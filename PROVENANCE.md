@@ -6,10 +6,10 @@ documentation, and project-owned tests are the permitted design inputs.
 
 ## T01 bootstrap record
 
-- Authorship: OpenAI Codex generated and integrated the T01 implementation and
-  documentation at the repository operator's direction. The eventual human
-  committer remains responsible for review and DCO certification; this T01
-  execution creates no commit.
+- Authorship and certification: OpenAI Codex generated and integrated the T01
+  implementation and documentation at repository operator MaBaiqiu's direction.
+  MaBaiqiu authorized the commit and is recorded as its author and committer,
+  with DCO certification supplied through the `Signed-off-by` trailer.
 - Project inputs: issue #1, issue #2, the repository context map and Document
   Engine glossary, and ADR-0002, 0004, 0006, 0008–0010, 0012–0015, 0025,
   0029, 0030, and 0032.
@@ -35,6 +35,35 @@ documentation, and project-owned tests are the permitted design inputs.
   differential evidence was used.
 - Compatibility Curator evidence: none; the role is vacant and the T01
   capability remains `experimental`.
+
+## T02 inventory-authority record
+
+- Authorship and certification: OpenAI Codex generated and integrated the T02
+  validator, generator, fixtures, inventories, and documentation at repository
+  operator MaBaiqiu's direction. MaBaiqiu authorized this commit and is recorded
+  as its author and committer, with DCO certification supplied through the
+  `Signed-off-by` trailer.
+- Project inputs: issue #1, issue #3, the Migration and Document Engine
+  glossaries, ADR-0011, 0020, 0023, and 0029, the accepted T01 authorities and
+  evidence, and the repository contribution and release contracts.
+- Repository tooling: SnakeYAML 2.2 (Apache-2.0) safely parses YAML and remains
+  outside shipped product artifacts. Exec Maven Plugin 3.6.3 (Apache-2.0) is
+  version-pinned to expose the Java 8 inventory command through Maven and bind
+  its drift check to `verify`. Coordinates, roles, and licenses are recorded in
+  [DEPENDENCIES.md](DEPENDENCIES.md).
+- Test fixtures: every positive and negative inventory, evidence record, and
+  generated-document input under `build-tools/inventory/src/test/resources` is
+  project-authored for T02. No external PDF, facade source, or product artifact
+  is included.
+- Generated documentation: `docs/generated/capability-matrix.md` and
+  `docs/generated/facade-surface.md` are deterministic renderings of the two
+  YAML authorities and contain no external copied content.
+- Excluded inputs: no iText source, resource, fixture, decompiled or
+  binary-derived implementation detail, closed add-on material, or proprietary
+  differential evidence was used.
+- Scope: T02 adds only repository validation and documentation tooling. It
+  introduces no Migration Facade type or stub, changes no T01 compatibility
+  claim, and leaves independent T06 Acceptance Evidence outstanding.
 
 Future changes append or update a scoped record and supply the pull-request
 provenance statement required by [CONTRIBUTING.md](CONTRIBUTING.md).

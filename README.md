@@ -30,6 +30,18 @@ Run the repository-owned container matrix with Podman:
 Both commands compile shipped code for Java release 8. The local matrix runs
 the same Maven verification contract on JDK 8, 11, 17, and 21.
 
+Validate or regenerate the machine-readable compatibility inventories and
+their cross-linked human-readable views with:
+
+```text
+./scripts/inventory validate
+./scripts/inventory generate
+```
+
+The YAML authorities, state and evidence rules, exact output paths, and drift
+contract are documented in
+[capabilities/README.md](capabilities/README.md).
+
 ## Maven coordinates
 
 All first-party artifacts use the `0.1.0-SNAPSHOT` Release Train. Consumers

@@ -16,8 +16,8 @@ capabilities:
       query: net.zerocloud.pdf.query.PageCount
       outcome: net.zerocloud.pdf.WorkflowOutcome
     migration-facade:
-      stable: none
-      preview: none
+      stable: []
+      preview: []
     limitations:
       - One path source or one path publication target per workflow request.
       - New documents use a staged rewrite; incremental publication is not in T01.
@@ -29,6 +29,11 @@ capabilities:
     acceptance-profile:
       id: T01-blank-document-workflow
       state: experimental
+      mandatory-evidence:
+        - syntax
+        - standards
+        - semantic
+        - visual
       evidence-record: capabilities/evidence/T01-blank-document-workflow.md
     evidence:
       - kind: consumer-contract
@@ -46,6 +51,7 @@ capabilities:
       - kind: cross-jdk-contract
         path: scripts/verify-jdk-matrix.sh
         assertion: Maven verification runs on JDK 8, 11, 17, and 21.
+    acceptance-evidence: []
     provenance:
       path: PROVENANCE.md
       record: T01 bootstrap record

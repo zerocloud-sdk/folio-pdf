@@ -1,0 +1,41 @@
+schema-version: 1
+release-train: 9.9.9-TEST
+authority: migration-source-surface
+surfaces:
+  stable:
+    - id: surface.compatible
+      reference:
+        type: com.itextpdf.fixture.Compatible
+        member: execute(java.lang.String)
+      open-pdf:
+        type: net.zerocloud.pdf.itext7.fixture.Compatible
+        member: execute(java.lang.String)
+      generic-contract: Returns the fixture value.
+      exception-contract: Throws the documented fixture failure.
+      capabilities:
+        - sample.compatible
+  preview:
+    - id: surface.experimental
+      reference:
+        type: com.itextpdf.fixture.Experimental
+        member: execute()
+      open-pdf:
+        type: net.zerocloud.pdf.itext7.wrong.Experimental
+        member: execute()
+      generic-contract: No generic parameters.
+      exception-contract: No checked exception.
+      capabilities:
+        - sample.experimental
+excluded-capabilities:
+  - id: sample.planned
+    ticket: T99
+    reason: The fixture capability is not implemented.
+  - id: sample.limited
+    ticket: T99
+    reason: Limited behavior is not eligible for facade coverage.
+  - id: anchor.a-b
+    ticket: T99
+    reason: The anchor-collision fixture has no facade surface.
+  - id: anchor.a.b
+    ticket: T99
+    reason: The anchor-collision fixture has no facade surface.

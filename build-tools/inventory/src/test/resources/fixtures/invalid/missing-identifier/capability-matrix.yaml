@@ -1,0 +1,34 @@
+schema-version: 1
+release-train: 9.9.9-TEST
+authority: behavioral-capability
+capabilities:
+  - context: test-context
+    summary: Missing identifier fixture.
+    reference-suite:
+      source: public fixture contract
+      role: validation fixture only
+    native-interface:
+      entry-point: example.Invalid#execute
+    migration-facade:
+      stable: []
+      preview: []
+    limitations: []
+    dependency-gates: []
+    promotion-gates:
+      - ticket: T99
+        requirement: Implement and collect evidence.
+    acceptance-profile:
+      id: sample-invalid-profile
+      state: planned
+      mandatory-evidence:
+        - syntax
+        - standards
+        - semantic
+        - visual
+    evidence: []
+    acceptance-evidence: []
+    provenance:
+      path: PROVENANCE.md
+      record: Fixture record
+    certified-platforms: []
+    status: planned

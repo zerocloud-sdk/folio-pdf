@@ -1,0 +1,271 @@
+schema-version: 1
+release-train: 9.9.9-TEST
+authority: behavioral-capability
+
+capabilities:
+  - id: sample.planned
+    context: test-context
+    summary: A planned fixture capability.
+    reference-suite:
+      source: public fixture contract
+      role: validation fixture only
+    native-interface:
+      entry-point: example.Planned#execute
+    migration-facade:
+      stable: []
+      preview: []
+    limitations: []
+    dependency-gates: []
+    promotion-gates:
+      - ticket: T99
+        requirement: Implement and collect evidence.
+    acceptance-profile:
+      id: sample-planned-profile
+      state: planned
+      mandatory-evidence:
+        - syntax
+        - standards
+        - semantic
+        - visual
+    evidence: []
+    acceptance-evidence: []
+    provenance:
+      path: PROVENANCE.md
+      record: Fixture record
+    certified-platforms: []
+    status: planned
+
+  - id: sample.experimental
+    context: test-context
+    summary: An experimental fixture capability.
+    reference-suite:
+      source: public fixture contract
+      role: validation fixture only
+    native-interface:
+      entry-point: example.Experimental#execute
+    migration-facade:
+      stable: []
+      preview:
+        - surface.experimental
+    limitations: []
+    dependency-gates: []
+    promotion-gates:
+      - ticket: T99
+        requirement: Complete independent Acceptance Evidence.
+    acceptance-profile:
+      id: sample-experimental-profile
+      state: experimental
+      mandatory-evidence:
+        - syntax
+        - standards
+        - semantic
+        - visual
+      evidence-record: evidence/experimental-profile.md
+    evidence:
+      - kind: consumer-contract
+        path: evidence/implementation.md
+        assertion: The fixture has observable implementation evidence.
+    acceptance-evidence:
+      - chain: syntax
+        result: indeterminate
+        record: evidence/experimental-syntax.md
+        producer:
+          kind: external-tool
+          name: fixture-syntax-validator
+          version: "1.0"
+    provenance:
+      path: PROVENANCE.md
+      record: Fixture record
+    certified-platforms: []
+    status: experimental
+
+  - id: sample.compatible
+    context: test-context
+    summary: A compatible fixture capability.
+    reference-suite:
+      source: public fixture contract
+      role: validation fixture only
+    native-interface:
+      entry-point: example.Compatible#execute
+    migration-facade:
+      stable:
+        - surface.compatible
+      preview: []
+    limitations: []
+    dependency-gates: []
+    promotion-gates: []
+    acceptance-profile:
+      id: sample-compatible-profile
+      state: compatible
+      mandatory-evidence:
+        - syntax
+        - standards
+        - semantic
+        - visual
+      evidence-record: evidence/compatible-profile.md
+    evidence:
+      - kind: consumer-contract
+        path: evidence/implementation.md
+        assertion: The fixture has observable implementation evidence.
+    acceptance-evidence:
+      - chain: syntax
+        result: pass
+        record: evidence/compatible-syntax.md
+        producer:
+          kind: external-tool
+          name: fixture-syntax-validator
+          version: "1.0"
+      - chain: standards
+        result: pass
+        record: evidence/compatible-standards.md
+        producer:
+          kind: external-tool
+          name: fixture-standards-validator
+          version: "1.0"
+      - chain: semantic
+        result: pass
+        record: evidence/compatible-semantic.md
+        producer:
+          kind: project-test
+          name: fixture-semantic-assertions
+          version: "1.0"
+      - chain: visual
+        result: pass
+        record: evidence/compatible-visual.md
+        producer:
+          kind: external-tool
+          name: fixture-visual-renderer
+          version: "1.0"
+    provenance:
+      path: PROVENANCE.md
+      record: Fixture record
+    certified-platforms:
+      - fixture-platform
+    status: compatible
+
+  - id: sample.limited
+    context: test-context
+    summary: A limited fixture capability.
+    reference-suite:
+      source: public fixture contract
+      role: validation fixture only
+    native-interface:
+      entry-point: example.Limited#execute
+    migration-facade:
+      stable: []
+      preview: []
+    limitations:
+      - The fixture intentionally supports one bounded case.
+    dependency-gates: []
+    promotion-gates: []
+    acceptance-profile:
+      id: sample-limited-profile
+      state: limited
+      mandatory-evidence:
+        - syntax
+        - standards
+        - semantic
+        - visual
+      evidence-record: evidence/limited-profile.md
+    evidence:
+      - kind: consumer-contract
+        path: evidence/implementation.md
+        assertion: The fixture has observable implementation evidence.
+    acceptance-evidence:
+      - chain: syntax
+        result: pass
+        record: evidence/limited-syntax.md
+        producer:
+          kind: external-tool
+          name: fixture-syntax-validator
+          version: "1.0"
+      - chain: standards
+        result: pass
+        record: evidence/limited-standards.md
+        producer:
+          kind: external-tool
+          name: fixture-standards-validator
+          version: "1.0"
+      - chain: semantic
+        result: pass
+        record: evidence/limited-semantic.md
+        producer:
+          kind: project-test
+          name: fixture-semantic-assertions
+          version: "1.0"
+      - chain: visual
+        result: pass
+        record: evidence/limited-visual.md
+        producer:
+          kind: external-tool
+          name: fixture-visual-renderer
+          version: "1.0"
+    provenance:
+      path: PROVENANCE.md
+      record: Fixture record
+    certified-platforms: []
+    status: limited
+
+  - id: anchor.a-b
+    context: test-context
+    summary: A planned fixture whose ID contains a hyphen.
+    reference-suite:
+      source: public fixture contract
+      role: anchor-collision fixture only
+    native-interface:
+      entry-point: example.HyphenAnchor#execute
+    migration-facade:
+      stable: []
+      preview: []
+    limitations: []
+    dependency-gates: []
+    promotion-gates:
+      - ticket: T99
+        requirement: Implement and collect evidence.
+    acceptance-profile:
+      id: anchor-hyphen-profile
+      state: planned
+      mandatory-evidence:
+        - syntax
+        - standards
+        - semantic
+        - visual
+    evidence: []
+    acceptance-evidence: []
+    provenance:
+      path: PROVENANCE.md
+      record: Fixture record
+    certified-platforms: []
+    status: planned
+
+  - id: anchor.a.b
+    context: test-context
+    summary: A planned fixture whose ID contains a dot.
+    reference-suite:
+      source: public fixture contract
+      role: anchor-collision fixture only
+    native-interface:
+      entry-point: example.DotAnchor#execute
+    migration-facade:
+      stable: []
+      preview: []
+    limitations: []
+    dependency-gates: []
+    promotion-gates:
+      - ticket: T99
+        requirement: Implement and collect evidence.
+    acceptance-profile:
+      id: anchor-dot-profile
+      state: planned
+      mandatory-evidence:
+        - syntax
+        - standards
+        - semantic
+        - visual
+    evidence: []
+    acceptance-evidence: []
+    provenance:
+      path: PROVENANCE.md
+      record: Fixture record
+    certified-platforms: []
+    status: planned

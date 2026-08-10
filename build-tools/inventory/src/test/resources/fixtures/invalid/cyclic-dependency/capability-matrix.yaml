@@ -1,0 +1,70 @@
+schema-version: 1
+release-train: 9.9.9-TEST
+authority: behavioral-capability
+capabilities:
+  - id: sample.invalid
+    context: test-context
+    summary: First cyclic dependency fixture.
+    reference-suite:
+      source: public fixture contract
+      role: validation fixture only
+    native-interface:
+      entry-point: example.Invalid#execute
+    migration-facade:
+      stable: []
+      preview: []
+    limitations: []
+    dependency-gates:
+      - capability: sample.other
+        required-status: compatible
+    promotion-gates:
+      - ticket: T99
+        requirement: Resolve dependencies.
+    acceptance-profile:
+      id: sample-invalid-profile
+      state: planned
+      mandatory-evidence:
+        - syntax
+        - standards
+        - semantic
+        - visual
+    evidence: []
+    acceptance-evidence: []
+    provenance:
+      path: PROVENANCE.md
+      record: Fixture record
+    certified-platforms: []
+    status: planned
+  - id: sample.other
+    context: test-context
+    summary: Second cyclic dependency fixture.
+    reference-suite:
+      source: public fixture contract
+      role: validation fixture only
+    native-interface:
+      entry-point: example.Other#execute
+    migration-facade:
+      stable: []
+      preview: []
+    limitations: []
+    dependency-gates:
+      - capability: sample.invalid
+        required-status: compatible
+    promotion-gates:
+      - ticket: T99
+        requirement: Resolve dependencies.
+    acceptance-profile:
+      id: sample-other-profile
+      state: planned
+      mandatory-evidence:
+        - syntax
+        - standards
+        - semantic
+        - visual
+    evidence: []
+    acceptance-evidence: []
+    provenance:
+      path: PROVENANCE.md
+      record: Fixture record
+    certified-platforms: []
+    status: planned

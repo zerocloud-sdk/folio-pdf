@@ -1,0 +1,102 @@
+schema-version: 1
+release-train: 9.9.9-TEST
+authority: behavioral-capability
+capabilities:
+  - id: sample.invalid
+    context: test-context
+    summary: Compatible capability with a blocked Dependency Gate.
+    reference-suite:
+      source: public fixture contract
+      role: validation fixture only
+    native-interface:
+      entry-point: example.Invalid#execute
+    migration-facade:
+      stable: []
+      preview: []
+    limitations: []
+    dependency-gates:
+      - capability: sample.experimental
+        required-status: compatible
+    promotion-gates: []
+    acceptance-profile:
+      id: sample-invalid-profile
+      state: compatible
+      mandatory-evidence:
+        - syntax
+        - standards
+        - semantic
+        - visual
+      evidence-record: evidence/compatible-profile.md
+    evidence:
+      - kind: consumer-contract
+        path: evidence/implementation.md
+        assertion: The fixture has observable implementation evidence.
+    acceptance-evidence:
+      - chain: syntax
+        result: pass
+        record: evidence/compatible-syntax.md
+        producer:
+          kind: external-tool
+          name: fixture-syntax-validator
+          version: "1.0"
+      - chain: standards
+        result: pass
+        record: evidence/compatible-standards.md
+        producer:
+          kind: external-tool
+          name: fixture-standards-validator
+          version: "1.0"
+      - chain: semantic
+        result: pass
+        record: evidence/compatible-semantic.md
+        producer:
+          kind: project-test
+          name: fixture-semantic-assertions
+          version: "1.0"
+      - chain: visual
+        result: pass
+        record: evidence/compatible-visual.md
+        producer:
+          kind: external-tool
+          name: fixture-visual-renderer
+          version: "1.0"
+    provenance:
+      path: PROVENANCE.md
+      record: Fixture record
+    certified-platforms: []
+    status: compatible
+  - id: sample.experimental
+    context: test-context
+    summary: Experimental prerequisite fixture.
+    reference-suite:
+      source: public fixture contract
+      role: validation fixture only
+    native-interface:
+      entry-point: example.Experimental#execute
+    migration-facade:
+      stable: []
+      preview: []
+    limitations: []
+    dependency-gates: []
+    promotion-gates:
+      - ticket: T99
+        requirement: Complete evidence.
+    acceptance-profile:
+      id: sample-experimental-profile
+      state: experimental
+      mandatory-evidence:
+        - syntax
+        - standards
+        - semantic
+        - visual
+      evidence-record: evidence/experimental-profile.md
+    evidence:
+      - kind: consumer-contract
+        path: evidence/implementation.md
+        assertion: The fixture has observable implementation evidence.
+    acceptance-evidence: []
+    provenance:
+      path: PROVENANCE.md
+      record: Fixture record
+    certified-platforms: []
+    status: experimental

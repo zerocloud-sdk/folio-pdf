@@ -1,0 +1,59 @@
+schema-version: 1
+release-train: 9.9.9-TEST
+authority: behavioral-capability
+capabilities:
+  - id: sample.invalid
+    context: test-context
+    summary: Limited capability with incomplete Acceptance Evidence.
+    reference-suite:
+      source: public fixture contract
+      role: validation fixture only
+    native-interface:
+      entry-point: example.Invalid#execute
+    migration-facade:
+      stable: []
+      preview: []
+    limitations:
+      - The fixture intentionally supports one bounded case.
+    dependency-gates: []
+    promotion-gates: []
+    acceptance-profile:
+      id: sample-invalid-profile
+      state: limited
+      mandatory-evidence:
+        - syntax
+        - standards
+        - semantic
+        - visual
+      evidence-record: evidence/limited-profile.md
+    evidence:
+      - kind: consumer-contract
+        path: evidence/implementation.md
+        assertion: Implementation evidence is present.
+    acceptance-evidence:
+      - chain: syntax
+        result: pass
+        record: evidence/limited-syntax.md
+        producer:
+          kind: external-tool
+          name: fixture-syntax-validator
+          version: "1.0"
+      - chain: standards
+        result: pass
+        record: evidence/limited-standards.md
+        producer:
+          kind: external-tool
+          name: fixture-standards-validator
+          version: "1.0"
+      - chain: semantic
+        result: pass
+        record: evidence/limited-semantic.md
+        producer:
+          kind: project-test
+          name: fixture-semantic-assertions
+          version: "1.0"
+    provenance:
+      path: PROVENANCE.md
+      record: Fixture record
+    certified-platforms: []
+    status: limited

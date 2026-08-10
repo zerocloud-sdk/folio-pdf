@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+script_directory=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+repository_root=$(cd -- "${script_directory}/.." && pwd)
+
+if (( $# != 1 )); then
+    echo "Usage: ./scripts/inventory <validate|generate|check>" >&2
+    exit 2
+fi
+
+inventory_action=$1
+case "${inventory_action}" in
+    validate|generate|check) ;;
+    *)
+        echo "Unsupported inventory action: ${inventory_action}" >&2
+        exit 2
+        ;;
+esac
+
+exec "${repository_root}/mvnw" \
+    -B -ntp \
+    -f "${repository_root}/build-tools/inventory/pom.xml" \
+    -Dinventory.action="${inventory_action}" \
+    -Dinventory.repository.root="${repository_root}" \
+    compile exec:java

@@ -1,0 +1,36 @@
+schema-version: 1
+release-train: 9.9.9-TEST
+authority: behavioral-capability
+capabilities:
+  - id: sample.invalid
+    context: test-context
+    summary: Experimental capability without implementation evidence.
+    reference-suite:
+      source: public fixture contract
+      role: validation fixture only
+    native-interface:
+      entry-point: example.Invalid#execute
+    migration-facade:
+      stable: []
+      preview: []
+    limitations: []
+    dependency-gates: []
+    promotion-gates:
+      - ticket: T99
+        requirement: Complete independent Acceptance Evidence.
+    acceptance-profile:
+      id: sample-invalid-profile
+      state: experimental
+      mandatory-evidence:
+        - syntax
+        - standards
+        - semantic
+        - visual
+      evidence-record: evidence/experimental-profile.md
+    evidence: []
+    acceptance-evidence: []
+    provenance:
+      path: PROVENANCE.md
+      record: Fixture record
+    certified-platforms: []
+    status: experimental

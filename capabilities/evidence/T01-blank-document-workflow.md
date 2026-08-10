@@ -4,6 +4,10 @@ Status: `experimental`
 
 Capability: `document.blank.create-publish-reopen`
 
+Acceptance Profile: `T01-blank-document-workflow`
+
+Release train: `0.1.0-SNAPSHOT`
+
 The consumer contract compiles at Java release 8 using JDK and
 `net.zerocloud.pdf` public types. It creates one blank page through
 `DocumentWorkflow.execute`, receives a committed path receipt, confirms a
@@ -19,8 +23,10 @@ obtain the literal page count `1` through `PageCount`.
   signature, generic bound, exception, annotation type, and public constant.
 - `JarContractIT` — `Automatic-Module-Name`, Java 8 class-file version, and jar
   boundary checks.
-- `InventoryContractIT` — machine-readable Capability Matrix and empty stable
-  and preview Facade Surface seeds.
+- `InventoryCommandTest` — live authority validation plus black-box state,
+  evidence, dependency, facade-reference, generation, and drift fixtures.
+- `./scripts/inventory check` — repository-owned validation and generated
+  documentation drift contract.
 - `./mvnw -B -ntp verify` — repository Maven verification contract.
 - `./scripts/verify-jdk-matrix.sh` — the same contract on JDK 8, 11, 17, and 21.
 

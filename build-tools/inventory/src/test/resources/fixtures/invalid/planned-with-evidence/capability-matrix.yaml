@@ -1,0 +1,39 @@
+schema-version: 1
+release-train: 9.9.9-TEST
+authority: behavioral-capability
+capabilities:
+  - id: sample.invalid
+    context: test-context
+    summary: Planned capability with premature evidence.
+    reference-suite:
+      source: public fixture contract
+      role: validation fixture only
+    native-interface:
+      entry-point: example.Invalid#execute
+    migration-facade:
+      stable: []
+      preview: []
+    limitations: []
+    dependency-gates: []
+    promotion-gates:
+      - ticket: T99
+        requirement: Implement the capability.
+    acceptance-profile:
+      id: sample-invalid-profile
+      state: planned
+      mandatory-evidence:
+        - syntax
+        - standards
+        - semantic
+        - visual
+      evidence-record: evidence/experimental-profile.md
+    evidence:
+      - kind: consumer-contract
+        path: evidence/implementation.md
+        assertion: Premature implementation evidence.
+    acceptance-evidence: []
+    provenance:
+      path: PROVENANCE.md
+      record: Fixture record
+    certified-platforms: []
+    status: planned
