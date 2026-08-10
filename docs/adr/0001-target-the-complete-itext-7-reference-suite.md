@@ -1,0 +1,3 @@
+# Target the complete iText 7 Reference Suite
+
+The long-term target is the complete Compatibility Matrix product set rather than Core alone: iText Core 7.2.6, pdfSweep 3.0.2, pdfCalligraph 3.0.2, pdfXFA 3.0.4, pdfHTML 4.0.5, pdfOCR 2.0.2, pdfOptimizer 2.0.2, pdfRender 2.0.4, and pdfOffice 2.0.5. “Complete” is deliberately limited to this matrix-defined Java suite and excludes adjacent or retired products and tools such as pdf2Data, pdfInvoice, pdfDebug/RUPS, DITO, and licensing infrastructure. Every product in the Reference Suite remains mandatory even when it is not an early workload priority. Capability Parity will be delivered in stages; the baseline will not silently move to later iText major versions.

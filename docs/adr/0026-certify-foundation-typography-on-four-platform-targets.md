@@ -1,0 +1,3 @@
+# Certify Foundation typography on four platform targets
+
+The Foundation Composition Profile is certified independently on Linux x86-64, Windows x86-64, macOS x86-64, and macOS arm64 using a project-owned HarfBuzz adapter against explicitly versioned native installations. HarfBuzz is not bundled and its lack of an official Java binding is not hidden behind a generic Java 8 claim. Evidence uses a separately licensed test-data artifact containing hash-pinned static Noto Sans, Noto Sans CJK SC/TC/JP/KR, Noto Sans Arabic, Noto Sans Hebrew, Noto Sans Devanagari, and Noto Sans Thai files with their OFL notices; system and online fonts are forbidden in compatibility evidence.

@@ -1,0 +1,12 @@
+schema-version: 1
+release-train: 0.1.0-SNAPSHOT
+authority: migration-source-surface
+
+surfaces:
+  stable: []
+  preview: []
+
+excluded-capabilities:
+  - id: document.blank.create-publish-reopen
+    ticket: T01
+    reason: T01 establishes only the Native Interface; Migration Facade mapping belongs to T04.

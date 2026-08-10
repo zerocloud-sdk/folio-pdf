@@ -1,0 +1,5 @@
+# Proxy Document Sessions across the worker seam
+
+`DocumentWorkflow.execute(request, work)` remains the Native Interface for both trusted in-process execution and the Hardened Worker Profile. The caller's callback always runs in the caller process against a Document Session: the in-process adapter executes project-defined Document Commands directly, while the IPC adapter batches them to a local worker; a Document Query is an ordering barrier that flushes earlier commands and observes their result. The worker accepts only versioned, whitelisted project values, commands, and queries—never lambdas, arbitrary classes, Java Serialization payloads, reflection targets, URIs, or user bytecode.
+
+The first worker protocol is local-only, versioned, length-bounded, deadline-aware, and identified by idempotent transaction IDs. Large values use bounded staging or chunking, publication status can be queried after a lost acknowledgement, and callers must not blindly retry an uncertain commit. Remote worker networking is outside the Foundation Release.

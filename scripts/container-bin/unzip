@@ -1,0 +1,32 @@
+#!/bin/sh
+set -eu
+
+# The official Maven only-script wrapper selects a tarball when `unzip` is not
+# present, but its single configured checksum belongs to the declared zip.
+# Minimal JDK images already contain the JDK `jar` extractor, so this adapter
+# preserves verification of the declared Maven distribution without installing
+# packages in the ephemeral validation container.
+if [ "${1-}" = "-q" ]; then
+    shift
+fi
+
+archive=${1:?missing archive}
+shift
+
+if [ "${1-}" != "-d" ] || [ -z "${2-}" ]; then
+    echo "usage: unzip [-q] ARCHIVE -d DIRECTORY" >&2
+    exit 2
+fi
+
+destination=$2
+mkdir -p "${destination}"
+(
+    cd "${destination}"
+    jar xf "${archive}"
+)
+
+for launcher in "${destination}"/*/bin/mvn "${destination}"/*/bin/mvnDebug; do
+    if [ -f "${launcher}" ]; then
+        chmod +x "${launcher}"
+    fi
+done

@@ -1,0 +1,3 @@
+# Separate stable and experimental Migration Facades
+
+The Stable Migration Facade contains only mappings whose Capability Matrix status is `compatible`; `pdf-migration-itext7-preview` is a mutually exclusive superset containing stable and experimental mappings and cannot coexist with `pdf-migration-itext7` on the classpath. Facade packages preserve the reference suffix under `net.zerocloud.pdf.itext7.*`, enabling mechanical import-prefix replacement, while Native Interface packages use `net.zerocloud.pdf.<context>.*`. The project will not publish a complete surface made of runtime-throwing stubs, because compile success must not imply support that the implementation cannot deliver.

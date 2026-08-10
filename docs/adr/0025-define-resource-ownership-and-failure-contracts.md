@@ -1,0 +1,3 @@
+# Define resource ownership and failure contracts
+
+The Document Workflow owns and closes resources that it opens from Paths, while caller-supplied streams and channels remain caller-owned and are never closed by the module; byte-array and worker-stream inputs are copied or staged under explicit limits. Path outputs use staged atomic publication where supported, and stream failures explicitly report possible partial output. Operational PDF, I/O, policy, limit, and worker failures use a checked Document Failure with stable codes and safe diagnostics; programming errors remain unchecked, and a caller callback's runtime exception aborts publication and propagates unchanged.

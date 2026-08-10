@@ -1,0 +1,3 @@
+# Treat PDF input as hostile
+
+All PDF input is treated as potentially malicious, including in multi-tenant network use. Document workflows and external Capability Provider adapters must enforce explicit limits for nesting, decompression, object and page counts, decoded pixels, memory, temporary storage, and elapsed processing, with safe defaults and stable limit errors rather than relying on callers to sanitize input first. Both in-process and process-isolated execution are supported, but the Hardened Worker Profile is mandatory for hostile multi-tenant uploads because an application thread cannot enforce hard isolation or termination.

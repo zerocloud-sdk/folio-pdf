@@ -1,0 +1,53 @@
+schema-version: 1
+release-train: 0.1.0-SNAPSHOT
+authority: behavioral-capability
+
+capabilities:
+  - id: document.blank.create-publish-reopen
+    context: document-engine
+    summary: Create, publish, reopen, and count the page of a blank PDF.
+    reference-suite:
+      source: iText Core 7.2.6 document lifecycle
+      role: capability inventory only; not an implementation oracle
+    native-interface:
+      entry-point: net.zerocloud.pdf.DocumentWorkflow#execute
+      request: net.zerocloud.pdf.WorkflowRequest
+      command: net.zerocloud.pdf.command.AddBlankPage
+      query: net.zerocloud.pdf.query.PageCount
+      outcome: net.zerocloud.pdf.WorkflowOutcome
+    migration-facade:
+      stable: none
+      preview: none
+    limitations:
+      - One path source or one path publication target per workflow request.
+      - New documents use a staged rewrite; incremental publication is not in T01.
+      - Named sources, multiple targets, deadlines, cancellation, and resource policy are deferred.
+    dependency-gates: []
+    promotion-gates:
+      - ticket: T06
+        requirement: Complete the independent acceptance evidence required before compatibility.
+    acceptance-profile:
+      id: T01-blank-document-workflow
+      state: experimental
+      evidence-record: capabilities/evidence/T01-blank-document-workflow.md
+    evidence:
+      - kind: consumer-contract
+        path: pdf-document/src/test/java/net/zerocloud/pdf/consumer/BlankDocumentWorkflowTest.java
+        assertion: A public Java 8 consumer creates, publishes, reopens, and observes one page.
+      - kind: lifecycle-contract
+        path: pdf-document/src/test/java/net/zerocloud/pdf/consumer/WorkflowLifecycleTest.java
+        assertion: Ordering, callback abort, session expiry, and command ownership are observable.
+      - kind: public-api-contract
+        path: pdf-document/src/test/java/net/zerocloud/pdf/contract/PublicApiLeakageIT.java
+        assertion: Public and protected signatures contain no PDFBox types.
+      - kind: artifact-contract
+        path: pdf-document/src/test/java/net/zerocloud/pdf/contract/JarContractIT.java
+        assertion: The jar has the stable module name and Java 8 class-file version.
+      - kind: cross-jdk-contract
+        path: scripts/verify-jdk-matrix.sh
+        assertion: Maven verification runs on JDK 8, 11, 17, and 21.
+    provenance:
+      path: PROVENANCE.md
+      record: T01 bootstrap record
+    certified-platforms: []
+    status: experimental

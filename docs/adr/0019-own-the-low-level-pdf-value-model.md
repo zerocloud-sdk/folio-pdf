@@ -1,0 +1,3 @@
+# Own the low-level PDF Value model
+
+The Document Engine exposes backend-neutral PDF Values for low-level inspection and applies changes through validated Document Patches rather than exposing PDFBox COS objects or forbidding low-level access. Small values are immutable and may be detached, while large streams and traversals are lazy, Policy-bounded Session views addressed by stable Object References and invalid after the Session ends. This preserves the advanced editing leverage required by the Reference Suite while keeping backend identity, mutability, update markers, signature rules, and unknown-object preservation inside the deep module.

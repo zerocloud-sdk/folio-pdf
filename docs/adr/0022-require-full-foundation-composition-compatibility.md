@@ -1,0 +1,3 @@
+# Require full Foundation Composition compatibility
+
+The Foundation Release requires compatible page sizing, margins and breaks; mixed-content paragraph leading, alignment, indentation, tabs, keep, widow, and orphan behavior; fixed and automatic table layout, spans, repeated headers and footers, page splitting, relayout, and incremental large-table flushing. It also requires representative Latin, Greek, Cyrillic, CJK, Arabic, Hebrew, Devanagari, and Thai profiles plus every barcode generation mode in the iText 7.2.6 core barcodes module; these items are release requirements rather than experimental previews.

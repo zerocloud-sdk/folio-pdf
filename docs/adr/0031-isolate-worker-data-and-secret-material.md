@@ -1,0 +1,3 @@
+# Isolate worker data and secret material
+
+Each Hardened Worker transaction uses a private, permission-restricted temporary root whose paths never derive from input names and which is destroyed with the worker; the project does not claim physical secure erasure on storage media. Workers have no network access by default, remote Capability Providers are brokered explicitly by the parent, and sending document content remotely requires caller authorization. Passwords and private-key material use clearable arrays or provider handles rather than Strings, while default logs exclude filenames, document content, metadata, credentials, private keys, and raw implementation exceptions.
