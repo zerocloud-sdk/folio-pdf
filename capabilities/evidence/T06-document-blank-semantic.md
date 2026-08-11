@@ -14,7 +14,7 @@ Result: `pass`
 
 Producer kind: `project-test`
 
-Producer: `open-pdf-semantic-assertions`
+Producer: `folio-pdf-semantic-assertions`
 
 Producer version: `0.1.0-SNAPSHOT`
 

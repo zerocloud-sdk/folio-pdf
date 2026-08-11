@@ -442,7 +442,7 @@ final class PdfBoxValueAdapter {
         }
         throw failure(
                 DocumentFailureCode.PATCH_VALUE_REJECTED,
-                "The Document Patch contains a value not owned by Open PDF.");
+                "The Document Patch contains a value not owned by Folio PDF.");
     }
 
     private COSBase backendNumber(PdfNumber publicNumber)

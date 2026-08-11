@@ -20,7 +20,7 @@ public final class ProviderProcessFixture {
         if (arguments.length != 1) {
             System.exit(64);
         }
-        String staging = System.getenv("OPEN_PDF_PROVIDER_STAGING");
+        String staging = System.getenv("FOLIO_PDF_PROVIDER_STAGING");
         if (staging != null) {
             Path marker = Paths.get(staging).resolve("fixture-marker");
             Files.write(marker, "fixture".getBytes(StandardCharsets.UTF_8));

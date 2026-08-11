@@ -9,7 +9,7 @@ surfaces:
       reference:
         type: com.itextpdf.kernel.pdf.PdfWriter
         member: <init>(java.lang.String)
-      open-pdf:
+      folio-pdf:
         type: net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter
         member: <init>(java.lang.String)
       generic-contract: No generic parameters.
@@ -20,7 +20,7 @@ surfaces:
       reference:
         type: com.itextpdf.kernel.pdf.PdfReader
         member: <init>(java.lang.String)
-      open-pdf:
+      folio-pdf:
         type: net.zerocloud.pdf.itext7.kernel.pdf.PdfReader
         member: <init>(java.lang.String)
       generic-contract: No generic parameters.
@@ -31,7 +31,7 @@ surfaces:
       reference:
         type: com.itextpdf.kernel.pdf.PdfReader
         member: close()
-      open-pdf:
+      folio-pdf:
         type: net.zerocloud.pdf.itext7.kernel.pdf.PdfReader
         member: close()
       generic-contract: No generic parameters or return value.
@@ -42,7 +42,7 @@ surfaces:
       reference:
         type: com.itextpdf.kernel.pdf.PdfDocument
         member: <init>(com.itextpdf.kernel.pdf.PdfWriter)
-      open-pdf:
+      folio-pdf:
         type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
         member: <init>(net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter)
       generic-contract: No generic parameters.
@@ -53,7 +53,7 @@ surfaces:
       reference:
         type: com.itextpdf.kernel.pdf.PdfDocument
         member: <init>(com.itextpdf.kernel.pdf.PdfReader)
-      open-pdf:
+      folio-pdf:
         type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
         member: <init>(net.zerocloud.pdf.itext7.kernel.pdf.PdfReader)
       generic-contract: No generic parameters.
@@ -64,7 +64,7 @@ surfaces:
       reference:
         type: com.itextpdf.kernel.pdf.PdfDocument
         member: addNewPage()
-      open-pdf:
+      folio-pdf:
         type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
         member: addNewPage()
       generic-contract: Returns the mapped PdfPage representing the added blank page.
@@ -75,7 +75,7 @@ surfaces:
       reference:
         type: com.itextpdf.kernel.pdf.PdfDocument
         member: getNumberOfPages()
-      open-pdf:
+      folio-pdf:
         type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
         member: getNumberOfPages()
       generic-contract: Returns the primitive page count.
@@ -86,7 +86,7 @@ surfaces:
       reference:
         type: com.itextpdf.kernel.pdf.PdfDocument
         member: close()
-      open-pdf:
+      folio-pdf:
         type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
         member: close()
       generic-contract: No generic parameters or return value.
@@ -97,7 +97,7 @@ surfaces:
       reference:
         type: com.itextpdf.kernel.pdf.PdfPage
         member: <type>
-      open-pdf:
+      folio-pdf:
         type: net.zerocloud.pdf.itext7.kernel.pdf.PdfPage
         member: <type>
       generic-contract: Non-generic return type for the mapped blank-page operation; no other PdfPage member is mapped in T04.
@@ -108,7 +108,7 @@ surfaces:
       reference:
         type: com.itextpdf.kernel.exceptions.PdfException
         member: <init>(java.lang.String,java.lang.Throwable)
-      open-pdf:
+      folio-pdf:
         type: net.zerocloud.pdf.itext7.kernel.exceptions.PdfException
         member: <init>(java.lang.String,java.lang.Throwable)
       generic-contract: Non-generic unchecked exception retaining a safe cause.
@@ -119,7 +119,7 @@ surfaces:
       reference:
         type: com.itextpdf.layout.Document
         member: <init>(com.itextpdf.kernel.pdf.PdfDocument)
-      open-pdf:
+      folio-pdf:
         type: net.zerocloud.pdf.itext7.layout.Document
         member: <init>(net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument)
       generic-contract: No generic parameters.
@@ -130,7 +130,7 @@ surfaces:
       reference:
         type: com.itextpdf.layout.Document
         member: close()
-      open-pdf:
+      folio-pdf:
         type: net.zerocloud.pdf.itext7.layout.Document
         member: close()
       generic-contract: No generic parameters or return value; closes the associated mapped PdfDocument.

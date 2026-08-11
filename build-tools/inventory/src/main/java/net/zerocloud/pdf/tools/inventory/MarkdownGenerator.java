@@ -233,8 +233,8 @@ final class MarkdownGenerator {
                     .append("\u0060\n");
             text.append("- Reference member: \u0060").append(codeText(surface.referenceType))
                     .append("#").append(codeText(surface.referenceMember)).append("\u0060\n");
-            text.append("- Open PDF mapping: \u0060").append(codeText(surface.openPdfType))
-                    .append("#").append(codeText(surface.openPdfMember)).append("\u0060\n");
+            text.append("- Folio PDF mapping: \u0060").append(codeText(surface.folioPdfType))
+                    .append("#").append(codeText(surface.folioPdfMember)).append("\u0060\n");
             text.append("- Generic contract: ").append(surface.genericContract).append("\n");
             text.append("- Exception contract: ").append(surface.exceptionContract).append("\n");
             text.append("- Behavioral capabilities: ");

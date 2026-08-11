@@ -144,7 +144,7 @@ Implementation evidence:
 Acceptance Evidence:
 
 - `syntax`: `pass` — [`capabilities/evidence/T06-document-blank-syntax.md`](../../capabilities/evidence/T06-document-blank-syntax.md); producer `qpdf@12.4.0` (`external-tool`)
-- `semantic`: `pass` — [`capabilities/evidence/T06-document-blank-semantic.md`](../../capabilities/evidence/T06-document-blank-semantic.md); producer `open-pdf-semantic-assertions@0.1.0-SNAPSHOT` (`project-test`)
+- `semantic`: `pass` — [`capabilities/evidence/T06-document-blank-semantic.md`](../../capabilities/evidence/T06-document-blank-semantic.md); producer `folio-pdf-semantic-assertions@0.1.0-SNAPSHOT` (`project-test`)
 
 Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T06 acceptance-evidence record`.
 

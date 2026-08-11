@@ -1,4 +1,4 @@
-# Open PDF Domain Context
+# Folio PDF Domain Context
 
 This document defines shared language for the complete product program and collects the ownership and vocabulary of its eight capability contexts in one place.
 
@@ -6,9 +6,9 @@ ADR-0014 continues to define the capability contexts as distinct architectural c
 
 ## Program Language
 
-**Open PDF**:
-The public name of this independent project. Public discovery and migration material uses the disambiguated form “Open PDF by ZeroCloud” and states that the project is unrelated to LibrePDF OpenPDF or Apryse iText.
-_Avoid_: OpenPDF, iText Open PDF
+**Folio PDF**:
+The public name of this independent project. Public discovery and migration material uses the disambiguated form “Folio PDF by ZeroCloud” and states that the project is unrelated to LibrePDF OpenPDF or Apryse iText.
+_Avoid_: OpenPDF, iText Folio PDF
 
 **Native Interface**:
 The primary public interface of this project, designed around its own model rather than around compatibility with historical iText signatures.
@@ -152,7 +152,7 @@ Owns irreversible removal of sensitive content and transformations that reduce o
 
 ## Migration
 
-Defines and measures migration from the fixed iText 7.2.6-era product set to Open PDF.
+Defines and measures migration from the fixed iText 7.2.6-era product set to Folio PDF.
 
 **Reference Suite**:
 The fixed Compatibility Matrix product set comprising iText Core 7.2.6, pdfSweep 3.0.2, pdfCalligraph 3.0.2, pdfXFA 3.0.4, pdfHTML 4.0.5, pdfOCR 2.0.2, pdfOptimizer 2.0.2, pdfRender 2.0.4, and pdfOffice 2.0.5. “Complete” refers to this matrix-defined Java suite, not every separate Apryse product or tool from the same era.

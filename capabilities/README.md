@@ -1,6 +1,6 @@
 # Compatibility inventories
 
-Open PDF keeps two versioned YAML authorities. The checked-in YAML is
+Folio PDF keeps two versioned YAML authorities. The checked-in YAML is
 normative; files below `docs/generated/` are deterministic views and must
 never be edited by hand.
 
@@ -126,7 +126,7 @@ version and Release Train and uses the literal authority
 `migration-source-surface`. Each unique stable surface ID records:
 
 - Reference Suite type and member descriptor;
-- Open PDF type and member mapping;
+- Folio PDF type and member mapping;
 - generic and exception contracts;
 - one or more behavioral capability IDs;
 - stable or preview availability through its containing list.
@@ -135,7 +135,7 @@ Stable surfaces may reference only `compatible` capabilities. Preview surfaces
 may reference only `compatible` or `experimental` capabilities. A surface
 cannot appear in both lists.
 
-Reference types must be below `com.itextpdf.*`. Their Open PDF types must
+Reference types must be below `com.itextpdf.*`. Their Folio PDF types must
 preserve the exact suffix below `net.zerocloud.pdf.itext7.*`, so the declared
 mapping remains eligible for mechanical import-prefix replacement.
 

@@ -159,7 +159,7 @@ final class PdfBoxWorkflowEngine {
             }
 
             try {
-                staged = Files.createTempFile(".open-pdf-", ".pdf");
+                staged = Files.createTempFile(".folio-pdf-", ".pdf");
                 document.save(staged.toFile());
             } catch (IOException | RuntimeException failure) {
                 throw failure(
@@ -479,7 +479,7 @@ final class PdfBoxWorkflowEngine {
         try {
             targetStage = Files.createTempFile(
                     target.getParent(),
-                    ".open-pdf-",
+                    ".folio-pdf-",
                     ".pdf");
             Files.copy(staged, targetStage, StandardCopyOption.REPLACE_EXISTING);
             try {

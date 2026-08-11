@@ -1,9 +1,9 @@
-# Open PDF by ZeroCloud
+# Folio PDF by ZeroCloud
 
-> **Independent project:** Open PDF by ZeroCloud is not affiliated with,
+> **Independent project:** Folio PDF by ZeroCloud is not affiliated with,
 > endorsed by, or sponsored by LibrePDF OpenPDF or Apryse/iText.
 
-Open PDF is an Apache-2.0 Java component suite under the `net.zerocloud`
+Folio PDF is an Apache-2.0 Java component suite under the `net.zerocloud`
 namespace. Its Native Interface is being built as a clean-room implementation
 for Java 8 and is tested on JDK 8, 11, 17, and 21. The project is currently
 experimental and has not published a Foundation Release.
@@ -278,8 +278,8 @@ factory call now receives an explicit `SaveMode`.
 
 ## Project information
 
-- Repository: <https://github.com/zerocloud-sdk/open-pdf>
-- Issue tracker: <https://github.com/zerocloud-sdk/open-pdf/issues>
+- Repository: <https://github.com/zerocloud-sdk/folio-pdf>
+- Issue tracker: <https://github.com/zerocloud-sdk/folio-pdf/issues>
 - Temporary public and security contact: <mabaiqiu@gmail.com>
 - License: [Apache License 2.0](LICENSE)
 - Chinese usage guide: [docs/zh-CN/getting-started.md](docs/zh-CN/getting-started.md)

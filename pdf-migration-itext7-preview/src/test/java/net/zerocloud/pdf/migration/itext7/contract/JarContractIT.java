@@ -33,7 +33,7 @@ public final class JarContractIT {
 
     private static final int JAVA_8_CLASS_MAJOR_VERSION = 52;
     private static final String EDITION_MARKER =
-            "META-INF/open-pdf/migration-itext7.edition";
+            "META-INF/folio-pdf/migration-itext7.edition";
 
     @Test
     public void previewIsJava8StrictSupersetWithExactMappedSurface() throws Exception {

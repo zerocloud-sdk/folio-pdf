@@ -1,6 +1,6 @@
 # Security model
 
-Open PDF treats every PDF as potentially malicious. Public limits cover input size, pages, objects, nesting, decoded streams and pixels, memory, temporary storage, processing time, and concurrency; limit failures use stable Document Failure codes.
+Folio PDF treats every PDF as potentially malicious. Public limits cover input size, pages, objects, nesting, decoded streams and pixels, memory, temporary storage, processing time, and concurrency; limit failures use stable Document Failure codes.
 
 ## Execution profiles
 
@@ -47,7 +47,7 @@ Transaction temporary data is isolated and removed with the worker. Passwords an
 ## Vulnerability handling
 
 Until a dedicated private reporting service is established, report suspected
-vulnerabilities to **mabaiqiu@gmail.com** with the subject `Open PDF security`.
+vulnerabilities to **mabaiqiu@gmail.com** with the subject `Folio PDF security`.
 Do not open a public issue or include document content, credentials, private
 keys, or exploit details in public discussion. The maintainer will acknowledge
 receipt and coordinate a private follow-up channel.

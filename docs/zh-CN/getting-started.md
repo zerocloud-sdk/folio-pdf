@@ -1,9 +1,9 @@
-# Open PDF 快速开始
+# Folio PDF 快速开始
 
-> **独立项目声明：** Open PDF by ZeroCloud 与 LibrePDF OpenPDF、Apryse 或
+> **独立项目声明：** Folio PDF by ZeroCloud 与 LibrePDF OpenPDF、Apryse 或
 > iText 没有隶属、赞助或背书关系。
 
-Open PDF 是采用 Apache-2.0 许可证的 Java 组件套件，Maven 坐标位于
+Folio PDF 是采用 Apache-2.0 许可证的 Java 组件套件，Maven 坐标位于
 `net.zerocloud` 命名空间。项目以 Java 8 为运行时基线，并在 JDK 8、11、
 17 和 21 上验证。当前版本仍处于实验阶段，尚未发布 Foundation Release。
 

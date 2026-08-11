@@ -11,7 +11,7 @@ import java.util.Enumeration;
 final class FacadeClasspathGuard {
 
     private static final String EDITION_MARKER =
-            "META-INF/open-pdf/migration-itext7.edition";
+            "META-INF/folio-pdf/migration-itext7.edition";
     private static final String CONFLICT_MESSAGE =
             "pdf-migration-itext7 and pdf-migration-itext7-preview "
                     + "cannot coexist on one classpath.";

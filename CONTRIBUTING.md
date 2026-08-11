@@ -1,6 +1,6 @@
 # Contributing
 
-Open PDF by ZeroCloud accepts contributions under Apache License 2.0 inbound
+Folio PDF by ZeroCloud accepts contributions under Apache License 2.0 inbound
 terms. Contributors retain their copyright; no copyright assignment is
 required.
 
@@ -49,4 +49,4 @@ issue without posting restricted or proprietary content.
 
 Report vulnerabilities privately as described in [SECURITY.md](SECURITY.md).
 General questions and defects belong in the canonical
-[issue tracker](https://github.com/zerocloud-sdk/open-pdf/issues).
+[issue tracker](https://github.com/zerocloud-sdk/folio-pdf/issues).

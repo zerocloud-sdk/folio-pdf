@@ -100,7 +100,7 @@ public final class SemanticObservation {
                 : "reopen failed with " + reopenFailure;
         return "# Project semantic findings\n\n"
                 + "Input SHA-256: `" + inputHash + "`\n\n"
-                + "Producer: `open-pdf-semantic-assertions`\n\n"
+                + "Producer: `folio-pdf-semantic-assertions`\n\n"
                 + "Producer version: `" + producerVersion + "`\n\n"
                 + "Publication status: `" + publicationStatus + "`\n\n"
                 + "Object graph observation: `" + objectGraph + "`\n\n"

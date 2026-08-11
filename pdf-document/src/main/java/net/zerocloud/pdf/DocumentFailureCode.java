@@ -48,7 +48,7 @@ public enum DocumentFailureCode {
     /** A Document Patch attempted to change engine-owned stream metadata. */
     PATCH_STREAM_CHANGE_REJECTED,
 
-    /** A Document Patch contains a PDF Value implementation not owned by Open PDF. */
+    /** A Document Patch contains a PDF Value implementation not owned by Folio PDF. */
     PATCH_VALUE_REJECTED,
 
     /** A staged document could not be written. */

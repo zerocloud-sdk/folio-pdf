@@ -163,7 +163,7 @@ public final class AcceptanceEvidenceCommand {
                 + metadata("Chain", "semantic")
                 + metadata("Result", result.recordValue())
                 + metadata("Producer kind", "project-test")
-                + metadata("Producer", "open-pdf-semantic-assertions")
+                + metadata("Producer", "folio-pdf-semantic-assertions")
                 + metadata("Producer version", releaseTrain)
                 + metadata("Input SHA-256", inputHash)
                 + "Final determination: `" + result.recordValue() + "`\n\n"

@@ -1,5 +1,5 @@
 /**
- * The Open PDF by ZeroCloud transactional Document Workflow Native Interface.
+ * The Folio PDF by ZeroCloud transactional Document Workflow Native Interface.
  *
  * <p>This is an independent project and is not affiliated with LibrePDF
  * OpenPDF or Apryse/iText. Backend classes are not part of this package's

@@ -55,7 +55,7 @@ selected for that capability. A direct `ProviderRequest` must call
 Missing authorization produces the stable
 `REMOTE_DISCLOSURE_NOT_AUTHORIZED` Provider Failure, or the corresponding
 Document Failure at the workflow seam. The check runs before Provider adapter
-code. Open PDF registers no default remote Provider and performs no discovery
+code. Folio PDF registers no default remote Provider and performs no discovery
 scan or implicit network call.
 
 ## Provider requests and results
@@ -80,7 +80,7 @@ Provider identity.
 JDK `List<String>` command, and a staging root. The command is passed directly
 to `ProcessBuilder`; it is never joined into a shell command. Each invocation
 gets a private child directory below the staging root, exposed to the child as
-`OPEN_PDF_PROVIDER_STAGING` and removed after every tested exit.
+`FOLIO_PDF_PROVIDER_STAGING` and removed after every tested exit.
 
 The version 1 stdin request frame is:
 

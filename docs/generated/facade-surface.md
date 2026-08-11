@@ -21,7 +21,7 @@ No stable surfaces are declared.
 
 - Availability: `preview`
 - Reference member: `com.itextpdf.kernel.pdf.PdfDocument#addNewPage()`
-- Open PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#addNewPage()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#addNewPage()`
 - Generic contract: Returns the mapped PdfPage representing the added blank page.
 - Exception contract: Rejects a closed or read-only facade document with java.lang.IllegalStateException.
 - Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen)
@@ -31,7 +31,7 @@ No stable surfaces are declared.
 
 - Availability: `preview`
 - Reference member: `com.itextpdf.kernel.pdf.PdfDocument#close()`
-- Open PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#close()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#close()`
 - Generic contract: No generic parameters or return value.
 - Exception contract: Maps a publication Document Failure to net.zerocloud.pdf.itext7.kernel.exceptions.PdfException with its stable code and safe diagnostic.
 - Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen)
@@ -41,7 +41,7 @@ No stable surfaces are declared.
 
 - Availability: `preview`
 - Reference member: `com.itextpdf.kernel.pdf.PdfDocument#<init>(com.itextpdf.kernel.pdf.PdfReader)`
-- Open PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#<init>(net.zerocloud.pdf.itext7.kernel.pdf.PdfReader)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#<init>(net.zerocloud.pdf.itext7.kernel.pdf.PdfReader)`
 - Generic contract: No generic parameters.
 - Exception contract: No checked exception; source failures are reported by the PdfReader constructor.
 - Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen)
@@ -51,7 +51,7 @@ No stable surfaces are declared.
 
 - Availability: `preview`
 - Reference member: `com.itextpdf.kernel.pdf.PdfDocument#<init>(com.itextpdf.kernel.pdf.PdfWriter)`
-- Open PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#<init>(net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#<init>(net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter)`
 - Generic contract: No generic parameters.
 - Exception contract: No checked exception; publication failures are reported by close().
 - Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen)
@@ -61,7 +61,7 @@ No stable surfaces are declared.
 
 - Availability: `preview`
 - Reference member: `com.itextpdf.kernel.pdf.PdfDocument#getNumberOfPages()`
-- Open PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#getNumberOfPages()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#getNumberOfPages()`
 - Generic contract: Returns the primitive page count.
 - Exception contract: Rejects a closed facade document with java.lang.IllegalStateException.
 - Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen)
@@ -71,7 +71,7 @@ No stable surfaces are declared.
 
 - Availability: `preview`
 - Reference member: `com.itextpdf.kernel.exceptions.PdfException#<init>(java.lang.String,java.lang.Throwable)`
-- Open PDF mapping: `net.zerocloud.pdf.itext7.kernel.exceptions.PdfException#<init>(java.lang.String,java.lang.Throwable)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.exceptions.PdfException#<init>(java.lang.String,java.lang.Throwable)`
 - Generic contract: Non-generic unchecked exception retaining a safe cause.
 - Exception contract: Constructor for mapped unchecked publication failures.
 - Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen)
@@ -81,7 +81,7 @@ No stable surfaces are declared.
 
 - Availability: `preview`
 - Reference member: `com.itextpdf.kernel.pdf.PdfPage#<type>`
-- Open PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfPage#<type>`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfPage#<type>`
 - Generic contract: Non-generic return type for the mapped blank-page operation; no other PdfPage member is mapped in T04.
 - Exception contract: No exception contract.
 - Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen)
@@ -91,7 +91,7 @@ No stable surfaces are declared.
 
 - Availability: `preview`
 - Reference member: `com.itextpdf.kernel.pdf.PdfReader#close()`
-- Open PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfReader#close()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfReader#close()`
 - Generic contract: No generic parameters or return value.
 - Exception contract: Retains the declared java.io.IOException contract; the mapped Path source is already closed by the Native Interface.
 - Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen)
@@ -101,7 +101,7 @@ No stable surfaces are declared.
 
 - Availability: `preview`
 - Reference member: `com.itextpdf.kernel.pdf.PdfReader#<init>(java.lang.String)`
-- Open PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfReader#<init>(java.lang.String)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfReader#<init>(java.lang.String)`
 - Generic contract: No generic parameters.
 - Exception contract: Maps a Native Document Failure to java.io.IOException with its stable code and safe diagnostic.
 - Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen)
@@ -111,7 +111,7 @@ No stable surfaces are declared.
 
 - Availability: `preview`
 - Reference member: `com.itextpdf.kernel.pdf.PdfWriter#<init>(java.lang.String)`
-- Open PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter#<init>(java.lang.String)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter#<init>(java.lang.String)`
 - Generic contract: No generic parameters.
 - Exception contract: Declares java.io.FileNotFoundException for a target that cannot name a file in an existing directory.
 - Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen)
@@ -121,7 +121,7 @@ No stable surfaces are declared.
 
 - Availability: `preview`
 - Reference member: `com.itextpdf.layout.Document#close()`
-- Open PDF mapping: `net.zerocloud.pdf.itext7.layout.Document#close()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.layout.Document#close()`
 - Generic contract: No generic parameters or return value; closes the associated mapped PdfDocument.
 - Exception contract: Propagates a mapped PdfException if Native Interface publication fails.
 - Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen)
@@ -131,7 +131,7 @@ No stable surfaces are declared.
 
 - Availability: `preview`
 - Reference member: `com.itextpdf.layout.Document#<init>(com.itextpdf.kernel.pdf.PdfDocument)`
-- Open PDF mapping: `net.zerocloud.pdf.itext7.layout.Document#<init>(net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.layout.Document#<init>(net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument)`
 - Generic contract: No generic parameters.
 - Exception contract: No checked exception.
 - Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen)

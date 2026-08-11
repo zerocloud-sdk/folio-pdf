@@ -2,7 +2,7 @@
 
 ### Issue tracker
 
-Issues are tracked in GitHub Issues for `zerocloud-sdk/open-pdf`. See `docs/agents/issue-tracker.md`.
+Issues are tracked in GitHub Issues for `zerocloud-sdk/folio-pdf`. See `docs/agents/issue-tracker.md`.
 
 ### Domain docs
 

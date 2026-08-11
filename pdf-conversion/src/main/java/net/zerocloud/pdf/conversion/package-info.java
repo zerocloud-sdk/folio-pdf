@@ -1,2 +1,2 @@
-/** Conversion Capability Provider adapters owned by Open PDF. */
+/** Conversion Capability Provider adapters owned by Folio PDF. */
 package net.zerocloud.pdf.conversion;

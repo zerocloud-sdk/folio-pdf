@@ -74,7 +74,7 @@ public final class AcceptanceEvidenceCommandTest {
         assertMetadata(semantic, "Chain", "semantic");
         assertMetadata(semantic, "Result", "pass");
         assertMetadata(semantic, "Producer kind", "project-test");
-        assertMetadata(semantic, "Producer", "open-pdf-semantic-assertions");
+        assertMetadata(semantic, "Producer", "folio-pdf-semantic-assertions");
         assertMetadata(semantic, "Producer version", "0.1.0-SNAPSHOT");
         assertTrue(semantic.contains("Final determination: `pass`"));
         assertTrue(semantic.contains("artifacts/T06-document-blank-semantic.txt"));

@@ -57,7 +57,7 @@ public final class SubprocessCapabilityProvider extends CapabilityProvider {
     private static final int RESPONSE_MAGIC = 0x4f504452;
     private static final int PROTOCOL_VERSION = 1;
     private static final String STAGING_ENVIRONMENT =
-            "OPEN_PDF_PROVIDER_STAGING";
+            "FOLIO_PDF_PROVIDER_STAGING";
 
     private final List<String> command;
     private final Path stagingRoot;
@@ -106,7 +106,7 @@ public final class SubprocessCapabilityProvider extends CapabilityProvider {
         Future<Void> errorDrain = null;
         try {
             Files.createDirectories(stagingRoot);
-            staging = Files.createTempDirectory(stagingRoot, ".open-pdf-provider-");
+            staging = Files.createTempDirectory(stagingRoot, ".folio-pdf-provider-");
             ProcessBuilder builder = new ProcessBuilder(command);
             builder.directory(staging.toFile());
             builder.environment().put(STAGING_ENVIRONMENT, staging.toString());
@@ -342,7 +342,7 @@ public final class SubprocessCapabilityProvider extends CapabilityProvider {
             public Thread newThread(Runnable task) {
                 Thread thread = new Thread(
                         task,
-                        "open-pdf-provider-subprocess-io");
+                        "folio-pdf-provider-subprocess-io");
                 thread.setDaemon(true);
                 return thread;
             }

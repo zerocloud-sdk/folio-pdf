@@ -28,7 +28,7 @@ for jdk_version in "${jdk_versions[@]}"; do
     esac
 
     image="docker.io/library/eclipse-temurin:${jdk_version}-jdk"
-    echo "==> Verifying Open PDF on JDK ${jdk_version} (${image})"
+    echo "==> Verifying Folio PDF on JDK ${jdk_version} (${image})"
     "${podman_command}" run --rm \
         --userns=keep-id \
         --volume "${repository_root}:/workspace:Z" \
@@ -36,7 +36,7 @@ for jdk_version in "${jdk_versions[@]}"; do
         --env MAVEN_USER_HOME=/workspace/.build-cache/maven \
         "${image}" \
         sh -c 'PATH=/workspace/scripts/container-bin:"${PATH}"; export PATH; exec ./mvnw "$@"' \
-        open-pdf-matrix \
+        folio-pdf-matrix \
         -B -ntp \
         -Dmaven.repo.local=/workspace/.build-cache/maven/repository \
         verify

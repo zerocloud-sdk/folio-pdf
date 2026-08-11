@@ -31,7 +31,7 @@ final class InventoryValidator {
             Pattern.compile("^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?$");
     private static final Pattern TICKET = Pattern.compile("^T[0-9]+$");
     private static final String REFERENCE_FACADE_PREFIX = "com.itextpdf.";
-    private static final String OPEN_PDF_FACADE_PREFIX = "net.zerocloud.pdf.itext7.";
+    private static final String FOLIO_PDF_FACADE_PREFIX = "net.zerocloud.pdf.itext7.";
 
     private static final Set<AcceptanceChain> BASE_ACCEPTANCE_CHAINS =
             Collections.unmodifiableSet(EnumSet.of(
@@ -473,7 +473,7 @@ final class InventoryValidator {
             String path = "facade-surface.surfaces." + availability + "[" + index + "]";
             Map<String, Object> value = map(values.get(index), path, errors, true);
             checkKeys(value, setOf(
-                    "id", "reference", "open-pdf", "generic-contract", "exception-contract",
+                    "id", "reference", "folio-pdf", "generic-contract", "exception-contract",
                     "capabilities"), path, errors);
             InventoryModel.Surface surface = new InventoryModel.Surface();
             surface.availability = availability;
@@ -486,10 +486,10 @@ final class InventoryValidator {
             surface.referenceMember = requiredString(
                     reference, "member", path + ".reference", errors);
 
-            Map<String, Object> openPdf = requiredMap(value, "open-pdf", path, errors);
-            checkKeys(openPdf, setOf("type", "member"), path + ".open-pdf", errors);
-            surface.openPdfType = requiredString(openPdf, "type", path + ".open-pdf", errors);
-            surface.openPdfMember = requiredString(openPdf, "member", path + ".open-pdf", errors);
+            Map<String, Object> folioPdf = requiredMap(value, "folio-pdf", path, errors);
+            checkKeys(folioPdf, setOf("type", "member"), path + ".folio-pdf", errors);
+            surface.folioPdfType = requiredString(folioPdf, "type", path + ".folio-pdf", errors);
+            surface.folioPdfMember = requiredString(folioPdf, "member", path + ".folio-pdf", errors);
             validateFacadeTypeMapping(surface, path, errors);
 
             surface.genericContract = requiredString(value, "generic-contract", path, errors);
@@ -625,7 +625,7 @@ final class InventoryValidator {
 
     private static void validateFacadeTypeMapping(
             InventoryModel.Surface surface, String path, List<String> errors) {
-        if (surface.referenceType == null || surface.openPdfType == null) {
+        if (surface.referenceType == null || surface.folioPdfType == null) {
             return;
         }
         if (!surface.referenceType.startsWith(REFERENCE_FACADE_PREFIX)
@@ -635,9 +635,9 @@ final class InventoryValidator {
             return;
         }
         String suffix = surface.referenceType.substring(REFERENCE_FACADE_PREFIX.length());
-        String expected = OPEN_PDF_FACADE_PREFIX + suffix;
-        if (!expected.equals(surface.openPdfType)) {
-            errors.add(path + ".open-pdf.type: must preserve the reference suffix as "
+        String expected = FOLIO_PDF_FACADE_PREFIX + suffix;
+        if (!expected.equals(surface.folioPdfType)) {
+            errors.add(path + ".folio-pdf.type: must preserve the reference suffix as "
                     + expected);
         }
     }

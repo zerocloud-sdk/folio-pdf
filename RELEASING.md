@@ -1,6 +1,6 @@
 # Releasing
 
-Open PDF uses one Release Train version for all first-party modules during `0.x` and publishes canonical artifacts under `net.zerocloud` to Maven Central.
+Folio PDF uses one Release Train version for all first-party modules during `0.x` and publishes canonical artifacts under `net.zerocloud` to Maven Central.
 
 ## Release gates
 

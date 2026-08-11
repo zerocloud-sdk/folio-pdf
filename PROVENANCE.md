@@ -191,7 +191,7 @@ documentation, and project-owned tests are the permitted design inputs.
   prerequisites, are recorded in [DEPENDENCIES.md](DEPENDENCIES.md). The
   archive remains in an ignored local validation cache and is not
   redistributed.
-- Project semantic producer: `open-pdf-semantic-assertions` at Release Train
+- Project semantic producer: `folio-pdf-semantic-assertions` at Release Train
   `0.1.0-SNAPSHOT` creates, publishes, reopens, and observes the one-page
   sequence and readable object graph entirely through
   `DocumentWorkflow.execute` and project-owned command/query types. Text order

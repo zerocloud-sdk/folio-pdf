@@ -1,6 +1,6 @@
 # Roadmap
 
-Open PDF follows Capability Matrix Dependency Gates rather than calendar promises or a single serial implementation plan. Independent contexts may progress in parallel, but a capability cannot become `compatible` before every verified prerequisite is `compatible`.
+Folio PDF follows Capability Matrix Dependency Gates rather than calendar promises or a single serial implementation plan. Independent contexts may progress in parallel, but a capability cannot become `compatible` before every verified prerequisite is `compatible`.
 
 ## Foundation Release — 0.1.0
 

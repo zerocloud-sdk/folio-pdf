@@ -85,8 +85,8 @@ final class InventoryModel {
         String id;
         String referenceType;
         String referenceMember;
-        String openPdfType;
-        String openPdfMember;
+        String folioPdfType;
+        String folioPdfMember;
         String genericContract;
         String exceptionContract;
         final List<String> capabilities = new ArrayList<String>();

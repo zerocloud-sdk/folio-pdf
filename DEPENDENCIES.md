@@ -60,7 +60,7 @@ Acceptance Evidence path:
 | qpdf 12.4.0 official Linux x86-64 binary archive | independent `--check` syntax chain | `https://github.com/qpdf/qpdf/releases/download/v12.4.0/qpdf-12.4.0-bin-linux-x86_64.zip`; archive SHA-256 `a3bca240f3bb61efdc3a90be89d1da4ed5e125326c3458c4e62df53ff4f153e3`; `bin/qpdf` SHA-256 `9ac787a28597e8428289a12ba3fedafd74bdfb4b4da1be814722faf76f14f21b` | Apache License 2.0 for qpdf |
 
 The SHA-pinned upstream archive contains these shared libraries. They are
-local validation-tool prerequisites, not Open PDF runtime dependencies:
+local validation-tool prerequisites, not Folio PDF runtime dependencies:
 
 | Archive member | Upstream origin | License |
 | --- | --- | --- |
@@ -85,7 +85,7 @@ The official archive includes its dynamically linked runtime libraries. It is
 operator-supplied, verified, expanded only into the ignored `.build-cache/`
 directory, and neither committed nor redistributed by this repository. qpdf
 and those bundled runtime libraries do not enter the Maven dependency graph,
-the BOM, or any shipped Open PDF artifact. The normal build has no network or
+the BOM, or any shipped Folio PDF artifact. The normal build has no network or
 system-qpdf requirement.
 
 Review the resolved graph with:
