@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import net.zerocloud.pdf.provider.ProviderSelection;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
@@ -28,16 +29,18 @@ final class PdfBoxWorkflowEngine {
     static <R> WorkflowOutcome<R> execute(
             WorkflowRequest request,
             DocumentWork<R> work,
-            Clock clock) throws DocumentFailure {
+            Clock clock,
+            List<ProviderSelection> providerSelections) throws DocumentFailure {
         try {
-            return executeChecked(request, work, clock);
+            return executeChecked(request, work, clock, providerSelections);
         } catch (DocumentFailure executionFailure) {
             if (!request.getPublicationTargets().isEmpty()
                     && executionFailure.getPublicationReceipts().isEmpty()) {
                 throw failure(
                         executionFailure.getCode(),
                         executionFailure.getDiagnostic(),
-                        notAttempted(request.getPublicationTargets()));
+                        PublicationReceipt.notAttempted(
+                                request.getPublicationTargets()));
             }
             throw executionFailure;
         }
@@ -46,7 +49,8 @@ final class PdfBoxWorkflowEngine {
     private static <R> WorkflowOutcome<R> executeChecked(
             WorkflowRequest request,
             DocumentWork<R> work,
-            Clock clock) throws DocumentFailure {
+            Clock clock,
+            List<ProviderSelection> providerSelections) throws DocumentFailure {
         if (request.getSaveMode() == SaveMode.INCREMENTAL) {
             throw failure(
                     DocumentFailureCode.SAVE_MODE_UNSUPPORTED,
@@ -87,7 +91,8 @@ final class PdfBoxWorkflowEngine {
                 request,
                 publicationTargets,
                 work,
-                clock);
+                clock,
+                providerSelections);
     }
 
     static DocumentFailure failure(DocumentFailureCode code, String diagnostic) {
@@ -106,7 +111,8 @@ final class PdfBoxWorkflowEngine {
             WorkflowRequest request,
             List<PublicationTargetAdapter> publicationTargets,
             DocumentWork<R> work,
-            Clock clock) throws DocumentFailure {
+            Clock clock,
+            List<ProviderSelection> providerSelections) throws DocumentFailure {
         PDDocument document = initialDocument;
         PdfBoxDocumentSession session = new PdfBoxDocumentSession(document);
         Path staged = null;
@@ -137,7 +143,8 @@ final class PdfBoxWorkflowEngine {
                 return outcome(
                         result,
                         request,
-                        Collections.<PublicationReceipt>emptyList());
+                        Collections.<PublicationReceipt>emptyList(),
+                        providerSelections);
             }
 
             try {
@@ -161,7 +168,7 @@ final class PdfBoxWorkflowEngine {
             List<PublicationReceipt> receipts =
                     publishAll(staged, publicationTargets, request, clock);
             emit(request, WorkflowProgressPhase.COMPLETED);
-            return outcome(result, request, receipts);
+            return outcome(result, request, receipts, providerSelections);
         } finally {
             session.invalidate();
             closeQuietly(document);
@@ -172,14 +179,16 @@ final class PdfBoxWorkflowEngine {
     private static <R> WorkflowOutcome<R> outcome(
             R result,
             WorkflowRequest request,
-            List<PublicationReceipt> receipts) {
+            List<PublicationReceipt> receipts,
+            List<ProviderSelection> providerSelections) {
         return new WorkflowOutcome<R>(
                 result,
                 CAPABILITY_ID,
                 WorkflowExecutionProfile.IN_PROCESS,
                 request.getSaveMode(),
                 Collections.<String>emptyList(),
-                receipts);
+                receipts,
+                providerSelections);
     }
 
     private static List<PublicationTargetAdapter> preflightTargets(
@@ -269,20 +278,6 @@ final class PdfBoxWorkflowEngine {
             receipts.add(target.receipt(
                     PublicationStatus.NOT_ATTEMPTED,
                     false));
-        }
-        return receipts;
-    }
-
-    private static List<PublicationReceipt> notAttempted(
-            Map<String, PublicationTarget> publicationTargets) {
-        List<PublicationReceipt> receipts =
-                new ArrayList<PublicationReceipt>(publicationTargets.size());
-        for (Map.Entry<String, PublicationTarget> entry
-                : publicationTargets.entrySet()) {
-            receipts.add(new PublicationReceipt(
-                    entry.getKey(),
-                    entry.getValue().getPath(),
-                    PublicationStatus.NOT_ATTEMPTED));
         }
         return receipts;
     }

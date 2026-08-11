@@ -6,13 +6,75 @@ Behavioral authority: [`../../capabilities/capability-matrix.yaml`](../../capabi
 
 - Schema version: `1`
 - Release train: `0.1.0-SNAPSHOT`
-- Capabilities: `1`
+- Capabilities: `2`
 
 ## Capability summary
 
 | Capability | Context | Status | Migration facade |
 | --- | --- | --- | --- |
+| [`conversion.capability-provider.select-execute`](#capability-conversion_dot_capability_dash_provider_dot_select_dash_execute) | `conversion` | `experimental` | [excluded by `T05`](facade-surface.md#excluded-capability-conversion_dot_capability_dash_provider_dot_select_dash_execute) |
 | [`document.blank.create-publish-reopen`](#capability-document_dot_blank_dot_create_dash_publish_dash_reopen) | `document-engine` | `experimental` | [excluded by `T04`](facade-surface.md#excluded-capability-document_dot_blank_dot_create_dash_publish_dash_reopen) |
+
+<a id="capability-conversion_dot_capability_dash_provider_dot_select_dash_execute"></a>
+## `conversion.capability-provider.select-execute`
+
+Register, inspect, deterministically select, and safely execute project-owned Capability Providers.
+
+- Context: `conversion`
+- Status: `experimental`
+- Reference Suite source: `Fixed Reference Suite OCR, Office, rendering, and external-engine integration boundaries`
+- Reference role: capability inventory only; not an implementation or behavioral oracle
+- Acceptance Profile: `T05-capability-provider-contract`
+- Mandatory evidence chains: `syntax`, `standards`, `semantic`, `visual`
+- Evidence record: [`capabilities/evidence/T05-capability-provider-contract.md`](../../capabilities/evidence/T05-capability-provider-contract.md)
+- Certified platforms: none
+
+### Native Interface mapping
+
+- `catalog`: `net.zerocloud.pdf.provider.ProviderCatalog`
+- `execution-mode`: `net.zerocloud.pdf.provider.ProviderExecutionMode`
+- `failure`: `net.zerocloud.pdf.provider.ProviderFailure`
+- `limits`: `net.zerocloud.pdf.provider.ProviderLimits`
+- `metadata`: `net.zerocloud.pdf.provider.ProviderMetadata`
+- `preference`: `net.zerocloud.pdf.provider.ProviderPreference`
+- `provider`: `net.zerocloud.pdf.provider.CapabilityProvider`
+- `request`: `net.zerocloud.pdf.provider.ProviderRequest`
+- `result`: `net.zerocloud.pdf.provider.ProviderResult`
+- `subprocess-adapter`: `net.zerocloud.pdf.conversion.SubprocessCapabilityProvider`
+- `workflow-environment`: `net.zerocloud.pdf.WorkflowEnvironment`
+- `workflow-outcome`: `net.zerocloud.pdf.WorkflowOutcome`
+- `workflow-request`: `net.zerocloud.pdf.WorkflowRequest`
+
+### Migration Facade coverage
+
+- Stable: none
+- Preview: none
+- Explicit exclusion: [`T05`](facade-surface.md#excluded-capability-conversion_dot_capability_dash_provider_dot_select_dash_execute) — T05 is a Native Interface provider seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+
+### Gates and limitations
+
+- Dependency Gate: [`document.blank.create-publish-reopen`](#capability-document_dot_blank_dot_create_dash_publish_dash_reopen) must be `compatible`
+- Promotion gate `T06`: Complete the independent acceptance evidence required before compatibility.
+- Limitation: T05 supplies the Provider contract and a generic bounded subprocess adapter; it does not implement or bundle Tesseract, LibreOffice, HarfBuzz, PDFium, a commercial engine, or a remote service adapter.
+- Limitation: Provider Operating Limits cover request bytes, result bytes, and elapsed subprocess time; comprehensive document, memory, pixel, concurrency, and hostile-input enforcement remains T20, and the Hardened Worker Profile remains T21.
+- Limitation: The generic Java 8 subprocess adapter supervises its direct child; descendant process-tree containment and hard isolation remain T21 scope.
+- Limitation: Provider availability is an immutable registration snapshot; callers rebuild the Workflow Environment when an external engine installation changes.
+- Limitation: T05 byte-array request and result values are bounded and detached; large-value chunking and worker staging remain outside this ticket.
+
+### Evidence
+
+Implementation evidence:
+
+- `provider-contract`: [`pdf-provider-contract/src/test/java/net/zerocloud/pdf/provider/ProviderCatalogTest.java`](../../pdf-provider-contract/src/test/java/net/zerocloud/pdf/provider/ProviderCatalogTest.java) — Immutable metadata and payloads, four execution modes, consistent remote metadata, deterministic selection, execution, limits, sanitized adapter failures, and remote-disclosure refusal and authorization are observable at the real Provider seam.
+- `workflow-provider-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/consumer/WorkflowCapabilityProviderTest.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/consumer/WorkflowCapabilityProviderTest.java) — Metadata-only discovery, immutable registration, explicit preference, selection information, offline defaults, availability failure, and capability-scoped remote authorization are observable through DocumentWorkflow.execute.
+- `subprocess-provider-contract`: [`pdf-conversion/src/test/java/net/zerocloud/pdf/conversion/SubprocessCapabilityProviderTest.java`](../../pdf-conversion/src/test/java/net/zerocloud/pdf/conversion/SubprocessCapabilityProviderTest.java) — Bounded exchange, input and output limits, deadline termination, startup and runtime failures, malformed output, safe diagnostics, and staging cleanup are observable at the real subprocess Provider seam.
+- `provider-public-api-contract`: [`pdf-conversion/src/test/java/net/zerocloud/pdf/conversion/contract/PublicApiLeakageIT.java`](../../pdf-conversion/src/test/java/net/zerocloud/pdf/conversion/contract/PublicApiLeakageIT.java) — Public and protected Provider signatures expose only project-owned or JDK types and no PDFBox, process-implementation, or network-client types.
+- `provider-artifact-contract`: [`pdf-conversion/src/test/java/net/zerocloud/pdf/conversion/contract/JarContractIT.java`](../../pdf-conversion/src/test/java/net/zerocloud/pdf/conversion/contract/JarContractIT.java) — Both shipped T05 artifacts have intentional module names, Java 8 class files, notices, no bundled backend, and Release Train BOM entries.
+- `cross-jdk-contract`: [`scripts/verify-jdk-matrix.sh`](../../scripts/verify-jdk-matrix.sh) — Maven verification runs the Provider contract on JDK 8, 11, 17, and 21.
+
+Acceptance Evidence: incomplete; no independent chain has been recorded as passing.
+
+Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T05 capability-provider record`.
 
 <a id="capability-document_dot_blank_dot_create_dash_publish_dash_reopen"></a>
 ## `document.blank.create-publish-reopen`

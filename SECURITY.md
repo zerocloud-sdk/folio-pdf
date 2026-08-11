@@ -8,6 +8,38 @@ Open PDF treats every PDF as potentially malicious. Public limits cover input si
 - The Hardened Worker Profile is mandatory for hostile multi-tenant uploads. It uses a local-only, versioned protocol, explicit resource limits, no arbitrary user code, and no network by default.
 - External Capability Providers are separately installed adapters. Remote disclosure of document data requires explicit caller authorization.
 
+## Capability Providers
+
+The default Workflow Environment has no Provider registrations, so the core
+cannot select a remote service or perform implicit network access. Provider
+registration and preference are not disclosure permission. A caller must
+authorize remote disclosure for the same capability on each immutable
+Workflow Request or Provider Request; the contract rejects the request before
+remote adapter code runs when authorization is absent.
+Provider metadata also rejects any mismatch between `REMOTE` execution and
+`REMOTE_SERVICE` distribution so contradictory declarations cannot bypass the
+authorization boundary.
+
+Provider metadata declares maximum input bytes, output bytes, and execution
+duration. The common contract enforces byte bounds and validates that a
+request timeout does not exceed that maximum; every execution-mode adapter is
+responsible for enforcing elapsed time. The generic subprocess adapter checks
+input before launch, keeps process and I/O waits deadline-bounded, reads only
+the bounded framed result, confirms direct-child termination on timeout or
+policy failure, discards stderr, and removes its private transaction staging
+directory on all tested exits. Failure to confirm termination or remove owned
+staging becomes a stable execution failure. Its fixed command does not use
+shell expansion. Stable Provider Failures contain only code-owned diagnostics,
+retain no raw engine or transport cause or suppressed exception, and rebuild
+checked adapter failures with the registered Provider identity.
+
+The subprocess adapter is an integration seam, not the Hardened Worker
+Profile. It does not enforce the comprehensive memory, CPU, filesystem,
+network, decoded-pixel, page, object, nesting, decompression, temporary-storage,
+or concurrency controls required for hostile multi-tenant input.
+It also does not contain descendant process trees; that hard-isolation boundary
+remains T21 scope.
+
 ## Sensitive data
 
 Transaction temporary data is isolated and removed with the worker. Passwords and private keys are not accepted as Strings or written to logs. Default diagnostics omit document content, names, metadata, credentials, private keys, and raw backend failures.

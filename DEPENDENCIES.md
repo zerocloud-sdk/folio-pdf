@@ -33,6 +33,13 @@ T02 adds one version-pinned build plugin:
 | --- | --- | --- |
 | `org.codehaus.mojo:exec-maven-plugin:3.6.3` | invoke the repository-only inventory command during validation and generation | Apache License 2.0 |
 
+T05 adds no third-party runtime, test, build-tool, native, or remote-service
+dependency. `pdf-provider-contract` uses only Java 8 platform types;
+`pdf-document` and `pdf-conversion` depend on that first-party artifact. The
+controlled subprocess fixture is project-authored test code launched with the
+JDK already running the test suite, and existing JUnit 4.13.2 remains the only
+test dependency. No external engine is bundled or downloaded.
+
 T06 uses one external executable only in the opt-in, repository-only
 Acceptance Evidence path:
 
@@ -72,7 +79,7 @@ system-qpdf requirement.
 Review the resolved graph with:
 
 ```text
-./mvnw -B -ntp -pl pdf-document,pdf-acceptance,build-tools/inventory dependency:tree
+./mvnw -B -ntp -pl pdf-provider-contract,pdf-document,pdf-conversion,pdf-acceptance,build-tools/inventory dependency:tree
 ```
 
 Formal releases additionally require generated SBOM, license, vulnerability,

@@ -93,6 +93,43 @@ documentation, and project-owned tests are the permitted design inputs.
 - Compatibility Curator evidence: none; the role remains vacant, the
   capability remains `experimental`, and T06 remains its promotion gate.
 
+## T05 capability-provider record
+
+- Authorship: OpenAI Codex generated and integrated the T05 implementation,
+  tests, inventories, and documentation at repository operator MaBaiqiu's
+  direction. The T05 implementation is committed with this change.
+- Project inputs: GitHub issues #1 and #6, `CONTEXT.md`, `CONTRIBUTING.md`,
+  `SECURITY.md`, the repository inventory contract, ADR-0006, 0007, 0009,
+  0011, 0013, 0014, 0016, 0018, 0024, 0025, 0029, and 0031, and the accepted
+  T01–T03 implementation and evidence.
+- Runtime and test dependencies: T05 adds no third-party dependency. The
+  shipped Provider contract and subprocess adapter use Java 8 platform types;
+  `pdf-document` and `pdf-conversion` use the first-party
+  `pdf-provider-contract`. JUnit 4.13.2 remains the existing test dependency.
+  The no-new-dependency statement is recorded in
+  [DEPENDENCIES.md](DEPENDENCIES.md).
+- Project-authored fixtures: deterministic in-process and remote test
+  Providers, byte payloads, temporary staging roots, and the Java subprocess
+  protocol fixture are authored for T05. The remote fixture is in memory and
+  contacts no network service. The subprocess fixture runs on the test JDK;
+  no external engine, document fixture, or binary is included.
+- Generated documentation: `docs/generated/capability-matrix.md` and
+  `docs/generated/facade-surface.md` are regenerated deterministically from
+  the two YAML authorities and contain no copied external content.
+- Excluded inputs: no iText source, resource, fixture, binary, decompiled or
+  binary-derived implementation detail, closed add-on material, proprietary
+  differential evidence, Reference Suite output, or external engine protocol
+  was used.
+- Scope: T05 adds only the project-owned Capability Provider contract,
+  immutable Workflow Environment registration and selection configuration,
+  explicit remote-disclosure authorization, and a bounded generic subprocess
+  adapter. It adds no T06 Acceptance Evidence infrastructure, T20
+  comprehensive hostile-input enforcement, T21 Hardened Worker, downstream
+  engine adapter, Migration Facade mapping, external engine, or network call.
+- Compatibility Curator evidence: none; the role remains vacant. The T03
+  Dependency Gate and T06 independent Acceptance Evidence remain open, so the
+  T05 capability stays `experimental` with no certified-platform claim.
+
 ## T06 acceptance-evidence record
 
 - Authorship: OpenAI Codex generated and integrated the T06 repository-only

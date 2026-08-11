@@ -1,6 +1,9 @@
 package net.zerocloud.pdf;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -39,6 +42,23 @@ public final class PublicationReceipt {
         this.pathTarget = pathTarget;
         this.status = Objects.requireNonNull(status, "status");
         this.partialOutputPossible = partialOutputPossible;
+    }
+
+    static List<PublicationReceipt> notAttempted(
+            Map<String, PublicationTarget> publicationTargets) {
+        List<PublicationReceipt> receipts = new ArrayList<PublicationReceipt>(
+                publicationTargets.size());
+        for (Map.Entry<String, PublicationTarget> entry
+                : publicationTargets.entrySet()) {
+            PublicationTarget target = entry.getValue();
+            receipts.add(new PublicationReceipt(
+                    entry.getKey(),
+                    target.getKind() == PublicationTarget.Kind.PATH
+                            ? target.getPath()
+                            : null,
+                    PublicationStatus.NOT_ATTEMPTED));
+        }
+        return receipts;
     }
 
     /**

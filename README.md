@@ -16,6 +16,12 @@ Receipt per Target. An immutable Workflow Environment owns deadline time.
 PDFBox is an internal implementation dependency and is never part of the
 public interface.
 
+T05 establishes the Capability Provider contract for in-process Java, native
+linkage, local subprocess, and explicitly authorized remote engines. The
+default Workflow Environment registers no Provider, remains offline, and
+performs no implicit network access. A generic bounded subprocess adapter is
+included, but no external engine is bundled.
+
 ## Build
 
 No system Maven installation is required. The wrapper uses Maven 3.9.16:
@@ -61,8 +67,8 @@ contract are documented in
 ## Maven coordinates
 
 All first-party artifacts use the `0.1.0-SNAPSHOT` Release Train. Consumers
-select versions through `net.zerocloud:pdf-bom` and use the Document Engine as
-`net.zerocloud:pdf-document`.
+select versions through `net.zerocloud:pdf-bom`. The BOM manages
+`pdf-provider-contract`, `pdf-document`, and `pdf-conversion`.
 
 ```xml
 <dependencyManagement>
@@ -87,6 +93,49 @@ select versions through `net.zerocloud:pdf-bom` and use the Document Engine as
 
 The snapshot is not published to Maven Central yet. Build it locally before
 using these coordinates from another project.
+
+## Capability Providers
+
+Applications register explicitly installed Provider adapters through the
+immutable Workflow Environment. Registration order is deterministic; a
+`ProviderPreference` either accepts the first eligible registration or names
+one Provider ID. `WorkflowEnvironment.getProviderMetadata()` exposes only
+immutable identity, capability, version, execution-mode, availability, limit,
+license, and distribution facts—never executable Provider instances.
+
+```java
+import net.zerocloud.pdf.WorkflowEnvironment;
+import net.zerocloud.pdf.provider.CapabilityProvider;
+
+CapabilityProvider installedProvider = obtainInstalledProvider();
+WorkflowEnvironment environment = WorkflowEnvironment.builder()
+        .provider(installedProvider)
+        .build();
+```
+
+A workflow request can make a capability-scoped preference. The resulting
+`WorkflowOutcome.getProviderSelections()` reports the selected metadata. T05
+selection does not itself invoke an engine; capability-specific modules invoke
+the selected Provider at the real Provider seam.
+
+Remote disclosure is absent by default and is never implied by registration
+or preference. A workflow must call
+`authorizeRemoteDisclosure(capabilityId)` for the same capability before a
+remote Provider is eligible. Direct `ProviderRequest` execution has the same
+explicit authorization gate. The deterministic remote tests use an in-memory
+adapter and contact no network service.
+
+`pdf-provider-contract` contains the project-owned metadata, request/result,
+selection, execution, limit, and stable failure types. `pdf-conversion`
+contains `SubprocessCapabilityProvider`, which launches a fixed argument list
+without a shell, enforces input/output/time bounds, terminates stalled or
+oversized processing, discards child diagnostics, and removes its private
+per-run staging directory. It is not the Hardened Worker Profile and must not
+be used as hard isolation for hostile multi-tenant input.
+
+See the [Capability Provider guide](docs/capability-providers.md) for the
+selection and subprocess protocol contracts and [SECURITY.md](SECURITY.md) for
+the disclosure and isolation boundaries.
 
 ## Document Workflow
 
@@ -149,9 +198,11 @@ DocMDP decisions, and signature-safe incremental publication remain T15.
 
 Successful `WorkflowOutcome` values identify the capability, the in-process
 execution profile, the selected Save Mode, safe diagnostics, and every Target
-receipt. A deterministic deadline Clock is configured through
-`WorkflowEnvironment.withClock(clock)` and supplied when constructing a workflow;
-`DocumentWorkflow` does not accept a raw Clock.
+receipt, plus any declaration-ordered Capability Provider selections. A
+deterministic deadline Clock is configured through
+`WorkflowEnvironment.withClock(clock)` or `WorkflowEnvironment.builder()` and
+supplied when constructing a workflow; `DocumentWorkflow` does not accept a
+raw Clock.
 
 Callers moving from the T01 request factories should follow the
 [0.x T03 migration note](docs/migrations/0.x-t03-document-workflow.md): every

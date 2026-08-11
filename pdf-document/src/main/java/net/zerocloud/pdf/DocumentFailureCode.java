@@ -43,5 +43,17 @@ public enum DocumentFailureCode {
     PUBLICATION_FAILED,
 
     /** A library-owned document resource could not be closed cleanly. */
-    RESOURCE_CLOSE_FAILED
+    RESOURCE_CLOSE_FAILED,
+
+    /** A requested Capability Provider could not be selected or executed. */
+    CAPABILITY_PROVIDER_FAILED,
+
+    /** No eligible Capability Provider is registered for a requested capability. */
+    CAPABILITY_PROVIDER_NOT_FOUND,
+
+    /** A specifically selected Capability Provider reports unavailable. */
+    CAPABILITY_PROVIDER_UNAVAILABLE,
+
+    /** A remote Provider was requested without explicit disclosure permission. */
+    REMOTE_DISCLOSURE_NOT_AUTHORIZED
 }

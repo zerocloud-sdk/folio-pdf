@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import net.zerocloud.pdf.provider.ProviderSelection;
 
 /**
  * The detached result, capability and execution information, safe
- * diagnostics, and publication receipts of a completed workflow.
+ * diagnostics, publication receipts, and declaration-ordered Capability
+ * Provider selection metadata of a completed workflow.
  *
  * @param <R> the caller result type
  * @since 0.1.0
@@ -20,6 +22,7 @@ public final class WorkflowOutcome<R> {
     private final SaveMode saveMode;
     private final List<String> diagnostics;
     private final List<PublicationReceipt> publicationReceipts;
+    private final List<ProviderSelection> providerSelections;
 
     WorkflowOutcome(
             R result,
@@ -27,7 +30,8 @@ public final class WorkflowOutcome<R> {
             WorkflowExecutionProfile executionProfile,
             SaveMode saveMode,
             List<String> diagnostics,
-            List<PublicationReceipt> publicationReceipts) {
+            List<PublicationReceipt> publicationReceipts,
+            List<ProviderSelection> providerSelections) {
         this.result = result;
         this.capabilityId = Objects.requireNonNull(capabilityId, "capabilityId");
         this.executionProfile = Objects.requireNonNull(
@@ -42,6 +46,11 @@ public final class WorkflowOutcome<R> {
                         Objects.requireNonNull(
                                 publicationReceipts,
                                 "publicationReceipts")));
+        this.providerSelections = Collections.unmodifiableList(
+                new ArrayList<ProviderSelection>(
+                        Objects.requireNonNull(
+                                providerSelections,
+                                "providerSelections")));
     }
 
     /**
@@ -98,5 +107,15 @@ public final class WorkflowOutcome<R> {
      */
     public List<PublicationReceipt> getPublicationReceipts() {
         return publicationReceipts;
+    }
+
+    /**
+     * Returns declaration-ordered Capability Provider selections made for the
+     * workflow request.
+     *
+     * @return immutable Provider selections, empty when none were requested
+     */
+    public List<ProviderSelection> getProviderSelections() {
+        return providerSelections;
     }
 }

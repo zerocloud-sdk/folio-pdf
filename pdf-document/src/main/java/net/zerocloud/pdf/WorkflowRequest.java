@@ -4,9 +4,12 @@ import java.nio.file.Path;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import net.zerocloud.pdf.provider.ProviderPreference;
 
 /**
  * An immutable request for one Document Workflow transaction.
@@ -15,7 +18,10 @@ import java.util.Optional;
  * unique within their respective collections. A request with sources
  * explicitly names the primary source operated on by the supplied Document
  * Session. Every request explicitly selects a Save Mode and may also supply
- * cancellation, an absolute deadline, and a sanitized progress listener.</p>
+ * cancellation, an absolute deadline, and a sanitized progress listener.
+ * Capability Provider preferences retain declaration order. Remote document
+ * disclosure is capability-scoped, absent by default, and never inferred from
+ * registration or preference.</p>
  *
  * @since 0.1.0
  */
@@ -38,6 +44,8 @@ public final class WorkflowRequest {
     private final CancellationToken cancellationToken;
     private final Instant deadline;
     private final WorkflowProgressListener progressListener;
+    private final Map<String, ProviderPreference> providerPreferences;
+    private final Set<String> remoteDisclosureAuthorizations;
 
     private WorkflowRequest(Builder builder) {
         this.sources = Collections.unmodifiableMap(
@@ -49,6 +57,12 @@ public final class WorkflowRequest {
         this.cancellationToken = builder.cancellationToken;
         this.deadline = builder.deadline;
         this.progressListener = builder.progressListener;
+        this.providerPreferences = Collections.unmodifiableMap(
+                new LinkedHashMap<String, ProviderPreference>(
+                        builder.providerPreferences));
+        this.remoteDisclosureAuthorizations = Collections.unmodifiableSet(
+                new LinkedHashSet<String>(
+                        builder.remoteDisclosureAuthorizations));
     }
 
     /**
@@ -153,6 +167,14 @@ public final class WorkflowRequest {
         return progressListener;
     }
 
+    Map<String, ProviderPreference> getProviderPreferences() {
+        return providerPreferences;
+    }
+
+    boolean isRemoteDisclosureAuthorized(String capabilityId) {
+        return remoteDisclosureAuthorizations.contains(capabilityId);
+    }
+
     /**
      * Builds an immutable workflow request.
      *
@@ -169,6 +191,10 @@ public final class WorkflowRequest {
         private CancellationToken cancellationToken = CancellationToken.none();
         private Instant deadline;
         private WorkflowProgressListener progressListener = NO_PROGRESS;
+        private final Map<String, ProviderPreference> providerPreferences =
+                new LinkedHashMap<String, ProviderPreference>();
+        private final Set<String> remoteDisclosureAuthorizations =
+                new LinkedHashSet<String>();
 
         private Builder() {
         }
@@ -266,6 +292,40 @@ public final class WorkflowRequest {
             this.progressListener = Objects.requireNonNull(
                     progressListener,
                     "progressListener");
+            return this;
+        }
+
+        /**
+         * Declares one capability-scoped Provider preference.
+         *
+         * @param preference the deterministic Provider preference
+         * @return this builder
+         */
+        public Builder providerPreference(ProviderPreference preference) {
+            ProviderPreference required = Objects.requireNonNull(
+                    preference,
+                    "preference");
+            String capabilityId = required.getCapabilityId();
+            if (providerPreferences.containsKey(capabilityId)) {
+                throw new IllegalArgumentException(
+                        "Duplicate Provider preference for capability: "
+                                + capabilityId);
+            }
+            providerPreferences.put(capabilityId, required);
+            return this;
+        }
+
+        /**
+         * Explicitly authorizes disclosure to a remote Provider for one
+         * capability. Authorization is absent by default.
+         *
+         * @param capabilityId the capability allowed to disclose request data
+         * @return this builder
+         */
+        public Builder authorizeRemoteDisclosure(String capabilityId) {
+            String requiredCapabilityId = ProviderPreference.any(capabilityId)
+                    .getCapabilityId();
+            remoteDisclosureAuthorizations.add(requiredCapabilityId);
             return this;
         }
 

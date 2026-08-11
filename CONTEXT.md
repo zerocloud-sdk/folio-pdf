@@ -126,6 +126,26 @@ Owns transformations between PDF and external representations such as HTML, SVG,
 A replaceable implementation of a conversion capability. Providers may use different local or remote technologies while the default distribution remains usable offline.
 _Avoid_: built-in converter, mandatory cloud service
 
+**Provider Registration**:
+An immutable Workflow Environment entry that makes one Capability Provider eligible for deterministic selection. Registration does not imply that its external engine is installed, available, or authorized to receive document content.
+_Avoid_: plugin scan, service locator entry
+
+**Provider Preference**:
+A capability-scoped caller choice that either accepts the first eligible registered Provider or names one preferred Provider explicitly.
+_Avoid_: backend hint, global provider default
+
+**Provider Execution Mode**:
+The location and mechanism used by a Capability Provider engine: in-process Java, local native linkage, a local subprocess, or a remote service. It is distinct from the execution profile of the enclosing Document Workflow.
+_Avoid_: workflow profile, backend type
+
+**Provider Operating Limits**:
+The immutable input, output, and maximum-duration policy declared for one Capability Provider. The common contract enforces byte bounds and validates the requested timeout; each execution-mode adapter is responsible for enforcing elapsed time, and the generic subprocess adapter does so for its direct child.
+_Avoid_: best-effort limits, unlimited provider
+
+**Remote Disclosure Authorization**:
+An explicit, capability-scoped caller permission to send request content to a remote Capability Provider. It is absent by default and never inferred from Provider registration or preference.
+_Avoid_: remote opt-in default, network permission
+
 ## Sanitization
 
 Owns irreversible removal of sensitive content and transformations that reduce or optimize document resources.

@@ -1,6 +1,13 @@
 package net.zerocloud.pdf;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import net.zerocloud.pdf.provider.ProviderFailure;
+import net.zerocloud.pdf.provider.ProviderFailureCode;
+import net.zerocloud.pdf.provider.ProviderPreference;
+import net.zerocloud.pdf.provider.ProviderSelection;
 
 /**
  * Reusable entry point for isolated document transactions.
@@ -50,9 +57,47 @@ public final class DocumentWorkflow {
             DocumentWork<R> work) throws DocumentFailure {
         Objects.requireNonNull(request, "request");
         Objects.requireNonNull(work, "work");
+        List<ProviderSelection> providerSelections = selectProviders(request);
         return PdfBoxWorkflowEngine.execute(
                 request,
                 work,
-                environment.getClock());
+                environment.getClock(),
+                providerSelections);
     }
+
+    private List<ProviderSelection> selectProviders(WorkflowRequest request)
+            throws DocumentFailure {
+        List<ProviderSelection> selections = new ArrayList<ProviderSelection>();
+        try {
+            for (Map.Entry<String, ProviderPreference> entry
+                    : request.getProviderPreferences().entrySet()) {
+                selections.add(environment.getProviderCatalog().select(
+                        entry.getValue(),
+                        request.isRemoteDisclosureAuthorized(entry.getKey())));
+            }
+        } catch (ProviderFailure failure) {
+            throw new DocumentFailure(
+                    documentFailureCode(failure.getCode()),
+                    failure.getCapabilityId(),
+                    failure.getDiagnostic(),
+                    PublicationReceipt.notAttempted(
+                            request.getPublicationTargets()));
+        }
+        return selections;
+    }
+
+    private static DocumentFailureCode documentFailureCode(
+            ProviderFailureCode providerCode) {
+        switch (providerCode) {
+            case PROVIDER_NOT_FOUND:
+                return DocumentFailureCode.CAPABILITY_PROVIDER_NOT_FOUND;
+            case PROVIDER_UNAVAILABLE:
+                return DocumentFailureCode.CAPABILITY_PROVIDER_UNAVAILABLE;
+            case REMOTE_DISCLOSURE_NOT_AUTHORIZED:
+                return DocumentFailureCode.REMOTE_DISCLOSURE_NOT_AUTHORIZED;
+            default:
+                return DocumentFailureCode.CAPABILITY_PROVIDER_FAILED;
+        }
+    }
+
 }
