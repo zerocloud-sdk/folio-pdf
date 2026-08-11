@@ -21,7 +21,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 
 final class PdfBoxWorkflowEngine {
 
-    private static final String CAPABILITY_ID = "document.blank.create-publish-reopen";
+    static final String CAPABILITY_ID = "document.blank.create-publish-reopen";
 
     private PdfBoxWorkflowEngine() {
     }
@@ -38,6 +38,7 @@ final class PdfBoxWorkflowEngine {
                     && executionFailure.getPublicationReceipts().isEmpty()) {
                 throw failure(
                         executionFailure.getCode(),
+                        executionFailure.getCapabilityId(),
                         executionFailure.getDiagnostic(),
                         PublicationReceipt.notAttempted(
                                 request.getPublicationTargets()));
@@ -106,6 +107,14 @@ final class PdfBoxWorkflowEngine {
         return new DocumentFailure(code, CAPABILITY_ID, diagnostic, receipts);
     }
 
+    private static DocumentFailure failure(
+            DocumentFailureCode code,
+            String capabilityId,
+            String diagnostic,
+            List<PublicationReceipt> receipts) {
+        return new DocumentFailure(code, capabilityId, diagnostic, receipts);
+    }
+
     private static <R> WorkflowOutcome<R> executeWithDocument(
             PDDocument initialDocument,
             WorkflowRequest request,
@@ -129,6 +138,7 @@ final class PdfBoxWorkflowEngine {
             } catch (DocumentFailure workFailure) {
                 throw failure(
                         workFailure.getCode(),
+                        workFailure.getCapabilityId(),
                         workFailure.getDiagnostic(),
                         notAttempted(publicationTargets));
             }
@@ -142,6 +152,7 @@ final class PdfBoxWorkflowEngine {
                 emit(request, WorkflowProgressPhase.COMPLETED);
                 return outcome(
                         result,
+                        session.getOutcomeCapabilityId(),
                         request,
                         Collections.<PublicationReceipt>emptyList(),
                         providerSelections);
@@ -168,7 +179,12 @@ final class PdfBoxWorkflowEngine {
             List<PublicationReceipt> receipts =
                     publishAll(staged, publicationTargets, request, clock);
             emit(request, WorkflowProgressPhase.COMPLETED);
-            return outcome(result, request, receipts, providerSelections);
+            return outcome(
+                    result,
+                    session.getOutcomeCapabilityId(),
+                    request,
+                    receipts,
+                    providerSelections);
         } finally {
             session.invalidate();
             closeQuietly(document);
@@ -178,12 +194,13 @@ final class PdfBoxWorkflowEngine {
 
     private static <R> WorkflowOutcome<R> outcome(
             R result,
+            String capabilityId,
             WorkflowRequest request,
             List<PublicationReceipt> receipts,
             List<ProviderSelection> providerSelections) {
         return new WorkflowOutcome<R>(
                 result,
-                CAPABILITY_ID,
+                capabilityId,
                 WorkflowExecutionProfile.IN_PROCESS,
                 request.getSaveMode(),
                 Collections.<String>emptyList(),

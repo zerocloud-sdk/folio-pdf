@@ -139,6 +139,9 @@ surfaces:
         - document.blank.create-publish-reopen
 
 excluded-capabilities:
+  - id: document.value.inspect-patch
+    ticket: T09
+    reason: T09 is a Native Interface low-level PDF Value and Document Patch seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
   - id: conversion.capability-provider.select-execute
     ticket: T05
     reason: T05 is a Native Interface provider seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.

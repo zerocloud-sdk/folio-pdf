@@ -6,7 +6,7 @@ Behavioral authority: [`../../capabilities/capability-matrix.yaml`](../../capabi
 
 - Schema version: `1`
 - Release train: `0.1.0-SNAPSHOT`
-- Capabilities: `2`
+- Capabilities: `3`
 
 ## Capability summary
 
@@ -14,6 +14,7 @@ Behavioral authority: [`../../capabilities/capability-matrix.yaml`](../../capabi
 | --- | --- | --- | --- |
 | [`conversion.capability-provider.select-execute`](#capability-conversion_dot_capability_dash_provider_dot_select_dash_execute) | `conversion` | `experimental` | [excluded by `T05`](facade-surface.md#excluded-capability-conversion_dot_capability_dash_provider_dot_select_dash_execute) |
 | [`document.blank.create-publish-reopen`](#capability-document_dot_blank_dot_create_dash_publish_dash_reopen) | `document-engine` | `experimental` | [`itext7.kernel.pdf-document.add-new-page`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_add_dash_new_dash_page), [`itext7.kernel.pdf-document.close`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_close), [`itext7.kernel.pdf-document.constructor-reader`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_constructor_dash_reader), [`itext7.kernel.pdf-document.constructor-writer`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_constructor_dash_writer), [`itext7.kernel.pdf-document.get-number-of-pages`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_number_dash_of_dash_pages), [`itext7.kernel.pdf-exception.constructor-message-cause`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_exception_dot_constructor_dash_message_dash_cause), [`itext7.kernel.pdf-page.type`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_page_dot_type), [`itext7.kernel.pdf-reader.close`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_reader_dot_close), [`itext7.kernel.pdf-reader.constructor-string`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_reader_dot_constructor_dash_string), [`itext7.kernel.pdf-writer.constructor-string`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_writer_dot_constructor_dash_string), [`itext7.layout.document.close`](facade-surface.md#facade-surface-itext7_dot_layout_dot_document_dot_close), [`itext7.layout.document.constructor-pdf-document`](facade-surface.md#facade-surface-itext7_dot_layout_dot_document_dot_constructor_dash_pdf_dash_document) |
+| [`document.value.inspect-patch`](#capability-document_dot_value_dot_inspect_dash_patch) | `document-engine` | `experimental` | [excluded by `T09`](facade-surface.md#excluded-capability-document_dot_value_dot_inspect_dash_patch) |
 
 <a id="capability-conversion_dot_capability_dash_provider_dot_select_dash_execute"></a>
 ## `conversion.capability-provider.select-execute`
@@ -146,3 +147,59 @@ Acceptance Evidence:
 - `semantic`: `pass` — [`capabilities/evidence/T06-document-blank-semantic.md`](../../capabilities/evidence/T06-document-blank-semantic.md); producer `open-pdf-semantic-assertions@0.1.0-SNAPSHOT` (`project-test`)
 
 Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T06 acceptance-evidence record`.
+
+<a id="capability-document_dot_value_dot_inspect_dash_patch"></a>
+## `document.value.inspect-patch`
+
+Inspect all nine backend-neutral PDF Value kinds through bounded Session views and apply validated versioned Document Patches.
+
+- Context: `document-engine`
+- Status: `experimental`
+- Reference Suite source: `iText Core 7.2.6 low-level PDF object inspection and mutation surface`
+- Reference role: capability inventory only; not an implementation or behavioral oracle
+- Acceptance Profile: `T09-document-value-inspection-patch`
+- Mandatory evidence chains: `syntax`, `standards`, `semantic`, `visual`
+- Evidence record: [`capabilities/evidence/T09-document-value-inspection-patch.md`](../../capabilities/evidence/T09-document-value-inspection-patch.md)
+- Certified platforms: none
+
+### Native Interface mapping
+
+- `entry-point`: `net.zerocloud.pdf.DocumentWorkflow#execute`
+- `failure`: `net.zerocloud.pdf.DocumentFailure`
+- `failure-code`: `net.zerocloud.pdf.DocumentFailureCode`
+- `inspection-limits`: `net.zerocloud.pdf.PdfInspectionLimits`
+- `inspection-query`: `net.zerocloud.pdf.query.InspectObject`
+- `object-reference`: `net.zerocloud.pdf.ObjectReference`
+- `patch`: `net.zerocloud.pdf.DocumentPatch`
+- `root-query`: `net.zerocloud.pdf.query.DocumentRootReference`
+- `value`: `net.zerocloud.pdf.PdfValue`
+- `value-kind`: `net.zerocloud.pdf.PdfValueKind`
+
+### Migration Facade coverage
+
+- Stable: none
+- Preview: none
+- Explicit exclusion: [`T09`](facade-surface.md#excluded-capability-document_dot_value_dot_inspect_dash_patch) — T09 is a Native Interface low-level PDF Value and Document Patch seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+
+### Gates and limitations
+
+- Dependency Gate: [`document.blank.create-publish-reopen`](#capability-document_dot_blank_dot_create_dash_publish_dash_reopen) must be `compatible`
+- Promotion gate `T06`: Complete the independent acceptance evidence required before compatibility.
+- Limitation: T09 applies version-1 dictionary-entry replacements in REWRITE workflows; array-element replacement, entry removal, and broader structural editing operations remain future capability slices.
+- Limitation: INCREMENTAL remains SAVE_MODE_UNSUPPORTED, and signed-document recognition, DocMDP decisions, and signature-safe changes remain T15.
+- Limitation: Inspection limits are explicit per-query traversal and decoded-stream bounds; comprehensive hostile-input object, depth, decompression, memory, time, and concurrency enforcement remains T20.
+- Limitation: T09 runs only through the trusted in-process adapter; the Hardened Worker Profile and its codecs remain T21.
+- Limitation: Stream patches accept decoded bytes and reject engine-owned encoding metadata; preservation-sensitive filter and incremental stream changes are not claimed.
+
+### Evidence
+
+Implementation evidence:
+
+- `value-patch-consumer-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/consumer/PdfValueWorkflowTest.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/consumer/PdfValueWorkflowTest.java) — Public workflows round-trip all nine PDF Value kinds, including exact decimal numbers, through REWRITE and reopen; retain stable Session references; enforce lazy-view lifecycle and limits; validate each Patch completely before mutation; and reject introduced object-graph cycles plus the complete T09 invalid-Patch matrix with stable safe failures.
+- `public-api-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/contract/PublicApiLeakageIT.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/contract/PublicApiLeakageIT.java) — Public and protected signatures, including every T09 value, reference, query, and Patch type, contain no PDFBox types.
+- `artifact-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/contract/JarContractIT.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/contract/JarContractIT.java) — The jar retains its stable module name, Java 8 class-file version, notices, and unbundled backend.
+- `cross-jdk-contract`: [`scripts/verify-jdk-matrix.sh`](../../scripts/verify-jdk-matrix.sh) — Maven verification runs the T09 public workflow contract on JDK 8, 11, 17, and 21.
+
+Acceptance Evidence: incomplete; no independent chain has been recorded as passing.
+
+Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T09 document-value-inspection-patch record`.

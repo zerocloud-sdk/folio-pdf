@@ -28,7 +28,7 @@ public final class InventoryCommandTest {
     public final TemporaryFolder temporaryFolder = new TemporaryFolder();
 
     @Test
-    public void checkedInAuthoritiesRecordT04FacadeContract() throws Exception {
+    public void checkedInAuthoritiesRecordFacadeContracts() throws Exception {
         Path repositoryRoot = Paths.get(requiredProperty("repositoryRoot"));
 
         CommandResult result = runCommand("check", repositoryRoot);
@@ -66,7 +66,8 @@ public final class InventoryCommandTest {
                 "`document.blank.create-publish-reopen`"));
         assertTrue(facades.contains("- Stable entries: `0`"));
         assertTrue(facades.contains("- Preview entries: `12`"));
-        assertTrue(facades.contains("- Explicit capability exclusions: `1`"));
+        assertTrue(facades.contains("- Explicit capability exclusions: `2`"));
+        assertTrue(facades.contains("`document.value.inspect-patch`"));
         assertTrue(facades.contains("`itext7.kernel.pdf-document.add-new-page`"));
     }
 

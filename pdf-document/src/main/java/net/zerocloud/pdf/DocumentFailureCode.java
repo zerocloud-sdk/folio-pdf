@@ -33,6 +33,24 @@ public enum DocumentFailureCode {
     /** A supported query could not be evaluated. */
     QUERY_FAILED,
 
+    /** A lazy PDF Value view was used after its Document Session ended. */
+    PDF_VALUE_VIEW_EXPIRED,
+
+    /** A caller-declared PDF Value inspection bound was exhausted. */
+    PDF_VALUE_LIMIT_EXCEEDED,
+
+    /** An Object Reference was supplied to a different Document Session. */
+    OBJECT_REFERENCE_OWNERSHIP_INVALID,
+
+    /** A Document Patch would introduce a cycle among its changed objects. */
+    PATCH_CYCLE_REJECTED,
+
+    /** A Document Patch attempted to change engine-owned stream metadata. */
+    PATCH_STREAM_CHANGE_REJECTED,
+
+    /** A Document Patch contains a PDF Value implementation not owned by Open PDF. */
+    PATCH_VALUE_REJECTED,
+
     /** A staged document could not be written. */
     DOCUMENT_WRITE_FAILED,
 

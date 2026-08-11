@@ -45,6 +45,13 @@ controlled subprocess fixture is project-authored test code launched with the
 JDK already running the test suite, and existing JUnit 4.13.2 remains the only
 test dependency. No external engine is bundled or downloaded.
 
+T09 adds no third-party runtime, test, build-tool, native, or external-tool
+dependency. The backend-neutral PDF Value and Document Patch surface reuses
+Apache PDFBox 3.0.8 only behind private implementation types and uses the
+existing JUnit 4.13.2 dependency for public-workflow consumer tests. No
+Acceptance Evidence executable, external fixture, or Migration Facade
+dependency is added.
+
 T06 uses one external executable only in the opt-in, repository-only
 Acceptance Evidence path:
 

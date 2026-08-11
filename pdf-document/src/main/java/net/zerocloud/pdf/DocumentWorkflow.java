@@ -49,7 +49,8 @@ public final class DocumentWorkflow {
      * @param request the immutable workflow request
      * @param work caller work at the public Document Session seam
      * @param <R> the caller result type
-     * @return the detached result and publication receipts
+     * @return the completed outcome and publication receipts; any Session-bound
+     *     values retained in the caller result are expired after the callback
      * @throws DocumentFailure if an operational document step fails
      */
     public <R> WorkflowOutcome<R> execute(

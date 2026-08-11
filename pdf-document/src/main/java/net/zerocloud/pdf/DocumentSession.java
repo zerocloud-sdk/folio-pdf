@@ -23,7 +23,7 @@ public interface DocumentSession {
      * Evaluates one library-owned query after all preceding commands.
      *
      * @param query the query to evaluate
-     * @param <R> the detached result type
+     * @param <R> the query result type; each query documents its lifecycle
      * @return the query result
      * @throws DocumentFailure if the query cannot be evaluated
      */

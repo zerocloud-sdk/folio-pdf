@@ -123,6 +123,67 @@ capabilities:
     certified-platforms: []
     status: experimental
 
+  - id: document.value.inspect-patch
+    context: document-engine
+    summary: Inspect all nine backend-neutral PDF Value kinds through bounded Session views and apply validated versioned Document Patches.
+    reference-suite:
+      source: iText Core 7.2.6 low-level PDF object inspection and mutation surface
+      role: capability inventory only; not an implementation or behavioral oracle
+    native-interface:
+      entry-point: net.zerocloud.pdf.DocumentWorkflow#execute
+      patch: net.zerocloud.pdf.DocumentPatch
+      object-reference: net.zerocloud.pdf.ObjectReference
+      value: net.zerocloud.pdf.PdfValue
+      value-kind: net.zerocloud.pdf.PdfValueKind
+      inspection-limits: net.zerocloud.pdf.PdfInspectionLimits
+      root-query: net.zerocloud.pdf.query.DocumentRootReference
+      inspection-query: net.zerocloud.pdf.query.InspectObject
+      failure: net.zerocloud.pdf.DocumentFailure
+      failure-code: net.zerocloud.pdf.DocumentFailureCode
+    migration-facade:
+      stable: []
+      preview: []
+    limitations:
+      - T09 applies version-1 dictionary-entry replacements in REWRITE workflows; array-element replacement, entry removal, and broader structural editing operations remain future capability slices.
+      - INCREMENTAL remains SAVE_MODE_UNSUPPORTED, and signed-document recognition, DocMDP decisions, and signature-safe changes remain T15.
+      - Inspection limits are explicit per-query traversal and decoded-stream bounds; comprehensive hostile-input object, depth, decompression, memory, time, and concurrency enforcement remains T20.
+      - T09 runs only through the trusted in-process adapter; the Hardened Worker Profile and its codecs remain T21.
+      - Stream patches accept decoded bytes and reject engine-owned encoding metadata; preservation-sensitive filter and incremental stream changes are not claimed.
+    dependency-gates:
+      - capability: document.blank.create-publish-reopen
+        required-status: compatible
+    promotion-gates:
+      - ticket: T06
+        requirement: Complete the independent acceptance evidence required before compatibility.
+    acceptance-profile:
+      id: T09-document-value-inspection-patch
+      state: experimental
+      mandatory-evidence:
+        - syntax
+        - standards
+        - semantic
+        - visual
+      evidence-record: capabilities/evidence/T09-document-value-inspection-patch.md
+    evidence:
+      - kind: value-patch-consumer-contract
+        path: pdf-document/src/test/java/net/zerocloud/pdf/consumer/PdfValueWorkflowTest.java
+        assertion: Public workflows round-trip all nine PDF Value kinds, including exact decimal numbers, through REWRITE and reopen; retain stable Session references; enforce lazy-view lifecycle and limits; validate each Patch completely before mutation; and reject introduced object-graph cycles plus the complete T09 invalid-Patch matrix with stable safe failures.
+      - kind: public-api-contract
+        path: pdf-document/src/test/java/net/zerocloud/pdf/contract/PublicApiLeakageIT.java
+        assertion: Public and protected signatures, including every T09 value, reference, query, and Patch type, contain no PDFBox types.
+      - kind: artifact-contract
+        path: pdf-document/src/test/java/net/zerocloud/pdf/contract/JarContractIT.java
+        assertion: The jar retains its stable module name, Java 8 class-file version, notices, and unbundled backend.
+      - kind: cross-jdk-contract
+        path: scripts/verify-jdk-matrix.sh
+        assertion: Maven verification runs the T09 public workflow contract on JDK 8, 11, 17, and 21.
+    acceptance-evidence: []
+    provenance:
+      path: PROVENANCE.md
+      record: T09 document-value-inspection-patch record
+    certified-platforms: []
+    status: experimental
+
   - id: conversion.capability-provider.select-execute
     context: conversion
     summary: Register, inspect, deterministically select, and safely execute project-owned Capability Providers.

@@ -7,9 +7,9 @@ import java.util.Objects;
 import net.zerocloud.pdf.provider.ProviderSelection;
 
 /**
- * The detached result, capability and execution information, safe
- * diagnostics, publication receipts, and declaration-ordered Capability
- * Provider selection metadata of a completed workflow.
+ * The caller result, capability and execution information, safe diagnostics,
+ * publication receipts, and declaration-ordered Capability Provider selection
+ * metadata of a completed workflow.
  *
  * @param <R> the caller result type
  * @since 0.1.0

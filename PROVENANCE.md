@@ -213,5 +213,40 @@ documentation, and project-owned tests are the permitted design inputs.
   therefore `indeterminate`, the T06 promotion gate remains open, and the
   capability remains `experimental`.
 
+## T09 document-value-inspection-patch record
+
+- Authorship: OpenAI Codex generated and integrated the T09 implementation,
+  tests, inventories, and documentation at repository operator MaBaiqiu's
+  direction. No T09 commit was created in this execution.
+- Project inputs: GitHub issues #1 and #10, `CONTEXT.md`, ADR-0019 as the
+  primary design authority, ADR-0011, 0013, 0017, 0023, 0025, and 0029, the
+  repository inventory contract, and the accepted T01–T06 implementation and
+  evidence.
+- Runtime and test dependencies: T09 adds no third-party dependency. Apache
+  PDFBox 3.0.8 remains the private Apache-2.0 implementation dependency, and
+  JUnit 4.13.2 remains the existing test dependency. The no-new-dependency
+  statement is recorded in [DEPENDENCIES.md](DEPENDENCIES.md).
+- Project-authored fixtures: every T09 PDF is created, patched, published, and
+  reopened through the project-owned Native Interface in temporary test
+  directories. Test values, byte streams, invalid value implementations, and
+  failure cases are authored for T09. No external PDF fixture or product
+  artifact is included.
+- Generated documentation: `docs/generated/capability-matrix.md` and
+  `docs/generated/facade-surface.md` are deterministic renderings of the two
+  YAML authorities and contain no copied external content.
+- Excluded inputs: no iText source, resource, fixture, binary, decompiled or
+  binary-derived implementation detail, closed add-on material, proprietary
+  differential evidence, Reference Suite output, or external behavioral oracle
+  was used.
+- Scope: T09 adds bounded trusted in-process PDF Value inspection and validated
+  version-1 dictionary-entry Patches only. It adds no downstream page editing,
+  extraction, INCREMENTAL or signed-document behavior (T15), comprehensive
+  hostile-input policy (T20), Hardened Worker or codec (T21), or Migration
+  Facade mapping.
+- Compatibility Curator evidence: none; the role remains vacant. The
+  blank-document Dependency Gate and T06 promotion gate remain open, all T09
+  Acceptance Evidence chains remain absent, and the capability stays
+  `experimental` with no certified-platform claim.
+
 Future changes append or update a scoped record and supply the pull-request
 provenance statement required by [CONTRIBUTING.md](CONTRIBUTING.md).
