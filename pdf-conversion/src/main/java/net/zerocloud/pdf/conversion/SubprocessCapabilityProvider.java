@@ -256,7 +256,21 @@ public final class SubprocessCapabilityProvider extends CapabilityProvider {
                             timeoutNanos);
                     resultCompleted = true;
                 } catch (ProviderFailure resultFailure) {
-                    if (observeNonzeroExit(process, remaining, request)) {
+                    boolean exitedNonzero;
+                    if (resultFailure.getCode()
+                            == ProviderFailureCode.MALFORMED_OUTPUT) {
+                        exitedNonzero = awaitNonzeroExit(
+                                process,
+                                started,
+                                timeoutNanos,
+                                request);
+                    } else {
+                        exitedNonzero = observeNonzeroExit(
+                                process,
+                                remaining,
+                                request);
+                    }
+                    if (exitedNonzero) {
                         throw failure(
                                 ProviderFailureCode.EXECUTION_FAILED,
                                 request);
@@ -284,6 +298,30 @@ public final class SubprocessCapabilityProvider extends CapabilityProvider {
                 TimeUnit.MILLISECONDS.toNanos(100L));
         try {
             return process.waitFor(observation, TimeUnit.NANOSECONDS)
+                    && process.exitValue() != 0;
+        } catch (InterruptedException failure) {
+            Thread.currentThread().interrupt();
+            throw failure(ProviderFailureCode.EXECUTION_FAILED, request);
+        }
+    }
+
+    /**
+     * Waits up to the remaining request deadline for the process exit status
+     * to arbitrate malformed or truncated output. Pipe EOF reaches the reader
+     * as soon as the kernel closes the process streams, while the exit status
+     * only becomes visible once the process reaper runs, so a short fixed
+     * observation window misclassifies crashes as malformed output.
+     *
+     * @return true when the process exited with a nonzero status
+     */
+    private boolean awaitNonzeroExit(
+            Process process,
+            long started,
+            long timeoutNanos,
+            ProviderRequest request) throws ProviderFailure {
+        long remaining = remainingNanos(started, timeoutNanos);
+        try {
+            return process.waitFor(Math.max(remaining, 0L), TimeUnit.NANOSECONDS)
                     && process.exitValue() != 0;
         } catch (InterruptedException failure) {
             Thread.currentThread().interrupt();
