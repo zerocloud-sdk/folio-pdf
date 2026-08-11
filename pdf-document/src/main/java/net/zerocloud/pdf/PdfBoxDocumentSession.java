@@ -5,6 +5,7 @@ import net.zerocloud.pdf.command.AddBlankPage;
 import net.zerocloud.pdf.query.PageCount;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDResources;
 
 final class PdfBoxDocumentSession implements DocumentSession {
 
@@ -25,7 +26,9 @@ final class PdfBoxDocumentSession implements DocumentSession {
 
         if (command == AddBlankPage.INSTANCE) {
             try {
-                document.addPage(new PDPage());
+                PDPage page = new PDPage();
+                page.setResources(new PDResources());
+                document.addPage(page);
                 return;
             } catch (RuntimeException failure) {
                 throw PdfBoxWorkflowEngine.failure(

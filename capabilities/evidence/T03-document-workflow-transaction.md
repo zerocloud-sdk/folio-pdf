@@ -58,9 +58,15 @@ be submitted to a mutating T03 REWRITE workflow.
 
 The PDF fixtures are generated entirely through the project-owned Native
 Interface. Apache PDFBox 3.0.8 remains behind project-owned public types. This
-record is implementation evidence, not independent Acceptance Evidence. The
-capability remains `experimental`; T06 is still required before promotion to
-`compatible`.
+record is implementation evidence, not independent Acceptance Evidence.
+
+T06 now records passing independent
+[`syntax`](T06-document-blank-syntax.md) and
+[`semantic`](T06-document-blank-semantic.md) chains against the same pinned
+artifact. The [overall determination](T06-document-blank-determination.md)
+remains `indeterminate` because standards and visual evidence are absent.
+qpdf syntax success is not a standards-compliance claim. The capability
+therefore remains `experimental`, and its T06 promotion gate remains open.
 
 ## Execution record — 2026-08-10
 

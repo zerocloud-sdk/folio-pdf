@@ -1,0 +1,25 @@
+#!/usr/bin/env sh
+set -eu
+
+script_directory=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+repository_root=$(CDPATH= cd -- "${script_directory}/.." && pwd)
+maven_command=${MAVEN_COMMAND:-"${repository_root}/mvnw"}
+
+if [ "$#" -ne 1 ]; then
+    echo "Usage: ./scripts/acceptance OUTPUT_DIRECTORY" >&2
+    exit 2
+fi
+
+output_directory=$1
+case ${output_directory} in
+    /*) ;;
+    *) output_directory=${PWD}/${output_directory} ;;
+esac
+exec "${maven_command}" \
+    -B -ntp \
+    -pl pdf-acceptance \
+    -am \
+    -Pacceptance-record \
+    -DskipTests \
+    -Dacceptance.output="${output_directory}" \
+    verify

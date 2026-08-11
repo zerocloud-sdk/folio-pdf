@@ -70,7 +70,14 @@ Implementation evidence:
 - `public-api-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/contract/PublicApiLeakageIT.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/contract/PublicApiLeakageIT.java) — Public and protected signatures contain no PDFBox types.
 - `artifact-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/contract/JarContractIT.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/contract/JarContractIT.java) — The jar has the stable module name and Java 8 class-file version.
 - `cross-jdk-contract`: [`scripts/verify-jdk-matrix.sh`](../../scripts/verify-jdk-matrix.sh) — Maven verification runs on JDK 8, 11, 17, and 21.
+- `acceptance-pipeline-contract`: [`pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/AcceptanceEvidenceCommandTest.java`](../../pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/AcceptanceEvidenceCommandTest.java) — Repository-only public-seam checks cover pinned-tool success, failure, warning, mismatch, unavailability, provisioning, and evidence recording.
+- `acceptance-command`: [`scripts/acceptance`](../../scripts/acceptance) — The repository-owned command runs only the isolated Acceptance Evidence profile and writes to an explicit output directory.
+- `external-tool-provisioning`: [`scripts/provision-qpdf`](../../scripts/provision-qpdf) — A local official qpdf archive is verified by SHA-256 and staged outside product artifacts without build-time network access.
+- `external-tool-pin`: [`scripts/qpdf-pin.properties`](../../scripts/qpdf-pin.properties) — The qpdf version, official asset, archive hash, and extracted executable hash have one repository authority.
 
-Acceptance Evidence: incomplete; no independent chain has been recorded as passing.
+Acceptance Evidence:
 
-Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T03 transaction-contract record`.
+- `syntax`: `pass` — [`capabilities/evidence/T06-document-blank-syntax.md`](../../capabilities/evidence/T06-document-blank-syntax.md); producer `qpdf@12.4.0` (`external-tool`)
+- `semantic`: `pass` — [`capabilities/evidence/T06-document-blank-semantic.md`](../../capabilities/evidence/T06-document-blank-semantic.md); producer `open-pdf-semantic-assertions@0.1.0-SNAPSHOT` (`project-test`)
+
+Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T06 acceptance-evidence record`.

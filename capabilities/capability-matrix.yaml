@@ -66,9 +66,35 @@ capabilities:
       - kind: cross-jdk-contract
         path: scripts/verify-jdk-matrix.sh
         assertion: Maven verification runs on JDK 8, 11, 17, and 21.
-    acceptance-evidence: []
+      - kind: acceptance-pipeline-contract
+        path: pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/AcceptanceEvidenceCommandTest.java
+        assertion: Repository-only public-seam checks cover pinned-tool success, failure, warning, mismatch, unavailability, provisioning, and evidence recording.
+      - kind: acceptance-command
+        path: scripts/acceptance
+        assertion: The repository-owned command runs only the isolated Acceptance Evidence profile and writes to an explicit output directory.
+      - kind: external-tool-provisioning
+        path: scripts/provision-qpdf
+        assertion: A local official qpdf archive is verified by SHA-256 and staged outside product artifacts without build-time network access.
+      - kind: external-tool-pin
+        path: scripts/qpdf-pin.properties
+        assertion: The qpdf version, official asset, archive hash, and extracted executable hash have one repository authority.
+    acceptance-evidence:
+      - chain: syntax
+        result: pass
+        record: capabilities/evidence/T06-document-blank-syntax.md
+        producer:
+          kind: external-tool
+          name: qpdf
+          version: "12.4.0"
+      - chain: semantic
+        result: pass
+        record: capabilities/evidence/T06-document-blank-semantic.md
+        producer:
+          kind: project-test
+          name: open-pdf-semantic-assertions
+          version: 0.1.0-SNAPSHOT
     provenance:
       path: PROVENANCE.md
-      record: T03 transaction-contract record
+      record: T06 acceptance-evidence record
     certified-platforms: []
     status: experimental

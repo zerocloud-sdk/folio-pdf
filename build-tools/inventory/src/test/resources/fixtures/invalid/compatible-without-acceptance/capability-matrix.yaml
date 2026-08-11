@@ -4,7 +4,7 @@ authority: behavioral-capability
 capabilities:
   - id: sample.invalid
     context: test-context
-    summary: Compatible capability with implementation tests alone.
+    summary: Compatible capability with implementation tests and syntax evidence alone.
     reference-suite:
       source: public fixture contract
       role: validation fixture only
@@ -28,8 +28,15 @@ capabilities:
     evidence:
       - kind: consumer-contract
         path: evidence/implementation.md
-        assertion: Implementation tests are present but Acceptance Evidence is absent.
-    acceptance-evidence: []
+        assertion: Implementation tests are present but mandatory Acceptance Evidence is incomplete.
+    acceptance-evidence:
+      - chain: syntax
+        result: pass
+        record: evidence/compatible-syntax.md
+        producer:
+          kind: external-tool
+          name: fixture-syntax-validator
+          version: "1.0"
     provenance:
       path: PROVENANCE.md
       record: Fixture record

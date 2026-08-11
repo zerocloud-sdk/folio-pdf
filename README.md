@@ -33,6 +33,19 @@ Run the repository-owned container matrix with Podman:
 Both commands compile shipped code for Java release 8. The local matrix runs
 the same Maven verification contract on JDK 8, 11, 17, and 21.
 
+The repository-only T06 Acceptance Evidence path is separate from the normal
+build and published artifacts. After supplying the pinned official qpdf
+archive locally, run:
+
+```text
+./scripts/provision-qpdf /path/to/qpdf-12.4.0-bin-linux-x86_64.zip
+./scripts/acceptance capabilities/evidence
+```
+
+This records external syntax and project semantic findings for the same
+project-generated PDF. See [capabilities/README.md](capabilities/README.md)
+for the pinned hash, output contract, and conservative determination rules.
+
 Validate or regenerate the machine-readable compatibility inventories and
 their cross-linked human-readable views with:
 

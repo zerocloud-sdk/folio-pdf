@@ -23,6 +23,38 @@ The outputs are:
 - `docs/generated/capability-matrix.md`
 - `docs/generated/facade-surface.md`
 
+Record the built-in T06 blank-document Acceptance Profile with the pinned
+external syntax validator and the project semantic assertions:
+
+```text
+./scripts/provision-qpdf /path/to/qpdf-12.4.0-bin-linux-x86_64.zip
+./scripts/acceptance capabilities/evidence
+```
+
+Provisioning is deliberately offline. The operator supplies the official
+qpdf 12.4.0 Linux x86-64 archive; `scripts/provision-qpdf` verifies SHA-256
+`a3bca240f3bb61efdc3a90be89d1da4ed5e125326c3458c4e62df53ff4f153e3`
+and verifies the extracted `bin/qpdf` SHA-256
+`9ac787a28597e8428289a12ba3fedafd74bdfb4b4da1be814722faf76f14f21b`
+before placing it in the ignored `.build-cache/qpdf/12.4.0` directory.
+`scripts/qpdf-pin.properties` is the single operational pin authority, and
+the canonical acceptance profile fixes both the repository wrapper and that
+pin file. The normal build, tests, and inventory commands neither download
+nor require qpdf. A missing, unreadable, incorrectly versioned, or
+digest-unmarked validator records the syntax chain as `indeterminate`, never
+`pass`.
+
+The acceptance command creates one PDF through `DocumentWorkflow.execute`,
+hashes that artifact, runs `qpdf --check` on it, and then reopens the same
+artifact through the public workflow to assert the committed one-page
+sequence and readable object graph; text order is not applicable because the
+profile emits no text. It records tool identity, version and distribution
+digest, input SHA-256, raw findings,
+chain-level results, and an overall determination beneath the requested
+output directory. qpdf is syntax evidence only: its success is not a PDF
+standards-conformance result and cannot satisfy the independent standards,
+semantic, or visual chains.
+
 `./scripts/inventory check` validates the authorities and fails if either
 generated file is missing or stale. The repository root command
 `./mvnw -B -ntp verify` invokes that check through the internal
@@ -124,3 +156,11 @@ Generated Markdown is review material, not a third authority.
 
 The T02 validator and generator evidence is recorded in
 `capabilities/evidence/T02-inventory-authorities.md`.
+
+The current T06 syntax, semantic, and overall records are
+`capabilities/evidence/T06-document-blank-syntax.md`,
+`capabilities/evidence/T06-document-blank-semantic.md`, and
+`capabilities/evidence/T06-document-blank-determination.md`. Syntax and
+semantic pass for their shared pinned artifact. Standards and visual evidence
+are absent, so the overall profile remains `indeterminate` and the capability
+remains `experimental`.

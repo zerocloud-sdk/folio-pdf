@@ -1,0 +1,106 @@
+#!/usr/bin/env sh
+set -eu
+
+script_directory=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+repository_root=$(CDPATH= cd -- "${script_directory}/.." && pwd)
+
+. "${script_directory}/qpdf-pin.properties"
+qpdf_version=${QPDF_VERSION}
+archive_name=${QPDF_ARCHIVE_NAME}
+archive_sha256=${QPDF_ARCHIVE_SHA256}
+binary_sha256=${QPDF_BINARY_SHA256}
+qpdf_cache=${QPDF_CACHE_DIRECTORY:-"${repository_root}/.build-cache/qpdf"}
+sha256_command=${SHA256_COMMAND:-sha256sum}
+unzip_command=${UNZIP_COMMAND:-"${repository_root}/scripts/container-bin/unzip"}
+
+if [ "$#" -ne 1 ]; then
+    echo "Usage: ./scripts/provision-qpdf /path/to/${archive_name}" >&2
+    exit 2
+fi
+
+archive=$1
+if [ ! -f "${archive}" ]; then
+    echo "qpdf archive is not a regular file: ${archive}" >&2
+    exit 2
+fi
+
+checksum_output=$("${sha256_command}" "${archive}")
+actual_sha256=${checksum_output%% *}
+if [ "${actual_sha256}" != "${archive_sha256}" ]; then
+    echo "qpdf archive SHA-256 mismatch." >&2
+    echo "Expected: ${archive_sha256}" >&2
+    echo "Observed: ${actual_sha256}" >&2
+    exit 1
+fi
+
+mkdir -p "${qpdf_cache}"
+installation=${qpdf_cache}/${qpdf_version}
+if [ -e "${installation}" ]; then
+    if [ ! -x "${installation}/bin/qpdf" ] \
+            || [ ! -f "${installation}/.archive-sha256" ] \
+            || [ "$(sed -n '1p' "${installation}/.archive-sha256")" != "${archive_sha256}" ] \
+            || [ ! -f "${installation}/.binary-sha256" ] \
+            || [ "$(sed -n '1p' "${installation}/.binary-sha256")" != "${binary_sha256}" ]; then
+        echo "Existing qpdf cache entry is incomplete or has the wrong digest: ${installation}" >&2
+        exit 1
+    fi
+    observed=$(LD_LIBRARY_PATH="${installation}/lib${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}" \
+            "${installation}/bin/qpdf" --version | sed -n '1p')
+    if [ "${observed}" != "qpdf version ${qpdf_version}" ]; then
+        echo "Existing qpdf cache entry reports an unexpected version: ${observed}" >&2
+        exit 1
+    fi
+    echo "qpdf ${qpdf_version} is already provisioned at ${installation}"
+    exit 0
+fi
+
+staging_directory=$(mktemp -d "${qpdf_cache}/.qpdf-${qpdf_version}.XXXXXX")
+cleanup() {
+    if [ -n "${staging_directory}" ] && [ -d "${staging_directory}" ]; then
+        rm -rf -- "${staging_directory}"
+    fi
+}
+trap cleanup EXIT HUP INT TERM
+
+"${unzip_command}" -q "${archive}" -d "${staging_directory}"
+if [ ! -f "${staging_directory}/bin/qpdf" ]; then
+    echo "Pinned qpdf archive did not contain bin/qpdf." >&2
+    exit 1
+fi
+chmod +x "${staging_directory}/bin/qpdf"
+binary_checksum_output=$("${sha256_command}" "${staging_directory}/bin/qpdf")
+actual_binary_sha256=${binary_checksum_output%% *}
+if [ "${actual_binary_sha256}" != "${binary_sha256}" ]; then
+    echo "qpdf executable SHA-256 mismatch." >&2
+    echo "Expected: ${binary_sha256}" >&2
+    echo "Observed: ${actual_binary_sha256}" >&2
+    exit 1
+fi
+
+qpdf_library_link=${staging_directory}/lib/libqpdf.so.30
+qpdf_library_target=libqpdf.so.30.4.0
+link_payload=
+if [ -f "${qpdf_library_link}" ]; then
+    IFS= read -r link_payload < "${qpdf_library_link}" || true
+fi
+if [ "${link_payload}" != "${qpdf_library_target}" ] \
+        || [ ! -f "${staging_directory}/lib/${qpdf_library_target}" ]; then
+    echo "Pinned qpdf archive has an unexpected libqpdf link layout." >&2
+    exit 1
+fi
+ln -sf "${qpdf_library_target}" "${qpdf_library_link}"
+
+observed=$(LD_LIBRARY_PATH="${staging_directory}/lib${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}" \
+        "${staging_directory}/bin/qpdf" --version | sed -n '1p')
+if [ "${observed}" != "qpdf version ${qpdf_version}" ]; then
+    echo "Pinned qpdf archive reports an unexpected version: ${observed}" >&2
+    exit 1
+fi
+
+printf '%s\n' "${archive_sha256}" > "${staging_directory}/.archive-sha256"
+printf '%s\n' "${binary_sha256}" > "${staging_directory}/.binary-sha256"
+mv "${staging_directory}" "${installation}"
+staging_directory=
+trap - EXIT HUP INT TERM
+
+echo "Provisioned qpdf ${qpdf_version} at ${installation}"

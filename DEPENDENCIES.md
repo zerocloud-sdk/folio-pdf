@@ -33,10 +33,46 @@ T02 adds one version-pinned build plugin:
 | --- | --- | --- |
 | `org.codehaus.mojo:exec-maven-plugin:3.6.3` | invoke the repository-only inventory command during validation and generation | Apache License 2.0 |
 
+T06 uses one external executable only in the opt-in, repository-only
+Acceptance Evidence path:
+
+| Tool | Role | Source and integrity | License |
+| --- | --- | --- | --- |
+| qpdf 12.4.0 official Linux x86-64 binary archive | independent `--check` syntax chain | `https://github.com/qpdf/qpdf/releases/download/v12.4.0/qpdf-12.4.0-bin-linux-x86_64.zip`; archive SHA-256 `a3bca240f3bb61efdc3a90be89d1da4ed5e125326c3458c4e62df53ff4f153e3`; `bin/qpdf` SHA-256 `9ac787a28597e8428289a12ba3fedafd74bdfb4b4da1be814722faf76f14f21b` | Apache License 2.0 for qpdf |
+
+The SHA-pinned upstream archive contains these shared libraries. They are
+local validation-tool prerequisites, not Open PDF runtime dependencies:
+
+| Archive member | Upstream origin | License |
+| --- | --- | --- |
+| `libqpdf.so.30.4.0` | [qpdf](https://github.com/qpdf/qpdf) | Apache License 2.0 |
+| `libffi.so.8` | [libffi](https://github.com/libffi/libffi) | MIT |
+| `libgnutls.so.30` | [GnuTLS](https://gitlab.com/gnutls/gnutls) | LGPL-2.1-or-later for the main library |
+| `libnettle.so.8`, `libhogweed.so.6` | [Nettle](https://git.lysator.liu.se/nettle/nettle) | LGPL-3.0-or-later OR GPL-2.0-or-later |
+| `libidn2.so.0` | [GNU Libidn2](https://gitlab.com/libidn/libidn2) | LGPL-3.0-or-later OR GPL-2.0-or-later |
+| `libjpeg.so.8` | [libjpeg-turbo](https://github.com/libjpeg-turbo/libjpeg-turbo) | IJG, modified BSD, and zlib-style terms documented by upstream |
+| `libp11-kit.so.0` | [p11-kit](https://github.com/p11-glue/p11-kit) | BSD-3-Clause |
+| `libtasn1.so.6` | [GNU Libtasn1](https://gitlab.com/gnutls/libtasn1) | LGPL-2.1-or-later |
+| `libunistring.so.2` | [GNU libunistring](https://www.gnu.org/software/libunistring/) | LGPL-3.0-or-later OR GPL-2.0-or-later |
+
+On Linux, the bundle additionally links to host-provided GNU C Library
+(`libc`, `libm`, and the loader; LGPL-2.1-or-later), GCC runtimes (`libstdc++`
+and `libgcc_s`; GPL-3.0-or-later with GCC Runtime Library Exception 3.1), zlib
+(`libz`; zlib License), and GNU MP (`libgmp`; LGPL-3.0-or-later OR
+GPL-2.0-or-later). These remain host components and are not copied by the
+provisioner.
+
+The official archive includes its dynamically linked runtime libraries. It is
+operator-supplied, verified, expanded only into the ignored `.build-cache/`
+directory, and neither committed nor redistributed by this repository. qpdf
+and those bundled runtime libraries do not enter the Maven dependency graph,
+the BOM, or any shipped Open PDF artifact. The normal build has no network or
+system-qpdf requirement.
+
 Review the resolved graph with:
 
 ```text
-./mvnw -B -ntp -pl pdf-document,build-tools/inventory dependency:tree
+./mvnw -B -ntp -pl pdf-document,pdf-acceptance,build-tools/inventory dependency:tree
 ```
 
 Formal releases additionally require generated SBOM, license, vulnerability,

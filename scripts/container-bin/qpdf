@@ -1,0 +1,38 @@
+#!/usr/bin/env sh
+set -eu
+
+script_directory=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+repository_root=$(CDPATH= cd -- "${script_directory}/../.." && pwd)
+
+. "${script_directory}/../qpdf-pin.properties"
+qpdf_version=${QPDF_VERSION}
+archive_sha256=${QPDF_ARCHIVE_SHA256}
+binary_sha256=${QPDF_BINARY_SHA256}
+qpdf_cache=${QPDF_CACHE_DIRECTORY:-"${repository_root}/.build-cache/qpdf"}
+qpdf_home=${qpdf_cache}/${qpdf_version}
+archive_digest_record=${qpdf_home}/.archive-sha256
+binary_digest_record=${qpdf_home}/.binary-sha256
+qpdf_executable=${qpdf_home}/bin/qpdf
+
+if [ ! -x "${qpdf_executable}" ]; then
+    echo "Pinned qpdf ${qpdf_version} is not provisioned; run ./scripts/provision-qpdf." >&2
+    exit 127
+fi
+if [ ! -f "${archive_digest_record}" ] || [ ! -f "${binary_digest_record}" ]; then
+    echo "Pinned qpdf cache digest marker is invalid." >&2
+    exit 127
+fi
+
+observed_archive_sha256=
+observed_binary_sha256=
+IFS= read -r observed_archive_sha256 < "${archive_digest_record}" || true
+IFS= read -r observed_binary_sha256 < "${binary_digest_record}" || true
+if [ "${observed_archive_sha256}" != "${archive_sha256}" ] \
+        || [ "${observed_binary_sha256}" != "${binary_sha256}" ]; then
+    echo "Pinned qpdf cache digest marker is invalid." >&2
+    exit 127
+fi
+
+LD_LIBRARY_PATH="${qpdf_home}/lib${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
+export LD_LIBRARY_PATH
+exec "${qpdf_executable}" "$@"
