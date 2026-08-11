@@ -17,49 +17,60 @@ Behavioral authority: [`../../capabilities/capability-matrix.yaml`](../../capabi
 <a id="capability-document_dot_blank_dot_create_dash_publish_dash_reopen"></a>
 ## `document.blank.create-publish-reopen`
 
-Create, publish, reopen, and count the page of a blank PDF.
+Execute a named-source document transaction and publish validated rewrites to named targets.
 
 - Context: `document-engine`
 - Status: `experimental`
 - Reference Suite source: `iText Core 7.2.6 document lifecycle`
 - Reference role: capability inventory only; not an implementation oracle
-- Acceptance Profile: `T01-blank-document-workflow`
+- Acceptance Profile: `T03-document-workflow-transaction`
 - Mandatory evidence chains: `syntax`, `standards`, `semantic`, `visual`
-- Evidence record: [`capabilities/evidence/T01-blank-document-workflow.md`](../../capabilities/evidence/T01-blank-document-workflow.md)
+- Evidence record: [`capabilities/evidence/T03-document-workflow-transaction.md`](../../capabilities/evidence/T03-document-workflow-transaction.md)
 - Certified platforms: none
 
 ### Native Interface mapping
 
+- `cancellation`: `net.zerocloud.pdf.CancellationToken`
 - `command`: `net.zerocloud.pdf.command.AddBlankPage`
 - `entry-point`: `net.zerocloud.pdf.DocumentWorkflow#execute`
+- `environment`: `net.zerocloud.pdf.WorkflowEnvironment`
+- `execution-profile`: `net.zerocloud.pdf.WorkflowExecutionProfile`
+- `failure`: `net.zerocloud.pdf.DocumentFailure`
 - `outcome`: `net.zerocloud.pdf.WorkflowOutcome`
+- `progress`: `net.zerocloud.pdf.WorkflowProgressListener`
 - `query`: `net.zerocloud.pdf.query.PageCount`
+- `receipt`: `net.zerocloud.pdf.PublicationReceipt`
 - `request`: `net.zerocloud.pdf.WorkflowRequest`
+- `save-mode`: `net.zerocloud.pdf.SaveMode`
+- `source`: `net.zerocloud.pdf.DocumentSource`
 
 ### Migration Facade coverage
 
 - Stable: none
 - Preview: none
-- Explicit exclusion: [`T04`](facade-surface.md#excluded-capability-document_dot_blank_dot_create_dash_publish_dash_reopen) — T01 establishes only the Native Interface; Migration Facade mapping belongs to T04.
+- Explicit exclusion: [`T04`](facade-surface.md#excluded-capability-document_dot_blank_dot_create_dash_publish_dash_reopen) — T03 completes the Native Interface transaction contract; Migration Facade mapping remains scoped to T04.
 
 ### Gates and limitations
 
 - Dependency Gates: none
 - Promotion gate `T06`: Complete the independent acceptance evidence required before compatibility.
-- Limitation: One path source or one path publication target per workflow request.
-- Limitation: New documents use a staged rewrite; incremental publication is not in T01.
-- Limitation: Named sources, multiple targets, deadlines, cancellation, and resource policy are deferred.
+- Limitation: INCREMENTAL is represented but fails with SAVE_MODE_UNSUPPORTED until T15 implements revision-preserving publication.
+- Limitation: T03 does not detect or protect signed documents; signed-document read-only enforcement, DocMDP decisions, and signature-safe publication remain T15.
+- Limitation: T03 opens only the explicitly selected primary source; commands that consume additional named sources remain downstream.
+- Limitation: Cancellation and deadlines are checked at T03 transaction boundaries; comprehensive hostile-input limits and worker enforcement remain T20 and T21.
 
 ### Evidence
 
 Implementation evidence:
 
 - `consumer-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/consumer/BlankDocumentWorkflowTest.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/consumer/BlankDocumentWorkflowTest.java) — A public Java 8 consumer creates, publishes, reopens, and observes one page.
-- `lifecycle-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/consumer/WorkflowLifecycleTest.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/consumer/WorkflowLifecycleTest.java) — Ordering, callback abort, session expiry, and command ownership are observable.
+- `lifecycle-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/consumer/WorkflowLifecycleTest.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/consumer/WorkflowLifecycleTest.java) — Ordering, callback abort, thread confinement, session expiry, and command ownership are observable.
+- `transaction-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/consumer/WorkflowTransactionContractTest.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/consumer/WorkflowTransactionContractTest.java) — Named source forms, immutable execution configuration and outcomes, explicit Save Mode, multi-target receipts, validation, cancellation, deadlines, and sanitized progress are observable.
+- `resource-ownership-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/consumer/WorkflowResourceOwnershipTest.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/consumer/WorkflowResourceOwnershipTest.java) — Module-opened Path descriptors and caller-owned input, channel, and output resources are checked across the T03 success and failure categories.
 - `public-api-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/contract/PublicApiLeakageIT.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/contract/PublicApiLeakageIT.java) — Public and protected signatures contain no PDFBox types.
 - `artifact-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/contract/JarContractIT.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/contract/JarContractIT.java) — The jar has the stable module name and Java 8 class-file version.
 - `cross-jdk-contract`: [`scripts/verify-jdk-matrix.sh`](../../scripts/verify-jdk-matrix.sh) — Maven verification runs on JDK 8, 11, 17, and 21.
 
 Acceptance Evidence: incomplete; no independent chain has been recorded as passing.
 
-Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T01 bootstrap record`.
+Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T03 transaction-contract record`.

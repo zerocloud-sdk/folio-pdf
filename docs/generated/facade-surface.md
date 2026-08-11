@@ -25,4 +25,4 @@ No preview surfaces are declared.
 
 - Behavioral capability: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen)
 - Deferred ticket: `T04`
-- Reason: T01 establishes only the Native Interface; Migration Facade mapping belongs to T04.
+- Reason: T03 completes the Native Interface transaction contract; Migration Facade mapping remains scoped to T04.

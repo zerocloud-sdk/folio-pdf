@@ -65,5 +65,33 @@ documentation, and project-owned tests are the permitted design inputs.
   introduces no Migration Facade type or stub, changes no T01 compatibility
   claim, and leaves independent T06 Acceptance Evidence outstanding.
 
+## T03 transaction-contract record
+
+- Authorship: OpenAI Codex generated and integrated the T03 implementation,
+  tests, and documentation at repository operator MaBaiqiu's direction. No
+  T03 commit was created in this execution.
+- Project inputs: GitHub issues #1 and #4, the Document Engine glossary,
+  ADR-0013, ADR-0024, ADR-0025, CONTRIBUTING.md, the accepted T01/T02
+  implementation and evidence, and the repository Capability Matrix and
+  Facade Surface Manifest.
+- Runtime and test dependencies: T03 adds no dependency. Apache PDFBox 3.0.8
+  remains the private Apache-2.0 implementation dependency; JUnit 4.13.2
+  remains the test dependency. Their coordinates, roles, and licenses remain
+  recorded in [DEPENDENCIES.md](DEPENDENCIES.md).
+- Test fixtures: all PDFs, failing streams, cancellation signals, and
+  deterministic clocks used by T03 tests are project-authored and created in
+  memory or temporary test directories. Linux Path-ownership checks inspect
+  only the current test process's `/proc/self/fd` links and retain no host
+  data. No external PDF fixture is included.
+- Excluded inputs: no iText source, resource, fixture, decompiled or
+  binary-derived implementation detail, closed add-on material, or proprietary
+  differential evidence was used.
+- Scope: T03 implements only the trusted in-process transaction boundaries.
+  It adds no T04 Migration Facade, T05 Capability Provider, T06 independent
+  Acceptance Evidence, T15 incremental publication, T20 comprehensive
+  hostile-input policy, or T21 Hardened Worker implementation.
+- Compatibility Curator evidence: none; the role remains vacant, the
+  capability remains `experimental`, and T06 remains its promotion gate.
+
 Future changes append or update a scoped record and supply the pull-request
 provenance statement required by [CONTRIBUTING.md](CONTRIBUTING.md).

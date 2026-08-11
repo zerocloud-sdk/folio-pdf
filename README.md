@@ -8,10 +8,13 @@ namespace. Its Native Interface is being built as a clean-room implementation
 for Java 8 and is tested on JDK 8, 11, 17, and 21. The project is currently
 experimental and has not published a Foundation Release.
 
-T01 provides one complete workflow: create a document, add one blank page,
-publish it to a path, reopen it in a separate workflow, and query its page
-count. PDFBox is an internal implementation dependency and is never part of
-the public interface.
+T03 provides the complete trusted in-process Document Workflow transaction:
+uniquely named Sources, an explicit primary Source, ordered named Path and
+stream Targets, explicit Save Mode, cancellation, deadlines, sanitized
+progress, stable failures, immutable execution outcomes, and one Publication
+Receipt per Target. An immutable Workflow Environment owns deadline time.
+PDFBox is an internal implementation dependency and is never part of the
+public interface.
 
 ## Build
 
@@ -72,12 +75,15 @@ select versions through `net.zerocloud:pdf-bom` and use the Document Engine as
 The snapshot is not published to Maven Central yet. Build it locally before
 using these coordinates from another project.
 
-## Blank-document workflow
+## Document Workflow
 
 ```java
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import net.zerocloud.pdf.DocumentSource;
 import net.zerocloud.pdf.DocumentWorkflow;
+import net.zerocloud.pdf.PublicationTarget;
+import net.zerocloud.pdf.SaveMode;
 import net.zerocloud.pdf.WorkflowOutcome;
 import net.zerocloud.pdf.WorkflowRequest;
 import net.zerocloud.pdf.command.AddBlankPage;
@@ -86,13 +92,24 @@ import net.zerocloud.pdf.query.PageCount;
 Path output = Paths.get("blank.pdf");
 DocumentWorkflow workflow = new DocumentWorkflow();
 
-workflow.execute(WorkflowRequest.create(output), session -> {
+WorkflowRequest create = WorkflowRequest.builder()
+        .target("primary-output", PublicationTarget.path(output))
+        .saveMode(SaveMode.REWRITE)
+        .build();
+
+workflow.execute(create, session -> {
     session.execute(AddBlankPage.INSTANCE);
     return null;
 });
 
+WorkflowRequest inspect = WorkflowRequest.builder()
+        .source("published", DocumentSource.path(output))
+        .primarySource("published")
+        .saveMode(SaveMode.REWRITE)
+        .build();
+
 WorkflowOutcome<Integer> inspected = workflow.execute(
-        WorkflowRequest.open(output),
+        inspect,
         session -> session.query(PageCount.INSTANCE));
 
 if (inspected.getResult().intValue() != 1) {
@@ -100,9 +117,32 @@ if (inspected.getResult().intValue() != 1) {
 }
 ```
 
-The Native Interface uses only `net.zerocloud.pdf` and JDK types. Operational
-failures are reported as checked `DocumentFailure` values with stable codes and
-safe diagnostics.
+The Native Interface uses only `net.zerocloud.pdf` and JDK types. Sources may
+be Paths, caller-owned streams, caller-owned channels, or bounded bytes.
+Targets may be Paths or caller-owned streams. Caller-owned resources are never
+closed.
+
+`REWRITE` is the supported publication mode. `INCREMENTAL` is represented
+but returns the stable `SAVE_MODE_UNSUPPORTED` failure until T15. Each
+successful or partially attempted publication reports Targets in declaration
+order as `COMMITTED`, `FAILED`, or `NOT_ATTEMPTED`; there is no
+cross-Target atomicity, and a failed stream may contain partial output.
+Operational failures use checked `DocumentFailure` values with stable codes,
+safe diagnostics, and available per-Target receipts.
+
+T03 does not yet detect or protect signed documents. Do not submit a signed
+document to a mutating `REWRITE` workflow; signed-document read-only policy,
+DocMDP decisions, and signature-safe incremental publication remain T15.
+
+Successful `WorkflowOutcome` values identify the capability, the in-process
+execution profile, the selected Save Mode, safe diagnostics, and every Target
+receipt. A deterministic deadline Clock is configured through
+`WorkflowEnvironment.withClock(clock)` and supplied when constructing a workflow;
+`DocumentWorkflow` does not accept a raw Clock.
+
+Callers moving from the T01 request factories should follow the
+[0.x T03 migration note](docs/migrations/0.x-t03-document-workflow.md): every
+factory call now receives an explicit `SaveMode`.
 
 ## Project information
 

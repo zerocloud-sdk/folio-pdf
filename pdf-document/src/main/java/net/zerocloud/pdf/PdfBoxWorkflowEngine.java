@@ -1,11 +1,20 @@
 package net.zerocloud.pdf;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.ByteBuffer;
+import java.nio.channels.ReadableByteChannel;
 import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.time.Clock;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
@@ -18,60 +27,141 @@ final class PdfBoxWorkflowEngine {
 
     static <R> WorkflowOutcome<R> execute(
             WorkflowRequest request,
-            DocumentWork<R> work) throws DocumentFailure {
-        if (request.getPublicationTarget().isPresent()) {
-            return createAndPublish(request.getPublicationTarget().get(), work);
+            DocumentWork<R> work,
+            Clock clock) throws DocumentFailure {
+        try {
+            return executeChecked(request, work, clock);
+        } catch (DocumentFailure executionFailure) {
+            if (!request.getPublicationTargets().isEmpty()
+                    && executionFailure.getPublicationReceipts().isEmpty()) {
+                throw failure(
+                        executionFailure.getCode(),
+                        executionFailure.getDiagnostic(),
+                        notAttempted(request.getPublicationTargets()));
+            }
+            throw executionFailure;
         }
-        if (request.getSource().isPresent()) {
-            return openAndInspect(request.getSource().get(), work);
+    }
+
+    private static <R> WorkflowOutcome<R> executeChecked(
+            WorkflowRequest request,
+            DocumentWork<R> work,
+            Clock clock) throws DocumentFailure {
+        if (request.getSaveMode() == SaveMode.INCREMENTAL) {
+            throw failure(
+                    DocumentFailureCode.SAVE_MODE_UNSUPPORTED,
+                    "INCREMENTAL publication is not supported until T15.");
         }
-        throw failure(
-                DocumentFailureCode.INVALID_REQUEST,
-                "The workflow request has no source or publication target.");
+        if (request.getSaveMode() != SaveMode.REWRITE) {
+            throw failure(
+                    DocumentFailureCode.INVALID_REQUEST,
+                    "The workflow request must select REWRITE.");
+        }
+        requireExecutionAllowed(request, clock);
+        emit(request, WorkflowProgressPhase.STARTED);
+        if (request.getSources().isEmpty()
+                && request.getPublicationTargets().isEmpty()) {
+            throw failure(
+                    DocumentFailureCode.INVALID_REQUEST,
+                    "The workflow request has no source or publication target.");
+        }
+        List<PublicationTargetAdapter> publicationTargets =
+                preflightTargets(request.getPublicationTargets());
+
+        PDDocument document;
+        if (request.getSources().isEmpty()) {
+            document = createDocument();
+        } else {
+            DocumentSource source = request.getSources().get(
+                    request.getPrimarySourceName());
+            if (source == null) {
+                throw failure(
+                        DocumentFailureCode.INVALID_REQUEST,
+                        "The workflow request must select a declared primary source.");
+            }
+            document = openDocument(source);
+        }
+
+        return executeWithDocument(
+                document,
+                request,
+                publicationTargets,
+                work,
+                clock);
     }
 
     static DocumentFailure failure(DocumentFailureCode code, String diagnostic) {
         return new DocumentFailure(code, CAPABILITY_ID, diagnostic);
     }
 
-    private static <R> WorkflowOutcome<R> createAndPublish(
-            Path requestedTarget,
-            DocumentWork<R> work) throws DocumentFailure {
-        Path target = requestedTarget.toAbsolutePath().normalize();
-        Path parent = target.getParent();
-        if (parent == null || !Files.isDirectory(parent)) {
-            throw failure(
-                    DocumentFailureCode.INVALID_REQUEST,
-                    "The publication target parent must be an existing directory.");
-        }
+    private static DocumentFailure failure(
+            DocumentFailureCode code,
+            String diagnostic,
+            List<PublicationReceipt> receipts) {
+        return new DocumentFailure(code, CAPABILITY_ID, diagnostic, receipts);
+    }
 
-        PDDocument document = createDocument();
+    private static <R> WorkflowOutcome<R> executeWithDocument(
+            PDDocument initialDocument,
+            WorkflowRequest request,
+            List<PublicationTargetAdapter> publicationTargets,
+            DocumentWork<R> work,
+            Clock clock) throws DocumentFailure {
+        PDDocument document = initialDocument;
         PdfBoxDocumentSession session = new PdfBoxDocumentSession(document);
         Path staged = null;
 
         try {
-            R result = work.perform(session);
+            requireExecutionAllowed(request, clock);
+            if (!request.getSources().isEmpty()) {
+                emit(request, WorkflowProgressPhase.SOURCE_OPENED);
+            }
+            emit(request, WorkflowProgressPhase.WORK_STARTED);
+            R result;
+            try {
+                result = work.perform(session);
+            } catch (DocumentFailure workFailure) {
+                throw failure(
+                        workFailure.getCode(),
+                        workFailure.getDiagnostic(),
+                        notAttempted(publicationTargets));
+            }
             session.invalidate();
+            emit(request, WorkflowProgressPhase.WORK_COMPLETED);
+            requireExecutionAllowed(request, clock);
+
+            if (publicationTargets.isEmpty()) {
+                closeForSuccess(document);
+                document = null;
+                emit(request, WorkflowProgressPhase.COMPLETED);
+                return outcome(
+                        result,
+                        request,
+                        Collections.<PublicationReceipt>emptyList());
+            }
 
             try {
-                staged = Files.createTempFile(parent, ".open-pdf-", ".pdf");
+                staged = Files.createTempFile(".open-pdf-", ".pdf");
                 document.save(staged.toFile());
             } catch (IOException | RuntimeException failure) {
                 throw failure(
                         DocumentFailureCode.DOCUMENT_WRITE_FAILED,
                         "The document could not be staged for publication.");
             }
+            emit(request, WorkflowProgressPhase.STAGED);
+            requireExecutionAllowed(request, clock);
 
             closeForSuccess(document);
             document = null;
             validate(staged);
-            publish(staged, target);
-            staged = null;
+            emit(request, WorkflowProgressPhase.VALIDATED);
+            requireExecutionAllowed(request, clock);
 
-            PublicationReceipt receipt = new PublicationReceipt(
-                    requestedTarget,
-                    PublicationStatus.COMMITTED);
-            return new WorkflowOutcome<R>(result, Collections.singletonList(receipt));
+            emit(request, WorkflowProgressPhase.PUBLICATION_STARTED);
+            List<PublicationReceipt> receipts =
+                    publishAll(staged, publicationTargets, request, clock);
+            emit(request, WorkflowProgressPhase.COMPLETED);
+            return outcome(result, request, receipts);
         } finally {
             session.invalidate();
             closeQuietly(document);
@@ -79,31 +169,263 @@ final class PdfBoxWorkflowEngine {
         }
     }
 
-    private static <R> WorkflowOutcome<R> openAndInspect(
-            Path requestedSource,
-            DocumentWork<R> work) throws DocumentFailure {
-        Path source = requestedSource.toAbsolutePath().normalize();
-        PDDocument document;
+    private static <R> WorkflowOutcome<R> outcome(
+            R result,
+            WorkflowRequest request,
+            List<PublicationReceipt> receipts) {
+        return new WorkflowOutcome<R>(
+                result,
+                CAPABILITY_ID,
+                WorkflowExecutionProfile.IN_PROCESS,
+                request.getSaveMode(),
+                Collections.<String>emptyList(),
+                receipts);
+    }
+
+    private static List<PublicationTargetAdapter> preflightTargets(
+            Map<String, PublicationTarget> publicationTargets)
+            throws DocumentFailure {
+        List<PublicationTargetAdapter> prepared =
+                new ArrayList<PublicationTargetAdapter>(
+                        publicationTargets.size());
+        for (Map.Entry<String, PublicationTarget> target
+                : publicationTargets.entrySet()) {
+            prepared.add(PublicationTargetAdapter.prepare(target));
+        }
+        return prepared;
+    }
+
+    private static void requireExecutionAllowed(
+            WorkflowRequest request,
+            Clock clock)
+            throws DocumentFailure {
+        if (request.getCancellationToken().isCancellationRequested()) {
+            throw failure(
+                    DocumentFailureCode.WORKFLOW_CANCELLED,
+                    "The workflow was cancelled.");
+        }
+        if (request.getDeadline() != null
+                && !clock.instant().isBefore(request.getDeadline())) {
+            throw failure(
+                    DocumentFailureCode.DEADLINE_EXCEEDED,
+                    "The workflow deadline has expired.");
+        }
+    }
+
+    private static void emit(
+            WorkflowRequest request,
+            WorkflowProgressPhase phase) {
+        request.getProgressListener().onProgress(phase);
+    }
+
+    private static List<PublicationReceipt> publishAll(
+            Path staged,
+            List<PublicationTargetAdapter> targets,
+            WorkflowRequest request,
+            Clock clock)
+            throws DocumentFailure {
+        List<PublicationReceipt> receipts =
+                new ArrayList<PublicationReceipt>(targets.size());
+        for (int index = 0; index < targets.size(); index++) {
+            PublicationTargetAdapter target = targets.get(index);
+            try {
+                requireExecutionAllowed(request, clock);
+                target.publish(staged);
+            } catch (DocumentFailure publicationFailure) {
+                boolean executionStop = isExecutionStop(publicationFailure);
+                receipts.add(target.receipt(
+                        executionStop
+                                ? PublicationStatus.NOT_ATTEMPTED
+                                : PublicationStatus.FAILED,
+                        !executionStop && target.isStream()));
+                for (int later = index + 1; later < targets.size(); later++) {
+                    receipts.add(targets.get(later).receipt(
+                            PublicationStatus.NOT_ATTEMPTED,
+                            false));
+                }
+                throw failure(
+                        publicationFailure.getCode(),
+                        publicationFailure.getDiagnostic(),
+                        receipts);
+            }
+            receipts.add(target.receipt(
+                    PublicationStatus.COMMITTED,
+                    false));
+            emit(request, WorkflowProgressPhase.TARGET_COMMITTED);
+        }
+        return receipts;
+    }
+
+    private static boolean isExecutionStop(DocumentFailure failure) {
+        return failure.getCode() == DocumentFailureCode.WORKFLOW_CANCELLED
+                || failure.getCode() == DocumentFailureCode.DEADLINE_EXCEEDED;
+    }
+
+    private static List<PublicationReceipt> notAttempted(
+            List<PublicationTargetAdapter> publicationTargets) {
+        List<PublicationReceipt> receipts =
+                new ArrayList<PublicationReceipt>(publicationTargets.size());
+        for (PublicationTargetAdapter target : publicationTargets) {
+            receipts.add(target.receipt(
+                    PublicationStatus.NOT_ATTEMPTED,
+                    false));
+        }
+        return receipts;
+    }
+
+    private static List<PublicationReceipt> notAttempted(
+            Map<String, PublicationTarget> publicationTargets) {
+        List<PublicationReceipt> receipts =
+                new ArrayList<PublicationReceipt>(publicationTargets.size());
+        for (Map.Entry<String, PublicationTarget> entry
+                : publicationTargets.entrySet()) {
+            receipts.add(new PublicationReceipt(
+                    entry.getKey(),
+                    entry.getValue().getPath(),
+                    PublicationStatus.NOT_ATTEMPTED));
+        }
+        return receipts;
+    }
+
+    private static Path normalizedPathTarget(Path requestedTarget)
+            throws DocumentFailure {
+        Path target = requestedTarget.toAbsolutePath().normalize();
+        Path parent = target.getParent();
+        if (parent == null || !Files.isDirectory(parent)) {
+            throw failure(
+                    DocumentFailureCode.INVALID_REQUEST,
+                    "The publication target parent must be an existing directory.");
+        }
+        return target;
+    }
+
+    private static PDDocument openDocument(DocumentSource source)
+            throws DocumentFailure {
+        switch (source.getKind()) {
+            case PATH:
+                return loadPathDocument(source.getPath());
+            case STREAM:
+                return loadByteDocument(readCallerStream(
+                        source.getStream(),
+                        source.getMaximumBytes()));
+            case CHANNEL:
+                return loadByteDocument(readCallerChannel(
+                        source.getChannel(),
+                        source.getMaximumBytes()));
+            case BYTES:
+                return loadByteDocument(requireBoundedBytes(
+                        source.getBytes(),
+                        source.getMaximumBytes()));
+            default:
+                throw new IllegalStateException("Unsupported source kind.");
+        }
+    }
+
+    private static byte[] readCallerStream(
+            InputStream stream,
+            long maximumBytes) throws DocumentFailure {
         try {
-            document = Loader.loadPDF(source.toFile());
-        } catch (IOException | RuntimeException failure) {
+            return readBounded(stream, maximumBytes);
+        } catch (SourceLimitExceeded sourceLimit) {
+            throw failure(
+                    DocumentFailureCode.SOURCE_LIMIT_EXCEEDED,
+                    "The source exceeds its declared byte limit.");
+        } catch (IOException ioFailure) {
             throw failure(
                     DocumentFailureCode.SOURCE_READ_FAILED,
                     "The source could not be opened as a PDF document.");
         }
+    }
 
-        PdfBoxDocumentSession session = new PdfBoxDocumentSession(document);
+    private static byte[] readCallerChannel(
+            ReadableByteChannel channel,
+            long maximumBytes) throws DocumentFailure {
         try {
-            R result = work.perform(session);
-            session.invalidate();
-            closeForSuccess(document);
-            document = null;
-            return new WorkflowOutcome<R>(
-                    result,
-                    Collections.<PublicationReceipt>emptyList());
-        } finally {
-            session.invalidate();
-            closeQuietly(document);
+            return readBounded(channel, maximumBytes);
+        } catch (SourceLimitExceeded sourceLimit) {
+            throw failure(
+                    DocumentFailureCode.SOURCE_LIMIT_EXCEEDED,
+                    "The source exceeds its declared byte limit.");
+        } catch (IOException ioFailure) {
+            throw failure(
+                    DocumentFailureCode.SOURCE_READ_FAILED,
+                    "The source could not be opened as a PDF document.");
+        }
+    }
+
+    private static byte[] requireBoundedBytes(
+            byte[] bytes,
+            long maximumBytes) throws DocumentFailure {
+        try {
+            requireWithinLimit(bytes.length, maximumBytes);
+            return bytes;
+        } catch (SourceLimitExceeded sourceLimit) {
+            throw failure(
+                    DocumentFailureCode.SOURCE_LIMIT_EXCEEDED,
+                    "The source exceeds its declared byte limit.");
+        }
+    }
+
+    private static PDDocument loadPathDocument(Path source)
+            throws DocumentFailure {
+        try {
+            Path path = source.toAbsolutePath().normalize();
+            return Loader.loadPDF(path.toFile());
+        } catch (IOException | RuntimeException backendFailure) {
+            throw failure(
+                    DocumentFailureCode.SOURCE_READ_FAILED,
+                    "The source could not be opened as a PDF document.");
+        }
+    }
+
+    private static PDDocument loadByteDocument(byte[] bytes)
+            throws DocumentFailure {
+        try {
+            return Loader.loadPDF(bytes);
+        } catch (IOException | RuntimeException backendFailure) {
+            throw failure(
+                    DocumentFailureCode.SOURCE_READ_FAILED,
+                    "The source could not be opened as a PDF document.");
+        }
+    }
+
+    private static byte[] readBounded(InputStream stream, long maximumBytes)
+            throws IOException {
+        BoundedByteAccumulator bytes =
+                new BoundedByteAccumulator(maximumBytes);
+        byte[] buffer = new byte[8192];
+        int read;
+        while ((read = stream.read(buffer)) != -1) {
+            bytes.append(buffer, read);
+        }
+        return bytes.toByteArray();
+    }
+
+    private static byte[] readBounded(
+            ReadableByteChannel channel,
+            long maximumBytes) throws IOException {
+        BoundedByteAccumulator bytes =
+                new BoundedByteAccumulator(maximumBytes);
+        ByteBuffer buffer = ByteBuffer.allocate(8192);
+        while (channel.read(buffer) != -1) {
+            bytes.append(buffer.array(), buffer.position());
+            buffer.clear();
+        }
+        return bytes.toByteArray();
+    }
+
+    private static long checkedTotal(long total, int read, long maximumBytes)
+            throws SourceLimitExceeded {
+        if (maximumBytes < 0L || total > maximumBytes - read) {
+            throw new SourceLimitExceeded();
+        }
+        return total + read;
+    }
+
+    private static void requireWithinLimit(long size, long maximumBytes)
+            throws SourceLimitExceeded {
+        if (maximumBytes < 0L || size > maximumBytes) {
+            throw new SourceLimitExceeded();
         }
     }
 
@@ -123,6 +445,11 @@ final class PdfBoxWorkflowEngine {
         PDDocument validationDocument = null;
         try {
             validationDocument = Loader.loadPDF(staged.toFile());
+            if (validationDocument.getNumberOfPages() == 0) {
+                throw failure(
+                        DocumentFailureCode.DOCUMENT_VALIDATION_FAILED,
+                        "The staged document must contain at least one page.");
+            }
             validationDocument.close();
             validationDocument = null;
         } catch (IOException | RuntimeException failure) {
@@ -134,25 +461,57 @@ final class PdfBoxWorkflowEngine {
         }
     }
 
-    private static void publish(Path staged, Path target) throws DocumentFailure {
+    private static void publishPath(Path staged, Path target)
+            throws DocumentFailure {
+        Path targetStage = null;
         try {
+            targetStage = Files.createTempFile(
+                    target.getParent(),
+                    ".open-pdf-",
+                    ".pdf");
+            Files.copy(staged, targetStage, StandardCopyOption.REPLACE_EXISTING);
             try {
                 Files.move(
-                        staged,
+                        targetStage,
                         target,
                         StandardCopyOption.ATOMIC_MOVE,
                         StandardCopyOption.REPLACE_EXISTING);
             } catch (AtomicMoveNotSupportedException unsupported) {
-                Files.move(staged, target, StandardCopyOption.REPLACE_EXISTING);
+                Files.move(
+                        targetStage,
+                        target,
+                        StandardCopyOption.REPLACE_EXISTING);
             }
+            targetStage = null;
         } catch (IOException | RuntimeException failure) {
             throw failure(
                     DocumentFailureCode.PUBLICATION_FAILED,
                     "The validated document could not be committed to its target.");
+        } finally {
+            deleteQuietly(targetStage);
         }
     }
 
-    private static void closeForSuccess(PDDocument document) throws DocumentFailure {
+    private static void publishStream(Path staged, OutputStream output)
+            throws DocumentFailure {
+        try (InputStream input = Files.newInputStream(staged)) {
+            byte[] buffer = new byte[8192];
+            int read;
+            while ((read = input.read(buffer)) != -1) {
+                if (read > 0) {
+                    output.write(buffer, 0, read);
+                }
+            }
+            output.flush();
+        } catch (IOException failure) {
+            throw failure(
+                    DocumentFailureCode.PUBLICATION_FAILED,
+                    "The validated document could not be written to its stream target.");
+        }
+    }
+
+    private static void closeForSuccess(PDDocument document)
+            throws DocumentFailure {
         try {
             document.close();
         } catch (IOException | RuntimeException failure) {
@@ -191,6 +550,99 @@ final class PdfBoxWorkflowEngine {
             Files.deleteIfExists(staged);
         } catch (IOException | RuntimeException ignored) {
             // Best-effort cleanup must not replace the safe primary diagnostic.
+        }
+    }
+
+    private static final class PublicationTargetAdapter {
+
+        private final String targetName;
+        private final Path pathTarget;
+        private final Path normalizedPathTarget;
+        private final OutputStream streamTarget;
+
+        private PublicationTargetAdapter(
+                String targetName,
+                Path pathTarget,
+                Path normalizedPathTarget,
+                OutputStream streamTarget) {
+            this.targetName = targetName;
+            this.pathTarget = pathTarget;
+            this.normalizedPathTarget = normalizedPathTarget;
+            this.streamTarget = streamTarget;
+        }
+
+        private static PublicationTargetAdapter prepare(
+                Map.Entry<String, PublicationTarget> entry)
+                throws DocumentFailure {
+            PublicationTarget target = entry.getValue();
+            switch (target.getKind()) {
+                case PATH:
+                    return new PublicationTargetAdapter(
+                            entry.getKey(),
+                            target.getPath(),
+                            normalizedPathTarget(target.getPath()),
+                            null);
+                case STREAM:
+                    return new PublicationTargetAdapter(
+                            entry.getKey(),
+                            null,
+                            null,
+                            target.getStream());
+                default:
+                    throw new IllegalStateException(
+                            "Unsupported publication target kind.");
+            }
+        }
+
+        private void publish(Path staged) throws DocumentFailure {
+            if (isStream()) {
+                publishStream(staged, streamTarget);
+            } else {
+                publishPath(staged, normalizedPathTarget);
+            }
+        }
+
+        private PublicationReceipt receipt(
+                PublicationStatus status,
+                boolean partialOutputPossible) {
+            return new PublicationReceipt(
+                    targetName,
+                    pathTarget,
+                    status,
+                    partialOutputPossible);
+        }
+
+        private boolean isStream() {
+            return streamTarget != null;
+        }
+    }
+
+    private static final class SourceLimitExceeded extends IOException {
+
+        private static final long serialVersionUID = 1L;
+    }
+
+    private static final class BoundedByteAccumulator {
+
+        private final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        private final long maximumBytes;
+        private long total;
+
+        private BoundedByteAccumulator(long maximumBytes) {
+            this.maximumBytes = maximumBytes;
+        }
+
+        private void append(byte[] buffer, int length)
+                throws SourceLimitExceeded {
+            if (length <= 0) {
+                return;
+            }
+            total = checkedTotal(total, length, maximumBytes);
+            bytes.write(buffer, 0, length);
+        }
+
+        private byte[] toByteArray() {
+            return bytes.toByteArray();
         }
     }
 }

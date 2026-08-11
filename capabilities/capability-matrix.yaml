@@ -5,43 +5,58 @@ authority: behavioral-capability
 capabilities:
   - id: document.blank.create-publish-reopen
     context: document-engine
-    summary: Create, publish, reopen, and count the page of a blank PDF.
+    summary: Execute a named-source document transaction and publish validated rewrites to named targets.
     reference-suite:
       source: iText Core 7.2.6 document lifecycle
       role: capability inventory only; not an implementation oracle
     native-interface:
       entry-point: net.zerocloud.pdf.DocumentWorkflow#execute
+      environment: net.zerocloud.pdf.WorkflowEnvironment
       request: net.zerocloud.pdf.WorkflowRequest
+      source: net.zerocloud.pdf.DocumentSource
       command: net.zerocloud.pdf.command.AddBlankPage
       query: net.zerocloud.pdf.query.PageCount
+      save-mode: net.zerocloud.pdf.SaveMode
+      cancellation: net.zerocloud.pdf.CancellationToken
+      progress: net.zerocloud.pdf.WorkflowProgressListener
       outcome: net.zerocloud.pdf.WorkflowOutcome
+      execution-profile: net.zerocloud.pdf.WorkflowExecutionProfile
+      receipt: net.zerocloud.pdf.PublicationReceipt
+      failure: net.zerocloud.pdf.DocumentFailure
     migration-facade:
       stable: []
       preview: []
     limitations:
-      - One path source or one path publication target per workflow request.
-      - New documents use a staged rewrite; incremental publication is not in T01.
-      - Named sources, multiple targets, deadlines, cancellation, and resource policy are deferred.
+      - INCREMENTAL is represented but fails with SAVE_MODE_UNSUPPORTED until T15 implements revision-preserving publication.
+      - T03 does not detect or protect signed documents; signed-document read-only enforcement, DocMDP decisions, and signature-safe publication remain T15.
+      - T03 opens only the explicitly selected primary source; commands that consume additional named sources remain downstream.
+      - Cancellation and deadlines are checked at T03 transaction boundaries; comprehensive hostile-input limits and worker enforcement remain T20 and T21.
     dependency-gates: []
     promotion-gates:
       - ticket: T06
         requirement: Complete the independent acceptance evidence required before compatibility.
     acceptance-profile:
-      id: T01-blank-document-workflow
+      id: T03-document-workflow-transaction
       state: experimental
       mandatory-evidence:
         - syntax
         - standards
         - semantic
         - visual
-      evidence-record: capabilities/evidence/T01-blank-document-workflow.md
+      evidence-record: capabilities/evidence/T03-document-workflow-transaction.md
     evidence:
       - kind: consumer-contract
         path: pdf-document/src/test/java/net/zerocloud/pdf/consumer/BlankDocumentWorkflowTest.java
         assertion: A public Java 8 consumer creates, publishes, reopens, and observes one page.
       - kind: lifecycle-contract
         path: pdf-document/src/test/java/net/zerocloud/pdf/consumer/WorkflowLifecycleTest.java
-        assertion: Ordering, callback abort, session expiry, and command ownership are observable.
+        assertion: Ordering, callback abort, thread confinement, session expiry, and command ownership are observable.
+      - kind: transaction-contract
+        path: pdf-document/src/test/java/net/zerocloud/pdf/consumer/WorkflowTransactionContractTest.java
+        assertion: Named source forms, immutable execution configuration and outcomes, explicit Save Mode, multi-target receipts, validation, cancellation, deadlines, and sanitized progress are observable.
+      - kind: resource-ownership-contract
+        path: pdf-document/src/test/java/net/zerocloud/pdf/consumer/WorkflowResourceOwnershipTest.java
+        assertion: Module-opened Path descriptors and caller-owned input, channel, and output resources are checked across the T03 success and failure categories.
       - kind: public-api-contract
         path: pdf-document/src/test/java/net/zerocloud/pdf/contract/PublicApiLeakageIT.java
         assertion: Public and protected signatures contain no PDFBox types.
@@ -54,6 +69,6 @@ capabilities:
     acceptance-evidence: []
     provenance:
       path: PROVENANCE.md
-      record: T01 bootstrap record
+      record: T03 transaction-contract record
     certified-platforms: []
     status: experimental

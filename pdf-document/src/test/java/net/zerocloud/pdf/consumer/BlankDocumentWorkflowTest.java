@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import net.zerocloud.pdf.DocumentWorkflow;
 import net.zerocloud.pdf.PublicationStatus;
+import net.zerocloud.pdf.SaveMode;
 import net.zerocloud.pdf.WorkflowOutcome;
 import net.zerocloud.pdf.WorkflowRequest;
 import net.zerocloud.pdf.command.AddBlankPage;
@@ -28,7 +29,7 @@ public final class BlankDocumentWorkflowTest {
         DocumentWorkflow workflow = new DocumentWorkflow();
 
         WorkflowOutcome<Void> creation = workflow.execute(
-                WorkflowRequest.create(target),
+                WorkflowRequest.create(target, SaveMode.REWRITE),
                 session -> {
                     session.execute(AddBlankPage.INSTANCE);
                     return null;
@@ -43,7 +44,7 @@ public final class BlankDocumentWorkflowTest {
         assertTrue(Files.size(target) > 0L);
 
         WorkflowOutcome<Integer> inspection = workflow.execute(
-                WorkflowRequest.open(target),
+                WorkflowRequest.open(target, SaveMode.REWRITE),
                 session -> session.query(PageCount.INSTANCE));
 
         assertEquals(Integer.valueOf(1), inspection.getResult());

@@ -1,7 +1,7 @@
 package net.zerocloud.pdf;
 
 /**
- * Stable operational failure categories for the T01 Document Workflow.
+ * Stable operational failure categories for the Document Workflow.
  *
  * @since 0.1.0
  */
@@ -11,6 +11,18 @@ public enum DocumentFailureCode {
 
     /** The source could not be opened as a PDF document. */
     SOURCE_READ_FAILED,
+
+    /** A bounded source exceeded its caller-declared byte limit. */
+    SOURCE_LIMIT_EXCEEDED,
+
+    /** The selected Save Mode is represented but not implemented. */
+    SAVE_MODE_UNSUPPORTED,
+
+    /** Cancellation was observed at an owned transaction boundary. */
+    WORKFLOW_CANCELLED,
+
+    /** The caller-declared workflow deadline has expired. */
+    DEADLINE_EXCEEDED,
 
     /** A command is not part of the supported library-owned command set. */
     COMMAND_REJECTED,

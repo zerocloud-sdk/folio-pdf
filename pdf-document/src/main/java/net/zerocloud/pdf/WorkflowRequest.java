@@ -1,66 +1,291 @@
 package net.zerocloud.pdf;
 
 import java.nio.file.Path;
+import java.time.Instant;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
 /**
- * An immutable request for the minimal T01 path-based workflow.
+ * An immutable request for one Document Workflow transaction.
  *
- * <p>A create request starts a new document and publishes one staged rewrite
- * to one path. An open request reads one path without publishing. Multi-source,
- * multi-target, incremental, deadline, cancellation, and resource-policy
- * options are intentionally outside T01.</p>
+ * <p>Sources and publication targets retain declaration order. Names are
+ * unique within their respective collections. A request with sources
+ * explicitly names the primary source operated on by the supplied Document
+ * Session. Every request explicitly selects a Save Mode and may also supply
+ * cancellation, an absolute deadline, and a sanitized progress listener.</p>
  *
  * @since 0.1.0
  */
 public final class WorkflowRequest {
 
-    private final Path source;
-    private final Path publicationTarget;
+    private static final String DEFAULT_SOURCE_NAME = "source";
+    private static final String DEFAULT_TARGET_NAME = "target";
+    private static final WorkflowProgressListener NO_PROGRESS =
+            new WorkflowProgressListener() {
+                @Override
+                public void onProgress(WorkflowProgressPhase phase) {
+                    // Default requests do not observe progress.
+                }
+            };
 
-    private WorkflowRequest(Path source, Path publicationTarget) {
-        this.source = source;
-        this.publicationTarget = publicationTarget;
+    private final Map<String, DocumentSource> sources;
+    private final String primarySourceName;
+    private final Map<String, PublicationTarget> publicationTargets;
+    private final SaveMode saveMode;
+    private final CancellationToken cancellationToken;
+    private final Instant deadline;
+    private final WorkflowProgressListener progressListener;
+
+    private WorkflowRequest(Builder builder) {
+        this.sources = Collections.unmodifiableMap(
+                new LinkedHashMap<String, DocumentSource>(builder.sources));
+        this.primarySourceName = builder.primarySourceName;
+        this.publicationTargets = Collections.unmodifiableMap(
+                new LinkedHashMap<String, PublicationTarget>(builder.publicationTargets));
+        this.saveMode = builder.saveMode;
+        this.cancellationToken = builder.cancellationToken;
+        this.deadline = builder.deadline;
+        this.progressListener = builder.progressListener;
     }
 
     /**
-     * Creates a request for a new document and one path publication target.
+     * Begins an explicitly configured workflow request.
+     *
+     * @return a new request builder
+     */
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    /**
+     * Creates a convenience request for a new document and one Path target.
      *
      * @param publicationTarget the path to replace after staging and validation
+     * @param saveMode the caller-selected publication strategy
      * @return an immutable create request
      */
-    public static WorkflowRequest create(Path publicationTarget) {
-        return new WorkflowRequest(
-                null,
-                Objects.requireNonNull(publicationTarget, "publicationTarget"));
+    public static WorkflowRequest create(
+            Path publicationTarget,
+            SaveMode saveMode) {
+        return builder()
+                .target(
+                        DEFAULT_TARGET_NAME,
+                        PublicationTarget.path(
+                                Objects.requireNonNull(
+                                        publicationTarget,
+                                        "publicationTarget")))
+                .saveMode(Objects.requireNonNull(saveMode, "saveMode"))
+                .build();
     }
 
     /**
-     * Creates a read-only request for an existing path source.
+     * Creates a convenience request for one read-only Path source.
      *
      * @param source the PDF path to open
+     * @param saveMode the caller-selected publication strategy
      * @return an immutable open request
      */
-    public static WorkflowRequest open(Path source) {
-        return new WorkflowRequest(Objects.requireNonNull(source, "source"), null);
+    public static WorkflowRequest open(Path source, SaveMode saveMode) {
+        return builder()
+                .source(
+                        DEFAULT_SOURCE_NAME,
+                        DocumentSource.path(Objects.requireNonNull(source, "source")))
+                .primarySource(DEFAULT_SOURCE_NAME)
+                .saveMode(Objects.requireNonNull(saveMode, "saveMode"))
+                .build();
     }
 
     /**
-     * Returns the source when this is an open request.
+     * Returns the path source used by the compatibility request shape.
      *
-     * @return the optional source path
+     * @return the optional primary path source
      */
     public Optional<Path> getSource() {
-        return Optional.ofNullable(source);
+        DocumentSource primary = sources.get(primarySourceName);
+        if (primary == null || primary.getKind() != DocumentSource.Kind.PATH) {
+            return Optional.empty();
+        }
+        return Optional.of(primary.getPath());
     }
 
     /**
-     * Returns the target when this is a create request.
+     * Returns the first path target used by the compatibility request shape.
      *
-     * @return the optional publication target
+     * @return the optional first path target
      */
     public Optional<Path> getPublicationTarget() {
-        return Optional.ofNullable(publicationTarget);
+        for (PublicationTarget target : publicationTargets.values()) {
+            if (target.getKind() == PublicationTarget.Kind.PATH) {
+                return Optional.of(target.getPath());
+            }
+        }
+        return Optional.empty();
+    }
+
+    Map<String, DocumentSource> getSources() {
+        return sources;
+    }
+
+    String getPrimarySourceName() {
+        return primarySourceName;
+    }
+
+    Map<String, PublicationTarget> getPublicationTargets() {
+        return publicationTargets;
+    }
+
+    SaveMode getSaveMode() {
+        return saveMode;
+    }
+
+    CancellationToken getCancellationToken() {
+        return cancellationToken;
+    }
+
+    Instant getDeadline() {
+        return deadline;
+    }
+
+    WorkflowProgressListener getProgressListener() {
+        return progressListener;
+    }
+
+    /**
+     * Builds an immutable workflow request.
+     *
+     * @since 0.1.0
+     */
+    public static final class Builder {
+
+        private final Map<String, DocumentSource> sources =
+                new LinkedHashMap<String, DocumentSource>();
+        private final Map<String, PublicationTarget> publicationTargets =
+                new LinkedHashMap<String, PublicationTarget>();
+        private String primarySourceName;
+        private SaveMode saveMode;
+        private CancellationToken cancellationToken = CancellationToken.none();
+        private Instant deadline;
+        private WorkflowProgressListener progressListener = NO_PROGRESS;
+
+        private Builder() {
+        }
+
+        /**
+         * Declares one named source.
+         *
+         * @param name the request-local source name
+         * @param source the source descriptor
+         * @return this builder
+         */
+        public Builder source(String name, DocumentSource source) {
+            String requiredName = Objects.requireNonNull(name, "name");
+            if (sources.containsKey(requiredName)) {
+                throw new IllegalArgumentException(
+                        "Duplicate source name: " + requiredName);
+            }
+            sources.put(requiredName, Objects.requireNonNull(source, "source"));
+            return this;
+        }
+
+        /**
+         * Selects the source operated on by the Document Session.
+         *
+         * @param name a declared source name
+         * @return this builder
+         */
+        public Builder primarySource(String name) {
+            this.primarySourceName = Objects.requireNonNull(name, "name");
+            return this;
+        }
+
+        /**
+         * Declares one named publication target.
+         *
+         * @param name the request-local target name
+         * @param target the target descriptor
+         * @return this builder
+         */
+        public Builder target(String name, PublicationTarget target) {
+            String requiredName = Objects.requireNonNull(name, "name");
+            if (publicationTargets.containsKey(requiredName)) {
+                throw new IllegalArgumentException(
+                        "Duplicate target name: " + requiredName);
+            }
+            publicationTargets.put(
+                    requiredName,
+                    Objects.requireNonNull(target, "target"));
+            return this;
+        }
+
+        /**
+         * Selects the publication strategy.
+         *
+         * @param saveMode the explicit save mode
+         * @return this builder
+         */
+        public Builder saveMode(SaveMode saveMode) {
+            this.saveMode = Objects.requireNonNull(saveMode, "saveMode");
+            return this;
+        }
+
+        /**
+         * Supplies the explicit cancellation signal for this request.
+         *
+         * @param cancellationToken the cancellation token
+         * @return this builder
+         */
+        public Builder cancellationToken(CancellationToken cancellationToken) {
+            this.cancellationToken = Objects.requireNonNull(
+                    cancellationToken,
+                    "cancellationToken");
+            return this;
+        }
+
+        /**
+         * Sets the absolute deadline checked against the workflow's Clock.
+         *
+         * @param deadline the deadline instant
+         * @return this builder
+         */
+        public Builder deadline(Instant deadline) {
+            this.deadline = Objects.requireNonNull(deadline, "deadline");
+            return this;
+        }
+
+        /**
+         * Supplies the synchronous sanitized progress listener.
+         *
+         * @param progressListener the listener
+         * @return this builder
+         */
+        public Builder progressListener(
+                WorkflowProgressListener progressListener) {
+            this.progressListener = Objects.requireNonNull(
+                    progressListener,
+                    "progressListener");
+            return this;
+        }
+
+        /**
+         * Builds the immutable request.
+         *
+         * @return the request
+         */
+        public WorkflowRequest build() {
+            if (!sources.isEmpty()
+                    && (primarySourceName == null
+                            || !sources.containsKey(primarySourceName))) {
+                throw new IllegalStateException(
+                        "A request with sources must select a declared primary source.");
+            }
+            if (saveMode == null) {
+                throw new IllegalStateException(
+                        "A workflow request must select a Save Mode.");
+            }
+            return new WorkflowRequest(this);
+        }
     }
 }
