@@ -25,7 +25,19 @@ capabilities:
       failure: net.zerocloud.pdf.DocumentFailure
     migration-facade:
       stable: []
-      preview: []
+      preview:
+        - itext7.kernel.pdf-writer.constructor-string
+        - itext7.kernel.pdf-reader.constructor-string
+        - itext7.kernel.pdf-reader.close
+        - itext7.kernel.pdf-document.constructor-writer
+        - itext7.kernel.pdf-document.constructor-reader
+        - itext7.kernel.pdf-document.add-new-page
+        - itext7.kernel.pdf-document.get-number-of-pages
+        - itext7.kernel.pdf-document.close
+        - itext7.kernel.pdf-page.type
+        - itext7.kernel.pdf-exception.constructor-message-cause
+        - itext7.layout.document.constructor-pdf-document
+        - itext7.layout.document.close
     limitations:
       - INCREMENTAL is represented but fails with SAVE_MODE_UNSUPPORTED until T15 implements revision-preserving publication.
       - T03 does not detect or protect signed documents; signed-document read-only enforcement, DocMDP decisions, and signature-safe publication remain T15.
@@ -66,6 +78,18 @@ capabilities:
       - kind: cross-jdk-contract
         path: scripts/verify-jdk-matrix.sh
         assertion: Maven verification runs on JDK 8, 11, 17, and 21.
+      - kind: migration-facade-consumer-contract
+        path: pdf-migration-itext7-preview/src/test/java/net/zerocloud/pdf/itext7/consumer/PreviewBlankDocumentFacadeTest.java
+        assertion: A public preview-facade consumer creates, publishes, reopens, observes one page, receives stable failure codes, and retains Native failure receipts.
+      - kind: migration-facade-artifact-contract
+        path: pdf-migration-itext7-preview/src/test/java/net/zerocloud/pdf/migration/itext7/contract/JarContractIT.java
+        assertion: The stable artifact is a resource-only compatible surface, while the preview Java 8 artifact has the exact mapped surface and is a strict superset of stable mappings.
+      - kind: facade-classpath-exclusivity-contract
+        path: pdf-migration-itext7-preview/src/test/java/net/zerocloud/pdf/migration/itext7/contract/ClasspathExclusivityIT.java
+        assertion: Every mapped public class rejects stable-plus-preview classpaths observably in both jar orders.
+      - kind: migration-facade-evidence-record
+        path: capabilities/evidence/T04-migration-facades.md
+        assertion: T04 scope, behavior, artifact, exclusivity, and evidence boundaries are recorded.
       - kind: acceptance-pipeline-contract
         path: pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/AcceptanceEvidenceCommandTest.java
         assertion: Repository-only public-seam checks cover pinned-tool success, failure, warning, mismatch, unavailability, provisioning, and evidence recording.

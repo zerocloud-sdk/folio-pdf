@@ -28,22 +28,46 @@ public final class InventoryCommandTest {
     public final TemporaryFolder temporaryFolder = new TemporaryFolder();
 
     @Test
-    public void checkedInAuthoritiesPreserveTheT01TracerContract() throws Exception {
+    public void checkedInAuthoritiesRecordT04FacadeContract() throws Exception {
         Path repositoryRoot = Paths.get(requiredProperty("repositoryRoot"));
 
         CommandResult result = runCommand("check", repositoryRoot);
 
         assertEquals(result.output, 0, result.exitCode);
-        assertTrue(result.output, result.output.contains(
-                "Inventory validation passed: 1 capabilities, 0 facade surfaces, 1 exclusions."));
+        assertTrue(result.output, result.output.matches(
+                "(?s).*Inventory validation passed: [0-9]+ capabilities, "
+                        + "12 facade surfaces, [0-9]+ exclusions\\..*"));
+
+        ValidationResult validation = new InventoryValidator().validate(
+                repositoryRoot,
+                repositoryRoot.resolve("capabilities/capability-matrix.yaml"),
+                repositoryRoot.resolve("capabilities/facade-surface.yaml"));
+        assertTrue(validation.errors().toString(), validation.isValid());
+        InventoryModel.Capability mappedCapability = null;
+        for (InventoryModel.Capability capability : validation.model().capabilities) {
+            if ("document.blank.create-publish-reopen".equals(capability.id)) {
+                mappedCapability = capability;
+            }
+        }
+        assertNotNull(mappedCapability);
+        assertEquals(0, mappedCapability.stableFacadeIds.size());
+        assertEquals(12, mappedCapability.previewFacadeIds.size());
+        for (InventoryModel.Exclusion exclusion : validation.model().exclusions) {
+            assertFalse("T04 capability remains explicitly excluded",
+                    mappedCapability.id.equals(exclusion.capability));
+        }
+
         String capabilities = read(repositoryRoot.resolve(MarkdownGenerator.CAPABILITY_OUTPUT));
         String facades = read(repositoryRoot.resolve(MarkdownGenerator.FACADE_OUTPUT));
         assertTrue(capabilities.contains("- Status: `experimental`"));
         assertTrue(capabilities.contains("- Certified platforms: none"));
         assertTrue(capabilities.contains("- Promotion gate `T06`:"));
-        assertTrue(capabilities.contains("- Explicit exclusion: [`T04`]("));
+        assertTrue(capabilities.contains(
+                "`document.blank.create-publish-reopen`"));
         assertTrue(facades.contains("- Stable entries: `0`"));
-        assertTrue(facades.contains("- Preview entries: `0`"));
+        assertTrue(facades.contains("- Preview entries: `12`"));
+        assertTrue(facades.contains("- Explicit capability exclusions: `1`"));
+        assertTrue(facades.contains("`itext7.kernel.pdf-document.add-new-page`"));
     }
 
     @Test
@@ -159,15 +183,17 @@ public final class InventoryCommandTest {
     }
 
     @Test
-    public void buildToolDoesNotAddAMigrationProductArtifact() throws Exception {
+    public void releaseTrainIncludesT04ProductsButNotTheBuildTool() throws Exception {
         Path repositoryRoot = Paths.get(requiredProperty("repositoryRoot"));
         String parentPom = read(repositoryRoot.resolve("pom.xml"));
         String bomPom = read(repositoryRoot.resolve("pdf-bom/pom.xml"));
 
         assertTrue(parentPom.contains("<module>build-tools/inventory</module>"));
-        assertFalse(parentPom.contains("<module>pdf-migration"));
+        assertTrue(parentPom.contains("<module>pdf-migration-itext7</module>"));
+        assertTrue(parentPom.contains("<module>pdf-migration-itext7-preview</module>"));
         assertFalse(bomPom.contains("<artifactId>pdf-inventory-tool</artifactId>"));
-        assertFalse(bomPom.contains("<artifactId>pdf-migration"));
+        assertTrue(bomPom.contains("<artifactId>pdf-migration-itext7</artifactId>"));
+        assertTrue(bomPom.contains("<artifactId>pdf-migration-itext7-preview</artifactId>"));
     }
 
     private Path materialize(String name, String invalidCase)

@@ -4,12 +4,141 @@ authority: migration-source-surface
 
 surfaces:
   stable: []
-  preview: []
+  preview:
+    - id: itext7.kernel.pdf-writer.constructor-string
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfWriter
+        member: <init>(java.lang.String)
+      open-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter
+        member: <init>(java.lang.String)
+      generic-contract: No generic parameters.
+      exception-contract: Declares java.io.FileNotFoundException for a target that cannot name a file in an existing directory.
+      capabilities:
+        - document.blank.create-publish-reopen
+    - id: itext7.kernel.pdf-reader.constructor-string
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfReader
+        member: <init>(java.lang.String)
+      open-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfReader
+        member: <init>(java.lang.String)
+      generic-contract: No generic parameters.
+      exception-contract: Maps a Native Document Failure to java.io.IOException with its stable code and safe diagnostic.
+      capabilities:
+        - document.blank.create-publish-reopen
+    - id: itext7.kernel.pdf-reader.close
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfReader
+        member: close()
+      open-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfReader
+        member: close()
+      generic-contract: No generic parameters or return value.
+      exception-contract: Retains the declared java.io.IOException contract; the mapped Path source is already closed by the Native Interface.
+      capabilities:
+        - document.blank.create-publish-reopen
+    - id: itext7.kernel.pdf-document.constructor-writer
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDocument
+        member: <init>(com.itextpdf.kernel.pdf.PdfWriter)
+      open-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: <init>(net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter)
+      generic-contract: No generic parameters.
+      exception-contract: No checked exception; publication failures are reported by close().
+      capabilities:
+        - document.blank.create-publish-reopen
+    - id: itext7.kernel.pdf-document.constructor-reader
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDocument
+        member: <init>(com.itextpdf.kernel.pdf.PdfReader)
+      open-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: <init>(net.zerocloud.pdf.itext7.kernel.pdf.PdfReader)
+      generic-contract: No generic parameters.
+      exception-contract: No checked exception; source failures are reported by the PdfReader constructor.
+      capabilities:
+        - document.blank.create-publish-reopen
+    - id: itext7.kernel.pdf-document.add-new-page
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDocument
+        member: addNewPage()
+      open-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: addNewPage()
+      generic-contract: Returns the mapped PdfPage representing the added blank page.
+      exception-contract: Rejects a closed or read-only facade document with java.lang.IllegalStateException.
+      capabilities:
+        - document.blank.create-publish-reopen
+    - id: itext7.kernel.pdf-document.get-number-of-pages
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDocument
+        member: getNumberOfPages()
+      open-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: getNumberOfPages()
+      generic-contract: Returns the primitive page count.
+      exception-contract: Rejects a closed facade document with java.lang.IllegalStateException.
+      capabilities:
+        - document.blank.create-publish-reopen
+    - id: itext7.kernel.pdf-document.close
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDocument
+        member: close()
+      open-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: close()
+      generic-contract: No generic parameters or return value.
+      exception-contract: Maps a publication Document Failure to net.zerocloud.pdf.itext7.kernel.exceptions.PdfException with its stable code and safe diagnostic.
+      capabilities:
+        - document.blank.create-publish-reopen
+    - id: itext7.kernel.pdf-page.type
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfPage
+        member: <type>
+      open-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfPage
+        member: <type>
+      generic-contract: Non-generic return type for the mapped blank-page operation; no other PdfPage member is mapped in T04.
+      exception-contract: No exception contract.
+      capabilities:
+        - document.blank.create-publish-reopen
+    - id: itext7.kernel.pdf-exception.constructor-message-cause
+      reference:
+        type: com.itextpdf.kernel.exceptions.PdfException
+        member: <init>(java.lang.String,java.lang.Throwable)
+      open-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.exceptions.PdfException
+        member: <init>(java.lang.String,java.lang.Throwable)
+      generic-contract: Non-generic unchecked exception retaining a safe cause.
+      exception-contract: Constructor for mapped unchecked publication failures.
+      capabilities:
+        - document.blank.create-publish-reopen
+    - id: itext7.layout.document.constructor-pdf-document
+      reference:
+        type: com.itextpdf.layout.Document
+        member: <init>(com.itextpdf.kernel.pdf.PdfDocument)
+      open-pdf:
+        type: net.zerocloud.pdf.itext7.layout.Document
+        member: <init>(net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument)
+      generic-contract: No generic parameters.
+      exception-contract: No checked exception.
+      capabilities:
+        - document.blank.create-publish-reopen
+    - id: itext7.layout.document.close
+      reference:
+        type: com.itextpdf.layout.Document
+        member: close()
+      open-pdf:
+        type: net.zerocloud.pdf.itext7.layout.Document
+        member: close()
+      generic-contract: No generic parameters or return value; closes the associated mapped PdfDocument.
+      exception-contract: Propagates a mapped PdfException if Native Interface publication fails.
+      capabilities:
+        - document.blank.create-publish-reopen
 
 excluded-capabilities:
-  - id: document.blank.create-publish-reopen
-    ticket: T04
-    reason: T03 completes the Native Interface transaction contract; Migration Facade mapping remains scoped to T04.
   - id: conversion.capability-provider.select-execute
     ticket: T05
     reason: T05 is a Native Interface provider seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.

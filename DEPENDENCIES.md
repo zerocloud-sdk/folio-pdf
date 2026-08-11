@@ -33,6 +33,11 @@ T02 adds one version-pinned build plugin:
 | --- | --- | --- |
 | `org.codehaus.mojo:exec-maven-plugin:3.6.3` | invoke the repository-only inventory command during validation and generation | Apache License 2.0 |
 
+T04 adds no third-party runtime, test, or build-tool dependency. The resource-
+only stable Migration Facade has no dependencies. The preview facade depends
+only on the existing first-party `pdf-document` artifact at runtime and uses
+the existing JUnit dependency for tests.
+
 T05 adds no third-party runtime, test, build-tool, native, or remote-service
 dependency. `pdf-provider-contract` uses only Java 8 platform types;
 `pdf-document` and `pdf-conversion` depend on that first-party artifact. The

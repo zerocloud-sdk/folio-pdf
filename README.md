@@ -16,6 +16,12 @@ Receipt per Target. An immutable Workflow Environment owns deadline time.
 PDFBox is an internal implementation dependency and is never part of the
 public interface.
 
+T04 packages the Stable and Experimental Migration Facades. The first mapped
+document-creation workflow remains experimental, so it is available only from
+`pdf-migration-itext7-preview`; `pdf-migration-itext7` intentionally contains
+no public mapping or unsupported stub. The two artifacts are mutually
+exclusive.
+
 T05 establishes the Capability Provider contract for in-process Java, native
 linkage, local subprocess, and explicitly authorized remote engines. The
 default Workflow Environment registers no Provider, remains offline, and
@@ -68,7 +74,8 @@ contract are documented in
 
 All first-party artifacts use the `0.1.0-SNAPSHOT` Release Train. Consumers
 select versions through `net.zerocloud:pdf-bom`. The BOM manages
-`pdf-provider-contract`, `pdf-document`, and `pdf-conversion`.
+`pdf-provider-contract`, `pdf-document`, `pdf-conversion`,
+`pdf-migration-itext7`, and `pdf-migration-itext7-preview`.
 
 ```xml
 <dependencyManagement>
@@ -90,6 +97,31 @@ select versions through `net.zerocloud:pdf-bom`. The BOM manages
   </dependency>
 </dependencies>
 ```
+
+Migration callers must select exactly one facade artifact. Use
+`pdf-migration-itext7` for compatible mappings only, or use
+`pdf-migration-itext7-preview` for the strict superset that also includes
+experimental mappings:
+
+```xml
+<!-- Stable: currently contains no T04 mapping because the capability is experimental. -->
+<dependency>
+  <groupId>net.zerocloud</groupId>
+  <artifactId>pdf-migration-itext7</artifactId>
+</dependency>
+```
+
+```xml
+<!-- Preview: contains the first experimental document-creation mapping. -->
+<dependency>
+  <groupId>net.zerocloud</groupId>
+  <artifactId>pdf-migration-itext7-preview</artifactId>
+</dependency>
+```
+
+Do not place both facade artifacts on one classpath. Every mapped preview
+public class checks the packaged edition markers when initialized and fails
+with an explicit conflict if both are present, independent of jar order.
 
 The snapshot is not published to Maven Central yet. Build it locally before
 using these coordinates from another project.
@@ -136,6 +168,42 @@ be used as hard isolation for hostile multi-tenant input.
 See the [Capability Provider guide](docs/capability-providers.md) for the
 selection and subprocess protocol contracts and [SECURITY.md](SECURITY.md) for
 the disclosure and isolation boundaries.
+
+## Migration Facade
+
+For a mapped surface, replace the package prefix `com.itextpdf.*` with
+`net.zerocloud.pdf.itext7.*`. T04 maps only the preview blank-document flow:
+
+```java
+import java.nio.file.Path;
+import net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument;
+import net.zerocloud.pdf.itext7.kernel.pdf.PdfReader;
+import net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter;
+import net.zerocloud.pdf.itext7.layout.Document;
+
+Path output = java.nio.file.Paths.get("blank.pdf");
+
+PdfDocument created = new PdfDocument(new PdfWriter(output.toString()));
+Document layout = new Document(created);
+created.addNewPage();
+layout.close();
+
+try (PdfReader reader = new PdfReader(output.toString());
+        PdfDocument reopened = new PdfDocument(reader)) {
+    if (reopened.getNumberOfPages() != 1) {
+        throw new IllegalStateException("Expected one page");
+    }
+}
+```
+
+Closing a writing `PdfDocument` or its associated layout `Document` executes
+the Native Interface transaction and returns only after the Path target has a
+`COMMITTED` Publication Receipt. A reader failure is an `IOException` whose
+safe message begins with the stable Document Failure code. Publication
+failures are mapped to
+`net.zerocloud.pdf.itext7.kernel.exceptions.PdfException`. The exact mapped
+members and their limitations are generated from
+[capabilities/facade-surface.yaml](capabilities/facade-surface.yaml).
 
 ## Document Workflow
 

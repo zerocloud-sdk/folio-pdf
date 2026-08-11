@@ -93,6 +93,42 @@ documentation, and project-owned tests are the permitted design inputs.
 - Compatibility Curator evidence: none; the role remains vacant, the
   capability remains `experimental`, and T06 remains its promotion gate.
 
+## T04 migration-facade record
+
+- Authorship: OpenAI Codex generated and integrated the T04 implementation,
+  tests, inventories, and documentation at repository operator MaBaiqiu's
+  direction. No T04 commit was created in this execution.
+- Project inputs: GitHub issues #1 and #5, the Migration and Document Engine
+  glossaries, ADR-0004, ADR-0015, ADR-0020, ADR-0029, the accepted T01–T03
+  implementation and evidence, and the repository Capability Matrix and
+  Facade Surface Manifest.
+- Public interface inputs: the official iText 7.2.6 public Javadocs for
+  `PdfWriter`, `PdfReader`, `PdfDocument`, `PdfPage`, layout `Document`, and
+  `PdfException` were used only to identify public package, constructor,
+  return, close, and checked-exception shapes. They were not used as an
+  implementation or behavioral oracle.
+- Runtime and test dependencies: T04 adds no third-party dependency. The
+  resource-only stable facade has no dependencies. The preview facade depends
+  only on the existing first-party `pdf-document` artifact, and JUnit 4.13.2
+  remains its test dependency. Existing coordinates, roles, and licenses
+  remain recorded in [DEPENDENCIES.md](DEPENDENCIES.md).
+- Project-authored resources and fixtures: the stable and preview edition
+  marker files, temporary output paths, blank PDFs produced through the Native
+  Interface, and subprocess classpath probes are project-authored. No external
+  PDF fixture or product artifact is included.
+- Generated documentation: `docs/generated/capability-matrix.md` and
+  `docs/generated/facade-surface.md` were regenerated deterministically from
+  the two YAML authorities with the repository inventory tool.
+- Excluded inputs: no iText source, resource, fixture, binary, decompiled or
+  binary-derived implementation detail, closed add-on material, proprietary
+  differential evidence, or Reference Suite output was used.
+- Scope: T04 adds only the Stable and Experimental Migration Facade artifacts
+  and the first blank-document workflow mapping. It adds no T05 Capability
+  Provider contract, T06 independent Acceptance Evidence, or later facade
+  capability mapping.
+- Compatibility Curator evidence: none; the role remains vacant, the mapped
+  capability remains `experimental`, and T06 remains its promotion gate.
+
 ## T05 capability-provider record
 
 - Authorship: OpenAI Codex generated and integrated the T05 implementation,
