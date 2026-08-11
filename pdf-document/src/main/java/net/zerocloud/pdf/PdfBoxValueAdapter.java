@@ -53,6 +53,11 @@ final class PdfBoxValueAdapter {
         return referenceFor(root);
     }
 
+    ObjectReference pageReference(COSBase pageTreeReference)
+            throws DocumentFailure {
+        return referenceFor(pageTreeReference);
+    }
+
     PdfValue inspect(
             ObjectReference reference,
             PdfInspectionLimits limits) throws DocumentFailure {
@@ -298,22 +303,45 @@ final class PdfBoxValueAdapter {
                     DocumentFailureCode.QUERY_FAILED,
                     "The requested PDF object is unavailable.");
         }
-        ObjectReference existing = references.get(rawValue);
-        if (existing != null) {
-            return existing;
-        }
         COSBase value = rawValue instanceof COSObject
                 ? ((COSObject) rawValue).getObject()
                 : rawValue;
         if (value == null) {
             value = COSNull.NULL;
         }
+        boolean pageDictionary = isPageDictionary(value);
+        ObjectReference existing = references.get(rawValue);
+        if (existing == null && pageDictionary) {
+            existing = references.get(value);
+        }
+        if (existing != null) {
+            references.put(rawValue, existing);
+            if (pageDictionary) {
+                references.put(value, existing);
+            }
+            return existing;
+        }
         ObjectReference created = new ObjectReference(
                 sessionIdentity,
                 nextReferenceIdentity++);
         references.put(rawValue, created);
+        if (pageDictionary) {
+            references.put(value, created);
+        }
         targets.put(created, new ReferenceTarget(rawValue, value));
         return created;
+    }
+
+    private static boolean isPageDictionary(COSBase value) {
+        return value instanceof COSDictionary
+                && COSName.PAGE.equals(dereference(
+                        ((COSDictionary) value).getItem(COSName.TYPE)));
+    }
+
+    private static COSBase dereference(COSBase value) {
+        return value instanceof COSObject
+                ? ((COSObject) value).getObject()
+                : value;
     }
 
     private PdfValue publicValue(

@@ -1,0 +1,60 @@
+# T10 qpdf syntax findings
+
+Input set SHA-256: `a5f701a0339471ab09094ed4eb118a61a6f75acc5acbc1aa3e2ad26a487bc9b9`
+
+Tool: `qpdf`
+
+Tool version: `12.4.0`
+
+Distribution SHA-256: `a3bca240f3bb61efdc3a90be89d1da4ed5e125326c3458c4e62df53ff4f153e3`
+
+Final determination: `pass`
+
+## T10-page-manipulation-front.pdf
+
+Input SHA-256: `995380335cb8be49176e379d393533c42d1ac14ffc13d9c75c5c29f7d597c0b5`
+
+Invocation: `qpdf --check T10-page-manipulation-front.pdf`
+
+`T10-page-manipulation-front.pdf` exit code: `0`
+
+### Standard output
+
+```text
+checking T10-page-manipulation-front.pdf
+PDF Version: 1.6
+File is not encrypted
+File is not linearized
+No syntax or stream encoding errors found; the file may still contain
+errors that qpdf cannot detect
+```
+
+### Standard error
+
+```text
+
+```
+## T10-page-manipulation-back.pdf
+
+Input SHA-256: `4f462d46b3ee4e4e87f1056019499c4b95c9446e9a969e9e89f69ef562fe2245`
+
+Invocation: `qpdf --check T10-page-manipulation-back.pdf`
+
+`T10-page-manipulation-back.pdf` exit code: `0`
+
+### Standard output
+
+```text
+checking T10-page-manipulation-back.pdf
+PDF Version: 1.6
+File is not encrypted
+File is not linearized
+No syntax or stream encoding errors found; the file may still contain
+errors that qpdf cannot detect
+```
+
+### Standard error
+
+```text
+
+```

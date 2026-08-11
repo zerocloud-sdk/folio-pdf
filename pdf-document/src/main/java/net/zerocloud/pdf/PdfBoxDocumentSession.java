@@ -1,10 +1,12 @@
 package net.zerocloud.pdf;
 
+import java.util.Map;
 import java.util.Objects;
 import net.zerocloud.pdf.command.AddBlankPage;
 import net.zerocloud.pdf.query.DocumentRootReference;
 import net.zerocloud.pdf.query.InspectObject;
 import net.zerocloud.pdf.query.PageCount;
+import net.zerocloud.pdf.query.PageObjectReference;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDResources;
@@ -14,13 +16,24 @@ final class PdfBoxDocumentSession implements DocumentSession {
     private final PDDocument document;
     private final Thread owner;
     private final PdfBoxValueAdapter valueAdapter;
+    private final PdfBoxPageOperations pageOperations;
     private String outcomeCapabilityId;
     private volatile boolean active;
 
-    PdfBoxDocumentSession(PDDocument document) {
+    PdfBoxDocumentSession(
+            PDDocument document,
+            Map<String, DocumentSource> sources,
+            String primarySourceName,
+            Map<String, PublicationTarget> publicationTargets) {
         this.document = Objects.requireNonNull(document, "document");
         this.owner = Thread.currentThread();
         this.valueAdapter = new PdfBoxValueAdapter(document, this);
+        this.pageOperations = new PdfBoxPageOperations(
+                document,
+                sources,
+                primarySourceName,
+                publicationTargets,
+                valueAdapter);
         this.outcomeCapabilityId = PdfBoxWorkflowEngine.CAPABILITY_ID;
         this.active = true;
     }
@@ -29,18 +42,26 @@ final class PdfBoxDocumentSession implements DocumentSession {
     public void execute(DocumentCommand command) throws DocumentFailure {
         requireActiveOwner();
         Objects.requireNonNull(command, "command");
+        pageOperations.requireCommandAllowed();
 
         if (command == AddBlankPage.INSTANCE) {
             try {
                 PDPage page = new PDPage();
                 page.setResources(new PDResources());
                 document.addPage(page);
+                pageOperations.makeLibraryOwnedPageIndirect(page);
                 return;
-            } catch (RuntimeException failure) {
+            } catch (RuntimeException backendFailure) {
                 throw PdfBoxWorkflowEngine.failure(
                         DocumentFailureCode.DOCUMENT_WRITE_FAILED,
                         "The blank page could not be added.");
             }
+        }
+
+        if (pageOperations.supports(command)) {
+            outcomeCapabilityId = PdfBoxPageOperations.CAPABILITY_ID;
+            pageOperations.execute(command);
+            return;
         }
 
         if (command instanceof DocumentPatch) {
@@ -68,11 +89,17 @@ final class PdfBoxDocumentSession implements DocumentSession {
         if (query == PageCount.INSTANCE) {
             try {
                 return pageCountResult(document.getNumberOfPages());
-            } catch (RuntimeException failure) {
+            } catch (RuntimeException backendFailure) {
                 throw PdfBoxWorkflowEngine.failure(
                         DocumentFailureCode.QUERY_FAILED,
                         "The page count could not be evaluated.");
             }
+        }
+
+        if (query instanceof PageObjectReference) {
+            outcomeCapabilityId = PdfBoxPageOperations.CAPABILITY_ID;
+            return queryResult(pageOperations.pageReference(
+                    (PageObjectReference) query));
         }
 
         if (query == DocumentRootReference.INSTANCE) {
@@ -111,6 +138,10 @@ final class PdfBoxDocumentSession implements DocumentSession {
 
     String getOutcomeCapabilityId() {
         return outcomeCapabilityId;
+    }
+
+    Map<String, PDDocument> getSplitDocuments() {
+        return pageOperations.getSplitDocuments();
     }
 
     void requireActiveOwner() {

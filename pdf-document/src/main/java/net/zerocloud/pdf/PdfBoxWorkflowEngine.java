@@ -123,8 +123,13 @@ final class PdfBoxWorkflowEngine {
             Clock clock,
             List<ProviderSelection> providerSelections) throws DocumentFailure {
         PDDocument document = initialDocument;
-        PdfBoxDocumentSession session = new PdfBoxDocumentSession(document);
-        Path staged = null;
+        PdfBoxDocumentSession session = new PdfBoxDocumentSession(
+                document,
+                request.getSources(),
+                request.getPrimarySourceName(),
+                request.getPublicationTargets());
+        List<Path> stagedDocuments = new ArrayList<Path>();
+        Map<String, PDDocument> splitDocuments = null;
 
         try {
             requireExecutionAllowed(request, clock);
@@ -143,6 +148,7 @@ final class PdfBoxWorkflowEngine {
                         notAttempted(publicationTargets));
             }
             session.invalidate();
+            splitDocuments = session.getSplitDocuments();
             emit(request, WorkflowProgressPhase.WORK_COMPLETED);
             requireExecutionAllowed(request, clock);
 
@@ -159,8 +165,20 @@ final class PdfBoxWorkflowEngine {
             }
 
             try {
-                staged = Files.createTempFile(".folio-pdf-", ".pdf");
-                document.save(staged.toFile());
+                if (splitDocuments == null) {
+                    Path staged = Files.createTempFile(".folio-pdf-", ".pdf");
+                    stagedDocuments.add(staged);
+                    document.save(staged.toFile());
+                } else {
+                    for (PublicationTargetAdapter target : publicationTargets) {
+                        Path staged = Files.createTempFile(
+                                ".folio-pdf-",
+                                ".pdf");
+                        stagedDocuments.add(staged);
+                        splitDocuments.get(target.getTargetName())
+                                .save(staged.toFile());
+                    }
+                }
             } catch (IOException | RuntimeException failure) {
                 throw failure(
                         DocumentFailureCode.DOCUMENT_WRITE_FAILED,
@@ -171,13 +189,20 @@ final class PdfBoxWorkflowEngine {
 
             closeForSuccess(document);
             document = null;
-            validate(staged);
+            closeForSuccess(splitDocuments);
+            for (Path staged : stagedDocuments) {
+                validate(staged);
+            }
             emit(request, WorkflowProgressPhase.VALIDATED);
             requireExecutionAllowed(request, clock);
 
             emit(request, WorkflowProgressPhase.PUBLICATION_STARTED);
             List<PublicationReceipt> receipts =
-                    publishAll(staged, publicationTargets, request, clock);
+                    publishAll(
+                            stagedDocuments,
+                            publicationTargets,
+                            request,
+                            clock);
             emit(request, WorkflowProgressPhase.COMPLETED);
             return outcome(
                     result,
@@ -188,7 +213,10 @@ final class PdfBoxWorkflowEngine {
         } finally {
             session.invalidate();
             closeQuietly(document);
-            deleteQuietly(staged);
+            closeQuietly(splitDocuments == null
+                    ? session.getSplitDocuments()
+                    : splitDocuments);
+            deleteQuietly(stagedDocuments);
         }
     }
 
@@ -245,7 +273,7 @@ final class PdfBoxWorkflowEngine {
     }
 
     private static List<PublicationReceipt> publishAll(
-            Path staged,
+            List<Path> stagedDocuments,
             List<PublicationTargetAdapter> targets,
             WorkflowRequest request,
             Clock clock)
@@ -254,6 +282,9 @@ final class PdfBoxWorkflowEngine {
                 new ArrayList<PublicationReceipt>(targets.size());
         for (int index = 0; index < targets.size(); index++) {
             PublicationTargetAdapter target = targets.get(index);
+            Path staged = stagedDocuments.size() == 1
+                    ? stagedDocuments.get(0)
+                    : stagedDocuments.get(index);
             try {
                 requireExecutionAllowed(request, clock);
                 target.publish(staged);
@@ -311,7 +342,7 @@ final class PdfBoxWorkflowEngine {
         return target;
     }
 
-    private static PDDocument openDocument(DocumentSource source)
+    static PDDocument openDocument(DocumentSource source)
             throws DocumentFailure {
         switch (source.getKind()) {
             case PATH:
@@ -533,6 +564,16 @@ final class PdfBoxWorkflowEngine {
         }
     }
 
+    private static void closeForSuccess(Map<String, PDDocument> documents)
+            throws DocumentFailure {
+        if (documents == null) {
+            return;
+        }
+        for (PDDocument document : documents.values()) {
+            closeForSuccess(document);
+        }
+    }
+
     private static PDDocument createDocument() throws DocumentFailure {
         try {
             return new PDDocument();
@@ -554,6 +595,15 @@ final class PdfBoxWorkflowEngine {
         }
     }
 
+    private static void closeQuietly(Map<String, PDDocument> documents) {
+        if (documents == null) {
+            return;
+        }
+        for (PDDocument document : documents.values()) {
+            closeQuietly(document);
+        }
+    }
+
     private static void deleteQuietly(Path staged) {
         if (staged == null) {
             return;
@@ -562,6 +612,12 @@ final class PdfBoxWorkflowEngine {
             Files.deleteIfExists(staged);
         } catch (IOException | RuntimeException ignored) {
             // Best-effort cleanup must not replace the safe primary diagnostic.
+        }
+    }
+
+    private static void deleteQuietly(List<Path> stagedDocuments) {
+        for (Path staged : stagedDocuments) {
+            deleteQuietly(staged);
         }
     }
 
@@ -626,6 +682,10 @@ final class PdfBoxWorkflowEngine {
 
         private boolean isStream() {
             return streamTarget != null;
+        }
+
+        private String getTargetName() {
+            return targetName;
         }
     }
 

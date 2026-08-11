@@ -248,5 +248,58 @@ documentation, and project-owned tests are the permitted design inputs.
   Acceptance Evidence chains remain absent, and the capability stays
   `experimental` with no certified-platform claim.
 
+## T10 page-manipulation-merge-split record
+
+- Authorship: OpenAI Codex generated and integrated the T10 implementation,
+  tests, inventories, and documentation at repository operator MaBaiqiu's
+  direction. This record accompanies the repository's one-ticket T10 commit.
+- Project inputs: GitHub issues #1 and #11, `CONTEXT.md`, ADR-0013, 0017,
+  0019, and 0025, the repository inventory contract, and the accepted T03 and
+  T09 public workflow seams and evidence.
+- Runtime and test dependencies: T10 adds no third-party dependency. Apache
+  PDFBox 3.0.8 remains the private Apache-2.0 implementation dependency, and
+  JUnit 4.13.2 remains the existing test dependency. The no-new-dependency
+  statement is recorded in [DEPENDENCIES.md](DEPENDENCIES.md).
+- Project-authored fixtures: T10 consumer tests construct their own marker
+  documents, preservation-sensitive catalog/page/annotation relationship
+  structures, custom and external-file content streams, nested content arrays,
+  malformed inherited page attributes, structurally inconsistent, missing-type,
+  and direct-node page trees, duplicate-scalar indirect objects, caller-failing
+  Sources, and a raw nested-page-tree PDF with inherited page boxes,
+  rotation, resources, annotations, and content. Every operation,
+  terminal-split probe, query non-mutation probe, rejection, reopen,
+  rewrite-isolation probe, and semantic assertion crosses
+  `DocumentWorkflow.execute`; no externally sourced fixture or product artifact
+  is included.
+- Acceptance artifacts: the repository-owned acceptance command creates the
+  two checked-in T10 split products through all six T10 Commands. The official
+  pinned qpdf 12.4.0 distribution checked both products with exit code 0; the
+  syntax record retains their hashes, invocations, and raw findings. This is
+  syntax evidence only and makes no standards-conformance claim.
+- Public implementation references: Apache PDFBox 3.0.8 source and Javadocs
+  were consulted for its public page import, split, merge, page-tree, and
+  resource behavior. They were obtained from the official Maven artifact and
+  used only behind project-owned interfaces.
+- Generated documentation: `docs/generated/capability-matrix.md` and
+  `docs/generated/facade-surface.md` are deterministic renderings of the two
+  YAML authorities and contain no copied external content.
+- Excluded inputs: no iText source, resource, fixture, binary, decompiled or
+  binary-derived implementation detail, closed add-on material, proprietary
+  differential evidence, Reference Suite output, or external behavioral oracle
+  was used.
+- Scope: T10 adds version-1 page insertion, removal, movement, copying,
+  ordered multi-Source merge, exact Target-to-range split, and a page Object
+  Reference query. It does not add T11 metadata, outline, destination, or
+  attachment management; T12 action management; T15 incremental or signed-
+  document behavior; T20 hostile-input policy; T21 Worker codecs; or a
+  Migration Facade mapping. Page commands conservatively reject these
+  downstream or otherwise unproven catalog, page-tree, page, and annotation
+  structures rather than silently altering them.
+- Compatibility Curator evidence: none; the role remains vacant. The T10
+  syntax chain passes, while standards, semantic, and visual Acceptance
+  Evidence remain absent. The blank-document Dependency Gate and T06 promotion
+  gate remain open, so the capability stays `experimental` with no certified-
+  platform claim.
+
 Future changes append or update a scoped record and supply the pull-request
 provenance statement required by [CONTRIBUTING.md](CONTRIBUTING.md).

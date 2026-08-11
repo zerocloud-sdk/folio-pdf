@@ -6,7 +6,7 @@ Behavioral authority: [`../../capabilities/capability-matrix.yaml`](../../capabi
 
 - Schema version: `1`
 - Release train: `0.1.0-SNAPSHOT`
-- Capabilities: `3`
+- Capabilities: `4`
 
 ## Capability summary
 
@@ -14,6 +14,7 @@ Behavioral authority: [`../../capabilities/capability-matrix.yaml`](../../capabi
 | --- | --- | --- | --- |
 | [`conversion.capability-provider.select-execute`](#capability-conversion_dot_capability_dash_provider_dot_select_dash_execute) | `conversion` | `experimental` | [excluded by `T05`](facade-surface.md#excluded-capability-conversion_dot_capability_dash_provider_dot_select_dash_execute) |
 | [`document.blank.create-publish-reopen`](#capability-document_dot_blank_dot_create_dash_publish_dash_reopen) | `document-engine` | `experimental` | [`itext7.kernel.pdf-document.add-new-page`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_add_dash_new_dash_page), [`itext7.kernel.pdf-document.close`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_close), [`itext7.kernel.pdf-document.constructor-reader`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_constructor_dash_reader), [`itext7.kernel.pdf-document.constructor-writer`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_constructor_dash_writer), [`itext7.kernel.pdf-document.get-number-of-pages`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_number_dash_of_dash_pages), [`itext7.kernel.pdf-exception.constructor-message-cause`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_exception_dot_constructor_dash_message_dash_cause), [`itext7.kernel.pdf-page.type`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_page_dot_type), [`itext7.kernel.pdf-reader.close`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_reader_dot_close), [`itext7.kernel.pdf-reader.constructor-string`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_reader_dot_constructor_dash_string), [`itext7.kernel.pdf-writer.constructor-string`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_writer_dot_constructor_dash_string), [`itext7.layout.document.close`](facade-surface.md#facade-surface-itext7_dot_layout_dot_document_dot_close), [`itext7.layout.document.constructor-pdf-document`](facade-surface.md#facade-surface-itext7_dot_layout_dot_document_dot_constructor_dash_pdf_dash_document) |
+| [`document.page.manipulate-merge-split`](#capability-document_dot_page_dot_manipulate_dash_merge_dash_split) | `document-engine` | `experimental` | [excluded by `T10`](facade-surface.md#excluded-capability-document_dot_page_dot_manipulate_dash_merge_dash_split) |
 | [`document.value.inspect-patch`](#capability-document_dot_value_dot_inspect_dash_patch) | `document-engine` | `experimental` | [excluded by `T09`](facade-surface.md#excluded-capability-document_dot_value_dot_inspect_dash_patch) |
 
 <a id="capability-conversion_dot_capability_dash_provider_dot_select_dash_execute"></a>
@@ -118,7 +119,7 @@ Execute a named-source document transaction and publish validated rewrites to na
 - Promotion gate `T06`: Complete the independent acceptance evidence required before compatibility.
 - Limitation: INCREMENTAL is represented but fails with SAVE_MODE_UNSUPPORTED until T15 implements revision-preserving publication.
 - Limitation: T03 does not detect or protect signed documents; signed-document read-only enforcement, DocMDP decisions, and signature-safe publication remain T15.
-- Limitation: T03 opens only the explicitly selected primary source; commands that consume additional named sources remain downstream.
+- Limitation: T03 opens only the explicitly selected primary source unless an ordered Document Command, such as T10 merge, explicitly selects additional named Sources.
 - Limitation: Cancellation and deadlines are checked at T03 transaction boundaries; comprehensive hostile-input limits and worker enforcement remain T20 and T21.
 
 ### Evidence
@@ -147,6 +148,66 @@ Acceptance Evidence:
 - `semantic`: `pass` — [`capabilities/evidence/T06-document-blank-semantic.md`](../../capabilities/evidence/T06-document-blank-semantic.md); producer `folio-pdf-semantic-assertions@0.1.0-SNAPSHOT` (`project-test`)
 
 Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T06 acceptance-evidence record`.
+
+<a id="capability-document_dot_page_dot_manipulate_dash_merge_dash_split"></a>
+## `document.page.manipulate-merge-split`
+
+Insert, remove, move, and copy pages; append ordered named Sources; and publish independently reopenable page-range products.
+
+- Context: `document-engine`
+- Status: `experimental`
+- Reference Suite source: `iText Core 7.2.6 page tree, copy, merge, and split surface`
+- Reference role: capability inventory only; not an implementation or behavioral oracle
+- Acceptance Profile: `T10-page-manipulation-merge-split`
+- Mandatory evidence chains: `syntax`, `standards`, `semantic`, `visual`
+- Evidence record: [`capabilities/evidence/T10-page-manipulation-merge-split.md`](../../capabilities/evidence/T10-page-manipulation-merge-split.md)
+- Certified platforms: none
+
+### Native Interface mapping
+
+- `copy-pages-command`: `net.zerocloud.pdf.command.CopyPages`
+- `entry-point`: `net.zerocloud.pdf.DocumentWorkflow#execute`
+- `failure`: `net.zerocloud.pdf.DocumentFailure`
+- `failure-code`: `net.zerocloud.pdf.DocumentFailureCode`
+- `insert-page-command`: `net.zerocloud.pdf.command.InsertBlankPage`
+- `merge-documents-command`: `net.zerocloud.pdf.command.MergeDocuments`
+- `move-pages-command`: `net.zerocloud.pdf.command.MovePages`
+- `page-range`: `net.zerocloud.pdf.PageRange`
+- `page-reference-query`: `net.zerocloud.pdf.query.PageObjectReference`
+- `receipt`: `net.zerocloud.pdf.PublicationReceipt`
+- `remove-pages-command`: `net.zerocloud.pdf.command.RemovePages`
+- `split-document-command`: `net.zerocloud.pdf.command.SplitDocument`
+
+### Migration Facade coverage
+
+- Stable: none
+- Preview: none
+- Explicit exclusion: [`T10`](facade-surface.md#excluded-capability-document_dot_page_dot_manipulate_dash_merge_dash_split) — T10 is a Native Interface page manipulation, merge, and split seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+
+### Gates and limitations
+
+- Dependency Gate: [`document.blank.create-publish-reopen`](#capability-document_dot_blank_dot_create_dash_publish_dash_reopen) must be `compatible`
+- Promotion gate `T06`: Complete the independent acceptance evidence required before compatibility.
+- Limitation: T10 operates in REWRITE workflows; INCREMENTAL remains SAVE_MODE_UNSUPPORTED, and signed-document recognition, DocMDP decisions, and signature-safe changes remain T15.
+- Limitation: Page operations preserve tested inherited boxes, rotation, resources, basic Text annotations, and content when copied or reparented. Before mutation, T10 rejects nonstructural trailer data, nonempty document information, catalogs or page-tree nodes with unproven entries, inconsistent page-tree parents, counts, cycles, repeated nodes, or any direct input page-tree node, missing effective media boxes, malformed box, rotation, or resource entries, resource graphs that reach page or page-tree structures, nested content arrays, external-file content streams, filtered content streams unless they use one parameter-free FlateDecode or Fl filter with a strictly valid zlib payload, content streams with non-engine metadata, unproven indirect page extensions, separation information, links, widgets, annotation relationships or actions, tagged-page references, and thread beads; metadata, outlines, destinations, attachments, forms, tagged structure, and action management remain downstream capability slices.
+- Limitation: Copy, merge, and split preserve semantic page graphs, not source byte layout or backend object identity. Object References are Session-local; public reopen-and-rewrite probes demonstrate that changing an imported content graph leaves its Source and sibling products unchanged.
+- Limitation: T10 validates command ranges, positions, named merge Sources, and exact split Target coverage. A successful SplitDocument is terminal for Document Commands in that workflow; comprehensive hostile-input page, object, depth, decompression, memory, time, and concurrency enforcement remains T20.
+- Limitation: T10 runs only through the trusted in-process adapter; the Hardened Worker Profile and its command and query codecs remain T21.
+
+### Evidence
+
+Implementation evidence:
+
+- `page-workflow-consumer-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/consumer/PageManipulationWorkflowTest.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/consumer/PageManipulationWorkflowTest.java) — Public workflows prove deterministic insert, remove, move, copy, ordered multi-Source merge, range split, preservation of proven-safe page graphs, non-mutating page-reference queries that reject malformed, direct, parent-inconsistent, or count-inconsistent input page-tree nodes while giving every library-created page tree immediate indirect identity, terminal split command ordering, conservative rejection of missing or malformed inherited page attributes, resource graphs that reach page or page-tree structures, nested content arrays, external-file content streams, non-Flate filters, filter arrays, decode parameters, malformed, trailing-data, or preset-dictionary Flate payloads, unproven content-stream metadata, and structurally inconsistent catalog, page-tree, page, and annotation structures before mutation, stable and distinct same-Session indirect-object identities, Source and sibling-product rewrite isolation, stable validation failures, caller-owned Source lifetime and runtime propagation, and complete ordered publication receipts after reopen.
+- `public-api-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/contract/PublicApiLeakageIT.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/contract/PublicApiLeakageIT.java) — Public and protected signatures, including every T10 command, range, and query type, contain no PDFBox types.
+- `artifact-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/contract/JarContractIT.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/contract/JarContractIT.java) — The jar retains its stable module name, Java 8 class-file version, notices, and unbundled backend.
+- `cross-jdk-contract`: [`scripts/verify-jdk-matrix.sh`](../../scripts/verify-jdk-matrix.sh) — Maven verification runs the T10 public workflow contract on JDK 8, 11, 17, and 21.
+
+Acceptance Evidence:
+
+- `syntax`: `pass` — [`capabilities/evidence/T10-page-manipulation-merge-split-syntax.md`](../../capabilities/evidence/T10-page-manipulation-merge-split-syntax.md); producer `qpdf@12.4.0` (`external-tool`)
+
+Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T10 page-manipulation-merge-split record`.
 
 <a id="capability-document_dot_value_dot_inspect_dash_patch"></a>
 ## `document.value.inspect-patch`

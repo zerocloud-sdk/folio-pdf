@@ -8,7 +8,7 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Release train: `0.1.0-SNAPSHOT`
 - Stable entries: `0`
 - Preview entries: `12`
-- Explicit capability exclusions: `2`
+- Explicit capability exclusions: `3`
 
 ## Stable surfaces
 
@@ -144,6 +144,13 @@ No stable surfaces are declared.
 - Behavioral capability: [`conversion.capability-provider.select-execute`](capability-matrix.md#capability-conversion_dot_capability_dash_provider_dot_select_dash_execute)
 - Deferred ticket: `T05`
 - Reason: T05 is a Native Interface provider seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+
+<a id="excluded-capability-document_dot_page_dot_manipulate_dash_merge_dash_split"></a>
+### `document.page.manipulate-merge-split`
+
+- Behavioral capability: [`document.page.manipulate-merge-split`](capability-matrix.md#capability-document_dot_page_dot_manipulate_dash_merge_dash_split)
+- Deferred ticket: `T10`
+- Reason: T10 is a Native Interface page manipulation, merge, and split seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
 
 <a id="excluded-capability-document_dot_value_dot_inspect_dash_patch"></a>
 ### `document.value.inspect-patch`

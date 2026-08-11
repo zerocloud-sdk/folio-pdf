@@ -44,13 +44,15 @@ nor require qpdf. A missing, unreadable, incorrectly versioned, or
 digest-unmarked validator records the syntax chain as `indeterminate`, never
 `pass`.
 
-The acceptance command creates one PDF through `DocumentWorkflow.execute`,
-hashes that artifact, runs `qpdf --check` on it, and then reopens the same
-artifact through the public workflow to assert the committed one-page
-sequence and readable object graph; text order is not applicable because the
-profile emits no text. It records tool identity, version and distribution
-digest, input SHA-256, raw findings,
-chain-level results, and an overall determination beneath the requested
+The acceptance command creates the T06 blank PDF through
+`DocumentWorkflow.execute`, hashes that artifact, runs `qpdf --check` on it,
+and then reopens the same artifact through the public workflow to assert the
+committed one-page sequence and readable object graph; text order is not
+applicable because the profile emits no text. It also drives all six T10 page,
+merge, and split Commands to create two independently reopenable products and
+runs the same pinned qpdf syntax check on both. It records tool identity,
+version and distribution digest, input SHA-256 values, raw findings,
+chain-level results, and the applicable determination beneath the requested
 output directory. qpdf is syntax evidence only: its success is not a PDF
 standards-conformance result and cannot satisfy the independent standards,
 semantic, or visual chains.
@@ -164,3 +166,9 @@ The current T06 syntax, semantic, and overall records are
 semantic pass for their shared pinned artifact. Standards and visual evidence
 are absent, so the overall profile remains `indeterminate` and the capability
 remains `experimental`.
+
+The current T10 syntax record is
+`capabilities/evidence/T10-page-manipulation-merge-split-syntax.md`. Its two
+project-produced artifacts pass pinned qpdf 12.4.0 syntax checks. Standards,
+semantic, and visual Acceptance Evidence remain absent, so the T10 capability
+also remains `experimental`.

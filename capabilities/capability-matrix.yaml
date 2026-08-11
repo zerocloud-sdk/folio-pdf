@@ -41,7 +41,7 @@ capabilities:
     limitations:
       - INCREMENTAL is represented but fails with SAVE_MODE_UNSUPPORTED until T15 implements revision-preserving publication.
       - T03 does not detect or protect signed documents; signed-document read-only enforcement, DocMDP decisions, and signature-safe publication remain T15.
-      - T03 opens only the explicitly selected primary source; commands that consume additional named sources remain downstream.
+      - T03 opens only the explicitly selected primary source unless an ordered Document Command, such as T10 merge, explicitly selects additional named Sources.
       - Cancellation and deadlines are checked at T03 transaction boundaries; comprehensive hostile-input limits and worker enforcement remain T20 and T21.
     dependency-gates: []
     promotion-gates:
@@ -181,6 +181,76 @@ capabilities:
     provenance:
       path: PROVENANCE.md
       record: T09 document-value-inspection-patch record
+    certified-platforms: []
+    status: experimental
+
+  - id: document.page.manipulate-merge-split
+    context: document-engine
+    summary: Insert, remove, move, and copy pages; append ordered named Sources; and publish independently reopenable page-range products.
+    reference-suite:
+      source: iText Core 7.2.6 page tree, copy, merge, and split surface
+      role: capability inventory only; not an implementation or behavioral oracle
+    native-interface:
+      entry-point: net.zerocloud.pdf.DocumentWorkflow#execute
+      page-range: net.zerocloud.pdf.PageRange
+      insert-page-command: net.zerocloud.pdf.command.InsertBlankPage
+      remove-pages-command: net.zerocloud.pdf.command.RemovePages
+      move-pages-command: net.zerocloud.pdf.command.MovePages
+      copy-pages-command: net.zerocloud.pdf.command.CopyPages
+      merge-documents-command: net.zerocloud.pdf.command.MergeDocuments
+      split-document-command: net.zerocloud.pdf.command.SplitDocument
+      page-reference-query: net.zerocloud.pdf.query.PageObjectReference
+      receipt: net.zerocloud.pdf.PublicationReceipt
+      failure: net.zerocloud.pdf.DocumentFailure
+      failure-code: net.zerocloud.pdf.DocumentFailureCode
+    migration-facade:
+      stable: []
+      preview: []
+    limitations:
+      - T10 operates in REWRITE workflows; INCREMENTAL remains SAVE_MODE_UNSUPPORTED, and signed-document recognition, DocMDP decisions, and signature-safe changes remain T15.
+      - Page operations preserve tested inherited boxes, rotation, resources, basic Text annotations, and content when copied or reparented. Before mutation, T10 rejects nonstructural trailer data, nonempty document information, catalogs or page-tree nodes with unproven entries, inconsistent page-tree parents, counts, cycles, repeated nodes, or any direct input page-tree node, missing effective media boxes, malformed box, rotation, or resource entries, resource graphs that reach page or page-tree structures, nested content arrays, external-file content streams, filtered content streams unless they use one parameter-free FlateDecode or Fl filter with a strictly valid zlib payload, content streams with non-engine metadata, unproven indirect page extensions, separation information, links, widgets, annotation relationships or actions, tagged-page references, and thread beads; metadata, outlines, destinations, attachments, forms, tagged structure, and action management remain downstream capability slices.
+      - Copy, merge, and split preserve semantic page graphs, not source byte layout or backend object identity. Object References are Session-local; public reopen-and-rewrite probes demonstrate that changing an imported content graph leaves its Source and sibling products unchanged.
+      - T10 validates command ranges, positions, named merge Sources, and exact split Target coverage. A successful SplitDocument is terminal for Document Commands in that workflow; comprehensive hostile-input page, object, depth, decompression, memory, time, and concurrency enforcement remains T20.
+      - T10 runs only through the trusted in-process adapter; the Hardened Worker Profile and its command and query codecs remain T21.
+    dependency-gates:
+      - capability: document.blank.create-publish-reopen
+        required-status: compatible
+    promotion-gates:
+      - ticket: T06
+        requirement: Complete the independent acceptance evidence required before compatibility.
+    acceptance-profile:
+      id: T10-page-manipulation-merge-split
+      state: experimental
+      mandatory-evidence:
+        - syntax
+        - standards
+        - semantic
+        - visual
+      evidence-record: capabilities/evidence/T10-page-manipulation-merge-split.md
+    evidence:
+      - kind: page-workflow-consumer-contract
+        path: pdf-document/src/test/java/net/zerocloud/pdf/consumer/PageManipulationWorkflowTest.java
+        assertion: Public workflows prove deterministic insert, remove, move, copy, ordered multi-Source merge, range split, preservation of proven-safe page graphs, non-mutating page-reference queries that reject malformed, direct, parent-inconsistent, or count-inconsistent input page-tree nodes while giving every library-created page tree immediate indirect identity, terminal split command ordering, conservative rejection of missing or malformed inherited page attributes, resource graphs that reach page or page-tree structures, nested content arrays, external-file content streams, non-Flate filters, filter arrays, decode parameters, malformed, trailing-data, or preset-dictionary Flate payloads, unproven content-stream metadata, and structurally inconsistent catalog, page-tree, page, and annotation structures before mutation, stable and distinct same-Session indirect-object identities, Source and sibling-product rewrite isolation, stable validation failures, caller-owned Source lifetime and runtime propagation, and complete ordered publication receipts after reopen.
+      - kind: public-api-contract
+        path: pdf-document/src/test/java/net/zerocloud/pdf/contract/PublicApiLeakageIT.java
+        assertion: Public and protected signatures, including every T10 command, range, and query type, contain no PDFBox types.
+      - kind: artifact-contract
+        path: pdf-document/src/test/java/net/zerocloud/pdf/contract/JarContractIT.java
+        assertion: The jar retains its stable module name, Java 8 class-file version, notices, and unbundled backend.
+      - kind: cross-jdk-contract
+        path: scripts/verify-jdk-matrix.sh
+        assertion: Maven verification runs the T10 public workflow contract on JDK 8, 11, 17, and 21.
+    acceptance-evidence:
+      - chain: syntax
+        result: pass
+        record: capabilities/evidence/T10-page-manipulation-merge-split-syntax.md
+        producer:
+          kind: external-tool
+          name: qpdf
+          version: "12.4.0"
+    provenance:
+      path: PROVENANCE.md
+      record: T10 page-manipulation-merge-split record
     certified-platforms: []
     status: experimental
 

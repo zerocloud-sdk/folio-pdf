@@ -33,6 +33,21 @@ public enum DocumentFailureCode {
     /** A supported query could not be evaluated. */
     QUERY_FAILED,
 
+    /** A page range is outside the current document or is not ordered. */
+    PAGE_RANGE_INVALID,
+
+    /** A page insertion or movement position is outside its defined sequence. */
+    PAGE_POSITION_INVALID,
+
+    /** A merge command selected an invalid named Source. */
+    MERGE_SOURCE_INVALID,
+
+    /** A split command did not map every named publication Target exactly once. */
+    SPLIT_TARGET_INVALID,
+
+    /** A page operation cannot prove that sensitive structures will survive. */
+    PRESERVATION_UNSUPPORTED,
+
     /** A lazy PDF Value view was used after its Document Session ended. */
     PDF_VALUE_VIEW_EXPIRED,
 
