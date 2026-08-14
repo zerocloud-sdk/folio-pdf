@@ -6,7 +6,7 @@ Behavioral authority: [`../../capabilities/capability-matrix.yaml`](../../capabi
 
 - Schema version: `1`
 - Release train: `0.1.0-SNAPSHOT`
-- Capabilities: `4`
+- Capabilities: `5`
 
 ## Capability summary
 
@@ -14,6 +14,7 @@ Behavioral authority: [`../../capabilities/capability-matrix.yaml`](../../capabi
 | --- | --- | --- | --- |
 | [`conversion.capability-provider.select-execute`](#capability-conversion_dot_capability_dash_provider_dot_select_dash_execute) | `conversion` | `experimental` | [excluded by `T05`](facade-surface.md#excluded-capability-conversion_dot_capability_dash_provider_dot_select_dash_execute) |
 | [`document.blank.create-publish-reopen`](#capability-document_dot_blank_dot_create_dash_publish_dash_reopen) | `document-engine` | `experimental` | [`itext7.kernel.pdf-document.add-new-page`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_add_dash_new_dash_page), [`itext7.kernel.pdf-document.close`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_close), [`itext7.kernel.pdf-document.constructor-reader`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_constructor_dash_reader), [`itext7.kernel.pdf-document.constructor-writer`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_constructor_dash_writer), [`itext7.kernel.pdf-document.get-number-of-pages`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_number_dash_of_dash_pages), [`itext7.kernel.pdf-exception.constructor-message-cause`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_exception_dot_constructor_dash_message_dash_cause), [`itext7.kernel.pdf-page.type`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_page_dot_type), [`itext7.kernel.pdf-reader.close`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_reader_dot_close), [`itext7.kernel.pdf-reader.constructor-string`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_reader_dot_constructor_dash_string), [`itext7.kernel.pdf-writer.constructor-string`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_writer_dot_constructor_dash_string), [`itext7.layout.document.close`](facade-surface.md#facade-surface-itext7_dot_layout_dot_document_dot_close), [`itext7.layout.document.constructor-pdf-document`](facade-surface.md#facade-surface-itext7_dot_layout_dot_document_dot_constructor_dash_pdf_dash_document) |
+| [`document.metadata.outlines-destinations-attachments`](#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments) | `document-engine` | `experimental` | [excluded by `T11`](facade-surface.md#excluded-capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments) |
 | [`document.page.manipulate-merge-split`](#capability-document_dot_page_dot_manipulate_dash_merge_dash_split) | `document-engine` | `experimental` | [excluded by `T10`](facade-surface.md#excluded-capability-document_dot_page_dot_manipulate_dash_merge_dash_split) |
 | [`document.value.inspect-patch`](#capability-document_dot_value_dot_inspect_dash_patch) | `document-engine` | `experimental` | [excluded by `T09`](facade-surface.md#excluded-capability-document_dot_value_dot_inspect_dash_patch) |
 
@@ -149,6 +150,73 @@ Acceptance Evidence:
 
 Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T06 acceptance-evidence record`.
 
+<a id="capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments"></a>
+## `document.metadata.outlines-destinations-attachments`
+
+Read, create, update, and preserve document information, XMP metadata, outlines, named destinations, page destinations, and embedded files, with destination retargeting across page reorder, copy, merge, and split.
+
+- Context: `document-engine`
+- Status: `experimental`
+- Reference Suite source: `iText Core 7.2.6 document information, XMP, outline, named destination, and embedded file surface`
+- Reference role: capability inventory only; not an implementation or behavioral oracle
+- Acceptance Profile: `T11-metadata-outlines-destinations-attachments`
+- Mandatory evidence chains: `syntax`, `standards`, `semantic`, `visual`
+- Evidence record: [`capabilities/evidence/T11-metadata-outlines-destinations-attachments.md`](../../capabilities/evidence/T11-metadata-outlines-destinations-attachments.md)
+- Certified platforms: none
+
+### Native Interface mapping
+
+- `destinations-command`: `net.zerocloud.pdf.command.SetNamedDestinations`
+- `destinations-query`: `net.zerocloud.pdf.query.NamedDestinations`
+- `embed-command`: `net.zerocloud.pdf.command.EmbedFile`
+- `embedded-file`: `net.zerocloud.pdf.EmbeddedFile`
+- `embedded-file-data`: `net.zerocloud.pdf.EmbeddedFileData`
+- `embedded-file-summary`: `net.zerocloud.pdf.EmbeddedFileSummary`
+- `embedded-files-query`: `net.zerocloud.pdf.query.EmbeddedFiles`
+- `entry-point`: `net.zerocloud.pdf.DocumentWorkflow#execute`
+- `failure`: `net.zerocloud.pdf.DocumentFailure`
+- `failure-code`: `net.zerocloud.pdf.DocumentFailureCode`
+- `info-command`: `net.zerocloud.pdf.command.UpdateDocumentInfo`
+- `info-query`: `net.zerocloud.pdf.query.DocumentInfo`
+- `outline-command`: `net.zerocloud.pdf.command.ReplaceOutlineTree`
+- `outline-item`: `net.zerocloud.pdf.OutlineItem`
+- `outline-query`: `net.zerocloud.pdf.query.OutlineTree`
+- `page-destination`: `net.zerocloud.pdf.PageDestination`
+- `read-embedded-file-query`: `net.zerocloud.pdf.query.ReadEmbeddedFile`
+- `xmp-command`: `net.zerocloud.pdf.command.SetXmpMetadata`
+- `xmp-query`: `net.zerocloud.pdf.query.XmpMetadata`
+
+### Migration Facade coverage
+
+- Stable: none
+- Preview: none
+- Explicit exclusion: [`T11`](facade-surface.md#excluded-capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments) — T11 is a Native Interface metadata, outline, destination, and attachment seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+
+### Gates and limitations
+
+- Dependency Gate: [`document.value.inspect-patch`](#capability-document_dot_value_dot_inspect_dash_patch) must be `compatible`
+- Promotion gate `T06`: Complete the independent acceptance evidence required before compatibility.
+- Limitation: T11 operates in REWRITE workflows; INCREMENTAL remains SAVE_MODE_UNSUPPORTED, and signed-document recognition, DocMDP decisions, and signature-safe changes remain T15.
+- Limitation: Outlines are written all-open with positive visible-item counts, and name trees are written as one flat array sorted by unsigned encoded key-byte order; richer tree shapes are read only when they satisfy the proven safe invariants, and are otherwise preserved intact or rejected with PRESERVATION_UNSUPPORTED.
+- Limitation: A page removal that would orphan a managed destination fails with DESTINATION_CONFLICT before mutation; destinations that target pages outside a split selection are dropped from that product, and merge renames colliding destination and embedded-file names with a deterministic -N suffix.
+- Limitation: Inspection and payload bounds are explicit per-query limits failing with METADATA_LIMIT_EXCEEDED; XMP command packets must be well-formed XML carrying the XMP root marker within a 64 MiB bound, and embedded-file MIME subtypes are restricted to printable ASCII; comprehensive hostile-input object, depth, decompression, memory, time, and concurrency enforcement remains T20, and the Hardened Worker Profile and its codecs remain T21.
+- Limitation: Annotation and action management remains T12, content extraction remains T13 and T14, and encryption remains T16.
+
+### Evidence
+
+Implementation evidence:
+
+- `metadata-workflow-consumer-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/consumer/DocumentMetadataWorkflowTest.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/consumer/DocumentMetadataWorkflowTest.java) — Public workflows round-trip document information, bounded XMP packets, outline trees, name-tree destinations, and embedded files through REWRITE and reopen; follow page identity through move, copy, merge, and split; reject destination-orphaning removals with DESTINATION_CONFLICT; reject malformed trees, streams, specifications, and packets with stable safe failures; enforce per-query bounds with METADATA_LIMIT_EXCEEDED; and keep the T10 preflight rejections attributed to the page capability.
+- `public-api-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/contract/PublicApiLeakageIT.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/contract/PublicApiLeakageIT.java) — Public and protected signatures, including every T11 command, query, and value type, contain no PDFBox types.
+- `artifact-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/contract/JarContractIT.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/contract/JarContractIT.java) — The jar retains its stable module name, Java 8 class-file version, notices, and unbundled backend.
+- `cross-jdk-contract`: [`scripts/verify-jdk-matrix.sh`](../../scripts/verify-jdk-matrix.sh) — Maven verification runs the T11 public workflow contract on JDK 8, 11, 17, and 21.
+
+Acceptance Evidence:
+
+- `syntax`: `pass` — [`capabilities/evidence/T11-metadata-outlines-destinations-attachments-syntax.md`](../../capabilities/evidence/T11-metadata-outlines-destinations-attachments-syntax.md); producer `qpdf@12.4.0` (`external-tool`)
+
+Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T11 metadata-outlines-destinations-attachments record`.
+
 <a id="capability-document_dot_page_dot_manipulate_dash_merge_dash_split"></a>
 ## `document.page.manipulate-merge-split`
 
@@ -189,7 +257,7 @@ Insert, remove, move, and copy pages; append ordered named Sources; and publish 
 - Dependency Gate: [`document.blank.create-publish-reopen`](#capability-document_dot_blank_dot_create_dash_publish_dash_reopen) must be `compatible`
 - Promotion gate `T06`: Complete the independent acceptance evidence required before compatibility.
 - Limitation: T10 operates in REWRITE workflows; INCREMENTAL remains SAVE_MODE_UNSUPPORTED, and signed-document recognition, DocMDP decisions, and signature-safe changes remain T15.
-- Limitation: Page operations preserve tested inherited boxes, rotation, resources, basic Text annotations, and content when copied or reparented. Before mutation, T10 rejects nonstructural trailer data, nonempty document information, catalogs or page-tree nodes with unproven entries, inconsistent page-tree parents, counts, cycles, repeated nodes, or any direct input page-tree node, missing effective media boxes, malformed box, rotation, or resource entries, resource graphs that reach page or page-tree structures, nested content arrays, external-file content streams, filtered content streams unless they use one parameter-free FlateDecode or Fl filter with a strictly valid zlib payload, content streams with non-engine metadata, unproven indirect page extensions, separation information, links, widgets, annotation relationships or actions, tagged-page references, and thread beads; metadata, outlines, destinations, attachments, forms, tagged structure, and action management remain downstream capability slices.
+- Limitation: Page operations preserve tested inherited boxes, rotation, resources, basic Text annotations, and content when copied or reparented. Before mutation, T10 rejects nonstructural trailer data, nonempty document information, catalogs or page-tree nodes with unproven entries, inconsistent page-tree parents, counts, cycles, repeated nodes, or any direct input page-tree node, missing effective media boxes, malformed box, rotation, or resource entries, resource graphs that reach page or page-tree structures, nested content arrays, external-file content streams, filtered content streams unless they use one parameter-free FlateDecode or Fl filter with a strictly valid zlib payload, content streams with non-engine metadata, unproven indirect page extensions, separation information, links, widgets, annotation relationships or actions, tagged-page references, and thread beads. Managed document information, XMP metadata, outlines, named destinations, and embedded files are validated, preserved, and retargeted by the document.metadata.outlines-destinations-attachments capability; forms, tagged structure, and annotation action management remain downstream capability slices.
 - Limitation: Copy, merge, and split preserve semantic page graphs, not source byte layout or backend object identity. Object References are Session-local; public reopen-and-rewrite probes demonstrate that changing an imported content graph leaves its Source and sibling products unchanged.
 - Limitation: T10 validates command ranges, positions, named merge Sources, and exact split Target coverage. A successful SplitDocument is terminal for Document Commands in that workflow; comprehensive hostile-input page, object, depth, decompression, memory, time, and concurrency enforcement remains T20.
 - Limitation: T10 runs only through the trusted in-process adapter; the Hardened Worker Profile and its command and query codecs remain T21.

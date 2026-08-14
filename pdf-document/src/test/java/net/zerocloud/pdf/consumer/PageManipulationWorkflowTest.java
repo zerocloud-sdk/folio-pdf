@@ -56,6 +56,7 @@ import net.zerocloud.pdf.command.MergeDocuments;
 import net.zerocloud.pdf.command.MovePages;
 import net.zerocloud.pdf.command.RemovePages;
 import net.zerocloud.pdf.command.SplitDocument;
+import net.zerocloud.pdf.query.DocumentInfo;
 import net.zerocloud.pdf.query.DocumentRootReference;
 import net.zerocloud.pdf.query.InspectObject;
 import net.zerocloud.pdf.query.PageCount;
@@ -440,16 +441,26 @@ public final class PageManipulationWorkflowTest {
     public void pageMutationRejectsUnprovenCatalogAndPageStructures()
             throws Exception {
         assertUnsupportedStructureRejected(
-                "outlines",
+                "outlines-malformed",
                 true,
                 PdfName.of("Outlines"),
                 PdfDictionary.builder()
                         .put(PdfName.of("Type"), PdfName.of("Outlines"))
+                        .put(PdfName.of("Count"), PdfNumber.of(1L))
                         .build());
         assertUnsupportedStructureRejected(
-                "names",
+                "names-unknown-subtree",
                 true,
                 PdfName.of("Names"),
+                PdfDictionary.builder()
+                        .put(
+                                PdfName.of("JavaScript"),
+                                PdfDictionary.builder().build())
+                        .build());
+        assertUnsupportedStructureRejected(
+                "catalog-dests",
+                true,
+                PdfName.of("Dests"),
                 PdfDictionary.builder().build());
         assertUnsupportedStructureRejected(
                 "forms",
@@ -1007,6 +1018,9 @@ public final class PageManipulationWorkflowTest {
                                     .put(
                                             PdfName.of("Type"),
                                             PdfName.of("Outlines"))
+                                    .put(
+                                            PdfName.of("Count"),
+                                            PdfNumber.of(1L))
                                     .build())
                     .build());
             return null;
@@ -1235,12 +1249,12 @@ public final class PageManipulationWorkflowTest {
     }
 
     @Test
-    public void mergeRejectsDocumentInformationFromAnAdditionalSource()
+    public void mergePreservesDocumentInformationFromAdditionalSources()
             throws Exception {
         Path primary = temporaryFolder.getRoot().toPath().resolve("primary.pdf");
         Path output = temporaryFolder.getRoot().toPath().resolve(
-                "metadata-merge-unchanged.pdf");
-        createTaggedDocument(primary, "primary");
+                "metadata-merged.pdf");
+        Files.write(primary, primaryDocumentInformationFixture());
         byte[] appendix = documentInformationFixture();
 
         WorkflowRequest request = WorkflowRequest.builder()
@@ -1253,14 +1267,35 @@ public final class PageManipulationWorkflowTest {
                 .saveMode(SaveMode.REWRITE)
                 .build();
         new DocumentWorkflow().execute(request, session -> {
-            assertPreservationRejected(() -> session.execute(
-                    MergeDocuments.version1("appendix")));
+            session.execute(MergeDocuments.version1("appendix"));
             return null;
         });
 
-        assertEquals(
-                Arrays.<PdfValue>asList(PdfName.of("primary")),
-                readPageMarkers(output));
+        new DocumentWorkflow().execute(
+                WorkflowRequest.builder()
+                        .source("input", DocumentSource.path(output))
+                        .primarySource("input")
+                        .saveMode(SaveMode.REWRITE)
+                        .build(),
+                session -> {
+                    assertEquals(
+                            Integer.valueOf(2),
+                            session.query(PageCount.INSTANCE));
+                    PdfDictionary info = session.query(DocumentInfo.INSTANCE);
+                    assertEquals(
+                            PdfString.of("Primary".getBytes(
+                                    StandardCharsets.ISO_8859_1)),
+                            info.get(PdfName.of("Author")));
+                    assertEquals(
+                            PdfString.of("primary wins".getBytes(
+                                    StandardCharsets.ISO_8859_1)),
+                            info.get(PdfName.of("T11Shared")));
+                    assertEquals(
+                            PdfString.of("from source".getBytes(
+                                    StandardCharsets.ISO_8859_1)),
+                            info.get(PdfName.of("T11Note")));
+                    return null;
+                });
     }
 
     @Test
@@ -2288,7 +2323,17 @@ public final class PageManipulationWorkflowTest {
                 "<< /Type /Pages /Kids [3 0 R] /Count 1 "
                         + "/MediaBox [0 0 612 792] >>",
                 "<< /Type /Page /Parent 2 0 R >>",
-                "<< /Author (T11 metadata must not be merged) >>");
+                "<< /Author (Source) /T11Note (from source) >>");
+        return pdfFixture(objects, " /Info 4 0 R");
+    }
+
+    private static byte[] primaryDocumentInformationFixture() {
+        List<String> objects = Arrays.asList(
+                "<< /Type /Catalog /Pages 2 0 R >>",
+                "<< /Type /Pages /Kids [3 0 R] /Count 1 "
+                        + "/MediaBox [0 0 612 792] >>",
+                "<< /Type /Page /Parent 2 0 R >>",
+                "<< /Author (Primary) /T11Shared (primary wins) >>");
         return pdfFixture(objects, " /Info 4 0 R");
     }
 

@@ -48,6 +48,12 @@ public enum DocumentFailureCode {
     /** A page operation cannot prove that sensitive structures will survive. */
     PRESERVATION_UNSUPPORTED,
 
+    /** A page removal conflicts with an existing managed destination. */
+    DESTINATION_CONFLICT,
+
+    /** A caller-declared metadata traversal or byte bound was exhausted. */
+    METADATA_LIMIT_EXCEEDED,
+
     /** A lazy PDF Value view was used after its Document Session ended. */
     PDF_VALUE_VIEW_EXPIRED,
 

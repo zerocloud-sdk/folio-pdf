@@ -135,6 +135,43 @@ public final class AcceptanceEvidenceCommandTest {
                 "T10-page-manipulation-front.pdf` exit code: `0`"));
         assertTrue(t10Findings.contains(
                 "T10-page-manipulation-back.pdf` exit code: `0`"));
+
+        Path t11Front = output.resolve(
+                "artifacts/T11-metadata-front.pdf");
+        Path t11Back = output.resolve(
+                "artifacts/T11-metadata-back.pdf");
+        assertTrue(Files.isRegularFile(t11Front));
+        assertTrue(Files.isRegularFile(t11Back));
+        assertTrue(Files.size(t11Front) > 0L);
+        assertTrue(Files.size(t11Back) > 0L);
+
+        String t11Syntax = readT11Syntax(output);
+        assertMetadata(
+                t11Syntax,
+                "Capability",
+                "document.metadata.outlines-destinations-attachments");
+        assertMetadata(
+                t11Syntax,
+                "Acceptance Profile",
+                "T11-metadata-outlines-destinations-attachments");
+        assertMetadata(t11Syntax, "Chain", "syntax");
+        assertMetadata(t11Syntax, "Result", "pass");
+        assertMetadata(t11Syntax, "Producer kind", "external-tool");
+        assertMetadata(t11Syntax, "Producer", "qpdf");
+        assertMetadata(t11Syntax, "Producer version", "12.4.0");
+        assertTrue(t11Syntax.contains(
+                "artifacts/T11-metadata-front.pdf"));
+        assertTrue(t11Syntax.contains(
+                "artifacts/T11-metadata-back.pdf"));
+        assertTrue(t11Syntax.contains(
+                "artifacts/T11-metadata-outlines-destinations-attachments-qpdf.txt"));
+
+        String t11Findings = read(output.resolve(
+                "artifacts/T11-metadata-outlines-destinations-attachments-qpdf.txt"));
+        assertTrue(t11Findings.contains(
+                "T11-metadata-front.pdf` exit code: `0`"));
+        assertTrue(t11Findings.contains(
+                "T11-metadata-back.pdf` exit code: `0`"));
     }
 
     @Test
@@ -189,6 +226,11 @@ public final class AcceptanceEvidenceCommandTest {
         assertMetadata(t10Syntax, "Producer version", "unavailable");
         assertTrue(t10Syntax.contains("The pinned qpdf tool was unavailable."));
         assertTrue(!t10Syntax.contains("Result: `pass`"));
+        String t11Syntax = readT11Syntax(output);
+        assertMetadata(t11Syntax, "Result", "indeterminate");
+        assertMetadata(t11Syntax, "Producer version", "unavailable");
+        assertTrue(t11Syntax.contains("The pinned qpdf tool was unavailable."));
+        assertTrue(!t11Syntax.contains("Result: `pass`"));
     }
 
     @Test
@@ -215,6 +257,11 @@ public final class AcceptanceEvidenceCommandTest {
         assertMetadata(t10Syntax, "Result", "indeterminate");
         assertMetadata(t10Syntax, "Producer version", "12.3.2");
         assertTrue(t10Syntax.contains(
+                "Expected pinned qpdf version `12.4.0`; observed `12.3.2`."));
+        String t11Syntax = readT11Syntax(output);
+        assertMetadata(t11Syntax, "Result", "indeterminate");
+        assertMetadata(t11Syntax, "Producer version", "12.3.2");
+        assertTrue(t11Syntax.contains(
                 "Expected pinned qpdf version `12.4.0`; observed `12.3.2`."));
     }
 
@@ -246,6 +293,10 @@ public final class AcceptanceEvidenceCommandTest {
         assertMetadata(t10Syntax, "Result", "fail");
         assertTrue(t10Syntax.contains(
                 "qpdf reported warnings or errors for a T10 product."));
+        String t11Syntax = readT11Syntax(output);
+        assertMetadata(t11Syntax, "Result", "fail");
+        assertTrue(t11Syntax.contains(
+                "qpdf reported warnings or errors for a T11 product."));
     }
 
     @Test
@@ -269,6 +320,7 @@ public final class AcceptanceEvidenceCommandTest {
                 "T06-document-blank-determination.md"));
         assertTrue(determination.contains("Final determination: `fail`"));
         assertMetadata(readT10Syntax(output), "Result", "fail");
+        assertMetadata(readT11Syntax(output), "Result", "fail");
     }
 
     @Test
@@ -299,6 +351,10 @@ public final class AcceptanceEvidenceCommandTest {
         assertMetadata(t10Syntax, "Result", "indeterminate");
         assertTrue(t10Syntax.contains(
                 "qpdf returned an undocumented status for a T10 product."));
+        String t11Syntax = readT11Syntax(output);
+        assertMetadata(t11Syntax, "Result", "indeterminate");
+        assertTrue(t11Syntax.contains(
+                "qpdf returned an undocumented status for a T11 product."));
     }
 
     @Test
@@ -529,6 +585,11 @@ public final class AcceptanceEvidenceCommandTest {
     private static String readT10Syntax(Path output) throws IOException {
         return read(output.resolve(
                 "T10-page-manipulation-merge-split-syntax.md"));
+    }
+
+    private static String readT11Syntax(Path output) throws IOException {
+        return read(output.resolve(
+                "T11-metadata-outlines-destinations-attachments-syntax.md"));
     }
 
     private static String read(Path path) throws IOException {

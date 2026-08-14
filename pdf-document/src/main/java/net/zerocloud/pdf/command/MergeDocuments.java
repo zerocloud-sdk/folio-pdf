@@ -10,6 +10,11 @@ import net.zerocloud.pdf.DocumentCommand;
  * Appends complete named non-primary Sources to the current document in the
  * declared command order.
  *
+ * <p>Source pages are appended before the managed document metadata is
+ * merged; a backend input/output failure in that final metadata step can
+ * therefore leave the appended pages in the document even though the command
+ * fails. Structural rejections are always evaluated before any mutation.</p>
+ *
  * @since 0.1.0
  */
 public final class MergeDocuments implements DocumentCommand {

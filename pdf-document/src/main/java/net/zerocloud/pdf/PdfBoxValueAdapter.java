@@ -515,7 +515,7 @@ final class PdfBoxValueAdapter {
         return converted;
     }
 
-    private static BigDecimal serializedNumber(COSFloat number)
+    static BigDecimal serializedNumber(COSFloat number)
             throws IOException {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         number.writePDF(bytes);

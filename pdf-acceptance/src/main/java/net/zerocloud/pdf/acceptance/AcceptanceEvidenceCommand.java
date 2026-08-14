@@ -11,24 +11,35 @@ import java.nio.file.StandardOpenOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import net.zerocloud.pdf.DocumentSource;
 import net.zerocloud.pdf.DocumentWorkflow;
+import net.zerocloud.pdf.EmbeddedFile;
+import net.zerocloud.pdf.OutlineItem;
+import net.zerocloud.pdf.PageDestination;
 import net.zerocloud.pdf.PageRange;
+import net.zerocloud.pdf.PdfString;
 import net.zerocloud.pdf.PublicationTarget;
 import net.zerocloud.pdf.SaveMode;
 import net.zerocloud.pdf.WorkflowOutcome;
 import net.zerocloud.pdf.WorkflowRequest;
 import net.zerocloud.pdf.command.AddBlankPage;
 import net.zerocloud.pdf.command.CopyPages;
+import net.zerocloud.pdf.command.EmbedFile;
 import net.zerocloud.pdf.command.InsertBlankPage;
 import net.zerocloud.pdf.command.MergeDocuments;
 import net.zerocloud.pdf.command.MovePages;
 import net.zerocloud.pdf.command.RemovePages;
+import net.zerocloud.pdf.command.ReplaceOutlineTree;
+import net.zerocloud.pdf.command.SetNamedDestinations;
+import net.zerocloud.pdf.command.SetXmpMetadata;
 import net.zerocloud.pdf.command.SplitDocument;
+import net.zerocloud.pdf.command.UpdateDocumentInfo;
 
 /**
- * Repository-only command that records T06 evidence and the T10 syntax chain.
+ * Repository-only command that records T06 evidence and the T10 and T11
+ * syntax chains.
  */
 public final class AcceptanceEvidenceCommand {
 
@@ -51,12 +62,24 @@ public final class AcceptanceEvidenceCommand {
             "T10-page-manipulation-back.pdf";
     private static final String T10_QPDF_FINDINGS =
             "T10-page-manipulation-merge-split-qpdf.txt";
+    private static final String T11_CAPABILITY =
+            "document.metadata.outlines-destinations-attachments";
+    private static final String T11_ACCEPTANCE_PROFILE =
+            "T11-metadata-outlines-destinations-attachments";
+    private static final String T11_PROFILE_RECORD =
+            "capabilities/evidence/T11-metadata-outlines-destinations-attachments.md";
+    private static final String T11_FRONT_ARTIFACT =
+            "T11-metadata-front.pdf";
+    private static final String T11_BACK_ARTIFACT =
+            "T11-metadata-back.pdf";
+    private static final String T11_QPDF_FINDINGS =
+            "T11-metadata-outlines-destinations-attachments-qpdf.txt";
 
     private AcceptanceEvidenceCommand() {
     }
 
     /**
-     * Runs the built-in T06 profile and T10 syntax chain.
+     * Runs the built-in T06 profile and the T10 and T11 syntax chains.
      *
      * @param arguments output directory, qpdf executable, and Release Train
      * @throws Exception if the evidence run cannot be completed
@@ -141,7 +164,44 @@ public final class AcceptanceEvidenceCommand {
                 determinationRecord(inputHash, releaseTrain, syntaxResult,
                         semantic.result(), profileDetermination));
 
-        EvidenceResult t10Syntax = recordT10Syntax(
+        EvidenceResult t10Syntax = recordProductSyntax(
+                new ProductChain(
+                        "T10",
+                        T10_CAPABILITY,
+                        T10_ACCEPTANCE_PROFILE,
+                        T10_PROFILE_RECORD,
+                        T10_FRONT_ARTIFACT,
+                        T10_BACK_ARTIFACT,
+                        T10_QPDF_FINDINGS,
+                        "T10-page-manipulation-merge-split-syntax.md"),
+                new ProductCreator() {
+                    @Override
+                    public void create(Path front, Path back) throws Exception {
+                        createT10Products(front, back);
+                    }
+                },
+                output,
+                artifacts,
+                qpdf,
+                qpdfPin,
+                releaseTrain);
+
+        EvidenceResult t11Syntax = recordProductSyntax(
+                new ProductChain(
+                        "T11",
+                        T11_CAPABILITY,
+                        T11_ACCEPTANCE_PROFILE,
+                        T11_PROFILE_RECORD,
+                        T11_FRONT_ARTIFACT,
+                        T11_BACK_ARTIFACT,
+                        T11_QPDF_FINDINGS,
+                        "T11-metadata-outlines-destinations-attachments-syntax.md"),
+                new ProductCreator() {
+                    @Override
+                    public void create(Path front, Path back) throws Exception {
+                        createT11Products(front, back);
+                    }
+                },
                 output,
                 artifacts,
                 qpdf,
@@ -151,17 +211,56 @@ public final class AcceptanceEvidenceCommand {
         System.out.println("Acceptance Profile determination: "
                 + profileDetermination.recordValue());
         System.out.println("T10 syntax chain: " + t10Syntax.recordValue());
+        System.out.println("T11 syntax chain: " + t11Syntax.recordValue());
     }
 
-    private static EvidenceResult recordT10Syntax(
+    private interface ProductCreator {
+
+        void create(Path front, Path back) throws Exception;
+    }
+
+    private static final class ProductChain {
+
+        private final String label;
+        private final String capability;
+        private final String acceptanceProfile;
+        private final String profileRecord;
+        private final String frontArtifact;
+        private final String backArtifact;
+        private final String qpdfFindings;
+        private final String syntaxRecord;
+
+        ProductChain(
+                String label,
+                String capability,
+                String acceptanceProfile,
+                String profileRecord,
+                String frontArtifact,
+                String backArtifact,
+                String qpdfFindings,
+                String syntaxRecord) {
+            this.label = label;
+            this.capability = capability;
+            this.acceptanceProfile = acceptanceProfile;
+            this.profileRecord = profileRecord;
+            this.frontArtifact = frontArtifact;
+            this.backArtifact = backArtifact;
+            this.qpdfFindings = qpdfFindings;
+            this.syntaxRecord = syntaxRecord;
+        }
+    }
+
+    private static EvidenceResult recordProductSyntax(
+            ProductChain chain,
+            ProductCreator creator,
             Path output,
             Path artifacts,
             Path qpdf,
             QpdfPin qpdfPin,
             String releaseTrain) throws Exception {
-        Path front = artifacts.resolve(T10_FRONT_ARTIFACT);
-        Path back = artifacts.resolve(T10_BACK_ARTIFACT);
-        createT10Products(front, back);
+        Path front = artifacts.resolve(chain.frontArtifact);
+        Path back = artifacts.resolve(chain.backArtifact);
+        creator.create(front, back);
         String frontHash = sha256(front);
         String backHash = sha256(back);
         String inputSetHash = sha256(frontHash + "\n" + backHash);
@@ -178,24 +277,27 @@ public final class AcceptanceEvidenceCommand {
                 result = EvidenceResult.INDETERMINATE;
                 finding = "Expected pinned qpdf version `" + qpdfPin.version()
                         + "`; observed `" + observedVersion + "`.";
-                findings = t10IndeterminateToolFindings(
+                findings = productIndeterminateToolFindings(
+                        chain,
                         inputSetHash,
                         observedVersion,
                         finding,
                         qpdfPin);
             } else {
-                List<T10QpdfResult> checks = new ArrayList<T10QpdfResult>(2);
-                checks.add(new T10QpdfResult(
-                        T10_FRONT_ARTIFACT,
+                List<ProductQpdfResult> checks =
+                        new ArrayList<ProductQpdfResult>(2);
+                checks.add(new ProductQpdfResult(
+                        chain.frontArtifact,
                         frontHash,
-                        run(qpdf, artifacts, "--check", T10_FRONT_ARTIFACT)));
-                checks.add(new T10QpdfResult(
-                        T10_BACK_ARTIFACT,
+                        run(qpdf, artifacts, "--check", chain.frontArtifact)));
+                checks.add(new ProductQpdfResult(
+                        chain.backArtifact,
                         backHash,
-                        run(qpdf, artifacts, "--check", T10_BACK_ARTIFACT)));
+                        run(qpdf, artifacts, "--check", chain.backArtifact)));
                 result = aggregateQpdfResults(checks);
-                finding = t10SyntaxFinding(result);
-                findings = t10QpdfFindings(
+                finding = productSyntaxFinding(chain, result);
+                findings = productQpdfFindings(
+                        chain,
                         inputSetHash,
                         checks,
                         result,
@@ -205,16 +307,18 @@ public final class AcceptanceEvidenceCommand {
             result = EvidenceResult.INDETERMINATE;
             observedVersion = "unavailable";
             finding = "The pinned qpdf tool was unavailable.";
-            findings = t10IndeterminateToolFindings(
+            findings = productIndeterminateToolFindings(
+                    chain,
                     inputSetHash,
                     observedVersion,
                     finding,
                     qpdfPin);
         }
 
-        write(artifacts.resolve(T10_QPDF_FINDINGS), findings);
-        write(output.resolve("T10-page-manipulation-merge-split-syntax.md"),
-                t10SyntaxRecord(
+        write(artifacts.resolve(chain.qpdfFindings), findings);
+        write(output.resolve(chain.syntaxRecord),
+                productSyntaxRecord(
+                        chain,
                         inputSetHash,
                         releaseTrain,
                         observedVersion,
@@ -269,10 +373,119 @@ public final class AcceptanceEvidenceCommand {
         return output.toByteArray();
     }
 
+    private static void createT11Products(Path front, Path back)
+            throws Exception {
+        byte[] primary = t11PrimarySource();
+        byte[] appendix = t11AppendixSource();
+        WorkflowRequest request = WorkflowRequest.builder()
+                .source(
+                        "primary",
+                        DocumentSource.bytes(primary, primary.length))
+                .source(
+                        "appendix",
+                        DocumentSource.bytes(appendix, appendix.length))
+                .primarySource("primary")
+                .target("front", PublicationTarget.path(front))
+                .target("back", PublicationTarget.path(back))
+                .saveMode(SaveMode.REWRITE)
+                .build();
+        new DocumentWorkflow().execute(request, session -> {
+            session.execute(MergeDocuments.version1("appendix"));
+            session.execute(SplitDocument.version1()
+                    .target("front", PageRange.of(1, 2))
+                    .target("back", PageRange.of(3, 5))
+                    .build());
+            return null;
+        });
+    }
+
+    private static byte[] t11PrimarySource() throws Exception {
+        byte[] blank = blankDocument(3);
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        WorkflowRequest request = WorkflowRequest.builder()
+                .source("input", DocumentSource.bytes(blank, blank.length))
+                .primarySource("input")
+                .target("output", PublicationTarget.stream(output))
+                .saveMode(SaveMode.REWRITE)
+                .build();
+        new DocumentWorkflow().execute(request, session -> {
+            session.execute(SetNamedDestinations.version1()
+                    .set("chapter-one", PageDestination.fit(1))
+                    .set("chapter-two", PageDestination.fit(2))
+                    .set("chapter-three", PageDestination.fit(3))
+                    .build());
+            session.execute(UpdateDocumentInfo.version1()
+                    .set("Author", PdfString.of(
+                            "T11 Primary".getBytes(StandardCharsets.UTF_8)))
+                    .build());
+            session.execute(SetXmpMetadata.version1(
+                    t11XmpPacket("t11-primary-xmp")));
+            session.execute(EmbedFile.version1(EmbeddedFile.version1(
+                    "notes.txt",
+                    "primary-notes".getBytes(StandardCharsets.UTF_8))));
+            session.execute(ReplaceOutlineTree.version1(Arrays.asList(
+                    OutlineItem.toPage(
+                            "Part One",
+                            PageDestination.fit(1),
+                            Arrays.<OutlineItem>asList()),
+                    OutlineItem.toPage(
+                            "Part Two",
+                            PageDestination.fit(3),
+                            Arrays.<OutlineItem>asList()))));
+            return null;
+        });
+        return output.toByteArray();
+    }
+
+    private static byte[] t11AppendixSource() throws Exception {
+        byte[] blank = blankDocument(2);
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        WorkflowRequest request = WorkflowRequest.builder()
+                .source("input", DocumentSource.bytes(blank, blank.length))
+                .primarySource("input")
+                .target("output", PublicationTarget.stream(output))
+                .saveMode(SaveMode.REWRITE)
+                .build();
+        new DocumentWorkflow().execute(request, session -> {
+            session.execute(SetNamedDestinations.version1()
+                    .set("chapter-one", PageDestination.fit(1))
+                    .set("appendix-local", PageDestination.fit(2))
+                    .build());
+            session.execute(UpdateDocumentInfo.version1()
+                    .set("Author", PdfString.of(
+                            "T11 Appendix".getBytes(StandardCharsets.UTF_8)))
+                    .set("T11Note", PdfString.of(
+                            "from appendix".getBytes(StandardCharsets.UTF_8)))
+                    .build());
+            session.execute(SetXmpMetadata.version1(
+                    t11XmpPacket("t11-appendix-xmp")));
+            session.execute(EmbedFile.version1(EmbeddedFile.version1(
+                    "notes.txt",
+                    "appendix-notes".getBytes(StandardCharsets.UTF_8))));
+            session.execute(ReplaceOutlineTree.version1(Arrays.asList(
+                    OutlineItem.toPage(
+                            "Appendix",
+                            PageDestination.fit(2),
+                            Arrays.<OutlineItem>asList()))));
+            return null;
+        });
+        return output.toByteArray();
+    }
+
+    private static byte[] t11XmpPacket(String marker) {
+        return ("<?xpacket begin=\"﻿\" id=\"W5M0MpCehiHzreSzNTczkc9d\"?>\n"
+                + "<x:xmpmeta xmlns:x=\"adobe:ns:meta/\">\n"
+                + "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
+                + "<!-- " + marker + " -->\n"
+                + "</rdf:RDF>\n"
+                + "</x:xmpmeta>\n"
+                + "<?xpacket end=\"w\"?>").getBytes(StandardCharsets.UTF_8);
+    }
+
     private static EvidenceResult aggregateQpdfResults(
-            List<T10QpdfResult> checks) {
+            List<ProductQpdfResult> checks) {
         boolean indeterminate = false;
-        for (T10QpdfResult check : checks) {
+        for (ProductQpdfResult check : checks) {
             int exitCode = check.result.exitCode;
             if (exitCode == 2 || exitCode == 3) {
                 return EvidenceResult.FAIL;
@@ -286,27 +499,33 @@ public final class AcceptanceEvidenceCommand {
                 : EvidenceResult.PASS;
     }
 
-    private static String t10SyntaxFinding(EvidenceResult result) {
+    private static String productSyntaxFinding(
+            ProductChain chain,
+            EvidenceResult result) {
         if (result == EvidenceResult.PASS) {
-            return "qpdf completed `--check` for both T10 products with exit code `0`.";
+            return "qpdf completed `--check` for both " + chain.label
+                    + " products with exit code `0`.";
         }
         if (result == EvidenceResult.FAIL) {
-            return "qpdf reported warnings or errors for a T10 product.";
+            return "qpdf reported warnings or errors for a " + chain.label
+                    + " product.";
         }
-        return "qpdf returned an undocumented status for a T10 product.";
+        return "qpdf returned an undocumented status for a " + chain.label
+                + " product.";
     }
 
-    private static String t10SyntaxRecord(
+    private static String productSyntaxRecord(
+            ProductChain chain,
             String inputSetHash,
             String releaseTrain,
             String producerVersion,
             EvidenceResult result,
             String finding,
             QpdfPin qpdfPin) {
-        return "# T10 qpdf syntax evidence\n\n"
-                + metadata("Capability", T10_CAPABILITY)
-                + metadata("Acceptance Profile", T10_ACCEPTANCE_PROFILE)
-                + metadata("Profile record", T10_PROFILE_RECORD)
+        return "# " + chain.label + " qpdf syntax evidence\n\n"
+                + metadata("Capability", chain.capability)
+                + metadata("Acceptance Profile", chain.acceptanceProfile)
+                + metadata("Profile record", chain.profileRecord)
                 + metadata("Release train", releaseTrain)
                 + metadata("Chain", "syntax")
                 + metadata("Result", result.recordValue())
@@ -317,24 +536,26 @@ public final class AcceptanceEvidenceCommand {
                 + metadata("Input set SHA-256", inputSetHash)
                 + "Final determination: `" + result.recordValue() + "`\n\n"
                 + "## Findings and artifacts\n\n"
-                + "- Front product: [`artifacts/" + T10_FRONT_ARTIFACT
-                + "`](artifacts/" + T10_FRONT_ARTIFACT + ")\n"
-                + "- Back product: [`artifacts/" + T10_BACK_ARTIFACT
-                + "`](artifacts/" + T10_BACK_ARTIFACT + ")\n"
-                + "- qpdf findings: [`artifacts/" + T10_QPDF_FINDINGS
-                + "`](artifacts/" + T10_QPDF_FINDINGS + ")\n"
+                + "- Front product: [`artifacts/" + chain.frontArtifact
+                + "`](artifacts/" + chain.frontArtifact + ")\n"
+                + "- Back product: [`artifacts/" + chain.backArtifact
+                + "`](artifacts/" + chain.backArtifact + ")\n"
+                + "- qpdf findings: [`artifacts/" + chain.qpdfFindings
+                + "`](artifacts/" + chain.qpdfFindings + ")\n"
                 + "- " + finding + "\n\n"
                 + "This syntax chain does not establish PDF standards conformance. "
                 + "The mandatory standards, semantic, and visual chains remain absent.\n";
     }
 
-    private static String t10QpdfFindings(
+    private static String productQpdfFindings(
+            ProductChain chain,
             String inputSetHash,
-            List<T10QpdfResult> checks,
+            List<ProductQpdfResult> checks,
             EvidenceResult result,
             QpdfPin qpdfPin) {
         StringBuilder findings = new StringBuilder();
-        findings.append("# T10 qpdf syntax findings\n\n")
+        findings.append("# ").append(chain.label)
+                .append(" qpdf syntax findings\n\n")
                 .append(metadata("Input set SHA-256", inputSetHash))
                 .append(metadata("Tool", "qpdf"))
                 .append(metadata("Tool version", qpdfPin.version()))
@@ -342,7 +563,7 @@ public final class AcceptanceEvidenceCommand {
                 .append("Final determination: `")
                 .append(result.recordValue())
                 .append("`\n\n");
-        for (T10QpdfResult check : checks) {
+        for (ProductQpdfResult check : checks) {
             findings.append("## ").append(check.artifactName).append("\n\n")
                     .append(metadata("Input SHA-256", check.inputHash))
                     .append("Invocation: `qpdf --check ")
@@ -362,12 +583,13 @@ public final class AcceptanceEvidenceCommand {
         return findings.toString();
     }
 
-    private static String t10IndeterminateToolFindings(
+    private static String productIndeterminateToolFindings(
+            ProductChain chain,
             String inputSetHash,
             String observedVersion,
             String finding,
             QpdfPin qpdfPin) {
-        return "# T10 qpdf syntax findings\n\n"
+        return "# " + chain.label + " qpdf syntax findings\n\n"
                 + metadata("Input set SHA-256", inputSetHash)
                 + metadata("Tool", "qpdf")
                 + metadata("Tool version", observedVersion)
@@ -641,12 +863,12 @@ public final class AcceptanceEvidenceCommand {
         }
     }
 
-    private static final class T10QpdfResult {
+    private static final class ProductQpdfResult {
         private final String artifactName;
         private final String inputHash;
         private final ProcessResult result;
 
-        T10QpdfResult(
+        ProductQpdfResult(
                 String artifactName,
                 String inputHash,
                 ProcessResult result) {

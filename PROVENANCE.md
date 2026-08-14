@@ -301,5 +301,57 @@ documentation, and project-owned tests are the permitted design inputs.
   gate remain open, so the capability stays `experimental` with no certified-
   platform claim.
 
+## T11 metadata-outlines-destinations-attachments record
+
+- Authorship: OpenAI Codex generated and integrated the T11 implementation,
+  tests, inventories, and documentation at repository operator MaBaiqiu's
+  direction. This record accompanies the repository's one-ticket T11 commit.
+- Project inputs: GitHub issues #1 and #12, `CONTEXT.md`, ADR-0013, 0017, and
+  0019, the repository inventory contract, ISO 32000-2:2020 document catalog,
+  name tree, outline, file specification, and XMP clauses, and the accepted
+  T03, T09, and T10 public workflow seams and evidence.
+- Runtime and test dependencies: T11 adds no third-party dependency. Apache
+  PDFBox 3.0.8 remains the private Apache-2.0 implementation dependency, and
+  JUnit 4.13.2 remains the existing test dependency. The no-new-dependency
+  statement is recorded in [DEPENDENCIES.md](DEPENDENCIES.md).
+- Project-authored fixtures: T11 consumer tests construct their own raw
+  marker documents carrying document information entries, XMP packets, flat
+  name-tree destinations, outline trees with explicit and named destinations,
+  embedded-file specifications and streams, and malformed variants of each
+  structure, plus unproven catalog subtrees for the preservation rejection
+  matrix. Every command, query, conflict rejection, retarget, reopen, and
+  semantic assertion crosses `DocumentWorkflow.execute`; no externally
+  sourced fixture or product artifact is included.
+- Acceptance artifacts: the repository-owned acceptance command creates the
+  two checked-in T11 split products through every T11 Command applied across
+  a merge and split. The official pinned qpdf 12.4.0 distribution checked
+  both products with exit code 0; the syntax record retains their hashes,
+  invocations, and raw findings. This is syntax evidence only and makes no
+  standards-conformance claim.
+- Public implementation references: Apache PDFBox 3.0.8 source and Javadocs
+  were consulted for its public merge, split, name-tree, outline, metadata,
+  and embedded-file behavior. They were obtained from the official Maven
+  artifact and used only behind project-owned interfaces.
+- Generated documentation: `docs/generated/capability-matrix.md` and
+  `docs/generated/facade-surface.md` are deterministic renderings of the two
+  YAML authorities and contain no copied external content.
+- Excluded inputs: no iText source, resource, fixture, binary, decompiled or
+  binary-derived implementation detail, closed add-on material, proprietary
+  differential evidence, Reference Suite output, or external behavioral
+  oracle was used.
+- Scope: T11 adds version-1 document information, XMP metadata, named
+  destination, outline, and embedded-file commands and queries with
+  destination retargeting across the T10 page operations. It does not add T12
+  annotation or action management, T13 or T14 extraction, T15 incremental or
+  signed-document behavior, T16 encryption, T20 hostile-input policy, T21
+  Worker codecs, or a Migration Facade mapping. Structures outside the proven
+  safe invariants remain preserved intact or rejected with
+  `PRESERVATION_UNSUPPORTED`.
+- Compatibility Curator evidence: none; the role remains vacant. The T11
+  syntax chain passes, while standards, semantic, and visual Acceptance
+  Evidence remain absent. The value-inspection Dependency Gate and the T06
+  promotion gate remain open, so the capability stays `experimental` with no
+  certified-platform claim.
+
 Future changes append or update a scoped record and supply the pull-request
 provenance statement required by [CONTRIBUTING.md](CONTRIBUTING.md).

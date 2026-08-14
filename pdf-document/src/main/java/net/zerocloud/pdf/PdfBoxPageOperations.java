@@ -46,6 +46,7 @@ final class PdfBoxPageOperations {
     private final String primarySourceName;
     private final Map<String, PublicationTarget> publicationTargets;
     private final PdfBoxValueAdapter valueAdapter;
+    private final PdfBoxMetadataOperations metadataOperations;
     private Map<String, PDDocument> splitDocuments;
 
     PdfBoxPageOperations(
@@ -53,7 +54,8 @@ final class PdfBoxPageOperations {
             Map<String, DocumentSource> sources,
             String primarySourceName,
             Map<String, PublicationTarget> publicationTargets,
-            PdfBoxValueAdapter valueAdapter) {
+            PdfBoxValueAdapter valueAdapter,
+            PdfBoxMetadataOperations metadataOperations) {
         this.document = Objects.requireNonNull(document, "document");
         this.sources = Objects.requireNonNull(sources, "sources");
         this.primarySourceName = primarySourceName;
@@ -61,6 +63,9 @@ final class PdfBoxPageOperations {
                 publicationTargets,
                 "publicationTargets");
         this.valueAdapter = Objects.requireNonNull(valueAdapter, "valueAdapter");
+        this.metadataOperations = Objects.requireNonNull(
+                metadataOperations,
+                "metadataOperations");
         if (primarySourceName == null) {
             makeLibraryOwnedPageTreeIndirect(document);
         }
@@ -250,6 +255,13 @@ final class PdfBoxPageOperations {
         PageRange range = removal.getRange();
         requireRange(range);
         requirePreservable(document);
+        java.util.Set<Integer> removed = new java.util.HashSet<Integer>();
+        for (int pageNumber = range.getFirstPageNumber();
+                pageNumber <= range.getLastPageNumber();
+                pageNumber++) {
+            removed.add(Integer.valueOf(pageNumber - 1));
+        }
+        metadataOperations.requireNoDestinationConflict(document, removed);
         try {
             for (int pageNumber = range.getLastPageNumber();
                     pageNumber >= range.getFirstPageNumber();
@@ -312,6 +324,8 @@ final class PdfBoxPageOperations {
                 copy.getInsertionPageNumber(),
                 document.getNumberOfPages() + 1);
         requirePreservable(document);
+        boolean hadInfo = document.getDocument().getTrailer()
+                .getItem(COSName.INFO) != null;
         List<PDDocument> copiedDocuments = null;
         try {
             int originalPageCount = document.getNumberOfPages();
@@ -343,6 +357,9 @@ final class PdfBoxPageOperations {
             for (PDPage copiedPage : copiedPages) {
                 makeLibraryOwnedPageIndirect(copiedPage);
             }
+            if (!hadInfo) {
+                removeBackendCreatedInfo(document);
+            }
         } catch (IOException | RuntimeException backendFailure) {
             closeQuietly(copiedDocuments);
             throw failure(
@@ -365,21 +382,32 @@ final class PdfBoxPageOperations {
             throw invalidMergeSources();
         }
         requirePreservable(document);
+        boolean primaryHadInfo = document.getDocument().getTrailer()
+                .getItem(COSName.INFO) != null;
 
         List<PDDocument> mergeDocuments = new ArrayList<PDDocument>();
         try {
             PDDocument combinedSources = new PDDocument();
             mergeDocuments.add(combinedSources);
             PDFMergerUtility merger = new PDFMergerUtility();
+            List<PdfBoxMetadataOperations.MergedStructures> structures =
+                    new ArrayList<PdfBoxMetadataOperations.MergedStructures>();
             for (String sourceName : merge.getSourceNames()) {
                 PDDocument sourceDocument = openAdditionalSource(
                         sources.get(sourceName));
                 mergeDocuments.add(sourceDocument);
                 requirePreservable(sourceDocument);
+                structures.add(
+                        metadataOperations.extractAndStripManagedStructures(
+                                sourceDocument));
                 merger.appendDocument(combinedSources, sourceDocument);
             }
             int originalPageCount = document.getNumberOfPages();
             merger.appendDocument(document, combinedSources);
+            metadataOperations.applyMergedStructures(
+                    document,
+                    structures,
+                    primaryHadInfo);
             for (int index = originalPageCount;
                     index < document.getNumberOfPages();
                     index++) {
@@ -429,24 +457,65 @@ final class PdfBoxPageOperations {
             requireRange(range);
         }
         requirePreservable(document);
+        boolean hadInfo = document.getDocument().getTrailer()
+                .getItem(COSName.INFO) != null;
 
         Map<String, PDDocument> created =
                 new LinkedHashMap<String, PDDocument>();
         try {
+            PdfBoxMetadataOperations.MergedStructures snapshot =
+                    metadataOperations.snapshotManagedStructures(document);
             for (Map.Entry<String, PageRange> product
                     : split.getTargetRanges().entrySet()) {
                 List<PDDocument> documents = splitter(product.getValue())
                         .split(document);
                 PDDocument productDocument = documents.get(0);
                 created.put(product.getKey(), productDocument);
+                metadataOperations.retargetSplitStructures(
+                        productDocument,
+                        snapshot,
+                        splitMapping(
+                                document.getNumberOfPages(),
+                                product.getValue()));
                 makeLibraryOwnedPageTreeIndirect(productDocument);
             }
+            if (!hadInfo) {
+                removeBackendCreatedInfo(document);
+            }
             splitDocuments = created;
+        } catch (DocumentFailure splitFailure) {
+            closeQuietly(new ArrayList<PDDocument>(created.values()));
+            throw failure(
+                    splitFailure.getCode(),
+                    splitFailure.getDiagnostic());
         } catch (IOException | RuntimeException backendFailure) {
             closeQuietly(new ArrayList<PDDocument>(created.values()));
             throw failure(
                     DocumentFailureCode.DOCUMENT_WRITE_FAILED,
                     "The split products could not be created safely.");
+        }
+    }
+
+    private static int[] splitMapping(int pageCount, PageRange range) {
+        int[] mapping = new int[pageCount];
+        int position = 0;
+        for (int pageNumber = range.getFirstPageNumber();
+                pageNumber <= range.getLastPageNumber();
+                pageNumber++) {
+            mapping[pageNumber - 1] = ++position;
+        }
+        return mapping;
+    }
+
+    private static void removeBackendCreatedInfo(PDDocument candidate) {
+        COSBase infoValue = dereference(
+                candidate.getDocument().getTrailer().getItem(COSName.INFO));
+        if (infoValue instanceof COSDictionary
+                && ((COSDictionary) infoValue).size() == 0) {
+            // The backend's Splitter and merger attach an empty information
+            // dictionary to documents that declared none; drop it again so
+            // the trailer survives the page operation unchanged.
+            candidate.getDocument().getTrailer().removeItem(COSName.INFO);
         }
     }
 
@@ -557,14 +626,21 @@ final class PdfBoxPageOperations {
 
     private void requirePreservable(PDDocument candidate)
             throws DocumentFailure {
-        requireSafeTrailer(candidate.getDocument().getTrailer());
+        requireSafeTrailer(candidate);
         COSDictionary catalog = candidate.getDocumentCatalog().getCOSObject();
         for (COSName name : catalog.keySet()) {
             if (!COSName.TYPE.equals(name)
                     && !COSName.PAGES.equals(name)
-                    && !COSName.VERSION.equals(name)) {
+                    && !COSName.VERSION.equals(name)
+                    && !PdfBoxMetadataOperations.isManagedCatalogEntry(name)) {
                 throw preservationUnsupported();
             }
+        }
+        try {
+            metadataOperations.requireSafeCatalogStructures(candidate);
+            metadataOperations.requireSafeInfoPreservable(candidate);
+        } catch (DocumentFailure metadataStructure) {
+            throw preservationUnsupported();
         }
         requireSafePageTree(
                 catalog.getItem(COSName.PAGES),
@@ -576,6 +652,36 @@ final class PdfBoxPageOperations {
             requireSafeAnnotations(
                     dictionary,
                     dictionary.getItem(COSName.ANNOTS));
+        }
+    }
+
+    private static void requireSafeTrailer(PDDocument candidate)
+            throws DocumentFailure {
+        COSDictionary trailer = candidate.getDocument().getTrailer();
+        if (trailer == null) {
+            return;
+        }
+        for (COSName name : trailer.keySet()) {
+            if (!COSName.INFO.equals(name)
+                    && !isOneOf(
+                            name,
+                            "Size",
+                            "Prev",
+                            "Root",
+                            "ID",
+                            "XRefStm",
+                            "Type",
+                            "Index",
+                            "W",
+                            "Length",
+                            "Filter",
+                            "DecodeParms",
+                            "F",
+                            "FFilter",
+                            "FDecodeParms",
+                            "DL")) {
+                throw preservationUnsupported();
+            }
         }
     }
 
@@ -627,40 +733,6 @@ final class PdfBoxPageOperations {
         requireSafeRectangle(page, COSName.ART_BOX);
         requireEffectiveMediaBox(page);
         requireSafeContents(page.getItem(COSName.CONTENTS));
-    }
-
-    private static void requireSafeTrailer(COSDictionary trailer)
-            throws DocumentFailure {
-        if (trailer == null) {
-            return;
-        }
-        for (COSName name : trailer.keySet()) {
-            if (COSName.INFO.equals(name)) {
-                COSBase information = dereference(trailer.getItem(name));
-                if (!(information instanceof COSDictionary)
-                        || ((COSDictionary) information).size() != 0) {
-                    throw preservationUnsupported();
-                }
-            } else if (!isOneOf(
-                    name,
-                    "Size",
-                    "Prev",
-                    "Root",
-                    "ID",
-                    "XRefStm",
-                    "Type",
-                    "Index",
-                    "W",
-                    "Length",
-                    "Filter",
-                    "DecodeParms",
-                    "F",
-                    "FFilter",
-                    "FDecodeParms",
-                    "DL")) {
-                throw preservationUnsupported();
-            }
-        }
     }
 
     private static long requireSafePageTree(

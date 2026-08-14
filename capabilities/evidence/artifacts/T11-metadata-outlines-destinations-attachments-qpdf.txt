@@ -1,0 +1,62 @@
+# T11 qpdf syntax findings
+
+Input set SHA-256: `4465760eda668c84bf0507ab035588329fb9b9784b74afb377220362f2c808db`
+
+Tool: `qpdf`
+
+Tool version: `12.4.0`
+
+Distribution SHA-256: `a3bca240f3bb61efdc3a90be89d1da4ed5e125326c3458c4e62df53ff4f153e3`
+
+Final determination: `pass`
+
+## T11-metadata-front.pdf
+
+Input SHA-256: `d329459dc777034fa6a9d3fe1aeb46e34cf2290aa7fb2ad849fdf884b9cee43b`
+
+Invocation: `qpdf --check T11-metadata-front.pdf`
+
+`T11-metadata-front.pdf` exit code: `0`
+
+### Standard output
+
+```text
+checking T11-metadata-front.pdf
+PDF Version: 1.6
+File is not encrypted
+File is not linearized
+No syntax or stream encoding errors found; the file may still contain
+errors that qpdf cannot detect
+```
+
+### Standard error
+
+```text
+
+```
+
+## T11-metadata-back.pdf
+
+Input SHA-256: `7e750cfd5acb4dfaf3931151c3553387473953994f8b3731ef1257d0eca07d04`
+
+Invocation: `qpdf --check T11-metadata-back.pdf`
+
+`T11-metadata-back.pdf` exit code: `0`
+
+### Standard output
+
+```text
+checking T11-metadata-back.pdf
+PDF Version: 1.6
+File is not encrypted
+File is not linearized
+No syntax or stream encoding errors found; the file may still contain
+errors that qpdf cannot detect
+```
+
+### Standard error
+
+```text
+
+```
+

@@ -208,7 +208,7 @@ capabilities:
       preview: []
     limitations:
       - T10 operates in REWRITE workflows; INCREMENTAL remains SAVE_MODE_UNSUPPORTED, and signed-document recognition, DocMDP decisions, and signature-safe changes remain T15.
-      - Page operations preserve tested inherited boxes, rotation, resources, basic Text annotations, and content when copied or reparented. Before mutation, T10 rejects nonstructural trailer data, nonempty document information, catalogs or page-tree nodes with unproven entries, inconsistent page-tree parents, counts, cycles, repeated nodes, or any direct input page-tree node, missing effective media boxes, malformed box, rotation, or resource entries, resource graphs that reach page or page-tree structures, nested content arrays, external-file content streams, filtered content streams unless they use one parameter-free FlateDecode or Fl filter with a strictly valid zlib payload, content streams with non-engine metadata, unproven indirect page extensions, separation information, links, widgets, annotation relationships or actions, tagged-page references, and thread beads; metadata, outlines, destinations, attachments, forms, tagged structure, and action management remain downstream capability slices.
+      - Page operations preserve tested inherited boxes, rotation, resources, basic Text annotations, and content when copied or reparented. Before mutation, T10 rejects nonstructural trailer data, nonempty document information, catalogs or page-tree nodes with unproven entries, inconsistent page-tree parents, counts, cycles, repeated nodes, or any direct input page-tree node, missing effective media boxes, malformed box, rotation, or resource entries, resource graphs that reach page or page-tree structures, nested content arrays, external-file content streams, filtered content streams unless they use one parameter-free FlateDecode or Fl filter with a strictly valid zlib payload, content streams with non-engine metadata, unproven indirect page extensions, separation information, links, widgets, annotation relationships or actions, tagged-page references, and thread beads. Managed document information, XMP metadata, outlines, named destinations, and embedded files are validated, preserved, and retargeted by the document.metadata.outlines-destinations-attachments capability; forms, tagged structure, and annotation action management remain downstream capability slices.
       - Copy, merge, and split preserve semantic page graphs, not source byte layout or backend object identity. Object References are Session-local; public reopen-and-rewrite probes demonstrate that changing an imported content graph leaves its Source and sibling products unchanged.
       - T10 validates command ranges, positions, named merge Sources, and exact split Target coverage. A successful SplitDocument is terminal for Document Commands in that workflow; comprehensive hostile-input page, object, depth, decompression, memory, time, and concurrency enforcement remains T20.
       - T10 runs only through the trusted in-process adapter; the Hardened Worker Profile and its command and query codecs remain T21.
@@ -251,6 +251,83 @@ capabilities:
     provenance:
       path: PROVENANCE.md
       record: T10 page-manipulation-merge-split record
+    certified-platforms: []
+    status: experimental
+
+  - id: document.metadata.outlines-destinations-attachments
+    context: document-engine
+    summary: Read, create, update, and preserve document information, XMP metadata, outlines, named destinations, page destinations, and embedded files, with destination retargeting across page reorder, copy, merge, and split.
+    reference-suite:
+      source: iText Core 7.2.6 document information, XMP, outline, named destination, and embedded file surface
+      role: capability inventory only; not an implementation or behavioral oracle
+    native-interface:
+      entry-point: net.zerocloud.pdf.DocumentWorkflow#execute
+      page-destination: net.zerocloud.pdf.PageDestination
+      outline-item: net.zerocloud.pdf.OutlineItem
+      embedded-file: net.zerocloud.pdf.EmbeddedFile
+      embedded-file-summary: net.zerocloud.pdf.EmbeddedFileSummary
+      embedded-file-data: net.zerocloud.pdf.EmbeddedFileData
+      info-command: net.zerocloud.pdf.command.UpdateDocumentInfo
+      xmp-command: net.zerocloud.pdf.command.SetXmpMetadata
+      destinations-command: net.zerocloud.pdf.command.SetNamedDestinations
+      outline-command: net.zerocloud.pdf.command.ReplaceOutlineTree
+      embed-command: net.zerocloud.pdf.command.EmbedFile
+      info-query: net.zerocloud.pdf.query.DocumentInfo
+      xmp-query: net.zerocloud.pdf.query.XmpMetadata
+      destinations-query: net.zerocloud.pdf.query.NamedDestinations
+      outline-query: net.zerocloud.pdf.query.OutlineTree
+      embedded-files-query: net.zerocloud.pdf.query.EmbeddedFiles
+      read-embedded-file-query: net.zerocloud.pdf.query.ReadEmbeddedFile
+      failure: net.zerocloud.pdf.DocumentFailure
+      failure-code: net.zerocloud.pdf.DocumentFailureCode
+    migration-facade:
+      stable: []
+      preview: []
+    limitations:
+      - T11 operates in REWRITE workflows; INCREMENTAL remains SAVE_MODE_UNSUPPORTED, and signed-document recognition, DocMDP decisions, and signature-safe changes remain T15.
+      - Outlines are written all-open with positive visible-item counts, and name trees are written as one flat array sorted by unsigned encoded key-byte order; richer tree shapes are read only when they satisfy the proven safe invariants, and are otherwise preserved intact or rejected with PRESERVATION_UNSUPPORTED.
+      - A page removal that would orphan a managed destination fails with DESTINATION_CONFLICT before mutation; destinations that target pages outside a split selection are dropped from that product, and merge renames colliding destination and embedded-file names with a deterministic -N suffix.
+      - Inspection and payload bounds are explicit per-query limits failing with METADATA_LIMIT_EXCEEDED; XMP command packets must be well-formed XML carrying the XMP root marker within a 64 MiB bound, and embedded-file MIME subtypes are restricted to printable ASCII; comprehensive hostile-input object, depth, decompression, memory, time, and concurrency enforcement remains T20, and the Hardened Worker Profile and its codecs remain T21.
+      - Annotation and action management remains T12, content extraction remains T13 and T14, and encryption remains T16.
+    dependency-gates:
+      - capability: document.value.inspect-patch
+        required-status: compatible
+    promotion-gates:
+      - ticket: T06
+        requirement: Complete the independent acceptance evidence required before compatibility.
+    acceptance-profile:
+      id: T11-metadata-outlines-destinations-attachments
+      state: experimental
+      mandatory-evidence:
+        - syntax
+        - standards
+        - semantic
+        - visual
+      evidence-record: capabilities/evidence/T11-metadata-outlines-destinations-attachments.md
+    evidence:
+      - kind: metadata-workflow-consumer-contract
+        path: pdf-document/src/test/java/net/zerocloud/pdf/consumer/DocumentMetadataWorkflowTest.java
+        assertion: Public workflows round-trip document information, bounded XMP packets, outline trees, name-tree destinations, and embedded files through REWRITE and reopen; follow page identity through move, copy, merge, and split; reject destination-orphaning removals with DESTINATION_CONFLICT; reject malformed trees, streams, specifications, and packets with stable safe failures; enforce per-query bounds with METADATA_LIMIT_EXCEEDED; and keep the T10 preflight rejections attributed to the page capability.
+      - kind: public-api-contract
+        path: pdf-document/src/test/java/net/zerocloud/pdf/contract/PublicApiLeakageIT.java
+        assertion: Public and protected signatures, including every T11 command, query, and value type, contain no PDFBox types.
+      - kind: artifact-contract
+        path: pdf-document/src/test/java/net/zerocloud/pdf/contract/JarContractIT.java
+        assertion: The jar retains its stable module name, Java 8 class-file version, notices, and unbundled backend.
+      - kind: cross-jdk-contract
+        path: scripts/verify-jdk-matrix.sh
+        assertion: Maven verification runs the T11 public workflow contract on JDK 8, 11, 17, and 21.
+    acceptance-evidence:
+      - chain: syntax
+        result: pass
+        record: capabilities/evidence/T11-metadata-outlines-destinations-attachments-syntax.md
+        producer:
+          kind: external-tool
+          name: qpdf
+          version: "12.4.0"
+    provenance:
+      path: PROVENANCE.md
+      record: T11 metadata-outlines-destinations-attachments record
     certified-platforms: []
     status: experimental
 

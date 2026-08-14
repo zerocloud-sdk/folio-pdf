@@ -16,6 +16,7 @@ final class PdfBoxDocumentSession implements DocumentSession {
     private final PDDocument document;
     private final Thread owner;
     private final PdfBoxValueAdapter valueAdapter;
+    private final PdfBoxMetadataOperations metadataOperations;
     private final PdfBoxPageOperations pageOperations;
     private String outcomeCapabilityId;
     private volatile boolean active;
@@ -28,12 +29,14 @@ final class PdfBoxDocumentSession implements DocumentSession {
         this.document = Objects.requireNonNull(document, "document");
         this.owner = Thread.currentThread();
         this.valueAdapter = new PdfBoxValueAdapter(document, this);
+        this.metadataOperations = new PdfBoxMetadataOperations(document);
         this.pageOperations = new PdfBoxPageOperations(
                 document,
                 sources,
                 primarySourceName,
                 publicationTargets,
-                valueAdapter);
+                valueAdapter,
+                metadataOperations);
         this.outcomeCapabilityId = PdfBoxWorkflowEngine.CAPABILITY_ID;
         this.active = true;
     }
@@ -61,6 +64,12 @@ final class PdfBoxDocumentSession implements DocumentSession {
         if (pageOperations.supports(command)) {
             outcomeCapabilityId = PdfBoxPageOperations.CAPABILITY_ID;
             pageOperations.execute(command);
+            return;
+        }
+
+        if (metadataOperations.supports(command)) {
+            outcomeCapabilityId = PdfBoxMetadataOperations.CAPABILITY_ID;
+            metadataOperations.execute(command);
             return;
         }
 
@@ -125,6 +134,11 @@ final class PdfBoxDocumentSession implements DocumentSession {
                         DocumentFailureCode.QUERY_FAILED,
                         "The PDF object could not be inspected.");
             }
+        }
+
+        if (metadataOperations.supportsQuery(query)) {
+            outcomeCapabilityId = PdfBoxMetadataOperations.CAPABILITY_ID;
+            return queryResult(metadataOperations.evaluate(query));
         }
 
         throw PdfBoxWorkflowEngine.failure(
