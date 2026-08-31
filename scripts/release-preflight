@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+approved_fingerprint=C5149FD6B5EF7C2126F1FD0FCC1A12E348E171D8
+
+if [[ $# -ne 1 || ! $1 =~ ^[0-9]+\.[0-9]+\.[0-9]+([.-][0-9A-Za-z]+)*$ \
+        || $1 == *-SNAPSHOT ]]; then
+    echo "Usage: ./scripts/release-preflight NON_SNAPSHOT_VERSION" >&2
+    exit 2
+fi
+if [[ -z ${MAVEN_GPG_PASSPHRASE:-} ]]; then
+    echo "Protected MAVEN_GPG_PASSPHRASE is required for production preflight." >&2
+    exit 1
+fi
+gpg_version=$(gpg --version | sed -n '1s/^gpg (GnuPG) //p')
+if [[ ${gpg_version} != 2.4.4 ]]; then
+    echo "Production release requires pinned GnuPG 2.4.4; found ${gpg_version:-unknown}" >&2
+    exit 1
+fi
+listed_fingerprint=$(gpg --batch --with-colons --fingerprint \
+    --list-secret-keys "${approved_fingerprint}" \
+    | sed -n 's/^fpr:::::::::\([0-9A-F]\{40\}\):$/\1/p' \
+    | head -n 1)
+if [[ ${listed_fingerprint} != "${approved_fingerprint}" ]]; then
+    echo "Approved production signing fingerprint is not available." >&2
+    exit 1
+fi
+
+preflight_root=$(mktemp -d "${TMPDIR:-/tmp}/folio-pdf-release-preflight.XXXXXXXX")
+cleanup_preflight() {
+    rm -rf -- "${preflight_root}"
+}
+trap cleanup_preflight EXIT HUP INT TERM
+printf 'Folio PDF production signing preflight\n' > "${preflight_root}/message.txt"
+printf '%s\n' "${MAVEN_GPG_PASSPHRASE}" \
+    | gpg --batch --yes --pinentry-mode loopback --passphrase-fd 0 \
+        --local-user "${approved_fingerprint}" --detach-sign \
+        --output "${preflight_root}/message.txt.sig" "${preflight_root}/message.txt"
+gpg --batch --verify "${preflight_root}/message.txt.sig" \
+    "${preflight_root}/message.txt" >/dev/null 2>&1
+echo "Production release preflight passed for $1 and ${approved_fingerprint}."

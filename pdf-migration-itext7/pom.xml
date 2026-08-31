@@ -7,7 +7,7 @@
   <parent>
     <groupId>net.zerocloud</groupId>
     <artifactId>pdf-parent</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>${revision}</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -16,6 +16,10 @@
 
   <name>Folio PDF by ZeroCloud - Stable iText 7 Migration Facade</name>
   <description>The stable Migration Facade containing only compatible mappings.</description>
+
+  <properties>
+    <maven.javadoc.skip>true</maven.javadoc.skip>
+  </properties>
 
   <build>
     <resources>
@@ -42,6 +46,19 @@
             </manifestEntries>
           </archive>
         </configuration>
+        <executions>
+          <execution>
+            <id>attach-resource-contract-javadocs</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <configuration>
+              <classifier>javadoc</classifier>
+              <classesDirectory>${project.basedir}/src/main/javadoc-resource-contract</classesDirectory>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

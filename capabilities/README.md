@@ -230,3 +230,10 @@ The current T10 syntax record is
 project-produced artifacts pass pinned qpdf 12.4.0 syntax checks. Standards,
 semantic, and visual Acceptance Evidence remain absent, so the T10 capability
 also remains `experimental`.
+
+The T08 release-gate evidence is recorded in
+`capabilities/evidence/T08-secure-maven-central-rehearsal.md`. T08 validates a
+non-publishing Maven Central rehearsal and protected production staging
+contract. It does not add a behavioral capability, Native Interface member, or
+Migration Facade surface, so the Capability Matrix and Facade Surface
+authorities remain unchanged.

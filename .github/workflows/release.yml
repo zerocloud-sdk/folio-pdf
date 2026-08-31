@@ -1,0 +1,75 @@
+name: Stage Maven Central release
+
+on:
+  workflow_dispatch:
+    inputs:
+      release-version:
+        description: Non-SNAPSHOT Release Train version to stage
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: maven-central-release
+  cancel-in-progress: false
+
+jobs:
+  stage:
+    name: Validate and stage release
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    environment: maven-central
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Set up rehearsal JDK
+        uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: Build and validate non-publishing rehearsal
+        env:
+          RELEASE_VERSION: ${{ inputs.release-version }}
+        run: ./scripts/release-rehearsal target/release-rehearsal "${RELEASE_VERSION}"
+
+      - name: Preserve rehearsal evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: release-rehearsal-${{ inputs.release-version }}
+          path: target/release-rehearsal/
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Import protected production credentials
+        uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4
+        env:
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+          server-id: central
+          server-username: CENTRAL_USERNAME
+          server-password: CENTRAL_PASSWORD
+          gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE
+
+      - name: Verify production release identity and configuration
+        env:
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+          RELEASE_VERSION: ${{ inputs.release-version }}
+        run: ./scripts/release-preflight "${RELEASE_VERSION}"
+
+      - name: Upload and wait for Central validation
+        env:
+          CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
+          CENTRAL_PASSWORD: ${{ secrets.CENTRAL_PASSWORD }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+          RELEASE_VERSION: ${{ inputs.release-version }}
+        run: ./scripts/release-central "${RELEASE_VERSION}"

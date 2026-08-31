@@ -414,5 +414,60 @@ documentation, and project-owned tests are the permitted design inputs.
   Facade surface, stable mapping, or unsupported stub, and does not bundle or
   publish either external executable.
 
+## T08 secure Maven Central rehearsal record
+
+- Authorship: OpenAI Codex generated and integrated the T08 release profile,
+  repository command, local Central-layout bundle assembler, validator, tests,
+  workflow, and documentation at repository operator MaBaiqiu's direction. No
+  T08 commit was created in this execution.
+- Project inputs: GitHub issues #1 and #9, `CONTEXT.md`, ADR-0030, ADR-0031,
+  ADR-0032, the existing Release Train POMs and BOM, the CI workflow,
+  `RELEASING.md`, `SECURITY.md`, `DEPENDENCIES.md`, the inventory authorities,
+  and accepted T01-T07/T09-T11 implementation and evidence.
+- Public tool references: official Apache Maven Source, Javadoc, and GPG plugin
+  documentation; official Sonatype Central Publisher Maven documentation;
+  official CycloneDX Maven plugin documentation; official MojoHaus Flatten and
+  License plugin documentation; and official OWASP Dependency-Check
+  documentation and public issues #8715/#8716. These sources supplied public
+  configuration and security contracts only.
+- Build plugins and tools: the exact Maven coordinates, versions, roles, and
+  licenses are recorded in [DEPENDENCIES.md](DEPENDENCIES.md). Maven 3.9.16,
+  GnuPG 2.4.4, and rsync 3.2.7 are operational pins. Every GitHub Action
+  reference is a full commit SHA. Release-only tooling is absent from
+  `pdf-bom` and product runtime artifacts. Hosted vulnerability suppressions
+  are disabled; the checked-in suppression file is the only release-gate
+  exception authority.
+- Project-authored tests and fixtures: T08 tests create a synthetic
+  Central-layout repository from project-authored POM, JAR, SBOM, license, and
+  vulnerability-report content. Each test invocation generates a temporary
+  non-production RSA signing identity, signs the fixture artifacts with GnuPG,
+  and invokes the repository command. Corruption cases remove an artifact,
+  damage a signature or checksum, remove POM metadata, add an unexpected
+  module, inject an unresolved high-severity vulnerability, or remove an audit
+  report. No external binary fixture or private key is committed.
+- Rehearsal identity boundary: the real command creates a fresh isolated
+  one-day test identity, exports only its public key, and deletes its private
+  temporary home. It also creates a temporary Maven settings file with dummy
+  server id `central` credentials to satisfy Central Publisher without reading
+  production credentials. The production workflow instead pins the approved
+  fingerprint and obtains the existing key and passphrase only from the
+  protected GitHub Environment.
+- Capability and facade determination: T08 adds a repository release gate, not
+  a PDF behavioral capability, Native Interface, Acceptance Profile, or
+  Migration Facade mapping. The Capability Matrix YAML and generated view
+  therefore remain unchanged. The Facade Surface authority remains unchanged,
+  and no Stable Migration Facade stub is introduced. The concrete release-gate
+  determination is recorded in the T08 evidence record.
+- Excluded inputs: no iText source, resource, fixture, binary, decompiled or
+  binary-derived implementation detail, closed add-on material, proprietary
+  differential evidence, Reference Suite output, production credential,
+  production private key, passphrase, generated Maven settings, Central
+  deployment, tag, or GitHub Release was used or created.
+- Scope: T08 builds and validates a non-publishing Maven Central rehearsal and
+  supplies a protected, manually dispatched production staging contract. It
+  does not publish, tag, certify the Foundation Release (T32), change product
+  behavior, promote a capability, or perform the separate human Central
+  publication step.
+
 Future changes append or update a scoped record and supply the pull-request
 provenance statement required by [CONTRIBUTING.md](CONTRIBUTING.md).

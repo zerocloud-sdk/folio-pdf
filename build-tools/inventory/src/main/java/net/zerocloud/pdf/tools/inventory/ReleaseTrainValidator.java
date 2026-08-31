@@ -35,6 +35,17 @@ final class ReleaseTrainValidator {
             factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
             Document document = factory.newDocumentBuilder().parse(pom.toFile());
             String mavenVersion = directChildText(document.getDocumentElement(), "version");
+            if ("${revision}".equals(mavenVersion)) {
+                Element properties = directChild(document.getDocumentElement(), "properties");
+                mavenVersion = properties == null
+                        ? null
+                        : directChildText(properties, "revision");
+                if (mavenVersion == null) {
+                    errors.add("release-train: root pom.xml uses ${revision} but does not "
+                            + "declare properties/revision");
+                    return;
+                }
+            }
             if (mavenVersion == null) {
                 errors.add("release-train: root pom.xml must declare a project version");
             } else if (model.releaseTrain != null && !model.releaseTrain.equals(mavenVersion)) {
@@ -55,11 +66,19 @@ final class ReleaseTrainValidator {
     }
 
     private static String directChildText(Element parent, String localName) {
+        Element child = directChild(parent, localName);
+        if (child == null) {
+            return null;
+        }
+        String value = child.getTextContent();
+        return value == null ? null : value.trim();
+    }
+
+    private static Element directChild(Element parent, String localName) {
         for (Node child = parent.getFirstChild(); child != null; child = child.getNextSibling()) {
             if (child.getNodeType() == Node.ELEMENT_NODE
                     && localName.equals(child.getLocalName())) {
-                String value = child.getTextContent();
-                return value == null ? null : value.trim();
+                return (Element) child;
             }
         }
         return null;

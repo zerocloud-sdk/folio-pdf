@@ -6,7 +6,7 @@
 
   <groupId>net.zerocloud</groupId>
   <artifactId>pdf-parent</artifactId>
-  <version>0.1.0-SNAPSHOT</version>
+  <version>${revision}</version>
   <packaging>pom</packaging>
 
   <name>Folio PDF by ZeroCloud - Parent</name>
@@ -58,9 +58,11 @@
     <module>pdf-migration-itext7</module>
     <module>pdf-migration-itext7-preview</module>
     <module>build-tools/inventory</module>
+    <module>build-tools/release</module>
   </modules>
 
   <properties>
+    <revision>0.1.0-SNAPSHOT</revision>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <maven.compiler.release>8</maven.compiler.release>
@@ -80,7 +82,21 @@
     <maven.deploy.plugin.version>3.1.3</maven.deploy.plugin.version>
     <maven.site.plugin.version>3.12.1</maven.site.plugin.version>
     <maven.enforcer.plugin.version>3.6.2</maven.enforcer.plugin.version>
+    <maven.source.plugin.version>3.4.0</maven.source.plugin.version>
+    <maven.javadoc.plugin.version>3.12.0</maven.javadoc.plugin.version>
+    <maven.gpg.plugin.version>3.2.8</maven.gpg.plugin.version>
+    <flatten.maven.plugin.version>1.7.3</flatten.maven.plugin.version>
+    <central.publishing.maven.plugin.version>0.11.0</central.publishing.maven.plugin.version>
+    <cyclonedx.maven.plugin.version>2.9.2</cyclonedx.maven.plugin.version>
+    <license.maven.plugin.version>2.7.1</license.maven.plugin.version>
+    <dependency.check.maven.version>12.2.2</dependency.check.maven.version>
+    <dependency.check.data.directory>${maven.multiModuleProjectDirectory}/.build-cache/dependency-check/12.2.2</dependency.check.data.directory>
     <exec.maven.plugin.version>3.6.3</exec.maven.plugin.version>
+
+    <release.signing.fingerprint>C5149FD6B5EF7C2126F1FD0FCC1A12E348E171D8</release.signing.fingerprint>
+    <release.gpg.version>2.4.4</release.gpg.version>
+    <release.rsync.version>3.2.7</release.rsync.version>
+    <central.skipPublishing>true</central.skipPublishing>
   </properties>
 
   <build>
@@ -137,6 +153,46 @@
           <version>${maven.enforcer.plugin.version}</version>
         </plugin>
         <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>${maven.source.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>${maven.javadoc.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-gpg-plugin</artifactId>
+          <version>${maven.gpg.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>flatten-maven-plugin</artifactId>
+          <version>${flatten.maven.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.sonatype.central</groupId>
+          <artifactId>central-publishing-maven-plugin</artifactId>
+          <version>${central.publishing.maven.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.cyclonedx</groupId>
+          <artifactId>cyclonedx-maven-plugin</artifactId>
+          <version>${cyclonedx.maven.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>license-maven-plugin</artifactId>
+          <version>${license.maven.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.owasp</groupId>
+          <artifactId>dependency-check-maven</artifactId>
+          <version>${dependency.check.maven.version}</version>
+        </plugin>
+        <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>exec-maven-plugin</artifactId>
           <version>${exec.maven.plugin.version}</version>
@@ -182,4 +238,183 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>central-release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>flatten-maven-plugin</artifactId>
+            <configuration>
+              <flattenMode>resolveCiFriendliesOnly</flattenMode>
+              <updatePomFile>true</updatePomFile>
+            </configuration>
+            <executions>
+              <execution>
+                <id>flatten-release-pom</id>
+                <phase>process-resources</phase>
+                <goals>
+                  <goal>flatten</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>clean-flattened-release-pom</id>
+                <goals>
+                  <goal>clean</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-release-sources</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>jar-no-fork</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <configuration>
+              <doclint>none</doclint>
+              <notimestamp>true</notimestamp>
+            </configuration>
+            <executions>
+              <execution>
+                <id>attach-release-javadocs</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.cyclonedx</groupId>
+            <artifactId>cyclonedx-maven-plugin</artifactId>
+            <inherited>false</inherited>
+            <configuration>
+              <includeBomSerialNumber>false</includeBomSerialNumber>
+              <includeTestScope>false</includeTestScope>
+              <outputDirectory>${project.build.directory}/release-audit</outputDirectory>
+              <outputFormat>all</outputFormat>
+              <outputName>sbom</outputName>
+              <projectType>library</projectType>
+              <schemaVersion>1.6</schemaVersion>
+              <skipNotDeployed>false</skipNotDeployed>
+            </configuration>
+            <executions>
+              <execution>
+                <id>generate-release-sbom</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>makeAggregateBom</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>license-maven-plugin</artifactId>
+            <inherited>false</inherited>
+            <configuration>
+              <deployMissingFile>false</deployMissingFile>
+              <excludedScopes>test,provided,system</excludedScopes>
+              <failOnMissing>true</failOnMissing>
+              <force>true</force>
+              <includeOptional>false</includeOptional>
+              <includeTransitiveDependencies>true</includeTransitiveDependencies>
+              <outputDirectory>${project.build.directory}/release-audit</outputDirectory>
+              <thirdPartyFilename>license-report.txt</thirdPartyFilename>
+              <useRepositoryMissingFiles>false</useRepositoryMissingFiles>
+            </configuration>
+            <executions>
+              <execution>
+                <id>generate-release-license-report</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>aggregate-add-third-party</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.owasp</groupId>
+            <artifactId>dependency-check-maven</artifactId>
+            <inherited>false</inherited>
+            <configuration>
+              <centralAnalyzerEnabled>false</centralAnalyzerEnabled>
+              <dataDirectory>${dependency.check.data.directory}</dataDirectory>
+              <failBuildOnCVSS>7.0</failBuildOnCVSS>
+              <failBuildOnUnusedSuppressionRule>true</failBuildOnUnusedSuppressionRule>
+              <failOnError>true</failOnError>
+              <formats>
+                <format>HTML</format>
+                <format>JSON</format>
+                <format>XML</format>
+              </formats>
+              <hostedSuppressionsEnabled>false</hostedSuppressionsEnabled>
+              <outputDirectory>${project.build.directory}/release-audit/vulnerability</outputDirectory>
+              <ossIndexAnalyzerEnabled>false</ossIndexAnalyzerEnabled>
+              <skipTestScope>true</skipTestScope>
+              <suppressionFiles>
+                <suppressionFile>${maven.multiModuleProjectDirectory}/release/dependency-check-suppressions.xml</suppressionFile>
+              </suppressionFiles>
+            </configuration>
+            <executions>
+              <execution>
+                <id>check-release-vulnerabilities</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>aggregate</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <configuration>
+              <bestPractices>true</bestPractices>
+              <keyname>${release.signing.fingerprint}</keyname>
+            </configuration>
+            <executions>
+              <execution>
+                <id>sign-release-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.sonatype.central</groupId>
+            <artifactId>central-publishing-maven-plugin</artifactId>
+            <extensions>true</extensions>
+            <configuration>
+              <publishingServerId>central</publishingServerId>
+              <autoPublish>false</autoPublish>
+              <waitUntil>validated</waitUntil>
+              <checksums>all</checksums>
+              <skipPublishing>${central.skipPublishing}</skipPublishing>
+              <forcedOutputDirectory>${maven.multiModuleProjectDirectory}/target/central-publishing</forcedOutputDirectory>
+              <forcedStagingDirectory>${maven.multiModuleProjectDirectory}/target/central-staging</forcedStagingDirectory>
+              <forcedDeferredDirectory>${maven.multiModuleProjectDirectory}/target/central-deferred</forcedDeferredDirectory>
+              <outputFilename>central-bundle.zip</outputFilename>
+              <excludeArtifacts>pdf-acceptance,pdf-inventory-tool,pdf-release-tool</excludeArtifacts>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

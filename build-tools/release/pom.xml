@@ -11,25 +11,23 @@
     <relativePath>../../pom.xml</relativePath>
   </parent>
 
-  <artifactId>pdf-inventory-tool</artifactId>
+  <artifactId>pdf-release-tool</artifactId>
   <packaging>jar</packaging>
 
-  <name>Folio PDF by ZeroCloud - Inventory Build Tool</name>
-  <description>Repository-only validation and documentation generation for compatibility inventories.</description>
+  <name>Folio PDF by ZeroCloud - Release Rehearsal Tool</name>
+  <description>Repository-only structural validation for non-publishing release rehearsals.</description>
 
   <properties>
-    <inventory.action>validate</inventory.action>
-    <inventory.repository.root>${maven.multiModuleProjectDirectory}</inventory.repository.root>
+    <release.command>validate</release.command>
+    <release.output>${maven.multiModuleProjectDirectory}/target/release-rehearsal</release.output>
+    <release.bundle.output>${release.output}/central-bundle.zip</release.bundle.output>
+    <release.repository.root>${maven.multiModuleProjectDirectory}</release.repository.root>
+    <release.version>0.1.0</release.version>
     <maven.install.skip>true</maven.install.skip>
     <maven.deploy.skip>true</maven.deploy.skip>
   </properties>
 
   <dependencies>
-    <dependency>
-      <groupId>org.yaml</groupId>
-      <artifactId>snakeyaml</artifactId>
-      <version>${snakeyaml.version}</version>
-    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -46,6 +44,7 @@
         <configuration>
           <systemPropertyVariables>
             <repositoryRoot>${maven.multiModuleProjectDirectory}</repositoryRoot>
+            <releaseToolClasspath>${project.build.outputDirectory}</releaseToolClasspath>
           </systemPropertyVariables>
         </configuration>
       </plugin>
@@ -53,28 +52,16 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
         <configuration>
-          <mainClass>net.zerocloud.pdf.tools.inventory.InventoryCommand</mainClass>
+          <mainClass>net.zerocloud.pdf.tools.release.ReleaseBundleCommand</mainClass>
           <classpathScope>runtime</classpathScope>
           <arguments>
-            <argument>${inventory.action}</argument>
-            <argument>${inventory.repository.root}</argument>
+            <argument>${release.command}</argument>
+            <argument>${release.output}</argument>
+            <argument>${release.bundle.output}</argument>
+            <argument>${release.repository.root}</argument>
+            <argument>${release.version}</argument>
           </arguments>
         </configuration>
-        <executions>
-          <execution>
-            <id>check-compatibility-inventories</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>java</goal>
-            </goals>
-            <configuration>
-              <arguments combine.self="override">
-                <argument>check</argument>
-                <argument>${maven.multiModuleProjectDirectory}</argument>
-              </arguments>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
   </build>

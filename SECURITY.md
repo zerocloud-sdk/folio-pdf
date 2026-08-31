@@ -57,3 +57,37 @@ scanning, reproducibility evidence, artifact signatures, and checksums. A
 high-severity parsing, cryptography, isolation, or required-dependency
 vulnerability blocks release unless the Lead Maintainer publishes an explicit
 security exception.
+
+## Release supply-chain gate
+
+Pull-request CI has read-only repository contents permission and contains no
+Central or GPG secret reference. Production credentials are referenced only by
+the manually dispatched release job, which is bound to the externally managed
+`maven-central` GitHub Environment and serialized with every other release
+execution.
+
+The local release rehearsal generates a new isolated, explicitly
+non-production signing identity on every invocation. Its public key and full
+fingerprint are evidence; its temporary private keyring is deleted and never
+enters the repository or output bundle. The rehearsal also supplies Central
+Publisher with an isolated temporary Maven settings file containing dummy
+server id `central` credentials, never the operator's real Central username or
+password. Production staging separately requires the approved full fingerprint
+`C5149FD6B5EF7C2126F1FD0FCC1A12E348E171D8` and the protected Environment
+secrets documented in [RELEASING.md](RELEASING.md).
+
+OWASP Dependency-Check 12.2.2 scans the selected Release Train dependencies
+against current public vulnerability data and emits HTML, JSON, and XML
+reports. A scanner error or a finding at CVSS 7.0 or above fails the release.
+This blocks every unresolved high-severity required-dependency finding and
+therefore covers the parsing, cryptography, and worker-isolation categories in
+ADR-0032. The public suppression authority is
+`release/dependency-check-suppressions.xml`; hosted suppressions are disabled,
+the checked-in file is currently empty, and unused rules are errors. A future
+suppression is invalid without an advisory, coordinate, expiry, technical
+justification, and linked public Lead Maintainer acceptance.
+
+The Central staging configuration never auto-publishes. It waits for Central
+validation and leaves the immutable publication decision to a separate human
+review. Rehearsal logs and reports contain no production credential or private
+key material.

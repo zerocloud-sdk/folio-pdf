@@ -26,6 +26,18 @@ _Avoid_: phase date, team preference, issue order
 One version shared by every first-party module and coordinated through the BOM. During `0.x`, all modules move together even when contexts progress independently.
 _Avoid_: add-on version, independent module release
 
+**Release Gate**:
+A mandatory evidence checkpoint for a formal release. A failed Release Gate blocks the Release Train unless the documented exception authority accepts the risk publicly.
+_Avoid_: best-effort check, advisory validation
+
+**Release Rehearsal**:
+A non-publishing proof that a Release Train can be assembled and validated with release-shaped metadata, artifacts, signatures, checksums, and evidence without production credentials or Central publication.
+_Avoid_: staging release, dry-run publish, mock release
+
+**Central Staging**:
+The protected Maven Central handoff that submits a Release Train for Central validation while leaving publication as a separate human decision.
+_Avoid_: automatic publication, release rehearsal, publish step
+
 ## Document Engine
 
 Owns the logical PDF document, its pages and resources, and the lifecycle by which a document is read, changed, and published.

@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+script_directory=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+repository_root=$(cd -- "${script_directory}/.." && pwd)
+approved_fingerprint=C5149FD6B5EF7C2126F1FD0FCC1A12E348E171D8
+
+if [[ $# -ne 1 || ! $1 =~ ^[0-9]+\.[0-9]+\.[0-9]+([.-][0-9A-Za-z]+)*$ \
+        || $1 == *-SNAPSHOT ]]; then
+    echo "Usage: ./scripts/release-central NON_SNAPSHOT_VERSION" >&2
+    exit 2
+fi
+if [[ -z ${CENTRAL_USERNAME:-} || -z ${CENTRAL_PASSWORD:-} \
+        || -z ${MAVEN_GPG_PASSPHRASE:-} ]]; then
+    echo "Protected Central and GPG environment credentials are required." >&2
+    exit 1
+fi
+gpg_version=$(gpg --version | sed -n '1s/^gpg (GnuPG) //p')
+if [[ ${gpg_version} != 2.4.4 ]]; then
+    echo "Production release requires pinned GnuPG 2.4.4; found ${gpg_version:-unknown}" >&2
+    exit 1
+fi
+
+release_version=$1
+source_date_epoch=$(git -C "${repository_root}" show -s --format=%ct HEAD)
+release_projects='pdf-bom,pdf-provider-contract,pdf-document,pdf-conversion,pdf-migration-itext7,pdf-migration-itext7-preview'
+
+exec "${repository_root}/mvnw" \
+    -B -ntp \
+    -Drevision="${release_version}" \
+    -Dproject.build.outputTimestamp="${source_date_epoch}" \
+    -Drelease.signing.fingerprint="${approved_fingerprint}" \
+    -Dcentral.skipPublishing=false \
+    -Pcentral-release \
+    -pl "${release_projects}" \
+    -am \
+    clean deploy

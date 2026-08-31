@@ -146,3 +146,44 @@ Review the resolved graph with:
 
 Formal releases additionally require generated SBOM, license, vulnerability,
 and reproducibility evidence as described in [RELEASING.md](RELEASING.md).
+
+T08 adds no product runtime dependency and no coordinate to `pdf-bom`. The
+repository-only release path pins these Maven plugins:
+
+| Maven coordinate | Version | Release-only role | Upstream origin | License |
+| --- | --- | --- | --- | --- |
+| `org.apache.maven.plugins:maven-source-plugin` | 3.4.0 | attach source artifacts | [Apache Maven Source Plugin](https://maven.apache.org/plugins/maven-source-plugin/) | Apache-2.0 |
+| `org.apache.maven.plugins:maven-javadoc-plugin` | 3.12.0 | attach timestamp-free Javadoc artifacts | [Apache Maven Javadoc Plugin](https://maven.apache.org/plugins/maven-javadoc-plugin/) | Apache-2.0 |
+| `org.apache.maven.plugins:maven-gpg-plugin` | 3.2.8 | detached signatures with best-practices enforcement | [Apache Maven GPG Plugin](https://maven.apache.org/plugins/maven-gpg-plugin/) | Apache-2.0 |
+| `org.codehaus.mojo:flatten-maven-plugin` | 1.7.3 | resolve the CI-friendly Release Train revision in published POMs | [MojoHaus Flatten Plugin](https://www.mojohaus.org/flatten-maven-plugin/) | Apache-2.0 |
+| `org.sonatype.central:central-publishing-maven-plugin` | 0.11.0 | exercise non-publishing Central configuration locally and stage protected production deployments for validation | [Sonatype Central Publisher](https://central.sonatype.org/publish/publish-portal-maven/) | Apache-2.0 |
+| `org.cyclonedx:cyclonedx-maven-plugin` | 2.9.2 | aggregate CycloneDX 1.6 JSON and XML SBOMs | [CycloneDX Maven Plugin](https://github.com/CycloneDX/cyclonedx-maven-plugin) | Apache-2.0 |
+| `org.codehaus.mojo:license-maven-plugin` | 2.7.1 | aggregate third-party license report and fail on missing metadata | [MojoHaus License Plugin](https://www.mojohaus.org/license-maven-plugin/) | Apache-2.0 |
+| `org.owasp:dependency-check-maven` | 12.2.2 | known-vulnerability reports and CVSS 7.0 gate | [OWASP Dependency-Check](https://dependency-check.github.io/DependencyCheck/) | Apache-2.0 |
+
+Dependency-Check 12.2.2 is deliberately pinned instead of 13.0.0. The latter
+has a confirmed unauthenticated-NVD regression that converts the absent API key
+to an invalid empty key; the upstream report and fix are
+[dependency-check#8715](https://github.com/dependency-check/DependencyCheck/issues/8715)
+and [dependency-check#8716](https://github.com/dependency-check/DependencyCheck/pull/8716).
+Version 12.2.2 remains above the project's mandatory 12.1.0 compatibility
+floor, requires JDK 11 only in the release profile, and does not affect the
+Java 8 product runtime. Hosted suppressions are disabled; the repository file
+under `release/dependency-check-suppressions.xml` is the only enabled
+suppression authority. The scanner's versioned database is ignored local
+validation state and is neither bundled nor published.
+
+The release scripts additionally use these exact operational tools:
+
+| Tool | Version | Release-only role | Upstream origin | License |
+| --- | --- | --- | --- | --- |
+| Apache Maven distribution | 3.9.16 | execute both clean builds and release validation through the hash-pinned Wrapper | [Apache Maven](https://maven.apache.org/) | Apache-2.0 |
+| GnuPG | 2.4.4 | generate the isolated test identity and create or verify detached signatures | [GnuPG](https://gnupg.org/software/) | GPL-3.0-or-later |
+| rsync | 3.2.7 | copy the checked-out source into isolated clean-build trees | [rsync](https://rsync.samba.org/) | GPL-3.0-or-later |
+
+Their exact versions are enforced and recorded in rehearsal evidence.
+Existing Shell, Git, and GNU Coreutils operations manage temporary directories
+and calculate the outer bundle hash; none enter Maven artifacts. The production
+workflow pins `actions/checkout`, `actions/setup-java`, and
+`actions/upload-artifact` to complete commit SHAs. Release-only tools, reports,
+and repository modules are excluded from the BOM and product runtime.

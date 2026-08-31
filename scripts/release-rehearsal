@@ -1,0 +1,302 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+script_directory=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+repository_root=$(cd -- "${script_directory}/.." && pwd)
+
+invoke_release_tool() {
+    local release_command=$1
+    shift
+    if [[ -n ${RELEASE_TOOL_CLASSPATH:-} ]]; then
+        java -cp "${RELEASE_TOOL_CLASSPATH}" \
+            net.zerocloud.pdf.tools.release.ReleaseBundleCommand \
+            "${release_command}" "$@"
+        return
+    fi
+    local release_output
+    local release_bundle_output
+    local release_version_argument
+    case ${release_command} in
+        validate|compare)
+            release_output=$1
+            release_bundle_output=${release_output}/central-bundle.zip
+            release_version_argument=0.1.0
+            ;;
+        bundle)
+            release_output=$1
+            release_bundle_output=$2
+            release_version_argument=$4
+            ;;
+        *)
+            echo "Unknown release rehearsal command: ${release_command}" >&2
+            exit 2
+            ;;
+    esac
+    "${repository_root}/mvnw" \
+        -B -ntp \
+        -f "${repository_root}/build-tools/release/pom.xml" \
+        -Drelease.command="${release_command}" \
+        -Drelease.output="${release_output}" \
+        -Drelease.bundle.output="${release_bundle_output}" \
+        -Drelease.repository.root="${3:-${repository_root}}" \
+        -Drelease.version="${release_version_argument}" \
+        compile exec:java
+}
+
+if [[ $# -eq 2 && ( $1 == validate || $1 == compare ) ]]; then
+    invoke_release_tool "$1" "$2" "${repository_root}"
+    exit
+fi
+
+if [[ $# -eq 4 && $1 == bundle ]]; then
+    invoke_release_tool bundle "$2" "$3" "${repository_root}" "$4"
+    exit
+fi
+
+if [[ $# -eq 2 ]]; then
+    output_directory=$1
+    release_version=$2
+else
+    echo "Usage: ./scripts/release-rehearsal OUTPUT_DIRECTORY RELEASE_VERSION" >&2
+    echo "       ./scripts/release-rehearsal validate OUTPUT_DIRECTORY" >&2
+    echo "       ./scripts/release-rehearsal bundle BUILD_TREE OUTPUT_ZIP RELEASE_VERSION" >&2
+    exit 2
+fi
+
+if [[ ! ${release_version} =~ ^[0-9]+\.[0-9]+\.[0-9]+([.-][0-9A-Za-z]+)*$ \
+        || ${release_version} == *-SNAPSHOT ]]; then
+    echo "Release version must be a non-SNAPSHOT semantic version: ${release_version}" >&2
+    exit 2
+fi
+
+for required_command in gpg rsync sha256sum realpath mktemp; do
+    if ! command -v "${required_command}" >/dev/null 2>&1; then
+        echo "Required release rehearsal command is unavailable: ${required_command}" >&2
+        exit 1
+    fi
+done
+
+gpg_version=$(gpg --version | sed -n '1s/^gpg (GnuPG) //p')
+if [[ ${gpg_version} != 2.4.4 ]]; then
+    echo "Release rehearsal requires pinned GnuPG 2.4.4; found ${gpg_version:-unknown}" >&2
+    exit 1
+fi
+rsync_version=$(rsync --version | sed -n '1s/^rsync  version \([^ ]*\).*/\1/p')
+if [[ ${rsync_version} != 3.2.7 ]]; then
+    echo "Release rehearsal requires pinned rsync 3.2.7; found ${rsync_version:-unknown}" >&2
+    exit 1
+fi
+
+java_specification=$(java -XshowSettings:properties -version 2>&1 \
+    | sed -n 's/^[[:space:]]*java.specification.version = //p')
+case ${java_specification} in
+    1.*|8|9|10)
+        echo "Release rehearsal requires JDK 11 or newer for the vulnerability scanner." >&2
+        exit 1
+        ;;
+    '')
+        echo "Cannot determine the release rehearsal JDK version." >&2
+        exit 1
+        ;;
+esac
+
+case ${output_directory} in
+    /*) ;;
+    *) output_directory=${PWD}/${output_directory} ;;
+esac
+output_directory=$(realpath -m -- "${output_directory}")
+case ${output_directory} in
+    "${repository_root}/target/"*)
+        rm -rf -- "${output_directory}"
+        ;;
+    *)
+        if [[ -e ${output_directory} ]]; then
+            echo "Refusing to replace an output outside repository target/: ${output_directory}" >&2
+            exit 1
+        fi
+        ;;
+esac
+mkdir -p -- "${output_directory}/audit"
+
+rehearsal_root=$(mktemp -d "${TMPDIR:-/tmp}/folio-pdf-release-rehearsal.XXXXXXXX")
+cleanup_rehearsal() {
+    gpgconf --homedir "${rehearsal_root}/gnupg" --kill gpg-agent >/dev/null 2>&1 || true
+    rm -rf -- "${rehearsal_root}"
+}
+trap cleanup_rehearsal EXIT HUP INT TERM
+
+build_a=${rehearsal_root}/build-a
+build_b=${rehearsal_root}/build-b
+mkdir -p -- "${build_a}" "${build_b}"
+for build_tree in "${build_a}" "${build_b}"; do
+    rsync -a \
+        --exclude='.git/' \
+        --exclude='.build-cache/' \
+        --exclude='.idea/' \
+        --exclude='target/' \
+        --exclude='*/target/' \
+        "${repository_root}/" "${build_tree}/"
+done
+
+gpg_home=${rehearsal_root}/gnupg
+install -d -m 700 -- "${gpg_home}"
+key_parameters=${rehearsal_root}/test-signing-key.batch
+printf '%s\n' \
+    'Key-Type: RSA' \
+    'Key-Length: 3072' \
+    'Key-Usage: sign' \
+    'Name-Real: Folio PDF Release Rehearsal' \
+    'Name-Email: release-rehearsal@folio-pdf.invalid' \
+    'Expire-Date: 1d' \
+    '%no-protection' \
+    '%commit' > "${key_parameters}"
+gpg --homedir "${gpg_home}" --batch --generate-key "${key_parameters}" >/dev/null 2>&1
+test_fingerprint=$(gpg --homedir "${gpg_home}" --batch --with-colons \
+    --fingerprint --list-secret-keys \
+    | sed -n 's/^fpr:::::::::\([0-9A-F]\{40\}\):$/\1/p' \
+    | head -n 1)
+if [[ ! ${test_fingerprint} =~ ^[0-9A-F]{40}$ \
+        || ${test_fingerprint} == C5149FD6B5EF7C2126F1FD0FCC1A12E348E171D8 ]]; then
+    echo "Failed to create an isolated non-production test signing identity." >&2
+    exit 1
+fi
+
+rehearsal_settings=${rehearsal_root}/settings.xml
+{
+    printf '%s\n' '<?xml version="1.0" encoding="UTF-8"?>'
+    printf '%s\n' '<settings xmlns="http://maven.apache.org/SETTINGS/1.2.0"'
+    printf '%s\n' '          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"'
+    printf '%s\n' '          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.2.0 https://maven.apache.org/xsd/settings-1.2.0.xsd">'
+    printf '%s\n' '  <servers>'
+    printf '%s\n' '    <server>'
+    printf '%s\n' '      <id>central</id>'
+    printf '%s\n' '      <username>folio-pdf-release-rehearsal-unused</username>'
+    printf '%s\n' '      <password>folio-pdf-release-rehearsal-unused</password>'
+    printf '%s\n' '    </server>'
+    printf '%s\n' '  </servers>'
+    printf '%s\n' '</settings>'
+} > "${rehearsal_settings}"
+chmod 600 "${rehearsal_settings}"
+
+source_commit=$(git -C "${repository_root}" rev-parse HEAD)
+source_date_epoch=$(git -C "${repository_root}" show -s --format=%ct HEAD)
+if [[ -z $(git -C "${repository_root}" status --short --untracked-files=all) ]]; then
+    source_worktree_status=clean
+else
+    source_worktree_status=dirty
+fi
+source_tree_manifest=${rehearsal_root}/source-tree.sha256
+(
+    cd -- "${build_a}"
+    find . -type f | LC_ALL=C sort | while IFS= read -r source_file; do
+        sha256sum "${source_file}"
+    done
+) > "${source_tree_manifest}"
+source_tree_sha256=$(sha256sum "${source_tree_manifest}" | sed 's/[[:space:]].*$//')
+release_projects='pdf-bom,pdf-provider-contract,pdf-document,pdf-conversion,pdf-migration-itext7,pdf-migration-itext7-preview'
+common_maven_arguments=(
+    -B
+    -ntp
+    -s
+    "${rehearsal_settings}"
+    -Drevision="${release_version}"
+    -Dproject.build.outputTimestamp="${source_date_epoch}"
+    -Drelease.signing.fingerprint="${test_fingerprint}"
+    -Ddependency.check.data.directory="${repository_root}/.build-cache/dependency-check/12.2.2"
+    -Dcentral.skipPublishing=true
+    -DcentralBaseUrl=http://127.0.0.1:1
+    -Pcentral-release
+    -pl "${release_projects}"
+    -am
+)
+
+echo "Building signed non-publishing Central bundle (clean build 1 of 2)."
+if ! (cd -- "${build_a}" && GNUPGHOME="${gpg_home}" ./mvnw \
+        "${common_maven_arguments[@]}" clean deploy) \
+        > "${rehearsal_root}/build-a.log" 2>&1; then
+    tail -n 200 "${rehearsal_root}/build-a.log" >&2
+    exit 1
+fi
+
+echo "Building unsigned comparison bundle (clean build 2 of 2)."
+if ! (cd -- "${build_b}" && GNUPGHOME="${gpg_home}" ./mvnw \
+        "${common_maven_arguments[@]}" \
+        -Dgpg.skip=true \
+        -Ddependency-check.skip=true \
+        -DskipTests \
+        clean deploy) > "${rehearsal_root}/build-b.log" 2>&1; then
+    tail -n 200 "${rehearsal_root}/build-b.log" >&2
+    exit 1
+fi
+
+central_bundle_a=${build_a}/target/central-publishing/central-bundle.zip
+central_bundle_b=${build_b}/target/central-publishing/central-bundle.zip
+invoke_release_tool bundle "${build_a}" "${central_bundle_a}" "${repository_root}" \
+    "${release_version}"
+invoke_release_tool bundle "${build_b}" "${central_bundle_b}" "${repository_root}" \
+    "${release_version}"
+if [[ ! -f ${central_bundle_a} || ! -f ${central_bundle_b} ]]; then
+    echo "Release rehearsal did not assemble both comparison bundles." >&2
+    exit 1
+fi
+
+cp -- "${central_bundle_a}" "${output_directory}/central-bundle.zip"
+cp -- "${rehearsal_root}/build-a.log" "${output_directory}/audit/build-a.log"
+cp -- "${rehearsal_root}/build-b.log" "${output_directory}/audit/build-b.log"
+cp -- "${build_a}/target/release-audit/sbom.xml" "${output_directory}/audit/sbom.xml"
+cp -- "${build_a}/target/release-audit/sbom.json" "${output_directory}/audit/sbom.json"
+cp -- "${build_a}/target/release-audit/license-report.txt" \
+    "${output_directory}/audit/license-report.txt"
+cp -- "${build_a}/target/release-audit/vulnerability/dependency-check-report.xml" \
+    "${output_directory}/audit/dependency-check-report.xml"
+cp -- "${build_a}/target/release-audit/vulnerability/dependency-check-report.json" \
+    "${output_directory}/audit/dependency-check-report.json"
+cp -- "${build_a}/target/release-audit/vulnerability/dependency-check-report.html" \
+    "${output_directory}/audit/dependency-check-report.html"
+cp -- "${repository_root}/release/dependency-check-suppressions.xml" \
+    "${output_directory}/audit/dependency-check-suppressions.xml"
+gpg --homedir "${gpg_home}" --batch --armor --export "${test_fingerprint}" \
+    > "${output_directory}/audit/test-signing-public-key.asc"
+
+comparison_directory=${rehearsal_root}/comparison
+mkdir -p -- "${comparison_directory}"
+cp -- "${central_bundle_a}" "${comparison_directory}/central-bundle-a.zip"
+cp -- "${central_bundle_b}" "${comparison_directory}/central-bundle-b.zip"
+invoke_release_tool compare "${comparison_directory}"
+cp -- "${comparison_directory}/reproducibility.txt" \
+    "${output_directory}/audit/reproducibility.txt"
+
+maven_version=$("${repository_root}/mvnw" --version \
+    | sed -n '1s/^Apache Maven \([0-9][0-9.]*\).*/\1/p')
+{
+    printf 'format-version=1\n'
+    printf 'release-version=%s\n' "${release_version}"
+    printf 'signing-identity=NON_PRODUCTION_TEST\n'
+    printf 'test-signing-fingerprint=%s\n' "${test_fingerprint}"
+    printf 'source-commit=%s\n' "${source_commit}"
+    printf 'source-date-epoch=%s\n' "${source_date_epoch}"
+    printf 'source-worktree-status=%s\n' "${source_worktree_status}"
+    printf 'source-tree-sha256=%s\n' "${source_tree_sha256}"
+    printf 'central-server-id=central\n'
+    printf 'central-credentials=TEMPORARY_DUMMY_REHEARSAL\n'
+    printf 'central-base-url=http://127.0.0.1:1\n'
+    printf 'central-uploaded=false\n'
+    printf 'maven-version=%s\n' "${maven_version}"
+    printf 'gpg-version=%s\n' "${gpg_version}"
+    printf 'rsync-version=%s\n' "${rsync_version}"
+    printf 'central-publishing-maven-plugin=0.11.0\n'
+    printf 'maven-gpg-plugin=3.2.8\n'
+    printf 'maven-source-plugin=3.4.0\n'
+    printf 'maven-javadoc-plugin=3.12.0\n'
+    printf 'cyclonedx-maven-plugin=2.9.2\n'
+    printf 'license-maven-plugin=2.7.1\n'
+    printf 'dependency-check-maven=12.2.2\n'
+    printf 'flatten-maven-plugin=1.7.3\n'
+} > "${output_directory}/audit/rehearsal.properties"
+
+(cd -- "${output_directory}" && sha256sum central-bundle.zip) \
+    > "${output_directory}/audit/central-bundle.sha256"
+
+invoke_release_tool validate "${output_directory}" \
+    | tee "${output_directory}/audit/structural-validation.txt"
+echo "Release rehearsal complete: ${output_directory}"
