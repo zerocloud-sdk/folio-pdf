@@ -1,0 +1,39 @@
+#!/usr/bin/env sh
+set -eu
+
+script_directory=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+repository_root=$(CDPATH= cd -- "${script_directory}/../.." && pwd)
+
+. "${script_directory}/../imagemagick-pin.properties"
+. "${script_directory}/../visual-tool-common"
+imagemagick_version=${IMAGEMAGICK_VERSION}
+archive_sha256=${IMAGEMAGICK_ARCHIVE_SHA256}
+executable_sha256=${IMAGEMAGICK_EXECUTABLE_SHA256}
+imagemagick_cache=${IMAGEMAGICK_CACHE_DIRECTORY:-"${repository_root}/.build-cache/imagemagick"}
+sha256_command=${SHA256_COMMAND:-sha256sum}
+imagemagick_home=${imagemagick_cache}/${imagemagick_version}
+imagemagick_executable=${imagemagick_home}/bin/imagemagick.AppImage
+
+if [ ! -x "${imagemagick_executable}" ]; then
+    echo "Pinned ImageMagick ${imagemagick_version} is not provisioned; run ./scripts/provision-imagemagick." >&2
+    exit 127
+fi
+if ! visual_verify_marker \
+        "Pinned ImageMagick" \
+        "${imagemagick_home}/.archive-sha256" \
+        "${archive_sha256}" \
+        || ! visual_verify_marker \
+            "Pinned ImageMagick" \
+            "${imagemagick_home}/.executable-sha256" \
+            "${executable_sha256}" \
+        || ! visual_verify_digest \
+            "Pinned ImageMagick executable" \
+            "${imagemagick_executable}" \
+            "${executable_sha256}" \
+            "${sha256_command}"; then
+    exit 127
+fi
+
+APPIMAGE_EXTRACT_AND_RUN=1
+export APPIMAGE_EXTRACT_AND_RUN
+exec "${imagemagick_executable}" "$@"

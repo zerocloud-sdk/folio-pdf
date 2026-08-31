@@ -107,6 +107,37 @@ and those bundled runtime libraries do not enter the Maven dependency graph,
 the BOM, or any shipped Folio PDF artifact. The normal build has no network or
 system-qpdf requirement.
 
+T07 adds two external executables only to the same opt-in, repository-only
+Acceptance Evidence path:
+
+| Tool | Role | Source and integrity | License |
+| --- | --- | --- | --- |
+| pdfium-cli v0.11.2 WebAssembly Linux amd64, embedding PDFium Chromium build 7881 | independent PDF-to-PNG renderer | `https://github.com/klippa-app/pdfium-cli/releases/download/v0.11.2/pdfium-webassembly-linux-amd64`; direct release-asset and executable SHA-256 `3ef3375c429ce665e834f933a028225bf28ac837695aaa69c6fc21facf6780ab` | MIT for pdfium-cli and go-pdfium; BSD-3-Clause for PDFium |
+| ImageMagick 7.1.2-30 GCC x86-64 AppImage | fixed-size PNG AE comparison and difference-raster generation | `https://github.com/ImageMagick/ImageMagick/releases/download/7.1.2-30/ImageMagick-7.1.2-30-gcc-x86_64.AppImage`; direct release-asset and executable SHA-256 `372af8a3fd61ef5f15c6331cde3e21f840eb165d8b533f34ed05d68736dd682e` | ImageMagick License |
+
+The exact linked Go modules and the PDFium engine's archived `licenses/`
+inventory are identified by the pinned
+[pdfium-cli notice manifest](docs/third-party/pdfium-cli-v0.11.2.md). The
+PDFium 151.0.7881.0 source engine archive is additionally pinned as
+`pdfium-wasm.tgz`, SHA-256
+`added6e8ac024f71cb61cf2b77a205d178e2bdde2e4048fbcd916f68b7264d56`.
+Every shared-library payload component extracted from the exact ImageMagick
+AppImage is identified by the pinned
+[ImageMagick AppImage notice manifest](docs/third-party/imagemagick-7.1.2-30-appimage.md).
+Those delegates are local validation-tool components and are never invoked on
+PDF input by this profile. Both single-file distributions are supplied by the
+operator, verified offline, and copied only into ignored `.build-cache/`
+directories. The ImageMagick notice manifest also records every host library
+resolved by the extracted executable; those host components are not copied by
+the provisioner. Neither external tool is redistributed.
+
+T07 also uses the existing Apache PDFBox 3.0.8 dependency inside the
+repository-only `pdf-acceptance` module to produce secondary implementation-
+renderer disagreement evidence. PDFBox cannot make the visual chain pass and
+remains Apache-2.0. No PDFium, ImageMagick, PDFBox Renderer, or acceptance-tool
+type enters the Native Interface, BOM, or a published product artifact. Normal
+Maven builds and tests do not execute or require the two external tools.
+
 Review the resolved graph with:
 
 ```text

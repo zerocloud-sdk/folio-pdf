@@ -117,7 +117,7 @@ Execute a named-source document transaction and publish validated rewrites to na
 ### Gates and limitations
 
 - Dependency Gates: none
-- Promotion gate `T06`: Complete the independent acceptance evidence required before compatibility.
+- Promotion gate `T06`: Complete the remaining independent standards evidence; the T06 syntax and semantic chains and T07 visual chain are complete.
 - Limitation: INCREMENTAL is represented but fails with SAVE_MODE_UNSUPPORTED until T15 implements revision-preserving publication.
 - Limitation: T03 does not detect or protect signed documents; signed-document read-only enforcement, DocMDP decisions, and signature-safe publication remain T15.
 - Limitation: T03 opens only the explicitly selected primary source unless an ordered Document Command, such as T10 merge, explicitly selects additional named Sources.
@@ -138,17 +138,26 @@ Implementation evidence:
 - `migration-facade-artifact-contract`: [`pdf-migration-itext7-preview/src/test/java/net/zerocloud/pdf/migration/itext7/contract/JarContractIT.java`](../../pdf-migration-itext7-preview/src/test/java/net/zerocloud/pdf/migration/itext7/contract/JarContractIT.java) — The stable artifact is a resource-only compatible surface, while the preview Java 8 artifact has the exact mapped surface and is a strict superset of stable mappings.
 - `facade-classpath-exclusivity-contract`: [`pdf-migration-itext7-preview/src/test/java/net/zerocloud/pdf/migration/itext7/contract/ClasspathExclusivityIT.java`](../../pdf-migration-itext7-preview/src/test/java/net/zerocloud/pdf/migration/itext7/contract/ClasspathExclusivityIT.java) — Every mapped public class rejects stable-plus-preview classpaths observably in both jar orders.
 - `migration-facade-evidence-record`: [`capabilities/evidence/T04-migration-facades.md`](../../capabilities/evidence/T04-migration-facades.md) — T04 scope, behavior, artifact, exclusivity, and evidence boundaries are recorded.
-- `acceptance-pipeline-contract`: [`pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/AcceptanceEvidenceCommandTest.java`](../../pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/AcceptanceEvidenceCommandTest.java) — Repository-only public-seam checks cover pinned-tool success, failure, warning, mismatch, unavailability, provisioning, and evidence recording.
-- `acceptance-command`: [`scripts/acceptance`](../../scripts/acceptance) — The repository-owned command runs only the isolated Acceptance Evidence profile and writes to an explicit output directory.
+- `acceptance-pipeline-contract`: [`pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/AcceptanceEvidenceCommandTest.java`](../../pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/AcceptanceEvidenceCommandTest.java) — Repository-only public-seam checks cover pinned-tool success, failure, warning, mismatch, unavailability, provisioning, fixed raster dimensions, threshold failures with difference artifacts, raster-only ImageMagick arguments, and secondary-renderer disagreement.
+- `acceptance-command`: [`scripts/acceptance`](../../scripts/acceptance) — The repository-owned command runs only the isolated Acceptance Profile with fixed qpdf, PDFium, ImageMagick, pin, and visual-profile paths and writes to an explicit output directory.
 - `external-tool-provisioning`: [`scripts/provision-qpdf`](../../scripts/provision-qpdf) — A local official qpdf archive is verified by SHA-256 and staged outside product artifacts without build-time network access.
 - `external-tool-pin`: [`scripts/qpdf-pin.properties`](../../scripts/qpdf-pin.properties) — The qpdf version, official asset, archive hash, and extracted executable hash have one repository authority.
+- `visual-profile`: [`capabilities/profiles/T03-document-blank-visual.properties`](../../capabilities/profiles/T03-document-blank-visual.properties) — The project-owned profile fixes page box, DPI, color, font, antialiasing, background, raster dimensions, expected raster hash, AE metric, and capability and renderer-agreement thresholds.
+- `visual-expected-raster`: [`capabilities/expected/T03-document-blank-144dpi-srgb.png`](../../capabilities/expected/T03-document-blank-144dpi-srgb.png) — The project-owned expected raster is an opaque white 1224 by 1584 sRGB RGB image derived from the blank-page profile, not from Reference Suite output.
+- `external-tool-provisioning`: [`scripts/provision-pdfium`](../../scripts/provision-pdfium) — A local PDFium CLI release asset is verified by SHA-256 and staged outside product artifacts without build-time network access.
+- `external-tool-pin`: [`scripts/pdfium-pin.properties`](../../scripts/pdfium-pin.properties) — The PDFium CLI and engine versions, distribution, archive and executable hashes, sources, and licenses have one repository authority.
+- `external-tool-provisioning`: [`scripts/provision-imagemagick`](../../scripts/provision-imagemagick) — A local ImageMagick AppImage is verified by SHA-256 and staged outside product artifacts without build-time network access.
+- `external-tool-pin`: [`scripts/imagemagick-pin.properties`](../../scripts/imagemagick-pin.properties) — The ImageMagick version, distribution, archive and executable hashes, source, and license have one repository authority.
+- `third-party-notice-manifest`: [`docs/third-party/pdfium-cli-v0.11.2.md`](../third-party/pdfium-cli-v0.11.2.md) — The exact pdfium-cli asset hash, linked Go modules, embedded PDFium engine archive hash, origins, and archived license inventory are recorded.
+- `third-party-notice-manifest`: [`docs/third-party/imagemagick-7.1.2-30-appimage.md`](../third-party/imagemagick-7.1.2-30-appimage.md) — Every executable and shared-library component extracted from the exact ImageMagick AppImage has a recorded upstream origin and license.
 
 Acceptance Evidence:
 
 - `syntax`: `pass` — [`capabilities/evidence/T06-document-blank-syntax.md`](../../capabilities/evidence/T06-document-blank-syntax.md); producer `qpdf@12.4.0` (`external-tool`)
 - `semantic`: `pass` — [`capabilities/evidence/T06-document-blank-semantic.md`](../../capabilities/evidence/T06-document-blank-semantic.md); producer `folio-pdf-semantic-assertions@0.1.0-SNAPSHOT` (`project-test`)
+- `visual`: `pass` — [`capabilities/evidence/T07-document-blank-visual.md`](../../capabilities/evidence/T07-document-blank-visual.md); producer `pdfium-cli@v0.11.2-pdfium-chromium-7881` (`external-tool`)
 
-Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T06 acceptance-evidence record`.
+Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T07 independent-visual-evidence record`.
 
 <a id="capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments"></a>
 ## `document.metadata.outlines-destinations-attachments`

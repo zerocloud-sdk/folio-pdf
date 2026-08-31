@@ -1,15 +1,17 @@
 package net.zerocloud.pdf.acceptance;
 
+import static net.zerocloud.pdf.acceptance.EvidenceFiles.fencedEnding;
+import static net.zerocloud.pdf.acceptance.EvidenceFiles.finalFencedEnding;
+import static net.zerocloud.pdf.acceptance.EvidenceFiles.metadata;
+import static net.zerocloud.pdf.acceptance.EvidenceFiles.sha256;
+import static net.zerocloud.pdf.acceptance.EvidenceFiles.write;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -38,7 +40,7 @@ import net.zerocloud.pdf.command.SplitDocument;
 import net.zerocloud.pdf.command.UpdateDocumentInfo;
 
 /**
- * Repository-only command that records T06 evidence and the T10 and T11
+ * Repository-only command that records T06/T07 evidence and the T10 and T11
  * syntax chains.
  */
 public final class AcceptanceEvidenceCommand {
@@ -79,23 +81,34 @@ public final class AcceptanceEvidenceCommand {
     }
 
     /**
-     * Runs the built-in T06 profile and the T10 and T11 syntax chains.
+     * Runs the built-in T03 Acceptance Profile and the T10 and T11 syntax chains.
      *
-     * @param arguments output directory, qpdf executable, and Release Train
+     * @param arguments output directory, pinned tool and profile authorities,
+     *        and Release Train
      * @throws Exception if the evidence run cannot be completed
      */
     public static void main(String[] arguments) throws Exception {
-        if (arguments.length != 4) {
+        if (arguments.length != 6) {
             throw new IllegalArgumentException(
                     "Usage: AcceptanceEvidenceCommand <output-directory> "
-                            + "<qpdf-executable> <qpdf-pin> <release-train>");
+                            + "<qpdf-pin> <pdfium-pin> <imagemagick-pin> "
+                            + "<visual-profile> <release-train>");
         }
 
         Path output = Paths.get(arguments[0]).toAbsolutePath().normalize();
-        Path qpdf = Paths.get(arguments[1]).toAbsolutePath().normalize();
         QpdfPin qpdfPin = QpdfPin.load(
+                Paths.get(arguments[1]).toAbsolutePath().normalize());
+        PdfiumPin pdfiumPin = PdfiumPin.load(
                 Paths.get(arguments[2]).toAbsolutePath().normalize());
-        String releaseTrain = arguments[3];
+        ImageMagickPin imageMagickPin = ImageMagickPin.load(
+                Paths.get(arguments[3]).toAbsolutePath().normalize());
+        VisualProfile visualProfile = VisualProfile.load(
+                Paths.get(arguments[4]).toAbsolutePath().normalize());
+        if (!ACCEPTANCE_PROFILE.equals(visualProfile.profileId())) {
+            throw new IllegalArgumentException(
+                    "Visual profile does not describe " + ACCEPTANCE_PROFILE);
+        }
+        String releaseTrain = arguments[5];
         Path artifacts = output.resolve("artifacts");
         Files.createDirectories(artifacts);
         Path pdf = artifacts.resolve(ARTIFACT_NAME);
@@ -106,13 +119,14 @@ public final class AcceptanceEvidenceCommand {
                     session.execute(AddBlankPage.INSTANCE);
                     return null;
                 });
-        String inputHash = sha256(pdf);
+        String inputHash = EvidenceFiles.idNeutralPdfSha256(pdf);
 
         EvidenceResult syntaxResult;
         String observedVersion;
         String syntaxFinding;
         try {
-            ProcessResult version = run(qpdf, output, "--version");
+            ProcessResult version = ExternalProcess.run(
+                    qpdfPin.executable(), output, "--version");
             observedVersion = qpdfVersion(version.combinedOutput());
             if (version.exitCode != 0 || !qpdfPin.version().equals(observedVersion)) {
                 syntaxResult = EvidenceResult.INDETERMINATE;
@@ -121,7 +135,11 @@ public final class AcceptanceEvidenceCommand {
                 write(artifacts.resolve(QPDF_FINDINGS_NAME),
                         unpinnedQpdfFindings(inputHash, observedVersion, qpdfPin));
             } else {
-                ProcessResult syntax = run(qpdf, artifacts, "--check", ARTIFACT_NAME);
+                ProcessResult syntax = ExternalProcess.run(
+                        qpdfPin.executable(),
+                        artifacts,
+                        "--check",
+                        ARTIFACT_NAME);
                 syntaxResult = syntax.exitCode == 0
                         ? EvidenceResult.PASS
                         : syntax.exitCode == 2 || syntax.exitCode == 3
@@ -149,11 +167,26 @@ public final class AcceptanceEvidenceCommand {
         }
 
         SemanticObservation semantic = SemanticAssertions.inspect(creation, pdf);
-        EvidenceResult profileDetermination = syntaxResult == EvidenceResult.FAIL
-                || semantic.result() == EvidenceResult.FAIL
-                        ? EvidenceResult.FAIL : EvidenceResult.INDETERMINATE;
         write(artifacts.resolve(SEMANTIC_FINDINGS_NAME),
                 semantic.findings(inputHash, releaseTrain));
+
+        VisualEvidence visual = VisualEvidenceRecorder.record(
+                pdf,
+                inputHash,
+                artifacts,
+                pdfiumPin,
+                imageMagickPin,
+                visualProfile,
+                releaseTrain);
+        write(artifacts.resolve(VisualEvidenceRecorder.FINDINGS_NAME),
+                visual.rawFindings());
+        write(output.resolve(VisualEvidenceRecorder.RECORD_NAME),
+                visual.record());
+
+        EvidenceResult profileDetermination = syntaxResult == EvidenceResult.FAIL
+                || semantic.result() == EvidenceResult.FAIL
+                || visual.result() == EvidenceResult.FAIL
+                        ? EvidenceResult.FAIL : EvidenceResult.INDETERMINATE;
 
         write(output.resolve("T06-document-blank-syntax.md"),
                 syntaxRecord(inputHash, releaseTrain, observedVersion,
@@ -162,7 +195,7 @@ public final class AcceptanceEvidenceCommand {
                 semanticRecord(inputHash, releaseTrain, semantic));
         write(output.resolve("T06-document-blank-determination.md"),
                 determinationRecord(inputHash, releaseTrain, syntaxResult,
-                        semantic.result(), profileDetermination));
+                        semantic.result(), visual.result(), profileDetermination));
 
         EvidenceResult t10Syntax = recordProductSyntax(
                 new ProductChain(
@@ -182,7 +215,6 @@ public final class AcceptanceEvidenceCommand {
                 },
                 output,
                 artifacts,
-                qpdf,
                 qpdfPin,
                 releaseTrain);
 
@@ -204,12 +236,12 @@ public final class AcceptanceEvidenceCommand {
                 },
                 output,
                 artifacts,
-                qpdf,
                 qpdfPin,
                 releaseTrain);
 
         System.out.println("Acceptance Profile determination: "
                 + profileDetermination.recordValue());
+        System.out.println("T07 visual chain: " + visual.result().recordValue());
         System.out.println("T10 syntax chain: " + t10Syntax.recordValue());
         System.out.println("T11 syntax chain: " + t11Syntax.recordValue());
     }
@@ -255,7 +287,6 @@ public final class AcceptanceEvidenceCommand {
             ProductCreator creator,
             Path output,
             Path artifacts,
-            Path qpdf,
             QpdfPin qpdfPin,
             String releaseTrain) throws Exception {
         Path front = artifacts.resolve(chain.frontArtifact);
@@ -270,7 +301,8 @@ public final class AcceptanceEvidenceCommand {
         String finding;
         String findings;
         try {
-            ProcessResult version = run(qpdf, output, "--version");
+            ProcessResult version = ExternalProcess.run(
+                    qpdfPin.executable(), output, "--version");
             observedVersion = qpdfVersion(version.combinedOutput());
             if (version.exitCode != 0
                     || !qpdfPin.version().equals(observedVersion)) {
@@ -289,11 +321,19 @@ public final class AcceptanceEvidenceCommand {
                 checks.add(new ProductQpdfResult(
                         chain.frontArtifact,
                         frontHash,
-                        run(qpdf, artifacts, "--check", chain.frontArtifact)));
+                        ExternalProcess.run(
+                                qpdfPin.executable(),
+                                artifacts,
+                                "--check",
+                                chain.frontArtifact)));
                 checks.add(new ProductQpdfResult(
                         chain.backArtifact,
                         backHash,
-                        run(qpdf, artifacts, "--check", chain.backArtifact)));
+                        ExternalProcess.run(
+                                qpdfPin.executable(),
+                                artifacts,
+                                "--check",
+                                chain.backArtifact)));
                 result = aggregateQpdfResults(checks);
                 finding = productSyntaxFinding(chain, result);
                 findings = productQpdfFindings(
@@ -616,7 +656,8 @@ public final class AcceptanceEvidenceCommand {
                 + metadata("Producer", "qpdf")
                 + metadata("Producer version", producerVersion)
                 + metadata("Tool distribution SHA-256", qpdfPin.archiveSha256())
-                + metadata("Input SHA-256", inputHash)
+                + metadata("Input ID-neutral SHA-256", inputHash)
+                + metadata("Input hash policy", EvidenceFiles.inputHashPolicy())
                 + "Final determination: `" + result.recordValue() + "`\n\n"
                 + "## Findings and artifacts\n\n"
                 + "- Input PDF: [`artifacts/" + ARTIFACT_NAME + "`](artifacts/"
@@ -641,7 +682,8 @@ public final class AcceptanceEvidenceCommand {
                 + metadata("Producer kind", "project-test")
                 + metadata("Producer", "folio-pdf-semantic-assertions")
                 + metadata("Producer version", releaseTrain)
-                + metadata("Input SHA-256", inputHash)
+                + metadata("Input ID-neutral SHA-256", inputHash)
+                + metadata("Input hash policy", EvidenceFiles.inputHashPolicy())
                 + "Final determination: `" + result.recordValue() + "`\n\n"
                 + "## Findings and artifacts\n\n"
                 + "- Input PDF: [`artifacts/" + ARTIFACT_NAME + "`](artifacts/"
@@ -656,39 +698,58 @@ public final class AcceptanceEvidenceCommand {
             String releaseTrain,
             EvidenceResult syntaxResult,
             EvidenceResult semanticResult,
+            EvidenceResult visualResult,
             EvidenceResult profileDetermination) {
-        return "# T06 Acceptance Profile determination\n\n"
+        return "# T03 Acceptance Profile determination\n\n"
                 + metadata("Capability", CAPABILITY)
                 + metadata("Acceptance Profile", ACCEPTANCE_PROFILE)
                 + metadata("Profile record", PROFILE_RECORD)
                 + metadata("Release train", releaseTrain)
-                + metadata("Input SHA-256", inputHash)
+                + metadata("Input ID-neutral SHA-256", inputHash)
+                + metadata("Input hash policy", EvidenceFiles.inputHashPolicy())
                 + "Final determination: `" + profileDetermination.recordValue() + "`\n\n"
-                + passingChains(syntaxResult, semanticResult)
+                + passingChains(syntaxResult, semanticResult, visualResult)
                 + (syntaxResult == EvidenceResult.FAIL
                         ? "Failing mandatory chains: `syntax`\n\n" : "")
                 + (semanticResult == EvidenceResult.FAIL
                         ? "Failing mandatory chains: `semantic`\n\n" : "")
+                + (visualResult == EvidenceResult.FAIL
+                        ? "Failing mandatory chains: `visual`\n\n" : "")
                 + (syntaxResult == EvidenceResult.INDETERMINATE
                         ? "Indeterminate mandatory chains: `syntax`\n\n" : "")
-                + "Missing mandatory chains: `standards`, `visual`\n\n"
+                + (visualResult == EvidenceResult.INDETERMINATE
+                        ? "Indeterminate mandatory chains: `visual`\n\n" : "")
+                + "Missing mandatory chains: `standards`\n\n"
                 + "The capability remains `experimental`; qpdf syntax evidence is not "
-                + "a standards-compliance claim.\n";
+                + "a standards-compliance claim, and visual evidence cannot replace the "
+                + "missing independent standards chain.\n";
     }
 
     private static String passingChains(
             EvidenceResult syntaxResult,
-            EvidenceResult semanticResult) {
-        if (syntaxResult == EvidenceResult.PASS && semanticResult == EvidenceResult.PASS) {
-            return "Passing chains: `syntax`, `semantic`\n\n";
-        }
+            EvidenceResult semanticResult,
+            EvidenceResult visualResult) {
+        List<String> passing = new ArrayList<String>(3);
         if (syntaxResult == EvidenceResult.PASS) {
-            return "Passing chains: `syntax`\n\n";
+            passing.add("syntax");
         }
         if (semanticResult == EvidenceResult.PASS) {
-            return "Passing chains: `semantic`\n\n";
+            passing.add("semantic");
         }
-        return "Passing chains: none\n\n";
+        if (visualResult == EvidenceResult.PASS) {
+            passing.add("visual");
+        }
+        if (passing.isEmpty()) {
+            return "Passing chains: none\n\n";
+        }
+        StringBuilder value = new StringBuilder("Passing chains: ");
+        for (int index = 0; index < passing.size(); index++) {
+            if (index > 0) {
+                value.append(", ");
+            }
+            value.append('`').append(passing.get(index)).append('`');
+        }
+        return value.append("\n\n").toString();
     }
 
     private static String qpdfFindings(
@@ -696,7 +757,8 @@ public final class AcceptanceEvidenceCommand {
             String inputHash,
             QpdfPin qpdfPin) {
         return "# qpdf syntax findings\n\n"
-                + metadata("Input SHA-256", inputHash)
+                + metadata("Input ID-neutral SHA-256", inputHash)
+                + metadata("Input hash policy", EvidenceFiles.inputHashPolicy())
                 + metadata("Tool", "qpdf")
                 + metadata("Tool version", qpdfPin.version())
                 + metadata("Distribution SHA-256", qpdfPin.archiveSha256())
@@ -710,7 +772,8 @@ public final class AcceptanceEvidenceCommand {
 
     private static String unavailableQpdfFindings(String inputHash, QpdfPin qpdfPin) {
         return "# qpdf syntax findings\n\n"
-                + metadata("Input SHA-256", inputHash)
+                + metadata("Input ID-neutral SHA-256", inputHash)
+                + metadata("Input hash policy", EvidenceFiles.inputHashPolicy())
                 + metadata("Tool", "qpdf")
                 + metadata("Tool version", "unavailable")
                 + metadata("Distribution SHA-256", qpdfPin.archiveSha256())
@@ -723,25 +786,14 @@ public final class AcceptanceEvidenceCommand {
             String observedVersion,
             QpdfPin qpdfPin) {
         return "# qpdf syntax findings\n\n"
-                + metadata("Input SHA-256", inputHash)
+                + metadata("Input ID-neutral SHA-256", inputHash)
+                + metadata("Input hash policy", EvidenceFiles.inputHashPolicy())
                 + metadata("Tool", "qpdf")
                 + metadata("Tool version", observedVersion)
                 + metadata("Distribution SHA-256", qpdfPin.archiveSha256())
                 + "Final determination: `indeterminate`\n\n"
                 + "Expected pinned qpdf version `" + qpdfPin.version()
                 + "`; observed `" + observedVersion + "`.\n";
-    }
-
-    private static String fencedEnding(String value) {
-        return value.endsWith("\n") ? "```\n\n" : "\n```\n\n";
-    }
-
-    private static String finalFencedEnding(String value) {
-        return value.endsWith("\n") ? "```\n" : "\n```\n";
-    }
-
-    private static String metadata(String label, String value) {
-        return label + ": `" + value + "`\n\n";
     }
 
     private static String qpdfVersion(String output) {
@@ -752,115 +804,6 @@ public final class AcceptanceEvidenceCommand {
             }
         }
         return "unavailable";
-    }
-
-    private static ProcessResult run(Path executable, Path directory, String... arguments)
-            throws IOException, InterruptedException {
-        String[] command = new String[arguments.length + 1];
-        command[0] = executable.toString();
-        System.arraycopy(arguments, 0, command, 1, arguments.length);
-        Process process = new ProcessBuilder(command)
-                .directory(directory.toFile())
-                .start();
-        StreamCapture standardOutput = new StreamCapture(process.getInputStream());
-        StreamCapture standardError = new StreamCapture(process.getErrorStream());
-        Thread outputThread = new Thread(standardOutput, "qpdf-standard-output");
-        Thread errorThread = new Thread(standardError, "qpdf-standard-error");
-        outputThread.start();
-        errorThread.start();
-        int exitCode = process.waitFor();
-        outputThread.join();
-        errorThread.join();
-        return new ProcessResult(exitCode, standardOutput.value(), standardError.value());
-    }
-
-    private static String sha256(Path path) throws IOException {
-        MessageDigest digest;
-        try {
-            digest = MessageDigest.getInstance("SHA-256");
-        } catch (NoSuchAlgorithmException impossible) {
-            throw new IllegalStateException("SHA-256 is unavailable", impossible);
-        }
-        try (InputStream input = Files.newInputStream(path)) {
-            byte[] buffer = new byte[8192];
-            int count;
-            while ((count = input.read(buffer)) >= 0) {
-                digest.update(buffer, 0, count);
-            }
-        }
-        return hex(digest.digest());
-    }
-
-    private static String sha256(String value) {
-        MessageDigest digest;
-        try {
-            digest = MessageDigest.getInstance("SHA-256");
-        } catch (NoSuchAlgorithmException impossible) {
-            throw new IllegalStateException("SHA-256 is unavailable", impossible);
-        }
-        return hex(digest.digest(value.getBytes(StandardCharsets.UTF_8)));
-    }
-
-    private static String hex(byte[] digest) {
-        StringBuilder result = new StringBuilder(64);
-        for (byte value : digest) {
-            result.append(String.format("%02x", value & 0xff));
-        }
-        return result.toString();
-    }
-
-    private static void write(Path path, String value) throws IOException {
-        Files.write(path,
-                value.getBytes(StandardCharsets.UTF_8),
-                StandardOpenOption.CREATE,
-                StandardOpenOption.TRUNCATE_EXISTING,
-                StandardOpenOption.WRITE);
-    }
-
-    private static final class StreamCapture implements Runnable {
-        private final InputStream input;
-        private final ByteArrayOutputStream output = new ByteArrayOutputStream();
-        private IOException failure;
-
-        StreamCapture(InputStream input) {
-            this.input = input;
-        }
-
-        @Override
-        public void run() {
-            try (InputStream stream = input) {
-                byte[] buffer = new byte[4096];
-                int count;
-                while ((count = stream.read(buffer)) >= 0) {
-                    output.write(buffer, 0, count);
-                }
-            } catch (IOException captureFailure) {
-                failure = captureFailure;
-            }
-        }
-
-        String value() throws IOException {
-            if (failure != null) {
-                throw failure;
-            }
-            return new String(output.toByteArray(), StandardCharsets.UTF_8);
-        }
-    }
-
-    private static final class ProcessResult {
-        private final int exitCode;
-        private final String standardOutput;
-        private final String standardError;
-
-        ProcessResult(int exitCode, String standardOutput, String standardError) {
-            this.exitCode = exitCode;
-            this.standardOutput = standardOutput;
-            this.standardError = standardError;
-        }
-
-        String combinedOutput() {
-            return standardOutput + "\n" + standardError;
-        }
     }
 
     private static final class ProductQpdfResult {

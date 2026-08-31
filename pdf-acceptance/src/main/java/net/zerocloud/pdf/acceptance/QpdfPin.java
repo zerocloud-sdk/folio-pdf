@@ -1,30 +1,31 @@
 package net.zerocloud.pdf.acceptance;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Properties;
 
 /** Immutable qpdf distribution identity loaded from the repository authority. */
 final class QpdfPin {
 
+    private final Path executable;
     private final String version;
     private final String archiveSha256;
 
-    private QpdfPin(String version, String archiveSha256) {
+    private QpdfPin(Path executable, String version, String archiveSha256) {
+        this.executable = executable;
         this.version = version;
         this.archiveSha256 = archiveSha256;
     }
 
     static QpdfPin load(Path path) throws IOException {
-        Properties properties = new Properties();
-        try (InputStream input = Files.newInputStream(path)) {
-            properties.load(input);
-        }
+        PinProperties properties = PinProperties.load(path, "qpdf pin");
         return new QpdfPin(
-                required(properties, "QPDF_VERSION"),
-                required(properties, "QPDF_ARCHIVE_SHA256"));
+                properties.requiredExecutable("QPDF_EXECUTABLE"),
+                properties.required("QPDF_VERSION"),
+                properties.requiredSha256("QPDF_ARCHIVE_SHA256"));
+    }
+
+    Path executable() {
+        return executable;
     }
 
     String version() {
@@ -33,13 +34,5 @@ final class QpdfPin {
 
     String archiveSha256() {
         return archiveSha256;
-    }
-
-    private static String required(Properties properties, String key) throws IOException {
-        String value = properties.getProperty(key);
-        if (value == null || value.trim().isEmpty()) {
-            throw new IOException("Missing qpdf pin property " + key);
-        }
-        return value.trim();
     }
 }

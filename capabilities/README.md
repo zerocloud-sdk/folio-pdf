@@ -23,39 +23,96 @@ The outputs are:
 - `docs/generated/capability-matrix.md`
 - `docs/generated/facade-surface.md`
 
-Record the built-in T06 blank-document Acceptance Profile with the pinned
-external syntax validator and the project semantic assertions:
+Record the built-in T03 blank-document Acceptance Profile with the pinned
+external syntax validator, independent renderer, raster comparator, and
+project semantic assertions:
 
 ```text
 ./scripts/provision-qpdf /path/to/qpdf-12.4.0-bin-linux-x86_64.zip
+./scripts/provision-pdfium /path/to/pdfium-webassembly-linux-amd64
+./scripts/provision-imagemagick /path/to/ImageMagick-7.1.2-30-gcc-x86_64.AppImage
 ./scripts/acceptance capabilities/evidence
 ```
 
-Provisioning is deliberately offline. The operator supplies the official
-qpdf 12.4.0 Linux x86-64 archive; `scripts/provision-qpdf` verifies SHA-256
+Provisioning is deliberately offline. The operator supplies each release
+asset locally; none of these commands downloads it. For qpdf,
+`scripts/provision-qpdf` verifies the official 12.4.0 Linux x86-64 archive at SHA-256
 `a3bca240f3bb61efdc3a90be89d1da4ed5e125326c3458c4e62df53ff4f153e3`
 and verifies the extracted `bin/qpdf` SHA-256
 `9ac787a28597e8428289a12ba3fedafd74bdfb4b4da1be814722faf76f14f21b`
 before placing it in the ignored `.build-cache/qpdf/12.4.0` directory.
-`scripts/qpdf-pin.properties` is the single operational pin authority, and
-the canonical acceptance profile fixes both the repository wrapper and that
-pin file. The normal build, tests, and inventory commands neither download
-nor require qpdf. A missing, unreadable, incorrectly versioned, or
-digest-unmarked validator records the syntax chain as `indeterminate`, never
-`pass`.
+`scripts/qpdf-pin.properties` is the single operational pin authority and
+also fixes the repository wrapper path consumed by the canonical command.
 
-The acceptance command creates the T06 blank PDF through
-`DocumentWorkflow.execute`, hashes that artifact, runs `qpdf --check` on it,
-and then reopens the same artifact through the public workflow to assert the
-committed one-page sequence and readable object graph; text order is not
-applicable because the profile emits no text. It also drives all six T10 page,
+The PDFium renderer is the MIT-licensed pdfium-cli v0.11.2 WebAssembly Linux
+x86-64 release containing BSD-3-Clause PDFium Chromium build 7881. Its direct
+executable release asset has both distribution and executable SHA-256
+`3ef3375c429ce665e834f933a028225bf28ac837695aaa69c6fc21facf6780ab`.
+The ImageMagick 7.1.2-30 GCC x86-64 AppImage is under the ImageMagick License;
+its direct executable release asset has both distribution and executable
+SHA-256
+`372af8a3fd61ef5f15c6331cde3e21f840eb165d8b533f34ed05d68736dd682e`.
+`scripts/pdfium-pin.properties` and `scripts/imagemagick-pin.properties` are
+their operational authorities and pair each distribution identity with its
+repository wrapper. The exact linked modules and bundled components are
+recorded in the pinned
+[PDFium](../docs/third-party/pdfium-cli-v0.11.2.md) and
+[ImageMagick](../docs/third-party/imagemagick-7.1.2-30-appimage.md) notice
+manifests. The provisioners verify the supplied asset, reported version, and
+executable hash before placing it under the ignored `.build-cache/` tree. The
+wrappers recheck digest markers and executable hashes and never search `PATH`
+for a fallback.
+
+The normal build, published artifacts, and inventory commands neither
+download nor require qpdf, PDFium, or ImageMagick. Missing, unreadable,
+incorrectly versioned, or digest-unmarked tools record the applicable chain as
+`indeterminate`, never `pass`.
+
+The acceptance command creates the blank PDF through
+`DocumentWorkflow.execute`, computes its ID-neutral input SHA-256, runs
+`qpdf --check` on the unmodified artifact, and then reopens that same artifact
+through the public workflow to assert the committed one-page sequence and
+readable object graph; text order is not applicable because the profile emits
+no text. The input hash replaces only the two hexadecimal trailer `/ID` values
+with ASCII zeroes before hashing. This preserves reproducible evidence
+metadata while honoring issue #1's explicit exclusion of byte-identical PDF
+output; every other PDF byte remains hash-significant, and the file handed to
+qpdf and PDFium is never normalized or rewritten. A repeat-run command test
+requires the T06/T07 records and raw findings to reproduce exactly. The command
+also drives all six T10 page,
 merge, and split Commands to create two independently reopenable products and
 runs the same pinned qpdf syntax check on both. It records tool identity,
-version and distribution digest, input SHA-256 values, raw findings,
+version and distribution digest, ID-neutral input SHA-256 values, raw findings,
 chain-level results, and the applicable determination beneath the requested
 output directory. qpdf is syntax evidence only: its success is not a PDF
 standards-conformance result and cannot satisfy the independent standards,
 semantic, or visual chains.
+
+For T07, PDFium receives that exact workflow-produced PDF and renders its one
+effective MediaBox page at 144 DPI into an opaque sRGB RGB PNG of exactly
+`1224x1584` pixels. The project-owned profile at
+`capabilities/profiles/T03-document-blank-visual.properties` fixes the page
+box, color, font and antialiasing policies, dimensions, expected-raster hash,
+ImageMagick AE metric with fuzz `0%`, and zero-pixel capability and renderer-
+agreement thresholds. The expected raster is a project-defined all-white
+image; it is not Reference Suite output.
+
+With the pinned ImageMagick asset provisioned, its exact bytes reproduce with:
+
+```text
+./scripts/container-bin/imagemagick -size 1224x1584 xc:'#ffffff' -colorspace sRGB -alpha off -type TrueColor -depth 8 -strip PNG24:capabilities/expected/T03-document-blank-144dpi-srgb.png
+```
+
+The resulting SHA-256 is
+`c7bbf03603aee1dba4ef80c9eee9abb93b7f3adfb94b84e4abf0203d78f89011`.
+
+The harness validates PNG structure, dimensions, color type, and decodability
+before comparison. ImageMagick receives raster paths only and produces
+reviewable red/white difference artifacts. A threshold mismatch is `fail`.
+Apache PDFBox Renderer 3.0.8 supplies a secondary raster only to detect
+implementation-renderer disagreement; disagreement is review-required and
+`indeterminate`, never `pass`. Unexpected tool results, invalid metrics,
+missing difference output, or unusable rasters are also `indeterminate`.
 
 `./scripts/inventory check` validates the authorities and fails if either
 generated file is missing or stale. The repository root command
@@ -159,13 +216,14 @@ Generated Markdown is review material, not a third authority.
 The T02 validator and generator evidence is recorded in
 `capabilities/evidence/T02-inventory-authorities.md`.
 
-The current T06 syntax, semantic, and overall records are
+The current T06 syntax and semantic, T07 visual, and overall records are
 `capabilities/evidence/T06-document-blank-syntax.md`,
-`capabilities/evidence/T06-document-blank-semantic.md`, and
+`capabilities/evidence/T06-document-blank-semantic.md`,
+`capabilities/evidence/T07-document-blank-visual.md`, and
 `capabilities/evidence/T06-document-blank-determination.md`. Syntax and
-semantic pass for their shared pinned artifact. Standards and visual evidence
-are absent, so the overall profile remains `indeterminate` and the capability
-remains `experimental`.
+semantic pass for their shared artifact, and visual passes against that same
+PDF. Standards evidence is absent, so the overall profile remains
+`indeterminate` and the capability remains `experimental`.
 
 The current T10 syntax record is
 `capabilities/evidence/T10-page-manipulation-merge-split-syntax.md`. Its two

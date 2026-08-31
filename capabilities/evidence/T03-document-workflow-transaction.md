@@ -60,13 +60,56 @@ The PDF fixtures are generated entirely through the project-owned Native
 Interface. Apache PDFBox 3.0.8 remains behind project-owned public types. This
 record is implementation evidence, not independent Acceptance Evidence.
 
-T06 now records passing independent
+T06 records passing independent
 [`syntax`](T06-document-blank-syntax.md) and
 [`semantic`](T06-document-blank-semantic.md) chains against the same pinned
-artifact. The [overall determination](T06-document-blank-determination.md)
-remains `indeterminate` because standards and visual evidence are absent.
-qpdf syntax success is not a standards-compliance claim. The capability
-therefore remains `experimental`, and its T06 promotion gate remains open.
+artifact. T07 records the passing independent
+[`visual`](T07-document-blank-visual.md) chain after PDFium renders that exact
+artifact and ImageMagick compares only fixed-size PNG rasters. The
+[overall determination](T06-document-blank-determination.md) remains
+`indeterminate` because independent standards evidence is still absent. qpdf
+syntax success is not a standards-compliance claim, and visual success cannot
+replace that missing chain. The capability therefore remains `experimental`.
+
+The T06/T07 records identify the shared input with an ID-neutral SHA-256:
+before hashing, only the two hexadecimal values in the PDF trailer `/ID` array
+are replaced with ASCII zeroes. Issue #1 excludes byte-identical PDF output,
+and a fresh PDF identifier is not a semantic or visual difference. All other
+bytes remain hash-significant, while qpdf, the public reopen check, PDFium, and
+the secondary renderer receive the exact unmodified workflow output. The
+acceptance command's repeat-run test requires the records and raw findings to
+reproduce byte-for-byte under this policy.
+
+## T07 blank-document visual profile
+
+The machine-consumed profile is
+[`capabilities/profiles/T03-document-blank-visual.properties`](../profiles/T03-document-blank-visual.properties).
+It fixes the effective page box to the MediaBox `[0 0 612 792]` points because
+the blank artifact has no CropBox, renders at 144 DPI, and requires an opaque
+8-bit sRGB RGB PNG of exactly `1224x1584` pixels on a white background. Fonts
+are explicitly not applicable because the artifact contains no text or font
+resources. Antialiasing is the pinned PDFium build's default smoothing and has
+no marks to affect in this profile.
+
+The project-owned expected raster is an all-white image defined by those
+settings, not output from the Reference Suite. ImageMagick uses absolute error
+count (`AE`) with fuzz `0%`; the capability threshold and the independent-to-
+implementation renderer agreement threshold are both zero changed pixels. A
+threshold mismatch retains a red/white difference raster and is `fail`. A
+PDFium/PDFBox Renderer disagreement is review-required and `indeterminate`,
+never `pass`. Missing or unpinned tools, unexpected process results, malformed
+PNG data, and any wrong raster dimension are also `indeterminate`.
+
+PDFium CLI v0.11.2 with embedded PDFium Chromium build 7881 is the independent
+renderer and receives the PDF input. ImageMagick 7.1.2-30 receives only the
+validated expected, PDFium, and secondary-renderer PNG paths. Apache PDFBox
+Renderer 3.0.8 supplies secondary disagreement evidence only; it is not the
+visual oracle. All three remain acceptance-only implementation details and no
+T23 runtime page-rendering capability or Native Interface type is introduced.
+The pinned component and license inventories are
+[`docs/third-party/pdfium-cli-v0.11.2.md`](../../docs/third-party/pdfium-cli-v0.11.2.md)
+and
+[`docs/third-party/imagemagick-7.1.2-30-appimage.md`](../../docs/third-party/imagemagick-7.1.2-30-appimage.md).
 
 ## Execution record — 2026-08-10
 

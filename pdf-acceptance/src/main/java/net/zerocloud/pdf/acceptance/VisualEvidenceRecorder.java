@@ -1,0 +1,715 @@
+package net.zerocloud.pdf.acceptance;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+/** Records the independent PDFium/ImageMagick visual chain for the T03 profile. */
+final class VisualEvidenceRecorder {
+
+    static final String RECORD_NAME = "T07-document-blank-visual.md";
+    static final String FINDINGS_NAME = "T07-document-blank-visual.txt";
+    static final String EXPECTED_RASTER_NAME = "T07-document-blank-expected.png";
+    static final String PDFIUM_RASTER_NAME = "T07-document-blank-pdfium.png";
+    static final String IMPLEMENTATION_RASTER_NAME =
+            "T07-document-blank-implementation.png";
+    static final String DIFFERENCE_RASTER_NAME =
+            "T07-document-blank-difference.png";
+    static final String RENDERER_DIFFERENCE_RASTER_NAME =
+            "T07-document-blank-renderer-difference.png";
+
+    private static final String CAPABILITY =
+            "document.blank.create-publish-reopen";
+    private static final String ACCEPTANCE_PROFILE =
+            "T03-document-workflow-transaction";
+    private static final String PROFILE_RECORD =
+            "capabilities/evidence/T03-document-workflow-transaction.md";
+    private static final Pattern AE_METRIC = Pattern.compile(
+            "^([0-9]+)(?:\\s+\\([^\\r\\n]*\\))?\\s*$");
+
+    private VisualEvidenceRecorder() {
+    }
+
+    static VisualEvidence record(
+            Path pdf,
+            String inputHash,
+            Path artifacts,
+            PdfiumPin pdfiumPin,
+            ImageMagickPin imageMagickPin,
+            VisualProfile profile,
+            String releaseTrain) throws IOException {
+        RunState state = new RunState(
+                inputHash,
+                pdfiumPin,
+                imageMagickPin,
+                profile,
+                releaseTrain);
+        Path expected = artifacts.resolve(EXPECTED_RASTER_NAME);
+        Path actual = artifacts.resolve(PDFIUM_RASTER_NAME);
+        Path implementation = artifacts.resolve(IMPLEMENTATION_RASTER_NAME);
+        Path difference = artifacts.resolve(DIFFERENCE_RASTER_NAME);
+        Path rendererDifference = artifacts.resolve(
+                RENDERER_DIFFERENCE_RASTER_NAME);
+        clearOutputs(expected, actual, implementation, difference, rendererDifference);
+
+        try {
+            state.expectedHash = EvidenceFiles.sha256(profile.expectedRaster());
+            if (!profile.expectedRasterSha256().equals(state.expectedHash)) {
+                return indeterminate(
+                        state,
+                        "The project-owned expected raster did not match its pinned SHA-256.",
+                        artifacts);
+            }
+            PngRaster.requireProfileRaster(
+                    profile.expectedRaster(),
+                    profile.rasterWidth(),
+                    profile.rasterHeight());
+            Files.copy(
+                    profile.expectedRaster(),
+                    expected,
+                    StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException unusableExpected) {
+            state.transcript.append("Expected raster validation: `indeterminate`\n\n")
+                    .append(safeMessage(unusableExpected)).append("\n\n");
+            return indeterminate(
+                    state,
+                    "The project-owned expected raster was missing or unusable.",
+                    artifacts);
+        }
+
+        ProcessResult pdfiumVersion;
+        try {
+            pdfiumVersion = ExternalProcess.run(
+                    pdfiumPin.executable(), artifacts, "--version");
+            appendInvocation(
+                    state.transcript,
+                    "PDFium identity",
+                    "pdfium --version",
+                    pdfiumVersion);
+        } catch (IOException unavailable) {
+            state.transcript.append("PDFium identity: tool unavailable.\n\n");
+            return indeterminate(
+                    state,
+                    "The pinned PDFium renderer was unavailable.",
+                    artifacts);
+        } catch (InterruptedException interrupted) {
+            Thread.currentThread().interrupt();
+            state.transcript.append("PDFium identity: process interrupted.\n\n");
+            return indeterminate(
+                    state,
+                    "The pinned PDFium renderer was interrupted.",
+                    artifacts);
+        }
+        state.observedPdfiumVersion = pdfiumVersion(pdfiumVersion.combinedOutput());
+        if (pdfiumVersion.exitCode != 0
+                || !pdfiumPin.cliVersion().equals(state.observedPdfiumVersion)) {
+            return indeterminate(
+                    state,
+                    "Expected pinned PDFium CLI version `" + pdfiumPin.cliVersion()
+                            + "`; observed `" + state.observedPdfiumVersion + "`.",
+                    artifacts);
+        }
+
+        ProcessResult render;
+        try {
+            render = ExternalProcess.run(
+                    pdfiumPin.executable(),
+                    artifacts,
+                    "render",
+                    pdf.getFileName().toString(),
+                    PDFIUM_RASTER_NAME,
+                    "--dpi",
+                    Integer.toString(profile.dpi()),
+                    "--file-type",
+                    "png",
+                    "--pages",
+                    "first");
+            appendInvocation(
+                    state.transcript,
+                    "PDFium render",
+                    "pdfium render " + pdf.getFileName() + " "
+                            + PDFIUM_RASTER_NAME + " --dpi " + profile.dpi()
+                            + " --file-type png --pages first",
+                    render);
+        } catch (IOException unavailable) {
+            state.transcript.append("PDFium render: tool unavailable.\n\n");
+            return indeterminate(
+                    state,
+                    "The pinned PDFium renderer was unavailable during rendering.",
+                    artifacts);
+        } catch (InterruptedException interrupted) {
+            Thread.currentThread().interrupt();
+            state.transcript.append("PDFium render: process interrupted.\n\n");
+            return indeterminate(
+                    state,
+                    "The pinned PDFium renderer was interrupted during rendering.",
+                    artifacts);
+        }
+        if (render.exitCode != 0) {
+            return indeterminate(
+                    state,
+                    "PDFium returned an unexpected render status `"
+                            + render.exitCode + "`.",
+                    artifacts);
+        }
+        try {
+            PngRaster.requireProfileRaster(
+                    actual,
+                    profile.rasterWidth(),
+                    profile.rasterHeight());
+            state.actualHash = EvidenceFiles.sha256(actual);
+        } catch (IOException unusableRaster) {
+            state.transcript.append("PDFium raster validation: `indeterminate`\n\n")
+                    .append(safeMessage(unusableRaster)).append("\n\n");
+            return indeterminate(
+                    state,
+                    "PDFium produced a malformed or wrong-sized raster.",
+                    artifacts);
+        }
+
+        try {
+            state.implementationVersion = ImplementationRenderer.render(
+                    pdf,
+                    implementation,
+                    profile);
+            PngRaster.requireProfileRaster(
+                    implementation,
+                    profile.rasterWidth(),
+                    profile.rasterHeight());
+            state.implementationHash = EvidenceFiles.sha256(implementation);
+            state.transcript.append("Secondary implementation renderer: `Apache PDFBox ")
+                    .append(state.implementationVersion)
+                    .append("` at `")
+                    .append(profile.dpi())
+                    .append(" DPI RGB`\n\n");
+        } catch (IOException unusableSecondary) {
+            state.transcript.append("Secondary renderer validation: `indeterminate`\n\n")
+                    .append(safeMessage(unusableSecondary)).append("\n\n");
+            return indeterminate(
+                    state,
+                    "The secondary implementation-renderer evidence was unusable.",
+                    artifacts);
+        } catch (RuntimeException unexpectedSecondary) {
+            state.transcript.append("Secondary renderer validation: `indeterminate`\n\n");
+            return indeterminate(
+                    state,
+                    "The secondary implementation renderer ended unexpectedly.",
+                    artifacts);
+        }
+
+        ProcessResult imageMagickVersion;
+        try {
+            imageMagickVersion = ExternalProcess.run(
+                    imageMagickPin.executable(),
+                    artifacts,
+                    "--version");
+            appendInvocation(
+                    state.transcript,
+                    "ImageMagick identity",
+                    "magick --version",
+                    imageMagickVersion);
+        } catch (IOException unavailable) {
+            state.transcript.append("ImageMagick identity: tool unavailable.\n\n");
+            return indeterminate(
+                    state,
+                    "The pinned ImageMagick comparator was unavailable.",
+                    artifacts);
+        } catch (InterruptedException interrupted) {
+            Thread.currentThread().interrupt();
+            state.transcript.append("ImageMagick identity: process interrupted.\n\n");
+            return indeterminate(
+                    state,
+                    "The pinned ImageMagick comparator was interrupted.",
+                    artifacts);
+        }
+        state.observedImageMagickVersion = imageMagickVersion(
+                imageMagickVersion.combinedOutput());
+        if (imageMagickVersion.exitCode != 0
+                || !imageMagickPin.version().equals(
+                        state.observedImageMagickVersion)) {
+            return indeterminate(
+                    state,
+                    "Expected pinned ImageMagick version `"
+                            + imageMagickPin.version() + "`; observed `"
+                            + state.observedImageMagickVersion + "`.",
+                    artifacts);
+        }
+
+        ComparisonObservation primary = compare(
+                imageMagickPin.executable(),
+                artifacts,
+                EXPECTED_RASTER_NAME,
+                PDFIUM_RASTER_NAME,
+                DIFFERENCE_RASTER_NAME,
+                "Expected-to-PDFium raster comparison",
+                state.transcript,
+                profile);
+        if (!primary.usable) {
+            return indeterminate(state, primary.finding, artifacts);
+        }
+        state.primaryMetric = Long.toString(primary.absoluteError);
+        state.differenceHash = EvidenceFiles.sha256(difference);
+
+        ComparisonObservation rendererAgreement = compare(
+                imageMagickPin.executable(),
+                artifacts,
+                PDFIUM_RASTER_NAME,
+                IMPLEMENTATION_RASTER_NAME,
+                RENDERER_DIFFERENCE_RASTER_NAME,
+                "PDFium-to-implementation renderer comparison",
+                state.transcript,
+                profile);
+        if (!rendererAgreement.usable) {
+            return indeterminate(state, rendererAgreement.finding, artifacts);
+        }
+        state.rendererAgreementMetric = Long.toString(
+                rendererAgreement.absoluteError);
+        state.rendererDifferenceHash = EvidenceFiles.sha256(rendererDifference);
+
+        if (rendererAgreement.absoluteError
+                > profile.rendererAgreementThreshold()) {
+            state.reviewRequired = true;
+            return finish(
+                    state,
+                    EvidenceResult.INDETERMINATE,
+                    "PDFium and the secondary implementation renderer disagreed at AE `"
+                            + rendererAgreement.absoluteError
+                            + "`; review is required and the visual chain cannot pass.",
+                    artifacts);
+        }
+        if (primary.absoluteError > profile.comparisonThreshold()) {
+            return finish(
+                    state,
+                    EvidenceResult.FAIL,
+                    "The PDFium raster exceeded the capability threshold with AE `"
+                            + primary.absoluteError + "`; the raster difference is retained.",
+                    artifacts);
+        }
+        return finish(
+                state,
+                EvidenceResult.PASS,
+                "The PDFium raster matched the project-owned expectation at AE `"
+                        + primary.absoluteError
+                        + "`, and the secondary renderer agreement AE was `"
+                        + rendererAgreement.absoluteError + "`.",
+                artifacts);
+    }
+
+    private static ComparisonObservation compare(
+            Path imageMagick,
+            Path artifacts,
+            String expected,
+            String actual,
+            String difference,
+            String label,
+            StringBuilder transcript,
+            VisualProfile profile) {
+        ProcessResult comparison;
+        try {
+            comparison = ExternalProcess.run(
+                    imageMagick,
+                    artifacts,
+                    "compare",
+                    "-metric",
+                    profile.comparisonMetric(),
+                    "-fuzz",
+                    profile.comparisonFuzzPercent() + "%",
+                    "-highlight-color",
+                    "#ff0000",
+                    "-lowlight-color",
+                    "#ffffff",
+                    "-define",
+                    "png:exclude-chunk=time,date",
+                    expected,
+                    actual,
+                    difference);
+            appendInvocation(
+                    transcript,
+                    label,
+                    "magick compare -metric " + profile.comparisonMetric()
+                            + " -fuzz " + profile.comparisonFuzzPercent()
+                            + "% -highlight-color #ff0000 "
+                            + "-lowlight-color #ffffff -define "
+                            + "png:exclude-chunk=time,date " + expected + " "
+                            + actual + " " + difference,
+                    comparison);
+        } catch (IOException unavailable) {
+            transcript.append(label).append(": tool unavailable.\n\n");
+            return ComparisonObservation.unusable(
+                    "The pinned ImageMagick comparator was unavailable during comparison.");
+        } catch (InterruptedException interrupted) {
+            Thread.currentThread().interrupt();
+            transcript.append(label).append(": process interrupted.\n\n");
+            return ComparisonObservation.unusable(
+                    "The pinned ImageMagick comparator was interrupted.");
+        }
+        if (comparison.exitCode != 0 && comparison.exitCode != 1) {
+            return ComparisonObservation.unusable(
+                    "ImageMagick returned an unexpected comparison status `"
+                            + comparison.exitCode + "`.");
+        }
+        Matcher metric = AE_METRIC.matcher(comparison.standardError.trim());
+        if (!metric.matches()) {
+            return ComparisonObservation.unusable(
+                    "ImageMagick did not emit a usable absolute-error metric.");
+        }
+        long absoluteError;
+        try {
+            absoluteError = Long.parseLong(metric.group(1));
+        } catch (NumberFormatException invalidMetric) {
+            return ComparisonObservation.unusable(
+                    "ImageMagick emitted an out-of-range absolute-error metric.");
+        }
+        if ((comparison.exitCode == 0 && absoluteError != 0L)
+                || (comparison.exitCode == 1 && absoluteError == 0L)) {
+            return ComparisonObservation.unusable(
+                    "ImageMagick comparison status and metric disagreed.");
+        }
+        try {
+            PngRaster.requireDifferenceRaster(
+                    artifacts.resolve(difference),
+                    profile.rasterWidth(),
+                    profile.rasterHeight());
+        } catch (IOException unusableDifference) {
+            transcript.append("Difference raster validation: `indeterminate`\n\n")
+                    .append(safeMessage(unusableDifference)).append("\n\n");
+            return ComparisonObservation.unusable(
+                    "ImageMagick did not produce a reviewable fixed-size difference raster.");
+        }
+        return ComparisonObservation.usable(absoluteError);
+    }
+
+    private static VisualEvidence indeterminate(
+            RunState state,
+            String finding,
+            Path artifacts) {
+        return finish(state, EvidenceResult.INDETERMINATE, finding, artifacts);
+    }
+
+    private static VisualEvidence finish(
+            RunState state,
+            EvidenceResult result,
+            String finding,
+            Path artifacts) {
+        state.transcript.append("Final visual finding: ")
+                .append(finding)
+                .append("\n\n")
+                .append("Final determination: `")
+                .append(result.recordValue())
+                .append("`\n");
+        String record = record(state, result, finding, artifacts);
+        String rawFindings = rawFindings(state);
+        return new VisualEvidence(result, record, rawFindings);
+    }
+
+    private static String record(
+            RunState state,
+            EvidenceResult result,
+            String finding,
+            Path artifacts) {
+        VisualProfile profile = state.profile;
+        PdfiumPin pdfium = state.pdfiumPin;
+        ImageMagickPin imageMagick = state.imageMagickPin;
+        StringBuilder record = new StringBuilder();
+        record.append("# T07 PDFium visual evidence\n\n")
+                .append(EvidenceFiles.metadata("Capability", CAPABILITY))
+                .append(EvidenceFiles.metadata(
+                        "Acceptance Profile", ACCEPTANCE_PROFILE))
+                .append(EvidenceFiles.metadata("Profile record", PROFILE_RECORD))
+                .append(EvidenceFiles.metadata(
+                        "Release train", state.releaseTrain))
+                .append(EvidenceFiles.metadata("Chain", "visual"))
+                .append(EvidenceFiles.metadata("Result", result.recordValue()))
+                .append(EvidenceFiles.metadata("Producer kind", "external-tool"))
+                .append(EvidenceFiles.metadata("Producer", "pdfium-cli"))
+                .append(EvidenceFiles.metadata(
+                        "Producer version", pdfium.producerVersion()))
+                .append(EvidenceFiles.metadata(
+                        "PDFium CLI version", state.observedPdfiumVersion))
+                .append(EvidenceFiles.metadata(
+                        "PDFium engine version", pdfium.engineVersion()))
+                .append(EvidenceFiles.metadata(
+                        "PDFium engine distribution",
+                        pdfium.engineDistributionName()))
+                .append(EvidenceFiles.metadata(
+                        "PDFium engine distribution SHA-256",
+                        pdfium.engineArchiveSha256()))
+                .append(EvidenceFiles.metadata(
+                        "PDFium distribution", pdfium.distributionName()))
+                .append(EvidenceFiles.metadata(
+                        "PDFium distribution SHA-256", pdfium.archiveSha256()))
+                .append(EvidenceFiles.metadata(
+                        "PDFium executable SHA-256", pdfium.executableSha256()))
+                .append(EvidenceFiles.metadata(
+                        "PDFium distribution license",
+                        pdfium.distributionLicense()))
+                .append(EvidenceFiles.metadata(
+                        "PDFium engine license", pdfium.engineLicense()))
+                .append(EvidenceFiles.metadata(
+                        "PDFium notice manifest", pdfium.noticeManifest()))
+                .append(EvidenceFiles.metadata(
+                        "ImageMagick version", state.observedImageMagickVersion))
+                .append(EvidenceFiles.metadata(
+                        "ImageMagick distribution", imageMagick.distributionName()))
+                .append(EvidenceFiles.metadata(
+                        "ImageMagick distribution SHA-256",
+                        imageMagick.archiveSha256()))
+                .append(EvidenceFiles.metadata(
+                        "ImageMagick executable SHA-256",
+                        imageMagick.executableSha256()))
+                .append(EvidenceFiles.metadata(
+                        "ImageMagick distribution license",
+                        imageMagick.distributionLicense()))
+                .append(EvidenceFiles.metadata(
+                        "ImageMagick notice manifest",
+                        imageMagick.noticeManifest()))
+                .append(EvidenceFiles.metadata(
+                        "Implementation renderer version",
+                        state.implementationVersion))
+                .append(EvidenceFiles.metadata(
+                        "Input ID-neutral SHA-256", state.inputHash))
+                .append(EvidenceFiles.metadata(
+                        "Input hash policy", EvidenceFiles.inputHashPolicy()))
+                .append(EvidenceFiles.metadata(
+                        "Expected raster SHA-256", state.expectedHash))
+                .append(EvidenceFiles.metadata(
+                        "PDFium raster SHA-256", state.actualHash))
+                .append(EvidenceFiles.metadata(
+                        "Implementation raster SHA-256",
+                        state.implementationHash))
+                .append(EvidenceFiles.metadata(
+                        "Expected comparison AE", state.primaryMetric))
+                .append(EvidenceFiles.metadata(
+                        "Renderer agreement AE", state.rendererAgreementMetric))
+                .append(EvidenceFiles.metadata(
+                        "Review required", Boolean.toString(state.reviewRequired)))
+                .append("Final determination: `")
+                .append(result.recordValue())
+                .append("`\n\n")
+                .append("## Visual profile\n\n")
+                .append("- Page box: ").append(profile.pageBox()).append(".\n")
+                .append("- DPI: `").append(profile.dpi()).append("`.\n")
+                .append("- Color policy: ").append(profile.colorPolicy()).append(".\n")
+                .append("- Font policy: ").append(profile.fontPolicy()).append(".\n")
+                .append("- Antialiasing policy: ")
+                .append(profile.antialiasingPolicy()).append(".\n")
+                .append("- Background: ").append(profile.background()).append(".\n")
+                .append("- Raster dimensions: `")
+                .append(profile.rasterWidth()).append('x')
+                .append(profile.rasterHeight()).append("`.\n")
+                .append("- Comparison metric: ")
+                .append(profile.comparisonDescription()).append(".\n")
+                .append("- Capability threshold: `")
+                .append(profile.comparisonThreshold()).append("` changed pixels.\n")
+                .append("- Renderer-agreement threshold: `")
+                .append(profile.rendererAgreementThreshold())
+                .append("` changed pixels.\n\n")
+                .append("## Findings and artifacts\n\n")
+                .append("- Input PDF: [`artifacts/T06-document-blank-output.pdf`]"
+                        + "(artifacts/T06-document-blank-output.pdf)\n")
+                .append("- Expected-raster authority: [`")
+                .append(profile.expectedRasterReference()).append("`](")
+                .append(profile.expectedRasterReference()).append(")\n")
+                .append("- PDFium notice manifest: [`")
+                .append(pdfium.noticeManifest()).append("`](../../")
+                .append(pdfium.noticeManifest()).append(")\n")
+                .append("- ImageMagick notice manifest: [`")
+                .append(imageMagick.noticeManifest()).append("`](../../")
+                .append(imageMagick.noticeManifest()).append(")\n");
+        appendArtifact(record, artifacts, EXPECTED_RASTER_NAME);
+        appendArtifact(record, artifacts, PDFIUM_RASTER_NAME);
+        appendArtifact(record, artifacts, IMPLEMENTATION_RASTER_NAME);
+        appendArtifact(record, artifacts, DIFFERENCE_RASTER_NAME);
+        appendArtifact(record, artifacts, RENDERER_DIFFERENCE_RASTER_NAME);
+        record.append("- Raw findings: [`artifacts/")
+                .append(FINDINGS_NAME).append("`](artifacts/")
+                .append(FINDINGS_NAME).append(")\n")
+                .append("- ").append(finding).append("\n\n")
+                .append("ImageMagick receives only validated PNG raster paths in both ")
+                .append("comparison invocations; it is never given the PDF. Apache PDFBox ")
+                .append("Renderer is secondary disagreement evidence only and cannot make ")
+                .append("this chain pass.\n");
+        return record.toString();
+    }
+
+    private static String rawFindings(RunState state) {
+        VisualProfile profile = state.profile;
+        return "# T07 visual-chain raw findings\n\n"
+                + EvidenceFiles.metadata(
+                        "Input ID-neutral SHA-256", state.inputHash)
+                + EvidenceFiles.metadata(
+                        "Input hash policy", EvidenceFiles.inputHashPolicy())
+                + EvidenceFiles.metadata("Expected raster SHA-256", state.expectedHash)
+                + EvidenceFiles.metadata("PDFium raster SHA-256", state.actualHash)
+                + EvidenceFiles.metadata(
+                        "Implementation raster SHA-256", state.implementationHash)
+                + EvidenceFiles.metadata("Difference raster SHA-256", state.differenceHash)
+                + EvidenceFiles.metadata(
+                        "Renderer difference raster SHA-256",
+                        state.rendererDifferenceHash)
+                + EvidenceFiles.metadata("Profile", profile.profileId())
+                + EvidenceFiles.metadata("Page box", profile.pageBox())
+                + EvidenceFiles.metadata("DPI", Integer.toString(profile.dpi()))
+                + EvidenceFiles.metadata("Color policy", profile.colorPolicy())
+                + EvidenceFiles.metadata("Font policy", profile.fontPolicy())
+                + EvidenceFiles.metadata(
+                        "Antialiasing policy", profile.antialiasingPolicy())
+                + EvidenceFiles.metadata(
+                        "Raster dimensions",
+                        profile.rasterWidth() + "x" + profile.rasterHeight())
+                + EvidenceFiles.metadata(
+                        "Comparison metric", profile.comparisonMetric())
+                + EvidenceFiles.metadata(
+                        "Comparison fuzz percent",
+                        Integer.toString(profile.comparisonFuzzPercent()))
+                + EvidenceFiles.metadata(
+                        "Comparison threshold",
+                        Long.toString(profile.comparisonThreshold()))
+                + EvidenceFiles.metadata(
+                        "Renderer agreement threshold",
+                        Long.toString(profile.rendererAgreementThreshold()))
+                + EvidenceFiles.metadata("Expected comparison AE", state.primaryMetric)
+                + EvidenceFiles.metadata(
+                        "Renderer agreement AE", state.rendererAgreementMetric)
+                + EvidenceFiles.metadata(
+                        "PDFium CLI version", state.observedPdfiumVersion)
+                + EvidenceFiles.metadata(
+                        "PDFium engine version", state.pdfiumPin.engineVersion())
+                + EvidenceFiles.metadata(
+                        "ImageMagick version", state.observedImageMagickVersion)
+                + EvidenceFiles.metadata(
+                        "Implementation renderer version",
+                        state.implementationVersion)
+                + EvidenceFiles.metadata(
+                        "Review required", Boolean.toString(state.reviewRequired))
+                + "## Process findings\n\n"
+                + state.transcript;
+    }
+
+    private static void appendArtifact(
+            StringBuilder record,
+            Path artifacts,
+            String name) {
+        if (Files.isRegularFile(artifacts.resolve(name))) {
+            record.append("- Raster artifact: [`artifacts/")
+                    .append(name).append("`](artifacts/")
+                    .append(name).append(")\n");
+        }
+    }
+
+    private static void appendInvocation(
+            StringBuilder output,
+            String label,
+            String invocation,
+            ProcessResult result) {
+        String standardOutput = markdownProcessOutput(result.standardOutput);
+        String standardError = markdownProcessOutput(result.standardError);
+        output.append("## ").append(label).append("\n\n")
+                .append("Invocation: `").append(invocation).append("`\n\n")
+                .append("Exit code: `").append(result.exitCode).append("`\n\n")
+                .append("### Standard output\n\n```text\n")
+                .append(standardOutput)
+                .append(EvidenceFiles.fencedEnding(standardOutput))
+                .append("### Standard error\n\n```text\n")
+                .append(standardError)
+                .append(EvidenceFiles.fencedEnding(standardError));
+    }
+
+    private static String markdownProcessOutput(String value) {
+        return value.replaceAll("(?m)[\\t ]+$", "");
+    }
+
+    private static String pdfiumVersion(String output) {
+        String prefix = "pdfium version ";
+        for (String line : output.split("\\r?\\n")) {
+            if (line.startsWith(prefix)) {
+                return line.substring(prefix.length()).trim();
+            }
+        }
+        return "unavailable";
+    }
+
+    private static String imageMagickVersion(String output) {
+        String prefix = "Version: ImageMagick ";
+        for (String line : output.split("\\r?\\n")) {
+            if (line.startsWith(prefix)) {
+                String remainder = line.substring(prefix.length()).trim();
+                int separator = remainder.indexOf(' ');
+                return separator < 0 ? remainder : remainder.substring(0, separator);
+            }
+        }
+        return "unavailable";
+    }
+
+    private static void clearOutputs(Path... outputs) throws IOException {
+        for (Path output : outputs) {
+            Files.deleteIfExists(output);
+        }
+    }
+
+    private static String safeMessage(IOException failure) {
+        String message = failure.getMessage();
+        return message == null || message.trim().isEmpty()
+                ? "The raster operation failed."
+                : message;
+    }
+
+    private static final class ComparisonObservation {
+        private final boolean usable;
+        private final long absoluteError;
+        private final String finding;
+
+        private ComparisonObservation(
+                boolean usable,
+                long absoluteError,
+                String finding) {
+            this.usable = usable;
+            this.absoluteError = absoluteError;
+            this.finding = finding;
+        }
+
+        static ComparisonObservation usable(long absoluteError) {
+            return new ComparisonObservation(true, absoluteError, "");
+        }
+
+        static ComparisonObservation unusable(String finding) {
+            return new ComparisonObservation(false, -1L, finding);
+        }
+    }
+
+    private static final class RunState {
+        private final String inputHash;
+        private final PdfiumPin pdfiumPin;
+        private final ImageMagickPin imageMagickPin;
+        private final VisualProfile profile;
+        private final String releaseTrain;
+        private final StringBuilder transcript = new StringBuilder();
+        private String observedPdfiumVersion = "unavailable";
+        private String observedImageMagickVersion = "unavailable";
+        private String implementationVersion = "unavailable";
+        private String expectedHash = "unavailable";
+        private String actualHash = "unavailable";
+        private String implementationHash = "unavailable";
+        private String differenceHash = "unavailable";
+        private String rendererDifferenceHash = "unavailable";
+        private String primaryMetric = "unavailable";
+        private String rendererAgreementMetric = "unavailable";
+        private boolean reviewRequired;
+
+        RunState(
+                String inputHash,
+                PdfiumPin pdfiumPin,
+                ImageMagickPin imageMagickPin,
+                VisualProfile profile,
+                String releaseTrain) {
+            this.inputHash = inputHash;
+            this.pdfiumPin = pdfiumPin;
+            this.imageMagickPin = imageMagickPin;
+            this.profile = profile;
+            this.releaseTrain = releaseTrain;
+        }
+    }
+}

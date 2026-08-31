@@ -1,4 +1,4 @@
-# T06 Acceptance Profile determination
+# T03 Acceptance Profile determination
 
 Capability: `document.blank.create-publish-reopen`
 
@@ -8,12 +8,14 @@ Profile record: `capabilities/evidence/T03-document-workflow-transaction.md`
 
 Release train: `0.1.0-SNAPSHOT`
 
-Input SHA-256: `5d0554807aaa15d070811cf1c87eb9e1c05a77630fedf198acf0bdc7f21237a8`
+Input ID-neutral SHA-256: `9cb6708129183241c0384d674451d644e1bab118707588448bbffcbaeb04da6c`
+
+Input hash policy: `SHA-256 of the exact PDF bytes after replacing only the two hexadecimal trailer /ID values with ASCII zeroes`
 
 Final determination: `indeterminate`
 
-Passing chains: `syntax`, `semantic`
+Passing chains: `syntax`, `semantic`, `visual`
 
-Missing mandatory chains: `standards`, `visual`
+Missing mandatory chains: `standards`
 
-The capability remains `experimental`; qpdf syntax evidence is not a standards-compliance claim.
+The capability remains `experimental`; qpdf syntax evidence is not a standards-compliance claim, and visual evidence cannot replace the missing independent standards chain.

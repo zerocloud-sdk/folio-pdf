@@ -89,7 +89,7 @@ public final class SemanticObservation {
     /**
      * Renders the raw semantic findings artifact.
      *
-     * @param inputHash SHA-256 of the shared input PDF
+     * @param inputHash ID-neutral SHA-256 of the shared input PDF
      * @param producerVersion project Release Train
      * @return Markdown findings
      */
@@ -99,7 +99,9 @@ public final class SemanticObservation {
                 ? "reopened through DocumentWorkflow"
                 : "reopen failed with " + reopenFailure;
         return "# Project semantic findings\n\n"
-                + "Input SHA-256: `" + inputHash + "`\n\n"
+                + "Input ID-neutral SHA-256: `" + inputHash + "`\n\n"
+                + "Input hash policy: `" + EvidenceFiles.inputHashPolicy()
+                + "`\n\n"
                 + "Producer: `folio-pdf-semantic-assertions`\n\n"
                 + "Producer version: `" + producerVersion + "`\n\n"
                 + "Publication status: `" + publicationStatus + "`\n\n"

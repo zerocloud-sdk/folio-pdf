@@ -3,6 +3,8 @@ package net.zerocloud.pdf.acceptance;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.imageio.ImageIO;
 import net.zerocloud.pdf.DocumentWorkflow;
 import net.zerocloud.pdf.SaveMode;
 import net.zerocloud.pdf.WorkflowOutcome;
@@ -59,6 +62,7 @@ public final class AcceptanceEvidenceCommandTest {
 
         String syntax = read(output.resolve("T06-document-blank-syntax.md"));
         String semantic = read(output.resolve("T06-document-blank-semantic.md"));
+        String visual = read(output.resolve("T07-document-blank-visual.md"));
         String determination = read(output.resolve("T06-document-blank-determination.md"));
 
         assertMetadata(syntax, "Chain", "syntax");
@@ -79,11 +83,58 @@ public final class AcceptanceEvidenceCommandTest {
         assertTrue(semantic.contains("Final determination: `pass`"));
         assertTrue(semantic.contains("artifacts/T06-document-blank-semantic.txt"));
 
-        String syntaxHash = metadata(syntax, "Input SHA-256");
-        assertEquals(syntaxHash, metadata(semantic, "Input SHA-256"));
+        assertMetadata(visual, "Chain", "visual");
+        assertMetadata(visual, "Result", "pass");
+        assertMetadata(visual, "Producer kind", "external-tool");
+        assertMetadata(visual, "Producer", "pdfium-cli");
+        assertMetadata(
+                visual,
+                "Producer version",
+                "v0.11.2-pdfium-chromium-7881");
+        assertMetadata(visual, "ImageMagick version", "7.1.2-30");
+        assertMetadata(visual, "Expected comparison AE", "0");
+        assertMetadata(visual, "Renderer agreement AE", "0");
+        assertMetadata(visual, "Review required", "false");
+        assertTrue(visual.contains("Raster dimensions: `1224x1584`"));
+        assertTrue(visual.contains("Capability threshold: `0` changed pixels"));
+        String visualFindings = read(output.resolve(
+                "artifacts/T07-document-blank-visual.txt"));
+        assertTrue(!visualFindings.contains("fixture  \n"));
+
+        String syntaxHash = metadata(syntax, "Input ID-neutral SHA-256");
+        assertEquals(syntaxHash, metadata(
+                semantic, "Input ID-neutral SHA-256"));
+        assertEquals(syntaxHash, metadata(
+                visual, "Input ID-neutral SHA-256"));
         assertTrue(syntaxHash.matches("[0-9a-f]{64}"));
+        assertMetadata(
+                visual,
+                "Input hash policy",
+                EvidenceFiles.inputHashPolicy());
         assertTrue(determination.contains("Final determination: `indeterminate`"));
-        assertTrue(determination.contains("Missing mandatory chains: `standards`, `visual`"));
+        assertTrue(determination.contains(
+                "Passing chains: `syntax`, `semantic`, `visual`"));
+        assertTrue(determination.contains("Missing mandatory chains: `standards`"));
+
+        String pdfiumArguments = read(output.resolve("pdfium-arguments.txt"));
+        assertTrue(pdfiumArguments, pdfiumArguments.contains("render\n"));
+        assertTrue(pdfiumArguments, pdfiumArguments.contains(
+                "T06-document-blank-output.pdf\n"));
+        assertTrue(pdfiumArguments, pdfiumArguments.contains(
+                "T07-document-blank-pdfium.png\n"));
+        assertTrue(pdfiumArguments, pdfiumArguments.contains("--dpi\n144\n"));
+
+        String imageMagickArguments = read(output.resolve(
+                "imagemagick-arguments.txt"));
+        assertTrue(imageMagickArguments, imageMagickArguments.contains(
+                "T07-document-blank-expected.png\n"));
+        assertTrue(imageMagickArguments, imageMagickArguments.contains(
+                "T07-document-blank-pdfium.png\n"));
+        assertTrue(imageMagickArguments, imageMagickArguments.contains(
+                "T07-document-blank-implementation.png\n"));
+        assertTrue(imageMagickArguments, imageMagickArguments.contains(
+                "-metric\nAE\n-fuzz\n0%\n"));
+        assertTrue(imageMagickArguments, !imageMagickArguments.contains(".pdf"));
 
         String qpdfFindings = read(
                 output.resolve("artifacts/T06-document-blank-qpdf.txt"));
@@ -172,6 +223,73 @@ public final class AcceptanceEvidenceCommandTest {
                 "T11-metadata-front.pdf` exit code: `0`"));
         assertTrue(t11Findings.contains(
                 "T11-metadata-back.pdf` exit code: `0`"));
+    }
+
+    @Test
+    public void visualProfileRejectsUnsupportedComparisonPolicy()
+            throws Exception {
+        Path output = temporaryFolder.newFolder("unsupported-profile").toPath();
+        VisualFixtures fixtures = visualFixtures(
+                output,
+                "v0.11.2",
+                "7.1.2-30",
+                0L,
+                0L,
+                null);
+        List<String> properties = new ArrayList<String>(Files.readAllLines(
+                fixtures.profile,
+                StandardCharsets.UTF_8));
+        properties.add("COMPARISON_METRIC=RMSE");
+        Files.write(fixtures.profile, properties, StandardCharsets.UTF_8);
+
+        try {
+            VisualProfile.load(fixtures.profile);
+            throw new AssertionError("unsupported comparison metric was accepted");
+        } catch (IOException expected) {
+            assertTrue(expected.getMessage(), expected.getMessage().contains(
+                    "Unsupported visual profile property COMPARISON_METRIC"));
+        }
+    }
+
+    @Test
+    public void repeatedRunsProduceIdenticalEvidenceMetadata()
+            throws Exception {
+        Path firstOutput = temporaryFolder.newFolder("reproduction-first").toPath();
+        Path secondOutput = temporaryFolder.newFolder("reproduction-second").toPath();
+        Path firstQpdf = qpdfFixture(
+                "reproduction-qpdf-first",
+                "12.4.0",
+                "if [ \"${1-}\" = \"--check\" ]; then",
+                "  echo 'No syntax or stream encoding errors found'",
+                "  exit 0",
+                "fi",
+                "exit 2");
+        Path secondQpdf = qpdfFixture(
+                "reproduction-qpdf-second",
+                "12.4.0",
+                "if [ \"${1-}\" = \"--check\" ]; then",
+                "  echo 'No syntax or stream encoding errors found'",
+                "  exit 0",
+                "fi",
+                "exit 2");
+
+        CommandResult first = runCommand(firstOutput, firstQpdf);
+        CommandResult second = runCommand(secondOutput, secondQpdf);
+
+        assertEquals(first.output, 0, first.exitCode);
+        assertEquals(second.output, 0, second.exitCode);
+        for (String relative : Arrays.asList(
+                "T06-document-blank-syntax.md",
+                "T06-document-blank-semantic.md",
+                "T06-document-blank-determination.md",
+                "T07-document-blank-visual.md",
+                "artifacts/T06-document-blank-qpdf.txt",
+                "artifacts/T06-document-blank-semantic.txt",
+                "artifacts/T07-document-blank-visual.txt")) {
+            assertEquals(relative,
+                    read(firstOutput.resolve(relative)),
+                    read(secondOutput.resolve(relative)));
+        }
     }
 
     @Test
@@ -358,6 +476,258 @@ public final class AcceptanceEvidenceCommandTest {
     }
 
     @Test
+    public void thresholdMismatchFailsWithMetricsAndReviewableDifference()
+            throws Exception {
+        Path output = temporaryFolder.newFolder("visual-mismatch-evidence").toPath();
+        Path qpdf = qpdfFixture("visual-mismatch-qpdf", "12.4.0",
+                "exit 0");
+        VisualFixtures visuals = visualFixtures(
+                output,
+                "v0.11.2",
+                "7.1.2-30",
+                17L,
+                0L,
+                null);
+
+        CommandResult result = runCommand(output, qpdf, visuals);
+
+        assertEquals(result.output, 0, result.exitCode);
+        String visual = read(output.resolve("T07-document-blank-visual.md"));
+        assertMetadata(visual, "Result", "fail");
+        assertMetadata(visual, "Expected comparison AE", "17");
+        assertMetadata(visual, "Renderer agreement AE", "0");
+        assertTrue(visual.contains("exceeded the capability threshold"));
+        assertTrue(visual.contains("artifacts/T07-document-blank-difference.png"));
+        assertTrue(Files.isRegularFile(output.resolve(
+                "artifacts/T07-document-blank-difference.png")));
+        String findings = read(output.resolve(
+                "artifacts/T07-document-blank-visual.txt"));
+        assertMetadata(findings, "Expected comparison AE", "17");
+        assertTrue(findings.contains("Exit code: `1`"));
+        String determination = read(output.resolve(
+                "T06-document-blank-determination.md"));
+        assertTrue(determination.contains("Final determination: `fail`"));
+        assertTrue(determination.contains("Failing mandatory chains: `visual`"));
+    }
+
+    @Test
+    public void secondaryRendererDisagreementRequiresReviewAndNeverPasses()
+            throws Exception {
+        Path output = temporaryFolder.newFolder("renderer-disagreement").toPath();
+        Path qpdf = qpdfFixture("renderer-disagreement-qpdf", "12.4.0",
+                "exit 0");
+        VisualFixtures visuals = visualFixtures(
+                output,
+                "v0.11.2",
+                "7.1.2-30",
+                0L,
+                9L,
+                null);
+
+        CommandResult result = runCommand(output, qpdf, visuals);
+
+        assertEquals(result.output, 0, result.exitCode);
+        String visual = read(output.resolve("T07-document-blank-visual.md"));
+        assertMetadata(visual, "Result", "indeterminate");
+        assertMetadata(visual, "Expected comparison AE", "0");
+        assertMetadata(visual, "Renderer agreement AE", "9");
+        assertMetadata(visual, "Review required", "true");
+        assertTrue(visual.contains("review is required"));
+        assertTrue(!visual.contains("Result: `pass`"));
+        assertTrue(Files.isRegularFile(output.resolve(
+                "artifacts/T07-document-blank-renderer-difference.png")));
+        String determination = read(output.resolve(
+                "T06-document-blank-determination.md"));
+        assertTrue(determination.contains(
+                "Indeterminate mandatory chains: `visual`"));
+    }
+
+    @Test
+    public void missingAndUnpinnedVisualToolsRemainIndeterminate()
+            throws Exception {
+        Path missingOutput = temporaryFolder.newFolder("missing-pdfium").toPath();
+        Path qpdf = qpdfFixture("missing-visual-qpdf", "12.4.0", "exit 0");
+        VisualFixtures available = visualFixtures(
+                missingOutput,
+                "v0.11.2",
+                "7.1.2-30",
+                0L,
+                0L,
+                null);
+        VisualFixtures missing = new VisualFixtures(
+                missingOutput.resolve("missing-pdfium"),
+                available.imageMagick,
+                available.profile);
+
+        CommandResult missingResult = runCommand(missingOutput, qpdf, missing);
+
+        assertEquals(missingResult.output, 0, missingResult.exitCode);
+        String missingVisual = read(missingOutput.resolve(
+                "T07-document-blank-visual.md"));
+        assertMetadata(missingVisual, "Result", "indeterminate");
+        assertMetadata(missingVisual, "PDFium CLI version", "unavailable");
+        assertTrue(missingVisual.contains("PDFium renderer was unavailable"));
+        assertTrue(!missingVisual.contains("Result: `pass`"));
+
+        Path missingImageOutput = temporaryFolder.newFolder(
+                "missing-imagemagick").toPath();
+        VisualFixtures imageAvailable = visualFixtures(
+                missingImageOutput,
+                "v0.11.2",
+                "7.1.2-30",
+                0L,
+                0L,
+                null);
+        VisualFixtures missingImageMagick = new VisualFixtures(
+                imageAvailable.pdfium,
+                missingImageOutput.resolve("missing-imagemagick"),
+                imageAvailable.profile);
+
+        CommandResult missingImageResult = runCommand(
+                missingImageOutput,
+                qpdf,
+                missingImageMagick);
+
+        assertEquals(missingImageResult.output, 0, missingImageResult.exitCode);
+        String missingImageVisual = read(missingImageOutput.resolve(
+                "T07-document-blank-visual.md"));
+        assertMetadata(missingImageVisual, "Result", "indeterminate");
+        assertMetadata(missingImageVisual, "ImageMagick version", "unavailable");
+        assertTrue(missingImageVisual.contains(
+                "ImageMagick comparator was unavailable"));
+        assertTrue(!missingImageVisual.contains("Result: `pass`"));
+
+        Path wrongOutput = temporaryFolder.newFolder("wrong-visual-versions").toPath();
+        VisualFixtures wrongPdfium = visualFixtures(
+                wrongOutput,
+                "v0.10.0",
+                "7.1.2-30",
+                0L,
+                0L,
+                null);
+        CommandResult wrongResult = runCommand(wrongOutput, qpdf, wrongPdfium);
+
+        assertEquals(wrongResult.output, 0, wrongResult.exitCode);
+        String wrongVisual = read(wrongOutput.resolve(
+                "T07-document-blank-visual.md"));
+        assertMetadata(wrongVisual, "Result", "indeterminate");
+        assertMetadata(wrongVisual, "PDFium CLI version", "v0.10.0");
+        assertTrue(wrongVisual.contains(
+                "Expected pinned PDFium CLI version `v0.11.2`; observed `v0.10.0`"));
+        assertTrue(!wrongVisual.contains("Result: `pass`"));
+
+        Path wrongImageOutput = temporaryFolder.newFolder(
+                "wrong-imagemagick-version").toPath();
+        VisualFixtures wrongImageMagick = visualFixtures(
+                wrongImageOutput,
+                "v0.11.2",
+                "7.1.2-29",
+                0L,
+                0L,
+                null);
+        CommandResult wrongImageResult = runCommand(
+                wrongImageOutput,
+                qpdf,
+                wrongImageMagick);
+
+        assertEquals(wrongImageResult.output, 0, wrongImageResult.exitCode);
+        String wrongImageVisual = read(wrongImageOutput.resolve(
+                "T07-document-blank-visual.md"));
+        assertMetadata(wrongImageVisual, "Result", "indeterminate");
+        assertMetadata(wrongImageVisual, "ImageMagick version", "7.1.2-29");
+        assertTrue(!wrongImageVisual.contains("Result: `pass`"));
+    }
+
+    @Test
+    public void malformedAndWrongSizedPdfiumRastersAreRejectedBeforeComparison()
+            throws Exception {
+        Path qpdf = qpdfFixture("raster-validation-qpdf", "12.4.0", "exit 0");
+
+        Path malformedOutput = temporaryFolder.newFolder("malformed-raster").toPath();
+        Path malformed = malformedOutput.resolve("malformed.png");
+        Files.write(malformed, Arrays.asList("not a png"), StandardCharsets.UTF_8);
+        VisualFixtures malformedVisuals = visualFixtures(
+                malformedOutput,
+                "v0.11.2",
+                "7.1.2-30",
+                0L,
+                0L,
+                malformed);
+        CommandResult malformedResult = runCommand(
+                malformedOutput,
+                qpdf,
+                malformedVisuals);
+
+        assertEquals(malformedResult.output, 0, malformedResult.exitCode);
+        String malformedVisual = read(malformedOutput.resolve(
+                "T07-document-blank-visual.md"));
+        assertMetadata(malformedVisual, "Result", "indeterminate");
+        assertTrue(malformedVisual.contains("malformed or wrong-sized raster"));
+        assertTrue(!Files.exists(malformedOutput.resolve(
+                "imagemagick-arguments.txt")));
+
+        Path wrongSizeOutput = temporaryFolder.newFolder("wrong-size-raster").toPath();
+        Path wrongSize = wrongSizeOutput.resolve("wrong-size.png");
+        writeRaster(wrongSize, 12, 16, Color.WHITE);
+        VisualFixtures wrongSizeVisuals = visualFixtures(
+                wrongSizeOutput,
+                "v0.11.2",
+                "7.1.2-30",
+                0L,
+                0L,
+                wrongSize);
+        CommandResult wrongSizeResult = runCommand(
+                wrongSizeOutput,
+                qpdf,
+                wrongSizeVisuals);
+
+        assertEquals(wrongSizeResult.output, 0, wrongSizeResult.exitCode);
+        String wrongSizeVisual = read(wrongSizeOutput.resolve(
+                "T07-document-blank-visual.md"));
+        assertMetadata(wrongSizeVisual, "Result", "indeterminate");
+        String wrongSizeFindings = read(wrongSizeOutput.resolve(
+                "artifacts/T07-document-blank-visual.txt"));
+        assertTrue(wrongSizeFindings.contains(
+                "Raster dimensions were 12x16; expected 1224x1584"));
+        assertTrue(!Files.exists(wrongSizeOutput.resolve(
+                "imagemagick-arguments.txt")));
+    }
+
+    @Test
+    public void unexpectedImageMagickStatusCannotProduceVisualPass()
+            throws Exception {
+        Path output = temporaryFolder.newFolder("unexpected-imagemagick").toPath();
+        Path qpdf = qpdfFixture("unexpected-imagemagick-qpdf", "12.4.0", "exit 0");
+        VisualFixtures visuals = visualFixtures(
+                output,
+                "v0.11.2",
+                "7.1.2-30",
+                0L,
+                0L,
+                null);
+        writeExecutable(visuals.imageMagick, Arrays.asList(
+                "#!/bin/sh",
+                "if [ \"${1-}\" = \"--version\" ]; then",
+                "  echo 'Version: ImageMagick 7.1.2-30 Q16-HDRI x86_64 fixture'",
+                "  exit 0",
+                "fi",
+                "if [ \"${1-}\" = \"compare\" ]; then",
+                "  cp \"${12}\" \"${14}\"",
+                "  printf '0 (0)' >&2",
+                "  exit 42",
+                "fi",
+                "exit 99"));
+
+        CommandResult result = runCommand(output, qpdf, visuals);
+
+        assertEquals(result.output, 0, result.exitCode);
+        String visual = read(output.resolve("T07-document-blank-visual.md"));
+        assertMetadata(visual, "Result", "indeterminate");
+        assertTrue(visual.contains("unexpected comparison status `42`"));
+        assertTrue(!visual.contains("Result: `pass`"));
+    }
+
+    @Test
     public void provisionerVerifiesAndStagesThePinnedQpdfArchive() throws Exception {
         Path root = Paths.get(requiredProperty("repositoryRoot"));
         Path archive = temporaryFolder.newFile(
@@ -401,6 +771,137 @@ public final class AcceptanceEvidenceCommandTest {
         assertEquals(
                 "9ac787a28597e8428289a12ba3fedafd74bdfb4b4da1be814722faf76f14f21b\n",
                 read(cache.resolve("12.4.0/.binary-sha256")));
+    }
+
+    @Test
+    public void visualProvisionersVerifyAndStageOnlyPinnedDistributions()
+            throws Exception {
+        Path root = Paths.get(requiredProperty("repositoryRoot"));
+        Path pdfiumDistribution = executable(
+                "pdfium-webassembly-linux-amd64",
+                Arrays.asList(
+                        "#!/bin/sh",
+                        "echo 'pdfium version v0.11.2'"));
+        Path pdfiumCache = temporaryFolder.newFolder("pdfium-cache").toPath();
+        Path pdfiumSha = executable("fixture-pdfium-sha256sum", Arrays.asList(
+                "#!/bin/sh",
+                "printf '%s  %s\\n' "
+                        + "'3ef3375c429ce665e834f933a028225bf28ac837695aaa69c6fc21facf6780ab' "
+                        + "\"${1}\""));
+        Map<String, String> pdfiumEnvironment = new HashMap<String, String>();
+        pdfiumEnvironment.put("PDFIUM_CACHE_DIRECTORY", pdfiumCache.toString());
+        pdfiumEnvironment.put("SHA256_COMMAND", pdfiumSha.toString());
+
+        CommandResult pdfiumResult = runProcess(
+                Arrays.asList(
+                        "sh",
+                        root.resolve("scripts/provision-pdfium").toString(),
+                        pdfiumDistribution.toString()),
+                pdfiumEnvironment);
+
+        assertEquals(pdfiumResult.output, 0, pdfiumResult.exitCode);
+        assertTrue(pdfiumResult.output, pdfiumResult.output.contains(
+                "Provisioned PDFium v0.11.2 (chromium-7881)"));
+        Path pdfiumHome = pdfiumCache.resolve("v0.11.2-chromium-7881");
+        assertTrue(Files.isExecutable(pdfiumHome.resolve("bin/pdfium")));
+        assertEquals("chromium-7881\n", read(pdfiumHome.resolve(".engine-version")));
+
+        Path imageMagickDistribution = executable(
+                "ImageMagick-7.1.2-30-gcc-x86_64.AppImage",
+                Arrays.asList(
+                        "#!/bin/sh",
+                        "echo 'Version: ImageMagick 7.1.2-30 Q16-HDRI x86_64 fixture'"));
+        Path imageMagickCache = temporaryFolder.newFolder(
+                "imagemagick-cache").toPath();
+        Path imageMagickSha = executable(
+                "fixture-imagemagick-sha256sum",
+                Arrays.asList(
+                        "#!/bin/sh",
+                        "printf '%s  %s\\n' "
+                                + "'372af8a3fd61ef5f15c6331cde3e21f840eb165d8b533f34ed05d68736dd682e' "
+                                + "\"${1}\""));
+        Map<String, String> imageMagickEnvironment = new HashMap<String, String>();
+        imageMagickEnvironment.put(
+                "IMAGEMAGICK_CACHE_DIRECTORY",
+                imageMagickCache.toString());
+        imageMagickEnvironment.put("SHA256_COMMAND", imageMagickSha.toString());
+
+        CommandResult imageMagickResult = runProcess(
+                Arrays.asList(
+                        "sh",
+                        root.resolve("scripts/provision-imagemagick").toString(),
+                        imageMagickDistribution.toString()),
+                imageMagickEnvironment);
+
+        assertEquals(imageMagickResult.output, 0, imageMagickResult.exitCode);
+        assertTrue(imageMagickResult.output, imageMagickResult.output.contains(
+                "Provisioned ImageMagick 7.1.2-30"));
+        Path imageMagickHome = imageMagickCache.resolve("7.1.2-30");
+        assertTrue(Files.isExecutable(imageMagickHome.resolve(
+                "bin/imagemagick.AppImage")));
+        assertEquals(
+                "372af8a3fd61ef5f15c6331cde3e21f840eb165d8b533f34ed05d68736dd682e\n",
+                read(imageMagickHome.resolve(".executable-sha256")));
+    }
+
+    @Test
+    public void visualWrappersRejectWrongDigestMarkers() throws Exception {
+        Path root = Paths.get(requiredProperty("repositoryRoot"));
+        Path pdfiumCache = temporaryFolder.newFolder(
+                "wrong-pdfium-wrapper-cache").toPath();
+        Path pdfiumHome = pdfiumCache.resolve("v0.11.2-chromium-7881");
+        Files.createDirectories(pdfiumHome.resolve("bin"));
+        writeExecutable(pdfiumHome.resolve("bin/pdfium"), Arrays.asList(
+                "#!/bin/sh",
+                "exit 0"));
+        Files.write(pdfiumHome.resolve(".archive-sha256"), Arrays.asList(
+                "wrong-digest"), StandardCharsets.UTF_8);
+        Files.write(pdfiumHome.resolve(".executable-sha256"), Arrays.asList(
+                "3ef3375c429ce665e834f933a028225bf28ac837695aaa69c6fc21facf6780ab"),
+                StandardCharsets.UTF_8);
+        Files.write(pdfiumHome.resolve(".engine-version"), Arrays.asList(
+                "chromium-7881"), StandardCharsets.UTF_8);
+        Map<String, String> pdfiumEnvironment = new HashMap<String, String>();
+        pdfiumEnvironment.put("PDFIUM_CACHE_DIRECTORY", pdfiumCache.toString());
+
+        CommandResult pdfiumResult = runProcess(
+                Arrays.asList(
+                        "sh",
+                        root.resolve("scripts/container-bin/pdfium").toString(),
+                        "--version"),
+                pdfiumEnvironment);
+
+        assertEquals(pdfiumResult.output, 127, pdfiumResult.exitCode);
+        assertTrue(pdfiumResult.output, pdfiumResult.output.contains(
+                "digest marker is invalid"));
+
+        Path imageMagickCache = temporaryFolder.newFolder(
+                "wrong-imagemagick-wrapper-cache").toPath();
+        Path imageMagickHome = imageMagickCache.resolve("7.1.2-30");
+        Files.createDirectories(imageMagickHome.resolve("bin"));
+        writeExecutable(
+                imageMagickHome.resolve("bin/imagemagick.AppImage"),
+                Arrays.asList("#!/bin/sh", "exit 0"));
+        Files.write(imageMagickHome.resolve(".archive-sha256"), Arrays.asList(
+                "372af8a3fd61ef5f15c6331cde3e21f840eb165d8b533f34ed05d68736dd682e"),
+                StandardCharsets.UTF_8);
+        Files.write(imageMagickHome.resolve(".executable-sha256"), Arrays.asList(
+                "wrong-digest"), StandardCharsets.UTF_8);
+        Map<String, String> imageMagickEnvironment = new HashMap<String, String>();
+        imageMagickEnvironment.put(
+                "IMAGEMAGICK_CACHE_DIRECTORY",
+                imageMagickCache.toString());
+
+        CommandResult imageMagickResult = runProcess(
+                Arrays.asList(
+                        "sh",
+                        root.resolve("scripts/container-bin/imagemagick").toString(),
+                        "--version"),
+                imageMagickEnvironment);
+
+        assertEquals(imageMagickResult.output, 127, imageMagickResult.exitCode);
+        assertTrue(imageMagickResult.output, imageMagickResult.output.contains(
+                "digest marker is invalid"));
     }
 
     @Test
@@ -470,7 +971,7 @@ public final class AcceptanceEvidenceCommandTest {
     }
 
     @Test
-    public void acceptanceRunnerCannotOverrideTheRepositoryPinnedQpdfPath()
+    public void acceptanceRunnerIgnoresToolOverridesAndUsesRepositoryPinAuthorities()
             throws Exception {
         Path root = Paths.get(requiredProperty("repositoryRoot"));
         Path output = temporaryFolder.newFolder("runner-output").toPath();
@@ -480,6 +981,8 @@ public final class AcceptanceEvidenceCommandTest {
         Map<String, String> environment = new HashMap<String, String>();
         environment.put("MAVEN_COMMAND", maven.toString());
         environment.put("QPDF_COMMAND", "/tmp/untrusted-qpdf");
+        environment.put("PDFIUM_COMMAND", "/tmp/untrusted-pdfium");
+        environment.put("IMAGEMAGICK_COMMAND", "/tmp/untrusted-imagemagick");
 
         CommandResult result = runProcess(
                 Arrays.asList(
@@ -494,11 +997,24 @@ public final class AcceptanceEvidenceCommandTest {
         assertTrue(result.output, result.output.contains(
                 "-Dacceptance.output=" + output.toAbsolutePath().normalize()));
         assertTrue(result.output, !result.output.contains("-Dacceptance.qpdf="));
+        assertTrue(result.output, !result.output.contains("-Dacceptance.pdfium="));
+        assertTrue(result.output, !result.output.contains("-Dacceptance.imagemagick="));
         String acceptancePom = read(root.resolve("pdf-acceptance/pom.xml"));
         assertTrue(acceptancePom.contains(
-                "${maven.multiModuleProjectDirectory}/scripts/container-bin/qpdf"));
-        assertTrue(acceptancePom.contains(
                 "${maven.multiModuleProjectDirectory}/scripts/qpdf-pin.properties"));
+        assertTrue(acceptancePom.contains(
+                "${maven.multiModuleProjectDirectory}/scripts/pdfium-pin.properties"));
+        assertTrue(acceptancePom.contains(
+                "${maven.multiModuleProjectDirectory}/scripts/imagemagick-pin.properties"));
+        assertTrue(read(root.resolve("scripts/qpdf-pin.properties"))
+                .contains("QPDF_EXECUTABLE=container-bin/qpdf"));
+        assertTrue(read(root.resolve("scripts/pdfium-pin.properties"))
+                .contains("PDFIUM_EXECUTABLE=container-bin/pdfium"));
+        assertTrue(read(root.resolve("scripts/imagemagick-pin.properties"))
+                .contains("IMAGEMAGICK_EXECUTABLE=container-bin/imagemagick"));
+        assertTrue(acceptancePom.contains(
+                "${maven.multiModuleProjectDirectory}/capabilities/profiles/"
+                        + "T03-document-blank-visual.properties"));
         assertTrue(result.output, result.output.endsWith("verify\n"));
     }
 
@@ -527,16 +1043,47 @@ public final class AcceptanceEvidenceCommandTest {
 
     private static CommandResult runCommand(Path output, Path qpdf)
             throws IOException, InterruptedException {
+        return runCommand(output, qpdf, visualFixtures(
+                output,
+                "v0.11.2",
+                "7.1.2-30",
+                0L,
+                0L,
+                null));
+    }
+
+    private static CommandResult runCommand(
+            Path output,
+            Path qpdf,
+            VisualFixtures visualFixtures)
+            throws IOException, InterruptedException {
         Path repositoryRoot = Paths.get(requiredProperty("repositoryRoot"));
         Path java = Paths.get(System.getProperty("java.home"), "bin", "java");
+        Path qpdfPin = configuredPin(
+                repositoryRoot.resolve("scripts/qpdf-pin.properties"),
+                "QPDF_EXECUTABLE",
+                qpdf,
+                output.resolve("qpdf-fixture-pin.properties"));
+        Path pdfiumPin = configuredPin(
+                repositoryRoot.resolve("scripts/pdfium-pin.properties"),
+                "PDFIUM_EXECUTABLE",
+                visualFixtures.pdfium,
+                output.resolve("pdfium-fixture-pin.properties"));
+        Path imageMagickPin = configuredPin(
+                repositoryRoot.resolve("scripts/imagemagick-pin.properties"),
+                "IMAGEMAGICK_EXECUTABLE",
+                visualFixtures.imageMagick,
+                output.resolve("imagemagick-fixture-pin.properties"));
         Process process = new ProcessBuilder(
                 java.toString(),
                 "-cp",
                 System.getProperty("java.class.path"),
                 COMMAND_CLASS,
                 output.toString(),
-                qpdf.toString(),
-                repositoryRoot.resolve("scripts/qpdf-pin.properties").toString(),
+                qpdfPin.toString(),
+                pdfiumPin.toString(),
+                imageMagickPin.toString(),
+                visualFixtures.profile.toString(),
                 "0.1.0-SNAPSHOT")
                 .redirectErrorStream(true)
                 .start();
@@ -545,6 +1092,131 @@ public final class AcceptanceEvidenceCommandTest {
             commandOutput = read(input);
         }
         return new CommandResult(process.waitFor(), commandOutput);
+    }
+
+    private static Path configuredPin(
+            Path repositoryPin,
+            String executableProperty,
+            Path executable,
+            Path fixturePin) throws IOException {
+        List<String> properties = new ArrayList<String>(
+                Files.readAllLines(repositoryPin, StandardCharsets.UTF_8));
+        properties.add(executableProperty + "="
+                + executable.toAbsolutePath().normalize());
+        Files.write(fixturePin, properties, StandardCharsets.UTF_8);
+        return fixturePin;
+    }
+
+    private static VisualFixtures visualFixtures(
+            Path output,
+            String pdfiumVersion,
+            String imageMagickVersion,
+            long primaryMetric,
+            long rendererMetric,
+            Path renderedRaster) throws IOException {
+        Path fixtures = output.resolve("visual-fixture");
+        Files.createDirectories(fixtures);
+        Path expected = fixtures.resolve("expected.png");
+        writeRaster(expected, 1224, 1584, Color.WHITE);
+        Path rendererSource = renderedRaster == null ? expected : renderedRaster;
+        Path profile = fixtures.resolve("visual-profile.properties");
+        Files.write(profile, Arrays.asList(
+                "PROFILE_ID=T03-document-workflow-transaction",
+                "PAGE_BOX=effective CropBox; CropBox is absent, so MediaBox [0 0 612 792] points is used",
+                "DPI=144",
+                "COLOR_POLICY=sRGB, opaque 8-bit RGB PNG; grayscale and alpha are disabled",
+                "FONT_POLICY=not applicable; the blank document has no text or font resources and uses no system fonts",
+                "ANTIALIASING_POLICY=pinned PDFium default smoothing; no marks are present for antialiasing to affect",
+                "BACKGROUND=opaque white (#ffffff)",
+                "RASTER_WIDTH=1224",
+                "RASTER_HEIGHT=1584",
+                "COMPARISON_METRIC=AE",
+                "COMPARISON_FUZZ_PERCENT=0",
+                "COMPARISON_THRESHOLD=0",
+                "RENDERER_AGREEMENT_THRESHOLD=0",
+                "EXPECTED_RASTER=expected.png",
+                "EXPECTED_RASTER_SHA256=" + EvidenceFiles.sha256(expected)),
+                StandardCharsets.UTF_8);
+
+        Path pdfiumArguments = output.resolve("pdfium-arguments.txt");
+        Path pdfium = writeExecutable(fixtures.resolve("pdfium"), Arrays.asList(
+                "#!/bin/sh",
+                "printf '%s\\n' '---' \"$@\" >> " + shellQuote(pdfiumArguments),
+                "if [ \"${1-}\" = \"--version\" ]; then",
+                "  echo 'pdfium version " + pdfiumVersion + "'",
+                "  exit 0",
+                "fi",
+                "if [ \"${1-}\" = \"render\" ]; then",
+                "  cp " + shellQuote(rendererSource) + " \"${3}\"",
+                "  echo \"Rendered page 1 into ${3}\"",
+                "  exit 0",
+                "fi",
+                "exit 99"));
+
+        Path imageMagickArguments = output.resolve("imagemagick-arguments.txt");
+        Path comparisonCount = fixtures.resolve("comparison-count");
+        Path imageMagick = writeExecutable(
+                fixtures.resolve("imagemagick"),
+                Arrays.asList(
+                        "#!/bin/sh",
+                        "printf '%s\\n' '---' \"$@\" >> "
+                                + shellQuote(imageMagickArguments),
+                        "if [ \"${1-}\" = \"--version\" ]; then",
+                        "  echo 'Version: ImageMagick " + imageMagickVersion
+                                + " Q16-HDRI x86_64 fixture  '",
+                        "  exit 0",
+                        "fi",
+                        "if [ \"${1-}\" = \"compare\" ]; then",
+                        "  comparison_count=0",
+                        "  if [ -f " + shellQuote(comparisonCount) + " ]; then",
+                        "    IFS= read -r comparison_count < "
+                                + shellQuote(comparisonCount) + " || true",
+                        "  fi",
+                        "  comparison_count=$((comparison_count + 1))",
+                        "  printf '%s\\n' \"${comparison_count}\" > "
+                                + shellQuote(comparisonCount),
+                        "  cp \"${12}\" \"${14}\"",
+                        "  if [ \"${comparison_count}\" -eq 1 ]; then",
+                        "    metric=" + primaryMetric,
+                        "  else",
+                        "    metric=" + rendererMetric,
+                        "  fi",
+                        "  printf '%s (0)' \"${metric}\" >&2",
+                        "  if [ \"${metric}\" -eq 0 ]; then exit 0; fi",
+                        "  exit 1",
+                        "fi",
+                        "exit 99"));
+        return new VisualFixtures(pdfium, imageMagick, profile);
+    }
+
+    private static void writeRaster(
+            Path path,
+            int width,
+            int height,
+            Color color) throws IOException {
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        java.awt.Graphics2D graphics = image.createGraphics();
+        try {
+            graphics.setColor(color);
+            graphics.fillRect(0, 0, width, height);
+        } finally {
+            graphics.dispose();
+        }
+        assertTrue("PNG writer unavailable", ImageIO.write(image, "png", path.toFile()));
+    }
+
+    private static Path writeExecutable(Path path, Iterable<String> lines)
+            throws IOException {
+        Files.write(path, lines, StandardCharsets.UTF_8);
+        Files.setPosixFilePermissions(path, EnumSet.of(
+                PosixFilePermission.OWNER_READ,
+                PosixFilePermission.OWNER_WRITE,
+                PosixFilePermission.OWNER_EXECUTE));
+        return path;
+    }
+
+    private static String shellQuote(Path path) {
+        return "'" + path.toString().replace("'", "'\"'\"'") + "'";
     }
 
     private static CommandResult runProcess(
@@ -621,6 +1293,18 @@ public final class AcceptanceEvidenceCommandTest {
         CommandResult(int exitCode, String output) {
             this.exitCode = exitCode;
             this.output = output;
+        }
+    }
+
+    private static final class VisualFixtures {
+        private final Path pdfium;
+        private final Path imageMagick;
+        private final Path profile;
+
+        VisualFixtures(Path pdfium, Path imageMagick, Path profile) {
+            this.pdfium = pdfium;
+            this.imageMagick = imageMagick;
+            this.profile = profile;
         }
     }
 }

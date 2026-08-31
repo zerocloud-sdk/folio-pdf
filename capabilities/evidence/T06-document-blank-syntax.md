@@ -20,7 +20,9 @@ Producer version: `12.4.0`
 
 Tool distribution SHA-256: `a3bca240f3bb61efdc3a90be89d1da4ed5e125326c3458c4e62df53ff4f153e3`
 
-Input SHA-256: `5d0554807aaa15d070811cf1c87eb9e1c05a77630fedf198acf0bdc7f21237a8`
+Input ID-neutral SHA-256: `9cb6708129183241c0384d674451d644e1bab118707588448bbffcbaeb04da6c`
+
+Input hash policy: `SHA-256 of the exact PDF bytes after replacing only the two hexadecimal trailer /ID values with ASCII zeroes`
 
 Final determination: `pass`
 

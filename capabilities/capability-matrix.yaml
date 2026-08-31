@@ -46,7 +46,7 @@ capabilities:
     dependency-gates: []
     promotion-gates:
       - ticket: T06
-        requirement: Complete the independent acceptance evidence required before compatibility.
+        requirement: Complete the remaining independent standards evidence; the T06 syntax and semantic chains and T07 visual chain are complete.
     acceptance-profile:
       id: T03-document-workflow-transaction
       state: experimental
@@ -92,16 +92,40 @@ capabilities:
         assertion: T04 scope, behavior, artifact, exclusivity, and evidence boundaries are recorded.
       - kind: acceptance-pipeline-contract
         path: pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/AcceptanceEvidenceCommandTest.java
-        assertion: Repository-only public-seam checks cover pinned-tool success, failure, warning, mismatch, unavailability, provisioning, and evidence recording.
+        assertion: Repository-only public-seam checks cover pinned-tool success, failure, warning, mismatch, unavailability, provisioning, fixed raster dimensions, threshold failures with difference artifacts, raster-only ImageMagick arguments, and secondary-renderer disagreement.
       - kind: acceptance-command
         path: scripts/acceptance
-        assertion: The repository-owned command runs only the isolated Acceptance Evidence profile and writes to an explicit output directory.
+        assertion: The repository-owned command runs only the isolated Acceptance Profile with fixed qpdf, PDFium, ImageMagick, pin, and visual-profile paths and writes to an explicit output directory.
       - kind: external-tool-provisioning
         path: scripts/provision-qpdf
         assertion: A local official qpdf archive is verified by SHA-256 and staged outside product artifacts without build-time network access.
       - kind: external-tool-pin
         path: scripts/qpdf-pin.properties
         assertion: The qpdf version, official asset, archive hash, and extracted executable hash have one repository authority.
+      - kind: visual-profile
+        path: capabilities/profiles/T03-document-blank-visual.properties
+        assertion: The project-owned profile fixes page box, DPI, color, font, antialiasing, background, raster dimensions, expected raster hash, AE metric, and capability and renderer-agreement thresholds.
+      - kind: visual-expected-raster
+        path: capabilities/expected/T03-document-blank-144dpi-srgb.png
+        assertion: The project-owned expected raster is an opaque white 1224 by 1584 sRGB RGB image derived from the blank-page profile, not from Reference Suite output.
+      - kind: external-tool-provisioning
+        path: scripts/provision-pdfium
+        assertion: A local PDFium CLI release asset is verified by SHA-256 and staged outside product artifacts without build-time network access.
+      - kind: external-tool-pin
+        path: scripts/pdfium-pin.properties
+        assertion: The PDFium CLI and engine versions, distribution, archive and executable hashes, sources, and licenses have one repository authority.
+      - kind: external-tool-provisioning
+        path: scripts/provision-imagemagick
+        assertion: A local ImageMagick AppImage is verified by SHA-256 and staged outside product artifacts without build-time network access.
+      - kind: external-tool-pin
+        path: scripts/imagemagick-pin.properties
+        assertion: The ImageMagick version, distribution, archive and executable hashes, source, and license have one repository authority.
+      - kind: third-party-notice-manifest
+        path: docs/third-party/pdfium-cli-v0.11.2.md
+        assertion: The exact pdfium-cli asset hash, linked Go modules, embedded PDFium engine archive hash, origins, and archived license inventory are recorded.
+      - kind: third-party-notice-manifest
+        path: docs/third-party/imagemagick-7.1.2-30-appimage.md
+        assertion: Every executable and shared-library component extracted from the exact ImageMagick AppImage has a recorded upstream origin and license.
     acceptance-evidence:
       - chain: syntax
         result: pass
@@ -117,9 +141,16 @@ capabilities:
           kind: project-test
           name: folio-pdf-semantic-assertions
           version: 0.1.0-SNAPSHOT
+      - chain: visual
+        result: pass
+        record: capabilities/evidence/T07-document-blank-visual.md
+        producer:
+          kind: external-tool
+          name: pdfium-cli
+          version: v0.11.2-pdfium-chromium-7881
     provenance:
       path: PROVENANCE.md
-      record: T06 acceptance-evidence record
+      record: T07 independent-visual-evidence record
     certified-platforms: []
     status: experimental
 

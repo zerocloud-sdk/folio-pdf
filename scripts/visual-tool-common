@@ -1,0 +1,62 @@
+#!/usr/bin/env sh
+
+# Shared offline staging and cache-verification primitives for T07 visual tools.
+
+visual_sha256() {
+    visual_checksum_output=$("$2" "$1")
+    printf '%s\n' "${visual_checksum_output%% *}"
+}
+
+visual_verify_digest() {
+    visual_label=$1
+    visual_file=$2
+    visual_expected=$3
+    visual_sha_command=$4
+    if [ ! -f "${visual_file}" ]; then
+        echo "${visual_label} is not a regular file: ${visual_file}" >&2
+        return 1
+    fi
+    visual_observed=$(visual_sha256 "${visual_file}" "${visual_sha_command}")
+    if [ "${visual_observed}" != "${visual_expected}" ]; then
+        echo "${visual_label} SHA-256 mismatch." >&2
+        echo "Expected: ${visual_expected}" >&2
+        echo "Observed: ${visual_observed}" >&2
+        return 1
+    fi
+}
+
+visual_verify_marker() {
+    visual_label=$1
+    visual_record=$2
+    visual_expected=$3
+    if [ ! -f "${visual_record}" ]; then
+        echo "${visual_label} cache digest marker is invalid." >&2
+        return 1
+    fi
+    visual_observed=
+    IFS= read -r visual_observed < "${visual_record}" || true
+    if [ "${visual_observed}" != "${visual_expected}" ]; then
+        echo "${visual_label} cache digest marker is invalid." >&2
+        return 1
+    fi
+}
+
+visual_stage_executable() {
+    visual_label=$1
+    visual_distribution=$2
+    visual_executable=$3
+    visual_expected=$4
+    visual_sha_command=$5
+    mkdir -p "$(dirname -- "${visual_executable}")"
+    cp "${visual_distribution}" "${visual_executable}"
+    chmod +x "${visual_executable}"
+    visual_verify_digest \
+        "${visual_label} executable" \
+        "${visual_executable}" \
+        "${visual_expected}" \
+        "${visual_sha_command}"
+}
+
+visual_write_marker() {
+    printf '%s\n' "$2" > "$1"
+}

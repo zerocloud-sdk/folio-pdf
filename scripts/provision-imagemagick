@@ -1,0 +1,85 @@
+#!/usr/bin/env sh
+set -eu
+
+script_directory=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+repository_root=$(CDPATH= cd -- "${script_directory}/.." && pwd)
+
+. "${script_directory}/imagemagick-pin.properties"
+. "${script_directory}/visual-tool-common"
+imagemagick_version=${IMAGEMAGICK_VERSION}
+distribution_name=${IMAGEMAGICK_DISTRIBUTION_NAME}
+archive_sha256=${IMAGEMAGICK_ARCHIVE_SHA256}
+executable_sha256=${IMAGEMAGICK_EXECUTABLE_SHA256}
+imagemagick_cache=${IMAGEMAGICK_CACHE_DIRECTORY:-"${repository_root}/.build-cache/imagemagick"}
+sha256_command=${SHA256_COMMAND:-sha256sum}
+
+if [ "$#" -ne 1 ]; then
+    echo "Usage: ./scripts/provision-imagemagick /path/to/${distribution_name}" >&2
+    exit 2
+fi
+
+distribution=$1
+visual_verify_digest \
+    "ImageMagick distribution" \
+    "${distribution}" \
+    "${archive_sha256}" \
+    "${sha256_command}"
+
+mkdir -p "${imagemagick_cache}"
+installation=${imagemagick_cache}/${imagemagick_version}
+if [ -e "${installation}" ]; then
+    executable=${installation}/bin/imagemagick.AppImage
+    if [ ! -x "${executable}" ] \
+            || ! visual_verify_marker \
+                "ImageMagick" "${installation}/.archive-sha256" "${archive_sha256}" \
+            || ! visual_verify_marker \
+                "ImageMagick" "${installation}/.executable-sha256" "${executable_sha256}" \
+            || ! visual_verify_digest \
+                "ImageMagick executable" "${executable}" "${executable_sha256}" \
+                "${sha256_command}"; then
+        echo "Existing ImageMagick cache entry is incomplete or invalid: ${installation}" >&2
+        exit 1
+    fi
+    observed=$(APPIMAGE_EXTRACT_AND_RUN=1 "${executable}" --version | sed -n '1p')
+    case ${observed} in
+        "Version: ImageMagick ${imagemagick_version} "*) ;;
+        *)
+            echo "Existing ImageMagick cache entry reports an unexpected version: ${observed}" >&2
+            exit 1
+            ;;
+    esac
+    echo "ImageMagick ${imagemagick_version} is already provisioned at ${installation}"
+    exit 0
+fi
+
+staging_directory=$(mktemp -d "${imagemagick_cache}/.imagemagick-${imagemagick_version}.XXXXXX")
+cleanup() {
+    if [ -n "${staging_directory}" ] && [ -d "${staging_directory}" ]; then
+        rm -rf -- "${staging_directory}"
+    fi
+}
+trap cleanup EXIT HUP INT TERM
+
+visual_stage_executable \
+    "ImageMagick" \
+    "${distribution}" \
+    "${staging_directory}/bin/imagemagick.AppImage" \
+    "${executable_sha256}" \
+    "${sha256_command}"
+observed=$(APPIMAGE_EXTRACT_AND_RUN=1 \
+        "${staging_directory}/bin/imagemagick.AppImage" --version | sed -n '1p')
+case ${observed} in
+    "Version: ImageMagick ${imagemagick_version} "*) ;;
+    *)
+        echo "Pinned ImageMagick distribution reports an unexpected version: ${observed}" >&2
+        exit 1
+        ;;
+esac
+
+visual_write_marker "${staging_directory}/.archive-sha256" "${archive_sha256}"
+visual_write_marker "${staging_directory}/.executable-sha256" "${executable_sha256}"
+mv "${staging_directory}" "${installation}"
+staging_directory=
+trap - EXIT HUP INT TERM
+
+echo "Provisioned ImageMagick ${imagemagick_version} at ${installation}"

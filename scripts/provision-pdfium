@@ -1,0 +1,82 @@
+#!/usr/bin/env sh
+set -eu
+
+script_directory=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+repository_root=$(CDPATH= cd -- "${script_directory}/.." && pwd)
+
+. "${script_directory}/pdfium-pin.properties"
+. "${script_directory}/visual-tool-common"
+pdfium_cli_version=${PDFIUM_CLI_VERSION}
+pdfium_engine_version=${PDFIUM_ENGINE_VERSION}
+distribution_name=${PDFIUM_DISTRIBUTION_NAME}
+archive_sha256=${PDFIUM_ARCHIVE_SHA256}
+executable_sha256=${PDFIUM_EXECUTABLE_SHA256}
+pdfium_cache=${PDFIUM_CACHE_DIRECTORY:-"${repository_root}/.build-cache/pdfium"}
+sha256_command=${SHA256_COMMAND:-sha256sum}
+
+if [ "$#" -ne 1 ]; then
+    echo "Usage: ./scripts/provision-pdfium /path/to/${distribution_name}" >&2
+    exit 2
+fi
+
+distribution=$1
+visual_verify_digest \
+    "PDFium distribution" \
+    "${distribution}" \
+    "${archive_sha256}" \
+    "${sha256_command}"
+
+mkdir -p "${pdfium_cache}"
+installation=${pdfium_cache}/${pdfium_cli_version}-${pdfium_engine_version}
+if [ -e "${installation}" ]; then
+    executable=${installation}/bin/pdfium
+    if [ ! -x "${executable}" ] \
+            || ! visual_verify_marker \
+                "PDFium" "${installation}/.archive-sha256" "${archive_sha256}" \
+            || ! visual_verify_marker \
+                "PDFium" "${installation}/.executable-sha256" "${executable_sha256}" \
+            || ! visual_verify_marker \
+                "PDFium" "${installation}/.engine-version" "${pdfium_engine_version}" \
+            || ! visual_verify_digest \
+                "PDFium executable" "${executable}" "${executable_sha256}" \
+                "${sha256_command}"; then
+        echo "Existing PDFium cache entry is incomplete or invalid: ${installation}" >&2
+        exit 1
+    fi
+    observed=$("${executable}" --version | sed -n '1p')
+    if [ "${observed}" != "pdfium version ${pdfium_cli_version}" ]; then
+        echo "Existing PDFium cache entry reports an unexpected version: ${observed}" >&2
+        exit 1
+    fi
+    echo "PDFium ${pdfium_cli_version} (${pdfium_engine_version}) is already provisioned at ${installation}"
+    exit 0
+fi
+
+staging_directory=$(mktemp -d "${pdfium_cache}/.pdfium-${pdfium_cli_version}.XXXXXX")
+cleanup() {
+    if [ -n "${staging_directory}" ] && [ -d "${staging_directory}" ]; then
+        rm -rf -- "${staging_directory}"
+    fi
+}
+trap cleanup EXIT HUP INT TERM
+
+visual_stage_executable \
+    "PDFium" \
+    "${distribution}" \
+    "${staging_directory}/bin/pdfium" \
+    "${executable_sha256}" \
+    "${sha256_command}"
+observed=$("${staging_directory}/bin/pdfium" --version | sed -n '1p')
+if [ "${observed}" != "pdfium version ${pdfium_cli_version}" ]; then
+    echo "Pinned PDFium distribution reports an unexpected version: ${observed}" >&2
+    exit 1
+fi
+
+visual_write_marker "${staging_directory}/.archive-sha256" "${archive_sha256}"
+visual_write_marker "${staging_directory}/.executable-sha256" "${executable_sha256}"
+visual_write_marker "${staging_directory}/.engine-version" "${pdfium_engine_version}"
+mv "${staging_directory}" "${installation}"
+staging_directory=
+trap - EXIT HUP INT TERM
+
+echo "Provisioned PDFium ${pdfium_cli_version} (${pdfium_engine_version}) at ${installation}"

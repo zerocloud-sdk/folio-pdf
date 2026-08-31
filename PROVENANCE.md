@@ -207,11 +207,11 @@ documentation, and project-owned tests are the permitted design inputs.
 - Excluded inputs: no iText source, resource, fixture, decompiled or
   binary-derived implementation detail, closed add-on material, or proprietary
   differential evidence was used.
-- Scope and determination: T06 records only the syntax and semantic chains for
-  the built-in blank-document profile. Both pass for the checked-in artifact,
-  but standards and visual evidence are absent. The overall determination is
-  therefore `indeterminate`, the T06 promotion gate remains open, and the
-  capability remains `experimental`.
+- Scope and determination: T06 records the syntax and semantic chains for the
+  built-in blank-document profile, and both pass for the checked-in artifact.
+  T07 now supplies the passing independent visual chain. Standards evidence
+  remains absent, so the overall determination is still `indeterminate`, the
+  T06 promotion gate remains open, and the capability remains `experimental`.
 
 ## T09 document-value-inspection-patch record
 
@@ -352,6 +352,67 @@ documentation, and project-owned tests are the permitted design inputs.
   Evidence remain absent. The value-inspection Dependency Gate and the T06
   promotion gate remain open, so the capability stays `experimental` with no
   certified-platform claim.
+
+## T07 independent-visual-evidence record
+
+- Authorship: OpenAI Codex generated and integrated the T07 repository-only
+  profile, provisioning, harness, tests, evidence, and documentation at
+  repository operator MaBaiqiu's direction. No T07 commit was created in this
+  execution.
+- Project inputs: GitHub issues #1, #7, and #8, `CONTEXT.md`, ADR-0002, 0005,
+  0007, 0011, 0023, and 0027, the accepted T03 and T06 public-workflow and
+  Acceptance Evidence seams, the repository Capability Matrix, and the clean-
+  room and dependency authorities.
+- Independent renderer: the pdfium-cli v0.11.2 WebAssembly Linux amd64 release
+  from `https://github.com/klippa-app/pdfium-cli`, embedding PDFium Chromium
+  build 7881, is pinned as both release-asset and executable SHA-256
+  `3ef3375c429ce665e834f933a028225bf28ac837695aaa69c6fc21facf6780ab`.
+  pdfium-cli and go-pdfium are MIT; PDFium is BSD-3-Clause with its documented
+  third-party notices. The linked Go modules and the exact PDFium 7881 archive
+  notice set are recorded in
+  `docs/third-party/pdfium-cli-v0.11.2.md`, tied to the executable hash and the
+  source `pdfium-wasm.tgz` SHA-256
+  `added6e8ac024f71cb61cf2b77a205d178e2bdde2e4048fbcd916f68b7264d56`.
+  The executable is operator-supplied, verified offline, and retained only in
+  the ignored local validation cache.
+- Raster comparator: the official ImageMagick 7.1.2-30 GCC x86-64 AppImage
+  from `https://github.com/ImageMagick/ImageMagick` is pinned as both release-
+  asset and executable SHA-256
+  `372af8a3fd61ef5f15c6331cde3e21f840eb165d8b533f34ed05d68736dd682e`
+  under the ImageMagick License. The origin and license of every extracted
+  shared-library payload component are recorded in
+  `docs/third-party/imagemagick-7.1.2-30-appimage.md`, tied to that exact
+  AppImage hash. It is operator-supplied, verified offline, and retained only
+  in the ignored local validation cache.
+- Project-owned expectation: the blank-page expected raster is defined as
+  `1224x1584` opaque white sRGB RGB pixels by the T03 visual profile and was
+  encoded with the pinned ImageMagick tool using metadata stripping. Its
+  SHA-256 is
+  `c7bbf03603aee1dba4ef80c9eee9abb93b7f3adfb94b84e4abf0203d78f89011`.
+  It is a project-authored expectation derived from page geometry and contains
+  no Reference Suite or third-party document content.
+- Secondary evidence: Apache PDFBox Renderer 3.0.8, already present under
+  Apache-2.0 as the private Document Engine dependency, renders the same
+  workflow artifact only to detect renderer disagreement. It cannot make the
+  visual chain pass and exposes no backend type through the Native Interface.
+- Evidence artifact: PDFium renders the exact PDF created by
+  `DocumentWorkflow.execute`; ImageMagick receives only validated fixed-size
+  PNG paths. The passing record retains an ID-neutral input hash and exact
+  raster hashes, profile settings, both AE metrics, tool identities and
+  digests, raw findings, and reviewable difference artifacts. The input hash
+  replaces only the fresh trailer `/ID` hex values with zeroes, consistently
+  with issue #1's byte-equality exclusion; tools receive the unmodified PDF,
+  and repeat-run tests require identical T06/T07 metadata. Independent
+  standards evidence remains absent, so the overall T03 determination and
+  capability remain
+  `indeterminate` and `experimental`.
+- Excluded inputs: no iText source, resource, fixture, output, decompiled or
+  binary-derived implementation detail, closed add-on material, proprietary
+  differential evidence, or system font was used.
+- Scope: T07 adds repository-only visual Acceptance Evidence. It adds no T23
+  runtime page rendering, Capability Provider, Native Interface or Migration
+  Facade surface, stable mapping, or unsupported stub, and does not bundle or
+  publish either external executable.
 
 Future changes append or update a scoped record and supply the pull-request
 provenance statement required by [CONTRIBUTING.md](CONTRIBUTING.md).
