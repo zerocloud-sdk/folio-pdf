@@ -15,7 +15,9 @@ import net.zerocloud.pdf.PageDestination;
  *
  * <p>Pre-existing destinations that the command does not name are preserved
  * unchanged, and unknown subtrees of the Names dictionary are left intact.
- * Removing the final destination drops the empty Dests name tree.</p>
+ * Removing the final destination drops the empty Dests name tree. Removing a
+ * name still referenced by a managed Link or Action fails atomically with
+ * {@link net.zerocloud.pdf.DocumentFailureCode#DESTINATION_CONFLICT}.</p>
  *
  * @since 0.1.0
  */

@@ -48,8 +48,26 @@ public enum DocumentFailureCode {
     /** A page operation cannot prove that sensitive structures will survive. */
     PRESERVATION_UNSUPPORTED,
 
-    /** A page removal conflicts with an existing managed destination. */
+    /** A page or named-destination removal would orphan a managed target. */
     DESTINATION_CONFLICT,
+
+    /** A supported annotation graph is malformed or cannot be updated safely. */
+    ANNOTATION_INVALID,
+
+    /** An annotation selected for mutation does not exist. */
+    ANNOTATION_NOT_FOUND,
+
+    /** An annotation cannot be flattened under the version-1 contract. */
+    ANNOTATION_FLATTENING_UNSUPPORTED,
+
+    /** A caller-declared annotation count or decoded-byte bound was exhausted. */
+    ANNOTATION_LIMIT_EXCEEDED,
+
+    /** A supported Action graph is malformed or cannot be updated safely. */
+    ACTION_INVALID,
+
+    /** A caller-declared Action count bound was exhausted. */
+    ACTION_LIMIT_EXCEEDED,
 
     /** A caller-declared metadata traversal or byte bound was exhausted. */
     METADATA_LIMIT_EXCEEDED,

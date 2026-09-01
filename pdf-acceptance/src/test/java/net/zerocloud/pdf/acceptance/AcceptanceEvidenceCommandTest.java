@@ -1,5 +1,6 @@
 package net.zerocloud.pdf.acceptance;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -223,6 +224,43 @@ public final class AcceptanceEvidenceCommandTest {
                 "T11-metadata-front.pdf` exit code: `0`"));
         assertTrue(t11Findings.contains(
                 "T11-metadata-back.pdf` exit code: `0`"));
+
+        Path t12Front = output.resolve(
+                "artifacts/T12-annotations-actions-front.pdf");
+        Path t12Back = output.resolve(
+                "artifacts/T12-annotations-actions-back.pdf");
+        assertTrue(Files.isRegularFile(t12Front));
+        assertTrue(Files.isRegularFile(t12Back));
+        assertTrue(Files.size(t12Front) > 0L);
+        assertTrue(Files.size(t12Back) > 0L);
+
+        String t12Syntax = readT12Syntax(output);
+        assertMetadata(
+                t12Syntax,
+                "Capability",
+                "document.annotations-actions.manage");
+        assertMetadata(
+                t12Syntax,
+                "Acceptance Profile",
+                "T12-annotations-document-actions");
+        assertMetadata(t12Syntax, "Chain", "syntax");
+        assertMetadata(t12Syntax, "Result", "pass");
+        assertMetadata(t12Syntax, "Producer kind", "external-tool");
+        assertMetadata(t12Syntax, "Producer", "qpdf");
+        assertMetadata(t12Syntax, "Producer version", "12.4.0");
+        assertTrue(t12Syntax.contains(
+                "artifacts/T12-annotations-actions-front.pdf"));
+        assertTrue(t12Syntax.contains(
+                "artifacts/T12-annotations-actions-back.pdf"));
+        assertTrue(t12Syntax.contains(
+                "artifacts/T12-annotations-document-actions-qpdf.txt"));
+
+        String t12Findings = read(output.resolve(
+                "artifacts/T12-annotations-document-actions-qpdf.txt"));
+        assertTrue(t12Findings.contains(
+                "T12-annotations-actions-front.pdf` exit code: `0`"));
+        assertTrue(t12Findings.contains(
+                "T12-annotations-actions-back.pdf` exit code: `0`"));
     }
 
     @Test
@@ -285,10 +323,19 @@ public final class AcceptanceEvidenceCommandTest {
                 "T07-document-blank-visual.md",
                 "artifacts/T06-document-blank-qpdf.txt",
                 "artifacts/T06-document-blank-semantic.txt",
-                "artifacts/T07-document-blank-visual.txt")) {
+                "artifacts/T07-document-blank-visual.txt",
+                "T12-annotations-document-actions-syntax.md",
+                "artifacts/T12-annotations-document-actions-qpdf.txt")) {
             assertEquals(relative,
                     read(firstOutput.resolve(relative)),
                     read(secondOutput.resolve(relative)));
+        }
+        for (String relative : Arrays.asList(
+                "artifacts/T12-annotations-actions-front.pdf",
+                "artifacts/T12-annotations-actions-back.pdf")) {
+            assertArrayEquals(relative,
+                    Files.readAllBytes(firstOutput.resolve(relative)),
+                    Files.readAllBytes(secondOutput.resolve(relative)));
         }
     }
 
@@ -349,6 +396,11 @@ public final class AcceptanceEvidenceCommandTest {
         assertMetadata(t11Syntax, "Producer version", "unavailable");
         assertTrue(t11Syntax.contains("The pinned qpdf tool was unavailable."));
         assertTrue(!t11Syntax.contains("Result: `pass`"));
+        String t12Syntax = readT12Syntax(output);
+        assertMetadata(t12Syntax, "Result", "indeterminate");
+        assertMetadata(t12Syntax, "Producer version", "unavailable");
+        assertTrue(t12Syntax.contains("The pinned qpdf tool was unavailable."));
+        assertTrue(!t12Syntax.contains("Result: `pass`"));
     }
 
     @Test
@@ -380,6 +432,11 @@ public final class AcceptanceEvidenceCommandTest {
         assertMetadata(t11Syntax, "Result", "indeterminate");
         assertMetadata(t11Syntax, "Producer version", "12.3.2");
         assertTrue(t11Syntax.contains(
+                "Expected pinned qpdf version `12.4.0`; observed `12.3.2`."));
+        String t12Syntax = readT12Syntax(output);
+        assertMetadata(t12Syntax, "Result", "indeterminate");
+        assertMetadata(t12Syntax, "Producer version", "12.3.2");
+        assertTrue(t12Syntax.contains(
                 "Expected pinned qpdf version `12.4.0`; observed `12.3.2`."));
     }
 
@@ -415,6 +472,10 @@ public final class AcceptanceEvidenceCommandTest {
         assertMetadata(t11Syntax, "Result", "fail");
         assertTrue(t11Syntax.contains(
                 "qpdf reported warnings or errors for a T11 product."));
+        String t12Syntax = readT12Syntax(output);
+        assertMetadata(t12Syntax, "Result", "fail");
+        assertTrue(t12Syntax.contains(
+                "qpdf reported warnings or errors for a T12 product."));
     }
 
     @Test
@@ -439,6 +500,7 @@ public final class AcceptanceEvidenceCommandTest {
         assertTrue(determination.contains("Final determination: `fail`"));
         assertMetadata(readT10Syntax(output), "Result", "fail");
         assertMetadata(readT11Syntax(output), "Result", "fail");
+        assertMetadata(readT12Syntax(output), "Result", "fail");
     }
 
     @Test
@@ -473,6 +535,10 @@ public final class AcceptanceEvidenceCommandTest {
         assertMetadata(t11Syntax, "Result", "indeterminate");
         assertTrue(t11Syntax.contains(
                 "qpdf returned an undocumented status for a T11 product."));
+        String t12Syntax = readT12Syntax(output);
+        assertMetadata(t12Syntax, "Result", "indeterminate");
+        assertTrue(t12Syntax.contains(
+                "qpdf returned an undocumented status for a T12 product."));
     }
 
     @Test
@@ -1262,6 +1328,11 @@ public final class AcceptanceEvidenceCommandTest {
     private static String readT11Syntax(Path output) throws IOException {
         return read(output.resolve(
                 "T11-metadata-outlines-destinations-attachments-syntax.md"));
+    }
+
+    private static String readT12Syntax(Path output) throws IOException {
+        return read(output.resolve(
+                "T12-annotations-document-actions-syntax.md"));
     }
 
     private static String read(Path path) throws IOException {

@@ -6,13 +6,14 @@ Behavioral authority: [`../../capabilities/capability-matrix.yaml`](../../capabi
 
 - Schema version: `1`
 - Release train: `0.1.0-SNAPSHOT`
-- Capabilities: `5`
+- Capabilities: `6`
 
 ## Capability summary
 
 | Capability | Context | Status | Migration facade |
 | --- | --- | --- | --- |
 | [`conversion.capability-provider.select-execute`](#capability-conversion_dot_capability_dash_provider_dot_select_dash_execute) | `conversion` | `experimental` | [excluded by `T05`](facade-surface.md#excluded-capability-conversion_dot_capability_dash_provider_dot_select_dash_execute) |
+| [`document.annotations-actions.manage`](#capability-document_dot_annotations_dash_actions_dot_manage) | `document-engine` | `experimental` | [excluded by `T12`](facade-surface.md#excluded-capability-document_dot_annotations_dash_actions_dot_manage) |
 | [`document.blank.create-publish-reopen`](#capability-document_dot_blank_dot_create_dash_publish_dash_reopen) | `document-engine` | `experimental` | [`itext7.kernel.pdf-document.add-new-page`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_add_dash_new_dash_page), [`itext7.kernel.pdf-document.close`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_close), [`itext7.kernel.pdf-document.constructor-reader`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_constructor_dash_reader), [`itext7.kernel.pdf-document.constructor-writer`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_constructor_dash_writer), [`itext7.kernel.pdf-document.get-number-of-pages`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_number_dash_of_dash_pages), [`itext7.kernel.pdf-exception.constructor-message-cause`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_exception_dot_constructor_dash_message_dash_cause), [`itext7.kernel.pdf-page.type`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_page_dot_type), [`itext7.kernel.pdf-reader.close`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_reader_dot_close), [`itext7.kernel.pdf-reader.constructor-string`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_reader_dot_constructor_dash_string), [`itext7.kernel.pdf-writer.constructor-string`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_writer_dot_constructor_dash_string), [`itext7.layout.document.close`](facade-surface.md#facade-surface-itext7_dot_layout_dot_document_dot_close), [`itext7.layout.document.constructor-pdf-document`](facade-surface.md#facade-surface-itext7_dot_layout_dot_document_dot_constructor_dash_pdf_dash_document) |
 | [`document.metadata.outlines-destinations-attachments`](#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments) | `document-engine` | `experimental` | [excluded by `T11`](facade-surface.md#excluded-capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments) |
 | [`document.page.manipulate-merge-split`](#capability-document_dot_page_dot_manipulate_dash_merge_dash_split) | `document-engine` | `experimental` | [excluded by `T10`](facade-surface.md#excluded-capability-document_dot_page_dot_manipulate_dash_merge_dash_split) |
@@ -78,6 +79,77 @@ Implementation evidence:
 Acceptance Evidence: incomplete; no independent chain has been recorded as passing.
 
 Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T05 capability-provider record`.
+
+<a id="capability-document_dot_annotations_dash_actions_dot_manage"></a>
+## `document.annotations-actions.manage`
+
+Read, create, update, remove, flatten, and preserve managed annotations and inert local GoTo Action bindings across page workflows.
+
+- Context: `document-engine`
+- Status: `experimental`
+- Reference Suite source: `iText Core 7.2.6 annotation and action surface`
+- Reference role: capability inventory only; not an implementation or behavioral oracle
+- Acceptance Profile: `T12-annotations-document-actions`
+- Mandatory evidence chains: `syntax`, `standards`, `semantic`, `visual`
+- Evidence record: [`capabilities/evidence/T12-annotations-document-actions.md`](../../capabilities/evidence/T12-annotations-document-actions.md)
+- Certified platforms: none
+
+### Native Interface mapping
+
+- `actions-command`: `net.zerocloud.pdf.command.UpdateActions`
+- `actions-query`: `net.zerocloud.pdf.query.Actions`
+- `annotation`: `net.zerocloud.pdf.Annotation`
+- `annotation-appearance`: `net.zerocloud.pdf.AnnotationAppearance`
+- `annotation-color`: `net.zerocloud.pdf.AnnotationColor`
+- `annotation-flag`: `net.zerocloud.pdf.AnnotationFlag`
+- `annotation-properties`: `net.zerocloud.pdf.AnnotationProperties`
+- `annotation-quad`: `net.zerocloud.pdf.AnnotationQuad`
+- `annotation-rectangle`: `net.zerocloud.pdf.AnnotationRectangle`
+- `annotations-command`: `net.zerocloud.pdf.command.UpdateAnnotations`
+- `annotations-query`: `net.zerocloud.pdf.query.Annotations`
+- `document-actions`: `net.zerocloud.pdf.DocumentActions`
+- `entry-point`: `net.zerocloud.pdf.DocumentWorkflow#execute`
+- `failure`: `net.zerocloud.pdf.DocumentFailure`
+- `failure-code`: `net.zerocloud.pdf.DocumentFailureCode`
+- `flatten-command`: `net.zerocloud.pdf.command.FlattenAnnotations`
+- `go-to-action`: `net.zerocloud.pdf.GoToAction`
+- `link-activation`: `net.zerocloud.pdf.LinkActivation`
+- `navigation-target`: `net.zerocloud.pdf.NavigationTarget`
+- `page-actions`: `net.zerocloud.pdf.PageActions`
+
+### Migration Facade coverage
+
+- Stable: none
+- Preview: none
+- Explicit exclusion: [`T12`](facade-surface.md#excluded-capability-document_dot_annotations_dash_actions_dot_manage) — T12 is a Native Interface annotation, appearance, flattening, and inert local Action seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+
+### Gates and limitations
+
+- Dependency Gate: [`document.value.inspect-patch`](#capability-document_dot_value_dot_inspect_dash_patch) must be `compatible`
+- Dependency Gate: [`document.page.manipulate-merge-split`](#capability-document_dot_page_dot_manipulate_dash_merge_dash_split) must be `compatible`
+- Dependency Gate: [`document.metadata.outlines-destinations-attachments`](#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments) must be `compatible`
+- Promotion gate `T06`: Complete the independent acceptance evidence required before compatibility.
+- Limitation: T12 operates in REWRITE workflows; INCREMENTAL remains SAVE_MODE_UNSUPPORTED, and signed-document recognition, DocMDP decisions, and signature-safe changes remain T15.
+- Limitation: Version 1 manages Text, Stamp, Highlight, FileAttachment, standalone Widget, and Link annotations. Widget values do not create AcroForm fields and cannot be flattened; AcroForm field behavior, form Actions, and form flattening remain outside T12.
+- Limitation: The complete Action allowlist is an inert local GoTo dictionary with one direct page or existing named-destination target, bound only to catalog open, page open or close, and Link annotations. Folio PDF never executes Actions; unsupported or chained Action graphs remain structurally unchanged only during rewrites that need not interpret them and are otherwise rejected before mutation. Source-byte preservation is not claimed.
+- Limitation: Normal appearances are resource-free Form XObjects with an identity matrix, an empty Resources dictionary, a 1 MiB decoded-content limit, semantically range-checked graphics operands, and a strict operator allowlist. Flattening requires a validated normal appearance, isolates pre-existing page content with q/Q, and supports non-Widget annotations only.
+- Limitation: Annotation counts, appearance bytes, and attachment bytes are caller-bounded on query. Each complete managed-graph command or page-operation validation or retargeting pass shares fixed document-wide 8 MiB decoded-appearance and 8 MiB decoded-attachment bounds. Comprehensive hostile-input object, depth, decompression, memory, time, and concurrency enforcement remains T20, and the Hardened Worker Profile and its codecs remain T21.
+- Limitation: Copy, merge, and split classify each annotation-array entry independently, preserve proven-safe legacy basic Text annotations alongside managed entries in either order, retarget supported direct and named destinations by page identity, deterministically suffix colliding annotation identifiers including an optional legacy identifier on a copied Text entry, reject unrenamable legacy identifier collisions before merge target mutation, and filter bindings whose target does not survive a split. Removing a named destination fails atomically with DESTINATION_CONFLICT while a managed Link or Action still refers to it. Source-byte layout and cross-Session object identity are not claimed.
+
+### Evidence
+
+Implementation evidence:
+
+- `annotation-action-workflow-consumer-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/consumer/AnnotationWorkflowTest.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/consumer/AnnotationWorkflowTest.java) — Public workflows round-trip all six managed annotation types, resource-free normal appearances, file attachments, direct and Action Link targets, catalog and page Actions, atomic updates and removals, and graphics-state-isolated non-Widget flattening through REWRITE and reopen; enforce query, payload, and page-retargeting decode bounds; preserve or safely reject unsupported Action and appearance graphs; reject malformed annotation, appearance, destination, and Action graphs with stable safe failures before mutation, including normalized scalar update and flattening diagnostics; prove hostile Actions cause no script, process, filesystem, or network effects; prevent removal of referenced named destinations; preserve proven-safe legacy Text entries alongside managed annotations in either array order; deterministically suffix copied legacy identifiers without changing their originals; reject unrenamable legacy identifier collisions before merge mutation; and retarget managed bindings through move, copy, merge, split, and removal, including direct merge page offsets.
+- `public-api-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/contract/PublicApiLeakageIT.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/contract/PublicApiLeakageIT.java) — Public and protected signatures, including every T12 command, query, Action, annotation, appearance, geometry, and color value, contain no PDFBox types.
+- `artifact-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/contract/JarContractIT.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/contract/JarContractIT.java) — The jar retains its stable module name, Java 8 class-file version, notices, and unbundled backend.
+- `cross-jdk-contract`: [`scripts/verify-jdk-matrix.sh`](../../scripts/verify-jdk-matrix.sh) — Maven verification runs the T12 public workflow contract on JDK 8, 11, 17, and 21.
+
+Acceptance Evidence:
+
+- `syntax`: `pass` — [`capabilities/evidence/T12-annotations-document-actions-syntax.md`](../../capabilities/evidence/T12-annotations-document-actions-syntax.md); producer `qpdf@12.4.0` (`external-tool`)
+
+Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T12 annotations-document-actions record`.
 
 <a id="capability-document_dot_blank_dot_create_dash_publish_dash_reopen"></a>
 ## `document.blank.create-publish-reopen`
@@ -209,7 +281,7 @@ Read, create, update, and preserve document information, XMP metadata, outlines,
 - Limitation: Outlines are written all-open with positive visible-item counts, and name trees are written as one flat array sorted by unsigned encoded key-byte order; richer tree shapes are read only when they satisfy the proven safe invariants, and are otherwise preserved intact or rejected with PRESERVATION_UNSUPPORTED.
 - Limitation: A page removal that would orphan a managed destination fails with DESTINATION_CONFLICT before mutation; destinations that target pages outside a split selection are dropped from that product, and merge renames colliding destination and embedded-file names with a deterministic -N suffix.
 - Limitation: Inspection and payload bounds are explicit per-query limits failing with METADATA_LIMIT_EXCEEDED; XMP command packets must be well-formed XML carrying the XMP root marker within a 64 MiB bound, and embedded-file MIME subtypes are restricted to printable ASCII; comprehensive hostile-input object, depth, decompression, memory, time, and concurrency enforcement remains T20, and the Hardened Worker Profile and its codecs remain T21.
-- Limitation: Annotation and action management remains T12, content extraction remains T13 and T14, and encryption remains T16.
+- Limitation: Managed annotations and local GoTo Actions integrate through document.annotations-actions.manage; content extraction remains T13 and T14, and encryption remains T16.
 
 ### Evidence
 
@@ -266,10 +338,11 @@ Insert, remove, move, and copy pages; append ordered named Sources; and publish 
 - Dependency Gate: [`document.blank.create-publish-reopen`](#capability-document_dot_blank_dot_create_dash_publish_dash_reopen) must be `compatible`
 - Promotion gate `T06`: Complete the independent acceptance evidence required before compatibility.
 - Limitation: T10 operates in REWRITE workflows; INCREMENTAL remains SAVE_MODE_UNSUPPORTED, and signed-document recognition, DocMDP decisions, and signature-safe changes remain T15.
-- Limitation: Page operations preserve tested inherited boxes, rotation, resources, basic Text annotations, and content when copied or reparented. Before mutation, T10 rejects nonstructural trailer data, nonempty document information, catalogs or page-tree nodes with unproven entries, inconsistent page-tree parents, counts, cycles, repeated nodes, or any direct input page-tree node, missing effective media boxes, malformed box, rotation, or resource entries, resource graphs that reach page or page-tree structures, nested content arrays, external-file content streams, filtered content streams unless they use one parameter-free FlateDecode or Fl filter with a strictly valid zlib payload, content streams with non-engine metadata, unproven indirect page extensions, separation information, links, widgets, annotation relationships or actions, tagged-page references, and thread beads. Managed document information, XMP metadata, outlines, named destinations, and embedded files are validated, preserved, and retargeted by the document.metadata.outlines-destinations-attachments capability; forms, tagged structure, and annotation action management remain downstream capability slices.
+- Limitation: Page operations preserve tested inherited boxes, rotation, resources, content, the legacy basic Text-annotation subset, and managed T12 annotations and local GoTo Action bindings when copied or reparented. Before mutation, T10 rejects nonstructural trailer data, nonempty document information, catalogs or page-tree nodes with unproven entries, inconsistent page-tree parents, counts, cycles, repeated nodes, or any direct input page-tree node, missing effective media boxes, malformed box, rotation, or resource entries, resource graphs that reach page or page-tree structures, nested content arrays, external-file content streams, filtered content streams unless they use one parameter-free FlateDecode or Fl filter with a strictly valid zlib payload, content streams with non-engine metadata, unproven indirect page extensions, separation information, unsupported annotation relationships or Action graphs, tagged-page references, and thread beads. Managed document information, XMP metadata, outlines, named destinations, and embedded files are validated, preserved, and retargeted by the document.metadata.outlines-destinations-attachments capability; managed annotations and Actions are validated, preserved, and retargeted by document.annotations-actions.manage; forms and tagged structure remain downstream capability slices.
 - Limitation: Copy, merge, and split preserve semantic page graphs, not source byte layout or backend object identity. Object References are Session-local; public reopen-and-rewrite probes demonstrate that changing an imported content graph leaves its Source and sibling products unchanged.
 - Limitation: T10 validates command ranges, positions, named merge Sources, and exact split Target coverage. A successful SplitDocument is terminal for Document Commands in that workflow; comprehensive hostile-input page, object, depth, decompression, memory, time, and concurrency enforcement remains T20.
 - Limitation: T10 runs only through the trusted in-process adapter; the Hardened Worker Profile and its command and query codecs remain T21.
+- Limitation: A new split product that has no trailer identifier receives one derived from a fixed-placeholder serialization of that product; existing identifiers and non-split publication are unchanged. T10 makes no broader source-byte-layout guarantee.
 
 ### Evidence
 

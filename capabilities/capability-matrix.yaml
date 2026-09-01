@@ -239,10 +239,11 @@ capabilities:
       preview: []
     limitations:
       - T10 operates in REWRITE workflows; INCREMENTAL remains SAVE_MODE_UNSUPPORTED, and signed-document recognition, DocMDP decisions, and signature-safe changes remain T15.
-      - Page operations preserve tested inherited boxes, rotation, resources, basic Text annotations, and content when copied or reparented. Before mutation, T10 rejects nonstructural trailer data, nonempty document information, catalogs or page-tree nodes with unproven entries, inconsistent page-tree parents, counts, cycles, repeated nodes, or any direct input page-tree node, missing effective media boxes, malformed box, rotation, or resource entries, resource graphs that reach page or page-tree structures, nested content arrays, external-file content streams, filtered content streams unless they use one parameter-free FlateDecode or Fl filter with a strictly valid zlib payload, content streams with non-engine metadata, unproven indirect page extensions, separation information, links, widgets, annotation relationships or actions, tagged-page references, and thread beads. Managed document information, XMP metadata, outlines, named destinations, and embedded files are validated, preserved, and retargeted by the document.metadata.outlines-destinations-attachments capability; forms, tagged structure, and annotation action management remain downstream capability slices.
+      - Page operations preserve tested inherited boxes, rotation, resources, content, the legacy basic Text-annotation subset, and managed T12 annotations and local GoTo Action bindings when copied or reparented. Before mutation, T10 rejects nonstructural trailer data, nonempty document information, catalogs or page-tree nodes with unproven entries, inconsistent page-tree parents, counts, cycles, repeated nodes, or any direct input page-tree node, missing effective media boxes, malformed box, rotation, or resource entries, resource graphs that reach page or page-tree structures, nested content arrays, external-file content streams, filtered content streams unless they use one parameter-free FlateDecode or Fl filter with a strictly valid zlib payload, content streams with non-engine metadata, unproven indirect page extensions, separation information, unsupported annotation relationships or Action graphs, tagged-page references, and thread beads. Managed document information, XMP metadata, outlines, named destinations, and embedded files are validated, preserved, and retargeted by the document.metadata.outlines-destinations-attachments capability; managed annotations and Actions are validated, preserved, and retargeted by document.annotations-actions.manage; forms and tagged structure remain downstream capability slices.
       - Copy, merge, and split preserve semantic page graphs, not source byte layout or backend object identity. Object References are Session-local; public reopen-and-rewrite probes demonstrate that changing an imported content graph leaves its Source and sibling products unchanged.
       - T10 validates command ranges, positions, named merge Sources, and exact split Target coverage. A successful SplitDocument is terminal for Document Commands in that workflow; comprehensive hostile-input page, object, depth, decompression, memory, time, and concurrency enforcement remains T20.
       - T10 runs only through the trusted in-process adapter; the Hardened Worker Profile and its command and query codecs remain T21.
+      - A new split product that has no trailer identifier receives one derived from a fixed-placeholder serialization of that product; existing identifiers and non-split publication are unchanged. T10 makes no broader source-byte-layout guarantee.
     dependency-gates:
       - capability: document.blank.create-publish-reopen
         required-status: compatible
@@ -319,7 +320,7 @@ capabilities:
       - Outlines are written all-open with positive visible-item counts, and name trees are written as one flat array sorted by unsigned encoded key-byte order; richer tree shapes are read only when they satisfy the proven safe invariants, and are otherwise preserved intact or rejected with PRESERVATION_UNSUPPORTED.
       - A page removal that would orphan a managed destination fails with DESTINATION_CONFLICT before mutation; destinations that target pages outside a split selection are dropped from that product, and merge renames colliding destination and embedded-file names with a deterministic -N suffix.
       - Inspection and payload bounds are explicit per-query limits failing with METADATA_LIMIT_EXCEEDED; XMP command packets must be well-formed XML carrying the XMP root marker within a 64 MiB bound, and embedded-file MIME subtypes are restricted to printable ASCII; comprehensive hostile-input object, depth, decompression, memory, time, and concurrency enforcement remains T20, and the Hardened Worker Profile and its codecs remain T21.
-      - Annotation and action management remains T12, content extraction remains T13 and T14, and encryption remains T16.
+      - Managed annotations and local GoTo Actions integrate through document.annotations-actions.manage; content extraction remains T13 and T14, and encryption remains T16.
     dependency-gates:
       - capability: document.value.inspect-patch
         required-status: compatible
@@ -359,6 +360,89 @@ capabilities:
     provenance:
       path: PROVENANCE.md
       record: T11 metadata-outlines-destinations-attachments record
+    certified-platforms: []
+    status: experimental
+
+  - id: document.annotations-actions.manage
+    context: document-engine
+    summary: Read, create, update, remove, flatten, and preserve managed annotations and inert local GoTo Action bindings across page workflows.
+    reference-suite:
+      source: iText Core 7.2.6 annotation and action surface
+      role: capability inventory only; not an implementation or behavioral oracle
+    native-interface:
+      entry-point: net.zerocloud.pdf.DocumentWorkflow#execute
+      annotation: net.zerocloud.pdf.Annotation
+      annotation-properties: net.zerocloud.pdf.AnnotationProperties
+      annotation-rectangle: net.zerocloud.pdf.AnnotationRectangle
+      annotation-appearance: net.zerocloud.pdf.AnnotationAppearance
+      annotation-flag: net.zerocloud.pdf.AnnotationFlag
+      annotation-color: net.zerocloud.pdf.AnnotationColor
+      annotation-quad: net.zerocloud.pdf.AnnotationQuad
+      navigation-target: net.zerocloud.pdf.NavigationTarget
+      link-activation: net.zerocloud.pdf.LinkActivation
+      go-to-action: net.zerocloud.pdf.GoToAction
+      page-actions: net.zerocloud.pdf.PageActions
+      document-actions: net.zerocloud.pdf.DocumentActions
+      annotations-command: net.zerocloud.pdf.command.UpdateAnnotations
+      flatten-command: net.zerocloud.pdf.command.FlattenAnnotations
+      actions-command: net.zerocloud.pdf.command.UpdateActions
+      annotations-query: net.zerocloud.pdf.query.Annotations
+      actions-query: net.zerocloud.pdf.query.Actions
+      failure: net.zerocloud.pdf.DocumentFailure
+      failure-code: net.zerocloud.pdf.DocumentFailureCode
+    migration-facade:
+      stable: []
+      preview: []
+    limitations:
+      - T12 operates in REWRITE workflows; INCREMENTAL remains SAVE_MODE_UNSUPPORTED, and signed-document recognition, DocMDP decisions, and signature-safe changes remain T15.
+      - Version 1 manages Text, Stamp, Highlight, FileAttachment, standalone Widget, and Link annotations. Widget values do not create AcroForm fields and cannot be flattened; AcroForm field behavior, form Actions, and form flattening remain outside T12.
+      - The complete Action allowlist is an inert local GoTo dictionary with one direct page or existing named-destination target, bound only to catalog open, page open or close, and Link annotations. Folio PDF never executes Actions; unsupported or chained Action graphs remain structurally unchanged only during rewrites that need not interpret them and are otherwise rejected before mutation. Source-byte preservation is not claimed.
+      - Normal appearances are resource-free Form XObjects with an identity matrix, an empty Resources dictionary, a 1 MiB decoded-content limit, semantically range-checked graphics operands, and a strict operator allowlist. Flattening requires a validated normal appearance, isolates pre-existing page content with q/Q, and supports non-Widget annotations only.
+      - Annotation counts, appearance bytes, and attachment bytes are caller-bounded on query. Each complete managed-graph command or page-operation validation or retargeting pass shares fixed document-wide 8 MiB decoded-appearance and 8 MiB decoded-attachment bounds. Comprehensive hostile-input object, depth, decompression, memory, time, and concurrency enforcement remains T20, and the Hardened Worker Profile and its codecs remain T21.
+      - Copy, merge, and split classify each annotation-array entry independently, preserve proven-safe legacy basic Text annotations alongside managed entries in either order, retarget supported direct and named destinations by page identity, deterministically suffix colliding annotation identifiers including an optional legacy identifier on a copied Text entry, reject unrenamable legacy identifier collisions before merge target mutation, and filter bindings whose target does not survive a split. Removing a named destination fails atomically with DESTINATION_CONFLICT while a managed Link or Action still refers to it. Source-byte layout and cross-Session object identity are not claimed.
+    dependency-gates:
+      - capability: document.value.inspect-patch
+        required-status: compatible
+      - capability: document.page.manipulate-merge-split
+        required-status: compatible
+      - capability: document.metadata.outlines-destinations-attachments
+        required-status: compatible
+    promotion-gates:
+      - ticket: T06
+        requirement: Complete the independent acceptance evidence required before compatibility.
+    acceptance-profile:
+      id: T12-annotations-document-actions
+      state: experimental
+      mandatory-evidence:
+        - syntax
+        - standards
+        - semantic
+        - visual
+      evidence-record: capabilities/evidence/T12-annotations-document-actions.md
+    evidence:
+      - kind: annotation-action-workflow-consumer-contract
+        path: pdf-document/src/test/java/net/zerocloud/pdf/consumer/AnnotationWorkflowTest.java
+        assertion: Public workflows round-trip all six managed annotation types, resource-free normal appearances, file attachments, direct and Action Link targets, catalog and page Actions, atomic updates and removals, and graphics-state-isolated non-Widget flattening through REWRITE and reopen; enforce query, payload, and page-retargeting decode bounds; preserve or safely reject unsupported Action and appearance graphs; reject malformed annotation, appearance, destination, and Action graphs with stable safe failures before mutation, including normalized scalar update and flattening diagnostics; prove hostile Actions cause no script, process, filesystem, or network effects; prevent removal of referenced named destinations; preserve proven-safe legacy Text entries alongside managed annotations in either array order; deterministically suffix copied legacy identifiers without changing their originals; reject unrenamable legacy identifier collisions before merge mutation; and retarget managed bindings through move, copy, merge, split, and removal, including direct merge page offsets.
+      - kind: public-api-contract
+        path: pdf-document/src/test/java/net/zerocloud/pdf/contract/PublicApiLeakageIT.java
+        assertion: Public and protected signatures, including every T12 command, query, Action, annotation, appearance, geometry, and color value, contain no PDFBox types.
+      - kind: artifact-contract
+        path: pdf-document/src/test/java/net/zerocloud/pdf/contract/JarContractIT.java
+        assertion: The jar retains its stable module name, Java 8 class-file version, notices, and unbundled backend.
+      - kind: cross-jdk-contract
+        path: scripts/verify-jdk-matrix.sh
+        assertion: Maven verification runs the T12 public workflow contract on JDK 8, 11, 17, and 21.
+    acceptance-evidence:
+      - chain: syntax
+        result: pass
+        record: capabilities/evidence/T12-annotations-document-actions-syntax.md
+        producer:
+          kind: external-tool
+          name: qpdf
+          version: "12.4.0"
+    provenance:
+      path: PROVENANCE.md
+      record: T12 annotations-document-actions record
     certified-platforms: []
     status: experimental
 

@@ -3,6 +3,7 @@ package net.zerocloud.pdf;
 import java.util.Map;
 import java.util.Objects;
 import net.zerocloud.pdf.command.AddBlankPage;
+import net.zerocloud.pdf.command.SetNamedDestinations;
 import net.zerocloud.pdf.query.DocumentRootReference;
 import net.zerocloud.pdf.query.InspectObject;
 import net.zerocloud.pdf.query.PageCount;
@@ -17,6 +18,8 @@ final class PdfBoxDocumentSession implements DocumentSession {
     private final Thread owner;
     private final PdfBoxValueAdapter valueAdapter;
     private final PdfBoxMetadataOperations metadataOperations;
+    private final PdfBoxAnnotationOperations annotationOperations;
+    private final PdfBoxAnnotationPageOperations annotationPageOperations;
     private final PdfBoxPageOperations pageOperations;
     private String outcomeCapabilityId;
     private volatile boolean active;
@@ -30,13 +33,21 @@ final class PdfBoxDocumentSession implements DocumentSession {
         this.owner = Thread.currentThread();
         this.valueAdapter = new PdfBoxValueAdapter(document, this);
         this.metadataOperations = new PdfBoxMetadataOperations(document);
+        this.annotationOperations = new PdfBoxAnnotationOperations(
+                document,
+                metadataOperations);
+        this.annotationPageOperations = new PdfBoxAnnotationPageOperations(
+                document,
+                metadataOperations,
+                annotationOperations);
         this.pageOperations = new PdfBoxPageOperations(
                 document,
                 sources,
                 primarySourceName,
                 publicationTargets,
                 valueAdapter,
-                metadataOperations);
+                metadataOperations,
+                annotationPageOperations);
         this.outcomeCapabilityId = PdfBoxWorkflowEngine.CAPABILITY_ID;
         this.active = true;
     }
@@ -68,8 +79,18 @@ final class PdfBoxDocumentSession implements DocumentSession {
         }
 
         if (metadataOperations.supports(command)) {
+            if (command instanceof SetNamedDestinations) {
+                annotationPageOperations.requireNamedDestinationRemovalSafe(
+                        ((SetNamedDestinations) command).getRemovedNames());
+            }
             outcomeCapabilityId = PdfBoxMetadataOperations.CAPABILITY_ID;
             metadataOperations.execute(command);
+            return;
+        }
+
+        if (annotationOperations.supports(command)) {
+            outcomeCapabilityId = PdfBoxAnnotationOperations.CAPABILITY_ID;
+            annotationOperations.execute(command);
             return;
         }
 
@@ -139,6 +160,12 @@ final class PdfBoxDocumentSession implements DocumentSession {
         if (metadataOperations.supportsQuery(query)) {
             outcomeCapabilityId = PdfBoxMetadataOperations.CAPABILITY_ID;
             return queryResult(metadataOperations.evaluate(query));
+        }
+
+
+        if (annotationOperations.supportsQuery(query)) {
+            outcomeCapabilityId = PdfBoxAnnotationOperations.CAPABILITY_ID;
+            return queryResult(annotationOperations.evaluate(query));
         }
 
         throw PdfBoxWorkflowEngine.failure(

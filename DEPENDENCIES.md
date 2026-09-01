@@ -71,6 +71,16 @@ dependency is added. T11 reuses the existing repository-only pinned qpdf
 12.4.0 acceptance path and adds no new external executable or runtime
 dependency.
 
+T12 adds no third-party runtime, test, build-tool, native, or external-tool
+dependency. Annotation, resource-free appearance, flattening, and inert local
+GoTo Action management reuses Apache PDFBox 3.0.8 only behind private
+implementation types and uses the existing JUnit 4.13.2 dependency for
+public-workflow consumer tests. Annotation and hostile-Action fixtures are
+generated in test code; no external PDF fixture or Migration Facade
+dependency is added. T12 reuses the existing repository-only pinned qpdf
+12.4.0 acceptance path and adds no new external executable or runtime
+dependency.
+
 T06 uses one external executable only in the opt-in, repository-only
 Acceptance Evidence path:
 

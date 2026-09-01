@@ -696,6 +696,15 @@ final class PdfBoxMetadataOperations {
         return destinations;
     }
 
+    java.util.Set<String> namedDestinationNames(PDDocument source)
+            throws DocumentFailure {
+        java.util.Set<String> names = new java.util.HashSet<String>();
+        for (COSString name : destinationEntriesByName(source).keySet()) {
+            names.add(name.getString());
+        }
+        return names;
+    }
+
     private static java.util.TreeSet<COSString> namedNamesOf(
             java.util.TreeMap<COSString, COSBase> destinations) {
         java.util.TreeSet<COSString> names =
@@ -704,10 +713,12 @@ final class PdfBoxMetadataOperations {
         return names;
     }
 
-    void applyMergedStructures(
+    List<Map<String, String>> applyMergedStructures(
             PDDocument target,
             List<MergedStructures> sources,
             boolean primaryHadInfo) throws DocumentFailure {
+        List<Map<String, String>> sourceRenames =
+                new java.util.ArrayList<Map<String, String>>();
         try {
             COSDictionary catalog = target.getDocumentCatalog().getCOSObject();
             IdentityHashMap<COSDictionary, Integer> pageNumbers =
@@ -784,6 +795,15 @@ final class PdfBoxMetadataOperations {
                                     entry.getValue(),
                                     references.get(sourceBase + sourceIndex)));
                 }
+                Map<String, String> publicRenames =
+                        new java.util.LinkedHashMap<String, String>();
+                for (Map.Entry<COSString, COSString> rename
+                        : renames.entrySet()) {
+                    publicRenames.put(
+                            rename.getKey().getString(),
+                            rename.getValue().getString());
+                }
+                sourceRenames.add(publicRenames);
                 for (Map.Entry<COSString, COSDictionary> entry
                         : source.files.entrySet()) {
                     files.put(
@@ -825,6 +845,7 @@ final class PdfBoxMetadataOperations {
         } catch (RuntimeException backendFailure) {
             throw preservationUnsupported();
         }
+        return sourceRenames;
     }
 
     private static COSString availableKey(
@@ -2517,7 +2538,7 @@ final class PdfBoxMetadataOperations {
         }
     }
 
-    private PageDestination destinationFromArray(
+    PageDestination destinationFromArray(
             COSBase rawValue,
             IdentityHashMap<COSDictionary, Integer> pageNumbers) {
         COSBase value = dereference(rawValue);
@@ -2599,7 +2620,7 @@ final class PdfBoxMetadataOperations {
         }
     }
 
-    private COSArray destinationToArray(
+    COSArray destinationToArray(
             PageDestination destination,
             COSBase pageReference) throws DocumentFailure {
         COSArray array = new COSArray();

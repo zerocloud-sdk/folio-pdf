@@ -1,0 +1,5 @@
+# Limit document Actions and annotation appearances
+
+The version-1 Native Interface represents only inert local `GoTo` Actions and resource-free normal Annotation Appearances, never executes an Action, and flattens only non-form Annotations after validating and incorporating their normal appearance. Appearance graphics-state operands are range-checked, and flattening isolates pre-existing page content with a `q`/`Q` pair before invoking the appearance. Each complete managed-graph command or page-operation pass shares one document-wide budget and decodes no more than 8 MiB each of appearance and attachment content. Removing a named destination is rejected before mutation while a managed Link or Action still refers to it.
+
+Supporting arbitrary Action chains or resource-bearing appearance programs would blur the Trust, Composition, and Forms boundaries and would make T10 page rewrites impossible to preserve or reject deterministically. Unsupported structures therefore remain structurally unchanged only when no semantic rewrite is required, and are otherwise rejected before mutation; no source-byte preservation claim is made.

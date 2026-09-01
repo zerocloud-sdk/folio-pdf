@@ -272,6 +272,19 @@ T03 does not yet detect or protect signed documents. Do not submit a signed
 document to a mutating `REWRITE` workflow; signed-document read-only policy,
 DocMDP decisions, and signature-safe incremental publication remain T15.
 
+The Document Engine also exposes backend-neutral PDF Values and validated
+Document Patches (T09), page manipulation/merge/split (T10), document
+metadata/outlines/destinations/attachments (T11), and supported annotations
+and inert local GoTo Actions (T12). T12 covers Text, Stamp, Highlight,
+FileAttachment, standalone Widget, and Link annotations; bounded queries;
+resource-free normal appearances; non-form flattening; and destination-aware
+move, copy, merge, split, and removal behavior. It never executes an Action,
+and unsupported Action graphs are preserved only when no semantic rewrite is
+required or rejected before mutation. See the authoritative
+[annotations and document Actions guide](docs/annotations-actions.md) for the
+exact allowlist, appearance operators, Forms boundary, failure policy, and
+page-operation rules.
+
 Successful `WorkflowOutcome` values identify the capability, the in-process
 execution profile, the selected Save Mode, safe diagnostics, and every Target
 receipt, plus any declaration-ordered Capability Provider selections. A

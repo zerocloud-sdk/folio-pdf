@@ -57,6 +57,9 @@ command maps every declared publication Target exactly once.
   runtime failures propagate unchanged.
 - Split products are staged and validated before publication, reopen
   independently, and map one staged product to each ordered named Target.
+  A newly created split product without a trailer identifier is first staged
+  with a fixed placeholder and then receives a streaming content-derived
+  identifier; existing identifiers and non-split publication are unchanged.
   Rewriting one product's imported content stream leaves the sibling product
   and original Source unchanged. A controlled publication failure proves
   `COMMITTED`, `FAILED`, and `NOT_ATTEMPTED` receipts for earlier, failing, and
@@ -129,14 +132,17 @@ nested content arrays, external-file content streams,
 filtered content streams unless they use one parameter-free `FlateDecode` or
 `Fl` filter with a strictly valid zlib payload, content streams with non-engine
 metadata, unproven indirect page extensions, separation information, and page
-structures that PDFBox
-copy/split mechanics may rewrite or discard: links, widgets, annotation
-relationships or actions, tagged-page references, and page-thread beads. The
-proven annotation subset is basic Text annotation data attached to its owning
-page; richer appearance and relationship graphs are rejected. Metadata,
-outline, destination, attachment, annotation-action, forms, and
-tagged-structure management remain downstream slices. T10 makes no
-source-byte-layout or cross-Session object-identity claim. `INCREMENTAL`
+structures that PDFBox copy/split mechanics may rewrite or discard:
+unsupported annotation relationships or Action graphs, tagged-page
+references, and page-thread beads. The legacy proven annotation subset remains
+basic Text annotation data attached to its owning page. T12 now validates,
+preserves, and retargets its managed Text, Stamp, Highlight, FileAttachment,
+standalone Widget, and Link annotations plus local GoTo Action bindings, even
+when managed and proven-safe legacy Text entries coexist in either order.
+Metadata, outline, destination, and attachment management belongs to T11;
+forms and tagged-structure management remain downstream slices. T10 makes no
+source-byte-layout claim beyond the content-derived identifier of a newly
+created split product, and no cross-Session object-identity claim. `INCREMENTAL`
 remains `SAVE_MODE_UNSUPPORTED`; signed-document rules remain T15,
 comprehensive hostile-input policy remains T20, and the Hardened Worker
 Profile and codecs remain T21.

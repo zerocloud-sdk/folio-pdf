@@ -70,6 +70,26 @@ _Avoid_: callback, remote method, custom command class
 A versioned, project-defined request for information from the current Document Session. A query is an ordering barrier that observes every earlier Document Command.
 _Avoid_: live view, direct backend query
 
+**Annotation**:
+A page-associated interactive or descriptive PDF object with project-owned geometry, identity, and subtype data.
+_Avoid_: comment object, backend annotation
+
+**Annotation Appearance**:
+The resource-free normal visual program for an Annotation, expressed independently of its interactive behavior.
+_Avoid_: annotation renderer, arbitrary content stream
+
+**Navigation Target**:
+A destination within the same document, identified either by an explicit page view or by a named destination.
+_Avoid_: URL, external destination, executable target
+
+**GoTo Action**:
+Inert document data that binds an event to one local Navigation Target. A GoTo Action is never executed by Folio PDF.
+_Avoid_: callback, script, command execution
+
+**Annotation Flattening**:
+The irreversible incorporation of a non-form Annotation Appearance into page content followed by removal of that Annotation.
+_Avoid_: form flattening, annotation deletion
+
 **Save Mode**:
 The explicit publication strategy for a changed document: `REWRITE` serializes a replacement document, while `INCREMENTAL` appends a new revision under stricter preservation rules.
 _Avoid_: auto-save, smart save

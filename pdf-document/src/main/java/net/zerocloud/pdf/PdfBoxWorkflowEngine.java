@@ -175,8 +175,9 @@ final class PdfBoxWorkflowEngine {
                                 ".folio-pdf-",
                                 ".pdf");
                         stagedDocuments.add(staged);
-                        splitDocuments.get(target.getTargetName())
-                                .save(staged.toFile());
+                        PdfBoxSplitProductWriter.save(
+                                splitDocuments.get(target.getTargetName()),
+                                staged);
                     }
                 }
             } catch (IOException | RuntimeException failure) {

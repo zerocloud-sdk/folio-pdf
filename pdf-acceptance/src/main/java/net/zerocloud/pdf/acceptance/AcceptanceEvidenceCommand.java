@@ -8,6 +8,7 @@ import static net.zerocloud.pdf.acceptance.EvidenceFiles.write;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,9 +16,18 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import net.zerocloud.pdf.Annotation;
+import net.zerocloud.pdf.AnnotationAppearance;
+import net.zerocloud.pdf.AnnotationColor;
+import net.zerocloud.pdf.AnnotationProperties;
+import net.zerocloud.pdf.AnnotationQuad;
+import net.zerocloud.pdf.AnnotationRectangle;
 import net.zerocloud.pdf.DocumentSource;
 import net.zerocloud.pdf.DocumentWorkflow;
 import net.zerocloud.pdf.EmbeddedFile;
+import net.zerocloud.pdf.GoToAction;
+import net.zerocloud.pdf.LinkActivation;
+import net.zerocloud.pdf.NavigationTarget;
 import net.zerocloud.pdf.OutlineItem;
 import net.zerocloud.pdf.PageDestination;
 import net.zerocloud.pdf.PageRange;
@@ -29,6 +39,7 @@ import net.zerocloud.pdf.WorkflowRequest;
 import net.zerocloud.pdf.command.AddBlankPage;
 import net.zerocloud.pdf.command.CopyPages;
 import net.zerocloud.pdf.command.EmbedFile;
+import net.zerocloud.pdf.command.FlattenAnnotations;
 import net.zerocloud.pdf.command.InsertBlankPage;
 import net.zerocloud.pdf.command.MergeDocuments;
 import net.zerocloud.pdf.command.MovePages;
@@ -38,10 +49,12 @@ import net.zerocloud.pdf.command.SetNamedDestinations;
 import net.zerocloud.pdf.command.SetXmpMetadata;
 import net.zerocloud.pdf.command.SplitDocument;
 import net.zerocloud.pdf.command.UpdateDocumentInfo;
+import net.zerocloud.pdf.command.UpdateActions;
+import net.zerocloud.pdf.command.UpdateAnnotations;
 
 /**
- * Repository-only command that records T06/T07 evidence and the T10 and T11
- * syntax chains.
+ * Repository-only command that records T06/T07 evidence and the T10, T11,
+ * and T12 syntax chains.
  */
 public final class AcceptanceEvidenceCommand {
 
@@ -76,12 +89,25 @@ public final class AcceptanceEvidenceCommand {
             "T11-metadata-back.pdf";
     private static final String T11_QPDF_FINDINGS =
             "T11-metadata-outlines-destinations-attachments-qpdf.txt";
+    private static final String T12_CAPABILITY =
+            "document.annotations-actions.manage";
+    private static final String T12_ACCEPTANCE_PROFILE =
+            "T12-annotations-document-actions";
+    private static final String T12_PROFILE_RECORD =
+            "capabilities/evidence/T12-annotations-document-actions.md";
+    private static final String T12_FRONT_ARTIFACT =
+            "T12-annotations-actions-front.pdf";
+    private static final String T12_BACK_ARTIFACT =
+            "T12-annotations-actions-back.pdf";
+    private static final String T12_QPDF_FINDINGS =
+            "T12-annotations-document-actions-qpdf.txt";
 
     private AcceptanceEvidenceCommand() {
     }
 
     /**
-     * Runs the built-in T03 Acceptance Profile and the T10 and T11 syntax chains.
+     * Runs the built-in T03 Acceptance Profile and the T10 through T12 syntax
+     * chains.
      *
      * @param arguments output directory, pinned tool and profile authorities,
      *        and Release Train
@@ -239,11 +265,33 @@ public final class AcceptanceEvidenceCommand {
                 qpdfPin,
                 releaseTrain);
 
+        EvidenceResult t12Syntax = recordProductSyntax(
+                new ProductChain(
+                        "T12",
+                        T12_CAPABILITY,
+                        T12_ACCEPTANCE_PROFILE,
+                        T12_PROFILE_RECORD,
+                        T12_FRONT_ARTIFACT,
+                        T12_BACK_ARTIFACT,
+                        T12_QPDF_FINDINGS,
+                        "T12-annotations-document-actions-syntax.md"),
+                new ProductCreator() {
+                    @Override
+                    public void create(Path front, Path back) throws Exception {
+                        createT12Products(front, back);
+                    }
+                },
+                output,
+                artifacts,
+                qpdfPin,
+                releaseTrain);
+
         System.out.println("Acceptance Profile determination: "
                 + profileDetermination.recordValue());
         System.out.println("T07 visual chain: " + visual.result().recordValue());
         System.out.println("T10 syntax chain: " + t10Syntax.recordValue());
         System.out.println("T11 syntax chain: " + t11Syntax.recordValue());
+        System.out.println("T12 syntax chain: " + t12Syntax.recordValue());
     }
 
     private interface ProductCreator {
@@ -520,6 +568,138 @@ public final class AcceptanceEvidenceCommand {
                 + "</rdf:RDF>\n"
                 + "</x:xmpmeta>\n"
                 + "<?xpacket end=\"w\"?>").getBytes(StandardCharsets.UTF_8);
+    }
+
+    private static void createT12Products(Path front, Path back)
+            throws Exception {
+        byte[] source = blankDocument(4);
+        WorkflowRequest request = WorkflowRequest.builder()
+                .source("input", DocumentSource.bytes(source, source.length))
+                .primarySource("input")
+                .target("front", PublicationTarget.path(front))
+                .target("back", PublicationTarget.path(back))
+                .saveMode(SaveMode.REWRITE)
+                .build();
+        new DocumentWorkflow().execute(request, session -> {
+            session.execute(SetNamedDestinations.version1()
+                    .set("appendix", PageDestination.fit(4))
+                    .build());
+            session.execute(UpdateAnnotations.version1()
+                    .put(Annotation.text(
+                            AnnotationProperties.version1(
+                                            "acceptance-note",
+                                            1,
+                                            AnnotationRectangle.of(
+                                                    36L, 700L, 72L, 736L))
+                                    .contents("T12 acceptance note")
+                                    .appearance(t12Appearance(
+                                            36L,
+                                            36L,
+                                            "q 1 1 0 rg 0 0 36 36 re f Q\n"))
+                                    .build(),
+                            Annotation.TextIcon.NOTE,
+                            false))
+                    .put(Annotation.link(
+                            AnnotationProperties.version1(
+                                            "acceptance-link",
+                                            1,
+                                            AnnotationRectangle.of(
+                                                    90L, 700L, 250L, 724L))
+                                    .appearance(t12Appearance(
+                                            160L,
+                                            24L,
+                                            "q 0 0 1 RG 1 w 0 1 m 160 1 l S Q\n"))
+                                    .build(),
+                            LinkActivation.action(GoToAction.version1(
+                                    NavigationTarget.toPage(
+                                            PageDestination.fit(2))))))
+                    .put(Annotation.stamp(
+                            AnnotationProperties.version1(
+                                            "acceptance-stamp",
+                                            2,
+                                            AnnotationRectangle.of(
+                                                    36L, 640L, 156L, 680L))
+                                    .appearance(t12Appearance(
+                                            120L,
+                                            40L,
+                                            "q 0.8 0 0 RG 2 w 1 1 118 38 re S Q\n"))
+                                    .build(),
+                            "Approved"))
+                    .put(Annotation.highlight(
+                            AnnotationProperties.version1(
+                                            "acceptance-highlight",
+                                            2,
+                                            AnnotationRectangle.of(
+                                                    36L, 600L, 176L, 620L))
+                                    .appearance(t12Appearance(
+                                            140L,
+                                            20L,
+                                            "q 1 1 0 rg 0 0 140 20 re f Q\n"))
+                                    .build(),
+                            Arrays.asList(AnnotationQuad.of(
+                                    36L, 620L, 176L, 620L,
+                                    36L, 600L, 176L, 600L)),
+                            AnnotationColor.rgb(
+                                    BigDecimal.ONE,
+                                    BigDecimal.ONE,
+                                    BigDecimal.ZERO)))
+                    .put(Annotation.fileAttachment(
+                            AnnotationProperties.version1(
+                                            "acceptance-attachment",
+                                            3,
+                                            AnnotationRectangle.of(
+                                                    36L, 700L, 68L, 732L))
+                                    .appearance(t12Appearance(
+                                            32L,
+                                            32L,
+                                            "q 0 0 0 RG 1 w 2 2 28 28 re S Q\n"))
+                                    .build(),
+                            EmbeddedFile.version1(
+                                    "acceptance.txt",
+                                    "T12 attachment".getBytes(
+                                            StandardCharsets.UTF_8),
+                                    "text/plain",
+                                    "T12 acceptance attachment",
+                                    EmbeddedFile.Relationship.SUPPLEMENT),
+                            Annotation.FileAttachmentIcon.PAPERCLIP))
+                    .put(Annotation.widget(
+                            AnnotationProperties.version1(
+                                            "acceptance-widget",
+                                            4,
+                                            AnnotationRectangle.of(
+                                                    36L, 650L, 220L, 686L))
+                                    .appearance(t12Appearance(
+                                            184L,
+                                            36L,
+                                            "q 0 0 0 RG 1 w 1 1 182 34 re S Q\n"))
+                                    .build()))
+                    .build());
+            session.execute(UpdateActions.version1()
+                    .setDocumentOpenAction(GoToAction.version1(
+                            NavigationTarget.toPage(PageDestination.fit(2))))
+                    .setPageOpenAction(1, GoToAction.version1(
+                            NavigationTarget.toPage(PageDestination.fit(2))))
+                    .setPageCloseAction(1, GoToAction.version1(
+                            NavigationTarget.toNamedDestination("appendix")))
+                    .build());
+            session.execute(FlattenAnnotations.version1(
+                    "acceptance-stamp"));
+            session.execute(CopyPages.version1(PageRange.of(1, 2), 5));
+            session.execute(SplitDocument.version1()
+                    .target("front", PageRange.of(1, 3))
+                    .target("back", PageRange.of(4, 6))
+                    .build());
+            return null;
+        });
+    }
+
+    private static AnnotationAppearance t12Appearance(
+            long width,
+            long height,
+            String operators) {
+        return AnnotationAppearance.version1(
+                AnnotationRectangle.of(0L, 0L, width, height),
+                operators.getBytes(StandardCharsets.US_ASCII));
     }
 
     private static EvidenceResult aggregateQpdfResults(

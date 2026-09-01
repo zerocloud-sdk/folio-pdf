@@ -1,0 +1,60 @@
+# T12 qpdf syntax findings
+
+Input set SHA-256: `c17d5934f5e217484ea8144fb7b441a392253cdcd1e6773bc76dab750fa0082d`
+
+Tool: `qpdf`
+
+Tool version: `12.4.0`
+
+Distribution SHA-256: `a3bca240f3bb61efdc3a90be89d1da4ed5e125326c3458c4e62df53ff4f153e3`
+
+Final determination: `pass`
+
+## T12-annotations-actions-front.pdf
+
+Input SHA-256: `20b875eb01ec2b3560d70c166a0a5570bd939ebf6224d9d81481fa6fef673e66`
+
+Invocation: `qpdf --check T12-annotations-actions-front.pdf`
+
+`T12-annotations-actions-front.pdf` exit code: `0`
+
+### Standard output
+
+```text
+checking T12-annotations-actions-front.pdf
+PDF Version: 1.6
+File is not encrypted
+File is not linearized
+No syntax or stream encoding errors found; the file may still contain
+errors that qpdf cannot detect
+```
+
+### Standard error
+
+```text
+
+```
+## T12-annotations-actions-back.pdf
+
+Input SHA-256: `52ff3543db6162d4b2e12462233bc1b7a1460e7d6f04f8e350fa4b944e87731a`
+
+Invocation: `qpdf --check T12-annotations-actions-back.pdf`
+
+`T12-annotations-actions-back.pdf` exit code: `0`
+
+### Standard output
+
+```text
+checking T12-annotations-actions-back.pdf
+PDF Version: 1.6
+File is not encrypted
+File is not linearized
+No syntax or stream encoding errors found; the file may still contain
+errors that qpdf cannot detect
+```
+
+### Standard error
+
+```text
+
+```

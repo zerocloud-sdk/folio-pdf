@@ -85,9 +85,9 @@ matched by unsigned key-byte order, XMP packets are accepted only when they
 are well-formed XML carrying the XMP root marker within a 64 MiB command
 bound, embedded-file MIME subtypes are restricted to printable ASCII, and
 embedded-file digests are recorded as MD5 parameters with SHA-256 summaries
-at the public seam. Annotation and
-action management remains T12, extraction remains T13 and T14, incremental
-publication and signatures remain T15, encryption remains T16, comprehensive
+at the public seam. Managed annotations and local GoTo Actions now integrate
+through T12; extraction remains T13 and T14, incremental publication and
+signatures remain T15, encryption remains T16, comprehensive
 hostile-input policy remains T20, and the Hardened Worker Profile and codecs
 remain T21. T11 makes no source-byte-layout or cross-Session object-identity
 claim. `INCREMENTAL` remains `SAVE_MODE_UNSUPPORTED`.

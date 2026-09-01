@@ -353,6 +353,74 @@ documentation, and project-owned tests are the permitted design inputs.
   promotion gate remain open, so the capability stays `experimental` with no
   certified-platform claim.
 
+## T12 annotations-document-actions record
+
+- Authorship: OpenAI Codex generated and integrated the T12 implementation,
+  tests, inventories, and documentation at repository operator MaBaiqiu's
+  direction. No T12 commit was created in this execution.
+- Project inputs: GitHub issues #1 and #13, `CONTEXT.md`, ADR-0005, 0006,
+  0009, 0011, 0012, 0013, 0014, 0016, 0017, 0019, 0023, 0025, 0029, and
+  0034, the repository inventory contract, ISO 32000-2:2020 annotation,
+  appearance-stream, Action, destination, and embedded-file clauses, and the
+  accepted T03 and T09 through T11 public workflow seams and evidence.
+- Runtime and test dependencies: T12 adds no third-party dependency. Apache
+  PDFBox 3.0.8 remains the private Apache-2.0 implementation dependency, and
+  JUnit 4.13.2 remains the existing test dependency. The no-new-dependency
+  statement is recorded in [DEPENDENCIES.md](DEPENDENCIES.md).
+- Project-authored fixtures: T12 consumer tests construct their own Text,
+  Stamp, Highlight, FileAttachment, standalone Widget, and Link annotations;
+  resource-free normal appearances; direct and named destinations; catalog
+  and page Actions; unsupported URI, JavaScript, Launch, and chained Action
+  graphs; mixed managed and proven-safe legacy Text annotation arrays,
+  including copied legacy identifier suffixing and an unrenamable merge
+  collision; a filesystem marker that would expose Action execution; and
+  malformed appearance, destination, Action, and annotation variants,
+  including scalar update and flattening inputs.
+  Every update, query, flatten, retarget, preservation or rejection probe,
+  reopen, and semantic assertion crosses `DocumentWorkflow.execute`; no
+  externally sourced fixture or product artifact is included.
+- Acceptance artifacts: the repository-owned acceptance command creates two
+  checked-in T12 split products through the public workflow seam after adding
+  all six supported annotation types, document and page Actions, a named
+  destination, flattening a Stamp annotation, and copying and splitting pages.
+  Newly created split products use a project-authored, streaming content-
+  derived trailer identifier when the splitter supplies no identifier;
+  existing identifiers and non-split publication are unchanged. An acceptance
+  regression executes independent runs and compares the exact T12 product
+  bytes and evidence metadata.
+  The official pinned qpdf 12.4.0 distribution checks both products; the
+  syntax record retains their hashes, invocations, exit codes, and raw
+  findings. This is syntax evidence only and makes no standards-conformance
+  claim.
+- Public implementation references: Apache PDFBox 3.0.8 source and Javadocs
+  were consulted for its public annotation, appearance, Action, destination,
+  file-specification, page import, and content-stream behavior. They were
+  obtained from the official Maven artifact and used only behind project-owned
+  interfaces.
+- Generated documentation: `docs/generated/capability-matrix.md` and
+  `docs/generated/facade-surface.md` are deterministic renderings of the two
+  YAML authorities and contain no copied external content.
+- Excluded inputs: no iText source, resource, fixture, binary, decompiled or
+  binary-derived implementation detail, closed add-on material, proprietary
+  differential evidence, Reference Suite output, or external behavioral
+  oracle was used.
+- Scope: T12 adds immutable version-1 values, Commands, and bounded Queries
+  for six annotation types, resource-free normal appearances, non-Widget
+  annotation flattening, local direct or named GoTo destinations, and catalog,
+  page, and Link Action bindings. Managed targets integrate with T10 and T11
+  page move, copy, merge, split, and removal behavior. T12 does not add T13 or
+  T14 extraction, T15 incremental or signed-document behavior, T16 encryption,
+  T17 canvas composition, T20 comprehensive hostile-input policy, T21 Worker
+  codecs, T34/T35 AcroForm field behavior, T36 XFDF, form Actions or form
+  flattening, or a Migration Facade mapping. Unsupported Action and appearance
+  graphs are preserved only when no interpretation is required and otherwise
+  rejected before mutation.
+- Compatibility Curator evidence: none; the role remains vacant. The T12
+  syntax chain passes, while standards, semantic, and visual Acceptance
+  Evidence remain absent. Its value, page, and metadata Dependency Gates and
+  the T06 promotion gate remain open, so the capability stays `experimental`
+  with no certified-platform claim.
+
 ## T07 independent-visual-evidence record
 
 - Authorship: OpenAI Codex generated and integrated the T07 repository-only
