@@ -997,6 +997,9 @@ final class PdfBoxTextStructureExtractionOperations {
                     mapping,
                     contribution,
                     geometry(textRenderingMatrix, displacement),
+                    TextRenderingMode.fromOperatorValue(
+                            getGraphicsState().getTextState()
+                                    .getRenderingMode().intValue()),
                     markedContentIds));
         }
 

@@ -14,6 +14,10 @@ _Avoid_: OpenPDF, iText Folio PDF
 The primary public interface of this project, designed around its own model rather than around compatibility with historical iText signatures.
 _Avoid_: native API, compatibility interface, iText API
 
+**Text Rendering Mode**:
+The shared PDF value describing the fill, stroke, invisible, and/or clipping treatment applied to a positioned glyph. The Document Engine observes it and Composition declares it; it is not a font-selection or text-layout policy.
+_Avoid_: font style, text effect, paint default
+
 **Foundation Release**:
 Version `0.1.0`, the first usable release, covering PDF creation and persistence, manipulation and extraction, the full Foundation Composition Profile, page rendering, password encryption, recognition and protection of existing signatures, and matching Migration Facade coverage. Every required capability and certified platform must be `compatible` before release.
 _Avoid_: skeleton release, Core parity, production-complete release
@@ -153,6 +157,14 @@ _Avoid_: PDFBox exception, generic runtime exception
 ## Composition
 
 Owns how semantic content becomes positioned page content, including layout, typography, graphics, and barcodes.
+
+**Canvas Program**:
+A versioned, immutable sequence of explicitly positioned path, graphics-state, and text instructions for one page, with every external resource declared by a project-owned reference. It is document data, not caller code or an unvalidated PDF content stream.
+_Avoid_: drawing callback, raw content stream, backend canvas
+
+**Canvas Font**:
+An explicit Canvas Program declaration that identifies an existing Font resource in the current Document Session. It positions already encoded glyphs but does not discover, load, embed, subset, map, or fall back fonts.
+_Avoid_: default font, system font, font loader
 
 **Foundation Composition Profile**:
 The Foundation Release contract covering full paragraph and table behavior selected for the first release, representative major writing systems, and every barcode generation mode in the Reference Suite core.

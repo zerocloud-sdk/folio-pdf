@@ -100,6 +100,14 @@ reopens each with user and owner credentials before qpdf runs `--check` plus
 `--show-encryption`. qpdf receives the user credential through a temporary
 password file that is deleted after inspection; the recorded invocation hides
 its path and password-valued tool output is replaced with `<redacted>`.
+The T17 producer appends two Canvas Programs to a project-authored page and
+retains the unchanged result as one artifact covering lines, a cubic curve,
+stroke, both fill and clip winding rules, an affine transform, nested graphics
+state, all eight text rendering modes, explicit glyph matrices, Font resource
+reuse, and preservation of existing content and resources. Pinned qpdf checks
+that unchanged artifact for syntax. A distinct project-test producer reopens
+it through public Folio PDF queries and compares project-owned semantic
+expectations without using PDFBox as an oracle.
 The command records tool identity, version and distribution digest, exact or
 documented ID-neutral input SHA-256 values, raw findings, chain-level results,
 and the applicable determination beneath the requested
@@ -263,11 +271,12 @@ project-produced artifacts pass pinned qpdf 12.4.0 syntax checks. Standards,
 semantic, and visual Acceptance Evidence remain absent, so the T10 capability
 also remains `experimental`.
 
-The T11 through T16 profiles likewise have one passing qpdf syntax record
-for each pair of public-workflow products. Their mandatory standards,
-semantic, and visual Acceptance Evidence chains remain absent, and their
-Dependency Gates remain open while prerequisites are `experimental`; none is
-promoted beyond `experimental`.
+The T11 through T16 profiles likewise have one passing qpdf syntax record for
+each pair of public-workflow products. Their mandatory standards, semantic,
+and visual Acceptance Evidence chains remain absent. T17 has passing syntax
+and project-owned semantic records, while its mandatory standards and visual
+chains remain absent. Their Dependency Gates remain open while prerequisites
+are `experimental`; none is promoted beyond `experimental`.
 
 The T08 release-gate evidence is recorded in
 `capabilities/evidence/T08-secure-maven-central-rehearsal.md`. T08 validates a

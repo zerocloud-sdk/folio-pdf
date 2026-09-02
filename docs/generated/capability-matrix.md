@@ -6,12 +6,13 @@ Behavioral authority: [`../../capabilities/capability-matrix.yaml`](../../capabi
 
 - Schema version: `1`
 - Release train: `0.1.0-SNAPSHOT`
-- Capabilities: `10`
+- Capabilities: `11`
 
 ## Capability summary
 
 | Capability | Context | Status | Migration facade |
 | --- | --- | --- | --- |
+| [`composition.canvas.draw-positioned-text`](#capability-composition_dot_canvas_dot_draw_dash_positioned_dash_text) | `composition` | `experimental` | [excluded by `T17`](facade-surface.md#excluded-capability-composition_dot_canvas_dot_draw_dash_positioned_dash_text) |
 | [`conversion.capability-provider.select-execute`](#capability-conversion_dot_capability_dash_provider_dot_select_dash_execute) | `conversion` | `experimental` | [excluded by `T05`](facade-surface.md#excluded-capability-conversion_dot_capability_dash_provider_dot_select_dash_execute) |
 | [`document.annotations-actions.manage`](#capability-document_dot_annotations_dash_actions_dot_manage) | `document-engine` | `experimental` | [excluded by `T12`](facade-surface.md#excluded-capability-document_dot_annotations_dash_actions_dot_manage) |
 | [`document.blank.create-publish-reopen`](#capability-document_dot_blank_dot_create_dash_publish_dash_reopen) | `document-engine` | `experimental` | [`itext7.kernel.pdf-document.add-new-page`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_add_dash_new_dash_page), [`itext7.kernel.pdf-document.close`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_close), [`itext7.kernel.pdf-document.constructor-reader`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_constructor_dash_reader), [`itext7.kernel.pdf-document.constructor-writer`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_constructor_dash_writer), [`itext7.kernel.pdf-document.get-number-of-pages`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_number_dash_of_dash_pages), [`itext7.kernel.pdf-exception.constructor-message-cause`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_exception_dot_constructor_dash_message_dash_cause), [`itext7.kernel.pdf-page.type`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_page_dot_type), [`itext7.kernel.pdf-reader.close`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_reader_dot_close), [`itext7.kernel.pdf-reader.constructor-string`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_reader_dot_constructor_dash_string), [`itext7.kernel.pdf-writer.constructor-string`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_writer_dot_constructor_dash_string), [`itext7.layout.document.close`](facade-surface.md#facade-surface-itext7_dot_layout_dot_document_dot_close), [`itext7.layout.document.constructor-pdf-document`](facade-surface.md#facade-surface-itext7_dot_layout_dot_document_dot_constructor_dash_pdf_dash_document) |
@@ -22,6 +23,81 @@ Behavioral authority: [`../../capabilities/capability-matrix.yaml`](../../capabi
 | [`document.text-structure.extract`](#capability-document_dot_text_dash_structure_dot_extract) | `document-engine` | `experimental` | [excluded by `T13`](facade-surface.md#excluded-capability-document_dot_text_dash_structure_dot_extract) |
 | [`document.value.inspect-patch`](#capability-document_dot_value_dot_inspect_dash_patch) | `document-engine` | `experimental` | [excluded by `T09`](facade-surface.md#excluded-capability-document_dot_value_dot_inspect_dash_patch) |
 | [`document.version-password-security`](#capability-document_dot_version_dash_password_dash_security) | `document-engine` | `experimental` | [excluded by `T16`](facade-surface.md#excluded-capability-document_dot_version_dash_password_dash_security) |
+
+<a id="capability-composition_dot_canvas_dot_draw_dash_positioned_dash_text"></a>
+## `composition.canvas.draw-positioned-text`
+
+Append validated backend-neutral vector graphics and explicitly positioned glyphs to an existing page.
+
+- Context: `composition`
+- Status: `experimental`
+- Reference Suite source: `ISO 32000-1:2008 path, graphics-state, clipping, text-object, text-matrix, rendering-mode, Font-resource, and page-content concepts`
+- Reference role: public standards input only; no third-party implementation, font, or rendered output is an oracle
+- Acceptance Profile: `T17-canvas-vector-positioned-text`
+- Mandatory evidence chains: `syntax`, `standards`, `semantic`, `visual`
+- Evidence record: [`capabilities/evidence/T17-canvas-vector-positioned-text.md`](../../capabilities/evidence/T17-canvas-vector-positioned-text.md)
+- Certified platforms: none
+
+### Native Interface mapping
+
+- `canvas-font`: `net.zerocloud.pdf.composition.CanvasFont`
+- `command`: `net.zerocloud.pdf.composition.command.DrawCanvas`
+- `entry-point`: `net.zerocloud.pdf.DocumentWorkflow#execute`
+- `failure`: `net.zerocloud.pdf.DocumentFailure`
+- `failure-code`: `net.zerocloud.pdf.DocumentFailureCode`
+- `font-resource-query`: `net.zerocloud.pdf.query.ExtractImagesAndResources`
+- `instruction`: `net.zerocloud.pdf.composition.CanvasProgram.Instruction`
+- `instruction-kind`: `net.zerocloud.pdf.composition.CanvasProgram.Kind`
+- `matrix`: `net.zerocloud.pdf.composition.CanvasMatrix`
+- `outcome`: `net.zerocloud.pdf.WorkflowOutcome`
+- `page-object-query`: `net.zerocloud.pdf.query.PageObjectReference`
+- `program`: `net.zerocloud.pdf.composition.CanvasProgram`
+- `receipt`: `net.zerocloud.pdf.PublicationReceipt`
+- `request`: `net.zerocloud.pdf.WorkflowRequest`
+- `save-mode`: `net.zerocloud.pdf.SaveMode`
+- `text-query`: `net.zerocloud.pdf.query.ExtractTextAndStructure`
+- `text-rendering-mode`: `net.zerocloud.pdf.TextRenderingMode`
+- `winding-rule`: `net.zerocloud.pdf.composition.CanvasWindingRule`
+
+### Migration Facade coverage
+
+- Stable: none
+- Preview: none
+- Explicit exclusion: [`T17`](facade-surface.md#excluded-capability-composition_dot_canvas_dot_draw_dash_positioned_dash_text) — T17 is a Composition-owned Native Interface Canvas Program and DrawCanvas command with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+
+### Gates and limitations
+
+- Dependency Gate: [`document.value.inspect-patch`](#capability-document_dot_value_dot_inspect_dash_patch) must be `compatible`
+- Promotion gate `T06`: Complete the missing mandatory independent standards and visual evidence and close the T09 compatible-status Dependency Gate before compatibility; closing the T09 implementation issue alone is insufficient.
+- Limitation: A Canvas Program is an immutable version-1 data value interpreted only by the library-owned DrawCanvas command. Callers cannot supply raw operators, executable callbacks, custom DocumentCommand implementations, backend objects, or a backend SPI.
+- Limitation: Version 1 supports lines, cubic Bezier curves, close-path, stroke, nonzero and even-odd fill, nonzero and even-odd clipping, affine transforms, and graphics-state nesting to depth 64 under a closed state machine. It does not expose painting colors, line style, calibrated or ICC color, alpha, masks, transparency, patterns, shading, or images.
+- Limitation: Positioned text accepts only an explicit same-Session indirect existing Font reference, positive font size, one of all eight Text Rendering Modes, explicit text matrix, and one already encoded glyph code per show operation. Every later glyph in a text object requires a fresh matrix.
+- Limitation: Simple Type1, MMType1, and TrueType Fonts accept one-byte codes. Type0 Fonts accept two-byte codes only with Identity-H or Identity-V and one CIDFontType0 or CIDFontType2 descendant. Type3 and other profiles are rejected; discovery, loading, embedding, subsetting, ToUnicode generation, and fallback remain T19.
+- Limitation: Programs contain 1 through 10,000 instructions, at most 256 distinct Font declarations, and at most 1 MiB of generated content. Numbers are finite and bounded to absolute value 1,000,000,000; font size is additionally at most 1,000,000.
+- Limitation: Existing Contents must be absent/null, one indirect stream, or an array of indirect streams, with no external-file stream and at most 8 MiB decoded content. Syntax plus graphics, text, marked-content, and compatibility scopes must preflight safely; resource inheritance is bounded to 64 acyclic parent steps. Otherwise the command is rejected before page mutation.
+- Limitation: Existing page content and resources are preserved in isolated scopes. Existing Font declarations are reused by indirect object identity; adding a Font shallow-copies inherited resources to the page and later use reuses that declaration without exposing its private resource name.
+- Limitation: Unsigned REWRITE and INCREMENTAL publication explicitly admit DrawCanvas. Every Existing Signature rejects it in version 1, and password user authority requires general modification permission; signature creation or validation remains T38+.
+- Limitation: Image embedding remains T18; comprehensive hostile-input enforcement and Worker isolation remain T20 and T21; rendering remains T23. Layout, barcodes, Forms, tagged-document construction, SVG conversion, and redaction are not included.
+
+### Evidence
+
+Implementation evidence:
+
+- `canvas-workflow-consumer-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/consumer/CanvasWorkflowTest.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/consumer/CanvasWorkflowTest.java) — Public workflows prove lines, cubic curves, both fill and clip winding rules, transformations, nested graphics state, all eight positioned-text rendering modes and geometry, Font reuse, safe preservation, rewrite and incremental publication, and stable atomic program, page, resource, signature, and permission failures.
+- `public-api-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/contract/PublicApiLeakageIT.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/contract/PublicApiLeakageIT.java) — Public and protected Canvas signatures expose only project-owned or JDK types and no PDFBox or FontBox type.
+- `artifact-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/contract/JarContractIT.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/contract/JarContractIT.java) — The jar retains its stable module name, Java 8 class-file version, notices, and unbundled PDFBox and FontBox implementation dependencies.
+- `cross-jdk-contract`: [`scripts/verify-jdk-matrix.sh`](../../scripts/verify-jdk-matrix.sh) — Maven verification runs the T17 public workflow and API contracts on JDK 8, 11, 17, and 21.
+- `acceptance-command`: [`scripts/acceptance`](../../scripts/acceptance) — The repository-owned command creates the T17 artifact through public workflows, sends the unchanged product to pinned qpdf, and records a distinct public-query semantic chain.
+- `acceptance-reproducibility-contract`: [`pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/AcceptanceEvidenceCommandTest.java`](../../pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/AcceptanceEvidenceCommandTest.java) — Independent command runs reproduce T17 syntax and semantic records, raw findings, and the artifact hash without rewriting unrelated T01 through T16 evidence.
+- `inventory-contract`: [`build-tools/inventory/src/test/java/net/zerocloud/pdf/tools/inventory/InventoryCommandTest.java`](../../build-tools/inventory/src/test/java/net/zerocloud/pdf/tools/inventory/InventoryCommandTest.java) — Checked-in authorities validate and their generated views expose the explicit T17 facade exclusion and current capability counts.
+- `authoritative-contract`: [`docs/canvas-vector-positioned-text.md`](../canvas-vector-positioned-text.md) — The coordinate, operator, state-transition, Font, limit, failure, preservation, publication, and downstream-exclusion contracts are documented.
+
+Acceptance Evidence:
+
+- `syntax`: `pass` — [`capabilities/evidence/T17-canvas-vector-positioned-text-syntax.md`](../../capabilities/evidence/T17-canvas-vector-positioned-text-syntax.md); producer `qpdf@12.4.0` (`external-tool`)
+- `semantic`: `pass` — [`capabilities/evidence/T17-canvas-vector-positioned-text-semantic.md`](../../capabilities/evidence/T17-canvas-vector-positioned-text-semantic.md); producer `folio-pdf-t17-semantic-assertions@0.1.0-SNAPSHOT` (`project-test`)
+
+Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T17 canvas-vector-positioned-text record`.
 
 <a id="capability-conversion_dot_capability_dash_provider_dot_select_dash_execute"></a>
 ## `conversion.capability-provider.select-execute`

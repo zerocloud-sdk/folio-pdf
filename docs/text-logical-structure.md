@@ -26,6 +26,12 @@ inspectable but have empty aggregate-text contributions. `Alt` is exposed on
 marked content and structure elements and is never substituted into Page
 Text.
 
+`TextItem.getRenderingMode()` reports the effective PDF text rendering mode
+for that source code as a project-owned `TextRenderingMode`. This includes all
+eight fill, stroke, invisible, and clipping combinations and supports public
+reopen verification of T17 positioned text; it does not describe color,
+alpha, or an ink outline.
+
 ## Geometry
 
 `TextGeometry` reports the effective text-rendering matrix at the start of an

@@ -9,6 +9,7 @@ import net.zerocloud.pdf.command.SetNamedDestinations;
 import net.zerocloud.pdf.command.SplitDocument;
 import net.zerocloud.pdf.command.UpdateActions;
 import net.zerocloud.pdf.command.UpdateAnnotations;
+import net.zerocloud.pdf.composition.command.DrawCanvas;
 import net.zerocloud.pdf.query.DocumentRootReference;
 import net.zerocloud.pdf.query.DocumentSecurity;
 import net.zerocloud.pdf.query.DocumentVersion;
@@ -30,6 +31,7 @@ final class PdfBoxDocumentSession implements DocumentSession {
     private final PdfBoxTextStructureExtractionOperations extractionOperations;
     private final PdfBoxImageResourceExtractionOperations
             imageResourceExtractionOperations;
+    private final PdfBoxCanvasOperations canvasOperations;
     private final PdfBoxPageOperations pageOperations;
     private final SaveMode saveMode;
     private final PdfBoxSignaturePolicy signaturePolicy;
@@ -68,6 +70,9 @@ final class PdfBoxDocumentSession implements DocumentSession {
                 new PdfBoxImageResourceExtractionOperations(
                         document,
                         valueAdapter);
+        this.canvasOperations = new PdfBoxCanvasOperations(
+                document,
+                valueAdapter);
         this.pageOperations = new PdfBoxPageOperations(
                 document,
                 sources,
@@ -94,9 +99,12 @@ final class PdfBoxDocumentSession implements DocumentSession {
         requireActiveOwner();
         Objects.requireNonNull(command, "command");
         pageOperations.requireCommandAllowed();
+        boolean canvasCommand = canvasOperations.supports(command);
         if (saveMode == SaveMode.REWRITE
                 && signaturePolicy.hasExistingSignatures()) {
-            throw PdfBoxWorkflowEngine.signaturePolicyFailure();
+            throw canvasCommand
+                    ? PdfBoxCanvasOperations.signatureFailure()
+                    : PdfBoxWorkflowEngine.signaturePolicyFailure();
         }
         if (saveMode == SaveMode.INCREMENTAL
                 && !PdfBoxIncrementalCommandPolicy.supports(command)) {
@@ -106,7 +114,9 @@ final class PdfBoxDocumentSession implements DocumentSession {
         }
         if (saveMode == SaveMode.INCREMENTAL
                 && !signaturePolicy.permits(command)) {
-            throw PdfBoxWorkflowEngine.signaturePolicyFailure();
+            throw canvasCommand
+                    ? PdfBoxCanvasOperations.signatureFailure()
+                    : PdfBoxWorkflowEngine.signaturePolicyFailure();
         }
         if (saveMode == SaveMode.INCREMENTAL
                 && signaturePolicy.requiresNonWidgetAnnotationPolicy(command)) {
@@ -170,6 +180,15 @@ final class PdfBoxDocumentSession implements DocumentSession {
             }
             outcomeCapabilityId = PdfBoxAnnotationOperations.CAPABILITY_ID;
             annotationOperations.execute(command);
+            mutationOccurred = true;
+            return;
+        }
+
+        if (canvasCommand) {
+            PdfBoxCanvasOperations.requireModificationPermission(
+                    securityInfo);
+            outcomeCapabilityId = PdfBoxCanvasOperations.CAPABILITY_ID;
+            canvasOperations.execute((DrawCanvas) command);
             mutationOccurred = true;
             return;
         }

@@ -14,6 +14,7 @@ import net.zerocloud.pdf.command.SetXmpMetadata;
 import net.zerocloud.pdf.command.UpdateActions;
 import net.zerocloud.pdf.command.UpdateAnnotations;
 import net.zerocloud.pdf.command.UpdateDocumentInfo;
+import net.zerocloud.pdf.composition.command.DrawCanvas;
 
 /** Closed version-1 classification of commands representable incrementally. */
 final class PdfBoxIncrementalCommandPolicy {
@@ -36,6 +37,7 @@ final class PdfBoxIncrementalCommandPolicy {
                 || command instanceof UpdateAnnotations
                 || command instanceof UpdateActions
                 || command instanceof FlattenAnnotations
+                || command instanceof DrawCanvas
                 || command instanceof DocumentPatch;
     }
 }

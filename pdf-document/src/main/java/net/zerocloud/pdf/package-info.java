@@ -21,5 +21,11 @@
  * identity, Page Usage, filter, color, mask, font, byte-selection, lifecycle,
  * and failure contracts are documented in
  * {@code docs/image-resource-extraction.md}.</p>
+ *
+ * <p>The {@code net.zerocloud.pdf.composition} Native Interface provides T17
+ * Canvas Programs for immutable low-level vector and explicitly positioned-
+ * glyph composition. Its state, resource, preservation, and publication
+ * contracts are documented in
+ * {@code docs/canvas-vector-positioned-text.md}.</p>
  */
 package net.zerocloud.pdf;

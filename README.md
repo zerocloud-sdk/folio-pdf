@@ -317,6 +317,17 @@ information. See the authoritative
 ordering, identity, byte lifecycle, all mandatory limits, safe failures, and
 the version-1 unsupported cases.
 
+T17 adds the immutable `CanvasProgram` under
+`net.zerocloud.pdf.composition` and the page-targeted `DrawCanvas` command
+under its `command` subpackage for low-level vector paths and explicitly
+positioned encoded glyphs. It covers
+lines, cubic curves, stroke, both fill and clipping winding rules, affine
+transforms, nested graphics state, all eight text rendering modes, and reuse
+of an existing Session-owned Font resource. See the authoritative
+[Canvas vector and positioned-text guide](docs/canvas-vector-positioned-text.md)
+for the closed state machine, coordinates, resource rules, limits,
+preservation proof, publication policy, and downstream exclusions.
+
 Successful `WorkflowOutcome` values identify the capability, the in-process
 execution profile, the selected Save Mode, safe diagnostics, and every Target
 receipt, plus any declaration-ordered Capability Provider selections. A

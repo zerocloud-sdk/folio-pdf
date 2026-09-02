@@ -63,6 +63,18 @@ final class PdfBoxValueAdapter {
         return referenceFor(resource);
     }
 
+    COSBase referencedObject(ObjectReference reference)
+            throws DocumentFailure {
+        requireOwned(reference);
+        ReferenceTarget target = targets.get(reference);
+        if (target == null) {
+            throw failure(
+                    DocumentFailureCode.QUERY_FAILED,
+                    "The Object Reference is unavailable.");
+        }
+        return target.rawValue;
+    }
+
     PdfValue inspect(
             ObjectReference reference,
             PdfInspectionLimits limits) throws DocumentFailure {

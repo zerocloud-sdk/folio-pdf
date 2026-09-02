@@ -444,10 +444,15 @@ final class PdfBoxWorkflowEngine {
             WorkflowRequest request,
             List<PublicationReceipt> receipts,
             List<ProviderSelection> providerSelections) {
+        String reportedCapabilityId = capabilityId;
+        if (request.getSaveMode() == SaveMode.INCREMENTAL
+                && !PdfBoxCanvasOperations.CAPABILITY_ID.equals(
+                        capabilityId)) {
+            reportedCapabilityId = INCREMENTAL_CAPABILITY_ID;
+        }
         return new WorkflowOutcome<R>(
                 result,
-                request.getSaveMode() == SaveMode.INCREMENTAL
-                        ? INCREMENTAL_CAPABILITY_ID : capabilityId,
+                reportedCapabilityId,
                 WorkflowExecutionProfile.IN_PROCESS,
                 request.getSaveMode(),
                 Collections.<String>emptyList(),
@@ -458,6 +463,10 @@ final class PdfBoxWorkflowEngine {
     private static String outcomeCapabilityId(
             WorkflowRequest request,
             PdfBoxDocumentSession session) {
+        if (PdfBoxCanvasOperations.CAPABILITY_ID.equals(
+                session.getOutcomeCapabilityId())) {
+            return PdfBoxCanvasOperations.CAPABILITY_ID;
+        }
         return !request.getPublicationTargets().isEmpty()
                         && request.getOutputPolicy() != null
                 ? VERSION_SECURITY_CAPABILITY_ID

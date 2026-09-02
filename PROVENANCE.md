@@ -699,6 +699,89 @@ documentation, and project-owned tests are the permitted design inputs.
   `experimental`, and T06 remains a promotion gate. T16 therefore remains
   `experimental` with no compatible or certified-platform claim.
 
+## T17 canvas-vector-positioned-text record
+
+- Authorship: OpenAI Codex generated and integrated the T17 implementation,
+  tests, evidence, and documentation at repository operator MaBaiqiu's
+  direction. No T17 commit was created in this execution.
+- Project inputs: GitHub issues #1, #18, #19, and #20; `CONTEXT.md`,
+  `CONTRIBUTING.md`, the repository issue/domain instructions, and ADR-0004,
+  0005, 0009, 0011, 0013, 0014, 0016, 0017, 0019, 0020, 0023, 0025, 0029,
+  and 0034; the accepted T03, T09, T12, T13, T14, T15, and T16 public
+  transaction, PDF Value, content-preflight, extraction, resource,
+  publication, signature, and permission seams; and the fixed review point
+  `cbd493376c0c8ea3676f47be3e708ba4c03249fd`.
+- Public standards input: the Adobe-hosted authorized ISO 32000-1:2008 copy
+  already inventoried for T15/T16, SHA-256
+  `9de0ca9e8570d6209e8bd48a355be8eb6ec376acfc3fc3ae97cd8730351417ff`,
+  supplied the public graphics-state, current-transformation-matrix, path
+  construction/painting/clipping, text-object, text-state, text-matrix,
+  rendering-mode, Font-resource, content-stream-array, and page-resource
+  concepts. The PDF is copyright Adobe/ISO, all rights reserved, was not
+  redistributed, and supplied specification semantics only. Existing project
+  contracts were used for the narrower fail-closed version-1 policy; no
+  standards-conformance claim is inferred.
+- Backend inputs: the existing Apache PDFBox 3.0.8 public COS and parser APIs
+  for dictionaries, arrays, indirect objects, streams, names,
+  `PDFStreamParser`, and content `Operator` values establish the private
+  adapter surface. The official tag is `3.0.8`, peeled commit
+  `9286e47d89d6877005c9d2d0f2fd38793a62519a`; its already inventoried source
+  JAR SHA-256 is
+  `eaed642d27599c78229857e4ab571805979f828f5ec8c695e3135ca933766132`.
+  PDFBox is Apache-2.0. No source was copied or adapted, and PDFBox identity,
+  serialization choices, text mapping, or renderer output is not the T17
+  behavioral oracle.
+- Runtime and test dependencies: T17 adds no dependency. Apache PDFBox 3.0.8
+  and transitive FontBox remain private Apache-2.0 implementation
+  dependencies; JUnit 4.13.2 remains the EPL-1.0 test dependency. Pinned qpdf
+  12.4.0 remains an acceptance-only Apache-2.0 tool. Their exact coordinates,
+  roles, pins, and licenses remain recorded in
+  [DEPENDENCIES.md](DEPENDENCIES.md) and the existing qpdf pin authority.
+- Project-authored fixtures and resources: consumer tests create deterministic
+  minimal PDF syntax for pages, content, resources, unsigned incremental
+  input, structural Existing Signatures, and password permissions. The
+  acceptance source is a project-authored one-page PDF containing one short
+  path, a private marker resource, and an unembedded standard `/Helvetica`
+  Type1 Font declaration; it contains no downloaded font program and performs
+  no system-font or network lookup. Glyph code `41` hexadecimal and every
+  expected path, matrix, rendering mode, and geometry value are project-owned
+  test inputs.
+- Output validation and evidence boundary: consumer tests publish and reopen
+  products only through `DocumentWorkflow.execute` and public PDF Value, T13,
+  and T14 queries. The acceptance command retains the exact workflow product,
+  computes the existing ID-neutral hash, and sends the unchanged bytes to
+  pinned qpdf 12.4.0 for syntax evidence. A distinct project-test semantic
+  producer reopens the same artifact through public queries and compares
+  semantic operations, state balance, resource reuse, preservation, all eight
+  rendering modes, and glyph geometry with the project-owned Canvas Program.
+  Neither chain uses Reference Suite output, PDFBox object identity, a private
+  call, or incidental dictionary/resource ordering as an oracle. qpdf does
+  not establish standards, semantic, visual, or rendering conformance.
+- Generated documentation: `docs/generated/capability-matrix.md` and
+  `docs/generated/facade-surface.md` are deterministic renderings of the YAML
+  authorities and contain no copied external content.
+- Excluded inputs: no iText source, resource, fixture, binary, output,
+  decompiled or binary-derived detail, closed add-on material, proprietary
+  differential evidence, unauthorized black-box observation, external PDF,
+  third-party font, system font, image, renderer output, or Reference Suite
+  behavioral oracle was used.
+- Scope: T17 adds backend-neutral low-level vector paths, affine transforms,
+  clipping, nested graphics state, and explicit existing-resource positioned
+  glyphs with Canvas-specific types under the Composition-context Native
+  Interface namespace and the shared rendering-mode value below that context,
+  while retaining the existing deep Document Engine artifact. It adds no T18
+  image embedding; T19 font discovery, loading,
+  embedding, subsetting, mapping, or fallback; T20 comprehensive hostile-input
+  policy; T21 Worker isolation; T23 rendering; layout; barcodes; Forms;
+  tagged-document construction; SVG conversion; redaction; public backend
+  SPI; Migration Facade mapping; or new Maven artifact.
+- Compatibility Curator evidence: none; the role remains vacant. T17 has
+  passing syntax and project-owned semantic chains only. Mandatory standards
+  and visual evidence remain absent, its T09 Dependency Gate remains open
+  while T09 is `experimental` regardless of the closed implementation issue,
+  and T06 remains a promotion gate. T17 therefore remains `experimental` with
+  no compatible or certified-platform claim.
+
 ## T07 independent-visual-evidence record
 
 - Authorship: OpenAI Codex generated and integrated the T07 repository-only

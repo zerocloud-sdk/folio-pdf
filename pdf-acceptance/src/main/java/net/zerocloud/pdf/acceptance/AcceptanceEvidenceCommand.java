@@ -60,6 +60,7 @@ import net.zerocloud.pdf.PublicationStatus;
 import net.zerocloud.pdf.PublicationTarget;
 import net.zerocloud.pdf.ResourceExtractionLimits;
 import net.zerocloud.pdf.SaveMode;
+import net.zerocloud.pdf.TextRenderingMode;
 import net.zerocloud.pdf.TextStructureExtraction;
 import net.zerocloud.pdf.WorkflowOutcome;
 import net.zerocloud.pdf.WorkflowRequest;
@@ -78,6 +79,11 @@ import net.zerocloud.pdf.command.SplitDocument;
 import net.zerocloud.pdf.command.UpdateDocumentInfo;
 import net.zerocloud.pdf.command.UpdateActions;
 import net.zerocloud.pdf.command.UpdateAnnotations;
+import net.zerocloud.pdf.composition.CanvasFont;
+import net.zerocloud.pdf.composition.CanvasMatrix;
+import net.zerocloud.pdf.composition.CanvasProgram;
+import net.zerocloud.pdf.composition.CanvasWindingRule;
+import net.zerocloud.pdf.composition.command.DrawCanvas;
 import net.zerocloud.pdf.query.ExtractImagesAndResources;
 import net.zerocloud.pdf.query.ExtractTextAndStructure;
 import net.zerocloud.pdf.query.DocumentSecurity;
@@ -87,7 +93,7 @@ import net.zerocloud.pdf.query.PageCount;
 
 /**
  * Repository-only command that records T06/T07 evidence and the T10 through
- * T16 syntax chains.
+ * T17 product chains.
  */
 public final class AcceptanceEvidenceCommand {
 
@@ -182,6 +188,18 @@ public final class AcceptanceEvidenceCommand {
             "T16-password-security-pdf20.pdf";
     private static final String T16_QPDF_FINDINGS =
             "T16-pdf-version-password-security-qpdf.txt";
+    private static final String T17_CAPABILITY =
+            "composition.canvas.draw-positioned-text";
+    private static final String T17_ACCEPTANCE_PROFILE =
+            "T17-canvas-vector-positioned-text";
+    private static final String T17_PROFILE_RECORD =
+            "capabilities/evidence/T17-canvas-vector-positioned-text.md";
+    private static final String T17_ARTIFACT =
+            "T17-canvas-vector-positioned-text.pdf";
+    private static final String T17_QPDF_FINDINGS =
+            "T17-canvas-vector-positioned-text-qpdf.txt";
+    private static final String T17_SEMANTIC_FINDINGS =
+            "T17-canvas-vector-positioned-text-semantic.txt";
 
     private AcceptanceEvidenceCommand() {
     }
@@ -460,6 +478,12 @@ public final class AcceptanceEvidenceCommand {
                 qpdfPin,
                 releaseTrain);
 
+        T17Evidence t17 = recordT17Evidence(
+                output,
+                artifacts,
+                qpdfPin,
+                releaseTrain);
+
         System.out.println("Acceptance Profile determination: "
                 + profileDetermination.recordValue());
         System.out.println("T07 visual chain: " + visual.result().recordValue());
@@ -470,6 +494,10 @@ public final class AcceptanceEvidenceCommand {
         System.out.println("T14 syntax chain: " + t14Syntax.recordValue());
         System.out.println("T15 syntax chain: " + t15Syntax.recordValue());
         System.out.println("T16 syntax chain: " + t16Syntax.recordValue());
+        System.out.println("T17 syntax chain: "
+                + t17.syntax.recordValue());
+        System.out.println("T17 semantic chain: "
+                + t17.semantic.recordValue());
     }
 
     private interface ProductCreator {
@@ -630,6 +658,208 @@ public final class AcceptanceEvidenceCommand {
             return description == null
                     ? ""
                     : metadata("Input hash policy", description);
+        }
+    }
+
+    private static T17Evidence recordT17Evidence(
+            Path output,
+            Path artifacts,
+            QpdfPin qpdfPin,
+            String releaseTrain) throws Exception {
+        Path artifact = artifacts.resolve(T17_ARTIFACT);
+        WorkflowOutcome<Void> creation = createT17Product(artifact);
+        String inputHash = EvidenceFiles.idNeutralPdfSha256(artifact);
+
+        CanvasSemanticObservation semantic =
+                CanvasSemanticAssertions.inspect(creation, artifact);
+        write(artifacts.resolve(T17_SEMANTIC_FINDINGS),
+                semantic.findings(inputHash, releaseTrain));
+        write(output.resolve(
+                        "T17-canvas-vector-positioned-text-semantic.md"),
+                t17SemanticRecord(
+                        inputHash,
+                        releaseTrain,
+                        semantic));
+
+        EvidenceResult syntaxResult;
+        String observedVersion;
+        String syntaxFinding;
+        String findings;
+        try {
+            ProcessResult version = ExternalProcess.run(
+                    qpdfPin.executable(), output, "--version");
+            observedVersion = qpdfVersion(version.combinedOutput());
+            if (version.exitCode != 0
+                    || !qpdfPin.version().equals(observedVersion)) {
+                syntaxResult = EvidenceResult.INDETERMINATE;
+                syntaxFinding = "Expected pinned qpdf version `"
+                        + qpdfPin.version() + "`; observed `"
+                        + observedVersion + "`.";
+                findings = t17IndeterminateToolFindings(
+                        inputHash,
+                        observedVersion,
+                        syntaxFinding,
+                        qpdfPin);
+            } else {
+                ProcessResult check = ExternalProcess.run(
+                        qpdfPin.executable(),
+                        artifacts,
+                        "--check",
+                        T17_ARTIFACT);
+                if (check.exitCode == 0) {
+                    syntaxResult = EvidenceResult.PASS;
+                    syntaxFinding = "qpdf completed `--check` for the T17 product with exit code `0`.";
+                } else if (check.exitCode == 2 || check.exitCode == 3) {
+                    syntaxResult = EvidenceResult.FAIL;
+                    syntaxFinding = "qpdf reported warnings or errors for a T17 product.";
+                } else {
+                    syntaxResult = EvidenceResult.INDETERMINATE;
+                    syntaxFinding = "qpdf returned an undocumented status for a T17 product.";
+                }
+                findings = t17QpdfFindings(
+                        inputHash,
+                        check,
+                        syntaxResult,
+                        qpdfPin);
+            }
+        } catch (IOException unavailable) {
+            syntaxResult = EvidenceResult.INDETERMINATE;
+            observedVersion = "unavailable";
+            syntaxFinding = "The pinned qpdf tool was unavailable.";
+            findings = t17IndeterminateToolFindings(
+                    inputHash,
+                    observedVersion,
+                    syntaxFinding,
+                    qpdfPin);
+        }
+        write(artifacts.resolve(T17_QPDF_FINDINGS), findings);
+        write(output.resolve(
+                        "T17-canvas-vector-positioned-text-syntax.md"),
+                t17SyntaxRecord(
+                        inputHash,
+                        releaseTrain,
+                        observedVersion,
+                        syntaxResult,
+                        syntaxFinding,
+                        qpdfPin));
+        return new T17Evidence(syntaxResult, semantic.result());
+    }
+
+    private static String t17SyntaxRecord(
+            String inputHash,
+            String releaseTrain,
+            String producerVersion,
+            EvidenceResult result,
+            String finding,
+            QpdfPin qpdfPin) {
+        return "# T17 qpdf syntax evidence\n\n"
+                + metadata("Capability", T17_CAPABILITY)
+                + metadata("Acceptance Profile", T17_ACCEPTANCE_PROFILE)
+                + metadata("Profile record", T17_PROFILE_RECORD)
+                + metadata("Release train", releaseTrain)
+                + metadata("Chain", "syntax")
+                + metadata("Result", result.recordValue())
+                + metadata("Producer kind", "external-tool")
+                + metadata("Producer", "qpdf")
+                + metadata("Producer version", producerVersion)
+                + metadata("Tool distribution SHA-256",
+                        qpdfPin.archiveSha256())
+                + metadata("Input ID-neutral SHA-256", inputHash)
+                + metadata("Input hash policy",
+                        EvidenceFiles.inputHashPolicy())
+                + "Final determination: `" + result.recordValue() + "`\n\n"
+                + "## Findings and artifact\n\n"
+                + "- Product: [`artifacts/" + T17_ARTIFACT
+                + "`](artifacts/" + T17_ARTIFACT + ")\n"
+                + "- qpdf findings: [`artifacts/" + T17_QPDF_FINDINGS
+                + "`](artifacts/" + T17_QPDF_FINDINGS + ")\n"
+                + "- " + finding + "\n\n"
+                + "This syntax chain does not establish PDF standards conformance. The standards and visual chains remain absent.\n";
+    }
+
+    private static String t17SemanticRecord(
+            String inputHash,
+            String releaseTrain,
+            CanvasSemanticObservation semantic) {
+        return "# T17 project semantic evidence\n\n"
+                + metadata("Capability", T17_CAPABILITY)
+                + metadata("Acceptance Profile", T17_ACCEPTANCE_PROFILE)
+                + metadata("Profile record", T17_PROFILE_RECORD)
+                + metadata("Release train", releaseTrain)
+                + metadata("Chain", "semantic")
+                + metadata("Result", semantic.result().recordValue())
+                + metadata("Producer kind", "project-test")
+                + metadata("Producer",
+                        "folio-pdf-t17-semantic-assertions")
+                + metadata("Producer version", releaseTrain)
+                + metadata("Input ID-neutral SHA-256", inputHash)
+                + metadata("Input hash policy",
+                        EvidenceFiles.inputHashPolicy())
+                + "Final determination: `"
+                + semantic.result().recordValue() + "`\n\n"
+                + "## Finding and artifact\n\n"
+                + "- Product: [`artifacts/" + T17_ARTIFACT
+                + "`](artifacts/" + T17_ARTIFACT + ")\n"
+                + "- Semantic findings: [`artifacts/"
+                + T17_SEMANTIC_FINDINGS + "`](artifacts/"
+                + T17_SEMANTIC_FINDINGS + ")\n"
+                + "- " + semantic.recordFinding() + "\n\n"
+                + "The expected semantics are project-owned Canvas Program values. The standards and visual chains remain absent.\n";
+    }
+
+    private static String t17QpdfFindings(
+            String inputHash,
+            ProcessResult check,
+            EvidenceResult result,
+            QpdfPin qpdfPin) {
+        return "# T17 qpdf syntax findings\n\n"
+                + metadata("Input ID-neutral SHA-256", inputHash)
+                + metadata("Input hash policy",
+                        EvidenceFiles.inputHashPolicy())
+                + metadata("Tool", "qpdf")
+                + metadata("Tool version", qpdfPin.version())
+                + metadata("Distribution SHA-256",
+                        qpdfPin.archiveSha256())
+                + "Final determination: `" + result.recordValue() + "`\n\n"
+                + "## " + T17_ARTIFACT + "\n\n"
+                + "Invocation: `qpdf --check " + T17_ARTIFACT + "`\n\n"
+                + "`" + T17_ARTIFACT + "` exit code: `"
+                + check.exitCode + "`\n\n"
+                + "### Standard output\n\n```text\n"
+                + check.standardOutput
+                + fencedEnding(check.standardOutput)
+                + "### Standard error\n\n```text\n"
+                + check.standardError
+                + finalFencedEnding(check.standardError);
+    }
+
+    private static String t17IndeterminateToolFindings(
+            String inputHash,
+            String observedVersion,
+            String finding,
+            QpdfPin qpdfPin) {
+        return "# T17 qpdf syntax findings\n\n"
+                + metadata("Input ID-neutral SHA-256", inputHash)
+                + metadata("Input hash policy",
+                        EvidenceFiles.inputHashPolicy())
+                + metadata("Tool", "qpdf")
+                + metadata("Tool version", observedVersion)
+                + metadata("Distribution SHA-256",
+                        qpdfPin.archiveSha256())
+                + "Final determination: `indeterminate`\n\n"
+                + finding + "\n";
+    }
+
+    private static final class T17Evidence {
+
+        private final EvidenceResult syntax;
+        private final EvidenceResult semantic;
+
+        T17Evidence(
+                EvidenceResult syntax,
+                EvidenceResult semantic) {
+            this.syntax = syntax;
+            this.semantic = semantic;
         }
     }
 
@@ -1097,6 +1327,123 @@ public final class AcceptanceEvidenceCommand {
         if (!condition) {
             throw new IllegalStateException(diagnostic);
         }
+    }
+
+    private static WorkflowOutcome<Void> createT17Product(Path target)
+            throws Exception {
+        byte[] source = t17Source();
+        WorkflowOutcome<Void> creation = new DocumentWorkflow().execute(
+                WorkflowRequest.builder()
+                        .source(
+                                "input",
+                                DocumentSource.bytes(source, source.length))
+                        .primarySource("input")
+                        .target("output", PublicationTarget.path(target))
+                        .saveMode(SaveMode.REWRITE)
+                        .build(),
+                session -> {
+                    DocumentResourceInventory inventory = session.query(
+                            ExtractImagesAndResources.version1(
+                                    t14Limits(),
+                                    ImageByteAccess.NONE));
+                    if (inventory.getFonts().size() != 1
+                            || !inventory.getFonts().get(0)
+                                    .getObjectReference().isPresent()) {
+                        throw new IllegalStateException(
+                                "The T17 source did not expose one indirect Font resource");
+                    }
+                    CanvasFont font = CanvasFont.version1(
+                            inventory.getFonts().get(0)
+                                    .getObjectReference().get());
+                    session.execute(DrawCanvas.version1(
+                            1,
+                            t17Program(font)));
+                    session.execute(DrawCanvas.version1(
+                            1,
+                            t17ReuseProgram(font)));
+                    return null;
+                });
+        requireCommitted(creation, "T17 Canvas product");
+        if (!T17_CAPABILITY.equals(creation.getCapabilityId())) {
+            throw new IllegalStateException(
+                    "The T17 Canvas product did not report its capability identity");
+        }
+        return creation;
+    }
+
+    private static CanvasProgram t17Program(CanvasFont font) {
+        CanvasProgram.Builder program = CanvasProgram.version1()
+                .saveState()
+                .transform(CanvasMatrix.of(1d, 0d, 0d, 1d, 6d, 8d))
+                .moveTo(10d, 10d)
+                .lineTo(80d, 10d)
+                .stroke()
+                .saveState()
+                .moveTo(10d, 20d)
+                .curveTo(20d, 30d, 40d, 70d, 80d, 90d)
+                .fill(CanvasWindingRule.NONZERO)
+                .restoreState()
+                .moveTo(100d, 20d).lineTo(160d, 20d)
+                .lineTo(160d, 80d).lineTo(100d, 80d).closePath()
+                .moveTo(115d, 35d).lineTo(145d, 35d)
+                .lineTo(145d, 65d).lineTo(115d, 65d).closePath()
+                .fill(CanvasWindingRule.EVEN_ODD)
+                .saveState()
+                .moveTo(0d, 0d).lineTo(200d, 0d)
+                .lineTo(200d, 200d).closePath()
+                .clip(CanvasWindingRule.NONZERO)
+                .moveTo(0d, 100d).lineTo(200d, 100d).stroke()
+                .restoreState()
+                .saveState()
+                .moveTo(0d, 0d).lineTo(200d, 0d)
+                .lineTo(200d, 200d).closePath()
+                .clip(CanvasWindingRule.EVEN_ODD)
+                .moveTo(100d, 0d).lineTo(100d, 200d).stroke()
+                .restoreState()
+                .restoreState();
+        TextRenderingMode[] modes = TextRenderingMode.values();
+        for (int index = 0; index < modes.length; index++) {
+            program.saveState()
+                    .beginText(
+                            font,
+                            14d,
+                            modes[index],
+                            CanvasMatrix.of(
+                                    1d, 0d, 0d, 1d,
+                                    30d + index * 25d,
+                                    120d + index * 8d))
+                    .showGlyph(new byte[] {65})
+                    .endText()
+                    .restoreState();
+        }
+        return program.build();
+    }
+
+    private static CanvasProgram t17ReuseProgram(CanvasFont font) {
+        return CanvasProgram.version1()
+                .beginText(
+                        font,
+                        14d,
+                        TextRenderingMode.FILL,
+                        CanvasMatrix.of(1d, 0d, 0d, 1d, 240d, 40d))
+                .showGlyph(new byte[] {65})
+                .endText()
+                .build();
+    }
+
+    private static byte[] t17Source() throws IOException {
+        String existing = "q\n2 2 m\n3 3 l\nS\nQ\n";
+        String[] objects = {
+            "<< /Type /Catalog /Pages 2 0 R >>",
+            "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+            "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 320 320] "
+                    + "/Resources << /Font << /F1 5 0 R >> "
+                    + "/FolioKeep /Kept >> /Contents 4 0 R >>",
+            t13StreamObject(existing, ""),
+            "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica "
+                    + "/Encoding /WinAnsiEncoding >>"
+        };
+        return pdfSource(objects);
     }
 
     private static char[] t16OwnerPassword() {

@@ -135,6 +135,15 @@ public enum DocumentFailureCode {
     /** A Document Patch contains a PDF Value implementation not owned by Folio PDF. */
     PATCH_VALUE_REJECTED,
 
+    /** A Canvas Program has an invalid number, operation, or state transition. */
+    CANVAS_PROGRAM_INVALID,
+
+    /** A declared Canvas Font is unavailable or not a supported Font resource. */
+    CANVAS_RESOURCE_INVALID,
+
+    /** Existing page content or resources cannot be preserved for Canvas drawing. */
+    CANVAS_PRESERVATION_UNSUPPORTED,
+
     /** A staged document could not be written. */
     DOCUMENT_WRITE_FAILED,
 

@@ -56,7 +56,10 @@ public final class AcceptanceEvidenceCommandTest {
                     "T15-incremental-signature-protection-syntax.md"),
             new ProductSyntax(
                     "T16",
-                    "T16-pdf-version-password-security-syntax.md"));
+                    "T16-pdf-version-password-security-syntax.md"),
+            new ProductSyntax(
+                    "T17",
+                    "T17-canvas-vector-positioned-text-syntax.md"));
 
     @Rule
     public final TemporaryFolder temporaryFolder = new TemporaryFolder();
@@ -459,6 +462,51 @@ public final class AcceptanceEvidenceCommandTest {
                 "T16-password-security-pdf20.pdf` exit code: `0`"));
         assertTrue(!t16Findings.contains("folio-t16-user-evidence"));
         assertTrue(t16Findings.contains("User password = <redacted>"));
+
+        Path t17Artifact = output.resolve(
+                "artifacts/T17-canvas-vector-positioned-text.pdf");
+        assertTrue(Files.isRegularFile(t17Artifact));
+        assertTrue(Files.size(t17Artifact) > 0L);
+        String t17Syntax = read(output.resolve(
+                "T17-canvas-vector-positioned-text-syntax.md"));
+        assertMetadata(
+                t17Syntax,
+                "Capability",
+                "composition.canvas.draw-positioned-text");
+        assertMetadata(
+                t17Syntax,
+                "Acceptance Profile",
+                "T17-canvas-vector-positioned-text");
+        assertMetadata(t17Syntax, "Chain", "syntax");
+        assertMetadata(t17Syntax, "Result", "pass");
+        assertTrue(t17Syntax.contains(
+                "artifacts/T17-canvas-vector-positioned-text.pdf"));
+        String t17Qpdf = read(output.resolve(
+                "artifacts/T17-canvas-vector-positioned-text-qpdf.txt"));
+        assertTrue(t17Qpdf.contains(
+                "T17-canvas-vector-positioned-text.pdf` exit code: `0`"));
+
+        String t17Semantic = read(output.resolve(
+                "T17-canvas-vector-positioned-text-semantic.md"));
+        assertMetadata(t17Semantic, "Chain", "semantic");
+        assertMetadata(t17Semantic, "Result", "pass");
+        assertMetadata(
+                t17Semantic,
+                "Producer",
+                "folio-pdf-t17-semantic-assertions");
+        assertEquals(
+                metadata(t17Syntax, "Input ID-neutral SHA-256"),
+                metadata(t17Semantic, "Input ID-neutral SHA-256"));
+        String t17SemanticFindings = read(output.resolve(
+                "artifacts/T17-canvas-vector-positioned-text-semantic.txt"));
+        assertTrue(t17SemanticFindings.contains(
+                "Line, cubic-curve, fill, and winding semantics: `true`"));
+        assertTrue(t17SemanticFindings.contains(
+                "Transform, clipping, and nested graphics-state semantics: `true`"));
+        assertTrue(t17SemanticFindings.contains(
+                "Repeated Font resource reuse: `true`"));
+        assertTrue(t17SemanticFindings.contains(
+                "Existing content and resource preservation: `true`"));
     }
 
     @Test
@@ -553,7 +601,11 @@ public final class AcceptanceEvidenceCommandTest {
                 "T15-incremental-signature-protection-syntax.md",
                 "artifacts/T15-incremental-signature-protection-qpdf.txt",
                 "T16-pdf-version-password-security-syntax.md",
-                "artifacts/T16-pdf-version-password-security-qpdf.txt")) {
+                "artifacts/T16-pdf-version-password-security-qpdf.txt",
+                "T17-canvas-vector-positioned-text-syntax.md",
+                "T17-canvas-vector-positioned-text-semantic.md",
+                "artifacts/T17-canvas-vector-positioned-text-qpdf.txt",
+                "artifacts/T17-canvas-vector-positioned-text-semantic.txt")) {
             assertEquals(relative,
                     read(firstOutput.resolve(relative)),
                     read(secondOutput.resolve(relative)));
@@ -569,7 +621,8 @@ public final class AcceptanceEvidenceCommandTest {
                 "artifacts/T13-page-text.pdf",
                 "artifacts/T13-tagged-structure.pdf",
                 "artifacts/T14-image-font-inventory.pdf",
-                "artifacts/T14-form-mask-inventory.pdf")) {
+                "artifacts/T14-form-mask-inventory.pdf",
+                "artifacts/T17-canvas-vector-positioned-text.pdf")) {
             assertEquals(relative,
                     EvidenceFiles.idNeutralPdfSha256(
                             firstOutput.resolve(relative)),

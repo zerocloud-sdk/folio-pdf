@@ -21,6 +21,7 @@ public final class TextItem {
     private final CharacterMapping characterMapping;
     private final String textContribution;
     private final TextGeometry geometry;
+    private final TextRenderingMode renderingMode;
     private final List<Integer> markedContentSequenceIds;
 
     TextItem(
@@ -28,6 +29,7 @@ public final class TextItem {
             CharacterMapping characterMapping,
             String textContribution,
             TextGeometry geometry,
+            TextRenderingMode renderingMode,
             List<Integer> markedContentSequenceIds) {
         this.index = index;
         this.characterMapping = Objects.requireNonNull(
@@ -35,6 +37,8 @@ public final class TextItem {
         this.textContribution = Objects.requireNonNull(
                 textContribution, "textContribution");
         this.geometry = Objects.requireNonNull(geometry, "geometry");
+        this.renderingMode = Objects.requireNonNull(
+                renderingMode, "renderingMode");
         this.markedContentSequenceIds = Collections.unmodifiableList(
                 new ArrayList<Integer>(markedContentSequenceIds));
     }
@@ -55,6 +59,9 @@ public final class TextItem {
 
     /** Returns the effective text geometry. @return geometry */
     public TextGeometry getGeometry() { return geometry; }
+
+    /** Returns the effective PDF text rendering mode. @return rendering mode */
+    public TextRenderingMode getRenderingMode() { return renderingMode; }
 
     /** Returns enclosing marked-content sequence identifiers, outermost first. */
     public List<Integer> getMarkedContentSequenceIds() {

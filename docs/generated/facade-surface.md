@@ -8,7 +8,7 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Release train: `0.1.0-SNAPSHOT`
 - Stable entries: `0`
 - Preview entries: `12`
-- Explicit capability exclusions: `9`
+- Explicit capability exclusions: `10`
 
 ## Stable surfaces
 
@@ -137,6 +137,13 @@ No stable surfaces are declared.
 - Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen)
 
 ## Explicit capability exclusions
+
+<a id="excluded-capability-composition_dot_canvas_dot_draw_dash_positioned_dash_text"></a>
+### `composition.canvas.draw-positioned-text`
+
+- Behavioral capability: [`composition.canvas.draw-positioned-text`](capability-matrix.md#capability-composition_dot_canvas_dot_draw_dash_positioned_dash_text)
+- Deferred ticket: `T17`
+- Reason: T17 is a Composition-owned Native Interface Canvas Program and DrawCanvas command with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
 
 <a id="excluded-capability-conversion_dot_capability_dash_provider_dot_select_dash_execute"></a>
 ### `conversion.capability-provider.select-execute`

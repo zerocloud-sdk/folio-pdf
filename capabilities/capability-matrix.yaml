@@ -806,6 +806,105 @@ capabilities:
     certified-platforms: []
     status: experimental
 
+  - id: composition.canvas.draw-positioned-text
+    context: composition
+    summary: Append validated backend-neutral vector graphics and explicitly positioned glyphs to an existing page.
+    reference-suite:
+      source: ISO 32000-1:2008 path, graphics-state, clipping, text-object, text-matrix, rendering-mode, Font-resource, and page-content concepts
+      role: public standards input only; no third-party implementation, font, or rendered output is an oracle
+    native-interface:
+      entry-point: net.zerocloud.pdf.DocumentWorkflow#execute
+      request: net.zerocloud.pdf.WorkflowRequest
+      command: net.zerocloud.pdf.composition.command.DrawCanvas
+      program: net.zerocloud.pdf.composition.CanvasProgram
+      instruction: net.zerocloud.pdf.composition.CanvasProgram.Instruction
+      instruction-kind: net.zerocloud.pdf.composition.CanvasProgram.Kind
+      matrix: net.zerocloud.pdf.composition.CanvasMatrix
+      winding-rule: net.zerocloud.pdf.composition.CanvasWindingRule
+      canvas-font: net.zerocloud.pdf.composition.CanvasFont
+      text-rendering-mode: net.zerocloud.pdf.TextRenderingMode
+      font-resource-query: net.zerocloud.pdf.query.ExtractImagesAndResources
+      text-query: net.zerocloud.pdf.query.ExtractTextAndStructure
+      page-object-query: net.zerocloud.pdf.query.PageObjectReference
+      save-mode: net.zerocloud.pdf.SaveMode
+      outcome: net.zerocloud.pdf.WorkflowOutcome
+      receipt: net.zerocloud.pdf.PublicationReceipt
+      failure: net.zerocloud.pdf.DocumentFailure
+      failure-code: net.zerocloud.pdf.DocumentFailureCode
+    migration-facade:
+      stable: []
+      preview: []
+    limitations:
+      - A Canvas Program is an immutable version-1 data value interpreted only by the library-owned DrawCanvas command. Callers cannot supply raw operators, executable callbacks, custom DocumentCommand implementations, backend objects, or a backend SPI.
+      - Version 1 supports lines, cubic Bezier curves, close-path, stroke, nonzero and even-odd fill, nonzero and even-odd clipping, affine transforms, and graphics-state nesting to depth 64 under a closed state machine. It does not expose painting colors, line style, calibrated or ICC color, alpha, masks, transparency, patterns, shading, or images.
+      - Positioned text accepts only an explicit same-Session indirect existing Font reference, positive font size, one of all eight Text Rendering Modes, explicit text matrix, and one already encoded glyph code per show operation. Every later glyph in a text object requires a fresh matrix.
+      - Simple Type1, MMType1, and TrueType Fonts accept one-byte codes. Type0 Fonts accept two-byte codes only with Identity-H or Identity-V and one CIDFontType0 or CIDFontType2 descendant. Type3 and other profiles are rejected; discovery, loading, embedding, subsetting, ToUnicode generation, and fallback remain T19.
+      - Programs contain 1 through 10,000 instructions, at most 256 distinct Font declarations, and at most 1 MiB of generated content. Numbers are finite and bounded to absolute value 1,000,000,000; font size is additionally at most 1,000,000.
+      - Existing Contents must be absent/null, one indirect stream, or an array of indirect streams, with no external-file stream and at most 8 MiB decoded content. Syntax plus graphics, text, marked-content, and compatibility scopes must preflight safely; resource inheritance is bounded to 64 acyclic parent steps. Otherwise the command is rejected before page mutation.
+      - Existing page content and resources are preserved in isolated scopes. Existing Font declarations are reused by indirect object identity; adding a Font shallow-copies inherited resources to the page and later use reuses that declaration without exposing its private resource name.
+      - Unsigned REWRITE and INCREMENTAL publication explicitly admit DrawCanvas. Every Existing Signature rejects it in version 1, and password user authority requires general modification permission; signature creation or validation remains T38+.
+      - Image embedding remains T18; comprehensive hostile-input enforcement and Worker isolation remain T20 and T21; rendering remains T23. Layout, barcodes, Forms, tagged-document construction, SVG conversion, and redaction are not included.
+    dependency-gates:
+      - capability: document.value.inspect-patch
+        required-status: compatible
+    promotion-gates:
+      - ticket: T06
+        requirement: Complete the missing mandatory independent standards and visual evidence and close the T09 compatible-status Dependency Gate before compatibility; closing the T09 implementation issue alone is insufficient.
+    acceptance-profile:
+      id: T17-canvas-vector-positioned-text
+      state: experimental
+      mandatory-evidence:
+        - syntax
+        - standards
+        - semantic
+        - visual
+      evidence-record: capabilities/evidence/T17-canvas-vector-positioned-text.md
+    evidence:
+      - kind: canvas-workflow-consumer-contract
+        path: pdf-document/src/test/java/net/zerocloud/pdf/consumer/CanvasWorkflowTest.java
+        assertion: Public workflows prove lines, cubic curves, both fill and clip winding rules, transformations, nested graphics state, all eight positioned-text rendering modes and geometry, Font reuse, safe preservation, rewrite and incremental publication, and stable atomic program, page, resource, signature, and permission failures.
+      - kind: public-api-contract
+        path: pdf-document/src/test/java/net/zerocloud/pdf/contract/PublicApiLeakageIT.java
+        assertion: Public and protected Canvas signatures expose only project-owned or JDK types and no PDFBox or FontBox type.
+      - kind: artifact-contract
+        path: pdf-document/src/test/java/net/zerocloud/pdf/contract/JarContractIT.java
+        assertion: The jar retains its stable module name, Java 8 class-file version, notices, and unbundled PDFBox and FontBox implementation dependencies.
+      - kind: cross-jdk-contract
+        path: scripts/verify-jdk-matrix.sh
+        assertion: Maven verification runs the T17 public workflow and API contracts on JDK 8, 11, 17, and 21.
+      - kind: acceptance-command
+        path: scripts/acceptance
+        assertion: The repository-owned command creates the T17 artifact through public workflows, sends the unchanged product to pinned qpdf, and records a distinct public-query semantic chain.
+      - kind: acceptance-reproducibility-contract
+        path: pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/AcceptanceEvidenceCommandTest.java
+        assertion: Independent command runs reproduce T17 syntax and semantic records, raw findings, and the artifact hash without rewriting unrelated T01 through T16 evidence.
+      - kind: inventory-contract
+        path: build-tools/inventory/src/test/java/net/zerocloud/pdf/tools/inventory/InventoryCommandTest.java
+        assertion: Checked-in authorities validate and their generated views expose the explicit T17 facade exclusion and current capability counts.
+      - kind: authoritative-contract
+        path: docs/canvas-vector-positioned-text.md
+        assertion: The coordinate, operator, state-transition, Font, limit, failure, preservation, publication, and downstream-exclusion contracts are documented.
+    acceptance-evidence:
+      - chain: syntax
+        result: pass
+        record: capabilities/evidence/T17-canvas-vector-positioned-text-syntax.md
+        producer:
+          kind: external-tool
+          name: qpdf
+          version: "12.4.0"
+      - chain: semantic
+        result: pass
+        record: capabilities/evidence/T17-canvas-vector-positioned-text-semantic.md
+        producer:
+          kind: project-test
+          name: folio-pdf-t17-semantic-assertions
+          version: "0.1.0-SNAPSHOT"
+    provenance:
+      path: PROVENANCE.md
+      record: T17 canvas-vector-positioned-text record
+    certified-platforms: []
+    status: experimental
+
   - id: conversion.capability-provider.select-execute
     context: conversion
     summary: Register, inspect, deterministically select, and safely execute project-owned Capability Providers.

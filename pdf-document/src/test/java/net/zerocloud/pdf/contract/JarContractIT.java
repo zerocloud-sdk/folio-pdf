@@ -37,6 +37,8 @@ public final class JarContractIT {
                 JarEntry entry = entries.nextElement();
                 assertFalse("PDFBox classes must not be bundled in pdf-document",
                         entry.getName().startsWith("org/apache/pdfbox/"));
+                assertFalse("FontBox classes must not be bundled in pdf-document",
+                        entry.getName().startsWith("org/apache/fontbox/"));
                 if (entry.getName().endsWith(".class")) {
                     assertJava8Class(jar, entry);
                 }

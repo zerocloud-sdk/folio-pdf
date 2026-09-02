@@ -7,6 +7,7 @@ import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.Set;
 import net.zerocloud.pdf.command.UpdateAnnotations;
+import net.zerocloud.pdf.composition.command.DrawCanvas;
 import org.apache.pdfbox.cos.COSArray;
 import org.apache.pdfbox.cos.COSBase;
 import org.apache.pdfbox.cos.COSDictionary;
@@ -125,6 +126,9 @@ final class PdfBoxSignaturePolicy {
     }
 
     boolean permits(DocumentCommand command) {
+        if (command instanceof DrawCanvas) {
+            return permission == Permission.UNSIGNED;
+        }
         return permission == Permission.UNSIGNED
                 || (permission == Permission.NON_WIDGET_ANNOTATIONS
                         && command instanceof UpdateAnnotations);
