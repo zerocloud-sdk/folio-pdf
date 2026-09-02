@@ -9,5 +9,11 @@
  * appearance, local Navigation Target, and inert GoTo Action values. The
  * exact T12 allowlist, flattening contract, and page-operation policy are
  * documented in {@code docs/annotations-actions.md}.</p>
+ *
+ * <p>Detached T13 page-text, character-mapping evidence, marked-content, and
+ * Tagged PDF logical-structure values are bounded by {@link
+ * net.zerocloud.pdf.ExtractionLimits}. Their ordering, geometry, mapping,
+ * language, role, and failure contracts are documented in
+ * {@code docs/text-logical-structure.md}.</p>
  */
 package net.zerocloud.pdf;

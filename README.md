@@ -285,6 +285,20 @@ required or rejected before mutation. See the authoritative
 exact allowlist, appearance operators, Forms boundary, failure policy, and
 page-operation rules.
 
+T13 adds the bounded `ExtractTextAndStructure` Document Query. Its detached
+results retain deterministic page/content execution order, unrotated page-
+space geometry, exact source-code bytes with explicit mapping confidence,
+marked-content nesting and MCIDs, and Tagged PDF hierarchy, role resolution,
+language inheritance, Alt, and ActualText. Missing and contradictory Unicode
+mappings remain uncertain and diagnostic; no reading order, whitespace, OCR,
+font-program guess, unbounded page-tree or content-array traversal, font-
+program decode, encoding or width-array traversal, CID width materialization,
+malformed explicit Unicode destination, or unbounded `ToUnicode` range
+expansion is accepted. See the
+[text and logical-structure guide](docs/text-logical-structure.md) for the
+coordinate system, ordering, all mandatory limits, safe failures, and the
+version-1 unsupported cases.
+
 Successful `WorkflowOutcome` values identify the capability, the in-process
 execution profile, the selected Save Mode, safe diagnostics, and every Target
 receipt, plus any declaration-ordered Capability Provider selections. A

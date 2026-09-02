@@ -78,6 +78,9 @@ public enum DocumentFailureCode {
     /** A caller-declared PDF Value inspection bound was exhausted. */
     PDF_VALUE_LIMIT_EXCEEDED,
 
+    /** A caller-declared text or logical-structure extraction bound was exhausted. */
+    EXTRACTION_LIMIT_EXCEEDED,
+
     /** An Object Reference was supplied to a different Document Session. */
     OBJECT_REFERENCE_OWNERSHIP_INVALID,
 

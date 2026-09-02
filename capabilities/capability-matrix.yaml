@@ -446,6 +446,94 @@ capabilities:
     certified-platforms: []
     status: experimental
 
+  - id: document.text-structure.extract
+    context: document-engine
+    summary: Extract bounded deterministic page text, mapping evidence, marked content, and Tagged PDF logical structure as detached backend-neutral values.
+    reference-suite:
+      source: iText Core 7.2.6 text extraction and Tagged PDF inspection surface
+      role: capability inventory only; not an implementation or behavioral oracle
+    native-interface:
+      entry-point: net.zerocloud.pdf.DocumentWorkflow#execute
+      query: net.zerocloud.pdf.query.ExtractTextAndStructure
+      limits: net.zerocloud.pdf.ExtractionLimits
+      result: net.zerocloud.pdf.TextStructureExtraction
+      page-text: net.zerocloud.pdf.PageText
+      text-item: net.zerocloud.pdf.TextItem
+      geometry: net.zerocloud.pdf.TextGeometry
+      character-mapping: net.zerocloud.pdf.CharacterMapping
+      diagnostic: net.zerocloud.pdf.ExtractionDiagnostic
+      marked-content: net.zerocloud.pdf.MarkedContentSequence
+      logical-element: net.zerocloud.pdf.LogicalStructureElement
+      logical-item: net.zerocloud.pdf.LogicalStructureItem
+      marked-content-reference: net.zerocloud.pdf.MarkedContentReference
+      failure: net.zerocloud.pdf.DocumentFailure
+      failure-code: net.zerocloud.pdf.DocumentFailureCode
+    migration-facade:
+      stable: []
+      preview: []
+    limitations:
+      - Version 1 returns page-tree and content-stream execution order, including Form invocation order. Contents arrays are parsed as one newline-separated stream and may split tokens across members. Version 1 does not infer visual or semantic reading order, whitespace, line breaks, columns, paragraphs, bidi order, OCR, or layout.
+      - Character evidence uses independently parsed ToUnicode mappings and explicitly declared simple-font Differences entries for exact codes, otherwise falling back only to a recognized Encoding or BaseEncoding, all mapped through the public Adobe Glyph List. An absent or unknown base supplies no unoverridden mapping. Composite fonts without ToUnicode, font programs, substituted or system fonts, renderers, and backend coercions are never promoted to confident Unicode.
+      - Marked-content ActualText replaces enclosed aggregate Page Text once with outer replacement precedence, while Alt remains separate. Logical structure uses iterative depth-bounded traversal and supports ordered nested elements, direct page MCIDs and explicit page-content MCR dictionaries, optional StructElem Type values, transitive unqualified RoleMap resolution to the PDF 1.7 standard-role vocabulary, and element-ancestor-catalog language inheritance. Unqualified PDF 2.0-only roles remain unresolved. Elements are visited once and must carry the parent backlink implied by K; repeated/shared elements, inconsistent parents, marked content inside Form XObjects, MCRs carrying Stm or StmOwn, OBJR children, and PDF 2.0 structure namespaces fail safely outside version 1.
+      - Every query declares page, page-tree-node, content-stream count and depth, decoded-byte, text-item, Unicode, materialized ToUnicode-mapping, font-data-entry, marked-content count and depth, structure-element, structure-item, structure-depth, and RoleMap bounds; content-stream depth has a version-1 ceiling of 32 because backend Form traversal is recursive. Iterative page-tree traversal validates Kids, Parent, Type, Count, cycles, repeated nodes, inherited Resources/MediaBox/CropBox/Rotate, and direct UserUnit within the node bound, supplies detached leaf views, and checks raw Contents arrays before backend traversal. Decoded page content is syntax-checked in the same combined-stream form the backend consumes, including rejection of unterminated tokens and trailing operands without an operator; supported extraction-operator arity, operand types, finite numeric values, text-object placement, and page/Form-local BT/ET and q/Q balance are checked before a result is published. The gs adapter applies only a validated optional Font setting through a detached one-key ExtGState view and ignores unrelated graphics-state arrays and graphs without backend traversal. Full PDF integers for page Count, Differences codes, FormType, and MCIDs are range-checked before narrowing. Form Type, Subtype, BBox, Matrix, Resources, and FormType values and every marked-content begin or end operator inside Forms are validated before backend processing. ToUnicode range expansion, including decimal count syntax, exact bfchar/bfrange counts and terminators, non-reversed source ranges, the carrying increment used by PDFBox's non-strict embedded-font CMap construction, and the endcmap stop, Differences traversal, decoded embedded font-program data, font-data entry kinds, supported explicit font kinds, simple FirstChar/LastChar/Widths values, and CID DW, W, W2, and DW2 traversal and compact-range materialization are bounded or validated before backend font construction; the text-item bound is charged before source-code mapping evidence is published. ToUnicode usecmap, nested CMap composites, invalid UTF-16BE destinations, Type0 Encoding values other than Identity-H or Identity-V, Type0 descendants other than exactly one CIDFontType0 or CIDFontType2 dictionary, embedded Type0 headers that contradict the descendant subtype, and Type3 fonts are outside version 1. These trusted in-process query limits do not provide T20 comprehensive hostile-input enforcement or T21 Worker isolation and codecs.
+      - T13 is read-only and observes preceding supported Commands in one Session. INCREMENTAL and signed-document policy remain T15; image/resource extraction, encryption, drawing, and later capability slices are not included.
+    dependency-gates:
+      - capability: document.value.inspect-patch
+        required-status: compatible
+    promotion-gates:
+      - ticket: T06
+        requirement: Complete the independent acceptance evidence required before compatibility.
+    acceptance-profile:
+      id: T13-text-logical-structure
+      state: experimental
+      mandatory-evidence:
+        - syntax
+        - standards
+        - semantic
+        - visual
+      evidence-record: capabilities/evidence/T13-text-logical-structure.md
+    evidence:
+      - kind: text-structure-workflow-consumer-contract
+        path: pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java
+        assertion: Public workflows prove same-Session ordering; detached untagged and fully linked tagged results; deterministic page, stream, Form, repeated-query, and reopen order, including a token split across Contents members; transformed, rotated, spacing-adjusted, and non-identity nested-Form geometry; explicit, code-specific Differences inference without a known base, missing, and contradictory mappings without font fallback, including valid paired-surrogate ToUnicode evidence; pre-parser rejection of hostile integer, decimal, and embedded-carry ToUnicode range expansion, inconsistent declared mapping counts, reversed ranges, and invalid Unicode destinations; bounded and cached simple-font Differences, decoded embedded font programs, prompt large-string text-item exhaustion before result publication, validated font and font-data kinds and simple/CID scalar and array metrics, isolated bounded ExtGState font application without unrelated array traversal, iterative page trees with inherited geometry, direct UserUnit validation, and full-width Count rejection, validated Form dictionaries and marked-content isolation, combined content-syntax including trailing-orphan rejection, supported-operator operand, text-object placement, and state-balance validation, and bounded Contents arrays; exact Form and logical-structure depth ceilings independent of query-side recursion; safe rejection of malformed, cyclic, or repeated page, Form, and structure graphs, inconsistent structure parents, oversized MCIDs, cyclic RoleMap chains, unsupported OBJR, Form-stream MCR, namespace, Type0 encoding, Type3, and named-resource inputs, and contradictory embedded Type0 headers without live-graph or rewrite mutation; preservation of indirect Form Type and Subtype entries through same-Session extraction and rewrite; nested marked content with begin order, parent and text-item associations, depth, and ActualText precedence; MCIDs, language, PDF 1.7 standard roles, transitive roles, unresolved PDF 2.0-only names, and Alt; exact boundaries and exhaustion for every limit; and query-only source and publication non-mutation.
+      - kind: cmap-preflight-contract
+        path: pdf-document/src/test/java/net/zerocloud/pdf/PdfBoxCMapPreflightTest.java
+        assertion: Focused private-module tests prove strict PDF-number count tokenization, including signed and leading-fraction forms, followed by backend-compatible integer conversion; signed four-byte endpoints; exact declared mapping counts and terminators; non-reversed ranges; the carrying scalar increment used by PDFBox's embedded-font construction path; and the endcmap stop; exact mapping totals; bounded huge-range rejection; valid nonempty UTF-16BE destinations with paired surrogates; and unsupported inherited-CMap rejection before backend parsing.
+      - kind: font-metric-preflight-contract
+        path: pdf-document/src/test/java/net/zerocloud/pdf/PdfBoxFontMetricPreflightTest.java
+        assertion: Focused private-module tests prove exact simple and CID horizontal and vertical metric accounting, exhaustion, scalar and integer-selector validation, malformed-array rejection, and rejection of compact ranges that would overflow PDFBox before font construction.
+      - kind: public-api-contract
+        path: pdf-document/src/test/java/net/zerocloud/pdf/contract/PublicApiLeakageIT.java
+        assertion: Public and protected signatures, including every T13 query, limit, result, mapping, diagnostic, marked-content, and logical-structure type, contain no PDFBox or FontBox types.
+      - kind: artifact-contract
+        path: pdf-document/src/test/java/net/zerocloud/pdf/contract/JarContractIT.java
+        assertion: The jar retains its stable module name, Java 8 class-file version, notices, and unbundled backend.
+      - kind: cross-jdk-contract
+        path: scripts/verify-jdk-matrix.sh
+        assertion: Maven verification runs the T13 public workflow contract on JDK 8, 11, 17, and 21.
+      - kind: acceptance-command
+        path: scripts/acceptance
+        assertion: The repository-owned command produces project-authored T13 page-text and tagged-structure artifacts, probes them through the public Query, and records pinned qpdf syntax findings.
+      - kind: acceptance-reproducibility-contract
+        path: pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/AcceptanceEvidenceCommandTest.java
+        assertion: Independent command runs reproduce T13 PDF bytes under the repository ID-neutral policy plus exact evidence metadata, hashes, invocations, exit codes, and raw qpdf findings.
+      - kind: extraction-profile-documentation
+        path: docs/text-logical-structure.md
+        assertion: The version-1 ordering, coordinate, mapping, marked-content, logical-structure, role, language, limit, failure, lifecycle, and unsupported-case contracts are documented.
+    acceptance-evidence:
+      - chain: syntax
+        result: pass
+        record: capabilities/evidence/T13-text-logical-structure-syntax.md
+        producer:
+          kind: external-tool
+          name: qpdf
+          version: "12.4.0"
+    provenance:
+      path: PROVENANCE.md
+      record: T13 text-logical-structure extraction record
+    certified-platforms: []
+    status: experimental
+
   - id: conversion.capability-provider.select-execute
     context: conversion
     summary: Register, inspect, deterministically select, and safely execute project-owned Capability Providers.

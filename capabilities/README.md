@@ -79,10 +79,16 @@ metadata while honoring issue #1's explicit exclusion of byte-identical PDF
 output; every other PDF byte remains hash-significant, and the file handed to
 qpdf and PDFium is never normalized or rewritten. A repeat-run command test
 requires the T06/T07 records and raw findings to reproduce exactly. The command
-also drives all six T10 page,
-merge, and split Commands to create two independently reopenable products and
-runs the same pinned qpdf syntax check on both. It records tool identity,
-version and distribution digest, ID-neutral input SHA-256 values, raw findings,
+also drives the T10 page/merge/split, T11 metadata, T12 annotation/Action, and
+T13 text/structure profiles to create paired project-owned products and runs
+the same pinned qpdf syntax check on each. The T13 producer also evaluates the
+finished in-Session state through `ExtractTextAndStructure` before publication;
+its tagged product includes MarkInfo, page StructParents, a ParentTree, and
+bidirectional structure-parent links;
+that implementation probe is not recorded as an independent semantic chain.
+The command records tool identity,
+version and distribution digest, exact or documented ID-neutral input SHA-256
+values, raw findings,
 chain-level results, and the applicable determination beneath the requested
 output directory. qpdf is syntax evidence only: its success is not a PDF
 standards-conformance result and cannot satisfy the independent standards,
@@ -230,6 +236,12 @@ The current T10 syntax record is
 project-produced artifacts pass pinned qpdf 12.4.0 syntax checks. Standards,
 semantic, and visual Acceptance Evidence remain absent, so the T10 capability
 also remains `experimental`.
+
+The T11, T12, and T13 profiles likewise have one passing qpdf syntax record
+for each pair of public-workflow products. Their mandatory standards,
+semantic, and visual Acceptance Evidence chains remain absent, and their
+Dependency Gates remain open while prerequisites are `experimental`; none is
+promoted beyond `experimental`.
 
 The T08 release-gate evidence is recorded in
 `capabilities/evidence/T08-secure-maven-central-rehearsal.md`. T08 validates a

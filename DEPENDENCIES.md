@@ -81,6 +81,40 @@ dependency is added. T12 reuses the existing repository-only pinned qpdf
 12.4.0 acceptance path and adds no new external executable or runtime
 dependency.
 
+T13 adds no third-party runtime, test, build-tool, native, or external-tool
+dependency. Page-text, character-mapping, marked-content, and logical-
+structure extraction reuse Apache PDFBox 3.0.8 and its existing FontBox
+transitive dependency only behind private implementation types, plus the
+existing JUnit 4.13.2 consumer-test dependency. Every PDF fixture is generated
+from project-authored public-workflow values or transparent test-owned PDF
+syntax. Project-owned preflights bound and validate page-tree and content-array
+traversal, FontBox's eager CMap range materialization, simple-font encoding
+arrays, simple and CID font-width arrays and compact ranges, and decoded
+embedded font-program inputs before backend construction or traversal. The
+CMap preflight also validates explicit UTF-16BE destinations, mirrors
+FontBox's `endcmap` stop, and charges the carrying scalar-range expansion used
+by PDFBox's non-strict embedded-font construction path. It requires exact
+declared mapping counts and terminators and rejects reversed source ranges;
+contradictory embedded Type 0 headers are rejected before PDFBox can repair
+the live graph. Raw page
+geometry, Form dictionaries, font kinds and scalar metrics, and structure
+identities and parent links are validated before coercive backend access.
+Page content is syntax-checked in its backend-equivalent combined-stream form,
+and supported extraction-operator operands, page/Form operator-state balance,
+text-operator placement, font-data entry kinds, and full-width PDF integers are
+validated before backend narrowing or silent recovery. No additional parser
+or dependency is introduced; the private preflight reuses PDFBox's existing
+public stream parser behind a project-owned token/operand terminal check.
+The extraction adapter applies only the optional ExtGState `Font` setting
+through a detached one-key view and never delegates unrelated ExtGState arrays
+or graphs to PDFBox.
+The text-item bound is enforced before source-code mapping evidence is
+published.
+T13 rejects Type 3 fonts and arbitrary composite-font encodings rather than
+opening unbounded glyph-program or predefined-CMap inputs. T13 reuses the
+existing repository-only pinned qpdf 12.4.0 acceptance
+path and adds no executable or Migration Facade dependency.
+
 T06 uses one external executable only in the opt-in, repository-only
 Acceptance Evidence path:
 

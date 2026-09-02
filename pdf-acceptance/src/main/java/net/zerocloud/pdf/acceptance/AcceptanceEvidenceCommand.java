@@ -16,24 +16,34 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import net.zerocloud.pdf.Annotation;
 import net.zerocloud.pdf.AnnotationAppearance;
 import net.zerocloud.pdf.AnnotationColor;
 import net.zerocloud.pdf.AnnotationProperties;
 import net.zerocloud.pdf.AnnotationQuad;
 import net.zerocloud.pdf.AnnotationRectangle;
+import net.zerocloud.pdf.DocumentPatch;
 import net.zerocloud.pdf.DocumentSource;
 import net.zerocloud.pdf.DocumentWorkflow;
 import net.zerocloud.pdf.EmbeddedFile;
+import net.zerocloud.pdf.ExtractionLimits;
 import net.zerocloud.pdf.GoToAction;
 import net.zerocloud.pdf.LinkActivation;
 import net.zerocloud.pdf.NavigationTarget;
+import net.zerocloud.pdf.ObjectReference;
 import net.zerocloud.pdf.OutlineItem;
 import net.zerocloud.pdf.PageDestination;
 import net.zerocloud.pdf.PageRange;
+import net.zerocloud.pdf.PdfArray;
+import net.zerocloud.pdf.PdfDictionary;
+import net.zerocloud.pdf.PdfName;
+import net.zerocloud.pdf.PdfNumber;
+import net.zerocloud.pdf.PdfStream;
 import net.zerocloud.pdf.PdfString;
 import net.zerocloud.pdf.PublicationTarget;
 import net.zerocloud.pdf.SaveMode;
+import net.zerocloud.pdf.TextStructureExtraction;
 import net.zerocloud.pdf.WorkflowOutcome;
 import net.zerocloud.pdf.WorkflowRequest;
 import net.zerocloud.pdf.command.AddBlankPage;
@@ -51,10 +61,12 @@ import net.zerocloud.pdf.command.SplitDocument;
 import net.zerocloud.pdf.command.UpdateDocumentInfo;
 import net.zerocloud.pdf.command.UpdateActions;
 import net.zerocloud.pdf.command.UpdateAnnotations;
+import net.zerocloud.pdf.query.ExtractTextAndStructure;
+import net.zerocloud.pdf.query.PageObjectReference;
 
 /**
- * Repository-only command that records T06/T07 evidence and the T10, T11,
- * and T12 syntax chains.
+ * Repository-only command that records T06/T07 evidence and the T10 through
+ * T13 syntax chains.
  */
 public final class AcceptanceEvidenceCommand {
 
@@ -101,12 +113,24 @@ public final class AcceptanceEvidenceCommand {
             "T12-annotations-actions-back.pdf";
     private static final String T12_QPDF_FINDINGS =
             "T12-annotations-document-actions-qpdf.txt";
+    private static final String T13_CAPABILITY =
+            "document.text-structure.extract";
+    private static final String T13_ACCEPTANCE_PROFILE =
+            "T13-text-logical-structure";
+    private static final String T13_PROFILE_RECORD =
+            "capabilities/evidence/T13-text-logical-structure.md";
+    private static final String T13_PAGE_TEXT_ARTIFACT =
+            "T13-page-text.pdf";
+    private static final String T13_TAGGED_ARTIFACT =
+            "T13-tagged-structure.pdf";
+    private static final String T13_QPDF_FINDINGS =
+            "T13-text-logical-structure-qpdf.txt";
 
     private AcceptanceEvidenceCommand() {
     }
 
     /**
-     * Runs the built-in T03 Acceptance Profile and the T10 through T12 syntax
+     * Runs the built-in T03 Acceptance Profile and the T10 through T13 syntax
      * chains.
      *
      * @param arguments output directory, pinned tool and profile authorities,
@@ -286,12 +310,36 @@ public final class AcceptanceEvidenceCommand {
                 qpdfPin,
                 releaseTrain);
 
+        EvidenceResult t13Syntax = recordProductSyntax(
+                new ProductChain(
+                        "T13",
+                        T13_CAPABILITY,
+                        T13_ACCEPTANCE_PROFILE,
+                        T13_PROFILE_RECORD,
+                        T13_PAGE_TEXT_ARTIFACT,
+                        T13_TAGGED_ARTIFACT,
+                        T13_QPDF_FINDINGS,
+                        "T13-text-logical-structure-syntax.md",
+                        ProductHashPolicy.ID_NEUTRAL),
+                new ProductCreator() {
+                    @Override
+                    public void create(Path pageText, Path tagged)
+                            throws Exception {
+                        createT13Products(pageText, tagged);
+                    }
+                },
+                output,
+                artifacts,
+                qpdfPin,
+                releaseTrain);
+
         System.out.println("Acceptance Profile determination: "
                 + profileDetermination.recordValue());
         System.out.println("T07 visual chain: " + visual.result().recordValue());
         System.out.println("T10 syntax chain: " + t10Syntax.recordValue());
         System.out.println("T11 syntax chain: " + t11Syntax.recordValue());
         System.out.println("T12 syntax chain: " + t12Syntax.recordValue());
+        System.out.println("T13 syntax chain: " + t13Syntax.recordValue());
     }
 
     private interface ProductCreator {
@@ -309,6 +357,7 @@ public final class AcceptanceEvidenceCommand {
         private final String backArtifact;
         private final String qpdfFindings;
         private final String syntaxRecord;
+        private final ProductHashPolicy hashPolicy;
 
         ProductChain(
                 String label,
@@ -319,6 +368,28 @@ public final class AcceptanceEvidenceCommand {
                 String backArtifact,
                 String qpdfFindings,
                 String syntaxRecord) {
+            this(
+                    label,
+                    capability,
+                    acceptanceProfile,
+                    profileRecord,
+                    frontArtifact,
+                    backArtifact,
+                    qpdfFindings,
+                    syntaxRecord,
+                    ProductHashPolicy.EXACT);
+        }
+
+        ProductChain(
+                String label,
+                String capability,
+                String acceptanceProfile,
+                String profileRecord,
+                String frontArtifact,
+                String backArtifact,
+                String qpdfFindings,
+                String syntaxRecord,
+                ProductHashPolicy hashPolicy) {
             this.label = label;
             this.capability = capability;
             this.acceptanceProfile = acceptanceProfile;
@@ -327,6 +398,54 @@ public final class AcceptanceEvidenceCommand {
             this.backArtifact = backArtifact;
             this.qpdfFindings = qpdfFindings;
             this.syntaxRecord = syntaxRecord;
+            this.hashPolicy = hashPolicy;
+        }
+    }
+
+    private enum ProductHashPolicy {
+        EXACT("Input SHA-256", "Input set SHA-256", null) {
+            @Override
+            String hash(Path artifact) throws IOException {
+                return sha256(artifact);
+            }
+        },
+        ID_NEUTRAL(
+                "Input ID-neutral SHA-256",
+                "Input ID-neutral set SHA-256",
+                EvidenceFiles.inputHashPolicy()) {
+            @Override
+            String hash(Path artifact) throws IOException {
+                return EvidenceFiles.idNeutralPdfSha256(artifact);
+            }
+        };
+
+        private final String inputHashLabel;
+        private final String inputSetHashLabel;
+        private final String description;
+
+        ProductHashPolicy(
+                String inputHashLabel,
+                String inputSetHashLabel,
+                String description) {
+            this.inputHashLabel = inputHashLabel;
+            this.inputSetHashLabel = inputSetHashLabel;
+            this.description = description;
+        }
+
+        abstract String hash(Path artifact) throws IOException;
+
+        String inputHashMetadata(String hash) {
+            return metadata(inputHashLabel, hash);
+        }
+
+        String inputSetHashMetadata(String hash) {
+            return metadata(inputSetHashLabel, hash);
+        }
+
+        String policyMetadata() {
+            return description == null
+                    ? ""
+                    : metadata("Input hash policy", description);
         }
     }
 
@@ -340,8 +459,8 @@ public final class AcceptanceEvidenceCommand {
         Path front = artifacts.resolve(chain.frontArtifact);
         Path back = artifacts.resolve(chain.backArtifact);
         creator.create(front, back);
-        String frontHash = sha256(front);
-        String backHash = sha256(back);
+        String frontHash = chain.hashPolicy.hash(front);
+        String backHash = chain.hashPolicy.hash(back);
         String inputSetHash = sha256(frontHash + "\n" + backHash);
 
         EvidenceResult result;
@@ -702,6 +821,215 @@ public final class AcceptanceEvidenceCommand {
                 operators.getBytes(StandardCharsets.US_ASCII));
     }
 
+    private static void createT13Products(Path pageText, Path tagged)
+            throws Exception {
+        createT13PageTextProduct(pageText);
+        createT13TaggedProduct(tagged);
+    }
+
+    private static void createT13PageTextProduct(Path target)
+            throws Exception {
+        WorkflowOutcome<TextStructureExtraction> outcome =
+                new DocumentWorkflow().execute(
+                        WorkflowRequest.create(target, SaveMode.REWRITE),
+                        session -> {
+                            session.execute(AddBlankPage.INSTANCE);
+                            session.execute(AddBlankPage.INSTANCE);
+                            ObjectReference first = session.query(
+                                    PageObjectReference.version1(1));
+                            ObjectReference second = session.query(
+                                    PageObjectReference.version1(2));
+                            PdfDictionary resources = t13Resources();
+                            session.execute(DocumentPatch.builder()
+                                    .setDictionaryEntry(
+                                            first,
+                                            PdfName.of("Resources"),
+                                            resources)
+                                    .setDictionaryEntry(
+                                            first,
+                                            PdfName.of("Contents"),
+                                            PdfArray.of(
+                                                    t13Content(
+                                                            "BT /F1 12 Tf (A) Tj ET\n"),
+                                                    t13Content(
+                                                            "BT /F1 12 Tf (B) Tj ET\n")))
+                                    .setDictionaryEntry(
+                                            second,
+                                            PdfName.of("Resources"),
+                                            resources)
+                                    .setDictionaryEntry(
+                                            second,
+                                            PdfName.of("Contents"),
+                                            t13Content(
+                                                    "BT /F1 10 Tf 0 1 -1 0 "
+                                                            + "100 200 Tm (C) Tj ET\n"))
+                                    .setDictionaryEntry(
+                                            second,
+                                            PdfName.of("Rotate"),
+                                            PdfNumber.of(90L))
+                                    .build());
+                            return session.query(
+                                    ExtractTextAndStructure.version1(
+                                            t13Limits()));
+                        });
+        if (outcome.getResult().getPages().size() != 2
+                || !"AB".equals(outcome.getResult().getPages().get(0).getText())
+                || !"C".equals(outcome.getResult().getPages().get(1).getText())) {
+            throw new IllegalStateException(
+                    "T13 page-text product did not satisfy its public query probe");
+        }
+    }
+
+    private static void createT13TaggedProduct(Path target)
+            throws Exception {
+        byte[] source = t13TaggedSource();
+        WorkflowOutcome<TextStructureExtraction> outcome =
+                new DocumentWorkflow().execute(
+                        WorkflowRequest.builder()
+                                .source(
+                                        "input",
+                                        DocumentSource.bytes(
+                                                source, source.length))
+                                .primarySource("input")
+                                .target(
+                                        "output",
+                                        PublicationTarget.path(target))
+                                .saveMode(SaveMode.REWRITE)
+                                .build(),
+                        session -> {
+                            return session.query(
+                                    ExtractTextAndStructure.version1(
+                                            t13Limits()));
+                        });
+        if (outcome.getResult().getStructureRoots().size() != 1
+                || !"Tagged".equals(
+                        outcome.getResult().getPages().get(0).getText())
+                || !"T13 alternate".equals(outcome.getResult()
+                        .getStructureRoots().get(0)
+                        .getAlternateText().orElse(null))
+                || !"Sect".equals(outcome.getResult()
+                        .getStructureRoots().get(0)
+                        .getResolvedRole().orElse(null))
+                || !outcome.getResult().getStructureRoots().get(0)
+                        .getChildren().get(0).getMarkedContent().get()
+                        .getMarkedContentSequenceId().isPresent()) {
+            throw new IllegalStateException(
+                    "T13 tagged product did not satisfy its public query probe");
+        }
+    }
+
+    private static byte[] t13TaggedSource() throws IOException {
+        String[] objects = {
+            "<< /Type /Catalog /Pages 2 0 R /StructTreeRoot 6 0 R "
+                    + "/MarkInfo << /Marked true >> /Lang (en-US) >>",
+            "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+            "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] "
+                    + "/Resources << /Font << /F1 5 0 R >> >> "
+                    + "/Contents 4 0 R /StructParents 0 /Tabs /S >>",
+            t13StreamObject(
+                    "/Span <</MCID 0 /ActualText (Tagged)>> BDC "
+                            + "BT /F1 12 Tf (Visible) Tj ET EMC\n",
+                    ""),
+            "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica "
+                    + "/Encoding /WinAnsiEncoding /ToUnicode 9 0 R >>",
+            "<< /Type /StructTreeRoot /K 7 0 R "
+                    + "/RoleMap << /AcceptanceSection /Sect >> "
+                    + "/ParentTree 8 0 R /ParentTreeNextKey 1 >>",
+            "<< /Type /StructElem /S /AcceptanceSection /P 6 0 R "
+                    + "/Pg 3 0 R /Lang (en-GB) /Alt (T13 alternate) "
+                    + "/K 0 >>",
+            "<< /Nums [0 [7 0 R]] >>",
+            t13StreamObject(t13ToUnicodeCMap(), "")
+        };
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        output.write("%PDF-1.7\n".getBytes(StandardCharsets.US_ASCII));
+        int[] offsets = new int[objects.length + 1];
+        for (int index = 0; index < objects.length; index++) {
+            offsets[index + 1] = output.size();
+            output.write(((index + 1) + " 0 obj\n")
+                    .getBytes(StandardCharsets.US_ASCII));
+            output.write(objects[index].getBytes(StandardCharsets.US_ASCII));
+            output.write("\nendobj\n".getBytes(StandardCharsets.US_ASCII));
+        }
+        int xref = output.size();
+        output.write(("xref\n0 " + offsets.length + "\n")
+                .getBytes(StandardCharsets.US_ASCII));
+        output.write("0000000000 65535 f \n"
+                .getBytes(StandardCharsets.US_ASCII));
+        for (int index = 1; index < offsets.length; index++) {
+            output.write(String.format(
+                    Locale.ROOT,
+                    "%010d 00000 n \n",
+                    Integer.valueOf(offsets[index]))
+                    .getBytes(StandardCharsets.US_ASCII));
+        }
+        output.write(("trailer\n<< /Size " + offsets.length
+                + " /Root 1 0 R >>\nstartxref\n" + xref
+                + "\n%%EOF\n").getBytes(StandardCharsets.US_ASCII));
+        return output.toByteArray();
+    }
+
+    private static String t13StreamObject(String data, String entries) {
+        return "<< " + entries + "/Length "
+                + data.getBytes(StandardCharsets.US_ASCII).length
+                + " >>\nstream\n" + data + "endstream";
+    }
+
+    private static PdfDictionary t13Resources() {
+        String cmap = t13ToUnicodeCMap();
+        PdfDictionary font = PdfDictionary.builder()
+                .put(PdfName.of("Type"), PdfName.of("Font"))
+                .put(PdfName.of("Subtype"), PdfName.of("Type1"))
+                .put(PdfName.of("BaseFont"), PdfName.of("Helvetica"))
+                .put(PdfName.of("Encoding"), PdfName.of("WinAnsiEncoding"))
+                .put(PdfName.of("ToUnicode"), PdfStream.of(
+                        PdfDictionary.builder().build(),
+                        cmap.getBytes(StandardCharsets.US_ASCII)))
+                .build();
+        return PdfDictionary.builder()
+                .put(PdfName.of("Font"), PdfDictionary.builder()
+                        .put(PdfName.of("F1"), font)
+                        .build())
+                .build();
+    }
+
+    private static String t13ToUnicodeCMap() {
+        return "/CIDInit /ProcSet findresource begin\n"
+                + "12 dict begin\nbegincmap\n"
+                + "/CMapName /FolioT13Acceptance def\n/CMapType 2 def\n"
+                + "1 begincodespacerange\n<00> <FF>\nendcodespacerange\n"
+                + "3 beginbfrange\n<41> <4A> <0041>\n"
+                + "<54> <63> <0054>\n<64> <77> <0064>\n"
+                + "endbfrange\n"
+                + "endcmap\nend\nend\n";
+    }
+
+    private static PdfStream t13Content(String operators) {
+        return PdfStream.of(
+                PdfDictionary.builder().build(),
+                operators.getBytes(StandardCharsets.US_ASCII));
+    }
+
+    private static ExtractionLimits t13Limits() {
+        return ExtractionLimits.builder()
+                .maximumPages(4)
+                .maximumPageTreeNodes(32)
+                .maximumContentStreams(16)
+                .maximumContentStreamDepth(4)
+                .maximumDecodedBytes(64L * 1024L)
+                .maximumTextItems(256)
+                .maximumUnicodeCodePoints(4096)
+                .maximumMarkedContentSequences(64)
+                .maximumMarkedContentDepth(8)
+                .maximumStructureElements(64)
+                .maximumStructureItems(128)
+                .maximumStructureDepth(16)
+                .maximumRoleMappings(32)
+                .maximumToUnicodeMappings(512)
+                .maximumFontDataEntries(512)
+                .build();
+    }
+
     private static EvidenceResult aggregateQpdfResults(
             List<ProductQpdfResult> checks) {
         boolean indeterminate = false;
@@ -753,7 +1081,8 @@ public final class AcceptanceEvidenceCommand {
                 + metadata("Producer", "qpdf")
                 + metadata("Producer version", producerVersion)
                 + metadata("Tool distribution SHA-256", qpdfPin.archiveSha256())
-                + metadata("Input set SHA-256", inputSetHash)
+                + chain.hashPolicy.inputSetHashMetadata(inputSetHash)
+                + chain.hashPolicy.policyMetadata()
                 + "Final determination: `" + result.recordValue() + "`\n\n"
                 + "## Findings and artifacts\n\n"
                 + "- Front product: [`artifacts/" + chain.frontArtifact
@@ -776,7 +1105,8 @@ public final class AcceptanceEvidenceCommand {
         StringBuilder findings = new StringBuilder();
         findings.append("# ").append(chain.label)
                 .append(" qpdf syntax findings\n\n")
-                .append(metadata("Input set SHA-256", inputSetHash))
+                .append(chain.hashPolicy.inputSetHashMetadata(inputSetHash))
+                .append(chain.hashPolicy.policyMetadata())
                 .append(metadata("Tool", "qpdf"))
                 .append(metadata("Tool version", qpdfPin.version()))
                 .append(metadata("Distribution SHA-256", qpdfPin.archiveSha256()))
@@ -785,7 +1115,7 @@ public final class AcceptanceEvidenceCommand {
                 .append("`\n\n");
         for (ProductQpdfResult check : checks) {
             findings.append("## ").append(check.artifactName).append("\n\n")
-                    .append(metadata("Input SHA-256", check.inputHash))
+                    .append(chain.hashPolicy.inputHashMetadata(check.inputHash))
                     .append("Invocation: `qpdf --check ")
                     .append(check.artifactName)
                     .append("`\n\n")
@@ -810,7 +1140,8 @@ public final class AcceptanceEvidenceCommand {
             String finding,
             QpdfPin qpdfPin) {
         return "# " + chain.label + " qpdf syntax findings\n\n"
-                + metadata("Input set SHA-256", inputSetHash)
+                + chain.hashPolicy.inputSetHashMetadata(inputSetHash)
+                + chain.hashPolicy.policyMetadata()
                 + metadata("Tool", "qpdf")
                 + metadata("Tool version", observedVersion)
                 + metadata("Distribution SHA-256", qpdfPin.archiveSha256())

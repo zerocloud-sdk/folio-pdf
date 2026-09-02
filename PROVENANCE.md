@@ -421,6 +421,78 @@ documentation, and project-owned tests are the permitted design inputs.
   the T06 promotion gate remain open, so the capability stays `experimental`
   with no certified-platform claim.
 
+## T13 text-logical-structure extraction record
+
+- Authorship: OpenAI Codex generated and integrated the T13 implementation,
+  tests, inventories, evidence, and documentation at repository operator
+  MaBaiqiu's direction. No T13 commit was created in this execution.
+- Project inputs: GitHub issues #1 and #14, `CONTEXT.md`, ADR-0004, 0005,
+  0009, 0011, 0013, 0016, 0017, 0019, 0023, 0025, 0029, and the T13
+  decision in ADR-0035, the repository inventory contract, and the accepted
+  T03 and T09 public workflow and PDF Value seams.
+- Public standards inputs: the freely available ISO 32000-1:2008 document
+  published by Adobe, the PDF Association's ISO 32000-2 overview and errata,
+  and the PDF Association's Well-Tagged PDF guidance were consulted for text
+  showing, `ToUnicode`, marked-content, `MCID`, `ActualText`, `Alt`, structure
+  children, role mapping, and language semantics. These public materials were
+  used as specification inputs, not copied fixtures or implementation code.
+- Public implementation references: Apache PDFBox 3.0.8 public source and
+  Javadocs for `PDFStreamEngine`, text and marked-content operators, font
+  encodings, embedded font loading, simple and CID width handling, Form
+  XObjects, and FontBox `CMapParser` numeric and token behavior were consulted
+  to keep the private adapter aligned with its supported API. PDFBox output or
+  coercive Unicode results are not a behavioral oracle; T13 independently
+  preflights and parses mapping evidence, derives simple-font inference only
+  from declared PDF encoding data and the public Adobe Glyph List, and tests
+  only Native Interface observations.
+- Runtime and test dependencies: T13 adds no third-party dependency. Apache
+  PDFBox 3.0.8 and transitive FontBox remain private Apache-2.0
+  implementation dependencies, and JUnit 4.13.2 remains the existing test
+  dependency. The repository-only acceptance path reuses pinned qpdf 12.4.0.
+  Exact facts and roles remain recorded in
+  [DEPENDENCIES.md](DEPENDENCIES.md).
+- Project-authored fixtures: public-workflow consumer tests construct
+  untagged, multi-page, multi-stream, transformed, spaced, rotated, explicitly
+  mapped, contradictory, unmapped, marked-content, tagged-structure, nested-
+  Form, hostile-CMap, bounded embedded-font/encoding, bounded and hostile CID-
+  metric and scalar, malformed-resource, page-geometry, Form-dictionary,
+  page-tree, content-array, cross-member content-token, truncated-content,
+  trailing-orphan-operand, malformed-operator, unbalanced page/Form operator-
+  state, bounded-ExtGState, full-width-integer,
+  font-kind, font-data-kind, Type 0 encoding,
+  Type 3 glyph-program,
+  deep Form and logical-structure, repeated and parent-inconsistent structure,
+  namespace, OBJR and Form-stream MCR, transitive and cyclic RoleMap,
+  invalid Unicode CMap destination, malformed CMap count and range,
+  embedded CMap carry, embedded Type 0 subtype-repair, large-text-item, nested
+  marked-content, and exact-limit PDFs from project-owned values. Transparent
+  minimal PDF syntax supplies only the cyclic graphs, fully linked tagged
+  hierarchy, and hostile structures needed to make those contracts
+  observable; it calls no other PDF implementation.
+  The
+  acceptance command
+  rewrites its project-owned fully tagged source and creates the checked-in
+  T13 page-text product through `DocumentWorkflow.execute`, validates both
+  public Query observations, and submits those exact products to pinned qpdf.
+- Generated documentation: `docs/generated/capability-matrix.md` and
+  `docs/generated/facade-surface.md` are deterministic renderings of the YAML
+  authorities and contain no copied external content.
+- Excluded inputs: no iText source, resource, binary, fixture, output,
+  decompiled or binary-derived implementation detail, closed add-on material,
+  proprietary differential evidence, OCR engine output, or Reference Suite
+  behavioral oracle was used.
+- Scope: T13 adds only bounded detached page text, source-code mapping
+  evidence, marked content, and logical structure through a version-1
+  Document Query. It adds no image/resource extraction (T14), incremental or
+  signature-aware publication (T15), encryption (T16), drawing (T17),
+  comprehensive hostile-input policy (T20), Worker codecs (T21), or Migration
+  Facade surface.
+- Compatibility Curator evidence: none; the role remains vacant. T13 has a
+  passing syntax record only. Mandatory standards, semantic, and visual chains
+  remain absent, and its T09 Dependency Gate remains open while that capability
+  is `experimental`, so T13 remains `experimental` with no certified-platform
+  claim.
+
 ## T07 independent-visual-evidence record
 
 - Authorship: OpenAI Codex generated and integrated the T07 repository-only

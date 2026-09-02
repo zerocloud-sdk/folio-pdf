@@ -22,10 +22,14 @@ import org.junit.Test;
 
 public final class PublicApiLeakageIT {
 
-    private static final String FORBIDDEN_PACKAGE = "org.apache.pdfbox";
+    private static final String[] FORBIDDEN_PACKAGES = {
+        "org.apache.pdfbox",
+        "org.apache.fontbox"
+    };
 
     @Test
-    public void publicAndProtectedSignaturesContainNoPdfBoxTypes() throws Exception {
+    public void publicAndProtectedSignaturesContainNoBackendTypes()
+            throws Exception {
         Path artifact = Paths.get(requiredProperty("artifactPath"));
 
         try (JarFile jar = new JarFile(artifact.toFile())) {
@@ -188,7 +192,11 @@ public final class PublicApiLeakageIT {
     }
 
     private static void assertAllowedName(String location, String value) {
-        assertFalse(location + " exposes " + value, value.contains(FORBIDDEN_PACKAGE));
+        for (String forbiddenPackage : FORBIDDEN_PACKAGES) {
+            assertFalse(
+                    location + " exposes " + value,
+                    value.contains(forbiddenPackage));
+        }
     }
 
     private static String requiredProperty(String name) {

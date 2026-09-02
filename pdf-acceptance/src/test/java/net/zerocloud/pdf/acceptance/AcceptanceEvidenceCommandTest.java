@@ -35,6 +35,19 @@ public final class AcceptanceEvidenceCommandTest {
 
     private static final String COMMAND_CLASS =
             "net.zerocloud.pdf.acceptance.AcceptanceEvidenceCommand";
+    private static final List<ProductSyntax> PRODUCT_SYNTAX = Arrays.asList(
+            new ProductSyntax(
+                    "T10",
+                    "T10-page-manipulation-merge-split-syntax.md"),
+            new ProductSyntax(
+                    "T11",
+                    "T11-metadata-outlines-destinations-attachments-syntax.md"),
+            new ProductSyntax(
+                    "T12",
+                    "T12-annotations-document-actions-syntax.md"),
+            new ProductSyntax(
+                    "T13",
+                    "T13-text-logical-structure-syntax.md"));
 
     @Rule
     public final TemporaryFolder temporaryFolder = new TemporaryFolder();
@@ -261,6 +274,47 @@ public final class AcceptanceEvidenceCommandTest {
                 "T12-annotations-actions-front.pdf` exit code: `0`"));
         assertTrue(t12Findings.contains(
                 "T12-annotations-actions-back.pdf` exit code: `0`"));
+
+        Path t13PageText = output.resolve(
+                "artifacts/T13-page-text.pdf");
+        Path t13Tagged = output.resolve(
+                "artifacts/T13-tagged-structure.pdf");
+        assertTrue(Files.isRegularFile(t13PageText));
+        assertTrue(Files.isRegularFile(t13Tagged));
+        assertTrue(Files.size(t13PageText) > 0L);
+        assertTrue(Files.size(t13Tagged) > 0L);
+
+        String t13Syntax = read(output.resolve(
+                "T13-text-logical-structure-syntax.md"));
+        assertMetadata(
+                t13Syntax,
+                "Capability",
+                "document.text-structure.extract");
+        assertMetadata(
+                t13Syntax,
+                "Acceptance Profile",
+                "T13-text-logical-structure");
+        assertMetadata(t13Syntax, "Chain", "syntax");
+        assertMetadata(t13Syntax, "Result", "pass");
+        assertMetadata(t13Syntax, "Producer kind", "external-tool");
+        assertMetadata(t13Syntax, "Producer", "qpdf");
+        assertMetadata(t13Syntax, "Producer version", "12.4.0");
+        assertMetadata(
+                t13Syntax,
+                "Input hash policy",
+                EvidenceFiles.inputHashPolicy());
+        assertTrue(t13Syntax.contains("artifacts/T13-page-text.pdf"));
+        assertTrue(t13Syntax.contains("artifacts/T13-tagged-structure.pdf"));
+        assertTrue(t13Syntax.contains(
+                "artifacts/T13-text-logical-structure-qpdf.txt"));
+
+        String t13Findings = read(output.resolve(
+                "artifacts/T13-text-logical-structure-qpdf.txt"));
+        assertTrue(t13Findings.contains(
+                "T13-page-text.pdf` exit code: `0`"));
+        assertTrue(t13Findings.contains(
+                "T13-tagged-structure.pdf` exit code: `0`"));
+        assertTrue(t13Findings.contains("Input ID-neutral SHA-256"));
     }
 
     @Test
@@ -325,7 +379,9 @@ public final class AcceptanceEvidenceCommandTest {
                 "artifacts/T06-document-blank-semantic.txt",
                 "artifacts/T07-document-blank-visual.txt",
                 "T12-annotations-document-actions-syntax.md",
-                "artifacts/T12-annotations-document-actions-qpdf.txt")) {
+                "artifacts/T12-annotations-document-actions-qpdf.txt",
+                "T13-text-logical-structure-syntax.md",
+                "artifacts/T13-text-logical-structure-qpdf.txt")) {
             assertEquals(relative,
                     read(firstOutput.resolve(relative)),
                     read(secondOutput.resolve(relative)));
@@ -336,6 +392,15 @@ public final class AcceptanceEvidenceCommandTest {
             assertArrayEquals(relative,
                     Files.readAllBytes(firstOutput.resolve(relative)),
                     Files.readAllBytes(secondOutput.resolve(relative)));
+        }
+        for (String relative : Arrays.asList(
+                "artifacts/T13-page-text.pdf",
+                "artifacts/T13-tagged-structure.pdf")) {
+            assertEquals(relative,
+                    EvidenceFiles.idNeutralPdfSha256(
+                            firstOutput.resolve(relative)),
+                    EvidenceFiles.idNeutralPdfSha256(
+                            secondOutput.resolve(relative)));
         }
     }
 
@@ -386,21 +451,15 @@ public final class AcceptanceEvidenceCommandTest {
         assertTrue(determination.contains("Final determination: `indeterminate`"));
         assertTrue(determination.contains(
                 "Indeterminate mandatory chains: `syntax`"));
-        String t10Syntax = readT10Syntax(output);
-        assertMetadata(t10Syntax, "Result", "indeterminate");
-        assertMetadata(t10Syntax, "Producer version", "unavailable");
-        assertTrue(t10Syntax.contains("The pinned qpdf tool was unavailable."));
-        assertTrue(!t10Syntax.contains("Result: `pass`"));
-        String t11Syntax = readT11Syntax(output);
-        assertMetadata(t11Syntax, "Result", "indeterminate");
-        assertMetadata(t11Syntax, "Producer version", "unavailable");
-        assertTrue(t11Syntax.contains("The pinned qpdf tool was unavailable."));
-        assertTrue(!t11Syntax.contains("Result: `pass`"));
-        String t12Syntax = readT12Syntax(output);
-        assertMetadata(t12Syntax, "Result", "indeterminate");
-        assertMetadata(t12Syntax, "Producer version", "unavailable");
-        assertTrue(t12Syntax.contains("The pinned qpdf tool was unavailable."));
-        assertTrue(!t12Syntax.contains("Result: `pass`"));
+        for (ProductSyntax product : PRODUCT_SYNTAX) {
+            String productRecord = product.read(output);
+            assertMetadata(productRecord, "Result", "indeterminate");
+            assertMetadata(
+                    productRecord, "Producer version", "unavailable");
+            assertTrue(productRecord.contains(
+                    "The pinned qpdf tool was unavailable."));
+            assertTrue(!productRecord.contains("Result: `pass`"));
+        }
     }
 
     @Test
@@ -423,21 +482,13 @@ public final class AcceptanceEvidenceCommandTest {
         String findings = read(output.resolve(
                 "artifacts/T06-document-blank-qpdf.txt"));
         assertTrue(!findings.contains("unpinned qpdf check unexpectedly ran"));
-        String t10Syntax = readT10Syntax(output);
-        assertMetadata(t10Syntax, "Result", "indeterminate");
-        assertMetadata(t10Syntax, "Producer version", "12.3.2");
-        assertTrue(t10Syntax.contains(
-                "Expected pinned qpdf version `12.4.0`; observed `12.3.2`."));
-        String t11Syntax = readT11Syntax(output);
-        assertMetadata(t11Syntax, "Result", "indeterminate");
-        assertMetadata(t11Syntax, "Producer version", "12.3.2");
-        assertTrue(t11Syntax.contains(
-                "Expected pinned qpdf version `12.4.0`; observed `12.3.2`."));
-        String t12Syntax = readT12Syntax(output);
-        assertMetadata(t12Syntax, "Result", "indeterminate");
-        assertMetadata(t12Syntax, "Producer version", "12.3.2");
-        assertTrue(t12Syntax.contains(
-                "Expected pinned qpdf version `12.4.0`; observed `12.3.2`."));
+        for (ProductSyntax product : PRODUCT_SYNTAX) {
+            String productRecord = product.read(output);
+            assertMetadata(productRecord, "Result", "indeterminate");
+            assertMetadata(productRecord, "Producer version", "12.3.2");
+            assertTrue(productRecord.contains(
+                    "Expected pinned qpdf version `12.4.0`; observed `12.3.2`."));
+        }
     }
 
     @Test
@@ -464,18 +515,13 @@ public final class AcceptanceEvidenceCommandTest {
                 "T06-document-blank-determination.md"));
         assertTrue(determination.contains("Final determination: `fail`"));
         assertTrue(determination.contains("Failing mandatory chains: `syntax`"));
-        String t10Syntax = readT10Syntax(output);
-        assertMetadata(t10Syntax, "Result", "fail");
-        assertTrue(t10Syntax.contains(
-                "qpdf reported warnings or errors for a T10 product."));
-        String t11Syntax = readT11Syntax(output);
-        assertMetadata(t11Syntax, "Result", "fail");
-        assertTrue(t11Syntax.contains(
-                "qpdf reported warnings or errors for a T11 product."));
-        String t12Syntax = readT12Syntax(output);
-        assertMetadata(t12Syntax, "Result", "fail");
-        assertTrue(t12Syntax.contains(
-                "qpdf reported warnings or errors for a T12 product."));
+        for (ProductSyntax product : PRODUCT_SYNTAX) {
+            String productRecord = product.read(output);
+            assertMetadata(productRecord, "Result", "fail");
+            assertTrue(productRecord.contains(
+                    "qpdf reported warnings or errors for a "
+                            + product.label + " product."));
+        }
     }
 
     @Test
@@ -498,9 +544,9 @@ public final class AcceptanceEvidenceCommandTest {
         String determination = read(output.resolve(
                 "T06-document-blank-determination.md"));
         assertTrue(determination.contains("Final determination: `fail`"));
-        assertMetadata(readT10Syntax(output), "Result", "fail");
-        assertMetadata(readT11Syntax(output), "Result", "fail");
-        assertMetadata(readT12Syntax(output), "Result", "fail");
+        for (ProductSyntax product : PRODUCT_SYNTAX) {
+            assertMetadata(product.read(output), "Result", "fail");
+        }
     }
 
     @Test
@@ -527,18 +573,13 @@ public final class AcceptanceEvidenceCommandTest {
         assertTrue(determination.contains("Final determination: `indeterminate`"));
         assertTrue(determination.contains(
                 "Indeterminate mandatory chains: `syntax`"));
-        String t10Syntax = readT10Syntax(output);
-        assertMetadata(t10Syntax, "Result", "indeterminate");
-        assertTrue(t10Syntax.contains(
-                "qpdf returned an undocumented status for a T10 product."));
-        String t11Syntax = readT11Syntax(output);
-        assertMetadata(t11Syntax, "Result", "indeterminate");
-        assertTrue(t11Syntax.contains(
-                "qpdf returned an undocumented status for a T11 product."));
-        String t12Syntax = readT12Syntax(output);
-        assertMetadata(t12Syntax, "Result", "indeterminate");
-        assertTrue(t12Syntax.contains(
-                "qpdf returned an undocumented status for a T12 product."));
+        for (ProductSyntax product : PRODUCT_SYNTAX) {
+            String productRecord = product.read(output);
+            assertMetadata(productRecord, "Result", "indeterminate");
+            assertTrue(productRecord.contains(
+                    "qpdf returned an undocumented status for a "
+                            + product.label + " product."));
+        }
     }
 
     @Test
@@ -1320,11 +1361,6 @@ public final class AcceptanceEvidenceCommandTest {
         return value;
     }
 
-    private static String readT10Syntax(Path output) throws IOException {
-        return read(output.resolve(
-                "T10-page-manipulation-merge-split-syntax.md"));
-    }
-
     private static String readT11Syntax(Path output) throws IOException {
         return read(output.resolve(
                 "T11-metadata-outlines-destinations-attachments-syntax.md"));
@@ -1355,6 +1391,21 @@ public final class AcceptanceEvidenceCommandTest {
             throw new IllegalStateException("Missing system property: " + name);
         }
         return value;
+    }
+
+    private static final class ProductSyntax {
+
+        private final String label;
+        private final String record;
+
+        ProductSyntax(String label, String record) {
+            this.label = label;
+            this.record = record;
+        }
+
+        String read(Path output) throws IOException {
+            return AcceptanceEvidenceCommandTest.read(output.resolve(record));
+        }
     }
 
     private static final class CommandResult {

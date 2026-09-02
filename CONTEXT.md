@@ -70,6 +70,22 @@ _Avoid_: callback, remote method, custom command class
 A versioned, project-defined request for information from the current Document Session. A query is an ordering barrier that observes every earlier Document Command.
 _Avoid_: live view, direct backend query
 
+**Page Text**:
+A detached page-ordered record of text-showing content in content-stream execution order, including geometry and character-mapping evidence. It is not inferred reading order, layout reconstruction, or OCR output.
+_Avoid_: plain text, reading order, OCR text
+
+**Character Mapping Confidence**:
+The explicit strength of the evidence connecting a PDF character code to Unicode: explicit, inferred from a standard mapping, contradictory, or missing. Contradictory and missing mappings remain uncertain rather than becoming guessed characters.
+_Avoid_: encoding quality, guessed character
+
+**Marked Content**:
+Page content bracketed by PDF marked-content operators and identified by a tag and optional marked-content identifier. Its association with Logical Structure is explicit document data, not implied by operator nesting alone.
+_Avoid_: tag node, structure element
+
+**Logical Structure**:
+The Tagged PDF hierarchy of structure elements and ordered content references, with role resolution, language inheritance, alternate text, and replacement text kept distinct from Page Text.
+_Avoid_: document outline, bookmark tree
+
 **Annotation**:
 A page-associated interactive or descriptive PDF object with project-owned geometry, identity, and subtype data.
 _Avoid_: comment object, backend annotation

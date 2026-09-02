@@ -8,7 +8,7 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Release train: `0.1.0-SNAPSHOT`
 - Stable entries: `0`
 - Preview entries: `12`
-- Explicit capability exclusions: `5`
+- Explicit capability exclusions: `6`
 
 ## Stable surfaces
 
@@ -165,6 +165,13 @@ No stable surfaces are declared.
 - Behavioral capability: [`document.page.manipulate-merge-split`](capability-matrix.md#capability-document_dot_page_dot_manipulate_dash_merge_dash_split)
 - Deferred ticket: `T10`
 - Reason: T10 is a Native Interface page manipulation, merge, and split seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+
+<a id="excluded-capability-document_dot_text_dash_structure_dot_extract"></a>
+### `document.text-structure.extract`
+
+- Behavioral capability: [`document.text-structure.extract`](capability-matrix.md#capability-document_dot_text_dash_structure_dot_extract)
+- Deferred ticket: `T13`
+- Reason: T13 is a Native Interface page-text, marked-content, and logical-structure Query seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
 
 <a id="excluded-capability-document_dot_value_dot_inspect_dash_patch"></a>
 ### `document.value.inspect-patch`
