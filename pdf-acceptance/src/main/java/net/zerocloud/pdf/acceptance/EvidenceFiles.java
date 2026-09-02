@@ -19,10 +19,12 @@ final class EvidenceFiles {
     private static final String INPUT_HASH_POLICY =
             "SHA-256 of the exact PDF bytes after replacing only the two "
                     + "hexadecimal trailer /ID values with ASCII zeroes";
+    private static final String REVISION_INPUT_HASH_POLICY =
+            "SHA-256 of the exact PDF bytes after replacing every hexadecimal "
+                    + "two-value trailer /ID with equal-length ASCII zeroes";
 
     private EvidenceFiles() {
     }
-
     static String sha256(Path path) throws IOException {
         MessageDigest digest = sha256Digest();
         try (InputStream input = Files.newInputStream(path)) {
@@ -46,6 +48,20 @@ final class EvidenceFiles {
      * and values, and the unmodified file remains the tool input.
      */
     static String idNeutralPdfSha256(Path path) throws IOException {
+        return idNeutralPdfSha256(path, IdentifierCount.EXACTLY_ONE);
+    }
+
+    static String inputHashPolicy() {
+        return INPUT_HASH_POLICY;
+    }
+
+    static String revisionIdNeutralPdfSha256(Path path) throws IOException {
+        return idNeutralPdfSha256(path, IdentifierCount.AT_LEAST_ONE);
+    }
+
+    private static String idNeutralPdfSha256(
+            Path path,
+            IdentifierCount requiredCount) throws IOException {
         byte[] normalized = Files.readAllBytes(path);
         String pdf = new String(normalized, StandardCharsets.ISO_8859_1);
         Matcher identifiers = PDF_DOCUMENT_ID.matcher(pdf);
@@ -55,16 +71,14 @@ final class EvidenceFiles {
             zeroHexadecimal(normalized, identifiers.start(2), identifiers.end(2));
             matches++;
         }
-        if (matches != 1) {
-            throw new IOException(
-                    "Acceptance PDF must contain exactly one two-value trailer /ID");
+        if (!requiredCount.accepts(matches)) {
+            throw new IOException(requiredCount.diagnostic);
         }
-        MessageDigest digest = sha256Digest();
-        return hex(digest.digest(normalized));
+        return hex(sha256Digest().digest(normalized));
     }
 
-    static String inputHashPolicy() {
-        return INPUT_HASH_POLICY;
+    static String revisionInputHashPolicy() {
+        return REVISION_INPUT_HASH_POLICY;
     }
 
     static void write(Path path, String value) throws IOException {
@@ -111,5 +125,29 @@ final class EvidenceFiles {
             result.append(String.format("%02x", value & 0xff));
         }
         return result.toString();
+    }
+
+    private enum IdentifierCount {
+        EXACTLY_ONE(
+                "Acceptance PDF must contain exactly one two-value trailer /ID") {
+            @Override
+            boolean accepts(int count) {
+                return count == 1;
+            }
+        },
+        AT_LEAST_ONE("Acceptance PDF must contain a two-value trailer /ID") {
+            @Override
+            boolean accepts(int count) {
+                return count >= 1;
+            }
+        };
+
+        private final String diagnostic;
+
+        IdentifierCount(String diagnostic) {
+            this.diagnostic = diagnostic;
+        }
+
+        abstract boolean accepts(int count);
     }
 }

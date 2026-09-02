@@ -80,14 +80,18 @@ output; every other PDF byte remains hash-significant, and the file handed to
 qpdf and PDFium is never normalized or rewritten. A repeat-run command test
 requires the T06/T07 records and raw findings to reproduce exactly. The command
 also drives the T10 page/merge/split, T11 metadata, T12 annotation/Action,
-T13 text/structure, and T14 image/resource profiles to create paired
+T13 text/structure, T14 image/resource, and T15 incremental-publication
+profiles to create paired
 project-owned products and runs the same pinned qpdf syntax check on each.
 The T13 producer also evaluates the
 finished in-Session state through `ExtractTextAndStructure` before publication;
 its tagged product includes MarkInfo, page StructParents, a ParentTree, and
 bidirectional structure-parent links. The T14 producer similarly evaluates a
 filtered image and subset font plus a
-nested Form and soft mask through `ExtractImagesAndResources`. These
+nested Form and soft mask through `ExtractImagesAndResources`. The T15 pair is
+one public-workflow original and its two-page appended revision; the producer
+requires exact original-prefix retention, a non-empty suffix, a committed
+receipt, and public reopen before qpdf sees both unchanged files. These
 implementation probes are not recorded as independent semantic chains.
 The command records tool identity, version and distribution digest, exact or
 documented ID-neutral input SHA-256 values, raw findings, chain-level results,
@@ -95,6 +99,12 @@ and the applicable determination beneath the requested
 output directory. qpdf is syntax evidence only: its success is not a PDF
 standards-conformance result and cannot satisfy the independent standards,
 semantic, or visual chains.
+
+For ordinary rewrite products, the ID-neutral policy requires exactly one
+two-value trailer `/ID`. T15 may contain an `/ID` in more than one revision, so
+its revision-aware policy replaces every hexadecimal two-value trailer `/ID`
+with equal-length ASCII zeroes before hashing. Every other byte remains
+hash-significant, and normalization is never applied to a qpdf input.
 
 For T07, PDFium receives that exact workflow-produced PDF and renders its one
 effective MediaBox page at 144 DPI into an opaque sRGB RGB PNG of exactly

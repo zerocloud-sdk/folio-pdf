@@ -15,8 +15,23 @@ public enum DocumentFailureCode {
     /** A bounded source exceeded its caller-declared byte limit. */
     SOURCE_LIMIT_EXCEEDED,
 
-    /** The selected Save Mode is represented but not implemented. */
+    /** Legacy result retained for prerelease outcome compatibility. */
     SAVE_MODE_UNSUPPORTED,
+
+    /** Incremental publication was requested without an existing primary Source. */
+    INCREMENTAL_SOURCE_REQUIRED,
+
+    /** A command cannot be represented by the version-1 incremental policy. */
+    INCREMENTAL_COMMAND_REJECTED,
+
+    /** A Source with an Existing Signature cannot be republished by rewrite. */
+    SIGNED_REWRITE_REJECTED,
+
+    /** Existing signature structures cannot be interpreted safely. */
+    SIGNATURE_STRUCTURE_INVALID,
+
+    /** An Existing Signature permission does not authorize the requested workflow. */
+    SIGNATURE_POLICY_REJECTED,
 
     /** Cancellation was observed at an owned transaction boundary. */
     WORKFLOW_CANCELLED,

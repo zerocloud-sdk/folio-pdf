@@ -48,7 +48,7 @@ Page-operation validation classifies each annotation-array entry independently. 
 
 Removing a named destination with `SetNamedDestinations` fails atomically with `DESTINATION_CONFLICT` when a managed Link, catalog open Action, or page Action still refers to that name. Each complete managed-graph validation or retargeting pass used by annotation replacement or removal, page preservation, copy, merge, split, flattening, and this destination-removal check shares one document-wide budget and decodes at most 8 MiB of appearance content and 8 MiB of embedded-attachment content; exceeding either fixed bound fails safely before mutation.
 
-T12 operates only in `REWRITE` workflows. `INCREMENTAL`, signed-document policy, AcroForm behavior, form Actions, form flattening, comprehensive hostile-input resource enforcement, and Worker codecs remain downstream capabilities.
+T12 commands are available for unsigned `REWRITE` and `INCREMENTAL` workflows. Under T15's signed-Source `INCREMENTAL` policy, only `UpdateAnnotations` on supported non-Widget annotations is admitted by a sole coherent DocMDP P=3 permission; signed `REWRITE`, `UpdateActions`, and `FlattenAnnotations` are rejected. AcroForm behavior, form Actions, form flattening, comprehensive hostile-input resource enforcement, and Worker codecs remain downstream capabilities.
 
 ## Example
 

@@ -122,6 +122,14 @@ _Avoid_: form flattening, annotation deletion
 The explicit publication strategy for a changed document: `REWRITE` serializes a replacement document, while `INCREMENTAL` appends a new revision under stricter preservation rules.
 _Avoid_: auto-save, smart save
 
+**Existing Signature**:
+A structurally recognized signature value already present in a Source. It is protected whether or not Folio PDF has established its cryptographic validity.
+_Avoid_: valid signature, verified signature
+
+**Signature Permission**:
+The narrow mutation authority established from every Existing Signature and every applicable document-modification restriction. Missing, contradictory, malformed, or unsupported evidence grants no authority.
+_Avoid_: signature validity, signer permission
+
 **Publication Receipt**:
 The result of publishing one workflow's outputs, recording whether each destination was committed, failed, or not attempted. It does not imply a transaction spanning multiple destinations.
 _Avoid_: transaction result, global commit

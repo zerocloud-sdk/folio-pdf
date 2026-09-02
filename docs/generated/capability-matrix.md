@@ -6,7 +6,7 @@ Behavioral authority: [`../../capabilities/capability-matrix.yaml`](../../capabi
 
 - Schema version: `1`
 - Release train: `0.1.0-SNAPSHOT`
-- Capabilities: `8`
+- Capabilities: `9`
 
 ## Capability summary
 
@@ -16,6 +16,7 @@ Behavioral authority: [`../../capabilities/capability-matrix.yaml`](../../capabi
 | [`document.annotations-actions.manage`](#capability-document_dot_annotations_dash_actions_dot_manage) | `document-engine` | `experimental` | [excluded by `T12`](facade-surface.md#excluded-capability-document_dot_annotations_dash_actions_dot_manage) |
 | [`document.blank.create-publish-reopen`](#capability-document_dot_blank_dot_create_dash_publish_dash_reopen) | `document-engine` | `experimental` | [`itext7.kernel.pdf-document.add-new-page`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_add_dash_new_dash_page), [`itext7.kernel.pdf-document.close`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_close), [`itext7.kernel.pdf-document.constructor-reader`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_constructor_dash_reader), [`itext7.kernel.pdf-document.constructor-writer`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_constructor_dash_writer), [`itext7.kernel.pdf-document.get-number-of-pages`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_number_dash_of_dash_pages), [`itext7.kernel.pdf-exception.constructor-message-cause`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_exception_dot_constructor_dash_message_dash_cause), [`itext7.kernel.pdf-page.type`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_page_dot_type), [`itext7.kernel.pdf-reader.close`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_reader_dot_close), [`itext7.kernel.pdf-reader.constructor-string`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_reader_dot_constructor_dash_string), [`itext7.kernel.pdf-writer.constructor-string`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_writer_dot_constructor_dash_string), [`itext7.layout.document.close`](facade-surface.md#facade-surface-itext7_dot_layout_dot_document_dot_close), [`itext7.layout.document.constructor-pdf-document`](facade-surface.md#facade-surface-itext7_dot_layout_dot_document_dot_constructor_dash_pdf_dash_document) |
 | [`document.images-resources.extract`](#capability-document_dot_images_dash_resources_dot_extract) | `document-engine` | `experimental` | [excluded by `T14`](facade-surface.md#excluded-capability-document_dot_images_dash_resources_dot_extract) |
+| [`document.incremental-signature.protect`](#capability-document_dot_incremental_dash_signature_dot_protect) | `document-engine` | `experimental` | [excluded by `T15`](facade-surface.md#excluded-capability-document_dot_incremental_dash_signature_dot_protect) |
 | [`document.metadata.outlines-destinations-attachments`](#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments) | `document-engine` | `experimental` | [excluded by `T11`](facade-surface.md#excluded-capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments) |
 | [`document.page.manipulate-merge-split`](#capability-document_dot_page_dot_manipulate_dash_merge_dash_split) | `document-engine` | `experimental` | [excluded by `T10`](facade-surface.md#excluded-capability-document_dot_page_dot_manipulate_dash_merge_dash_split) |
 | [`document.text-structure.extract`](#capability-document_dot_text_dash_structure_dot_extract) | `document-engine` | `experimental` | [excluded by `T13`](facade-surface.md#excluded-capability-document_dot_text_dash_structure_dot_extract) |
@@ -131,7 +132,7 @@ Read, create, update, remove, flatten, and preserve managed annotations and iner
 - Dependency Gate: [`document.page.manipulate-merge-split`](#capability-document_dot_page_dot_manipulate_dash_merge_dash_split) must be `compatible`
 - Dependency Gate: [`document.metadata.outlines-destinations-attachments`](#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments) must be `compatible`
 - Promotion gate `T06`: Complete the independent acceptance evidence required before compatibility.
-- Limitation: T12 operates in REWRITE workflows; INCREMENTAL remains SAVE_MODE_UNSUPPORTED, and signed-document recognition, DocMDP decisions, and signature-safe changes remain T15.
+- Limitation: T15 admits all T12 commands for unsigned INCREMENTAL publication; a sole coherent DocMDP P=3 policy admits only supported non-Widget UpdateAnnotations changes, while UpdateActions and FlattenAnnotations remain rejected for signed Sources.
 - Limitation: Version 1 manages Text, Stamp, Highlight, FileAttachment, standalone Widget, and Link annotations. Widget values do not create AcroForm fields and cannot be flattened; AcroForm field behavior, form Actions, and form flattening remain outside T12.
 - Limitation: The complete Action allowlist is an inert local GoTo dictionary with one direct page or existing named-destination target, bound only to catalog open, page open or close, and Link annotations. Folio PDF never executes Actions; unsupported or chained Action graphs remain structurally unchanged only during rewrites that need not interpret them and are otherwise rejected before mutation. Source-byte preservation is not claimed.
 - Limitation: Normal appearances are resource-free Form XObjects with an identity matrix, an empty Resources dictionary, a 1 MiB decoded-content limit, semantically range-checked graphics operands, and a strict operator allowlist. Flattening requires a validated normal appearance, isolates pre-existing page content with q/Q, and supports non-Widget annotations only.
@@ -192,8 +193,8 @@ Execute a named-source document transaction and publish validated rewrites to na
 
 - Dependency Gates: none
 - Promotion gate `T06`: Complete the remaining independent standards evidence; the T06 syntax and semantic chains and T07 visual chain are complete.
-- Limitation: INCREMENTAL is represented but fails with SAVE_MODE_UNSUPPORTED until T15 implements revision-preserving publication.
-- Limitation: T03 does not detect or protect signed documents; signed-document read-only enforcement, DocMDP decisions, and signature-safe publication remain T15.
+- Limitation: T15 supplies revision-preserving INCREMENTAL publication through this transaction seam; INCREMENTAL requires an existing primary Source and applies a closed command policy.
+- Limitation: T15 separately recognizes Existing Signatures, rejects signed REWRITE publication, and conservatively authorizes signed incremental changes from DocMDP evidence.
 - Limitation: T03 opens only the explicitly selected primary source unless an ordered Document Command, such as T10 merge, explicitly selects additional named Sources.
 - Limitation: Cancellation and deadlines are checked at T03 transaction boundaries; comprehensive hostile-input limits and worker enforcement remain T20 and T21.
 
@@ -276,7 +277,7 @@ Extract a bounded deterministic inventory of page and nested-Form resources, inc
 - Limitation: Image metadata includes exact dimensions, declared bit depth where applicable, proven component count, classified declared and resolved color-space information, exact filter order and supported effective predictor parameters, Image Mask state, color-key ranges, and explicit or soft image relationships. Pattern color spaces are malformed on Image XObjects. ICCBased wrapper metadata retains its proven component count but is unsupported because version 1 does not certify the profile payload; Indexed stream lookups and Separation or DeviceN tint functions likewise retain classified metadata but are unsupported because version 1 does not recursively certify auxiliary streams or arbitrary PDF functions. Version-1 bounded decoded access supports only unfiltered, ASCIIHexDecode, ASCII85Decode, RunLengthDecode, and FlateDecode Image XObject streams; an empty filter array is unfiltered, decode-parameter container shape follows filter count, and inline-image-only filter abbreviations are rejected, while recognized LZW, DCT, JPX, CCITT, JBIG2, and Crypt filters remain inventory-visible but decoded bytes are unavailable. Filter-specific one-bit, eight-bit, and predictor geometry constraints are enforced even for unselected or unsupported decoded data. External-file streams are never resolved; null F values remain in-file streams, and non-null F values must have a file-specification shape. Subsidiary soft masks require grayscale images with an explicit bit depth and no nested Mask or SMask entry; Matte shape, owner dimensions, and values in the owning color space's declared or default component ranges are enforced. JPX SMaskInData 0, 1, and 2 are reported as no embedded mask, an embedded soft mask, or a preblended embedded soft mask; nonzero values conflict with a subsidiary SMask, malformed JPX values fail, and the meaningless entry is ignored for non-JPX sequences. Malformed color information is classified without backend coercion; malformed unknown filters, dimensions, masks, fonts, and resource graphs fail safely rather than yielding a partial result.
 - Limitation: Encoded and decoded availability and selection are separate. Selected available bytes stream only through aggregate pixel, every filter-stage decompression, and returned-byte bounds; the defensive detached result is published only after all bounds pass and is never exposed on a failed query. Every query also declares exact page, page-tree-node, traversed-resource-value, and resource-depth bounds; version 1 caps resource depth at 64 because Form and image-mask traversal is recursive. These trusted in-process bounds do not provide T20 comprehensive hostile-input enforcement or T21 Worker isolation and codecs.
 - Limitation: Font records expose indirect Object Reference when present, exact BaseFont identity, a six-letter subset prefix, embedding classification, subtype support, declaration locations, and Page Usage. Version 1 validates supported simple, Type 0 descendant, Type 3 CharProcs, and font-program descriptor shapes; direct CIDFontType0 or CIDFontType2 resource entries are malformed because CIDFonts are accepted only as Type 0 descendants. Version 1 does not parse font programs, map glyphs, or infer text usage from content operators.
-- Limitation: T14 is read-only and observes preceding supported Commands in one Session. It publishes only when the Workflow Request declares a Target and otherwise leaves Source bytes unchanged. INCREMENTAL and signed-document policy remain T15, encryption remains T16, drawing remains T17, and image embedding remains T18.
+- Limitation: T14 is read-only and observes preceding T15-authorized Commands in one Session. It publishes only when the Workflow Request declares a Target and otherwise leaves Source bytes unchanged; target-free signed queries are permitted. Encryption remains T16, drawing remains T17, and image embedding remains T18.
 
 ### Evidence
 
@@ -295,6 +296,72 @@ Acceptance Evidence:
 - `syntax`: `pass` — [`capabilities/evidence/T14-image-resource-extraction-syntax.md`](../../capabilities/evidence/T14-image-resource-extraction-syntax.md); producer `qpdf@12.4.0` (`external-tool`)
 
 Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T14 image-resource extraction record`.
+
+<a id="capability-document_dot_incremental_dash_signature_dot_protect"></a>
+## `document.incremental-signature.protect`
+
+Append validated PDF revisions while preserving the complete primary Source and conservatively enforcing Existing Signature permissions.
+
+- Context: `document-engine`
+- Status: `experimental`
+- Reference Suite source: `ISO 32000-1 incremental-update, signature-field, ByteRange, permissions, and DocMDP contracts`
+- Reference role: public standards input only; no third-party implementation or signed artifact is an oracle
+- Acceptance Profile: `T15-incremental-signature-protection`
+- Mandatory evidence chains: `syntax`, `standards`, `semantic`, `visual`
+- Evidence record: [`capabilities/evidence/T15-incremental-signature-protection.md`](../../capabilities/evidence/T15-incremental-signature-protection.md)
+- Certified platforms: none
+
+### Native Interface mapping
+
+- `command`: `net.zerocloud.pdf.DocumentCommand`
+- `entry-point`: `net.zerocloud.pdf.DocumentWorkflow#execute`
+- `failure`: `net.zerocloud.pdf.DocumentFailure`
+- `failure-code`: `net.zerocloud.pdf.DocumentFailureCode`
+- `outcome`: `net.zerocloud.pdf.WorkflowOutcome`
+- `query`: `net.zerocloud.pdf.DocumentQuery`
+- `receipt`: `net.zerocloud.pdf.PublicationReceipt`
+- `request`: `net.zerocloud.pdf.WorkflowRequest`
+- `save-mode`: `net.zerocloud.pdf.SaveMode`
+- `source`: `net.zerocloud.pdf.DocumentSource`
+
+### Migration Facade coverage
+
+- Stable: none
+- Preview: none
+- Explicit exclusion: [`T15`](facade-surface.md#excluded-capability-document_dot_incremental_dash_signature_dot_protect) — T15 is a Native Interface incremental-publication and Existing Signature policy within DocumentWorkflow with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+
+### Gates and limitations
+
+- Dependency Gate: [`document.value.inspect-patch`](#capability-document_dot_value_dot_inspect_dash_patch) must be `compatible`
+- Promotion gate `T06`: Complete the remaining mandatory independent standards, semantic, and visual evidence and close the prerequisite capability gate before compatibility.
+- Limitation: INCREMENTAL requires an existing primary Source, preserves its complete bytes as an unchanged output prefix, appends a non-empty revision, and rejects SplitDocument plus caller-defined or future unclassified commands.
+- Limitation: Signed Sources are queryable without Targets and cannot be republished with REWRITE. Ordinary signatures and DocMDP P=1 or P=2 authorize no current mutation; only a sole coherent DocMDP P=3 certification policy admits supported non-Widget UpdateAnnotations changes.
+- Limitation: Recognition validates inherited signature fields, ByteRange bounds, catalog Perms/DocMDP and UR3 entries, transform references, and every applicable restriction by intersection. Structurally valid unsupported handlers and nonzero-first-offset byte ranges remain protected and grant no mutation.
+- Limitation: Signature-policy inspection is bounded to 4,096 queued field nodes at depth 64, 16 catalog permission entries, 64 entries per signature dictionary, 256 ByteRange entries, 64 signature references, and one indirect-reference resolution at a time; exhaustion or a nested indirect reference fails closed before mutation or publication.
+- Limitation: T15 recognizes and protects Existing Signatures but does not validate signature digests, certificates, identities, trust chains, revocation, or timestamps; signature creation and cryptographic validation remain T38+.
+- Limitation: Parsed COS inspection cannot recover duplicate raw dictionary keys, hexadecimal-versus-literal string delimiters, or other lexical details normalized or repaired by PDFBox. Comprehensive raw hostile-input enforcement remains T20, and the Hardened Worker Profile remains T21.
+- Limitation: Forms, template instantiation, signature creation, and Widget-field mutation remain T34+; encryption remains T16.
+
+### Evidence
+
+Implementation evidence:
+
+- `incremental-signature-workflow-consumer-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/consumer/IncrementalSignatureWorkflowTest.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/consumer/IncrementalSignatureWorkflowTest.java) — Public workflows prove exact Source-prefix retention, non-empty appended revisions, reopen, ordered publication, all Source forms and ownership, missing-Source and closed-command failures, signed query and rewrite policy, ordinary and DocMDP permission decisions, multiple restrictions, P=3 non-Widget annotation changes, malformed and unsupported structures, bounded policy traversal exhaustion, fixed safe failures, NOT_ATTEMPTED receipts, and unchanged Sources and Targets.
+- `transaction-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/consumer/WorkflowTransactionContractTest.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/consumer/WorkflowTransactionContractTest.java) — Incremental publication retains the existing staging, validation, cancellation, deadline, ordered multi-Target, receipt, and safe-diagnostic transaction contract.
+- `public-api-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/contract/PublicApiLeakageIT.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/contract/PublicApiLeakageIT.java) — Public and protected signatures expose no PDFBox signature, permission, or incremental-save type.
+- `artifact-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/contract/JarContractIT.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/contract/JarContractIT.java) — The jar retains its stable module name, Java 8 class-file version, notices, and unbundled backend.
+- `cross-jdk-contract`: [`scripts/verify-jdk-matrix.sh`](../../scripts/verify-jdk-matrix.sh) — Maven verification runs the T15 public workflow contract on JDK 8, 11, 17, and 21.
+- `acceptance-command`: [`scripts/acceptance`](../../scripts/acceptance) — The repository-owned command produces original and appended T15 artifacts through public workflows, checks exact prefix retention and reopen, and records pinned qpdf syntax findings for both unchanged products.
+- `acceptance-reproducibility-contract`: [`pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/AcceptanceEvidenceCommandTest.java`](../../pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/AcceptanceEvidenceCommandTest.java) — Independent command runs reproduce the T15 evidence record and findings plus both artifact hashes under the documented all-revision ID-neutral policy.
+- `authoritative-policy`: [`docs/incremental-signature-policy.md`](../incremental-signature-policy.md) — The version-1 publication, command, Existing Signature, DocMDP, failure, parsed-graph, and downstream contracts are documented.
+- `architectural-decision`: [`docs/adr/0037-authorize-signed-incremental-changes-conservatively.md`](../adr/0037-authorize-signed-incremental-changes-conservatively.md) — The conservative permission-intersection decision and P=3 annotation boundary are recorded.
+- `primary-source-research`: [`docs/research/T15-incremental-signature-primary-sources.md`](../research/T15-incremental-signature-primary-sources.md) — Exact public standards and PDFBox source citations, clean-room boundaries, uncertainties, and derived implementation constraints are recorded.
+
+Acceptance Evidence:
+
+- `syntax`: `pass` — [`capabilities/evidence/T15-incremental-signature-protection-syntax.md`](../../capabilities/evidence/T15-incremental-signature-protection-syntax.md); producer `qpdf@12.4.0` (`external-tool`)
+
+Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T15 incremental-signature-protection record`.
 
 <a id="capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments"></a>
 ## `document.metadata.outlines-destinations-attachments`
@@ -342,7 +409,7 @@ Read, create, update, and preserve document information, XMP metadata, outlines,
 
 - Dependency Gate: [`document.value.inspect-patch`](#capability-document_dot_value_dot_inspect_dash_patch) must be `compatible`
 - Promotion gate `T06`: Complete the independent acceptance evidence required before compatibility.
-- Limitation: T11 operates in REWRITE workflows; INCREMENTAL remains SAVE_MODE_UNSUPPORTED, and signed-document recognition, DocMDP decisions, and signature-safe changes remain T15.
+- Limitation: T15 admits T11 commands for unsigned INCREMENTAL publication; Existing Signatures authorize no T11 command in version 1.
 - Limitation: Outlines are written all-open with positive visible-item counts, and name trees are written as one flat array sorted by unsigned encoded key-byte order; richer tree shapes are read only when they satisfy the proven safe invariants, and are otherwise preserved intact or rejected with PRESERVATION_UNSUPPORTED.
 - Limitation: A page removal that would orphan a managed destination fails with DESTINATION_CONFLICT before mutation; destinations that target pages outside a split selection are dropped from that product, and merge renames colliding destination and embedded-file names with a deterministic -N suffix.
 - Limitation: Inspection and payload bounds are explicit per-query limits failing with METADATA_LIMIT_EXCEEDED; XMP command packets must be well-formed XML carrying the XMP root marker within a 64 MiB bound, and embedded-file MIME subtypes are restricted to printable ASCII; comprehensive hostile-input object, depth, decompression, memory, time, and concurrency enforcement remains T20, and the Hardened Worker Profile and its codecs remain T21.
@@ -402,7 +469,7 @@ Insert, remove, move, and copy pages; append ordered named Sources; and publish 
 
 - Dependency Gate: [`document.blank.create-publish-reopen`](#capability-document_dot_blank_dot_create_dash_publish_dash_reopen) must be `compatible`
 - Promotion gate `T06`: Complete the independent acceptance evidence required before compatibility.
-- Limitation: T10 operates in REWRITE workflows; INCREMENTAL remains SAVE_MODE_UNSUPPORTED, and signed-document recognition, DocMDP decisions, and signature-safe changes remain T15.
+- Limitation: T15 admits T10 primary-document commands for unsigned INCREMENTAL publication but rejects SplitDocument; Existing Signatures authorize no T10 command in version 1.
 - Limitation: Page operations preserve tested inherited boxes, rotation, resources, content, the legacy basic Text-annotation subset, and managed T12 annotations and local GoTo Action bindings when copied or reparented. Before mutation, T10 rejects nonstructural trailer data, nonempty document information, catalogs or page-tree nodes with unproven entries, inconsistent page-tree parents, counts, cycles, repeated nodes, or any direct input page-tree node, missing effective media boxes, malformed box, rotation, or resource entries, resource graphs that reach page or page-tree structures, nested content arrays, external-file content streams, filtered content streams unless they use one parameter-free FlateDecode or Fl filter with a strictly valid zlib payload, content streams with non-engine metadata, unproven indirect page extensions, separation information, unsupported annotation relationships or Action graphs, tagged-page references, and thread beads. Managed document information, XMP metadata, outlines, named destinations, and embedded files are validated, preserved, and retargeted by the document.metadata.outlines-destinations-attachments capability; managed annotations and Actions are validated, preserved, and retargeted by document.annotations-actions.manage; forms and tagged structure remain downstream capability slices.
 - Limitation: Copy, merge, and split preserve semantic page graphs, not source byte layout or backend object identity. Object References are Session-local; public reopen-and-rewrite probes demonstrate that changing an imported content graph leaves its Source and sibling products unchanged.
 - Limitation: T10 validates command ranges, positions, named merge Sources, and exact split Target coverage. A successful SplitDocument is terminal for Document Commands in that workflow; comprehensive hostile-input page, object, depth, decompression, memory, time, and concurrency enforcement remains T20.
@@ -470,7 +537,7 @@ Extract bounded deterministic page text, mapping evidence, marked content, and T
 - Limitation: Character evidence uses independently parsed ToUnicode mappings and explicitly declared simple-font Differences entries for exact codes, otherwise falling back only to a recognized Encoding or BaseEncoding, all mapped through the public Adobe Glyph List. An absent or unknown base supplies no unoverridden mapping. Composite fonts without ToUnicode, font programs, substituted or system fonts, renderers, and backend coercions are never promoted to confident Unicode.
 - Limitation: Marked-content ActualText replaces enclosed aggregate Page Text once with outer replacement precedence, while Alt remains separate. Logical structure uses iterative depth-bounded traversal and supports ordered nested elements, direct page MCIDs and explicit page-content MCR dictionaries, optional StructElem Type values, transitive unqualified RoleMap resolution to the PDF 1.7 standard-role vocabulary, and element-ancestor-catalog language inheritance. Unqualified PDF 2.0-only roles remain unresolved. Elements are visited once and must carry the parent backlink implied by K; repeated/shared elements, inconsistent parents, marked content inside Form XObjects, MCRs carrying Stm or StmOwn, OBJR children, and PDF 2.0 structure namespaces fail safely outside version 1.
 - Limitation: Every query declares page, page-tree-node, content-stream count and depth, decoded-byte, text-item, Unicode, materialized ToUnicode-mapping, font-data-entry, marked-content count and depth, structure-element, structure-item, structure-depth, and RoleMap bounds; content-stream depth has a version-1 ceiling of 32 because backend Form traversal is recursive. Iterative page-tree traversal validates Kids, Parent, Type, Count, cycles, repeated nodes, inherited Resources/MediaBox/CropBox/Rotate, and direct UserUnit within the node bound, supplies detached leaf views, and checks raw Contents arrays before backend traversal. Decoded page content is syntax-checked in the same combined-stream form the backend consumes, including rejection of unterminated tokens and trailing operands without an operator; supported extraction-operator arity, operand types, finite numeric values, text-object placement, and page/Form-local BT/ET and q/Q balance are checked before a result is published. The gs adapter applies only a validated optional Font setting through a detached one-key ExtGState view and ignores unrelated graphics-state arrays and graphs without backend traversal. Full PDF integers for page Count, Differences codes, FormType, and MCIDs are range-checked before narrowing. Form Type, Subtype, BBox, Matrix, Resources, and FormType values and every marked-content begin or end operator inside Forms are validated before backend processing. ToUnicode range expansion, including decimal count syntax, exact bfchar/bfrange counts and terminators, non-reversed source ranges, the carrying increment used by PDFBox's non-strict embedded-font CMap construction, and the endcmap stop, Differences traversal, decoded embedded font-program data, font-data entry kinds, supported explicit font kinds, simple FirstChar/LastChar/Widths values, and CID DW, W, W2, and DW2 traversal and compact-range materialization are bounded or validated before backend font construction; the text-item bound is charged before source-code mapping evidence is published. ToUnicode usecmap, nested CMap composites, invalid UTF-16BE destinations, Type0 Encoding values other than Identity-H or Identity-V, Type0 descendants other than exactly one CIDFontType0 or CIDFontType2 dictionary, embedded Type0 headers that contradict the descendant subtype, and Type3 fonts are outside version 1. These trusted in-process query limits do not provide T20 comprehensive hostile-input enforcement or T21 Worker isolation and codecs.
-- Limitation: T13 is read-only and observes preceding supported Commands in one Session. INCREMENTAL and signed-document policy remain T15; image/resource extraction, encryption, drawing, and later capability slices are not included.
+- Limitation: T13 is read-only and observes preceding T15-authorized Commands in one Session; target-free signed queries are permitted. Image/resource extraction, encryption, drawing, and later capability slices are not included.
 
 ### Evidence
 
@@ -530,7 +597,7 @@ Inspect all nine backend-neutral PDF Value kinds through bounded Session views a
 - Dependency Gate: [`document.blank.create-publish-reopen`](#capability-document_dot_blank_dot_create_dash_publish_dash_reopen) must be `compatible`
 - Promotion gate `T06`: Complete the independent acceptance evidence required before compatibility.
 - Limitation: T09 applies version-1 dictionary-entry replacements in REWRITE workflows; array-element replacement, entry removal, and broader structural editing operations remain future capability slices.
-- Limitation: INCREMENTAL remains SAVE_MODE_UNSUPPORTED, and signed-document recognition, DocMDP decisions, and signature-safe changes remain T15.
+- Limitation: T15 classifies a validated DocumentPatch as representable for unsigned INCREMENTAL publication; Existing Signatures authorize no DocumentPatch in version 1.
 - Limitation: Inspection limits are explicit per-query traversal and decoded-stream bounds; comprehensive hostile-input object, depth, decompression, memory, time, and concurrency enforcement remains T20.
 - Limitation: T09 runs only through the trusted in-process adapter; the Hardened Worker Profile and its codecs remain T21.
 - Limitation: Stream patches accept decoded bytes and reject engine-owned encoding metadata; preservation-sensitive filter and incremental stream changes are not claimed.

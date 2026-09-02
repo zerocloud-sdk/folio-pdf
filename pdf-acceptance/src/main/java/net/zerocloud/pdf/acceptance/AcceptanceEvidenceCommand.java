@@ -71,10 +71,11 @@ import net.zerocloud.pdf.command.UpdateAnnotations;
 import net.zerocloud.pdf.query.ExtractImagesAndResources;
 import net.zerocloud.pdf.query.ExtractTextAndStructure;
 import net.zerocloud.pdf.query.PageObjectReference;
+import net.zerocloud.pdf.query.PageCount;
 
 /**
  * Repository-only command that records T06/T07 evidence and the T10 through
- * T14 syntax chains.
+ * T15 syntax chains.
  */
 public final class AcceptanceEvidenceCommand {
 
@@ -145,12 +146,24 @@ public final class AcceptanceEvidenceCommand {
             "T14-form-mask-inventory.pdf";
     private static final String T14_QPDF_FINDINGS =
             "T14-image-resource-extraction-qpdf.txt";
+    private static final String T15_CAPABILITY =
+            "document.incremental-signature.protect";
+    private static final String T15_ACCEPTANCE_PROFILE =
+            "T15-incremental-signature-protection";
+    private static final String T15_PROFILE_RECORD =
+            "capabilities/evidence/T15-incremental-signature-protection.md";
+    private static final String T15_ORIGINAL_ARTIFACT =
+            "T15-incremental-original.pdf";
+    private static final String T15_INCREMENTAL_ARTIFACT =
+            "T15-incremental-output.pdf";
+    private static final String T15_QPDF_FINDINGS =
+            "T15-incremental-signature-protection-qpdf.txt";
 
     private AcceptanceEvidenceCommand() {
     }
 
     /**
-     * Runs the built-in T03 Acceptance Profile and the T10 through T14 syntax
+     * Runs the built-in T03 Acceptance Profile and the T10 through T15 syntax
      * chains.
      *
      * @param arguments output directory, pinned tool and profile authorities,
@@ -376,6 +389,29 @@ public final class AcceptanceEvidenceCommand {
                 qpdfPin,
                 releaseTrain);
 
+        EvidenceResult t15Syntax = recordProductSyntax(
+                new ProductChain(
+                        "T15",
+                        T15_CAPABILITY,
+                        T15_ACCEPTANCE_PROFILE,
+                        T15_PROFILE_RECORD,
+                        T15_ORIGINAL_ARTIFACT,
+                        T15_INCREMENTAL_ARTIFACT,
+                        T15_QPDF_FINDINGS,
+                        "T15-incremental-signature-protection-syntax.md",
+                        ProductHashPolicy.REVISION_ID_NEUTRAL),
+                new ProductCreator() {
+                    @Override
+                    public void create(Path original, Path incremental)
+                            throws Exception {
+                        createT15Products(original, incremental);
+                    }
+                },
+                output,
+                artifacts,
+                qpdfPin,
+                releaseTrain);
+
         System.out.println("Acceptance Profile determination: "
                 + profileDetermination.recordValue());
         System.out.println("T07 visual chain: " + visual.result().recordValue());
@@ -384,6 +420,7 @@ public final class AcceptanceEvidenceCommand {
         System.out.println("T12 syntax chain: " + t12Syntax.recordValue());
         System.out.println("T13 syntax chain: " + t13Syntax.recordValue());
         System.out.println("T14 syntax chain: " + t14Syntax.recordValue());
+        System.out.println("T15 syntax chain: " + t15Syntax.recordValue());
     }
 
     private interface ProductCreator {
@@ -460,6 +497,15 @@ public final class AcceptanceEvidenceCommand {
             @Override
             String hash(Path artifact) throws IOException {
                 return EvidenceFiles.idNeutralPdfSha256(artifact);
+            }
+        },
+        REVISION_ID_NEUTRAL(
+                "Input revision-ID-neutral SHA-256",
+                "Input revision-ID-neutral set SHA-256",
+                EvidenceFiles.revisionInputHashPolicy()) {
+            @Override
+            String hash(Path artifact) throws IOException {
+                return EvidenceFiles.revisionIdNeutralPdfSha256(artifact);
             }
         };
 
@@ -622,6 +668,67 @@ public final class AcceptanceEvidenceCommand {
             return null;
         });
         return output.toByteArray();
+    }
+
+    private static void createT15Products(Path original, Path incremental)
+            throws Exception {
+        WorkflowOutcome<Void> originalOutcome = new DocumentWorkflow().execute(
+                WorkflowRequest.create(original, SaveMode.REWRITE),
+                session -> {
+                    session.execute(AddBlankPage.INSTANCE);
+                    return null;
+                });
+        requireCommitted(originalOutcome, "T15 original");
+        byte[] originalRevision = Files.readAllBytes(original);
+
+        WorkflowOutcome<Integer> incrementalOutcome =
+                new DocumentWorkflow().execute(
+                        WorkflowRequest.builder()
+                                .source(
+                                        "original",
+                                        DocumentSource.path(original))
+                                .primarySource("original")
+                                .target(
+                                        "incremental",
+                                        PublicationTarget.path(incremental))
+                                .saveMode(SaveMode.INCREMENTAL)
+                                .build(),
+                        session -> {
+                            session.execute(AddBlankPage.INSTANCE);
+                            return session.query(PageCount.INSTANCE);
+                        });
+        requireCommitted(incrementalOutcome, "T15 incremental");
+        if (!Integer.valueOf(2).equals(incrementalOutcome.getResult())) {
+            throw new IllegalStateException(
+                    "T15 incremental product did not contain two pages");
+        }
+        byte[] appendedRevision = Files.readAllBytes(incremental);
+        if (appendedRevision.length <= originalRevision.length
+                || !Arrays.equals(
+                        originalRevision,
+                        Arrays.copyOf(
+                                appendedRevision,
+                                originalRevision.length))) {
+            throw new IllegalStateException(
+                    "T15 incremental product did not preserve its Source prefix");
+        }
+        Integer reopenedPages = new DocumentWorkflow().execute(
+                WorkflowRequest.open(incremental, SaveMode.REWRITE),
+                session -> session.query(PageCount.INSTANCE)).getResult();
+        if (!Integer.valueOf(2).equals(reopenedPages)) {
+            throw new IllegalStateException(
+                    "T15 incremental product did not reopen with two pages");
+        }
+    }
+
+    private static void requireCommitted(
+            WorkflowOutcome<?> outcome,
+            String product) {
+        if (outcome.getPublicationReceipts().size() != 1
+                || outcome.getPublicationReceipts().get(0).getStatus()
+                        != PublicationStatus.COMMITTED) {
+            throw new IllegalStateException(product + " was not committed");
+        }
     }
 
     private static void createT11Products(Path front, Path back)

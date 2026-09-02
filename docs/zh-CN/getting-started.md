@@ -67,17 +67,18 @@ stream；每个目标都会得到 `COMMITTED`、`FAILED` 或
 `NOT_ATTEMPTED` 收据。调用方提供的资源不会被关闭，多个目标之间不承诺
 全局原子性，stream 写入失败时可能留下部分输出。
 
-`REWRITE` 是当前支持的 Save Mode。`INCREMENTAL` 已在接口中表示，但在
-T15 实现增量发布前会返回稳定的 `SAVE_MODE_UNSUPPORTED`。T03 还提供显式
+`REWRITE` 发布完整替换文件。`INCREMENTAL` 要求已有 primary Source，保持
+Source 的全部字节作为不变前缀，并按版本 1 命令策略追加非空修订。T03 还提供显式
 取消、期限和不携带路径、文件名、内容、元数据、凭据或后端异常的进度阶段。
 不可变的 `WorkflowEnvironment` 持有期限检查所需的 Clock；成功的
 `WorkflowOutcome` 会给出 capability ID、进程内执行配置、Save Mode、安全
 诊断和每个目标的收据。PDFBox 仅作为 `pdf-document` 的内部实现依赖，不会
 出现在公开接口中。
 
-T03 尚不检测或保护已签名文档。请勿把已签名文档交给会修改内容的
-`REWRITE` 工作流；签名文档默认只读策略、DocMDP 判断和签名安全的增量发布
-仍属于 T15。
+已有签名会受到保守保护：已签名 Source 可用于无 Target 的只读 Query，不能以
+`REWRITE` 重新发布；只有唯一且一致的 DocMDP P=3 策略可授权受支持的非 Widget
+`UpdateAnnotations` 命令。普通签名以及 DocMDP P=1/P=2 不授权当前修改。完整规则
+见英文权威文档 [增量发布与已有签名策略](../incremental-signature-policy.md)。
 
 英文 README、Javadoc、ADR、Capability Matrix 和 API 契约是权威规范；本页
 提供中文使用说明。如有安全问题，请按 [SECURITY.md](../../SECURITY.md) 中的

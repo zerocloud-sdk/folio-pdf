@@ -26,7 +26,7 @@ caller-owned stream Targets are covered.
   command enforcement, and Path-source release across success and failures.
 - `WorkflowTransactionContractTest` covers named primary selection, all T03
   Source forms and ownership, source limits, request invariants, explicit
-  REWRITE, stable unsupported INCREMENTAL, successful multi-target
+  REWRITE, the stable missing-Source INCREMENTAL refusal, successful multi-target
   publication, validation-before-publication, partial stream failure,
   cancellation, deterministic deadlines through Workflow Environment,
   immutable outcome information, nested-failure receipt isolation, and
@@ -51,10 +51,10 @@ remain `COMMITTED`, the failing Target is `FAILED`, and later Targets are
 `NOT_ATTEMPTED`. Path replacement is staged and atomic where the platform
 supports it. Caller-owned streams and channels are never closed.
 
-T03 makes no signed-document preservation claim. It does not detect existing
-signatures or decide DocMDP permissions; default read-only enforcement and
-signature-safe incremental publication remain T15. Signed documents must not
-be submitted to a mutating T03 REWRITE workflow.
+T03 itself makes no signed-document preservation claim. The separate T15
+capability now supplies incremental prefix preservation, Existing Signature
+recognition, signed-REWRITE refusal, and conservative DocMDP authorization
+through the same transaction seam.
 
 The PDF fixtures are generated entirely through the project-owned Native
 Interface. Apache PDFBox 3.0.8 remains behind project-owned public types. This

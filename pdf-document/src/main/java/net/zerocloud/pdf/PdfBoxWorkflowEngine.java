@@ -10,8 +10,11 @@ import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.Clock;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +25,8 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 final class PdfBoxWorkflowEngine {
 
     static final String CAPABILITY_ID = "document.blank.create-publish-reopen";
+    static final String INCREMENTAL_CAPABILITY_ID =
+            "document.incremental-signature.protect";
 
     private PdfBoxWorkflowEngine() {
     }
@@ -53,14 +58,18 @@ final class PdfBoxWorkflowEngine {
             Clock clock,
             List<ProviderSelection> providerSelections) throws DocumentFailure {
         if (request.getSaveMode() == SaveMode.INCREMENTAL) {
-            throw failure(
-                    DocumentFailureCode.SAVE_MODE_UNSUPPORTED,
-                    "INCREMENTAL publication is not supported until T15.");
+            if (request.getSources().isEmpty()) {
+                throw new DocumentFailure(
+                        DocumentFailureCode.INCREMENTAL_SOURCE_REQUIRED,
+                        INCREMENTAL_CAPABILITY_ID,
+                        "INCREMENTAL publication requires an existing primary Source.");
+            }
         }
-        if (request.getSaveMode() != SaveMode.REWRITE) {
+        if (request.getSaveMode() != SaveMode.REWRITE
+                && request.getSaveMode() != SaveMode.INCREMENTAL) {
             throw failure(
                     DocumentFailureCode.INVALID_REQUEST,
-                    "The workflow request must select REWRITE.");
+                    "The workflow request must select a supported Save Mode.");
         }
         requireExecutionAllowed(request, clock);
         emit(request, WorkflowProgressPhase.STARTED);
@@ -74,6 +83,8 @@ final class PdfBoxWorkflowEngine {
                 preflightTargets(request.getPublicationTargets());
 
         PDDocument document;
+        long sourceLength = -1L;
+        SourceFingerprint sourceFingerprint = null;
         if (request.getSources().isEmpty()) {
             document = createDocument();
         } else {
@@ -84,20 +95,45 @@ final class PdfBoxWorkflowEngine {
                         DocumentFailureCode.INVALID_REQUEST,
                         "The workflow request must select a declared primary source.");
             }
-            document = openDocument(source);
+            OpenedDocument opened = openPrimaryDocument(source, true);
+            document = opened.document;
+            sourceLength = opened.sourceLength;
+            sourceFingerprint = opened.fingerprint;
+        }
+
+        PdfBoxSignaturePolicy signaturePolicy;
+        try {
+            signaturePolicy = PdfBoxSignaturePolicy.inspect(document, sourceLength);
+        } catch (DocumentFailure policyFailure) {
+            closeQuietly(document);
+            throw policyFailure;
         }
 
         return executeWithDocument(
                 document,
+                signaturePolicy,
                 request,
                 publicationTargets,
                 work,
                 clock,
-                providerSelections);
+                providerSelections,
+                sourceFingerprint);
     }
 
     static DocumentFailure failure(DocumentFailureCode code, String diagnostic) {
         return new DocumentFailure(code, CAPABILITY_ID, diagnostic);
+    }
+
+    static DocumentFailure incrementalFailure(
+            DocumentFailureCode code,
+            String diagnostic) {
+        return new DocumentFailure(code, INCREMENTAL_CAPABILITY_ID, diagnostic);
+    }
+
+    static DocumentFailure signaturePolicyFailure() {
+        return incrementalFailure(
+                DocumentFailureCode.SIGNATURE_POLICY_REJECTED,
+                "The Existing Signature policy does not permit this workflow.");
     }
 
     private static DocumentFailure failure(
@@ -117,22 +153,33 @@ final class PdfBoxWorkflowEngine {
 
     private static <R> WorkflowOutcome<R> executeWithDocument(
             PDDocument initialDocument,
+            PdfBoxSignaturePolicy signaturePolicy,
             WorkflowRequest request,
             List<PublicationTargetAdapter> publicationTargets,
             DocumentWork<R> work,
             Clock clock,
-            List<ProviderSelection> providerSelections) throws DocumentFailure {
+            List<ProviderSelection> providerSelections,
+            SourceFingerprint sourceFingerprint) throws DocumentFailure {
         PDDocument document = initialDocument;
         PdfBoxDocumentSession session = new PdfBoxDocumentSession(
                 document,
                 request.getSources(),
                 request.getPrimarySourceName(),
-                request.getPublicationTargets());
+                request.getPublicationTargets(),
+                request.getSaveMode(),
+                signaturePolicy);
         List<Path> stagedDocuments = new ArrayList<Path>();
         Map<String, PDDocument> splitDocuments = null;
 
         try {
             requireExecutionAllowed(request, clock);
+            if (signaturePolicy.hasExistingSignatures()
+                    && request.getSaveMode() == SaveMode.REWRITE
+                    && !publicationTargets.isEmpty()) {
+                throw incrementalFailure(
+                        DocumentFailureCode.SIGNED_REWRITE_REJECTED,
+                        "A Source with an Existing Signature cannot be published with REWRITE.");
+            }
             if (!request.getSources().isEmpty()) {
                 emit(request, WorkflowProgressPhase.SOURCE_OPENED);
             }
@@ -152,6 +199,14 @@ final class PdfBoxWorkflowEngine {
             emit(request, WorkflowProgressPhase.WORK_COMPLETED);
             requireExecutionAllowed(request, clock);
 
+                if (signaturePolicy.hasExistingSignatures()
+                    && request.getSaveMode() == SaveMode.INCREMENTAL
+                    && !publicationTargets.isEmpty()
+                    && !signaturePolicy.permitsSignedPublication(
+                            session.hasMutationOccurred())) {
+                throw signaturePolicyFailure();
+            }
+
             if (publicationTargets.isEmpty()) {
                 closeForSuccess(document);
                 document = null;
@@ -168,7 +223,10 @@ final class PdfBoxWorkflowEngine {
                 if (splitDocuments == null) {
                     Path staged = Files.createTempFile(".folio-pdf-", ".pdf");
                     stagedDocuments.add(staged);
-                    document.save(staged.toFile());
+                    save(document, staged, request.getSaveMode());
+                    if (request.getSaveMode() == SaveMode.INCREMENTAL) {
+                        validateIncrementalRevision(staged, sourceFingerprint);
+                    }
                 } else {
                     for (PublicationTargetAdapter target : publicationTargets) {
                         Path staged = Files.createTempFile(
@@ -229,12 +287,26 @@ final class PdfBoxWorkflowEngine {
             List<ProviderSelection> providerSelections) {
         return new WorkflowOutcome<R>(
                 result,
-                capabilityId,
+                request.getSaveMode() == SaveMode.INCREMENTAL
+                        ? INCREMENTAL_CAPABILITY_ID : capabilityId,
                 WorkflowExecutionProfile.IN_PROCESS,
                 request.getSaveMode(),
                 Collections.<String>emptyList(),
                 receipts,
                 providerSelections);
+    }
+
+    private static void save(
+            PDDocument document,
+            Path staged,
+            SaveMode saveMode) throws IOException {
+        if (saveMode == SaveMode.INCREMENTAL) {
+            try (OutputStream output = Files.newOutputStream(staged)) {
+                document.saveIncremental(output);
+            }
+        } else {
+            document.save(staged.toFile());
+        }
     }
 
     private static List<PublicationTargetAdapter> preflightTargets(
@@ -345,21 +417,53 @@ final class PdfBoxWorkflowEngine {
 
     static PDDocument openDocument(DocumentSource source)
             throws DocumentFailure {
+        return openPrimaryDocument(source, false).document;
+    }
+
+    private static OpenedDocument openPrimaryDocument(
+            DocumentSource source,
+            boolean captureFingerprint)
+            throws DocumentFailure {
         switch (source.getKind()) {
             case PATH:
-                return loadPathDocument(source.getPath());
-            case STREAM:
-                return loadByteDocument(readCallerStream(
-                        source.getStream(),
-                        source.getMaximumBytes()));
-            case CHANNEL:
-                return loadByteDocument(readCallerChannel(
-                        source.getChannel(),
-                        source.getMaximumBytes()));
-            case BYTES:
-                return loadByteDocument(requireBoundedBytes(
-                        source.getBytes(),
-                        source.getMaximumBytes()));
+                try {
+                    Path path = source.getPath().toAbsolutePath().normalize();
+                    long length = Files.size(path);
+                    SourceFingerprint fingerprint = captureFingerprint
+                            ? fingerprint(path, length) : null;
+                    return new OpenedDocument(
+                            loadPathDocument(path),
+                            length,
+                            fingerprint);
+                } catch (IOException | RuntimeException failure) {
+                    throw failure(
+                            DocumentFailureCode.SOURCE_READ_FAILED,
+                            "The source could not be opened as a PDF document.");
+                }
+            case STREAM: {
+                byte[] bytes = readCallerStream(
+                        source.getStream(), source.getMaximumBytes());
+                return new OpenedDocument(
+                        loadByteDocument(bytes),
+                        bytes.length,
+                        captureFingerprint ? fingerprint(bytes) : null);
+            }
+            case CHANNEL: {
+                byte[] bytes = readCallerChannel(
+                        source.getChannel(), source.getMaximumBytes());
+                return new OpenedDocument(
+                        loadByteDocument(bytes),
+                        bytes.length,
+                        captureFingerprint ? fingerprint(bytes) : null);
+            }
+            case BYTES: {
+                byte[] bytes = requireBoundedBytes(
+                        source.getBytes(), source.getMaximumBytes());
+                return new OpenedDocument(
+                        loadByteDocument(bytes),
+                        bytes.length,
+                        captureFingerprint ? fingerprint(bytes) : null);
+            }
             default:
                 throw new IllegalStateException("Unsupported source kind.");
         }
@@ -503,6 +607,79 @@ final class PdfBoxWorkflowEngine {
         } finally {
             closeQuietly(validationDocument);
         }
+    }
+
+    private static void validateIncrementalRevision(
+            Path staged,
+            SourceFingerprint source) throws DocumentFailure {
+        if (source == null) {
+            throw failure(
+                    DocumentFailureCode.DOCUMENT_VALIDATION_FAILED,
+                    "The staged incremental revision could not be validated.");
+        }
+        try {
+            if (Files.size(staged) <= source.length) {
+                throw incrementalValidationFailure();
+            }
+            MessageDigest digest = sha256();
+            long remaining = source.length;
+            try (InputStream input = Files.newInputStream(staged)) {
+                byte[] buffer = new byte[8192];
+                while (remaining > 0L) {
+                    int read = input.read(
+                            buffer,
+                            0,
+                            (int) Math.min(buffer.length, remaining));
+                    if (read < 0) {
+                        throw incrementalValidationFailure();
+                    }
+                    if (read > 0) {
+                        digest.update(buffer, 0, read);
+                        remaining -= read;
+                    }
+                }
+            }
+            if (!Arrays.equals(source.sha256, digest.digest())) {
+                throw incrementalValidationFailure();
+            }
+        } catch (DocumentFailure failure) {
+            throw failure;
+        } catch (IOException | RuntimeException failure) {
+            throw incrementalValidationFailure();
+        }
+    }
+
+    private static SourceFingerprint fingerprint(Path source, long length)
+            throws IOException {
+        MessageDigest digest = sha256();
+        try (InputStream input = Files.newInputStream(source)) {
+            byte[] buffer = new byte[8192];
+            int read;
+            while ((read = input.read(buffer)) != -1) {
+                if (read > 0) {
+                    digest.update(buffer, 0, read);
+                }
+            }
+        }
+        return new SourceFingerprint(length, digest.digest());
+    }
+
+    private static SourceFingerprint fingerprint(byte[] source) {
+        return new SourceFingerprint(source.length, sha256().digest(source));
+    }
+
+    private static MessageDigest sha256() {
+        try {
+            return MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException unavailable) {
+            throw new IllegalStateException("SHA-256 is unavailable.", unavailable);
+        }
+    }
+
+    private static DocumentFailure incrementalValidationFailure() {
+        return failure(
+                DocumentFailureCode.DOCUMENT_VALIDATION_FAILED,
+                "The staged incremental revision does not preserve its Source prefix.");
     }
 
     private static void publishPath(Path staged, Path target)
@@ -693,6 +870,33 @@ final class PdfBoxWorkflowEngine {
     private static final class SourceLimitExceeded extends IOException {
 
         private static final long serialVersionUID = 1L;
+    }
+
+    private static final class OpenedDocument {
+
+        private final PDDocument document;
+        private final long sourceLength;
+        private final SourceFingerprint fingerprint;
+
+        private OpenedDocument(
+                PDDocument document,
+                long sourceLength,
+                SourceFingerprint fingerprint) {
+            this.document = document;
+            this.sourceLength = sourceLength;
+            this.fingerprint = fingerprint;
+        }
+    }
+
+    private static final class SourceFingerprint {
+
+        private final long length;
+        private final byte[] sha256;
+
+        private SourceFingerprint(long length, byte[] sha256) {
+            this.length = length;
+            this.sha256 = sha256;
+        }
     }
 
     private static final class BoundedByteAccumulator {

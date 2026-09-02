@@ -559,6 +559,65 @@ documentation, and project-owned tests are the permitted design inputs.
   is `experimental`, so T14 remains `experimental` with no certified-platform
   claim.
 
+## T15 incremental-signature-protection record
+
+- Authorship: OpenAI Codex generated and integrated the T15 implementation,
+  tests, research, evidence, and documentation at repository operator
+  MaBaiqiu's direction. No T15 commit was created in this execution.
+- Project inputs: GitHub issues #1, #10, and #16; `CONTEXT.md`; ADR-0005,
+  0009, 0011, 0013, 0016, 0017, 0019, 0023, 0025, and 0029; the repository
+  workflow, annotation, inventory, and acceptance contracts; and the accepted
+  T03 and T09 through T14 implementation and evidence.
+- Public standards and API inputs: ISO 32000-1:2008 clauses 7.5.6, 12.8.1,
+  12.8.2.2, and 12.8.4 and Tables 252, 254, and 258 supplied the public
+  incremental-update, signature dictionary, ByteRange, DocMDP, and permissions
+  contracts. Official Apache PDFBox 3.0.8 Javadocs and Apache-2.0 source for
+  `PDDocument.saveIncremental`, signature discovery, COS loading, and update
+  tracking supplied public backend behavior and its limitations. Exact URLs,
+  source revisions, retrieval results, line citations, hashes, licenses,
+  uncertainties, and derived decisions are recorded in
+  `docs/research/T15-incremental-signature-primary-sources.md`.
+- Runtime and test dependencies: T15 adds no dependency. Apache PDFBox 3.0.8
+  remains the private Apache-2.0 implementation dependency and JUnit 4.13.2
+  remains the test dependency; their existing coordinates and licenses remain
+  recorded in [DEPENDENCIES.md](DEPENDENCIES.md).
+- Project-authored fixtures: every signed fixture is deterministic minimal PDF
+  syntax authored for T15 and contains placeholder structural signature bytes,
+  not a cryptographically valid third-party signature. Fixtures cover inherited
+  fields, optional signature Type, general ByteRange pairs, ordinary and
+  DocMDP P=1/P=2/P=3 policies, multiple restrictions, unsupported transforms,
+  invalid ranges, cycles, permission contradictions, indirect critical
+  DocMDP values, and local field, signature-dictionary, ByteRange, and
+  signature-reference policy-limit exhaustion. Acceptance artifacts are
+  produced only through the project-owned
+  `DocumentWorkflow.execute` seam.
+- Evidence boundary: the acceptance command verifies exact Source-prefix
+  retention, a non-empty appended revision, a committed receipt, and public
+  reopen as an implementation precondition, then submits the unmodified
+  original and incremental products to pinned qpdf 12.4.0. Only qpdf's result
+  is recorded as independent syntax Acceptance Evidence. The reproducibility
+  hash replaces every hexadecimal two-value trailer `/ID` with equal-length
+  ASCII zeroes; every other byte remains significant and tool inputs are never
+  normalized or rewritten.
+- Generated documentation: `docs/generated/capability-matrix.md` and
+  `docs/generated/facade-surface.md` are deterministic renderings of the YAML
+  authorities and contain no copied external content.
+- Excluded inputs: no iText source, resource, fixture, binary, output,
+  decompiled or binary-derived implementation detail, closed add-on material,
+  proprietary differential evidence, external signed PDF, certificate,
+  private key, or Reference Suite behavioral oracle was used.
+- Scope: T15 recognizes and protects Existing Signatures, authorizes only the
+  narrow version-1 DocMDP P=3 non-Widget annotation footprint, and appends
+  Source-preserving revisions. It does not implement encryption (T16),
+  comprehensive raw hostile-input enforcement (T20), Worker isolation (T21),
+  Forms or signature creation (T34+), or cryptographic signature and trust
+  validation (T38+).
+- Compatibility Curator evidence: T15 has a passing qpdf syntax record only.
+  Mandatory standards, semantic, and visual chains remain absent, its T09
+  Dependency Gate remains open while T09 is `experimental`, and T06 remains a
+  promotion gate. T15 therefore remains `experimental` with no compatible or
+  certified-platform claim.
+
 ## T07 independent-visual-evidence record
 
 - Authorship: OpenAI Codex generated and integrated the T07 repository-only

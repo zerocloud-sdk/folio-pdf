@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Objects;
 import net.zerocloud.pdf.command.AddBlankPage;
 import net.zerocloud.pdf.command.SetNamedDestinations;
+import net.zerocloud.pdf.command.UpdateAnnotations;
 import net.zerocloud.pdf.query.DocumentRootReference;
 import net.zerocloud.pdf.query.InspectObject;
 import net.zerocloud.pdf.query.PageCount;
@@ -24,14 +25,19 @@ final class PdfBoxDocumentSession implements DocumentSession {
     private final PdfBoxImageResourceExtractionOperations
             imageResourceExtractionOperations;
     private final PdfBoxPageOperations pageOperations;
+    private final SaveMode saveMode;
+    private final PdfBoxSignaturePolicy signaturePolicy;
     private String outcomeCapabilityId;
+    private boolean mutationOccurred;
     private volatile boolean active;
 
     PdfBoxDocumentSession(
             PDDocument document,
             Map<String, DocumentSource> sources,
             String primarySourceName,
-            Map<String, PublicationTarget> publicationTargets) {
+            Map<String, PublicationTarget> publicationTargets,
+            SaveMode saveMode,
+            PdfBoxSignaturePolicy signaturePolicy) {
         this.document = Objects.requireNonNull(document, "document");
         this.owner = Thread.currentThread();
         this.valueAdapter = new PdfBoxValueAdapter(document, this);
@@ -57,6 +63,10 @@ final class PdfBoxDocumentSession implements DocumentSession {
                 valueAdapter,
                 metadataOperations,
                 annotationPageOperations);
+        this.saveMode = Objects.requireNonNull(saveMode, "saveMode");
+        this.signaturePolicy = Objects.requireNonNull(
+                signaturePolicy,
+                "signaturePolicy");
         this.outcomeCapabilityId = PdfBoxWorkflowEngine.CAPABILITY_ID;
         this.active = true;
     }
@@ -66,6 +76,25 @@ final class PdfBoxDocumentSession implements DocumentSession {
         requireActiveOwner();
         Objects.requireNonNull(command, "command");
         pageOperations.requireCommandAllowed();
+        if (saveMode == SaveMode.REWRITE
+                && signaturePolicy.hasExistingSignatures()) {
+            throw PdfBoxWorkflowEngine.signaturePolicyFailure();
+        }
+        if (saveMode == SaveMode.INCREMENTAL
+                && !PdfBoxIncrementalCommandPolicy.supports(command)) {
+            throw PdfBoxWorkflowEngine.incrementalFailure(
+                    DocumentFailureCode.INCREMENTAL_COMMAND_REJECTED,
+                    "The command is not supported for INCREMENTAL publication.");
+        }
+        if (saveMode == SaveMode.INCREMENTAL
+                && !signaturePolicy.permits(command)) {
+            throw PdfBoxWorkflowEngine.signaturePolicyFailure();
+        }
+        if (saveMode == SaveMode.INCREMENTAL
+                && signaturePolicy.requiresNonWidgetAnnotationPolicy(command)) {
+            annotationOperations.requireNonWidgetSignatureUpdate(
+                    (UpdateAnnotations) command);
+        }
 
         if (command == AddBlankPage.INSTANCE) {
             try {
@@ -73,6 +102,7 @@ final class PdfBoxDocumentSession implements DocumentSession {
                 page.setResources(new PDResources());
                 document.addPage(page);
                 pageOperations.makeLibraryOwnedPageIndirect(page);
+                mutationOccurred = true;
                 return;
             } catch (RuntimeException backendFailure) {
                 throw PdfBoxWorkflowEngine.failure(
@@ -84,6 +114,7 @@ final class PdfBoxDocumentSession implements DocumentSession {
         if (pageOperations.supports(command)) {
             outcomeCapabilityId = PdfBoxPageOperations.CAPABILITY_ID;
             pageOperations.execute(command);
+            mutationOccurred = true;
             return;
         }
 
@@ -94,12 +125,14 @@ final class PdfBoxDocumentSession implements DocumentSession {
             }
             outcomeCapabilityId = PdfBoxMetadataOperations.CAPABILITY_ID;
             metadataOperations.execute(command);
+            mutationOccurred = true;
             return;
         }
 
         if (annotationOperations.supports(command)) {
             outcomeCapabilityId = PdfBoxAnnotationOperations.CAPABILITY_ID;
             annotationOperations.execute(command);
+            mutationOccurred = true;
             return;
         }
 
@@ -107,6 +140,7 @@ final class PdfBoxDocumentSession implements DocumentSession {
             outcomeCapabilityId = PdfBoxValueAdapter.CAPABILITY_ID;
             try {
                 valueAdapter.apply((DocumentPatch) command);
+                mutationOccurred = true;
                 return;
             } catch (RuntimeException backendFailure) {
                 throw PdfBoxValueAdapter.failure(
@@ -118,6 +152,10 @@ final class PdfBoxDocumentSession implements DocumentSession {
         throw PdfBoxWorkflowEngine.failure(
                 DocumentFailureCode.COMMAND_REJECTED,
                 "The command is not supported by this workflow version.");
+    }
+
+    boolean hasMutationOccurred() {
+        return mutationOccurred;
     }
 
     @Override

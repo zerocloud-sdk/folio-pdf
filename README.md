@@ -260,17 +260,21 @@ be Paths, caller-owned streams, caller-owned channels, or bounded bytes.
 Targets may be Paths or caller-owned streams. Caller-owned resources are never
 closed.
 
-`REWRITE` is the supported publication mode. `INCREMENTAL` is represented
-but returns the stable `SAVE_MODE_UNSUPPORTED` failure until T15. Each
+`REWRITE` publishes a complete replacement. `INCREMENTAL` requires an existing
+primary Source, preserves all Source bytes as an unchanged prefix, and appends
+a non-empty revision for commands in the version-1 policy. Each
 successful or partially attempted publication reports Targets in declaration
 order as `COMMITTED`, `FAILED`, or `NOT_ATTEMPTED`; there is no
 cross-Target atomicity, and a failed stream may contain partial output.
 Operational failures use checked `DocumentFailure` values with stable codes,
 safe diagnostics, and available per-Target receipts.
 
-T03 does not yet detect or protect signed documents. Do not submit a signed
-document to a mutating `REWRITE` workflow; signed-document read-only policy,
-DocMDP decisions, and signature-safe incremental publication remain T15.
+Existing signatures are protected conservatively: signed Sources remain
+available to target-free queries, cannot be republished with `REWRITE`, and
+reject mutation unless a sole coherent DocMDP P=3 policy permits a supported
+non-Widget `UpdateAnnotations` command. Ordinary signatures and DocMDP P=1 or
+P=2 permit no current mutation. See the authoritative
+[incremental publication and Existing Signature guide](docs/incremental-signature-policy.md).
 
 The Document Engine also exposes backend-neutral PDF Values and validated
 Document Patches (T09), page manipulation/merge/split (T10), document

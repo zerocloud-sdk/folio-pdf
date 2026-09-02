@@ -10,10 +10,9 @@ public enum SaveMode {
     REWRITE,
 
     /**
-     * Append a new revision while preserving earlier revisions.
-     *
-     * <p>This value is reserved by the public vocabulary but returns
-     * {@link DocumentFailureCode#SAVE_MODE_UNSUPPORTED} until T15.</p>
+     * Append a new revision while preserving the complete primary Source as
+     * an unchanged prefix, subject to the incremental command and Existing
+     * Signature permission policy.
      */
     INCREMENTAL
 }

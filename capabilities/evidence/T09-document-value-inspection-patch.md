@@ -45,8 +45,9 @@ command applied only after Document Engine validation.
 
 T09 changes only custom low-level values attached through a validated Patch;
 it does not change the built-in blank-page command, page resources, or the T06
-blank-document artifact and evidence records. `INCREMENTAL` remains
-`SAVE_MODE_UNSUPPORTED`; signed-document rules remain T15, comprehensive
+blank-document artifact and evidence records. T15 separately classifies a
+validated `DocumentPatch` as representable for unsigned incremental Sources;
+signed Sources do not authorize it. Comprehensive
 hostile-input policy remains T20, and the Hardened Worker Profile remains T21.
 
 This record is implementation evidence, not independent Acceptance Evidence.

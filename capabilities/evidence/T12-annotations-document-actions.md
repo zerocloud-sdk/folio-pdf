@@ -107,7 +107,8 @@ an Action and does not expose PDFBox or another backend type.
   `./scripts/verify-jdk-matrix.sh` then passed the complete reactor on JDK 8,
   11, 17, and 21.
 
-T12 operates only in `REWRITE` workflows. Version 1 allows only local GoTo
+T12 operates in `REWRITE` and, for unsigned Sources, T15-classified
+`INCREMENTAL` workflows. Version 1 allows only local GoTo
 Action dictionaries with a direct page or existing named-destination target,
 bound to catalog open, page open or close, or Link activation. All Actions are
 inert. Widget support is annotation-only and does not create or flatten an

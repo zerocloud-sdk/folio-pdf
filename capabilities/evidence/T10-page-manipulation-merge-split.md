@@ -121,7 +121,8 @@ command maps every declared publication Target exactly once.
   reproduced where a public observation exists and remediated before the final
   independent review gate.
 
-T10 operates only in `REWRITE` workflows. It preserves the tested safe
+T10 operates in `REWRITE` and, for unsigned primary Sources, T15-classified
+`INCREMENTAL` workflows. It preserves the tested safe
 page-owned and inherited semantics. Before any page command, it conservatively
 rejects nonstructural trailer data, nonempty document information, catalog and
 page-tree-node extensions outside the proven basic structure, inconsistent
@@ -142,8 +143,9 @@ when managed and proven-safe legacy Text entries coexist in either order.
 Metadata, outline, destination, and attachment management belongs to T11;
 forms and tagged-structure management remain downstream slices. T10 makes no
 source-byte-layout claim beyond the content-derived identifier of a newly
-created split product, and no cross-Session object-identity claim. `INCREMENTAL`
-remains `SAVE_MODE_UNSUPPORTED`; signed-document rules remain T15,
+created split product, and no cross-Session object-identity claim. T15 admits
+the primary-document page commands for unsigned incremental Sources but rejects
+`SplitDocument`; signed Sources authorize none of these commands. The
 comprehensive hostile-input policy remains T20, and the Hardened Worker
 Profile and codecs remain T21.
 

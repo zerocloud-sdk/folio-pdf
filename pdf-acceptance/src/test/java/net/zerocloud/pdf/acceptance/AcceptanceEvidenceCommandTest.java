@@ -50,7 +50,10 @@ public final class AcceptanceEvidenceCommandTest {
                     "T13-text-logical-structure-syntax.md"),
             new ProductSyntax(
                     "T14",
-                    "T14-image-resource-extraction-syntax.md"));
+                    "T14-image-resource-extraction-syntax.md"),
+            new ProductSyntax(
+                    "T15",
+                    "T15-incremental-signature-protection-syntax.md"));
 
     @Rule
     public final TemporaryFolder temporaryFolder = new TemporaryFolder();
@@ -361,6 +364,46 @@ public final class AcceptanceEvidenceCommandTest {
         assertTrue(t14Findings.contains(
                 "T14-form-mask-inventory.pdf` exit code: `0`"));
         assertTrue(t14Findings.contains("Input ID-neutral SHA-256"));
+
+        Path t15Original = output.resolve(
+                "artifacts/T15-incremental-original.pdf");
+        Path t15Incremental = output.resolve(
+                "artifacts/T15-incremental-output.pdf");
+        byte[] t15OriginalBytes = Files.readAllBytes(t15Original);
+        byte[] t15IncrementalBytes = Files.readAllBytes(t15Incremental);
+        assertTrue(t15IncrementalBytes.length > t15OriginalBytes.length);
+        assertArrayEquals(
+                t15OriginalBytes,
+                Arrays.copyOf(t15IncrementalBytes, t15OriginalBytes.length));
+
+        String t15Syntax = read(output.resolve(
+                "T15-incremental-signature-protection-syntax.md"));
+        assertMetadata(
+                t15Syntax,
+                "Capability",
+                "document.incremental-signature.protect");
+        assertMetadata(
+                t15Syntax,
+                "Acceptance Profile",
+                "T15-incremental-signature-protection");
+        assertMetadata(t15Syntax, "Chain", "syntax");
+        assertMetadata(t15Syntax, "Result", "pass");
+        assertMetadata(
+                t15Syntax,
+                "Input hash policy",
+                EvidenceFiles.revisionInputHashPolicy());
+        assertTrue(t15Syntax.contains(
+                "artifacts/T15-incremental-original.pdf"));
+        assertTrue(t15Syntax.contains(
+                "artifacts/T15-incremental-output.pdf"));
+        String t15Findings = read(output.resolve(
+                "artifacts/T15-incremental-signature-protection-qpdf.txt"));
+        assertTrue(t15Findings.contains(
+                "T15-incremental-original.pdf` exit code: `0`"));
+        assertTrue(t15Findings.contains(
+                "T15-incremental-output.pdf` exit code: `0`"));
+        assertTrue(t15Findings.contains(
+                "Input revision-ID-neutral SHA-256"));
     }
 
     @Test
@@ -429,7 +472,9 @@ public final class AcceptanceEvidenceCommandTest {
                 "T13-text-logical-structure-syntax.md",
                 "artifacts/T13-text-logical-structure-qpdf.txt",
                 "T14-image-resource-extraction-syntax.md",
-                "artifacts/T14-image-resource-extraction-qpdf.txt")) {
+                "artifacts/T14-image-resource-extraction-qpdf.txt",
+                "T15-incremental-signature-protection-syntax.md",
+                "artifacts/T15-incremental-signature-protection-qpdf.txt")) {
             assertEquals(relative,
                     read(firstOutput.resolve(relative)),
                     read(secondOutput.resolve(relative)));
@@ -450,6 +495,15 @@ public final class AcceptanceEvidenceCommandTest {
                     EvidenceFiles.idNeutralPdfSha256(
                             firstOutput.resolve(relative)),
                     EvidenceFiles.idNeutralPdfSha256(
+                            secondOutput.resolve(relative)));
+        }
+        for (String relative : Arrays.asList(
+                "artifacts/T15-incremental-original.pdf",
+                "artifacts/T15-incremental-output.pdf")) {
+            assertEquals(relative,
+                    EvidenceFiles.revisionIdNeutralPdfSha256(
+                            firstOutput.resolve(relative)),
+                    EvidenceFiles.revisionIdNeutralPdfSha256(
                             secondOutput.resolve(relative)));
         }
     }

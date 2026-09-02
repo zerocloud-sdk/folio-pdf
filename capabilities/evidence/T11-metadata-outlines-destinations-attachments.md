@@ -79,18 +79,19 @@ would orphan any managed destination fails with the stable
   fixed review point by clean-context reviewers; every finding with a public
   observation was reproduced and remediated before the final review gate.
 
-T11 operates only in `REWRITE` workflows. Outlines are written all-open with
+T11 commands operate in `REWRITE` and, for unsigned Sources, T15-classified
+`INCREMENTAL` workflows. Outlines are written all-open with
 positive visible-item counts, name trees are written as one flat sorted array
 matched by unsigned key-byte order, XMP packets are accepted only when they
 are well-formed XML carrying the XMP root marker within a 64 MiB command
 bound, embedded-file MIME subtypes are restricted to printable ASCII, and
 embedded-file digests are recorded as MD5 parameters with SHA-256 summaries
 at the public seam. Managed annotations and local GoTo Actions now integrate
-through T12; extraction remains T13 and T14, incremental publication and
-signatures remain T15, encryption remains T16, comprehensive
+through T12; extraction remains T13 and T14. Signed Sources authorize none of
+the T11 commands under T15. Encryption remains T16, comprehensive
 hostile-input policy remains T20, and the Hardened Worker Profile and codecs
 remain T21. T11 makes no source-byte-layout or cross-Session object-identity
-claim. `INCREMENTAL` remains `SAVE_MODE_UNSUPPORTED`.
+claim.
 
 This record is implementation evidence, not independent Acceptance Evidence.
 The separate T11 qpdf record supplies a passing syntax chain only; qpdf

@@ -107,6 +107,52 @@ final class PdfBoxAnnotationOperations {
         return query instanceof Annotations || query instanceof Actions;
     }
 
+    void requireNonWidgetSignatureUpdate(UpdateAnnotations command)
+            throws DocumentFailure {
+        Set<String> selected = new HashSet<String>(
+                command.getRemovedIdentifiers());
+        for (Annotation annotation : command.getAnnotations()) {
+            if (annotation.getType() == Annotation.Type.WIDGET) {
+                throw PdfBoxWorkflowEngine.signaturePolicyFailure();
+            }
+            selected.add(annotation.getProperties().getIdentifier());
+        }
+        if (selected.isEmpty()) {
+            return;
+        }
+        try {
+            for (COSBase rawPage : pageReferencesForCommand()) {
+                COSDictionary page = dictionary(rawPage);
+                COSBase rawAnnotations = page.getItem(COSName.ANNOTS);
+                if (rawAnnotations == null) {
+                    continue;
+                }
+                COSBase value = dereference(rawAnnotations);
+                if (!(value instanceof COSArray)) {
+                    continue;
+                }
+                COSArray annotations = (COSArray) value;
+                for (int index = 0; index < annotations.size(); index++) {
+                    COSDictionary existing = dictionary(annotations.get(index));
+                    COSBase rawIdentifier = dereference(existing.getItem(NM));
+                    if (!(rawIdentifier instanceof COSString)
+                            || !selected.contains(
+                                    ((COSString) rawIdentifier).getString())) {
+                        continue;
+                    }
+                    if (WIDGET.equals(dereference(
+                            existing.getItem(COSName.SUBTYPE)))) {
+                        throw PdfBoxWorkflowEngine.signaturePolicyFailure();
+                    }
+                }
+            }
+        } catch (DocumentFailure failure) {
+            throw failure;
+        } catch (RuntimeException backendFailure) {
+            throw PdfBoxWorkflowEngine.signaturePolicyFailure();
+        }
+    }
+
     void execute(DocumentCommand command) throws DocumentFailure {
         if (!supports(command)) {
             throw new IllegalArgumentException("Unsupported annotation command.");

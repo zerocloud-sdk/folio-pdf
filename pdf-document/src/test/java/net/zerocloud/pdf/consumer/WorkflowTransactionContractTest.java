@@ -499,7 +499,7 @@ public final class WorkflowTransactionContractTest {
     }
 
     @Test
-    public void incrementalSaveModeFailsWithStableUnsupportedResult()
+    public void incrementalWithoutPrimarySourceFailsBeforeCallerWork()
             throws Exception {
         Path target = temporaryFolder.getRoot().toPath().resolve("incremental.pdf");
         byte[] existing = new byte[] {71, 72, 73};
@@ -514,16 +514,19 @@ public final class WorkflowTransactionContractTest {
             new DocumentWorkflow().execute(
                     request,
                     session -> {
-                        fail("Caller work must not run for unsupported INCREMENTAL mode");
+                        fail("Caller work must not run without an incremental Source");
                         return null;
                     });
-            fail("Expected INCREMENTAL to be unsupported");
+            fail("Expected INCREMENTAL to require a primary Source");
         } catch (DocumentFailure failure) {
             assertEquals(
-                    DocumentFailureCode.SAVE_MODE_UNSUPPORTED,
-                    failure.getCode());
+                    "INCREMENTAL_SOURCE_REQUIRED",
+                    failure.getCode().name());
             assertEquals(
-                    "INCREMENTAL publication is not supported until T15.",
+                    "document.incremental-signature.protect",
+                    failure.getCapabilityId());
+            assertEquals(
+                    "INCREMENTAL publication requires an existing primary Source.",
                     failure.getDiagnostic());
             assertEquals(1, failure.getPublicationReceipts().size());
             assertReceipt(
