@@ -53,7 +53,10 @@ public final class AcceptanceEvidenceCommandTest {
                     "T14-image-resource-extraction-syntax.md"),
             new ProductSyntax(
                     "T15",
-                    "T15-incremental-signature-protection-syntax.md"));
+                    "T15-incremental-signature-protection-syntax.md"),
+            new ProductSyntax(
+                    "T16",
+                    "T16-pdf-version-password-security-syntax.md"));
 
     @Rule
     public final TemporaryFolder temporaryFolder = new TemporaryFolder();
@@ -65,6 +68,7 @@ public final class AcceptanceEvidenceCommandTest {
         Path qpdf = qpdfFixture("qpdf", "12.4.0",
                 "if [ \"${1-}\" = \"--check\" ]; then",
                 "  echo 'PDF Version: 1.7'",
+                "  echo 'User password = folio-t16-user-evidence'",
                 "  echo 'No syntax or stream encoding errors found'",
                 "  exit 0",
                 "fi",
@@ -404,6 +408,57 @@ public final class AcceptanceEvidenceCommandTest {
                 "T15-incremental-output.pdf` exit code: `0`"));
         assertTrue(t15Findings.contains(
                 "Input revision-ID-neutral SHA-256"));
+
+        Path t16Pdf17 = output.resolve(
+                "artifacts/T16-password-security-pdf17.pdf");
+        Path t16Pdf20 = output.resolve(
+                "artifacts/T16-password-security-pdf20.pdf");
+        assertEquals(
+                "%PDF-1.7",
+                new String(
+                        Files.readAllBytes(t16Pdf17),
+                        0,
+                        8,
+                        StandardCharsets.US_ASCII));
+        assertEquals(
+                "%PDF-2.0",
+                new String(
+                        Files.readAllBytes(t16Pdf20),
+                        0,
+                        8,
+                        StandardCharsets.US_ASCII));
+        String t16Serialized = new String(
+                Files.readAllBytes(t16Pdf17),
+                StandardCharsets.ISO_8859_1);
+        assertTrue(t16Serialized.contains("/R 6"));
+        assertTrue(t16Serialized.contains("/CFM /AESV3"));
+
+        String t16Syntax = read(output.resolve(
+                "T16-pdf-version-password-security-syntax.md"));
+        assertMetadata(
+                t16Syntax,
+                "Capability",
+                "document.version-password-security");
+        assertMetadata(
+                t16Syntax,
+                "Acceptance Profile",
+                "T16-pdf-version-password-security");
+        assertMetadata(t16Syntax, "Chain", "syntax");
+        assertMetadata(t16Syntax, "Result", "pass");
+        assertMetadata(
+                t16Syntax,
+                "Input hash policy",
+                "SHA-256 of the project-observed non-secret version, Standard-handler profile, scope, permission word, and public-reopen page count; randomized credential entries, file identifiers, and ciphertext are excluded");
+        String t16Findings = read(output.resolve(
+                "artifacts/T16-pdf-version-password-security-qpdf.txt"));
+        assertTrue(t16Findings.contains(
+                "qpdf --check --show-encryption "
+                        + "--password-file=<redacted-temporary-file> "
+                        + "T16-password-security-pdf17.pdf"));
+        assertTrue(t16Findings.contains(
+                "T16-password-security-pdf20.pdf` exit code: `0`"));
+        assertTrue(!t16Findings.contains("folio-t16-user-evidence"));
+        assertTrue(t16Findings.contains("User password = <redacted>"));
     }
 
     @Test
@@ -430,6 +485,28 @@ public final class AcceptanceEvidenceCommandTest {
             assertTrue(expected.getMessage(), expected.getMessage().contains(
                     "Unsupported visual profile property COMPARISON_METRIC"));
         }
+    }
+
+    @Test
+    public void qpdfCredentialFilePathIsRedactedFromCapturedOutput()
+            throws Exception {
+        Path output = temporaryFolder.newFolder(
+                "qpdf-credential-path-redaction").toPath();
+        Path qpdf = qpdfFixture(
+                "echo-arguments-qpdf",
+                "12.4.0",
+                "printf '%s\\n' \"$*\"",
+                "printf '%s\\n' \"$*\" >&2",
+                "exit 0");
+
+        CommandResult result = runCommand(output, qpdf);
+
+        assertEquals(result.output, 0, result.exitCode);
+        String findings = read(output.resolve(
+                "artifacts/T16-pdf-version-password-security-qpdf.txt"));
+        assertTrue(!findings.contains(".folio-t16-qpdf-credential-"));
+        assertTrue(findings.contains(
+                "--password-file=<redacted-temporary-file>"));
     }
 
     @Test
@@ -474,7 +551,9 @@ public final class AcceptanceEvidenceCommandTest {
                 "T14-image-resource-extraction-syntax.md",
                 "artifacts/T14-image-resource-extraction-qpdf.txt",
                 "T15-incremental-signature-protection-syntax.md",
-                "artifacts/T15-incremental-signature-protection-qpdf.txt")) {
+                "artifacts/T15-incremental-signature-protection-qpdf.txt",
+                "T16-pdf-version-password-security-syntax.md",
+                "artifacts/T16-pdf-version-password-security-qpdf.txt")) {
             assertEquals(relative,
                     read(firstOutput.resolve(relative)),
                     read(secondOutput.resolve(relative)));

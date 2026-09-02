@@ -23,7 +23,9 @@ import net.zerocloud.pdf.AnnotationColor;
 import net.zerocloud.pdf.AnnotationProperties;
 import net.zerocloud.pdf.AnnotationQuad;
 import net.zerocloud.pdf.AnnotationRectangle;
+import net.zerocloud.pdf.CredentialAuthority;
 import net.zerocloud.pdf.DocumentPatch;
+import net.zerocloud.pdf.DocumentPermissions;
 import net.zerocloud.pdf.DocumentResource;
 import net.zerocloud.pdf.DocumentResourceInventory;
 import net.zerocloud.pdf.DocumentSource;
@@ -40,12 +42,20 @@ import net.zerocloud.pdf.ObjectReference;
 import net.zerocloud.pdf.OutlineItem;
 import net.zerocloud.pdf.PageDestination;
 import net.zerocloud.pdf.PageRange;
+import net.zerocloud.pdf.PasswordCredential;
+import net.zerocloud.pdf.PasswordEncryptionAlgorithm;
+import net.zerocloud.pdf.PasswordEncryptionScope;
+import net.zerocloud.pdf.PasswordSecurityInfo;
+import net.zerocloud.pdf.PasswordSecurityPolicy;
 import net.zerocloud.pdf.PdfArray;
 import net.zerocloud.pdf.PdfDictionary;
 import net.zerocloud.pdf.PdfName;
 import net.zerocloud.pdf.PdfNumber;
 import net.zerocloud.pdf.PdfStream;
 import net.zerocloud.pdf.PdfString;
+import net.zerocloud.pdf.PdfOutputPolicy;
+import net.zerocloud.pdf.PdfVersion;
+import net.zerocloud.pdf.PdfVersionInfo;
 import net.zerocloud.pdf.PublicationStatus;
 import net.zerocloud.pdf.PublicationTarget;
 import net.zerocloud.pdf.ResourceExtractionLimits;
@@ -70,12 +80,14 @@ import net.zerocloud.pdf.command.UpdateActions;
 import net.zerocloud.pdf.command.UpdateAnnotations;
 import net.zerocloud.pdf.query.ExtractImagesAndResources;
 import net.zerocloud.pdf.query.ExtractTextAndStructure;
+import net.zerocloud.pdf.query.DocumentSecurity;
+import net.zerocloud.pdf.query.DocumentVersion;
 import net.zerocloud.pdf.query.PageObjectReference;
 import net.zerocloud.pdf.query.PageCount;
 
 /**
  * Repository-only command that records T06/T07 evidence and the T10 through
- * T15 syntax chains.
+ * T16 syntax chains.
  */
 public final class AcceptanceEvidenceCommand {
 
@@ -158,12 +170,24 @@ public final class AcceptanceEvidenceCommand {
             "T15-incremental-output.pdf";
     private static final String T15_QPDF_FINDINGS =
             "T15-incremental-signature-protection-qpdf.txt";
+    private static final String T16_CAPABILITY =
+            "document.version-password-security";
+    private static final String T16_ACCEPTANCE_PROFILE =
+            "T16-pdf-version-password-security";
+    private static final String T16_PROFILE_RECORD =
+            "capabilities/evidence/T16-pdf-version-password-security.md";
+    private static final String T16_PDF17_ARTIFACT =
+            "T16-password-security-pdf17.pdf";
+    private static final String T16_PDF20_ARTIFACT =
+            "T16-password-security-pdf20.pdf";
+    private static final String T16_QPDF_FINDINGS =
+            "T16-pdf-version-password-security-qpdf.txt";
 
     private AcceptanceEvidenceCommand() {
     }
 
     /**
-     * Runs the built-in T03 Acceptance Profile and the T10 through T15 syntax
+     * Runs the built-in T03 Acceptance Profile and the T10 through T16 syntax
      * chains.
      *
      * @param arguments output directory, pinned tool and profile authorities,
@@ -412,6 +436,30 @@ public final class AcceptanceEvidenceCommand {
                 qpdfPin,
                 releaseTrain);
 
+        EvidenceResult t16Syntax = recordProductSyntax(
+                new ProductChain(
+                        "T16",
+                        T16_CAPABILITY,
+                        T16_ACCEPTANCE_PROFILE,
+                        T16_PROFILE_RECORD,
+                        T16_PDF17_ARTIFACT,
+                        T16_PDF20_ARTIFACT,
+                        T16_QPDF_FINDINGS,
+                        "T16-pdf-version-password-security-syntax.md",
+                        ProductHashPolicy.SECURITY_OBSERVATION,
+                        true),
+                new ProductCreator() {
+                    @Override
+                    public void create(Path pdf17, Path pdf20)
+                            throws Exception {
+                        createT16Products(pdf17, pdf20);
+                    }
+                },
+                output,
+                artifacts,
+                qpdfPin,
+                releaseTrain);
+
         System.out.println("Acceptance Profile determination: "
                 + profileDetermination.recordValue());
         System.out.println("T07 visual chain: " + visual.result().recordValue());
@@ -421,6 +469,7 @@ public final class AcceptanceEvidenceCommand {
         System.out.println("T13 syntax chain: " + t13Syntax.recordValue());
         System.out.println("T14 syntax chain: " + t14Syntax.recordValue());
         System.out.println("T15 syntax chain: " + t15Syntax.recordValue());
+        System.out.println("T16 syntax chain: " + t16Syntax.recordValue());
     }
 
     private interface ProductCreator {
@@ -439,6 +488,7 @@ public final class AcceptanceEvidenceCommand {
         private final String qpdfFindings;
         private final String syntaxRecord;
         private final ProductHashPolicy hashPolicy;
+        private final boolean passwordProtected;
 
         ProductChain(
                 String label,
@@ -458,7 +508,8 @@ public final class AcceptanceEvidenceCommand {
                     backArtifact,
                     qpdfFindings,
                     syntaxRecord,
-                    ProductHashPolicy.EXACT);
+                    ProductHashPolicy.EXACT,
+                    false);
         }
 
         ProductChain(
@@ -471,6 +522,30 @@ public final class AcceptanceEvidenceCommand {
                 String qpdfFindings,
                 String syntaxRecord,
                 ProductHashPolicy hashPolicy) {
+            this(
+                    label,
+                    capability,
+                    acceptanceProfile,
+                    profileRecord,
+                    frontArtifact,
+                    backArtifact,
+                    qpdfFindings,
+                    syntaxRecord,
+                    hashPolicy,
+                    false);
+        }
+
+        ProductChain(
+                String label,
+                String capability,
+                String acceptanceProfile,
+                String profileRecord,
+                String frontArtifact,
+                String backArtifact,
+                String qpdfFindings,
+                String syntaxRecord,
+                ProductHashPolicy hashPolicy,
+                boolean passwordProtected) {
             this.label = label;
             this.capability = capability;
             this.acceptanceProfile = acceptanceProfile;
@@ -480,6 +555,16 @@ public final class AcceptanceEvidenceCommand {
             this.qpdfFindings = qpdfFindings;
             this.syntaxRecord = syntaxRecord;
             this.hashPolicy = hashPolicy;
+            this.passwordProtected = passwordProtected;
+        }
+
+        String qpdfInvocation(String artifact) {
+            if (passwordProtected) {
+                return "qpdf --check --show-encryption "
+                        + "--password-file=<redacted-temporary-file> "
+                        + artifact;
+            }
+            return "qpdf --check " + artifact;
         }
     }
 
@@ -506,6 +591,15 @@ public final class AcceptanceEvidenceCommand {
             @Override
             String hash(Path artifact) throws IOException {
                 return EvidenceFiles.revisionIdNeutralPdfSha256(artifact);
+            }
+        },
+        SECURITY_OBSERVATION(
+                "Security observation SHA-256",
+                "Security observation set SHA-256",
+                "SHA-256 of the project-observed non-secret version, Standard-handler profile, scope, permission word, and public-reopen page count; randomized credential entries, file identifiers, and ciphertext are excluded") {
+            @Override
+            String hash(Path artifact) throws IOException {
+                return t16SecurityObservationSha256(artifact);
             }
         };
 
@@ -557,6 +651,8 @@ public final class AcceptanceEvidenceCommand {
         String observedVersion;
         String finding;
         String findings;
+        Path passwordFile = chain.passwordProtected
+                ? writeT16PasswordFile() : null;
         try {
             ProcessResult version = ExternalProcess.run(
                     qpdfPin.executable(), output, "--version");
@@ -578,18 +674,20 @@ public final class AcceptanceEvidenceCommand {
                 checks.add(new ProductQpdfResult(
                         chain.frontArtifact,
                         frontHash,
-                        ExternalProcess.run(
-                                qpdfPin.executable(),
+                        runProductQpdf(
+                                chain,
+                                qpdfPin,
                                 artifacts,
-                                "--check",
+                                passwordFile,
                                 chain.frontArtifact)));
                 checks.add(new ProductQpdfResult(
                         chain.backArtifact,
                         backHash,
-                        ExternalProcess.run(
-                                qpdfPin.executable(),
+                        runProductQpdf(
+                                chain,
+                                qpdfPin,
                                 artifacts,
-                                "--check",
+                                passwordFile,
                                 chain.backArtifact)));
                 result = aggregateQpdfResults(checks);
                 finding = productSyntaxFinding(chain, result);
@@ -610,6 +708,10 @@ public final class AcceptanceEvidenceCommand {
                     observedVersion,
                     finding,
                     qpdfPin);
+        } finally {
+            if (passwordFile != null) {
+                Files.deleteIfExists(passwordFile);
+            }
         }
 
         write(artifacts.resolve(chain.qpdfFindings), findings);
@@ -623,6 +725,159 @@ public final class AcceptanceEvidenceCommand {
                         finding,
                         qpdfPin));
         return result;
+    }
+
+    private static ProcessResult runProductQpdf(
+            ProductChain chain,
+            QpdfPin qpdfPin,
+            Path artifacts,
+            Path passwordFile,
+            String artifact) throws IOException, InterruptedException {
+        if (!chain.passwordProtected) {
+            return ExternalProcess.run(
+                    qpdfPin.executable(),
+                    artifacts,
+                    "--check",
+                    artifact);
+        }
+        ProcessResult result = ExternalProcess.run(
+                qpdfPin.executable(),
+                artifacts,
+                "--check",
+                "--show-encryption",
+                "--password-file=" + passwordFile,
+                artifact);
+        return new ProcessResult(
+                result.exitCode,
+                redactProductQpdfOutput(
+                        result.standardOutput,
+                        passwordFile),
+                redactProductQpdfOutput(
+                        result.standardError,
+                        passwordFile));
+    }
+
+    private static String redactProductQpdfOutput(
+            String output,
+            Path passwordFile) {
+        String redactedPath = output.replace(
+                passwordFile.toAbsolutePath().normalize().toString(),
+                "<redacted-temporary-file>");
+        redactedPath = redactedPath.replace(
+                passwordFile.toString(),
+                "<redacted-temporary-file>");
+        if (passwordFile.getFileName() != null) {
+            redactedPath = redactedPath.replace(
+                    passwordFile.getFileName().toString(),
+                    "<redacted-temporary-file>");
+        }
+        return redactPasswordValues(redactedPath);
+    }
+
+    private static String redactPasswordValues(String output) {
+        StringBuilder redacted = new StringBuilder(output.length());
+        String[] lines = output.split("\\n", -1);
+        for (int index = 0; index < lines.length; index++) {
+            String line = lines[index];
+            String lower = line.toLowerCase(Locale.ROOT);
+            int assignment = lower.indexOf("password =");
+            if (assignment >= 0) {
+                redacted.append(line.substring(0, assignment))
+                        .append("password = <redacted>");
+            } else {
+                redacted.append(line);
+            }
+            if (index + 1 < lines.length) {
+                redacted.append('\n');
+            }
+        }
+        return redacted.toString();
+    }
+
+    private static Path writeT16PasswordFile() throws IOException {
+        Path passwordFile = Files.createTempFile(
+                ".folio-t16-qpdf-credential-",
+                ".tmp");
+        char[] characters = t16UserPassword();
+        byte[] ascii = new byte[characters.length];
+        boolean written = false;
+        try {
+            for (int index = 0; index < characters.length; index++) {
+                ascii[index] = (byte) characters[index];
+            }
+            Files.write(passwordFile, ascii);
+            written = true;
+            return passwordFile;
+        } finally {
+            Arrays.fill(characters, '\0');
+            Arrays.fill(ascii, (byte) 0);
+            if (!written) {
+                Files.deleteIfExists(passwordFile);
+            }
+        }
+    }
+
+    private static String t16SecurityObservationSha256(Path artifact)
+            throws IOException {
+        byte[] bytes = Files.readAllBytes(artifact);
+        if (bytes.length < 8) {
+            throw new IOException("The T16 product has no PDF version marker.");
+        }
+        String header = new String(
+                bytes,
+                0,
+                8,
+                StandardCharsets.US_ASCII);
+        String serialized = new String(bytes, StandardCharsets.ISO_8859_1);
+        boolean pdf17 = "%PDF-1.7".equals(header);
+        boolean pdf20 = "%PDF-2.0".equals(header);
+        if ((!pdf17 && !pdf20)
+                || !serialized.contains("/V 5")
+                || !serialized.contains("/R 6")
+                || !serialized.contains("/Length 256")
+                || !serialized.contains("/CFM /AESV3")
+                || !serialized.contains("/StmF /StdCF")
+                || !serialized.contains("/StrF /StdCF")
+                || serialized.contains("/EncryptMetadata false")
+                || (pdf17 && !serialized.contains("/Extensions"))
+                || (pdf20 && serialized.contains("/Extensions"))) {
+            throw new IOException(
+                    "The T16 product does not match its security observation profile.");
+        }
+        int permissions = pdfInteger(serialized, "/P ");
+        String observation = "header=" + header
+                + "\nhandler=Standard"
+                + "\nV=5\nR=6\nLength=256\nCFM=AESV3"
+                + "\nscope=ALL_CONTENT\nP=" + permissions
+                + "\npage-count=1\npublic-reopen=verified";
+        return sha256(observation);
+    }
+
+    private static int pdfInteger(String serialized, String marker)
+            throws IOException {
+        int start = serialized.indexOf(marker);
+        if (start < 0) {
+            throw new IOException("The T16 permission word is missing.");
+        }
+        start += marker.length();
+        int end = start;
+        if (end < serialized.length() && serialized.charAt(end) == '-') {
+            end++;
+        }
+        while (end < serialized.length()
+                && serialized.charAt(end) >= '0'
+                && serialized.charAt(end) <= '9') {
+            end++;
+        }
+        if (end == start || end == start + 1
+                && serialized.charAt(start) == '-') {
+            throw new IOException("The T16 permission word is malformed.");
+        }
+        try {
+            return Integer.parseInt(serialized.substring(start, end));
+        } catch (NumberFormatException malformed) {
+            throw new IOException("The T16 permission word is malformed.");
+        }
     }
 
     private static void createT10Products(Path front, Path back)
@@ -719,6 +974,143 @@ public final class AcceptanceEvidenceCommand {
             throw new IllegalStateException(
                     "T15 incremental product did not reopen with two pages");
         }
+    }
+
+    private static void createT16Products(Path pdf17, Path pdf20)
+            throws Exception {
+        char[] ownerCharacters = t16OwnerPassword();
+        char[] userCharacters = t16UserPassword();
+        try (PasswordCredential owner = PasswordCredential.of(ownerCharacters);
+                PasswordCredential user = PasswordCredential.of(userCharacters)) {
+            Arrays.fill(ownerCharacters, '\0');
+            Arrays.fill(userCharacters, '\0');
+            DocumentPermissions permissions = DocumentPermissions.builder()
+                    .allowPrinting(true)
+                    .allowContentExtraction(true)
+                    .allowAccessibilityExtraction(true)
+                    .build();
+            createT16Product(
+                    pdf17,
+                    PdfVersion.PDF_1_7,
+                    owner,
+                    user,
+                    permissions);
+            createT16Product(
+                    pdf20,
+                    PdfVersion.PDF_2_0,
+                    owner,
+                    user,
+                    permissions);
+        } finally {
+            Arrays.fill(ownerCharacters, '\0');
+            Arrays.fill(userCharacters, '\0');
+        }
+    }
+
+    private static void createT16Product(
+            Path target,
+            PdfVersion version,
+            PasswordCredential owner,
+            PasswordCredential user,
+            DocumentPermissions permissions) throws Exception {
+        PasswordSecurityPolicy security = PasswordSecurityPolicy.builder(
+                        owner,
+                        user)
+                .permissions(permissions)
+                .build();
+        WorkflowOutcome<Void> creation = new DocumentWorkflow().execute(
+                WorkflowRequest.builder()
+                        .target("protected", PublicationTarget.path(target))
+                        .saveMode(SaveMode.REWRITE)
+                        .outputPolicy(PdfOutputPolicy.version(version)
+                                .withPasswordSecurity(security))
+                        .build(),
+                session -> {
+                    session.execute(AddBlankPage.INSTANCE);
+                    return null;
+                });
+        requireT16Observation(
+                T16_CAPABILITY.equals(creation.getCapabilityId()),
+                "The protected product did not report the T16 capability identity.");
+        requireCommitted(creation, "T16 protected " + version);
+        verifyT16Product(target, version, user, permissions, false);
+        verifyT16Product(target, version, owner, permissions, true);
+    }
+
+    private static void verifyT16Product(
+            Path target,
+            PdfVersion expectedVersion,
+            PasswordCredential credential,
+            DocumentPermissions permissions,
+            boolean owner) throws Exception {
+        new DocumentWorkflow().execute(
+                WorkflowRequest.builder()
+                        .source(
+                                "protected",
+                                DocumentSource.path(target)
+                                        .withCredential(credential))
+                        .primarySource("protected")
+                        .saveMode(SaveMode.REWRITE)
+                        .build(),
+                session -> {
+                    PdfVersionInfo version = session.query(
+                            DocumentVersion.INSTANCE);
+                    PasswordSecurityInfo security = session.query(
+                            DocumentSecurity.INSTANCE);
+                    Integer pages = session.query(PageCount.INSTANCE);
+                    requireT16Observation(
+                            version.getHeaderVersion() == expectedVersion
+                                    && version.getEffectiveVersion()
+                                            == expectedVersion,
+                            "The T16 product did not reopen with its requested version.");
+                    requireT16Observation(
+                            security.getAlgorithm().orElse(null)
+                                            == PasswordEncryptionAlgorithm.AES_256
+                                    && security.getSecurityHandlerRevision() == 6
+                                    && security.getEncryptionScope()
+                                            == PasswordEncryptionScope.ALL_CONTENT
+                                    && security.getDeclaredUserPermissions()
+                                            .equals(permissions),
+                            "The T16 product did not reopen with its requested security policy.");
+                    requireT16Observation(
+                            owner
+                                    ? security.getCredentialAuthority()
+                                                    == CredentialAuthority.OWNER
+                                            && security.getEffectivePermissions()
+                                                    .equals(DocumentPermissions
+                                                            .unrestricted())
+                                    : security.getCredentialAuthority()
+                                                    == CredentialAuthority.USER
+                                            && security.getEffectivePermissions()
+                                                    .equals(permissions),
+                            "The T16 product did not reopen with the expected credential authority.");
+                    requireT16Observation(
+                            Integer.valueOf(1).equals(pages),
+                            "The T16 product did not reopen with one page.");
+                    return null;
+                });
+    }
+
+    private static void requireT16Observation(
+            boolean condition,
+            String diagnostic) {
+        if (!condition) {
+            throw new IllegalStateException(diagnostic);
+        }
+    }
+
+    private static char[] t16OwnerPassword() {
+        return new char[] {
+            'f', 'o', 'l', 'i', 'o', '-', 't', '1', '6', '-',
+            'o', 'w', 'n', 'e', 'r', '-', 'e', 'v', 'i', 'd', 'e', 'n', 'c', 'e'
+        };
+    }
+
+    private static char[] t16UserPassword() {
+        return new char[] {
+            'f', 'o', 'l', 'i', 'o', '-', 't', '1', '6', '-',
+            'u', 's', 'e', 'r', '-', 'e', 'v', 'i', 'd', 'e', 'n', 'c', 'e'
+        };
     }
 
     private static void requireCommitted(
@@ -1444,11 +1836,12 @@ public final class AcceptanceEvidenceCommand {
                 .append("Final determination: `")
                 .append(result.recordValue())
                 .append("`\n\n");
-        for (ProductQpdfResult check : checks) {
+        for (int index = 0; index < checks.size(); index++) {
+            ProductQpdfResult check = checks.get(index);
             findings.append("## ").append(check.artifactName).append("\n\n")
                     .append(chain.hashPolicy.inputHashMetadata(check.inputHash))
-                    .append("Invocation: `qpdf --check ")
-                    .append(check.artifactName)
+                    .append("Invocation: `")
+                    .append(chain.qpdfInvocation(check.artifactName))
                     .append("`\n\n")
                     .append('`').append(check.artifactName)
                     .append("` exit code: `")
@@ -1459,7 +1852,9 @@ public final class AcceptanceEvidenceCommand {
                     .append(fencedEnding(check.result.standardOutput))
                     .append("### Standard error\n\n```text\n")
                     .append(check.result.standardError)
-                    .append(fencedEnding(check.result.standardError));
+                    .append(index + 1 == checks.size()
+                            ? finalFencedEnding(check.result.standardError)
+                            : fencedEnding(check.result.standardError));
         }
         return findings.toString();
     }

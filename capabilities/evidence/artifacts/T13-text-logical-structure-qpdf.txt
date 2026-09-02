@@ -1,6 +1,6 @@
 # T13 qpdf syntax findings
 
-Input ID-neutral set SHA-256: `95336a44f958a36a6a0e760e1a9588b0f036976d5dc3f3be6ad793d6ec6eb7c5`
+Input ID-neutral set SHA-256: `9bf763bbade9dba9ec74d454b0f6473412fd5b46a9c39ad7e09073c45a49ab60`
 
 Input hash policy: `SHA-256 of the exact PDF bytes after replacing only the two hexadecimal trailer /ID values with ASCII zeroes`
 
@@ -14,7 +14,7 @@ Final determination: `pass`
 
 ## T13-page-text.pdf
 
-Input ID-neutral SHA-256: `f6b0752b4573347c3c5d371ec2bc5406f29dff1e4c158541b0f1ba4881414a06`
+Input ID-neutral SHA-256: `90333268d8b94ec3d545b3ae21d94d53709b8bc7bd0231d9745b8fb3b53b53f7`
 
 Invocation: `qpdf --check T13-page-text.pdf`
 
@@ -24,7 +24,7 @@ Invocation: `qpdf --check T13-page-text.pdf`
 
 ```text
 checking T13-page-text.pdf
-PDF Version: 1.6
+PDF Version: 1.7
 File is not encrypted
 File is not linearized
 No syntax or stream encoding errors found; the file may still contain
@@ -36,6 +36,7 @@ errors that qpdf cannot detect
 ```text
 
 ```
+
 ## T13-tagged-structure.pdf
 
 Input ID-neutral SHA-256: `96c26835680700b5a49ff0d62887fec6c022e034334f97a0be88a7b604e949ea`

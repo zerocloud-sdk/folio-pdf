@@ -6,7 +6,7 @@ Behavioral authority: [`../../capabilities/capability-matrix.yaml`](../../capabi
 
 - Schema version: `1`
 - Release train: `0.1.0-SNAPSHOT`
-- Capabilities: `9`
+- Capabilities: `10`
 
 ## Capability summary
 
@@ -21,6 +21,7 @@ Behavioral authority: [`../../capabilities/capability-matrix.yaml`](../../capabi
 | [`document.page.manipulate-merge-split`](#capability-document_dot_page_dot_manipulate_dash_merge_dash_split) | `document-engine` | `experimental` | [excluded by `T10`](facade-surface.md#excluded-capability-document_dot_page_dot_manipulate_dash_merge_dash_split) |
 | [`document.text-structure.extract`](#capability-document_dot_text_dash_structure_dot_extract) | `document-engine` | `experimental` | [excluded by `T13`](facade-surface.md#excluded-capability-document_dot_text_dash_structure_dot_extract) |
 | [`document.value.inspect-patch`](#capability-document_dot_value_dot_inspect_dash_patch) | `document-engine` | `experimental` | [excluded by `T09`](facade-surface.md#excluded-capability-document_dot_value_dot_inspect_dash_patch) |
+| [`document.version-password-security`](#capability-document_dot_version_dash_password_dash_security) | `document-engine` | `experimental` | [excluded by `T16`](facade-surface.md#excluded-capability-document_dot_version_dash_password_dash_security) |
 
 <a id="capability-conversion_dot_capability_dash_provider_dot_select_dash_execute"></a>
 ## `conversion.capability-provider.select-execute`
@@ -614,3 +615,86 @@ Implementation evidence:
 Acceptance Evidence: incomplete; no independent chain has been recorded as passing.
 
 Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T09 document-value-inspection-patch record`.
+
+<a id="capability-document_dot_version_dash_password_dash_security"></a>
+## `document.version-password-security`
+
+Inspect exact effective PDF versions, publish PDF 1.7 or 2.0, and authenticate and enforce bounded Standard-handler password security with AES-256 defaults.
+
+- Context: `document-engine`
+- Status: `experimental`
+- Reference Suite source: `ISO 32000-1:2008 and ISO 32000-2:2020 version, Standard security-handler, crypt-filter, credential, permission, and extension contracts`
+- Reference role: public standards input only; no third-party implementation or protected artifact is an oracle
+- Acceptance Profile: `T16-pdf-version-password-security`
+- Mandatory evidence chains: `syntax`, `standards`, `semantic`, `visual`
+- Evidence record: [`capabilities/evidence/T16-pdf-version-password-security.md`](../../capabilities/evidence/T16-pdf-version-password-security.md)
+- Certified platforms: none
+
+### Native Interface mapping
+
+- `credential-authority`: `net.zerocloud.pdf.CredentialAuthority`
+- `document-permissions`: `net.zerocloud.pdf.DocumentPermissions`
+- `entry-point`: `net.zerocloud.pdf.DocumentWorkflow#execute`
+- `failure`: `net.zerocloud.pdf.DocumentFailure`
+- `failure-code`: `net.zerocloud.pdf.DocumentFailureCode`
+- `legacy-security-mode`: `net.zerocloud.pdf.LegacySecurityMode`
+- `outcome`: `net.zerocloud.pdf.WorkflowOutcome`
+- `output-policy`: `net.zerocloud.pdf.PdfOutputPolicy`
+- `password-credential`: `net.zerocloud.pdf.PasswordCredential`
+- `password-encryption-algorithm`: `net.zerocloud.pdf.PasswordEncryptionAlgorithm`
+- `password-encryption-scope`: `net.zerocloud.pdf.PasswordEncryptionScope`
+- `password-security-info`: `net.zerocloud.pdf.PasswordSecurityInfo`
+- `password-security-policy`: `net.zerocloud.pdf.PasswordSecurityPolicy`
+- `receipt`: `net.zerocloud.pdf.PublicationReceipt`
+- `request`: `net.zerocloud.pdf.WorkflowRequest`
+- `security-query`: `net.zerocloud.pdf.query.DocumentSecurity`
+- `source`: `net.zerocloud.pdf.DocumentSource`
+- `version`: `net.zerocloud.pdf.PdfVersion`
+- `version-info`: `net.zerocloud.pdf.PdfVersionInfo`
+- `version-query`: `net.zerocloud.pdf.query.DocumentVersion`
+
+### Migration Facade coverage
+
+- Stable: none
+- Preview: none
+- Explicit exclusion: [`T16`](facade-surface.md#excluded-capability-document_dot_version_dash_password_dash_security) — T16 is a Native Interface PDF-version and Standard-handler password-security policy within DocumentWorkflow with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+
+### Gates and limitations
+
+- Dependency Gate: [`document.value.inspect-patch`](#capability-document_dot_value_dot_inspect_dash_patch) must be `compatible`
+- Promotion gate `T06`: Complete the remaining mandatory independent standards, semantic, and visual evidence and close the prerequisite capability gate before compatibility.
+- Limitation: Input versions are the exact header and optional catalog declarations for PDF 1.0 through 1.7 and 2.0; PDF 1.x begins at byte zero while PDF 2.0 may follow a preamble within the 1,024-byte inspection bound. Missing, malformed, or unsupported declarations fail closed, and effective version is the later declaration.
+- Limitation: REWRITE output defaults to PDF 1.7 and supports explicit PDF 1.7 or PDF 2.0 only. A PDF 2.0 primary or named Source requires explicit PDF 2.0 REWRITE because no downgrade proof exists; INCREMENTAL may preserve but cannot change the effective primary Source version.
+- Limitation: Secure password output is Standard-handler V=5, R=6, AESV3 with 256-bit keys and whole-document metadata encryption. PDF 1.7 output carries the qualified ADBE Extension Level 8 convention; PDF 2.0 output uses the normative R6 profile and requires permission bit 10 set.
+- Limitation: Legacy Security Mode is request-scoped. It permits only RC4-128 V=2/R=3 or AES-128 V=4/R=4 output on PDF 1.7; RC4-40 output, V=4 RC4 output, and R=5 output are unsupported.
+- Limitation: Accepted legacy inputs are V=1/R=2 or R=3 RC4-40, V=2/R=3 RC4-128, and whole-document V=4/R=4 RC4-128 or AES-128. R=5, public-key handlers, unknown crypt filters, malformed authentication entries, attachment-only encryption, and inconsistent R6 Perms fail closed.
+- Limitation: Output models all-content, metadata-clear, and attachment-only scopes but the current backend supports only all-content output. Fixture-proven metadata-clear V=4/R=4 input may be read; metadata-clear AES-256 and attachment-only input are not claimed.
+- Limitation: Output owner and user credentials must be distinct, non-empty printable ASCII, at most 127 characters for AES-256 and 32 for legacy profiles. This deliberately rejects backend normalization, truncation, and legacy encoding ambiguity.
+- Limitation: PasswordCredential owns destroyable defensive char-array copies, but PDFBox requires temporary immutable String values; Folio cannot guarantee erasure of backend or JVM copies and makes no physical secure-erasure claim.
+- Limitation: Owner authority bypasses the permission word; user authority is checked before every mapped command or content-bearing query. Folio separately applies the Standard-handler owner predicate when the permission word is unrestricted: proven owners report OWNER, while unrestricted users remain UNRESTRICTED and cannot perform owner-only protected REWRITE.
+- Limitation: Password permissions are cooperative processor restrictions rather than cryptographic DRM. Printing and form filling have no current workflow commands, so those bits round-trip without an execution claim.
+- Limitation: A protected Source cannot be implicitly rewritten as plaintext or rekeyed by user authority. Protected INCREMENTAL publication preserves encryption and still intersects T15 Existing Signature rules; explicit security changes in INCREMENTAL are unsupported.
+- Limitation: Every declared non-primary Source is authenticated and strictly classified before caller work using a workflow-owned temporary snapshot that preserves one-shot stream/channel ownership. Published donors cannot downgrade effective version, algorithm, or encryption scope; donor extraction permission remains a merge-command gate.
+- Limitation: DocumentPatch cannot change catalog Version or Extensions, an exposed encryption dictionary, or trailer Encrypt state. Page operations preserve only the exact ADBE Extension Level 8 declaration owned by T16 and reject additional or malformed extension state.
+- Limitation: Public-key encryption, FIPS validation, signature creation or trust validation, comprehensive hostile-input enforcement, and Hardened Worker isolation remain T37, T38+, T20, and T21 scope.
+
+### Evidence
+
+Implementation evidence:
+
+- `version-password-security-workflow-consumer-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/consumer/PdfVersionPasswordSecurityWorkflowTest.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/consumer/PdfVersionPasswordSecurityWorkflowTest.java) — Public workflows prove every supported version marker, catalog precedence, deterministic malformed declarations, PDF 1.7 and 2.0 output and transition markers, exact secure and legacy dictionaries, version minima, metadata-clear R4 input, credential lifecycle and independently proven owner authority, every permission bit, mapped authorization, private named-Source snapshots and anti-downgrade policy, protected rewrite, nested reserved-state rejection, encrypted incremental preservation, and encrypted Existing Signature interaction with stable safe failures and NOT_ATTEMPTED receipts.
+- `incremental-signature-regression-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/consumer/IncrementalSignatureWorkflowTest.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/consumer/IncrementalSignatureWorkflowTest.java) — Existing Signature recognition, exact Source-prefix preservation, closed incremental commands, DocMDP authorization, and safe publication behavior remain intact while protected incremental Sources preserve their existing encryption.
+- `public-api-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/contract/PublicApiLeakageIT.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/contract/PublicApiLeakageIT.java) — Public and protected signatures expose only project-owned or JDK version, credential, security, permission, and policy types and no PDFBox type.
+- `artifact-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/contract/JarContractIT.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/contract/JarContractIT.java) — The jar retains its stable module name, Java 8 class-file version, notices, and unbundled PDFBox dependency.
+- `cross-jdk-contract`: [`scripts/verify-jdk-matrix.sh`](../../scripts/verify-jdk-matrix.sh) — Maven verification runs the T16 public workflow contract on JDK 8, 11, 17, and 21.
+- `acceptance-command`: [`scripts/acceptance`](../../scripts/acceptance) — The repository-owned command produces AES-256 PDF 1.7 Extension Level 8 and PDF 2.0 products through public workflows, reopens both with user and owner credentials, and records redacted pinned-qpdf syntax and encryption-profile findings.
+- `acceptance-reproducibility-contract`: [`pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/AcceptanceEvidenceCommandTest.java`](../../pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/AcceptanceEvidenceCommandTest.java) — Independent command runs reproduce T16 evidence metadata and non-secret security-observation hashes while intentionally excluding randomized credential entries, file identifiers, ciphertext, and credential-file paths.
+- `authoritative-policy`: [`docs/pdf-version-password-security.md`](../pdf-version-password-security.md) — The version, output, algorithm, scope, credential, permission, protected-publication, failure, backend-boundary, and unsupported-case contracts are documented.
+- `architectural-decision`: [`docs/adr/0021-use-secure-pdf-and-encryption-defaults.md`](../adr/0021-use-secure-pdf-and-encryption-defaults.md) — The secure-default decision records the qualified PDF 1.7 Extension Level 8 boundary and fully normative PDF 2.0 R6 path.
+- `primary-source-research`: [`docs/research/T16-pdf-version-password-security-primary-sources.md`](../research/T16-pdf-version-password-security-primary-sources.md) — Exact public standards and PDFBox source citations, clean-room boundaries, uncertainties, permission mapping, and derived implementation constraints are recorded.
+
+Acceptance Evidence:
+
+- `syntax`: `pass` — [`capabilities/evidence/T16-pdf-version-password-security-syntax.md`](../../capabilities/evidence/T16-pdf-version-password-security-syntax.md); producer `qpdf@12.4.0` (`external-tool`)
+
+Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T16 pdf-version-password-security record`.

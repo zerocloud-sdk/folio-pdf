@@ -16,17 +16,21 @@ import java.time.Clock;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import net.zerocloud.pdf.provider.ProviderSelection;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
 
 final class PdfBoxWorkflowEngine {
 
     static final String CAPABILITY_ID = "document.blank.create-publish-reopen";
     static final String INCREMENTAL_CAPABILITY_ID =
             "document.incremental-signature.protect";
+    static final String VERSION_SECURITY_CAPABILITY_ID =
+            "document.version-password-security";
 
     private PdfBoxWorkflowEngine() {
     }
@@ -85,8 +89,11 @@ final class PdfBoxWorkflowEngine {
         PDDocument document;
         long sourceLength = -1L;
         SourceFingerprint sourceFingerprint = null;
+        DocumentSource primarySource = null;
+        PdfVersion declaredHeaderVersion;
         if (request.getSources().isEmpty()) {
             document = createDocument();
+            declaredHeaderVersion = PdfVersion.PDF_1_7;
         } else {
             DocumentSource source = request.getSources().get(
                     request.getPrimarySourceName());
@@ -96,22 +103,127 @@ final class PdfBoxWorkflowEngine {
                         "The workflow request must select a declared primary source.");
             }
             OpenedDocument opened = openPrimaryDocument(source, true);
+            primarySource = source;
             document = opened.document;
             sourceLength = opened.sourceLength;
             sourceFingerprint = opened.fingerprint;
+            declaredHeaderVersion = opened.declaredHeaderVersion;
         }
 
         PdfBoxSignaturePolicy signaturePolicy;
+        PdfVersionInfo versionInfo;
+        PasswordSecurityInfo securityInfo;
+        PdfVersion outputVersion;
+        PasswordSecurityPolicy requestedSecurity = null;
+        PdfBoxPasswordSecurity.PreparedOutput outputSecurity = null;
         try {
+            versionInfo = PdfBoxVersionPolicy.inspect(
+                    document,
+                    declaredHeaderVersion);
+            securityInfo = PdfBoxPasswordSecurity.inspect(
+                    document,
+                    primarySource == null
+                            ? null : primarySource.getCredential());
+            PdfBoxPasswordSecurity.requireCompatibleInput(
+                    document,
+                    versionInfo,
+                    securityInfo);
+            if (securityInfo.isPasswordProtected()
+                    && primarySource.getCredential() == null) {
+                throw credentialFailure(true);
+            }
+            outputVersion = outputVersion(request, versionInfo);
             signaturePolicy = PdfBoxSignaturePolicy.inspect(document, sourceLength);
+            requestedSecurity = request.getPublicationTargets().isEmpty()
+                    || request.getOutputPolicy() == null
+                    ? null
+                    : request.getOutputPolicy().getPasswordSecurity();
+            if (!request.getPublicationTargets().isEmpty()
+                    && securityInfo.isPasswordProtected()
+                    && request.getSaveMode() == SaveMode.REWRITE
+                    && securityInfo.getCredentialAuthority()
+                            != CredentialAuthority.OWNER) {
+                throw versionFailure(
+                        DocumentFailureCode.DOCUMENT_PERMISSION_DENIED,
+                        "Protected rewrite requires proven owner authority.");
+            }
+            if (!request.getPublicationTargets().isEmpty()
+                    && securityInfo.isPasswordProtected()
+                    && requestedSecurity == null
+                    && request.getSaveMode() == SaveMode.REWRITE) {
+                throw versionFailure(
+                        DocumentFailureCode.PASSWORD_SECURITY_POLICY_REQUIRED,
+                        "Rewriting a protected Source requires an explicit password-security output policy.");
+            }
+            if (!request.getPublicationTargets().isEmpty()
+                    && securityInfo.isPasswordProtected()
+                    && requestedSecurity == null
+                    && request.getSaveMode() == SaveMode.INCREMENTAL) {
+                outputSecurity =
+                        PdfBoxPasswordSecurity
+                                .preserveForIncrementalValidation(
+                                        primarySource.getCredential());
+            } else {
+                outputSecurity = PdfBoxPasswordSecurity.prepare(
+                        requestedSecurity,
+                        outputVersion,
+                        request.getSaveMode(),
+                        request.getLegacySecurityMode());
+            }
+            outputSecurity.preflight(document);
         } catch (DocumentFailure policyFailure) {
+            if (outputSecurity != null) {
+                outputSecurity.close();
+            }
             closeQuietly(document);
             throw policyFailure;
+        }
+
+        PdfVersion publicationVersion = request.getPublicationTargets().isEmpty()
+                ? null
+                : request.getSaveMode() == SaveMode.INCREMENTAL
+                        ? versionInfo.getEffectiveVersion() : outputVersion;
+        PasswordEncryptionAlgorithm publicationAlgorithm = null;
+        PasswordEncryptionScope publicationScope = null;
+        if (!request.getPublicationTargets().isEmpty()) {
+            if (request.getSaveMode() == SaveMode.INCREMENTAL
+                    && securityInfo.isPasswordProtected()) {
+                publicationAlgorithm = securityInfo.getAlgorithm().get();
+                publicationScope = securityInfo.getEncryptionScope();
+            } else if (requestedSecurity != null) {
+                publicationAlgorithm = requestedSecurity.getAlgorithm();
+                publicationScope = requestedSecurity.getEncryptionScope();
+            }
+        }
+
+        Map<String, PreparedNamedSource> preparedSources;
+        try {
+            preparedSources = prepareNamedSources(
+                    request,
+                    publicationVersion,
+                    publicationAlgorithm,
+                    publicationScope);
+        } catch (DocumentFailure preparationFailure) {
+            outputSecurity.close();
+            closeQuietly(document);
+            throw preparationFailure;
+        } catch (RuntimeException callerFailure) {
+            outputSecurity.close();
+            closeQuietly(document);
+            throw callerFailure;
         }
 
         return executeWithDocument(
                 document,
                 signaturePolicy,
+                versionInfo,
+                securityInfo,
+                outputVersion,
+                outputSecurity,
+                preparedSources,
+                publicationVersion,
+                publicationAlgorithm,
+                publicationScope,
                 request,
                 publicationTargets,
                 work,
@@ -128,6 +240,15 @@ final class PdfBoxWorkflowEngine {
             DocumentFailureCode code,
             String diagnostic) {
         return new DocumentFailure(code, INCREMENTAL_CAPABILITY_ID, diagnostic);
+    }
+
+    static DocumentFailure versionFailure(
+            DocumentFailureCode code,
+            String diagnostic) {
+        return new DocumentFailure(
+                code,
+                VERSION_SECURITY_CAPABILITY_ID,
+                diagnostic);
     }
 
     static DocumentFailure signaturePolicyFailure() {
@@ -154,6 +275,14 @@ final class PdfBoxWorkflowEngine {
     private static <R> WorkflowOutcome<R> executeWithDocument(
             PDDocument initialDocument,
             PdfBoxSignaturePolicy signaturePolicy,
+            PdfVersionInfo versionInfo,
+            PasswordSecurityInfo securityInfo,
+            PdfVersion outputVersion,
+            PdfBoxPasswordSecurity.PreparedOutput outputSecurity,
+            Map<String, PreparedNamedSource> preparedSources,
+            PdfVersion publicationVersion,
+            PasswordEncryptionAlgorithm publicationAlgorithm,
+            PasswordEncryptionScope publicationScope,
             WorkflowRequest request,
             List<PublicationTargetAdapter> publicationTargets,
             DocumentWork<R> work,
@@ -161,17 +290,23 @@ final class PdfBoxWorkflowEngine {
             List<ProviderSelection> providerSelections,
             SourceFingerprint sourceFingerprint) throws DocumentFailure {
         PDDocument document = initialDocument;
-        PdfBoxDocumentSession session = new PdfBoxDocumentSession(
-                document,
-                request.getSources(),
-                request.getPrimarySourceName(),
-                request.getPublicationTargets(),
-                request.getSaveMode(),
-                signaturePolicy);
+        PdfBoxDocumentSession session = null;
         List<Path> stagedDocuments = new ArrayList<Path>();
         Map<String, PDDocument> splitDocuments = null;
 
         try {
+            session = new PdfBoxDocumentSession(
+                    document,
+                    preparedSources,
+                    request.getSources().isEmpty(),
+                    request.getPublicationTargets(),
+                    request.getSaveMode(),
+                    signaturePolicy,
+                    versionInfo,
+                    securityInfo,
+                    publicationVersion,
+                    publicationAlgorithm,
+                    publicationScope);
             requireExecutionAllowed(request, clock);
             if (signaturePolicy.hasExistingSignatures()
                     && request.getSaveMode() == SaveMode.REWRITE
@@ -199,7 +334,7 @@ final class PdfBoxWorkflowEngine {
             emit(request, WorkflowProgressPhase.WORK_COMPLETED);
             requireExecutionAllowed(request, clock);
 
-                if (signaturePolicy.hasExistingSignatures()
+            if (signaturePolicy.hasExistingSignatures()
                     && request.getSaveMode() == SaveMode.INCREMENTAL
                     && !publicationTargets.isEmpty()
                     && !signaturePolicy.permitsSignedPublication(
@@ -213,7 +348,7 @@ final class PdfBoxWorkflowEngine {
                 emit(request, WorkflowProgressPhase.COMPLETED);
                 return outcome(
                         result,
-                        session.getOutcomeCapabilityId(),
+                        outcomeCapabilityId(request, session),
                         request,
                         Collections.<PublicationReceipt>emptyList(),
                         providerSelections);
@@ -221,6 +356,12 @@ final class PdfBoxWorkflowEngine {
 
             try {
                 if (splitDocuments == null) {
+                    if (outputVersion != null) {
+                        PdfBoxVersionPolicy.setOutputVersion(
+                                document,
+                                outputVersion);
+                    }
+                    outputSecurity.apply(document);
                     Path staged = Files.createTempFile(".folio-pdf-", ".pdf");
                     stagedDocuments.add(staged);
                     save(document, staged, request.getSaveMode());
@@ -233,6 +374,13 @@ final class PdfBoxWorkflowEngine {
                                 ".folio-pdf-",
                                 ".pdf");
                         stagedDocuments.add(staged);
+                        if (outputVersion != null) {
+                            PdfBoxVersionPolicy.setOutputVersion(
+                                    splitDocuments.get(target.getTargetName()),
+                                    outputVersion);
+                        }
+                        outputSecurity.apply(
+                                splitDocuments.get(target.getTargetName()));
                         PdfBoxSplitProductWriter.save(
                                 splitDocuments.get(target.getTargetName()),
                                 staged);
@@ -250,7 +398,12 @@ final class PdfBoxWorkflowEngine {
             document = null;
             closeForSuccess(splitDocuments);
             for (Path staged : stagedDocuments) {
-                validate(staged);
+                validate(
+                        staged,
+                        outputSecurity,
+                        publicationVersion,
+                        request.getSaveMode(),
+                        securityInfo);
             }
             emit(request, WorkflowProgressPhase.VALIDATED);
             requireExecutionAllowed(request, clock);
@@ -265,16 +418,22 @@ final class PdfBoxWorkflowEngine {
             emit(request, WorkflowProgressPhase.COMPLETED);
             return outcome(
                     result,
-                    session.getOutcomeCapabilityId(),
+                    outcomeCapabilityId(request, session),
                     request,
                     receipts,
                     providerSelections);
         } finally {
-            session.invalidate();
+            if (session != null) {
+                session.invalidate();
+            }
             closeQuietly(document);
-            closeQuietly(splitDocuments == null
-                    ? session.getSplitDocuments()
-                    : splitDocuments);
+            if (splitDocuments != null) {
+                closeQuietly(splitDocuments);
+            } else if (session != null) {
+                closeQuietly(session.getSplitDocuments());
+            }
+            outputSecurity.close();
+            closePreparedSources(preparedSources);
             deleteQuietly(stagedDocuments);
         }
     }
@@ -296,6 +455,15 @@ final class PdfBoxWorkflowEngine {
                 providerSelections);
     }
 
+    private static String outcomeCapabilityId(
+            WorkflowRequest request,
+            PdfBoxDocumentSession session) {
+        return !request.getPublicationTargets().isEmpty()
+                        && request.getOutputPolicy() != null
+                ? VERSION_SECURITY_CAPABILITY_ID
+                : session.getOutcomeCapabilityId();
+    }
+
     private static void save(
             PDDocument document,
             Path staged,
@@ -306,6 +474,47 @@ final class PdfBoxWorkflowEngine {
             }
         } else {
             document.save(staged.toFile());
+        }
+    }
+
+    private static PdfVersion outputVersion(
+            WorkflowRequest request,
+            PdfVersionInfo sourceVersion) throws DocumentFailure {
+        if (request.getPublicationTargets().isEmpty()) {
+            return null;
+        }
+        PdfOutputPolicy policy = request.getOutputPolicy();
+        if (request.getSaveMode() == SaveMode.INCREMENTAL) {
+            if (policy == null) {
+                return null;
+            }
+            requireSupportedOutputVersion(policy.getVersion());
+            if (policy.getVersion() != sourceVersion.getEffectiveVersion()) {
+                throw versionFailure(
+                        DocumentFailureCode.PDF_VERSION_UNSUPPORTED,
+                        "INCREMENTAL publication cannot change the effective PDF version.");
+            }
+            return null;
+        }
+        PdfVersion version = policy == null
+                ? PdfVersion.PDF_1_7 : policy.getVersion();
+        requireSupportedOutputVersion(version);
+        if (sourceVersion.getEffectiveVersion() == PdfVersion.PDF_2_0
+                && version != PdfVersion.PDF_2_0) {
+            throw versionFailure(
+                    DocumentFailureCode.PDF_VERSION_UNSUPPORTED,
+                    "A PDF 2.0 Source cannot be rewritten as PDF 1.7.");
+        }
+        return version;
+    }
+
+    private static void requireSupportedOutputVersion(PdfVersion version)
+            throws DocumentFailure {
+        if (version != PdfVersion.PDF_1_7
+                && version != PdfVersion.PDF_2_0) {
+            throw versionFailure(
+                    DocumentFailureCode.PDF_VERSION_UNSUPPORTED,
+                    "Only PDF 1.7 and PDF 2.0 output are supported.");
         }
     }
 
@@ -415,9 +624,94 @@ final class PdfBoxWorkflowEngine {
         return target;
     }
 
-    static PDDocument openDocument(DocumentSource source)
+    private static Map<String, PreparedNamedSource> prepareNamedSources(
+            WorkflowRequest request,
+            PdfVersion publicationVersion,
+            PasswordEncryptionAlgorithm publicationAlgorithm,
+            PasswordEncryptionScope publicationScope) throws DocumentFailure {
+        Map<String, PreparedNamedSource> prepared =
+                new LinkedHashMap<String, PreparedNamedSource>();
+        try {
+            for (Map.Entry<String, DocumentSource> entry
+                    : request.getSources().entrySet()) {
+                if (!entry.getKey().equals(request.getPrimarySourceName())) {
+                    PreparedNamedSource source =
+                            PreparedNamedSource.prepare(entry.getValue());
+                    prepared.put(entry.getKey(), source);
+                    source.requirePublicationCompatible(
+                            publicationVersion,
+                            publicationAlgorithm,
+                            publicationScope);
+                }
+            }
+            return prepared;
+        } catch (DocumentFailure failure) {
+            closePreparedSources(prepared);
+            throw failure;
+        } catch (RuntimeException callerFailure) {
+            closePreparedSources(prepared);
+            throw callerFailure;
+        }
+    }
+
+    private static Path snapshot(DocumentSource source)
             throws DocumentFailure {
-        return openPrimaryDocument(source, false).document;
+        Path snapshot = null;
+        try {
+            snapshot = Files.createTempFile(
+                    ".folio-pdf-source-",
+                    ".pdf");
+            switch (source.getKind()) {
+                case PATH:
+                    copyPathContents(
+                            source.getPath().toAbsolutePath().normalize(),
+                            snapshot);
+                    break;
+                case STREAM:
+                    Files.write(
+                            snapshot,
+                            readCallerStream(
+                                    source.getStream(),
+                                    source.getMaximumBytes()));
+                    break;
+                case CHANNEL:
+                    Files.write(
+                            snapshot,
+                            readCallerChannel(
+                                    source.getChannel(),
+                                    source.getMaximumBytes()));
+                    break;
+                case BYTES:
+                    Files.write(
+                            snapshot,
+                            requireBoundedBytes(
+                                    source.getBytes(),
+                                    source.getMaximumBytes()));
+                    break;
+                default:
+                    throw new IllegalStateException(
+                            "Unsupported source kind.");
+            }
+            return snapshot;
+        } catch (DocumentFailure failure) {
+            deleteQuietly(snapshot);
+            throw failure;
+        } catch (IOException ioFailure) {
+            deleteQuietly(snapshot);
+            throw failure(
+                    DocumentFailureCode.SOURCE_READ_FAILED,
+                    "The source could not be opened as a PDF document.");
+        } catch (RuntimeException callerFailure) {
+            deleteQuietly(snapshot);
+            throw callerFailure;
+        }
+    }
+
+    private static void copyPathContents(Path source, Path snapshot)
+            throws IOException {
+        try (OutputStream output = Files.newOutputStream(snapshot)) {
+            Files.copy(source, output);
+        }
     }
 
     private static OpenedDocument openPrimaryDocument(
@@ -429,12 +723,14 @@ final class PdfBoxWorkflowEngine {
                 try {
                     Path path = source.getPath().toAbsolutePath().normalize();
                     long length = Files.size(path);
+                    PdfVersion header = PdfBoxVersionPolicy.inspectHeader(path);
                     SourceFingerprint fingerprint = captureFingerprint
                             ? fingerprint(path, length) : null;
                     return new OpenedDocument(
-                            loadPathDocument(path),
+                            loadPathDocument(path, source.getCredential()),
                             length,
-                            fingerprint);
+                            fingerprint,
+                            header);
                 } catch (IOException | RuntimeException failure) {
                     throw failure(
                             DocumentFailureCode.SOURCE_READ_FAILED,
@@ -443,26 +739,32 @@ final class PdfBoxWorkflowEngine {
             case STREAM: {
                 byte[] bytes = readCallerStream(
                         source.getStream(), source.getMaximumBytes());
+                PdfVersion header = PdfBoxVersionPolicy.inspectHeader(bytes);
                 return new OpenedDocument(
-                        loadByteDocument(bytes),
+                        loadByteDocument(bytes, source.getCredential()),
                         bytes.length,
-                        captureFingerprint ? fingerprint(bytes) : null);
+                        captureFingerprint ? fingerprint(bytes) : null,
+                        header);
             }
             case CHANNEL: {
                 byte[] bytes = readCallerChannel(
                         source.getChannel(), source.getMaximumBytes());
+                PdfVersion header = PdfBoxVersionPolicy.inspectHeader(bytes);
                 return new OpenedDocument(
-                        loadByteDocument(bytes),
+                        loadByteDocument(bytes, source.getCredential()),
                         bytes.length,
-                        captureFingerprint ? fingerprint(bytes) : null);
+                        captureFingerprint ? fingerprint(bytes) : null,
+                        header);
             }
             case BYTES: {
                 byte[] bytes = requireBoundedBytes(
                         source.getBytes(), source.getMaximumBytes());
+                PdfVersion header = PdfBoxVersionPolicy.inspectHeader(bytes);
                 return new OpenedDocument(
-                        loadByteDocument(bytes),
+                        loadByteDocument(bytes, source.getCredential()),
                         bytes.length,
-                        captureFingerprint ? fingerprint(bytes) : null);
+                        captureFingerprint ? fingerprint(bytes) : null,
+                        header);
             }
             default:
                 throw new IllegalStateException("Unsupported source kind.");
@@ -514,11 +816,28 @@ final class PdfBoxWorkflowEngine {
         }
     }
 
-    private static PDDocument loadPathDocument(Path source)
+    private static PDDocument loadPathDocument(
+            Path source,
+            PasswordCredential credential)
             throws DocumentFailure {
+        char[] characters = credentialCharacters(credential);
+        try {
+            return loadPathDocument(source, characters);
+        } finally {
+            clear(characters);
+        }
+    }
+
+    private static PDDocument loadPathDocument(
+            Path source,
+            char[] characters) throws DocumentFailure {
         try {
             Path path = source.toAbsolutePath().normalize();
-            return Loader.loadPDF(path.toFile());
+            return characters == null
+                    ? Loader.loadPDF(path.toFile())
+                    : Loader.loadPDF(path.toFile(), new String(characters));
+        } catch (InvalidPasswordException rejected) {
+            throw credentialFailure(characters == null);
         } catch (IOException | RuntimeException backendFailure) {
             throw failure(
                     DocumentFailureCode.SOURCE_READ_FAILED,
@@ -526,14 +845,53 @@ final class PdfBoxWorkflowEngine {
         }
     }
 
-    private static PDDocument loadByteDocument(byte[] bytes)
+    private static PDDocument loadByteDocument(
+            byte[] bytes,
+            PasswordCredential credential)
             throws DocumentFailure {
+        char[] characters = credentialCharacters(credential);
         try {
-            return Loader.loadPDF(bytes);
+            return characters == null
+                    ? Loader.loadPDF(bytes)
+                    : Loader.loadPDF(bytes, new String(characters));
+        } catch (InvalidPasswordException rejected) {
+            throw credentialFailure(credential == null);
         } catch (IOException | RuntimeException backendFailure) {
             throw failure(
                     DocumentFailureCode.SOURCE_READ_FAILED,
                     "The source could not be opened as a PDF document.");
+        } finally {
+            clear(characters);
+        }
+    }
+
+    private static char[] credentialCharacters(PasswordCredential credential)
+            throws DocumentFailure {
+        if (credential == null) {
+            return null;
+        }
+        try {
+            return credential.copyForExecution();
+        } catch (IllegalStateException destroyed) {
+            throw versionFailure(
+                    DocumentFailureCode.CREDENTIAL_DESTROYED,
+                    "A password credential was destroyed before execution.");
+        }
+    }
+
+    private static DocumentFailure credentialFailure(boolean missing) {
+        return versionFailure(
+                missing
+                        ? DocumentFailureCode.CREDENTIAL_REQUIRED
+                        : DocumentFailureCode.CREDENTIAL_REJECTED,
+                missing
+                        ? "The password-protected Source requires a credential."
+                        : "The supplied Source credential was not accepted.");
+    }
+
+    private static void clear(char[] characters) {
+        if (characters != null) {
+            Arrays.fill(characters, '\0');
         }
     }
 
@@ -577,7 +935,13 @@ final class PdfBoxWorkflowEngine {
         }
     }
 
-    private static void validate(Path staged) throws DocumentFailure {
+    private static void validate(
+            Path staged,
+            PdfBoxPasswordSecurity.PreparedOutput outputSecurity,
+            PdfVersion expectedVersion,
+            SaveMode saveMode,
+            PasswordSecurityInfo sourceSecurity)
+            throws DocumentFailure {
         try {
             if (Files.size(staged) <= 0L) {
                 throw failure(
@@ -592,20 +956,79 @@ final class PdfBoxWorkflowEngine {
 
         PDDocument validationDocument = null;
         try {
-            validationDocument = Loader.loadPDF(staged.toFile());
+            validationDocument = Loader.loadPDF(
+                    staged.toFile(),
+                    outputSecurity.validationPassword());
             if (validationDocument.getNumberOfPages() == 0) {
                 throw failure(
                         DocumentFailureCode.DOCUMENT_VALIDATION_FAILED,
                         "The staged document must contain at least one page.");
             }
+            PdfVersion header = PdfBoxVersionPolicy.inspectHeader(staged);
+            PdfVersionInfo version = PdfBoxVersionPolicy.inspect(
+                    validationDocument,
+                    header);
+            if (version.getEffectiveVersion() != expectedVersion
+                    || (saveMode == SaveMode.REWRITE
+                            && (header != expectedVersion
+                                    || version.getCatalogVersion()
+                                            .isPresent()))) {
+                throw versionFailure(
+                        DocumentFailureCode.DOCUMENT_VALIDATION_FAILED,
+                        "The staged PDF version does not match the output policy.");
+            }
+            PasswordSecurityInfo actualSecurity =
+                    PdfBoxPasswordSecurity.inspect(validationDocument);
+            if (outputSecurity.preservesExistingSecurity()) {
+                requireSameSecurity(sourceSecurity, actualSecurity);
+            } else if (!outputSecurity.isPresent()
+                    && actualSecurity.isPasswordProtected()) {
+                throw versionFailure(
+                        DocumentFailureCode.DOCUMENT_VALIDATION_FAILED,
+                        "The staged password-security state does not match the output policy.");
+            }
+            outputSecurity.validate(validationDocument);
             validationDocument.close();
             validationDocument = null;
+            if (outputSecurity.isPresent()) {
+                validationDocument = Loader.loadPDF(
+                        staged.toFile(),
+                        outputSecurity.ownerValidationPassword());
+                if (validationDocument.getNumberOfPages() == 0) {
+                    throw failure(
+                            DocumentFailureCode.DOCUMENT_VALIDATION_FAILED,
+                            "The staged document must contain at least one page.");
+                }
+                outputSecurity.validateOwner(validationDocument);
+                validationDocument.close();
+                validationDocument = null;
+            }
+        } catch (DocumentFailure failure) {
+            throw failure;
         } catch (IOException | RuntimeException failure) {
             throw failure(
                     DocumentFailureCode.DOCUMENT_VALIDATION_FAILED,
                     "The staged document is not a parseable PDF document.");
         } finally {
             closeQuietly(validationDocument);
+        }
+    }
+
+    private static void requireSameSecurity(
+            PasswordSecurityInfo expected,
+            PasswordSecurityInfo actual) throws DocumentFailure {
+        if (expected.isPasswordProtected()
+                        != actual.isPasswordProtected()
+                || !expected.getAlgorithm().equals(actual.getAlgorithm())
+                || expected.getSecurityHandlerRevision()
+                        != actual.getSecurityHandlerRevision()
+                || expected.getEncryptionScope()
+                        != actual.getEncryptionScope()
+                || !expected.getDeclaredUserPermissions().equals(
+                        actual.getDeclaredUserPermissions())) {
+            throw versionFailure(
+                    DocumentFailureCode.DOCUMENT_VALIDATION_FAILED,
+                    "The staged password-security state does not preserve its Source.");
         }
     }
 
@@ -754,7 +1177,11 @@ final class PdfBoxWorkflowEngine {
 
     private static PDDocument createDocument() throws DocumentFailure {
         try {
-            return new PDDocument();
+            PDDocument document = new PDDocument();
+            PdfBoxVersionPolicy.setOutputVersion(
+                    document,
+                    PdfVersion.PDF_1_7);
+            return document;
         } catch (RuntimeException failure) {
             throw failure(
                     DocumentFailureCode.DOCUMENT_WRITE_FAILED,
@@ -779,6 +1206,16 @@ final class PdfBoxWorkflowEngine {
         }
         for (PDDocument document : documents.values()) {
             closeQuietly(document);
+        }
+    }
+
+    private static void closePreparedSources(
+            Map<String, PreparedNamedSource> sources) {
+        if (sources == null) {
+            return;
+        }
+        for (PreparedNamedSource source : sources.values()) {
+            source.close();
         }
     }
 
@@ -877,14 +1314,157 @@ final class PdfBoxWorkflowEngine {
         private final PDDocument document;
         private final long sourceLength;
         private final SourceFingerprint fingerprint;
+        private final PdfVersion declaredHeaderVersion;
 
         private OpenedDocument(
                 PDDocument document,
                 long sourceLength,
-                SourceFingerprint fingerprint) {
+                SourceFingerprint fingerprint,
+                PdfVersion declaredHeaderVersion) {
             this.document = document;
             this.sourceLength = sourceLength;
             this.fingerprint = fingerprint;
+            this.declaredHeaderVersion = declaredHeaderVersion;
+        }
+    }
+
+    static final class PreparedNamedSource implements AutoCloseable {
+
+        private final Path snapshot;
+        private final PdfVersionInfo versionInfo;
+        private final PasswordSecurityInfo securityInfo;
+        private char[] credentialCharacters;
+
+        private PreparedNamedSource(
+                Path snapshot,
+                PdfVersionInfo versionInfo,
+                PasswordSecurityInfo securityInfo,
+                char[] credentialCharacters) {
+            this.snapshot = snapshot;
+            this.versionInfo = versionInfo;
+            this.securityInfo = securityInfo;
+            this.credentialCharacters = credentialCharacters;
+        }
+
+        private static PreparedNamedSource prepare(DocumentSource source)
+                throws DocumentFailure {
+            Path snapshot = null;
+            char[] credentialCharacters = null;
+            PDDocument document = null;
+            boolean retained = false;
+            try {
+                snapshot = PdfBoxWorkflowEngine.snapshot(source);
+                PdfVersion header = PdfBoxVersionPolicy.inspectHeader(snapshot);
+                credentialCharacters = credentialCharacters(
+                        source.getCredential());
+                document = loadPathDocument(snapshot, credentialCharacters);
+                PdfVersionInfo versionInfo = PdfBoxVersionPolicy.inspect(
+                        document,
+                        header);
+                PasswordSecurityInfo securityInfo =
+                        PdfBoxPasswordSecurity.inspect(
+                                document,
+                                credentialCharacters);
+                PdfBoxPasswordSecurity.requireCompatibleInput(
+                        document,
+                        versionInfo,
+                        securityInfo);
+                PreparedNamedSource prepared = new PreparedNamedSource(
+                        snapshot,
+                        versionInfo,
+                        securityInfo,
+                        credentialCharacters);
+                retained = true;
+                return prepared;
+            } finally {
+                closeQuietly(document);
+                if (!retained) {
+                    clear(credentialCharacters);
+                    deleteQuietly(snapshot);
+                }
+            }
+        }
+
+        PDDocument open() throws DocumentFailure {
+            return loadPathDocument(snapshot, credentialCharacters);
+        }
+
+        void requireMergeAllowed(
+                PdfVersion publicationVersion,
+                PasswordEncryptionAlgorithm publicationAlgorithm,
+                PasswordEncryptionScope publicationScope)
+                throws DocumentFailure {
+            PdfBoxPermissionPolicy.requireMergeSource(securityInfo);
+            requirePublicationCompatible(
+                    publicationVersion,
+                    publicationAlgorithm,
+                    publicationScope);
+        }
+
+        private void requirePublicationCompatible(
+                PdfVersion publicationVersion,
+                PasswordEncryptionAlgorithm publicationAlgorithm,
+                PasswordEncryptionScope publicationScope)
+                throws DocumentFailure {
+            if (publicationVersion == null) {
+                return;
+            }
+            if (versionInfo.getEffectiveVersion().ordinal()
+                    > publicationVersion.ordinal()) {
+                throw versionFailure(
+                        DocumentFailureCode.PDF_VERSION_UNSUPPORTED,
+                        "A merged Source cannot be published with an older PDF version.");
+            }
+            if (!securityInfo.isPasswordProtected()) {
+                return;
+            }
+            if (publicationAlgorithm == null) {
+                throw versionFailure(
+                        DocumentFailureCode.PASSWORD_SECURITY_POLICY_REQUIRED,
+                        "A protected merged Source requires protected publication.");
+            }
+            PasswordEncryptionAlgorithm sourceAlgorithm =
+                    securityInfo.getAlgorithm().get();
+            if (securityStrength(publicationAlgorithm)
+                            < securityStrength(sourceAlgorithm)
+                    || !scopeProtects(
+                            publicationScope,
+                            securityInfo.getEncryptionScope())) {
+                throw versionFailure(
+                        DocumentFailureCode.PASSWORD_SECURITY_UNSUPPORTED,
+                        "A merged Source cannot be published with weaker password security.");
+            }
+        }
+
+        private static int securityStrength(
+                PasswordEncryptionAlgorithm algorithm) {
+            switch (algorithm) {
+                case AES_256:
+                    return 4;
+                case AES_128:
+                    return 3;
+                case RC4_128:
+                    return 2;
+                case RC4_40:
+                    return 1;
+                default:
+                    throw new IllegalStateException(
+                            "Unsupported password-encryption algorithm.");
+            }
+        }
+
+        private static boolean scopeProtects(
+                PasswordEncryptionScope publicationScope,
+                PasswordEncryptionScope sourceScope) {
+            return publicationScope == PasswordEncryptionScope.ALL_CONTENT
+                    || publicationScope == sourceScope;
+        }
+
+        @Override
+        public void close() {
+            clear(credentialCharacters);
+            credentialCharacters = null;
+            deleteQuietly(snapshot);
         }
     }
 

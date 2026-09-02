@@ -701,6 +701,111 @@ capabilities:
     certified-platforms: []
     status: experimental
 
+  - id: document.version-password-security
+    context: document-engine
+    summary: Inspect exact effective PDF versions, publish PDF 1.7 or 2.0, and authenticate and enforce bounded Standard-handler password security with AES-256 defaults.
+    reference-suite:
+      source: ISO 32000-1:2008 and ISO 32000-2:2020 version, Standard security-handler, crypt-filter, credential, permission, and extension contracts
+      role: public standards input only; no third-party implementation or protected artifact is an oracle
+    native-interface:
+      entry-point: net.zerocloud.pdf.DocumentWorkflow#execute
+      request: net.zerocloud.pdf.WorkflowRequest
+      source: net.zerocloud.pdf.DocumentSource
+      output-policy: net.zerocloud.pdf.PdfOutputPolicy
+      version: net.zerocloud.pdf.PdfVersion
+      version-info: net.zerocloud.pdf.PdfVersionInfo
+      version-query: net.zerocloud.pdf.query.DocumentVersion
+      password-credential: net.zerocloud.pdf.PasswordCredential
+      password-security-policy: net.zerocloud.pdf.PasswordSecurityPolicy
+      password-security-info: net.zerocloud.pdf.PasswordSecurityInfo
+      password-encryption-algorithm: net.zerocloud.pdf.PasswordEncryptionAlgorithm
+      password-encryption-scope: net.zerocloud.pdf.PasswordEncryptionScope
+      document-permissions: net.zerocloud.pdf.DocumentPermissions
+      credential-authority: net.zerocloud.pdf.CredentialAuthority
+      legacy-security-mode: net.zerocloud.pdf.LegacySecurityMode
+      security-query: net.zerocloud.pdf.query.DocumentSecurity
+      outcome: net.zerocloud.pdf.WorkflowOutcome
+      receipt: net.zerocloud.pdf.PublicationReceipt
+      failure: net.zerocloud.pdf.DocumentFailure
+      failure-code: net.zerocloud.pdf.DocumentFailureCode
+    migration-facade:
+      stable: []
+      preview: []
+    limitations:
+      - Input versions are the exact header and optional catalog declarations for PDF 1.0 through 1.7 and 2.0; PDF 1.x begins at byte zero while PDF 2.0 may follow a preamble within the 1,024-byte inspection bound. Missing, malformed, or unsupported declarations fail closed, and effective version is the later declaration.
+      - REWRITE output defaults to PDF 1.7 and supports explicit PDF 1.7 or PDF 2.0 only. A PDF 2.0 primary or named Source requires explicit PDF 2.0 REWRITE because no downgrade proof exists; INCREMENTAL may preserve but cannot change the effective primary Source version.
+      - Secure password output is Standard-handler V=5, R=6, AESV3 with 256-bit keys and whole-document metadata encryption. PDF 1.7 output carries the qualified ADBE Extension Level 8 convention; PDF 2.0 output uses the normative R6 profile and requires permission bit 10 set.
+      - Legacy Security Mode is request-scoped. It permits only RC4-128 V=2/R=3 or AES-128 V=4/R=4 output on PDF 1.7; RC4-40 output, V=4 RC4 output, and R=5 output are unsupported.
+      - Accepted legacy inputs are V=1/R=2 or R=3 RC4-40, V=2/R=3 RC4-128, and whole-document V=4/R=4 RC4-128 or AES-128. R=5, public-key handlers, unknown crypt filters, malformed authentication entries, attachment-only encryption, and inconsistent R6 Perms fail closed.
+      - Output models all-content, metadata-clear, and attachment-only scopes but the current backend supports only all-content output. Fixture-proven metadata-clear V=4/R=4 input may be read; metadata-clear AES-256 and attachment-only input are not claimed.
+      - Output owner and user credentials must be distinct, non-empty printable ASCII, at most 127 characters for AES-256 and 32 for legacy profiles. This deliberately rejects backend normalization, truncation, and legacy encoding ambiguity.
+      - PasswordCredential owns destroyable defensive char-array copies, but PDFBox requires temporary immutable String values; Folio cannot guarantee erasure of backend or JVM copies and makes no physical secure-erasure claim.
+      - "Owner authority bypasses the permission word; user authority is checked before every mapped command or content-bearing query. Folio separately applies the Standard-handler owner predicate when the permission word is unrestricted: proven owners report OWNER, while unrestricted users remain UNRESTRICTED and cannot perform owner-only protected REWRITE."
+      - Password permissions are cooperative processor restrictions rather than cryptographic DRM. Printing and form filling have no current workflow commands, so those bits round-trip without an execution claim.
+      - A protected Source cannot be implicitly rewritten as plaintext or rekeyed by user authority. Protected INCREMENTAL publication preserves encryption and still intersects T15 Existing Signature rules; explicit security changes in INCREMENTAL are unsupported.
+      - Every declared non-primary Source is authenticated and strictly classified before caller work using a workflow-owned temporary snapshot that preserves one-shot stream/channel ownership. Published donors cannot downgrade effective version, algorithm, or encryption scope; donor extraction permission remains a merge-command gate.
+      - DocumentPatch cannot change catalog Version or Extensions, an exposed encryption dictionary, or trailer Encrypt state. Page operations preserve only the exact ADBE Extension Level 8 declaration owned by T16 and reject additional or malformed extension state.
+      - Public-key encryption, FIPS validation, signature creation or trust validation, comprehensive hostile-input enforcement, and Hardened Worker isolation remain T37, T38+, T20, and T21 scope.
+    dependency-gates:
+      - capability: document.value.inspect-patch
+        required-status: compatible
+    promotion-gates:
+      - ticket: T06
+        requirement: Complete the remaining mandatory independent standards, semantic, and visual evidence and close the prerequisite capability gate before compatibility.
+    acceptance-profile:
+      id: T16-pdf-version-password-security
+      state: experimental
+      mandatory-evidence:
+        - syntax
+        - standards
+        - semantic
+        - visual
+      evidence-record: capabilities/evidence/T16-pdf-version-password-security.md
+    evidence:
+      - kind: version-password-security-workflow-consumer-contract
+        path: pdf-document/src/test/java/net/zerocloud/pdf/consumer/PdfVersionPasswordSecurityWorkflowTest.java
+        assertion: Public workflows prove every supported version marker, catalog precedence, deterministic malformed declarations, PDF 1.7 and 2.0 output and transition markers, exact secure and legacy dictionaries, version minima, metadata-clear R4 input, credential lifecycle and independently proven owner authority, every permission bit, mapped authorization, private named-Source snapshots and anti-downgrade policy, protected rewrite, nested reserved-state rejection, encrypted incremental preservation, and encrypted Existing Signature interaction with stable safe failures and NOT_ATTEMPTED receipts.
+      - kind: incremental-signature-regression-contract
+        path: pdf-document/src/test/java/net/zerocloud/pdf/consumer/IncrementalSignatureWorkflowTest.java
+        assertion: Existing Signature recognition, exact Source-prefix preservation, closed incremental commands, DocMDP authorization, and safe publication behavior remain intact while protected incremental Sources preserve their existing encryption.
+      - kind: public-api-contract
+        path: pdf-document/src/test/java/net/zerocloud/pdf/contract/PublicApiLeakageIT.java
+        assertion: Public and protected signatures expose only project-owned or JDK version, credential, security, permission, and policy types and no PDFBox type.
+      - kind: artifact-contract
+        path: pdf-document/src/test/java/net/zerocloud/pdf/contract/JarContractIT.java
+        assertion: The jar retains its stable module name, Java 8 class-file version, notices, and unbundled PDFBox dependency.
+      - kind: cross-jdk-contract
+        path: scripts/verify-jdk-matrix.sh
+        assertion: Maven verification runs the T16 public workflow contract on JDK 8, 11, 17, and 21.
+      - kind: acceptance-command
+        path: scripts/acceptance
+        assertion: The repository-owned command produces AES-256 PDF 1.7 Extension Level 8 and PDF 2.0 products through public workflows, reopens both with user and owner credentials, and records redacted pinned-qpdf syntax and encryption-profile findings.
+      - kind: acceptance-reproducibility-contract
+        path: pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/AcceptanceEvidenceCommandTest.java
+        assertion: Independent command runs reproduce T16 evidence metadata and non-secret security-observation hashes while intentionally excluding randomized credential entries, file identifiers, ciphertext, and credential-file paths.
+      - kind: authoritative-policy
+        path: docs/pdf-version-password-security.md
+        assertion: The version, output, algorithm, scope, credential, permission, protected-publication, failure, backend-boundary, and unsupported-case contracts are documented.
+      - kind: architectural-decision
+        path: docs/adr/0021-use-secure-pdf-and-encryption-defaults.md
+        assertion: The secure-default decision records the qualified PDF 1.7 Extension Level 8 boundary and fully normative PDF 2.0 R6 path.
+      - kind: primary-source-research
+        path: docs/research/T16-pdf-version-password-security-primary-sources.md
+        assertion: Exact public standards and PDFBox source citations, clean-room boundaries, uncertainties, permission mapping, and derived implementation constraints are recorded.
+    acceptance-evidence:
+      - chain: syntax
+        result: pass
+        record: capabilities/evidence/T16-pdf-version-password-security-syntax.md
+        producer:
+          kind: external-tool
+          name: qpdf
+          version: "12.4.0"
+    provenance:
+      path: PROVENANCE.md
+      record: T16 pdf-version-password-security record
+    certified-platforms: []
+    status: experimental
+
   - id: conversion.capability-provider.select-execute
     context: conversion
     summary: Register, inspect, deterministically select, and safely execute project-owned Capability Providers.

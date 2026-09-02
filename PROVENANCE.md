@@ -618,6 +618,87 @@ documentation, and project-owned tests are the permitted design inputs.
   promotion gate. T15 therefore remains `experimental` with no compatible or
   certified-platform claim.
 
+## T16 pdf-version-password-security record
+
+- Authorship: OpenAI Codex generated and integrated the T16 implementation,
+  tests, research, evidence, and documentation at repository operator
+  MaBaiqiu's direction. No T16 commit was created in this execution.
+- Project inputs: GitHub issues #1 and #17; `CONTEXT.md`, `SECURITY.md`, and
+  `CONTRIBUTING.md`; ADR-0002, 0005, 0006, 0010, 0011, 0012, 0013, 0016,
+  0017, 0019, 0020, 0021, 0023, 0025, 0028, 0029, and 0037; the repository
+  workflow, value, page, metadata, annotation, extraction, inventory, and
+  acceptance contracts; the accepted T03 through T15 implementation; and the
+  fixed review point `0d74da80c9607d3fbe50cd12fbd13810d69bfc8c`.
+- Public standards inputs: the Adobe-hosted authorized ISO 32000-1:2008 copy
+  supplied the PDF 1.0–1.7 header/catalog, Standard security-handler,
+  crypt-filter, password, permission, and extension contracts. Current ISO
+  and PDF Association metadata and EC3 resolutions, plus explicitly
+  provisional public ISO/FDIS 32000-2 clause material, supplied corroborated
+  PDF 2.0 version and R6 behavior. Adobe's public Extension Level 3 supplement
+  supplied R5/AESV3 history. A PDF Association presentation identifies ADBE
+  Extension Level 8 as the PDF 1.7 interoperability signal for corrected R6,
+  but is not treated as normative evidence. Exact URLs, hashes, copyrights,
+  uncertainties, and clause/table mappings are recorded in
+  `docs/research/T16-pdf-version-password-security-primary-sources.md`.
+- Backend inputs: official Apache PDFBox tag `3.0.8`, peeled commit
+  `9286e47d89d6877005c9d2d0f2fd38793a62519a`, and source JAR SHA-256
+  `eaed642d27599c78229857e4ab571805979f828f5ec8c695e3135ca933766132`
+  were inspected under Apache License 2.0. Public loader, version, encryption,
+  permission, incremental-save, and security-handler behavior established the
+  private adapter boundary. No PDFBox source was copied or adapted.
+- Runtime and test dependencies: T16 adds no dependency. Apache PDFBox 3.0.8
+  remains the private Apache-2.0 runtime dependency and JUnit 4.13.2 remains
+  the test dependency; their existing coordinates and licenses remain recorded
+  in [DEPENDENCIES.md](DEPENDENCIES.md).
+- Project-authored fixtures: version and structural encrypted-signature
+  fixtures are deterministic minimal PDF
+  syntax. Legacy protected fixtures implement the public ISO password padding,
+  MD5, RC4, owner/user entry, file-key, and permission algorithms for the exact
+  admitted V1/R2, V1/R3, V2/R3, and V4/R4 profiles, including the V4 metadata-
+  clear file-key exception. No downloaded protected PDF, standard example, or
+  third-party output became a fixture. Test-only credential literals are
+  controlled inputs and are not copied into evidence.
+- Output validation: staged products are inspected for their exact effective
+  version and security state and reopened through public user and owner
+  credentials and compared with the requested detached version, authority,
+  algorithm, scope, and permissions. Project-owned raw checks verify exact
+  header/catalog markers, V/R/Length/CFM/filter entries, the permission word,
+  R6 `Perms` integrity, and absence of PDFBox's noncanonical crypt-filter
+  Length value. These implementation checks are not independent Acceptance
+  Evidence.
+- Evidence boundary: the acceptance command creates PDF 1.7 ADBE Extension
+  Level 8 and PDF 2.0 AES-256 products through `DocumentWorkflow.execute`,
+  verifies public user and owner reopen, then gives both unchanged encrypted
+  products to pinned qpdf 12.4.0. qpdf's version, R=6, permission, AESv3, and
+  parse findings are independent syntax evidence only. qpdf receives the user
+  credential through a deleted temporary password file; its password-valued
+  output and the temporary path are redacted. The repeatable security-
+  observation hash includes only non-secret version/profile/scope/permission
+  and page-count observations and excludes randomized authentication entries,
+  identifiers, and ciphertext. No standards, semantic, visual, cryptographic,
+  or permission-enforcement claim is inferred from qpdf.
+- Generated documentation: `docs/generated/capability-matrix.md` and
+  `docs/generated/facade-surface.md` are deterministic renderings of the YAML
+  authorities and contain no copied external content.
+- Excluded inputs: no iText source, resource, fixture, binary, output,
+  decompiled or binary-derived implementation detail, closed add-on material,
+  proprietary differential evidence, third-party protected PDF, unapproved
+  black-box result, private key, or Reference Suite behavioral oracle was used.
+- Scope: T16 adds exact version observation, PDF 1.7/PDF 2.0 publication,
+  Standard password authentication, AES-256 secure output, exact documented
+  legacy profiles and version minima, credential ownership, independently
+  proven owner authority, permission enforcement, named-Source preflight and
+  anti-downgrade rules, protected rewrite, and encrypted incremental and
+  Existing Signature preservation. It does not implement T17
+  drawing, T20 comprehensive hostile-input enforcement, T21 Worker isolation,
+  T37 public-key encryption, T38+ signing/trust, metadata-clear or attachment-
+  only output, or FIPS validation.
+- Compatibility Curator evidence: none; the role remains vacant. T16 has one
+  passing qpdf syntax record only. Mandatory standards, semantic, and visual
+  chains remain absent, its T09 Dependency Gate remains open while T09 is
+  `experimental`, and T06 remains a promotion gate. T16 therefore remains
+  `experimental` with no compatible or certified-platform claim.
+
 ## T07 independent-visual-evidence record
 
 - Authorship: OpenAI Codex generated and integrated the T07 repository-only

@@ -112,6 +112,7 @@ final class PdfBoxValueAdapter {
             }
             COSDictionary dictionary = (COSDictionary) target.value;
             COSName name = COSName.getPDFName(change.getName().getValue());
+            requireNoVersionSecurityChange(dictionary, name);
             List<ObjectReference> referencedObjects =
                     new ArrayList<ObjectReference>();
             COSBase value = backendValue(
@@ -127,6 +128,80 @@ final class PdfBoxValueAdapter {
                     dictionary.getItem(name)));
         }
         return prepared;
+    }
+
+    private void requireNoVersionSecurityChange(
+            COSDictionary dictionary,
+            COSName name) throws DocumentFailure {
+        COSDictionary catalog = document.getDocumentCatalog().getCOSObject();
+        COSDictionary encryption = document.getEncryption() == null
+                ? null : document.getEncryption().getCOSObject();
+        COSDictionary trailer = document.getDocument().getTrailer();
+        if ((dictionary == catalog
+                        && (COSName.VERSION.equals(name)
+                                || COSName.EXTENSIONS.equals(name)))
+                || containsDictionary(
+                        catalog.getItem(COSName.EXTENSIONS),
+                        dictionary,
+                        new IdentityHashMap<COSBase, Boolean>())
+                || containsDictionary(
+                        trailer.getItem(COSName.ENCRYPT),
+                        dictionary,
+                        new IdentityHashMap<COSBase, Boolean>())
+                || containsDictionary(
+                        encryption,
+                        dictionary,
+                        new IdentityHashMap<COSBase, Boolean>())
+                || (dictionary == trailer && COSName.ENCRYPT.equals(name))) {
+            throw PdfBoxWorkflowEngine.versionFailure(
+                    DocumentFailureCode.COMMAND_REJECTED,
+                    "A Document Patch cannot change engine-owned version or password-security state.");
+        }
+    }
+
+    private static boolean containsDictionary(
+            COSBase value,
+            COSDictionary target,
+            IdentityHashMap<COSBase, Boolean> visited) {
+        if (value == null) {
+            return false;
+        }
+        if (value == target) {
+            return true;
+        }
+        if (visited.put(value, Boolean.TRUE) != null) {
+            return false;
+        }
+        if (value instanceof COSObject) {
+            return containsDictionary(
+                    ((COSObject) value).getObject(),
+                    target,
+                    visited);
+        }
+        if (value instanceof COSArray) {
+            COSArray array = (COSArray) value;
+            for (int index = 0; index < array.size(); index++) {
+                if (containsDictionary(
+                        array.get(index),
+                        target,
+                        visited)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        if (value instanceof COSDictionary) {
+            COSDictionary dictionary = (COSDictionary) value;
+            for (COSName key : dictionary.keySet()) {
+                if (containsDictionary(
+                        dictionary.getItem(key),
+                        target,
+                        visited)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private static void rollback(

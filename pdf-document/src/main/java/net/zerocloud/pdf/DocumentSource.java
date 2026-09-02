@@ -30,6 +30,7 @@ public final class DocumentSource {
     private final ReadableByteChannel channel;
     private final byte[] bytes;
     private final long maximumBytes;
+    private final PasswordCredential credential;
 
     private DocumentSource(
             Kind kind,
@@ -37,13 +38,15 @@ public final class DocumentSource {
             InputStream stream,
             ReadableByteChannel channel,
             byte[] bytes,
-            long maximumBytes) {
+            long maximumBytes,
+            PasswordCredential credential) {
         this.kind = kind;
         this.path = path;
         this.stream = stream;
         this.channel = channel;
         this.bytes = bytes;
         this.maximumBytes = maximumBytes;
+        this.credential = credential;
     }
 
     /**
@@ -59,7 +62,8 @@ public final class DocumentSource {
                 null,
                 null,
                 null,
-                Long.MAX_VALUE);
+                Long.MAX_VALUE,
+                null);
     }
 
     /**
@@ -78,7 +82,8 @@ public final class DocumentSource {
                 stream,
                 null,
                 null,
-                maximumBytes);
+                maximumBytes,
+                null);
     }
 
     /**
@@ -99,7 +104,8 @@ public final class DocumentSource {
                 null,
                 channel,
                 null,
-                maximumBytes);
+                maximumBytes,
+                null);
     }
 
     /**
@@ -118,7 +124,26 @@ public final class DocumentSource {
                 null,
                 null,
                 Arrays.copyOf(bytes, bytes.length),
-                maximumBytes);
+                maximumBytes,
+                null);
+    }
+
+    /**
+     * Returns a source descriptor that uses the supplied password credential.
+     * The credential remains caller-owned and is not destroyed by a workflow.
+     *
+     * @param credential the credential used only while opening this source
+     * @return a new immutable source descriptor
+     */
+    public DocumentSource withCredential(PasswordCredential credential) {
+        return new DocumentSource(
+                kind,
+                path,
+                stream,
+                channel,
+                bytes,
+                maximumBytes,
+                Objects.requireNonNull(credential, "credential"));
     }
 
     private static void requireMaximumBytes(long maximumBytes) {
@@ -150,5 +175,9 @@ public final class DocumentSource {
 
     long getMaximumBytes() {
         return maximumBytes;
+    }
+
+    PasswordCredential getCredential() {
+        return credential;
     }
 }

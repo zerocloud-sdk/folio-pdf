@@ -12,6 +12,33 @@ public enum DocumentFailureCode {
     /** The source could not be opened as a PDF document. */
     SOURCE_READ_FAILED,
 
+    /** A PDF header or catalog version declaration is malformed. */
+    PDF_VERSION_INVALID,
+
+    /** A syntactically valid PDF version is outside the supported input set. */
+    PDF_VERSION_UNSUPPORTED,
+
+    /** A password-protected Source requires an opening credential. */
+    CREDENTIAL_REQUIRED,
+
+    /** The supplied opening credential was not accepted. */
+    CREDENTIAL_REJECTED,
+
+    /** A credential was destroyed before the workflow could copy it. */
+    CREDENTIAL_DESTROYED,
+
+    /** The requested or encountered password-security form is unsupported. */
+    PASSWORD_SECURITY_UNSUPPORTED,
+
+    /** A protected Source rewrite requires a complete explicit output policy. */
+    PASSWORD_SECURITY_POLICY_REQUIRED,
+
+    /** Obsolete password-security output was requested without legacy mode. */
+    LEGACY_SECURITY_MODE_REQUIRED,
+
+    /** The effective user permissions do not authorize an operation. */
+    DOCUMENT_PERMISSION_DENIED,
+
     /** A bounded source exceeded its caller-declared byte limit. */
     SOURCE_LIMIT_EXCEEDED,
 

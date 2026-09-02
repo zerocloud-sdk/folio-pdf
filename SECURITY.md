@@ -42,7 +42,29 @@ remains T21 scope.
 
 ## Sensitive data
 
-Transaction temporary data is isolated and removed with the worker. Passwords and private keys are not accepted as Strings or written to logs. Default diagnostics omit document content, names, metadata, credentials, private keys, and raw backend failures.
+Transaction temporary data is isolated and removed with the worker. Passwords
+and private keys are not accepted as public Strings or written to logs.
+`PasswordCredential` immediately copies caller characters, returns no array,
+and idempotently overwrites its owned array on close. A workflow uses separate
+execution-local copies, clears every project-owned temporary array on success
+and failure, and never closes the caller's credential. Destroyed credentials
+fail before caller work and publication.
+
+Apache PDFBox's public password loader and protection policy require temporary
+immutable Java `String` values. Folio PDF minimizes their lifetime and closes
+the containing document, but cannot erase backend or JVM String copies and
+makes no physical secure-erasure claim. Output rejects empty, equal,
+non-printable-ASCII, or over-limit credentials rather than relying on backend
+fallback, normalization, or truncation. A missing credential is never treated
+as an empty password.
+
+Default diagnostics omit document content, names, metadata, credentials,
+private keys, secret-derived values, and raw backend failures. Acceptance
+evidence supplies encrypted products to qpdf through a temporary password file,
+redacts password-valued tool output and the temporary path, and deletes the
+file before the command returns. Evidence hashes exclude randomized
+credential-derived entries and ciphertext and do not expose private security
+state.
 
 ## Vulnerability handling
 

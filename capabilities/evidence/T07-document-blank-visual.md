@@ -52,7 +52,7 @@ ImageMagick notice manifest: `docs/third-party/imagemagick-7.1.2-30-appimage.md`
 
 Implementation renderer version: `3.0.8`
 
-Input ID-neutral SHA-256: `9cb6708129183241c0384d674451d644e1bab118707588448bbffcbaeb04da6c`
+Input ID-neutral SHA-256: `9fa3077b3f3ae8fae8789556bb1d5e77c934f0945bec3c2b2078b683b2bce219`
 
 Input hash policy: `SHA-256 of the exact PDF bytes after replacing only the two hexadecimal trailer /ID values with ASCII zeroes`
 

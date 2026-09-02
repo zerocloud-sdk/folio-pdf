@@ -20,7 +20,7 @@ Producer version: `12.4.0`
 
 Tool distribution SHA-256: `a3bca240f3bb61efdc3a90be89d1da4ed5e125326c3458c4e62df53ff4f153e3`
 
-Input revision-ID-neutral set SHA-256: `aed7e84bbe8353ab581114b6f53c47754839b8df82110d193915705d35e4ee08`
+Input revision-ID-neutral set SHA-256: `4214edd75e98d7cb740ca64d3e08ea07c8a56e80b98433d114cda2fce4325c93`
 
 Input hash policy: `SHA-256 of the exact PDF bytes after replacing every hexadecimal two-value trailer /ID with equal-length ASCII zeroes`
 

@@ -42,9 +42,11 @@ final class PdfBoxPageOperations {
             "document.page.manipulate-merge-split";
 
     private final PDDocument document;
-    private final Map<String, DocumentSource> sources;
-    private final String primarySourceName;
+    private final Map<String, PdfBoxWorkflowEngine.PreparedNamedSource> sources;
     private final Map<String, PublicationTarget> publicationTargets;
+    private final PdfVersion publicationVersion;
+    private final PasswordEncryptionAlgorithm publicationAlgorithm;
+    private final PasswordEncryptionScope publicationScope;
     private final PdfBoxValueAdapter valueAdapter;
     private final PdfBoxMetadataOperations metadataOperations;
     private final PdfBoxAnnotationPageOperations annotationOperations;
@@ -52,18 +54,23 @@ final class PdfBoxPageOperations {
 
     PdfBoxPageOperations(
             PDDocument document,
-            Map<String, DocumentSource> sources,
-            String primarySourceName,
+            Map<String, PdfBoxWorkflowEngine.PreparedNamedSource> sources,
+            boolean libraryOwnedDocument,
             Map<String, PublicationTarget> publicationTargets,
+            PdfVersion publicationVersion,
+            PasswordEncryptionAlgorithm publicationAlgorithm,
+            PasswordEncryptionScope publicationScope,
             PdfBoxValueAdapter valueAdapter,
             PdfBoxMetadataOperations metadataOperations,
             PdfBoxAnnotationPageOperations annotationOperations) {
         this.document = Objects.requireNonNull(document, "document");
         this.sources = Objects.requireNonNull(sources, "sources");
-        this.primarySourceName = primarySourceName;
         this.publicationTargets = Objects.requireNonNull(
                 publicationTargets,
                 "publicationTargets");
+        this.publicationVersion = publicationVersion;
+        this.publicationAlgorithm = publicationAlgorithm;
+        this.publicationScope = publicationScope;
         this.valueAdapter = Objects.requireNonNull(valueAdapter, "valueAdapter");
         this.metadataOperations = Objects.requireNonNull(
                 metadataOperations,
@@ -71,7 +78,7 @@ final class PdfBoxPageOperations {
         this.annotationOperations = Objects.requireNonNull(
                 annotationOperations,
                 "annotationOperations");
-        if (primarySourceName == null) {
+        if (libraryOwnedDocument) {
             makeLibraryOwnedPageTreeIndirect(document);
         }
     }
@@ -105,8 +112,6 @@ final class PdfBoxPageOperations {
             }
         } catch (DocumentFailure failure) {
             throw failure;
-        } catch (CallerSourceRuntimeFailure callerFailure) {
-            throw callerFailure.getCallerFailure();
         } catch (RuntimeException backendFailure) {
             throw failure(
                     DocumentFailureCode.DOCUMENT_WRITE_FAILED,
@@ -436,8 +441,7 @@ final class PdfBoxPageOperations {
         LinkedHashSet<String> selectedSources = new LinkedHashSet<String>();
         for (String sourceName : merge.getSourceNames()) {
             if (!selectedSources.add(sourceName)
-                    || !sources.containsKey(sourceName)
-                    || sourceName.equals(primarySourceName)) {
+                    || !sources.containsKey(sourceName)) {
                 throw invalidMergeSources();
             }
         }
@@ -460,8 +464,14 @@ final class PdfBoxPageOperations {
                     new ArrayList<
                             PdfBoxAnnotationPageOperations.MergeStructures>();
             for (String sourceName : merge.getSourceNames()) {
+                PdfBoxWorkflowEngine.PreparedNamedSource preparedSource =
+                        sources.get(sourceName);
+                preparedSource.requireMergeAllowed(
+                        publicationVersion,
+                        publicationAlgorithm,
+                        publicationScope);
                 PDDocument sourceDocument = openAdditionalSource(
-                        sources.get(sourceName));
+                        preparedSource);
                 mergeDocuments.add(sourceDocument);
                 requirePreservable(sourceDocument);
                 annotationStructures.add(
@@ -493,12 +503,13 @@ final class PdfBoxPageOperations {
                     destinationRenames);
         } catch (DocumentFailure sourceFailure) {
             closeQuietly(mergeDocuments);
+            if (PdfBoxWorkflowEngine.VERSION_SECURITY_CAPABILITY_ID.equals(
+                    sourceFailure.getCapabilityId())) {
+                throw sourceFailure;
+            }
             throw failure(
                     sourceFailure.getCode(),
                     sourceFailure.getDiagnostic());
-        } catch (CallerSourceRuntimeFailure callerFailure) {
-            closeQuietly(mergeDocuments);
-            throw callerFailure;
         } catch (IOException | RuntimeException backendFailure) {
             closeQuietly(mergeDocuments);
             throw failure(
@@ -508,17 +519,10 @@ final class PdfBoxPageOperations {
         closeForSuccess(mergeDocuments);
     }
 
-    private static PDDocument openAdditionalSource(DocumentSource source)
+    private static PDDocument openAdditionalSource(
+            PdfBoxWorkflowEngine.PreparedNamedSource source)
             throws DocumentFailure {
-        try {
-            return PdfBoxWorkflowEngine.openDocument(source);
-        } catch (RuntimeException callerFailure) {
-            if (source.getKind() == DocumentSource.Kind.STREAM
-                    || source.getKind() == DocumentSource.Kind.CHANNEL) {
-                throw new CallerSourceRuntimeFailure(callerFailure);
-            }
-            throw callerFailure;
-        }
+        return source.open();
     }
 
     private void split(SplitDocument split) throws DocumentFailure {
@@ -719,6 +723,11 @@ final class PdfBoxPageOperations {
             if (!COSName.TYPE.equals(name)
                     && !COSName.PAGES.equals(name)
                     && !COSName.VERSION.equals(name)
+                    && !(candidate.isEncrypted()
+                            && COSName.EXTENSIONS.equals(name)
+                            && PdfBoxPasswordSecurity
+                                    .hasOnlyPreservableAdobeSecurityExtension(
+                                            candidate))
                     && !PdfBoxMetadataOperations.isManagedCatalogEntry(name)
                     && !PdfBoxAnnotationOperations.isManagedCatalogEntry(name)) {
                 throw preservationUnsupported();
@@ -760,6 +769,8 @@ final class PdfBoxPageOperations {
         }
         for (COSName name : trailer.keySet()) {
             if (!COSName.INFO.equals(name)
+                    && !(candidate.isEncrypted()
+                            && COSName.ENCRYPT.equals(name))
                     && !isOneOf(
                             name,
                             "Size",
@@ -1223,22 +1234,6 @@ final class PdfBoxPageOperations {
             DocumentFailureCode code,
             String diagnostic) {
         return new DocumentFailure(code, CAPABILITY_ID, diagnostic);
-    }
-
-    private static final class CallerSourceRuntimeFailure
-            extends RuntimeException {
-
-        private static final long serialVersionUID = 1L;
-
-        private final RuntimeException callerFailure;
-
-        CallerSourceRuntimeFailure(RuntimeException callerFailure) {
-            this.callerFailure = callerFailure;
-        }
-
-        RuntimeException getCallerFailure() {
-            return callerFailure;
-        }
     }
 
     private static final class PageReferenceLookup {

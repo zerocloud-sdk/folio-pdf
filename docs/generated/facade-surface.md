@@ -8,7 +8,7 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Release train: `0.1.0-SNAPSHOT`
 - Stable entries: `0`
 - Preview entries: `12`
-- Explicit capability exclusions: `8`
+- Explicit capability exclusions: `9`
 
 ## Stable surfaces
 
@@ -193,3 +193,10 @@ No stable surfaces are declared.
 - Behavioral capability: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
 - Deferred ticket: `T09`
 - Reason: T09 is a Native Interface low-level PDF Value and Document Patch seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+
+<a id="excluded-capability-document_dot_version_dash_password_dash_security"></a>
+### `document.version-password-security`
+
+- Behavioral capability: [`document.version-password-security`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security)
+- Deferred ticket: `T16`
+- Reason: T16 is a Native Interface PDF-version and Standard-handler password-security policy within DocumentWorkflow with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.

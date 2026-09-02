@@ -3,9 +3,15 @@ package net.zerocloud.pdf;
 import java.util.Map;
 import java.util.Objects;
 import net.zerocloud.pdf.command.AddBlankPage;
+import net.zerocloud.pdf.command.FlattenAnnotations;
+import net.zerocloud.pdf.command.ReplaceOutlineTree;
 import net.zerocloud.pdf.command.SetNamedDestinations;
+import net.zerocloud.pdf.command.SplitDocument;
+import net.zerocloud.pdf.command.UpdateActions;
 import net.zerocloud.pdf.command.UpdateAnnotations;
 import net.zerocloud.pdf.query.DocumentRootReference;
+import net.zerocloud.pdf.query.DocumentSecurity;
+import net.zerocloud.pdf.query.DocumentVersion;
 import net.zerocloud.pdf.query.InspectObject;
 import net.zerocloud.pdf.query.PageCount;
 import net.zerocloud.pdf.query.PageObjectReference;
@@ -27,17 +33,24 @@ final class PdfBoxDocumentSession implements DocumentSession {
     private final PdfBoxPageOperations pageOperations;
     private final SaveMode saveMode;
     private final PdfBoxSignaturePolicy signaturePolicy;
+    private final PdfVersionInfo versionInfo;
+    private final PasswordSecurityInfo securityInfo;
     private String outcomeCapabilityId;
     private boolean mutationOccurred;
     private volatile boolean active;
 
     PdfBoxDocumentSession(
             PDDocument document,
-            Map<String, DocumentSource> sources,
-            String primarySourceName,
+            Map<String, PdfBoxWorkflowEngine.PreparedNamedSource> sources,
+            boolean libraryOwnedDocument,
             Map<String, PublicationTarget> publicationTargets,
             SaveMode saveMode,
-            PdfBoxSignaturePolicy signaturePolicy) {
+            PdfBoxSignaturePolicy signaturePolicy,
+            PdfVersionInfo versionInfo,
+            PasswordSecurityInfo securityInfo,
+            PdfVersion publicationVersion,
+            PasswordEncryptionAlgorithm publicationAlgorithm,
+            PasswordEncryptionScope publicationScope) {
         this.document = Objects.requireNonNull(document, "document");
         this.owner = Thread.currentThread();
         this.valueAdapter = new PdfBoxValueAdapter(document, this);
@@ -58,8 +71,11 @@ final class PdfBoxDocumentSession implements DocumentSession {
         this.pageOperations = new PdfBoxPageOperations(
                 document,
                 sources,
-                primarySourceName,
+                libraryOwnedDocument,
                 publicationTargets,
+                publicationVersion,
+                publicationAlgorithm,
+                publicationScope,
                 valueAdapter,
                 metadataOperations,
                 annotationPageOperations);
@@ -67,6 +83,8 @@ final class PdfBoxDocumentSession implements DocumentSession {
         this.signaturePolicy = Objects.requireNonNull(
                 signaturePolicy,
                 "signaturePolicy");
+        this.versionInfo = Objects.requireNonNull(versionInfo, "versionInfo");
+        this.securityInfo = Objects.requireNonNull(securityInfo, "securityInfo");
         this.outcomeCapabilityId = PdfBoxWorkflowEngine.CAPABILITY_ID;
         this.active = true;
     }
@@ -97,6 +115,7 @@ final class PdfBoxDocumentSession implements DocumentSession {
         }
 
         if (command == AddBlankPage.INSTANCE) {
+            PdfBoxPermissionPolicy.requireAssembly(securityInfo);
             try {
                 PDPage page = new PDPage();
                 page.setResources(new PDResources());
@@ -112,6 +131,11 @@ final class PdfBoxDocumentSession implements DocumentSession {
         }
 
         if (pageOperations.supports(command)) {
+            if (command instanceof SplitDocument) {
+                PdfBoxPermissionPolicy.requireExtraction(securityInfo);
+            } else {
+                PdfBoxPermissionPolicy.requireAssembly(securityInfo);
+            }
             outcomeCapabilityId = PdfBoxPageOperations.CAPABILITY_ID;
             pageOperations.execute(command);
             mutationOccurred = true;
@@ -119,6 +143,11 @@ final class PdfBoxDocumentSession implements DocumentSession {
         }
 
         if (metadataOperations.supports(command)) {
+            if (command instanceof ReplaceOutlineTree) {
+                PdfBoxPermissionPolicy.requireAssembly(securityInfo);
+            } else {
+                PdfBoxPermissionPolicy.requireModification(securityInfo);
+            }
             if (command instanceof SetNamedDestinations) {
                 annotationPageOperations.requireNamedDestinationRemovalSafe(
                         ((SetNamedDestinations) command).getRemovedNames());
@@ -130,6 +159,15 @@ final class PdfBoxDocumentSession implements DocumentSession {
         }
 
         if (annotationOperations.supports(command)) {
+            if (command instanceof UpdateActions) {
+                PdfBoxPermissionPolicy.requireModification(securityInfo);
+            } else {
+                PdfBoxPermissionPolicy.requireAnnotationModification(
+                        securityInfo);
+                if (command instanceof FlattenAnnotations) {
+                    PdfBoxPermissionPolicy.requireModification(securityInfo);
+                }
+            }
             outcomeCapabilityId = PdfBoxAnnotationOperations.CAPABILITY_ID;
             annotationOperations.execute(command);
             mutationOccurred = true;
@@ -137,6 +175,9 @@ final class PdfBoxDocumentSession implements DocumentSession {
         }
 
         if (command instanceof DocumentPatch) {
+            PdfBoxPermissionPolicy.requireModification(securityInfo);
+            PdfBoxPermissionPolicy.requireAnnotationModification(securityInfo);
+            PdfBoxPermissionPolicy.requireAssembly(securityInfo);
             outcomeCapabilityId = PdfBoxValueAdapter.CAPABILITY_ID;
             try {
                 valueAdapter.apply((DocumentPatch) command);
@@ -173,6 +214,18 @@ final class PdfBoxDocumentSession implements DocumentSession {
             }
         }
 
+        if (query == DocumentVersion.INSTANCE) {
+            outcomeCapabilityId =
+                    PdfBoxWorkflowEngine.VERSION_SECURITY_CAPABILITY_ID;
+            return queryResult(versionInfo);
+        }
+
+        if (query == DocumentSecurity.INSTANCE) {
+            outcomeCapabilityId =
+                    PdfBoxWorkflowEngine.VERSION_SECURITY_CAPABILITY_ID;
+            return queryResult(securityInfo);
+        }
+
         if (query instanceof PageObjectReference) {
             outcomeCapabilityId = PdfBoxPageOperations.CAPABILITY_ID;
             return queryResult(pageOperations.pageReference(
@@ -191,6 +244,7 @@ final class PdfBoxDocumentSession implements DocumentSession {
         }
 
         if (query instanceof InspectObject) {
+            PdfBoxPermissionPolicy.requireExtraction(securityInfo);
             outcomeCapabilityId = PdfBoxValueAdapter.CAPABILITY_ID;
             InspectObject inspection = (InspectObject) query;
             try {
@@ -205,17 +259,20 @@ final class PdfBoxDocumentSession implements DocumentSession {
         }
 
         if (metadataOperations.supportsQuery(query)) {
+            PdfBoxPermissionPolicy.requireExtraction(securityInfo);
             outcomeCapabilityId = PdfBoxMetadataOperations.CAPABILITY_ID;
             return queryResult(metadataOperations.evaluate(query));
         }
 
 
         if (annotationOperations.supportsQuery(query)) {
+            PdfBoxPermissionPolicy.requireExtraction(securityInfo);
             outcomeCapabilityId = PdfBoxAnnotationOperations.CAPABILITY_ID;
             return queryResult(annotationOperations.evaluate(query));
         }
 
         if (extractionOperations.supportsQuery(query)) {
+            PdfBoxPermissionPolicy.requireExtraction(securityInfo);
             outcomeCapabilityId =
                     PdfBoxTextStructureExtractionOperations.CAPABILITY_ID;
             return queryResult(extractionOperations.evaluate(
@@ -223,6 +280,7 @@ final class PdfBoxDocumentSession implements DocumentSession {
         }
 
         if (imageResourceExtractionOperations.supportsQuery(query)) {
+            PdfBoxPermissionPolicy.requireExtraction(securityInfo);
             outcomeCapabilityId =
                     PdfBoxImageResourceExtractionOperations.CAPABILITY_ID;
             return queryResult(imageResourceExtractionOperations.evaluate(

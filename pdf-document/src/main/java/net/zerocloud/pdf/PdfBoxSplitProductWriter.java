@@ -22,6 +22,12 @@ final class PdfBoxSplitProductWriter {
     }
 
     static void save(PDDocument document, Path target) throws IOException {
+        if (document.isEncrypted()) {
+            // PDFBox creates the identifier needed by the security handler.
+            // A protected document must not be reused for a second save.
+            document.save(target.toFile());
+            return;
+        }
         COSDictionary trailer = document.getDocument().getTrailer();
         boolean needsIdentifier = trailer.getItem(COSName.ID) == null;
         if (needsIdentifier) {

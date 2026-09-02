@@ -122,6 +122,14 @@ _Avoid_: form flattening, annotation deletion
 The explicit publication strategy for a changed document: `REWRITE` serializes a replacement document, while `INCREMENTAL` appends a new revision under stricter preservation rules.
 _Avoid_: auto-save, smart save
 
+**PDF Version**:
+An exact major/minor PDF specification declaration. A document has a required header version, an optional catalog version, and an effective version equal to the later supported declaration.
+_Avoid_: backend float version, parser default
+
+**PDF Output Policy**:
+The immutable, request-scoped version and password-security choices applied to every product published by one Document Workflow.
+_Avoid_: writer setting, global output default
+
 **Existing Signature**:
 A structurally recognized signature value already present in a Source. It is protected whether or not Folio PDF has established its cryptographic validity.
 _Avoid_: valid signature, verified signature
@@ -162,8 +170,28 @@ Owns interactive fields, form data, appearances, AcroForm behavior, and XFA proc
 
 Owns document confidentiality, authenticity, integrity, timestamps, trust chains, and signature validation.
 
+**Password Credential**:
+A caller-owned, destroyable defensive copy of password characters used to authenticate one Source or define one output owner/user role. It is never a public String.
+_Avoid_: password string, encryption key
+
+**Password Security Policy**:
+The immutable owner credential, user credential, encryption algorithm, encryption scope, and Document Permissions requested for protected published products.
+_Avoid_: password flag, backend protection policy
+
+**Password Encryption Scope**:
+The declared coverage of password encryption: all content, all content except document-level metadata, or embedded files only. Modeling a scope does not imply that every backend can write it.
+_Avoid_: encryption boolean, metadata permission
+
+**Document Permissions**:
+The eight Standard-handler user permission choices represented by the PDF permission word and enforced by the Document Workflow after authentication and before mapped operations.
+_Avoid_: DRM, owner rights, Signature Permission
+
+**Credential Authority**:
+The detached authority established while opening a document: none, restricted user, independently proven owner, or unrestricted permission without owner proof.
+_Avoid_: valid password, access level
+
 **Legacy Security Mode**:
-An explicit opt-in that permits writing obsolete Reference Suite password-encryption algorithms for migration needs. It is never selected by default.
+An explicit request-scoped opt-in that permits supported obsolete password-encryption output for migration needs. It is absent by default, selects no algorithm by itself, and cannot alter another Document Workflow.
 _Avoid_: compatible encryption, default encryption
 
 **FIPS Distribution**:

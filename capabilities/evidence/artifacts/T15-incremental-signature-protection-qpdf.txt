@@ -1,6 +1,6 @@
 # T15 qpdf syntax findings
 
-Input revision-ID-neutral set SHA-256: `aed7e84bbe8353ab581114b6f53c47754839b8df82110d193915705d35e4ee08`
+Input revision-ID-neutral set SHA-256: `4214edd75e98d7cb740ca64d3e08ea07c8a56e80b98433d114cda2fce4325c93`
 
 Input hash policy: `SHA-256 of the exact PDF bytes after replacing every hexadecimal two-value trailer /ID with equal-length ASCII zeroes`
 
@@ -14,7 +14,7 @@ Final determination: `pass`
 
 ## T15-incremental-original.pdf
 
-Input revision-ID-neutral SHA-256: `9cb6708129183241c0384d674451d644e1bab118707588448bbffcbaeb04da6c`
+Input revision-ID-neutral SHA-256: `9fa3077b3f3ae8fae8789556bb1d5e77c934f0945bec3c2b2078b683b2bce219`
 
 Invocation: `qpdf --check T15-incremental-original.pdf`
 
@@ -24,7 +24,7 @@ Invocation: `qpdf --check T15-incremental-original.pdf`
 
 ```text
 checking T15-incremental-original.pdf
-PDF Version: 1.6
+PDF Version: 1.7
 File is not encrypted
 File is not linearized
 No syntax or stream encoding errors found; the file may still contain
@@ -36,9 +36,10 @@ errors that qpdf cannot detect
 ```text
 
 ```
+
 ## T15-incremental-output.pdf
 
-Input revision-ID-neutral SHA-256: `49a82e6e6d4c7bae4a0213c7139dba0c9fca83bfadc5be5adf8e09880c295a1e`
+Input revision-ID-neutral SHA-256: `4b6aa67efca42850679a9ff2d279775c94fcbabc0811c109e00a487e64832d7b`
 
 Invocation: `qpdf --check T15-incremental-output.pdf`
 
@@ -48,7 +49,7 @@ Invocation: `qpdf --check T15-incremental-output.pdf`
 
 ```text
 checking T15-incremental-output.pdf
-PDF Version: 1.6
+PDF Version: 1.7
 File is not encrypted
 File is not linearized
 No syntax or stream encoding errors found; the file may still contain

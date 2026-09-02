@@ -948,7 +948,7 @@ public final class PageManipulationWorkflowTest {
     }
 
     @Test
-    public void mergeReportsAdditionalSourceReadFailureAsT10WithoutMutation()
+    public void invalidNamedSourceFailsBeforeCallerWorkOrMutation()
             throws Exception {
         Path primary = temporaryFolder.getRoot().toPath().resolve("primary.pdf");
         Path output = temporaryFolder.getRoot().toPath().resolve("output.pdf");
@@ -964,33 +964,33 @@ public final class PageManipulationWorkflowTest {
                 .target("output", PublicationTarget.path(output))
                 .saveMode(SaveMode.REWRITE)
                 .build();
-        WorkflowOutcome<Void> outcome = new DocumentWorkflow().execute(
-                request,
-                session -> {
-                    try {
-                        session.execute(MergeDocuments.version1("malformed"));
-                        fail("Expected the additional Source to be rejected");
-                    } catch (DocumentFailure failure) {
-                        assertEquals(
-                                DocumentFailureCode.SOURCE_READ_FAILED,
-                                failure.getCode());
-                        assertEquals(
-                                "document.page.manipulate-merge-split",
-                                failure.getCapabilityId());
-                        assertEquals(
-                                "The source could not be opened as a PDF document.",
-                                failure.getDiagnostic());
-                        assertNull(failure.getCause());
-                    }
-                    return null;
-                });
+        final boolean[] workRan = new boolean[1];
+        try {
+            new DocumentWorkflow().execute(
+                    request,
+                    session -> {
+                        workRan[0] = true;
+                        return null;
+                    });
+            fail("Expected the additional Source to be rejected");
+        } catch (DocumentFailure failure) {
+            assertEquals(
+                    DocumentFailureCode.SOURCE_READ_FAILED,
+                    failure.getCode());
+            assertEquals(
+                    "document.blank.create-publish-reopen",
+                    failure.getCapabilityId());
+            assertEquals(
+                    "The source could not be opened as a PDF document.",
+                    failure.getDiagnostic());
+            assertNull(failure.getCause());
+            assertEquals(
+                    PublicationStatus.NOT_ATTEMPTED,
+                    failure.getPublicationReceipts().get(0).getStatus());
+        }
 
-        assertEquals(
-                "document.page.manipulate-merge-split",
-                outcome.getCapabilityId());
-        assertEquals(
-                Arrays.<PdfValue>asList(PdfName.of("primary")),
-                readPageMarkers(output));
+        assertFalse(workRan[0]);
+        assertFalse(Files.exists(output));
     }
 
     @Test

@@ -80,7 +80,8 @@ output; every other PDF byte remains hash-significant, and the file handed to
 qpdf and PDFium is never normalized or rewritten. A repeat-run command test
 requires the T06/T07 records and raw findings to reproduce exactly. The command
 also drives the T10 page/merge/split, T11 metadata, T12 annotation/Action,
-T13 text/structure, T14 image/resource, and T15 incremental-publication
+T13 text/structure, T14 image/resource, T15 incremental-publication, and T16
+version/password-security
 profiles to create paired
 project-owned products and runs the same pinned qpdf syntax check on each.
 The T13 producer also evaluates the
@@ -93,6 +94,12 @@ one public-workflow original and its two-page appended revision; the producer
 requires exact original-prefix retention, a non-empty suffix, a committed
 receipt, and public reopen before qpdf sees both unchanged files. These
 implementation probes are not recorded as independent semantic chains.
+The T16 pair is a public-workflow PDF 1.7 ADBE Extension Level 8 product and a
+PDF 2.0 product, both using the secure V=5/R=6 AESV3 default. The producer
+reopens each with user and owner credentials before qpdf runs `--check` plus
+`--show-encryption`. qpdf receives the user credential through a temporary
+password file that is deleted after inspection; the recorded invocation hides
+its path and password-valued tool output is replaced with `<redacted>`.
 The command records tool identity, version and distribution digest, exact or
 documented ID-neutral input SHA-256 values, raw findings, chain-level results,
 and the applicable determination beneath the requested
@@ -105,6 +112,13 @@ two-value trailer `/ID`. T15 may contain an `/ID` in more than one revision, so
 its revision-aware policy replaces every hexadecimal two-value trailer `/ID`
 with equal-length ASCII zeroes before hashing. Every other byte remains
 hash-significant, and normalization is never applied to a qpdf input.
+
+AES-256 authentication entries, identifiers, and ciphertext are intentionally
+randomized, so T16 records a reproducible SHA-256 of the non-secret public
+version, handler, scope, permission, and page-count observation instead of
+claiming byte-identical encrypted output. The encrypted files handed to qpdf
+are not normalized or rewritten. This observation hash is an input-identity
+policy for the syntax run, not independent semantic or cryptographic proof.
 
 For T07, PDFium receives that exact workflow-produced PDF and renders its one
 effective MediaBox page at 144 DPI into an opaque sRGB RGB PNG of exactly
@@ -249,7 +263,7 @@ project-produced artifacts pass pinned qpdf 12.4.0 syntax checks. Standards,
 semantic, and visual Acceptance Evidence remain absent, so the T10 capability
 also remains `experimental`.
 
-The T11, T12, T13, and T14 profiles likewise have one passing qpdf syntax record
+The T11 through T16 profiles likewise have one passing qpdf syntax record
 for each pair of public-workflow products. Their mandatory standards,
 semantic, and visual Acceptance Evidence chains remain absent, and their
 Dependency Gates remain open while prerequisites are `experimental`; none is

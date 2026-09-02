@@ -41,6 +41,8 @@ public final class WorkflowRequest {
     private final String primarySourceName;
     private final Map<String, PublicationTarget> publicationTargets;
     private final SaveMode saveMode;
+    private final PdfOutputPolicy outputPolicy;
+    private final LegacySecurityMode legacySecurityMode;
     private final CancellationToken cancellationToken;
     private final Instant deadline;
     private final WorkflowProgressListener progressListener;
@@ -54,6 +56,8 @@ public final class WorkflowRequest {
         this.publicationTargets = Collections.unmodifiableMap(
                 new LinkedHashMap<String, PublicationTarget>(builder.publicationTargets));
         this.saveMode = builder.saveMode;
+        this.outputPolicy = builder.outputPolicy;
+        this.legacySecurityMode = builder.legacySecurityMode;
         this.cancellationToken = builder.cancellationToken;
         this.deadline = builder.deadline;
         this.progressListener = builder.progressListener;
@@ -155,6 +159,14 @@ public final class WorkflowRequest {
         return saveMode;
     }
 
+    PdfOutputPolicy getOutputPolicy() {
+        return outputPolicy;
+    }
+
+    LegacySecurityMode getLegacySecurityMode() {
+        return legacySecurityMode;
+    }
+
     CancellationToken getCancellationToken() {
         return cancellationToken;
     }
@@ -188,6 +200,8 @@ public final class WorkflowRequest {
                 new LinkedHashMap<String, PublicationTarget>();
         private String primarySourceName;
         private SaveMode saveMode;
+        private PdfOutputPolicy outputPolicy;
+        private LegacySecurityMode legacySecurityMode;
         private CancellationToken cancellationToken = CancellationToken.none();
         private Instant deadline;
         private WorkflowProgressListener progressListener = NO_PROGRESS;
@@ -254,6 +268,33 @@ public final class WorkflowRequest {
          */
         public Builder saveMode(SaveMode saveMode) {
             this.saveMode = Objects.requireNonNull(saveMode, "saveMode");
+            return this;
+        }
+
+        /**
+         * Selects the PDF version and security policy for published products.
+         * When absent, REWRITE products use the secure PDF 1.7 default and
+         * INCREMENTAL products preserve their Source version.
+         *
+         * @param outputPolicy the request-scoped output policy
+         * @return this builder
+         */
+        public Builder outputPolicy(PdfOutputPolicy outputPolicy) {
+            this.outputPolicy = Objects.requireNonNull(
+                    outputPolicy,
+                    "outputPolicy");
+            return this;
+        }
+
+        /**
+         * Explicitly permits obsolete password-security output for this
+         * request only. It does not select an obsolete algorithm by itself.
+         *
+         * @param mode the request-scoped legacy authorization
+         * @return this builder
+         */
+        public Builder legacySecurityMode(LegacySecurityMode mode) {
+            this.legacySecurityMode = Objects.requireNonNull(mode, "mode");
             return this;
         }
 
