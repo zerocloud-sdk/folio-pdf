@@ -47,7 +47,10 @@ public final class AcceptanceEvidenceCommandTest {
                     "T12-annotations-document-actions-syntax.md"),
             new ProductSyntax(
                     "T13",
-                    "T13-text-logical-structure-syntax.md"));
+                    "T13-text-logical-structure-syntax.md"),
+            new ProductSyntax(
+                    "T14",
+                    "T14-image-resource-extraction-syntax.md"));
 
     @Rule
     public final TemporaryFolder temporaryFolder = new TemporaryFolder();
@@ -315,6 +318,49 @@ public final class AcceptanceEvidenceCommandTest {
         assertTrue(t13Findings.contains(
                 "T13-tagged-structure.pdf` exit code: `0`"));
         assertTrue(t13Findings.contains("Input ID-neutral SHA-256"));
+
+        Path t14ImageFont = output.resolve(
+                "artifacts/T14-image-font-inventory.pdf");
+        Path t14FormMask = output.resolve(
+                "artifacts/T14-form-mask-inventory.pdf");
+        assertTrue(Files.isRegularFile(t14ImageFont));
+        assertTrue(Files.isRegularFile(t14FormMask));
+        assertTrue(Files.size(t14ImageFont) > 0L);
+        assertTrue(Files.size(t14FormMask) > 0L);
+
+        String t14Syntax = read(output.resolve(
+                "T14-image-resource-extraction-syntax.md"));
+        assertMetadata(
+                t14Syntax,
+                "Capability",
+                "document.images-resources.extract");
+        assertMetadata(
+                t14Syntax,
+                "Acceptance Profile",
+                "T14-image-resource-extraction");
+        assertMetadata(t14Syntax, "Chain", "syntax");
+        assertMetadata(t14Syntax, "Result", "pass");
+        assertMetadata(t14Syntax, "Producer kind", "external-tool");
+        assertMetadata(t14Syntax, "Producer", "qpdf");
+        assertMetadata(t14Syntax, "Producer version", "12.4.0");
+        assertMetadata(
+                t14Syntax,
+                "Input hash policy",
+                EvidenceFiles.inputHashPolicy());
+        assertTrue(t14Syntax.contains(
+                "artifacts/T14-image-font-inventory.pdf"));
+        assertTrue(t14Syntax.contains(
+                "artifacts/T14-form-mask-inventory.pdf"));
+        assertTrue(t14Syntax.contains(
+                "artifacts/T14-image-resource-extraction-qpdf.txt"));
+
+        String t14Findings = read(output.resolve(
+                "artifacts/T14-image-resource-extraction-qpdf.txt"));
+        assertTrue(t14Findings.contains(
+                "T14-image-font-inventory.pdf` exit code: `0`"));
+        assertTrue(t14Findings.contains(
+                "T14-form-mask-inventory.pdf` exit code: `0`"));
+        assertTrue(t14Findings.contains("Input ID-neutral SHA-256"));
     }
 
     @Test
@@ -381,7 +427,9 @@ public final class AcceptanceEvidenceCommandTest {
                 "T12-annotations-document-actions-syntax.md",
                 "artifacts/T12-annotations-document-actions-qpdf.txt",
                 "T13-text-logical-structure-syntax.md",
-                "artifacts/T13-text-logical-structure-qpdf.txt")) {
+                "artifacts/T13-text-logical-structure-qpdf.txt",
+                "T14-image-resource-extraction-syntax.md",
+                "artifacts/T14-image-resource-extraction-qpdf.txt")) {
             assertEquals(relative,
                     read(firstOutput.resolve(relative)),
                     read(secondOutput.resolve(relative)));
@@ -395,7 +443,9 @@ public final class AcceptanceEvidenceCommandTest {
         }
         for (String relative : Arrays.asList(
                 "artifacts/T13-page-text.pdf",
-                "artifacts/T13-tagged-structure.pdf")) {
+                "artifacts/T13-tagged-structure.pdf",
+                "artifacts/T14-image-font-inventory.pdf",
+                "artifacts/T14-form-mask-inventory.pdf")) {
             assertEquals(relative,
                     EvidenceFiles.idNeutralPdfSha256(
                             firstOutput.resolve(relative)),

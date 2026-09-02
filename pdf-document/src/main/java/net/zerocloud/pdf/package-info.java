@@ -15,5 +15,11 @@
  * net.zerocloud.pdf.ExtractionLimits}. Their ordering, geometry, mapping,
  * language, role, and failure contracts are documented in
  * {@code docs/text-logical-structure.md}.</p>
+ *
+ * <p>Detached T14 Image and Document Resource Inventory values are bounded by
+ * {@link net.zerocloud.pdf.ResourceExtractionLimits}. Their traversal,
+ * identity, Page Usage, filter, color, mask, font, byte-selection, lifecycle,
+ * and failure contracts are documented in
+ * {@code docs/image-resource-extraction.md}.</p>
  */
 package net.zerocloud.pdf;

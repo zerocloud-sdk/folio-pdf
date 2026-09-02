@@ -58,6 +58,11 @@ final class PdfBoxValueAdapter {
         return referenceFor(pageTreeReference);
     }
 
+    ObjectReference resourceReference(COSObject resource)
+            throws DocumentFailure {
+        return referenceFor(resource);
+    }
+
     PdfValue inspect(
             ObjectReference reference,
             PdfInspectionLimits limits) throws DocumentFailure {

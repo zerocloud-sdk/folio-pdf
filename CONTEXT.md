@@ -54,6 +54,18 @@ _Avoid_: PDF document object, backend document
 A backend-neutral representation of a low-level PDF null, boolean, number, string, name, array, dictionary, stream, or indirect reference.
 _Avoid_: COS object, PdfObject, backend value
 
+**Resource Inventory**:
+A detached, declaration-ordered account of document resources reachable from effective page Resources and nested Form resources, including their page usage and backend-neutral identity where the PDF supplies one.
+_Avoid_: rendered-content scan, resource cache dump
+
+**Image Resource**:
+An image XObject or related image-mask stream described by dimensions, sample metadata, filters, color information, explicit, subsidiary, or embedded masks, and explicitly selected bounded byte data.
+_Avoid_: rendered image, BufferedImage, image file
+
+**Page Usage**:
+The one-based pages whose effective Resources can reach a resource directly or through nested Forms. It describes declaration reachability, not proof that a page content stream executes the resource.
+_Avoid_: rendered usage, content occurrence count
+
 **Object Reference**:
 A stable, backend-neutral identity for one indirect PDF object inside a Document Session. It is not a live mutable handle and cannot be dereferenced after its Session ends.
 _Avoid_: object pointer, COS reference

@@ -1,0 +1,64 @@
+# T14 qpdf syntax findings
+
+Input ID-neutral set SHA-256: `5114983f25709d75f341b5ae72c963dacdaae58844054ce18ebe97ddf22f5171`
+
+Input hash policy: `SHA-256 of the exact PDF bytes after replacing only the two hexadecimal trailer /ID values with ASCII zeroes`
+
+Tool: `qpdf`
+
+Tool version: `12.4.0`
+
+Distribution SHA-256: `a3bca240f3bb61efdc3a90be89d1da4ed5e125326c3458c4e62df53ff4f153e3`
+
+Final determination: `pass`
+
+## T14-image-font-inventory.pdf
+
+Input ID-neutral SHA-256: `571f3b36e25b0ff67210b6f5fa3fb61c88d3beeb564bdcf2fb8f51327236d852`
+
+Invocation: `qpdf --check T14-image-font-inventory.pdf`
+
+`T14-image-font-inventory.pdf` exit code: `0`
+
+### Standard output
+
+```text
+checking T14-image-font-inventory.pdf
+PDF Version: 1.7
+File is not encrypted
+File is not linearized
+No syntax or stream encoding errors found; the file may still contain
+errors that qpdf cannot detect
+```
+
+### Standard error
+
+```text
+
+```
+
+## T14-form-mask-inventory.pdf
+
+Input ID-neutral SHA-256: `3765eb95a006784aa57702dcd623e218385aff0bde2af99c9988c6a02ac9a45d`
+
+Invocation: `qpdf --check T14-form-mask-inventory.pdf`
+
+`T14-form-mask-inventory.pdf` exit code: `0`
+
+### Standard output
+
+```text
+checking T14-form-mask-inventory.pdf
+PDF Version: 1.7
+File is not encrypted
+File is not linearized
+No syntax or stream encoding errors found; the file may still contain
+errors that qpdf cannot detect
+```
+
+### Standard error
+
+```text
+
+```
+

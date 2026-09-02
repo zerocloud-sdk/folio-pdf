@@ -1,0 +1,3 @@
+# Detach explicitly requested image bytes under extraction limits
+
+Image and Resource Inventory metadata is detached, and encoded or decoded image bytes are included only when the query explicitly selects them and the complete result fits mandatory pixel, decompression, and returned-byte limits. This bounded eager materialization is a deliberate exception to the usual Session-bound treatment of large PDF stream views: it makes extraction atomic, keeps byte availability distinct from byte selection, and leaves every successful result defensively usable after the Document Session closes; a Session-bound alternative would make a workflow result unusable outside its callback and could expose a successful prefix before a later aggregate-limit failure.

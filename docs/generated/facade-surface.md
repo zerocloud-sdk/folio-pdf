@@ -8,7 +8,7 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Release train: `0.1.0-SNAPSHOT`
 - Stable entries: `0`
 - Preview entries: `12`
-- Explicit capability exclusions: `6`
+- Explicit capability exclusions: `7`
 
 ## Stable surfaces
 
@@ -151,6 +151,13 @@ No stable surfaces are declared.
 - Behavioral capability: [`document.annotations-actions.manage`](capability-matrix.md#capability-document_dot_annotations_dash_actions_dot_manage)
 - Deferred ticket: `T12`
 - Reason: T12 is a Native Interface annotation, appearance, flattening, and inert local Action seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+
+<a id="excluded-capability-document_dot_images_dash_resources_dot_extract"></a>
+### `document.images-resources.extract`
+
+- Behavioral capability: [`document.images-resources.extract`](capability-matrix.md#capability-document_dot_images_dash_resources_dot_extract)
+- Deferred ticket: `T14`
+- Reason: T14 is a Native Interface image and page/nested-Form resource-inventory Query seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
 
 <a id="excluded-capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments"></a>
 ### `document.metadata.outlines-destinations-attachments`

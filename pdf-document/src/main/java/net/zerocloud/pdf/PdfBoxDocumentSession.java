@@ -21,6 +21,8 @@ final class PdfBoxDocumentSession implements DocumentSession {
     private final PdfBoxAnnotationOperations annotationOperations;
     private final PdfBoxAnnotationPageOperations annotationPageOperations;
     private final PdfBoxTextStructureExtractionOperations extractionOperations;
+    private final PdfBoxImageResourceExtractionOperations
+            imageResourceExtractionOperations;
     private final PdfBoxPageOperations pageOperations;
     private String outcomeCapabilityId;
     private volatile boolean active;
@@ -43,6 +45,10 @@ final class PdfBoxDocumentSession implements DocumentSession {
                 annotationOperations);
         this.extractionOperations =
                 new PdfBoxTextStructureExtractionOperations(document);
+        this.imageResourceExtractionOperations =
+                new PdfBoxImageResourceExtractionOperations(
+                        document,
+                        valueAdapter);
         this.pageOperations = new PdfBoxPageOperations(
                 document,
                 sources,
@@ -176,6 +182,13 @@ final class PdfBoxDocumentSession implements DocumentSession {
                     PdfBoxTextStructureExtractionOperations.CAPABILITY_ID;
             return queryResult(extractionOperations.evaluate(
                     (net.zerocloud.pdf.query.ExtractTextAndStructure) query));
+        }
+
+        if (imageResourceExtractionOperations.supportsQuery(query)) {
+            outcomeCapabilityId =
+                    PdfBoxImageResourceExtractionOperations.CAPABILITY_ID;
+            return queryResult(imageResourceExtractionOperations.evaluate(
+                    (net.zerocloud.pdf.query.ExtractImagesAndResources) query));
         }
 
         throw PdfBoxWorkflowEngine.failure(

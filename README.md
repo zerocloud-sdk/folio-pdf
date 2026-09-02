@@ -299,6 +299,20 @@ expansion is accepted. See the
 coordinate system, ordering, all mandatory limits, safe failures, and the
 version-1 unsupported cases.
 
+T14 adds the bounded `ExtractImagesAndResources` Document Query. Its detached
+inventory walks effective page and nested Form resources deterministically,
+keeps existing indirect Object References while giving direct declarations no
+fabricated identity, and reports declaration-reachable page usage. Image
+records classify dimensions, color spaces, filters and effective decoding
+parameters, explicit, subsidiary, and JPX-embedded masks, and encoded/decoded
+availability; explicitly selected available bytes are bounded, defensive, and
+usable after the Session closes.
+Font records expose BaseFont, embedding, subset, declaration, and page-usage
+information. See the authoritative
+[image and resource extraction guide](docs/image-resource-extraction.md) for
+ordering, identity, byte lifecycle, all mandatory limits, safe failures, and
+the version-1 unsupported cases.
+
 Successful `WorkflowOutcome` values identify the capability, the in-process
 execution profile, the selected Save Mode, safe diagnostics, and every Target
 receipt, plus any declaration-ordered Capability Provider selections. A

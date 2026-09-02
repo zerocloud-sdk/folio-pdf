@@ -24,11 +24,16 @@ import net.zerocloud.pdf.AnnotationProperties;
 import net.zerocloud.pdf.AnnotationQuad;
 import net.zerocloud.pdf.AnnotationRectangle;
 import net.zerocloud.pdf.DocumentPatch;
+import net.zerocloud.pdf.DocumentResource;
+import net.zerocloud.pdf.DocumentResourceInventory;
 import net.zerocloud.pdf.DocumentSource;
 import net.zerocloud.pdf.DocumentWorkflow;
 import net.zerocloud.pdf.EmbeddedFile;
 import net.zerocloud.pdf.ExtractionLimits;
+import net.zerocloud.pdf.FontResource;
 import net.zerocloud.pdf.GoToAction;
+import net.zerocloud.pdf.ImageByteAccess;
+import net.zerocloud.pdf.ImageResource;
 import net.zerocloud.pdf.LinkActivation;
 import net.zerocloud.pdf.NavigationTarget;
 import net.zerocloud.pdf.ObjectReference;
@@ -41,7 +46,9 @@ import net.zerocloud.pdf.PdfName;
 import net.zerocloud.pdf.PdfNumber;
 import net.zerocloud.pdf.PdfStream;
 import net.zerocloud.pdf.PdfString;
+import net.zerocloud.pdf.PublicationStatus;
 import net.zerocloud.pdf.PublicationTarget;
+import net.zerocloud.pdf.ResourceExtractionLimits;
 import net.zerocloud.pdf.SaveMode;
 import net.zerocloud.pdf.TextStructureExtraction;
 import net.zerocloud.pdf.WorkflowOutcome;
@@ -61,12 +68,13 @@ import net.zerocloud.pdf.command.SplitDocument;
 import net.zerocloud.pdf.command.UpdateDocumentInfo;
 import net.zerocloud.pdf.command.UpdateActions;
 import net.zerocloud.pdf.command.UpdateAnnotations;
+import net.zerocloud.pdf.query.ExtractImagesAndResources;
 import net.zerocloud.pdf.query.ExtractTextAndStructure;
 import net.zerocloud.pdf.query.PageObjectReference;
 
 /**
  * Repository-only command that records T06/T07 evidence and the T10 through
- * T13 syntax chains.
+ * T14 syntax chains.
  */
 public final class AcceptanceEvidenceCommand {
 
@@ -125,12 +133,24 @@ public final class AcceptanceEvidenceCommand {
             "T13-tagged-structure.pdf";
     private static final String T13_QPDF_FINDINGS =
             "T13-text-logical-structure-qpdf.txt";
+    private static final String T14_CAPABILITY =
+            "document.images-resources.extract";
+    private static final String T14_ACCEPTANCE_PROFILE =
+            "T14-image-resource-extraction";
+    private static final String T14_PROFILE_RECORD =
+            "capabilities/evidence/T14-image-resource-extraction.md";
+    private static final String T14_IMAGE_FONT_ARTIFACT =
+            "T14-image-font-inventory.pdf";
+    private static final String T14_FORM_MASK_ARTIFACT =
+            "T14-form-mask-inventory.pdf";
+    private static final String T14_QPDF_FINDINGS =
+            "T14-image-resource-extraction-qpdf.txt";
 
     private AcceptanceEvidenceCommand() {
     }
 
     /**
-     * Runs the built-in T03 Acceptance Profile and the T10 through T13 syntax
+     * Runs the built-in T03 Acceptance Profile and the T10 through T14 syntax
      * chains.
      *
      * @param arguments output directory, pinned tool and profile authorities,
@@ -333,6 +353,29 @@ public final class AcceptanceEvidenceCommand {
                 qpdfPin,
                 releaseTrain);
 
+        EvidenceResult t14Syntax = recordProductSyntax(
+                new ProductChain(
+                        "T14",
+                        T14_CAPABILITY,
+                        T14_ACCEPTANCE_PROFILE,
+                        T14_PROFILE_RECORD,
+                        T14_IMAGE_FONT_ARTIFACT,
+                        T14_FORM_MASK_ARTIFACT,
+                        T14_QPDF_FINDINGS,
+                        "T14-image-resource-extraction-syntax.md",
+                        ProductHashPolicy.ID_NEUTRAL),
+                new ProductCreator() {
+                    @Override
+                    public void create(Path imageFont, Path formMask)
+                            throws Exception {
+                        createT14Products(imageFont, formMask);
+                    }
+                },
+                output,
+                artifacts,
+                qpdfPin,
+                releaseTrain);
+
         System.out.println("Acceptance Profile determination: "
                 + profileDetermination.recordValue());
         System.out.println("T07 visual chain: " + visual.result().recordValue());
@@ -340,6 +383,7 @@ public final class AcceptanceEvidenceCommand {
         System.out.println("T11 syntax chain: " + t11Syntax.recordValue());
         System.out.println("T12 syntax chain: " + t12Syntax.recordValue());
         System.out.println("T13 syntax chain: " + t13Syntax.recordValue());
+        System.out.println("T14 syntax chain: " + t14Syntax.recordValue());
     }
 
     private interface ProductCreator {
@@ -941,6 +985,186 @@ public final class AcceptanceEvidenceCommand {
             "<< /Nums [0 [7 0 R]] >>",
             t13StreamObject(t13ToUnicodeCMap(), "")
         };
+        return pdfSource(objects);
+    }
+
+    private static void createT14Products(Path imageFont, Path formMask)
+            throws Exception {
+        createT14ImageFontProduct(imageFont);
+        createT14FormMaskProduct(formMask);
+    }
+
+    private static void createT14ImageFontProduct(Path target)
+            throws Exception {
+        DocumentResourceInventory inventory = createT14Product(
+                target,
+                t14ImageFontSource());
+        if (inventory.getImages().size() != 1
+                || inventory.getFonts().size() != 1) {
+            throw new IllegalStateException(
+                    "T14 image/font product did not expose its inventory");
+        }
+        ImageResource image = inventory.getImages().get(0);
+        FontResource font = inventory.getFonts().get(0);
+        if (image.getWidth() != 1
+                || image.getHeight() != 1
+                || image.getColorSpace().getFamily()
+                        != ImageResource.ColorFamily.DEVICE_RGB
+                || !PdfName.of("BrandRGB").equals(image.getColorSpace()
+                        .getDeclaredName().orElse(null))
+                || image.getFilters().size() != 1
+                || !PdfName.of("ASCIIHexDecode").equals(
+                        image.getFilters().get(0).getName())
+                || !Arrays.equals(
+                        "524742>".getBytes(StandardCharsets.US_ASCII),
+                        image.getEncodedData().getBytes().orElse(null))
+                || !Arrays.equals(
+                        "RGB".getBytes(StandardCharsets.US_ASCII),
+                        image.getDecodedData().getBytes().orElse(null))
+                || !Arrays.asList(Integer.valueOf(1)).equals(
+                        image.getPageUsage())
+                || !font.isSubset()
+                || !"ABCDEF".equals(font.getSubsetPrefix().orElse(null))
+                || font.getEmbedding() != FontResource.Embedding.NOT_EMBEDDED
+                || !PdfName.of("ABCDEF+Helvetica").equals(
+                        font.getBaseFontName().orElse(null))) {
+            throw new IllegalStateException(
+                    "T14 image/font product did not satisfy its public query probe");
+        }
+    }
+
+    private static void createT14FormMaskProduct(Path target)
+            throws Exception {
+        DocumentResourceInventory inventory = createT14Product(
+                target,
+                t14FormMaskSource());
+        if (inventory.getImages().size() != 2) {
+            throw new IllegalStateException(
+                    "T14 Form/mask product did not expose both images");
+        }
+        ImageResource image = inventory.getImages().get(0);
+        ImageResource softMask = inventory.getImages().get(1);
+        boolean hasForm = false;
+        for (DocumentResource resource : inventory.getResources()) {
+            hasForm |= resource.getKind() == DocumentResource.Kind.FORM;
+        }
+        if (!hasForm
+                || image.getWidth() != 2
+                || image.getHeight() != 1
+                || softMask.getColorSpace().getFamily()
+                        != ImageResource.ColorFamily.DEVICE_GRAY
+                || !image.getSoftMask().isPresent()
+                || image.getSoftMask().get().getKind()
+                        != ImageResource.Mask.Kind.SOFT_IMAGE
+                || image.getSoftMask().get().getImage().orElse(null) != softMask
+                || !Arrays.equals(
+                        "RGBRGB".getBytes(StandardCharsets.US_ASCII),
+                        image.getDecodedData().getBytes().orElse(null))
+                || !Arrays.equals(
+                        "AZ".getBytes(StandardCharsets.US_ASCII),
+                        softMask.getDecodedData().getBytes().orElse(null))) {
+            throw new IllegalStateException(
+                    "T14 Form/mask product did not satisfy its public query probe");
+        }
+    }
+
+    private static DocumentResourceInventory createT14Product(
+            Path target,
+            byte[] source) throws Exception {
+        WorkflowOutcome<DocumentResourceInventory> outcome =
+                new DocumentWorkflow().execute(
+                        WorkflowRequest.builder()
+                                .source(
+                                        "input",
+                                        DocumentSource.bytes(
+                                                source, source.length))
+                                .primarySource("input")
+                                .target(
+                                        "output",
+                                        PublicationTarget.path(target))
+                                .saveMode(SaveMode.REWRITE)
+                                .build(),
+                        session -> session.query(
+                                ExtractImagesAndResources.version1(
+                                        t14Limits(),
+                                        ImageByteAccess.ENCODED_AND_DECODED)));
+        if (outcome.getPublicationReceipts().size() != 1
+                || outcome.getPublicationReceipts().get(0).getStatus()
+                        != PublicationStatus.COMMITTED) {
+            throw new IllegalStateException(
+                    "T14 acceptance product was not committed");
+        }
+        return outcome.getResult();
+    }
+
+    private static byte[] t14ImageFontSource() throws IOException {
+        String[] objects = {
+            "<< /Type /Catalog /Pages 2 0 R >>",
+            "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+            "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] "
+                    + "/Resources << /XObject << /ImFront 5 0 R >> "
+                    + "/Font << /F1 6 0 R >> "
+                    + "/ColorSpace << /BrandRGB /DeviceRGB >> >> "
+                    + "/Contents 4 0 R >>",
+            t14StreamObject(
+                    "q 100 0 0 100 36 620 cm /ImFront Do Q\n"
+                            + "BT /F1 12 Tf 36 600 Td (T14) Tj ET\n",
+                    ""),
+            t14StreamObject(
+                    "524742>",
+                    "/Type /XObject /Subtype /Image /Width 1 /Height 1 "
+                            + "/ColorSpace /BrandRGB /BitsPerComponent 8 "
+                            + "/Filter /ASCIIHexDecode "),
+            "<< /Type /Font /Subtype /Type1 "
+                    + "/BaseFont /ABCDEF+Helvetica >>"
+        };
+        return pdfSource(objects);
+    }
+
+    private static byte[] t14FormMaskSource() throws IOException {
+        String[] objects = {
+            "<< /Type /Catalog /Pages 2 0 R >>",
+            "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+            "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] "
+                    + "/Resources << /XObject << /Nested 5 0 R >> >> "
+                    + "/Contents 4 0 R >>",
+            t14StreamObject("q /Nested Do Q\n", ""),
+            t14StreamObject(
+                    "q /ImNested Do Q\n",
+                    "/Type /XObject /Subtype /Form /BBox [0 0 10 10] "
+                            + "/Resources << /XObject << /ImNested 6 0 R >> >> "),
+            t14StreamObject(
+                    "RGBRGB",
+                    "/Type /XObject /Subtype /Image /Width 2 /Height 1 "
+                            + "/ColorSpace /DeviceRGB /BitsPerComponent 8 "
+                            + "/SMask 7 0 R "),
+            t14StreamObject(
+                    "AZ",
+                    "/Type /XObject /Subtype /Image /Width 2 /Height 1 "
+                            + "/ColorSpace /DeviceGray /BitsPerComponent 8 ")
+        };
+        return pdfSource(objects);
+    }
+
+    private static String t14StreamObject(String data, String entries) {
+        return "<< " + entries + "/Length "
+                + data.getBytes(StandardCharsets.US_ASCII).length
+                + " >>\nstream\n" + data + "\nendstream";
+    }
+
+    private static ResourceExtractionLimits t14Limits() {
+        return ResourceExtractionLimits.builder()
+                .maximumPages(4)
+                .maximumPageTreeNodes(32)
+                .maximumTraversedResourceValues(256L)
+                .maximumResourceTraversalDepth(16)
+                .maximumDecodedPixels(4096L)
+                .maximumDecompressedBytes(64L * 1024L)
+                .maximumReturnedBytes(64L * 1024L)
+                .build();
+    }
+
+    private static byte[] pdfSource(String[] objects) throws IOException {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         output.write("%PDF-1.7\n".getBytes(StandardCharsets.US_ASCII));
         int[] offsets = new int[objects.length + 1];

@@ -6,7 +6,7 @@ Behavioral authority: [`../../capabilities/capability-matrix.yaml`](../../capabi
 
 - Schema version: `1`
 - Release train: `0.1.0-SNAPSHOT`
-- Capabilities: `7`
+- Capabilities: `8`
 
 ## Capability summary
 
@@ -15,6 +15,7 @@ Behavioral authority: [`../../capabilities/capability-matrix.yaml`](../../capabi
 | [`conversion.capability-provider.select-execute`](#capability-conversion_dot_capability_dash_provider_dot_select_dash_execute) | `conversion` | `experimental` | [excluded by `T05`](facade-surface.md#excluded-capability-conversion_dot_capability_dash_provider_dot_select_dash_execute) |
 | [`document.annotations-actions.manage`](#capability-document_dot_annotations_dash_actions_dot_manage) | `document-engine` | `experimental` | [excluded by `T12`](facade-surface.md#excluded-capability-document_dot_annotations_dash_actions_dot_manage) |
 | [`document.blank.create-publish-reopen`](#capability-document_dot_blank_dot_create_dash_publish_dash_reopen) | `document-engine` | `experimental` | [`itext7.kernel.pdf-document.add-new-page`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_add_dash_new_dash_page), [`itext7.kernel.pdf-document.close`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_close), [`itext7.kernel.pdf-document.constructor-reader`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_constructor_dash_reader), [`itext7.kernel.pdf-document.constructor-writer`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_constructor_dash_writer), [`itext7.kernel.pdf-document.get-number-of-pages`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_number_dash_of_dash_pages), [`itext7.kernel.pdf-exception.constructor-message-cause`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_exception_dot_constructor_dash_message_dash_cause), [`itext7.kernel.pdf-page.type`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_page_dot_type), [`itext7.kernel.pdf-reader.close`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_reader_dot_close), [`itext7.kernel.pdf-reader.constructor-string`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_reader_dot_constructor_dash_string), [`itext7.kernel.pdf-writer.constructor-string`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_writer_dot_constructor_dash_string), [`itext7.layout.document.close`](facade-surface.md#facade-surface-itext7_dot_layout_dot_document_dot_close), [`itext7.layout.document.constructor-pdf-document`](facade-surface.md#facade-surface-itext7_dot_layout_dot_document_dot_constructor_dash_pdf_dash_document) |
+| [`document.images-resources.extract`](#capability-document_dot_images_dash_resources_dot_extract) | `document-engine` | `experimental` | [excluded by `T14`](facade-surface.md#excluded-capability-document_dot_images_dash_resources_dot_extract) |
 | [`document.metadata.outlines-destinations-attachments`](#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments) | `document-engine` | `experimental` | [excluded by `T11`](facade-surface.md#excluded-capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments) |
 | [`document.page.manipulate-merge-split`](#capability-document_dot_page_dot_manipulate_dash_merge_dash_split) | `document-engine` | `experimental` | [excluded by `T10`](facade-surface.md#excluded-capability-document_dot_page_dot_manipulate_dash_merge_dash_split) |
 | [`document.text-structure.extract`](#capability-document_dot_text_dash_structure_dot_extract) | `document-engine` | `experimental` | [excluded by `T13`](facade-surface.md#excluded-capability-document_dot_text_dash_structure_dot_extract) |
@@ -231,6 +232,69 @@ Acceptance Evidence:
 - `visual`: `pass` — [`capabilities/evidence/T07-document-blank-visual.md`](../../capabilities/evidence/T07-document-blank-visual.md); producer `pdfium-cli@v0.11.2-pdfium-chromium-7881` (`external-tool`)
 
 Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T07 independent-visual-evidence record`.
+
+<a id="capability-document_dot_images_dash_resources_dot_extract"></a>
+## `document.images-resources.extract`
+
+Extract a bounded deterministic inventory of page and nested-Form resources, including detached image metadata and explicitly selected bytes plus font identity and usage.
+
+- Context: `document-engine`
+- Status: `experimental`
+- Reference Suite source: `iText Core 7.2.6 image XObject, font, and page-resource inspection surface`
+- Reference role: capability inventory only; not an implementation or behavioral oracle
+- Acceptance Profile: `T14-image-resource-extraction`
+- Mandatory evidence chains: `syntax`, `standards`, `semantic`, `visual`
+- Evidence record: [`capabilities/evidence/T14-image-resource-extraction.md`](../../capabilities/evidence/T14-image-resource-extraction.md)
+- Certified platforms: none
+
+### Native Interface mapping
+
+- `byte-access`: `net.zerocloud.pdf.ImageByteAccess`
+- `declaration`: `net.zerocloud.pdf.ResourceDeclaration`
+- `entry-point`: `net.zerocloud.pdf.DocumentWorkflow#execute`
+- `failure`: `net.zerocloud.pdf.DocumentFailure`
+- `failure-code`: `net.zerocloud.pdf.DocumentFailureCode`
+- `font`: `net.zerocloud.pdf.FontResource`
+- `image`: `net.zerocloud.pdf.ImageResource`
+- `limits`: `net.zerocloud.pdf.ResourceExtractionLimits`
+- `object-reference`: `net.zerocloud.pdf.ObjectReference`
+- `query`: `net.zerocloud.pdf.query.ExtractImagesAndResources`
+- `resource`: `net.zerocloud.pdf.DocumentResource`
+- `result`: `net.zerocloud.pdf.DocumentResourceInventory`
+
+### Migration Facade coverage
+
+- Stable: none
+- Preview: none
+- Explicit exclusion: [`T14`](facade-surface.md#excluded-capability-document_dot_images_dash_resources_dot_extract) — T14 is a Native Interface image and page/nested-Form resource-inventory Query seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+
+### Gates and limitations
+
+- Dependency Gate: [`document.value.inspect-patch`](#capability-document_dot_value_dot_inspect_dash_patch) must be `compatible`
+- Promotion gate `T06`: Complete the independent acceptance evidence required before compatibility.
+- Limitation: Version 1 walks effective page Resources in ascending page order, resource-dictionary category and named-entry decoded-name Unicode order, declared ProcSet array order, and nested Form depth-first order. Explicit PDF null categories and named members are omitted without a record or traversal-value charge. Indirect resources are deduplicated by the existing Session Object Reference and accumulate every declaration and ascending declaration-reachable Page Usage; direct page/Form resource declarations remain separate records with no fabricated identity, while a direct mask embedded in a deduplicated image remains the one deterministic target of that owning relationship. Repeated page-tree nodes, Form cycles, image-mask cycles, and conflicting reuse fail atomically.
+- Limitation: Image metadata includes exact dimensions, declared bit depth where applicable, proven component count, classified declared and resolved color-space information, exact filter order and supported effective predictor parameters, Image Mask state, color-key ranges, and explicit or soft image relationships. Pattern color spaces are malformed on Image XObjects. ICCBased wrapper metadata retains its proven component count but is unsupported because version 1 does not certify the profile payload; Indexed stream lookups and Separation or DeviceN tint functions likewise retain classified metadata but are unsupported because version 1 does not recursively certify auxiliary streams or arbitrary PDF functions. Version-1 bounded decoded access supports only unfiltered, ASCIIHexDecode, ASCII85Decode, RunLengthDecode, and FlateDecode Image XObject streams; an empty filter array is unfiltered, decode-parameter container shape follows filter count, and inline-image-only filter abbreviations are rejected, while recognized LZW, DCT, JPX, CCITT, JBIG2, and Crypt filters remain inventory-visible but decoded bytes are unavailable. Filter-specific one-bit, eight-bit, and predictor geometry constraints are enforced even for unselected or unsupported decoded data. External-file streams are never resolved; null F values remain in-file streams, and non-null F values must have a file-specification shape. Subsidiary soft masks require grayscale images with an explicit bit depth and no nested Mask or SMask entry; Matte shape, owner dimensions, and values in the owning color space's declared or default component ranges are enforced. JPX SMaskInData 0, 1, and 2 are reported as no embedded mask, an embedded soft mask, or a preblended embedded soft mask; nonzero values conflict with a subsidiary SMask, malformed JPX values fail, and the meaningless entry is ignored for non-JPX sequences. Malformed color information is classified without backend coercion; malformed unknown filters, dimensions, masks, fonts, and resource graphs fail safely rather than yielding a partial result.
+- Limitation: Encoded and decoded availability and selection are separate. Selected available bytes stream only through aggregate pixel, every filter-stage decompression, and returned-byte bounds; the defensive detached result is published only after all bounds pass and is never exposed on a failed query. Every query also declares exact page, page-tree-node, traversed-resource-value, and resource-depth bounds; version 1 caps resource depth at 64 because Form and image-mask traversal is recursive. These trusted in-process bounds do not provide T20 comprehensive hostile-input enforcement or T21 Worker isolation and codecs.
+- Limitation: Font records expose indirect Object Reference when present, exact BaseFont identity, a six-letter subset prefix, embedding classification, subtype support, declaration locations, and Page Usage. Version 1 validates supported simple, Type 0 descendant, Type 3 CharProcs, and font-program descriptor shapes; direct CIDFontType0 or CIDFontType2 resource entries are malformed because CIDFonts are accepted only as Type 0 descendants. Version 1 does not parse font programs, map glyphs, or infer text usage from content operators.
+- Limitation: T14 is read-only and observes preceding supported Commands in one Session. It publishes only when the Workflow Request declares a Target and otherwise leaves Source bytes unchanged. INCREMENTAL and signed-document policy remain T15, encryption remains T16, drawing remains T17, and image embedding remains T18.
+
+### Evidence
+
+Implementation evidence:
+
+- `image-resource-workflow-consumer-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/consumer/ImageResourceExtractionWorkflowTest.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/consumer/ImageResourceExtractionWorkflowTest.java) — Public workflows prove deterministic inherited page and nested-Form traversal; indirect deduplication, direct-resource separation, declaration paths, Page Usage, filter and effective parameter metadata, supported and unavailable bytes, defensive detached lifecycle, image-mask, explicit, soft, and color-key relationships, font embedding and subset identity, exact limits and first-excess failures, overflow-safe decoded sizing, strict supported-filter validation, same-Session command ordering, query-only non-publication, Source preservation, and stable safe rejection of malformed and cyclic graphs without partial publication or mutation.
+- `public-api-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/contract/PublicApiLeakageIT.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/contract/PublicApiLeakageIT.java) — Public and protected signatures, including every T14 query, limit, result, declaration, image, font, filter, color, mask, byte, and identity type, contain no PDFBox or FontBox types.
+- `artifact-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/contract/JarContractIT.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/contract/JarContractIT.java) — The jar retains its stable module name, Java 8 class-file version, notices, and unbundled backend.
+- `cross-jdk-contract`: [`scripts/verify-jdk-matrix.sh`](../../scripts/verify-jdk-matrix.sh) — Maven verification runs the T14 public workflow contract on JDK 8, 11, 17, and 21.
+- `acceptance-command`: [`scripts/acceptance`](../../scripts/acceptance) — The repository-owned command produces project-authored T14 filtered-image/font and nested-Form/soft-mask artifacts, probes them through the public Query, and records pinned qpdf syntax findings.
+- `acceptance-reproducibility-contract`: [`pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/AcceptanceEvidenceCommandTest.java`](../../pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/AcceptanceEvidenceCommandTest.java) — Independent command runs reproduce T14 PDF bytes under the repository ID-neutral policy plus exact evidence metadata, hashes, invocations, exit codes, and raw qpdf findings.
+- `extraction-profile-documentation`: [`docs/image-resource-extraction.md`](../image-resource-extraction.md) — The version-1 traversal, ordering, identity, Page Usage, image, font, filter, color, mask, byte lifecycle, exact limit, failure, and unsupported-case contracts are documented.
+
+Acceptance Evidence:
+
+- `syntax`: `pass` — [`capabilities/evidence/T14-image-resource-extraction-syntax.md`](../../capabilities/evidence/T14-image-resource-extraction-syntax.md); producer `qpdf@12.4.0` (`external-tool`)
+
+Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T14 image-resource extraction record`.
 
 <a id="capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments"></a>
 ## `document.metadata.outlines-destinations-attachments`

@@ -115,6 +115,21 @@ opening unbounded glyph-program or predefined-CMap inputs. T13 reuses the
 existing repository-only pinned qpdf 12.4.0 acceptance
 path and adds no executable or Migration Facade dependency.
 
+T14 adds no third-party runtime, test, build-tool, native, or external-tool
+dependency. Page and nested-Form resource traversal, image stream inspection,
+strict bounded decoding of unfiltered, ASCIIHex, ASCII85, RunLength, and Flate
+data, color-space and mask classification, and font identity/embedding
+inspection reuse Apache PDFBox 3.0.8 only behind private implementation types
+and use the existing JUnit 4.13.2 consumer-test dependency. Every PDF fixture
+is generated from project-authored public-workflow values or transparent test-
+owned PDF syntax. Project-owned preflights validate page/resource graphs,
+dimensions, filters and decode parameters, known compressed syntax, expected
+decoded sizes, color and mask graphs, and font descriptor shapes before
+publishing a result; no image codec, renderer, OCR engine, font parser, or
+additional decompression dependency is introduced. T14 reuses the existing
+repository-only pinned qpdf 12.4.0 acceptance path and adds no executable or
+Migration Facade dependency.
+
 T06 uses one external executable only in the opt-in, repository-only
 Acceptance Evidence path:
 

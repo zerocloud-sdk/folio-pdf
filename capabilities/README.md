@@ -79,17 +79,19 @@ metadata while honoring issue #1's explicit exclusion of byte-identical PDF
 output; every other PDF byte remains hash-significant, and the file handed to
 qpdf and PDFium is never normalized or rewritten. A repeat-run command test
 requires the T06/T07 records and raw findings to reproduce exactly. The command
-also drives the T10 page/merge/split, T11 metadata, T12 annotation/Action, and
-T13 text/structure profiles to create paired project-owned products and runs
-the same pinned qpdf syntax check on each. The T13 producer also evaluates the
+also drives the T10 page/merge/split, T11 metadata, T12 annotation/Action,
+T13 text/structure, and T14 image/resource profiles to create paired
+project-owned products and runs the same pinned qpdf syntax check on each.
+The T13 producer also evaluates the
 finished in-Session state through `ExtractTextAndStructure` before publication;
 its tagged product includes MarkInfo, page StructParents, a ParentTree, and
-bidirectional structure-parent links;
-that implementation probe is not recorded as an independent semantic chain.
-The command records tool identity,
-version and distribution digest, exact or documented ID-neutral input SHA-256
-values, raw findings,
-chain-level results, and the applicable determination beneath the requested
+bidirectional structure-parent links. The T14 producer similarly evaluates a
+filtered image and subset font plus a
+nested Form and soft mask through `ExtractImagesAndResources`. These
+implementation probes are not recorded as independent semantic chains.
+The command records tool identity, version and distribution digest, exact or
+documented ID-neutral input SHA-256 values, raw findings, chain-level results,
+and the applicable determination beneath the requested
 output directory. qpdf is syntax evidence only: its success is not a PDF
 standards-conformance result and cannot satisfy the independent standards,
 semantic, or visual chains.
@@ -237,7 +239,7 @@ project-produced artifacts pass pinned qpdf 12.4.0 syntax checks. Standards,
 semantic, and visual Acceptance Evidence remain absent, so the T10 capability
 also remains `experimental`.
 
-The T11, T12, and T13 profiles likewise have one passing qpdf syntax record
+The T11, T12, T13, and T14 profiles likewise have one passing qpdf syntax record
 for each pair of public-workflow products. Their mandatory standards,
 semantic, and visual Acceptance Evidence chains remain absent, and their
 Dependency Gates remain open while prerequisites are `experimental`; none is

@@ -493,6 +493,72 @@ documentation, and project-owned tests are the permitted design inputs.
   is `experimental`, so T13 remains `experimental` with no certified-platform
   claim.
 
+## T14 image-resource extraction record
+
+- Authorship: OpenAI Codex generated and integrated the T14 implementation,
+  tests, inventories, evidence, and documentation at repository operator
+  MaBaiqiu's direction. No T14 commit was created in this execution.
+- Project inputs: GitHub issues #1 and #15, `CONTEXT.md`, ADR-0005, 0009, 0011,
+  0014, 0016, 0017, 0019, 0023, 0025, 0029, and the T14 byte-lifecycle decision
+  in ADR-0036, the repository inventory and evidence contracts, and the
+  accepted T03, T09, and T13 public workflow, PDF Value, Object Reference,
+  page-tree, and extraction-limit seams.
+- Public standards inputs: the freely available ISO 32000-1:2008 document
+  published by Adobe was consulted for Resource dictionaries, XObject and
+  Form traversal, Image dictionaries, filters and decode parameters, color
+  spaces, Image Masks, explicit masks, subsidiary and JPX-embedded soft masks,
+  Font dictionaries, font descriptors, embedded font programs, and subset
+  naming. These public
+  materials were used as specification inputs, not copied fixtures or
+  implementation code.
+- Public implementation references: Apache PDFBox 3.0.8 public source and
+  Javadocs for COS dictionaries, arrays, names, object wrappers, streams,
+  public Filter implementations, and raw/decoded stream access were consulted
+  to keep the private adapter aligned with its supported API. PDFBox object
+  wrappers, image objects, decoded metadata, renderer output, and repaired or
+  coercive values are not a behavioral oracle; T14 independently traverses and
+  classifies raw PDF values, strictly validates the supported bounded filter
+  inputs, and tests only Native Interface observations.
+- Runtime and test dependencies: T14 adds no third-party dependency. Apache
+  PDFBox 3.0.8 remains the private Apache-2.0 implementation dependency, and
+  JUnit 4.13.2 remains the existing test dependency. The repository-only
+  acceptance path reuses pinned qpdf 12.4.0. Exact facts and roles remain
+  recorded in [DEPENDENCIES.md](DEPENDENCIES.md).
+- Project-authored fixtures: public-workflow consumer tests construct
+  inherited and direct Resources, shared indirect images and fonts, nested and
+  cyclic Forms, direct resources, Image Masks, explicit image and color-key
+  masks, subsidiary and JPX-embedded soft masks, named and composite color
+  spaces, supported and unsupported filter sequences and effective decode
+  parameters, external stream declarations, embedded and unembedded subset
+  fonts, repeated hostile
+  graphs, malformed dimensions, filters, compressed data, masks, fonts,
+  resource categories, colors and page trees, decoded-size overflow, and exact
+  page, node, value, depth, pixel, decompression, and returned-byte boundaries
+  from project-owned values or transparent minimal PDF syntax. The acceptance
+  command rewrites two project-owned sources through
+  `DocumentWorkflow.execute`, validates the detached public Query results, and
+  submits those exact filtered-image/font and nested-Form/soft-mask products to
+  pinned qpdf.
+- Generated documentation: `docs/generated/capability-matrix.md` and
+  `docs/generated/facade-surface.md` are deterministic renderings of the YAML
+  authorities and contain no copied external content.
+- Excluded inputs: no iText source, resource, binary, fixture, output,
+  decompiled or binary-derived implementation detail, closed add-on material,
+  proprietary differential evidence, OCR or renderer output, system font, or
+  Reference Suite behavioral oracle was used.
+- Scope: T14 adds only bounded, detached page and nested-Form resource
+  inventory, image metadata and explicitly selected bytes, and font identity,
+  embedding, subset, declaration, and Page Usage through one version-1
+  Document Query. It adds no incremental or signature-aware publication (T15),
+  encryption (T16), drawing (T17), image embedding (T18), comprehensive
+  hostile-input policy (T20), Worker isolation/codecs (T21), or Migration
+  Facade surface.
+- Compatibility Curator evidence: none; the role remains vacant. T14 has a
+  passing syntax record only. Mandatory standards, semantic, and visual chains
+  remain absent, and its T09 Dependency Gate remains open while that capability
+  is `experimental`, so T14 remains `experimental` with no certified-platform
+  claim.
+
 ## T07 independent-visual-evidence record
 
 - Authorship: OpenAI Codex generated and integrated the T07 repository-only
