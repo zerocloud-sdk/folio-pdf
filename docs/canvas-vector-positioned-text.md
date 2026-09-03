@@ -46,7 +46,10 @@ Version 1 supports this closed operation set:
 Painting uses the graphics parameters already in effect in the isolated
 Canvas scope. Version 1 does not expose colors, line style, calibrated or ICC
 color, alpha, blend modes, masks, transparency groups, shading, patterns, or
-image XObjects.
+image XObjects. T18 adds the closed version-2 image, color, mask, and
+transparency operations documented in
+[Canvas images, color, and transparency](canvas-images-colors-transparency.md);
+it does not change version-1 behavior.
 
 ## Closed state machine
 
@@ -224,7 +227,8 @@ The Font reference is normally obtained through the public T14 resource
 inventory in the same Session. The example deliberately uses an encoded glyph
 code rather than Unicode text.
 
-T17 adds no T18 image embedding; T19 font acquisition; T20 comprehensive
+T17 itself adds no image embedding or transparency; those are the separate
+T18 version-2 extension. It adds no T19 font acquisition; T20 comprehensive
 hostile-input policy; T21 Worker isolation; T23 renderer; paragraph/table
 layout; barcode generation; Forms; tagged-document construction; SVG
 conversion; redaction; or Migration Facade mapping.

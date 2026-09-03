@@ -558,7 +558,7 @@ capabilities:
       preview: []
     limitations:
       - Version 1 walks effective page Resources in ascending page order, resource-dictionary category and named-entry decoded-name Unicode order, declared ProcSet array order, and nested Form depth-first order. Explicit PDF null categories and named members are omitted without a record or traversal-value charge. Indirect resources are deduplicated by the existing Session Object Reference and accumulate every declaration and ascending declaration-reachable Page Usage; direct page/Form resource declarations remain separate records with no fabricated identity, while a direct mask embedded in a deduplicated image remains the one deterministic target of that owning relationship. Repeated page-tree nodes, Form cycles, image-mask cycles, and conflicting reuse fail atomically.
-      - Image metadata includes exact dimensions, declared bit depth where applicable, proven component count, classified declared and resolved color-space information, exact filter order and supported effective predictor parameters, Image Mask state, color-key ranges, and explicit or soft image relationships. Pattern color spaces are malformed on Image XObjects. ICCBased wrapper metadata retains its proven component count but is unsupported because version 1 does not certify the profile payload; Indexed stream lookups and Separation or DeviceN tint functions likewise retain classified metadata but are unsupported because version 1 does not recursively certify auxiliary streams or arbitrary PDF functions. Version-1 bounded decoded access supports only unfiltered, ASCIIHexDecode, ASCII85Decode, RunLengthDecode, and FlateDecode Image XObject streams; an empty filter array is unfiltered, decode-parameter container shape follows filter count, and inline-image-only filter abbreviations are rejected, while recognized LZW, DCT, JPX, CCITT, JBIG2, and Crypt filters remain inventory-visible but decoded bytes are unavailable. Filter-specific one-bit, eight-bit, and predictor geometry constraints are enforced even for unselected or unsupported decoded data. External-file streams are never resolved; null F values remain in-file streams, and non-null F values must have a file-specification shape. Subsidiary soft masks require grayscale images with an explicit bit depth and no nested Mask or SMask entry; Matte shape, owner dimensions, and values in the owning color space's declared or default component ranges are enforced. JPX SMaskInData 0, 1, and 2 are reported as no embedded mask, an embedded soft mask, or a preblended embedded soft mask; nonzero values conflict with a subsidiary SMask, malformed JPX values fail, and the meaningless entry is ignored for non-JPX sequences. Malformed color information is classified without backend coercion; malformed unknown filters, dimensions, masks, fonts, and resource graphs fail safely rather than yielding a partial result.
+      - Image metadata includes exact dimensions, declared bit depth where applicable, proven component count, classified declared and resolved color-space information, exact filter order and supported effective predictor parameters, Image Mask state, color-key ranges, and explicit or soft image relationships. Pattern color spaces are malformed on Image XObjects. A bounded in-file ICCBased profile with an exact header length, acsp signature, JDK parser acceptance, and wrapper-compatible Gray/RGB/CMYK components is SUPPORTED and exposes its optional Object Reference, decoded byte length, and SHA-256; invalid, external, unsupported-family, or incompatible profiles remain UNSUPPORTED without unverified identity and their attempted decoding consumes the decompressed-byte bound. Indexed stream lookups and Separation or DeviceN tint functions retain classified metadata but are unsupported because version 1 does not recursively certify auxiliary streams or arbitrary PDF functions. Version-1 bounded decoded access supports only unfiltered, ASCIIHexDecode, ASCII85Decode, RunLengthDecode, and FlateDecode Image XObject streams; an empty filter array is unfiltered, decode-parameter container shape follows filter count, and inline-image-only filter abbreviations are rejected, while recognized LZW, DCT, JPX, CCITT, JBIG2, and Crypt filters remain inventory-visible but decoded bytes are unavailable. Filter-specific one-bit, eight-bit, and predictor geometry constraints are enforced even for unselected or unsupported decoded data. External-file streams are never resolved; null F values remain in-file streams, and non-null F values must have a file-specification shape. Subsidiary soft masks require grayscale images with an explicit bit depth and no nested Mask or SMask entry; Matte shape, owner dimensions, and values in the owning color space's declared or default component ranges are enforced. JPX SMaskInData 0, 1, and 2 are reported as no embedded mask, an embedded soft mask, or a preblended embedded soft mask; nonzero values conflict with a subsidiary SMask, malformed JPX values fail, and the meaningless entry is ignored for non-JPX sequences. Malformed color information is classified without backend coercion; malformed unknown filters, dimensions, masks, fonts, and resource graphs fail safely rather than yielding a partial result.
       - Encoded and decoded availability and selection are separate. Selected available bytes stream only through aggregate pixel, every filter-stage decompression, and returned-byte bounds; the defensive detached result is published only after all bounds pass and is never exposed on a failed query. Every query also declares exact page, page-tree-node, traversed-resource-value, and resource-depth bounds; version 1 caps resource depth at 64 because Form and image-mask traversal is recursive. These trusted in-process bounds do not provide T20 comprehensive hostile-input enforcement or T21 Worker isolation and codecs.
       - Font records expose indirect Object Reference when present, exact BaseFont identity, a six-letter subset prefix, embedding classification, subtype support, declaration locations, and Page Usage. Version 1 validates supported simple, Type 0 descendant, Type 3 CharProcs, and font-program descriptor shapes; direct CIDFontType0 or CIDFontType2 resource entries are malformed because CIDFonts are accepted only as Type 0 descendants. Version 1 does not parse font programs, map glyphs, or infer text usage from content operators.
       - T14 is read-only and observes preceding T15-authorized Commands in one Session. It publishes only when the Workflow Request declares a Target and otherwise leaves Source bytes unchanged; target-free signed queries are permitted. Encryption remains T16, drawing remains T17, and image embedding remains T18.
@@ -902,6 +902,120 @@ capabilities:
     provenance:
       path: PROVENANCE.md
       record: T17 canvas-vector-positioned-text record
+    certified-platforms: []
+    status: experimental
+
+  - id: composition.canvas.images-colors-transparency
+    context: composition
+    summary: Embed, place, and reuse bounded image resources with explicit Device, calibrated, and ICC color plus masks, alpha, blend modes, and Transparency Groups.
+    reference-suite:
+      source: ISO 32000-1:2008 Image XObject, color-space, mask, graphics-state, blend-mode, Transparency Group, resource, and content-placement concepts
+      role: public standards input only; no third-party implementation, image, profile, fixture, or rendered output is an oracle
+    native-interface:
+      entry-point: net.zerocloud.pdf.DocumentWorkflow#execute
+      request: net.zerocloud.pdf.WorkflowRequest
+      command: net.zerocloud.pdf.composition.command.DrawCanvas
+      program: net.zerocloud.pdf.composition.CanvasProgram
+      image: net.zerocloud.pdf.composition.CanvasImage
+      image-capabilities: net.zerocloud.pdf.composition.CanvasImageCapabilities
+      image-capabilities-query: net.zerocloud.pdf.composition.query.InspectCanvasImageCapabilities
+      color: net.zerocloud.pdf.composition.CanvasColor
+      color-space: net.zerocloud.pdf.composition.CanvasColorSpace
+      mask: net.zerocloud.pdf.composition.CanvasMask
+      blend-mode: net.zerocloud.pdf.composition.CanvasBlendMode
+      transparency-state: net.zerocloud.pdf.composition.CanvasTransparencyState
+      transparency-group: net.zerocloud.pdf.composition.CanvasTransparencyGroup
+      rectangle: net.zerocloud.pdf.composition.CanvasRectangle
+      resource-limits: net.zerocloud.pdf.composition.CanvasResourceLimits
+      resource-query: net.zerocloud.pdf.query.ExtractImagesAndResources
+      resource-result: net.zerocloud.pdf.DocumentResourceInventory
+      image-observation: net.zerocloud.pdf.ImageResource
+      object-reference: net.zerocloud.pdf.ObjectReference
+      save-mode: net.zerocloud.pdf.SaveMode
+      outcome: net.zerocloud.pdf.WorkflowOutcome
+      receipt: net.zerocloud.pdf.PublicationReceipt
+      failure: net.zerocloud.pdf.DocumentFailure
+      failure-code: net.zerocloud.pdf.DocumentFailureCode
+    migration-facade:
+      stable: []
+      preview: []
+    limitations:
+      - Canvas Program version 2 retains the closed version-1 path, clipping, state, and positioned-glyph operations and adds only explicit fill/stroke color, alpha/blend state, image placement, and reusable Transparency Group placement. It accepts no raw operators, caller-defined command, callback, backend/provider object, arbitrary URI, implicit network access, or backend SPI.
+      - JPEG accepts bounded 8-bit SOF0/SOF1/SOF2 data with one, three, or four components and preserves exact bytes under DCTDecode; recognized JFIF/Adobe color-transform metadata is explicit and four-component Decode is inverted. PNG uses the platform ImageIO reader and TIFF uses an optional ImageIO reader; each is normalized through BufferedImage.getRGB to 8-bit DeviceRGB Flate samples plus a DeviceGray soft mask only when nonopaque alpha is present. Source precision and non-sRGB color information may be lost. TIFF requires exactly one image. Raw input requires positive geometry, 8 bits per component, a supported color space, and an exact row-major sample length. There is no silent codec or conversion fallback.
+      - Existing-image placement borrows only a live same-Session indirect in-file Image XObject with positive dimensions and no filter, one FlateDecode, or one DCTDecode; it preserves the original stream, dictionary, filter/color/Decode/mask metadata, bytes, and Object Reference. Direct, stale/foreign, external-file, chained-filter, JPX, LZW, CCITT, JBIG2, and Crypt resources are rejected rather than copied or transcoded.
+      - DeviceGray, DeviceRGB, DeviceCMYK, CalGray, CalRGB, and bounded ICCBased Gray/RGB/CMYK are supported for painting, raw images, and group color. ICC requires exact header length, acsp signature, JDK parser acceptance, and family/component agreement; valid T14 observations include profile Object Reference, decoded byte length, and SHA-256. Malformed and unsupported profiles never expose unverified content or partial output.
+      - Explicit masks contain exactly ceil(width/8) bytes per row at one bit per pixel and may invert Decode; soft masks contain exactly one 8-bit opacity byte per pixel. A mask matches its owner and explicit and soft relationships are mutually exclusive. Transparency state supports fill/stroke alpha in [0,1] and the 16 standard blend modes. Groups require a positive finite bounding box, explicit supported color space, version-2 program, isolation/knockout flags, bounded nesting, and no cycle.
+      - Every version-2 command declares exact aggregate limits for encoded input bytes, decoded pixels, decoded sample bytes, ICC profile bytes, mask bytes, generated content bytes (including preservation wrappers), distinct resource declarations, and group depth; generated content also has a hard 1 MiB ceiling and group depth has a hard ceiling of 16. Exact boundaries succeed, first excess and overflow fail, and equal image/mask/color-space/profile/state declarations plus repeated placement of the same group instance are charged and materialized once regardless of placement count. T17's 10,000-instruction, graphics-state, existing-content, Font, numeric, and inheritance bounds remain active. Comprehensive hostile-input enforcement and Worker isolation remain T20/T21.
+      - Existing content and resources must satisfy the T17 preservation preflight and remain in distinct balanced isolation scopes; effective resources are shallow-copied only when necessary and unknown entries remain unchanged. The entire recursive request and all resources are validated before mutation. Unsigned REWRITE and INCREMENTAL are admitted, Existing Signatures reject drawing, password user authority requires general modification permission, and every failure preserves Sources and Targets with NOT_ATTEMPTED receipts and a fixed safe diagnostic.
+      - The optional TwelveMonkeys ImageIO TIFF 3.14.0 graph is BSD-3-Clause, unshaded, and marked optional for consumers. Its availability is returned by a project-owned Query and absence produces CANVAS_IMAGE_CODEC_UNAVAILABLE before publication. JPEG/PNG use Java platform APIs. No ImageIO, TwelveMonkeys, or PDFBox implementation type enters the Native Interface.
+      - T18 adds no font acquisition, inline-image parsing, patterns, shading, layout, Forms UI, tagging, SVG, redaction, optimization, runtime rendering, Migration Facade surface, or certified-platform claim.
+    dependency-gates:
+      - capability: document.images-resources.extract
+        required-status: compatible
+      - capability: composition.canvas.draw-positioned-text
+        required-status: compatible
+    promotion-gates:
+      - ticket: T06
+        requirement: Complete the missing mandatory independent standards evidence and close both compatible-status Dependency Gates before compatibility; closed implementation issues alone are insufficient.
+    acceptance-profile:
+      id: T18-canvas-images-colors-transparency
+      state: experimental
+      mandatory-evidence:
+        - syntax
+        - standards
+        - semantic
+        - visual
+      evidence-record: capabilities/evidence/T18-canvas-images-colors-transparency.md
+    evidence:
+      - kind: canvas-image-color-transparency-workflow-contract
+        path: pdf-document/src/test/java/net/zerocloud/pdf/consumer/CanvasImageColorTransparencyWorkflowTest.java
+        assertion: Public workflows prove immutable Java 8 declarations; JPEG, PNG alpha, optional TIFF, raw samples, all existing unfiltered/Flate/DCT profiles, Device/calibrated/ICC painting and profile identity, explicit/soft masks, alpha/blend/groups, bounded repeated reuse, exact caller limits, preservation wrappers, hard byte/depth ceilings, shared/deep group paths, optional-codec absence, provider failure translation, preservation, save/signature/password policies, stable safe failures, receipts, and target atomicity after reopen.
+      - kind: public-api-contract
+        path: pdf-document/src/test/java/net/zerocloud/pdf/contract/PublicApiLeakageIT.java
+        assertion: Public and protected T18 signatures expose only project-owned or JDK types and no PDFBox, ImageIO-provider, or TwelveMonkeys implementation type.
+      - kind: artifact-contract
+        path: pdf-document/src/test/java/net/zerocloud/pdf/contract/JarContractIT.java
+        assertion: The jar retains its module name and Java 8 class files, embeds no dependency classes, carries updated notices, and declares the TIFF provider only as an optional separate runtime.
+      - kind: cross-jdk-contract
+        path: scripts/verify-jdk-matrix.sh
+        assertion: Maven verification runs T18 public workflow, API, artifact, and optional ImageIO discovery contracts on JDK 8, 11, 17, and 21.
+      - kind: acceptance-command
+        path: scripts/acceptance
+        assertion: The repository command creates one project-authored T18 artifact through public workflows and records pinned-qpdf syntax, exact per-format/color/profile/mask/transparency public-query semantics, and independent PDFium/ImageMagick visual chains over the unchanged ID-neutral-hashed product.
+      - kind: acceptance-reproducibility-contract
+        path: pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/AcceptanceEvidenceCommandTest.java
+        assertion: Independent runs reproduce T18 syntax, semantic, and visual records and findings, the artifact ID-neutral hash, and all expected/actual/difference raster hashes.
+      - kind: authoritative-contract
+        path: docs/canvas-images-colors-transparency.md
+        assertion: Coordinates, format/filter/transcoding behavior, optional availability, color/profile, mask/transparency, ownership/reuse, exact limits, failures, preservation, publication, and exclusions are documented.
+      - kind: optional-dependency-manifest
+        path: docs/third-party/twelvemonkeys-imageio-tiff-3.14.0.md
+        assertion: Exact optional and transitive coordinates, versions, resolved hashes, roles, distribution behavior, provenance, copyright, and BSD-3-Clause terms are recorded.
+    acceptance-evidence:
+      - chain: syntax
+        result: pass
+        record: capabilities/evidence/T18-canvas-images-colors-transparency-syntax.md
+        producer:
+          kind: external-tool
+          name: qpdf
+          version: "12.4.0"
+      - chain: semantic
+        result: pass
+        record: capabilities/evidence/T18-canvas-images-colors-transparency-semantic.md
+        producer:
+          kind: project-test
+          name: folio-pdf-t18-semantic-assertions
+          version: "0.1.0-SNAPSHOT"
+      - chain: visual
+        result: pass
+        record: capabilities/evidence/T18-canvas-images-colors-transparency-visual.md
+        producer:
+          kind: external-tool
+          name: pdfium-cli
+          version: v0.11.2-pdfium-chromium-7881
+    provenance:
+      path: PROVENANCE.md
+      record: T18 canvas-images-colors-transparency record
     certified-platforms: []
     status: experimental
 

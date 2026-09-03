@@ -22,21 +22,31 @@ public final class CanvasProgram {
     /** The currently supported Canvas Program representation version. */
     public static final int VERSION_1 = 1;
 
+    /** The image, color, and transparency Canvas Program representation. */
+    public static final int VERSION_2 = 2;
+
+    private final int version;
     private final List<Instruction> instructions;
 
     private CanvasProgram(Builder builder) {
+        this.version = builder.version;
         this.instructions = Collections.unmodifiableList(
                 new ArrayList<Instruction>(builder.instructions));
     }
 
     /** Starts an ordered version-1 Canvas Program. @return a new builder */
     public static Builder version1() {
-        return new Builder();
+        return new Builder(VERSION_1);
     }
 
-    /** @return {@link #VERSION_1} */
+    /** Starts an ordered version-2 Canvas Program. @return a new builder */
+    public static Builder version2() {
+        return new Builder(VERSION_2);
+    }
+
+    /** @return {@link #VERSION_1} or {@link #VERSION_2} */
     public int getVersion() {
-        return VERSION_1;
+        return version;
     }
 
     /** @return the number of recorded instructions */
@@ -57,7 +67,7 @@ public final class CanvasProgram {
         return instructions;
     }
 
-    /** The closed version-1 instruction kinds. @since 0.1.0 */
+    /** The closed instruction kinds for the supported program versions. */
     public enum Kind {
         SAVE_STATE,
         RESTORE_STATE,
@@ -72,7 +82,12 @@ public final class CanvasProgram {
         BEGIN_TEXT,
         SET_TEXT_MATRIX,
         SHOW_GLYPH,
-        END_TEXT
+        END_TEXT,
+        SET_FILL_COLOR,
+        SET_STROKE_COLOR,
+        SET_TRANSPARENCY,
+        DRAW_IMAGE,
+        DRAW_TRANSPARENCY_GROUP
     }
 
     /** One immutable instruction in a Canvas Program. @since 0.1.0 */
@@ -85,6 +100,10 @@ public final class CanvasProgram {
         private final CanvasFont font;
         private final TextRenderingMode renderingMode;
         private final byte[] glyphCode;
+        private final CanvasColor color;
+        private final CanvasTransparencyState transparencyState;
+        private final CanvasImage image;
+        private final CanvasTransparencyGroup transparencyGroup;
 
         Instruction(
                 Kind kind,
@@ -94,6 +113,32 @@ public final class CanvasProgram {
                 CanvasFont font,
                 TextRenderingMode renderingMode,
                 byte[] glyphCode) {
+            this(
+                    kind,
+                    numbers,
+                    matrix,
+                    windingRule,
+                    font,
+                    renderingMode,
+                    glyphCode,
+                    null,
+                    null,
+                    null,
+                    null);
+        }
+
+        Instruction(
+                Kind kind,
+                double[] numbers,
+                CanvasMatrix matrix,
+                CanvasWindingRule windingRule,
+                CanvasFont font,
+                TextRenderingMode renderingMode,
+                byte[] glyphCode,
+                CanvasColor color,
+                CanvasTransparencyState transparencyState,
+                CanvasImage image,
+                CanvasTransparencyGroup transparencyGroup) {
             this.kind = kind;
             this.numbers = numbers == null ? null : numbers.clone();
             this.matrix = matrix;
@@ -101,6 +146,10 @@ public final class CanvasProgram {
             this.font = font;
             this.renderingMode = renderingMode;
             this.glyphCode = glyphCode == null ? null : glyphCode.clone();
+            this.color = color;
+            this.transparencyState = transparencyState;
+            this.image = image;
+            this.transparencyGroup = transparencyGroup;
         }
 
         /** @return the instruction kind */
@@ -121,6 +170,18 @@ public final class CanvasProgram {
         public byte[] getGlyphCode() {
             return glyphCode == null ? null : glyphCode.clone();
         }
+        /** @return the color operand, or {@code null} */
+        public CanvasColor getColor() { return color; }
+        /** @return the transparency-state operand, or {@code null} */
+        public CanvasTransparencyState getTransparencyState() {
+            return transparencyState;
+        }
+        /** @return the image operand, or {@code null} */
+        public CanvasImage getImage() { return image; }
+        /** @return the transparency-group operand, or {@code null} */
+        public CanvasTransparencyGroup getTransparencyGroup() {
+            return transparencyGroup;
+        }
     }
 
     /** Builds one immutable ordered Canvas Program. */
@@ -128,8 +189,10 @@ public final class CanvasProgram {
 
         private final List<Instruction> instructions =
                 new ArrayList<Instruction>();
+        private final int version;
 
-        private Builder() {
+        private Builder(int version) {
+            this.version = version;
         }
 
         /** Saves the current graphics state. @return this builder */
@@ -257,6 +320,93 @@ public final class CanvasProgram {
         /** Ends the current text scope. @return this builder */
         public Builder endText() {
             return add(Kind.END_TEXT);
+        }
+
+        /** Sets the nonstroking color for later fill and text operations. */
+        public Builder setFillColor(CanvasColor color) {
+            instructions.add(new Instruction(
+                    Kind.SET_FILL_COLOR,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    Objects.requireNonNull(color, "color"),
+                    null,
+                    null,
+                    null));
+            return this;
+        }
+
+        /** Sets the stroking color for later stroke and text operations. */
+        public Builder setStrokeColor(CanvasColor color) {
+            instructions.add(new Instruction(
+                    Kind.SET_STROKE_COLOR,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    Objects.requireNonNull(color, "color"),
+                    null,
+                    null,
+                    null));
+            return this;
+        }
+
+        /** Applies a reusable alpha and blend-mode graphics state. */
+        public Builder setTransparency(CanvasTransparencyState state) {
+            instructions.add(new Instruction(
+                    Kind.SET_TRANSPARENCY,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    Objects.requireNonNull(state, "state"),
+                    null,
+                    null));
+            return this;
+        }
+
+        /** Places an image by mapping its unit square through the matrix. */
+        public Builder drawImage(CanvasImage image, CanvasMatrix matrix) {
+            instructions.add(new Instruction(
+                    Kind.DRAW_IMAGE,
+                    null,
+                    Objects.requireNonNull(matrix, "matrix"),
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    Objects.requireNonNull(image, "image"),
+                    null));
+            return this;
+        }
+
+        /** Places a reusable transparency group through the supplied matrix. */
+        public Builder drawTransparencyGroup(
+                CanvasTransparencyGroup group,
+                CanvasMatrix matrix) {
+            instructions.add(new Instruction(
+                    Kind.DRAW_TRANSPARENCY_GROUP,
+                    null,
+                    Objects.requireNonNull(matrix, "matrix"),
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    Objects.requireNonNull(group, "group")));
+            return this;
         }
 
         /**

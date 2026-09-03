@@ -144,6 +144,21 @@ public enum DocumentFailureCode {
     /** Existing page content or resources cannot be preserved for Canvas drawing. */
     CANVAS_PRESERVATION_UNSUPPORTED,
 
+    /** Encoded, sampled, or borrowed Canvas Image data is malformed or incompatible. */
+    CANVAS_IMAGE_INVALID,
+
+    /** A Canvas Image input or color profile is well-formed but unsupported. */
+    CANVAS_RESOURCE_UNSUPPORTED,
+
+    /** A requested optional Canvas Image codec is not available. */
+    CANVAS_IMAGE_CODEC_UNAVAILABLE,
+
+    /** A Canvas Color Space, color, alpha, blend mode, or group is invalid. */
+    CANVAS_GRAPHICS_INVALID,
+
+    /** A version-2 Canvas resource or generated-content bound was exceeded. */
+    CANVAS_RESOURCE_LIMIT_EXCEEDED,
+
     /** A staged document could not be written. */
     DOCUMENT_WRITE_FAILED,
 

@@ -15,6 +15,7 @@ import java.util.Map;
 import net.zerocloud.pdf.composition.CanvasFont;
 import net.zerocloud.pdf.composition.CanvasMatrix;
 import net.zerocloud.pdf.composition.CanvasProgram;
+import net.zerocloud.pdf.composition.CanvasTransparencyGroup;
 import net.zerocloud.pdf.composition.CanvasWindingRule;
 import net.zerocloud.pdf.composition.command.DrawCanvas;
 import org.apache.pdfbox.contentstream.operator.Operator;
@@ -40,7 +41,7 @@ final class PdfBoxCanvasOperations {
     private static final int MAXIMUM_PARENT_DEPTH = 64;
     private static final int MAXIMUM_FONT_RESOURCES = 256;
     private static final int MAXIMUM_GLYPH_BYTES = 4;
-    private static final int MAXIMUM_PROGRAM_BYTES = 1024 * 1024;
+    static final int MAXIMUM_PROGRAM_BYTES = 1024 * 1024;
     private static final int MAXIMUM_EXISTING_CONTENT_BYTES = 8 * 1024 * 1024;
     private static final double MAXIMUM_ABSOLUTE_NUMBER = 1000000000d;
     private static final double MAXIMUM_FONT_SIZE = 1000000d;
@@ -60,12 +61,16 @@ final class PdfBoxCanvasOperations {
 
     private final PDDocument document;
     private final PdfBoxValueAdapter valueAdapter;
+    private final PdfBoxCanvasResourceOperations resourceOperations;
 
     PdfBoxCanvasOperations(
             PDDocument document,
             PdfBoxValueAdapter valueAdapter) {
         this.document = document;
         this.valueAdapter = valueAdapter;
+        this.resourceOperations = new PdfBoxCanvasResourceOperations(
+                document,
+                valueAdapter);
     }
 
     boolean supports(DocumentCommand command) {
@@ -73,8 +78,27 @@ final class PdfBoxCanvasOperations {
     }
 
     void execute(DrawCanvas command) throws DocumentFailure {
+        if (command.getVersion() == DrawCanvas.VERSION_2) {
+            try {
+                executeVersion2(command);
+            } catch (DocumentFailure failure) {
+                if (CAPABILITY_ID.equals(failure.getCapabilityId())) {
+                    throw new DocumentFailure(
+                            failure.getCode(),
+                            PdfBoxCanvasResourceOperations.CAPABILITY_ID,
+                            failure.getDiagnostic());
+                }
+                throw failure;
+            }
+            return;
+        }
+        if (command.getVersion() != DrawCanvas.VERSION_1) {
+            throw invalidProgram();
+        }
         PDPage page = selectedPage(command.getPageNumber());
-        ValidatedProgram program = validate(command.getProgram());
+        ValidatedProgram program = validate(
+                command.getProgram(),
+                CanvasProgram.VERSION_1);
         ExistingContents existing = prepareExistingContents(
                 page.getCOSObject());
         ResourcesPlan resources = prepareResources(
@@ -116,10 +140,72 @@ final class PdfBoxCanvasOperations {
         }
     }
 
+    private void executeVersion2(DrawCanvas command) throws DocumentFailure {
+        if (command.getProgram().getVersion() != CanvasProgram.VERSION_2
+                || !command.getResourceLimits().isPresent()
+                || command.getResourceLimits().get().getVersion()
+                        != net.zerocloud.pdf.composition.CanvasResourceLimits.VERSION_1) {
+            throw invalidProgram();
+        }
+        PDPage page = selectedPage(command.getPageNumber());
+        validate(command.getProgram(), CanvasProgram.VERSION_2);
+        ExistingContents existing = prepareExistingContents(page.getCOSObject());
+        PdfBoxCanvasResourceOperations.Plan plan = resourceOperations.prepare(
+                effectiveResources(page.getCOSObject()),
+                command.getProgram(),
+                command.getResourceLimits().get(),
+                !existing.values.isEmpty());
+
+        COSArray contents = appendedContents(existing, plan.operators);
+        COSDictionary pageDictionary = page.getCOSObject();
+        try {
+            if (plan.resourcesChanged) {
+                pageDictionary.setItem(COSName.RESOURCES, plan.resources);
+            }
+            pageDictionary.setItem(COSName.CONTENTS, contents);
+        } catch (RuntimeException backendFailure) {
+            throw failure(
+                    DocumentFailureCode.DOCUMENT_WRITE_FAILED,
+                    "The Canvas Program could not be applied.");
+        }
+    }
+
+    private COSArray appendedContents(
+            ExistingContents existing,
+            byte[] operators) throws DocumentFailure {
+        COSArray contents = new COSArray();
+        contents.setDirect(true);
+        if (!existing.values.isEmpty()) {
+            contents.add(contentStream("q\n"));
+            for (COSBase value : existing.values) {
+                contents.add(value);
+            }
+            contents.add(contentStream("Q\nn\n"));
+        }
+        contents.add(contentStream(operators));
+        return contents;
+    }
+
+    String capabilityId(DrawCanvas command) {
+        return command.getVersion() == DrawCanvas.VERSION_2
+                ? PdfBoxCanvasResourceOperations.CAPABILITY_ID
+                : CAPABILITY_ID;
+    }
+
     static DocumentFailure signatureFailure() {
         return failure(
                 DocumentFailureCode.SIGNATURE_POLICY_REJECTED,
                 "The Existing Signature policy does not permit Canvas drawing.");
+    }
+
+    static DocumentFailure signatureFailure(DrawCanvas command) {
+        if (command.getVersion() == DrawCanvas.VERSION_2) {
+            return new DocumentFailure(
+                    DocumentFailureCode.SIGNATURE_POLICY_REJECTED,
+                    PdfBoxCanvasResourceOperations.CAPABILITY_ID,
+                    "The Existing Signature policy does not permit Canvas drawing.");
+        }
+        return signatureFailure();
     }
 
     static void requireModificationPermission(
@@ -132,6 +218,22 @@ final class PdfBoxCanvasOperations {
         }
     }
 
+    static void requireModificationPermission(
+            PasswordSecurityInfo securityInfo,
+            DrawCanvas command) throws DocumentFailure {
+        try {
+            requireModificationPermission(securityInfo);
+        } catch (DocumentFailure failure) {
+            if (command.getVersion() != DrawCanvas.VERSION_2) {
+                throw failure;
+            }
+            throw new DocumentFailure(
+                    failure.getCode(),
+                    PdfBoxCanvasResourceOperations.CAPABILITY_ID,
+                    failure.getDiagnostic());
+        }
+    }
+
     private PDPage selectedPage(int pageNumber) throws DocumentFailure {
         if (pageNumber < 1 || pageNumber > document.getNumberOfPages()) {
             throw failure(
@@ -141,21 +243,40 @@ final class PdfBoxCanvasOperations {
         return document.getPage(pageNumber - 1);
     }
 
-    private static ValidatedProgram validate(CanvasProgram program)
+    private static ValidatedProgram validate(
+            CanvasProgram program,
+            int expectedVersion)
             throws DocumentFailure {
+        ValidationAccumulator accumulator = new ValidationAccumulator();
+        Map<CanvasFont, List<byte[]>> glyphs =
+                new LinkedHashMap<CanvasFont, List<byte[]>>();
+        validateProgram(program, expectedVersion, accumulator, glyphs, 0);
+        return new ValidatedProgram(glyphs);
+    }
+
+    private static void validateProgram(
+            CanvasProgram program,
+            int expectedVersion,
+            ValidationAccumulator accumulator,
+            Map<CanvasFont, List<byte[]>> glyphs,
+            int groupDepth)
+            throws DocumentFailure {
+        if (program == null || program.getVersion() != expectedVersion) {
+            throw invalidProgram();
+        }
         List<CanvasProgram.Instruction> instructions =
                 program.getInstructions();
-        if (instructions.isEmpty()
-                || instructions.size() > MAXIMUM_INSTRUCTIONS) {
+        if (instructions.isEmpty()) {
+            throw invalidProgram();
+        }
+        accumulator.instructionCount += instructions.size();
+        if (accumulator.instructionCount > MAXIMUM_INSTRUCTIONS) {
             throw invalidProgram();
         }
 
         int graphicsDepth = 0;
         CanvasState state = CanvasState.IDLE;
         CanvasFont activeFont = null;
-        Map<CanvasFont, List<byte[]>> glyphs =
-                new LinkedHashMap<CanvasFont, List<byte[]>>();
-
         for (CanvasProgram.Instruction instruction : instructions) {
             switch (instruction.getKind()) {
                 case SAVE_STATE:
@@ -246,6 +367,47 @@ final class PdfBoxCanvasOperations {
                     state = CanvasState.IDLE;
                     activeFont = null;
                     break;
+                case SET_FILL_COLOR:
+                case SET_STROKE_COLOR:
+                case SET_TRANSPARENCY:
+                    requireVersion2(expectedVersion);
+                    requireState(state, CanvasState.IDLE);
+                    break;
+                case DRAW_IMAGE:
+                    requireVersion2(expectedVersion);
+                    requireState(state, CanvasState.IDLE);
+                    requireMatrix(instruction.getMatrix());
+                    break;
+                case DRAW_TRANSPARENCY_GROUP:
+                    requireVersion2(expectedVersion);
+                    requireState(state, CanvasState.IDLE);
+                    requireMatrix(instruction.getMatrix());
+                    CanvasTransparencyGroup group =
+                            instruction.getTransparencyGroup();
+                    if (group == null) {
+                        throw invalidProgram();
+                    }
+                    int nestedDepth = groupDepth + 1;
+                    if (nestedDepth
+                            > net.zerocloud.pdf.composition.CanvasResourceLimits
+                                    .MAXIMUM_TRANSPARENCY_GROUP_DEPTH_VERSION_1) {
+                        throw PdfBoxCanvasResourceOperations.limitFailure();
+                    }
+                    if (accumulator.activeGroups.containsKey(group)) {
+                        throw invalidProgram();
+                    }
+                    if (!accumulator.validatedGroups.containsKey(group)) {
+                        accumulator.activeGroups.put(group, Boolean.TRUE);
+                        validateProgram(
+                                group.getProgram(),
+                                CanvasProgram.VERSION_2,
+                                accumulator,
+                                glyphs,
+                                nestedDepth);
+                        accumulator.activeGroups.remove(group);
+                        accumulator.validatedGroups.put(group, Boolean.TRUE);
+                    }
+                    break;
                 default:
                     throw invalidProgram();
             }
@@ -253,7 +415,12 @@ final class PdfBoxCanvasOperations {
         if (graphicsDepth != 0 || state != CanvasState.IDLE) {
             throw invalidProgram();
         }
-        return new ValidatedProgram(glyphs);
+    }
+
+    private static void requireVersion2(int version) throws DocumentFailure {
+        if (version != CanvasProgram.VERSION_2) {
+            throw invalidProgram();
+        }
     }
 
     private ExistingContents prepareExistingContents(COSDictionary page)
@@ -368,7 +535,7 @@ final class PdfBoxCanvasOperations {
                 throw invalidResource();
             }
             COSDictionary font = (COSDictionary) fontValue;
-            int codeLength = validateFont(font);
+            int codeLength = validateFontDictionary(font);
             for (byte[] glyph : entry.getValue()) {
                 if (glyph.length != codeLength) {
                     throw invalidResource();
@@ -427,7 +594,7 @@ final class PdfBoxCanvasOperations {
         return null;
     }
 
-    private static int validateFont(COSDictionary font)
+    static int validateFontDictionary(COSDictionary font)
             throws DocumentFailure {
         if (!COSName.FONT.equals(dereference(font.getItem(COSName.TYPE)))) {
             throw invalidResource();
@@ -735,6 +902,17 @@ final class PdfBoxCanvasOperations {
         ValidatedProgram(Map<CanvasFont, List<byte[]>> glyphsByFont) {
             this.glyphsByFont = glyphsByFont;
         }
+    }
+
+    private static final class ValidationAccumulator {
+
+        private int instructionCount;
+        private final IdentityHashMap<CanvasTransparencyGroup, Boolean>
+                activeGroups =
+                        new IdentityHashMap<CanvasTransparencyGroup, Boolean>();
+        private final IdentityHashMap<CanvasTransparencyGroup, Boolean>
+                validatedGroups =
+                        new IdentityHashMap<CanvasTransparencyGroup, Boolean>();
     }
 
     private enum CanvasState {

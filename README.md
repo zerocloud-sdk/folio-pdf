@@ -310,7 +310,8 @@ fabricated identity, and reports declaration-reachable page usage. Image
 records classify dimensions, color spaces, filters and effective decoding
 parameters, explicit, subsidiary, and JPX-embedded masks, and encoded/decoded
 availability; explicitly selected available bytes are bounded, defensive, and
-usable after the Session closes.
+usable after the Session closes. Valid bounded ICCBased profiles additionally
+expose their stream identity, decoded byte length, and SHA-256.
 Font records expose BaseFont, embedding, subset, declaration, and page-usage
 information. See the authoritative
 [image and resource extraction guide](docs/image-resource-extraction.md) for
@@ -327,6 +328,16 @@ of an existing Session-owned Font resource. See the authoritative
 [Canvas vector and positioned-text guide](docs/canvas-vector-positioned-text.md)
 for the closed state machine, coordinates, resource rules, limits,
 preservation proof, publication policy, and downstream exclusions.
+
+T18 extends that seam with `CanvasProgram.version2()` and mandatory
+`CanvasResourceLimits`: bounded JPEG pass-through, PNG/TIFF normalization to
+8-bit DeviceRGB, raw samples, same-Session existing-image borrowing, Device,
+calibrated and ICCBased fill/stroke color, explicit and soft masks, alpha,
+standard blend modes, and reusable transparency groups. Optional TIFF support
+is discoverable through a project-owned Query. See the authoritative
+[Canvas images, color, and transparency guide](docs/canvas-images-colors-transparency.md)
+for the exact format/filter matrix, ownership, reuse, accounting, failure,
+preservation, and codec-availability contracts.
 
 Successful `WorkflowOutcome` values identify the capability, the in-process
 execution profile, the selected Save Mode, safe diagnostics, and every Target

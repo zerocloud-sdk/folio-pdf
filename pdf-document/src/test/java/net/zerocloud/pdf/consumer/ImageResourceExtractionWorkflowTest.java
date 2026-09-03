@@ -8,6 +8,8 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.awt.color.ColorSpace;
+import java.awt.color.ICC_Profile;
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -964,6 +966,38 @@ public final class ImageResourceExtractionWorkflowTest {
         assertEquals(ImageResource.ColorFamily.ICC_BASED,
                 iccImage.getColorSpace().getFamily());
         assertEquals(3, iccImage.getColorComponents().getAsInt());
+
+        byte[] xyzProfile = ICC_Profile.getInstance(
+                ColorSpace.CS_CIEXYZ).getData();
+        Path unsupportedIccFamily = temporaryFolder.getRoot().toPath().resolve(
+                "unsupported-icc-family.pdf");
+        writeSingleResourcePdf(
+                unsupportedIccFamily,
+                "XObject",
+                "Im",
+                "4 0 R",
+                streamObject(
+                        "rgb",
+                        "/Type /XObject /Subtype /Image /Width 1 /Height 1 "
+                                + "/BitsPerComponent 8 "
+                                + "/ColorSpace [/ICCBased 5 0 R] "),
+                streamObject(
+                        hex(xyzProfile) + ">",
+                        "/N 3 /Alternate /DeviceRGB "
+                                + "/Range [0 1 0 1 0 1] "
+                                + "/Filter /ASCIIHexDecode "));
+        ImageResource unsupportedFamily = query(
+                unsupportedIccFamily,
+                generousLimits(),
+                ImageByteAccess.NONE).getImages().get(0);
+        assertEquals(
+                ImageResource.ColorStatus.UNSUPPORTED,
+                unsupportedFamily.getColorSpace().getStatus());
+        assertEquals(
+                ImageResource.ColorFamily.ICC_BASED,
+                unsupportedFamily.getColorSpace().getFamily());
+        assertFalse(unsupportedFamily.getColorSpace()
+                .getIccProfile().isPresent());
 
         Path badIndexed = temporaryFolder.getRoot().toPath().resolve(
                 "malformed-indexed-lookup.pdf");

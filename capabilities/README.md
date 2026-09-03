@@ -23,9 +23,9 @@ The outputs are:
 - `docs/generated/capability-matrix.md`
 - `docs/generated/facade-surface.md`
 
-Record the built-in T03 blank-document Acceptance Profile with the pinned
-external syntax validator, independent renderer, raster comparator, and
-project semantic assertions:
+Record the built-in T03 blank-document and T18 Canvas-image Acceptance
+Profiles with the pinned external syntax validator, independent renderer,
+raster comparator, and project semantic assertions:
 
 ```text
 ./scripts/provision-qpdf /path/to/qpdf-12.4.0-bin-linux-x86_64.zip
@@ -108,6 +108,16 @@ reuse, and preservation of existing content and resources. Pinned qpdf checks
 that unchanged artifact for syntax. A distinct project-test producer reopens
 it through public Folio PDF queries and compares project-owned semantic
 expectations without using PDFBox as an oracle.
+The T18 producer appends a version-2 Canvas Program to project-authored
+existing content and resources. Its one unchanged artifact covers JPEG, PNG
+alpha, single-image TIFF, raw and borrowed existing images; Device,
+calibrated, and ICCBased fill/stroke color; explicit and soft masks; alpha,
+Multiply blend mode, reusable isolated Transparency Groups, resource reuse,
+and preservation. Pinned qpdf checks syntax, a distinct project-test producer
+reopens it through T09/T14 public queries, and PDFium/ImageMagick supplies the
+independent visual chain. The optional TwelveMonkeys TIFF provider is a direct
+repository-acceptance runtime so this artifact always exercises the available
+codec path.
 The command records tool identity, version and distribution digest, exact or
 documented ID-neutral input SHA-256 values, raw findings, chain-level results,
 and the applicable determination beneath the requested
@@ -145,6 +155,20 @@ With the pinned ImageMagick asset provisioned, its exact bytes reproduce with:
 
 The resulting SHA-256 is
 `c7bbf03603aee1dba4ef80c9eee9abb93b7f3adfb94b84e4abf0203d78f89011`.
+
+T18 uses the same page box, 144 DPI, opaque sRGB RGB PNG dimensions, pinned
+tools, and zero-fuzz AE metric. Its profile is
+`capabilities/profiles/T18-canvas-images-colors-transparency-visual.properties`.
+The project-owned, visually reviewed PDFium expected raster is
+`capabilities/expected/T18-canvas-images-colors-transparency-144dpi-srgb.png`,
+SHA-256
+`4027a0a929494c49051a3039be5bd1c06d2a6624ba7c161acb8c1bfe0780024a`.
+The authoritative PDFium comparison threshold is AE `0`. The secondary
+PDFBox-renderer disagreement ceiling is AE `2500` (less than 0.13 percent of
+the 1,938,816-pixel raster), accommodating bounded renderer color-management
+and antialiasing variation while still forcing review above that fixed
+capability-specific tolerance. ImageMagick HDRI decimal AE values are parsed
+exactly rather than rounded.
 
 The harness validates PNG structure, dimensions, color type, and decodability
 before comparison. ImageMagick receives raster paths only and produces
@@ -275,8 +299,10 @@ The T11 through T16 profiles likewise have one passing qpdf syntax record for
 each pair of public-workflow products. Their mandatory standards, semantic,
 and visual Acceptance Evidence chains remain absent. T17 has passing syntax
 and project-owned semantic records, while its mandatory standards and visual
-chains remain absent. Their Dependency Gates remain open while prerequisites
-are `experimental`; none is promoted beyond `experimental`.
+chains remain absent. T18 has passing syntax, project-owned semantic, and
+independent visual records, while its mandatory standards chain remains
+absent. Their Dependency Gates remain open while prerequisites are
+`experimental`; none is promoted beyond `experimental`.
 
 The T08 release-gate evidence is recorded in
 `capabilities/evidence/T08-secure-maven-central-rehearsal.md`. T08 validates a

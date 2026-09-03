@@ -5,6 +5,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.awt.color.ICC_Profile;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -1425,7 +1428,8 @@ final class PdfBoxImageResourceExtractionOperations {
                 if (array.size() != 2) {
                     return ColorInfo.malformed(declared);
                 }
-                COSBase profile = direct(array.get(1));
+                COSBase rawProfile = array.get(1);
+                COSBase profile = direct(rawProfile);
                 if (!(profile instanceof COSStream)) {
                     return ColorInfo.malformed(declared);
                 }
@@ -1463,13 +1467,21 @@ final class PdfBoxImageResourceExtractionOperations {
                         return ColorInfo.malformed(declared);
                     }
                 }
+                IccInfo icc = validatedIcc(
+                        rawProfile,
+                        (COSStream) profile,
+                        componentCount);
+                if (icc != null) {
+                    status = ColorStatus.SUPPORTED;
+                }
                 return new ColorInfo(
                         status,
                         ColorFamily.ICC_BASED,
                         declared,
                         PdfName.of(family.getName()),
                         Integer.valueOf(componentCount),
-                        matteRanges);
+                        matteRanges,
+                        icc);
             }
             if ("I".equals(name)) {
                 return ColorInfo.malformed(declared);
@@ -2001,6 +2013,82 @@ final class PdfBoxImageResourceExtractionOperations {
                 return ColorInfo.malformed(declared);
             }
             return null;
+        }
+
+        private IccInfo validatedIcc(
+                COSBase rawProfile,
+                COSStream stream,
+                int declaredComponents)
+                throws IOException {
+            if (direct(stream.getItem(COSName.F)) != null) {
+                return null;
+            }
+            AccountingOutput output = new AccountingOutput(this, true, false);
+            byte[] buffer = new byte[8192];
+            try (InputStream input = stream.createInputStream()) {
+                int count;
+                while ((count = input.read(buffer)) != -1) {
+                    output.write(buffer, 0, count);
+                }
+                byte[] bytes = output.toByteArray();
+                if (bytes.length < 128
+                        || unsignedInt(bytes, 0) != bytes.length
+                        || bytes[36] != 'a'
+                        || bytes[37] != 'c'
+                        || bytes[38] != 's'
+                        || bytes[39] != 'p') {
+                    return null;
+                }
+                ICC_Profile profile = ICC_Profile.getInstance(bytes);
+                if (profile.getNumComponents() != declaredComponents
+                        || !supportedIccFamily(
+                                declaredComponents,
+                                profile.getColorSpaceType())) {
+                    return null;
+                }
+                return new IccInfo(
+                        reference(rawProfile),
+                        bytes.length,
+                        sha256(bytes));
+            } catch (ResourceLimitIOException exhausted) {
+                throw exhausted;
+            } catch (IOException | IllegalArgumentException invalidProfile) {
+                return null;
+            }
+        }
+
+        private static boolean supportedIccFamily(
+                int components,
+                int colorSpaceType) {
+            return (components == 1
+                            && colorSpaceType == java.awt.color.ColorSpace.TYPE_GRAY)
+                    || (components == 3
+                            && colorSpaceType == java.awt.color.ColorSpace.TYPE_RGB)
+                    || (components == 4
+                            && colorSpaceType == java.awt.color.ColorSpace.TYPE_CMYK);
+        }
+
+        private static long unsignedInt(byte[] bytes, int offset) {
+            return ((long) (bytes[offset] & 0xff) << 24)
+                    | ((long) (bytes[offset + 1] & 0xff) << 16)
+                    | ((long) (bytes[offset + 2] & 0xff) << 8)
+                    | (long) (bytes[offset + 3] & 0xff);
+        }
+
+        private static String sha256(byte[] bytes) throws IOException {
+            try {
+                byte[] digest = MessageDigest.getInstance("SHA-256")
+                        .digest(bytes);
+                StringBuilder value = new StringBuilder(digest.length * 2);
+                for (byte part : digest) {
+                    int unsigned = part & 0xff;
+                    value.append(Character.forDigit(unsigned >>> 4, 16));
+                    value.append(Character.forDigit(unsigned & 0xf, 16));
+                }
+                return value.toString();
+            } catch (NoSuchAlgorithmException unavailable) {
+                throw new IOException("SHA-256 is unavailable");
+            }
         }
 
         private void visitFont(COSBase raw, ResourceDeclaration declaration)
@@ -2832,6 +2920,7 @@ final class PdfBoxImageResourceExtractionOperations {
         private final PdfName resolved;
         private final Integer components;
         private final double[] matteRanges;
+        private final IccInfo icc;
 
         ColorInfo(
                 ColorStatus status,
@@ -2840,6 +2929,17 @@ final class PdfBoxImageResourceExtractionOperations {
                 PdfName resolved,
                 Integer components,
                 double[] matteRanges) {
+            this(status, family, declared, resolved, components, matteRanges, null);
+        }
+
+        ColorInfo(
+                ColorStatus status,
+                ColorFamily family,
+                PdfName declared,
+                PdfName resolved,
+                Integer components,
+                double[] matteRanges,
+                IccInfo icc) {
             this.status = status;
             this.family = family;
             this.declared = declared;
@@ -2848,6 +2948,7 @@ final class PdfBoxImageResourceExtractionOperations {
             this.matteRanges = matteRanges == null
                     ? null
                     : matteRanges.clone();
+            this.icc = icc;
         }
 
         static ColorInfo imageMask() {
@@ -2922,7 +3023,8 @@ final class PdfBoxImageResourceExtractionOperations {
                     family,
                     declared,
                     resolved,
-                    components);
+                    components,
+                    icc == null ? null : icc.publicValue());
         }
 
         boolean same(ColorInfo other) {
@@ -2933,7 +3035,41 @@ final class PdfBoxImageResourceExtractionOperations {
                     && java.util.Objects.equals(components, other.components)
                     && java.util.Arrays.equals(
                             matteRanges,
-                            other.matteRanges);
+                            other.matteRanges)
+                    && java.util.Objects.equals(icc, other.icc);
+        }
+    }
+
+    private static final class IccInfo {
+
+        private final ObjectReference reference;
+        private final long byteLength;
+        private final String sha256;
+
+        IccInfo(ObjectReference reference, long byteLength, String sha256) {
+            this.reference = reference;
+            this.byteLength = byteLength;
+            this.sha256 = sha256;
+        }
+
+        ImageResource.IccProfile publicValue() {
+            return new ImageResource.IccProfile(reference, byteLength, sha256);
+        }
+
+        @Override
+        public boolean equals(Object candidate) {
+            if (!(candidate instanceof IccInfo)) {
+                return false;
+            }
+            IccInfo other = (IccInfo) candidate;
+            return byteLength == other.byteLength
+                    && java.util.Objects.equals(reference, other.reference)
+                    && java.util.Objects.equals(sha256, other.sha256);
+        }
+
+        @Override
+        public int hashCode() {
+            return java.util.Objects.hash(reference, byteLength, sha256);
         }
     }
 

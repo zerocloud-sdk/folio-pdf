@@ -898,5 +898,81 @@ documentation, and project-owned tests are the permitted design inputs.
   behavior, promote a capability, or perform the separate human Central
   publication step.
 
+## T18 canvas-images-colors-transparency record
+
+- Authorship: OpenAI Codex generated and integrated the T18 implementation,
+  tests, evidence, inventories, and documentation at repository operator
+  MaBaiqiu's direction. No T18 commit was created in this execution.
+- Project inputs: GitHub issues #1, #18, #19, and #20; `CONTEXT.md`,
+  `CONTRIBUTING.md`, repository issue/domain instructions; ADR-0005, 0010,
+  0011, 0017, 0023, 0025, and 0036; the accepted T03, T09, T13, T14, T15,
+  T16, and T17 public transaction, value, extraction, identity, publication,
+  security, preservation, and Canvas seams; and pre-implementation fixed point
+  `182a168e70c7b830de568829dff484e16b1b6cbb`.
+- Public standards input: the Adobe-hosted authorized ISO 32000-1:2008 copy
+  already inventoried by prior tickets, SHA-256
+  `9de0ca9e8570d6209e8bd48a355be8eb6ec376acfc3fc3ae97cd8730351417ff`,
+  supplied public Image XObject, color-space, Decode, mask, ExtGState, blend-
+  mode, Form Transparency Group, resource, and content-placement concepts. It
+  was not redistributed and supplied specification semantics only; no
+  standards-conformance claim is inferred.
+- Backend inputs: existing Apache PDFBox 3.0.8 public COS, stream, save, and
+  renderer APIs remain private implementation/secondary-evidence surfaces.
+  Java 8 ImageIO and `java.awt.color.ICC_Profile` provide platform raster and
+  profile parsing behind project-owned bounds. No backend type, serialization
+  choice, provider exception, or renderer output defines Native Interface
+  semantics.
+- Optional codec: TwelveMonkeys ImageIO 3.14.0, tag
+  `twelvemonkeys-3.14.0`, peeled commit
+  `62f6e2fba80b3eee99707985ebf4a4fd33abf07b`, supplies the optional TIFF
+  ImageIO provider under BSD-3-Clause. The exact root/transitive coordinates,
+  JAR hashes, roles, distribution behavior, copyright, and license text are in
+  [DEPENDENCIES.md](DEPENDENCIES.md) and the
+  [TwelveMonkeys manifest](docs/third-party/twelvemonkeys-imageio-tiff-3.14.0.md).
+  `pdf-document` marks it optional; no Folio PDF artifact shades or bundles
+  it. The repository-only acceptance module selects it directly to exercise
+  the available path. Provider absence is a first-class tested result.
+- Project-authored fixtures: consumer and acceptance tests synthesize their
+  raster pixels, JPEG/PNG/TIFF encodings, raw samples, masks, ICC data from the
+  JDK sRGB profile, minimal existing-image PDF syntax, signature/password
+  inputs, limits, and expected semantic values. No external image, PDF,
+  profile, proprietary output, system font, or Reference Suite fixture was
+  copied.
+- Output validation and evidence boundary: public workflows create, publish,
+  reopen, and query every product. T14 observations prove dimensions, filters,
+  masks, color/profile identity, Object References, Page Usage, and resource
+  counts. The repository acceptance command sends the unchanged ID-neutral-
+  hashed T18 artifact to pinned qpdf 12.4.0 and PDFium v0.11.2/Chromium 7881;
+  ImageMagick 7.1.2-30 compares validated fixed-size PNGs only. The
+  project-owned expected raster is the visually reviewed 144-DPI PDFium
+  baseline, SHA-256
+  `4027a0a929494c49051a3039be5bd1c06d2a6624ba7c161acb8c1bfe0780024a`.
+  Expected comparison requires AE 0; secondary PDFBox Renderer disagreement
+  must not exceed AE 2,500 and can never make the chain pass. Repeat-run tests
+  require identical records, findings, ID-neutral artifact hashes, and raster
+  hashes.
+- Generated documentation: `docs/generated/capability-matrix.md` and
+  `docs/generated/facade-surface.md` are deterministic renderings of the YAML
+  authorities and contain no copied external content.
+- Excluded inputs: no iText source, resource, fixture, binary, output,
+  decompiled or binary-derived implementation detail, closed add-on material,
+  proprietary differential evidence, unauthorized black-box observation,
+  downloaded image/PDF/profile, arbitrary URI, or Reference Suite behavioral
+  oracle was used.
+- Scope: T18 deepens the existing Canvas/Document Engine seam with bounded
+  JPEG/PNG/TIFF/raw/existing image declaration and placement, Device/
+  calibrated/ICCBased painting color, alpha, explicit and soft masks, standard
+  blend modes, reusable transparency groups, deterministic resource reuse,
+  optional-codec discovery, stable failures, and T14 ICC profile identity. It
+  adds no T19 font acquisition, T20 comprehensive hostile-input enforcement,
+  T21 Worker isolation, T23 runtime rendering, layout, Forms, SVG, redaction,
+  optimization, Migration Facade surface, backend SPI, or new product module.
+- Compatibility Curator evidence: none; the role remains vacant. T18 has
+  passing syntax, project-owned semantic, and independent visual chains, but
+  mandatory standards evidence remains absent. Its T14 and T17 compatible-
+  status Dependency Gates remain open while both capabilities are
+  `experimental`, and T06 remains a promotion gate. T18 therefore remains
+  `experimental` with no compatible or certified-platform claim.
+
 Future changes append or update a scoped record and supply the pull-request
 provenance statement required by [CONTRIBUTING.md](CONTRIBUTING.md).

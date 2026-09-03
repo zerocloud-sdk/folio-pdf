@@ -176,18 +176,21 @@ public final class ImageResource extends DocumentResource {
         private final PdfName declaredName;
         private final PdfName resolvedFamilyName;
         private final Integer components;
+        private final IccProfile iccProfile;
 
         ColorSpace(
                 ColorStatus status,
                 ColorFamily family,
                 PdfName declaredName,
                 PdfName resolvedFamilyName,
-                Integer components) {
+                Integer components,
+                IccProfile iccProfile) {
             this.status = Objects.requireNonNull(status, "status");
             this.family = Objects.requireNonNull(family, "family");
             this.declaredName = declaredName;
             this.resolvedFamilyName = resolvedFamilyName;
             this.components = components;
+            this.iccProfile = iccProfile;
         }
 
         /** Returns supported, unsupported, or malformed classification. @return status */
@@ -212,6 +215,43 @@ public final class ImageResource extends DocumentResource {
                     ? OptionalInt.empty()
                     : OptionalInt.of(components.intValue());
         }
+
+        /** Returns validated ICC profile metadata for ICCBased color. */
+        public Optional<IccProfile> getIccProfile() {
+            return Optional.ofNullable(iccProfile);
+        }
+    }
+
+    /** Detached identity and digest of one bounded, validated ICC profile. */
+    public static final class IccProfile {
+
+        private final ObjectReference objectReference;
+        private final long byteLength;
+        private final String sha256;
+
+        IccProfile(
+                ObjectReference objectReference,
+                long byteLength,
+                String sha256) {
+            if (byteLength < 0L) {
+                throw new IllegalArgumentException(
+                        "ICC profile byte length must not be negative");
+            }
+            this.objectReference = objectReference;
+            this.byteLength = byteLength;
+            this.sha256 = Objects.requireNonNull(sha256, "sha256");
+        }
+
+        /** Returns the profile stream identity when it is indirect. */
+        public Optional<ObjectReference> getObjectReference() {
+            return Optional.ofNullable(objectReference);
+        }
+
+        /** Returns the exact decoded profile byte length. */
+        public long getByteLength() { return byteLength; }
+
+        /** Returns the lowercase SHA-256 of the decoded profile bytes. */
+        public String getSha256() { return sha256; }
     }
 
     /** One declared image filter and supported effective decode metadata. */

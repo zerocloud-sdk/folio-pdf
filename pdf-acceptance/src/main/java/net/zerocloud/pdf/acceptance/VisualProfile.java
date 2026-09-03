@@ -12,14 +12,26 @@ final class VisualProfile {
     private static final String SUPPORTED_PAGE_BOX =
             "effective CropBox; CropBox is absent, so MediaBox "
                     + "[0 0 612 792] points is used";
-    private static final String SUPPORTED_COLOR_POLICY =
+    private static final String T03_PROFILE =
+            "T03-document-workflow-transaction";
+    private static final String T18_PROFILE =
+            "T18-canvas-images-colors-transparency";
+    private static final String T03_COLOR_POLICY =
             "sRGB, opaque 8-bit RGB PNG; grayscale and alpha are disabled";
-    private static final String SUPPORTED_FONT_POLICY =
+    private static final String T03_FONT_POLICY =
             "not applicable; the blank document has no text or font resources "
                     + "and uses no system fonts";
-    private static final String SUPPORTED_ANTIALIASING_POLICY =
+    private static final String T03_ANTIALIASING_POLICY =
             "pinned PDFium default smoothing; no marks are present for "
                     + "antialiasing to affect";
+    private static final String T18_COLOR_POLICY =
+            "sRGB, opaque 8-bit RGB PNG after compositing over opaque white";
+    private static final String T18_FONT_POLICY =
+            "not applicable; the artifact has no text or font resources and "
+                    + "uses no system fonts";
+    private static final String T18_ANTIALIASING_POLICY =
+            "pinned PDFium default smoothing; image interpolation is disabled "
+                    + "and vector edges are axis-aligned";
     private static final String SUPPORTED_BACKGROUND = "opaque white (#ffffff)";
     private static final String SUPPORTED_COMPARISON_METRIC = "AE";
 
@@ -82,6 +94,7 @@ final class VisualProfile {
             properties.load(input);
         }
         String expectedReference = required(properties, "EXPECTED_RASTER");
+        String profileId = required(properties, "PROFILE_ID");
         Path relativeExpected = java.nio.file.Paths.get(expectedReference);
         if (relativeExpected.isAbsolute()) {
             throw new IOException("EXPECTED_RASTER must be relative to the profile");
@@ -100,12 +113,26 @@ final class VisualProfile {
         String background = required(properties, "BACKGROUND");
         String comparisonMetric = required(properties, "COMPARISON_METRIC");
         requireSupported("PAGE_BOX", pageBox, SUPPORTED_PAGE_BOX);
-        requireSupported("COLOR_POLICY", colorPolicy, SUPPORTED_COLOR_POLICY);
-        requireSupported("FONT_POLICY", fontPolicy, SUPPORTED_FONT_POLICY);
+        String supportedColor;
+        String supportedFont;
+        String supportedAntialiasing;
+        if (T03_PROFILE.equals(profileId)) {
+            supportedColor = T03_COLOR_POLICY;
+            supportedFont = T03_FONT_POLICY;
+            supportedAntialiasing = T03_ANTIALIASING_POLICY;
+        } else if (T18_PROFILE.equals(profileId)) {
+            supportedColor = T18_COLOR_POLICY;
+            supportedFont = T18_FONT_POLICY;
+            supportedAntialiasing = T18_ANTIALIASING_POLICY;
+        } else {
+            throw new IOException("Unsupported visual profile ID: " + profileId);
+        }
+        requireSupported("COLOR_POLICY", colorPolicy, supportedColor);
+        requireSupported("FONT_POLICY", fontPolicy, supportedFont);
         requireSupported(
                 "ANTIALIASING_POLICY",
                 antialiasingPolicy,
-                SUPPORTED_ANTIALIASING_POLICY);
+                supportedAntialiasing);
         requireSupported("BACKGROUND", background, SUPPORTED_BACKGROUND);
         requireSupported(
                 "COMPARISON_METRIC",
@@ -117,7 +144,7 @@ final class VisualProfile {
                     "Visual profile COMPARISON_FUZZ_PERCENT must be at most 100");
         }
         return new VisualProfile(
-                required(properties, "PROFILE_ID"),
+                profileId,
                 pageBox,
                 positiveInt(properties, "DPI"),
                 colorPolicy,

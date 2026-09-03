@@ -446,8 +446,7 @@ final class PdfBoxWorkflowEngine {
             List<ProviderSelection> providerSelections) {
         String reportedCapabilityId = capabilityId;
         if (request.getSaveMode() == SaveMode.INCREMENTAL
-                && !PdfBoxCanvasOperations.CAPABILITY_ID.equals(
-                        capabilityId)) {
+                && !isCanvasCapability(capabilityId)) {
             reportedCapabilityId = INCREMENTAL_CAPABILITY_ID;
         }
         return new WorkflowOutcome<R>(
@@ -463,14 +462,19 @@ final class PdfBoxWorkflowEngine {
     private static String outcomeCapabilityId(
             WorkflowRequest request,
             PdfBoxDocumentSession session) {
-        if (PdfBoxCanvasOperations.CAPABILITY_ID.equals(
-                session.getOutcomeCapabilityId())) {
-            return PdfBoxCanvasOperations.CAPABILITY_ID;
+        if (isCanvasCapability(session.getOutcomeCapabilityId())) {
+            return session.getOutcomeCapabilityId();
         }
         return !request.getPublicationTargets().isEmpty()
                         && request.getOutputPolicy() != null
                 ? VERSION_SECURITY_CAPABILITY_ID
                 : session.getOutcomeCapabilityId();
+    }
+
+    private static boolean isCanvasCapability(String capabilityId) {
+        return PdfBoxCanvasOperations.CAPABILITY_ID.equals(capabilityId)
+                || PdfBoxCanvasResourceOperations.CAPABILITY_ID.equals(
+                        capabilityId);
     }
 
     private static void save(

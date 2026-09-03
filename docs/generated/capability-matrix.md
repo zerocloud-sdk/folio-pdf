@@ -6,13 +6,14 @@ Behavioral authority: [`../../capabilities/capability-matrix.yaml`](../../capabi
 
 - Schema version: `1`
 - Release train: `0.1.0-SNAPSHOT`
-- Capabilities: `11`
+- Capabilities: `12`
 
 ## Capability summary
 
 | Capability | Context | Status | Migration facade |
 | --- | --- | --- | --- |
 | [`composition.canvas.draw-positioned-text`](#capability-composition_dot_canvas_dot_draw_dash_positioned_dash_text) | `composition` | `experimental` | [excluded by `T17`](facade-surface.md#excluded-capability-composition_dot_canvas_dot_draw_dash_positioned_dash_text) |
+| [`composition.canvas.images-colors-transparency`](#capability-composition_dot_canvas_dot_images_dash_colors_dash_transparency) | `composition` | `experimental` | [excluded by `T18`](facade-surface.md#excluded-capability-composition_dot_canvas_dot_images_dash_colors_dash_transparency) |
 | [`conversion.capability-provider.select-execute`](#capability-conversion_dot_capability_dash_provider_dot_select_dash_execute) | `conversion` | `experimental` | [excluded by `T05`](facade-surface.md#excluded-capability-conversion_dot_capability_dash_provider_dot_select_dash_execute) |
 | [`document.annotations-actions.manage`](#capability-document_dot_annotations_dash_actions_dot_manage) | `document-engine` | `experimental` | [excluded by `T12`](facade-surface.md#excluded-capability-document_dot_annotations_dash_actions_dot_manage) |
 | [`document.blank.create-publish-reopen`](#capability-document_dot_blank_dot_create_dash_publish_dash_reopen) | `document-engine` | `experimental` | [`itext7.kernel.pdf-document.add-new-page`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_add_dash_new_dash_page), [`itext7.kernel.pdf-document.close`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_close), [`itext7.kernel.pdf-document.constructor-reader`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_constructor_dash_reader), [`itext7.kernel.pdf-document.constructor-writer`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_constructor_dash_writer), [`itext7.kernel.pdf-document.get-number-of-pages`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_number_dash_of_dash_pages), [`itext7.kernel.pdf-exception.constructor-message-cause`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_exception_dot_constructor_dash_message_dash_cause), [`itext7.kernel.pdf-page.type`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_page_dot_type), [`itext7.kernel.pdf-reader.close`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_reader_dot_close), [`itext7.kernel.pdf-reader.constructor-string`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_reader_dot_constructor_dash_string), [`itext7.kernel.pdf-writer.constructor-string`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_writer_dot_constructor_dash_string), [`itext7.layout.document.close`](facade-surface.md#facade-surface-itext7_dot_layout_dot_document_dot_close), [`itext7.layout.document.constructor-pdf-document`](facade-surface.md#facade-surface-itext7_dot_layout_dot_document_dot_constructor_dash_pdf_dash_document) |
@@ -98,6 +99,89 @@ Acceptance Evidence:
 - `semantic`: `pass` — [`capabilities/evidence/T17-canvas-vector-positioned-text-semantic.md`](../../capabilities/evidence/T17-canvas-vector-positioned-text-semantic.md); producer `folio-pdf-t17-semantic-assertions@0.1.0-SNAPSHOT` (`project-test`)
 
 Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T17 canvas-vector-positioned-text record`.
+
+<a id="capability-composition_dot_canvas_dot_images_dash_colors_dash_transparency"></a>
+## `composition.canvas.images-colors-transparency`
+
+Embed, place, and reuse bounded image resources with explicit Device, calibrated, and ICC color plus masks, alpha, blend modes, and Transparency Groups.
+
+- Context: `composition`
+- Status: `experimental`
+- Reference Suite source: `ISO 32000-1:2008 Image XObject, color-space, mask, graphics-state, blend-mode, Transparency Group, resource, and content-placement concepts`
+- Reference role: public standards input only; no third-party implementation, image, profile, fixture, or rendered output is an oracle
+- Acceptance Profile: `T18-canvas-images-colors-transparency`
+- Mandatory evidence chains: `syntax`, `standards`, `semantic`, `visual`
+- Evidence record: [`capabilities/evidence/T18-canvas-images-colors-transparency.md`](../../capabilities/evidence/T18-canvas-images-colors-transparency.md)
+- Certified platforms: none
+
+### Native Interface mapping
+
+- `blend-mode`: `net.zerocloud.pdf.composition.CanvasBlendMode`
+- `color`: `net.zerocloud.pdf.composition.CanvasColor`
+- `color-space`: `net.zerocloud.pdf.composition.CanvasColorSpace`
+- `command`: `net.zerocloud.pdf.composition.command.DrawCanvas`
+- `entry-point`: `net.zerocloud.pdf.DocumentWorkflow#execute`
+- `failure`: `net.zerocloud.pdf.DocumentFailure`
+- `failure-code`: `net.zerocloud.pdf.DocumentFailureCode`
+- `image`: `net.zerocloud.pdf.composition.CanvasImage`
+- `image-capabilities`: `net.zerocloud.pdf.composition.CanvasImageCapabilities`
+- `image-capabilities-query`: `net.zerocloud.pdf.composition.query.InspectCanvasImageCapabilities`
+- `image-observation`: `net.zerocloud.pdf.ImageResource`
+- `mask`: `net.zerocloud.pdf.composition.CanvasMask`
+- `object-reference`: `net.zerocloud.pdf.ObjectReference`
+- `outcome`: `net.zerocloud.pdf.WorkflowOutcome`
+- `program`: `net.zerocloud.pdf.composition.CanvasProgram`
+- `receipt`: `net.zerocloud.pdf.PublicationReceipt`
+- `rectangle`: `net.zerocloud.pdf.composition.CanvasRectangle`
+- `request`: `net.zerocloud.pdf.WorkflowRequest`
+- `resource-limits`: `net.zerocloud.pdf.composition.CanvasResourceLimits`
+- `resource-query`: `net.zerocloud.pdf.query.ExtractImagesAndResources`
+- `resource-result`: `net.zerocloud.pdf.DocumentResourceInventory`
+- `save-mode`: `net.zerocloud.pdf.SaveMode`
+- `transparency-group`: `net.zerocloud.pdf.composition.CanvasTransparencyGroup`
+- `transparency-state`: `net.zerocloud.pdf.composition.CanvasTransparencyState`
+
+### Migration Facade coverage
+
+- Stable: none
+- Preview: none
+- Explicit exclusion: [`T18`](facade-surface.md#excluded-capability-composition_dot_canvas_dot_images_dash_colors_dash_transparency) — T18 is a Composition-owned Native Interface Canvas image, color, mask, and transparency extension with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+
+### Gates and limitations
+
+- Dependency Gate: [`document.images-resources.extract`](#capability-document_dot_images_dash_resources_dot_extract) must be `compatible`
+- Dependency Gate: [`composition.canvas.draw-positioned-text`](#capability-composition_dot_canvas_dot_draw_dash_positioned_dash_text) must be `compatible`
+- Promotion gate `T06`: Complete the missing mandatory independent standards evidence and close both compatible-status Dependency Gates before compatibility; closed implementation issues alone are insufficient.
+- Limitation: Canvas Program version 2 retains the closed version-1 path, clipping, state, and positioned-glyph operations and adds only explicit fill/stroke color, alpha/blend state, image placement, and reusable Transparency Group placement. It accepts no raw operators, caller-defined command, callback, backend/provider object, arbitrary URI, implicit network access, or backend SPI.
+- Limitation: JPEG accepts bounded 8-bit SOF0/SOF1/SOF2 data with one, three, or four components and preserves exact bytes under DCTDecode; recognized JFIF/Adobe color-transform metadata is explicit and four-component Decode is inverted. PNG uses the platform ImageIO reader and TIFF uses an optional ImageIO reader; each is normalized through BufferedImage.getRGB to 8-bit DeviceRGB Flate samples plus a DeviceGray soft mask only when nonopaque alpha is present. Source precision and non-sRGB color information may be lost. TIFF requires exactly one image. Raw input requires positive geometry, 8 bits per component, a supported color space, and an exact row-major sample length. There is no silent codec or conversion fallback.
+- Limitation: Existing-image placement borrows only a live same-Session indirect in-file Image XObject with positive dimensions and no filter, one FlateDecode, or one DCTDecode; it preserves the original stream, dictionary, filter/color/Decode/mask metadata, bytes, and Object Reference. Direct, stale/foreign, external-file, chained-filter, JPX, LZW, CCITT, JBIG2, and Crypt resources are rejected rather than copied or transcoded.
+- Limitation: DeviceGray, DeviceRGB, DeviceCMYK, CalGray, CalRGB, and bounded ICCBased Gray/RGB/CMYK are supported for painting, raw images, and group color. ICC requires exact header length, acsp signature, JDK parser acceptance, and family/component agreement; valid T14 observations include profile Object Reference, decoded byte length, and SHA-256. Malformed and unsupported profiles never expose unverified content or partial output.
+- Limitation: Explicit masks contain exactly ceil(width/8) bytes per row at one bit per pixel and may invert Decode; soft masks contain exactly one 8-bit opacity byte per pixel. A mask matches its owner and explicit and soft relationships are mutually exclusive. Transparency state supports fill/stroke alpha in [0,1] and the 16 standard blend modes. Groups require a positive finite bounding box, explicit supported color space, version-2 program, isolation/knockout flags, bounded nesting, and no cycle.
+- Limitation: Every version-2 command declares exact aggregate limits for encoded input bytes, decoded pixels, decoded sample bytes, ICC profile bytes, mask bytes, generated content bytes (including preservation wrappers), distinct resource declarations, and group depth; generated content also has a hard 1 MiB ceiling and group depth has a hard ceiling of 16. Exact boundaries succeed, first excess and overflow fail, and equal image/mask/color-space/profile/state declarations plus repeated placement of the same group instance are charged and materialized once regardless of placement count. T17's 10,000-instruction, graphics-state, existing-content, Font, numeric, and inheritance bounds remain active. Comprehensive hostile-input enforcement and Worker isolation remain T20/T21.
+- Limitation: Existing content and resources must satisfy the T17 preservation preflight and remain in distinct balanced isolation scopes; effective resources are shallow-copied only when necessary and unknown entries remain unchanged. The entire recursive request and all resources are validated before mutation. Unsigned REWRITE and INCREMENTAL are admitted, Existing Signatures reject drawing, password user authority requires general modification permission, and every failure preserves Sources and Targets with NOT_ATTEMPTED receipts and a fixed safe diagnostic.
+- Limitation: The optional TwelveMonkeys ImageIO TIFF 3.14.0 graph is BSD-3-Clause, unshaded, and marked optional for consumers. Its availability is returned by a project-owned Query and absence produces CANVAS_IMAGE_CODEC_UNAVAILABLE before publication. JPEG/PNG use Java platform APIs. No ImageIO, TwelveMonkeys, or PDFBox implementation type enters the Native Interface.
+- Limitation: T18 adds no font acquisition, inline-image parsing, patterns, shading, layout, Forms UI, tagging, SVG, redaction, optimization, runtime rendering, Migration Facade surface, or certified-platform claim.
+
+### Evidence
+
+Implementation evidence:
+
+- `canvas-image-color-transparency-workflow-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/consumer/CanvasImageColorTransparencyWorkflowTest.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/consumer/CanvasImageColorTransparencyWorkflowTest.java) — Public workflows prove immutable Java 8 declarations; JPEG, PNG alpha, optional TIFF, raw samples, all existing unfiltered/Flate/DCT profiles, Device/calibrated/ICC painting and profile identity, explicit/soft masks, alpha/blend/groups, bounded repeated reuse, exact caller limits, preservation wrappers, hard byte/depth ceilings, shared/deep group paths, optional-codec absence, provider failure translation, preservation, save/signature/password policies, stable safe failures, receipts, and target atomicity after reopen.
+- `public-api-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/contract/PublicApiLeakageIT.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/contract/PublicApiLeakageIT.java) — Public and protected T18 signatures expose only project-owned or JDK types and no PDFBox, ImageIO-provider, or TwelveMonkeys implementation type.
+- `artifact-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/contract/JarContractIT.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/contract/JarContractIT.java) — The jar retains its module name and Java 8 class files, embeds no dependency classes, carries updated notices, and declares the TIFF provider only as an optional separate runtime.
+- `cross-jdk-contract`: [`scripts/verify-jdk-matrix.sh`](../../scripts/verify-jdk-matrix.sh) — Maven verification runs T18 public workflow, API, artifact, and optional ImageIO discovery contracts on JDK 8, 11, 17, and 21.
+- `acceptance-command`: [`scripts/acceptance`](../../scripts/acceptance) — The repository command creates one project-authored T18 artifact through public workflows and records pinned-qpdf syntax, exact per-format/color/profile/mask/transparency public-query semantics, and independent PDFium/ImageMagick visual chains over the unchanged ID-neutral-hashed product.
+- `acceptance-reproducibility-contract`: [`pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/AcceptanceEvidenceCommandTest.java`](../../pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/AcceptanceEvidenceCommandTest.java) — Independent runs reproduce T18 syntax, semantic, and visual records and findings, the artifact ID-neutral hash, and all expected/actual/difference raster hashes.
+- `authoritative-contract`: [`docs/canvas-images-colors-transparency.md`](../canvas-images-colors-transparency.md) — Coordinates, format/filter/transcoding behavior, optional availability, color/profile, mask/transparency, ownership/reuse, exact limits, failures, preservation, publication, and exclusions are documented.
+- `optional-dependency-manifest`: [`docs/third-party/twelvemonkeys-imageio-tiff-3.14.0.md`](../third-party/twelvemonkeys-imageio-tiff-3.14.0.md) — Exact optional and transitive coordinates, versions, resolved hashes, roles, distribution behavior, provenance, copyright, and BSD-3-Clause terms are recorded.
+
+Acceptance Evidence:
+
+- `syntax`: `pass` — [`capabilities/evidence/T18-canvas-images-colors-transparency-syntax.md`](../../capabilities/evidence/T18-canvas-images-colors-transparency-syntax.md); producer `qpdf@12.4.0` (`external-tool`)
+- `semantic`: `pass` — [`capabilities/evidence/T18-canvas-images-colors-transparency-semantic.md`](../../capabilities/evidence/T18-canvas-images-colors-transparency-semantic.md); producer `folio-pdf-t18-semantic-assertions@0.1.0-SNAPSHOT` (`project-test`)
+- `visual`: `pass` — [`capabilities/evidence/T18-canvas-images-colors-transparency-visual.md`](../../capabilities/evidence/T18-canvas-images-colors-transparency-visual.md); producer `pdfium-cli@v0.11.2-pdfium-chromium-7881` (`external-tool`)
+
+Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T18 canvas-images-colors-transparency record`.
 
 <a id="capability-conversion_dot_capability_dash_provider_dot_select_dash_execute"></a>
 ## `conversion.capability-provider.select-execute`
@@ -351,7 +435,7 @@ Extract a bounded deterministic inventory of page and nested-Form resources, inc
 - Dependency Gate: [`document.value.inspect-patch`](#capability-document_dot_value_dot_inspect_dash_patch) must be `compatible`
 - Promotion gate `T06`: Complete the independent acceptance evidence required before compatibility.
 - Limitation: Version 1 walks effective page Resources in ascending page order, resource-dictionary category and named-entry decoded-name Unicode order, declared ProcSet array order, and nested Form depth-first order. Explicit PDF null categories and named members are omitted without a record or traversal-value charge. Indirect resources are deduplicated by the existing Session Object Reference and accumulate every declaration and ascending declaration-reachable Page Usage; direct page/Form resource declarations remain separate records with no fabricated identity, while a direct mask embedded in a deduplicated image remains the one deterministic target of that owning relationship. Repeated page-tree nodes, Form cycles, image-mask cycles, and conflicting reuse fail atomically.
-- Limitation: Image metadata includes exact dimensions, declared bit depth where applicable, proven component count, classified declared and resolved color-space information, exact filter order and supported effective predictor parameters, Image Mask state, color-key ranges, and explicit or soft image relationships. Pattern color spaces are malformed on Image XObjects. ICCBased wrapper metadata retains its proven component count but is unsupported because version 1 does not certify the profile payload; Indexed stream lookups and Separation or DeviceN tint functions likewise retain classified metadata but are unsupported because version 1 does not recursively certify auxiliary streams or arbitrary PDF functions. Version-1 bounded decoded access supports only unfiltered, ASCIIHexDecode, ASCII85Decode, RunLengthDecode, and FlateDecode Image XObject streams; an empty filter array is unfiltered, decode-parameter container shape follows filter count, and inline-image-only filter abbreviations are rejected, while recognized LZW, DCT, JPX, CCITT, JBIG2, and Crypt filters remain inventory-visible but decoded bytes are unavailable. Filter-specific one-bit, eight-bit, and predictor geometry constraints are enforced even for unselected or unsupported decoded data. External-file streams are never resolved; null F values remain in-file streams, and non-null F values must have a file-specification shape. Subsidiary soft masks require grayscale images with an explicit bit depth and no nested Mask or SMask entry; Matte shape, owner dimensions, and values in the owning color space's declared or default component ranges are enforced. JPX SMaskInData 0, 1, and 2 are reported as no embedded mask, an embedded soft mask, or a preblended embedded soft mask; nonzero values conflict with a subsidiary SMask, malformed JPX values fail, and the meaningless entry is ignored for non-JPX sequences. Malformed color information is classified without backend coercion; malformed unknown filters, dimensions, masks, fonts, and resource graphs fail safely rather than yielding a partial result.
+- Limitation: Image metadata includes exact dimensions, declared bit depth where applicable, proven component count, classified declared and resolved color-space information, exact filter order and supported effective predictor parameters, Image Mask state, color-key ranges, and explicit or soft image relationships. Pattern color spaces are malformed on Image XObjects. A bounded in-file ICCBased profile with an exact header length, acsp signature, JDK parser acceptance, and wrapper-compatible Gray/RGB/CMYK components is SUPPORTED and exposes its optional Object Reference, decoded byte length, and SHA-256; invalid, external, unsupported-family, or incompatible profiles remain UNSUPPORTED without unverified identity and their attempted decoding consumes the decompressed-byte bound. Indexed stream lookups and Separation or DeviceN tint functions retain classified metadata but are unsupported because version 1 does not recursively certify auxiliary streams or arbitrary PDF functions. Version-1 bounded decoded access supports only unfiltered, ASCIIHexDecode, ASCII85Decode, RunLengthDecode, and FlateDecode Image XObject streams; an empty filter array is unfiltered, decode-parameter container shape follows filter count, and inline-image-only filter abbreviations are rejected, while recognized LZW, DCT, JPX, CCITT, JBIG2, and Crypt filters remain inventory-visible but decoded bytes are unavailable. Filter-specific one-bit, eight-bit, and predictor geometry constraints are enforced even for unselected or unsupported decoded data. External-file streams are never resolved; null F values remain in-file streams, and non-null F values must have a file-specification shape. Subsidiary soft masks require grayscale images with an explicit bit depth and no nested Mask or SMask entry; Matte shape, owner dimensions, and values in the owning color space's declared or default component ranges are enforced. JPX SMaskInData 0, 1, and 2 are reported as no embedded mask, an embedded soft mask, or a preblended embedded soft mask; nonzero values conflict with a subsidiary SMask, malformed JPX values fail, and the meaningless entry is ignored for non-JPX sequences. Malformed color information is classified without backend coercion; malformed unknown filters, dimensions, masks, fonts, and resource graphs fail safely rather than yielding a partial result.
 - Limitation: Encoded and decoded availability and selection are separate. Selected available bytes stream only through aggregate pixel, every filter-stage decompression, and returned-byte bounds; the defensive detached result is published only after all bounds pass and is never exposed on a failed query. Every query also declares exact page, page-tree-node, traversed-resource-value, and resource-depth bounds; version 1 caps resource depth at 64 because Form and image-mask traversal is recursive. These trusted in-process bounds do not provide T20 comprehensive hostile-input enforcement or T21 Worker isolation and codecs.
 - Limitation: Font records expose indirect Object Reference when present, exact BaseFont identity, a six-letter subset prefix, embedding classification, subtype support, declaration locations, and Page Usage. Version 1 validates supported simple, Type 0 descendant, Type 3 CharProcs, and font-program descriptor shapes; direct CIDFontType0 or CIDFontType2 resource entries are malformed because CIDFonts are accepted only as Type 0 descendants. Version 1 does not parse font programs, map glyphs, or infer text usage from content operators.
 - Limitation: T14 is read-only and observes preceding T15-authorized Commands in one Session. It publishes only when the Workflow Request declares a Target and otherwise leaves Source bytes unchanged; target-free signed queries are permitted. Encryption remains T16, drawing remains T17, and image embedding remains T18.

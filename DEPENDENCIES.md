@@ -130,6 +130,35 @@ additional decompression dependency is introduced. T14 reuses the existing
 repository-only pinned qpdf 12.4.0 acceptance path and adds no executable or
 Migration Facade dependency.
 
+T18 uses the Java 8 ImageIO API for built-in JPEG/PNG handling and adds the
+following optional runtime graph for TIFF decoding. Every artifact is version
+3.14.0 and BSD-3-Clause:
+
+| Maven coordinate | Relationship and role | Resolved JAR SHA-256 |
+| --- | --- | --- |
+| `com.twelvemonkeys.imageio:imageio-tiff:3.14.0` | direct optional `pdf-document` TIFF ImageIO provider; direct repository-only `pdf-acceptance` runtime | `68aa1b4a176d1242b9e49334df188ebfbb7c9201f6071dfe42500d63486224b6` |
+| `com.twelvemonkeys.imageio:imageio-core:3.14.0` | optional transitive ImageIO support | `a1b832b5090bd4677696f999b5ccb8954e987eb9674632a6286a6de2bb1c3c78` |
+| `com.twelvemonkeys.imageio:imageio-metadata:3.14.0` | optional transitive metadata support | `03768fc012bd2573236da803099aba6961dfb29c190103f9790fc49ac27f84c1` |
+| `com.twelvemonkeys.common:common-lang:3.14.0` | optional transitive utility support | `8d4529d6f56a010bc7e130ebfcdaf14bc11586e9d9ae66f6dca66f91da7eafef` |
+| `com.twelvemonkeys.common:common-io:3.14.0` | optional transitive bounded-I/O support | `ae01308bd48c68e76f6a1f76880cf7f4a3a004aa83d78e5448de358a4d957e8f` |
+| `com.twelvemonkeys.common:common-image:3.14.0` | optional transitive image support | `9edb1afd32278d20ad660869bfa5b0a27cf9b3553b6eb3f8fc51a2fc13109b66` |
+
+The artifacts are never shaded, copied into, or redistributed inside a Folio
+PDF JAR. The optional flag prevents the graph from becoming a transitive
+requirement of `pdf-document` consumers; an application that needs TIFF must
+select an ImageIO TIFF provider explicitly. The repository-only acceptance
+module selects the same coordinate directly so its TIFF product is
+deterministic, and that module is skipped for install and deploy. JPEG is
+embedded byte-for-byte without ImageIO decoding; PNG and available TIFF inputs
+are normalized to bounded 8-bit RGB plus optional alpha and Flate-encoded.
+Absence is exposed by the Native Interface capability Query and a stable
+pre-publication failure, not a provider exception or silent conversion.
+Coordinates, hashes, distribution behavior, license, and upstream authority
+are also recorded in the
+[TwelveMonkeys manifest](docs/third-party/twelvemonkeys-imageio-tiff-3.14.0.md).
+T18 otherwise reuses Apache PDFBox 3.0.8, JUnit 4.13.2, and the existing pinned
+qpdf/PDFium/ImageMagick acceptance tools in their already documented roles.
+
 T06 uses one external executable only in the opt-in, repository-only
 Acceptance Evidence path:
 

@@ -10,6 +10,7 @@ import net.zerocloud.pdf.command.SplitDocument;
 import net.zerocloud.pdf.command.UpdateActions;
 import net.zerocloud.pdf.command.UpdateAnnotations;
 import net.zerocloud.pdf.composition.command.DrawCanvas;
+import net.zerocloud.pdf.composition.query.InspectCanvasImageCapabilities;
 import net.zerocloud.pdf.query.DocumentRootReference;
 import net.zerocloud.pdf.query.DocumentSecurity;
 import net.zerocloud.pdf.query.DocumentVersion;
@@ -103,7 +104,8 @@ final class PdfBoxDocumentSession implements DocumentSession {
         if (saveMode == SaveMode.REWRITE
                 && signaturePolicy.hasExistingSignatures()) {
             throw canvasCommand
-                    ? PdfBoxCanvasOperations.signatureFailure()
+                    ? PdfBoxCanvasOperations.signatureFailure(
+                            (DrawCanvas) command)
                     : PdfBoxWorkflowEngine.signaturePolicyFailure();
         }
         if (saveMode == SaveMode.INCREMENTAL
@@ -115,7 +117,8 @@ final class PdfBoxDocumentSession implements DocumentSession {
         if (saveMode == SaveMode.INCREMENTAL
                 && !signaturePolicy.permits(command)) {
             throw canvasCommand
-                    ? PdfBoxCanvasOperations.signatureFailure()
+                    ? PdfBoxCanvasOperations.signatureFailure(
+                            (DrawCanvas) command)
                     : PdfBoxWorkflowEngine.signaturePolicyFailure();
         }
         if (saveMode == SaveMode.INCREMENTAL
@@ -186,8 +189,10 @@ final class PdfBoxDocumentSession implements DocumentSession {
 
         if (canvasCommand) {
             PdfBoxCanvasOperations.requireModificationPermission(
-                    securityInfo);
-            outcomeCapabilityId = PdfBoxCanvasOperations.CAPABILITY_ID;
+                    securityInfo,
+                    (DrawCanvas) command);
+            outcomeCapabilityId = canvasOperations.capabilityId(
+                    (DrawCanvas) command);
             canvasOperations.execute((DrawCanvas) command);
             mutationOccurred = true;
             return;
@@ -243,6 +248,12 @@ final class PdfBoxDocumentSession implements DocumentSession {
             outcomeCapabilityId =
                     PdfBoxWorkflowEngine.VERSION_SECURITY_CAPABILITY_ID;
             return queryResult(securityInfo);
+        }
+
+        if (query instanceof InspectCanvasImageCapabilities) {
+            outcomeCapabilityId =
+                    PdfBoxCanvasResourceOperations.CAPABILITY_ID;
+            return queryResult(PdfBoxCanvasResourceOperations.capabilities());
         }
 
         if (query instanceof PageObjectReference) {

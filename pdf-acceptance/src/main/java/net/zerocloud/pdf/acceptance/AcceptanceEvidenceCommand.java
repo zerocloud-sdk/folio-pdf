@@ -6,6 +6,10 @@ import static net.zerocloud.pdf.acceptance.EvidenceFiles.metadata;
 import static net.zerocloud.pdf.acceptance.EvidenceFiles.sha256;
 import static net.zerocloud.pdf.acceptance.EvidenceFiles.write;
 
+import java.awt.Color;
+import java.awt.color.ColorSpace;
+import java.awt.color.ICC_Profile;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -17,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import javax.imageio.ImageIO;
 import net.zerocloud.pdf.Annotation;
 import net.zerocloud.pdf.AnnotationAppearance;
 import net.zerocloud.pdf.AnnotationColor;
@@ -80,8 +85,17 @@ import net.zerocloud.pdf.command.UpdateDocumentInfo;
 import net.zerocloud.pdf.command.UpdateActions;
 import net.zerocloud.pdf.command.UpdateAnnotations;
 import net.zerocloud.pdf.composition.CanvasFont;
+import net.zerocloud.pdf.composition.CanvasBlendMode;
+import net.zerocloud.pdf.composition.CanvasColor;
+import net.zerocloud.pdf.composition.CanvasColorSpace;
+import net.zerocloud.pdf.composition.CanvasImage;
 import net.zerocloud.pdf.composition.CanvasMatrix;
+import net.zerocloud.pdf.composition.CanvasMask;
 import net.zerocloud.pdf.composition.CanvasProgram;
+import net.zerocloud.pdf.composition.CanvasRectangle;
+import net.zerocloud.pdf.composition.CanvasResourceLimits;
+import net.zerocloud.pdf.composition.CanvasTransparencyGroup;
+import net.zerocloud.pdf.composition.CanvasTransparencyState;
 import net.zerocloud.pdf.composition.CanvasWindingRule;
 import net.zerocloud.pdf.composition.command.DrawCanvas;
 import net.zerocloud.pdf.query.ExtractImagesAndResources;
@@ -200,6 +214,22 @@ public final class AcceptanceEvidenceCommand {
             "T17-canvas-vector-positioned-text-qpdf.txt";
     private static final String T17_SEMANTIC_FINDINGS =
             "T17-canvas-vector-positioned-text-semantic.txt";
+    private static final String T18_CAPABILITY =
+            "composition.canvas.images-colors-transparency";
+    private static final String T18_ACCEPTANCE_PROFILE =
+            "T18-canvas-images-colors-transparency";
+    private static final String T18_PROFILE_RECORD =
+            "capabilities/evidence/T18-canvas-images-colors-transparency.md";
+    private static final String T18_ARTIFACT =
+            "T18-canvas-images-colors-transparency.pdf";
+    private static final String T18_QPDF_FINDINGS =
+            "T18-canvas-images-colors-transparency-qpdf.txt";
+    private static final String T18_SYNTAX_RECORD =
+            "T18-canvas-images-colors-transparency-syntax.md";
+    private static final String T18_SEMANTIC_FINDINGS =
+            "T18-canvas-images-colors-transparency-semantic.txt";
+    private static final String T18_SEMANTIC_RECORD =
+            "T18-canvas-images-colors-transparency-semantic.md";
 
     private AcceptanceEvidenceCommand() {
     }
@@ -213,11 +243,12 @@ public final class AcceptanceEvidenceCommand {
      * @throws Exception if the evidence run cannot be completed
      */
     public static void main(String[] arguments) throws Exception {
-        if (arguments.length != 6) {
+        if (arguments.length != 7) {
             throw new IllegalArgumentException(
                     "Usage: AcceptanceEvidenceCommand <output-directory> "
                             + "<qpdf-pin> <pdfium-pin> <imagemagick-pin> "
-                            + "<visual-profile> <release-train>");
+                            + "<T03-visual-profile> <T18-visual-profile> "
+                            + "<release-train>");
         }
 
         Path output = Paths.get(arguments[0]).toAbsolutePath().normalize();
@@ -233,7 +264,13 @@ public final class AcceptanceEvidenceCommand {
             throw new IllegalArgumentException(
                     "Visual profile does not describe " + ACCEPTANCE_PROFILE);
         }
-        String releaseTrain = arguments[5];
+        VisualProfile t18VisualProfile = VisualProfile.load(
+                Paths.get(arguments[5]).toAbsolutePath().normalize());
+        if (!T18_ACCEPTANCE_PROFILE.equals(t18VisualProfile.profileId())) {
+            throw new IllegalArgumentException(
+                    "Visual profile does not describe " + T18_ACCEPTANCE_PROFILE);
+        }
+        String releaseTrain = arguments[6];
         Path artifacts = output.resolve("artifacts");
         Files.createDirectories(artifacts);
         Path pdf = artifacts.resolve(ARTIFACT_NAME);
@@ -483,6 +520,14 @@ public final class AcceptanceEvidenceCommand {
                 artifacts,
                 qpdfPin,
                 releaseTrain);
+        T18Evidence t18 = recordT18Evidence(
+                output,
+                artifacts,
+                qpdfPin,
+                pdfiumPin,
+                imageMagickPin,
+                t18VisualProfile,
+                releaseTrain);
 
         System.out.println("Acceptance Profile determination: "
                 + profileDetermination.recordValue());
@@ -498,6 +543,9 @@ public final class AcceptanceEvidenceCommand {
                 + t17.syntax.recordValue());
         System.out.println("T17 semantic chain: "
                 + t17.semantic.recordValue());
+        System.out.println("T18 syntax chain: " + t18.syntax.recordValue());
+        System.out.println("T18 semantic chain: " + t18.semantic.recordValue());
+        System.out.println("T18 visual chain: " + t18.visual.recordValue());
     }
 
     private interface ProductCreator {
@@ -745,6 +793,202 @@ public final class AcceptanceEvidenceCommand {
         return new T17Evidence(syntaxResult, semantic.result());
     }
 
+    private static T18Evidence recordT18Evidence(
+            Path output,
+            Path artifacts,
+            QpdfPin qpdfPin,
+            PdfiumPin pdfiumPin,
+            ImageMagickPin imageMagickPin,
+            VisualProfile visualProfile,
+            String releaseTrain) throws Exception {
+        Path artifact = artifacts.resolve(T18_ARTIFACT);
+        WorkflowOutcome<Void> creation = createT18Product(artifact);
+        String inputHash = EvidenceFiles.idNeutralPdfSha256(artifact);
+
+        T18CanvasSemanticObservation semantic =
+                T18CanvasSemanticAssertions.inspect(creation, artifact);
+        write(artifacts.resolve(T18_SEMANTIC_FINDINGS),
+                semantic.findings(inputHash, releaseTrain));
+        write(output.resolve(T18_SEMANTIC_RECORD),
+                t18SemanticRecord(inputHash, releaseTrain, semantic));
+
+        SyntaxEvidence syntax = recordT18Syntax(
+                output,
+                artifacts,
+                qpdfPin,
+                inputHash,
+                releaseTrain);
+        VisualEvidence visual = VisualEvidenceRecorder.record(
+                VisualEvidenceChain.t18(),
+                artifact,
+                inputHash,
+                artifacts,
+                pdfiumPin,
+                imageMagickPin,
+                visualProfile,
+                releaseTrain);
+        VisualEvidenceChain visualChain = VisualEvidenceChain.t18();
+        write(artifacts.resolve(visualChain.findingsName()),
+                visual.rawFindings());
+        write(output.resolve(visualChain.recordName()), visual.record());
+        return new T18Evidence(
+                syntax.result,
+                semantic.result(),
+                visual.result());
+    }
+
+    private static SyntaxEvidence recordT18Syntax(
+            Path output,
+            Path artifacts,
+            QpdfPin qpdfPin,
+            String inputHash,
+            String releaseTrain) throws IOException {
+        EvidenceResult result;
+        String observedVersion;
+        String finding;
+        String findings;
+        try {
+            ProcessResult version = ExternalProcess.run(
+                    qpdfPin.executable(), output, "--version");
+            observedVersion = qpdfVersion(version.combinedOutput());
+            if (version.exitCode != 0
+                    || !qpdfPin.version().equals(observedVersion)) {
+                result = EvidenceResult.INDETERMINATE;
+                finding = "Expected pinned qpdf version `" + qpdfPin.version()
+                        + "`; observed `" + observedVersion + "`.";
+                findings = t18IndeterminateQpdfFindings(
+                        inputHash, observedVersion, finding, qpdfPin);
+            } else {
+                ProcessResult check = ExternalProcess.run(
+                        qpdfPin.executable(), artifacts, "--check", T18_ARTIFACT);
+                if (check.exitCode == 0) {
+                    result = EvidenceResult.PASS;
+                    finding = "qpdf completed `--check` for the T18 product with exit code `0`.";
+                } else if (check.exitCode == 2 || check.exitCode == 3) {
+                    result = EvidenceResult.FAIL;
+                    finding = "qpdf reported warnings or errors for a T18 product.";
+                } else {
+                    result = EvidenceResult.INDETERMINATE;
+                    finding = "qpdf returned an undocumented status for a T18 product.";
+                }
+                findings = t18QpdfFindings(inputHash, check, result, qpdfPin);
+            }
+        } catch (InterruptedException interrupted) {
+            Thread.currentThread().interrupt();
+            result = EvidenceResult.INDETERMINATE;
+            observedVersion = "unavailable";
+            finding = "The pinned qpdf process was interrupted.";
+            findings = t18IndeterminateQpdfFindings(
+                    inputHash, observedVersion, finding, qpdfPin);
+        } catch (IOException unavailable) {
+            result = EvidenceResult.INDETERMINATE;
+            observedVersion = "unavailable";
+            finding = "The pinned qpdf tool was unavailable.";
+            findings = t18IndeterminateQpdfFindings(
+                    inputHash, observedVersion, finding, qpdfPin);
+        }
+        write(artifacts.resolve(T18_QPDF_FINDINGS), findings);
+        write(output.resolve(T18_SYNTAX_RECORD), t18SyntaxRecord(
+                inputHash,
+                releaseTrain,
+                observedVersion,
+                result,
+                finding,
+                qpdfPin));
+        return new SyntaxEvidence(result);
+    }
+
+    private static String t18SyntaxRecord(
+            String inputHash,
+            String releaseTrain,
+            String producerVersion,
+            EvidenceResult result,
+            String finding,
+            QpdfPin qpdfPin) {
+        return "# T18 qpdf syntax evidence\n\n"
+                + metadata("Capability", T18_CAPABILITY)
+                + metadata("Acceptance Profile", T18_ACCEPTANCE_PROFILE)
+                + metadata("Profile record", T18_PROFILE_RECORD)
+                + metadata("Release train", releaseTrain)
+                + metadata("Chain", "syntax")
+                + metadata("Result", result.recordValue())
+                + metadata("Producer kind", "external-tool")
+                + metadata("Producer", "qpdf")
+                + metadata("Producer version", producerVersion)
+                + metadata("Tool distribution SHA-256", qpdfPin.archiveSha256())
+                + metadata("Input ID-neutral SHA-256", inputHash)
+                + metadata("Input hash policy", EvidenceFiles.inputHashPolicy())
+                + "Final determination: `" + result.recordValue() + "`\n\n"
+                + "## Findings and artifact\n\n"
+                + "- Product: [`artifacts/" + T18_ARTIFACT + "`](artifacts/"
+                + T18_ARTIFACT + ")\n"
+                + "- qpdf findings: [`artifacts/" + T18_QPDF_FINDINGS
+                + "`](artifacts/" + T18_QPDF_FINDINGS + ")\n"
+                + "- " + finding + "\n\n"
+                + "This syntax chain does not establish PDF standards conformance.\n";
+    }
+
+    private static String t18SemanticRecord(
+            String inputHash,
+            String releaseTrain,
+            T18CanvasSemanticObservation semantic) {
+        return "# T18 project semantic evidence\n\n"
+                + metadata("Capability", T18_CAPABILITY)
+                + metadata("Acceptance Profile", T18_ACCEPTANCE_PROFILE)
+                + metadata("Profile record", T18_PROFILE_RECORD)
+                + metadata("Release train", releaseTrain)
+                + metadata("Chain", "semantic")
+                + metadata("Result", semantic.result().recordValue())
+                + metadata("Producer kind", "project-test")
+                + metadata("Producer", "folio-pdf-t18-semantic-assertions")
+                + metadata("Producer version", releaseTrain)
+                + metadata("Input ID-neutral SHA-256", inputHash)
+                + metadata("Input hash policy", EvidenceFiles.inputHashPolicy())
+                + "Final determination: `" + semantic.result().recordValue()
+                + "`\n\n## Finding and artifact\n\n"
+                + "- Product: [`artifacts/" + T18_ARTIFACT + "`](artifacts/"
+                + T18_ARTIFACT + ")\n"
+                + "- Semantic findings: [`artifacts/" + T18_SEMANTIC_FINDINGS
+                + "`](artifacts/" + T18_SEMANTIC_FINDINGS + ")\n"
+                + "- " + semantic.recordFinding() + "\n\n"
+                + "Expected semantics are project-owned public Canvas and resource-query values.\n";
+    }
+
+    private static String t18QpdfFindings(
+            String inputHash,
+            ProcessResult check,
+            EvidenceResult result,
+            QpdfPin qpdfPin) {
+        return "# T18 qpdf syntax findings\n\n"
+                + metadata("Input ID-neutral SHA-256", inputHash)
+                + metadata("Input hash policy", EvidenceFiles.inputHashPolicy())
+                + metadata("Tool", "qpdf")
+                + metadata("Tool version", qpdfPin.version())
+                + metadata("Distribution SHA-256", qpdfPin.archiveSha256())
+                + "Final determination: `" + result.recordValue() + "`\n\n"
+                + "## " + T18_ARTIFACT + "\n\n"
+                + "Invocation: `qpdf --check " + T18_ARTIFACT + "`\n\n"
+                + "`" + T18_ARTIFACT + "` exit code: `" + check.exitCode
+                + "`\n\n### Standard output\n\n```text\n"
+                + check.standardOutput + fencedEnding(check.standardOutput)
+                + "### Standard error\n\n```text\n" + check.standardError
+                + finalFencedEnding(check.standardError);
+    }
+
+    private static String t18IndeterminateQpdfFindings(
+            String inputHash,
+            String observedVersion,
+            String finding,
+            QpdfPin qpdfPin) {
+        return "# T18 qpdf syntax findings\n\n"
+                + metadata("Input ID-neutral SHA-256", inputHash)
+                + metadata("Input hash policy", EvidenceFiles.inputHashPolicy())
+                + metadata("Tool", "qpdf")
+                + metadata("Tool version", observedVersion)
+                + metadata("Distribution SHA-256", qpdfPin.archiveSha256())
+                + "Final determination: `indeterminate`\n\n" + finding + "\n";
+    }
+
     private static String t17SyntaxRecord(
             String inputHash,
             String releaseTrain,
@@ -860,6 +1104,29 @@ public final class AcceptanceEvidenceCommand {
                 EvidenceResult semantic) {
             this.syntax = syntax;
             this.semantic = semantic;
+        }
+    }
+
+    private static final class SyntaxEvidence {
+        private final EvidenceResult result;
+
+        SyntaxEvidence(EvidenceResult result) {
+            this.result = result;
+        }
+    }
+
+    private static final class T18Evidence {
+        private final EvidenceResult syntax;
+        private final EvidenceResult semantic;
+        private final EvidenceResult visual;
+
+        T18Evidence(
+                EvidenceResult syntax,
+                EvidenceResult semantic,
+                EvidenceResult visual) {
+            this.syntax = syntax;
+            this.semantic = semantic;
+            this.visual = visual;
         }
     }
 
@@ -1369,6 +1636,256 @@ public final class AcceptanceEvidenceCommand {
                     "The T17 Canvas product did not report its capability identity");
         }
         return creation;
+    }
+
+    private static WorkflowOutcome<Void> createT18Product(Path target)
+            throws Exception {
+        byte[] source = t18Source();
+        final byte[] jpeg = encodeT18Image(t18Raster(false), "jpeg");
+        final byte[] png = encodeT18Image(t18Raster(true), "png");
+        final byte[] tiff = encodeT18Image(t18Raster(false), "tiff");
+        final byte[] profile = ICC_Profile.getInstance(ColorSpace.CS_sRGB).getData();
+        WorkflowOutcome<Void> creation = new DocumentWorkflow().execute(
+                WorkflowRequest.builder()
+                        .source("input", DocumentSource.bytes(source, source.length))
+                        .primarySource("input")
+                        .target("output", PublicationTarget.path(target))
+                        .saveMode(SaveMode.REWRITE)
+                        .build(),
+                session -> {
+                    DocumentResourceInventory inventory = session.query(
+                            ExtractImagesAndResources.version1(
+                                    t18ExtractionLimits(),
+                                    ImageByteAccess.NONE));
+                    if (inventory.getImages().size() != 1
+                            || !inventory.getImages().get(0)
+                                    .getObjectReference().isPresent()) {
+                        throw new IllegalStateException(
+                                "The T18 source did not expose its existing Image Resource");
+                    }
+                    CanvasImage existing = CanvasImage.existing(
+                            inventory.getImages().get(0)
+                                    .getObjectReference().get());
+                    session.execute(DrawCanvas.version2(
+                            1,
+                            t18Program(jpeg, png, tiff, profile, existing),
+                            t18CanvasLimits()));
+                    return null;
+                });
+        requireCommitted(creation, "T18 Canvas product");
+        if (!T18_CAPABILITY.equals(creation.getCapabilityId())) {
+            throw new IllegalStateException(
+                    "The T18 Canvas product did not report its capability identity");
+        }
+        return creation;
+    }
+
+    private static CanvasProgram t18Program(
+            byte[] jpeg,
+            byte[] png,
+            byte[] tiff,
+            byte[] profile,
+            CanvasImage existing) {
+        CanvasColorSpace calGray = CanvasColorSpace.calibratedGray(
+                new double[] {0.9505d, 1d, 1.089d},
+                new double[] {0d, 0d, 0d},
+                2.2d);
+        CanvasColorSpace calRgb = CanvasColorSpace.calibratedRgb(
+                new double[] {0.9505d, 1d, 1.089d},
+                new double[] {0d, 0d, 0d},
+                new double[] {2.2d, 2.2d, 2.2d},
+                new double[] {
+                    0.4124d, 0.2126d, 0.0193d,
+                    0.3576d, 0.7152d, 0.1192d,
+                    0.1805d, 0.0722d, 0.9505d
+                });
+        CanvasColorSpace icc = CanvasColorSpace.iccBased(profile);
+        CanvasImage rawIcc = CanvasImage.rawSamples(
+                2,
+                2,
+                8,
+                icc,
+                new byte[] {
+                    (byte) 246, 80, 42,
+                    45, (byte) 194, 82,
+                    48, 96, (byte) 232,
+                    (byte) 242, (byte) 205, 48
+                });
+        CanvasImage explicitMask = CanvasImage.rawSamples(
+                2,
+                2,
+                8,
+                CanvasColorSpace.deviceRgb(),
+                new byte[] {
+                    (byte) 222, 48, 72, 42, (byte) 190, 92,
+                    45, 86, (byte) 220, (byte) 236, (byte) 190, 40
+                }).withExplicitMask(CanvasMask.explicit(
+                        2, 2, false, new byte[] {(byte) 0x80, (byte) 0x40}));
+        CanvasImage softMask = CanvasImage.rawSamples(
+                2,
+                2,
+                8,
+                CanvasColorSpace.deviceRgb(),
+                new byte[] {
+                    40, 100, (byte) 230, 40, 100, (byte) 230,
+                    40, 100, (byte) 230, 40, 100, (byte) 230
+                }).withSoftMask(CanvasMask.soft(
+                        2,
+                        2,
+                        new byte[] {0, 90, (byte) 180, (byte) 255}));
+        CanvasProgram.Builder groupProgram = CanvasProgram.version2()
+                .setFillColor(CanvasColor.rgb(0.95d, 0.32d, 0.18d));
+        rectangle(groupProgram, 0d, 0d, 56d, 56d)
+                .fill(CanvasWindingRule.NONZERO)
+                .setFillColor(CanvasColor.of(calGray, 0.55d));
+        rectangle(groupProgram, 22d, 22d, 56d, 56d)
+                .fill(CanvasWindingRule.NONZERO);
+        CanvasTransparencyGroup group = CanvasTransparencyGroup.version1(
+                CanvasRectangle.of(0d, 0d, 78d, 78d),
+                CanvasColorSpace.deviceRgb(),
+                true,
+                false,
+                groupProgram.build());
+        CanvasTransparencyState multiply = CanvasTransparencyState.version1(
+                0.72d,
+                0.84d,
+                CanvasBlendMode.MULTIPLY);
+
+        CanvasProgram.Builder program = CanvasProgram.version2()
+                .setFillColor(CanvasColor.gray(0.93d));
+        rectangle(program, 30d, 360d, 552d, 360d)
+                .fill(CanvasWindingRule.NONZERO)
+                .setFillColor(CanvasColor.rgb(0.10d, 0.38d, 0.78d));
+        rectangle(program, 48d, 672d, 76d, 28d)
+                .fill(CanvasWindingRule.NONZERO)
+                .setFillColor(CanvasColor.cmyk(0.05d, 0.75d, 0.70d, 0.05d));
+        rectangle(program, 142d, 672d, 76d, 28d)
+                .fill(CanvasWindingRule.NONZERO)
+                .setFillColor(CanvasColor.of(calRgb, 0.15d, 0.70d, 0.28d));
+        rectangle(program, 236d, 672d, 76d, 28d)
+                .fill(CanvasWindingRule.NONZERO)
+                .setStrokeColor(CanvasColor.of(calGray, 0.18d))
+                .moveTo(330d, 686d)
+                .lineTo(406d, 686d)
+                .stroke()
+                .setStrokeColor(CanvasColor.of(icc, 0.64d, 0.12d, 0.74d))
+                .moveTo(424d, 686d)
+                .lineTo(550d, 686d)
+                .stroke()
+                .drawImage(CanvasImage.jpeg(jpeg), t18Placement(48d, 540d))
+                .drawImage(CanvasImage.jpeg(jpeg), t18Placement(48d, 540d))
+                .drawImage(CanvasImage.png(png), t18Placement(164d, 540d))
+                .drawImage(CanvasImage.tiff(tiff), t18Placement(280d, 540d))
+                .drawImage(rawIcc, t18Placement(396d, 540d))
+                .drawImage(existing, t18Placement(48d, 408d))
+                .drawImage(existing, t18Placement(48d, 408d))
+                .drawImage(explicitMask, t18Placement(164d, 408d))
+                .drawImage(softMask, t18Placement(280d, 408d))
+                .saveState()
+                .setTransparency(multiply)
+                .setTransparency(multiply)
+                .drawTransparencyGroup(
+                        group,
+                        CanvasMatrix.of(1d, 0d, 0d, 1d, 408d, 416d))
+                .restoreState()
+                .drawTransparencyGroup(
+                        group,
+                        CanvasMatrix.of(1d, 0d, 0d, 1d, 484d, 416d));
+        return program.build();
+    }
+
+    private static CanvasProgram.Builder rectangle(
+            CanvasProgram.Builder program,
+            double x,
+            double y,
+            double width,
+            double height) {
+        return program.moveTo(x, y)
+                .lineTo(x + width, y)
+                .lineTo(x + width, y + height)
+                .lineTo(x, y + height)
+                .closePath();
+    }
+
+    private static CanvasMatrix t18Placement(double x, double y) {
+        return CanvasMatrix.of(96d, 0d, 0d, 96d, x, y);
+    }
+
+    private static CanvasResourceLimits t18CanvasLimits() {
+        return CanvasResourceLimits.builder()
+                .maximumEncodedImageBytes(4L * 1024L * 1024L)
+                .maximumDecodedImagePixels(1024L * 1024L)
+                .maximumDecodedImageBytes(8L * 1024L * 1024L)
+                .maximumIccProfileBytes(1024L * 1024L)
+                .maximumMaskBytes(1024L * 1024L)
+                .maximumGeneratedContentBytes(1024L * 1024L)
+                .maximumResourceDeclarations(64)
+                .maximumTransparencyGroupDepth(4)
+                .build();
+    }
+
+    private static ResourceExtractionLimits t18ExtractionLimits() {
+        return ResourceExtractionLimits.builder()
+                .maximumPages(4)
+                .maximumPageTreeNodes(32)
+                .maximumTraversedResourceValues(4096L)
+                .maximumResourceTraversalDepth(24)
+                .maximumDecodedPixels(4L * 1024L * 1024L)
+                .maximumDecompressedBytes(32L * 1024L * 1024L)
+                .maximumReturnedBytes(32L * 1024L * 1024L)
+                .build();
+    }
+
+    private static BufferedImage t18Raster(boolean alpha) {
+        BufferedImage image = new BufferedImage(
+                4,
+                4,
+                alpha ? BufferedImage.TYPE_INT_ARGB : BufferedImage.TYPE_INT_RGB);
+        for (int y = 0; y < image.getHeight(); y++) {
+            for (int x = 0; x < image.getWidth(); x++) {
+                int opacity = alpha && x == 1 && y == 1 ? 88 : 255;
+                Color color;
+                if (x < 2 && y < 2) {
+                    color = new Color(232, 55, 45, opacity);
+                } else if (x >= 2 && y < 2) {
+                    color = new Color(42, 194, 82, opacity);
+                } else if (x < 2) {
+                    color = new Color(42, 92, 226, opacity);
+                } else {
+                    color = new Color(242, 204, 42, opacity);
+                }
+                image.setRGB(x, y, color.getRGB());
+            }
+        }
+        return image;
+    }
+
+    private static byte[] encodeT18Image(BufferedImage image, String format)
+            throws IOException {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        if (!ImageIO.write(image, format, output)) {
+            throw new IOException("No ImageIO writer is available for " + format);
+        }
+        return output.toByteArray();
+    }
+
+    private static byte[] t18Source() throws IOException {
+        String[] objects = {
+            "<< /Type /Catalog /Pages 2 0 R >>",
+            "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+            "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] "
+                    + "/Resources << /XObject << /Seed 5 0 R >> "
+                    + "/FolioKeep /Kept >> /Contents 4 0 R >>",
+            t14StreamObject(
+                    "q 0.72 0.72 0.72 RG 1 w 24 24 m 588 24 l "
+                            + "588 768 l 24 768 l h S Q\n",
+                    ""),
+            t14StreamObject(
+                    "RGBYMCBRYGMC",
+                    "/Type /XObject /Subtype /Image /Width 2 /Height 2 "
+                            + "/ColorSpace /DeviceRGB /BitsPerComponent 8 ")
+        };
+        return pdfSource(objects);
     }
 
     private static CanvasProgram t17Program(CanvasFont font) {

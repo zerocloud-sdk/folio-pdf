@@ -59,7 +59,10 @@ public final class AcceptanceEvidenceCommandTest {
                     "T16-pdf-version-password-security-syntax.md"),
             new ProductSyntax(
                     "T17",
-                    "T17-canvas-vector-positioned-text-syntax.md"));
+                    "T17-canvas-vector-positioned-text-syntax.md"),
+            new ProductSyntax(
+                    "T18",
+                    "T18-canvas-images-colors-transparency-syntax.md"));
 
     @Rule
     public final TemporaryFolder temporaryFolder = new TemporaryFolder();
@@ -507,6 +510,38 @@ public final class AcceptanceEvidenceCommandTest {
                 "Repeated Font resource reuse: `true`"));
         assertTrue(t17SemanticFindings.contains(
                 "Existing content and resource preservation: `true`"));
+
+        Path t18Artifact = output.resolve(
+                "artifacts/T18-canvas-images-colors-transparency.pdf");
+        assertTrue(Files.isRegularFile(t18Artifact));
+        assertTrue(Files.size(t18Artifact) > 0L);
+        String t18Syntax = read(output.resolve(
+                "T18-canvas-images-colors-transparency-syntax.md"));
+        String t18Semantic = read(output.resolve(
+                "T18-canvas-images-colors-transparency-semantic.md"));
+        String t18Visual = read(output.resolve(
+                "T18-canvas-images-colors-transparency-visual.md"));
+        assertMetadata(t18Syntax, "Capability",
+                "composition.canvas.images-colors-transparency");
+        assertMetadata(t18Syntax, "Result", "pass");
+        assertMetadata(t18Semantic, "Result", "pass");
+        assertMetadata(t18Visual, "Result", "pass");
+        assertEquals(metadata(t18Syntax, "Input ID-neutral SHA-256"),
+                metadata(t18Semantic, "Input ID-neutral SHA-256"));
+        assertEquals(metadata(t18Syntax, "Input ID-neutral SHA-256"),
+                metadata(t18Visual, "Input ID-neutral SHA-256"));
+        String t18Findings = read(output.resolve(
+                "artifacts/T18-canvas-images-colors-transparency-semantic.txt"));
+        assertTrue(t18Findings.contains(
+                "Exact JPEG dimensions, filter, color, and mask absence; exact PNG, TIFF, raw, and existing-image dimensions, filters, color, alpha, and samples: `true`"));
+        assertTrue(t18Findings.contains(
+                "Exact device/calibrated values and ICCBased digest/object identity: `true`"));
+        assertTrue(t18Findings.contains(
+                "Exact explicit/soft-mask relationships and sample bytes: `true`"));
+        assertTrue(t18Findings.contains(
+                "Exact alpha, Multiply blend mode, and transparency-group semantics: `true`"));
+        assertTrue(t18Findings.contains(
+                "Repeated image, state, and group resource reuse: `true`"));
     }
 
     @Test
@@ -605,7 +640,13 @@ public final class AcceptanceEvidenceCommandTest {
                 "T17-canvas-vector-positioned-text-syntax.md",
                 "T17-canvas-vector-positioned-text-semantic.md",
                 "artifacts/T17-canvas-vector-positioned-text-qpdf.txt",
-                "artifacts/T17-canvas-vector-positioned-text-semantic.txt")) {
+                "artifacts/T17-canvas-vector-positioned-text-semantic.txt",
+                "T18-canvas-images-colors-transparency-syntax.md",
+                "T18-canvas-images-colors-transparency-semantic.md",
+                "T18-canvas-images-colors-transparency-visual.md",
+                "artifacts/T18-canvas-images-colors-transparency-qpdf.txt",
+                "artifacts/T18-canvas-images-colors-transparency-semantic.txt",
+                "artifacts/T18-canvas-images-colors-transparency-visual.txt")) {
             assertEquals(relative,
                     read(firstOutput.resolve(relative)),
                     read(secondOutput.resolve(relative)));
@@ -618,11 +659,22 @@ public final class AcceptanceEvidenceCommandTest {
                     Files.readAllBytes(secondOutput.resolve(relative)));
         }
         for (String relative : Arrays.asList(
+                "artifacts/T18-canvas-images-colors-transparency-expected.png",
+                "artifacts/T18-canvas-images-colors-transparency-pdfium.png",
+                "artifacts/T18-canvas-images-colors-transparency-implementation.png",
+                "artifacts/T18-canvas-images-colors-transparency-difference.png",
+                "artifacts/T18-canvas-images-colors-transparency-renderer-difference.png")) {
+            assertArrayEquals(relative,
+                    Files.readAllBytes(firstOutput.resolve(relative)),
+                    Files.readAllBytes(secondOutput.resolve(relative)));
+        }
+        for (String relative : Arrays.asList(
                 "artifacts/T13-page-text.pdf",
                 "artifacts/T13-tagged-structure.pdf",
                 "artifacts/T14-image-font-inventory.pdf",
                 "artifacts/T14-form-mask-inventory.pdf",
-                "artifacts/T17-canvas-vector-positioned-text.pdf")) {
+                "artifacts/T17-canvas-vector-positioned-text.pdf",
+                "artifacts/T18-canvas-images-colors-transparency.pdf")) {
             assertEquals(relative,
                     EvidenceFiles.idNeutralPdfSha256(
                             firstOutput.resolve(relative)),
@@ -900,7 +952,8 @@ public final class AcceptanceEvidenceCommandTest {
         VisualFixtures missing = new VisualFixtures(
                 missingOutput.resolve("missing-pdfium"),
                 available.imageMagick,
-                available.profile);
+                available.profile,
+                available.t18Profile);
 
         CommandResult missingResult = runCommand(missingOutput, qpdf, missing);
 
@@ -924,7 +977,8 @@ public final class AcceptanceEvidenceCommandTest {
         VisualFixtures missingImageMagick = new VisualFixtures(
                 imageAvailable.pdfium,
                 missingImageOutput.resolve("missing-imagemagick"),
-                imageAvailable.profile);
+                imageAvailable.profile,
+                imageAvailable.t18Profile);
 
         CommandResult missingImageResult = runCommand(
                 missingImageOutput,
@@ -1427,6 +1481,7 @@ public final class AcceptanceEvidenceCommandTest {
                 pdfiumPin.toString(),
                 imageMagickPin.toString(),
                 visualFixtures.profile.toString(),
+                visualFixtures.t18Profile.toString(),
                 "0.1.0-SNAPSHOT")
                 .redirectErrorStream(true)
                 .start();
@@ -1470,6 +1525,24 @@ public final class AcceptanceEvidenceCommandTest {
                 "COLOR_POLICY=sRGB, opaque 8-bit RGB PNG; grayscale and alpha are disabled",
                 "FONT_POLICY=not applicable; the blank document has no text or font resources and uses no system fonts",
                 "ANTIALIASING_POLICY=pinned PDFium default smoothing; no marks are present for antialiasing to affect",
+                "BACKGROUND=opaque white (#ffffff)",
+                "RASTER_WIDTH=1224",
+                "RASTER_HEIGHT=1584",
+                "COMPARISON_METRIC=AE",
+                "COMPARISON_FUZZ_PERCENT=0",
+                "COMPARISON_THRESHOLD=0",
+                "RENDERER_AGREEMENT_THRESHOLD=0",
+                "EXPECTED_RASTER=expected.png",
+                "EXPECTED_RASTER_SHA256=" + EvidenceFiles.sha256(expected)),
+                StandardCharsets.UTF_8);
+        Path t18Profile = fixtures.resolve("t18-visual-profile.properties");
+        Files.write(t18Profile, Arrays.asList(
+                "PROFILE_ID=T18-canvas-images-colors-transparency",
+                "PAGE_BOX=effective CropBox; CropBox is absent, so MediaBox [0 0 612 792] points is used",
+                "DPI=144",
+                "COLOR_POLICY=sRGB, opaque 8-bit RGB PNG after compositing over opaque white",
+                "FONT_POLICY=not applicable; the artifact has no text or font resources and uses no system fonts",
+                "ANTIALIASING_POLICY=pinned PDFium default smoothing; image interpolation is disabled and vector edges are axis-aligned",
                 "BACKGROUND=opaque white (#ffffff)",
                 "RASTER_WIDTH=1224",
                 "RASTER_HEIGHT=1584",
@@ -1529,7 +1602,7 @@ public final class AcceptanceEvidenceCommandTest {
                         "  exit 1",
                         "fi",
                         "exit 99"));
-        return new VisualFixtures(pdfium, imageMagick, profile);
+        return new VisualFixtures(pdfium, imageMagick, profile, t18Profile);
     }
 
     private static void writeRaster(
@@ -1658,11 +1731,17 @@ public final class AcceptanceEvidenceCommandTest {
         private final Path pdfium;
         private final Path imageMagick;
         private final Path profile;
+        private final Path t18Profile;
 
-        VisualFixtures(Path pdfium, Path imageMagick, Path profile) {
+        VisualFixtures(
+                Path pdfium,
+                Path imageMagick,
+                Path profile,
+                Path t18Profile) {
             this.pdfium = pdfium;
             this.imageMagick = imageMagick;
             this.profile = profile;
+            this.t18Profile = t18Profile;
         }
     }
 }

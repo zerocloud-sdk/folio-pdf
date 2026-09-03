@@ -34,6 +34,12 @@
       <version>${pdfbox.version}</version>
     </dependency>
     <dependency>
+      <groupId>com.twelvemonkeys.imageio</groupId>
+      <artifactId>imageio-tiff</artifactId>
+      <version>${twelvemonkeys.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>${junit.version}</version>
@@ -79,6 +85,7 @@
                     <argument>${maven.multiModuleProjectDirectory}/scripts/pdfium-pin.properties</argument>
                     <argument>${maven.multiModuleProjectDirectory}/scripts/imagemagick-pin.properties</argument>
                     <argument>${maven.multiModuleProjectDirectory}/capabilities/profiles/T03-document-blank-visual.properties</argument>
+                    <argument>${maven.multiModuleProjectDirectory}/capabilities/profiles/T18-canvas-images-colors-transparency-visual.properties</argument>
                     <argument>${project.version}</argument>
                   </arguments>
                 </configuration>

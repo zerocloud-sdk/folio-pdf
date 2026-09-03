@@ -24,7 +24,9 @@ public final class PublicApiLeakageIT {
 
     private static final String[] FORBIDDEN_PACKAGES = {
         "org.apache.pdfbox",
-        "org.apache.fontbox"
+        "org.apache.fontbox",
+        "com.twelvemonkeys",
+        "javax.imageio"
     };
 
     @Test

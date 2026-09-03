@@ -116,9 +116,17 @@ Separation, and DeviceN families, resolves named page/Form color
 resources without mutating them, and reports their component count when the
 declared graph proves it. Calibrated dictionaries, ICC component/Alternate/
 Range entries, and string-valued Indexed lookup lengths are structurally
-validated. ICCBased remains `UNSUPPORTED` because version 1 does not parse and
-certify the ICC profile payload or prove that its header and ranges agree with
-the wrapper dictionary. An Indexed stream lookup is `UNSUPPORTED` because
+validated. T18 extends the version-1 result for a bounded in-file ICCBased
+profile: the decoded stream must have an exact ICC header length, the `acsp`
+signature, JDK parser acceptance, and one, three, or four components agreeing
+with both its ICC family and wrapper `N`. A valid profile reports `SUPPORTED`
+and exposes its optional stream Object Reference, exact decoded byte length,
+and lowercase SHA-256 through `ImageResource.IccProfile`. The profile stream
+consumes the query's decompressed-byte limit even when image-byte selection is
+`NONE`, but it is identity metadata and does not consume the returned-image-
+byte limit. Invalid, externally referenced, unsupported-family, or component-
+incompatible profiles retain `UNSUPPORTED` without exposing unverified
+profile identity. An Indexed stream lookup is `UNSUPPORTED` because
 version 1 does not decode that auxiliary stream merely to certify its length.
 Separation and DeviceN retain their recognized family and component count but
 are `UNSUPPORTED` after bounded outer tint-function validation because version
@@ -317,4 +325,6 @@ Comprehensive process, memory, time, concurrency, decompression-ratio, and
 hostile-input enforcement remains T20/T21 scope. T14 adds no inline-image
 content extraction, rendering, image embedding, optimization, drawing,
 incremental publication, signature behavior, encryption, or Migration Facade
-surface.
+surface. T18 consumes this inventory for same-Session existing-image borrowing
+and adds image creation separately; it does not broaden T14 decoded-image
+filter support.

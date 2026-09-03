@@ -166,6 +166,22 @@ _Avoid_: drawing callback, raw content stream, backend canvas
 An explicit Canvas Program declaration that identifies an existing Font resource in the current Document Session. It positions already encoded glyphs but does not discover, load, embed, subset, map, or fall back fonts.
 _Avoid_: default font, system font, font loader
 
+**Canvas Color Space**:
+An immutable Canvas Program declaration for one supported device, calibrated, or ICC-based color interpretation, reusable by colors, images, and transparency groups.
+_Avoid_: backend color space, color profile handle
+
+**Canvas Image**:
+An immutable Canvas Program declaration for bounded encoded image input, raw samples, or a borrowed existing Image Resource, together with any explicit or soft mask relationship.
+_Avoid_: BufferedImage, image file, image callback
+
+**Canvas Transparency State**:
+An immutable Canvas Program declaration of fill alpha, stroke alpha, and a supported blend mode that can be reused across drawing instructions.
+_Avoid_: opacity flag, backend graphics state
+
+**Canvas Transparency Group**:
+An immutable bounded Canvas Program isolated as a reusable PDF transparency group with an explicit box, color space, isolation choice, and knockout choice.
+_Avoid_: layer, page canvas, arbitrary Form stream
+
 **Foundation Composition Profile**:
 The Foundation Release contract covering full paragraph and table behavior selected for the first release, representative major writing systems, and every barcode generation mode in the Reference Suite core.
 _Avoid_: basic layout, experimental layout, simple text support

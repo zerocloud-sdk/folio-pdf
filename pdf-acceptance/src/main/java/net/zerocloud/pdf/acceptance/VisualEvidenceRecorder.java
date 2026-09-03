@@ -1,13 +1,14 @@
 package net.zerocloud.pdf.acceptance;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/** Records the independent PDFium/ImageMagick visual chain for the T03 profile. */
+/** Records an independent PDFium/ImageMagick visual evidence chain. */
 final class VisualEvidenceRecorder {
 
     static final String RECORD_NAME = "T07-document-blank-visual.md";
@@ -21,14 +22,8 @@ final class VisualEvidenceRecorder {
     static final String RENDERER_DIFFERENCE_RASTER_NAME =
             "T07-document-blank-renderer-difference.png";
 
-    private static final String CAPABILITY =
-            "document.blank.create-publish-reopen";
-    private static final String ACCEPTANCE_PROFILE =
-            "T03-document-workflow-transaction";
-    private static final String PROFILE_RECORD =
-            "capabilities/evidence/T03-document-workflow-transaction.md";
     private static final Pattern AE_METRIC = Pattern.compile(
-            "^([0-9]+)(?:\\s+\\([^\\r\\n]*\\))?\\s*$");
+            "^([0-9]+(?:\\.[0-9]+)?)(?:\\s+\\([^\\r\\n]*\\))?\\s*$");
 
     private VisualEvidenceRecorder() {
     }
@@ -41,18 +36,39 @@ final class VisualEvidenceRecorder {
             ImageMagickPin imageMagickPin,
             VisualProfile profile,
             String releaseTrain) throws IOException {
+        return record(
+                VisualEvidenceChain.t03(),
+                pdf,
+                inputHash,
+                artifacts,
+                pdfiumPin,
+                imageMagickPin,
+                profile,
+                releaseTrain);
+    }
+
+    static VisualEvidence record(
+            VisualEvidenceChain chain,
+            Path pdf,
+            String inputHash,
+            Path artifacts,
+            PdfiumPin pdfiumPin,
+            ImageMagickPin imageMagickPin,
+            VisualProfile profile,
+            String releaseTrain) throws IOException {
         RunState state = new RunState(
+                chain,
                 inputHash,
                 pdfiumPin,
                 imageMagickPin,
                 profile,
                 releaseTrain);
-        Path expected = artifacts.resolve(EXPECTED_RASTER_NAME);
-        Path actual = artifacts.resolve(PDFIUM_RASTER_NAME);
-        Path implementation = artifacts.resolve(IMPLEMENTATION_RASTER_NAME);
-        Path difference = artifacts.resolve(DIFFERENCE_RASTER_NAME);
+        Path expected = artifacts.resolve(chain.expectedRasterName());
+        Path actual = artifacts.resolve(chain.pdfiumRasterName());
+        Path implementation = artifacts.resolve(chain.implementationRasterName());
+        Path difference = artifacts.resolve(chain.differenceRasterName());
         Path rendererDifference = artifacts.resolve(
-                RENDERER_DIFFERENCE_RASTER_NAME);
+                chain.rendererDifferenceRasterName());
         clearOutputs(expected, actual, implementation, difference, rendererDifference);
 
         try {
@@ -120,7 +136,7 @@ final class VisualEvidenceRecorder {
                     artifacts,
                     "render",
                     pdf.getFileName().toString(),
-                    PDFIUM_RASTER_NAME,
+                    chain.pdfiumRasterName(),
                     "--dpi",
                     Integer.toString(profile.dpi()),
                     "--file-type",
@@ -131,7 +147,7 @@ final class VisualEvidenceRecorder {
                     state.transcript,
                     "PDFium render",
                     "pdfium render " + pdf.getFileName() + " "
-                            + PDFIUM_RASTER_NAME + " --dpi " + profile.dpi()
+                            + chain.pdfiumRasterName() + " --dpi " + profile.dpi()
                             + " --file-type png --pages first",
                     render);
         } catch (IOException unavailable) {
@@ -241,36 +257,36 @@ final class VisualEvidenceRecorder {
         ComparisonObservation primary = compare(
                 imageMagickPin.executable(),
                 artifacts,
-                EXPECTED_RASTER_NAME,
-                PDFIUM_RASTER_NAME,
-                DIFFERENCE_RASTER_NAME,
+                chain.expectedRasterName(),
+                chain.pdfiumRasterName(),
+                chain.differenceRasterName(),
                 "Expected-to-PDFium raster comparison",
                 state.transcript,
                 profile);
         if (!primary.usable) {
             return indeterminate(state, primary.finding, artifacts);
         }
-        state.primaryMetric = Long.toString(primary.absoluteError);
+        state.primaryMetric = metricText(primary.absoluteError);
         state.differenceHash = EvidenceFiles.sha256(difference);
 
         ComparisonObservation rendererAgreement = compare(
                 imageMagickPin.executable(),
                 artifacts,
-                PDFIUM_RASTER_NAME,
-                IMPLEMENTATION_RASTER_NAME,
-                RENDERER_DIFFERENCE_RASTER_NAME,
+                chain.pdfiumRasterName(),
+                chain.implementationRasterName(),
+                chain.rendererDifferenceRasterName(),
                 "PDFium-to-implementation renderer comparison",
                 state.transcript,
                 profile);
         if (!rendererAgreement.usable) {
             return indeterminate(state, rendererAgreement.finding, artifacts);
         }
-        state.rendererAgreementMetric = Long.toString(
+        state.rendererAgreementMetric = metricText(
                 rendererAgreement.absoluteError);
         state.rendererDifferenceHash = EvidenceFiles.sha256(rendererDifference);
 
-        if (rendererAgreement.absoluteError
-                > profile.rendererAgreementThreshold()) {
+        if (rendererAgreement.absoluteError.compareTo(BigDecimal.valueOf(
+                profile.rendererAgreementThreshold())) > 0) {
             state.reviewRequired = true;
             return finish(
                     state,
@@ -280,7 +296,8 @@ final class VisualEvidenceRecorder {
                             + "`; review is required and the visual chain cannot pass.",
                     artifacts);
         }
-        if (primary.absoluteError > profile.comparisonThreshold()) {
+        if (primary.absoluteError.compareTo(BigDecimal.valueOf(
+                profile.comparisonThreshold())) > 0) {
             return finish(
                     state,
                     EvidenceResult.FAIL,
@@ -356,15 +373,15 @@ final class VisualEvidenceRecorder {
             return ComparisonObservation.unusable(
                     "ImageMagick did not emit a usable absolute-error metric.");
         }
-        long absoluteError;
+        BigDecimal absoluteError;
         try {
-            absoluteError = Long.parseLong(metric.group(1));
+            absoluteError = new BigDecimal(metric.group(1));
         } catch (NumberFormatException invalidMetric) {
             return ComparisonObservation.unusable(
                     "ImageMagick emitted an out-of-range absolute-error metric.");
         }
-        if ((comparison.exitCode == 0 && absoluteError != 0L)
-                || (comparison.exitCode == 1 && absoluteError == 0L)) {
+        if ((comparison.exitCode == 0 && absoluteError.signum() != 0)
+                || (comparison.exitCode == 1 && absoluteError.signum() == 0)) {
             return ComparisonObservation.unusable(
                     "ImageMagick comparison status and metric disagreed.");
         }
@@ -414,11 +431,13 @@ final class VisualEvidenceRecorder {
         PdfiumPin pdfium = state.pdfiumPin;
         ImageMagickPin imageMagick = state.imageMagickPin;
         StringBuilder record = new StringBuilder();
-        record.append("# T07 PDFium visual evidence\n\n")
-                .append(EvidenceFiles.metadata("Capability", CAPABILITY))
+        VisualEvidenceChain chain = state.chain;
+        record.append("# ").append(chain.label())
+                .append(" PDFium visual evidence\n\n")
+                .append(EvidenceFiles.metadata("Capability", chain.capability()))
                 .append(EvidenceFiles.metadata(
-                        "Acceptance Profile", ACCEPTANCE_PROFILE))
-                .append(EvidenceFiles.metadata("Profile record", PROFILE_RECORD))
+                        "Acceptance Profile", chain.acceptanceProfile()))
+                .append(EvidenceFiles.metadata("Profile record", chain.profileRecord()))
                 .append(EvidenceFiles.metadata(
                         "Release train", state.releaseTrain))
                 .append(EvidenceFiles.metadata("Chain", "visual"))
@@ -508,8 +527,9 @@ final class VisualEvidenceRecorder {
                 .append(profile.rendererAgreementThreshold())
                 .append("` changed pixels.\n\n")
                 .append("## Findings and artifacts\n\n")
-                .append("- Input PDF: [`artifacts/T06-document-blank-output.pdf`]"
-                        + "(artifacts/T06-document-blank-output.pdf)\n")
+                .append("- Input PDF: [`artifacts/")
+                .append(chain.inputArtifact()).append("`](artifacts/")
+                .append(chain.inputArtifact()).append(")\n")
                 .append("- Expected-raster authority: [`")
                 .append(profile.expectedRasterReference()).append("`](")
                 .append(profile.expectedRasterReference()).append(")\n")
@@ -519,14 +539,14 @@ final class VisualEvidenceRecorder {
                 .append("- ImageMagick notice manifest: [`")
                 .append(imageMagick.noticeManifest()).append("`](../../")
                 .append(imageMagick.noticeManifest()).append(")\n");
-        appendArtifact(record, artifacts, EXPECTED_RASTER_NAME);
-        appendArtifact(record, artifacts, PDFIUM_RASTER_NAME);
-        appendArtifact(record, artifacts, IMPLEMENTATION_RASTER_NAME);
-        appendArtifact(record, artifacts, DIFFERENCE_RASTER_NAME);
-        appendArtifact(record, artifacts, RENDERER_DIFFERENCE_RASTER_NAME);
+        appendArtifact(record, artifacts, chain.expectedRasterName());
+        appendArtifact(record, artifacts, chain.pdfiumRasterName());
+        appendArtifact(record, artifacts, chain.implementationRasterName());
+        appendArtifact(record, artifacts, chain.differenceRasterName());
+        appendArtifact(record, artifacts, chain.rendererDifferenceRasterName());
         record.append("- Raw findings: [`artifacts/")
-                .append(FINDINGS_NAME).append("`](artifacts/")
-                .append(FINDINGS_NAME).append(")\n")
+                .append(chain.findingsName()).append("`](artifacts/")
+                .append(chain.findingsName()).append(")\n")
                 .append("- ").append(finding).append("\n\n")
                 .append("ImageMagick receives only validated PNG raster paths in both ")
                 .append("comparison invocations; it is never given the PDF. Apache PDFBox ")
@@ -537,7 +557,7 @@ final class VisualEvidenceRecorder {
 
     private static String rawFindings(RunState state) {
         VisualProfile profile = state.profile;
-        return "# T07 visual-chain raw findings\n\n"
+        return "# " + state.chain.label() + " visual-chain raw findings\n\n"
                 + EvidenceFiles.metadata(
                         "Input ID-neutral SHA-256", state.inputHash)
                 + EvidenceFiles.metadata(
@@ -657,30 +677,35 @@ final class VisualEvidenceRecorder {
                 : message;
     }
 
+    private static String metricText(BigDecimal value) {
+        return value.stripTrailingZeros().toPlainString();
+    }
+
     private static final class ComparisonObservation {
         private final boolean usable;
-        private final long absoluteError;
+        private final BigDecimal absoluteError;
         private final String finding;
 
         private ComparisonObservation(
                 boolean usable,
-                long absoluteError,
+                BigDecimal absoluteError,
                 String finding) {
             this.usable = usable;
             this.absoluteError = absoluteError;
             this.finding = finding;
         }
 
-        static ComparisonObservation usable(long absoluteError) {
+        static ComparisonObservation usable(BigDecimal absoluteError) {
             return new ComparisonObservation(true, absoluteError, "");
         }
 
         static ComparisonObservation unusable(String finding) {
-            return new ComparisonObservation(false, -1L, finding);
+            return new ComparisonObservation(false, BigDecimal.valueOf(-1L), finding);
         }
     }
 
     private static final class RunState {
+        private final VisualEvidenceChain chain;
         private final String inputHash;
         private final PdfiumPin pdfiumPin;
         private final ImageMagickPin imageMagickPin;
@@ -700,11 +725,13 @@ final class VisualEvidenceRecorder {
         private boolean reviewRequired;
 
         RunState(
+                VisualEvidenceChain chain,
                 String inputHash,
                 PdfiumPin pdfiumPin,
                 ImageMagickPin imageMagickPin,
                 VisualProfile profile,
                 String releaseTrain) {
+            this.chain = chain;
             this.inputHash = inputHash;
             this.pdfiumPin = pdfiumPin;
             this.imageMagickPin = imageMagickPin;
