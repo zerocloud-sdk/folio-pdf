@@ -23,9 +23,9 @@ The outputs are:
 - `docs/generated/capability-matrix.md`
 - `docs/generated/facade-surface.md`
 
-Record the built-in T03 blank-document and T18 Canvas-image Acceptance
-Profiles with the pinned external syntax validator, independent renderer,
-raster comparator, and project semantic assertions:
+Record the built-in T03 blank-document, T18 Canvas-image, and T19 explicit-font
+Acceptance Profiles with the pinned external syntax validator, independent
+renderer, raster comparator, and project semantic assertions:
 
 ```text
 ./scripts/provision-qpdf /path/to/qpdf-12.4.0-bin-linux-x86_64.zip
@@ -118,6 +118,13 @@ reopens it through T09/T14 public queries, and PDFium/ImageMagick supplies the
 independent visual chain. The optional TwelveMonkeys TIFF provider is a direct
 repository-acceptance runtime so this artifact always exercises the available
 codec path.
+The T19 producer uses only two project-authored, hash-pinned TrueType fixtures
+configured as a Reference Font Set. Its unchanged artifact exercises strict
+primary-first A/U+03A9/B fallback, embedding, subsetting, source widths,
+ToUnicode extraction, and repeated resource reuse. Pinned qpdf checks syntax,
+a distinct project-test producer reopens it through public T13/T14 and bounded
+inspection APIs, and PDFium/ImageMagick supplies the independent visual chain
+without consulting host fonts.
 The command records tool identity, version and distribution digest, exact or
 documented ID-neutral input SHA-256 values, raw findings, chain-level results,
 and the applicable determination beneath the requested
@@ -169,6 +176,16 @@ the 1,938,816-pixel raster), accommodating bounded renderer color-management
 and antialiasing variation while still forcing review above that fixed
 capability-specific tolerance. ImageMagick HDRI decimal AE values are parsed
 exactly rather than rounded.
+
+T19 uses the same dimensions, color policy, tools, AE-0 authority threshold,
+and 2,500-pixel secondary renderer-review ceiling. Its profile is
+`capabilities/profiles/T19-font-loading-embedding-subsetting-visual.properties`.
+The project-owned, visually reviewed PDFium expected raster is
+`capabilities/expected/T19-font-loading-embedding-subsetting-144dpi-srgb.png`,
+SHA-256
+`d5a0c880a7a58bd0de6a1b7e887b6fe6b5a73f14608355434ee8cf022eb04a31`.
+Its font policy permits only the two embedded project-authored subsets and
+forbids system-font participation.
 
 The harness validates PNG structure, dimensions, color type, and decodability
 before comparison. ImageMagick receives raster paths only and produces
@@ -302,7 +319,10 @@ and project-owned semantic records, while its mandatory standards and visual
 chains remain absent. T18 has passing syntax, project-owned semantic, and
 independent visual records, while its mandatory standards chain remains
 absent. Their Dependency Gates remain open while prerequisites are
-`experimental`; none is promoted beyond `experimental`.
+`experimental`; none is promoted beyond `experimental`. T19 likewise has
+passing syntax, project semantic, and independent visual records, while its
+mandatory standards chain and T13/T14/T17 compatible-status Dependency Gates
+remain open.
 
 The T08 release-gate evidence is recorded in
 `capabilities/evidence/T08-secure-maven-central-rehearsal.md`. T08 validates a

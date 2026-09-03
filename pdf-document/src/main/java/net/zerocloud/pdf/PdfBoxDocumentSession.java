@@ -1,5 +1,6 @@
 package net.zerocloud.pdf;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import net.zerocloud.pdf.command.AddBlankPage;
@@ -9,7 +10,9 @@ import net.zerocloud.pdf.command.SetNamedDestinations;
 import net.zerocloud.pdf.command.SplitDocument;
 import net.zerocloud.pdf.command.UpdateActions;
 import net.zerocloud.pdf.command.UpdateAnnotations;
+import net.zerocloud.pdf.composition.FontSource;
 import net.zerocloud.pdf.composition.command.DrawCanvas;
+import net.zerocloud.pdf.composition.command.DrawPositionedUnicodeText;
 import net.zerocloud.pdf.composition.query.InspectCanvasImageCapabilities;
 import net.zerocloud.pdf.query.DocumentRootReference;
 import net.zerocloud.pdf.query.DocumentSecurity;
@@ -33,6 +36,7 @@ final class PdfBoxDocumentSession implements DocumentSession {
     private final PdfBoxImageResourceExtractionOperations
             imageResourceExtractionOperations;
     private final PdfBoxCanvasOperations canvasOperations;
+    private final PdfBoxPositionedTextOperations positionedUnicodeTextOperations;
     private final PdfBoxPageOperations pageOperations;
     private final SaveMode saveMode;
     private final PdfBoxSignaturePolicy signaturePolicy;
@@ -53,7 +57,8 @@ final class PdfBoxDocumentSession implements DocumentSession {
             PasswordSecurityInfo securityInfo,
             PdfVersion publicationVersion,
             PasswordEncryptionAlgorithm publicationAlgorithm,
-            PasswordEncryptionScope publicationScope) {
+            PasswordEncryptionScope publicationScope,
+            List<FontSource> referenceFonts) {
         this.document = Objects.requireNonNull(document, "document");
         this.owner = Thread.currentThread();
         this.valueAdapter = new PdfBoxValueAdapter(document, this);
@@ -74,6 +79,10 @@ final class PdfBoxDocumentSession implements DocumentSession {
         this.canvasOperations = new PdfBoxCanvasOperations(
                 document,
                 valueAdapter);
+        this.positionedUnicodeTextOperations = new PdfBoxPositionedTextOperations(
+                document,
+                referenceFonts,
+                publicationVersion);
         this.pageOperations = new PdfBoxPageOperations(
                 document,
                 sources,
@@ -99,14 +108,14 @@ final class PdfBoxDocumentSession implements DocumentSession {
     public void execute(DocumentCommand command) throws DocumentFailure {
         requireActiveOwner();
         Objects.requireNonNull(command, "command");
+        positionedUnicodeTextOperations.finalizeFonts();
         pageOperations.requireCommandAllowed();
         boolean canvasCommand = canvasOperations.supports(command);
+        boolean positionedUnicodeTextCommand =
+                positionedUnicodeTextOperations.supports(command);
         if (saveMode == SaveMode.REWRITE
                 && signaturePolicy.hasExistingSignatures()) {
-            throw canvasCommand
-                    ? PdfBoxCanvasOperations.signatureFailure(
-                            (DrawCanvas) command)
-                    : PdfBoxWorkflowEngine.signaturePolicyFailure();
+            throw signatureFailure(command);
         }
         if (saveMode == SaveMode.INCREMENTAL
                 && !PdfBoxIncrementalCommandPolicy.supports(command)) {
@@ -116,10 +125,7 @@ final class PdfBoxDocumentSession implements DocumentSession {
         }
         if (saveMode == SaveMode.INCREMENTAL
                 && !signaturePolicy.permits(command)) {
-            throw canvasCommand
-                    ? PdfBoxCanvasOperations.signatureFailure(
-                            (DrawCanvas) command)
-                    : PdfBoxWorkflowEngine.signaturePolicyFailure();
+            throw signatureFailure(command);
         }
         if (saveMode == SaveMode.INCREMENTAL
                 && signaturePolicy.requiresNonWidgetAnnotationPolicy(command)) {
@@ -198,6 +204,16 @@ final class PdfBoxDocumentSession implements DocumentSession {
             return;
         }
 
+        if (positionedUnicodeTextCommand) {
+            PdfBoxPositionedTextOperations.requireModificationPermission(
+                    securityInfo);
+            outcomeCapabilityId = PdfBoxPositionedTextOperations.CAPABILITY_ID;
+            positionedUnicodeTextOperations.execute(
+                    (DrawPositionedUnicodeText) command);
+            mutationOccurred = true;
+            return;
+        }
+
         if (command instanceof DocumentPatch) {
             PdfBoxPermissionPolicy.requireModification(securityInfo);
             PdfBoxPermissionPolicy.requireAnnotationModification(securityInfo);
@@ -219,6 +235,21 @@ final class PdfBoxDocumentSession implements DocumentSession {
                 "The command is not supported by this workflow version.");
     }
 
+    private static DocumentFailure signatureFailure(DocumentCommand command) {
+        if (command instanceof DrawCanvas) {
+            return PdfBoxCanvasOperations.signatureFailure(
+                    (DrawCanvas) command);
+        }
+        if (command instanceof DrawPositionedUnicodeText) {
+            return PdfBoxPositionedTextOperations.signatureFailure();
+        }
+        return PdfBoxWorkflowEngine.signaturePolicyFailure();
+    }
+
+    void finalizeFonts() throws DocumentFailure {
+        positionedUnicodeTextOperations.finalizeFonts();
+    }
+
     boolean hasMutationOccurred() {
         return mutationOccurred;
     }
@@ -227,6 +258,7 @@ final class PdfBoxDocumentSession implements DocumentSession {
     public <R> R query(DocumentQuery<R> query) throws DocumentFailure {
         requireActiveOwner();
         Objects.requireNonNull(query, "query");
+        positionedUnicodeTextOperations.finalizeFonts();
 
         if (query == PageCount.INSTANCE) {
             try {

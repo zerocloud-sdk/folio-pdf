@@ -1,0 +1,27 @@
+# T19 project semantic findings
+
+Input ID-neutral SHA-256: `c476b39cd5106f6270d815aebdcbb38d450ae18d89601da6aa6a02f1bd5c46a7`
+
+Input hash policy: `SHA-256 of the exact PDF bytes after replacing only the two hexadecimal trailer /ID values with ASCII zeroes`
+
+Producer: `folio-pdf-t19-semantic-assertions`
+
+Producer version: `0.1.0-SNAPSHOT`
+
+Publication status: `COMMITTED`
+
+T19 capability reported: `true`
+
+Public reopen completed: `true`
+
+Two embedded Type 0 Font resources: `true`
+
+Explicit A, omega, and B ToUnicode mappings: `true`
+
+Primary/fallback source advances: `true`
+
+Embedded sfnt subsets exclude unrelated glyphs: `true`
+
+Repeated primary use shares one resource: `true`
+
+All observations use public T13, T14, and bounded PDF Value inspection APIs; no backend object is an oracle.

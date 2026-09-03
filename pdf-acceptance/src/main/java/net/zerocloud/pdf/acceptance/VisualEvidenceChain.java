@@ -20,27 +20,22 @@ final class VisualEvidenceChain {
             String label,
             String capability,
             String acceptanceProfile,
-            String profileRecord,
             String inputArtifact,
-            String recordName,
-            String findingsName,
-            String expectedRasterName,
-            String pdfiumRasterName,
-            String implementationRasterName,
-            String differenceRasterName,
-            String rendererDifferenceRasterName) {
+            String visualArtifactStem) {
         this.label = label;
         this.capability = capability;
         this.acceptanceProfile = acceptanceProfile;
-        this.profileRecord = profileRecord;
+        this.profileRecord = "capabilities/evidence/" + acceptanceProfile + ".md";
         this.inputArtifact = inputArtifact;
-        this.recordName = recordName;
-        this.findingsName = findingsName;
-        this.expectedRasterName = expectedRasterName;
-        this.pdfiumRasterName = pdfiumRasterName;
-        this.implementationRasterName = implementationRasterName;
-        this.differenceRasterName = differenceRasterName;
-        this.rendererDifferenceRasterName = rendererDifferenceRasterName;
+        this.recordName = visualArtifactStem + "-visual.md";
+        this.findingsName = visualArtifactStem + "-visual.txt";
+        this.expectedRasterName = visualArtifactStem + "-expected.png";
+        this.pdfiumRasterName = visualArtifactStem + "-pdfium.png";
+        this.implementationRasterName = visualArtifactStem
+                + "-implementation.png";
+        this.differenceRasterName = visualArtifactStem + "-difference.png";
+        this.rendererDifferenceRasterName = visualArtifactStem
+                + "-renderer-difference.png";
     }
 
     static VisualEvidenceChain t03() {
@@ -48,31 +43,34 @@ final class VisualEvidenceChain {
                 "T07",
                 "document.blank.create-publish-reopen",
                 "T03-document-workflow-transaction",
-                "capabilities/evidence/T03-document-workflow-transaction.md",
                 "T06-document-blank-output.pdf",
-                "T07-document-blank-visual.md",
-                "T07-document-blank-visual.txt",
-                "T07-document-blank-expected.png",
-                "T07-document-blank-pdfium.png",
-                "T07-document-blank-implementation.png",
-                "T07-document-blank-difference.png",
-                "T07-document-blank-renderer-difference.png");
+                "T07-document-blank");
     }
 
     static VisualEvidenceChain t18() {
-        return new VisualEvidenceChain(
+        return conventional(
                 "T18",
                 "composition.canvas.images-colors-transparency",
-                "T18-canvas-images-colors-transparency",
-                "capabilities/evidence/T18-canvas-images-colors-transparency.md",
-                "T18-canvas-images-colors-transparency.pdf",
-                "T18-canvas-images-colors-transparency-visual.md",
-                "T18-canvas-images-colors-transparency-visual.txt",
-                "T18-canvas-images-colors-transparency-expected.png",
-                "T18-canvas-images-colors-transparency-pdfium.png",
-                "T18-canvas-images-colors-transparency-implementation.png",
-                "T18-canvas-images-colors-transparency-difference.png",
-                "T18-canvas-images-colors-transparency-renderer-difference.png");
+                "T18-canvas-images-colors-transparency");
+    }
+
+    static VisualEvidenceChain t19() {
+        return conventional(
+                "T19",
+                "composition.fonts.load-embed-subset-fallback",
+                "T19-font-loading-embedding-subsetting");
+    }
+
+    private static VisualEvidenceChain conventional(
+            String label,
+            String capability,
+            String artifactStem) {
+        return new VisualEvidenceChain(
+                label,
+                capability,
+                artifactStem,
+                artifactStem + ".pdf",
+                artifactStem);
     }
 
     String label() {

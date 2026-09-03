@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 /** Immutable visual Acceptance Profile loaded from its repository authority. */
@@ -16,6 +19,8 @@ final class VisualProfile {
             "T03-document-workflow-transaction";
     private static final String T18_PROFILE =
             "T18-canvas-images-colors-transparency";
+    private static final String T19_PROFILE =
+            "T19-font-loading-embedding-subsetting";
     private static final String T03_COLOR_POLICY =
             "sRGB, opaque 8-bit RGB PNG; grayscale and alpha are disabled";
     private static final String T03_FONT_POLICY =
@@ -24,7 +29,7 @@ final class VisualProfile {
     private static final String T03_ANTIALIASING_POLICY =
             "pinned PDFium default smoothing; no marks are present for "
                     + "antialiasing to affect";
-    private static final String T18_COLOR_POLICY =
+    private static final String OPAQUE_SRGB_COLOR_POLICY =
             "sRGB, opaque 8-bit RGB PNG after compositing over opaque white";
     private static final String T18_FONT_POLICY =
             "not applicable; the artifact has no text or font resources and "
@@ -32,8 +37,14 @@ final class VisualProfile {
     private static final String T18_ANTIALIASING_POLICY =
             "pinned PDFium default smoothing; image interpolation is disabled "
                     + "and vector edges are axis-aligned";
+    private static final String T19_FONT_POLICY =
+            "only the two embedded project-authored subsets; no system fonts";
+    private static final String T19_ANTIALIASING_POLICY =
+            "pinned PDFium default text smoothing";
     private static final String SUPPORTED_BACKGROUND = "opaque white (#ffffff)";
     private static final String SUPPORTED_COMPARISON_METRIC = "AE";
+    private static final Map<String, RenderingPolicy> SUPPORTED_POLICIES =
+            supportedPolicies();
 
     private final String profileId;
     private final String pageBox;
@@ -113,26 +124,17 @@ final class VisualProfile {
         String background = required(properties, "BACKGROUND");
         String comparisonMetric = required(properties, "COMPARISON_METRIC");
         requireSupported("PAGE_BOX", pageBox, SUPPORTED_PAGE_BOX);
-        String supportedColor;
-        String supportedFont;
-        String supportedAntialiasing;
-        if (T03_PROFILE.equals(profileId)) {
-            supportedColor = T03_COLOR_POLICY;
-            supportedFont = T03_FONT_POLICY;
-            supportedAntialiasing = T03_ANTIALIASING_POLICY;
-        } else if (T18_PROFILE.equals(profileId)) {
-            supportedColor = T18_COLOR_POLICY;
-            supportedFont = T18_FONT_POLICY;
-            supportedAntialiasing = T18_ANTIALIASING_POLICY;
-        } else {
+        RenderingPolicy supportedPolicy = SUPPORTED_POLICIES.get(profileId);
+        if (supportedPolicy == null) {
             throw new IOException("Unsupported visual profile ID: " + profileId);
         }
-        requireSupported("COLOR_POLICY", colorPolicy, supportedColor);
-        requireSupported("FONT_POLICY", fontPolicy, supportedFont);
+        requireSupported(
+                "COLOR_POLICY", colorPolicy, supportedPolicy.colorPolicy);
+        requireSupported("FONT_POLICY", fontPolicy, supportedPolicy.fontPolicy);
         requireSupported(
                 "ANTIALIASING_POLICY",
                 antialiasingPolicy,
-                supportedAntialiasing);
+                supportedPolicy.antialiasingPolicy);
         requireSupported("BACKGROUND", background, SUPPORTED_BACKGROUND);
         requireSupported(
                 "COMPARISON_METRIC",
@@ -160,6 +162,23 @@ final class VisualProfile {
                 expectedReference,
                 expected,
                 requiredSha256(properties, "EXPECTED_RASTER_SHA256"));
+    }
+
+    private static Map<String, RenderingPolicy> supportedPolicies() {
+        Map<String, RenderingPolicy> policies = new HashMap<>();
+        policies.put(T03_PROFILE, new RenderingPolicy(
+                T03_COLOR_POLICY,
+                T03_FONT_POLICY,
+                T03_ANTIALIASING_POLICY));
+        policies.put(T18_PROFILE, new RenderingPolicy(
+                OPAQUE_SRGB_COLOR_POLICY,
+                T18_FONT_POLICY,
+                T18_ANTIALIASING_POLICY));
+        policies.put(T19_PROFILE, new RenderingPolicy(
+                OPAQUE_SRGB_COLOR_POLICY,
+                T19_FONT_POLICY,
+                T19_ANTIALIASING_POLICY));
+        return Collections.unmodifiableMap(policies);
     }
 
     String profileId() {
@@ -229,6 +248,21 @@ final class VisualProfile {
 
     String expectedRasterSha256() {
         return expectedRasterSha256;
+    }
+
+    private static final class RenderingPolicy {
+        private final String colorPolicy;
+        private final String fontPolicy;
+        private final String antialiasingPolicy;
+
+        private RenderingPolicy(
+                String colorPolicy,
+                String fontPolicy,
+                String antialiasingPolicy) {
+            this.colorPolicy = colorPolicy;
+            this.fontPolicy = fontPolicy;
+            this.antialiasingPolicy = antialiasingPolicy;
+        }
     }
 
     private static int positiveInt(Properties properties, String key)

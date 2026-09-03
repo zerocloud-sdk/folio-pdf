@@ -1,10 +1,6 @@
 package net.zerocloud.pdf;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,20 +9,16 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import net.zerocloud.pdf.composition.CanvasFont;
-import net.zerocloud.pdf.composition.CanvasMatrix;
 import net.zerocloud.pdf.composition.CanvasProgram;
 import net.zerocloud.pdf.composition.CanvasTransparencyGroup;
 import net.zerocloud.pdf.composition.CanvasWindingRule;
 import net.zerocloud.pdf.composition.command.DrawCanvas;
-import org.apache.pdfbox.contentstream.operator.Operator;
 import org.apache.pdfbox.cos.COSArray;
 import org.apache.pdfbox.cos.COSBase;
 import org.apache.pdfbox.cos.COSDictionary;
 import org.apache.pdfbox.cos.COSName;
-import org.apache.pdfbox.cos.COSNull;
 import org.apache.pdfbox.cos.COSObject;
 import org.apache.pdfbox.cos.COSStream;
-import org.apache.pdfbox.pdfparser.PDFStreamParser;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 
@@ -38,12 +30,9 @@ final class PdfBoxCanvasOperations {
 
     private static final int MAXIMUM_INSTRUCTIONS = 10000;
     private static final int MAXIMUM_GRAPHICS_STATE_DEPTH = 64;
-    private static final int MAXIMUM_PARENT_DEPTH = 64;
     private static final int MAXIMUM_FONT_RESOURCES = 256;
     private static final int MAXIMUM_GLYPH_BYTES = 4;
     static final int MAXIMUM_PROGRAM_BYTES = 1024 * 1024;
-    private static final int MAXIMUM_EXISTING_CONTENT_BYTES = 8 * 1024 * 1024;
-    private static final double MAXIMUM_ABSOLUTE_NUMBER = 1000000000d;
     private static final double MAXIMUM_FONT_SIZE = 1000000d;
 
     private static final COSName TYPE_0 = COSName.getPDFName("Type0");
@@ -99,8 +88,10 @@ final class PdfBoxCanvasOperations {
         ValidatedProgram program = validate(
                 command.getProgram(),
                 CanvasProgram.VERSION_1);
-        ExistingContents existing = prepareExistingContents(
-                page.getCOSObject());
+        PdfBoxPageContentSupport.ExistingContents existing =
+                PdfBoxPageContentSupport.prepareExistingContents(
+                        page.getCOSObject(),
+                        PdfBoxCanvasOperations::preservationUnsupported);
         ResourcesPlan resources = prepareResources(
                 page.getCOSObject(),
                 program.glyphsByFont);
@@ -116,28 +107,14 @@ final class PdfBoxCanvasOperations {
             throw invalidProgram();
         }
 
-        COSArray contents = new COSArray();
-        contents.setDirect(true);
-        if (!existing.values.isEmpty()) {
-            contents.add(contentStream("q\n"));
-            for (COSBase value : existing.values) {
-                contents.add(value);
-            }
-            contents.add(contentStream("Q\nn\n"));
-        }
-        contents.add(contentStream(operators));
-
-        COSDictionary pageDictionary = page.getCOSObject();
-        try {
-            if (resources.changed) {
-                pageDictionary.setItem(COSName.RESOURCES, resources.resources);
-            }
-            pageDictionary.setItem(COSName.CONTENTS, contents);
-        } catch (RuntimeException backendFailure) {
-            throw failure(
-                    DocumentFailureCode.DOCUMENT_WRITE_FAILED,
-                    "The Canvas Program could not be applied.");
-        }
+        PdfBoxPageContentSupport.apply(
+                document,
+                page,
+                existing,
+                operators,
+                resources.resources,
+                resources.changed,
+                PdfBoxCanvasOperations::writeFailure);
     }
 
     private void executeVersion2(DrawCanvas command) throws DocumentFailure {
@@ -149,41 +126,26 @@ final class PdfBoxCanvasOperations {
         }
         PDPage page = selectedPage(command.getPageNumber());
         validate(command.getProgram(), CanvasProgram.VERSION_2);
-        ExistingContents existing = prepareExistingContents(page.getCOSObject());
+        PdfBoxPageContentSupport.ExistingContents existing =
+                PdfBoxPageContentSupport.prepareExistingContents(
+                        page.getCOSObject(),
+                        PdfBoxCanvasOperations::preservationUnsupported);
         PdfBoxCanvasResourceOperations.Plan plan = resourceOperations.prepare(
-                effectiveResources(page.getCOSObject()),
+                PdfBoxPageContentSupport.effectiveResources(
+                        page.getCOSObject(),
+                        PdfBoxCanvasOperations::preservationUnsupported),
                 command.getProgram(),
                 command.getResourceLimits().get(),
-                !existing.values.isEmpty());
+                !existing.isEmpty());
 
-        COSArray contents = appendedContents(existing, plan.operators);
-        COSDictionary pageDictionary = page.getCOSObject();
-        try {
-            if (plan.resourcesChanged) {
-                pageDictionary.setItem(COSName.RESOURCES, plan.resources);
-            }
-            pageDictionary.setItem(COSName.CONTENTS, contents);
-        } catch (RuntimeException backendFailure) {
-            throw failure(
-                    DocumentFailureCode.DOCUMENT_WRITE_FAILED,
-                    "The Canvas Program could not be applied.");
-        }
-    }
-
-    private COSArray appendedContents(
-            ExistingContents existing,
-            byte[] operators) throws DocumentFailure {
-        COSArray contents = new COSArray();
-        contents.setDirect(true);
-        if (!existing.values.isEmpty()) {
-            contents.add(contentStream("q\n"));
-            for (COSBase value : existing.values) {
-                contents.add(value);
-            }
-            contents.add(contentStream("Q\nn\n"));
-        }
-        contents.add(contentStream(operators));
-        return contents;
+        PdfBoxPageContentSupport.apply(
+                document,
+                page,
+                existing,
+                plan.operators,
+                plan.resources,
+                plan.resourcesChanged,
+                PdfBoxCanvasOperations::writeFailure);
     }
 
     String capabilityId(DrawCanvas command) {
@@ -295,23 +257,34 @@ final class PdfBoxCanvasOperations {
                     break;
                 case TRANSFORM:
                     requireState(state, CanvasState.IDLE);
-                    requireMatrix(instruction.getMatrix());
+                    PdfBoxPageContentSupport.requireMatrix(
+                            instruction.getMatrix(),
+                            PdfBoxCanvasOperations::invalidProgram);
                     break;
                 case MOVE_TO:
                     if (state == CanvasState.TEXT_READY
                             || state == CanvasState.TEXT_NEEDS_MATRIX) {
                         throw invalidProgram();
                     }
-                    requireNumbers(instruction.getNumbers(), 2);
+                    PdfBoxPageContentSupport.requireNumbers(
+                            instruction.getNumbers(),
+                            2,
+                            PdfBoxCanvasOperations::invalidProgram);
                     state = CanvasState.PATH;
                     break;
                 case LINE_TO:
                     requireState(state, CanvasState.PATH);
-                    requireNumbers(instruction.getNumbers(), 2);
+                    PdfBoxPageContentSupport.requireNumbers(
+                            instruction.getNumbers(),
+                            2,
+                            PdfBoxCanvasOperations::invalidProgram);
                     break;
                 case CURVE_TO:
                     requireState(state, CanvasState.PATH);
-                    requireNumbers(instruction.getNumbers(), 6);
+                    PdfBoxPageContentSupport.requireNumbers(
+                            instruction.getNumbers(),
+                            6,
+                            PdfBoxCanvasOperations::invalidProgram);
                     break;
                 case CLOSE_PATH:
                     requireState(state, CanvasState.PATH);
@@ -325,12 +298,17 @@ final class PdfBoxCanvasOperations {
                 case BEGIN_TEXT:
                     requireState(state, CanvasState.IDLE);
                     double[] fontSize = instruction.getNumbers();
-                    requireNumbers(fontSize, 1);
+                    PdfBoxPageContentSupport.requireNumbers(
+                            fontSize,
+                            1,
+                            PdfBoxCanvasOperations::invalidProgram);
                     if (fontSize[0] <= 0d
                             || fontSize[0] > MAXIMUM_FONT_SIZE) {
                         throw invalidProgram();
                     }
-                    requireMatrix(instruction.getMatrix());
+                    PdfBoxPageContentSupport.requireMatrix(
+                            instruction.getMatrix(),
+                            PdfBoxCanvasOperations::invalidProgram);
                     if (instruction.getFont() == null
                             || instruction.getRenderingMode() == null) {
                         throw invalidProgram();
@@ -346,7 +324,9 @@ final class PdfBoxCanvasOperations {
                     break;
                 case SET_TEXT_MATRIX:
                     requireState(state, CanvasState.TEXT_NEEDS_MATRIX);
-                    requireMatrix(instruction.getMatrix());
+                    PdfBoxPageContentSupport.requireMatrix(
+                            instruction.getMatrix(),
+                            PdfBoxCanvasOperations::invalidProgram);
                     state = CanvasState.TEXT_READY;
                     break;
                 case SHOW_GLYPH:
@@ -376,12 +356,16 @@ final class PdfBoxCanvasOperations {
                 case DRAW_IMAGE:
                     requireVersion2(expectedVersion);
                     requireState(state, CanvasState.IDLE);
-                    requireMatrix(instruction.getMatrix());
+                    PdfBoxPageContentSupport.requireMatrix(
+                            instruction.getMatrix(),
+                            PdfBoxCanvasOperations::invalidProgram);
                     break;
                 case DRAW_TRANSPARENCY_GROUP:
                     requireVersion2(expectedVersion);
                     requireState(state, CanvasState.IDLE);
-                    requireMatrix(instruction.getMatrix());
+                    PdfBoxPageContentSupport.requireMatrix(
+                            instruction.getMatrix(),
+                            PdfBoxCanvasOperations::invalidProgram);
                     CanvasTransparencyGroup group =
                             instruction.getTransparencyGroup();
                     if (group == null) {
@@ -423,96 +407,19 @@ final class PdfBoxCanvasOperations {
         }
     }
 
-    private ExistingContents prepareExistingContents(COSDictionary page)
-            throws DocumentFailure {
-        COSBase rawContents = page.getItem(COSName.CONTENTS);
-        if (rawContents == null || dereference(rawContents) instanceof COSNull) {
-            return new ExistingContents(Collections.<COSBase>emptyList());
-        }
-
-        COSBase value = dereference(rawContents);
-        List<COSBase> values = new ArrayList<COSBase>();
-        if (value instanceof COSStream) {
-            if (!(rawContents instanceof COSObject)) {
-                throw preservationUnsupported();
-            }
-            values.add(rawContents);
-        } else if (value instanceof COSArray) {
-            COSArray array = (COSArray) value;
-            for (int index = 0; index < array.size(); index++) {
-                COSBase rawStream = array.get(index);
-                if (!(rawStream instanceof COSObject)
-                        || !(dereference(rawStream) instanceof COSStream)) {
-                    throw preservationUnsupported();
-                }
-                values.add(rawStream);
-            }
-        } else {
-            throw preservationUnsupported();
-        }
-
-        ByteArrayOutputStream combined = new ByteArrayOutputStream();
-        byte[] buffer = new byte[8192];
-        int remaining = MAXIMUM_EXISTING_CONTENT_BYTES;
-        for (COSBase raw : values) {
-            COSStream stream = (COSStream) dereference(raw);
-            if (stream.containsKey(COSName.F)) {
-                throw preservationUnsupported();
-            }
-            try (InputStream input = stream.createInputStream()) {
-                int count;
-                while ((count = input.read(buffer)) != -1) {
-                    if (count > remaining) {
-                        throw preservationUnsupported();
-                    }
-                    combined.write(buffer, 0, count);
-                    remaining -= count;
-                }
-            } catch (IOException decodingFailure) {
-                throw preservationUnsupported();
-            }
-            combined.write('\n');
-        }
-        byte[] decoded = combined.toByteArray();
-        try {
-            PdfBoxContentStreamPreflight.validate(decoded);
-            requireBalancedExistingContent(decoded);
-        } catch (IOException malformed) {
-            throw preservationUnsupported();
-        }
-        return new ExistingContents(values);
-    }
-
     private ResourcesPlan prepareResources(
             COSDictionary page,
             Map<CanvasFont, List<byte[]>> glyphsByFont)
             throws DocumentFailure {
-        COSDictionary effective = effectiveResources(page);
-        COSDictionary existingFonts = null;
-        COSBase rawFonts = effective == null
-                ? null : effective.getItem(COSName.FONT);
-        if (rawFonts != null) {
-            COSBase fontValue = dereference(rawFonts);
-            if (!(fontValue instanceof COSDictionary)
-                    || fontValue instanceof COSStream) {
-                throw preservationUnsupported();
-            }
-            existingFonts = (COSDictionary) fontValue;
-        }
+        PdfBoxPageContentSupport.FontResources prepared =
+                PdfBoxPageContentSupport.prepareFontResources(
+                        page,
+                        PdfBoxCanvasOperations::preservationUnsupported);
         if (glyphsByFont.isEmpty()) {
             return ResourcesPlan.unchanged();
         }
-
-        COSDictionary resources = new COSDictionary();
-        resources.setDirect(true);
-        if (effective != null) {
-            resources.addAll(effective);
-        }
-        COSDictionary fonts = new COSDictionary();
-        fonts.setDirect(true);
-        if (existingFonts != null) {
-            fonts.addAll(existingFonts);
-        }
+        COSDictionary resources = prepared.resources();
+        COSDictionary fonts = prepared.fonts();
 
         boolean changed = false;
         Map<CanvasFont, COSName> names =
@@ -529,7 +436,7 @@ final class PdfBoxCanvasOperations {
             if (!(rawFont instanceof COSObject)) {
                 throw invalidResource();
             }
-            COSBase fontValue = dereference(rawFont);
+            COSBase fontValue = PdfBoxPageContentSupport.dereference(rawFont);
             if (!(fontValue instanceof COSDictionary)
                     || fontValue instanceof COSStream) {
                 throw invalidResource();
@@ -556,52 +463,17 @@ final class PdfBoxCanvasOperations {
         return new ResourcesPlan(resources, names, changed);
     }
 
-    private static COSDictionary effectiveResources(COSDictionary page)
-            throws DocumentFailure {
-        IdentityHashMap<COSDictionary, Boolean> visited =
-                new IdentityHashMap<COSDictionary, Boolean>();
-        COSDictionary current = page;
-        int depth = 0;
-        while (current != null && visited.put(current, Boolean.TRUE) == null) {
-            depth++;
-            if (depth > MAXIMUM_PARENT_DEPTH) {
-                throw preservationUnsupported();
-            }
-            COSBase rawResources = current.getItem(COSName.RESOURCES);
-            if (rawResources != null) {
-                COSBase resources = dereference(rawResources);
-                if (!(resources instanceof COSDictionary)
-                        || resources instanceof COSStream) {
-                    throw preservationUnsupported();
-                }
-                return (COSDictionary) resources;
-            }
-            COSBase rawParent = current.getItem(COSName.PARENT);
-            if (rawParent == null) {
-                current = null;
-            } else {
-                COSBase parent = dereference(rawParent);
-                if (!(parent instanceof COSDictionary)
-                        || parent instanceof COSStream) {
-                    throw preservationUnsupported();
-                }
-                current = (COSDictionary) parent;
-            }
-        }
-        if (current != null) {
-            throw preservationUnsupported();
-        }
-        return null;
-    }
-
     static int validateFontDictionary(COSDictionary font)
             throws DocumentFailure {
-        if (!COSName.FONT.equals(dereference(font.getItem(COSName.TYPE)))) {
+        if (!COSName.FONT.equals(PdfBoxPageContentSupport.dereference(
+                font.getItem(COSName.TYPE)))) {
             throw invalidResource();
         }
-        COSBase subtype = dereference(font.getItem(COSName.SUBTYPE));
+        COSBase subtype = PdfBoxPageContentSupport.dereference(
+                font.getItem(COSName.SUBTYPE));
         if (!(subtype instanceof COSName)
-                || !(dereference(font.getItem(COSName.BASE_FONT))
+                || !(PdfBoxPageContentSupport.dereference(
+                        font.getItem(COSName.BASE_FONT))
                         instanceof COSName)) {
             throw invalidResource();
         }
@@ -613,21 +485,24 @@ final class PdfBoxCanvasOperations {
         if (!TYPE_0.equals(subtype)) {
             throw invalidResource();
         }
-        COSBase encoding = dereference(font.getItem(COSName.ENCODING));
+        COSBase encoding = PdfBoxPageContentSupport.dereference(
+                font.getItem(COSName.ENCODING));
         if (!IDENTITY_H.equals(encoding) && !IDENTITY_V.equals(encoding)) {
             throw invalidResource();
         }
-        COSBase descendants = dereference(font.getItem(DESCENDANT_FONTS));
+        COSBase descendants = PdfBoxPageContentSupport.dereference(
+                font.getItem(DESCENDANT_FONTS));
         if (!(descendants instanceof COSArray)
                 || ((COSArray) descendants).size() != 1) {
             throw invalidResource();
         }
-        COSBase descendant = dereference(((COSArray) descendants).get(0));
+        COSBase descendant = PdfBoxPageContentSupport.dereference(
+                ((COSArray) descendants).get(0));
         if (!(descendant instanceof COSDictionary)
                 || descendant instanceof COSStream) {
             throw invalidResource();
         }
-        COSBase descendantSubtype = dereference(
+        COSBase descendantSubtype = PdfBoxPageContentSupport.dereference(
                 ((COSDictionary) descendant).getItem(COSName.SUBTYPE));
         if (!CID_FONT_TYPE_0.equals(descendantSubtype)
                 && !CID_FONT_TYPE_2.equals(descendantSubtype)) {
@@ -640,7 +515,8 @@ final class PdfBoxCanvasOperations {
             COSDictionary fonts,
             COSDictionary target) {
         for (Map.Entry<COSName, COSBase> entry : fonts.entrySet()) {
-            if (dereference(entry.getValue()) == target) {
+            if (PdfBoxPageContentSupport.dereference(entry.getValue())
+                    == target) {
                 return entry.getKey();
             }
         }
@@ -656,26 +532,6 @@ final class PdfBoxCanvasOperations {
             }
         }
         throw invalidResource();
-    }
-
-    private COSObject contentStream(String operators)
-            throws DocumentFailure {
-        return contentStream(operators.getBytes(StandardCharsets.US_ASCII));
-    }
-
-    private COSObject contentStream(byte[] operators)
-            throws DocumentFailure {
-        try {
-            COSStream stream = document.getDocument().createCOSStream();
-            try (OutputStream output = stream.createOutputStream()) {
-                output.write(operators);
-            }
-            return new COSObject(stream);
-        } catch (IOException | RuntimeException failure) {
-            throw failure(
-                    DocumentFailureCode.DOCUMENT_WRITE_FAILED,
-                    "The Canvas Program could not be applied.");
-        }
     }
 
     private static byte[] serialize(
@@ -694,19 +550,31 @@ final class PdfBoxCanvasOperations {
                     output.append("Q\n");
                     break;
                 case TRANSFORM:
-                    appendMatrix(output, instruction.getMatrix());
+                    PdfBoxPageContentSupport.appendMatrix(
+                            output,
+                            instruction.getMatrix(),
+                            PdfBoxCanvasOperations::invalidProgram);
                     output.append(" cm\n");
                     break;
                 case MOVE_TO:
-                    appendNumbers(output, instruction.getNumbers());
+                    PdfBoxPageContentSupport.appendNumbers(
+                            output,
+                            instruction.getNumbers(),
+                            PdfBoxCanvasOperations::invalidProgram);
                     output.append(" m\n");
                     break;
                 case LINE_TO:
-                    appendNumbers(output, instruction.getNumbers());
+                    PdfBoxPageContentSupport.appendNumbers(
+                            output,
+                            instruction.getNumbers(),
+                            PdfBoxCanvasOperations::invalidProgram);
                     output.append(" l\n");
                     break;
                 case CURVE_TO:
-                    appendNumbers(output, instruction.getNumbers());
+                    PdfBoxPageContentSupport.appendNumbers(
+                            output,
+                            instruction.getNumbers(),
+                            PdfBoxCanvasOperations::invalidProgram);
                     output.append(" c\n");
                     break;
                 case CLOSE_PATH:
@@ -730,16 +598,27 @@ final class PdfBoxCanvasOperations {
                         throw invalidResource();
                     }
                     output.append("BT\n");
-                    output.append(pdfName(fontName)).append(' ')
-                            .append(number(instruction.getNumbers()[0]))
+                    output.append(PdfBoxPageContentSupport.pdfName(
+                            fontName,
+                            PdfBoxCanvasOperations::invalidResource))
+                            .append(' ')
+                            .append(PdfBoxPageContentSupport.number(
+                                    instruction.getNumbers()[0],
+                                    PdfBoxCanvasOperations::invalidProgram))
                             .append(" Tf\n");
                     output.append(instruction.getRenderingMode()
                             .getOperatorValue()).append(" Tr\n");
-                    appendMatrix(output, instruction.getMatrix());
+                    PdfBoxPageContentSupport.appendMatrix(
+                            output,
+                            instruction.getMatrix(),
+                            PdfBoxCanvasOperations::invalidProgram);
                     output.append(" Tm\n");
                     break;
                 case SET_TEXT_MATRIX:
-                    appendMatrix(output, instruction.getMatrix());
+                    PdfBoxPageContentSupport.appendMatrix(
+                            output,
+                            instruction.getMatrix(),
+                            PdfBoxCanvasOperations::invalidProgram);
                     output.append(" Tm\n");
                     break;
                 case SHOW_GLYPH:
@@ -766,109 +645,12 @@ final class PdfBoxCanvasOperations {
         return output.toString().getBytes(StandardCharsets.US_ASCII);
     }
 
-    private static String pdfName(COSName name) throws DocumentFailure {
-        try {
-            ByteArrayOutputStream output = new ByteArrayOutputStream();
-            name.writePDF(output);
-            return new String(output.toByteArray(), StandardCharsets.US_ASCII);
-        } catch (IOException failure) {
-            throw invalidResource();
-        }
-    }
-
-    private static void appendMatrix(
-            StringBuilder output,
-            CanvasMatrix matrix) throws DocumentFailure {
-        appendNumbers(output, new double[] {
-            matrix.getA(), matrix.getB(), matrix.getC(),
-            matrix.getD(), matrix.getE(), matrix.getF()
-        });
-    }
-
-    private static void appendNumbers(
-            StringBuilder output,
-            double[] values) throws DocumentFailure {
-        for (int index = 0; index < values.length; index++) {
-            if (index > 0) {
-                output.append(' ');
-            }
-            output.append(number(values[index]));
-        }
-    }
-
-    private static String number(double value) throws DocumentFailure {
-        requireNumber(value);
-        if (value == 0d) {
-            return "0";
-        }
-        return BigDecimal.valueOf(value).stripTrailingZeros().toPlainString();
-    }
-
     private static void requireState(
             CanvasState actual,
             CanvasState expected) throws DocumentFailure {
         if (actual != expected) {
             throw invalidProgram();
         }
-    }
-
-    private static void requireNumbers(double[] values, int expected)
-            throws DocumentFailure {
-        if (values == null || values.length != expected) {
-            throw invalidProgram();
-        }
-        for (double value : values) {
-            requireNumber(value);
-        }
-    }
-
-    private static void requireMatrix(CanvasMatrix matrix)
-            throws DocumentFailure {
-        if (matrix == null) {
-            throw invalidProgram();
-        }
-        requireNumber(matrix.getA());
-        requireNumber(matrix.getB());
-        requireNumber(matrix.getC());
-        requireNumber(matrix.getD());
-        requireNumber(matrix.getE());
-        requireNumber(matrix.getF());
-    }
-
-    private static void requireNumber(double value) throws DocumentFailure {
-        if (Double.isNaN(value)
-                || Double.isInfinite(value)
-                || Math.abs(value) > MAXIMUM_ABSOLUTE_NUMBER) {
-            throw invalidProgram();
-        }
-    }
-
-    private static void requireBalancedExistingContent(byte[] content)
-            throws IOException {
-        PDFStreamParser parser = new PDFStreamParser(content);
-        ExistingOperatorBalance balance = new ExistingOperatorBalance();
-        try {
-            Object token;
-            while ((token = parser.parseNextToken()) != null) {
-                if (token instanceof Operator) {
-                    balance.accept(((Operator) token).getName());
-                }
-            }
-        } finally {
-            parser.close();
-        }
-        balance.requireBalanced();
-    }
-
-    private static COSBase dereference(COSBase value) {
-        COSBase current = value;
-        IdentityHashMap<COSBase, Boolean> visited =
-                new IdentityHashMap<COSBase, Boolean>();
-        while (current instanceof COSObject
-                && visited.put(current, Boolean.TRUE) == null) {
-            current = ((COSObject) current).getObject();
-        }
-        return current;
     }
 
     private static DocumentFailure invalidProgram() {
@@ -887,6 +669,12 @@ final class PdfBoxCanvasOperations {
         return failure(
                 DocumentFailureCode.CANVAS_PRESERVATION_UNSUPPORTED,
                 "The page content or resources cannot be preserved safely for Canvas drawing.");
+    }
+
+    private static DocumentFailure writeFailure() {
+        return failure(
+                DocumentFailureCode.DOCUMENT_WRITE_FAILED,
+                "The Canvas Program could not be applied.");
     }
 
     private static DocumentFailure failure(
@@ -922,15 +710,6 @@ final class PdfBoxCanvasOperations {
         TEXT_NEEDS_MATRIX
     }
 
-    private static final class ExistingContents {
-
-        private final List<COSBase> values;
-
-        ExistingContents(List<COSBase> values) {
-            this.values = values;
-        }
-    }
-
     private static final class ResourcesPlan {
 
         private final COSDictionary resources;
@@ -954,84 +733,4 @@ final class PdfBoxCanvasOperations {
         }
     }
 
-    private static final class ExistingOperatorBalance {
-
-        private int graphicsDepth;
-        private int markedContentDepth;
-        private int compatibilityDepth;
-        private boolean text;
-
-        void accept(String operator) throws IOException {
-            if ("BT".equals(operator)) {
-                if (text) {
-                    throw new IOException("nested text scope");
-                }
-                text = true;
-            } else if ("ET".equals(operator)) {
-                if (!text) {
-                    throw new IOException("unmatched text end");
-                }
-                text = false;
-            } else if ("q".equals(operator)) {
-                if (text || graphicsDepth == Integer.MAX_VALUE) {
-                    throw new IOException("invalid graphics save");
-                }
-                graphicsDepth++;
-            } else if ("Q".equals(operator)) {
-                if (text || graphicsDepth == 0) {
-                    throw new IOException("unmatched graphics restore");
-                }
-                graphicsDepth--;
-            } else if ("BMC".equals(operator) || "BDC".equals(operator)) {
-                if (markedContentDepth == Integer.MAX_VALUE) {
-                    throw new IOException("marked-content depth overflow");
-                }
-                markedContentDepth++;
-            } else if ("EMC".equals(operator)) {
-                if (markedContentDepth == 0) {
-                    throw new IOException("unmatched marked-content end");
-                }
-                markedContentDepth--;
-            } else if ("BX".equals(operator)) {
-                if (compatibilityDepth == Integer.MAX_VALUE) {
-                    throw new IOException("compatibility depth overflow");
-                }
-                compatibilityDepth++;
-            } else if ("EX".equals(operator)) {
-                if (compatibilityDepth == 0) {
-                    throw new IOException("unmatched compatibility end");
-                }
-                compatibilityDepth--;
-            } else if (isTextOperator(operator) && !text) {
-                throw new IOException("text operator outside text scope");
-            }
-        }
-
-        void requireBalanced() throws IOException {
-            if (graphicsDepth != 0
-                    || markedContentDepth != 0
-                    || compatibilityDepth != 0
-                    || text) {
-                throw new IOException("unbalanced page content");
-            }
-        }
-
-        private static boolean isTextOperator(String operator) {
-            return "Tc".equals(operator)
-                    || "Tw".equals(operator)
-                    || "Tz".equals(operator)
-                    || "TL".equals(operator)
-                    || "Tf".equals(operator)
-                    || "Tr".equals(operator)
-                    || "Ts".equals(operator)
-                    || "Td".equals(operator)
-                    || "TD".equals(operator)
-                    || "Tm".equals(operator)
-                    || "T*".equals(operator)
-                    || "Tj".equals(operator)
-                    || "TJ".equals(operator)
-                    || "'".equals(operator)
-                    || "\"".equals(operator);
-        }
-    }
 }

@@ -66,7 +66,7 @@ public final class InventoryCommandTest {
                 "`document.blank.create-publish-reopen`"));
         assertTrue(facades.contains("- Stable entries: `0`"));
         assertTrue(facades.contains("- Preview entries: `12`"));
-        assertTrue(facades.contains("- Explicit capability exclusions: `11`"));
+        assertTrue(facades.contains("- Explicit capability exclusions: `12`"));
         assertTrue(facades.contains("`document.value.inspect-patch`"));
         assertTrue(facades.contains("`document.page.manipulate-merge-split`"));
         assertTrue(facades.contains(
@@ -83,6 +83,8 @@ public final class InventoryCommandTest {
                 "`composition.canvas.draw-positioned-text`"));
         assertTrue(facades.contains(
                 "`composition.canvas.images-colors-transparency`"));
+        assertTrue(facades.contains(
+                "`composition.fonts.load-embed-subset-fallback`"));
         assertTrue(facades.contains("`itext7.kernel.pdf-document.add-new-page`"));
     }
 

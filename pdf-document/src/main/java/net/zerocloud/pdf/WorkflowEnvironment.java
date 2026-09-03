@@ -4,6 +4,7 @@ import java.time.Clock;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import net.zerocloud.pdf.composition.ReferenceFontSet;
 import net.zerocloud.pdf.provider.CapabilityProvider;
 import net.zerocloud.pdf.provider.ProviderCatalog;
 import net.zerocloud.pdf.provider.ProviderMetadata;
@@ -11,26 +12,35 @@ import net.zerocloud.pdf.provider.ProviderMetadata;
 /**
  * Immutable environment shared by reusable Document Workflow instances.
  *
- * <p>The environment owns deadline time and declaration-ordered Capability
- * Provider registrations instead of exposing either as a generic lookup on
- * Document Session. The system defaults contain no Provider registration and
- * therefore cannot select a remote engine or perform implicit network access.
- * A caller-supplied Clock and every registered Provider must be safe for the
- * way the resulting environment is shared.</p>
+ * <p>The environment owns deadline time, declaration-ordered Capability
+ * Provider registrations, and an explicit reusable Reference Font Set instead
+ * of exposing them as generic lookups on Document Session. The system defaults
+ * contain neither Providers nor fonts and therefore cannot select a remote
+ * engine, scan installed fonts, or perform implicit network access. A caller-
+ * supplied Clock and every registered Provider must be safe for the way the
+ * resulting environment is shared.</p>
  *
  * @since 0.1.0
  */
 public final class WorkflowEnvironment {
 
     private static final WorkflowEnvironment SYSTEM_DEFAULTS =
-            new WorkflowEnvironment(Clock.systemUTC(), ProviderCatalog.empty());
+            new WorkflowEnvironment(
+                    Clock.systemUTC(),
+                    ProviderCatalog.empty(),
+                    ReferenceFontSet.empty());
 
     private final Clock clock;
     private final ProviderCatalog providerCatalog;
+    private final ReferenceFontSet referenceFontSet;
 
-    private WorkflowEnvironment(Clock clock, ProviderCatalog providerCatalog) {
+    private WorkflowEnvironment(
+            Clock clock,
+            ProviderCatalog providerCatalog,
+            ReferenceFontSet referenceFontSet) {
         this.clock = clock;
         this.providerCatalog = providerCatalog;
+        this.referenceFontSet = referenceFontSet;
     }
 
     /**
@@ -51,11 +61,12 @@ public final class WorkflowEnvironment {
     public static WorkflowEnvironment withClock(Clock clock) {
         return new WorkflowEnvironment(
                 Objects.requireNonNull(clock, "clock"),
-                ProviderCatalog.empty());
+                ProviderCatalog.empty(),
+                ReferenceFontSet.empty());
     }
 
     /**
-     * Begins explicit immutable Clock and Provider configuration.
+     * Begins explicit immutable Clock, Provider, and font configuration.
      *
      * @return a detached environment builder
      */
@@ -81,12 +92,17 @@ public final class WorkflowEnvironment {
         return providerCatalog;
     }
 
+    ReferenceFontSet getReferenceFontSet() {
+        return referenceFontSet;
+    }
+
     /** Builds immutable, declaration-ordered workflow configuration. */
     public static final class Builder {
 
         private Clock clock = Clock.systemUTC();
         private final List<CapabilityProvider> providers =
                 new ArrayList<CapabilityProvider>();
+        private ReferenceFontSet referenceFontSet = ReferenceFontSet.empty();
 
         private Builder() {
         }
@@ -115,12 +131,28 @@ public final class WorkflowEnvironment {
         }
 
         /**
+         * Sets the reusable declaration-ordered Reference Font Set.
+         *
+         * @param referenceFontSet the explicit reusable font declarations
+         * @return this builder
+         */
+        public Builder referenceFontSet(ReferenceFontSet referenceFontSet) {
+            this.referenceFontSet = Objects.requireNonNull(
+                    referenceFontSet,
+                    "referenceFontSet");
+            return this;
+        }
+
+        /**
          * Builds a detached immutable environment.
          *
          * @return the configured environment
          */
         public WorkflowEnvironment build() {
-            return new WorkflowEnvironment(clock, ProviderCatalog.of(providers));
+            return new WorkflowEnvironment(
+                    clock,
+                    ProviderCatalog.of(providers),
+                    referenceFontSet);
         }
     }
 }

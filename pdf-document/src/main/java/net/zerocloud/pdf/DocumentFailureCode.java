@@ -159,6 +159,30 @@ public enum DocumentFailureCode {
     /** A version-2 Canvas resource or generated-content bound was exceeded. */
     CANVAS_RESOURCE_LIMIT_EXCEEDED,
 
+    /** A positioned Unicode text declaration is invalid. */
+    POSITIONED_TEXT_INVALID,
+
+    /** Explicit font source data could not be loaded or parsed safely. */
+    FONT_SOURCE_INVALID,
+
+    /** Explicit font data uses a format or profile outside version 1. */
+    FONT_FORMAT_UNSUPPORTED,
+
+    /** A font program's declared permissions prohibit outline embedding. */
+    FONT_EMBEDDING_RESTRICTED,
+
+    /** No declared font supplies one of the requested Unicode scalars. */
+    FONT_GLYPH_MISSING,
+
+    /** A requested source mapping cannot be represented unambiguously. */
+    FONT_MAPPING_UNSUPPORTED,
+
+    /** A caller-declared T19 source, text, fallback, or content bound was exhausted. */
+    FONT_LIMIT_EXCEEDED,
+
+    /** Existing page content or resources cannot be preserved for positioned text. */
+    POSITIONED_TEXT_PRESERVATION_UNSUPPORTED,
+
     /** A staged document could not be written. */
     DOCUMENT_WRITE_FAILED,
 

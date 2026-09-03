@@ -974,5 +974,80 @@ documentation, and project-owned tests are the permitted design inputs.
   `experimental`, and T06 remains a promotion gate. T18 therefore remains
   `experimental` with no compatible or certified-platform claim.
 
+## T19 font-loading-embedding-subsetting record
+
+- Authorship: OpenAI Codex generated and integrated the T19 implementation,
+  tests, evidence, inventories, and documentation at repository operator
+  MaBaiqiu's direction. No T19 commit was created or authorized in this
+  execution.
+- Project inputs: GitHub issues #1, #18, and #20; `CONTEXT.md`,
+  `CONTRIBUTING.md`, repository issue/domain instructions; ADR-0002, 0005,
+  0006, 0009, 0011, 0013, 0014, 0016, 0022, 0023, 0025, 0026, 0029, and
+  0035; the accepted T13, T14, T15, T17, and T18 extraction, resource,
+  publication, security, preservation, and borrowed-Canvas-Font seams; and
+  pre-implementation fixed point
+  `f18bc3fc495bf1357ccfd65318125c2e964b5814`.
+- Public standards input: the Adobe-hosted authorized ISO 32000-1:2008 copy
+  already inventoried by prior tickets, SHA-256
+  `9de0ca9e8570d6209e8bd48a355be8eb6ec376acfc3fc3ae97cd8730351417ff`,
+  supplied public Type 0 Font, CIDFontType2, Identity-H, width, embedded-font,
+  subset-name, and ToUnicode concepts. Public OpenType specification tables
+  supplied sfnt-directory, `head`, `hhea`, `maxp`, `hmtx`, `loca`, `glyf`,
+  `name`, `post`, Unicode `cmap`, and OS/2 structure and embedding-permission
+  semantics. These sources supplied specification
+  semantics only and were not redistributed; no standards-conformance claim
+  is inferred.
+- Backend inputs: existing Apache PDFBox and FontBox 3.0.8 public loading,
+  TrueType parsing, subsetting, COS, content-stream, and save APIs remain
+  private implementation/secondary-evidence surfaces. No backend type,
+  provider exception, resource name, serialization choice, or renderer output
+  defines Native Interface semantics, and T19 introduces no dependency.
+- Project-authored fixtures: consumer tests and repository-only Acceptance
+  Evidence use `FolioPrimary.ttf` (972 bytes, SHA-256
+  `e2fbb634c3c0fe78efb449bde4426d10a93aa813596ff5cf3360f02ec97673fb`)
+  and `FolioFallback.ttf` (1,028 bytes, SHA-256
+  `ced760bc126036779fa84ad3da4638733032512457bf599c44d8c455360f75e1`).
+  The project generated these minimal Apache-2.0 TrueType programs from
+  declared tables, mappings, and metrics; their scoped READMEs record origin,
+  license, contents, and hashes. They are test/evidence data only and are
+  absent from the `pdf-document` main resources and published artifacts.
+- Output validation and evidence boundary: public workflows create, publish,
+  reopen, and query every product. T13/T14 observations prove explicit source
+  text, mapping confidence, geometry, embedded subset resources, identity,
+  page usage, and bounded public-object font/ToUnicode details. The repository
+  acceptance command sends the unchanged ID-neutral-hashed T19 artifact to
+  pinned qpdf 12.4.0 and PDFium v0.11.2/Chromium 7881; ImageMagick 7.1.2-30
+  compares validated fixed-size PNGs only. The project-owned expected raster
+  is the visually reviewed 144-DPI PDFium baseline, SHA-256
+  `d5a0c880a7a58bd0de6a1b7e887b6fe6b5a73f14608355434ee8cf022eb04a31`.
+  Expected comparison requires AE 0; secondary PDFBox Renderer disagreement
+  must not exceed AE 2,500 and can never make the chain pass. Repeat-run tests
+  require identical records, findings, ID-neutral artifact hashes, and raster
+  hashes.
+- Generated documentation: `docs/generated/capability-matrix.md` and
+  `docs/generated/facade-surface.md` are deterministic renderings of the YAML
+  authorities and contain no copied external content.
+- Excluded inputs: no iText source, resource, fixture, binary, output,
+  decompiled or binary-derived implementation detail, closed add-on material,
+  proprietary differential evidence, unauthorized black-box observation,
+  downloaded font/PDF, installed-font scan, implicit network lookup, native
+  shaping library, or Reference Suite behavioral oracle was used.
+- Scope: T19 adds bounded explicit byte/path/stream/channel font sources, an
+  ordered configured Reference Font Set, a closed TrueType version-1 profile,
+  embedding-permission enforcement, deterministic Unicode glyph fallback,
+  horizontal metrics, subsetting or documented full embedding, ToUnicode,
+  resource reuse, positioned Unicode text, stable failures, and public
+  semantic/syntax/visual evidence. It preserves the existing borrowed Canvas
+  Font path and adds no T20 hostile-input policy, T21 Worker isolation, T23
+  runtime rendering, T24 layout, T28 shaping, T29 HarfBuzz, T33 Asian resource
+  profile, Migration Facade surface, backend SPI, system-font acquisition, or
+  product-bundled font.
+- Compatibility Curator evidence: none; the role remains vacant. T19 has
+  passing syntax, project-owned semantic, and independent visual chains, but
+  mandatory standards evidence remains absent. Its T13, T14, and T17
+  compatible-status Dependency Gates and T06 Promotion Gate remain open. T19
+  therefore remains `experimental` with no compatible or certified-platform
+  claim.
+
 Future changes append or update a scoped record and supply the pull-request
 provenance statement required by [CONTRIBUTING.md](CONTRIBUTING.md).

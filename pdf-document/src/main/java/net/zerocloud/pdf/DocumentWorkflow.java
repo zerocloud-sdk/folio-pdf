@@ -60,10 +60,12 @@ public final class DocumentWorkflow {
         Objects.requireNonNull(work, "work");
         List<ProviderSelection> providerSelections = selectProviders(request);
         return PdfBoxWorkflowEngine.execute(
-                request,
-                work,
-                environment.getClock(),
-                providerSelections);
+                new PdfBoxWorkflowEngine.ExecutionContext<R>(
+                        request,
+                        work,
+                        environment.getClock(),
+                        providerSelections,
+                        environment.getReferenceFontSet().getSources()));
     }
 
     private List<ProviderSelection> selectProviders(WorkflowRequest request)

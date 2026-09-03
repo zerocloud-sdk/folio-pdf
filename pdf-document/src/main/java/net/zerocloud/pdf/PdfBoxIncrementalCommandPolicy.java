@@ -15,6 +15,7 @@ import net.zerocloud.pdf.command.UpdateActions;
 import net.zerocloud.pdf.command.UpdateAnnotations;
 import net.zerocloud.pdf.command.UpdateDocumentInfo;
 import net.zerocloud.pdf.composition.command.DrawCanvas;
+import net.zerocloud.pdf.composition.command.DrawPositionedUnicodeText;
 
 /** Closed version-1 classification of commands representable incrementally. */
 final class PdfBoxIncrementalCommandPolicy {
@@ -38,6 +39,7 @@ final class PdfBoxIncrementalCommandPolicy {
                 || command instanceof UpdateActions
                 || command instanceof FlattenAnnotations
                 || command instanceof DrawCanvas
+                || command instanceof DrawPositionedUnicodeText
                 || command instanceof DocumentPatch;
     }
 }

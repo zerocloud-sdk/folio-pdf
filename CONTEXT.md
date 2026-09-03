@@ -187,8 +187,16 @@ The Foundation Release contract covering full paragraph and table behavior selec
 _Avoid_: basic layout, experimental layout, simple text support
 
 **Reference Font Set**:
-The versioned, hash-pinned static Noto fonts used to make Foundation typography evidence reproducible across certified platforms.
-_Avoid_: system font, online font, any Noto version
+An immutable, declaration-ordered set of explicitly supplied reusable Font Sources. A Foundation Reference Font Set additionally pins the approved Noto versions and hashes used to make Foundation typography evidence reproducible across certified platforms.
+_Avoid_: system font, online font, default font search
+
+**Font Source**:
+An explicit caller-supplied byte array, path, stream, or channel from which one font program is staged under declared ownership and limits. It is never an installed-font lookup, URI, or backend font object.
+_Avoid_: system font, font URL, backend font
+
+**Positioned Unicode Text**:
+An unshaped Unicode scalar sequence placed with an explicit text matrix, size, Text Rendering Mode, and deterministic Font Source selection. It is not bidi, shaping, line breaking, or paragraph layout.
+_Avoid_: paragraph, text layout, encoded glyph run
 
 ## Forms
 

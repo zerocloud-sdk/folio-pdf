@@ -1,0 +1,36 @@
+# T19 qpdf syntax findings
+
+Input ID-neutral SHA-256: `c476b39cd5106f6270d815aebdcbb38d450ae18d89601da6aa6a02f1bd5c46a7`
+
+Input hash policy: `SHA-256 of the exact PDF bytes after replacing only the two hexadecimal trailer /ID values with ASCII zeroes`
+
+Tool: `qpdf`
+
+Tool version: `12.4.0`
+
+Distribution SHA-256: `a3bca240f3bb61efdc3a90be89d1da4ed5e125326c3458c4e62df53ff4f153e3`
+
+Final determination: `pass`
+
+## T19-font-loading-embedding-subsetting.pdf
+
+Invocation: `qpdf --check T19-font-loading-embedding-subsetting.pdf`
+
+`T19-font-loading-embedding-subsetting.pdf` exit code: `0`
+
+### Standard output
+
+```text
+checking T19-font-loading-embedding-subsetting.pdf
+PDF Version: 1.7
+File is not encrypted
+File is not linearized
+No syntax or stream encoding errors found; the file may still contain
+errors that qpdf cannot detect
+```
+
+### Standard error
+
+```text
+
+```

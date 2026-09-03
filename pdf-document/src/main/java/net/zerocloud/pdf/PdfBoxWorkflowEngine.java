@@ -19,6 +19,8 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import net.zerocloud.pdf.composition.FontSource;
 import net.zerocloud.pdf.provider.ProviderSelection;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -35,32 +37,27 @@ final class PdfBoxWorkflowEngine {
     private PdfBoxWorkflowEngine() {
     }
 
-    static <R> WorkflowOutcome<R> execute(
-            WorkflowRequest request,
-            DocumentWork<R> work,
-            Clock clock,
-            List<ProviderSelection> providerSelections) throws DocumentFailure {
+    static <R> WorkflowOutcome<R> execute(ExecutionContext<R> context)
+            throws DocumentFailure {
         try {
-            return executeChecked(request, work, clock, providerSelections);
+            return executeChecked(context);
         } catch (DocumentFailure executionFailure) {
-            if (!request.getPublicationTargets().isEmpty()
+            if (!context.request.getPublicationTargets().isEmpty()
                     && executionFailure.getPublicationReceipts().isEmpty()) {
                 throw failure(
                         executionFailure.getCode(),
                         executionFailure.getCapabilityId(),
                         executionFailure.getDiagnostic(),
                         PublicationReceipt.notAttempted(
-                                request.getPublicationTargets()));
+                                context.request.getPublicationTargets()));
             }
             throw executionFailure;
         }
     }
 
     private static <R> WorkflowOutcome<R> executeChecked(
-            WorkflowRequest request,
-            DocumentWork<R> work,
-            Clock clock,
-            List<ProviderSelection> providerSelections) throws DocumentFailure {
+            ExecutionContext<R> context) throws DocumentFailure {
+        WorkflowRequest request = context.request;
         if (request.getSaveMode() == SaveMode.INCREMENTAL) {
             if (request.getSources().isEmpty()) {
                 throw new DocumentFailure(
@@ -75,8 +72,8 @@ final class PdfBoxWorkflowEngine {
                     DocumentFailureCode.INVALID_REQUEST,
                     "The workflow request must select a supported Save Mode.");
         }
-        requireExecutionAllowed(request, clock);
-        emit(request, WorkflowProgressPhase.STARTED);
+        requireExecutionAllowed(context);
+        emit(context, WorkflowProgressPhase.STARTED);
         if (request.getSources().isEmpty()
                 && request.getPublicationTargets().isEmpty()) {
             throw failure(
@@ -224,11 +221,8 @@ final class PdfBoxWorkflowEngine {
                 publicationVersion,
                 publicationAlgorithm,
                 publicationScope,
-                request,
                 publicationTargets,
-                work,
-                clock,
-                providerSelections,
+                context,
                 sourceFingerprint);
     }
 
@@ -283,12 +277,10 @@ final class PdfBoxWorkflowEngine {
             PdfVersion publicationVersion,
             PasswordEncryptionAlgorithm publicationAlgorithm,
             PasswordEncryptionScope publicationScope,
-            WorkflowRequest request,
             List<PublicationTargetAdapter> publicationTargets,
-            DocumentWork<R> work,
-            Clock clock,
-            List<ProviderSelection> providerSelections,
+            ExecutionContext<R> context,
             SourceFingerprint sourceFingerprint) throws DocumentFailure {
+        WorkflowRequest request = context.request;
         PDDocument document = initialDocument;
         PdfBoxDocumentSession session = null;
         List<Path> stagedDocuments = new ArrayList<Path>();
@@ -306,8 +298,9 @@ final class PdfBoxWorkflowEngine {
                     securityInfo,
                     publicationVersion,
                     publicationAlgorithm,
-                    publicationScope);
-            requireExecutionAllowed(request, clock);
+                    publicationScope,
+                    context.referenceFonts);
+            requireExecutionAllowed(context);
             if (signaturePolicy.hasExistingSignatures()
                     && request.getSaveMode() == SaveMode.REWRITE
                     && !publicationTargets.isEmpty()) {
@@ -316,12 +309,12 @@ final class PdfBoxWorkflowEngine {
                         "A Source with an Existing Signature cannot be published with REWRITE.");
             }
             if (!request.getSources().isEmpty()) {
-                emit(request, WorkflowProgressPhase.SOURCE_OPENED);
+                emit(context, WorkflowProgressPhase.SOURCE_OPENED);
             }
-            emit(request, WorkflowProgressPhase.WORK_STARTED);
+            emit(context, WorkflowProgressPhase.WORK_STARTED);
             R result;
             try {
-                result = work.perform(session);
+                result = context.work.perform(session);
             } catch (DocumentFailure workFailure) {
                 throw failure(
                         workFailure.getCode(),
@@ -331,8 +324,8 @@ final class PdfBoxWorkflowEngine {
             }
             session.invalidate();
             splitDocuments = session.getSplitDocuments();
-            emit(request, WorkflowProgressPhase.WORK_COMPLETED);
-            requireExecutionAllowed(request, clock);
+            emit(context, WorkflowProgressPhase.WORK_COMPLETED);
+            requireExecutionAllowed(context);
 
             if (signaturePolicy.hasExistingSignatures()
                     && request.getSaveMode() == SaveMode.INCREMENTAL
@@ -345,13 +338,12 @@ final class PdfBoxWorkflowEngine {
             if (publicationTargets.isEmpty()) {
                 closeForSuccess(document);
                 document = null;
-                emit(request, WorkflowProgressPhase.COMPLETED);
+                emit(context, WorkflowProgressPhase.COMPLETED);
                 return outcome(
                         result,
                         outcomeCapabilityId(request, session),
-                        request,
                         Collections.<PublicationReceipt>emptyList(),
-                        providerSelections);
+                        context);
             }
 
             try {
@@ -361,6 +353,7 @@ final class PdfBoxWorkflowEngine {
                                 document,
                                 outputVersion);
                     }
+                    session.finalizeFonts();
                     outputSecurity.apply(document);
                     Path staged = Files.createTempFile(".folio-pdf-", ".pdf");
                     stagedDocuments.add(staged);
@@ -391,8 +384,8 @@ final class PdfBoxWorkflowEngine {
                         DocumentFailureCode.DOCUMENT_WRITE_FAILED,
                         "The document could not be staged for publication.");
             }
-            emit(request, WorkflowProgressPhase.STAGED);
-            requireExecutionAllowed(request, clock);
+            emit(context, WorkflowProgressPhase.STAGED);
+            requireExecutionAllowed(context);
 
             closeForSuccess(document);
             document = null;
@@ -405,23 +398,21 @@ final class PdfBoxWorkflowEngine {
                         request.getSaveMode(),
                         securityInfo);
             }
-            emit(request, WorkflowProgressPhase.VALIDATED);
-            requireExecutionAllowed(request, clock);
+            emit(context, WorkflowProgressPhase.VALIDATED);
+            requireExecutionAllowed(context);
 
-            emit(request, WorkflowProgressPhase.PUBLICATION_STARTED);
+            emit(context, WorkflowProgressPhase.PUBLICATION_STARTED);
             List<PublicationReceipt> receipts =
                     publishAll(
                             stagedDocuments,
                             publicationTargets,
-                            request,
-                            clock);
-            emit(request, WorkflowProgressPhase.COMPLETED);
+                            context);
+            emit(context, WorkflowProgressPhase.COMPLETED);
             return outcome(
                     result,
                     outcomeCapabilityId(request, session),
-                    request,
                     receipts,
-                    providerSelections);
+                    context);
         } finally {
             if (session != null) {
                 session.invalidate();
@@ -441,12 +432,12 @@ final class PdfBoxWorkflowEngine {
     private static <R> WorkflowOutcome<R> outcome(
             R result,
             String capabilityId,
-            WorkflowRequest request,
             List<PublicationReceipt> receipts,
-            List<ProviderSelection> providerSelections) {
+            ExecutionContext<R> context) {
+        WorkflowRequest request = context.request;
         String reportedCapabilityId = capabilityId;
         if (request.getSaveMode() == SaveMode.INCREMENTAL
-                && !isCanvasCapability(capabilityId)) {
+                && !isCompositionCapability(capabilityId)) {
             reportedCapabilityId = INCREMENTAL_CAPABILITY_ID;
         }
         return new WorkflowOutcome<R>(
@@ -456,13 +447,13 @@ final class PdfBoxWorkflowEngine {
                 request.getSaveMode(),
                 Collections.<String>emptyList(),
                 receipts,
-                providerSelections);
+                context.providerSelections);
     }
 
     private static String outcomeCapabilityId(
             WorkflowRequest request,
             PdfBoxDocumentSession session) {
-        if (isCanvasCapability(session.getOutcomeCapabilityId())) {
+        if (isCompositionCapability(session.getOutcomeCapabilityId())) {
             return session.getOutcomeCapabilityId();
         }
         return !request.getPublicationTargets().isEmpty()
@@ -471,9 +462,11 @@ final class PdfBoxWorkflowEngine {
                 : session.getOutcomeCapabilityId();
     }
 
-    private static boolean isCanvasCapability(String capabilityId) {
+    private static boolean isCompositionCapability(String capabilityId) {
         return PdfBoxCanvasOperations.CAPABILITY_ID.equals(capabilityId)
                 || PdfBoxCanvasResourceOperations.CAPABILITY_ID.equals(
+                        capabilityId)
+                || PdfBoxPositionedTextOperations.CAPABILITY_ID.equals(
                         capabilityId);
     }
 
@@ -544,17 +537,16 @@ final class PdfBoxWorkflowEngine {
         return prepared;
     }
 
-    private static void requireExecutionAllowed(
-            WorkflowRequest request,
-            Clock clock)
+    private static void requireExecutionAllowed(ExecutionContext<?> context)
             throws DocumentFailure {
+        WorkflowRequest request = context.request;
         if (request.getCancellationToken().isCancellationRequested()) {
             throw failure(
                     DocumentFailureCode.WORKFLOW_CANCELLED,
                     "The workflow was cancelled.");
         }
         if (request.getDeadline() != null
-                && !clock.instant().isBefore(request.getDeadline())) {
+                && !context.clock.instant().isBefore(request.getDeadline())) {
             throw failure(
                     DocumentFailureCode.DEADLINE_EXCEEDED,
                     "The workflow deadline has expired.");
@@ -562,17 +554,15 @@ final class PdfBoxWorkflowEngine {
     }
 
     private static void emit(
-            WorkflowRequest request,
+            ExecutionContext<?> context,
             WorkflowProgressPhase phase) {
-        request.getProgressListener().onProgress(phase);
+        context.request.getProgressListener().onProgress(phase);
     }
 
     private static List<PublicationReceipt> publishAll(
             List<Path> stagedDocuments,
             List<PublicationTargetAdapter> targets,
-            WorkflowRequest request,
-            Clock clock)
-            throws DocumentFailure {
+            ExecutionContext<?> context) throws DocumentFailure {
         List<PublicationReceipt> receipts =
                 new ArrayList<PublicationReceipt>(targets.size());
         for (int index = 0; index < targets.size(); index++) {
@@ -581,7 +571,7 @@ final class PdfBoxWorkflowEngine {
                     ? stagedDocuments.get(0)
                     : stagedDocuments.get(index);
             try {
-                requireExecutionAllowed(request, clock);
+                requireExecutionAllowed(context);
                 target.publish(staged);
             } catch (DocumentFailure publicationFailure) {
                 boolean executionStop = isExecutionStop(publicationFailure);
@@ -603,7 +593,7 @@ final class PdfBoxWorkflowEngine {
             receipts.add(target.receipt(
                     PublicationStatus.COMMITTED,
                     false));
-            emit(request, WorkflowProgressPhase.TARGET_COMMITTED);
+            emit(context, WorkflowProgressPhase.TARGET_COMMITTED);
         }
         return receipts;
     }
@@ -1246,6 +1236,29 @@ final class PdfBoxWorkflowEngine {
     private static void deleteQuietly(List<Path> stagedDocuments) {
         for (Path staged : stagedDocuments) {
             deleteQuietly(staged);
+        }
+    }
+
+    static final class ExecutionContext<R> {
+        private final WorkflowRequest request;
+        private final DocumentWork<R> work;
+        private final Clock clock;
+        private final List<ProviderSelection> providerSelections;
+        private final List<FontSource> referenceFonts;
+
+        ExecutionContext(
+                WorkflowRequest request,
+                DocumentWork<R> work,
+                Clock clock,
+                List<ProviderSelection> providerSelections,
+                List<FontSource> referenceFonts) {
+            this.request = Objects.requireNonNull(request, "request");
+            this.work = Objects.requireNonNull(work, "work");
+            this.clock = Objects.requireNonNull(clock, "clock");
+            this.providerSelections = Collections.unmodifiableList(
+                    new ArrayList<ProviderSelection>(providerSelections));
+            this.referenceFonts = Collections.unmodifiableList(
+                    new ArrayList<FontSource>(referenceFonts));
         }
     }
 

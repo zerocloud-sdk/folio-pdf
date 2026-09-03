@@ -159,6 +159,19 @@ are also recorded in the
 T18 otherwise reuses Apache PDFBox 3.0.8, JUnit 4.13.2, and the existing pinned
 qpdf/PDFium/ImageMagick acceptance tools in their already documented roles.
 
+T19 adds no third-party runtime, test, build-tool, native, or external-tool
+dependency. Deterministic TrueType parsing, embedding, and subsetting reuse
+Apache PDFBox 3.0.8 and its existing transitive FontBox 3.0.8 dependency only
+behind private implementation types; public signatures remain project-owned
+and Java 8 types. The two minimal TrueType programs used by consumer tests and
+repository-only Acceptance Evidence are project-authored Apache-2.0 fixtures,
+hash-pinned in their scoped resource READMEs, and are absent from every
+published Folio PDF artifact. T19 reuses JUnit 4.13.2 and the existing pinned
+qpdf/PDFium/ImageMagick Acceptance Evidence tools in their already documented
+roles. No installed font, downloaded font, network service, native shaper, or
+Migration Facade dependency is added, and no third-party notice change is
+required for project-authored fixtures.
+
 T06 uses one external executable only in the opt-in, repository-only
 Acceptance Evidence path:
 

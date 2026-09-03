@@ -1019,6 +1019,118 @@ capabilities:
     certified-platforms: []
     status: experimental
 
+  - id: composition.fonts.load-embed-subset-fallback
+    context: composition
+    summary: Load only explicit TrueType sources, select ordered fallbacks, embed or subset them, and write positioned Unicode text with source metrics and ToUnicode mappings.
+    reference-suite:
+      source: ISO 32000-1:2008 Type 0, CIDFontType2, embedded-font, width, and ToUnicode concepts plus the public OpenType TrueType, cmap, hmtx, maxp, name, OS/2, glyf, and loca specifications
+      role: public standards input only; no third-party font, implementation, fixture, output, system-font result, or Reference Suite output is an oracle
+    native-interface:
+      entry-point: net.zerocloud.pdf.DocumentWorkflow#execute
+      environment: net.zerocloud.pdf.WorkflowEnvironment
+      command: net.zerocloud.pdf.composition.command.DrawPositionedUnicodeText
+      positioned-text: net.zerocloud.pdf.composition.PositionedUnicodeText
+      font-selection: net.zerocloud.pdf.composition.FontSelection
+      font-source: net.zerocloud.pdf.composition.FontSource
+      reference-font-set: net.zerocloud.pdf.composition.ReferenceFontSet
+      limits: net.zerocloud.pdf.composition.FontLimits
+      matrix: net.zerocloud.pdf.composition.CanvasMatrix
+      rendering-mode: net.zerocloud.pdf.TextRenderingMode
+      text-query: net.zerocloud.pdf.query.ExtractTextAndStructure
+      text-observation: net.zerocloud.pdf.TextItem
+      resource-query: net.zerocloud.pdf.query.ExtractImagesAndResources
+      font-observation: net.zerocloud.pdf.FontResource
+      inspection-query: net.zerocloud.pdf.query.InspectObject
+      save-mode: net.zerocloud.pdf.SaveMode
+      outcome: net.zerocloud.pdf.WorkflowOutcome
+      receipt: net.zerocloud.pdf.PublicationReceipt
+      failure: net.zerocloud.pdf.DocumentFailure
+      failure-code: net.zerocloud.pdf.DocumentFailureCode
+    migration-facade:
+      stable: []
+      preview: []
+    limitations:
+      - Version 1 accepts a nonempty unshaped Unicode String, one positive font size, one non-clipping Text Rendering Mode (FILL, STROKE, FILL_STROKE, or INVISIBLE), an explicit text matrix, and either nonempty command-local Font Sources or the Workflow Environment's explicitly configured Reference Font Set. Clipping modes 4 through 7 fail with POSITIONED_TEXT_INVALID because the isolated command scope cannot expose their clipping path. System defaults contain no fonts; no installed-font directory, backend mapper, URI, network service, locale, style, or implicit substitute is consulted.
+      - Byte sources are copied at declaration and command staging; Path handles are opened and closed by the workflow; caller streams and channels are read but never closed and an identical one-shot declaration is staged once per Session. Shared Reference Font Sets accept only reusable byte and Path declarations. Every ordered source is staged, parsed, format-checked, and embedding-checked even when unused by selection.
+      - The closed profile supports standalone 00010000 or true quadratic TrueType sfnt programs containing exactly OS/2, cmap, glyf, head, hhea, hmtx, loca, maxp, name, and post. It requires an ascending unique directory with contiguous zero-filled aligned ranges, exact offset-table search fields and checksums; exact version-1 head/maxp/hhea values with head flags 2 through 10 clear and zero TrueType-VM maxima; exact full-or-compact hmtx and short-or-long loca data; bounded instruction-free simple glyphs and -1-marked XY-translation-only composites with exact bounds, upper-bound maxima, and acyclic dependencies; sorted contiguous format-0 BMP-only Windows 3/1 English-US names using exactly IDs 1 through 6, with a bounded decimal version in ID 5 and a PostScript name in ID 6; post version 2 or 3 with custom version-2 glyph names limited to at most 63 ASCII letters, digits, periods, or underscores; full-length internally consistent OS/2 versions 0 through 5 with reserved Unicode/code-page range bits clear (including unassigned code-page bit 8 in version 1), zero sFamilyClass, and an achVendID that is blank or is a printable Tag with trailing-space-only padding; and exactly one nonempty contiguous cmap using Unicode 0/1 or 0/3 format 4, Unicode 0/4 format 12, or Windows 3/1 format 4. Conservative overestimates in the six glyph-derived maxp maxima are supported, while reserved or out-of-range name IDs are corrupt. Optional tables, disallowed head flags, glyph instructions or nonzero VM maxima, other negative composite markers, transformed, point-attached, or USE_MY_METRICS composites, other assigned or font-specific name IDs, name format 1, post version 1, legacy 68-byte OS/2 version 0, nonzero OS/2 family classification, Windows 3/10 or multi-record cmap data, other cmap formats, and other otherwise valid profiles are unsupported. CFF/CFF2, collections, WOFF, variable, color, SVG, bitmap-only, vertical, symbol-only, recognizable raw Type 1/CFF/CIDFont or PDF Font dictionary data, and caller-supplied encoding/CMap profiles are likewise rejected; malformed or unrecognized data and inconsistent headers, checksums, directories, metrics, glyphs, names, permissions, styles, character ranges, or mappings fail before publication.
+      - Selection visits Unicode scalars in input order and sources in declaration order, choosing the first nonzero valid glyph. Missing glyphs reject the command. One selected font cannot map two requested Unicode scalars in a Session to the same glyph ID because Identity-H would make ToUnicode ambiguous. No normalization, bidi, shaping, substitution, kerning, line breaking, paragraph layout, or automatic placement is performed.
+      - Widths come from source hmtx values and use exact integer rational half-up scaling to PDF 1000-unit CID widths, with no floating-point intermediate; T19 writes the values before use and again after subset rebuilding. PDFBox's deterministic TrueType subsetter is preflighted with the accumulated requested set before mutation; output includes glyph zero, requested glyphs, and required composite dependencies while excluding unrelated glyphs. The generated six-table subset is revalidated, its head bounds and hhea extrema are normalized to retained outlines, and its table and whole-font checksums are repaired and checked before embedding. Restricted and bitmap-only embedding flags reject the operation; No Subsetting embeds the complete permitted program and rejects a requested scalar when the source cmap's canonical reverse mapping differs. Requested mappings take priority in generated ToUnicode, which may also retain source-cmap mappings for full fonts or unrequested composite dependencies; T13 retains ADR-0035 uncertainty for absent or contradictory source evidence and never guesses from embedded outlines.
+      - Equal source bytes share one loaded effective font and indirect Font resource within a Document Session; selected glyphs accumulate across commands, and an exact existing page alias is reused or a deterministic FolioT19F<n> alias is declared. Every subsequent Document Command and Query finalizes prior subsets as an ordering barrier; later glyphs rebuild only T19-managed entries in the same persistent Type 0 Font, CIDFont, and Font Descriptor dictionaries instead of creating a duplicate or erasing unknown entries written by an intervening command. Reopened previously subset resources are not expanded or treated as original source programs.
+      - Every command declares exact nonnegative bounds for source declarations, aggregate staged bytes, input Unicode scalars, fallback visits, and generated content bytes. Exact boundaries succeed and first excess fails before page mutation. T19 also retains the existing 8 MiB content-preservation and 64-parent inheritance ceilings; comprehensive hostile-input policy, process/memory/time/concurrency limits, temporary-storage quotas, and Worker isolation remain T20/T21.
+      - Existing Contents and inherited Resources must satisfy the same conservative indirect-stream, external-data, syntax, balanced-scope, and acyclic-inheritance preservation rules as Canvas. Unsigned REWRITE and INCREMENTAL publication are admitted, but all positioned text fails with PDF_VERSION_UNSUPPORTED for INCREMENTAL PDF 1.0/1.1 because Type 0 fonts require PDF 1.2. Through PDF 1.4, a command also fails before page mutation when any selected source font has a supplementary cmap mapping, even for BMP-only requested text, because full embedding or retained composite dependencies can place that mapping in ToUnicode and require PDF 1.5. Existing Signatures reject positioned text, and password user authority requires general modification permission. Failures carry fixed input-free diagnostics and NOT_ATTEMPTED receipts.
+      - T19 leaves CanvasFont and DrawCanvas's borrowed encoded-glyph contract unchanged. It adds no rendering, Forms UI, tagging, redaction, optimization, Migration Facade surface, runtime font bundle, certified-platform claim, T23 rendering, T24 paragraph layout, T28 Unicode layout, T29 HarfBuzz shaping, or T33 Asian resource profile.
+    dependency-gates:
+      - capability: document.text-structure.extract
+        required-status: compatible
+      - capability: document.images-resources.extract
+        required-status: compatible
+      - capability: composition.canvas.draw-positioned-text
+        required-status: compatible
+    promotion-gates:
+      - ticket: T06
+        requirement: Complete the missing mandatory independent standards evidence and close every compatible-status Dependency Gate before compatibility; closed implementation issues alone are insufficient.
+    acceptance-profile:
+      id: T19-font-loading-embedding-subsetting
+      state: experimental
+      mandatory-evidence:
+        - syntax
+        - standards
+        - semantic
+        - visual
+      evidence-record: capabilities/evidence/T19-font-loading-embedding-subsetting.md
+    evidence:
+      - kind: public-font-workflow-contract
+        path: pdf-document/src/test/java/net/zerocloud/pdf/consumer/FontLoadingWorkflowTest.java
+        assertion: Public workflows prove explicit byte, Path, stream, channel, and configured Reference Font Set behavior; defensive copy and caller ownership; strict ordered fallback without system fonts; eager validation of unused fallbacks; duplicate source charging; embedding, full/no-subset and normalized subset output, BMP and supplementary ToUnicode, exact-rational source widths and compact/full hmtx geometry, equal-program reuse across query/command barriers with Type 0/CIDFont/descriptor patch preservation, incremental publication and pre-1.2/pre-1.5 rejection, every supported closed-profile variant, corrupt-profile and known-outside-profile rejection, clipping-mode rejection, signature/password gates, atomic preflight, fixed failures, redaction, and exact limit boundaries after reopen.
+      - kind: public-api-contract
+        path: pdf-document/src/test/java/net/zerocloud/pdf/contract/PublicApiLeakageIT.java
+        assertion: Public and protected T19 signatures expose only project-owned or JDK types and no PDFBox or FontBox type.
+      - kind: artifact-contract
+        path: pdf-document/src/test/java/net/zerocloud/pdf/contract/JarContractIT.java
+        assertion: The shipped document jar retains its module name and Java 8 class files, embeds no acceptance font fixture or dependency class, and keeps PDFBox and FontBox unshaded implementation dependencies.
+      - kind: cross-jdk-contract
+        path: scripts/verify-jdk-matrix.sh
+        assertion: Maven verification runs the T19 public workflow, API, artifact, and regression contracts on JDK 8, 11, 17, and 21.
+      - kind: acceptance-command
+        path: scripts/acceptance
+        assertion: The repository command creates the host-independent T19 artifact through public workflows and records pinned-qpdf syntax, public T13/T14 plus bounded-inspection semantics, and independent PDFium/ImageMagick visual chains over the unchanged ID-neutral-hashed product.
+      - kind: acceptance-reproducibility-contract
+        path: pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/AcceptanceEvidenceCommandTest.java
+        assertion: Independent runs reproduce T19 syntax, semantic, and visual records and findings, the artifact ID-neutral hash, and all expected/actual/difference raster hashes.
+      - kind: fixture-authority
+        path: pdf-document/src/test/resources/net/zerocloud/pdf/fixtures/README.md
+        assertion: The two project-authored Apache-2.0 test fonts have fixed source metrics, glyph repertoires, decoded lengths, and SHA-256 hashes and remain outside the shipped document jar.
+      - kind: authoritative-contract
+        path: docs/font-loading.md
+        assertion: API use, source ownership, the closed profile matrix, fallback, mapping, metrics, subsetting, embedding restrictions, reuse, exact limits, failures, preservation, publication, evidence, and downstream exclusions are documented.
+    acceptance-evidence:
+      - chain: syntax
+        result: pass
+        record: capabilities/evidence/T19-font-loading-embedding-subsetting-syntax.md
+        producer:
+          kind: external-tool
+          name: qpdf
+          version: "12.4.0"
+      - chain: semantic
+        result: pass
+        record: capabilities/evidence/T19-font-loading-embedding-subsetting-semantic.md
+        producer:
+          kind: project-test
+          name: folio-pdf-t19-semantic-assertions
+          version: "0.1.0-SNAPSHOT"
+      - chain: visual
+        result: pass
+        record: capabilities/evidence/T19-font-loading-embedding-subsetting-visual.md
+        producer:
+          kind: external-tool
+          name: pdfium-cli
+          version: v0.11.2-pdfium-chromium-7881
+    provenance:
+      path: PROVENANCE.md
+      record: T19 font-loading-embedding-subsetting record
+    certified-platforms: []
+    status: experimental
+
   - id: conversion.capability-provider.select-execute
     context: conversion
     summary: Register, inspect, deterministically select, and safely execute project-owned Capability Providers.

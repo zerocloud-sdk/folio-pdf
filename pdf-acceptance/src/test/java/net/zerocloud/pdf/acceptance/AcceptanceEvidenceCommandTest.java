@@ -62,7 +62,10 @@ public final class AcceptanceEvidenceCommandTest {
                     "T17-canvas-vector-positioned-text-syntax.md"),
             new ProductSyntax(
                     "T18",
-                    "T18-canvas-images-colors-transparency-syntax.md"));
+                    "T18-canvas-images-colors-transparency-syntax.md"),
+            new ProductSyntax(
+                    "T19",
+                    "T19-font-loading-embedding-subsetting-syntax.md"));
 
     @Rule
     public final TemporaryFolder temporaryFolder = new TemporaryFolder();
@@ -542,6 +545,38 @@ public final class AcceptanceEvidenceCommandTest {
                 "Exact alpha, Multiply blend mode, and transparency-group semantics: `true`"));
         assertTrue(t18Findings.contains(
                 "Repeated image, state, and group resource reuse: `true`"));
+
+        Path t19Artifact = output.resolve(
+                "artifacts/T19-font-loading-embedding-subsetting.pdf");
+        assertTrue(Files.isRegularFile(t19Artifact));
+        assertTrue(Files.size(t19Artifact) > 0L);
+        String t19Syntax = read(output.resolve(
+                "T19-font-loading-embedding-subsetting-syntax.md"));
+        String t19Semantic = read(output.resolve(
+                "T19-font-loading-embedding-subsetting-semantic.md"));
+        String t19Visual = read(output.resolve(
+                "T19-font-loading-embedding-subsetting-visual.md"));
+        String t19Findings = read(output.resolve(
+                "artifacts/T19-font-loading-embedding-subsetting-semantic.txt"));
+        assertMetadata(t19Syntax, "Capability",
+                "composition.fonts.load-embed-subset-fallback");
+        assertMetadata(t19Syntax, "Result", "pass");
+        assertEquals(t19Findings, "pass", metadata(t19Semantic, "Result"));
+        assertMetadata(t19Visual, "Result", "pass");
+        assertEquals(metadata(t19Syntax, "Input ID-neutral SHA-256"),
+                metadata(t19Semantic, "Input ID-neutral SHA-256"));
+        assertEquals(metadata(t19Syntax, "Input ID-neutral SHA-256"),
+                metadata(t19Visual, "Input ID-neutral SHA-256"));
+        assertTrue(t19Findings.contains(
+                "Two embedded Type 0 Font resources: `true`"));
+        assertTrue(t19Findings.contains(
+                "Explicit A, omega, and B ToUnicode mappings: `true`"));
+        assertTrue(t19Findings.contains(
+                "Primary/fallback source advances: `true`"));
+        assertTrue(t19Findings.contains(
+                "Embedded sfnt subsets exclude unrelated glyphs: `true`"));
+        assertTrue(t19Findings.contains(
+                "Repeated primary use shares one resource: `true`"));
     }
 
     @Test
@@ -646,7 +681,13 @@ public final class AcceptanceEvidenceCommandTest {
                 "T18-canvas-images-colors-transparency-visual.md",
                 "artifacts/T18-canvas-images-colors-transparency-qpdf.txt",
                 "artifacts/T18-canvas-images-colors-transparency-semantic.txt",
-                "artifacts/T18-canvas-images-colors-transparency-visual.txt")) {
+                "artifacts/T18-canvas-images-colors-transparency-visual.txt",
+                "T19-font-loading-embedding-subsetting-syntax.md",
+                "T19-font-loading-embedding-subsetting-semantic.md",
+                "T19-font-loading-embedding-subsetting-visual.md",
+                "artifacts/T19-font-loading-embedding-subsetting-qpdf.txt",
+                "artifacts/T19-font-loading-embedding-subsetting-semantic.txt",
+                "artifacts/T19-font-loading-embedding-subsetting-visual.txt")) {
             assertEquals(relative,
                     read(firstOutput.resolve(relative)),
                     read(secondOutput.resolve(relative)));
@@ -663,7 +704,12 @@ public final class AcceptanceEvidenceCommandTest {
                 "artifacts/T18-canvas-images-colors-transparency-pdfium.png",
                 "artifacts/T18-canvas-images-colors-transparency-implementation.png",
                 "artifacts/T18-canvas-images-colors-transparency-difference.png",
-                "artifacts/T18-canvas-images-colors-transparency-renderer-difference.png")) {
+                "artifacts/T18-canvas-images-colors-transparency-renderer-difference.png",
+                "artifacts/T19-font-loading-embedding-subsetting-expected.png",
+                "artifacts/T19-font-loading-embedding-subsetting-pdfium.png",
+                "artifacts/T19-font-loading-embedding-subsetting-implementation.png",
+                "artifacts/T19-font-loading-embedding-subsetting-difference.png",
+                "artifacts/T19-font-loading-embedding-subsetting-renderer-difference.png")) {
             assertArrayEquals(relative,
                     Files.readAllBytes(firstOutput.resolve(relative)),
                     Files.readAllBytes(secondOutput.resolve(relative)));
@@ -674,7 +720,8 @@ public final class AcceptanceEvidenceCommandTest {
                 "artifacts/T14-image-font-inventory.pdf",
                 "artifacts/T14-form-mask-inventory.pdf",
                 "artifacts/T17-canvas-vector-positioned-text.pdf",
-                "artifacts/T18-canvas-images-colors-transparency.pdf")) {
+                "artifacts/T18-canvas-images-colors-transparency.pdf",
+                "artifacts/T19-font-loading-embedding-subsetting.pdf")) {
             assertEquals(relative,
                     EvidenceFiles.idNeutralPdfSha256(
                             firstOutput.resolve(relative)),
@@ -953,7 +1000,8 @@ public final class AcceptanceEvidenceCommandTest {
                 missingOutput.resolve("missing-pdfium"),
                 available.imageMagick,
                 available.profile,
-                available.t18Profile);
+                available.t18Profile,
+                available.t19Profile);
 
         CommandResult missingResult = runCommand(missingOutput, qpdf, missing);
 
@@ -978,7 +1026,8 @@ public final class AcceptanceEvidenceCommandTest {
                 imageAvailable.pdfium,
                 missingImageOutput.resolve("missing-imagemagick"),
                 imageAvailable.profile,
-                imageAvailable.t18Profile);
+                imageAvailable.t18Profile,
+                imageAvailable.t19Profile);
 
         CommandResult missingImageResult = runCommand(
                 missingImageOutput,
@@ -1482,6 +1531,7 @@ public final class AcceptanceEvidenceCommandTest {
                 imageMagickPin.toString(),
                 visualFixtures.profile.toString(),
                 visualFixtures.t18Profile.toString(),
+                visualFixtures.t19Profile.toString(),
                 "0.1.0-SNAPSHOT")
                 .redirectErrorStream(true)
                 .start();
@@ -1517,42 +1567,30 @@ public final class AcceptanceEvidenceCommandTest {
         Path expected = fixtures.resolve("expected.png");
         writeRaster(expected, 1224, 1584, Color.WHITE);
         Path rendererSource = renderedRaster == null ? expected : renderedRaster;
-        Path profile = fixtures.resolve("visual-profile.properties");
-        Files.write(profile, Arrays.asList(
-                "PROFILE_ID=T03-document-workflow-transaction",
-                "PAGE_BOX=effective CropBox; CropBox is absent, so MediaBox [0 0 612 792] points is used",
-                "DPI=144",
-                "COLOR_POLICY=sRGB, opaque 8-bit RGB PNG; grayscale and alpha are disabled",
-                "FONT_POLICY=not applicable; the blank document has no text or font resources and uses no system fonts",
-                "ANTIALIASING_POLICY=pinned PDFium default smoothing; no marks are present for antialiasing to affect",
-                "BACKGROUND=opaque white (#ffffff)",
-                "RASTER_WIDTH=1224",
-                "RASTER_HEIGHT=1584",
-                "COMPARISON_METRIC=AE",
-                "COMPARISON_FUZZ_PERCENT=0",
-                "COMPARISON_THRESHOLD=0",
-                "RENDERER_AGREEMENT_THRESHOLD=0",
-                "EXPECTED_RASTER=expected.png",
-                "EXPECTED_RASTER_SHA256=" + EvidenceFiles.sha256(expected)),
-                StandardCharsets.UTF_8);
-        Path t18Profile = fixtures.resolve("t18-visual-profile.properties");
-        Files.write(t18Profile, Arrays.asList(
-                "PROFILE_ID=T18-canvas-images-colors-transparency",
-                "PAGE_BOX=effective CropBox; CropBox is absent, so MediaBox [0 0 612 792] points is used",
-                "DPI=144",
-                "COLOR_POLICY=sRGB, opaque 8-bit RGB PNG after compositing over opaque white",
-                "FONT_POLICY=not applicable; the artifact has no text or font resources and uses no system fonts",
-                "ANTIALIASING_POLICY=pinned PDFium default smoothing; image interpolation is disabled and vector edges are axis-aligned",
-                "BACKGROUND=opaque white (#ffffff)",
-                "RASTER_WIDTH=1224",
-                "RASTER_HEIGHT=1584",
-                "COMPARISON_METRIC=AE",
-                "COMPARISON_FUZZ_PERCENT=0",
-                "COMPARISON_THRESHOLD=0",
-                "RENDERER_AGREEMENT_THRESHOLD=0",
-                "EXPECTED_RASTER=expected.png",
-                "EXPECTED_RASTER_SHA256=" + EvidenceFiles.sha256(expected)),
-                StandardCharsets.UTF_8);
+        Path profile = writeVisualProfile(
+                fixtures.resolve("visual-profile.properties"),
+                expected,
+                "T03-document-workflow-transaction",
+                "sRGB, opaque 8-bit RGB PNG; grayscale and alpha are disabled",
+                "not applicable; the blank document has no text or font resources and uses no system fonts",
+                "pinned PDFium default smoothing; no marks are present for antialiasing to affect",
+                0L);
+        Path t18Profile = writeVisualProfile(
+                fixtures.resolve("t18-visual-profile.properties"),
+                expected,
+                "T18-canvas-images-colors-transparency",
+                "sRGB, opaque 8-bit RGB PNG after compositing over opaque white",
+                "not applicable; the artifact has no text or font resources and uses no system fonts",
+                "pinned PDFium default smoothing; image interpolation is disabled and vector edges are axis-aligned",
+                0L);
+        Path t19Profile = writeVisualProfile(
+                fixtures.resolve("t19-visual-profile.properties"),
+                expected,
+                "T19-font-loading-embedding-subsetting",
+                "sRGB, opaque 8-bit RGB PNG after compositing over opaque white",
+                "only the two embedded project-authored subsets; no system fonts",
+                "pinned PDFium default text smoothing",
+                2500L);
 
         Path pdfiumArguments = output.resolve("pdfium-arguments.txt");
         Path pdfium = writeExecutable(fixtures.resolve("pdfium"), Arrays.asList(
@@ -1602,7 +1640,37 @@ public final class AcceptanceEvidenceCommandTest {
                         "  exit 1",
                         "fi",
                         "exit 99"));
-        return new VisualFixtures(pdfium, imageMagick, profile, t18Profile);
+        return new VisualFixtures(
+                pdfium, imageMagick, profile, t18Profile, t19Profile);
+    }
+
+    private static Path writeVisualProfile(
+            Path profile,
+            Path expected,
+            String profileId,
+            String colorPolicy,
+            String fontPolicy,
+            String antialiasingPolicy,
+            long rendererAgreementThreshold) throws IOException {
+        Files.write(profile, Arrays.asList(
+                "PROFILE_ID=" + profileId,
+                "PAGE_BOX=effective CropBox; CropBox is absent, so MediaBox [0 0 612 792] points is used",
+                "DPI=144",
+                "COLOR_POLICY=" + colorPolicy,
+                "FONT_POLICY=" + fontPolicy,
+                "ANTIALIASING_POLICY=" + antialiasingPolicy,
+                "BACKGROUND=opaque white (#ffffff)",
+                "RASTER_WIDTH=1224",
+                "RASTER_HEIGHT=1584",
+                "COMPARISON_METRIC=AE",
+                "COMPARISON_FUZZ_PERCENT=0",
+                "COMPARISON_THRESHOLD=0",
+                "RENDERER_AGREEMENT_THRESHOLD="
+                        + rendererAgreementThreshold,
+                "EXPECTED_RASTER=expected.png",
+                "EXPECTED_RASTER_SHA256=" + EvidenceFiles.sha256(expected)),
+                StandardCharsets.UTF_8);
+        return profile;
     }
 
     private static void writeRaster(
@@ -1732,16 +1800,19 @@ public final class AcceptanceEvidenceCommandTest {
         private final Path imageMagick;
         private final Path profile;
         private final Path t18Profile;
+        private final Path t19Profile;
 
         VisualFixtures(
                 Path pdfium,
                 Path imageMagick,
                 Path profile,
-                Path t18Profile) {
+                Path t18Profile,
+                Path t19Profile) {
             this.pdfium = pdfium;
             this.imageMagick = imageMagick;
             this.profile = profile;
             this.t18Profile = t18Profile;
+            this.t19Profile = t19Profile;
         }
     }
 }

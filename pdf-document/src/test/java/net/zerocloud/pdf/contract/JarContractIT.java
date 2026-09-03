@@ -14,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Enumeration;
+import java.util.Locale;
 import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -53,6 +54,14 @@ public final class JarContractIT {
                         entry.getName().startsWith("org/apache/fontbox/"));
                 assertFalse("TwelveMonkeys classes must not be bundled in pdf-document",
                         entry.getName().startsWith("com/twelvemonkeys/"));
+                String lowerName = entry.getName().toLowerCase(Locale.ROOT);
+                assertFalse("Font fixtures must not be bundled in pdf-document",
+                        lowerName.endsWith(".ttf")
+                                || lowerName.endsWith(".otf")
+                                || lowerName.endsWith(".woff")
+                                || lowerName.endsWith(".woff2")
+                                || lowerName.endsWith(".ttf.base64")
+                                || lowerName.endsWith(".otf.base64"));
                 if (entry.getName().endsWith(".class")) {
                     assertJava8Class(jar, entry);
                 }

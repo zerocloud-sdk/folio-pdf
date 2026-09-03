@@ -107,7 +107,7 @@ import net.zerocloud.pdf.query.PageCount;
 
 /**
  * Repository-only command that records T06/T07 evidence and the T10 through
- * T17 product chains.
+ * T19 product chains.
  */
 public final class AcceptanceEvidenceCommand {
 
@@ -118,6 +118,15 @@ public final class AcceptanceEvidenceCommand {
     private static final String ARTIFACT_NAME = "T06-document-blank-output.pdf";
     private static final String QPDF_FINDINGS_NAME = "T06-document-blank-qpdf.txt";
     private static final String SEMANTIC_FINDINGS_NAME = "T06-document-blank-semantic.txt";
+    private static final QpdfSyntaxRecorder.Profile T06_QPDF_PROFILE =
+            QpdfSyntaxRecorder.Profile.blankDocument(
+                    "T06",
+                    CAPABILITY,
+                    ACCEPTANCE_PROFILE,
+                    PROFILE_RECORD,
+                    ARTIFACT_NAME,
+                    "T06-document-blank-syntax.md",
+                    QPDF_FINDINGS_NAME);
     private static final String T10_CAPABILITY =
             "document.page.manipulate-merge-split";
     private static final String T10_ACCEPTANCE_PROFILE =
@@ -212,6 +221,8 @@ public final class AcceptanceEvidenceCommand {
             "T17-canvas-vector-positioned-text.pdf";
     private static final String T17_QPDF_FINDINGS =
             "T17-canvas-vector-positioned-text-qpdf.txt";
+    private static final String T17_SYNTAX_RECORD =
+            "T17-canvas-vector-positioned-text-syntax.md";
     private static final String T17_SEMANTIC_FINDINGS =
             "T17-canvas-vector-positioned-text-semantic.txt";
     private static final String T18_CAPABILITY =
@@ -230,6 +241,25 @@ public final class AcceptanceEvidenceCommand {
             "T18-canvas-images-colors-transparency-semantic.txt";
     private static final String T18_SEMANTIC_RECORD =
             "T18-canvas-images-colors-transparency-semantic.md";
+    private static final QpdfSyntaxRecorder.Profile T17_QPDF_PROFILE =
+            new QpdfSyntaxRecorder.Profile(
+                    "T17",
+                    T17_CAPABILITY,
+                    T17_ACCEPTANCE_PROFILE,
+                    T17_PROFILE_RECORD,
+                    T17_ARTIFACT,
+                    T17_SYNTAX_RECORD,
+                    T17_QPDF_FINDINGS,
+                    "This syntax chain does not establish PDF standards conformance. The standards and visual chains remain absent.");
+    private static final QpdfSyntaxRecorder.Profile T18_QPDF_PROFILE =
+            new QpdfSyntaxRecorder.Profile(
+                    "T18",
+                    T18_CAPABILITY,
+                    T18_ACCEPTANCE_PROFILE,
+                    T18_PROFILE_RECORD,
+                    T18_ARTIFACT,
+                    T18_SYNTAX_RECORD,
+                    T18_QPDF_FINDINGS);
 
     private AcceptanceEvidenceCommand() {
     }
@@ -243,11 +273,12 @@ public final class AcceptanceEvidenceCommand {
      * @throws Exception if the evidence run cannot be completed
      */
     public static void main(String[] arguments) throws Exception {
-        if (arguments.length != 7) {
+        if (arguments.length != 8) {
             throw new IllegalArgumentException(
                     "Usage: AcceptanceEvidenceCommand <output-directory> "
                             + "<qpdf-pin> <pdfium-pin> <imagemagick-pin> "
                             + "<T03-visual-profile> <T18-visual-profile> "
+                            + "<T19-visual-profile> "
                             + "<release-train>");
         }
 
@@ -270,7 +301,15 @@ public final class AcceptanceEvidenceCommand {
             throw new IllegalArgumentException(
                     "Visual profile does not describe " + T18_ACCEPTANCE_PROFILE);
         }
-        String releaseTrain = arguments[6];
+        VisualProfile t19VisualProfile = VisualProfile.load(
+                Paths.get(arguments[6]).toAbsolutePath().normalize());
+        if (!T19FontEvidenceRecorder.PROFILE.equals(
+                t19VisualProfile.profileId())) {
+            throw new IllegalArgumentException(
+                    "Visual profile does not describe "
+                            + T19FontEvidenceRecorder.PROFILE);
+        }
+        String releaseTrain = arguments[7];
         Path artifacts = output.resolve("artifacts");
         Files.createDirectories(artifacts);
         Path pdf = artifacts.resolve(ARTIFACT_NAME);
@@ -283,50 +322,13 @@ public final class AcceptanceEvidenceCommand {
                 });
         String inputHash = EvidenceFiles.idNeutralPdfSha256(pdf);
 
-        EvidenceResult syntaxResult;
-        String observedVersion;
-        String syntaxFinding;
-        try {
-            ProcessResult version = ExternalProcess.run(
-                    qpdfPin.executable(), output, "--version");
-            observedVersion = qpdfVersion(version.combinedOutput());
-            if (version.exitCode != 0 || !qpdfPin.version().equals(observedVersion)) {
-                syntaxResult = EvidenceResult.INDETERMINATE;
-                syntaxFinding = "Expected pinned qpdf version `" + qpdfPin.version()
-                        + "`; observed `" + observedVersion + "`.";
-                write(artifacts.resolve(QPDF_FINDINGS_NAME),
-                        unpinnedQpdfFindings(inputHash, observedVersion, qpdfPin));
-            } else {
-                ProcessResult syntax = ExternalProcess.run(
-                        qpdfPin.executable(),
-                        artifacts,
-                        "--check",
-                        ARTIFACT_NAME);
-                syntaxResult = syntax.exitCode == 0
-                        ? EvidenceResult.PASS
-                        : syntax.exitCode == 2 || syntax.exitCode == 3
-                                ? EvidenceResult.FAIL : EvidenceResult.INDETERMINATE;
-                if (syntax.exitCode == 3) {
-                    syntaxFinding = "qpdf reported warnings (exit code `3`).";
-                } else if (syntax.exitCode == 2) {
-                    syntaxFinding = "qpdf reported errors (exit code `2`).";
-                } else if (syntax.exitCode != 0) {
-                    syntaxFinding = "qpdf did not return a documented inspection status "
-                            + "(exit code `" + syntax.exitCode + "`).";
-                } else {
-                    syntaxFinding = "qpdf completed `--check` with exit code `"
-                            + syntax.exitCode + "`.";
-                }
-                write(artifacts.resolve(QPDF_FINDINGS_NAME),
-                        qpdfFindings(syntax, inputHash, qpdfPin));
-            }
-        } catch (IOException unavailable) {
-            syntaxResult = EvidenceResult.INDETERMINATE;
-            observedVersion = "unavailable";
-            syntaxFinding = "The pinned qpdf tool was unavailable.";
-            write(artifacts.resolve(QPDF_FINDINGS_NAME),
-                    unavailableQpdfFindings(inputHash, qpdfPin));
-        }
+        EvidenceResult syntaxResult = QpdfSyntaxRecorder.record(
+                output,
+                artifacts,
+                qpdfPin,
+                inputHash,
+                releaseTrain,
+                T06_QPDF_PROFILE);
 
         SemanticObservation semantic = SemanticAssertions.inspect(creation, pdf);
         write(artifacts.resolve(SEMANTIC_FINDINGS_NAME),
@@ -350,9 +352,6 @@ public final class AcceptanceEvidenceCommand {
                 || visual.result() == EvidenceResult.FAIL
                         ? EvidenceResult.FAIL : EvidenceResult.INDETERMINATE;
 
-        write(output.resolve("T06-document-blank-syntax.md"),
-                syntaxRecord(inputHash, releaseTrain, observedVersion,
-                        syntaxResult, syntaxFinding, qpdfPin));
         write(output.resolve("T06-document-blank-semantic.md"),
                 semanticRecord(inputHash, releaseTrain, semantic));
         write(output.resolve("T06-document-blank-determination.md"),
@@ -528,6 +527,15 @@ public final class AcceptanceEvidenceCommand {
                 imageMagickPin,
                 t18VisualProfile,
                 releaseTrain);
+        T19FontEvidenceRecorder.Result t19 =
+                T19FontEvidenceRecorder.record(
+                        output,
+                        artifacts,
+                        qpdfPin,
+                        pdfiumPin,
+                        imageMagickPin,
+                        t19VisualProfile,
+                        releaseTrain);
 
         System.out.println("Acceptance Profile determination: "
                 + profileDetermination.recordValue());
@@ -546,6 +554,12 @@ public final class AcceptanceEvidenceCommand {
         System.out.println("T18 syntax chain: " + t18.syntax.recordValue());
         System.out.println("T18 semantic chain: " + t18.semantic.recordValue());
         System.out.println("T18 visual chain: " + t18.visual.recordValue());
+        System.out.println("T19 syntax chain: "
+                + t19.syntax().recordValue());
+        System.out.println("T19 semantic chain: "
+                + t19.semantic().recordValue());
+        System.out.println("T19 visual chain: "
+                + t19.visual().recordValue());
     }
 
     private interface ProductCreator {
@@ -729,67 +743,13 @@ public final class AcceptanceEvidenceCommand {
                         releaseTrain,
                         semantic));
 
-        EvidenceResult syntaxResult;
-        String observedVersion;
-        String syntaxFinding;
-        String findings;
-        try {
-            ProcessResult version = ExternalProcess.run(
-                    qpdfPin.executable(), output, "--version");
-            observedVersion = qpdfVersion(version.combinedOutput());
-            if (version.exitCode != 0
-                    || !qpdfPin.version().equals(observedVersion)) {
-                syntaxResult = EvidenceResult.INDETERMINATE;
-                syntaxFinding = "Expected pinned qpdf version `"
-                        + qpdfPin.version() + "`; observed `"
-                        + observedVersion + "`.";
-                findings = t17IndeterminateToolFindings(
-                        inputHash,
-                        observedVersion,
-                        syntaxFinding,
-                        qpdfPin);
-            } else {
-                ProcessResult check = ExternalProcess.run(
-                        qpdfPin.executable(),
-                        artifacts,
-                        "--check",
-                        T17_ARTIFACT);
-                if (check.exitCode == 0) {
-                    syntaxResult = EvidenceResult.PASS;
-                    syntaxFinding = "qpdf completed `--check` for the T17 product with exit code `0`.";
-                } else if (check.exitCode == 2 || check.exitCode == 3) {
-                    syntaxResult = EvidenceResult.FAIL;
-                    syntaxFinding = "qpdf reported warnings or errors for a T17 product.";
-                } else {
-                    syntaxResult = EvidenceResult.INDETERMINATE;
-                    syntaxFinding = "qpdf returned an undocumented status for a T17 product.";
-                }
-                findings = t17QpdfFindings(
-                        inputHash,
-                        check,
-                        syntaxResult,
-                        qpdfPin);
-            }
-        } catch (IOException unavailable) {
-            syntaxResult = EvidenceResult.INDETERMINATE;
-            observedVersion = "unavailable";
-            syntaxFinding = "The pinned qpdf tool was unavailable.";
-            findings = t17IndeterminateToolFindings(
-                    inputHash,
-                    observedVersion,
-                    syntaxFinding,
-                    qpdfPin);
-        }
-        write(artifacts.resolve(T17_QPDF_FINDINGS), findings);
-        write(output.resolve(
-                        "T17-canvas-vector-positioned-text-syntax.md"),
-                t17SyntaxRecord(
-                        inputHash,
-                        releaseTrain,
-                        observedVersion,
-                        syntaxResult,
-                        syntaxFinding,
-                        qpdfPin));
+        EvidenceResult syntaxResult = QpdfSyntaxRecorder.record(
+                output,
+                artifacts,
+                qpdfPin,
+                inputHash,
+                releaseTrain,
+                T17_QPDF_PROFILE);
         return new T17Evidence(syntaxResult, semantic.result());
     }
 
@@ -812,12 +772,13 @@ public final class AcceptanceEvidenceCommand {
         write(output.resolve(T18_SEMANTIC_RECORD),
                 t18SemanticRecord(inputHash, releaseTrain, semantic));
 
-        SyntaxEvidence syntax = recordT18Syntax(
+        EvidenceResult syntax = QpdfSyntaxRecorder.record(
                 output,
                 artifacts,
                 qpdfPin,
                 inputHash,
-                releaseTrain);
+                releaseTrain,
+                T18_QPDF_PROFILE);
         VisualEvidence visual = VisualEvidenceRecorder.record(
                 VisualEvidenceChain.t18(),
                 artifact,
@@ -832,100 +793,9 @@ public final class AcceptanceEvidenceCommand {
                 visual.rawFindings());
         write(output.resolve(visualChain.recordName()), visual.record());
         return new T18Evidence(
-                syntax.result,
+                syntax,
                 semantic.result(),
                 visual.result());
-    }
-
-    private static SyntaxEvidence recordT18Syntax(
-            Path output,
-            Path artifacts,
-            QpdfPin qpdfPin,
-            String inputHash,
-            String releaseTrain) throws IOException {
-        EvidenceResult result;
-        String observedVersion;
-        String finding;
-        String findings;
-        try {
-            ProcessResult version = ExternalProcess.run(
-                    qpdfPin.executable(), output, "--version");
-            observedVersion = qpdfVersion(version.combinedOutput());
-            if (version.exitCode != 0
-                    || !qpdfPin.version().equals(observedVersion)) {
-                result = EvidenceResult.INDETERMINATE;
-                finding = "Expected pinned qpdf version `" + qpdfPin.version()
-                        + "`; observed `" + observedVersion + "`.";
-                findings = t18IndeterminateQpdfFindings(
-                        inputHash, observedVersion, finding, qpdfPin);
-            } else {
-                ProcessResult check = ExternalProcess.run(
-                        qpdfPin.executable(), artifacts, "--check", T18_ARTIFACT);
-                if (check.exitCode == 0) {
-                    result = EvidenceResult.PASS;
-                    finding = "qpdf completed `--check` for the T18 product with exit code `0`.";
-                } else if (check.exitCode == 2 || check.exitCode == 3) {
-                    result = EvidenceResult.FAIL;
-                    finding = "qpdf reported warnings or errors for a T18 product.";
-                } else {
-                    result = EvidenceResult.INDETERMINATE;
-                    finding = "qpdf returned an undocumented status for a T18 product.";
-                }
-                findings = t18QpdfFindings(inputHash, check, result, qpdfPin);
-            }
-        } catch (InterruptedException interrupted) {
-            Thread.currentThread().interrupt();
-            result = EvidenceResult.INDETERMINATE;
-            observedVersion = "unavailable";
-            finding = "The pinned qpdf process was interrupted.";
-            findings = t18IndeterminateQpdfFindings(
-                    inputHash, observedVersion, finding, qpdfPin);
-        } catch (IOException unavailable) {
-            result = EvidenceResult.INDETERMINATE;
-            observedVersion = "unavailable";
-            finding = "The pinned qpdf tool was unavailable.";
-            findings = t18IndeterminateQpdfFindings(
-                    inputHash, observedVersion, finding, qpdfPin);
-        }
-        write(artifacts.resolve(T18_QPDF_FINDINGS), findings);
-        write(output.resolve(T18_SYNTAX_RECORD), t18SyntaxRecord(
-                inputHash,
-                releaseTrain,
-                observedVersion,
-                result,
-                finding,
-                qpdfPin));
-        return new SyntaxEvidence(result);
-    }
-
-    private static String t18SyntaxRecord(
-            String inputHash,
-            String releaseTrain,
-            String producerVersion,
-            EvidenceResult result,
-            String finding,
-            QpdfPin qpdfPin) {
-        return "# T18 qpdf syntax evidence\n\n"
-                + metadata("Capability", T18_CAPABILITY)
-                + metadata("Acceptance Profile", T18_ACCEPTANCE_PROFILE)
-                + metadata("Profile record", T18_PROFILE_RECORD)
-                + metadata("Release train", releaseTrain)
-                + metadata("Chain", "syntax")
-                + metadata("Result", result.recordValue())
-                + metadata("Producer kind", "external-tool")
-                + metadata("Producer", "qpdf")
-                + metadata("Producer version", producerVersion)
-                + metadata("Tool distribution SHA-256", qpdfPin.archiveSha256())
-                + metadata("Input ID-neutral SHA-256", inputHash)
-                + metadata("Input hash policy", EvidenceFiles.inputHashPolicy())
-                + "Final determination: `" + result.recordValue() + "`\n\n"
-                + "## Findings and artifact\n\n"
-                + "- Product: [`artifacts/" + T18_ARTIFACT + "`](artifacts/"
-                + T18_ARTIFACT + ")\n"
-                + "- qpdf findings: [`artifacts/" + T18_QPDF_FINDINGS
-                + "`](artifacts/" + T18_QPDF_FINDINGS + ")\n"
-                + "- " + finding + "\n\n"
-                + "This syntax chain does not establish PDF standards conformance.\n";
     }
 
     private static String t18SemanticRecord(
@@ -952,73 +822,6 @@ public final class AcceptanceEvidenceCommand {
                 + "`](artifacts/" + T18_SEMANTIC_FINDINGS + ")\n"
                 + "- " + semantic.recordFinding() + "\n\n"
                 + "Expected semantics are project-owned public Canvas and resource-query values.\n";
-    }
-
-    private static String t18QpdfFindings(
-            String inputHash,
-            ProcessResult check,
-            EvidenceResult result,
-            QpdfPin qpdfPin) {
-        return "# T18 qpdf syntax findings\n\n"
-                + metadata("Input ID-neutral SHA-256", inputHash)
-                + metadata("Input hash policy", EvidenceFiles.inputHashPolicy())
-                + metadata("Tool", "qpdf")
-                + metadata("Tool version", qpdfPin.version())
-                + metadata("Distribution SHA-256", qpdfPin.archiveSha256())
-                + "Final determination: `" + result.recordValue() + "`\n\n"
-                + "## " + T18_ARTIFACT + "\n\n"
-                + "Invocation: `qpdf --check " + T18_ARTIFACT + "`\n\n"
-                + "`" + T18_ARTIFACT + "` exit code: `" + check.exitCode
-                + "`\n\n### Standard output\n\n```text\n"
-                + check.standardOutput + fencedEnding(check.standardOutput)
-                + "### Standard error\n\n```text\n" + check.standardError
-                + finalFencedEnding(check.standardError);
-    }
-
-    private static String t18IndeterminateQpdfFindings(
-            String inputHash,
-            String observedVersion,
-            String finding,
-            QpdfPin qpdfPin) {
-        return "# T18 qpdf syntax findings\n\n"
-                + metadata("Input ID-neutral SHA-256", inputHash)
-                + metadata("Input hash policy", EvidenceFiles.inputHashPolicy())
-                + metadata("Tool", "qpdf")
-                + metadata("Tool version", observedVersion)
-                + metadata("Distribution SHA-256", qpdfPin.archiveSha256())
-                + "Final determination: `indeterminate`\n\n" + finding + "\n";
-    }
-
-    private static String t17SyntaxRecord(
-            String inputHash,
-            String releaseTrain,
-            String producerVersion,
-            EvidenceResult result,
-            String finding,
-            QpdfPin qpdfPin) {
-        return "# T17 qpdf syntax evidence\n\n"
-                + metadata("Capability", T17_CAPABILITY)
-                + metadata("Acceptance Profile", T17_ACCEPTANCE_PROFILE)
-                + metadata("Profile record", T17_PROFILE_RECORD)
-                + metadata("Release train", releaseTrain)
-                + metadata("Chain", "syntax")
-                + metadata("Result", result.recordValue())
-                + metadata("Producer kind", "external-tool")
-                + metadata("Producer", "qpdf")
-                + metadata("Producer version", producerVersion)
-                + metadata("Tool distribution SHA-256",
-                        qpdfPin.archiveSha256())
-                + metadata("Input ID-neutral SHA-256", inputHash)
-                + metadata("Input hash policy",
-                        EvidenceFiles.inputHashPolicy())
-                + "Final determination: `" + result.recordValue() + "`\n\n"
-                + "## Findings and artifact\n\n"
-                + "- Product: [`artifacts/" + T17_ARTIFACT
-                + "`](artifacts/" + T17_ARTIFACT + ")\n"
-                + "- qpdf findings: [`artifacts/" + T17_QPDF_FINDINGS
-                + "`](artifacts/" + T17_QPDF_FINDINGS + ")\n"
-                + "- " + finding + "\n\n"
-                + "This syntax chain does not establish PDF standards conformance. The standards and visual chains remain absent.\n";
     }
 
     private static String t17SemanticRecord(
@@ -1051,49 +854,6 @@ public final class AcceptanceEvidenceCommand {
                 + "The expected semantics are project-owned Canvas Program values. The standards and visual chains remain absent.\n";
     }
 
-    private static String t17QpdfFindings(
-            String inputHash,
-            ProcessResult check,
-            EvidenceResult result,
-            QpdfPin qpdfPin) {
-        return "# T17 qpdf syntax findings\n\n"
-                + metadata("Input ID-neutral SHA-256", inputHash)
-                + metadata("Input hash policy",
-                        EvidenceFiles.inputHashPolicy())
-                + metadata("Tool", "qpdf")
-                + metadata("Tool version", qpdfPin.version())
-                + metadata("Distribution SHA-256",
-                        qpdfPin.archiveSha256())
-                + "Final determination: `" + result.recordValue() + "`\n\n"
-                + "## " + T17_ARTIFACT + "\n\n"
-                + "Invocation: `qpdf --check " + T17_ARTIFACT + "`\n\n"
-                + "`" + T17_ARTIFACT + "` exit code: `"
-                + check.exitCode + "`\n\n"
-                + "### Standard output\n\n```text\n"
-                + check.standardOutput
-                + fencedEnding(check.standardOutput)
-                + "### Standard error\n\n```text\n"
-                + check.standardError
-                + finalFencedEnding(check.standardError);
-    }
-
-    private static String t17IndeterminateToolFindings(
-            String inputHash,
-            String observedVersion,
-            String finding,
-            QpdfPin qpdfPin) {
-        return "# T17 qpdf syntax findings\n\n"
-                + metadata("Input ID-neutral SHA-256", inputHash)
-                + metadata("Input hash policy",
-                        EvidenceFiles.inputHashPolicy())
-                + metadata("Tool", "qpdf")
-                + metadata("Tool version", observedVersion)
-                + metadata("Distribution SHA-256",
-                        qpdfPin.archiveSha256())
-                + "Final determination: `indeterminate`\n\n"
-                + finding + "\n";
-    }
-
     private static final class T17Evidence {
 
         private final EvidenceResult syntax;
@@ -1104,14 +864,6 @@ public final class AcceptanceEvidenceCommand {
                 EvidenceResult semantic) {
             this.syntax = syntax;
             this.semantic = semantic;
-        }
-    }
-
-    private static final class SyntaxEvidence {
-        private final EvidenceResult result;
-
-        SyntaxEvidence(EvidenceResult result) {
-            this.result = result;
         }
     }
 
@@ -2739,35 +2491,6 @@ public final class AcceptanceEvidenceCommand {
                 + finding + "\n";
     }
 
-    private static String syntaxRecord(
-            String inputHash,
-            String releaseTrain,
-            String producerVersion,
-            EvidenceResult result,
-            String finding,
-            QpdfPin qpdfPin) {
-        return "# T06 qpdf syntax evidence\n\n"
-                + metadata("Capability", CAPABILITY)
-                + metadata("Acceptance Profile", ACCEPTANCE_PROFILE)
-                + metadata("Profile record", PROFILE_RECORD)
-                + metadata("Release train", releaseTrain)
-                + metadata("Chain", "syntax")
-                + metadata("Result", result.recordValue())
-                + metadata("Producer kind", "external-tool")
-                + metadata("Producer", "qpdf")
-                + metadata("Producer version", producerVersion)
-                + metadata("Tool distribution SHA-256", qpdfPin.archiveSha256())
-                + metadata("Input ID-neutral SHA-256", inputHash)
-                + metadata("Input hash policy", EvidenceFiles.inputHashPolicy())
-                + "Final determination: `" + result.recordValue() + "`\n\n"
-                + "## Findings and artifacts\n\n"
-                + "- Input PDF: [`artifacts/" + ARTIFACT_NAME + "`](artifacts/"
-                + ARTIFACT_NAME + ")\n"
-                + "- qpdf findings: [`artifacts/" + QPDF_FINDINGS_NAME + "`](artifacts/"
-                + QPDF_FINDINGS_NAME + ")\n"
-                + "- " + finding + "\n";
-    }
-
     private static String semanticRecord(
             String inputHash,
             String releaseTrain,
@@ -2853,51 +2576,7 @@ public final class AcceptanceEvidenceCommand {
         return value.append("\n\n").toString();
     }
 
-    private static String qpdfFindings(
-            ProcessResult result,
-            String inputHash,
-            QpdfPin qpdfPin) {
-        return "# qpdf syntax findings\n\n"
-                + metadata("Input ID-neutral SHA-256", inputHash)
-                + metadata("Input hash policy", EvidenceFiles.inputHashPolicy())
-                + metadata("Tool", "qpdf")
-                + metadata("Tool version", qpdfPin.version())
-                + metadata("Distribution SHA-256", qpdfPin.archiveSha256())
-                + "Invocation: `qpdf --check " + ARTIFACT_NAME + "`\n\n"
-                + "Exit code: `" + result.exitCode + "`\n\n"
-                + "## Standard output\n\n```text\n"
-                + result.standardOutput + fencedEnding(result.standardOutput)
-                + "## Standard error\n\n```text\n"
-                + result.standardError + finalFencedEnding(result.standardError);
-    }
-
-    private static String unavailableQpdfFindings(String inputHash, QpdfPin qpdfPin) {
-        return "# qpdf syntax findings\n\n"
-                + metadata("Input ID-neutral SHA-256", inputHash)
-                + metadata("Input hash policy", EvidenceFiles.inputHashPolicy())
-                + metadata("Tool", "qpdf")
-                + metadata("Tool version", "unavailable")
-                + metadata("Distribution SHA-256", qpdfPin.archiveSha256())
-                + "Final determination: `indeterminate`\n\n"
-                + "The pinned qpdf tool was unavailable.\n";
-    }
-
-    private static String unpinnedQpdfFindings(
-            String inputHash,
-            String observedVersion,
-            QpdfPin qpdfPin) {
-        return "# qpdf syntax findings\n\n"
-                + metadata("Input ID-neutral SHA-256", inputHash)
-                + metadata("Input hash policy", EvidenceFiles.inputHashPolicy())
-                + metadata("Tool", "qpdf")
-                + metadata("Tool version", observedVersion)
-                + metadata("Distribution SHA-256", qpdfPin.archiveSha256())
-                + "Final determination: `indeterminate`\n\n"
-                + "Expected pinned qpdf version `" + qpdfPin.version()
-                + "`; observed `" + observedVersion + "`.\n";
-    }
-
-    private static String qpdfVersion(String output) {
+    static String qpdfVersion(String output) {
         String prefix = "qpdf version ";
         for (String line : output.split("\\r?\\n")) {
             if (line.startsWith(prefix)) {

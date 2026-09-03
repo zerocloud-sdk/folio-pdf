@@ -8,7 +8,7 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Release train: `0.1.0-SNAPSHOT`
 - Stable entries: `0`
 - Preview entries: `12`
-- Explicit capability exclusions: `11`
+- Explicit capability exclusions: `12`
 
 ## Stable surfaces
 
@@ -151,6 +151,13 @@ No stable surfaces are declared.
 - Behavioral capability: [`composition.canvas.images-colors-transparency`](capability-matrix.md#capability-composition_dot_canvas_dot_images_dash_colors_dash_transparency)
 - Deferred ticket: `T18`
 - Reason: T18 is a Composition-owned Native Interface Canvas image, color, mask, and transparency extension with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+
+<a id="excluded-capability-composition_dot_fonts_dot_load_dash_embed_dash_subset_dash_fallback"></a>
+### `composition.fonts.load-embed-subset-fallback`
+
+- Behavioral capability: [`composition.fonts.load-embed-subset-fallback`](capability-matrix.md#capability-composition_dot_fonts_dot_load_dash_embed_dash_subset_dash_fallback)
+- Deferred ticket: `T19`
+- Reason: T19 is a Composition-owned Native Interface explicit font-source, embedding, subsetting, Unicode-mapping, metrics, and ordered-fallback seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
 
 <a id="excluded-capability-conversion_dot_capability_dash_provider_dot_select_dash_execute"></a>
 ### `conversion.capability-provider.select-execute`

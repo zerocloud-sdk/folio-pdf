@@ -339,6 +339,19 @@ is discoverable through a project-owned Query. See the authoritative
 for the exact format/filter matrix, ownership, reuse, accounting, failure,
 preservation, and codec-availability contracts.
 
+T19 adds a separate `DrawPositionedUnicodeText` command for deterministic unshaped
+Unicode text backed only by caller-supplied `FontSource` declarations or an
+explicit, declaration-ordered `ReferenceFontSet` in the Workflow Environment.
+Version 1 supports bounded standalone quadratic TrueType programs, strict
+primary-first fallback, embedding permissions, subsetting or documented full
+embedding, source metrics, ToUnicode, and same-Session resource reuse. The
+four non-clipping text modes are supported; clipping modes are rejected. The
+offline defaults contain no fonts and never scan installed fonts or resolve a
+network source. See the authoritative
+[explicit font loading and positioned Unicode text guide](docs/font-loading.md)
+for API use, ownership, the closed format matrix, exact limits, stable
+failures, publication policy, evidence status, and exclusions.
+
 Successful `WorkflowOutcome` values identify the capability, the in-process
 execution profile, the selected Save Mode, safe diagnostics, and every Target
 receipt, plus any declaration-ordered Capability Provider selections. A
