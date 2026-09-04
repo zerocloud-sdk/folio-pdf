@@ -2,6 +2,7 @@ package net.zerocloud.pdf;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.SecureRandom;
 import java.time.Clock;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,10 @@ public final class WorkflowEnvironment {
                     ProviderCatalog.empty(),
                     ReferenceFontSet.empty(),
                     WorkflowResourcePolicy.safeDefaults(),
-                    systemTemporaryDirectory());
+                    systemTemporaryDirectory(),
+                    HardenedWorkerSettings.safeDefaults(),
+                    new SecureRandom(),
+                    null);
 
     private final Clock clock;
     private final ProviderCatalog providerCatalog;
@@ -42,19 +46,30 @@ public final class WorkflowEnvironment {
     private final WorkflowResourcePolicy defaultResourcePolicy;
     private final Path temporaryDirectory;
     private final WorkflowConcurrencyGate concurrencyGate;
+    private final HardenedWorkerSettings hardenedWorkerSettings;
+    private final SecureRandom secureRandom;
+    private final WorkflowResourceContext.OwnedMemoryAuthority
+            ownedMemoryAuthority;
 
     private WorkflowEnvironment(
             Clock clock,
             ProviderCatalog providerCatalog,
             ReferenceFontSet referenceFontSet,
             WorkflowResourcePolicy defaultResourcePolicy,
-            Path temporaryDirectory) {
+            Path temporaryDirectory,
+            HardenedWorkerSettings hardenedWorkerSettings,
+            SecureRandom secureRandom,
+            WorkflowResourceContext.OwnedMemoryAuthority
+                    ownedMemoryAuthority) {
         this.clock = clock;
         this.providerCatalog = providerCatalog;
         this.referenceFontSet = referenceFontSet;
         this.defaultResourcePolicy = defaultResourcePolicy;
         this.temporaryDirectory = temporaryDirectory;
         this.concurrencyGate = new WorkflowConcurrencyGate();
+        this.hardenedWorkerSettings = hardenedWorkerSettings;
+        this.secureRandom = secureRandom;
+        this.ownedMemoryAuthority = ownedMemoryAuthority;
     }
 
     /**
@@ -78,7 +93,10 @@ public final class WorkflowEnvironment {
                 ProviderCatalog.empty(),
                 ReferenceFontSet.empty(),
                 WorkflowResourcePolicy.safeDefaults(),
-                systemTemporaryDirectory());
+                systemTemporaryDirectory(),
+                HardenedWorkerSettings.safeDefaults(),
+                new SecureRandom(),
+                null);
     }
 
     /**
@@ -109,6 +127,11 @@ public final class WorkflowEnvironment {
         return defaultResourcePolicy;
     }
 
+    /** Returns the immutable local Worker transport and isolation settings. */
+    public HardenedWorkerSettings getHardenedWorkerSettings() {
+        return hardenedWorkerSettings;
+    }
+
     Clock getClock() {
         return clock;
     }
@@ -129,6 +152,14 @@ public final class WorkflowEnvironment {
         return concurrencyGate;
     }
 
+    SecureRandom getSecureRandom() {
+        return secureRandom;
+    }
+
+    WorkflowResourceContext.OwnedMemoryAuthority getOwnedMemoryAuthority() {
+        return ownedMemoryAuthority;
+    }
+
     private static Path systemTemporaryDirectory() {
         return Paths.get(System.getProperty("java.io.tmpdir", "."))
                 .toAbsolutePath()
@@ -145,6 +176,11 @@ public final class WorkflowEnvironment {
         private WorkflowResourcePolicy defaultResourcePolicy =
                 WorkflowResourcePolicy.safeDefaults();
         private Path temporaryDirectory = systemTemporaryDirectory();
+        private HardenedWorkerSettings hardenedWorkerSettings =
+                HardenedWorkerSettings.safeDefaults();
+        private SecureRandom secureRandom = new SecureRandom();
+        private WorkflowResourceContext.OwnedMemoryAuthority
+                ownedMemoryAuthority;
 
         private Builder() {
         }
@@ -214,6 +250,26 @@ public final class WorkflowEnvironment {
         }
 
         /**
+         * Sets the bounded local Worker transport and isolation settings.
+         *
+         * @param settings immutable Hardened Worker settings
+         * @return this builder
+         */
+        public Builder hardenedWorkerSettings(
+                HardenedWorkerSettings settings) {
+            this.hardenedWorkerSettings = Objects.requireNonNull(
+                    settings,
+                    "settings");
+            return this;
+        }
+
+        Builder ownedMemoryAuthority(
+                WorkflowResourceContext.OwnedMemoryAuthority value) {
+            ownedMemoryAuthority = Objects.requireNonNull(value, "value");
+            return this;
+        }
+
+        /**
          * Builds a detached immutable environment.
          *
          * @return the configured environment
@@ -224,7 +280,10 @@ public final class WorkflowEnvironment {
                     ProviderCatalog.of(providers),
                     referenceFontSet,
                     defaultResourcePolicy,
-                    temporaryDirectory);
+                    temporaryDirectory,
+                    hardenedWorkerSettings,
+                    secureRandom,
+                    ownedMemoryAuthority);
         }
     }
 }

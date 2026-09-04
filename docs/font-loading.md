@@ -52,6 +52,19 @@ shared `WorkflowEnvironment`. Configure it with
 with `FontSelection.referenceFontSet()`. System defaults contain an empty
 Reference Font Set.
 
+Under `HARDENED_WORKER`, neither the Reference Font Set nor explicit Font
+Sources are opened during Worker startup. The caller-side proxy resolves them
+only for a positioned-text Command. Encoding that Command applies the
+declaration and source-count checks and carries opaque source identifiers, not
+font-program bytes. As the Worker evaluates the selection in declaration
+order, it requests each program separately; the parent then opens that source
+under the same aggregate-byte bound, first-excess behavior, and caller-
+ownership rules and returns one bounded `FONT_VALUE` frame. An unused missing
+reference path therefore has no effect. Identical one-shot stream or channel
+declarations remain cached only for the life of the proxy Session, while path
+sources retain command-time observation. Each requested font program must fit
+the configured Worker message limit; it is not embedded in the Command frame.
+
 ## Closed version-1 profile matrix
 
 | Font data or profile | Version-1 outcome |
@@ -219,9 +232,9 @@ succeeds and the first excess fails atomically with `FONT_LIMIT_EXCEEDED`:
   delimiters but excluding retained existing streams and embedded font data.
 
 These command-local bounds constrain T19 materialization and compose with
-T20's finite transaction-wide trusted in-process policy. Hard process,
-memory, CPU, network, and termination isolation for hostile multi-tenant input
-remains T21 scope.
+T20's finite transaction-wide policy. Callers that need process, heap/direct-
+memory, CPU, network, filesystem, and hard-termination controls can select the
+T21 Hardened Worker profile within its documented Linux/JDK envelope.
 
 ## Preservation, publication, and failures
 

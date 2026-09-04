@@ -45,6 +45,9 @@ final class PdfBoxDocumentSession implements DocumentSession {
     private final WorkflowResourceContext resources;
     private String outcomeCapabilityId;
     private boolean mutationOccurred;
+    private int pendingWorkerPreflightDetails =
+            WorkerCommandCodec.PREFLIGHT_DETAILS_NONE;
+    private int pendingWorkerPreflightPageNumber;
     private volatile boolean active;
 
     PdfBoxDocumentSession(
@@ -138,6 +141,19 @@ final class PdfBoxDocumentSession implements DocumentSession {
         }
     }
 
+    @Override
+    public void executeBatch(
+            List<? extends DocumentCommand> commands)
+            throws DocumentFailure {
+        requireActiveOwner();
+        List<DocumentCommand> copied =
+                DocumentWorkflow.copyAndValidateCommands(commands);
+        resources.checkpoint();
+        for (DocumentCommand command : copied) {
+            execute(command);
+        }
+    }
+
     private void executeChecked(DocumentCommand command)
             throws DocumentFailure {
         positionedUnicodeTextOperations.finalizeFonts();
@@ -145,6 +161,9 @@ final class PdfBoxDocumentSession implements DocumentSession {
         boolean canvasCommand = canvasOperations.supports(command);
         boolean positionedUnicodeTextCommand =
                 positionedUnicodeTextOperations.supports(command);
+        if (!positionedUnicodeTextCommand) {
+            positionedUnicodeTextOperations.clearWorkerPreflight();
+        }
         if (saveMode == SaveMode.REWRITE
                 && signaturePolicy.hasExistingSignatures()) {
             throw signatureFailure(command);
@@ -267,6 +286,271 @@ final class PdfBoxDocumentSession implements DocumentSession {
         throw PdfBoxWorkflowEngine.failure(
                 DocumentFailureCode.COMMAND_REJECTED,
                 "The command is not supported by this workflow version.");
+    }
+
+    int preflightWorkerCommand(
+            int category,
+            int pageNumber) throws DocumentFailure {
+        requireActiveOwner();
+        try {
+            pendingWorkerPreflightDetails =
+                    WorkerCommandCodec.PREFLIGHT_DETAILS_NONE;
+            pendingWorkerPreflightPageNumber = 0;
+            positionedUnicodeTextOperations.clearWorkerPreflight();
+            canvasOperations.clearWorkerPreflight();
+            resources.checkpoint();
+            positionedUnicodeTextOperations.finalizeFonts();
+            pageOperations.requireCommandAllowed();
+            if (saveMode == SaveMode.REWRITE
+                    && signaturePolicy.hasExistingSignatures()) {
+                throw workerSignatureFailure(category);
+            }
+            if (saveMode == SaveMode.INCREMENTAL
+                    && (category == WorkerCommandCodec.PREFLIGHT_UNKNOWN
+                            || category == WorkerCommandCodec.PREFLIGHT_SPLIT)) {
+                throw PdfBoxWorkflowEngine.incrementalFailure(
+                        DocumentFailureCode.INCREMENTAL_COMMAND_REJECTED,
+                        "The command is not supported for INCREMENTAL publication.");
+            }
+            if (saveMode == SaveMode.INCREMENTAL
+                    && signaturePolicy.hasExistingSignatures()
+                    && (category
+                            != WorkerCommandCodec.PREFLIGHT_ANNOTATIONS
+                            || !signaturePolicy
+                                    .permitsWorkerAnnotationUpdates())) {
+                throw workerSignatureFailure(category);
+            }
+            if (saveMode == SaveMode.INCREMENTAL
+                    && category == WorkerCommandCodec.PREFLIGHT_ANNOTATIONS
+                    && signaturePolicy
+                            .requiresWorkerNonWidgetAnnotationPolicy()) {
+                pendingWorkerPreflightDetails =
+                        WorkerCommandCodec.PREFLIGHT_DETAILS_ANNOTATIONS;
+                return pendingWorkerPreflightDetails;
+            }
+            preflightWorkerPermission(category);
+            if (category == WorkerCommandCodec.PREFLIGHT_CANVAS_V1
+                    || category == WorkerCommandCodec.PREFLIGHT_CANVAS_V2) {
+                pendingWorkerPreflightDetails =
+                        WorkerCommandCodec.PREFLIGHT_DETAILS_CANVAS;
+                pendingWorkerPreflightPageNumber = pageNumber;
+                return pendingWorkerPreflightDetails;
+            }
+            if (category == WorkerCommandCodec.PREFLIGHT_POSITIONED_TEXT) {
+                pendingWorkerPreflightDetails =
+                        WorkerCommandCodec.PREFLIGHT_DETAILS_POSITIONED_TEXT;
+                pendingWorkerPreflightPageNumber = pageNumber;
+                return pendingWorkerPreflightDetails;
+            }
+            resources.checkpoint();
+            return WorkerCommandCodec.PREFLIGHT_DETAILS_NONE;
+        } catch (DocumentFailure failure) {
+            resources.rethrowTerminalFailure();
+            throw failure;
+        } catch (RuntimeException failure) {
+            resources.rethrowResourceOrTerminalFailure(failure);
+            throw failure;
+        }
+    }
+
+    int completeWorkerAnnotationWidgetPreflight(boolean containsWidget)
+            throws DocumentFailure {
+        requireActiveOwner();
+        if (pendingWorkerPreflightDetails
+                != WorkerCommandCodec.PREFLIGHT_DETAILS_ANNOTATIONS) {
+            throw WorkerCommandCodec.rejected(
+                    "The Worker annotation preflight detail is inapplicable.");
+        }
+        try {
+            if (containsWidget) {
+                pendingWorkerPreflightDetails =
+                        WorkerCommandCodec.PREFLIGHT_DETAILS_NONE;
+                annotationOperations.requireNonWidgetSignatureUpdate(
+                        true,
+                        java.util.Collections.<String>emptySet());
+            }
+            pendingWorkerPreflightDetails = WorkerCommandCodec
+                    .PREFLIGHT_DETAILS_ANNOTATION_IDENTIFIERS;
+            resources.checkpoint();
+            return pendingWorkerPreflightDetails;
+        } catch (DocumentFailure failure) {
+            resources.rethrowTerminalFailure();
+            throw failure;
+        } catch (RuntimeException failure) {
+            resources.rethrowResourceOrTerminalFailure(failure);
+            throw failure;
+        }
+    }
+
+    void completeWorkerAnnotationPreflight(
+            java.util.Set<String> annotationIdentifiers)
+            throws DocumentFailure {
+        requireActiveOwner();
+        if (pendingWorkerPreflightDetails != WorkerCommandCodec
+                .PREFLIGHT_DETAILS_ANNOTATION_IDENTIFIERS) {
+            throw WorkerCommandCodec.rejected(
+                    "The Worker annotation preflight detail is inapplicable.");
+        }
+        pendingWorkerPreflightDetails =
+                WorkerCommandCodec.PREFLIGHT_DETAILS_NONE;
+        try {
+            annotationOperations.requireNonWidgetSignatureUpdate(
+                    false,
+                    annotationIdentifiers);
+            preflightWorkerPermission(
+                    WorkerCommandCodec.PREFLIGHT_ANNOTATIONS);
+            resources.checkpoint();
+        } catch (DocumentFailure failure) {
+            resources.rethrowTerminalFailure();
+            throw failure;
+        } catch (RuntimeException failure) {
+            resources.rethrowResourceOrTerminalFailure(failure);
+            throw failure;
+        }
+    }
+
+    void completeWorkerPositionedTextPreflight(
+            PdfBoxPositionedTextOperations.WorkerPreflight preflight)
+            throws DocumentFailure {
+        requireActiveOwner();
+        if (pendingWorkerPreflightDetails
+                != WorkerCommandCodec.PREFLIGHT_DETAILS_POSITIONED_TEXT) {
+            throw WorkerCommandCodec.rejected(
+                    "The Worker positioned-text preflight detail is inapplicable.");
+        }
+        int pageNumber = pendingWorkerPreflightPageNumber;
+        pendingWorkerPreflightDetails =
+                WorkerCommandCodec.PREFLIGHT_DETAILS_NONE;
+        try {
+            positionedUnicodeTextOperations.preflightWorkerCommand(
+                    pageNumber,
+                    preflight);
+            resources.checkpoint();
+        } catch (DocumentFailure failure) {
+            resources.rethrowTerminalFailure();
+            throw failure;
+        } catch (RuntimeException failure) {
+            resources.rethrowResourceOrTerminalFailure(failure);
+            throw failure;
+        }
+    }
+
+    int completeWorkerCanvasPreflight(
+            int commandVersion,
+            int programVersion,
+            boolean limitsPresent,
+            int limitsVersion) throws DocumentFailure {
+        requireActiveOwner();
+        if (pendingWorkerPreflightDetails
+                != WorkerCommandCodec.PREFLIGHT_DETAILS_CANVAS) {
+            throw WorkerCommandCodec.rejected(
+                    "The Worker Canvas preflight detail is inapplicable.");
+        }
+        int pageNumber = pendingWorkerPreflightPageNumber;
+        pendingWorkerPreflightDetails =
+                WorkerCommandCodec.PREFLIGHT_DETAILS_NONE;
+        try {
+            canvasOperations.preflightWorkerCommand(
+                    commandVersion,
+                    programVersion,
+                    limitsPresent,
+                    limitsVersion,
+                    pageNumber);
+            pendingWorkerPreflightDetails =
+                    WorkerCommandCodec.PREFLIGHT_DETAILS_CANVAS_PROGRAM;
+            resources.checkpoint();
+            return pendingWorkerPreflightDetails;
+        } catch (DocumentFailure failure) {
+            resources.rethrowTerminalFailure();
+            throw failure;
+        } catch (RuntimeException failure) {
+            resources.rethrowResourceOrTerminalFailure(failure);
+            throw failure;
+        }
+    }
+
+    void completeWorkerCanvasProgramPreflight() throws DocumentFailure {
+        requireActiveOwner();
+        if (pendingWorkerPreflightDetails
+                != WorkerCommandCodec.PREFLIGHT_DETAILS_CANVAS_PROGRAM) {
+            throw WorkerCommandCodec.rejected(
+                    "The Worker Canvas preflight detail is inapplicable.");
+        }
+        int pageNumber = pendingWorkerPreflightPageNumber;
+        pendingWorkerPreflightDetails =
+                WorkerCommandCodec.PREFLIGHT_DETAILS_NONE;
+        pendingWorkerPreflightPageNumber = 0;
+        try {
+            canvasOperations.preflightWorkerPreservation(pageNumber);
+            resources.checkpoint();
+        } catch (DocumentFailure failure) {
+            resources.rethrowTerminalFailure();
+            throw failure;
+        } catch (RuntimeException failure) {
+            resources.rethrowResourceOrTerminalFailure(failure);
+            throw failure;
+        }
+    }
+
+    private void preflightWorkerPermission(int category)
+            throws DocumentFailure {
+        switch (category) {
+            case WorkerCommandCodec.PREFLIGHT_ASSEMBLY:
+            case WorkerCommandCodec.PREFLIGHT_OUTLINE:
+                PdfBoxPermissionPolicy.requireAssembly(securityInfo);
+                return;
+            case WorkerCommandCodec.PREFLIGHT_SPLIT:
+                PdfBoxPermissionPolicy.requireExtraction(securityInfo);
+                return;
+            case WorkerCommandCodec.PREFLIGHT_METADATA:
+            case WorkerCommandCodec.PREFLIGHT_ACTIONS:
+                PdfBoxPermissionPolicy.requireModification(securityInfo);
+                return;
+            case WorkerCommandCodec.PREFLIGHT_ANNOTATIONS:
+                PdfBoxPermissionPolicy.requireAnnotationModification(
+                        securityInfo);
+                return;
+            case WorkerCommandCodec.PREFLIGHT_FLATTEN:
+                PdfBoxPermissionPolicy.requireAnnotationModification(
+                        securityInfo);
+                PdfBoxPermissionPolicy.requireModification(securityInfo);
+                return;
+            case WorkerCommandCodec.PREFLIGHT_CANVAS_V1:
+            case WorkerCommandCodec.PREFLIGHT_CANVAS_V2:
+                PdfBoxCanvasOperations.requireModificationPermission(
+                        securityInfo,
+                        category == WorkerCommandCodec.PREFLIGHT_CANVAS_V2
+                                ? DrawCanvas.VERSION_2
+                                : DrawCanvas.VERSION_1);
+                return;
+            case WorkerCommandCodec.PREFLIGHT_POSITIONED_TEXT:
+                PdfBoxPositionedTextOperations.requireModificationPermission(
+                        securityInfo);
+                return;
+            case WorkerCommandCodec.PREFLIGHT_PATCH:
+                PdfBoxPermissionPolicy.requireModification(securityInfo);
+                PdfBoxPermissionPolicy.requireAnnotationModification(
+                        securityInfo);
+                PdfBoxPermissionPolicy.requireAssembly(securityInfo);
+                return;
+            default:
+                return;
+        }
+    }
+
+    private static DocumentFailure workerSignatureFailure(int category) {
+        if (category == WorkerCommandCodec.PREFLIGHT_CANVAS_V1) {
+            return PdfBoxCanvasOperations.signatureFailure(
+                    net.zerocloud.pdf.composition.command.DrawCanvas.VERSION_1);
+        }
+        if (category == WorkerCommandCodec.PREFLIGHT_CANVAS_V2) {
+            return PdfBoxCanvasOperations.signatureFailure(
+                    net.zerocloud.pdf.composition.command.DrawCanvas.VERSION_2);
+        }
+        if (category == WorkerCommandCodec.PREFLIGHT_POSITIONED_TEXT) {
+            return PdfBoxPositionedTextOperations.signatureFailure();
+        }
+        return PdfBoxWorkflowEngine.signaturePolicyFailure();
     }
 
     private static DocumentFailure signatureFailure(DocumentCommand command) {
@@ -415,12 +699,35 @@ final class PdfBoxDocumentSession implements DocumentSession {
                 "The query is not supported by this workflow version.");
     }
 
+    void preflightWorkerQuery(boolean requiresExtraction)
+            throws DocumentFailure {
+        requireActiveOwner();
+        try {
+            resources.checkpoint();
+            positionedUnicodeTextOperations.finalizeFonts();
+            if (requiresExtraction) {
+                PdfBoxPermissionPolicy.requireExtraction(securityInfo);
+            }
+            resources.checkpoint();
+        } catch (DocumentFailure failure) {
+            resources.rethrowTerminalFailure();
+            throw failure;
+        } catch (RuntimeException failure) {
+            resources.rethrowResourceOrTerminalFailure(failure);
+            throw failure;
+        }
+    }
+
     void invalidate() {
         active = false;
     }
 
     String getOutcomeCapabilityId() {
         return outcomeCapabilityId;
+    }
+
+    WorkflowResourceContext getResources() {
+        return resources;
     }
 
     Map<String, PDDocument> getSplitDocuments() {

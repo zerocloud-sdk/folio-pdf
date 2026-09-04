@@ -142,9 +142,9 @@ layout, or font-program mappings. Composite-font encodings are limited to
 `Identity-H` and `Identity-V`, and Type 3 fonts are unsupported;
 marked content inside Forms, Form-stream MCRs, OBJR structure children, and
 PDF 2.0 structure namespaces fail safely instead of being approximated.
-Query-specific bounds do not
-replace the comprehensive process, memory, time, image, decompression-ratio,
-and concurrency enforcement reserved for T20/T21.
+Query-specific bounds do not replace T20's comprehensive memory, time, image,
+decompression, and concurrency policy or T21's separate opt-in Worker
+isolation.
 
 This record is implementation evidence, not independent Acceptance Evidence.
 The separate T13 qpdf record supplies a passing syntax chain only after the

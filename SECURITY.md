@@ -5,8 +5,32 @@ Folio PDF treats every PDF as potentially malicious. Public limits cover input s
 ## Execution profiles
 
 - In-process execution is for trusted desktop and controlled batch workloads.
-- The Hardened Worker Profile is mandatory for hostile multi-tenant uploads. It uses a local-only, versioned protocol, explicit resource limits, no arbitrary user code, and no network by default.
+- The opt-in Hardened Worker Profile is the T21 boundary for hostile
+  multi-tenant uploads on its supported Linux/JDK envelope. It uses a
+  separately limited local JVM, authenticated length-bounded pipes, a closed
+  Command/Query schema, private transaction files, hard parent termination,
+  an inventory/hash-checked dependency-only runtime class path, contained
+  process creation, and denied INET and Unix-domain network access. The
+  original environment Clock and deadline remain caller-thread-enforced; an
+  independent monotonic watchdog hard-stops an overlong Worker and observes
+  the explicitly thread-safe cancellation token. It never falls back to
+  in-process execution,
+  and inability to remove its private transaction root prevents a successful
+  outcome.
 - External Capability Providers are separately installed adapters. Remote disclosure of document data requires explicit caller authorization.
+
+The current Worker requires Linux `/usr/bin/prlimit` and a JDK 8, 11, 17, or
+21 runtime with the legacy Java Security Manager available. The project makes
+no certified-platform, whole-process RSS/native-memory, physical secure-
+erasure, arbitrary-bytecode sandbox, or post-crash retry claim. See the
+[Hardened Worker guide](docs/hardened-worker.md) before production deployment.
+The launcher also requires separate, unshaded Folio PDF production artifacts
+or project-only exploded production class directories; it refuses mixed
+application or test code sources instead of adding them to the Worker class
+path. First-party class-name inventories and exact dependency-JAR hashes are
+recorded in the [Hardened Worker guide](docs/hardened-worker.md) and
+[dependency record](DEPENDENCIES.md). Classpath paths containing a platform
+delimiter or JVM wildcard syntax are also refused.
 
 ## Capability Providers
 
@@ -38,7 +62,8 @@ Profile. It does not enforce the comprehensive memory, CPU, filesystem,
 network, decoded-pixel, page, object, nesting, decompression, temporary-storage,
 or concurrency controls required for hostile multi-tenant input.
 It also does not contain descendant process trees; that hard-isolation boundary
-remains T21 scope.
+is supplied only by the separate T21 Hardened Worker profile, not by the
+generic Provider adapter.
 
 ## Sensitive data
 
@@ -49,6 +74,25 @@ and idempotently overwrites its owned array on close. A workflow uses separate
 execution-local copies, clears every project-owned temporary array on success
 and failure, and never closes the caller's credential. Destroyed credentials
 fail before caller work and publication.
+
+The Hardened Worker initialization message carries password-security
+descriptors and credential-presence flags, never credential characters. The
+child requests required Source, output-owner, and output-user credentials in
+protocol order through authenticated on-demand messages. Every character and
+protocol-buffer copy is charged to the aggregate owned-memory policy and
+cleared at its transfer boundary; child-local destroyable credentials close at
+transaction teardown. The parent clears the descriptor-only initialization
+payload immediately after authenticated `READY`. Normal active-context failure
+envelopes are also accounted. Bootstrap and post-context failures have no live
+transaction ledger and use only a fixed eight-byte allowlisted descriptor,
+independently bounded by the message limit like the fixed eight-byte post-
+context finished control. The same bounded codec is permitted as an emergency
+exception path
+when a primary failure has already exhausted or poisoned an active modeled
+budget, so the stable cause is not silently replaced by connection loss. Fixed
+12-byte authenticated memory reserve, release, and grant payloads remain outside
+the ledger to prevent recursive accounting; their length and message bound are
+checked before allocation.
 
 Apache PDFBox's public password loader and protection policy require temporary
 immutable Java `String` values. Folio PDF minimizes their lifetime and closes

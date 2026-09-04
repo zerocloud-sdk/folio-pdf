@@ -60,11 +60,11 @@ is a valid stricter policy, not a contradictory declaration.
 | Concurrent workflows per environment | 4 |
 
 The version-1 public nesting ceiling is 16,384. Traversal used for this bound
-is iterative. Operations with a smaller existing stack-safe or semantic bound
-keep that smaller bound; in particular recursively materialized Document
-Patch values retain a 256-level implementation ceiling. This is the general
-composition rule: a workflow-wide bound and an operation-local bound both
-apply, and the first one exhausted supplies its own stable failure.
+is iterative, as are the T21 codecs for nested PDF Values, outline trees, and
+logical-structure trees. Operations with a smaller existing stack-safe or
+semantic bound keep that smaller bound. This is the general composition rule:
+a workflow-wide bound and an operation-local bound both apply, and the first
+one exhausted supplies its own stable failure.
 
 ## Accounting boundaries
 
@@ -115,6 +115,29 @@ Queries, Patches, named Sources, split products, or publication Targets.
   charged through the transaction. This is not a measurement or hard limit for
   the JVM heap, caller allocations, arbitrary callback code, or all transient
   allocations inside PDFBox or ImageIO.
+  In the opt-in T21 Hardened Worker, active application frame payloads and
+  codec output accumulators, decoded String and byte defensive-copy peaks,
+  decoded collection capacity, and execution-local credential copies are also
+  reserved before allocation and released at their actual lifetime. One
+  synchronized parent ledger covers parent-live and reported child allocations
+  without a static split: the parent grants each nonempty application payload,
+  the child reports other reserve/release events, and an acknowledged empty
+  synchronization follows each quiescent response before another parent
+  allocation. The authenticated memory reserve, release, and grant controls
+  are the sole active control-plane exception: their fixed 12-byte payloads
+  remain outside the ledger to prevent recursive accounting, while still being
+  authenticated and message-bounded before allocation. Declared collection
+  counts are checked against remaining wire
+  bytes and charged conservatively before capacity-bearing allocation. The
+  bootstrap payload and decoded String and collection copies are capped by the
+  parent-supplied owned-memory limit before the child transaction context
+  exists; retained initialization collection capacity remains charged after
+  `READY`. Credential characters are transferred only on demand rather than in
+  that initialization payload. Normal active-context failure envelopes are
+  accounted. Pre-context and post-context failures use a fixed eight-byte
+  allowlisted descriptor because no transaction ledger is live; an already
+  poisoned or exhausted active context may use the same bounded codec solely
+  to report the stable primary cause.
 - Temporary storage includes Source snapshots, supported filter-stage spill,
   PDFBox cache growth, staged documents and split products, and target commit
   staging. Snapshots, spill, and product staging live beneath a private
@@ -124,12 +147,21 @@ Queries, Patches, named Sources, split products, or publication Targets.
   quota and owned by the transaction. Rewritten files release their prior
   live-size charge before new bytes are charged. PDFBox uses temp-only cache,
   charged conservatively in cache-page increments, rather than an unbounded
-  heap cache.
+  heap cache. In the T21 child, every committed Worker product remains charged
+  through completion, so later products cannot reuse the earlier product's
+  live bytes; the parent adopts the same files into its transaction accounting
+  after confirmed Worker exit.
 - Elapsed time starts when the admitted transaction resource context opens and
   is measured by the environment `Clock`. Exact elapsed time is allowed; the
   first later checkpoint fails. A backwards-moving Clock contributes zero
   elapsed time until it catches up. An absolute request deadline remains
-  expired when the Clock is equal to or later than it.
+  expired when the Clock is equal to or later than it. Under T21 the parent
+  keeps this original Clock authoritative, including after authenticated
+  child `STAGED` and `VALIDATED` progress frames; the child's cooperative time
+  policy is disabled to avoid substituting its system clock. The original
+  Clock is sampled only on the caller execution thread. A monotonic parent
+  watchdog applies the same configured duration as an independent hard Worker-
+  lifetime ceiling, and RLIMIT_CPU remains an independent CPU ceiling.
 - Concurrency is nonblocking admission shared by every `DocumentWorkflow`
   using the same `WorkflowEnvironment`. Admission must satisfy both the new
   request's ceiling and every already-active request's ceiling. Rejection does
@@ -184,8 +216,22 @@ terminal path. Caller-owned streams, channels, and output streams remain open.
 ## T21 boundary
 
 This policy makes trusted desktop and controlled batch use finite by default.
-It does not isolate tenants, cap the complete JVM process, contain process
-trees, deny network syscalls, or hard-kill code that does not cooperate.
-Hostile multi-tenant input requires the future T21 Hardened Worker Profile with
-separate-process memory, CPU, wall-time, temporary-storage, and network
-enforcement. No T20 result is a substitute for that boundary.
+On its own it does not isolate tenants, cap the complete JVM process, contain
+process trees, deny network access, or hard-kill code that does not cooperate.
+
+T21 now supplies the opt-in `HARDENED_WORKER` execution profile. It runs the
+PDF engine in a separately launched local JVM, authenticates and bounds every
+closed-schema message, applies heap/direct-memory and CPU/open-file limits,
+uses caller-thread environment-Clock/deadline checkpoints plus a monotonic
+hard-stop watchdog, denies descendant process creation and INET/Unix-domain
+network access, confines Worker file access to a random owner-only transaction
+root, and leaves actual Target publication in the parent. The same T20 policy
+continues inside the child, with remaining shared temporary-storage capacity
+after parent staging and parent authority for the logical time dimensions.
+
+The in-process profile remains the backward-compatible default and is still
+not a hostile multi-tenant boundary. Deployments selecting the Worker must meet
+its fail-closed Linux/JDK requirements and must not silently fall back when it
+is unavailable. The exact controls, limitations, Worker failure codes, and
+absence of any certified-platform claim are documented in the
+[Hardened Worker guide](hardened-worker.md).

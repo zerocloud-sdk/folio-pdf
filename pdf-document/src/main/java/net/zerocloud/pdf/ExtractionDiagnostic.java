@@ -41,5 +41,6 @@ public final class ExtractionDiagnostic {
     public int getTextItemIndex() { return textItemIndex; }
     /** @return defensive source-code copy */
     public byte[] getSourceCode() { return Arrays.copyOf(sourceCode, sourceCode.length); }
+    byte[] sourceCodeForWorkflow() { return sourceCode; }
     /** @return safe diagnostic message */ public String getMessage() { return message; }
 }

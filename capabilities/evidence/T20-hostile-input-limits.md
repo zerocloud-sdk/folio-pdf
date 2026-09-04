@@ -9,8 +9,9 @@ Acceptance Profile: `T20-hostile-input-limits`
 Release train: `0.1.0-SNAPSHOT`
 
 T20 applies one finite-default, request-overridable resource policy throughout
-the trusted in-process Document Workflow. It does not implement the T21
-Hardened Worker Profile or claim hard process isolation.
+the trusted in-process Document Workflow. T21 separately composes that policy
+with the opt-in Hardened Worker Profile; T20 itself makes no hard-isolation
+claim.
 
 ## Implementation evidence
 
@@ -61,6 +62,7 @@ The owned-memory model covers declared Folio byte lifetimes, not all JVM,
 caller, PDFBox, ImageIO, native, or operating-system allocations. Cancellation
 and time enforcement are cooperative and cannot terminate arbitrary callback
 or backend code. Malformed inputs retain the owning operation's stable format
-failure when no resource limit is exhausted. T21 remains mandatory for hostile
-multi-tenant process isolation, hard termination, process-tree containment,
-and network denial.
+failure when no resource limit is exhausted. Hostile multi-tenant use must
+select T21's separate Hardened Worker Profile for its documented process
+isolation, hard Worker termination, descendant-process denial, and network
+denial.

@@ -4,12 +4,12 @@ T01 has one direct runtime dependency: Apache PDFBox 3.0.8. Maven resolves the
 following required runtime artifacts. All are permissively licensed and remain
 implementation details of `pdf-document`.
 
-| Maven coordinate | Relationship | License |
-| --- | --- | --- |
-| `org.apache.pdfbox:pdfbox:3.0.8` | direct | Apache License 2.0 |
-| `org.apache.pdfbox:pdfbox-io:3.0.8` | transitive | Apache License 2.0 |
-| `org.apache.pdfbox:fontbox:3.0.8` | transitive | Apache License 2.0 |
-| `commons-logging:commons-logging:1.4.0` | transitive | Apache License 2.0 |
+| Maven coordinate | Relationship | License | Resolved JAR SHA-256 |
+| --- | --- | --- | --- |
+| `org.apache.pdfbox:pdfbox:3.0.8` | direct | Apache License 2.0 | `97647cfbde61ebcfc06b4cf8c9b0ffcaaee073396eceb4a7f6836a9b9128903c` |
+| `org.apache.pdfbox:pdfbox-io:3.0.8` | transitive | Apache License 2.0 | `36a0e04001010b4c764857817412b96339930b19755e728959805cc0352061b2` |
+| `org.apache.pdfbox:fontbox:3.0.8` | transitive | Apache License 2.0 | `a1915c24e3edbe0ecec93896dfbf6d41427810b663ade97bd4e8bae86ec3fdab` |
+| `commons-logging:commons-logging:1.4.0` | transitive | Apache License 2.0 | `d175dbd751dd782a63bde28c7a039520e971f25e84b79c19b8435edc3603e0dc` |
 
 PDFBox declares Bouncy Castle support as optional; T01 does not select or use
 those artifacts.
@@ -171,6 +171,16 @@ qpdf/PDFium/ImageMagick Acceptance Evidence tools in their already documented
 roles. No installed font, downloaded font, network service, native shaper, or
 Migration Facade dependency is added, and no third-party notice change is
 required for project-authored fixtures.
+
+T21 adds no third-party runtime, test, build-tool, native, or external-tool
+dependency. Its fail-closed Worker launcher accepts the four required runtime
+JARs and, when TIFF is installed, the six optional TwelveMonkeys JARs only when
+the complete JAR bytes match the SHA-256 values recorded in the tables above.
+Repacked, shaded, modified, directory-form, or otherwise non-identical
+dependency artifacts are outside the supported Worker envelope even when they
+use the same Maven coordinate. This launch-time integrity rule changes no
+published dependency relationship and bundles no dependency into a Folio PDF
+artifact.
 
 T06 uses one external executable only in the opt-in, repository-only
 Acceptance Evidence path:

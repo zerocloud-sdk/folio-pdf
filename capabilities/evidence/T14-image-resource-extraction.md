@@ -126,9 +126,9 @@ Version 1 reports declaration reachability as Page Usage; it does not infer
 whether a content stream executes a resource. Decoded byte access supports only
 unfiltered, ASCIIHex, ASCII85, RunLength, and Flate image streams. Other known
 filters remain metadata-visible and unavailable for decoding, and external
-stream locations are never opened. Query-specific bounds do not replace the
-comprehensive process, memory, time, decompression-ratio, and concurrency
-enforcement reserved for T20/T21.
+stream locations are never opened. Query-specific bounds do not replace T20's
+comprehensive memory, time, decompression, and concurrency policy or T21's
+separate opt-in Worker isolation.
 
 This record is implementation evidence, not independent Acceptance Evidence.
 The separate T14 qpdf record supplies a passing syntax chain only; qpdf syntax

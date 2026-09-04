@@ -47,8 +47,9 @@ T09 changes only custom low-level values attached through a validated Patch;
 it does not change the built-in blank-page command, page resources, or the T06
 blank-document artifact and evidence records. T15 separately classifies a
 validated `DocumentPatch` as representable for unsigned incremental Sources;
-signed Sources do not authorize it. Comprehensive
-hostile-input policy remains T20, and the Hardened Worker Profile remains T21.
+signed Sources do not authorize it. T20 now supplies the comprehensive
+hostile-input policy, and T21 separately transports the T09 value and Patch
+contract through the opt-in Hardened Worker.
 
 This record is implementation evidence, not independent Acceptance Evidence.
 No syntax, standards, semantic, or visual chain is recorded for this capability,

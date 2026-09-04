@@ -80,6 +80,10 @@ public final class EmbeddedFileData {
                 : relationship;
     }
 
+    EmbeddedFile.Relationship declaredRelationshipForWorkflow() {
+        return relationship;
+    }
+
     /**
      * Returns the unfiltered byte length of the embedded content.
      *
@@ -116,6 +120,10 @@ public final class EmbeddedFileData {
      */
     public byte[] getContent() {
         return content.clone();
+    }
+
+    byte[] contentForWorkflow() {
+        return content;
     }
 
     @Override

@@ -162,6 +162,15 @@ final class PdfBoxSignaturePolicy {
                 && command instanceof UpdateAnnotations;
     }
 
+    boolean permitsWorkerAnnotationUpdates() {
+        return permission == Permission.UNSIGNED
+                || permission == Permission.NON_WIDGET_ANNOTATIONS;
+    }
+
+    boolean requiresWorkerNonWidgetAnnotationPolicy() {
+        return permission == Permission.NON_WIDGET_ANNOTATIONS;
+    }
+
     private static void inspectFields(
             COSArray roots,
             Set<COSDictionary> signatures,

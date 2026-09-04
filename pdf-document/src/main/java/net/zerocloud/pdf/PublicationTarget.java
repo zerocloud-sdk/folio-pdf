@@ -22,11 +22,17 @@ public final class PublicationTarget {
     private final Kind kind;
     private final Path path;
     private final OutputStream stream;
+    private final boolean retainTemporaryAccounting;
 
-    private PublicationTarget(Kind kind, Path path, OutputStream stream) {
+    private PublicationTarget(
+            Kind kind,
+            Path path,
+            OutputStream stream,
+            boolean retainTemporaryAccounting) {
         this.kind = kind;
         this.path = path;
         this.stream = stream;
+        this.retainTemporaryAccounting = retainTemporaryAccounting;
     }
 
     /**
@@ -39,7 +45,8 @@ public final class PublicationTarget {
         return new PublicationTarget(
                 Kind.PATH,
                 Objects.requireNonNull(path, "path"),
-                null);
+                null,
+                false);
     }
 
     /**
@@ -52,7 +59,16 @@ public final class PublicationTarget {
         return new PublicationTarget(
                 Kind.STREAM,
                 null,
-                Objects.requireNonNull(stream, "stream"));
+                Objects.requireNonNull(stream, "stream"),
+                false);
+    }
+
+    static PublicationTarget workerPath(Path path) {
+        return new PublicationTarget(
+                Kind.PATH,
+                Objects.requireNonNull(path, "path"),
+                null,
+                true);
     }
 
     Kind getKind() {
@@ -65,5 +81,9 @@ public final class PublicationTarget {
 
     OutputStream getStream() {
         return stream;
+    }
+
+    boolean retainsTemporaryAccounting() {
+        return retainTemporaryAccounting;
     }
 }

@@ -51,6 +51,7 @@ final class PdfBoxCanvasOperations {
     private final PdfBoxValueAdapter valueAdapter;
     private final PdfBoxCanvasResourceOperations resourceOperations;
     private final WorkflowResourceContext resources;
+    private WorkerPreservation workerPreservation;
 
     PdfBoxCanvasOperations(
             PDDocument document,
@@ -91,12 +92,18 @@ final class PdfBoxCanvasOperations {
         PDPage page = selectedPage(command.getPageNumber());
         try (ValidatedProgram program = validate(
                 command.getProgram(),
-                CanvasProgram.VERSION_1)) {
-            PdfBoxPageContentSupport.ExistingContents existing =
-                    PdfBoxPageContentSupport.prepareExistingContents(
-                            page.getCOSObject(),
-                            PdfBoxCanvasOperations::preservationUnsupported,
-                            resources);
+                CanvasProgram.VERSION_1,
+                resources)) {
+            WorkerPreservation preflight = takeWorkerPreservation(page);
+            PdfBoxPageContentSupport.ExistingContents existing;
+            if (preflight == null) {
+                existing = PdfBoxPageContentSupport.prepareExistingContents(
+                        page.getCOSObject(),
+                        PdfBoxCanvasOperations::preservationUnsupported,
+                        resources);
+            } else {
+                existing = preflight.existing;
+            }
             ResourcesPlan resources = prepareResources(
                     page.getCOSObject(),
                     program.glyphsByFont);
@@ -140,20 +147,30 @@ final class PdfBoxCanvasOperations {
         }
         PDPage page = selectedPage(command.getPageNumber());
         try (ValidatedProgram ignored = validate(
-                command.getProgram(), CanvasProgram.VERSION_2)) {
+                command.getProgram(),
+                CanvasProgram.VERSION_2,
+                resources)) {
             // Generic Canvas state validation precedes resource preparation.
         }
-        PdfBoxPageContentSupport.ExistingContents existing =
-                PdfBoxPageContentSupport.prepareExistingContents(
-                        page.getCOSObject(),
-                        PdfBoxCanvasOperations::preservationUnsupported,
-                        resources);
+        WorkerPreservation preflight = takeWorkerPreservation(page);
+        PdfBoxPageContentSupport.ExistingContents existing;
+        COSDictionary effectiveResources;
+        if (preflight != null) {
+            existing = preflight.existing;
+            effectiveResources = preflight.effectiveResources;
+        } else {
+            existing = PdfBoxPageContentSupport.prepareExistingContents(
+                    page.getCOSObject(),
+                    PdfBoxCanvasOperations::preservationUnsupported,
+                    resources);
+            effectiveResources = PdfBoxPageContentSupport.effectiveResources(
+                    page.getCOSObject(),
+                    PdfBoxCanvasOperations::preservationUnsupported,
+                    resources);
+        }
         try (PdfBoxCanvasResourceOperations.Plan plan =
                 resourceOperations.prepare(
-                        PdfBoxPageContentSupport.effectiveResources(
-                                page.getCOSObject(),
-                                PdfBoxCanvasOperations::preservationUnsupported,
-                                resources),
+                        effectiveResources,
                         command.getProgram(),
                         command.getResourceLimits().get(),
                         !existing.isEmpty())) {
@@ -182,13 +199,86 @@ final class PdfBoxCanvasOperations {
     }
 
     static DocumentFailure signatureFailure(DrawCanvas command) {
-        if (command.getVersion() == DrawCanvas.VERSION_2) {
+        return signatureFailure(command.getVersion());
+    }
+
+    static DocumentFailure signatureFailure(int version) {
+        if (version == DrawCanvas.VERSION_2) {
             return new DocumentFailure(
                     DocumentFailureCode.SIGNATURE_POLICY_REJECTED,
                     PdfBoxCanvasResourceOperations.CAPABILITY_ID,
                     "The Existing Signature policy does not permit Canvas drawing.");
         }
         return signatureFailure();
+    }
+
+    void requirePage(int pageNumber) throws DocumentFailure {
+        selectedPage(pageNumber);
+    }
+
+    void preflightWorkerCommand(
+            int commandVersion,
+            int programVersion,
+            boolean limitsPresent,
+            int limitsVersion,
+            int pageNumber) throws DocumentFailure {
+        if (commandVersion == DrawCanvas.VERSION_2) {
+            if (programVersion != CanvasProgram.VERSION_2
+                    || !limitsPresent
+                    || limitsVersion
+                            != net.zerocloud.pdf.composition.CanvasResourceLimits.VERSION_1) {
+                throw new DocumentFailure(
+                        DocumentFailureCode.CANVAS_PROGRAM_INVALID,
+                        PdfBoxCanvasResourceOperations.CAPABILITY_ID,
+                        "The Canvas Program is invalid.");
+            }
+            try {
+                selectedPage(pageNumber);
+            } catch (DocumentFailure failure) {
+                throw new DocumentFailure(
+                        failure.getCode(),
+                        PdfBoxCanvasResourceOperations.CAPABILITY_ID,
+                        failure.getDiagnostic());
+            }
+            return;
+        }
+        if (commandVersion != DrawCanvas.VERSION_1) {
+            throw invalidProgram();
+        }
+        selectedPage(pageNumber);
+    }
+
+    void clearWorkerPreflight() {
+        workerPreservation = null;
+    }
+
+    private WorkerPreservation takeWorkerPreservation(PDPage page) {
+        WorkerPreservation preflight = workerPreservation;
+        workerPreservation = null;
+        if (preflight != null
+                && preflight.page == page.getCOSObject()) {
+            return preflight;
+        }
+        return null;
+    }
+
+    void preflightWorkerPreservation(int pageNumber)
+            throws DocumentFailure {
+        PDPage page = selectedPage(pageNumber);
+        PdfBoxPageContentSupport.ExistingContents existing =
+                PdfBoxPageContentSupport.prepareExistingContents(
+                        page.getCOSObject(),
+                        PdfBoxCanvasOperations::preservationUnsupported,
+                        resources);
+        COSDictionary effectiveResources = PdfBoxPageContentSupport
+                .effectiveResources(
+                        page.getCOSObject(),
+                        PdfBoxCanvasOperations::preservationUnsupported,
+                        resources);
+        workerPreservation = new WorkerPreservation(
+                page.getCOSObject(),
+                existing,
+                effectiveResources);
     }
 
     static void requireModificationPermission(
@@ -204,10 +294,16 @@ final class PdfBoxCanvasOperations {
     static void requireModificationPermission(
             PasswordSecurityInfo securityInfo,
             DrawCanvas command) throws DocumentFailure {
+        requireModificationPermission(securityInfo, command.getVersion());
+    }
+
+    static void requireModificationPermission(
+            PasswordSecurityInfo securityInfo,
+            int version) throws DocumentFailure {
         try {
             requireModificationPermission(securityInfo);
         } catch (DocumentFailure failure) {
-            if (command.getVersion() != DrawCanvas.VERSION_2) {
+            if (version != DrawCanvas.VERSION_2) {
                 throw failure;
             }
             throw new DocumentFailure(
@@ -226,15 +322,50 @@ final class PdfBoxCanvasOperations {
         return document.getPage(pageNumber - 1);
     }
 
-    private ValidatedProgram validate(
+    static void preflightProgramShape(
+            DrawCanvas command,
+            WorkflowResourceContext resources) throws DocumentFailure {
+        int expectedVersion;
+        if (command.getVersion() == DrawCanvas.VERSION_1) {
+            expectedVersion = CanvasProgram.VERSION_1;
+        } else if (command.getVersion() == DrawCanvas.VERSION_2) {
+            expectedVersion = CanvasProgram.VERSION_2;
+        } else {
+            throw invalidProgram();
+        }
+        try (ValidatedProgram ignored = validate(
+                command.getProgram(),
+                expectedVersion,
+                resources)) {
+            // The validated projection intentionally does not access image data.
+        } catch (DocumentFailure failure) {
+            if (command.getVersion() == DrawCanvas.VERSION_2
+                    && CAPABILITY_ID.equals(failure.getCapabilityId())) {
+                throw new DocumentFailure(
+                        failure.getCode(),
+                        PdfBoxCanvasResourceOperations.CAPABILITY_ID,
+                        failure.getDiagnostic());
+            }
+            throw failure;
+        }
+    }
+
+    private static ValidatedProgram validate(
             CanvasProgram program,
-            int expectedVersion)
+            int expectedVersion,
+            WorkflowResourceContext resources)
             throws DocumentFailure {
         ValidationAccumulator accumulator = new ValidationAccumulator();
         Map<CanvasFont, List<byte[]>> glyphs =
                 new LinkedHashMap<CanvasFont, List<byte[]>>();
         try {
-            validateProgram(program, expectedVersion, accumulator, glyphs, 0);
+            validateProgram(
+                    program,
+                    expectedVersion,
+                    accumulator,
+                    glyphs,
+                    0,
+                    resources);
             return new ValidatedProgram(
                     glyphs,
                     accumulator.glyphCodes,
@@ -248,12 +379,13 @@ final class PdfBoxCanvasOperations {
         }
     }
 
-    private void validateProgram(
+    private static void validateProgram(
             CanvasProgram program,
             int expectedVersion,
             ValidationAccumulator accumulator,
             Map<CanvasFont, List<byte[]>> glyphs,
-            int groupDepth)
+            int groupDepth,
+            WorkflowResourceContext resources)
             throws DocumentFailure {
         resources.checkpoint();
         resources.requireNestingDepth(groupDepth);
@@ -431,7 +563,8 @@ final class PdfBoxCanvasOperations {
                                 CanvasProgram.VERSION_2,
                                 accumulator,
                                 glyphs,
-                                nestedDepth);
+                                nestedDepth,
+                                resources);
                         accumulator.activeGroups.remove(group);
                         accumulator.validatedGroups.put(group, Boolean.TRUE);
                     }
@@ -743,6 +876,22 @@ final class PdfBoxCanvasOperations {
             DocumentFailureCode code,
             String diagnostic) {
         return new DocumentFailure(code, CAPABILITY_ID, diagnostic);
+    }
+
+    private static final class WorkerPreservation {
+
+        private final COSDictionary page;
+        private final PdfBoxPageContentSupport.ExistingContents existing;
+        private final COSDictionary effectiveResources;
+
+        private WorkerPreservation(
+                COSDictionary page,
+                PdfBoxPageContentSupport.ExistingContents existing,
+                COSDictionary effectiveResources) {
+            this.page = page;
+            this.existing = existing;
+            this.effectiveResources = effectiveResources;
+        }
     }
 
     private static final class ValidatedProgram implements AutoCloseable {

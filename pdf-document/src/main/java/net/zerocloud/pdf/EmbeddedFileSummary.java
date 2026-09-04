@@ -70,6 +70,10 @@ public final class EmbeddedFileSummary {
                 : relationship;
     }
 
+    EmbeddedFile.Relationship declaredRelationshipForWorkflow() {
+        return relationship;
+    }
+
     /**
      * Returns the unfiltered byte length of the embedded content.
      *

@@ -351,6 +351,10 @@ public final class ImageResource extends DocumentResource {
                     ? Optional.<byte[]>empty()
                     : Optional.of(bytes.clone());
         }
+
+        byte[] bytesForWorkflow() {
+            return bytes;
+        }
     }
 
     /** An explicit color-key or stable image-record mask relationship. */

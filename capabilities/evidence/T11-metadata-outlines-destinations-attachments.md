@@ -88,10 +88,10 @@ bound, embedded-file MIME subtypes are restricted to printable ASCII, and
 embedded-file digests are recorded as MD5 parameters with SHA-256 summaries
 at the public seam. Managed annotations and local GoTo Actions now integrate
 through T12; extraction remains T13 and T14. Signed Sources authorize none of
-the T11 commands under T15. Encryption remains T16, comprehensive
-hostile-input policy remains T20, and the Hardened Worker Profile and codecs
-remain T21. T11 makes no source-byte-layout or cross-Session object-identity
-claim.
+the T11 commands under T15. Encryption remains T16, T20 now supplies the
+comprehensive hostile-input policy, and T21 separately transports the T11
+contract through the opt-in Hardened Worker. T11 makes no source-byte-layout
+or cross-Session object-identity claim.
 
 This record is implementation evidence, not independent Acceptance Evidence.
 The separate T11 qpdf record supplies a passing syntax chain only; qpdf

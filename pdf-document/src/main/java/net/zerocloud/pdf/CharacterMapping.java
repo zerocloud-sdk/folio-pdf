@@ -53,6 +53,10 @@ public final class CharacterMapping {
         return Arrays.copyOf(sourceCode, sourceCode.length);
     }
 
+    byte[] sourceCodeForWorkflow() {
+        return sourceCode;
+    }
+
     /** Returns the evidence confidence. @return the confidence */
     public Confidence getConfidence() {
         return confidence;

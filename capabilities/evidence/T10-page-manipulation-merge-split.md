@@ -145,9 +145,9 @@ forms and tagged-structure management remain downstream slices. T10 makes no
 source-byte-layout claim beyond the content-derived identifier of a newly
 created split product, and no cross-Session object-identity claim. T15 admits
 the primary-document page commands for unsigned incremental Sources but rejects
-`SplitDocument`; signed Sources authorize none of these commands. The
-comprehensive hostile-input policy remains T20, and the Hardened Worker
-Profile and codecs remain T21.
+`SplitDocument`; signed Sources authorize none of these commands. T20 now
+supplies the comprehensive hostile-input policy, and T21 separately transports
+the T10 commands and queries through the opt-in Hardened Worker.
 
 This record is implementation evidence, not independent Acceptance Evidence.
 The separate T10 qpdf record supplies a passing syntax chain only; qpdf syntax

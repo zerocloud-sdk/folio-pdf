@@ -75,6 +75,21 @@ public enum DocumentFailureCode {
     /** The configured environment temporary-storage root is unavailable. */
     TEMPORARY_STORAGE_UNAVAILABLE,
 
+    /** The local Hardened Worker cannot be launched on this host. */
+    WORKER_UNAVAILABLE,
+
+    /** A Worker frame failed authentication or sequence validation. */
+    WORKER_AUTHENTICATION_FAILED,
+
+    /** A Worker frame used an unsupported protocol version or opcode. */
+    WORKER_PROTOCOL_REJECTED,
+
+    /** A Worker message exceeded the configured transport bound. */
+    WORKER_MESSAGE_LIMIT_EXCEEDED,
+
+    /** The Worker exited, was forcibly stopped, or returned no valid result. */
+    WORKER_TERMINATED,
+
     /** Legacy result retained for prerelease outcome compatibility. */
     SAVE_MODE_UNSUPPORTED,
 

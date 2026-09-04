@@ -266,11 +266,15 @@ final class PdfBoxPageContentSupport {
 
     static void requireNumber(double value, FailureFactory failure)
             throws DocumentFailure {
-        if (Double.isNaN(value)
-                || Double.isInfinite(value)
-                || Math.abs(value) > MAXIMUM_ABSOLUTE_NUMBER) {
+        if (!isValidNumber(value)) {
             throw failure.create();
         }
+    }
+
+    static boolean isValidNumber(double value) {
+        return !Double.isNaN(value)
+                && !Double.isInfinite(value)
+                && Math.abs(value) <= MAXIMUM_ABSOLUTE_NUMBER;
     }
 
     static void requireNumbers(
@@ -288,15 +292,19 @@ final class PdfBoxPageContentSupport {
     static void requireMatrix(
             CanvasMatrix matrix,
             FailureFactory failure) throws DocumentFailure {
-        if (matrix == null) {
+        if (!isValidMatrix(matrix)) {
             throw failure.create();
         }
-        requireNumber(matrix.getA(), failure);
-        requireNumber(matrix.getB(), failure);
-        requireNumber(matrix.getC(), failure);
-        requireNumber(matrix.getD(), failure);
-        requireNumber(matrix.getE(), failure);
-        requireNumber(matrix.getF(), failure);
+    }
+
+    static boolean isValidMatrix(CanvasMatrix matrix) {
+        return matrix != null
+                && isValidNumber(matrix.getA())
+                && isValidNumber(matrix.getB())
+                && isValidNumber(matrix.getC())
+                && isValidNumber(matrix.getD())
+                && isValidNumber(matrix.getE())
+                && isValidNumber(matrix.getF());
     }
 
     static COSBase dereference(

@@ -24,6 +24,10 @@ public final class ObjectReference {
         return sessionIdentity;
     }
 
+    long getLocalIdentity() {
+        return localIdentity;
+    }
+
     @Override
     public boolean equals(Object candidate) {
         if (!(candidate instanceof ObjectReference)) {

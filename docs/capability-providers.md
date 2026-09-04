@@ -25,9 +25,9 @@ Every registration has immutable `ProviderMetadata`:
 `REMOTE` execution and `REMOTE_SERVICE` distribution must be declared
 together; contradictory metadata is rejected when it is built.
 
-Execution mode is not a Document Workflow execution profile. An in-process
-workflow can broker a subprocess or authorized remote Provider, while the
-future Hardened Worker Profile is a separate isolation decision.
+Execution mode is not a Document Workflow execution profile. Either an
+in-process or Hardened Worker workflow can broker an eligible Provider in the
+parent, while selecting the T21 profile remains a separate isolation decision.
 
 ## Registration and selection
 
@@ -108,8 +108,8 @@ and deadline categories are normalized to stable Provider Failures.
 
 This adapter is not the Hardened Worker Profile. It does not claim hard memory,
 CPU, filesystem, network, hostile-PDF, pixel, page, object, decompression,
-temporary-storage, or concurrency isolation. T20 now bounds the surrounding
-trusted in-process Document Workflow cooperatively, but hostile multi-tenant
-documents remain out of scope until T21 provides hard isolation. The
-Java 8 adapter supervises its direct child only; descendant process-tree
-containment is part of T21 rather than this generic integration seam.
+temporary-storage, or concurrency isolation. T20 bounds the surrounding
+workflow and the opt-in T21 Hardened Worker supplies the documented hostile-
+input process boundary. The Java 8 Provider adapter still supervises its
+direct child only; T21 process-tree containment applies to the PDF Worker and
+does not retroactively turn this generic integration seam into a sandbox.

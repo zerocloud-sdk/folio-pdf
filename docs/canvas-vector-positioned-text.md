@@ -228,8 +228,8 @@ inventory in the same Session. The example deliberately uses an encoded glyph
 code rather than Unicode text.
 
 T17 itself adds no image embedding or transparency; those are the separate
-T18 version-2 extension. Its local limits now compose with T20's cooperative
-transaction policy. It adds no T19 font acquisition; T21 Worker isolation;
-T23 renderer; paragraph/table
+T18 version-2 extension. Its local limits now compose with T20's transaction
+policy, and T21 can transport the commands through the opt-in Hardened Worker.
+T17 adds no T19 font acquisition, T23 renderer, paragraph/table
 layout; barcode generation; Forms; tagged-document construction; SVG
 conversion; redaction; or Migration Facade mapping.

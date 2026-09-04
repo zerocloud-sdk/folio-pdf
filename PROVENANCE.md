@@ -1107,5 +1107,95 @@ documentation, and project-owned tests are the permitted design inputs.
   therefore remains `experimental` with no compatible or certified-platform
   claim.
 
+## T21 hardened-worker record
+
+- Authorship: OpenAI Codex generated and integrated the T21 implementation,
+  tests, inventories, evidence record, and documentation at repository
+  operator MaBaiqiu's direction. No T21 commit was created or authorized in
+  this execution.
+- Project inputs: GitHub issues #1 and #22; `CONTEXT.md`, `CONTRIBUTING.md`,
+  repository issue/domain instructions; ADR-0013, 0016, 0018, 0024, 0025,
+  and 0031; the accepted T03 callback, ordering, lifecycle, ownership,
+  publication, result, receipt, progress, and failure seams; the T20 resource
+  and temporary-root contract; the complete library-owned Command and Query
+  set accepted by `PdfBoxDocumentSession`; and pre-implementation fixed point
+  `5d5cb89f8d25f7ad55a77560f2402a5d93d90065`.
+- Public platform inputs: Java SE 8 process, stream, NIO, permissions,
+  `SecurityManager`, HMAC-SHA-256, `SecureRandom`, concurrency, duration, and
+  resource-ownership contracts plus the Linux `/usr/bin/prlimit` CPU and open-
+  file resource controls supplied public interface semantics. These were
+  platform contracts only; no external Worker implementation, IPC protocol,
+  sandbox profile, fixture, product, or output was used as a behavioral
+  oracle.
+- Backend and dependency inputs: existing Apache PDFBox 3.0.8 public loading,
+  COS, command/query, cache, validation, and save APIs remain private Worker
+  implementation surfaces. T21 adds no dependency or product module. Its
+  launcher treats the complete-byte SHA-256 values of the four required JARs
+  and six optional TIFF-closure JARs as the exact runtime authority; their
+  coordinates, roles, hashes, notices, and licenses are recorded in
+  [DEPENDENCIES.md](DEPENDENCIES.md).
+- Project-authored fixtures: workflow tests construct blank and minimal PDF
+  inputs through project APIs or fixed in-memory bytes and use only temporary
+  directories, service-free local INET and Unix-domain socket attempts,
+  sentinel Target bytes,
+  deterministic authentication keys at the package-private protocol seam,
+  malformed project-authored frames, distinct marker bytes in concurrently
+  live transaction roots, the existing project-authored Apache-2.0 T19 font
+  fixture, clocks, tokens, callbacks, and latches.
+  No external PDF, hostile corpus, font, network service, system document,
+  Reference Suite output, or secret credential is included.
+- Protocol and isolation boundary: version-1 framing, opcodes, Command/Query/
+  value codecs, HMAC tags, sequence rules, and safe failure mapping are
+  project-authored. Each execution creates a fresh key and owner-restricted
+  random root, stages the primary Source before launch, requests other named
+  Sources one at a time in declaration order under T20 accounting, and resolves
+  reusable or explicit fonts lazily at their selecting Command. Commands carry
+  opaque font-source identifiers; each program is requested in order and sent
+  in a separate bounded frame under the same font-source limits. Eligible
+  fixed-size page-structure batches use a memory-negotiated atomic frame only
+  when the full encoder, retained/cross-process payload, and completion-control
+  peak fits; other, parent-ineligible, or Worker-deferred batches use
+  one authenticated count declaration followed by Worker-requested indexed
+  preflights, details, and items so later inputs remain unmaterialized after the
+  first failure. The launcher clears the child
+  environment, restricts the Worker class path to digest-pinned first-party
+  class-name inventories and exact-hash dependency JARs, and rejects mixed,
+  incomplete, extended, delimiter-bearing, or wildcard-bearing entries before
+  launch. It runs one local Worker under heap, direct-memory, stack, CPU, and
+  descriptor bounds; denies INET and Unix-domain network, descendant process,
+  link, and outside-root filesystem access; samples the environment Clock only
+  on the caller thread; and applies a monotonic hard Worker-lifetime watchdog.
+  Transport-buffer owned-memory accounting remains in the parent's synchronized
+  transaction ledger without evaluating caller time policy on its reader
+  thread. The parent retains
+  callbacks, Providers, actual Targets, and publication and confirms Worker
+  exit before committing a product.
+- Generated documentation: `docs/generated/capability-matrix.md` and
+  `docs/generated/facade-surface.md` are regenerated deterministically from
+  the two YAML authorities and contain no copied external content.
+- Clean-room and excluded inputs: no iText source, resource, fixture, binary,
+  output, decompiled or binary-derived implementation detail, proprietary
+  differential evidence, closed add-on material, unauthorized black-box
+  observation, third-party protocol or sandbox configuration, downloaded
+  hostile input, or Reference Suite behavioral oracle was used. The public
+  Reference Suite is not an implementation oracle and no Reference Suite
+  Worker API or output defines Native Interface behavior.
+- Scope: T21 adds only the opt-in local Hardened Worker profile for the fixed-
+  point Document Workflow contract, including authenticated bounded framing,
+  closed codecs, a caller-side proxy Session, parent-side Provider and
+  publication brokerage, private staging, supported Linux/JDK resource and
+  permission controls, hard Worker termination, cleanup, stable failures, and
+  implementation evidence. It adds no remote Worker, arbitrary extension,
+  public backend SPI, renderer, new Migration Facade surface, idempotent
+  transaction identity, retry or uncertain-publication recovery, large-value
+  chunking/staging protocol, 5,000-page or 1-GiB certification, full RSS or
+  kernel-container guarantee, physical secure-erasure claim, or downstream
+  T22-and-later behavior.
+- Compatibility Curator evidence: none; the role remains vacant. All four
+  mandatory Acceptance Evidence chains are absent, the T03 and T20 compatible-
+  status Dependency Gates remain open, and T06 remains a Promotion Gate. T21
+  therefore remains `experimental` with no compatible or certified-platform
+  claim.
+
 Future changes append or update a scoped record and supply the pull-request
 provenance statement required by [CONTRIBUTING.md](CONTRIBUTING.md).

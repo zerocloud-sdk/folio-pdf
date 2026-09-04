@@ -6,8 +6,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
+import java.nio.file.FileVisitResult;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardOpenOption;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.PosixFilePermission;
 import java.time.Clock;
 import java.time.Duration;
@@ -19,6 +23,7 @@ import java.util.IdentityHashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import org.apache.pdfbox.cos.COSDictionary;
 import org.apache.pdfbox.cos.COSObject;
@@ -44,6 +49,7 @@ final class WorkflowResourceContext implements AutoCloseable {
     private final Instant absoluteDeadline;
     private final Instant startedAt;
     private final Path temporaryRoot;
+    private final OwnedMemoryAuthority ownedMemoryAuthority;
     private final Map<Path, Long> temporaryFiles =
             new LinkedHashMap<Path, Long>();
     private final List<RandomAccessStreamCache> streamCaches =
@@ -77,13 +83,15 @@ final class WorkflowResourceContext implements AutoCloseable {
             Clock clock,
             CancellationToken cancellationToken,
             Instant absoluteDeadline,
-            Path temporaryRoot) {
+            Path temporaryRoot,
+            OwnedMemoryAuthority ownedMemoryAuthority) {
         this.policy = policy;
         this.clock = clock;
         this.cancellationToken = cancellationToken;
         this.absoluteDeadline = absoluteDeadline;
         this.startedAt = clock.instant();
         this.temporaryRoot = temporaryRoot;
+        this.ownedMemoryAuthority = ownedMemoryAuthority;
     }
 
     static WorkflowResourceContext open(
@@ -92,6 +100,23 @@ final class WorkflowResourceContext implements AutoCloseable {
             CancellationToken cancellationToken,
             Instant absoluteDeadline,
             Path environmentTemporaryDirectory) throws DocumentFailure {
+        return open(
+                policy,
+                clock,
+                cancellationToken,
+                absoluteDeadline,
+                environmentTemporaryDirectory,
+                null);
+    }
+
+    static WorkflowResourceContext open(
+            WorkflowResourcePolicy policy,
+            Clock clock,
+            CancellationToken cancellationToken,
+            Instant absoluteDeadline,
+            Path environmentTemporaryDirectory,
+            OwnedMemoryAuthority ownedMemoryAuthority)
+            throws DocumentFailure {
         Path root = null;
         try {
             Path parent = environmentTemporaryDirectory
@@ -107,7 +132,8 @@ final class WorkflowResourceContext implements AutoCloseable {
                     clock,
                     cancellationToken,
                     absoluteDeadline,
-                    root);
+                    root,
+                    ownedMemoryAuthority);
         } catch (DocumentFailure failure) {
             deleteTreeQuietly(root);
             throw failure;
@@ -121,8 +147,16 @@ final class WorkflowResourceContext implements AutoCloseable {
         return policy;
     }
 
-    Path getTemporaryRoot() {
-        return temporaryRoot;
+    long getRemainingTemporaryStorageBytes() {
+        return policy.getMaximumTemporaryStorageBytes() - temporaryBytes;
+    }
+
+    synchronized long getRemainingOwnedMemoryBytes() {
+        return policy.getMaximumOwnedMemoryBytes() - ownedMemoryBytes;
+    }
+
+    boolean isOpen() {
+        return !closed;
     }
 
     void checkpoint() throws DocumentFailure {
@@ -220,6 +254,12 @@ final class WorkflowResourceContext implements AutoCloseable {
         return new MemoryReservation(this, amount);
     }
 
+    MemoryReservation reserveProtocolPayloadMemory(long amount)
+            throws DocumentFailure {
+        reserveOwnedMemoryBytesAfterCheckpoint(amount, true);
+        return new MemoryReservation(this, amount);
+    }
+
     OwnedBytes copyOwnedBytes(byte[] source) throws DocumentFailure {
         MemoryReservation reservation = reserveOwnedMemory(source.length);
         try {
@@ -249,12 +289,36 @@ final class WorkflowResourceContext implements AutoCloseable {
 
     private void reserveOwnedMemoryBytes(long amount)
             throws DocumentFailure {
-        ownedMemoryBytes = checkedConsume(
-                ownedMemoryBytes,
-                amount,
-                policy.getMaximumOwnedMemoryBytes(),
-                DocumentFailureCode.MEMORY_LIMIT_EXCEEDED,
-                "The workflow owned-memory limit was exceeded.");
+        checkpoint();
+        reserveOwnedMemoryBytesAfterCheckpoint(amount, false);
+    }
+
+    private synchronized void reserveOwnedMemoryBytesAfterCheckpoint(
+            long amount,
+            boolean protocolPayload) throws DocumentFailure {
+        if (amount < 0L) {
+            throw new IllegalArgumentException(
+                    "Resource accounting amounts must not be negative.");
+        }
+        if (ownedMemoryBytes
+                > policy.getMaximumOwnedMemoryBytes() - amount) {
+            throw stopFailure(
+                    DocumentFailureCode.MEMORY_LIMIT_EXCEEDED,
+                    "The workflow owned-memory limit was exceeded.");
+        }
+        if (ownedMemoryAuthority != null && amount != 0L) {
+            try {
+                if (protocolPayload) {
+                    ownedMemoryAuthority.reserveProtocolPayload(amount);
+                } else {
+                    ownedMemoryAuthority.reserve(amount);
+                }
+            } catch (DocumentFailure failure) {
+                poison(failure);
+                throw failure;
+            }
+        }
+        ownedMemoryBytes += amount;
     }
 
     OwnedByteAccumulator ownedByteAccumulator() {
@@ -310,6 +374,34 @@ final class WorkflowResourceContext implements AutoCloseable {
         } catch (IOException | RuntimeException failure) {
             throw temporaryStorageUnavailable();
         }
+    }
+
+    Path getTemporaryRoot() {
+        requireOpen();
+        return temporaryRoot;
+    }
+
+    void accountExternalTemporaryFile(Path file) throws DocumentFailure {
+        requireOpen();
+        Path normalized = file.toAbsolutePath().normalize();
+        Long previous = temporaryFiles.get(normalized);
+        if (previous == null) {
+            throw new IllegalArgumentException(
+                    "Temporary file must belong to this transaction.");
+        }
+        long current;
+        try {
+            current = Files.size(normalized);
+        } catch (IOException | RuntimeException failure) {
+            throw temporaryStorageUnavailable();
+        }
+        long old = previous.longValue();
+        if (current > old) {
+            reserveTemporaryBytes(current - old);
+        } else if (old > current) {
+            releaseTemporaryBytes(old - current);
+        }
+        temporaryFiles.put(normalized, Long.valueOf(current));
     }
 
     void registerTemporaryFile(Path file) throws DocumentFailure {
@@ -376,6 +468,21 @@ final class WorkflowResourceContext implements AutoCloseable {
         if (size != null) {
             releaseTemporaryBytes(size.longValue());
         }
+    }
+
+    void transferTemporaryFile(Path source, Path target) {
+        Path normalizedSource = source.toAbsolutePath().normalize();
+        Path normalizedTarget = target.toAbsolutePath().normalize();
+        if (temporaryFiles.containsKey(normalizedTarget)) {
+            throw new IllegalStateException(
+                    "Temporary target is already registered.");
+        }
+        Long size = temporaryFiles.remove(normalizedSource);
+        if (size == null) {
+            throw new IllegalArgumentException(
+                    "Temporary source must belong to this transaction.");
+        }
+        temporaryFiles.put(normalizedTarget, size);
     }
 
     RandomAccessStreamCache.StreamCacheCreateFunction streamCacheFactory() {
@@ -495,11 +602,14 @@ final class WorkflowResourceContext implements AutoCloseable {
         }
     }
 
-    private void releaseOwnedMemory(long amount) {
+    private synchronized void releaseOwnedMemory(long amount) {
         ownedMemoryBytes -= amount;
         if (ownedMemoryBytes < 0L) {
             throw new IllegalStateException(
                     "Owned-memory accounting became negative.");
+        }
+        if (ownedMemoryAuthority != null && amount != 0L) {
+            ownedMemoryAuthority.release(amount);
         }
     }
 
@@ -526,6 +636,27 @@ final class WorkflowResourceContext implements AutoCloseable {
             DocumentFailureCode code,
             String diagnostic) {
         return stopFailure(code, diagnostic);
+    }
+
+    DocumentFailure executionFailure(
+            DocumentFailureCode code,
+            String diagnostic) {
+        return executionStopFailure(code, diagnostic);
+    }
+
+    DocumentFailure terminalFailure(DocumentFailure failure) {
+        poison(failure);
+        return failure;
+    }
+
+    /**
+     * Keeps an already-observed failure authoritative when a later recovery
+     * failure makes the transaction terminal.
+     */
+    void preferEarlierTerminalFailure(DocumentFailure earlierFailure) {
+        terminalFailure = Objects.requireNonNull(
+                earlierFailure,
+                "earlierFailure");
     }
 
     void rethrowTerminalFailure() throws DocumentFailure {
@@ -668,24 +799,38 @@ final class WorkflowResourceContext implements AutoCloseable {
     }
 
     @Override
-    public void close() {
+    public void close() throws DocumentFailure {
         if (closed) {
             return;
         }
         closed = true;
+        boolean cleanupFailed = false;
         for (RandomAccessStreamCache cache : streamCaches) {
             try {
                 cache.close();
             } catch (IOException | RuntimeException ignored) {
-                // Document cleanup owns the primary close result.
+                cleanupFailed = true;
             }
+        }
+        try {
+            deleteTree(temporaryRoot);
+        } catch (IOException | RuntimeException failure) {
+            cleanupFailed = true;
+            deleteTreeQuietly(temporaryRoot);
         }
         streamCaches.clear();
         materializableImageLengths.clear();
         temporaryFiles.clear();
         temporaryBytes = 0L;
+        long remainingOwnedMemory = ownedMemoryBytes;
         ownedMemoryBytes = 0L;
-        deleteTreeQuietly(temporaryRoot);
+        if (ownedMemoryAuthority != null && remainingOwnedMemory != 0L) {
+            ownedMemoryAuthority.release(remainingOwnedMemory);
+        }
+        if (cleanupFailed
+                || Files.exists(temporaryRoot, LinkOption.NOFOLLOW_LINKS)) {
+            throw unavailableTemporaryStorage();
+        }
     }
 
     static DocumentFailure findResourceFailure(Throwable failure) {
@@ -749,7 +894,7 @@ final class WorkflowResourceContext implements AutoCloseable {
             return;
         }
         try {
-            if (Files.isDirectory(root)) {
+            if (Files.isDirectory(root, LinkOption.NOFOLLOW_LINKS)) {
                 List<Path> paths = new ArrayList<Path>();
                 java.nio.file.DirectoryStream<Path> entries =
                         Files.newDirectoryStream(root);
@@ -761,7 +906,7 @@ final class WorkflowResourceContext implements AutoCloseable {
                     entries.close();
                 }
                 for (Path entry : paths) {
-                    if (Files.isDirectory(entry)) {
+                    if (Files.isDirectory(entry, LinkOption.NOFOLLOW_LINKS)) {
                         deleteTreeQuietly(entry);
                     } else {
                         Files.deleteIfExists(entry);
@@ -771,6 +916,61 @@ final class WorkflowResourceContext implements AutoCloseable {
             Files.deleteIfExists(root);
         } catch (IOException | RuntimeException ignored) {
             // Best-effort cleanup must not replace a safe primary failure.
+        }
+    }
+
+    private static void deleteTree(Path root) throws IOException {
+        if (root == null
+                || !Files.exists(root, LinkOption.NOFOLLOW_LINKS)) {
+            return;
+        }
+        final IOException[] firstFailure = new IOException[1];
+        Files.walkFileTree(root, new SimpleFileVisitor<Path>() {
+            @Override
+            public FileVisitResult visitFile(
+                    Path file,
+                    BasicFileAttributes attributes) {
+                deleteAndRecord(file, firstFailure);
+                return FileVisitResult.CONTINUE;
+            }
+
+            @Override
+            public FileVisitResult visitFileFailed(
+                    Path file,
+                    IOException failure) {
+                recordFailure(firstFailure, failure);
+                return FileVisitResult.CONTINUE;
+            }
+
+            @Override
+            public FileVisitResult postVisitDirectory(
+                    Path directory,
+                    IOException failure) {
+                recordFailure(firstFailure, failure);
+                deleteAndRecord(directory, firstFailure);
+                return FileVisitResult.CONTINUE;
+            }
+        });
+        if (firstFailure[0] != null) {
+            throw firstFailure[0];
+        }
+    }
+
+    private static void deleteAndRecord(
+            Path path,
+            IOException[] firstFailure) {
+        try {
+            Files.deleteIfExists(path);
+        } catch (IOException failure) {
+            recordFailure(firstFailure, failure);
+        }
+    }
+
+    private static void recordFailure(
+            IOException[] firstFailure,
+            IOException failure) {
+        if (failure != null && firstFailure[0] == null) {
+            firstFailure[0] = failure;
         }
     }
 
@@ -795,9 +995,18 @@ final class WorkflowResourceContext implements AutoCloseable {
             }
         }
 
-        private void transfer() {
+        void transfer() {
             context = null;
         }
+    }
+
+    interface OwnedMemoryAuthority {
+
+        void reserve(long amount) throws DocumentFailure;
+
+        void reserveProtocolPayload(long amount) throws DocumentFailure;
+
+        void release(long amount);
     }
 
     /**
@@ -1337,7 +1546,7 @@ final class WorkflowResourceContext implements AutoCloseable {
         private final byte[] bytes;
         private MemoryReservation reservation;
 
-        private OwnedBytes(
+        OwnedBytes(
                 byte[] bytes,
                 MemoryReservation reservation) {
             this.bytes = bytes;

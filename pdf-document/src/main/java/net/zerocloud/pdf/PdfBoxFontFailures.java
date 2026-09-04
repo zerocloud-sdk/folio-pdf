@@ -24,6 +24,12 @@ final class PdfBoxFontFailures {
                 "The font embedding permissions reject this operation.");
     }
 
+    static DocumentFailure operationLimitExceeded() {
+        return failure(
+                DocumentFailureCode.FONT_LIMIT_EXCEEDED,
+                "The font operation limit was exceeded.");
+    }
+
     private static DocumentFailure failure(
             DocumentFailureCode code,
             String diagnostic) {

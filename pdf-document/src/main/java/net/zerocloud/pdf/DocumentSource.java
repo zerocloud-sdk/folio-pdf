@@ -31,6 +31,7 @@ public final class DocumentSource {
     private final byte[] bytes;
     private final long maximumBytes;
     private final PasswordCredential credential;
+    private final boolean workflowSnapshot;
 
     private DocumentSource(
             Kind kind,
@@ -39,7 +40,8 @@ public final class DocumentSource {
             ReadableByteChannel channel,
             byte[] bytes,
             long maximumBytes,
-            PasswordCredential credential) {
+            PasswordCredential credential,
+            boolean workflowSnapshot) {
         this.kind = kind;
         this.path = path;
         this.stream = stream;
@@ -47,6 +49,7 @@ public final class DocumentSource {
         this.bytes = bytes;
         this.maximumBytes = maximumBytes;
         this.credential = credential;
+        this.workflowSnapshot = workflowSnapshot;
     }
 
     /**
@@ -63,7 +66,8 @@ public final class DocumentSource {
                 null,
                 null,
                 Long.MAX_VALUE,
-                null);
+                null,
+                false);
     }
 
     /**
@@ -83,7 +87,8 @@ public final class DocumentSource {
                 null,
                 null,
                 maximumBytes,
-                null);
+                null,
+                false);
     }
 
     /**
@@ -105,7 +110,8 @@ public final class DocumentSource {
                 channel,
                 null,
                 maximumBytes,
-                null);
+                null,
+                false);
     }
 
     /**
@@ -125,7 +131,8 @@ public final class DocumentSource {
                 null,
                 Arrays.copyOf(bytes, bytes.length),
                 maximumBytes,
-                null);
+                null,
+                false);
     }
 
     /**
@@ -143,7 +150,20 @@ public final class DocumentSource {
                 channel,
                 bytes,
                 maximumBytes,
-                Objects.requireNonNull(credential, "credential"));
+                Objects.requireNonNull(credential, "credential"),
+                workflowSnapshot);
+    }
+
+    static DocumentSource workflowSnapshot(Path path) {
+        return new DocumentSource(
+                Kind.PATH,
+                Objects.requireNonNull(path, "path"),
+                null,
+                null,
+                null,
+                Long.MAX_VALUE,
+                null,
+                true);
     }
 
     private static void requireMaximumBytes(long maximumBytes) {
@@ -179,5 +199,9 @@ public final class DocumentSource {
 
     PasswordCredential getCredential() {
         return credential;
+    }
+
+    boolean isWorkflowSnapshot() {
+        return workflowSnapshot;
     }
 }

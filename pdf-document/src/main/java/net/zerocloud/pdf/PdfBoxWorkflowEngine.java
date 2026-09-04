@@ -86,25 +86,28 @@ final class PdfBoxWorkflowEngine {
         PDDocument document;
         long sourceLength = -1L;
         SourceFingerprint sourceFingerprint = null;
-        DocumentSource primarySource = null;
+        PasswordCredential primaryCredential = null;
         InputStream ownedPrimaryPath = null;
         PdfVersion declaredHeaderVersion;
         if (request.getSources().isEmpty()) {
             document = createDocument(context.resources);
             declaredHeaderVersion = PdfVersion.PDF_1_7;
         } else {
+            String primarySourceName = request.getPrimarySourceName();
             DocumentSource source = request.getSources().get(
-                    request.getPrimarySourceName());
+                    primarySourceName);
             if (source == null) {
                 throw failure(
                         DocumentFailureCode.INVALID_REQUEST,
                         "The workflow request must select a declared primary source.");
             }
+            source = context.resolveSource(primarySourceName, source);
             OpenedDocument opened = openPrimaryDocument(
                     source,
+                    primarySourceName,
                     true,
-                    context.resources);
-            primarySource = source;
+                    context);
+            primaryCredential = opened.credential;
             document = opened.document;
             sourceLength = opened.sourceLength;
             sourceFingerprint = opened.fingerprint;
@@ -132,15 +135,14 @@ final class PdfBoxWorkflowEngine {
                     declaredHeaderVersion);
             securityInfo = PdfBoxPasswordSecurity.inspect(
                     document,
-                    primarySource == null
-                            ? null : primarySource.getCredential(),
+                    primaryCredential,
                     context.resources);
             PdfBoxPasswordSecurity.requireCompatibleInput(
                     document,
                     versionInfo,
                     securityInfo);
             if (securityInfo.isPasswordProtected()
-                    && primarySource.getCredential() == null) {
+                    && primaryCredential == null) {
                 throw credentialFailure(true);
             }
             outputVersion = outputVersion(request, versionInfo);
@@ -174,9 +176,11 @@ final class PdfBoxWorkflowEngine {
                 outputSecurity =
                         PdfBoxPasswordSecurity
                                 .preserveForIncrementalValidation(
-                                        primarySource.getCredential(),
+                                        primaryCredential,
                                         context.resources);
             } else {
+                requestedSecurity = context.resolveOutputSecurity(
+                        requestedSecurity);
                 outputSecurity = PdfBoxPasswordSecurity.prepare(
                         requestedSecurity,
                         outputVersion,
@@ -218,7 +222,7 @@ final class PdfBoxWorkflowEngine {
                     publicationVersion,
                     publicationAlgorithm,
                     publicationScope,
-                    context.resources);
+                    context);
         } catch (DocumentFailure preparationFailure) {
             outputSecurity.close();
             closeQuietly(document);
@@ -459,7 +463,8 @@ final class PdfBoxWorkflowEngine {
                     publishAll(
                             stagedDocuments,
                             publicationTargets,
-                            context);
+                            context.request,
+                            context.resources);
             emit(context, WorkflowProgressPhase.COMPLETED);
             return outcome(
                     result,
@@ -595,6 +600,15 @@ final class PdfBoxWorkflowEngine {
         return prepared;
     }
 
+    static WorkerPublicationPlan prepareWorkerPublication(
+            WorkflowRequest request,
+            WorkflowResourceContext resources) throws DocumentFailure {
+        return new WorkerPublicationPlan(
+                request,
+                resources,
+                preflightTargets(request.getPublicationTargets(), resources));
+    }
+
     private static void requireExecutionAllowed(ExecutionContext<?> context)
             throws DocumentFailure {
         context.resources.checkpoint();
@@ -609,7 +623,8 @@ final class PdfBoxWorkflowEngine {
     private static List<PublicationReceipt> publishAll(
             List<Path> stagedDocuments,
             List<PublicationTargetAdapter> targets,
-            ExecutionContext<?> context) throws DocumentFailure {
+            WorkflowRequest request,
+            WorkflowResourceContext resources) throws DocumentFailure {
         List<PublicationReceipt> receipts =
                 new ArrayList<PublicationReceipt>(targets.size());
         for (int index = 0; index < targets.size(); index++) {
@@ -618,8 +633,8 @@ final class PdfBoxWorkflowEngine {
                     ? stagedDocuments.get(0)
                     : stagedDocuments.get(index);
             try {
-                requireExecutionAllowed(context);
-                target.publish(staged, context.resources);
+                resources.checkpoint();
+                target.publish(staged, resources);
             } catch (DocumentFailure publicationFailure) {
                 boolean executionStop = isExecutionStop(publicationFailure);
                 boolean partialStream = target.isStream()
@@ -644,9 +659,10 @@ final class PdfBoxWorkflowEngine {
             receipts.add(target.receipt(
                     PublicationStatus.COMMITTED,
                     false));
-            emit(context, WorkflowProgressPhase.TARGET_COMMITTED);
+            request.getProgressListener().onProgress(
+                    WorkflowProgressPhase.TARGET_COMMITTED);
             try {
-                requireExecutionAllowed(context);
+                resources.checkpoint();
             } catch (DocumentFailure executionStop) {
                 for (int later = index + 1; later < targets.size(); later++) {
                     receipts.add(targets.get(later).receipt(
@@ -661,7 +677,7 @@ final class PdfBoxWorkflowEngine {
             }
         }
         if (targets.isEmpty()) {
-            requireExecutionAllowed(context);
+            resources.checkpoint();
         }
         return receipts;
     }
@@ -702,17 +718,22 @@ final class PdfBoxWorkflowEngine {
             PdfVersion publicationVersion,
             PasswordEncryptionAlgorithm publicationAlgorithm,
             PasswordEncryptionScope publicationScope,
-            WorkflowResourceContext resources) throws DocumentFailure {
+            ExecutionContext<?> context) throws DocumentFailure {
+        WorkflowResourceContext resources = context.resources;
         Map<String, PreparedNamedSource> prepared =
                 new LinkedHashMap<String, PreparedNamedSource>();
         try {
             for (Map.Entry<String, DocumentSource> entry
                     : request.getSources().entrySet()) {
                 if (!entry.getKey().equals(request.getPrimarySourceName())) {
+                    DocumentSource materialized = context.resolveSource(
+                            entry.getKey(),
+                            entry.getValue());
                     PreparedNamedSource source =
                             PreparedNamedSource.prepare(
-                                    entry.getValue(),
-                                    resources);
+                                    entry.getKey(),
+                                    materialized,
+                                    context);
                     prepared.put(entry.getKey(), source);
                     source.requirePublicationCompatible(
                             publicationVersion,
@@ -735,6 +756,14 @@ final class PdfBoxWorkflowEngine {
             DocumentSource source,
             WorkflowResourceContext resources)
             throws DocumentFailure {
+        return snapshot(source, resources, Long.MAX_VALUE);
+    }
+
+    private static Path snapshot(
+            DocumentSource source,
+            WorkflowResourceContext resources,
+            long temporaryStorageAllowance)
+            throws DocumentFailure {
         Path snapshot = null;
         try {
             snapshot = resources.createTemporaryFile(
@@ -749,6 +778,7 @@ final class PdfBoxWorkflowEngine {
                                     input,
                                     output,
                                     source.getMaximumBytes(),
+                                    temporaryStorageAllowance,
                                     resources);
                         }
                         break;
@@ -757,6 +787,7 @@ final class PdfBoxWorkflowEngine {
                                 source.getStream(),
                                 output,
                                 source.getMaximumBytes(),
+                                temporaryStorageAllowance,
                                 resources);
                         break;
                     case CHANNEL:
@@ -764,6 +795,7 @@ final class PdfBoxWorkflowEngine {
                                 source.getChannel(),
                                 output,
                                 source.getMaximumBytes(),
+                                temporaryStorageAllowance,
                                 resources);
                         break;
                     case BYTES:
@@ -771,6 +803,7 @@ final class PdfBoxWorkflowEngine {
                                 source.getBytes(),
                                 output,
                                 source.getMaximumBytes(),
+                                temporaryStorageAllowance,
                                 resources);
                         break;
                     default:
@@ -795,10 +828,24 @@ final class PdfBoxWorkflowEngine {
         }
     }
 
+    static Path snapshotForWorker(
+            DocumentSource source,
+            WorkflowResourceContext resources) throws DocumentFailure {
+        return snapshot(source, resources);
+    }
+
+    static Path snapshotForWorker(
+            DocumentSource source,
+            WorkflowResourceContext resources,
+            long temporaryStorageAllowance) throws DocumentFailure {
+        return snapshot(source, resources, temporaryStorageAllowance);
+    }
+
     private static void copySourceContents(
             InputStream input,
             OutputStream output,
             long maximumBytes,
+            long temporaryStorageAllowance,
             WorkflowResourceContext resources)
             throws IOException, DocumentFailure {
         byte[] buffer = new byte[8192];
@@ -817,6 +864,10 @@ final class PdfBoxWorkflowEngine {
                             DocumentFailureCode.SOURCE_LIMIT_EXCEEDED,
                             "The source exceeds its declared byte limit.");
                 }
+                requireTemporaryTransferWithinLimit(
+                        total,
+                        temporaryStorageAllowance,
+                        resources);
                 resources.consumeInputBytes(read);
                 output.write(buffer, 0, read);
             }
@@ -827,6 +878,7 @@ final class PdfBoxWorkflowEngine {
             ReadableByteChannel channel,
             OutputStream output,
             long maximumBytes,
+            long temporaryStorageAllowance,
             WorkflowResourceContext resources)
             throws IOException, DocumentFailure {
         ByteBuffer buffer = ByteBuffer.allocate(8192);
@@ -845,6 +897,10 @@ final class PdfBoxWorkflowEngine {
                             DocumentFailureCode.SOURCE_LIMIT_EXCEEDED,
                             "The source exceeds its declared byte limit.");
                 }
+                requireTemporaryTransferWithinLimit(
+                        total,
+                        temporaryStorageAllowance,
+                        resources);
                 resources.consumeInputBytes(read);
                 output.write(buffer.array(), 0, read);
                 buffer.clear();
@@ -856,6 +912,7 @@ final class PdfBoxWorkflowEngine {
             byte[] bytes,
             OutputStream output,
             long maximumBytes,
+            long temporaryStorageAllowance,
             WorkflowResourceContext resources)
             throws IOException, DocumentFailure {
         try {
@@ -865,19 +922,53 @@ final class PdfBoxWorkflowEngine {
                     DocumentFailureCode.SOURCE_LIMIT_EXCEEDED,
                     "The source exceeds its declared byte limit.");
         }
+        requireTemporaryTransferWithinLimit(
+                bytes.length,
+                temporaryStorageAllowance,
+                resources);
         resources.consumeInputBytes(bytes.length);
         resources.writeBytesAsIOException(output, bytes);
     }
 
+    private static void requireTemporaryTransferWithinLimit(
+            long transferred,
+            long temporaryStorageAllowance,
+            WorkflowResourceContext resources) throws DocumentFailure {
+        if (temporaryStorageAllowance < 0L
+                || transferred > temporaryStorageAllowance) {
+            throw resources.policyFailure(
+                    DocumentFailureCode.TEMPORARY_STORAGE_LIMIT_EXCEEDED,
+                    "The workflow temporary-storage limit was exceeded.");
+        }
+    }
+
     private static OpenedDocument openPrimaryDocument(
             DocumentSource source,
+            String sourceName,
             boolean captureFingerprint,
-            WorkflowResourceContext resources)
+            ExecutionContext<?> context)
             throws DocumentFailure {
+        WorkflowResourceContext resources = context.resources;
         if (source.getKind() == DocumentSource.Kind.PATH) {
             InputStream ownedPathInput = null;
             try {
                 Path path = source.getPath().toAbsolutePath().normalize();
+                if (source.isWorkflowSnapshot()) {
+                    long length = Files.size(path);
+                    PdfVersion header = PdfBoxVersionPolicy.inspectHeader(path);
+                    SourceFingerprint fingerprint = captureFingerprint
+                            ? fingerprint(path, length, resources) : null;
+                    PasswordCredential credential = context.resolveCredential(
+                            sourceName,
+                            source.getCredential());
+                    return new OpenedDocument(
+                            loadPathDocument(path, credential, resources),
+                            length,
+                            fingerprint,
+                            header,
+                            null,
+                            credential);
+                }
                 ownedPathInput = Files.newInputStream(path);
                 Path snapshot = snapshot(
                         ownedPathInput,
@@ -887,15 +978,19 @@ final class PdfBoxWorkflowEngine {
                 PdfVersion header = PdfBoxVersionPolicy.inspectHeader(snapshot);
                 SourceFingerprint fingerprint = captureFingerprint
                         ? fingerprint(snapshot, length, resources) : null;
+                PasswordCredential credential = context.resolveCredential(
+                        sourceName,
+                        source.getCredential());
                 return new OpenedDocument(
                         loadPathDocument(
                                 snapshot,
-                                source.getCredential(),
+                                credential,
                                 resources),
                         length,
                         fingerprint,
                         header,
-                        ownedPathInput);
+                        ownedPathInput,
+                        credential);
             } catch (DocumentFailure failure) {
                 closeQuietly(ownedPathInput);
                 throw failure;
@@ -913,15 +1008,19 @@ final class PdfBoxWorkflowEngine {
             PdfVersion header = PdfBoxVersionPolicy.inspectHeader(snapshot);
             SourceFingerprint fingerprint = captureFingerprint
                     ? fingerprint(snapshot, length, resources) : null;
+            PasswordCredential credential = context.resolveCredential(
+                    sourceName,
+                    source.getCredential());
             return new OpenedDocument(
                     loadPathDocument(
                             snapshot,
-                            source.getCredential(),
+                            credential,
                             resources),
                     length,
                     fingerprint,
                     header,
-                    null);
+                    null,
+                    credential);
         } catch (DocumentFailure failure) {
             throw failure;
         } catch (IOException | RuntimeException failure) {
@@ -946,6 +1045,7 @@ final class PdfBoxWorkflowEngine {
                         input,
                         output,
                         maximumBytes,
+                        Long.MAX_VALUE,
                         resources);
             }
             return snapshot;
@@ -1262,6 +1362,7 @@ final class PdfBoxWorkflowEngine {
     private static void publishPath(
             Path staged,
             Path target,
+            boolean retainTemporaryAccounting,
             WorkflowResourceContext resources)
             throws DocumentFailure {
         Path targetStage = null;
@@ -1290,7 +1391,11 @@ final class PdfBoxWorkflowEngine {
                         target,
                         StandardCopyOption.REPLACE_EXISTING);
             }
-            resources.relinquishTemporaryFile(targetStage);
+            if (retainTemporaryAccounting) {
+                resources.transferTemporaryFile(targetStage, target);
+            } else {
+                resources.relinquishTemporaryFile(targetStage);
+            }
             targetStage = null;
         } catch (DocumentFailure failure) {
             throw failure;
@@ -1442,6 +1547,7 @@ final class PdfBoxWorkflowEngine {
         private final List<ProviderSelection> providerSelections;
         private final List<FontSource> referenceFonts;
         private final WorkflowResourceContext resources;
+        private final InputResolver inputResolver;
 
         ExecutionContext(
                 WorkflowRequest request,
@@ -1449,6 +1555,22 @@ final class PdfBoxWorkflowEngine {
                 List<ProviderSelection> providerSelections,
                 List<FontSource> referenceFonts,
                 WorkflowResourceContext resources) {
+            this(
+                    request,
+                    work,
+                    providerSelections,
+                    referenceFonts,
+                    resources,
+                    null);
+        }
+
+        ExecutionContext(
+                WorkflowRequest request,
+                DocumentWork<R> work,
+                List<ProviderSelection> providerSelections,
+                List<FontSource> referenceFonts,
+                WorkflowResourceContext resources,
+                InputResolver inputResolver) {
             this.request = Objects.requireNonNull(request, "request");
             this.work = Objects.requireNonNull(work, "work");
             this.providerSelections = Collections.unmodifiableList(
@@ -1456,6 +1578,84 @@ final class PdfBoxWorkflowEngine {
             this.referenceFonts = Collections.unmodifiableList(
                     new ArrayList<FontSource>(referenceFonts));
             this.resources = Objects.requireNonNull(resources, "resources");
+            this.inputResolver = inputResolver;
+        }
+
+        private DocumentSource resolveSource(
+                String name,
+                DocumentSource source) throws DocumentFailure {
+            return inputResolver == null
+                    ? source
+                    : inputResolver.resolveSource(name, source, resources);
+        }
+
+        private PasswordCredential resolveCredential(
+                String sourceName,
+                PasswordCredential credential) throws DocumentFailure {
+            return inputResolver == null
+                    ? credential
+                    : inputResolver.resolveSourceCredential(
+                            sourceName,
+                            credential,
+                            resources);
+        }
+
+        private PasswordSecurityPolicy resolveOutputSecurity(
+                PasswordSecurityPolicy security) throws DocumentFailure {
+            return inputResolver == null || security == null
+                    ? security
+                    : inputResolver.resolveOutputSecurity(
+                            security,
+                            resources);
+        }
+    }
+
+    interface InputResolver {
+
+        void activate(WorkflowResourceContext resources)
+                throws DocumentFailure;
+
+        DocumentSource resolveSource(
+                String name,
+                DocumentSource source,
+                WorkflowResourceContext resources) throws DocumentFailure;
+
+        PasswordCredential resolveSourceCredential(
+                String sourceName,
+                PasswordCredential credential,
+                WorkflowResourceContext resources) throws DocumentFailure;
+
+        PasswordSecurityPolicy resolveOutputSecurity(
+                PasswordSecurityPolicy security,
+                WorkflowResourceContext resources) throws DocumentFailure;
+
+        void close();
+    }
+
+    static final class WorkerPublicationPlan {
+
+        private final WorkflowRequest request;
+        private final WorkflowResourceContext resources;
+        private final List<PublicationTargetAdapter> targets;
+
+        private WorkerPublicationPlan(
+                WorkflowRequest request,
+                WorkflowResourceContext resources,
+                List<PublicationTargetAdapter> targets) {
+            this.request = request;
+            this.resources = resources;
+            this.targets = targets;
+        }
+
+        List<PublicationReceipt> publish(List<Path> stagedDocuments)
+                throws DocumentFailure {
+            if (stagedDocuments.size() != targets.size()
+                    && !(stagedDocuments.size() == 1 && !targets.isEmpty())) {
+                throw failure(
+                        DocumentFailureCode.WORKER_PROTOCOL_REJECTED,
+                        "The Worker product declaration is invalid.");
+            }
+            return publishAll(stagedDocuments, targets, request, resources);
         }
     }
 
@@ -1465,17 +1665,20 @@ final class PdfBoxWorkflowEngine {
         private final Path pathTarget;
         private final Path normalizedPathTarget;
         private final OutputStream streamTarget;
+        private final boolean retainTemporaryAccounting;
         private boolean streamWriteAttempted;
 
         private PublicationTargetAdapter(
                 String targetName,
                 Path pathTarget,
                 Path normalizedPathTarget,
-                OutputStream streamTarget) {
+                OutputStream streamTarget,
+                boolean retainTemporaryAccounting) {
             this.targetName = targetName;
             this.pathTarget = pathTarget;
             this.normalizedPathTarget = normalizedPathTarget;
             this.streamTarget = streamTarget;
+            this.retainTemporaryAccounting = retainTemporaryAccounting;
         }
 
         private static PublicationTargetAdapter prepare(
@@ -1488,13 +1691,15 @@ final class PdfBoxWorkflowEngine {
                             entry.getKey(),
                             target.getPath(),
                             normalizedPathTarget(target.getPath()),
-                            null);
+                            null,
+                            target.retainsTemporaryAccounting());
                 case STREAM:
                     return new PublicationTargetAdapter(
                             entry.getKey(),
                             null,
                             null,
-                            target.getStream());
+                            target.getStream(),
+                            false);
                 default:
                     throw new IllegalStateException(
                             "Unsupported publication target kind.");
@@ -1507,7 +1712,11 @@ final class PdfBoxWorkflowEngine {
             if (isStream()) {
                 publishStream(staged, streamTarget, resources, this);
             } else {
-                publishPath(staged, normalizedPathTarget, resources);
+                publishPath(
+                        staged,
+                        normalizedPathTarget,
+                        retainTemporaryAccounting,
+                        resources);
             }
         }
 
@@ -1550,18 +1759,21 @@ final class PdfBoxWorkflowEngine {
         private final SourceFingerprint fingerprint;
         private final PdfVersion declaredHeaderVersion;
         private final InputStream ownedPathInput;
+        private final PasswordCredential credential;
 
         private OpenedDocument(
                 PDDocument document,
                 long sourceLength,
                 SourceFingerprint fingerprint,
                 PdfVersion declaredHeaderVersion,
-                InputStream ownedPathInput) {
+                InputStream ownedPathInput,
+                PasswordCredential credential) {
             this.document = document;
             this.sourceLength = sourceLength;
             this.fingerprint = fingerprint;
             this.declaredHeaderVersion = declaredHeaderVersion;
             this.ownedPathInput = ownedPathInput;
+            this.credential = credential;
         }
     }
 
@@ -1587,18 +1799,25 @@ final class PdfBoxWorkflowEngine {
         }
 
         private static PreparedNamedSource prepare(
+                String sourceName,
                 DocumentSource source,
-                WorkflowResourceContext resources)
+                ExecutionContext<?> context)
                 throws DocumentFailure {
+            WorkflowResourceContext resources = context.resources;
             Path snapshot = null;
             WorkflowCredentialCharacters credentialCharacters = null;
             PDDocument document = null;
             boolean retained = false;
             try {
-                snapshot = PdfBoxWorkflowEngine.snapshot(source, resources);
+                snapshot = source.isWorkflowSnapshot()
+                        ? source.getPath().toAbsolutePath().normalize()
+                        : PdfBoxWorkflowEngine.snapshot(source, resources);
                 PdfVersion header = PdfBoxVersionPolicy.inspectHeader(snapshot);
                 credentialCharacters = credentialCharacters(
-                        source.getCredential(), resources);
+                        context.resolveCredential(
+                                sourceName,
+                                source.getCredential()),
+                        resources);
                 document = loadPathDocument(
                         snapshot,
                         credentialCharacters == null

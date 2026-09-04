@@ -321,8 +321,9 @@ WorkflowOutcome<DocumentResourceInventory> outcome = workflow.execute(
 ```
 
 These are example application bounds, not universal safe defaults. They
-compose with T20's finite transaction-wide trusted in-process policy. Hard
-process, memory, CPU, network, and termination isolation remains T21 scope.
+compose with T20's finite transaction-wide policy. The same query is available
+through T21's opt-in process, heap/direct-memory, CPU, network, filesystem, and
+hard-termination boundary within its documented Linux/JDK envelope.
 T14 adds no inline-image
 content extraction, rendering, image embedding, optimization, drawing,
 incremental publication, signature behavior, encryption, or Migration Facade

@@ -18,7 +18,8 @@ public interface. T20 makes that profile finite by default with one shared
 request/environment policy for input, page, object, nesting, decompression,
 pixel, accounted owned-memory, temporary-storage, elapsed-time, and concurrency
 limits. The policy is cooperative; hostile multi-tenant input still requires
-the future T21 Hardened Worker Profile.
+the opt-in T21 Hardened Worker Profile, which is implemented for the documented
+Linux/JDK support envelope.
 
 T04 packages the Stable and Experimental Migration Facades. The first mapped
 document-creation workflow remains experimental, so it is available only from
@@ -226,6 +227,7 @@ import net.zerocloud.pdf.DocumentSource;
 import net.zerocloud.pdf.DocumentWorkflow;
 import net.zerocloud.pdf.PublicationTarget;
 import net.zerocloud.pdf.SaveMode;
+import net.zerocloud.pdf.WorkflowExecutionProfile;
 import net.zerocloud.pdf.WorkflowOutcome;
 import net.zerocloud.pdf.WorkflowRequest;
 import net.zerocloud.pdf.command.AddBlankPage;
@@ -237,6 +239,8 @@ DocumentWorkflow workflow = new DocumentWorkflow();
 WorkflowRequest create = WorkflowRequest.builder()
         .target("primary-output", PublicationTarget.path(output))
         .saveMode(SaveMode.REWRITE)
+        // Opt in for hostile-input process isolation; IN_PROCESS is the default.
+        .executionProfile(WorkflowExecutionProfile.HARDENED_WORKER)
         .build();
 
 workflow.execute(create, session -> {
@@ -259,6 +263,20 @@ if (inspected.getResult().intValue() != 1) {
 }
 ```
 
+Use `DocumentSession.executeBatch(...)` when several ordered Commands should
+cross a Hardened Worker boundary together. Fixed-size page-structure batches
+whose complete encoder, retained-payload, cross-process payload, and completion-
+control peak fits the parent's current message and aggregate owned-memory
+bounds are offered by encoded length and may cross in one atomic frame when the
+Worker accepts their current modeled-memory cost. Every other, parent-
+ineligible, or Worker-deferred batch uses one authenticated count declaration
+followed by indexed preflight, detail, and Command requests, each issued only
+after its predecessor succeeds. The parent therefore does not encode a later
+one-shot input or lazy value after an earlier failure. Both forms have one
+logical completion. A following Query remains an ordering barrier and observes
+the completed batch prefix; ordinary `execute(...)` delegates its singleton
+batch through the same selection.
+
 Every execution uses `WorkflowResourcePolicy.safeDefaults()` unless its
 `WorkflowRequest` supplies a complete immutable override or its shared
 `WorkflowEnvironment` supplies a different finite default. All named Sources,
@@ -268,8 +286,16 @@ produces a stable `DocumentFailure`; cancellation, deadlines, and elapsed time
 are checked cooperatively inside project-owned bounded work. Configure the
 environment-owned temporary root for service deployments. See the
 [trusted in-process hostile-input policy](docs/hostile-input-policy.md) for
-the exact defaults, accounting model, failure/receipt behavior, and T21
-boundary.
+the exact defaults, accounting model, and failure/receipt behavior.
+
+The T21 [Hardened Worker guide](docs/hardened-worker.md) documents the
+authenticated closed protocol, callback/query ordering, parent-owned Source
+and Target adapters, exact classpath authority, INET and Unix-domain network
+denial, filesystem/process controls, cleanup, stable Worker failures,
+configuration, supported Linux/JDK envelope, and explicit non-certification
+boundaries. Selecting the profile never silently falls back to in-process
+execution. Remote Capability Providers remain parent-brokered and separately
+require Remote Disclosure Authorization.
 
 The Native Interface uses only `net.zerocloud.pdf` and JDK types. Sources may
 be Paths, caller-owned streams, caller-owned channels, or bounded bytes.
@@ -368,8 +394,8 @@ network source. See the authoritative
 for API use, ownership, the closed format matrix, exact limits, stable
 failures, publication policy, evidence status, and exclusions.
 
-Successful `WorkflowOutcome` values identify the capability, the in-process
-execution profile, the selected Save Mode, safe diagnostics, and every Target
+Successful `WorkflowOutcome` values identify the capability, the actual
+selected execution profile, the selected Save Mode, safe diagnostics, and every Target
 receipt, plus any declaration-ordered Capability Provider selections. A
 deterministic deadline Clock is configured through
 `WorkflowEnvironment.withClock(clock)` or `WorkflowEnvironment.builder()` and

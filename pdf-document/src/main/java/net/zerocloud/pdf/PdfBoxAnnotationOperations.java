@@ -122,6 +122,16 @@ final class PdfBoxAnnotationOperations {
             }
             selected.add(annotation.getProperties().getIdentifier());
         }
+        requireNonWidgetSignatureUpdate(false, selected);
+    }
+
+    void requireNonWidgetSignatureUpdate(
+            boolean containsWidget,
+            Set<String> selected) throws DocumentFailure {
+        resources.checkpoint();
+        if (containsWidget) {
+            throw PdfBoxWorkflowEngine.signaturePolicyFailure();
+        }
         if (selected.isEmpty()) {
             return;
         }

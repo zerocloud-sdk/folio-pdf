@@ -263,9 +263,10 @@ exceptions, or private security state.
 ## Scope boundary
 
 T16 does not implement public-key encryption, FIPS validation, signature
-creation or cryptographic trust, arbitrary encrypted-stream combinations, or
-Hardened Worker isolation. T20's cooperative transaction policy now composes
-with T16; the other gaps remain T37, T38+, and T21 work. The exact public
+creation or cryptographic trust, or arbitrary encrypted-stream combinations.
+T20's transaction policy composes with T16, and T21 transports credentials and
+the same security contract through the opt-in Hardened Worker; the other gaps
+remain T37 and T38+ work. The exact public
 standards and PDFBox
 sources, unresolved PDF 1.7 Extension Level 8 provenance, and clean-room
 fixture boundary are recorded in the T16 research note and `PROVENANCE.md`.

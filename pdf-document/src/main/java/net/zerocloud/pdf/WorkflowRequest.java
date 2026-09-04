@@ -49,6 +49,7 @@ public final class WorkflowRequest {
     private final WorkflowResourcePolicy resourcePolicy;
     private final Map<String, ProviderPreference> providerPreferences;
     private final Set<String> remoteDisclosureAuthorizations;
+    private final WorkflowExecutionProfile executionProfile;
 
     private WorkflowRequest(Builder builder) {
         this.sources = Collections.unmodifiableMap(
@@ -69,6 +70,7 @@ public final class WorkflowRequest {
         this.remoteDisclosureAuthorizations = Collections.unmodifiableSet(
                 new LinkedHashSet<String>(
                         builder.remoteDisclosureAuthorizations));
+        this.executionProfile = builder.executionProfile;
     }
 
     /**
@@ -202,6 +204,37 @@ public final class WorkflowRequest {
     }
 
     /**
+     * Returns the explicitly selected execution boundary.
+     *
+     * @return the trusted in-process or Hardened Worker profile
+     */
+    public WorkflowExecutionProfile getExecutionProfile() {
+        return executionProfile;
+    }
+
+    WorkflowRequest withProgressListener(
+            WorkflowProgressListener replacement) {
+        Builder copy = new Builder();
+        copy.sources.putAll(sources);
+        copy.primarySourceName = primarySourceName;
+        copy.publicationTargets.putAll(publicationTargets);
+        copy.saveMode = saveMode;
+        copy.outputPolicy = outputPolicy;
+        copy.legacySecurityMode = legacySecurityMode;
+        copy.cancellationToken = cancellationToken;
+        copy.deadline = deadline;
+        copy.progressListener = Objects.requireNonNull(
+                replacement,
+                "replacement");
+        copy.resourcePolicy = resourcePolicy;
+        copy.providerPreferences.putAll(providerPreferences);
+        copy.remoteDisclosureAuthorizations.addAll(
+                remoteDisclosureAuthorizations);
+        copy.executionProfile = executionProfile;
+        return new WorkflowRequest(copy);
+    }
+
+    /**
      * Builds an immutable workflow request.
      *
      * @since 0.1.0
@@ -224,6 +257,8 @@ public final class WorkflowRequest {
                 new LinkedHashMap<String, ProviderPreference>();
         private final Set<String> remoteDisclosureAuthorizations =
                 new LinkedHashSet<String>();
+        private WorkflowExecutionProfile executionProfile =
+                WorkflowExecutionProfile.IN_PROCESS;
 
         private Builder() {
         }
@@ -364,6 +399,20 @@ public final class WorkflowRequest {
             this.resourcePolicy = Objects.requireNonNull(
                     resourcePolicy,
                     "resourcePolicy");
+            return this;
+        }
+
+        /**
+         * Selects the execution boundary for this request. The default is the
+         * backward-compatible trusted in-process profile.
+         *
+         * @param profile the explicit execution profile
+         * @return this builder
+         */
+        public Builder executionProfile(WorkflowExecutionProfile profile) {
+            this.executionProfile = Objects.requireNonNull(
+                    profile,
+                    "profile");
             return this;
         }
 

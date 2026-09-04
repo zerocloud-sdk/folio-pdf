@@ -115,7 +115,8 @@ inert. Widget support is annotation-only and does not create or flatten an
 AcroForm field. Resource-bearing appearance programs, form Actions, form
 flattening, extraction, encryption, incremental publication, signatures,
 comprehensive hostile-input enforcement, and Worker codecs remain outside
-T12.
+T12 itself; T20 and T21 now compose those latter policy and transport layers
+with the T12 contract.
 
 This record is implementation evidence, not independent Acceptance Evidence.
 The separate T12 qpdf record supplies a passing syntax chain only; qpdf syntax

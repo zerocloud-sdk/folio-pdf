@@ -92,6 +92,10 @@ public final class EmbeddedFile {
         return content;
     }
 
+    Relationship declaredRelationshipForWorkflow() {
+        return relationship;
+    }
+
     /**
      * Creates a minimal version-1 specification with no MIME subtype,
      * description, or relationship.

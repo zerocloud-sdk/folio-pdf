@@ -55,6 +55,7 @@ final class PdfBoxPositionedTextOperations {
     private static final int[] FORCED_INVISIBLE_CODE_POINTS = {
         0x200b, 0x200c, 0x2060, 0xfeff
     };
+    private static final int TEXT_SCAN_SUPPLEMENTARY = 1 << 30;
     private final PDDocument document;
     private final List<FontSource> referenceFonts;
     private final PdfVersion publicationVersion;
@@ -63,6 +64,7 @@ final class PdfBoxPositionedTextOperations {
             new LinkedHashMap<FontProgramKey, LoadedFont>();
     private final IdentityHashMap<FontSource, byte[]> stagedOneShotSources =
             new IdentityHashMap<FontSource, byte[]>();
+    private PreparedWorkerCommand preparedWorkerCommand;
 
     PdfBoxPositionedTextOperations(
             PDDocument document,
@@ -289,10 +291,7 @@ final class PdfBoxPositionedTextOperations {
                 declaration, command.getLimits());
         PDPage page = selectedPage(command.getPageNumber());
         PdfBoxPageContentSupport.ExistingContents existing =
-                PdfBoxPageContentSupport.prepareExistingContents(
-                        page.getCOSObject(),
-                        PdfBoxPositionedTextOperations::preservationUnsupported,
-                        resources);
+                takePreparedExistingContents(page);
 
         List<FontSource> sources = declaration.getFontSelection().getKind()
                 == FontSelection.Kind.EXPLICIT
@@ -361,6 +360,105 @@ final class PdfBoxPositionedTextOperations {
                 "The Existing Signature policy does not permit positioned text.");
     }
 
+    void requirePage(int pageNumber) throws DocumentFailure {
+        selectedPage(pageNumber);
+    }
+
+    void clearWorkerPreflight() {
+        preparedWorkerCommand = null;
+    }
+
+    void preflightWorkerCommand(
+            int pageNumber,
+            WorkerPreflight preflight) throws DocumentFailure {
+        clearWorkerPreflight();
+        if (preflight.commandVersion
+                        != DrawPositionedUnicodeText.VERSION_1
+                || preflight.limitsVersion != FontLimits.VERSION_1
+                || preflight.declarationVersion
+                        != PositionedUnicodeText.VERSION_1) {
+            throw invalidText();
+        }
+        if (preflight.scanOutcome == WorkerPreflight.SCAN_INVALID) {
+            throw invalidText();
+        }
+        if (preflight.scanOutcome == WorkerPreflight.SCAN_LIMIT_EXCEEDED) {
+            throw limitFailure();
+        }
+        if (publicationVersion != null
+                && publicationVersion.ordinal()
+                        < PdfVersion.PDF_1_2.ordinal()) {
+            throw baseVersionUnsupported();
+        }
+        if (publicationVersion != null
+                && publicationVersion.ordinal()
+                        < PdfVersion.PDF_1_5.ordinal()
+                && preflight.hasSupplementaryCodePoint) {
+            throw supplementaryVersionUnsupported();
+        }
+        PDPage page = selectedPage(pageNumber);
+        PdfBoxPageContentSupport.ExistingContents existing =
+                PdfBoxPageContentSupport.prepareExistingContents(
+                        page.getCOSObject(),
+                        PdfBoxPositionedTextOperations::preservationUnsupported,
+                        resources);
+        if (preflight.resolvedFontSourceCount
+                > preflight.maximumFontSources) {
+            throw limitFailure();
+        }
+        if (preflight.resolvedFontSourceCount == 0) {
+            throw missingGlyph();
+        }
+        preparedWorkerCommand = new PreparedWorkerCommand(
+                page.getCOSObject(),
+                existing);
+    }
+
+    private PdfBoxPageContentSupport.ExistingContents
+            takePreparedExistingContents(PDPage page) throws DocumentFailure {
+        PreparedWorkerCommand prepared = preparedWorkerCommand;
+        preparedWorkerCommand = null;
+        if (prepared != null
+                && prepared.page == page.getCOSObject()) {
+            return prepared.existingContents;
+        }
+        return PdfBoxPageContentSupport.prepareExistingContents(
+                page.getCOSObject(),
+                PdfBoxPositionedTextOperations::preservationUnsupported,
+                resources);
+    }
+
+    static WorkerPreflight describeWorkerPreflight(
+            DrawPositionedUnicodeText command,
+            int referenceFontCount,
+            WorkflowResourceContext resources) throws DocumentFailure {
+        PositionedUnicodeText declaration = command.getPositionedUnicodeText();
+        FontLimits limits = command.getLimits();
+        int selectionKind = declaration.getFontSelection().getKind()
+                == FontSelection.Kind.EXPLICIT
+                ? WorkerPreflight.SELECTION_EXPLICIT
+                : WorkerPreflight.SELECTION_REFERENCE;
+        int sourceCount = selectionKind == WorkerPreflight.SELECTION_EXPLICIT
+                ? declaration.getFontSelection().getSources().size()
+                : referenceFontCount;
+        int scan = isValidTextDeclaration(declaration)
+                ? scanText(
+                        declaration.getText(),
+                        limits.getMaximumCodePoints(),
+                        null,
+                        resources)
+                : WorkerPreflight.SCAN_INVALID;
+        return new WorkerPreflight(
+                command.getVersion(),
+                limits.getVersion(),
+                declaration.getVersion(),
+                scan & ~TEXT_SCAN_SUPPLEMENTARY,
+                (scan & TEXT_SCAN_SUPPLEMENTARY) != 0,
+                selectionKind,
+                sourceCount,
+                limits.getMaximumFontSources());
+    }
+
     static void requireModificationPermission(PasswordSecurityInfo securityInfo)
             throws DocumentFailure {
         if (securityInfo.isPasswordProtected()
@@ -374,47 +472,21 @@ final class PdfBoxPositionedTextOperations {
     private List<Integer> validateText(
             PositionedUnicodeText declaration,
             FontLimits limits) throws DocumentFailure {
-        if (declaration == null
-                || declaration.getVersion() != PositionedUnicodeText.VERSION_1
-                || declaration.getText().isEmpty()
-                || declaration.getFontSelection() == null
-                || declaration.getRenderingMode() == null
-                || declaration.getRenderingMode().getOperatorValue() >= 4
-                || declaration.getTextMatrix() == null
-                || declaration.getFontSize() <= 0d) {
+        if (!isValidTextDeclaration(declaration)) {
             throw invalidText();
         }
-        PdfBoxPageContentSupport.requireNumber(
-                declaration.getFontSize(),
-                PdfBoxPositionedTextOperations::invalidText);
-        PdfBoxPageContentSupport.requireMatrix(
-                declaration.getTextMatrix(),
-                PdfBoxPositionedTextOperations::invalidText);
 
         List<Integer> codePoints = new ArrayList<Integer>();
-        String value = declaration.getText();
-        int offset = 0;
-        while (offset < value.length()) {
-            resources.checkpoint();
-            char first = value.charAt(offset);
-            final int codePoint;
-            if (Character.isHighSurrogate(first)) {
-                if (offset + 1 >= value.length()
-                        || !Character.isLowSurrogate(value.charAt(offset + 1))) {
-                    throw invalidText();
-                }
-                codePoint = Character.toCodePoint(first, value.charAt(offset + 1));
-                offset += 2;
-            } else if (Character.isLowSurrogate(first)) {
-                throw invalidText();
-            } else {
-                codePoint = first;
-                offset++;
-            }
-            if (codePoints.size() >= limits.getMaximumCodePoints()) {
-                throw limitFailure();
-            }
-            codePoints.add(codePoint);
+        int scanOutcome = scanText(
+                declaration.getText(),
+                limits.getMaximumCodePoints(),
+                codePoints,
+                resources) & ~TEXT_SCAN_SUPPLEMENTARY;
+        if (scanOutcome == WorkerPreflight.SCAN_INVALID) {
+            throw invalidText();
+        }
+        if (scanOutcome == WorkerPreflight.SCAN_LIMIT_EXCEEDED) {
+            throw limitFailure();
         }
         if (publicationVersion != null
                 && publicationVersion.ordinal()
@@ -432,6 +504,64 @@ final class PdfBoxPositionedTextOperations {
             }
         }
         return codePoints;
+    }
+
+    private static boolean isValidTextDeclaration(
+            PositionedUnicodeText declaration) {
+        return declaration != null
+                && declaration.getVersion()
+                        == PositionedUnicodeText.VERSION_1
+                && !declaration.getText().isEmpty()
+                && declaration.getFontSelection() != null
+                && declaration.getRenderingMode() != null
+                && declaration.getRenderingMode().getOperatorValue() < 4
+                && declaration.getTextMatrix() != null
+                && declaration.getFontSize() > 0d
+                && PdfBoxPageContentSupport.isValidNumber(
+                        declaration.getFontSize())
+                && PdfBoxPageContentSupport.isValidMatrix(
+                        declaration.getTextMatrix());
+    }
+
+    private static int scanText(
+            String value,
+            int maximumCodePoints,
+            List<Integer> codePoints,
+            WorkflowResourceContext resources) throws DocumentFailure {
+        int offset = 0;
+        int count = 0;
+        int result = WorkerPreflight.SCAN_VALID;
+        while (offset < value.length()) {
+            resources.checkpoint();
+            char first = value.charAt(offset);
+            final int codePoint;
+            if (Character.isHighSurrogate(first)) {
+                if (offset + 1 >= value.length()
+                        || !Character.isLowSurrogate(value.charAt(offset + 1))) {
+                    return result | WorkerPreflight.SCAN_INVALID;
+                }
+                codePoint = Character.toCodePoint(
+                        first,
+                        value.charAt(offset + 1));
+                offset += 2;
+            } else if (Character.isLowSurrogate(first)) {
+                return result | WorkerPreflight.SCAN_INVALID;
+            } else {
+                codePoint = first;
+                offset++;
+            }
+            if (count >= maximumCodePoints) {
+                return result | WorkerPreflight.SCAN_LIMIT_EXCEEDED;
+            }
+            count++;
+            if (codePoints != null) {
+                codePoints.add(Integer.valueOf(codePoint));
+            }
+            if (codePoint > Character.MAX_VALUE) {
+                result |= TEXT_SCAN_SUPPLEMENTARY;
+            }
+        }
+        return result;
     }
 
     private List<SourceProgram> stageAndParse(
@@ -540,6 +670,11 @@ final class PdfBoxPositionedTextOperations {
         } catch (DocumentFailure failure) {
             throw failure;
         } catch (IOException | RuntimeException failure) {
+            DocumentFailure transported =
+                    WorkerCodecIO.findTransportedFailure(failure);
+            if (transported != null) {
+                throw transported;
+            }
             resources.rethrowResourceOrTerminalFailure(failure);
             throw sourceInvalid();
         }
@@ -1176,9 +1311,7 @@ final class PdfBoxPositionedTextOperations {
     }
 
     private static DocumentFailure limitFailure() {
-        return failure(
-                DocumentFailureCode.FONT_LIMIT_EXCEEDED,
-                "The font operation limit was exceeded.");
+        return PdfBoxFontFailures.operationLimitExceeded();
     }
 
     private static DocumentFailure preservationUnsupported() {
@@ -1197,6 +1330,66 @@ final class PdfBoxPositionedTextOperations {
             DocumentFailureCode code,
             String diagnostic) {
         return new DocumentFailure(code, CAPABILITY_ID, diagnostic);
+    }
+
+    static final class WorkerPreflight {
+
+        static final int SCAN_VALID = 0;
+        static final int SCAN_INVALID = 1;
+        static final int SCAN_LIMIT_EXCEEDED = 2;
+        static final int SELECTION_EXPLICIT = 1;
+        static final int SELECTION_REFERENCE = 2;
+
+        final int commandVersion;
+        final int limitsVersion;
+        final int declarationVersion;
+        final int scanOutcome;
+        final boolean hasSupplementaryCodePoint;
+        final int selectionKind;
+        final int resolvedFontSourceCount;
+        final int maximumFontSources;
+
+        WorkerPreflight(
+                int commandVersion,
+                int limitsVersion,
+                int declarationVersion,
+                int scanOutcome,
+                boolean hasSupplementaryCodePoint,
+                int selectionKind,
+                int resolvedFontSourceCount,
+                int maximumFontSources) {
+            this.commandVersion = commandVersion;
+            this.limitsVersion = limitsVersion;
+            this.declarationVersion = declarationVersion;
+            this.scanOutcome = scanOutcome;
+            this.hasSupplementaryCodePoint = hasSupplementaryCodePoint;
+            this.selectionKind = selectionKind;
+            this.resolvedFontSourceCount = resolvedFontSourceCount;
+            this.maximumFontSources = maximumFontSources;
+        }
+
+        boolean isValidWireValue() {
+            return scanOutcome >= SCAN_VALID
+                    && scanOutcome <= SCAN_LIMIT_EXCEEDED
+                    && (selectionKind == SELECTION_EXPLICIT
+                            || selectionKind == SELECTION_REFERENCE)
+                    && resolvedFontSourceCount >= 0
+                    && maximumFontSources >= 0;
+        }
+    }
+
+    private static final class PreparedWorkerCommand {
+
+        private final COSDictionary page;
+        private final PdfBoxPageContentSupport.ExistingContents
+                existingContents;
+
+        PreparedWorkerCommand(
+                COSDictionary page,
+                PdfBoxPageContentSupport.ExistingContents existingContents) {
+            this.page = page;
+            this.existingContents = existingContents;
+        }
     }
 
     private static final class PreservedEntry {
