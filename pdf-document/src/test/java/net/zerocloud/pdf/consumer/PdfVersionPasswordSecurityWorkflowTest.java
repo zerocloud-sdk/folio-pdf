@@ -1276,13 +1276,21 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
                     try {
                         Set<Path> created = namedSourceSnapshots();
                         created.removeAll(before);
-                        assertEquals(1, created.size());
-                        assertEquals(
-                                EnumSet.of(
-                                        PosixFilePermission.OWNER_READ,
-                                        PosixFilePermission.OWNER_WRITE),
-                                Files.getPosixFilePermissions(
-                                        created.iterator().next()));
+                        assertEquals(2, created.size());
+                        for (Path snapshot : created) {
+                            assertEquals(
+                                    EnumSet.of(
+                                            PosixFilePermission.OWNER_READ,
+                                            PosixFilePermission.OWNER_WRITE),
+                                    Files.getPosixFilePermissions(snapshot));
+                            assertEquals(
+                                    EnumSet.of(
+                                            PosixFilePermission.OWNER_READ,
+                                            PosixFilePermission.OWNER_WRITE,
+                                            PosixFilePermission.OWNER_EXECUTE),
+                                    Files.getPosixFilePermissions(
+                                            snapshot.getParent()));
+                        }
                     } catch (IOException exception) {
                         throw new AssertionError(exception);
                     }
@@ -2487,11 +2495,20 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
         Set<Path> snapshots = new HashSet<Path>();
         Path temporaryDirectory = Paths.get(
                 System.getProperty("java.io.tmpdir"));
-        try (DirectoryStream<Path> paths = Files.newDirectoryStream(
+        try (DirectoryStream<Path> roots = Files.newDirectoryStream(
                 temporaryDirectory,
-                ".folio-pdf-source-*.pdf")) {
-            for (Path path : paths) {
-                snapshots.add(path.toAbsolutePath().normalize());
+                ".folio-pdf-workflow-*")) {
+            for (Path root : roots) {
+                if (!Files.isDirectory(root)) {
+                    continue;
+                }
+                try (DirectoryStream<Path> paths = Files.newDirectoryStream(
+                        root,
+                        ".folio-pdf-source-*.pdf")) {
+                    for (Path path : paths) {
+                        snapshots.add(path.toAbsolutePath().normalize());
+                    }
+                }
             }
         }
         return snapshots;

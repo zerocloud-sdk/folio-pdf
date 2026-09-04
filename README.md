@@ -14,7 +14,11 @@ stream Targets, explicit Save Mode, cancellation, deadlines, sanitized
 progress, stable failures, immutable execution outcomes, and one Publication
 Receipt per Target. An immutable Workflow Environment owns deadline time.
 PDFBox is an internal implementation dependency and is never part of the
-public interface.
+public interface. T20 makes that profile finite by default with one shared
+request/environment policy for input, page, object, nesting, decompression,
+pixel, accounted owned-memory, temporary-storage, elapsed-time, and concurrency
+limits. The policy is cooperative; hostile multi-tenant input still requires
+the future T21 Hardened Worker Profile.
 
 T04 packages the Stable and Experimental Migration Facades. The first mapped
 document-creation workflow remains experimental, so it is available only from
@@ -254,6 +258,18 @@ if (inspected.getResult().intValue() != 1) {
     throw new IllegalStateException("Expected one page");
 }
 ```
+
+Every execution uses `WorkflowResourcePolicy.safeDefaults()` unless its
+`WorkflowRequest` supplies a complete immutable override or its shared
+`WorkflowEnvironment` supplies a different finite default. All named Sources,
+Session operations, staged/split products, and publication Targets continue
+the same transaction counters. Exact boundaries succeed and the first excess
+produces a stable `DocumentFailure`; cancellation, deadlines, and elapsed time
+are checked cooperatively inside project-owned bounded work. Configure the
+environment-owned temporary root for service deployments. See the
+[trusted in-process hostile-input policy](docs/hostile-input-policy.md) for
+the exact defaults, accounting model, failure/receipt behavior, and T21
+boundary.
 
 The Native Interface uses only `net.zerocloud.pdf` and JDK types. Sources may
 be Paths, caller-owned streams, caller-owned channels, or bounded bytes.

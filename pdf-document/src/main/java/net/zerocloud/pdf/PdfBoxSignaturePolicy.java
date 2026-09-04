@@ -50,9 +50,13 @@ final class PdfBoxSignaturePolicy {
         this.permission = permission;
     }
 
-    static PdfBoxSignaturePolicy inspect(PDDocument document, long sourceLength)
+    static PdfBoxSignaturePolicy inspect(
+            PDDocument document,
+            long sourceLength,
+            WorkflowResourceContext resources)
             throws DocumentFailure {
         try {
+            resources.checkpoint();
             COSDictionary trailer = document.getDocument().getTrailer();
             COSDictionary catalog = dictionary(trailer.getItem(COSName.ROOT));
             Set<COSDictionary> fieldSignatures = identitySet();
@@ -61,14 +65,22 @@ final class PdfBoxSignaturePolicy {
                 COSDictionary acroForm = dictionary(rawAcroForm);
                 COSBase rawFields = acroForm.getItem(COSName.FIELDS);
                 if (rawFields != null) {
-                    inspectFields(array(rawFields), fieldSignatures);
+                    inspectFields(
+                            array(rawFields), fieldSignatures, resources);
                 }
             }
 
-            PermissionEntries permissionEntries = inspectPermissionEntries(catalog);
+            PermissionEntries permissionEntries =
+                    inspectPermissionEntries(catalog, resources);
             Set<COSDictionary> allSignatures = identitySet();
-            allSignatures.addAll(fieldSignatures);
-            allSignatures.addAll(permissionEntries.signatures);
+            for (COSDictionary signature : fieldSignatures) {
+                resources.checkpoint();
+                allSignatures.add(signature);
+            }
+            for (COSDictionary signature : permissionEntries.signatures) {
+                resources.checkpoint();
+                allSignatures.add(signature);
+            }
             if (allSignatures.size() > MAXIMUM_FIELD_NODES + 2) {
                 throw invalidStructure();
             }
@@ -79,7 +91,11 @@ final class PdfBoxSignaturePolicy {
             Map<COSDictionary, SignatureInfo> signatureInfo =
                     new IdentityHashMap<COSDictionary, SignatureInfo>();
             for (COSDictionary signature : allSignatures) {
-                signatureInfo.put(signature, validateSignature(signature, sourceLength));
+                resources.checkpoint();
+                signatureInfo.put(
+                        signature,
+                        validateSignature(
+                                signature, sourceLength, resources));
             }
 
             COSDictionary certification = permissionEntries.docMdp;
@@ -88,6 +104,7 @@ final class PdfBoxSignaturePolicy {
             }
             int docMdpReferences = 0;
             for (Map.Entry<COSDictionary, SignatureInfo> entry : signatureInfo.entrySet()) {
+                resources.checkpoint();
                 docMdpReferences += entry.getValue().docMdpReferences;
                 if (entry.getValue().docMdpReferences > 0
                         && entry.getKey() != certification) {
@@ -117,6 +134,7 @@ final class PdfBoxSignaturePolicy {
         } catch (DocumentFailure failure) {
             throw failure;
         } catch (RuntimeException backendFailure) {
+            resources.rethrowResourceOrTerminalFailure(backendFailure);
             throw invalidStructure();
         }
     }
@@ -144,19 +162,25 @@ final class PdfBoxSignaturePolicy {
                 && command instanceof UpdateAnnotations;
     }
 
-    private static void inspectFields(COSArray roots, Set<COSDictionary> signatures)
+    private static void inspectFields(
+            COSArray roots,
+            Set<COSDictionary> signatures,
+            WorkflowResourceContext resources)
             throws DocumentFailure {
         Deque<FieldNode> pending = new ArrayDeque<FieldNode>();
         if (roots.size() > MAXIMUM_FIELD_NODES) {
             throw invalidStructure();
         }
         for (int index = roots.size() - 1; index >= 0; index--) {
+            resources.checkpoint();
             pending.push(new FieldNode(dictionary(roots.get(index)), null, null, null, 1));
         }
         Set<COSDictionary> visited = identitySet();
         int fieldCount = 0;
         while (!pending.isEmpty()) {
+            resources.checkpoint();
             FieldNode node = pending.pop();
+            resources.requireNestingDepth(node.depth);
             fieldCount++;
             if (fieldCount > MAXIMUM_FIELD_NODES
                     || node.depth > MAXIMUM_FIELD_DEPTH
@@ -189,6 +213,7 @@ final class PdfBoxSignaturePolicy {
                 throw invalidStructure();
             }
             for (int index = kids.size() - 1; index >= 0; index--) {
+                resources.checkpoint();
                 pending.push(new FieldNode(
                         dictionary(kids.get(index)), fieldType, fieldValue,
                         node.field, node.depth + 1));
@@ -196,7 +221,9 @@ final class PdfBoxSignaturePolicy {
         }
     }
 
-    private static PermissionEntries inspectPermissionEntries(COSDictionary catalog)
+    private static PermissionEntries inspectPermissionEntries(
+            COSDictionary catalog,
+            WorkflowResourceContext resources)
             throws DocumentFailure {
         COSBase rawPermissions = catalog.getItem(PERMS);
         if (rawPermissions == null) {
@@ -208,6 +235,7 @@ final class PdfBoxSignaturePolicy {
         }
         PermissionEntries entries = new PermissionEntries();
         for (COSName key : permissions.keySet()) {
+            resources.checkpoint();
             if (COSName.TYPE.equals(key)) {
                 COSBase type = nullable(permissions.getItem(key));
                 if (type != null && !PERMS.equals(type)) {
@@ -230,9 +258,12 @@ final class PdfBoxSignaturePolicy {
         return entries;
     }
 
-    private static SignatureInfo validateSignature(COSDictionary signature, long sourceLength)
+    private static SignatureInfo validateSignature(
+            COSDictionary signature,
+            long sourceLength,
+            WorkflowResourceContext resources)
             throws DocumentFailure {
-        requireDirectValues(signature);
+        requireDirectValues(signature, resources);
         COSBase type = nullable(signature.getItem(COSName.TYPE));
         if (type != null && !COSName.SIG.equals(type)) {
             throw invalidStructure();
@@ -249,6 +280,7 @@ final class PdfBoxSignaturePolicy {
         long previousEnd = -1L;
         boolean coversFromStart = false;
         for (int index = 0; index < byteRange.size(); index += 2) {
+            resources.checkpoint();
             long start = integer(direct(byteRange.get(index)));
             long length = integer(direct(byteRange.get(index + 1)));
             if (start < 0L || length < 0L
@@ -273,6 +305,7 @@ final class PdfBoxSignaturePolicy {
             throw invalidStructure();
         }
         for (int index = 0; index < references.size(); index++) {
+            resources.checkpoint();
             COSDictionary reference = dictionary(direct(references.get(index)));
             COSBase rawMethod = resolve(direct(
                     reference.getItem(TRANSFORM_METHOD)));
@@ -282,7 +315,7 @@ final class PdfBoxSignaturePolicy {
             COSName method = (COSName) rawMethod;
             if (DOC_MDP.equals(method)) {
                 info.docMdpReferences++;
-                inspectDocMdpTransform(reference, info);
+                inspectDocMdpTransform(reference, info, resources);
             } else {
                 info.unsupportedRestriction = true;
             }
@@ -290,8 +323,12 @@ final class PdfBoxSignaturePolicy {
         return info;
     }
 
-    private static void inspectDocMdpTransform(COSDictionary reference, SignatureInfo info)
+    private static void inspectDocMdpTransform(
+            COSDictionary reference,
+            SignatureInfo info,
+            WorkflowResourceContext resources)
             throws DocumentFailure {
+        resources.checkpoint();
         COSBase rawParameters = reference.getItem(TRANSFORM_PARAMS);
         if (rawParameters == null) {
             info.unsupportedRestriction = true;
@@ -365,13 +402,16 @@ final class PdfBoxSignaturePolicy {
         return value instanceof COSNull ? null : value;
     }
 
-    private static void requireDirectValues(COSDictionary dictionary)
+    private static void requireDirectValues(
+            COSDictionary dictionary,
+            WorkflowResourceContext resources)
             throws DocumentFailure {
         if (dictionary.keySet().size()
                 > MAXIMUM_SIGNATURE_DICTIONARY_ENTRIES) {
             throw invalidStructure();
         }
         for (COSName key : dictionary.keySet()) {
+            resources.checkpoint();
             direct(dictionary.getItem(key));
         }
     }

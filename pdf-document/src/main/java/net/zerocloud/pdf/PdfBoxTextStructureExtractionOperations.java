@@ -2,9 +2,9 @@ package net.zerocloud.pdf;
 
 import java.awt.geom.Point2D;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -79,9 +79,13 @@ final class PdfBoxTextStructureExtractionOperations {
     static final String CAPABILITY_ID = "document.text-structure.extract";
 
     private final PDDocument document;
+    private final WorkflowResourceContext resources;
 
-    PdfBoxTextStructureExtractionOperations(PDDocument document) {
+    PdfBoxTextStructureExtractionOperations(
+            PDDocument document,
+            WorkflowResourceContext resources) {
         this.document = document;
+        this.resources = resources;
     }
 
     boolean supportsQuery(DocumentQuery<?> query) {
@@ -90,7 +94,11 @@ final class PdfBoxTextStructureExtractionOperations {
 
     TextStructureExtraction evaluate(ExtractTextAndStructure query)
             throws DocumentFailure {
-        ExtractionState state = new ExtractionState(query.getLimits());
+        resources.checkpoint();
+        ExtractionState state = new ExtractionState(
+                query.getLimits(),
+                resources);
+        boolean completed = false;
         try {
             COSBase pageTree = document.getDocumentCatalog()
                     .getCOSObject().getDictionaryObject(COSName.PAGES);
@@ -101,45 +109,58 @@ final class PdfBoxTextStructureExtractionOperations {
             List<COSDictionary> pageDictionaries =
                     new ArrayList<COSDictionary>(pageViews.size());
             for (int index = 0; index < pageViews.size(); index++) {
+                resources.checkpoint();
                 PdfBoxPageTreePreflight.PageView pageView =
                         pageViews.get(index);
                 pageDictionaries.add(pageView.source());
                 PDPage page = new PDPage(pageView.effective());
                 state.accountPageStreams(page);
-                PageEngine engine = new PageEngine(index + 1, state);
-                engine.processPage(page);
-                pages.add(engine.result(page));
+                try (PageEngine engine = new PageEngine(index + 1, state)) {
+                    engine.processPage(page);
+                    pages.add(engine.result(page));
+                }
             }
             List<LogicalStructureElement> structureRoots =
                     new StructureExtractor(
                             document, state, pages, pageDictionaries).extract();
-            return new TextStructureExtraction(
+            TextStructureExtraction result = new TextStructureExtraction(
                     pages,
                     structureRoots,
                     state.diagnostics);
+            completed = true;
+            return result;
+        } catch (DocumentFailure failure) {
+            throw failure;
         } catch (ExtractionLimitException
                 | ExtractionLimitRuntimeException exhausted) {
+            resources.rethrowTerminalFailure();
             throw failure(
                     DocumentFailureCode.EXTRACTION_LIMIT_EXCEEDED,
                     "The text and logical-structure extraction limit was exceeded.");
         } catch (ExtractionMalformedRuntimeException malformed) {
+            resources.rethrowTerminalFailure();
             throw failure(
                     DocumentFailureCode.QUERY_FAILED,
                     "The document text and logical structure could not be extracted safely.");
         } catch (IOException malformed) {
+            resources.rethrowResourceOrTerminalFailure(malformed);
             throw failure(
                     DocumentFailureCode.QUERY_FAILED,
                     "The document text and logical structure could not be extracted safely.");
         } catch (RuntimeException malformed) {
+            resources.rethrowResourceOrTerminalFailure(malformed);
             throw failure(
                     DocumentFailureCode.QUERY_FAILED,
                     "The document text and logical structure could not be extracted safely.");
+        } finally {
+            state.releaseProvisionalMemory(completed);
         }
     }
 
     private static final class ExtractionState {
 
         private final ExtractionLimits limits;
+        private final WorkflowResourceContext resources;
         private final List<ExtractionDiagnostic> diagnostics =
                 new ArrayList<ExtractionDiagnostic>();
         private int contentStreams;
@@ -171,13 +192,19 @@ final class PdfBoxTextStructureExtractionOperations {
         private final IdentityHashMap<COSStream, Boolean>
                 contentStreamsInspected =
                         new IdentityHashMap<COSStream, Boolean>();
+        private long fontHeaderBytes;
+        private long resultSourceCodeBytes;
+        private long resultTextBytes;
 
-        ExtractionState(ExtractionLimits limits) {
+        ExtractionState(
+                ExtractionLimits limits,
+                WorkflowResourceContext resources) {
             this.limits = limits;
+            this.resources = resources;
         }
 
         List<PdfBoxPageTreePreflight.PageView> pageViews(COSBase value)
-                throws IOException {
+                throws IOException, DocumentFailure {
             if (!(value instanceof COSDictionary)
                     || value instanceof COSStream) {
                 throw new IOException("Page-tree root is malformed");
@@ -186,7 +213,8 @@ final class PdfBoxTextStructureExtractionOperations {
                 return PdfBoxPageTreePreflight.pages(
                         (COSDictionary) value,
                         limits.getMaximumPages(),
-                        limits.getMaximumPageTreeNodes());
+                        limits.getMaximumPageTreeNodes(),
+                        resources);
             } catch (PdfBoxPageTreePreflight.LimitExceededException
                     exhausted) {
                 throw new ExtractionLimitException();
@@ -212,19 +240,28 @@ final class PdfBoxTextStructureExtractionOperations {
                     - contentStreams) {
                 throw new ExtractionLimitException();
             }
-            ByteArrayOutputStream combined = new ByteArrayOutputStream();
-            for (int index = 0; index < streams.size(); index++) {
-                COSBase stream = streams.getObject(index);
-                if (!(stream instanceof COSStream)) {
-                    throw new IOException(
-                            "Page Contents array member is not a stream");
+            try (WorkflowResourceContext.OwnedByteAccumulator combined =
+                    resources.ownedByteAccumulator()) {
+                for (int index = 0; index < streams.size(); index++) {
+                    COSBase stream = streams.getObject(index);
+                    if (!(stream instanceof COSStream)) {
+                        throw new IOException(
+                                "Page Contents array member is not a stream");
+                    }
+                    accountStreamOccurrence(1);
+                    try (WorkflowResourceContext.OwnedBytes content =
+                            decodedBytes((COSStream) stream)) {
+                        byte[] bytes = content.getBytes();
+                        combined.write(bytes, 0, bytes.length);
+                    }
+                    combined.write('\n');
                 }
-                accountStreamOccurrence(1);
-                byte[] content = decodedBytes((COSStream) stream);
-                combined.write(content, 0, content.length);
-                combined.write('\n');
+                try (WorkflowResourceContext.OwnedBytes content =
+                        combined.finishWorkingAsIOException()) {
+                    PdfBoxContentStreamPreflight.validate(
+                            content.getBytes(), resources);
+                }
             }
-            PdfBoxContentStreamPreflight.validate(combined.toByteArray());
         }
 
         void accountFormStream(PDFormXObject form, int depth)
@@ -240,13 +277,18 @@ final class PdfBoxTextStructureExtractionOperations {
                 accountDecodedStream(stream);
                 return;
             }
-            byte[] content = decodedBytes(dictionary);
-            PdfBoxContentStreamPreflight.validate(content);
+            try (WorkflowResourceContext.OwnedBytes content =
+                    decodedBytes(dictionary)) {
+                PdfBoxContentStreamPreflight.validate(
+                        content.getBytes(), resources);
+            }
             contentStreamsInspected.put(dictionary, Boolean.TRUE);
         }
 
         private void accountStreamOccurrence(int depth)
-                throws ExtractionLimitException {
+                throws IOException {
+            resources.checkpointAsIOException();
+            resources.requireNestingDepthAsIOException(depth);
             if (depth > limits.getMaximumContentStreamDepth()) {
                 throw new ExtractionLimitException();
             }
@@ -258,13 +300,9 @@ final class PdfBoxTextStructureExtractionOperations {
 
         private void accountDecodedStream(PDStream stream)
                 throws IOException {
-            byte[] buffer = new byte[8192];
-            try (InputStream input = stream.createInputStream()) {
-                int count;
-                while ((count = input.read(buffer)) != -1) {
-                    accountDecodedBytes(count);
-                }
-            }
+            resources.decodeStreamAsIOException(
+                    stream.getCOSObject(),
+                    new AccountedDecodedOutput(null, null));
         }
 
         private void accountDecodedBytes(int count)
@@ -296,28 +334,33 @@ final class PdfBoxTextStructureExtractionOperations {
                     if (!(value instanceof COSStream)) {
                         throw new IOException("ToUnicode is not a stream");
                     }
-                    byte[] bytes = decodedBytes((COSStream) value);
-                    int remaining = limits.getMaximumToUnicodeMappings()
-                            - toUnicodeMappings;
-                    int mappings;
-                    try {
-                        mappings = PdfBoxCMapPreflight.countMappings(
-                                bytes, remaining);
-                    } catch (PdfBoxCMapPreflight.LimitExceededException
-                            exhausted) {
-                        throw new ExtractionLimitException();
-                    }
-                    accountToUnicodeMappings(mappings);
-                    try (RandomAccessRead input =
-                            new RandomAccessReadBuffer(bytes)) {
+                    try (WorkflowResourceContext.OwnedBytes decoded =
+                            decodedBytes((COSStream) value)) {
+                        byte[] bytes = decoded.getBytes();
+                        int remaining = limits.getMaximumToUnicodeMappings()
+                                - toUnicodeMappings;
+                        int mappings;
                         try {
-                            explicitCMaps.put(
-                                    dictionary,
-                                    new CMapParser(true).parse(input));
-                        } catch (ClassCastException malformed) {
-                            throw new IOException("Malformed ToUnicode CMap");
-                        } catch (IllegalArgumentException malformed) {
-                            throw new IOException("Malformed ToUnicode CMap");
+                            mappings = PdfBoxCMapPreflight.countMappings(
+                                    bytes, remaining, resources);
+                        } catch (PdfBoxCMapPreflight.LimitExceededException
+                                exhausted) {
+                            throw new ExtractionLimitException();
+                        }
+                        accountToUnicodeMappings(mappings);
+                        try (RandomAccessRead input =
+                                new RandomAccessReadBuffer(bytes)) {
+                            try {
+                                explicitCMaps.put(
+                                        dictionary,
+                                        new CMapParser(true).parse(input));
+                            } catch (ClassCastException malformed) {
+                                throw new IOException(
+                                        "Malformed ToUnicode CMap");
+                            } catch (IllegalArgumentException malformed) {
+                                throw new IOException(
+                                        "Malformed ToUnicode CMap");
+                            }
                         }
                     }
                 }
@@ -345,7 +388,7 @@ final class PdfBoxTextStructureExtractionOperations {
             int metricEntries;
             try {
                 metricEntries = PdfBoxFontMetricPreflight.countEntries(
-                        dictionary, remaining);
+                        dictionary, remaining, resources);
             } catch (PdfBoxFontMetricPreflight.LimitExceededException
                     exhausted) {
                 throw new ExtractionLimitException();
@@ -507,22 +550,56 @@ final class PdfBoxTextStructureExtractionOperations {
                 return;
             }
             fontDataInspected.put(stream, Boolean.TRUE);
-            byte[] header = new byte[4];
-            int headerBytes = 0;
-            byte[] buffer = new byte[8192];
-            try (InputStream input = stream.createInputStream()) {
-                int count;
-                while ((count = input.read(buffer)) != -1) {
-                    accountDecodedBytes(count);
-                    int copied = Math.min(count, header.length - headerBytes);
-                    if (copied > 0) {
-                        System.arraycopy(
-                                buffer, 0, header, headerBytes, copied);
-                        headerBytes += copied;
-                    }
+            resources.retainOwnedMemoryAsIOException(4L);
+            boolean retained = false;
+            try {
+                byte[] header = new byte[4];
+                resources.decodeStreamAsIOException(
+                        stream,
+                        new AccountedDecodedOutput(null, header));
+                fontDataHeaders.put(stream, header);
+                fontHeaderBytes += header.length;
+                retained = true;
+            } finally {
+                if (!retained) {
+                    resources.releaseRetainedOwnedMemory(4L);
                 }
             }
-            fontDataHeaders.put(stream, header);
+        }
+
+        byte[] provisionalSourceCode(
+                byte[] source,
+                int offset,
+                int length) throws IOException {
+            resources.retainOwnedMemoryAsIOException(length);
+            try {
+                byte[] bytes = Arrays.copyOfRange(
+                        source, offset, offset + length);
+                resultSourceCodeBytes += length;
+                return bytes;
+            } catch (RuntimeException | Error failure) {
+                resources.releaseRetainedOwnedMemory(length);
+                throw failure;
+            }
+        }
+
+        String finishPageText(
+                WorkflowResourceContext.OwnedTextAccumulator text)
+                throws IOException {
+            String result = text.finishRetainedAsIOException();
+            resultTextBytes += 2L * result.length();
+            return result;
+        }
+
+        void releaseProvisionalMemory(boolean resultReturned) {
+            resources.releaseRetainedOwnedMemory(fontHeaderBytes);
+            fontHeaderBytes = 0L;
+            if (!resultReturned) {
+                resources.releaseRetainedOwnedMemory(resultSourceCodeBytes);
+                resources.releaseRetainedOwnedMemory(resultTextBytes);
+            }
+            resultSourceCodeBytes = 0L;
+            resultTextBytes = 0L;
         }
 
         private void inspectCidToGidMap(COSBase value) throws IOException {
@@ -604,6 +681,7 @@ final class PdfBoxTextStructureExtractionOperations {
             String[] result = new String[256];
             int current = -1;
             for (int index = 0; index < entries.size(); index++) {
+                resources.checkpointAsIOException();
                 COSBase entry = entries.getObject(index);
                 if (entry instanceof COSInteger) {
                     long characterCode = ((COSInteger) entry).longValue();
@@ -635,20 +713,66 @@ final class PdfBoxTextStructureExtractionOperations {
             return cmap == null ? null : cmap.toUnicode(sourceCode);
         }
 
-        private byte[] decodedBytes(COSStream stream) throws IOException {
-            ByteArrayOutputStream output = new ByteArrayOutputStream();
-            byte[] buffer = new byte[8192];
-            try (InputStream input = stream.createInputStream()) {
-                int count;
-                while ((count = input.read(buffer)) != -1) {
-                    accountDecodedBytes(count);
-                    output.write(buffer, 0, count);
-                }
+        private WorkflowResourceContext.OwnedBytes decodedBytes(
+                COSStream stream) throws IOException {
+            try (WorkflowResourceContext.OwnedByteAccumulator output =
+                    resources.ownedByteAccumulator()) {
+                resources.decodeStreamAsIOException(
+                        stream,
+                        new AccountedDecodedOutput(output, null));
+                return output.finishWorkingAsIOException();
             }
-            return output.toByteArray();
         }
 
-        int nextTextItem() throws ExtractionLimitException {
+        private final class AccountedDecodedOutput extends OutputStream {
+
+            private final WorkflowResourceContext.OwnedByteAccumulator output;
+            private final byte[] header;
+            private int headerBytes;
+
+            private AccountedDecodedOutput(
+                    WorkflowResourceContext.OwnedByteAccumulator output,
+                    byte[] header) {
+                this.output = output;
+                this.header = header;
+            }
+
+            @Override
+            public void write(int value) throws IOException {
+                accountDecodedBytes(1);
+                if (header != null && headerBytes < header.length) {
+                    header[headerBytes++] = (byte) value;
+                }
+                if (output != null) {
+                    output.write(value);
+                }
+            }
+
+            @Override
+            public void write(byte[] bytes, int offset, int length)
+                    throws IOException {
+                if (bytes == null
+                        || offset < 0
+                        || length < 0
+                        || offset > bytes.length - length) {
+                    throw new IndexOutOfBoundsException();
+                }
+                accountDecodedBytes(length);
+                if (header != null && headerBytes < header.length) {
+                    int copied = Math.min(
+                            length, header.length - headerBytes);
+                    System.arraycopy(
+                            bytes, offset, header, headerBytes, copied);
+                    headerBytes += copied;
+                }
+                if (output != null) {
+                    output.write(bytes, offset, length);
+                }
+            }
+        }
+
+        int nextTextItem() throws IOException {
+            resources.checkpointAsIOException();
             if (textItems >= limits.getMaximumTextItems()) {
                 throw new ExtractionLimitException();
             }
@@ -656,17 +780,25 @@ final class PdfBoxTextStructureExtractionOperations {
             return textItems;
         }
 
-        void accountUnicode(String value) throws ExtractionLimitException {
-            int count = value.codePointCount(0, value.length());
-            if (unicodeCodePoints
-                    > limits.getMaximumUnicodeCodePoints() - count) {
-                throw new ExtractionLimitException();
+        void accountUnicode(String value) throws IOException {
+            int index = 0;
+            while (index < value.length()) {
+                if ((index & 1023) == 0) {
+                    resources.checkpointAsIOException();
+                }
+                if (unicodeCodePoints
+                        >= limits.getMaximumUnicodeCodePoints()) {
+                    throw new ExtractionLimitException();
+                }
+                int codePoint = Character.codePointAt(value, index);
+                index += Character.charCount(codePoint);
+                unicodeCodePoints++;
             }
-            unicodeCodePoints += count;
         }
 
         void accountToUnicodeMappings(long count)
-                throws ExtractionLimitException {
+                throws IOException {
+            resources.checkpointAsIOException();
             if (count < 0L
                     || count > limits.getMaximumToUnicodeMappings()
                             - (long) toUnicodeMappings) {
@@ -676,7 +808,8 @@ final class PdfBoxTextStructureExtractionOperations {
         }
 
         private void accountFontDataEntries(int count)
-                throws ExtractionLimitException {
+                throws IOException {
+            resources.checkpointAsIOException();
             if (count < 0
                     || count > limits.getMaximumFontDataEntries()
                             - fontDataEntries) {
@@ -685,7 +818,8 @@ final class PdfBoxTextStructureExtractionOperations {
             fontDataEntries += count;
         }
 
-        void nextMarkedContentSequence() throws ExtractionLimitException {
+        void nextMarkedContentSequence() throws IOException {
+            resources.checkpointAsIOException();
             if (markedContentSequences
                     >= limits.getMaximumMarkedContentSequences()) {
                 throw new ExtractionLimitException();
@@ -693,14 +827,17 @@ final class PdfBoxTextStructureExtractionOperations {
             markedContentSequences++;
         }
 
-        void requireMarkedContentDepth(int depth)
-                throws ExtractionLimitException {
+        void requireMarkedContentDepth(int depth) throws IOException {
+            resources.checkpointAsIOException();
+            resources.requireNestingDepthAsIOException(depth);
             if (depth > limits.getMaximumMarkedContentDepth()) {
                 throw new ExtractionLimitException();
             }
         }
 
-        int nextStructureElement(int depth) throws ExtractionLimitException {
+        int nextStructureElement(int depth) throws IOException {
+            resources.checkpointAsIOException();
+            resources.requireNestingDepthAsIOException(depth);
             if (depth > limits.getMaximumStructureDepth()) {
                 throw new ExtractionLimitException();
             }
@@ -711,14 +848,16 @@ final class PdfBoxTextStructureExtractionOperations {
             return structureElements;
         }
 
-        void nextStructureItem() throws ExtractionLimitException {
+        void nextStructureItem() throws IOException {
+            resources.checkpointAsIOException();
             if (structureItems >= limits.getMaximumStructureItems()) {
                 throw new ExtractionLimitException();
             }
             structureItems++;
         }
 
-        void nextRoleMapping() throws ExtractionLimitException {
+        void nextRoleMapping() throws IOException {
+            resources.checkpointAsIOException();
             if (roleMappings >= limits.getMaximumRoleMappings()) {
                 throw new ExtractionLimitException();
             }
@@ -750,7 +889,8 @@ final class PdfBoxTextStructureExtractionOperations {
         }
     }
 
-    private static final class PageEngine extends PDFStreamEngine {
+    private static final class PageEngine extends PDFStreamEngine
+            implements AutoCloseable {
 
         private final int pageNumber;
         private final ExtractionState state;
@@ -759,7 +899,7 @@ final class PdfBoxTextStructureExtractionOperations {
                 new ArrayList<SequenceBuilder>();
         private final Deque<SequenceBuilder> activeSequences =
                 new ArrayDeque<SequenceBuilder>();
-        private final StringBuilder pageText = new StringBuilder();
+        private final WorkflowResourceContext.OwnedTextAccumulator pageText;
         private final Deque<SourceCodeFrame> sourceFrames =
                 new ArrayDeque<SourceCodeFrame>();
         private final IdentityHashMap<COSStream, Boolean> activeForms =
@@ -770,7 +910,8 @@ final class PdfBoxTextStructureExtractionOperations {
         PageEngine(int pageNumber, ExtractionState state) {
             this.pageNumber = pageNumber;
             this.state = state;
-            operatorBalances.addLast(new OperatorBalance());
+            this.pageText = state.resources.ownedTextAccumulator();
+            operatorBalances.addLast(new OperatorBalance(state.resources));
             addOperator(new BeginText(this));
             addOperator(new BeginMarkedContentSequence(this));
             addOperator(new BeginMarkedContentSequenceWithProperties(this));
@@ -805,7 +946,8 @@ final class PdfBoxTextStructureExtractionOperations {
             }
             try {
                 state.accountFormStream(form, activeForms.size() + 1);
-                OperatorBalance formBalance = new OperatorBalance();
+                OperatorBalance formBalance = new OperatorBalance(
+                        state.resources);
                 operatorBalances.addLast(formBalance);
                 increaseLevel();
                 try {
@@ -836,6 +978,7 @@ final class PdfBoxTextStructureExtractionOperations {
         protected void processOperator(
                 Operator operator,
                 List<COSBase> operands) throws IOException {
+            state.resources.checkpointAsIOException();
             validateSupportedOperands(operator.getName(), operands);
             operatorBalances.peekLast().accept(operator.getName());
             if (OperatorName.SET_FONT_AND_SIZE.equals(operator.getName())) {
@@ -896,7 +1039,7 @@ final class PdfBoxTextStructureExtractionOperations {
             }
             SequenceBuilder completed = activeSequences.removeLast();
             if (completed.actualText != null && !hasActiveActualText()) {
-                pageText.append(completed.actualText);
+                pageText.appendAsRuntimeException(completed.actualText);
             }
         }
 
@@ -906,7 +1049,8 @@ final class PdfBoxTextStructureExtractionOperations {
             if (font == null) {
                 throw new IOException("Text has no current font");
             }
-            sourceFrames.push(new SourceCodeFrame(font, string));
+            sourceFrames.push(new SourceCodeFrame(
+                    font, string, state));
             try {
                 super.showText(string);
                 if (sourceFrames.peek().hasRemaining()) {
@@ -923,6 +1067,7 @@ final class PdfBoxTextStructureExtractionOperations {
                 PDFont font,
                 int code,
                 Vector displacement) throws IOException {
+            state.resources.checkpointAsIOException();
             if (sourceFrames.isEmpty()) {
                 throw new IOException("Text source code was unavailable");
             }
@@ -970,7 +1115,7 @@ final class PdfBoxTextStructureExtractionOperations {
                     : selected;
             if (selected != null) {
                 if (!hasActiveActualText()) {
-                    pageText.append(selected);
+                    pageText.appendAsIOException(selected);
                 }
             } else if (contradictory) {
                 state.diagnostics.add(new ExtractionDiagnostic(
@@ -989,6 +1134,7 @@ final class PdfBoxTextStructureExtractionOperations {
             }
             List<Integer> markedContentIds = new ArrayList<Integer>();
             for (SequenceBuilder sequence : activeSequences) {
+                state.resources.checkpointAsIOException();
                 markedContentIds.add(Integer.valueOf(sequence.id));
                 sequence.textItemIndices.add(Integer.valueOf(pageIndex));
             }
@@ -1003,7 +1149,7 @@ final class PdfBoxTextStructureExtractionOperations {
                     markedContentIds));
         }
 
-        PageText result(PDPage page) {
+        PageText result(PDPage page) throws IOException {
             if (!activeSequences.isEmpty()
                     || operatorBalances.size() != 1
                     || !operatorBalances.peekLast().isBalanced()) {
@@ -1013,6 +1159,7 @@ final class PdfBoxTextStructureExtractionOperations {
             List<MarkedContentSequence> detachedSequences =
                     new ArrayList<MarkedContentSequence>(sequences.size());
             for (SequenceBuilder sequence : sequences) {
+                state.resources.checkpointAsIOException();
                 detachedSequences.add(sequence.detach());
             }
             return new PageText(
@@ -1023,13 +1170,23 @@ final class PdfBoxTextStructureExtractionOperations {
                     decimal(cropBox.getLowerLeftY()),
                     decimal(cropBox.getUpperRightX()),
                     decimal(cropBox.getUpperRightY()),
-                    pageText.toString(),
+                    state.finishPageText(pageText),
                     items,
                     detachedSequences);
         }
 
+        @Override
+        public void close() {
+            pageText.close();
+        }
+
         private boolean hasActiveActualText() {
             for (SequenceBuilder sequence : activeSequences) {
+                try {
+                    state.resources.checkpointAsIOException();
+                } catch (IOException failure) {
+                    throw new ExtractionMalformedRuntimeException();
+                }
                 if (sequence.actualText != null) {
                     return true;
                 }
@@ -1038,7 +1195,7 @@ final class PdfBoxTextStructureExtractionOperations {
         }
 
         private void accountNullable(String value)
-                throws ExtractionLimitException {
+                throws IOException {
             if (value != null) {
                 state.accountUnicode(value);
             }
@@ -1172,7 +1329,7 @@ final class PdfBoxTextStructureExtractionOperations {
             }
         }
 
-        private static void validateSupportedOperands(
+        private void validateSupportedOperands(
                 String operator,
                 List<COSBase> operands) throws IOException {
             if (OperatorName.BEGIN_TEXT.equals(operator)
@@ -1266,7 +1423,7 @@ final class PdfBoxTextStructureExtractionOperations {
             }
         }
 
-        private static void requireTextAdjustmentArray(List<COSBase> operands)
+        private void requireTextAdjustmentArray(List<COSBase> operands)
                 throws IOException {
             if (operands.size() != 1
                     || !(operands.get(0) instanceof COSArray)) {
@@ -1274,6 +1431,7 @@ final class PdfBoxTextStructureExtractionOperations {
             }
             COSArray adjustments = (COSArray) operands.get(0);
             for (int index = 0; index < adjustments.size(); index++) {
+                state.resources.checkpointAsIOException();
                 COSBase value = adjustments.getObject(index);
                 if (value instanceof COSString) {
                     continue;
@@ -1296,8 +1454,13 @@ final class PdfBoxTextStructureExtractionOperations {
 
         private static final class OperatorBalance {
 
+            private final WorkflowResourceContext resources;
             private boolean inTextObject;
             private int graphicsSaves;
+
+            private OperatorBalance(WorkflowResourceContext resources) {
+                this.resources = resources;
+            }
 
             void accept(String operator) throws IOException {
                 if (OperatorName.BEGIN_TEXT.equals(operator)) {
@@ -1315,6 +1478,8 @@ final class PdfBoxTextStructureExtractionOperations {
                         throw new IOException("Graphics-state depth overflow");
                     }
                     graphicsSaves++;
+                    resources.requireNestingDepthAsIOException(
+                            graphicsSaves);
                 } else if (OperatorName.RESTORE.equals(operator)) {
                     if (graphicsSaves == 0) {
                         throw new IOException("Unmatched Q operator");
@@ -1565,11 +1730,12 @@ final class PdfBoxTextStructureExtractionOperations {
                 PDDocument document,
                 ExtractionState state,
                 List<PageText> pages,
-                List<COSDictionary> pageDictionaries) {
+                List<COSDictionary> pageDictionaries) throws IOException {
             this.document = document;
             this.state = state;
             this.pages = pages;
             for (int index = 0; index < pageDictionaries.size(); index++) {
+                state.resources.checkpointAsIOException();
                 pageNumbers.put(
                         pageDictionaries.get(index),
                         Integer.valueOf(index + 1));
@@ -1628,6 +1794,7 @@ final class PdfBoxTextStructureExtractionOperations {
                 roleMap.put(declared, resolved);
             }
             for (String role : roleMap.keySet()) {
+                state.resources.checkpointAsIOException();
                 resolveRole(role);
             }
         }
@@ -1682,6 +1849,7 @@ final class PdfBoxTextStructureExtractionOperations {
                     expectedParent,
                     active));
             while (!stack.isEmpty()) {
+                state.resources.checkpointAsIOException();
                 ElementFrame current = stack.peek();
                 if (!current.hasNextChild()) {
                     LogicalStructureElement completed = current.detach();
@@ -1831,6 +1999,7 @@ final class PdfBoxTextStructureExtractionOperations {
             Integer sequenceId = null;
             for (MarkedContentSequence sequence : pages.get(
                     page.intValue() - 1).getMarkedContentSequences()) {
+                state.resources.checkpointAsIOException();
                 if (sequence.getMarkedContentId().isPresent()
                         && sequence.getMarkedContentId().get().intValue()
                                 == markedContentId) {
@@ -1870,6 +2039,7 @@ final class PdfBoxTextStructureExtractionOperations {
             String current = role;
             Set<String> visited = new HashSet<String>();
             while (roleMap.containsKey(current)) {
+                state.resources.checkpointAsIOException();
                 if (!visited.add(current)) {
                     throw new IOException("Cyclic RoleMap");
                 }
@@ -1885,12 +2055,12 @@ final class PdfBoxTextStructureExtractionOperations {
                     LogicalStructureElement.RoleResolution.UNRESOLVED);
         }
 
-        private void account(String value) throws ExtractionLimitException {
+        private void account(String value) throws IOException {
             state.accountUnicode(value);
         }
 
         private void accountNullable(String value)
-                throws ExtractionLimitException {
+                throws IOException {
             if (value != null) {
                 account(value);
             }
@@ -2094,12 +2264,17 @@ final class PdfBoxTextStructureExtractionOperations {
         private final PDFont font;
         private final byte[] source;
         private final ByteArrayInputStream input;
+        private final ExtractionState state;
         private int offset;
 
-        SourceCodeFrame(PDFont font, byte[] source) {
+        SourceCodeFrame(
+                PDFont font,
+                byte[] source,
+                ExtractionState state) {
             this.font = font;
             this.source = source;
             this.input = new ByteArrayInputStream(source);
+            this.state = state;
         }
 
         boolean hasRemaining() {
@@ -2116,7 +2291,8 @@ final class PdfBoxTextStructureExtractionOperations {
             if (length < 1) {
                 throw new IOException("Font consumed no source-code bytes");
             }
-            byte[] bytes = Arrays.copyOfRange(source, offset, offset + length);
+            byte[] bytes = state.provisionalSourceCode(
+                    source, offset, length);
             offset += length;
             return new SourceCode(code, bytes);
         }

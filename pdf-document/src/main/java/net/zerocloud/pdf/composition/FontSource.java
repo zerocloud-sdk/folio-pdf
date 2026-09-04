@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.OptionalLong;
 
 /**
  * An explicit TrueType font-program source.
@@ -130,5 +131,17 @@ public final class FontSource {
         return bytes == null
                 ? Optional.<byte[]>empty()
                 : Optional.of(Arrays.copyOf(bytes, bytes.length));
+    }
+
+    /**
+     * Returns the byte count without creating the defensive copy returned by
+     * {@link #getBytes()}.
+     *
+     * @return the declared byte-source length, or empty for other source kinds
+     */
+    public OptionalLong getByteLength() {
+        return bytes == null
+                ? OptionalLong.empty()
+                : OptionalLong.of(bytes.length);
     }
 }

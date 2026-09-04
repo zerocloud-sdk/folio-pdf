@@ -4,7 +4,6 @@ import static net.zerocloud.pdf.PdfBoxFontFailures.formatUnsupported;
 import static net.zerocloud.pdf.PdfBoxFontFailures.sourceInvalid;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -59,6 +58,7 @@ final class PdfBoxPositionedTextOperations {
     private final PDDocument document;
     private final List<FontSource> referenceFonts;
     private final PdfVersion publicationVersion;
+    private final WorkflowResourceContext resources;
     private final Map<FontProgramKey, LoadedFont> loadedFonts =
             new LinkedHashMap<FontProgramKey, LoadedFont>();
     private final IdentityHashMap<FontSource, byte[]> stagedOneShotSources =
@@ -67,11 +67,13 @@ final class PdfBoxPositionedTextOperations {
     PdfBoxPositionedTextOperations(
             PDDocument document,
             List<FontSource> referenceFonts,
-            PdfVersion publicationVersion) {
+            PdfVersion publicationVersion,
+            WorkflowResourceContext resources) {
         this.document = document;
         this.referenceFonts = Collections.unmodifiableList(
                 new ArrayList<FontSource>(referenceFonts));
         this.publicationVersion = publicationVersion;
+        this.resources = resources;
     }
 
     boolean supports(DocumentCommand command) {
@@ -80,6 +82,7 @@ final class PdfBoxPositionedTextOperations {
 
     void finalizeFonts() throws DocumentFailure {
         for (LoadedFont loaded : loadedFonts.values()) {
+            resources.checkpoint();
             if (loaded.finalized) {
                 continue;
             }
@@ -91,51 +94,58 @@ final class PdfBoxPositionedTextOperations {
                 writeExactWidths(
                         loaded.font.getCOSObject(), loaded.widthByGlyph);
                 if (loaded.resourceDictionary != loaded.font.getCOSObject()) {
-                    loaded.replaceManagedFontEntries();
+                    loaded.replaceManagedFontEntries(resources);
                     loaded.resourceDictionary.setNeedToBeUpdated(true);
                 }
                 loaded.finalized = true;
             } catch (IOException | RuntimeException failure) {
+                resources.rethrowResourceOrTerminalFailure(failure);
                 throw sourceInvalid();
             }
         }
     }
 
-    private static void normalizeEmbeddedSubset(COSDictionary type0Font)
+    private void normalizeEmbeddedSubset(COSDictionary type0Font)
             throws IOException, DocumentFailure {
-        COSDictionary descendant = descendantFont(type0Font);
+        COSDictionary descendant = descendantFont(type0Font, resources);
         COSDictionary descriptor = dictionary(
-                descendant.getItem(COSName.FONT_DESC));
+                descendant.getItem(COSName.FONT_DESC), resources);
         COSBase rawProgram = PdfBoxPageContentSupport.dereference(
-                descriptor.getItem(COSName.FONT_FILE2));
+                descriptor.getItem(COSName.FONT_FILE2), resources);
         if (!(rawProgram instanceof COSStream)) {
             throw sourceInvalid();
         }
         COSStream program = (COSStream) rawProgram;
-        ByteArrayOutputStream staged = new ByteArrayOutputStream();
-        try (InputStream input = program.createInputStream()) {
-            byte[] buffer = new byte[8192];
-            int count;
-            while ((count = input.read(buffer)) != -1) {
-                staged.write(buffer, 0, count);
+        try (WorkflowResourceContext.OwnedByteAccumulator staged =
+                resources.ownedByteAccumulator()) {
+            PdfBoxHostileInputPreflight.decodeStream(
+                    program, resources, staged);
+            try (WorkflowResourceContext.OwnedBytes stagedBytes =
+                            staged.finishWorking();
+                    WorkflowResourceContext.MemoryReservation normalizedBytes =
+                            resources.reserveOwnedMemory(
+                                    stagedBytes.getBytes().length)) {
+                byte[] normalized =
+                        PdfBoxTrueTypePreflight.normalizeSubsetMetrics(
+                                stagedBytes.getBytes(), resources);
+                try (OutputStream output = program.createOutputStream(
+                        COSName.FLATE_DECODE)) {
+                    resources.writeBytesAsIOException(output, normalized);
+                }
+                program.setInt(COSName.LENGTH1, normalized.length);
             }
         }
-        byte[] normalized = PdfBoxTrueTypePreflight.normalizeSubsetMetrics(
-                staged.toByteArray());
-        try (OutputStream output = program.createOutputStream(
-                COSName.FLATE_DECODE)) {
-            output.write(normalized);
-        }
-        program.setInt(COSName.LENGTH1, normalized.length);
     }
 
     private static void replaceManagedEntries(
             COSDictionary target,
             COSDictionary replacement,
-            ManagedEntryPredicate isManaged) {
+            ManagedEntryPredicate isManaged,
+            WorkflowResourceContext resources) throws DocumentFailure {
         Map<String, PreservedEntry> preserved =
                 new TreeMap<String, PreservedEntry>();
         for (COSName name : target.keySet()) {
+            resources.checkpoint();
             if (!isManaged.test(name)) {
                 preserved.put(
                         name.getName(),
@@ -143,8 +153,12 @@ final class PdfBoxPositionedTextOperations {
             }
         }
         target.clear();
-        target.addAll(replacement);
+        for (COSName name : replacement.keySet()) {
+            resources.checkpoint();
+            target.setItem(name, replacement.getItem(name));
+        }
         for (PreservedEntry entry : preserved.values()) {
+            resources.checkpoint();
             target.setItem(entry.name, entry.value);
         }
     }
@@ -213,9 +227,11 @@ final class PdfBoxPositionedTextOperations {
         }
     }
 
-    private static COSDictionary descendantFont(COSDictionary type0Font) {
+    private static COSDictionary descendantFont(
+            COSDictionary type0Font,
+            WorkflowResourceContext resources) throws DocumentFailure {
         COSBase descendantsBase = PdfBoxPageContentSupport.dereference(
-                type0Font.getItem(COSName.DESCENDANT_FONTS));
+                type0Font.getItem(COSName.DESCENDANT_FONTS), resources);
         if (!(descendantsBase instanceof COSArray)) {
             throw new IllegalStateException("Type 0 font has no descendants");
         }
@@ -223,25 +239,33 @@ final class PdfBoxPositionedTextOperations {
         if (descendants.size() == 0) {
             throw new IllegalStateException("Type 0 font has no descendant");
         }
-        return dictionary(descendants.get(0));
+        return dictionary(descendants.get(0), resources);
     }
 
-    private static COSDictionary dictionary(COSBase value) {
-        COSBase resolved = PdfBoxPageContentSupport.dereference(value);
+    private static COSDictionary dictionary(
+            COSBase value,
+            WorkflowResourceContext resources) throws DocumentFailure {
+        COSBase resolved = PdfBoxPageContentSupport.dereference(
+                value, resources);
         if (!(resolved instanceof COSDictionary)) {
             throw new IllegalStateException("Expected a font dictionary");
         }
         return (COSDictionary) resolved;
     }
 
-    private static void writeExactWidths(
+    private void writeExactWidths(
             COSDictionary type0Font,
-            Map<Integer, Integer> widthsByGlyph) {
+            Map<Integer, Integer> widthsByGlyph) throws DocumentFailure {
         COSArray widths = new COSArray();
         COSArray run = null;
         int previous = Integer.MIN_VALUE;
-        for (Map.Entry<Integer, Integer> entry
-                : new TreeMap<Integer, Integer>(widthsByGlyph).entrySet()) {
+        TreeMap<Integer, Integer> sorted = new TreeMap<Integer, Integer>();
+        for (Map.Entry<Integer, Integer> entry : widthsByGlyph.entrySet()) {
+            resources.checkpoint();
+            sorted.put(entry.getKey(), entry.getValue());
+        }
+        for (Map.Entry<Integer, Integer> entry : sorted.entrySet()) {
+            resources.checkpoint();
             int glyphId = entry.getKey().intValue();
             if (run == null || glyphId != previous + 1) {
                 run = new COSArray();
@@ -251,10 +275,11 @@ final class PdfBoxPositionedTextOperations {
             run.add(COSInteger.get(entry.getValue().intValue()));
             previous = glyphId;
         }
-        descendantFont(type0Font).setItem(COSName.W, widths);
+        descendantFont(type0Font, resources).setItem(COSName.W, widths);
     }
 
     void execute(DrawPositionedUnicodeText command) throws DocumentFailure {
+        resources.checkpoint();
         if (command.getVersion() != DrawPositionedUnicodeText.VERSION_1
                 || command.getLimits().getVersion() != FontLimits.VERSION_1) {
             throw invalidText();
@@ -266,7 +291,8 @@ final class PdfBoxPositionedTextOperations {
         PdfBoxPageContentSupport.ExistingContents existing =
                 PdfBoxPageContentSupport.prepareExistingContents(
                         page.getCOSObject(),
-                        PdfBoxPositionedTextOperations::preservationUnsupported);
+                        PdfBoxPositionedTextOperations::preservationUnsupported,
+                        resources);
 
         List<FontSource> sources = declaration.getFontSelection().getKind()
                 == FontSelection.Kind.EXPLICIT
@@ -290,28 +316,40 @@ final class PdfBoxPositionedTextOperations {
             validatePublicationVersion(selected);
             preflightSubsets(programs, selected);
             List<TextRun> runs = encodeRuns(selected);
-            ResourcesPlan resources = prepareResources(
-                    page.getCOSObject(),
-                    runs);
-            byte[] operators = serialize(
-                    declaration,
-                    runs,
-                    resources.names,
-                    command.getLimits().getMaximumGeneratedContentBytes());
             try {
-                PdfBoxContentStreamPreflight.validate(operators);
-            } catch (IOException invalidGeneratedContent) {
-                throw invalidText();
+                ResourcesPlan resources = prepareResources(
+                        page.getCOSObject(),
+                        runs);
+                try (WorkflowResourceContext.OwnedBytes ownedOperators =
+                        serialize(
+                                declaration,
+                                runs,
+                                resources.names,
+                                command.getLimits()
+                                        .getMaximumGeneratedContentBytes())) {
+                    byte[] operators = ownedOperators.getBytes();
+                    try {
+                        PdfBoxContentStreamPreflight.validate(
+                                operators, this.resources);
+                    } catch (IOException invalidGeneratedContent) {
+                        this.resources.rethrowResourceOrTerminalFailure(
+                                invalidGeneratedContent);
+                        throw invalidText();
+                    }
+                    commitGlyphs(selected);
+                    PdfBoxPageContentSupport.apply(
+                            document,
+                            page,
+                            existing,
+                            operators,
+                            resources.resources,
+                            resources.changed,
+                            this.resources,
+                            PdfBoxPositionedTextOperations::writeFailure);
+                }
+            } finally {
+                closeRuns(runs);
             }
-            commitGlyphs(selected);
-            PdfBoxPageContentSupport.apply(
-                    document,
-                    page,
-                    existing,
-                    operators,
-                    resources.resources,
-                    resources.changed,
-                    PdfBoxPositionedTextOperations::writeFailure);
         } finally {
             closePrograms(programs);
         }
@@ -357,6 +395,7 @@ final class PdfBoxPositionedTextOperations {
         String value = declaration.getText();
         int offset = 0;
         while (offset < value.length()) {
+            resources.checkpoint();
             char first = value.charAt(offset);
             final int codePoint;
             if (Character.isHighSurrogate(first)) {
@@ -386,6 +425,7 @@ final class PdfBoxPositionedTextOperations {
                 && publicationVersion.ordinal()
                         < PdfVersion.PDF_1_5.ordinal()) {
             for (Integer codePoint : codePoints) {
+                resources.checkpoint();
                 if (codePoint.intValue() > Character.MAX_VALUE) {
                     throw supplementaryVersionUnsupported();
                 }
@@ -401,30 +441,55 @@ final class PdfBoxPositionedTextOperations {
         List<SourceProgram> result = new ArrayList<SourceProgram>(sources.size());
         Map<FontProgramKey, ParsedProgram> parsed =
                 new LinkedHashMap<FontProgramKey, ParsedProgram>();
+        Map<FontProgramKey, FontProgramKey> canonicalKeys =
+                new HashMap<FontProgramKey, FontProgramKey>();
+        List<FontProgramKey> createdKeys =
+                new ArrayList<FontProgramKey>();
         long totalBytes = 0L;
         try {
             for (FontSource source : sources) {
-                byte[] bytes = stage(source, limits.getMaximumSourceBytes() - totalBytes);
-                if (bytes.length > limits.getMaximumSourceBytes() - totalBytes) {
-                    throw limitFailure();
+                resources.checkpoint();
+                try (StagedFontBytes staged = stage(
+                        source,
+                        limits.getMaximumSourceBytes() - totalBytes)) {
+                    byte[] bytes = staged.bytes;
+                    if (bytes.length
+                            > limits.getMaximumSourceBytes() - totalBytes) {
+                        throw limitFailure();
+                    }
+                    totalBytes += bytes.length;
+                    FontProgramKey candidate = new FontProgramKey(
+                            resources.copyOwnedBytes(bytes), resources);
+                    createdKeys.add(candidate);
+                    FontProgramKey key = canonicalKeys.get(candidate);
+                    if (key == null) {
+                        key = candidate;
+                        canonicalKeys.put(key, key);
+                    } else {
+                        candidate.close();
+                    }
+                    ParsedProgram program = parsed.get(key);
+                    if (program == null) {
+                        program = parse(key, requestedCodePoints);
+                        parsed.put(key, program);
+                    }
+                    result.add(new SourceProgram(key, program));
                 }
-                totalBytes += bytes.length;
-                FontProgramKey key = new FontProgramKey(bytes);
-                ParsedProgram program = parsed.get(key);
-                if (program == null) {
-                    program = parse(key, requestedCodePoints);
-                    parsed.put(key, program);
-                }
-                result.add(new SourceProgram(key, program));
             }
             return result;
         } catch (DocumentFailure failure) {
             closeParsed(parsed.values());
+            closeKeys(createdKeys);
+            throw failure;
+        } catch (RuntimeException failure) {
+            closeParsed(parsed.values());
+            closeKeys(createdKeys);
+            resources.rethrowResourceOrTerminalFailure(failure);
             throw failure;
         }
     }
 
-    private byte[] stage(FontSource source, long remaining)
+    private StagedFontBytes stage(FontSource source, long remaining)
             throws DocumentFailure {
         if (remaining < 0L) {
             throw limitFailure();
@@ -432,11 +497,19 @@ final class PdfBoxPositionedTextOperations {
         try {
             switch (source.getSourceKind()) {
                 case BYTES:
-                    byte[] declared = source.getBytes().get();
-                    if (declared.length > remaining) {
+                    long declaredLength = source.getByteLength().getAsLong();
+                    if (declaredLength > remaining) {
                         throw limitFailure();
                     }
-                    return declared;
+                    WorkflowResourceContext.MemoryReservation reservation =
+                            resources.reserveOwnedMemory(declaredLength);
+                    try {
+                        return StagedFontBytes.reserved(
+                                source.getBytes().get(), reservation);
+                    } catch (RuntimeException failure) {
+                        reservation.close();
+                        throw failure;
+                    }
                 case PATH:
                     try (InputStream input = Files.newInputStream(
                             source.getPath().get())) {
@@ -444,50 +517,59 @@ final class PdfBoxPositionedTextOperations {
                     }
                 case STREAM:
                 case CHANNEL:
-                    byte[] staged = stagedOneShotSources.get(source);
-                    if (staged == null) {
+                    byte[] cached = stagedOneShotSources.get(source);
+                    if (cached == null) {
                         InputStream input = source.getSourceKind()
                                 == FontSource.SourceKind.STREAM
                                 ? source.getStream().get()
                                 : Channels.newInputStream(
                                         source.getChannel().get());
-                        staged = read(input, remaining);
-                        stagedOneShotSources.put(source, staged);
-                    } else if (staged.length > remaining) {
+                        try (StagedFontBytes staged =
+                                read(input, remaining)) {
+                            resources.retainOwnedMemory(staged.bytes.length);
+                            stagedOneShotSources.put(source, staged.bytes);
+                            return StagedFontBytes.borrowed(staged.bytes);
+                        }
+                    } else if (cached.length > remaining) {
                         throw limitFailure();
                     }
-                    return staged;
+                    return StagedFontBytes.borrowed(cached);
                 default:
                     throw sourceInvalid();
             }
         } catch (DocumentFailure failure) {
             throw failure;
         } catch (IOException | RuntimeException failure) {
+            resources.rethrowResourceOrTerminalFailure(failure);
             throw sourceInvalid();
         }
     }
 
-    private static byte[] read(InputStream input, long remaining)
+    private StagedFontBytes read(InputStream input, long remaining)
             throws IOException, DocumentFailure {
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
         byte[] buffer = new byte[8192];
         long count = 0L;
         int read;
-        while ((read = input.read(buffer)) != -1) {
-            if (read > remaining - count) {
-                throw limitFailure();
+        try (WorkflowResourceContext.OwnedByteAccumulator output =
+                resources.ownedByteAccumulator()) {
+            InputStream checkpointed = resources.checkpointedInput(input);
+            while ((read = checkpointed.read(buffer)) != -1) {
+                if (read > remaining - count) {
+                    throw limitFailure();
+                }
+                output.write(buffer, 0, read);
+                count += read;
             }
-            output.write(buffer, 0, read);
-            count += read;
+            return StagedFontBytes.owned(output.finishWorking());
         }
-        return output.toByteArray();
     }
 
     private ParsedProgram parse(
             FontProgramKey key,
             List<Integer> requestedCodePoints) throws DocumentFailure {
         PdfBoxTrueTypePreflight.EmbeddingProfile embeddingProfile =
-                PdfBoxTrueTypePreflight.validateForEmbedding(key.bytes);
+                PdfBoxTrueTypePreflight.validateForEmbedding(
+                        key.bytes, resources);
         TrueTypeFont font = null;
         try {
             font = new TTFParser().parse(new RandomAccessReadBuffer(key.bytes));
@@ -525,6 +607,7 @@ final class PdfBoxPositionedTextOperations {
                 }
             }
             for (Integer codePoint : requestedCodePoints) {
+                resources.checkpoint();
                 int glyphId = cmap.getGlyphId(codePoint.intValue());
                 if (glyphId < 0 || glyphId >= glyphCount) {
                     closeQuietly(font);
@@ -562,6 +645,7 @@ final class PdfBoxPositionedTextOperations {
             throw failure;
         } catch (IOException | RuntimeException failure) {
             closeQuietly(font);
+            resources.rethrowResourceOrTerminalFailure(failure);
             throw sourceInvalid();
         }
     }
@@ -588,8 +672,10 @@ final class PdfBoxPositionedTextOperations {
                 new ArrayList<SelectedGlyph>(codePoints.size());
         long checks = 0L;
         for (Integer codePoint : codePoints) {
+            resources.checkpoint();
             SelectedGlyph match = null;
             for (SourceProgram program : programs) {
+                resources.checkpoint();
                 if (checks >= limits.getMaximumFallbackChecks()) {
                     throw limitFailure();
                 }
@@ -617,6 +703,7 @@ final class PdfBoxPositionedTextOperations {
         Map<FontProgramKey, Map<Integer, Integer>> pending =
                 new HashMap<FontProgramKey, Map<Integer, Integer>>();
         for (SelectedGlyph glyph : selected) {
+            resources.checkpoint();
             if (glyph.embeddingProfile.requiresFullEmbedding()
                     && !glyph.metric.canonicalMapping) {
                 throw mappingUnsupported();
@@ -648,6 +735,7 @@ final class PdfBoxPositionedTextOperations {
             return;
         }
         for (SelectedGlyph glyph : selected) {
+            resources.checkpoint();
             if (glyph.embeddingProfile.hasSupplementaryMapping()) {
                 throw supplementaryVersionUnsupported();
             }
@@ -660,11 +748,13 @@ final class PdfBoxPositionedTextOperations {
         Map<FontProgramKey, ParsedProgram> parsedByKey =
                 new HashMap<FontProgramKey, ParsedProgram>();
         for (SourceProgram program : programs) {
+            resources.checkpoint();
             parsedByKey.put(program.key, program.parsed);
         }
         Map<FontProgramKey, Set<Integer>> codePointsByKey =
                 new LinkedHashMap<FontProgramKey, Set<Integer>>();
         for (SelectedGlyph glyph : selected) {
+            resources.checkpoint();
             if (glyph.embeddingProfile.requiresFullEmbedding()) {
                 continue;
             }
@@ -673,7 +763,11 @@ final class PdfBoxPositionedTextOperations {
                 codePoints = new LinkedHashSet<Integer>();
                 LoadedFont loaded = loadedFonts.get(glyph.key);
                 if (loaded != null) {
-                    codePoints.addAll(loaded.unicodeByGlyph.values());
+                    for (Integer codePoint
+                            : loaded.unicodeByGlyph.values()) {
+                        resources.checkpoint();
+                        codePoints.add(codePoint);
+                    }
                 }
                 codePointsByKey.put(glyph.key, codePoints);
             }
@@ -682,6 +776,7 @@ final class PdfBoxPositionedTextOperations {
         try {
             for (Map.Entry<FontProgramKey, Set<Integer>> entry
                     : codePointsByKey.entrySet()) {
+                resources.checkpoint();
                 ParsedProgram parsed = parsedByKey.get(entry.getKey());
                 if (parsed == null) {
                     throw new IOException("font program was not prepared");
@@ -689,13 +784,20 @@ final class PdfBoxPositionedTextOperations {
                 TTFSubsetter subsetter = new TTFSubsetter(
                         parsed.font,
                         SUBSET_TABLES);
-                subsetter.addAll(entry.getValue());
+                for (Integer codePoint : entry.getValue()) {
+                    resources.checkpoint();
+                    subsetter.add(codePoint.intValue());
+                }
                 for (int codePoint : FORCED_INVISIBLE_CODE_POINTS) {
                     subsetter.forceInvisible(codePoint);
                 }
-                subsetter.writeToStream(new ByteArrayOutputStream());
+                try (WorkflowResourceContext.OwnedByteAccumulator subset =
+                        resources.ownedByteAccumulator()) {
+                    subsetter.writeToStream(subset);
+                }
             }
         } catch (IOException | RuntimeException failure) {
+            resources.rethrowResourceOrTerminalFailure(failure);
             throw sourceInvalid();
         }
     }
@@ -703,37 +805,49 @@ final class PdfBoxPositionedTextOperations {
     private List<TextRun> encodeRuns(List<SelectedGlyph> selected)
             throws DocumentFailure {
         List<TextRun> runs = new ArrayList<TextRun>();
-        for (SelectedGlyph glyph : selected) {
-            LoadedFont loaded = loadedFont(glyph);
-            byte[] encoded;
-            try {
-                encoded = loaded.font.encode(
-                        new String(Character.toChars(glyph.codePoint)));
-                if (encoded.length != 2
-                        || (((encoded[0] & 0xff) << 8)
-                                | encoded[1] & 0xff)
-                                != glyph.metric.glyphId) {
-                    throw mappingUnsupported();
+        boolean complete = false;
+        try {
+            for (SelectedGlyph glyph : selected) {
+                resources.checkpoint();
+                LoadedFont loaded = loadedFont(glyph);
+                byte[] encoded;
+                try {
+                    encoded = loaded.font.encode(
+                            new String(Character.toChars(glyph.codePoint)));
+                    if (encoded.length != 2
+                            || (((encoded[0] & 0xff) << 8)
+                                    | encoded[1] & 0xff)
+                                    != glyph.metric.glyphId) {
+                        throw mappingUnsupported();
+                    }
+                } catch (DocumentFailure failure) {
+                    throw failure;
+                } catch (IOException | RuntimeException failure) {
+                    resources.rethrowResourceOrTerminalFailure(failure);
+                    throw sourceInvalid();
                 }
-            } catch (DocumentFailure failure) {
-                throw failure;
-            } catch (IOException | RuntimeException failure) {
-                throw sourceInvalid();
+                TextRun current = runs.isEmpty()
+                        ? null : runs.get(runs.size() - 1);
+                if (current == null || current.font != loaded) {
+                    current = new TextRun(loaded, resources);
+                    runs.add(current);
+                }
+                current.append(encoded);
             }
-            TextRun current = runs.isEmpty() ? null : runs.get(runs.size() - 1);
-            if (current == null || current.font != loaded) {
-                current = new TextRun(loaded);
-                runs.add(current);
+            complete = true;
+            return runs;
+        } finally {
+            if (!complete) {
+                closeRuns(runs);
             }
-            current.encoded.write(encoded, 0, encoded.length);
         }
-        return runs;
     }
 
     private void commitGlyphs(List<SelectedGlyph> selected)
             throws DocumentFailure {
         try {
             for (SelectedGlyph glyph : selected) {
+                resources.checkpoint();
                 LoadedFont loaded = loadedFonts.get(glyph.key);
                 if (loaded == null) {
                     throw new IllegalStateException("font was not prepared");
@@ -743,6 +857,7 @@ final class PdfBoxPositionedTextOperations {
                 }
             }
             for (SelectedGlyph glyph : selected) {
+                resources.checkpoint();
                 LoadedFont loaded = loadedFonts.get(glyph.key);
                 loaded.unicodeByGlyph.put(
                         glyph.metric.glyphId,
@@ -751,8 +866,13 @@ final class PdfBoxPositionedTextOperations {
                         glyph.metric.glyphId,
                         glyph.metric.width);
             }
-            for (LoadedFont loaded
-                    : new LinkedHashSet<LoadedFont>(loadedFonts.values())) {
+            Set<LoadedFont> distinctLoaded = new LinkedHashSet<LoadedFont>();
+            for (LoadedFont loaded : loadedFonts.values()) {
+                resources.checkpoint();
+                distinctLoaded.add(loaded);
+            }
+            for (LoadedFont loaded : distinctLoaded) {
+                resources.checkpoint();
                 if (!loaded.widthByGlyph.isEmpty()) {
                     writeExactWidths(
                             loaded.font.getCOSObject(),
@@ -760,6 +880,7 @@ final class PdfBoxPositionedTextOperations {
                 }
             }
         } catch (RuntimeException failure) {
+            resources.rethrowResourceOrTerminalFailure(failure);
             throw sourceInvalid();
         }
     }
@@ -786,10 +907,13 @@ final class PdfBoxPositionedTextOperations {
                     font,
                     raw,
                     font.getCOSObject(),
-                    !glyph.embeddingProfile.requiresFullEmbedding());
+                    !glyph.embeddingProfile.requiresFullEmbedding(),
+                    resources);
             loadedFonts.put(glyph.key, loaded);
+            glyph.key.retainForSession();
             return loaded;
         } catch (IOException | RuntimeException failure) {
+            resources.rethrowResourceOrTerminalFailure(failure);
             throw sourceInvalid();
         }
     }
@@ -803,18 +927,31 @@ final class PdfBoxPositionedTextOperations {
                     new ByteArrayInputStream(key.bytes),
                     true);
             for (Integer codePoint : finalized.unicodeByGlyph.values()) {
+                resources.checkpoint();
                 font.addToSubset(codePoint.intValue());
             }
             LoadedFont replacement = new LoadedFont(
                     font,
                     finalized.persistentFontResource,
                     finalized.resourceDictionary,
-                    true);
-            replacement.unicodeByGlyph.putAll(finalized.unicodeByGlyph);
-            replacement.widthByGlyph.putAll(finalized.widthByGlyph);
+                    true,
+                    resources);
+            for (Map.Entry<Integer, Integer> entry
+                    : finalized.unicodeByGlyph.entrySet()) {
+                resources.checkpoint();
+                replacement.unicodeByGlyph.put(
+                        entry.getKey(), entry.getValue());
+            }
+            for (Map.Entry<Integer, Integer> entry
+                    : finalized.widthByGlyph.entrySet()) {
+                resources.checkpoint();
+                replacement.widthByGlyph.put(
+                        entry.getKey(), entry.getValue());
+            }
             loadedFonts.put(key, replacement);
             return replacement;
         } catch (IOException | RuntimeException failure) {
+            resources.rethrowResourceOrTerminalFailure(failure);
             throw sourceInvalid();
         }
     }
@@ -825,7 +962,8 @@ final class PdfBoxPositionedTextOperations {
         PdfBoxPageContentSupport.FontResources prepared =
                 PdfBoxPageContentSupport.prepareFontResources(
                         page,
-                        PdfBoxPositionedTextOperations::preservationUnsupported);
+                        PdfBoxPositionedTextOperations::preservationUnsupported,
+                        resources);
         COSDictionary resources = prepared.resources();
         COSDictionary fonts = prepared.fonts();
 
@@ -833,6 +971,7 @@ final class PdfBoxPositionedTextOperations {
         Map<LoadedFont, COSName> names =
                 new IdentityHashMap<LoadedFont, COSName>();
         for (TextRun run : runs) {
+            this.resources.checkpoint();
             LoadedFont font = run.font;
             if (names.containsKey(font)) {
                 continue;
@@ -851,13 +990,17 @@ final class PdfBoxPositionedTextOperations {
         return new ResourcesPlan(resources, names, changed);
     }
 
-    private static COSName nameFor(COSDictionary fonts, COSDictionary target) {
+    private COSName nameFor(COSDictionary fonts, COSDictionary target)
+            throws DocumentFailure {
         Map<String, COSName> ordered = new TreeMap<String, COSName>();
         for (COSName name : fonts.keySet()) {
+            resources.checkpoint();
             ordered.put(name.getName(), name);
         }
         for (COSName name : ordered.values()) {
-            if (PdfBoxPageContentSupport.dereference(fonts.getItem(name))
+            resources.checkpoint();
+            if (PdfBoxPageContentSupport.dereference(
+                    fonts.getItem(name), resources)
                     == target) {
                 return name;
             }
@@ -865,9 +1008,11 @@ final class PdfBoxPositionedTextOperations {
         return null;
     }
 
-    private static COSName availableFontName(COSDictionary fonts) {
+    private COSName availableFontName(COSDictionary fonts)
+            throws DocumentFailure {
         long maximumSuffix = (long) fonts.size() + 1L;
         for (long suffix = 1L; suffix <= maximumSuffix; suffix++) {
+            resources.checkpoint();
             COSName name = COSName.getPDFName("FolioT19F" + suffix);
             if (!fonts.containsKey(name)) {
                 return name;
@@ -876,106 +1021,75 @@ final class PdfBoxPositionedTextOperations {
         throw new IllegalStateException("No available deterministic Font name");
     }
 
-    private static byte[] serialize(
+    private WorkflowResourceContext.OwnedBytes serialize(
             PositionedUnicodeText declaration,
             List<TextRun> runs,
             Map<LoadedFont, COSName> names,
             long maximumBytes) throws DocumentFailure {
-        BoundedAsciiOutput output = new BoundedAsciiOutput(maximumBytes);
-        output.append("q\nBT\n");
-        TextRun first = runs.get(0);
-        appendFont(output, names.get(first.font), declaration.getFontSize());
-        output.append(declaration.getRenderingMode().getOperatorValue());
-        output.append(" Tr\n");
-        StringBuilder matrix = new StringBuilder();
-        PdfBoxPageContentSupport.appendMatrix(
-                matrix,
-                declaration.getTextMatrix(),
-                PdfBoxPositionedTextOperations::invalidText);
-        output.append(matrix.toString());
-        output.append(" Tm\n");
-        appendText(output, first.encoded.toByteArray());
-        for (int index = 1; index < runs.size(); index++) {
-            TextRun run = runs.get(index);
-            appendFont(output, names.get(run.font), declaration.getFontSize());
-            appendText(output, run.encoded.toByteArray());
+        try (WorkflowAsciiOutput output = new WorkflowAsciiOutput(
+                resources,
+                maximumBytes,
+                PdfBoxPositionedTextOperations::limitFailure)) {
+            output.append("q\nBT\n");
+            TextRun first = runs.get(0);
+            appendFont(output, names.get(first.font), declaration.getFontSize());
+            output.append(declaration.getRenderingMode().getOperatorValue());
+            output.append(" Tr\n");
+            PdfBoxPageContentSupport.appendMatrix(
+                    output,
+                    declaration.getTextMatrix(),
+                    PdfBoxPositionedTextOperations::invalidText);
+            output.append(" Tm\n");
+            appendText(output, first.finish(), resources);
+            for (int index = 1; index < runs.size(); index++) {
+                TextRun run = runs.get(index);
+                appendFont(
+                        output,
+                        names.get(run.font),
+                        declaration.getFontSize());
+                appendText(output, run.finish(), resources);
+            }
+            output.append("ET\nQ\n");
+            return output.finishWorking();
         }
-        output.append("ET\nQ\n");
-        return output.toByteArray();
     }
 
     private static void appendFont(
-            BoundedAsciiOutput output,
+            WorkflowAsciiOutput output,
             COSName name,
             double size) throws DocumentFailure {
         if (name == null) {
             throw sourceInvalid();
         }
-        output.append(PdfBoxPageContentSupport.pdfName(
+        output.appendPdfName(
                 name,
-                PdfBoxFontFailures::sourceInvalid));
+                PdfBoxFontFailures::sourceInvalid);
         output.append(' ');
-        output.append(PdfBoxPageContentSupport.number(
-                size,
-                PdfBoxPositionedTextOperations::invalidText));
-        output.append(" Tf\n");
+            PdfBoxPageContentSupport.appendNumber(
+                    output,
+                    size,
+                    PdfBoxPositionedTextOperations::invalidText);
+            output.append(" Tf\n");
     }
 
     private static void appendText(
-            BoundedAsciiOutput output,
-            byte[] encoded) throws DocumentFailure {
-        output.append('<');
-        for (byte value : encoded) {
-            int part = value & 0xff;
-            output.append(Character.forDigit((part >>> 4) & 0xf, 16));
-            output.append(Character.forDigit(part & 0xf, 16));
-        }
-        output.append("> Tj\n");
-    }
-
-    private static final class BoundedAsciiOutput {
-        private final long maximumBytes;
-        private final ByteArrayOutputStream output =
-                new ByteArrayOutputStream();
-        private long bytes;
-
-        BoundedAsciiOutput(long maximumBytes) {
-            this.maximumBytes = maximumBytes;
-        }
-
-        void append(String value) throws DocumentFailure {
-            requireCapacity(value.length());
-            for (int index = 0; index < value.length(); index++) {
-                char character = value.charAt(index);
-                if (character > 0x7f) {
-                    throw invalidText();
+            WorkflowAsciiOutput output,
+            WorkflowResourceContext.OwnedBytes encoded,
+            WorkflowResourceContext resources)
+            throws DocumentFailure {
+        try (WorkflowResourceContext.OwnedBytes bytes = encoded) {
+            output.append('<');
+            byte[] values = bytes.getBytes();
+            for (int index = 0; index < values.length; index++) {
+                if ((index & 4095) == 0) {
+                    resources.checkpoint();
                 }
-                output.write(character);
+                byte value = values[index];
+                int part = value & 0xff;
+                output.append(Character.forDigit((part >>> 4) & 0xf, 16));
+                output.append(Character.forDigit(part & 0xf, 16));
             }
-        }
-
-        void append(char value) throws DocumentFailure {
-            if (value > 0x7f) {
-                throw invalidText();
-            }
-            requireCapacity(1);
-            output.write(value);
-        }
-
-        void append(int value) throws DocumentFailure {
-            append(Integer.toString(value));
-        }
-
-        byte[] toByteArray() {
-            return output.toByteArray();
-        }
-
-        private void requireCapacity(int additional)
-                throws DocumentFailure {
-            if (additional > maximumBytes - bytes) {
-                throw limitFailure();
-            }
-            bytes += additional;
+            output.append("> Tj\n");
         }
     }
 
@@ -988,13 +1102,30 @@ final class PdfBoxPositionedTextOperations {
         return document.getPage(pageNumber - 1);
     }
 
-    private static void closePrograms(List<SourceProgram> programs) {
+    private void closePrograms(List<SourceProgram> programs) {
         IdentityHashMap<ParsedProgram, Boolean> closed =
                 new IdentityHashMap<ParsedProgram, Boolean>();
+        IdentityHashMap<FontProgramKey, Boolean> closedKeys =
+                new IdentityHashMap<FontProgramKey, Boolean>();
         for (SourceProgram program : programs) {
             if (closed.put(program.parsed, Boolean.TRUE) == null) {
                 closeQuietly(program.parsed.font);
             }
+            if (closedKeys.put(program.key, Boolean.TRUE) == null) {
+                program.key.close();
+            }
+        }
+    }
+
+    private static void closeKeys(List<FontProgramKey> keys) {
+        for (FontProgramKey key : keys) {
+            key.close();
+        }
+    }
+
+    private static void closeRuns(List<TextRun> runs) {
+        for (TextRun run : runs) {
+            run.close();
         }
     }
 
@@ -1082,24 +1213,116 @@ final class PdfBoxPositionedTextOperations {
         boolean test(COSName name);
     }
 
-    private static final class FontProgramKey {
+    private static final class FontProgramKey implements AutoCloseable {
         private final byte[] bytes;
         private final int hashCode;
+        private final WorkflowResourceContext resources;
+        private WorkflowResourceContext.OwnedBytes ownedBytes;
 
-        FontProgramKey(byte[] bytes) {
-            this.bytes = Arrays.copyOf(bytes, bytes.length);
-            this.hashCode = Arrays.hashCode(this.bytes);
+        FontProgramKey(
+                WorkflowResourceContext.OwnedBytes ownedBytes,
+                WorkflowResourceContext resources) throws DocumentFailure {
+            byte[] source = ownedBytes.getBytes();
+            int hash = 1;
+            try {
+                for (int index = 0; index < source.length; index++) {
+                    if ((index & 8191) == 0) {
+                        resources.checkpoint();
+                    }
+                    hash = 31 * hash + source[index];
+                }
+            } catch (DocumentFailure | RuntimeException failure) {
+                ownedBytes.close();
+                throw failure;
+            }
+            this.ownedBytes = ownedBytes;
+            this.bytes = source;
+            this.resources = resources;
+            this.hashCode = hash;
+        }
+
+        void retainForSession() {
+            ownedBytes = null;
+        }
+
+        @Override
+        public void close() {
+            WorkflowResourceContext.OwnedBytes current = ownedBytes;
+            if (current != null) {
+                ownedBytes = null;
+                current.close();
+            }
         }
 
         @Override
         public boolean equals(Object candidate) {
-            return candidate instanceof FontProgramKey
-                    && Arrays.equals(bytes, ((FontProgramKey) candidate).bytes);
+            if (this == candidate) {
+                return true;
+            }
+            if (!(candidate instanceof FontProgramKey)) {
+                return false;
+            }
+            byte[] other = ((FontProgramKey) candidate).bytes;
+            if (bytes.length != other.length) {
+                return false;
+            }
+            for (int index = 0; index < bytes.length; index++) {
+                if ((index & 8191) == 0) {
+                    resources.checkpointAsRuntimeException();
+                }
+                if (bytes[index] != other[index]) {
+                    return false;
+                }
+            }
+            return true;
         }
 
         @Override
         public int hashCode() {
             return hashCode;
+        }
+    }
+
+    private static final class StagedFontBytes implements AutoCloseable {
+
+        private final byte[] bytes;
+        private WorkflowResourceContext.MemoryReservation reservation;
+        private WorkflowResourceContext.OwnedBytes owned;
+
+        private StagedFontBytes(
+                byte[] bytes,
+                WorkflowResourceContext.MemoryReservation reservation,
+                WorkflowResourceContext.OwnedBytes owned) {
+            this.bytes = bytes;
+            this.reservation = reservation;
+            this.owned = owned;
+        }
+
+        static StagedFontBytes reserved(
+                byte[] bytes,
+                WorkflowResourceContext.MemoryReservation reservation) {
+            return new StagedFontBytes(bytes, reservation, null);
+        }
+
+        static StagedFontBytes owned(
+                WorkflowResourceContext.OwnedBytes owned) {
+            return new StagedFontBytes(owned.getBytes(), null, owned);
+        }
+
+        static StagedFontBytes borrowed(byte[] bytes) {
+            return new StagedFontBytes(bytes, null, null);
+        }
+
+        @Override
+        public void close() {
+            if (reservation != null) {
+                reservation.close();
+                reservation = null;
+            }
+            if (owned != null) {
+                owned.close();
+                owned = null;
+            }
         }
     }
 
@@ -1179,48 +1402,57 @@ final class PdfBoxPositionedTextOperations {
                 PDType0Font font,
                 COSObject persistentFontResource,
                 COSDictionary resourceDictionary,
-                boolean subset) {
+                boolean subset,
+                WorkflowResourceContext resources) throws DocumentFailure {
             this.font = font;
             this.persistentFontResource = persistentFontResource;
             this.resourceDictionary = resourceDictionary;
-            makeManagedDictionariesIndirect(resourceDictionary);
+            makeManagedDictionariesIndirect(resourceDictionary, resources);
             this.descendantsItem = resourceDictionary.getItem(
                     COSName.DESCENDANT_FONTS);
-            this.descendantDictionary = descendantFont(resourceDictionary);
+            this.descendantDictionary = descendantFont(
+                    resourceDictionary, resources);
             this.descriptorItem = descendantDictionary.getItem(
                     COSName.FONT_DESC);
-            this.descriptorDictionary = dictionary(descriptorItem);
+            this.descriptorDictionary = dictionary(descriptorItem, resources);
             this.subset = subset;
         }
 
-        void replaceManagedFontEntries() {
+        void replaceManagedFontEntries(WorkflowResourceContext resources)
+                throws DocumentFailure {
             COSDictionary replacement = font.getCOSObject();
-            COSDictionary replacementDescendant = descendantFont(replacement);
+            COSDictionary replacementDescendant = descendantFont(
+                    replacement, resources);
             COSDictionary replacementDescriptor = dictionary(
-                    replacementDescendant.getItem(COSName.FONT_DESC));
+                    replacementDescendant.getItem(COSName.FONT_DESC),
+                    resources);
 
             replaceManagedEntries(
                     descriptorDictionary,
                     replacementDescriptor,
-                    PdfBoxPositionedTextOperations::isManagedDescriptorEntry);
+                    PdfBoxPositionedTextOperations::isManagedDescriptorEntry,
+                    resources);
             replacementDescendant.setItem(
                     COSName.FONT_DESC, descriptorItem);
             replaceManagedEntries(
                     descendantDictionary,
                     replacementDescendant,
-                    PdfBoxPositionedTextOperations::isManagedDescendantEntry);
+                    PdfBoxPositionedTextOperations::isManagedDescendantEntry,
+                    resources);
             replacement.setItem(
                     COSName.DESCENDANT_FONTS, descendantsItem);
             replaceManagedEntries(
                     resourceDictionary,
                     replacement,
-                    PdfBoxPositionedTextOperations::isManagedType0Entry);
+                    PdfBoxPositionedTextOperations::isManagedType0Entry,
+                    resources);
         }
 
         private static void makeManagedDictionariesIndirect(
-                COSDictionary type0Font) {
+                COSDictionary type0Font,
+                WorkflowResourceContext resources) throws DocumentFailure {
             COSBase rawDescendants = PdfBoxPageContentSupport.dereference(
-                    type0Font.getItem(COSName.DESCENDANT_FONTS));
+                    type0Font.getItem(COSName.DESCENDANT_FONTS), resources);
             if (!(rawDescendants instanceof COSArray)) {
                 throw new IllegalStateException("Type 0 font has no descendants");
             }
@@ -1229,12 +1461,12 @@ final class PdfBoxPositionedTextOperations {
                 throw new IllegalStateException("Type 0 font has no descendant");
             }
             COSBase rawDescendant = descendants.get(0);
-            COSDictionary descendant = dictionary(rawDescendant);
+            COSDictionary descendant = dictionary(rawDescendant, resources);
             if (!(rawDescendant instanceof COSObject)) {
                 descendants.set(0, new COSObject(descendant));
             }
             COSBase rawDescriptor = descendant.getItem(COSName.FONT_DESC);
-            COSDictionary descriptor = dictionary(rawDescriptor);
+            COSDictionary descriptor = dictionary(rawDescriptor, resources);
             if (!(rawDescriptor instanceof COSObject)) {
                 descendant.setItem(
                         COSName.FONT_DESC, new COSObject(descriptor));
@@ -1242,12 +1474,40 @@ final class PdfBoxPositionedTextOperations {
         }
     }
 
-    private static final class TextRun {
-        private final LoadedFont font;
-        private final ByteArrayOutputStream encoded = new ByteArrayOutputStream();
+    private static final class TextRun implements AutoCloseable {
 
-        TextRun(LoadedFont font) {
+        private final LoadedFont font;
+        private final WorkflowResourceContext resources;
+        private final WorkflowResourceContext.OwnedByteAccumulator encoded;
+
+        TextRun(
+                LoadedFont font,
+                WorkflowResourceContext resources) {
             this.font = font;
+            this.resources = resources;
+            this.encoded = resources.ownedByteAccumulator();
+        }
+
+        void append(byte[] bytes) throws DocumentFailure {
+            try {
+                encoded.write(bytes, 0, bytes.length);
+            } catch (IOException failure) {
+                resources.rethrowResourceOrTerminalFailure(failure);
+                throw sourceInvalid();
+            }
+        }
+
+        WorkflowResourceContext.OwnedBytes finish()
+                throws DocumentFailure {
+            WorkflowResourceContext.OwnedBytes bytes =
+                    encoded.finishWorking();
+            encoded.close();
+            return bytes;
+        }
+
+        @Override
+        public void close() {
+            encoded.close();
         }
     }
 

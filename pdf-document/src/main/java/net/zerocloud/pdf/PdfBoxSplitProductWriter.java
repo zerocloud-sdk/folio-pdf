@@ -2,9 +2,9 @@ package net.zerocloud.pdf;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import org.apache.pdfbox.cos.COSArray;
@@ -21,45 +21,71 @@ final class PdfBoxSplitProductWriter {
     private PdfBoxSplitProductWriter() {
     }
 
-    static void save(PDDocument document, Path target) throws IOException {
+    static void save(
+            PDDocument document,
+            Path target,
+            WorkflowResourceContext resources)
+            throws IOException, DocumentFailure {
         if (document.isEncrypted()) {
             // PDFBox creates the identifier needed by the security handler.
             // A protected document must not be reused for a second save.
-            document.save(target.toFile());
+            saveDocument(document, target, resources);
             return;
         }
         COSDictionary trailer = document.getDocument().getTrailer();
         boolean needsIdentifier = trailer.getItem(COSName.ID) == null;
-        if (needsIdentifier) {
-            trailer.setItem(
-                    COSName.ID,
-                    identifiers(IDENTIFIER_PLACEHOLDER));
-        }
-        document.save(target.toFile());
         if (!needsIdentifier) {
+            saveDocument(document, target, resources);
             return;
         }
 
-        trailer.setItem(COSName.ID, identifiers(contentDigest(target)));
-        Path identified = Files.createTempFile(".folio-pdf-id-", ".pdf");
-        try {
-            document.save(identified.toFile());
-            Files.move(
-                    identified,
-                    target,
-                    StandardCopyOption.REPLACE_EXISTING);
-        } finally {
-            Files.deleteIfExists(identified);
+        try (WorkflowResourceContext.OwnedMemoryScope finalOwnership =
+                resources.ownedMemoryScope()) {
+            try (WorkflowResourceContext.OwnedMemoryScope placeholderOwnership =
+                    resources.ownedMemoryScope()) {
+                trailer.setItem(
+                        COSName.ID,
+                        identifiers(
+                                IDENTIFIER_PLACEHOLDER,
+                                resources,
+                                placeholderOwnership));
+                saveDocument(document, target, resources);
+                try (WorkflowResourceContext.MemoryReservation digestMemory =
+                        resources.reserveOwnedMemory(32L)) {
+                    trailer.setItem(
+                            COSName.ID,
+                            identifiers(
+                                    contentDigest(target, resources),
+                                    resources,
+                                    finalOwnership));
+                }
+            }
+            saveDocument(document, target, resources);
+            finalOwnership.transfer();
         }
     }
 
-    private static byte[] contentDigest(Path path) throws IOException {
+    private static void saveDocument(
+            PDDocument document,
+            Path target,
+            WorkflowResourceContext resources)
+            throws IOException, DocumentFailure {
+        try (OutputStream output = resources.openTemporaryOutput(target)) {
+            document.save(output);
+        }
+    }
+
+    private static byte[] contentDigest(
+            Path path,
+            WorkflowResourceContext resources)
+            throws IOException, DocumentFailure {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             try (InputStream input = Files.newInputStream(path)) {
                 byte[] buffer = new byte[8192];
                 int count;
                 while ((count = input.read(buffer)) != -1) {
+                    resources.checkpoint();
                     digest.update(buffer, 0, count);
                 }
             }
@@ -69,8 +95,18 @@ final class PdfBoxSplitProductWriter {
         }
     }
 
-    private static COSArray identifiers(byte[] identifier) {
-        COSString value = new COSString(identifier);
+    private static COSArray identifiers(
+            byte[] identifier,
+            WorkflowResourceContext resources,
+            WorkflowResourceContext.OwnedMemoryScope ownership)
+            throws DocumentFailure {
+        COSString value = PdfBoxStringSupport.backendBytes(
+                identifier,
+                resources,
+                ownership,
+                () -> resources.policyFailure(
+                        DocumentFailureCode.MEMORY_LIMIT_EXCEEDED,
+                        "The workflow owned-memory limit was exceeded."));
         COSArray identifiers = new COSArray();
         identifiers.setDirect(true);
         identifiers.add(value);

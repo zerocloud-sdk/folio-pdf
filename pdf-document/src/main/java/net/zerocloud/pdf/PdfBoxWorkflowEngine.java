@@ -1,6 +1,5 @@
 package net.zerocloud.pdf;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -12,7 +11,6 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.time.Clock;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -81,15 +79,18 @@ final class PdfBoxWorkflowEngine {
                     "The workflow request has no source or publication target.");
         }
         List<PublicationTargetAdapter> publicationTargets =
-                preflightTargets(request.getPublicationTargets());
+                preflightTargets(
+                        request.getPublicationTargets(),
+                        context.resources);
 
         PDDocument document;
         long sourceLength = -1L;
         SourceFingerprint sourceFingerprint = null;
         DocumentSource primarySource = null;
+        InputStream ownedPrimaryPath = null;
         PdfVersion declaredHeaderVersion;
         if (request.getSources().isEmpty()) {
-            document = createDocument();
+            document = createDocument(context.resources);
             declaredHeaderVersion = PdfVersion.PDF_1_7;
         } else {
             DocumentSource source = request.getSources().get(
@@ -99,12 +100,24 @@ final class PdfBoxWorkflowEngine {
                         DocumentFailureCode.INVALID_REQUEST,
                         "The workflow request must select a declared primary source.");
             }
-            OpenedDocument opened = openPrimaryDocument(source, true);
+            OpenedDocument opened = openPrimaryDocument(
+                    source,
+                    true,
+                    context.resources);
             primarySource = source;
             document = opened.document;
             sourceLength = opened.sourceLength;
             sourceFingerprint = opened.fingerprint;
             declaredHeaderVersion = opened.declaredHeaderVersion;
+            ownedPrimaryPath = opened.ownedPathInput;
+        }
+
+        try {
+            context.resources.audit(document);
+        } catch (DocumentFailure preflightFailure) {
+            closeQuietly(document);
+            closeQuietly(ownedPrimaryPath);
+            throw preflightFailure;
         }
 
         PdfBoxSignaturePolicy signaturePolicy;
@@ -120,7 +133,8 @@ final class PdfBoxWorkflowEngine {
             securityInfo = PdfBoxPasswordSecurity.inspect(
                     document,
                     primarySource == null
-                            ? null : primarySource.getCredential());
+                            ? null : primarySource.getCredential(),
+                    context.resources);
             PdfBoxPasswordSecurity.requireCompatibleInput(
                     document,
                     versionInfo,
@@ -130,7 +144,8 @@ final class PdfBoxWorkflowEngine {
                 throw credentialFailure(true);
             }
             outputVersion = outputVersion(request, versionInfo);
-            signaturePolicy = PdfBoxSignaturePolicy.inspect(document, sourceLength);
+            signaturePolicy = PdfBoxSignaturePolicy.inspect(
+                    document, sourceLength, context.resources);
             requestedSecurity = request.getPublicationTargets().isEmpty()
                     || request.getOutputPolicy() == null
                     ? null
@@ -159,13 +174,15 @@ final class PdfBoxWorkflowEngine {
                 outputSecurity =
                         PdfBoxPasswordSecurity
                                 .preserveForIncrementalValidation(
-                                        primarySource.getCredential());
+                                        primarySource.getCredential(),
+                                        context.resources);
             } else {
                 outputSecurity = PdfBoxPasswordSecurity.prepare(
                         requestedSecurity,
                         outputVersion,
                         request.getSaveMode(),
-                        request.getLegacySecurityMode());
+                        request.getLegacySecurityMode(),
+                        context.resources);
             }
             outputSecurity.preflight(document);
         } catch (DocumentFailure policyFailure) {
@@ -173,6 +190,7 @@ final class PdfBoxWorkflowEngine {
                 outputSecurity.close();
             }
             closeQuietly(document);
+            closeQuietly(ownedPrimaryPath);
             throw policyFailure;
         }
 
@@ -199,14 +217,17 @@ final class PdfBoxWorkflowEngine {
                     request,
                     publicationVersion,
                     publicationAlgorithm,
-                    publicationScope);
+                    publicationScope,
+                    context.resources);
         } catch (DocumentFailure preparationFailure) {
             outputSecurity.close();
             closeQuietly(document);
+            closeQuietly(ownedPrimaryPath);
             throw preparationFailure;
         } catch (RuntimeException callerFailure) {
             outputSecurity.close();
             closeQuietly(document);
+            closeQuietly(ownedPrimaryPath);
             throw callerFailure;
         }
 
@@ -223,7 +244,8 @@ final class PdfBoxWorkflowEngine {
                 publicationScope,
                 publicationTargets,
                 context,
-                sourceFingerprint);
+                sourceFingerprint,
+                ownedPrimaryPath);
     }
 
     static DocumentFailure failure(DocumentFailureCode code, String diagnostic) {
@@ -279,7 +301,8 @@ final class PdfBoxWorkflowEngine {
             PasswordEncryptionScope publicationScope,
             List<PublicationTargetAdapter> publicationTargets,
             ExecutionContext<R> context,
-            SourceFingerprint sourceFingerprint) throws DocumentFailure {
+            SourceFingerprint sourceFingerprint,
+            InputStream ownedPrimaryPath) throws DocumentFailure {
         WorkflowRequest request = context.request;
         PDDocument document = initialDocument;
         PdfBoxDocumentSession session = null;
@@ -299,7 +322,8 @@ final class PdfBoxWorkflowEngine {
                     publicationVersion,
                     publicationAlgorithm,
                     publicationScope,
-                    context.referenceFonts);
+                    context.referenceFonts,
+                    context.resources);
             requireExecutionAllowed(context);
             if (signaturePolicy.hasExistingSignatures()
                     && request.getSaveMode() == SaveMode.REWRITE
@@ -312,20 +336,27 @@ final class PdfBoxWorkflowEngine {
                 emit(context, WorkflowProgressPhase.SOURCE_OPENED);
             }
             emit(context, WorkflowProgressPhase.WORK_STARTED);
+            requireExecutionAllowed(context);
             R result;
             try {
                 result = context.work.perform(session);
             } catch (DocumentFailure workFailure) {
+                context.resources.rethrowTerminalFailure();
                 throw failure(
                         workFailure.getCode(),
                         workFailure.getCapabilityId(),
                         workFailure.getDiagnostic(),
                         notAttempted(publicationTargets));
+            } catch (RuntimeException callerFailure) {
+                context.resources.rethrowResourceOrTerminalFailure(
+                        callerFailure);
+                throw callerFailure;
             }
             session.invalidate();
             splitDocuments = session.getSplitDocuments();
             emit(context, WorkflowProgressPhase.WORK_COMPLETED);
             requireExecutionAllowed(context);
+            context.resources.audit(document);
 
             if (signaturePolicy.hasExistingSignatures()
                     && request.getSaveMode() == SaveMode.INCREMENTAL
@@ -354,17 +385,28 @@ final class PdfBoxWorkflowEngine {
                                 outputVersion);
                     }
                     session.finalizeFonts();
-                    outputSecurity.apply(document);
-                    Path staged = Files.createTempFile(".folio-pdf-", ".pdf");
+                    outputSecurity.apply(document, context.resources);
+                    context.resources.audit(document);
+                    Path staged = context.resources.createTemporaryFile(
+                            ".staged-document-",
+                            ".pdf");
                     stagedDocuments.add(staged);
-                    save(document, staged, request.getSaveMode());
+                    save(
+                            document,
+                            staged,
+                            request.getSaveMode(),
+                            context.resources);
                     if (request.getSaveMode() == SaveMode.INCREMENTAL) {
-                        validateIncrementalRevision(staged, sourceFingerprint);
+                        validateIncrementalRevision(
+                                staged,
+                                sourceFingerprint,
+                                context.resources);
                     }
                 } else {
                     for (PublicationTargetAdapter target : publicationTargets) {
-                        Path staged = Files.createTempFile(
-                                ".folio-pdf-",
+                        requireExecutionAllowed(context);
+                        Path staged = context.resources.createTemporaryFile(
+                                ".staged-product-",
                                 ".pdf");
                         stagedDocuments.add(staged);
                         if (outputVersion != null) {
@@ -373,13 +415,21 @@ final class PdfBoxWorkflowEngine {
                                     outputVersion);
                         }
                         outputSecurity.apply(
+                                splitDocuments.get(target.getTargetName()),
+                                context.resources);
+                        context.resources.audit(
                                 splitDocuments.get(target.getTargetName()));
                         PdfBoxSplitProductWriter.save(
                                 splitDocuments.get(target.getTargetName()),
-                                staged);
+                                staged,
+                                context.resources);
                     }
                 }
+            } catch (DocumentFailure failure) {
+                context.resources.rethrowTerminalFailure();
+                throw failure;
             } catch (IOException | RuntimeException failure) {
+                context.resources.rethrowResourceOrTerminalFailure(failure);
                 throw failure(
                         DocumentFailureCode.DOCUMENT_WRITE_FAILED,
                         "The document could not be staged for publication.");
@@ -389,6 +439,8 @@ final class PdfBoxWorkflowEngine {
 
             closeForSuccess(document);
             document = null;
+            closeQuietly(ownedPrimaryPath);
+            ownedPrimaryPath = null;
             closeForSuccess(splitDocuments);
             for (Path staged : stagedDocuments) {
                 validate(
@@ -396,7 +448,8 @@ final class PdfBoxWorkflowEngine {
                         outputSecurity,
                         publicationVersion,
                         request.getSaveMode(),
-                        securityInfo);
+                        securityInfo,
+                        context.resources);
             }
             emit(context, WorkflowProgressPhase.VALIDATED);
             requireExecutionAllowed(context);
@@ -425,7 +478,8 @@ final class PdfBoxWorkflowEngine {
             }
             outputSecurity.close();
             closePreparedSources(preparedSources);
-            deleteQuietly(stagedDocuments);
+            releaseTemporaryFiles(context.resources, stagedDocuments);
+            closeQuietly(ownedPrimaryPath);
         }
     }
 
@@ -473,13 +527,15 @@ final class PdfBoxWorkflowEngine {
     private static void save(
             PDDocument document,
             Path staged,
-            SaveMode saveMode) throws IOException {
-        if (saveMode == SaveMode.INCREMENTAL) {
-            try (OutputStream output = Files.newOutputStream(staged)) {
+            SaveMode saveMode,
+            WorkflowResourceContext resources)
+            throws IOException, DocumentFailure {
+        try (OutputStream output = resources.openTemporaryOutput(staged)) {
+            if (saveMode == SaveMode.INCREMENTAL) {
                 document.saveIncremental(output);
+            } else {
+                document.save(output);
             }
-        } else {
-            document.save(staged.toFile());
         }
     }
 
@@ -525,13 +581,15 @@ final class PdfBoxWorkflowEngine {
     }
 
     private static List<PublicationTargetAdapter> preflightTargets(
-            Map<String, PublicationTarget> publicationTargets)
+            Map<String, PublicationTarget> publicationTargets,
+            WorkflowResourceContext resources)
             throws DocumentFailure {
         List<PublicationTargetAdapter> prepared =
                 new ArrayList<PublicationTargetAdapter>(
                         publicationTargets.size());
         for (Map.Entry<String, PublicationTarget> target
                 : publicationTargets.entrySet()) {
+            resources.checkpoint();
             prepared.add(PublicationTargetAdapter.prepare(target));
         }
         return prepared;
@@ -539,18 +597,7 @@ final class PdfBoxWorkflowEngine {
 
     private static void requireExecutionAllowed(ExecutionContext<?> context)
             throws DocumentFailure {
-        WorkflowRequest request = context.request;
-        if (request.getCancellationToken().isCancellationRequested()) {
-            throw failure(
-                    DocumentFailureCode.WORKFLOW_CANCELLED,
-                    "The workflow was cancelled.");
-        }
-        if (request.getDeadline() != null
-                && !context.clock.instant().isBefore(request.getDeadline())) {
-            throw failure(
-                    DocumentFailureCode.DEADLINE_EXCEEDED,
-                    "The workflow deadline has expired.");
-        }
+        context.resources.checkpoint();
     }
 
     private static void emit(
@@ -572,14 +619,17 @@ final class PdfBoxWorkflowEngine {
                     : stagedDocuments.get(index);
             try {
                 requireExecutionAllowed(context);
-                target.publish(staged);
+                target.publish(staged, context.resources);
             } catch (DocumentFailure publicationFailure) {
                 boolean executionStop = isExecutionStop(publicationFailure);
+                boolean partialStream = target.isStream()
+                        && target.isStreamWriteAttempted();
                 receipts.add(target.receipt(
-                        executionStop
+                        executionStop && !partialStream
                                 ? PublicationStatus.NOT_ATTEMPTED
                                 : PublicationStatus.FAILED,
-                        !executionStop && target.isStream()));
+                        partialStream
+                                || (!executionStop && target.isStream())));
                 for (int later = index + 1; later < targets.size(); later++) {
                     receipts.add(targets.get(later).receipt(
                             PublicationStatus.NOT_ATTEMPTED,
@@ -587,6 +637,7 @@ final class PdfBoxWorkflowEngine {
                 }
                 throw failure(
                         publicationFailure.getCode(),
+                        publicationFailure.getCapabilityId(),
                         publicationFailure.getDiagnostic(),
                         receipts);
             }
@@ -594,13 +645,32 @@ final class PdfBoxWorkflowEngine {
                     PublicationStatus.COMMITTED,
                     false));
             emit(context, WorkflowProgressPhase.TARGET_COMMITTED);
+            try {
+                requireExecutionAllowed(context);
+            } catch (DocumentFailure executionStop) {
+                for (int later = index + 1; later < targets.size(); later++) {
+                    receipts.add(targets.get(later).receipt(
+                            PublicationStatus.NOT_ATTEMPTED,
+                            false));
+                }
+                throw failure(
+                        executionStop.getCode(),
+                        executionStop.getCapabilityId(),
+                        executionStop.getDiagnostic(),
+                        receipts);
+            }
+        }
+        if (targets.isEmpty()) {
+            requireExecutionAllowed(context);
         }
         return receipts;
     }
 
     private static boolean isExecutionStop(DocumentFailure failure) {
         return failure.getCode() == DocumentFailureCode.WORKFLOW_CANCELLED
-                || failure.getCode() == DocumentFailureCode.DEADLINE_EXCEEDED;
+                || failure.getCode() == DocumentFailureCode.DEADLINE_EXCEEDED
+                || failure.getCode()
+                        == DocumentFailureCode.ELAPSED_TIME_LIMIT_EXCEEDED;
     }
 
     private static List<PublicationReceipt> notAttempted(
@@ -631,7 +701,8 @@ final class PdfBoxWorkflowEngine {
             WorkflowRequest request,
             PdfVersion publicationVersion,
             PasswordEncryptionAlgorithm publicationAlgorithm,
-            PasswordEncryptionScope publicationScope) throws DocumentFailure {
+            PasswordEncryptionScope publicationScope,
+            WorkflowResourceContext resources) throws DocumentFailure {
         Map<String, PreparedNamedSource> prepared =
                 new LinkedHashMap<String, PreparedNamedSource>();
         try {
@@ -639,7 +710,9 @@ final class PdfBoxWorkflowEngine {
                     : request.getSources().entrySet()) {
                 if (!entry.getKey().equals(request.getPrimarySourceName())) {
                     PreparedNamedSource source =
-                            PreparedNamedSource.prepare(entry.getValue());
+                            PreparedNamedSource.prepare(
+                                    entry.getValue(),
+                                    resources);
                     prepared.put(entry.getKey(), source);
                     source.requirePublicationCompatible(
                             publicationVersion,
@@ -653,233 +726,306 @@ final class PdfBoxWorkflowEngine {
             throw failure;
         } catch (RuntimeException callerFailure) {
             closePreparedSources(prepared);
+            resources.rethrowResourceOrTerminalFailure(callerFailure);
             throw callerFailure;
         }
     }
 
-    private static Path snapshot(DocumentSource source)
+    private static Path snapshot(
+            DocumentSource source,
+            WorkflowResourceContext resources)
             throws DocumentFailure {
         Path snapshot = null;
         try {
-            snapshot = Files.createTempFile(
+            snapshot = resources.createTemporaryFile(
                     ".folio-pdf-source-",
                     ".pdf");
-            switch (source.getKind()) {
-                case PATH:
-                    copyPathContents(
-                            source.getPath().toAbsolutePath().normalize(),
-                            snapshot);
-                    break;
-                case STREAM:
-                    Files.write(
-                            snapshot,
-                            readCallerStream(
-                                    source.getStream(),
-                                    source.getMaximumBytes()));
-                    break;
-                case CHANNEL:
-                    Files.write(
-                            snapshot,
-                            readCallerChannel(
-                                    source.getChannel(),
-                                    source.getMaximumBytes()));
-                    break;
-                case BYTES:
-                    Files.write(
-                            snapshot,
-                            requireBoundedBytes(
-                                    source.getBytes(),
-                                    source.getMaximumBytes()));
-                    break;
-                default:
-                    throw new IllegalStateException(
-                            "Unsupported source kind.");
+            try (OutputStream output = resources.openTemporaryOutput(snapshot)) {
+                switch (source.getKind()) {
+                    case PATH:
+                        try (InputStream input = Files.newInputStream(
+                                source.getPath().toAbsolutePath().normalize())) {
+                            copySourceContents(
+                                    input,
+                                    output,
+                                    source.getMaximumBytes(),
+                                    resources);
+                        }
+                        break;
+                    case STREAM:
+                        copySourceContents(
+                                source.getStream(),
+                                output,
+                                source.getMaximumBytes(),
+                                resources);
+                        break;
+                    case CHANNEL:
+                        copySourceContents(
+                                source.getChannel(),
+                                output,
+                                source.getMaximumBytes(),
+                                resources);
+                        break;
+                    case BYTES:
+                        copySourceBytes(
+                                source.getBytes(),
+                                output,
+                                source.getMaximumBytes(),
+                                resources);
+                        break;
+                    default:
+                        throw new IllegalStateException(
+                                "Unsupported source kind.");
+                }
             }
             return snapshot;
         } catch (DocumentFailure failure) {
-            deleteQuietly(snapshot);
+            resources.releaseTemporaryFile(snapshot);
             throw failure;
         } catch (IOException ioFailure) {
-            deleteQuietly(snapshot);
+            resources.releaseTemporaryFile(snapshot);
+            resources.rethrowResourceOrTerminalFailure(ioFailure);
             throw failure(
                     DocumentFailureCode.SOURCE_READ_FAILED,
                     "The source could not be opened as a PDF document.");
         } catch (RuntimeException callerFailure) {
-            deleteQuietly(snapshot);
+            resources.releaseTemporaryFile(snapshot);
+            resources.rethrowResourceOrTerminalFailure(callerFailure);
             throw callerFailure;
         }
     }
 
-    private static void copyPathContents(Path source, Path snapshot)
-            throws IOException {
-        try (OutputStream output = Files.newOutputStream(snapshot)) {
-            Files.copy(source, output);
+    private static void copySourceContents(
+            InputStream input,
+            OutputStream output,
+            long maximumBytes,
+            WorkflowResourceContext resources)
+            throws IOException, DocumentFailure {
+        byte[] buffer = new byte[8192];
+        long total = 0L;
+        while (true) {
+            resources.checkpoint();
+            int read = input.read(buffer);
+            if (read == -1) {
+                return;
+            }
+            if (read > 0) {
+                try {
+                    total = checkedTotal(total, read, maximumBytes);
+                } catch (SourceLimitExceeded exhausted) {
+                    throw failure(
+                            DocumentFailureCode.SOURCE_LIMIT_EXCEEDED,
+                            "The source exceeds its declared byte limit.");
+                }
+                resources.consumeInputBytes(read);
+                output.write(buffer, 0, read);
+            }
         }
+    }
+
+    private static void copySourceContents(
+            ReadableByteChannel channel,
+            OutputStream output,
+            long maximumBytes,
+            WorkflowResourceContext resources)
+            throws IOException, DocumentFailure {
+        ByteBuffer buffer = ByteBuffer.allocate(8192);
+        long total = 0L;
+        while (true) {
+            resources.checkpoint();
+            int read = channel.read(buffer);
+            if (read == -1) {
+                return;
+            }
+            if (read > 0) {
+                try {
+                    total = checkedTotal(total, read, maximumBytes);
+                } catch (SourceLimitExceeded exhausted) {
+                    throw failure(
+                            DocumentFailureCode.SOURCE_LIMIT_EXCEEDED,
+                            "The source exceeds its declared byte limit.");
+                }
+                resources.consumeInputBytes(read);
+                output.write(buffer.array(), 0, read);
+                buffer.clear();
+            }
+        }
+    }
+
+    private static void copySourceBytes(
+            byte[] bytes,
+            OutputStream output,
+            long maximumBytes,
+            WorkflowResourceContext resources)
+            throws IOException, DocumentFailure {
+        try {
+            requireWithinLimit(bytes.length, maximumBytes);
+        } catch (SourceLimitExceeded exhausted) {
+            throw failure(
+                    DocumentFailureCode.SOURCE_LIMIT_EXCEEDED,
+                    "The source exceeds its declared byte limit.");
+        }
+        resources.consumeInputBytes(bytes.length);
+        resources.writeBytesAsIOException(output, bytes);
     }
 
     private static OpenedDocument openPrimaryDocument(
             DocumentSource source,
-            boolean captureFingerprint)
+            boolean captureFingerprint,
+            WorkflowResourceContext resources)
             throws DocumentFailure {
-        switch (source.getKind()) {
-            case PATH:
-                try {
-                    Path path = source.getPath().toAbsolutePath().normalize();
-                    long length = Files.size(path);
-                    PdfVersion header = PdfBoxVersionPolicy.inspectHeader(path);
-                    SourceFingerprint fingerprint = captureFingerprint
-                            ? fingerprint(path, length) : null;
-                    return new OpenedDocument(
-                            loadPathDocument(path, source.getCredential()),
-                            length,
-                            fingerprint,
-                            header);
-                } catch (IOException | RuntimeException failure) {
-                    throw failure(
-                            DocumentFailureCode.SOURCE_READ_FAILED,
-                            "The source could not be opened as a PDF document.");
-                }
-            case STREAM: {
-                byte[] bytes = readCallerStream(
-                        source.getStream(), source.getMaximumBytes());
-                PdfVersion header = PdfBoxVersionPolicy.inspectHeader(bytes);
+        if (source.getKind() == DocumentSource.Kind.PATH) {
+            InputStream ownedPathInput = null;
+            try {
+                Path path = source.getPath().toAbsolutePath().normalize();
+                ownedPathInput = Files.newInputStream(path);
+                Path snapshot = snapshot(
+                        ownedPathInput,
+                        source.getMaximumBytes(),
+                        resources);
+                long length = Files.size(snapshot);
+                PdfVersion header = PdfBoxVersionPolicy.inspectHeader(snapshot);
+                SourceFingerprint fingerprint = captureFingerprint
+                        ? fingerprint(snapshot, length, resources) : null;
                 return new OpenedDocument(
-                        loadByteDocument(bytes, source.getCredential()),
-                        bytes.length,
-                        captureFingerprint ? fingerprint(bytes) : null,
-                        header);
+                        loadPathDocument(
+                                snapshot,
+                                source.getCredential(),
+                                resources),
+                        length,
+                        fingerprint,
+                        header,
+                        ownedPathInput);
+            } catch (DocumentFailure failure) {
+                closeQuietly(ownedPathInput);
+                throw failure;
+            } catch (IOException | RuntimeException failure) {
+                closeQuietly(ownedPathInput);
+                resources.rethrowResourceOrTerminalFailure(failure);
+                throw failure(
+                        DocumentFailureCode.SOURCE_READ_FAILED,
+                        "The source could not be opened as a PDF document.");
             }
-            case CHANNEL: {
-                byte[] bytes = readCallerChannel(
-                        source.getChannel(), source.getMaximumBytes());
-                PdfVersion header = PdfBoxVersionPolicy.inspectHeader(bytes);
-                return new OpenedDocument(
-                        loadByteDocument(bytes, source.getCredential()),
-                        bytes.length,
-                        captureFingerprint ? fingerprint(bytes) : null,
-                        header);
-            }
-            case BYTES: {
-                byte[] bytes = requireBoundedBytes(
-                        source.getBytes(), source.getMaximumBytes());
-                PdfVersion header = PdfBoxVersionPolicy.inspectHeader(bytes);
-                return new OpenedDocument(
-                        loadByteDocument(bytes, source.getCredential()),
-                        bytes.length,
-                        captureFingerprint ? fingerprint(bytes) : null,
-                        header);
-            }
-            default:
-                throw new IllegalStateException("Unsupported source kind.");
         }
-    }
-
-    private static byte[] readCallerStream(
-            InputStream stream,
-            long maximumBytes) throws DocumentFailure {
+        Path snapshot = snapshot(source, resources);
         try {
-            return readBounded(stream, maximumBytes);
-        } catch (SourceLimitExceeded sourceLimit) {
-            throw failure(
-                    DocumentFailureCode.SOURCE_LIMIT_EXCEEDED,
-                    "The source exceeds its declared byte limit.");
-        } catch (IOException ioFailure) {
+            long length = Files.size(snapshot);
+            PdfVersion header = PdfBoxVersionPolicy.inspectHeader(snapshot);
+            SourceFingerprint fingerprint = captureFingerprint
+                    ? fingerprint(snapshot, length, resources) : null;
+            return new OpenedDocument(
+                    loadPathDocument(
+                            snapshot,
+                            source.getCredential(),
+                            resources),
+                    length,
+                    fingerprint,
+                    header,
+                    null);
+        } catch (DocumentFailure failure) {
+            throw failure;
+        } catch (IOException | RuntimeException failure) {
+            resources.rethrowResourceOrTerminalFailure(failure);
             throw failure(
                     DocumentFailureCode.SOURCE_READ_FAILED,
                     "The source could not be opened as a PDF document.");
         }
     }
 
-    private static byte[] readCallerChannel(
-            ReadableByteChannel channel,
-            long maximumBytes) throws DocumentFailure {
+    private static Path snapshot(
+            InputStream input,
+            long maximumBytes,
+            WorkflowResourceContext resources) throws DocumentFailure {
+        Path snapshot = null;
         try {
-            return readBounded(channel, maximumBytes);
-        } catch (SourceLimitExceeded sourceLimit) {
-            throw failure(
-                    DocumentFailureCode.SOURCE_LIMIT_EXCEEDED,
-                    "The source exceeds its declared byte limit.");
-        } catch (IOException ioFailure) {
-            throw failure(
+            snapshot = resources.createTemporaryFile(
+                    ".folio-pdf-source-",
+                    ".pdf");
+            try (OutputStream output = resources.openTemporaryOutput(snapshot)) {
+                copySourceContents(
+                        input,
+                        output,
+                        maximumBytes,
+                        resources);
+            }
+            return snapshot;
+        } catch (DocumentFailure failure) {
+            resources.releaseTemporaryFile(snapshot);
+            throw failure;
+        } catch (IOException failure) {
+            resources.releaseTemporaryFile(snapshot);
+            resources.rethrowResourceOrTerminalFailure(failure);
+            throw PdfBoxWorkflowEngine.failure(
                     DocumentFailureCode.SOURCE_READ_FAILED,
                     "The source could not be opened as a PDF document.");
-        }
-    }
-
-    private static byte[] requireBoundedBytes(
-            byte[] bytes,
-            long maximumBytes) throws DocumentFailure {
-        try {
-            requireWithinLimit(bytes.length, maximumBytes);
-            return bytes;
-        } catch (SourceLimitExceeded sourceLimit) {
-            throw failure(
-                    DocumentFailureCode.SOURCE_LIMIT_EXCEEDED,
-                    "The source exceeds its declared byte limit.");
         }
     }
 
     private static PDDocument loadPathDocument(
             Path source,
-            PasswordCredential credential)
+            PasswordCredential credential,
+            WorkflowResourceContext resources)
             throws DocumentFailure {
-        char[] characters = credentialCharacters(credential);
+        WorkflowCredentialCharacters characters = credentialCharacters(
+                credential, resources);
         try {
-            return loadPathDocument(source, characters);
+            return loadPathDocument(
+                    source,
+                    characters == null ? null : characters.get(),
+                    resources);
         } finally {
-            clear(characters);
+            if (characters != null) {
+                characters.close();
+            }
         }
     }
 
     private static PDDocument loadPathDocument(
             Path source,
-            char[] characters) throws DocumentFailure {
+            char[] characters,
+            WorkflowResourceContext resources) throws DocumentFailure {
+        WorkflowResourceContext.MemoryReservation passwordMemory = null;
         try {
             Path path = source.toAbsolutePath().normalize();
-            return characters == null
-                    ? Loader.loadPDF(path.toFile())
-                    : Loader.loadPDF(path.toFile(), new String(characters));
+            if (characters == null) {
+                return Loader.loadPDF(
+                        path.toFile(),
+                        resources.streamCacheFactory());
+            }
+            passwordMemory = resources.reserveOwnedMemory(
+                    2L * characters.length);
+            resources.checkpoint();
+            PDDocument loaded = Loader.loadPDF(
+                    path.toFile(),
+                    new String(characters),
+                    resources.streamCacheFactory());
+            try {
+                resources.checkpoint();
+                return loaded;
+            } catch (DocumentFailure failure) {
+                closeQuietly(loaded);
+                throw failure;
+            }
         } catch (InvalidPasswordException rejected) {
             throw credentialFailure(characters == null);
         } catch (IOException | RuntimeException backendFailure) {
-            throw failure(
-                    DocumentFailureCode.SOURCE_READ_FAILED,
-                    "The source could not be opened as a PDF document.");
-        }
-    }
-
-    private static PDDocument loadByteDocument(
-            byte[] bytes,
-            PasswordCredential credential)
-            throws DocumentFailure {
-        char[] characters = credentialCharacters(credential);
-        try {
-            return characters == null
-                    ? Loader.loadPDF(bytes)
-                    : Loader.loadPDF(bytes, new String(characters));
-        } catch (InvalidPasswordException rejected) {
-            throw credentialFailure(credential == null);
-        } catch (IOException | RuntimeException backendFailure) {
+            resources.rethrowResourceOrTerminalFailure(backendFailure);
             throw failure(
                     DocumentFailureCode.SOURCE_READ_FAILED,
                     "The source could not be opened as a PDF document.");
         } finally {
-            clear(characters);
+            if (passwordMemory != null) {
+                passwordMemory.close();
+            }
         }
     }
 
-    private static char[] credentialCharacters(PasswordCredential credential)
-            throws DocumentFailure {
-        if (credential == null) {
-            return null;
-        }
-        try {
-            return credential.copyForExecution();
-        } catch (IllegalStateException destroyed) {
-            throw versionFailure(
-                    DocumentFailureCode.CREDENTIAL_DESTROYED,
-                    "A password credential was destroyed before execution.");
-        }
+    private static WorkflowCredentialCharacters credentialCharacters(
+            PasswordCredential credential,
+            WorkflowResourceContext resources) throws DocumentFailure {
+        return credential == null
+                ? null
+                : WorkflowCredentialCharacters.copyOf(credential, resources);
     }
 
     private static DocumentFailure credentialFailure(boolean missing) {
@@ -890,37 +1036,6 @@ final class PdfBoxWorkflowEngine {
                 missing
                         ? "The password-protected Source requires a credential."
                         : "The supplied Source credential was not accepted.");
-    }
-
-    private static void clear(char[] characters) {
-        if (characters != null) {
-            Arrays.fill(characters, '\0');
-        }
-    }
-
-    private static byte[] readBounded(InputStream stream, long maximumBytes)
-            throws IOException {
-        BoundedByteAccumulator bytes =
-                new BoundedByteAccumulator(maximumBytes);
-        byte[] buffer = new byte[8192];
-        int read;
-        while ((read = stream.read(buffer)) != -1) {
-            bytes.append(buffer, read);
-        }
-        return bytes.toByteArray();
-    }
-
-    private static byte[] readBounded(
-            ReadableByteChannel channel,
-            long maximumBytes) throws IOException {
-        BoundedByteAccumulator bytes =
-                new BoundedByteAccumulator(maximumBytes);
-        ByteBuffer buffer = ByteBuffer.allocate(8192);
-        while (channel.read(buffer) != -1) {
-            bytes.append(buffer.array(), buffer.position());
-            buffer.clear();
-        }
-        return bytes.toByteArray();
     }
 
     private static long checkedTotal(long total, int read, long maximumBytes)
@@ -943,8 +1058,10 @@ final class PdfBoxWorkflowEngine {
             PdfBoxPasswordSecurity.PreparedOutput outputSecurity,
             PdfVersion expectedVersion,
             SaveMode saveMode,
-            PasswordSecurityInfo sourceSecurity)
+            PasswordSecurityInfo sourceSecurity,
+            WorkflowResourceContext resources)
             throws DocumentFailure {
+        resources.checkpoint();
         try {
             if (Files.size(staged) <= 0L) {
                 throw failure(
@@ -952,21 +1069,36 @@ final class PdfBoxWorkflowEngine {
                         "The staged document is empty.");
             }
         } catch (IOException | RuntimeException failure) {
+            resources.rethrowResourceOrTerminalFailure(failure);
             throw failure(
                     DocumentFailureCode.DOCUMENT_VALIDATION_FAILED,
                     "The staged document could not be validated.");
         }
 
         PDDocument validationDocument = null;
+        PdfBoxPasswordSecurity.PreparedPassword validationPassword = null;
+        PdfBoxPasswordSecurity.PreparedPassword ownerPassword = null;
         try {
+            validationPassword = outputSecurity.validationPassword(resources);
             validationDocument = Loader.loadPDF(
                     staged.toFile(),
-                    outputSecurity.validationPassword());
+                    validationPassword.get(),
+                    resources.streamCacheFactory());
             if (validationDocument.getNumberOfPages() == 0) {
                 throw failure(
                         DocumentFailureCode.DOCUMENT_VALIDATION_FAILED,
                         "The staged document must contain at least one page.");
             }
+            if (validationDocument.getNumberOfPages()
+                    > resources.getPolicy().getMaximumPages()) {
+                throw resources.policyFailure(
+                        DocumentFailureCode.PAGE_LIMIT_EXCEEDED,
+                        "The workflow page-count limit was exceeded.");
+            }
+            resources.requireObjectCount(
+                    validationDocument.getDocument()
+                            .getXrefTable().size());
+            resources.checkpoint();
             PdfVersion header = PdfBoxVersionPolicy.inspectHeader(staged);
             PdfVersionInfo version = PdfBoxVersionPolicy.inspect(
                     validationDocument,
@@ -981,7 +1113,8 @@ final class PdfBoxWorkflowEngine {
                         "The staged PDF version does not match the output policy.");
             }
             PasswordSecurityInfo actualSecurity =
-                    PdfBoxPasswordSecurity.inspect(validationDocument);
+                    PdfBoxPasswordSecurity.inspect(
+                            validationDocument, (char[]) null, resources);
             if (outputSecurity.preservesExistingSecurity()) {
                 requireSameSecurity(sourceSecurity, actualSecurity);
             } else if (!outputSecurity.isPresent()
@@ -990,30 +1123,45 @@ final class PdfBoxWorkflowEngine {
                         DocumentFailureCode.DOCUMENT_VALIDATION_FAILED,
                         "The staged password-security state does not match the output policy.");
             }
-            outputSecurity.validate(validationDocument);
+            outputSecurity.validate(validationDocument, resources);
             validationDocument.close();
             validationDocument = null;
+            validationPassword.close();
+            validationPassword = null;
             if (outputSecurity.isPresent()) {
+                ownerPassword = outputSecurity.ownerValidationPassword(
+                        resources);
                 validationDocument = Loader.loadPDF(
                         staged.toFile(),
-                        outputSecurity.ownerValidationPassword());
+                        ownerPassword.get(),
+                        resources.streamCacheFactory());
                 if (validationDocument.getNumberOfPages() == 0) {
                     throw failure(
                             DocumentFailureCode.DOCUMENT_VALIDATION_FAILED,
                             "The staged document must contain at least one page.");
                 }
-                outputSecurity.validateOwner(validationDocument);
+                outputSecurity.validateOwner(validationDocument, resources);
+                resources.checkpoint();
                 validationDocument.close();
                 validationDocument = null;
+                ownerPassword.close();
+                ownerPassword = null;
             }
         } catch (DocumentFailure failure) {
             throw failure;
         } catch (IOException | RuntimeException failure) {
+            resources.rethrowResourceOrTerminalFailure(failure);
             throw failure(
                     DocumentFailureCode.DOCUMENT_VALIDATION_FAILED,
                     "The staged document is not a parseable PDF document.");
         } finally {
             closeQuietly(validationDocument);
+            if (validationPassword != null) {
+                validationPassword.close();
+            }
+            if (ownerPassword != null) {
+                ownerPassword.close();
+            }
         }
     }
 
@@ -1037,7 +1185,8 @@ final class PdfBoxWorkflowEngine {
 
     private static void validateIncrementalRevision(
             Path staged,
-            SourceFingerprint source) throws DocumentFailure {
+            SourceFingerprint source,
+            WorkflowResourceContext resources) throws DocumentFailure {
         if (source == null) {
             throw failure(
                     DocumentFailureCode.DOCUMENT_VALIDATION_FAILED,
@@ -1052,6 +1201,7 @@ final class PdfBoxWorkflowEngine {
             try (InputStream input = Files.newInputStream(staged)) {
                 byte[] buffer = new byte[8192];
                 while (remaining > 0L) {
+                    resources.checkpoint();
                     int read = input.read(
                             buffer,
                             0,
@@ -1071,27 +1221,28 @@ final class PdfBoxWorkflowEngine {
         } catch (DocumentFailure failure) {
             throw failure;
         } catch (IOException | RuntimeException failure) {
+            resources.rethrowResourceOrTerminalFailure(failure);
             throw incrementalValidationFailure();
         }
     }
 
-    private static SourceFingerprint fingerprint(Path source, long length)
-            throws IOException {
+    private static SourceFingerprint fingerprint(
+            Path source,
+            long length,
+            WorkflowResourceContext resources)
+            throws IOException, DocumentFailure {
         MessageDigest digest = sha256();
         try (InputStream input = Files.newInputStream(source)) {
             byte[] buffer = new byte[8192];
             int read;
             while ((read = input.read(buffer)) != -1) {
+                resources.checkpoint();
                 if (read > 0) {
                     digest.update(buffer, 0, read);
                 }
             }
         }
         return new SourceFingerprint(length, digest.digest());
-    }
-
-    private static SourceFingerprint fingerprint(byte[] source) {
-        return new SourceFingerprint(source.length, sha256().digest(source));
     }
 
     private static MessageDigest sha256() {
@@ -1108,7 +1259,10 @@ final class PdfBoxWorkflowEngine {
                 "The staged incremental revision does not preserve its Source prefix.");
     }
 
-    private static void publishPath(Path staged, Path target)
+    private static void publishPath(
+            Path staged,
+            Path target,
+            WorkflowResourceContext resources)
             throws DocumentFailure {
         Path targetStage = null;
         try {
@@ -1116,7 +1270,13 @@ final class PdfBoxWorkflowEngine {
                     target.getParent(),
                     ".folio-pdf-",
                     ".pdf");
-            Files.copy(staged, targetStage, StandardCopyOption.REPLACE_EXISTING);
+            resources.registerTemporaryFile(targetStage);
+            try (InputStream input = Files.newInputStream(staged);
+                    OutputStream output =
+                            resources.openTemporaryOutput(targetStage)) {
+                copyForPublication(input, output, resources, null);
+            }
+            resources.checkpoint();
             try {
                 Files.move(
                         targetStage,
@@ -1124,36 +1284,67 @@ final class PdfBoxWorkflowEngine {
                         StandardCopyOption.ATOMIC_MOVE,
                         StandardCopyOption.REPLACE_EXISTING);
             } catch (AtomicMoveNotSupportedException unsupported) {
+                resources.checkpoint();
                 Files.move(
                         targetStage,
                         target,
                         StandardCopyOption.REPLACE_EXISTING);
             }
+            resources.relinquishTemporaryFile(targetStage);
             targetStage = null;
+        } catch (DocumentFailure failure) {
+            throw failure;
         } catch (IOException | RuntimeException failure) {
+            resources.rethrowResourceOrTerminalFailure(failure);
             throw failure(
                     DocumentFailureCode.PUBLICATION_FAILED,
                     "The validated document could not be committed to its target.");
         } finally {
-            deleteQuietly(targetStage);
+            resources.releaseTemporaryFile(targetStage);
         }
     }
 
-    private static void publishStream(Path staged, OutputStream output)
+    private static void publishStream(
+            Path staged,
+            OutputStream output,
+            WorkflowResourceContext resources,
+            PublicationTargetAdapter target)
             throws DocumentFailure {
         try (InputStream input = Files.newInputStream(staged)) {
-            byte[] buffer = new byte[8192];
-            int read;
-            while ((read = input.read(buffer)) != -1) {
-                if (read > 0) {
-                    output.write(buffer, 0, read);
-                }
-            }
+            copyForPublication(input, output, resources, target);
             output.flush();
+            resources.checkpoint();
+        } catch (DocumentFailure failure) {
+            throw failure;
         } catch (IOException failure) {
+            resources.rethrowResourceOrTerminalFailure(failure);
             throw failure(
                     DocumentFailureCode.PUBLICATION_FAILED,
                     "The validated document could not be written to its stream target.");
+        }
+    }
+
+    private static void copyForPublication(
+            InputStream input,
+            OutputStream output,
+            WorkflowResourceContext resources,
+            PublicationTargetAdapter target)
+            throws IOException, DocumentFailure {
+        byte[] buffer = new byte[8192];
+        int read;
+        while (true) {
+            resources.checkpoint();
+            read = input.read(buffer);
+            if (read == -1) {
+                return;
+            }
+            if (read > 0) {
+                if (target != null) {
+                    target.markStreamWriteAttempted();
+                }
+                output.write(buffer, 0, read);
+                resources.checkpoint();
+            }
         }
     }
 
@@ -1178,14 +1369,18 @@ final class PdfBoxWorkflowEngine {
         }
     }
 
-    private static PDDocument createDocument() throws DocumentFailure {
+    private static PDDocument createDocument(
+            WorkflowResourceContext resources) throws DocumentFailure {
         try {
-            PDDocument document = new PDDocument();
+            resources.checkpoint();
+            PDDocument document = new PDDocument(
+                    resources.streamCacheFactory());
             PdfBoxVersionPolicy.setOutputVersion(
                     document,
                     PdfVersion.PDF_1_7);
             return document;
         } catch (RuntimeException failure) {
+            resources.rethrowResourceOrTerminalFailure(failure);
             throw failure(
                     DocumentFailureCode.DOCUMENT_WRITE_FAILED,
                     "A new document could not be initialized.");
@@ -1200,6 +1395,17 @@ final class PdfBoxWorkflowEngine {
             document.close();
         } catch (IOException | RuntimeException ignored) {
             // A primary failure is already propagating; do not expose backend details.
+        }
+    }
+
+    private static void closeQuietly(InputStream input) {
+        if (input == null) {
+            return;
+        }
+        try {
+            input.close();
+        } catch (IOException | RuntimeException ignored) {
+            // A primary result or failure already owns the public contract.
         }
     }
 
@@ -1222,43 +1428,34 @@ final class PdfBoxWorkflowEngine {
         }
     }
 
-    private static void deleteQuietly(Path staged) {
-        if (staged == null) {
-            return;
-        }
-        try {
-            Files.deleteIfExists(staged);
-        } catch (IOException | RuntimeException ignored) {
-            // Best-effort cleanup must not replace the safe primary diagnostic.
-        }
-    }
-
-    private static void deleteQuietly(List<Path> stagedDocuments) {
-        for (Path staged : stagedDocuments) {
-            deleteQuietly(staged);
+    private static void releaseTemporaryFiles(
+            WorkflowResourceContext resources,
+            List<Path> files) {
+        for (Path file : files) {
+            resources.releaseTemporaryFile(file);
         }
     }
 
     static final class ExecutionContext<R> {
         private final WorkflowRequest request;
         private final DocumentWork<R> work;
-        private final Clock clock;
         private final List<ProviderSelection> providerSelections;
         private final List<FontSource> referenceFonts;
+        private final WorkflowResourceContext resources;
 
         ExecutionContext(
                 WorkflowRequest request,
                 DocumentWork<R> work,
-                Clock clock,
                 List<ProviderSelection> providerSelections,
-                List<FontSource> referenceFonts) {
+                List<FontSource> referenceFonts,
+                WorkflowResourceContext resources) {
             this.request = Objects.requireNonNull(request, "request");
             this.work = Objects.requireNonNull(work, "work");
-            this.clock = Objects.requireNonNull(clock, "clock");
             this.providerSelections = Collections.unmodifiableList(
                     new ArrayList<ProviderSelection>(providerSelections));
             this.referenceFonts = Collections.unmodifiableList(
                     new ArrayList<FontSource>(referenceFonts));
+            this.resources = Objects.requireNonNull(resources, "resources");
         }
     }
 
@@ -1268,6 +1465,7 @@ final class PdfBoxWorkflowEngine {
         private final Path pathTarget;
         private final Path normalizedPathTarget;
         private final OutputStream streamTarget;
+        private boolean streamWriteAttempted;
 
         private PublicationTargetAdapter(
                 String targetName,
@@ -1303,12 +1501,22 @@ final class PdfBoxWorkflowEngine {
             }
         }
 
-        private void publish(Path staged) throws DocumentFailure {
+        private void publish(
+                Path staged,
+                WorkflowResourceContext resources) throws DocumentFailure {
             if (isStream()) {
-                publishStream(staged, streamTarget);
+                publishStream(staged, streamTarget, resources, this);
             } else {
-                publishPath(staged, normalizedPathTarget);
+                publishPath(staged, normalizedPathTarget, resources);
             }
+        }
+
+        private void markStreamWriteAttempted() {
+            streamWriteAttempted = true;
+        }
+
+        private boolean isStreamWriteAttempted() {
+            return streamWriteAttempted;
         }
 
         private PublicationReceipt receipt(
@@ -1341,16 +1549,19 @@ final class PdfBoxWorkflowEngine {
         private final long sourceLength;
         private final SourceFingerprint fingerprint;
         private final PdfVersion declaredHeaderVersion;
+        private final InputStream ownedPathInput;
 
         private OpenedDocument(
                 PDDocument document,
                 long sourceLength,
                 SourceFingerprint fingerprint,
-                PdfVersion declaredHeaderVersion) {
+                PdfVersion declaredHeaderVersion,
+                InputStream ownedPathInput) {
             this.document = document;
             this.sourceLength = sourceLength;
             this.fingerprint = fingerprint;
             this.declaredHeaderVersion = declaredHeaderVersion;
+            this.ownedPathInput = ownedPathInput;
         }
     }
 
@@ -1359,38 +1570,50 @@ final class PdfBoxWorkflowEngine {
         private final Path snapshot;
         private final PdfVersionInfo versionInfo;
         private final PasswordSecurityInfo securityInfo;
-        private char[] credentialCharacters;
+        private final WorkflowResourceContext resources;
+        private WorkflowCredentialCharacters credentialCharacters;
 
         private PreparedNamedSource(
                 Path snapshot,
                 PdfVersionInfo versionInfo,
                 PasswordSecurityInfo securityInfo,
-                char[] credentialCharacters) {
+                WorkflowCredentialCharacters credentialCharacters,
+                WorkflowResourceContext resources) {
             this.snapshot = snapshot;
             this.versionInfo = versionInfo;
             this.securityInfo = securityInfo;
             this.credentialCharacters = credentialCharacters;
+            this.resources = resources;
         }
 
-        private static PreparedNamedSource prepare(DocumentSource source)
+        private static PreparedNamedSource prepare(
+                DocumentSource source,
+                WorkflowResourceContext resources)
                 throws DocumentFailure {
             Path snapshot = null;
-            char[] credentialCharacters = null;
+            WorkflowCredentialCharacters credentialCharacters = null;
             PDDocument document = null;
             boolean retained = false;
             try {
-                snapshot = PdfBoxWorkflowEngine.snapshot(source);
+                snapshot = PdfBoxWorkflowEngine.snapshot(source, resources);
                 PdfVersion header = PdfBoxVersionPolicy.inspectHeader(snapshot);
                 credentialCharacters = credentialCharacters(
-                        source.getCredential());
-                document = loadPathDocument(snapshot, credentialCharacters);
+                        source.getCredential(), resources);
+                document = loadPathDocument(
+                        snapshot,
+                        credentialCharacters == null
+                                ? null : credentialCharacters.get(),
+                        resources);
+                resources.audit(document);
                 PdfVersionInfo versionInfo = PdfBoxVersionPolicy.inspect(
                         document,
                         header);
                 PasswordSecurityInfo securityInfo =
                         PdfBoxPasswordSecurity.inspect(
                                 document,
-                                credentialCharacters);
+                                credentialCharacters == null
+                                        ? null : credentialCharacters.get(),
+                                resources);
                 PdfBoxPasswordSecurity.requireCompatibleInput(
                         document,
                         versionInfo,
@@ -1399,20 +1622,28 @@ final class PdfBoxWorkflowEngine {
                         snapshot,
                         versionInfo,
                         securityInfo,
-                        credentialCharacters);
+                        credentialCharacters,
+                        resources);
                 retained = true;
                 return prepared;
             } finally {
                 closeQuietly(document);
                 if (!retained) {
-                    clear(credentialCharacters);
-                    deleteQuietly(snapshot);
+                    if (credentialCharacters != null) {
+                        credentialCharacters.close();
+                    }
+                    resources.releaseTemporaryFile(snapshot);
                 }
             }
         }
 
         PDDocument open() throws DocumentFailure {
-            return loadPathDocument(snapshot, credentialCharacters);
+            resources.checkpoint();
+            return loadPathDocument(
+                    snapshot,
+                    credentialCharacters == null
+                            ? null : credentialCharacters.get(),
+                    resources);
         }
 
         void requireMergeAllowed(
@@ -1488,9 +1719,11 @@ final class PdfBoxWorkflowEngine {
 
         @Override
         public void close() {
-            clear(credentialCharacters);
+            if (credentialCharacters != null) {
+                credentialCharacters.close();
+            }
             credentialCharacters = null;
-            deleteQuietly(snapshot);
+            resources.releaseTemporaryFile(snapshot);
         }
     }
 
@@ -1505,27 +1738,4 @@ final class PdfBoxWorkflowEngine {
         }
     }
 
-    private static final class BoundedByteAccumulator {
-
-        private final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        private final long maximumBytes;
-        private long total;
-
-        private BoundedByteAccumulator(long maximumBytes) {
-            this.maximumBytes = maximumBytes;
-        }
-
-        private void append(byte[] buffer, int length)
-                throws SourceLimitExceeded {
-            if (length <= 0) {
-                return;
-            }
-            total = checkedTotal(total, length, maximumBytes);
-            bytes.write(buffer, 0, length);
-        }
-
-        private byte[] toByteArray() {
-            return bytes.toByteArray();
-        }
-    }
 }

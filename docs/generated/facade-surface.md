@@ -8,7 +8,7 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Release train: `0.1.0-SNAPSHOT`
 - Stable entries: `0`
 - Preview entries: `12`
-- Explicit capability exclusions: `12`
+- Explicit capability exclusions: `13`
 
 ## Stable surfaces
 
@@ -172,6 +172,13 @@ No stable surfaces are declared.
 - Behavioral capability: [`document.annotations-actions.manage`](capability-matrix.md#capability-document_dot_annotations_dash_actions_dot_manage)
 - Deferred ticket: `T12`
 - Reason: T12 is a Native Interface annotation, appearance, flattening, and inert local Action seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+
+<a id="excluded-capability-document_dot_hostile_dash_input_dash_limits"></a>
+### `document.hostile-input-limits`
+
+- Behavioral capability: [`document.hostile-input-limits`](capability-matrix.md#capability-document_dot_hostile_dash_input_dash_limits)
+- Deferred ticket: `T20`
+- Reason: T20 is a Native Interface trusted in-process Workflow Resource Policy with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
 
 <a id="excluded-capability-document_dot_images_dash_resources_dot_extract"></a>
 ### `document.images-resources.extract`

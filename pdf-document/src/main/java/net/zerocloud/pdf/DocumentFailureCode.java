@@ -42,6 +42,39 @@ public enum DocumentFailureCode {
     /** A bounded source exceeded its caller-declared byte limit. */
     SOURCE_LIMIT_EXCEEDED,
 
+    /** Aggregate bytes accepted from all workflow Sources exceeded policy. */
+    WORKFLOW_INPUT_LIMIT_EXCEEDED,
+
+    /** The transaction-wide page-count policy was exhausted. */
+    PAGE_LIMIT_EXCEEDED,
+
+    /** The transaction-wide indirect-object policy was exhausted. */
+    OBJECT_LIMIT_EXCEEDED,
+
+    /** The transaction-wide container or graph-depth policy was exhausted. */
+    NESTING_LIMIT_EXCEEDED,
+
+    /** The transaction-wide supported filter-output policy was exhausted. */
+    DECOMPRESSION_LIMIT_EXCEEDED,
+
+    /** The transaction-wide decoded-pixel policy was exhausted. */
+    PIXEL_LIMIT_EXCEEDED,
+
+    /** The transaction-wide accounted owned-memory policy was exhausted. */
+    MEMORY_LIMIT_EXCEEDED,
+
+    /** The transaction-wide temporary-storage policy was exhausted. */
+    TEMPORARY_STORAGE_LIMIT_EXCEEDED,
+
+    /** The finite policy elapsed-time limit was observed. */
+    ELAPSED_TIME_LIMIT_EXCEEDED,
+
+    /** The shared Workflow Environment concurrency gate was saturated. */
+    CONCURRENCY_LIMIT_EXCEEDED,
+
+    /** The configured environment temporary-storage root is unavailable. */
+    TEMPORARY_STORAGE_UNAVAILABLE,
+
     /** Legacy result retained for prerelease outcome compatibility. */
     SAVE_MODE_UNSUPPORTED,
 
@@ -60,10 +93,10 @@ public enum DocumentFailureCode {
     /** An Existing Signature permission does not authorize the requested workflow. */
     SIGNATURE_POLICY_REJECTED,
 
-    /** Cancellation was observed at an owned transaction boundary. */
+    /** Cancellation was observed during cooperative owned workflow work. */
     WORKFLOW_CANCELLED,
 
-    /** The caller-declared workflow deadline has expired. */
+    /** The caller-declared workflow deadline expired at an owned checkpoint. */
     DEADLINE_EXCEEDED,
 
     /** A command is not part of the supported library-owned command set. */

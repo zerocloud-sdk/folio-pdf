@@ -218,9 +218,10 @@ succeeds and the first excess fails atomically with `FONT_LIMIT_EXCEEDED`:
   page-content operator stream, including its save/restore and text-object
   delimiters but excluding retained existing streams and embedded font data.
 
-These command-local bounds constrain T19 materialization. The comprehensive
-process, memory, time, recursion, concurrency, temporary-storage, and hostile
-multi-tenant policy remains T20/T21 scope.
+These command-local bounds constrain T19 materialization and compose with
+T20's finite transaction-wide trusted in-process policy. Hard process,
+memory, CPU, network, and termination isolation for hostile multi-tenant input
+remains T21 scope.
 
 ## Preservation, publication, and failures
 

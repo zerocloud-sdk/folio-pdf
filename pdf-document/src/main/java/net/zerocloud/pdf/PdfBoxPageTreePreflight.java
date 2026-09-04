@@ -25,6 +25,21 @@ final class PdfBoxPageTreePreflight {
             int maximumPages,
             int maximumNodes)
             throws IOException, LimitExceededException {
+        try {
+            return pages(root, maximumPages, maximumNodes, null);
+        } catch (DocumentFailure impossible) {
+            throw new IllegalStateException(
+                    "No workflow resource context was supplied.",
+                    impossible);
+        }
+    }
+
+    static List<PageView> pages(
+            COSDictionary root,
+            int maximumPages,
+            int maximumNodes,
+            WorkflowResourceContext resources)
+            throws IOException, LimitExceededException, DocumentFailure {
         if (maximumPages < 0 || maximumNodes < 0) {
             throw new IllegalArgumentException("maximums must not be negative");
         }
@@ -37,9 +52,16 @@ final class PdfBoxPageTreePreflight {
         List<PageView> pages =
                 new ArrayList<PageView>(Math.min(maximumPages, 1024));
         Deque<Frame> stack = new ArrayDeque<Frame>();
-        stack.push(frame(root, nodes, InheritedAttributes.empty()));
+        if (resources != null) {
+            resources.checkpoint();
+            resources.requireNestingDepth(1L);
+        }
+        stack.push(frame(root, nodes, InheritedAttributes.empty(), 1));
 
         while (!stack.isEmpty()) {
+            if (resources != null) {
+                resources.checkpoint();
+            }
             Frame current = stack.peek();
             if (current.index == current.children.size()) {
                 if (current.declaredPages != current.observedPages) {
@@ -78,7 +100,15 @@ final class PdfBoxPageTreePreflight {
                         current.attributes.pageView(child)));
                 current.observedPages++;
             } else if (COSName.PAGES.equals(type)) {
-                stack.push(frame(child, nodes, current.attributes));
+                int childDepth = current.depth + 1;
+                if (resources != null) {
+                    resources.requireNestingDepth(childDepth);
+                }
+                stack.push(frame(
+                        child,
+                        nodes,
+                        current.attributes,
+                        childDepth));
             } else {
                 throw new IOException("Page-tree node Type is malformed");
             }
@@ -98,7 +128,8 @@ final class PdfBoxPageTreePreflight {
     private static Frame frame(
             COSDictionary node,
             NodeCounter nodes,
-            InheritedAttributes inherited)
+            InheritedAttributes inherited,
+            int depth)
             throws IOException, LimitExceededException {
         COSBase children = node.getDictionaryObject(COSName.KIDS);
         COSBase count = node.getDictionaryObject(COSName.COUNT);
@@ -118,7 +149,8 @@ final class PdfBoxPageTreePreflight {
                 node,
                 array,
                 declaredPages,
-                inherited.extend(node));
+                inherited.extend(node),
+                depth);
     }
 
     static final class PageView {
@@ -151,6 +183,7 @@ final class PdfBoxPageTreePreflight {
         private final COSArray children;
         private final int declaredPages;
         private final InheritedAttributes attributes;
+        private final int depth;
         private int index;
         private int observedPages;
 
@@ -158,11 +191,13 @@ final class PdfBoxPageTreePreflight {
                 COSDictionary node,
                 COSArray children,
                 int declaredPages,
-                InheritedAttributes attributes) {
+                InheritedAttributes attributes,
+                int depth) {
             this.node = node;
             this.children = children;
             this.declaredPages = declaredPages;
             this.attributes = attributes;
+            this.depth = depth;
         }
     }
 

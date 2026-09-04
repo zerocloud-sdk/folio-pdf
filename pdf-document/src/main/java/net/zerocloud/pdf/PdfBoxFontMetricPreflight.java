@@ -16,10 +16,19 @@ final class PdfBoxFontMetricPreflight {
 
     static int countEntries(COSDictionary font, int maximum)
             throws IOException, LimitExceededException {
+        return countEntries(font, maximum, null);
+    }
+
+    static int countEntries(
+            COSDictionary font,
+            int maximum,
+            WorkflowResourceContext resources)
+            throws IOException, LimitExceededException {
         if (maximum < 0) {
             throw new IllegalArgumentException("maximum must not be negative");
         }
-        Counter counter = new Counter(maximum);
+        Counter counter = new Counter(maximum, resources);
+        counter.checkpoint();
         COSName subtype = font.getCOSName(COSName.SUBTYPE);
         if (COSName.CID_FONT_TYPE0.equals(subtype)
                 || COSName.CID_FONT_TYPE2.equals(subtype)) {
@@ -30,6 +39,7 @@ final class PdfBoxFontMetricPreflight {
         } else if (!COSName.TYPE0.equals(subtype)) {
             countSimpleWidths(font, counter);
         }
+        counter.checkpoint();
         return counter.value;
     }
 
@@ -54,7 +64,7 @@ final class PdfBoxFontMetricPreflight {
                     "Widths does not match FirstChar and LastChar");
         }
         counter.add(widths.size());
-        requireNumbers(widths, "Widths");
+        requireNumbers(widths, "Widths", counter);
     }
 
     private static void countDefaultVerticalMetrics(
@@ -68,7 +78,7 @@ final class PdfBoxFontMetricPreflight {
         if (metrics.size() != 2) {
             throw new IOException("DW2 must contain two numbers");
         }
-        requireNumbers(metrics, "DW2");
+        requireNumbers(metrics, "DW2", counter);
     }
 
     private static void countHorizontalCidMetrics(
@@ -81,6 +91,7 @@ final class PdfBoxFontMetricPreflight {
         counter.add(widths.size());
         int index = 0;
         while (index < widths.size()) {
+            counter.checkpoint();
             int first = cid(widths.getObject(index++), "W");
             if (index >= widths.size()) {
                 throw new IOException("W has an incomplete width entry");
@@ -89,7 +100,7 @@ final class PdfBoxFontMetricPreflight {
             if (next instanceof COSArray) {
                 COSArray explicitWidths = (COSArray) next;
                 counter.add(explicitWidths.size());
-                requireNumbers(explicitWidths, "W");
+                requireNumbers(explicitWidths, "W", counter);
             } else {
                 int last = cid(next, "W");
                 if (last < first) {
@@ -117,6 +128,7 @@ final class PdfBoxFontMetricPreflight {
         counter.add(metrics.size());
         int index = 0;
         while (index < metrics.size()) {
+            counter.checkpoint();
             int first = cid(metrics.getObject(index++), "W2");
             if (index >= metrics.size()) {
                 throw new IOException("W2 has an incomplete metric entry");
@@ -129,7 +141,7 @@ final class PdfBoxFontMetricPreflight {
                     throw new IOException(
                             "W2 explicit metrics must contain triples");
                 }
-                requireNumbers(explicitMetrics, "W2");
+                requireNumbers(explicitMetrics, "W2", counter);
             } else {
                 int last = cid(next, "W2");
                 if (last < first) {
@@ -158,9 +170,13 @@ final class PdfBoxFontMetricPreflight {
         return (COSArray) value;
     }
 
-    private static void requireNumbers(COSArray values, String name)
+    private static void requireNumbers(
+            COSArray values,
+            String name,
+            Counter counter)
             throws IOException {
         for (int index = 0; index < values.size(); index++) {
+            counter.checkpoint();
             number(values.getObject(index), name);
         }
     }
@@ -225,17 +241,29 @@ final class PdfBoxFontMetricPreflight {
     private static final class Counter {
 
         private final int maximum;
+        private final WorkflowResourceContext resources;
         private int value;
 
-        Counter(int maximum) {
+        Counter(
+                int maximum,
+                WorkflowResourceContext resources) {
             this.maximum = maximum;
+            this.resources = resources;
         }
 
-        void add(long count) throws LimitExceededException {
+        void add(long count)
+                throws IOException, LimitExceededException {
+            checkpoint();
             if (count < 0L || count > maximum - (long) value) {
                 throw new LimitExceededException();
             }
             value += (int) count;
+        }
+
+        void checkpoint() throws IOException {
+            if (resources != null) {
+                resources.checkpointAsIOException();
+            }
         }
     }
 }

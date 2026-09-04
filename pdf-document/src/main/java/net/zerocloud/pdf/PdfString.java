@@ -13,9 +13,14 @@ public final class PdfString implements PdfValue {
     private final byte[] bytes;
 
     private PdfString(byte[] bytes) {
-        this.bytes = Arrays.copyOf(
-                Objects.requireNonNull(bytes, "bytes"),
-                bytes.length);
+        this(bytes, true);
+    }
+
+    private PdfString(byte[] bytes, boolean copyBytes) {
+        byte[] requiredBytes = Objects.requireNonNull(bytes, "bytes");
+        this.bytes = copyBytes
+                ? Arrays.copyOf(requiredBytes, requiredBytes.length)
+                : requiredBytes;
     }
 
     /**
@@ -26,6 +31,14 @@ public final class PdfString implements PdfValue {
      */
     public static PdfString of(byte[] bytes) {
         return new PdfString(bytes);
+    }
+
+    static PdfString fromOwnedBytes(byte[] bytes) {
+        return new PdfString(bytes, false);
+    }
+
+    byte[] bytesForWorkflow() {
+        return bytes;
     }
 
     /**

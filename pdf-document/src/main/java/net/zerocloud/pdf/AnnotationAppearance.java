@@ -27,10 +27,18 @@ public final class AnnotationAppearance {
     private AnnotationAppearance(
             AnnotationRectangle boundingBox,
             byte[] content) {
+        this(boundingBox, content, true);
+    }
+
+    private AnnotationAppearance(
+            AnnotationRectangle boundingBox,
+            byte[] content,
+            boolean copyContent) {
         this.boundingBox = Objects.requireNonNull(
                 boundingBox,
                 "boundingBox");
-        this.content = Objects.requireNonNull(content, "content").clone();
+        byte[] requiredContent = Objects.requireNonNull(content, "content");
+        this.content = copyContent ? requiredContent.clone() : requiredContent;
     }
 
     /**
@@ -44,6 +52,16 @@ public final class AnnotationAppearance {
             AnnotationRectangle boundingBox,
             byte[] content) {
         return new AnnotationAppearance(boundingBox, content);
+    }
+
+    static AnnotationAppearance fromOwnedContent(
+            AnnotationRectangle boundingBox,
+            byte[] content) {
+        return new AnnotationAppearance(boundingBox, content, false);
+    }
+
+    byte[] contentForWorkflow() {
+        return content;
     }
 
     /** Returns the representation version. @return {@link #VERSION_1} */

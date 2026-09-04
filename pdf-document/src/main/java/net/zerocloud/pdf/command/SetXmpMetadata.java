@@ -51,4 +51,13 @@ public final class SetXmpMetadata implements DocumentCommand {
     public byte[] getXmpPacket() {
         return xmpPacket.clone();
     }
+
+    /**
+     * Returns the exact packet byte length without copying its content.
+     *
+     * @return the packet byte length
+     */
+    public int getXmpPacketLength() {
+        return xmpPacket.length;
+    }
 }

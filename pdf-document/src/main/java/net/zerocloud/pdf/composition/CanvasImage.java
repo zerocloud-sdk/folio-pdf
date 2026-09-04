@@ -146,6 +146,8 @@ public final class CanvasImage {
     public Optional<byte[]> getBytes() {
         return bytes == null ? Optional.<byte[]>empty() : Optional.of(bytes.clone());
     }
+    /** @return the exact encoded or sample byte length, or zero when absent */
+    public int getByteLength() { return bytes == null ? 0 : bytes.length; }
     /** @return declared width for raw samples, otherwise zero */
     public int getWidth() { return width; }
     /** @return declared height for raw samples, otherwise zero */

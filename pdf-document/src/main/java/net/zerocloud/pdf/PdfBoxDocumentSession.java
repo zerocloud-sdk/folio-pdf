@@ -42,6 +42,7 @@ final class PdfBoxDocumentSession implements DocumentSession {
     private final PdfBoxSignaturePolicy signaturePolicy;
     private final PdfVersionInfo versionInfo;
     private final PasswordSecurityInfo securityInfo;
+    private final WorkflowResourceContext resources;
     private String outcomeCapabilityId;
     private boolean mutationOccurred;
     private volatile boolean active;
@@ -58,31 +59,44 @@ final class PdfBoxDocumentSession implements DocumentSession {
             PdfVersion publicationVersion,
             PasswordEncryptionAlgorithm publicationAlgorithm,
             PasswordEncryptionScope publicationScope,
-            List<FontSource> referenceFonts) {
+            List<FontSource> referenceFonts,
+            WorkflowResourceContext resources) throws DocumentFailure {
         this.document = Objects.requireNonNull(document, "document");
         this.owner = Thread.currentThread();
-        this.valueAdapter = new PdfBoxValueAdapter(document, this);
-        this.metadataOperations = new PdfBoxMetadataOperations(document);
+        this.valueAdapter = new PdfBoxValueAdapter(
+                document,
+                this,
+                resources);
+        this.metadataOperations = new PdfBoxMetadataOperations(
+                document,
+                resources);
         this.annotationOperations = new PdfBoxAnnotationOperations(
                 document,
-                metadataOperations);
+                metadataOperations,
+                resources);
         this.annotationPageOperations = new PdfBoxAnnotationPageOperations(
                 document,
                 metadataOperations,
-                annotationOperations);
+                annotationOperations,
+                resources);
         this.extractionOperations =
-                new PdfBoxTextStructureExtractionOperations(document);
+                new PdfBoxTextStructureExtractionOperations(
+                        document,
+                        resources);
         this.imageResourceExtractionOperations =
                 new PdfBoxImageResourceExtractionOperations(
                         document,
-                        valueAdapter);
+                        valueAdapter,
+                        resources);
         this.canvasOperations = new PdfBoxCanvasOperations(
                 document,
-                valueAdapter);
+                valueAdapter,
+                resources);
         this.positionedUnicodeTextOperations = new PdfBoxPositionedTextOperations(
                 document,
                 referenceFonts,
-                publicationVersion);
+                publicationVersion,
+                resources);
         this.pageOperations = new PdfBoxPageOperations(
                 document,
                 sources,
@@ -93,13 +107,15 @@ final class PdfBoxDocumentSession implements DocumentSession {
                 publicationScope,
                 valueAdapter,
                 metadataOperations,
-                annotationPageOperations);
+                annotationPageOperations,
+                resources);
         this.saveMode = Objects.requireNonNull(saveMode, "saveMode");
         this.signaturePolicy = Objects.requireNonNull(
                 signaturePolicy,
                 "signaturePolicy");
         this.versionInfo = Objects.requireNonNull(versionInfo, "versionInfo");
         this.securityInfo = Objects.requireNonNull(securityInfo, "securityInfo");
+        this.resources = Objects.requireNonNull(resources, "resources");
         this.outcomeCapabilityId = PdfBoxWorkflowEngine.CAPABILITY_ID;
         this.active = true;
     }
@@ -108,6 +124,22 @@ final class PdfBoxDocumentSession implements DocumentSession {
     public void execute(DocumentCommand command) throws DocumentFailure {
         requireActiveOwner();
         Objects.requireNonNull(command, "command");
+        try {
+            resources.checkpoint();
+            executeChecked(command);
+            resources.audit(document);
+            resources.checkpoint();
+        } catch (DocumentFailure failure) {
+            resources.rethrowTerminalFailure();
+            throw failure;
+        } catch (RuntimeException failure) {
+            resources.rethrowResourceOrTerminalFailure(failure);
+            throw failure;
+        }
+    }
+
+    private void executeChecked(DocumentCommand command)
+            throws DocumentFailure {
         positionedUnicodeTextOperations.finalizeFonts();
         pageOperations.requireCommandAllowed();
         boolean canvasCommand = canvasOperations.supports(command);
@@ -143,6 +175,7 @@ final class PdfBoxDocumentSession implements DocumentSession {
                 mutationOccurred = true;
                 return;
             } catch (RuntimeException backendFailure) {
+                resources.rethrowResourceOrTerminalFailure(backendFailure);
                 throw PdfBoxWorkflowEngine.failure(
                         DocumentFailureCode.DOCUMENT_WRITE_FAILED,
                         "The blank page could not be added.");
@@ -224,6 +257,7 @@ final class PdfBoxDocumentSession implements DocumentSession {
                 mutationOccurred = true;
                 return;
             } catch (RuntimeException backendFailure) {
+                resources.rethrowResourceOrTerminalFailure(backendFailure);
                 throw PdfBoxValueAdapter.failure(
                         DocumentFailureCode.DOCUMENT_WRITE_FAILED,
                         "The Document Patch could not be applied.");
@@ -247,7 +281,15 @@ final class PdfBoxDocumentSession implements DocumentSession {
     }
 
     void finalizeFonts() throws DocumentFailure {
-        positionedUnicodeTextOperations.finalizeFonts();
+        try {
+            positionedUnicodeTextOperations.finalizeFonts();
+        } catch (DocumentFailure failure) {
+            resources.rethrowTerminalFailure();
+            throw failure;
+        } catch (RuntimeException failure) {
+            resources.rethrowResourceOrTerminalFailure(failure);
+            throw failure;
+        }
     }
 
     boolean hasMutationOccurred() {
@@ -258,12 +300,29 @@ final class PdfBoxDocumentSession implements DocumentSession {
     public <R> R query(DocumentQuery<R> query) throws DocumentFailure {
         requireActiveOwner();
         Objects.requireNonNull(query, "query");
+        try {
+            resources.checkpoint();
+            R result = evaluate(query);
+            resources.audit(document);
+            resources.checkpoint();
+            return result;
+        } catch (DocumentFailure failure) {
+            resources.rethrowTerminalFailure();
+            throw failure;
+        } catch (RuntimeException failure) {
+            resources.rethrowResourceOrTerminalFailure(failure);
+            throw failure;
+        }
+    }
+
+    private <R> R evaluate(DocumentQuery<R> query) throws DocumentFailure {
         positionedUnicodeTextOperations.finalizeFonts();
 
         if (query == PageCount.INSTANCE) {
             try {
                 return pageCountResult(document.getNumberOfPages());
             } catch (RuntimeException backendFailure) {
+                resources.rethrowResourceOrTerminalFailure(backendFailure);
                 throw PdfBoxWorkflowEngine.failure(
                         DocumentFailureCode.QUERY_FAILED,
                         "The page count could not be evaluated.");
@@ -299,6 +358,7 @@ final class PdfBoxDocumentSession implements DocumentSession {
             try {
                 return queryResult(valueAdapter.documentRootReference());
             } catch (RuntimeException backendFailure) {
+                resources.rethrowResourceOrTerminalFailure(backendFailure);
                 throw PdfBoxValueAdapter.failure(
                         DocumentFailureCode.QUERY_FAILED,
                         "The document root could not be inspected.");
@@ -314,6 +374,7 @@ final class PdfBoxDocumentSession implements DocumentSession {
                         inspection.getReference(),
                         inspection.getLimits()));
             } catch (RuntimeException backendFailure) {
+                resources.rethrowResourceOrTerminalFailure(backendFailure);
                 throw PdfBoxValueAdapter.failure(
                         DocumentFailureCode.QUERY_FAILED,
                         "The PDF object could not be inspected.");

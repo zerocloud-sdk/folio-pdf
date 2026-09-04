@@ -1,7 +1,6 @@
 package net.zerocloud.pdf;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -127,35 +126,100 @@ final class PdfBoxImageResourceExtractionOperations {
                 }
             };
 
+    private static final ExtractImagesAndResources PIXEL_PREFLIGHT_QUERY =
+            ExtractImagesAndResources.version1(
+                    ResourceExtractionLimits.builder()
+                            .maximumPages(Integer.MAX_VALUE)
+                            .maximumPageTreeNodes(Integer.MAX_VALUE)
+                            .maximumTraversedResourceValues(Long.MAX_VALUE)
+                            .maximumResourceTraversalDepth(
+                                    ResourceExtractionLimits
+                                            .MAXIMUM_RESOURCE_TRAVERSAL_DEPTH_VERSION_1)
+                            .maximumDecodedPixels(Long.MAX_VALUE)
+                            .maximumDecompressedBytes(Long.MAX_VALUE)
+                            .maximumReturnedBytes(Long.MAX_VALUE)
+                            .build(),
+                    ImageByteAccess.NONE);
+
     private final PDDocument document;
     private final PdfBoxValueAdapter valueAdapter;
+    private final WorkflowResourceContext resources;
 
     PdfBoxImageResourceExtractionOperations(
             PDDocument document,
-            PdfBoxValueAdapter valueAdapter) {
+            PdfBoxValueAdapter valueAdapter,
+            WorkflowResourceContext resources) {
         this.document = document;
         this.valueAdapter = valueAdapter;
+        this.resources = resources;
     }
 
     boolean supportsQuery(DocumentQuery<?> query) {
         return query instanceof ExtractImagesAndResources;
     }
 
+    static void accountMaterializableImagePixels(
+            PDDocument document,
+            WorkflowResourceContext resources) throws DocumentFailure {
+        State state = new State(
+                null,
+                PIXEL_PREFLIGHT_QUERY,
+                resources,
+                true);
+        try {
+            COSBase catalog = state.direct(
+                    document.getDocument().getTrailer().getItem(COSName.ROOT));
+            if (!(catalog instanceof COSDictionary)
+                    || catalog instanceof COSStream) {
+                return;
+            }
+            COSBase pageTree = state.direct(
+                    ((COSDictionary) catalog).getItem(COSName.PAGES));
+            List<PdfBoxPageTreePreflight.PageView> pages = state.pages(pageTree);
+            for (int index = 0; index < pages.size(); index++) {
+                resources.checkpoint();
+                COSBase rawResources = state.direct(
+                        pages.get(index).effective().getItem(COSName.RESOURCES));
+                if (rawResources == null) {
+                    continue;
+                }
+                if (!(rawResources instanceof COSDictionary)
+                        || rawResources instanceof COSStream) {
+                    continue;
+                }
+                state.visitResources(new State.ResourceContext(
+                        (COSDictionary) rawResources,
+                        index + 1,
+                        Collections.<ResourceDeclaration.Segment>emptyList(),
+                        1,
+                        resources));
+            }
+        } catch (ResourceLimitException | ResourceLimitIOException malformed) {
+            resources.rethrowTerminalFailure();
+        } catch (IOException | RuntimeException malformed) {
+            resources.rethrowResourceOrTerminalFailure(malformed);
+        } finally {
+            state.close();
+        }
+    }
+
     DocumentResourceInventory evaluate(ExtractImagesAndResources query)
             throws DocumentFailure {
-        State state = new State(valueAdapter, query);
+        resources.checkpoint();
+        State state = new State(valueAdapter, query, resources);
         try {
-            COSBase catalog = State.direct(
+            COSBase catalog = state.direct(
                     document.getDocument().getTrailer().getItem(COSName.ROOT));
             if (!(catalog instanceof COSDictionary)
                     || catalog instanceof COSStream) {
                 throw new IOException("Document catalog is malformed");
             }
-            COSBase pageTree = State.direct(
+            COSBase pageTree = state.direct(
                     ((COSDictionary) catalog).getItem(COSName.PAGES));
             List<PdfBoxPageTreePreflight.PageView> pages = state.pages(pageTree);
             for (int index = 0; index < pages.size(); index++) {
-                COSBase resources = State.direct(pages.get(index).effective()
+                resources.checkpoint();
+                COSBase resources = state.direct(pages.get(index).effective()
                         .getItem(COSName.RESOURCES));
                 if (resources != null) {
                     if (!(resources instanceof COSDictionary)
@@ -166,18 +230,27 @@ final class PdfBoxImageResourceExtractionOperations {
                             (COSDictionary) resources,
                             index + 1,
                             Collections.<ResourceDeclaration.Segment>emptyList(),
-                            1));
+                            1,
+                            this.resources));
                 }
             }
-            return state.result();
+            DocumentResourceInventory result = state.result();
+            state.transferResultOwnership();
+            return result;
+        } catch (DocumentFailure failure) {
+            throw failure;
         } catch (ResourceLimitException | ResourceLimitIOException exhausted) {
+            resources.rethrowTerminalFailure();
             throw failure(
                     DocumentFailureCode.EXTRACTION_LIMIT_EXCEEDED,
                     "The image and resource extraction limit was exceeded.");
         } catch (IOException malformed) {
+            resources.rethrowResourceOrTerminalFailure(malformed);
             throw failure(
                     DocumentFailureCode.QUERY_FAILED,
                     "The document images and resources could not be extracted safely.");
+        } finally {
+            state.close();
         }
     }
 
@@ -186,6 +259,9 @@ final class PdfBoxImageResourceExtractionOperations {
         private final PdfBoxValueAdapter valueAdapter;
         private final ResourceExtractionLimits limits;
         private final ImageByteAccess byteAccess;
+        private final WorkflowResourceContext workflowResources;
+        private final boolean pixelPreflight;
+        private final WorkflowResourceContext.OwnedMemoryScope resultOwnership;
         private final List<RecordBuilder> ordered = new ArrayList<RecordBuilder>();
         private final Map<ObjectReference, RecordBuilder> indirect =
                 new HashMap<ObjectReference, RecordBuilder>();
@@ -193,6 +269,8 @@ final class PdfBoxImageResourceExtractionOperations {
                 new IdentityHashMap<COSStream, Boolean>();
         private final IdentityHashMap<COSStream, Boolean> activeImages =
                 new IdentityHashMap<COSStream, Boolean>();
+        private IdentityHashMap<COSStream, Long> pendingImagePixels;
+        private int imageGraphDepth;
         private long traversedValues;
         private long decodedPixels;
         private long decompressedBytes;
@@ -200,10 +278,30 @@ final class PdfBoxImageResourceExtractionOperations {
 
         State(
                 PdfBoxValueAdapter valueAdapter,
-                ExtractImagesAndResources query) {
+                ExtractImagesAndResources query,
+                WorkflowResourceContext workflowResources) {
+            this(valueAdapter, query, workflowResources, false);
+        }
+
+        State(
+                PdfBoxValueAdapter valueAdapter,
+                ExtractImagesAndResources query,
+                WorkflowResourceContext workflowResources,
+                boolean pixelPreflight) {
             this.valueAdapter = valueAdapter;
             this.limits = query.getLimits();
             this.byteAccess = query.getByteAccess();
+            this.workflowResources = workflowResources;
+            this.pixelPreflight = pixelPreflight;
+            this.resultOwnership = workflowResources.ownedMemoryScope();
+        }
+
+        private void transferResultOwnership() throws DocumentFailure {
+            resultOwnership.transfer();
+        }
+
+        private void close() {
+            resultOwnership.close();
         }
 
         private static final class ResourceContext {
@@ -212,36 +310,54 @@ final class PdfBoxImageResourceExtractionOperations {
             private final int page;
             private final List<ResourceDeclaration.Segment> path;
             private final int depth;
+            private final WorkflowResourceContext workflowResources;
 
             private ResourceContext(
                     COSDictionary resources,
                     int page,
                     List<ResourceDeclaration.Segment> path,
-                    int depth) {
+                    int depth,
+                    WorkflowResourceContext workflowResources) {
                 this.resources = resources;
                 this.page = page;
                 this.path = path;
                 this.depth = depth;
+                this.workflowResources = workflowResources;
             }
 
-            private ResourceContext member(COSName category, COSName name) {
+            private ResourceContext member(COSName category, COSName name)
+                    throws IOException {
                 return new ResourceContext(
                         resources,
                         page,
-                        append(path, segment(category, name)),
-                        depth);
+                        append(
+                                path,
+                                segment(category, name),
+                                workflowResources),
+                        depth,
+                        workflowResources);
             }
 
             private ResourceContext nestedResources(COSDictionary nested) {
-                return new ResourceContext(nested, page, path, depth + 1);
+                return new ResourceContext(
+                        nested,
+                        page,
+                        path,
+                        depth + 1,
+                        workflowResources);
             }
 
-            private ResourceContext related(COSName relationship) {
+            private ResourceContext related(COSName relationship)
+                    throws IOException {
                 return new ResourceContext(
                         resources,
                         page,
-                        append(path, segment(relationship, relationship)),
-                        depth + 1);
+                        append(
+                                path,
+                                segment(relationship, relationship),
+                                workflowResources),
+                        depth + 1,
+                        workflowResources);
             }
 
             private ResourceDeclaration declaration() {
@@ -250,7 +366,7 @@ final class PdfBoxImageResourceExtractionOperations {
         }
 
         List<PdfBoxPageTreePreflight.PageView> pages(COSBase value)
-                throws IOException, ResourceLimitException {
+                throws IOException, ResourceLimitException, DocumentFailure {
             if (!(value instanceof COSDictionary)
                     || value instanceof COSStream) {
                 throw new IOException("Page-tree root is malformed");
@@ -259,7 +375,8 @@ final class PdfBoxImageResourceExtractionOperations {
                 return PdfBoxPageTreePreflight.pages(
                         (COSDictionary) value,
                         limits.getMaximumPages(),
-                        limits.getMaximumPageTreeNodes());
+                        limits.getMaximumPageTreeNodes(),
+                        workflowResources);
             } catch (PdfBoxPageTreePreflight.LimitExceededException exhausted) {
                 throw new ResourceLimitException();
             }
@@ -270,21 +387,35 @@ final class PdfBoxImageResourceExtractionOperations {
             List<Map.Entry<COSName, COSBase>> categories =
                     sorted(context.resources);
             for (Map.Entry<COSName, COSBase> categoryEntry : categories) {
-                accountValues(1L);
-                COSName category = categoryEntry.getKey();
-                COSBase rawCategory = categoryEntry.getValue();
-                if (PROC_SET.equals(category)) {
-                    visitProcSet(rawCategory, context);
-                } else if (isNamedCategory(category)) {
-                    visitNamedCategory(
-                            category,
-                            rawCategory,
-                            context);
-                } else {
-                    visitUnknownCategory(
-                            category,
-                            rawCategory,
-                            context);
+                try {
+                    accountValues(1L);
+                    COSName category = categoryEntry.getKey();
+                    COSBase rawCategory = categoryEntry.getValue();
+                    if (PROC_SET.equals(category)) {
+                        visitProcSet(rawCategory, context);
+                    } else if (isNamedCategory(category)) {
+                        visitNamedCategory(
+                                category,
+                                rawCategory,
+                                context);
+                    } else {
+                        visitUnknownCategory(
+                                category,
+                                rawCategory,
+                                context);
+                    }
+                } catch (ResourceLimitException malformed) {
+                    if (!pixelPreflight) {
+                        throw malformed;
+                    }
+                } catch (IOException malformed) {
+                    if (!tolerablePixelPreflightFailure(malformed)) {
+                        throw malformed;
+                    }
+                } catch (RuntimeException malformed) {
+                    if (!tolerablePixelPreflightFailure(malformed)) {
+                        throw malformed;
+                    }
                 }
             }
         }
@@ -301,21 +432,41 @@ final class PdfBoxImageResourceExtractionOperations {
             }
             for (Map.Entry<COSName, COSBase> entry
                     : sorted((COSDictionary) value)) {
-                ResourceContext member = context.member(
-                        category, entry.getKey());
-                checkDepth(member.depth);
-                accountValues(1L);
-                if (XOBJECT.equals(category)) {
-                    visitXObject(entry.getValue(), member);
-                } else if (FONT.equals(category)) {
-                    visitFont(entry.getValue(), member.declaration());
-                } else {
-                    addGeneric(
-                            entry.getValue(),
-                            kind(category),
-                            member.declaration());
+                try {
+                    ResourceContext member = context.member(
+                            category, entry.getKey());
+                    checkDepth(member.depth);
+                    accountValues(1L);
+                    if (XOBJECT.equals(category)) {
+                        visitXObject(entry.getValue(), member);
+                    } else if (FONT.equals(category)) {
+                        visitFont(entry.getValue(), member.declaration());
+                    } else {
+                        addGeneric(
+                                entry.getValue(),
+                                kind(category),
+                                member.declaration());
+                    }
+                } catch (ResourceLimitException malformed) {
+                    if (!pixelPreflight) {
+                        throw malformed;
+                    }
+                } catch (IOException malformed) {
+                    if (!tolerablePixelPreflightFailure(malformed)) {
+                        throw malformed;
+                    }
+                } catch (RuntimeException malformed) {
+                    if (!tolerablePixelPreflightFailure(malformed)) {
+                        throw malformed;
+                    }
                 }
             }
+        }
+
+        private boolean tolerablePixelPreflightFailure(Throwable failure) {
+            return pixelPreflight
+                    && WorkflowResourceContext.findResourceFailure(failure)
+                            == null;
         }
 
         private void visitProcSet(
@@ -444,45 +595,178 @@ final class PdfBoxImageResourceExtractionOperations {
                 ResourceContext context,
                 ImageBuilder existingDirect)
                 throws IOException, ResourceLimitException {
-            checkDepth(context.depth);
-            COSBase value = direct(raw);
-            if (!(value instanceof COSStream)) {
-                throw new IOException("Image is not a stream");
+            boolean rootGraph = imageGraphDepth == 0;
+            if (rootGraph) {
+                pendingImagePixels = new IdentityHashMap<COSStream, Long>();
             }
-            COSStream stream = (COSStream) value;
-            Registration<ImageBuilder> registration;
-            if (existingDirect == null) {
-                registration = imageBuilder(raw, context.declaration());
-            } else {
-                if (raw instanceof COSObject) {
-                    throw new IOException("Indirect image reuse is inconsistent");
-                }
-                existingDirect.add(context.declaration());
-                registration = new Registration<ImageBuilder>(
-                        existingDirect,
-                        false);
-            }
-            ImageMetadata metadata = imageMetadata(stream, context.resources);
-            if (registration.created) {
-                registration.builder.metadata = metadata;
-                materializeSelectedBytes(registration.builder, stream, metadata);
-            } else if (!registration.builder.metadata.same(metadata)) {
-                throw new IOException("Shared image metadata is context-dependent");
-            }
-
-            if (activeImages.put(stream, Boolean.TRUE) != null) {
-                throw new IOException("Image-mask graph is cyclic");
-            }
+            imageGraphDepth++;
+            boolean completed = false;
+            ImageBuilder result;
             try {
-                visitMasks(
-                        registration.builder,
-                        stream,
-                        metadata,
-                        context);
+                checkDepth(context.depth);
+                COSBase value = direct(raw);
+                if (!(value instanceof COSStream)) {
+                    throw new IOException("Image is not a stream");
+                }
+                COSStream stream = (COSStream) value;
+                ExistingImageDimensions canvasDimensions = rootGraph
+                        ? canvasExistingImageDimensions(raw, stream)
+                        : null;
+                try {
+                    Registration<ImageBuilder> registration;
+                    if (existingDirect == null) {
+                        registration = imageBuilder(raw, context.declaration());
+                    } else {
+                        if (raw instanceof COSObject) {
+                            throw new IOException(
+                                    "Indirect image reuse is inconsistent");
+                        }
+                        existingDirect.add(context.declaration());
+                        registration = new Registration<ImageBuilder>(
+                                existingDirect,
+                                false);
+                    }
+                    ImageMetadata metadata = imageMetadata(
+                            stream, context.resources);
+                    if (registration.created) {
+                        registration.builder.metadata = metadata;
+                        if (materializeSelectedBytes(
+                                registration.builder, stream, metadata)) {
+                            rememberImagePixels(
+                                    stream, metadata.width, metadata.height);
+                        }
+                    } else if (!registration.builder.metadata.same(
+                            metadata, workflowResources)) {
+                        throw new IOException(
+                                "Shared image metadata is context-dependent");
+                    }
+
+                    if (activeImages.put(stream, Boolean.TRUE) != null) {
+                        throw new IOException("Image-mask graph is cyclic");
+                    }
+                    try {
+                        visitMasks(
+                                registration.builder,
+                                stream,
+                                metadata,
+                                context);
+                    } finally {
+                        activeImages.remove(stream);
+                    }
+                    if (canvasDimensions != null) {
+                        workflowResources.consumeImageDimensionsAsIOException(
+                                stream,
+                                canvasDimensions.width,
+                                canvasDimensions.height);
+                    }
+                    result = registration.builder;
+                    completed = true;
+                } catch (IOException | ResourceLimitException malformed) {
+                    if (canvasDimensions == null
+                            || WorkflowResourceContext.findResourceFailure(
+                                    malformed) != null) {
+                        throw malformed;
+                    }
+                    pendingImagePixels.clear();
+                    workflowResources.consumeImageDimensionsAsIOException(
+                            stream,
+                            canvasDimensions.width,
+                            canvasDimensions.height);
+                    result = null;
+                    completed = false;
+                } catch (RuntimeException malformed) {
+                    if (canvasDimensions == null
+                            || WorkflowResourceContext.findResourceFailure(
+                                    malformed) != null) {
+                        throw malformed;
+                    }
+                    pendingImagePixels.clear();
+                    workflowResources.consumeImageDimensionsAsIOException(
+                            stream,
+                            canvasDimensions.width,
+                            canvasDimensions.height);
+                    result = null;
+                    completed = false;
+                }
             } finally {
-                activeImages.remove(stream);
+                imageGraphDepth--;
+                if (rootGraph) {
+                    try {
+                        if (completed) {
+                            commitImagePixels();
+                        }
+                    } finally {
+                        pendingImagePixels = null;
+                    }
+                }
             }
-            return registration.builder;
+            return result;
+        }
+
+        private ExistingImageDimensions canvasExistingImageDimensions(
+                COSBase raw,
+                COSStream stream) throws IOException {
+            if (!pixelPreflight || !(raw instanceof COSObject)) {
+                return null;
+            }
+            COSBase type = canvasDereference(stream.getItem(COSName.TYPE));
+            COSBase subtype = canvasDereference(
+                    stream.getItem(COSName.SUBTYPE));
+            long width = canvasPositiveInteger(
+                    stream.getItem(COSName.WIDTH));
+            long height = canvasPositiveInteger(
+                    stream.getItem(COSName.HEIGHT));
+            if ((type != null && !COSName.XOBJECT.equals(type))
+                    || !IMAGE.equals(subtype)
+                    || width < 1L
+                    || height < 1L
+                    || canvasDereference(stream.getItem(COSName.F)) != null
+                    || !canvasExistingFilter(
+                            stream.getItem(COSName.FILTER))) {
+                return null;
+            }
+            return new ExistingImageDimensions(width, height);
+        }
+
+        private boolean canvasExistingFilter(COSBase raw)
+                throws IOException {
+            COSBase value = canvasDereference(raw);
+            if (value == null || value instanceof COSNull) {
+                return true;
+            }
+            if (value instanceof COSName) {
+                return COSName.FLATE_DECODE.equals(value)
+                        || COSName.DCT_DECODE.equals(value);
+            }
+            if (value instanceof COSArray
+                    && ((COSArray) value).size() == 1) {
+                COSBase name = canvasDereference(
+                        ((COSArray) value).get(0));
+                return COSName.FLATE_DECODE.equals(name)
+                        || COSName.DCT_DECODE.equals(name);
+            }
+            return false;
+        }
+
+        private long canvasPositiveInteger(COSBase raw)
+                throws IOException {
+            COSBase value = canvasDereference(raw);
+            if (!(value instanceof COSInteger)) {
+                return -1L;
+            }
+            return ((COSInteger) value).longValue();
+        }
+
+        private COSBase canvasDereference(COSBase raw) throws IOException {
+            COSBase value = raw;
+            IdentityHashMap<COSObject, Boolean> seen =
+                    new IdentityHashMap<COSObject, Boolean>();
+            while (value instanceof COSObject
+                    && seen.put((COSObject) value, Boolean.TRUE) == null) {
+                workflowResources.checkpointAsIOException();
+                value = ((COSObject) value).getObject();
+            }
+            return value;
         }
 
         private void visitMasks(
@@ -607,7 +891,7 @@ final class PdfBoxImageResourceExtractionOperations {
             }
         }
 
-        private static ImageBuilder reusableDirectTarget(
+        private ImageBuilder reusableDirectTarget(
                 COSBase raw,
                 MaskLink existing,
                 ImageResource.Mask.Kind kind) throws IOException {
@@ -620,7 +904,7 @@ final class PdfBoxImageResourceExtractionOperations {
             return existing.target;
         }
 
-        private static long maskSample(COSBase raw, long maximum)
+        private long maskSample(COSBase raw, long maximum)
                 throws IOException {
             COSBase value = direct(raw);
             if (!(value instanceof COSInteger)) {
@@ -647,7 +931,7 @@ final class PdfBoxImageResourceExtractionOperations {
             boolean imageMask = booleanValue(stream.getItem(IMAGE_MASK), false);
             boolean external = hasExternalFile(stream);
             FilterSequence filters = filters(stream, external);
-            boolean jpx = filters.has(FilterKind.JPX);
+            boolean jpx = filters.has(FilterKind.JPX, workflowResources);
             ImageResource.EmbeddedSoftMask embeddedSoftMask = jpx
                     ? embeddedSoftMask(stream.getItem(S_MASK_IN_DATA))
                     : ImageResource.EmbeddedSoftMask.NONE;
@@ -714,7 +998,7 @@ final class PdfBoxImageResourceExtractionOperations {
                     external);
         }
 
-        private static ImageResource.EmbeddedSoftMask embeddedSoftMask(
+        private ImageResource.EmbeddedSoftMask embeddedSoftMask(
                 COSBase raw) throws IOException {
             COSBase value = direct(raw);
             if (value == null) {
@@ -804,6 +1088,7 @@ final class PdfBoxImageResourceExtractionOperations {
                 COSArray array = (COSArray) rawFilters;
                 accountValues(array.size());
                 for (int index = 0; index < array.size(); index++) {
+                    workflowResources.checkpointAsIOException();
                     COSBase value = direct(array.get(index));
                     if (!(value instanceof COSName)) {
                         throw new IOException("Filter array is malformed");
@@ -820,6 +1105,7 @@ final class PdfBoxImageResourceExtractionOperations {
             List<FilterSpec> specs = new ArrayList<FilterSpec>(names.size());
             boolean supported = true;
             for (int index = 0; index < names.size(); index++) {
+                workflowResources.checkpointAsIOException();
                 FilterSpec spec = filterSpec(names.get(index), parameters.get(index));
                 specs.add(spec);
                 supported &= spec.kind.decodeSupport() == DecodeSupport.SUPPORTED;
@@ -827,12 +1113,13 @@ final class PdfBoxImageResourceExtractionOperations {
             return new FilterSequence(specs, supported);
         }
 
-        private static void validateFilterSampleGeometry(
+        private void validateFilterSampleGeometry(
                 FilterSequence filters,
                 Integer bits,
                 Integer components,
                 int width) throws IOException {
             for (FilterSpec filter : filters.specs) {
+                workflowResources.checkpointAsIOException();
                 int requiredBits = filter.kind.requiredBits();
                 if (requiredBits != 0
                         && (bits == null
@@ -859,6 +1146,7 @@ final class PdfBoxImageResourceExtractionOperations {
             List<COSDictionary> result = new ArrayList<COSDictionary>(filterCount);
             if (raw == null || raw instanceof COSNull) {
                 for (int index = 0; index < filterCount; index++) {
+                    workflowResources.checkpointAsIOException();
                     result.add(null);
                 }
                 return result;
@@ -879,6 +1167,7 @@ final class PdfBoxImageResourceExtractionOperations {
                 throw new IOException("DecodeParms arity is malformed");
             }
             for (int index = 0; index < array.size(); index++) {
+                workflowResources.checkpointAsIOException();
                 COSBase value = direct(array.get(index));
                 if (value == null || value instanceof COSNull) {
                     result.add(null);
@@ -979,7 +1268,7 @@ final class PdfBoxImageResourceExtractionOperations {
             }
         }
 
-        private void materializeSelectedBytes(
+        private boolean materializeSelectedBytes(
                 ImageBuilder builder,
                 COSStream stream,
                 ImageMetadata metadata) throws IOException, ResourceLimitException {
@@ -997,20 +1286,95 @@ final class PdfBoxImageResourceExtractionOperations {
             builder.encodedAvailability = encodedAvailability;
             builder.decodedAvailability = decodedAvailability;
 
+            if (pixelPreflight) {
+                if (!metadata.external
+                        && metadata.filters.hasOnly(FilterKind.DCT)) {
+                    return true;
+                }
+                if (decodedAvailability == ByteAvailability.AVAILABLE) {
+                    long expected = expectedDecodedBytes(metadata);
+                    Long materialized = workflowResources
+                            .materializableImageLength(stream);
+                    if (materialized == null && expected >= 0L) {
+                        preflightDecodedCapacity(metadata);
+                        byte[] decoded = decodedBytes(stream, metadata);
+                        materialized = Long.valueOf(decoded.length);
+                        resultOwnership.releaseHeld(decoded);
+                        workflowResources.recordMaterializableImageLength(
+                                stream,
+                                materialized.longValue());
+                    }
+                    if (materialized != null
+                            && materialized.longValue() == expected) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
             if (byteAccess.includesEncoded()
                     && encodedAvailability == ByteAvailability.AVAILABLE) {
-                builder.encodedBytes = rawBytes(stream, true);
+                builder.encodedBytes = rawBytes(stream);
             }
             if (byteAccess.includesDecoded()
                     && decodedAvailability == ByteAvailability.AVAILABLE) {
                 preflightDecodedCapacity(metadata);
-                accountPixels(metadata.width, metadata.height);
-                builder.decodedBytes = decodedBytes(stream, metadata);
+                byte[] decoded = decodedBytes(stream, metadata);
+                builder.decodedBytes = decoded;
+                return true;
+            }
+            return false;
+        }
+
+        private void rememberImagePixels(
+                COSStream stream,
+                int width,
+                int height) throws ResourceLimitException {
+            if (pendingImagePixels == null) {
+                throw new IllegalStateException(
+                        "Image preparation is outside an image graph.");
+            }
+            long pixels = multiply(width, height);
+            Long previous = pendingImagePixels.get(stream);
+            if (previous == null || pixels > previous.longValue()) {
+                pendingImagePixels.put(stream, Long.valueOf(pixels));
             }
         }
 
+        private void commitImagePixels()
+                throws IOException, ResourceLimitException {
+            if (pixelPreflight) {
+                for (Map.Entry<COSStream, Long> entry
+                        : pendingImagePixels.entrySet()) {
+                    workflowResources.checkpointAsIOException();
+                    workflowResources.consumeImagePixelsAsIOException(
+                            entry.getKey(), entry.getValue().longValue());
+                }
+                return;
+            }
+            long total = 0L;
+            for (Long value : pendingImagePixels.values()) {
+                workflowResources.checkpointAsIOException();
+                long pixels = value.longValue();
+                if (total > limits.getMaximumDecodedPixels() - pixels) {
+                    throw new ResourceLimitException();
+                }
+                total += pixels;
+            }
+            if (decodedPixels > limits.getMaximumDecodedPixels() - total) {
+                throw new ResourceLimitException();
+            }
+            for (Map.Entry<COSStream, Long> entry
+                    : pendingImagePixels.entrySet()) {
+                workflowResources.checkpointAsIOException();
+                workflowResources.consumeImagePixelsAsIOException(
+                        entry.getKey(), entry.getValue().longValue());
+            }
+            decodedPixels += total;
+        }
+
         private void preflightDecodedCapacity(ImageMetadata metadata)
-                throws ResourceLimitException {
+                throws IOException, ResourceLimitException {
             long expected = expectedDecodedBytes(metadata);
             if (expected < 0L) {
                 return;
@@ -1022,7 +1386,11 @@ final class PdfBoxImageResourceExtractionOperations {
                             - returnedBytes) {
                 throw new ResourceLimitException();
             }
-            for (FilterSpec spec : metadata.filters.specs) {
+            for (int index = 0;
+                    index < metadata.filters.specs.size();
+                    index++) {
+                workflowResources.checkpointAsIOException();
+                FilterSpec spec = metadata.filters.specs.get(index);
                 if (spec.predictor != null) {
                     preflightPredictor(
                             spec.predictor.intValue(),
@@ -1033,49 +1401,66 @@ final class PdfBoxImageResourceExtractionOperations {
             }
         }
 
-        private byte[] rawBytes(COSStream stream, boolean returned)
+        private byte[] rawBytes(COSStream stream)
                 throws IOException, ResourceLimitException {
-            AccountingOutput output = new AccountingOutput(this, false, returned);
             byte[] buffer = new byte[8192];
-            try (InputStream input = stream.createRawInputStream()) {
+            try (AccountingOutput output =
+                            new AccountingOutput(this, false, true);
+                    InputStream input = workflowResources.checkpointedInput(
+                            stream.createRawInputStream())) {
                 int count;
                 while ((count = input.read(buffer)) != -1) {
                     output.write(buffer, 0, count);
                 }
+                return resultOwnership.hold(output.toWorkingBytes());
             }
-            return output.toByteArray();
         }
 
         private byte[] decodedBytes(
                 COSStream stream,
                 ImageMetadata metadata) throws IOException, ResourceLimitException {
-            byte[] current = null;
             if (metadata.filters.specs.isEmpty()) {
-                AccountingOutput output = new AccountingOutput(this, true, true);
                 byte[] buffer = new byte[8192];
-                try (InputStream input = stream.createRawInputStream()) {
+                try (AccountingOutput output =
+                                new AccountingOutput(
+                                        this, true, true, false);
+                        InputStream input =
+                                workflowResources.checkpointedInput(
+                                        stream.createRawInputStream())) {
                     int count;
                     while ((count = input.read(buffer)) != -1) {
                         output.write(buffer, 0, count);
                     }
+                    byte[] decoded = resultOwnership.hold(
+                            output.toWorkingBytes());
+                    requireExpectedDecodedLength(metadata, decoded.length);
+                    return decoded;
                 }
-                current = output.toByteArray();
-            } else {
+            }
+
+            WorkflowResourceContext.OwnedBytes current = null;
+            try {
                 for (int index = 0; index < metadata.filters.specs.size(); index++) {
                     FilterSpec spec = metadata.filters.specs.get(index);
-                    try (InputStream validation = index == 0
-                            ? stream.createRawInputStream()
-                            : new ByteArrayInputStream(current)) {
+                    try (InputStream validation =
+                            workflowResources.checkpointedInput(index == 0
+                                    ? stream.createRawInputStream()
+                                    : new ByteArrayInputStream(
+                                            current.getBytes()))) {
                         spec.kind.validate(this, spec, validation);
                     }
-                    AccountingOutput output = new AccountingOutput(
-                            this,
-                            true,
-                            index == metadata.filters.specs.size() - 1);
-                    InputStream input = index == 0
-                            ? stream.createRawInputStream()
-                            : new ByteArrayInputStream(current);
-                    try (InputStream owned = input) {
+                    boolean finalStage =
+                            index == metadata.filters.specs.size() - 1;
+                    try (AccountingOutput output = new AccountingOutput(
+                                    this,
+                                    true,
+                                    finalStage);
+                            InputStream owned =
+                                    workflowResources.checkpointedInput(
+                                            index == 0
+                                                    ? stream.createRawInputStream()
+                                                    : new ByteArrayInputStream(
+                                                            current.getBytes()))) {
                         org.apache.pdfbox.filter.Filter filter =
                                 FilterFactory.INSTANCE.getFilter(
                                         COSName.getPDFName(spec.declared.getValue()));
@@ -1085,15 +1470,36 @@ final class PdfBoxImageResourceExtractionOperations {
                                 stream,
                                 index,
                                 DecodeOptions.DEFAULT);
+                        if (finalStage) {
+                            byte[] decoded = resultOwnership.hold(
+                                    output.toWorkingBytes());
+                            requireExpectedDecodedLength(
+                                    metadata, decoded.length);
+                            return decoded;
+                        }
+                        WorkflowResourceContext.OwnedBytes next =
+                                output.toWorkingBytes();
+                        if (current != null) {
+                            current.close();
+                        }
+                        current = next;
                     }
-                    current = output.toByteArray();
+                }
+                throw new IOException("Decoded image has no filter output");
+            } finally {
+                if (current != null) {
+                    current.close();
                 }
             }
+        }
+
+        private void requireExpectedDecodedLength(
+                ImageMetadata metadata,
+                int actual) throws IOException, ResourceLimitException {
             long expected = expectedDecodedBytes(metadata);
-            if (expected >= 0L && current.length != expected) {
+            if (expected >= 0L && actual != expected) {
                 throw new IOException("Decoded image length is malformed");
             }
-            return current;
         }
 
         private void validateFlate(FilterSpec spec, InputStream input)
@@ -1121,6 +1527,7 @@ final class PdfBoxImageResourceExtractionOperations {
             }
             try {
                 while (!inflater.finished()) {
+                    workflowResources.checkpointAsIOException();
                     if (inflater.needsDictionary()) {
                         throw new IOException("Flate dictionary is unsupported");
                     }
@@ -1510,7 +1917,8 @@ final class PdfBoxImageResourceExtractionOperations {
                     long expectedLength = (high + 1L)
                             * base.components.intValue();
                     if (((org.apache.pdfbox.cos.COSString) lookup)
-                                    .getBytes().length != expectedLength) {
+                                    .toHexString().length() / 2L
+                            != expectedLength) {
                         return ColorInfo.malformed(declared);
                     }
                 } else if (lookup instanceof COSStream) {
@@ -1760,6 +2168,7 @@ final class PdfBoxImageResourceExtractionOperations {
             COSArray functions = (COSArray) rawFunctions;
             accountValues(functions.size());
             for (int index = 0; index < functions.size(); index++) {
+                workflowResources.checkpointAsIOException();
                 if (!(direct(functions.get(index)) instanceof COSDictionary)) {
                     return false;
                 }
@@ -1773,6 +2182,7 @@ final class PdfBoxImageResourceExtractionOperations {
             }
             double previous = domain[0];
             for (double bound : bounds) {
+                workflowResources.checkpointAsIOException();
                 if (bound <= previous || bound >= domain[1]) {
                     return false;
                 }
@@ -1791,6 +2201,7 @@ final class PdfBoxImageResourceExtractionOperations {
             COSArray values = (COSArray) value;
             accountValues(values.size());
             for (int index = 0; index < values.size(); index++) {
+                workflowResources.checkpointAsIOException();
                 COSBase member = direct(values.get(index));
                 if (!(member instanceof COSInteger)
                         || ((COSInteger) member).longValue() < 1L) {
@@ -1800,7 +2211,7 @@ final class PdfBoxImageResourceExtractionOperations {
             return true;
         }
 
-        private static boolean validBitsPerSample(COSBase raw)
+        private boolean validBitsPerSample(COSBase raw)
                 throws IOException {
             COSBase value = direct(raw);
             if (!(value instanceof COSInteger)) {
@@ -1812,7 +2223,7 @@ final class PdfBoxImageResourceExtractionOperations {
                     || bits == 32L;
         }
 
-        private static boolean validOrder(COSBase raw) throws IOException {
+        private boolean validOrder(COSBase raw) throws IOException {
             COSBase value = direct(raw);
             return value == null
                     || (value instanceof COSInteger
@@ -1829,8 +2240,9 @@ final class PdfBoxImageResourceExtractionOperations {
             return numberArray(raw, ((COSArray) value).size());
         }
 
-        private static boolean validPairs(double[] values) {
+        private boolean validPairs(double[] values) throws IOException {
             for (int index = 0; index < values.length; index += 2) {
+                workflowResources.checkpointAsIOException();
                 if (values[index] > values[index + 1]) {
                     return false;
                 }
@@ -1838,13 +2250,14 @@ final class PdfBoxImageResourceExtractionOperations {
             return true;
         }
 
-        private static boolean validColorComponents(
+        private boolean validColorComponents(
                 double[] values,
-                double[] ranges) {
+                double[] ranges) throws IOException {
             if (ranges.length != values.length * 2) {
                 return false;
             }
             for (int index = 0; index < values.length; index++) {
+                workflowResources.checkpointAsIOException();
                 if (values[index] < ranges[index * 2]
                         || values[index] > ranges[index * 2 + 1]) {
                     return false;
@@ -1979,6 +2392,7 @@ final class PdfBoxImageResourceExtractionOperations {
             accountValues(array.size());
             double[] result = new double[size];
             for (int index = 0; index < size; index++) {
+                workflowResources.checkpointAsIOException();
                 COSBase member = direct(array.get(index));
                 if (!(member instanceof COSNumber)) {
                     return null;
@@ -2023,33 +2437,33 @@ final class PdfBoxImageResourceExtractionOperations {
             if (direct(stream.getItem(COSName.F)) != null) {
                 return null;
             }
-            AccountingOutput output = new AccountingOutput(this, true, false);
-            byte[] buffer = new byte[8192];
-            try (InputStream input = stream.createInputStream()) {
-                int count;
-                while ((count = input.read(buffer)) != -1) {
-                    output.write(buffer, 0, count);
+            try (AccountingOutput output =
+                            new AccountingOutput(
+                                    this, true, false, false)) {
+                workflowResources.decodeStreamAsIOException(stream, output);
+                try (WorkflowResourceContext.OwnedBytes owned =
+                        output.toWorkingBytes()) {
+                    byte[] bytes = owned.getBytes();
+                    if (bytes.length < 128
+                            || unsignedInt(bytes, 0) != bytes.length
+                            || bytes[36] != 'a'
+                            || bytes[37] != 'c'
+                            || bytes[38] != 's'
+                            || bytes[39] != 'p') {
+                        return null;
+                    }
+                    ICC_Profile profile = ICC_Profile.getInstance(bytes);
+                    if (profile.getNumComponents() != declaredComponents
+                            || !supportedIccFamily(
+                                    declaredComponents,
+                                    profile.getColorSpaceType())) {
+                        return null;
+                    }
+                    return new IccInfo(
+                            reference(rawProfile),
+                            bytes.length,
+                            sha256(bytes));
                 }
-                byte[] bytes = output.toByteArray();
-                if (bytes.length < 128
-                        || unsignedInt(bytes, 0) != bytes.length
-                        || bytes[36] != 'a'
-                        || bytes[37] != 'c'
-                        || bytes[38] != 's'
-                        || bytes[39] != 'p') {
-                    return null;
-                }
-                ICC_Profile profile = ICC_Profile.getInstance(bytes);
-                if (profile.getNumComponents() != declaredComponents
-                        || !supportedIccFamily(
-                                declaredComponents,
-                                profile.getColorSpaceType())) {
-                    return null;
-                }
-                return new IccInfo(
-                        reference(rawProfile),
-                        bytes.length,
-                        sha256(bytes));
             } catch (ResourceLimitIOException exhausted) {
                 throw exhausted;
             } catch (IOException | IllegalArgumentException invalidProfile) {
@@ -2075,10 +2489,16 @@ final class PdfBoxImageResourceExtractionOperations {
                     | (long) (bytes[offset + 3] & 0xff);
         }
 
-        private static String sha256(byte[] bytes) throws IOException {
+        private String sha256(byte[] bytes) throws IOException {
             try {
-                byte[] digest = MessageDigest.getInstance("SHA-256")
-                        .digest(bytes);
+                MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
+                for (int offset = 0; offset < bytes.length; offset += 8192) {
+                    workflowResources.checkpointAsIOException();
+                    int length = Math.min(8192, bytes.length - offset);
+                    sha256.update(bytes, offset, length);
+                }
+                workflowResources.checkpointAsIOException();
+                byte[] digest = sha256.digest();
                 StringBuilder value = new StringBuilder(digest.length * 2);
                 for (byte part : digest) {
                     int unsigned = part & 0xff;
@@ -2178,6 +2598,7 @@ final class PdfBoxImageResourceExtractionOperations {
                 accountValues(((COSDictionary) charProcs).size());
                 for (Map.Entry<COSName, COSBase> glyph
                         : ((COSDictionary) charProcs).entrySet()) {
+                    workflowResources.checkpointAsIOException();
                     if (!(direct(glyph.getValue()) instanceof COSStream)) {
                         throw new IOException("Type 3 glyph program is malformed");
                     }
@@ -2281,6 +2702,9 @@ final class PdfBoxImageResourceExtractionOperations {
             if (!(raw instanceof COSObject)) {
                 return null;
             }
+            if (valueAdapter == null) {
+                return null;
+            }
             try {
                 return valueAdapter.resourceReference((COSObject) raw);
             } catch (DocumentFailure failure) {
@@ -2296,6 +2720,7 @@ final class PdfBoxImageResourceExtractionOperations {
             List<DocumentResource> resources =
                     new ArrayList<DocumentResource>(ordered.size());
             for (RecordBuilder builder : ordered) {
+                workflowResources.checkpointAsIOException();
                 resources.add(build(builder, built, building));
             }
             return new DocumentResourceInventory(resources);
@@ -2306,6 +2731,7 @@ final class PdfBoxImageResourceExtractionOperations {
                 IdentityHashMap<RecordBuilder, DocumentResource> built,
                 IdentityHashMap<RecordBuilder, Boolean> building)
                 throws IOException {
+            workflowResources.checkpointAsIOException();
             DocumentResource existing = built.get(builder);
             if (existing != null) {
                 return existing;
@@ -2325,6 +2751,7 @@ final class PdfBoxImageResourceExtractionOperations {
                             new ArrayList<ImageResource.Filter>(
                                     image.metadata.filters.specs.size());
                     for (FilterSpec spec : image.metadata.filters.specs) {
+                        workflowResources.checkpointAsIOException();
                         filters.add(spec.publicValue());
                     }
                     result = new ImageResource(
@@ -2388,7 +2815,9 @@ final class PdfBoxImageResourceExtractionOperations {
             return new ImageResource.Mask(link.kind, target, link.colorKeyRanges);
         }
 
-        private void accountValues(long count) throws ResourceLimitException {
+        private void accountValues(long count)
+                throws IOException, ResourceLimitException {
+            workflowResources.checkpointAsIOException();
             if (count < 0L
                     || traversedValues
                     > limits.getMaximumTraversedResourceValues() - count) {
@@ -2397,22 +2826,22 @@ final class PdfBoxImageResourceExtractionOperations {
             traversedValues += count;
         }
 
-        private void checkDepth(int depth) throws ResourceLimitException {
+        private void checkDepth(int depth)
+                throws IOException, ResourceLimitException {
+            workflowResources.checkpointAsIOException();
+            workflowResources.requireNestingDepthAsIOException(depth);
             if (depth > limits.getMaximumResourceTraversalDepth()) {
                 throw new ResourceLimitException();
             }
         }
 
-        private void accountPixels(int width, int height)
-                throws ResourceLimitException {
-            long pixels = multiply(width, height);
-            if (decodedPixels > limits.getMaximumDecodedPixels() - pixels) {
-                throw new ResourceLimitException();
-            }
-            decodedPixels += pixels;
+        private void accountDecompressed(long count)
+                throws IOException, ResourceLimitException {
+            accountDecompressedLocally(count);
+            workflowResources.consumeDecompressedBytesAsIOException(count);
         }
 
-        private void accountDecompressed(long count)
+        private void accountDecompressedLocally(long count)
                 throws ResourceLimitException {
             if (count < 0L
                     || decompressedBytes
@@ -2447,6 +2876,7 @@ final class PdfBoxImageResourceExtractionOperations {
             long remaining = limits.getMaximumTraversedResourceValues()
                     - traversedValues;
             for (Map.Entry<COSName, COSBase> entry : dictionary.entrySet()) {
+                workflowResources.checkpointAsIOException();
                 if (direct(entry.getValue()) == null) {
                     continue;
                 }
@@ -2455,15 +2885,42 @@ final class PdfBoxImageResourceExtractionOperations {
                 }
                 entries.add(entry);
             }
-            Collections.sort(entries, ENTRY_ORDER);
+            workflowResources.checkpointAsIOException();
+            try {
+                Collections.sort(
+                        entries,
+                        new Comparator<Map.Entry<COSName, COSBase>>() {
+                            private int comparisons;
+
+                            @Override
+                            public int compare(
+                                    Map.Entry<COSName, COSBase> left,
+                                    Map.Entry<COSName, COSBase> right) {
+                                if ((comparisons++ & 1023) == 0) {
+                                    try {
+                                        workflowResources
+                                                .checkpointAsIOException();
+                                    } catch (IOException failure) {
+                                        throw new CheckpointRuntimeException(
+                                                failure);
+                                    }
+                                }
+                                return ENTRY_ORDER.compare(left, right);
+                            }
+                        });
+            } catch (CheckpointRuntimeException failure) {
+                throw failure.failure;
+            }
+            workflowResources.checkpointAsIOException();
             return entries;
         }
 
-        private static COSBase direct(COSBase raw) throws IOException {
+        private COSBase direct(COSBase raw) throws IOException {
             COSBase value = raw;
             IdentityHashMap<COSObject, Boolean> seen =
                     new IdentityHashMap<COSObject, Boolean>();
             while (value instanceof COSObject) {
+                workflowResources.checkpointAsIOException();
                 COSObject object = (COSObject) value;
                 if (seen.put(object, Boolean.TRUE) != null) {
                     throw new IOException("Indirect object chain is cyclic");
@@ -2489,10 +2946,14 @@ final class PdfBoxImageResourceExtractionOperations {
 
         private static List<ResourceDeclaration.Segment> append(
                 List<ResourceDeclaration.Segment> path,
-                ResourceDeclaration.Segment segment) {
+                ResourceDeclaration.Segment segment,
+                WorkflowResourceContext resources) throws IOException {
             List<ResourceDeclaration.Segment> result =
                     new ArrayList<ResourceDeclaration.Segment>(path.size() + 1);
-            result.addAll(path);
+            for (ResourceDeclaration.Segment member : path) {
+                resources.checkpointAsIOException();
+                result.add(member);
+            }
             result.add(segment);
             return result;
         }
@@ -2533,7 +2994,7 @@ final class PdfBoxImageResourceExtractionOperations {
             }
         }
 
-        private static int positiveInt(COSBase raw, String label)
+        private int positiveInt(COSBase raw, String label)
                 throws IOException {
             COSBase value = direct(raw);
             if (!(value instanceof COSInteger)) {
@@ -2546,7 +3007,7 @@ final class PdfBoxImageResourceExtractionOperations {
             return (int) number;
         }
 
-        private static boolean booleanValue(COSBase raw, boolean defaultValue)
+        private boolean booleanValue(COSBase raw, boolean defaultValue)
                 throws IOException {
             COSBase value = direct(raw);
             if (value == null) {
@@ -2558,7 +3019,7 @@ final class PdfBoxImageResourceExtractionOperations {
             return ((COSBoolean) value).getValue();
         }
 
-        private static void requireNumberArray(
+        private void requireNumberArray(
                 COSBase raw,
                 int size,
                 String label) throws IOException {
@@ -2818,7 +3279,9 @@ final class PdfBoxImageResourceExtractionOperations {
             this.external = external;
         }
 
-        boolean same(ImageMetadata other) {
+        boolean same(
+                ImageMetadata other,
+                WorkflowResourceContext resources) throws IOException {
             return width == other.width
                     && height == other.height
                     && java.util.Objects.equals(bits, other.bits)
@@ -2827,7 +3290,7 @@ final class PdfBoxImageResourceExtractionOperations {
                     && embeddedSoftMask == other.embeddedSoftMask
                     && external == other.external
                     && color.same(other.color)
-                    && filters.same(other.filters);
+                    && filters.same(other.filters, resources);
         }
     }
 
@@ -2841,8 +3304,12 @@ final class PdfBoxImageResourceExtractionOperations {
             this.supported = supported;
         }
 
-        boolean has(FilterKind kind) {
-            for (FilterSpec spec : specs) {
+        boolean has(
+                FilterKind kind,
+                WorkflowResourceContext resources) throws IOException {
+            for (int index = 0; index < specs.size(); index++) {
+                resources.checkpointAsIOException();
+                FilterSpec spec = specs.get(index);
                 if (kind == spec.kind) {
                     return true;
                 }
@@ -2850,16 +3317,34 @@ final class PdfBoxImageResourceExtractionOperations {
             return false;
         }
 
-        boolean same(FilterSequence other) {
+        boolean hasOnly(FilterKind kind) {
+            return specs.size() == 1 && specs.get(0).kind == kind;
+        }
+
+        boolean same(
+                FilterSequence other,
+                WorkflowResourceContext resources) throws IOException {
             if (supported != other.supported || specs.size() != other.specs.size()) {
                 return false;
             }
             for (int index = 0; index < specs.size(); index++) {
+                resources.checkpointAsIOException();
                 if (!specs.get(index).same(other.specs.get(index))) {
                     return false;
                 }
             }
             return true;
+        }
+    }
+
+    private static final class ExistingImageDimensions {
+
+        private final long width;
+        private final long height;
+
+        ExistingImageDimensions(long width, long height) {
+            this.width = width;
+            this.height = height;
         }
     }
 
@@ -3140,12 +3625,23 @@ final class PdfBoxImageResourceExtractionOperations {
         private final State state;
         private final boolean decompressed;
         private final boolean returned;
-        private final ByteArrayOutputStream output = new ByteArrayOutputStream();
+        private final boolean workflowDecompression;
+        private final WorkflowResourceContext.OwnedByteAccumulator output;
 
         AccountingOutput(State state, boolean decompressed, boolean returned) {
+            this(state, decompressed, returned, decompressed);
+        }
+
+        AccountingOutput(
+                State state,
+                boolean decompressed,
+                boolean returned,
+                boolean workflowDecompression) {
             this.state = state;
             this.decompressed = decompressed;
             this.returned = returned;
+            this.workflowDecompression = workflowDecompression;
+            this.output = state.workflowResources.ownedByteAccumulator();
         }
 
         @Override
@@ -3167,13 +3663,17 @@ final class PdfBoxImageResourceExtractionOperations {
             output.write(values, offset, length);
         }
 
-        private void account(int count) throws ResourceLimitIOException {
+        private void account(int count) throws IOException {
             if (count < 0 || output.size() > MAXIMUM_ARRAY_SIZE - count) {
                 throw new ResourceLimitIOException();
             }
             try {
                 if (decompressed) {
-                    state.accountDecompressed(count);
+                    if (workflowDecompression) {
+                        state.accountDecompressed(count);
+                    } else {
+                        state.accountDecompressedLocally(count);
+                    }
                 }
                 if (returned) {
                     state.accountReturned(count);
@@ -3183,8 +3683,26 @@ final class PdfBoxImageResourceExtractionOperations {
             }
         }
 
-        byte[] toByteArray() {
-            return output.toByteArray();
+        WorkflowResourceContext.OwnedBytes toWorkingBytes()
+                throws IOException {
+            return output.finishWorkingAsIOException();
+        }
+
+        @Override
+        public void close() {
+            output.close();
+        }
+    }
+
+    private static final class CheckpointRuntimeException
+            extends RuntimeException {
+
+        private static final long serialVersionUID = 1L;
+        private final IOException failure;
+
+        private CheckpointRuntimeException(IOException failure) {
+            super(failure);
+            this.failure = failure;
         }
     }
 

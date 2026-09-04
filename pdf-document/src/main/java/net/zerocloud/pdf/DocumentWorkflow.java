@@ -1,9 +1,12 @@
 package net.zerocloud.pdf;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import net.zerocloud.pdf.provider.ProviderFailure;
 import net.zerocloud.pdf.provider.ProviderFailureCode;
 import net.zerocloud.pdf.provider.ProviderPreference;
@@ -13,7 +16,8 @@ import net.zerocloud.pdf.provider.ProviderSelection;
  * Reusable entry point for isolated document transactions.
  *
  * <p>The workflow owns document opening, staged publication, validation, and
- * cleanup, cancellation boundaries, deadline checks, and sanitized progress.
+ * cleanup, finite resource accounting, cooperative cancellation/deadline/time
+ * checks, shared-environment concurrency admission, and sanitized progress.
  * Instances contain no per-execution state and may be reused by independent
  * callers; each supplied session remains thread-confined.</p>
  *
@@ -58,22 +62,87 @@ public final class DocumentWorkflow {
             DocumentWork<R> work) throws DocumentFailure {
         Objects.requireNonNull(request, "request");
         Objects.requireNonNull(work, "work");
-        List<ProviderSelection> providerSelections = selectProviders(request);
-        return PdfBoxWorkflowEngine.execute(
-                new PdfBoxWorkflowEngine.ExecutionContext<R>(
-                        request,
-                        work,
-                        environment.getClock(),
-                        providerSelections,
-                        environment.getReferenceFontSet().getSources()));
+        WorkflowResourcePolicy policy = request.getResourcePolicy()
+                .orElse(environment.getDefaultResourcePolicy());
+        WorkflowConcurrencyGate.Permit permit =
+                environment.getConcurrencyGate().tryAcquire(
+                        policy.getMaximumConcurrentWorkflows());
+        if (permit == null) {
+            throw withReceipts(
+                    new DocumentFailure(
+                            DocumentFailureCode.CONCURRENCY_LIMIT_EXCEEDED,
+                            WorkflowResourceContext.CAPABILITY_ID,
+                            "The workflow concurrency limit was exceeded."),
+                    request);
+        }
+
+        WorkflowResourceContext resources = null;
+        try {
+            resources = WorkflowResourceContext.open(
+                    policy,
+                    environment.getClock(),
+                    request.getCancellationToken(),
+                    request.getDeadline(),
+                    environment.getTemporaryDirectory());
+            retainByteSources(request, resources);
+            resources.checkpoint();
+            List<ProviderSelection> providerSelections =
+                    selectProviders(request, resources);
+            return PdfBoxWorkflowEngine.execute(
+                    new PdfBoxWorkflowEngine.ExecutionContext<R>(
+                            request,
+                            work,
+                            providerSelections,
+                            environment.getReferenceFontSet().getSources(),
+                            resources));
+        } catch (DocumentFailure failure) {
+            throw withReceipts(failure, request);
+        } finally {
+            if (resources != null) {
+                resources.close();
+            }
+            permit.close();
+        }
     }
 
-    private List<ProviderSelection> selectProviders(WorkflowRequest request)
+    private static void retainByteSources(
+            WorkflowRequest request,
+            WorkflowResourceContext resources) throws DocumentFailure {
+        Set<byte[]> retainedArrays = Collections.newSetFromMap(
+                new IdentityHashMap<byte[], Boolean>());
+        for (DocumentSource source : request.getSources().values()) {
+            resources.checkpoint();
+            if (source.getKind() == DocumentSource.Kind.BYTES
+                    && retainedArrays.add(source.getBytes())) {
+                resources.retainOwnedMemory(source.getBytes().length);
+            }
+        }
+    }
+
+    private static DocumentFailure withReceipts(
+            DocumentFailure failure,
+            WorkflowRequest request) {
+        if (request.getPublicationTargets().isEmpty()
+                || !failure.getPublicationReceipts().isEmpty()) {
+            return failure;
+        }
+        return new DocumentFailure(
+                failure.getCode(),
+                failure.getCapabilityId(),
+                failure.getDiagnostic(),
+                PublicationReceipt.notAttempted(
+                        request.getPublicationTargets()));
+    }
+
+    private List<ProviderSelection> selectProviders(
+            WorkflowRequest request,
+            WorkflowResourceContext resources)
             throws DocumentFailure {
         List<ProviderSelection> selections = new ArrayList<ProviderSelection>();
         try {
             for (Map.Entry<String, ProviderPreference> entry
                     : request.getProviderPreferences().entrySet()) {
+                resources.checkpoint();
                 selections.add(environment.getProviderCatalog().select(
                         entry.getValue(),
                         request.isRemoteDisclosureAuthorized(entry.getKey())));

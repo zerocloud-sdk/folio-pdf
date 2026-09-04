@@ -8,12 +8,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 /** Closed structural and permission preflight for T19 TrueType programs. */
 final class PdfBoxTrueTypePreflight {
@@ -34,14 +33,25 @@ final class PdfBoxTrueTypePreflight {
     private PdfBoxTrueTypePreflight() {
     }
 
-    static byte[] normalizeSubsetMetrics(byte[] bytes)
+    static byte[] normalizeSubsetMetrics(
+            byte[] bytes,
+            WorkflowResourceContext resources)
             throws DocumentFailure {
-        byte[] normalized = Arrays.copyOf(bytes, bytes.length);
+        byte[] normalized = new byte[bytes.length];
+        for (int offset = 0; offset < bytes.length; offset += 8192) {
+            resources.checkpoint();
+            int length = Math.min(8192, bytes.length - offset);
+            System.arraycopy(bytes, offset, normalized, offset, length);
+        }
+        resources.checkpoint();
         ValidatedOutline outline = validateOutline(
-                normalized, SUBSET_TABLES);
+                normalized, SUBSET_TABLES, resources);
         HorizontalSummary horizontal = horizontalSummary(
-                outline.head, outline.horizontalMetrics, outline.glyphs);
-        GlyphBounds bounds = glyphBounds(outline.glyphs);
+                outline.head,
+                outline.horizontalMetrics,
+                outline.glyphs,
+                resources);
+        GlyphBounds bounds = glyphBounds(outline.glyphs, resources);
         TableRange hhea = outline.tables.get("hhea");
         writeShort(normalized, hhea.offset + 10, horizontal.maximumAdvance);
         writeShort(
@@ -58,7 +68,7 @@ final class PdfBoxTrueTypePreflight {
         writeShort(normalized, headTable.offset + 38, bounds.minimumY);
         writeShort(normalized, headTable.offset + 40, bounds.maximumX);
         writeShort(normalized, headTable.offset + 42, bounds.maximumY);
-        repairChecksums(normalized, outline.tables);
+        repairChecksums(normalized, outline.tables, resources);
         HeadInfo repairedHead = validateHead(normalized, headTable);
         HorizontalHeader repairedHhea = validateHorizontalHeader(
                 normalized, hhea, outline.maximum.glyphCount);
@@ -66,34 +76,44 @@ final class PdfBoxTrueTypePreflight {
                 repairedHead,
                 repairedHhea,
                 outline.horizontalMetrics,
-                outline.glyphs);
-        validateGlobalBounds(repairedHead, outline.glyphs);
+                outline.glyphs,
+                resources);
+        validateGlobalBounds(repairedHead, outline.glyphs, resources);
+        resources.checkpoint();
         return normalized;
     }
 
-    static EmbeddingProfile validateForEmbedding(byte[] bytes)
+    static EmbeddingProfile validateForEmbedding(
+            byte[] bytes,
+            WorkflowResourceContext resources)
             throws DocumentFailure {
-        ValidatedOutline outline = validateOutline(bytes, REQUIRED_TABLES);
+        resources.checkpoint();
+        ValidatedOutline outline = validateOutline(
+                bytes, REQUIRED_TABLES, resources);
         validateHorizontalMetrics(
                 outline.head,
                 outline.horizontalHeader,
                 outline.horizontalMetrics,
-                outline.glyphs);
-        validateNames(bytes, outline.tables.get("name"));
+                outline.glyphs,
+                resources);
+        validateNames(bytes, outline.tables.get("name"), resources);
         validatePost(
                 bytes,
                 outline.tables.get("post"),
-                outline.maximum.glyphCount);
-        validateGlobalBounds(outline.head, outline.glyphs);
+                outline.maximum.glyphCount,
+                resources);
+        validateGlobalBounds(outline.head, outline.glyphs, resources);
         CmapInfo cmap = validateCmap(
                 bytes,
                 outline.tables.get("cmap"),
-                outline.maximum.glyphCount);
+                outline.maximum.glyphCount,
+                resources);
         boolean noSubsetting = validateOs2(
                 bytes,
                 outline.tables.get("OS/2"),
                 outline.head.macStyle,
                 cmap);
+        resources.checkpoint();
         return new EmbeddingProfile(
                 noSubsetting,
                 cmap.hasSupplementaryMapping());
@@ -101,10 +121,11 @@ final class PdfBoxTrueTypePreflight {
 
     private static ValidatedOutline validateOutline(
             byte[] bytes,
-            List<String> profileTables) throws DocumentFailure {
+            List<String> profileTables,
+            WorkflowResourceContext resources) throws DocumentFailure {
         Map<String, TableRange> tables = inspectDirectory(
-                bytes, profileTables);
-        validateChecksums(bytes, tables.values());
+                bytes, profileTables, resources);
+        validateChecksums(bytes, tables.values(), resources);
         HeadInfo head = validateHead(bytes, tables.get("head"));
         MaximumProfile maximum = validateMaximumProfile(
                 bytes, tables.get("maxp"));
@@ -114,15 +135,21 @@ final class PdfBoxTrueTypePreflight {
                 bytes,
                 tables.get("hmtx"),
                 maximum.glyphCount,
-                horizontalHeader.metricCount);
+                horizontalHeader.metricCount,
+                resources);
         int[] glyphOffsets = validateGlyphOffsets(
                 bytes,
                 tables.get("loca"),
                 tables.get("glyf"),
                 maximum.glyphCount,
-                head.indexToLocFormat);
+                head.indexToLocFormat,
+                resources);
         GlyphInfo[] glyphs = validateGlyphs(
-                bytes, tables.get("glyf"), glyphOffsets, maximum);
+                bytes,
+                tables.get("glyf"),
+                glyphOffsets,
+                maximum,
+                resources);
         return new ValidatedOutline(
                 tables,
                 head,
@@ -134,7 +161,8 @@ final class PdfBoxTrueTypePreflight {
 
     private static Map<String, TableRange> inspectDirectory(
             byte[] bytes,
-            List<String> profileTables)
+            List<String> profileTables,
+            WorkflowResourceContext resources)
             throws DocumentFailure {
         if (bytes.length < 12) {
             throw sourceInvalid();
@@ -156,9 +184,11 @@ final class PdfBoxTrueTypePreflight {
         validateOffsetTable(bytes, tableCount);
 
         Map<String, TableRange> tables = new HashMap<String, TableRange>();
-        List<TableRange> ranges = new ArrayList<TableRange>(tableCount);
+        Map<Integer, TableRange> ranges =
+                new TreeMap<Integer, TableRange>();
         String previousTag = null;
         for (int index = 0; index < tableCount; index++) {
+            checkpointPeriodically(resources, index);
             int record = 12 + 16 * index;
             String tag = ascii(bytes, record, 4);
             long checksum = unsignedInt(bytes, record + 4);
@@ -185,21 +215,19 @@ final class PdfBoxTrueTypePreflight {
                     checksum,
                     "head".equals(tag));
             tables.put(tag, range);
-            ranges.add(range);
+            if (ranges.put(Integer.valueOf(range.offset), range) != null) {
+                throw sourceInvalid();
+            }
             previousTag = tag;
         }
-        Collections.sort(ranges, new Comparator<TableRange>() {
-            @Override
-            public int compare(TableRange left, TableRange right) {
-                return Integer.compare(left.offset, right.offset);
-            }
-        });
         int end = (int) directoryEnd;
-        for (TableRange range : ranges) {
+        for (TableRange range : ranges.values()) {
+            resources.checkpoint();
             if (range.offset < end) {
                 throw sourceInvalid();
             }
             for (int offset = end; offset < range.offset; offset++) {
+                checkpointPeriodically(resources, offset - end);
                 if (bytes[offset] != 0) {
                     throw sourceInvalid();
                 }
@@ -207,6 +235,9 @@ final class PdfBoxTrueTypePreflight {
             for (int offset = range.offset + range.length;
                     offset < range.paddedEnd;
                     offset++) {
+                checkpointPeriodically(
+                        resources,
+                        offset - range.offset - range.length);
                 if (bytes[offset] != 0) {
                     throw sourceInvalid();
                 }
@@ -223,6 +254,7 @@ final class PdfBoxTrueTypePreflight {
             }
         }
         for (String tag : tables.keySet()) {
+            resources.checkpoint();
             if (!profileTables.contains(tag)) {
                 throw formatUnsupported();
             }
@@ -251,15 +283,23 @@ final class PdfBoxTrueTypePreflight {
 
     private static void validateChecksums(
             byte[] bytes,
-            Iterable<TableRange> tables) throws DocumentFailure {
+            Iterable<TableRange> tables,
+            WorkflowResourceContext resources) throws DocumentFailure {
         for (TableRange table : tables) {
+            resources.checkpoint();
             int zeroOffset = table.head ? table.offset + 8 : -1;
-            if (checksum(bytes, table.offset, table.length, zeroOffset)
+            if (checksum(
+                    bytes,
+                    table.offset,
+                    table.length,
+                    zeroOffset,
+                    resources)
                     != table.checksum) {
                 throw sourceInvalid();
             }
         }
-        if (checksum(bytes, 0, bytes.length, -1) != 0xb1b0afbaL) {
+        if (checksum(bytes, 0, bytes.length, -1, resources)
+                != 0xb1b0afbaL) {
             throw sourceInvalid();
         }
     }
@@ -368,7 +408,8 @@ final class PdfBoxTrueTypePreflight {
             byte[] bytes,
             TableRange hmtx,
             int glyphCount,
-            int metricCount) throws DocumentFailure {
+            int metricCount,
+            WorkflowResourceContext resources) throws DocumentFailure {
         long requiredLength = 4L * metricCount
                 + 2L * (glyphCount - metricCount);
         if (hmtx.length != requiredLength) {
@@ -379,12 +420,14 @@ final class PdfBoxTrueTypePreflight {
         int cursor = hmtx.offset;
         int lastAdvance = 0;
         for (int glyph = 0; glyph < metricCount; glyph++) {
+            checkpointPeriodically(resources, glyph);
             lastAdvance = unsignedShort(bytes, cursor);
             advances[glyph] = lastAdvance;
             sideBearings[glyph] = signedShort(bytes, cursor + 2);
             cursor += 4;
         }
         for (int glyph = metricCount; glyph < glyphCount; glyph++) {
+            checkpointPeriodically(resources, glyph);
             advances[glyph] = lastAdvance;
             sideBearings[glyph] = signedShort(bytes, cursor);
             cursor += 2;
@@ -397,7 +440,8 @@ final class PdfBoxTrueTypePreflight {
             TableRange loca,
             TableRange glyf,
             int glyphCount,
-            int indexToLocFormat) throws DocumentFailure {
+            int indexToLocFormat,
+            WorkflowResourceContext resources) throws DocumentFailure {
         int entryBytes = indexToLocFormat == 0 ? 2 : 4;
         long requiredLength = (long) (glyphCount + 1) * entryBytes;
         if (loca.length != requiredLength) {
@@ -406,6 +450,7 @@ final class PdfBoxTrueTypePreflight {
         int[] result = new int[glyphCount + 1];
         long previous = -1L;
         for (int index = 0; index <= glyphCount; index++) {
+            checkpointPeriodically(resources, index);
             int offset = loca.offset + index * entryBytes;
             long current = indexToLocFormat == 0
                     ? 2L * unsignedShort(bytes, offset)
@@ -428,12 +473,15 @@ final class PdfBoxTrueTypePreflight {
             byte[] bytes,
             TableRange glyf,
             int[] offsets,
-            MaximumProfile maximum) throws DocumentFailure {
+            MaximumProfile maximum,
+            WorkflowResourceContext resources) throws DocumentFailure {
         GlyphInfo[] glyphs = new GlyphInfo[maximum.glyphCount];
         for (int glyph = 0; glyph < glyphs.length; glyph++) {
+            checkpointPeriodically(resources, glyph);
             int start = glyf.offset + offsets[glyph];
             int end = glyf.offset + offsets[glyph + 1];
-            glyphs[glyph] = parseGlyph(bytes, start, end, glyphs.length);
+            glyphs[glyph] = parseGlyph(
+                    bytes, start, end, glyphs.length, resources);
             if (!glyphs[glyph].composite
                     && (glyphs[glyph].points > maximum.maximumPoints
                             || glyphs[glyph].contours
@@ -441,19 +489,25 @@ final class PdfBoxTrueTypePreflight {
                 throw sourceInvalid();
             }
         }
-        byte[] states = new byte[glyphs.length];
-        for (int glyph = 0; glyph < glyphs.length; glyph++) {
-            ResolvedGlyph resolved = resolveGlyph(glyph, glyphs, states);
-            GlyphInfo info = glyphs[glyph];
-            if (info.composite
-                    && (resolved.points > maximum.maximumCompositePoints
-                            || resolved.contours
+        try (WorkflowResourceContext.MemoryReservation statesMemory =
+                resources.reserveOwnedMemory(glyphs.length)) {
+            byte[] states = new byte[glyphs.length];
+            for (int glyph = 0; glyph < glyphs.length; glyph++) {
+                checkpointPeriodically(resources, glyph);
+                ResolvedGlyph resolved = resolveGlyph(
+                        glyph, glyphs, states, resources);
+                GlyphInfo info = glyphs[glyph];
+                if (info.composite
+                        && (resolved.points
+                                    > maximum.maximumCompositePoints
+                                || resolved.contours
                                     > maximum.maximumCompositeContours
-                            || info.components.length
+                                || info.components.length
                                     > maximum.maximumComponentElements
-                            || resolved.depth
+                                || resolved.depth
                                     > maximum.maximumComponentDepth)) {
-                throw sourceInvalid();
+                    throw sourceInvalid();
+                }
             }
         }
         return glyphs;
@@ -463,7 +517,8 @@ final class PdfBoxTrueTypePreflight {
             byte[] bytes,
             int start,
             int end,
-            int glyphCount) throws DocumentFailure {
+            int glyphCount,
+            WorkflowResourceContext resources) throws DocumentFailure {
         if (start == end) {
             return GlyphInfo.empty();
         }
@@ -485,7 +540,8 @@ final class PdfBoxTrueTypePreflight {
                     start,
                     end,
                     contourCount,
-                    bounds);
+                    bounds,
+                    resources);
         }
         if (contourCount != -1) {
             throw formatUnsupported();
@@ -495,7 +551,8 @@ final class PdfBoxTrueTypePreflight {
                 start,
                 end,
                 glyphCount,
-                bounds);
+                bounds,
+                resources);
     }
 
     private static GlyphInfo parseSimpleGlyph(
@@ -503,7 +560,8 @@ final class PdfBoxTrueTypePreflight {
             int start,
             int end,
             int contourCount,
-            GlyphBounds bounds) throws DocumentFailure {
+            GlyphBounds bounds,
+            WorkflowResourceContext resources) throws DocumentFailure {
         int cursor = start + 10;
         if (contourCount == 0 && cursor == end) {
             if (!bounds.isZero()) {
@@ -516,6 +574,7 @@ final class PdfBoxTrueTypePreflight {
         }
         int lastEndPoint = -1;
         for (int contour = 0; contour < contourCount; contour++) {
+            checkpointPeriodically(resources, contour);
             int endPoint = unsignedShort(bytes, cursor);
             cursor += 2;
             if (endPoint <= lastEndPoint) {
@@ -533,49 +592,59 @@ final class PdfBoxTrueTypePreflight {
             throw formatUnsupported();
         }
         cursor += instructionLength;
-        byte[] flags = new byte[pointCount];
-        int point = 0;
-        while (point < pointCount) {
-            if (cursor >= end) {
-                throw sourceInvalid();
-            }
-            int flag = bytes[cursor++] & 0xff;
-            if ((flag & 0x80) != 0
-                    || (point > 0 && (flag & 0x40) != 0)) {
-                throw sourceInvalid();
-            }
-            flags[point++] = (byte) flag;
-            if ((flag & 0x08) != 0) {
+        try (WorkflowResourceContext.MemoryReservation flagsMemory =
+                resources.reserveOwnedMemory(pointCount)) {
+            byte[] flags = new byte[pointCount];
+            int point = 0;
+            while (point < pointCount) {
+                checkpointPeriodically(resources, point);
                 if (cursor >= end) {
                     throw sourceInvalid();
                 }
-                int repeats = bytes[cursor++] & 0xff;
-                if (repeats > pointCount - point) {
+                int flag = bytes[cursor++] & 0xff;
+                if ((flag & 0x80) != 0
+                        || (point > 0 && (flag & 0x40) != 0)) {
                     throw sourceInvalid();
                 }
-                for (int repeat = 0; repeat < repeats; repeat++) {
-                    flags[point++] = (byte) flag;
+                flags[point++] = (byte) flag;
+                if ((flag & 0x08) != 0) {
+                    if (cursor >= end) {
+                        throw sourceInvalid();
+                    }
+                    int repeats = bytes[cursor++] & 0xff;
+                    if (repeats > pointCount - point) {
+                        throw sourceInvalid();
+                    }
+                    for (int repeat = 0; repeat < repeats; repeat++) {
+                        checkpointPeriodically(resources, repeat);
+                        flags[point++] = (byte) flag;
+                    }
                 }
             }
-        }
 
-        int[] xs = new int[pointCount];
-        int[] ys = new int[pointCount];
-        cursor = readCoordinates(bytes, cursor, end, flags, true, xs);
-        cursor = readCoordinates(bytes, cursor, end, flags, false, ys);
-        requireZeroPadding(bytes, cursor, end);
-        if (pointCount == 0) {
-            if (!bounds.isZero()) {
+            int[] xs = new int[pointCount];
+            int[] ys = new int[pointCount];
+            cursor = readCoordinates(
+                    bytes, cursor, end, flags, true, xs, resources);
+            cursor = readCoordinates(
+                    bytes, cursor, end, flags, false, ys, resources);
+            requireZeroPadding(bytes, cursor, end);
+            if (pointCount == 0) {
+                if (!bounds.isZero()) {
+                    throw sourceInvalid();
+                }
+            } else if (!bounds.matches(
+                    minimum(xs, resources),
+                    minimum(ys, resources),
+                    maximum(xs, resources),
+                    maximum(ys, resources))) {
                 throw sourceInvalid();
             }
-        } else if (!bounds.matches(
-                minimum(xs), minimum(ys), maximum(xs), maximum(ys))) {
-            throw sourceInvalid();
+            return GlyphInfo.simple(
+                    pointCount,
+                    contourCount,
+                    bounds);
         }
-        return GlyphInfo.simple(
-                pointCount,
-                contourCount,
-                bounds);
     }
 
     private static int readCoordinates(
@@ -584,11 +653,13 @@ final class PdfBoxTrueTypePreflight {
             int end,
             byte[] flags,
             boolean horizontal,
-            int[] coordinates) throws DocumentFailure {
+            int[] coordinates,
+            WorkflowResourceContext resources) throws DocumentFailure {
         long coordinate = 0L;
         int shortMask = horizontal ? 0x02 : 0x04;
         int sameMask = horizontal ? 0x10 : 0x20;
         for (int point = 0; point < flags.length; point++) {
+            checkpointPeriodically(resources, point);
             int flag = flags[point] & 0xff;
             int delta = 0;
             if ((flag & shortMask) != 0) {
@@ -621,12 +692,14 @@ final class PdfBoxTrueTypePreflight {
             int start,
             int end,
             int glyphCount,
-            GlyphBounds bounds) throws DocumentFailure {
+            GlyphBounds bounds,
+            WorkflowResourceContext resources) throws DocumentFailure {
         int cursor = start + 10;
         List<CompositeComponent> components =
                 new ArrayList<CompositeComponent>();
         int flags;
         do {
+            resources.checkpoint();
             if (cursor > end - 4) {
                 throw sourceInvalid();
             }
@@ -691,7 +764,8 @@ final class PdfBoxTrueTypePreflight {
     private static ResolvedGlyph resolveGlyph(
             int glyph,
             GlyphInfo[] glyphs,
-            byte[] states) throws DocumentFailure {
+            byte[] states,
+            WorkflowResourceContext resources) throws DocumentFailure {
         if (states[glyph] == GLYPH_RESOLVED) {
             return glyphs[glyph].resolved;
         }
@@ -702,6 +776,7 @@ final class PdfBoxTrueTypePreflight {
         Deque<ResolveFrame> pending = new ArrayDeque<ResolveFrame>();
         pending.push(new ResolveFrame(glyph));
         while (!pending.isEmpty()) {
+            resources.checkpoint();
             ResolveFrame frame = pending.peek();
             GlyphInfo info = glyphs[frame.glyph];
             if (!info.composite) {
@@ -736,8 +811,10 @@ final class PdfBoxTrueTypePreflight {
             HeadInfo head,
             HorizontalHeader header,
             HorizontalMetrics metrics,
-            GlyphInfo[] glyphs) throws DocumentFailure {
-        HorizontalSummary summary = horizontalSummary(head, metrics, glyphs);
+            GlyphInfo[] glyphs,
+            WorkflowResourceContext resources) throws DocumentFailure {
+        HorizontalSummary summary = horizontalSummary(
+                head, metrics, glyphs, resources);
         if (header.maximumAdvance != summary.maximumAdvance
                 || header.minimumLeftSideBearing
                         != summary.minimumLeftSideBearing
@@ -751,12 +828,14 @@ final class PdfBoxTrueTypePreflight {
     private static HorizontalSummary horizontalSummary(
             HeadInfo head,
             HorizontalMetrics metrics,
-            GlyphInfo[] glyphs) throws DocumentFailure {
+            GlyphInfo[] glyphs,
+            WorkflowResourceContext resources) throws DocumentFailure {
         int maximumAdvance = 0;
         int minimumLeftSideBearing = Integer.MAX_VALUE;
         int minimumRightSideBearing = Integer.MAX_VALUE;
         int maximumExtent = Integer.MIN_VALUE;
         for (int glyph = 0; glyph < glyphs.length; glyph++) {
+            checkpointPeriodically(resources, glyph);
             int advance = metrics.advances[glyph];
             int leftSideBearing = metrics.sideBearings[glyph];
             maximumAdvance = Math.max(maximumAdvance, advance);
@@ -803,16 +882,21 @@ final class PdfBoxTrueTypePreflight {
 
     private static void validateGlobalBounds(
             HeadInfo head,
-            GlyphInfo[] glyphs) throws DocumentFailure {
-        GlyphBounds bounds = glyphBounds(glyphs);
+            GlyphInfo[] glyphs,
+            WorkflowResourceContext resources) throws DocumentFailure {
+        GlyphBounds bounds = glyphBounds(glyphs, resources);
         if (!head.bounds.sameAs(bounds)) {
             throw sourceInvalid();
         }
     }
 
-    private static GlyphBounds glyphBounds(GlyphInfo[] glyphs) {
+    private static GlyphBounds glyphBounds(
+            GlyphInfo[] glyphs,
+            WorkflowResourceContext resources) throws DocumentFailure {
         GlyphBounds bounds = null;
-        for (GlyphInfo glyph : glyphs) {
+        for (int index = 0; index < glyphs.length; index++) {
+            checkpointPeriodically(resources, index);
+            GlyphInfo glyph = glyphs[index];
             if (glyph.resolved.hasOutline) {
                 bounds = bounds == null
                         ? glyph.bounds
@@ -822,7 +906,10 @@ final class PdfBoxTrueTypePreflight {
         return bounds == null ? GlyphBounds.ZERO : bounds;
     }
 
-    private static void validateNames(byte[] bytes, TableRange name)
+    private static void validateNames(
+            byte[] bytes,
+            TableRange name,
+            WorkflowResourceContext resources)
             throws DocumentFailure {
         if (name.length < 6) {
             throw sourceInvalid();
@@ -847,6 +934,7 @@ final class PdfBoxTrueTypePreflight {
         NameKey previousKey = null;
         int expectedStringOffset = 0;
         for (int index = 0; index < count; index++) {
+            checkpointPeriodically(resources, index);
             int record = name.offset + 6 + 12 * index;
             int platform = unsignedShort(bytes, record);
             int encoding = unsignedShort(bytes, record + 2);
@@ -879,13 +967,15 @@ final class PdfBoxTrueTypePreflight {
             validateBmpUtf16Be(
                     bytes,
                     name.offset + storageOffset + offset,
-                    length);
+                    length,
+                    resources);
             expectedStringOffset += length;
             if (nameId == 5) {
                 validateVersionName(
                         bytes,
                         name.offset + storageOffset + offset,
-                        length);
+                        length,
+                        resources);
             } else if (nameId == 6) {
                 validatePostScriptName(
                         bytes,
@@ -915,13 +1005,16 @@ final class PdfBoxTrueTypePreflight {
     private static void validateVersionName(
             byte[] bytes,
             int offset,
-            int length) throws DocumentFailure {
+            int length,
+            WorkflowResourceContext resources) throws DocumentFailure {
         int characters = length / 2;
         int cursor = 0;
         while (cursor < characters) {
+            checkpointPeriodically(resources, cursor);
             while (cursor < characters
                     && !isAsciiDigit(unsignedShort(
                             bytes, offset + 2 * cursor))) {
+                checkpointPeriodically(resources, cursor);
                 cursor++;
             }
             long major = 0L;
@@ -929,6 +1022,7 @@ final class PdfBoxTrueTypePreflight {
             while (cursor < characters
                     && isAsciiDigit(unsignedShort(
                             bytes, offset + 2 * cursor))) {
+                checkpointPeriodically(resources, cursor);
                 major = Math.min(
                         65535L,
                         major * 10L + unsignedShort(
@@ -947,6 +1041,7 @@ final class PdfBoxTrueTypePreflight {
             while (cursor < characters
                     && isAsciiDigit(unsignedShort(
                             bytes, offset + 2 * cursor))) {
+                checkpointPeriodically(resources, cursor);
                 minor = Math.min(
                         65535L,
                         minor * 10L + unsignedShort(
@@ -968,8 +1063,10 @@ final class PdfBoxTrueTypePreflight {
     private static void validateBmpUtf16Be(
             byte[] bytes,
             int offset,
-            int length) throws DocumentFailure {
+            int length,
+            WorkflowResourceContext resources) throws DocumentFailure {
         for (int index = 0; index < length; index += 2) {
+            checkpointPeriodically(resources, index);
             int codeUnit = unsignedShort(bytes, offset + index);
             if (codeUnit >= 0xd800 && codeUnit <= 0xdfff) {
                 throw sourceInvalid();
@@ -1007,7 +1104,8 @@ final class PdfBoxTrueTypePreflight {
     private static void validatePost(
             byte[] bytes,
             TableRange post,
-            int glyphCount) throws DocumentFailure {
+            int glyphCount,
+            WorkflowResourceContext resources) throws DocumentFailure {
         if (post.length < 32
                 || unsignedInt(bytes, post.offset + 16)
                         > unsignedInt(bytes, post.offset + 20)
@@ -1039,6 +1137,7 @@ final class PdfBoxTrueTypePreflight {
         int maximumCustomName = -1;
         int cursor = post.offset + 34;
         for (int glyph = 0; glyph < glyphCount; glyph++) {
+            checkpointPeriodically(resources, glyph);
             int nameIndex = unsignedShort(bytes, cursor);
             cursor += 2;
             maximumCustomName = Math.max(
@@ -1048,6 +1147,7 @@ final class PdfBoxTrueTypePreflight {
         for (int nameIndex = 0;
                 nameIndex <= maximumCustomName;
                 nameIndex++) {
+            checkpointPeriodically(resources, nameIndex);
             if (cursor >= post.offset + post.length) {
                 throw sourceInvalid();
             }
@@ -1058,6 +1158,7 @@ final class PdfBoxTrueTypePreflight {
                 throw sourceInvalid();
             }
             for (int index = 0; index < length; index++) {
+                checkpointPeriodically(resources, index);
                 int value = bytes[cursor++] & 0xff;
                 if (!isPostGlyphNameCharacter(value)) {
                     throw sourceInvalid();
@@ -1188,7 +1289,8 @@ final class PdfBoxTrueTypePreflight {
     private static CmapInfo validateCmap(
             byte[] bytes,
             TableRange cmap,
-            int glyphCount) throws DocumentFailure {
+            int glyphCount,
+            WorkflowResourceContext resources) throws DocumentFailure {
         if (cmap.length < 4
                 || unsignedShort(bytes, cmap.offset) != 0) {
             throw sourceInvalid();
@@ -1219,9 +1321,21 @@ final class PdfBoxTrueTypePreflight {
             throw formatUnsupported();
         }
         if (format == 4) {
-            validateFormat4(bytes, cmap, subtable, glyphCount, result);
+            validateFormat4(
+                    bytes,
+                    cmap,
+                    subtable,
+                    glyphCount,
+                    result,
+                    resources);
         } else {
-            validateFormat12(bytes, cmap, subtable, glyphCount, result);
+            validateFormat12(
+                    bytes,
+                    cmap,
+                    subtable,
+                    glyphCount,
+                    result,
+                    resources);
         }
         int language = format == 4
                 ? unsignedShort(bytes, subtable + 4)
@@ -1251,7 +1365,8 @@ final class PdfBoxTrueTypePreflight {
             TableRange cmap,
             int subtable,
             int glyphCount,
-            CmapInfo result) throws DocumentFailure {
+            CmapInfo result,
+            WorkflowResourceContext resources) throws DocumentFailure {
         if (subtable > cmap.offset + cmap.length - 16
                 || unsignedShort(bytes, subtable + 2) != 0) {
             throw sourceInvalid();
@@ -1267,6 +1382,7 @@ final class PdfBoxTrueTypePreflight {
         }
         long previousEnd = -1L;
         for (long index = 0L; index < groups; index++) {
+            checkpointPeriodically(resources, index);
             int group = subtable + 16 + (int) (12L * index);
             long start = unsignedInt(bytes, group);
             long end = unsignedInt(bytes, group + 4);
@@ -1293,7 +1409,8 @@ final class PdfBoxTrueTypePreflight {
             TableRange cmap,
             int subtable,
             int glyphCount,
-            CmapInfo result) throws DocumentFailure {
+            CmapInfo result,
+            WorkflowResourceContext resources) throws DocumentFailure {
         if (subtable > cmap.offset + cmap.length - 16) {
             throw sourceInvalid();
         }
@@ -1328,6 +1445,7 @@ final class PdfBoxTrueTypePreflight {
         }
         int previousEnd = -1;
         for (int segment = 0; segment < segmentCount; segment++) {
+            checkpointPeriodically(resources, segment);
             int start = unsignedShort(bytes, startCodes + 2 * segment);
             int end = unsignedShort(bytes, endCodes + 2 * segment);
             if (start > end
@@ -1344,6 +1462,7 @@ final class PdfBoxTrueTypePreflight {
                 throw sourceInvalid();
             }
             for (int codePoint = start; codePoint <= end; codePoint++) {
+                checkpointPeriodically(resources, codePoint);
                 int glyph;
                 if (rangeOffset == 0) {
                     glyph = (codePoint + delta) & 0xffff;
@@ -1400,18 +1519,24 @@ final class PdfBoxTrueTypePreflight {
         }
     }
 
-    private static int minimum(int[] values) {
+    private static int minimum(
+            int[] values,
+            WorkflowResourceContext resources) throws DocumentFailure {
         int result = Integer.MAX_VALUE;
-        for (int value : values) {
-            result = Math.min(result, value);
+        for (int index = 0; index < values.length; index++) {
+            checkpointPeriodically(resources, index);
+            result = Math.min(result, values[index]);
         }
         return result;
     }
 
-    private static int maximum(int[] values) {
+    private static int maximum(
+            int[] values,
+            WorkflowResourceContext resources) throws DocumentFailure {
         int result = Integer.MIN_VALUE;
-        for (int value : values) {
-            result = Math.max(result, value);
+        for (int index = 0; index < values.length; index++) {
+            checkpointPeriodically(resources, index);
+            result = Math.max(result, values[index]);
         }
         return result;
     }
@@ -1473,9 +1598,11 @@ final class PdfBoxTrueTypePreflight {
             byte[] bytes,
             int offset,
             int length,
-            int zeroOffset) {
+            int zeroOffset,
+            WorkflowResourceContext resources) throws DocumentFailure {
         long sum = 0L;
         for (int index = 0; index < length; index += 4) {
+            checkpointPeriodically(resources, index);
             long word = 0L;
             for (int part = 0; part < 4; part++) {
                 word <<= 8;
@@ -1494,11 +1621,13 @@ final class PdfBoxTrueTypePreflight {
 
     private static void repairChecksums(
             byte[] bytes,
-            Map<String, TableRange> tables) {
+            Map<String, TableRange> tables,
+            WorkflowResourceContext resources) throws DocumentFailure {
         TableRange head = tables.get("head");
         writeInt(bytes, head.offset + 8, 0L);
         int tableCount = unsignedShort(bytes, 4);
         for (int index = 0; index < tableCount; index++) {
+            checkpointPeriodically(resources, index);
             int record = 12 + 16 * index;
             TableRange table = tables.get(ascii(bytes, record, 4));
             writeInt(
@@ -1508,12 +1637,22 @@ final class PdfBoxTrueTypePreflight {
                             bytes,
                             table.offset,
                             table.length,
-                            table.head ? table.offset + 8 : -1));
+                            table.head ? table.offset + 8 : -1,
+                            resources));
         }
         writeInt(
                 bytes,
                 head.offset + 8,
-                0xb1b0afbaL - checksum(bytes, 0, bytes.length, -1));
+                0xb1b0afbaL - checksum(
+                        bytes, 0, bytes.length, -1, resources));
+    }
+
+    private static void checkpointPeriodically(
+            WorkflowResourceContext resources,
+            long index) throws DocumentFailure {
+        if ((index & 1023L) == 0L) {
+            resources.checkpoint();
+        }
     }
 
     private static void writeShort(byte[] bytes, int offset, int value) {

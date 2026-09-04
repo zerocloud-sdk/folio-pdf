@@ -112,20 +112,37 @@ public final class CanvasColorSpace {
     /** @return a defensive white-point copy, or an empty array */
     public double[] getWhitePoint() { return whitePoint.clone(); }
 
+    /** @return the exact white-point component count without copying it */
+    public int getWhitePointLength() { return whitePoint.length; }
+
     /** @return a defensive black-point copy, or an empty array */
     public double[] getBlackPoint() { return blackPoint.clone(); }
+
+    /** @return the exact black-point component count without copying it */
+    public int getBlackPointLength() { return blackPoint.length; }
 
     /** @return defensive gamma values, or an empty array */
     public double[] getGamma() { return gamma.clone(); }
 
+    /** @return the exact gamma component count without copying it */
+    public int getGammaLength() { return gamma.length; }
+
     /** @return a defensive calibration-matrix copy, or an empty array */
     public double[] getMatrix() { return matrix.clone(); }
+
+    /** @return the exact matrix component count without copying it */
+    public int getMatrixLength() { return matrix.length; }
 
     /** @return a defensive ICC profile copy when this is ICCBased */
     public Optional<byte[]> getIccProfileBytes() {
         return iccProfile == null
                 ? Optional.<byte[]>empty()
                 : Optional.of(iccProfile.clone());
+    }
+
+    /** @return the exact ICC profile byte length, or zero when absent */
+    public int getIccProfileByteLength() {
+        return iccProfile == null ? 0 : iccProfile.length;
     }
 
     @Override

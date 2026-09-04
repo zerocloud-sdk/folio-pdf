@@ -52,6 +52,33 @@ public final class PasswordCredential implements AutoCloseable {
         return Arrays.copyOf(characters, characters.length);
     }
 
+    synchronized int characterCountForExecution() {
+        if (characters == null) {
+            throw new IllegalStateException("The password credential is destroyed.");
+        }
+        return characters.length;
+    }
+
+    synchronized char[] copyForExecution(
+            WorkflowResourceContext resources) throws DocumentFailure {
+        if (characters == null) {
+            throw new IllegalStateException("The password credential is destroyed.");
+        }
+        char[] copy = new char[characters.length];
+        try {
+            for (int offset = 0; offset < characters.length; offset += 4096) {
+                resources.checkpoint();
+                int length = Math.min(4096, characters.length - offset);
+                System.arraycopy(characters, offset, copy, offset, length);
+            }
+            resources.checkpoint();
+            return copy;
+        } catch (DocumentFailure | RuntimeException | Error failure) {
+            Arrays.fill(copy, '\0');
+            throw failure;
+        }
+    }
+
     @Override
     public String toString() {
         return "PasswordCredential[redacted]";

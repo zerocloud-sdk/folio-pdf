@@ -1,8 +1,6 @@
 package net.zerocloud.pdf;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
@@ -10,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Map;
 import net.zerocloud.pdf.composition.CanvasMatrix;
 import org.apache.pdfbox.contentstream.operator.Operator;
 import org.apache.pdfbox.cos.COSArray;
@@ -35,13 +34,16 @@ final class PdfBoxPageContentSupport {
 
     static ExistingContents prepareExistingContents(
             COSDictionary page,
-            FailureFactory preservationFailure) throws DocumentFailure {
+            FailureFactory preservationFailure,
+            WorkflowResourceContext resources) throws DocumentFailure {
+        resources.checkpoint();
         COSBase rawContents = page.getItem(COSName.CONTENTS);
-        if (rawContents == null || dereference(rawContents) instanceof COSNull) {
+        if (rawContents == null
+                || dereference(rawContents, resources) instanceof COSNull) {
             return new ExistingContents(Collections.<COSBase>emptyList());
         }
 
-        COSBase value = dereference(rawContents);
+        COSBase value = dereference(rawContents, resources);
         List<COSBase> values = new ArrayList<COSBase>();
         if (value instanceof COSStream) {
             if (!(rawContents instanceof COSObject)) {
@@ -51,9 +53,11 @@ final class PdfBoxPageContentSupport {
         } else if (value instanceof COSArray) {
             COSArray array = (COSArray) value;
             for (int index = 0; index < array.size(); index++) {
+                resources.checkpoint();
                 COSBase rawStream = array.get(index);
                 if (!(rawStream instanceof COSObject)
-                        || !(dereference(rawStream) instanceof COSStream)) {
+                        || !(dereference(rawStream, resources)
+                                instanceof COSStream)) {
                     throw preservationFailure.create();
                 }
                 values.add(rawStream);
@@ -62,47 +66,53 @@ final class PdfBoxPageContentSupport {
             throw preservationFailure.create();
         }
 
-        ByteArrayOutputStream combined = new ByteArrayOutputStream();
-        byte[] buffer = new byte[8192];
-        int remaining = MAXIMUM_EXISTING_CONTENT_BYTES;
-        for (COSBase raw : values) {
-            COSStream stream = (COSStream) dereference(raw);
-            if (stream.containsKey(COSName.F)) {
-                throw preservationFailure.create();
-            }
-            try (InputStream input = stream.createInputStream()) {
-                int count;
-                while ((count = input.read(buffer)) != -1) {
-                    if (count > remaining) {
-                        throw preservationFailure.create();
-                    }
-                    combined.write(buffer, 0, count);
-                    remaining -= count;
+        try (WorkflowResourceContext.OwnedByteAccumulator combined =
+                        resources.ownedByteAccumulator()) {
+            ExistingContentOutput decodedOutput = new ExistingContentOutput(
+                    combined,
+                    MAXIMUM_EXISTING_CONTENT_BYTES);
+            for (COSBase raw : values) {
+                resources.checkpoint();
+                COSStream stream = (COSStream) dereference(raw, resources);
+                if (stream.containsKey(COSName.F)) {
+                    throw preservationFailure.create();
                 }
-            } catch (IOException decodingFailure) {
-                throw preservationFailure.create();
+                PdfBoxHostileInputPreflight.decodeStream(
+                        stream,
+                        resources,
+                        decodedOutput);
+                combined.write('\n');
             }
-            combined.write('\n');
-        }
-        byte[] decoded = combined.toByteArray();
-        try {
-            PdfBoxContentStreamPreflight.validate(decoded);
-            requireBalancedExistingContent(decoded);
-        } catch (IOException malformed) {
+            try (WorkflowResourceContext.OwnedBytes decoded =
+                    combined.finishWorking()) {
+                PdfBoxContentStreamPreflight.validate(
+                        decoded.getBytes(), resources);
+                requireBalancedExistingContent(
+                        decoded.getBytes(), resources);
+            }
+            return new ExistingContents(values);
+        } catch (ExistingContentLimitIOException exhausted) {
+            throw preservationFailure.create();
+        } catch (DocumentFailure failure) {
+            throw failure;
+        } catch (IOException | RuntimeException malformed) {
+            resources.rethrowResourceOrTerminalFailure(malformed);
             throw preservationFailure.create();
         }
-        return new ExistingContents(values);
     }
 
     static FontResources prepareFontResources(
             COSDictionary page,
-            FailureFactory preservationFailure) throws DocumentFailure {
-        COSDictionary effective = effectiveResources(page, preservationFailure);
+            FailureFactory preservationFailure,
+            WorkflowResourceContext workflowResources)
+            throws DocumentFailure {
+        COSDictionary effective = effectiveResources(
+                page, preservationFailure, workflowResources);
         COSDictionary existingFonts = null;
         COSBase rawFonts = effective == null
                 ? null : effective.getItem(COSName.FONT);
         if (rawFonts != null) {
-            COSBase fontValue = dereference(rawFonts);
+            COSBase fontValue = dereference(rawFonts, workflowResources);
             if (!(fontValue instanceof COSDictionary)
                     || fontValue instanceof COSStream) {
                 throw preservationFailure.create();
@@ -113,30 +123,34 @@ final class PdfBoxPageContentSupport {
         COSDictionary resources = new COSDictionary();
         resources.setDirect(true);
         if (effective != null) {
-            resources.addAll(effective);
+            copyEntries(effective, resources, workflowResources);
         }
         COSDictionary fonts = new COSDictionary();
         fonts.setDirect(true);
         if (existingFonts != null) {
-            fonts.addAll(existingFonts);
+            copyEntries(existingFonts, fonts, workflowResources);
         }
         return new FontResources(resources, fonts);
     }
 
     static COSDictionary effectiveResources(
             COSDictionary page,
-            FailureFactory preservationFailure) throws DocumentFailure {
+            FailureFactory preservationFailure,
+            WorkflowResourceContext workflowResources)
+            throws DocumentFailure {
         IdentityHashMap<COSDictionary, Boolean> visited =
                 new IdentityHashMap<COSDictionary, Boolean>();
         COSDictionary current = page;
         int depth = 0;
         while (current != null && visited.put(current, Boolean.TRUE) == null) {
+            workflowResources.checkpoint();
             if (++depth > MAXIMUM_PARENT_DEPTH) {
                 throw preservationFailure.create();
             }
             COSBase rawResources = current.getItem(COSName.RESOURCES);
             if (rawResources != null) {
-                COSBase resources = dereference(rawResources);
+                COSBase resources = dereference(
+                        rawResources, workflowResources);
                 if (!(resources instanceof COSDictionary)
                         || resources instanceof COSStream) {
                     throw preservationFailure.create();
@@ -147,7 +161,7 @@ final class PdfBoxPageContentSupport {
             if (rawParent == null) {
                 current = null;
             } else {
-                COSBase parent = dereference(rawParent);
+                COSBase parent = dereference(rawParent, workflowResources);
                 if (!(parent instanceof COSDictionary)
                         || parent instanceof COSStream) {
                     throw preservationFailure.create();
@@ -161,6 +175,16 @@ final class PdfBoxPageContentSupport {
         return null;
     }
 
+    private static void copyEntries(
+            COSDictionary source,
+            COSDictionary target,
+            WorkflowResourceContext resources) throws DocumentFailure {
+        for (Map.Entry<COSName, COSBase> entry : source.entrySet()) {
+            resources.checkpoint();
+            target.setItem(entry.getKey(), entry.getValue());
+        }
+    }
+
     static void apply(
             PDDocument document,
             PDPage page,
@@ -168,6 +192,7 @@ final class PdfBoxPageContentSupport {
             byte[] operators,
             COSDictionary resources,
             boolean resourcesChanged,
+            WorkflowResourceContext workflowResources,
             FailureFactory writeFailure) throws DocumentFailure {
         COSArray contents = new COSArray();
         contents.setDirect(true);
@@ -175,40 +200,38 @@ final class PdfBoxPageContentSupport {
             contents.add(contentStream(
                     document,
                     "q\n".getBytes(StandardCharsets.US_ASCII),
+                    workflowResources,
                     writeFailure));
             for (COSBase value : existing.values()) {
+                workflowResources.checkpoint();
                 contents.add(value);
             }
             contents.add(contentStream(
                     document,
                     "Q\nn\n".getBytes(StandardCharsets.US_ASCII),
+                    workflowResources,
                     writeFailure));
         }
-        contents.add(contentStream(document, operators, writeFailure));
+        contents.add(contentStream(
+                document,
+                operators,
+                workflowResources,
+                writeFailure));
 
         try {
+            workflowResources.checkpoint();
             if (resourcesChanged) {
                 page.getCOSObject().setItem(COSName.RESOURCES, resources);
             }
             page.getCOSObject().setItem(COSName.CONTENTS, contents);
         } catch (RuntimeException backendFailure) {
+            workflowResources.rethrowResourceOrTerminalFailure(backendFailure);
             throw writeFailure.create();
         }
     }
 
-    static String pdfName(COSName name, FailureFactory failure)
-            throws DocumentFailure {
-        try {
-            ByteArrayOutputStream output = new ByteArrayOutputStream();
-            name.writePDF(output);
-            return new String(output.toByteArray(), StandardCharsets.US_ASCII);
-        } catch (IOException serializationFailure) {
-            throw failure.create();
-        }
-    }
-
     static void appendMatrix(
-            StringBuilder output,
+            WorkflowAsciiOutput output,
             CanvasMatrix matrix,
             FailureFactory failure) throws DocumentFailure {
         appendNumbers(output, new double[] {
@@ -218,23 +241,27 @@ final class PdfBoxPageContentSupport {
     }
 
     static void appendNumbers(
-            StringBuilder output,
+            WorkflowAsciiOutput output,
             double[] values,
             FailureFactory failure) throws DocumentFailure {
         for (int index = 0; index < values.length; index++) {
             if (index > 0) {
                 output.append(' ');
             }
-            output.append(number(values[index], failure));
+            appendNumber(output, values[index], failure);
         }
     }
 
-    static String number(double value, FailureFactory failure)
-            throws DocumentFailure {
+    static void appendNumber(
+            WorkflowAsciiOutput output,
+            double value,
+            FailureFactory failure) throws DocumentFailure {
         requireNumber(value, failure);
-        return value == 0d
-                ? "0"
-                : BigDecimal.valueOf(value).stripTrailingZeros().toPlainString();
+        if (value == 0d) {
+            output.append('0');
+            return;
+        }
+        output.append(BigDecimal.valueOf(value).stripTrailingZeros());
     }
 
     static void requireNumber(double value, FailureFactory failure)
@@ -272,12 +299,15 @@ final class PdfBoxPageContentSupport {
         requireNumber(matrix.getF(), failure);
     }
 
-    static COSBase dereference(COSBase value) {
+    static COSBase dereference(
+            COSBase value,
+            WorkflowResourceContext resources) throws DocumentFailure {
         COSBase current = value;
         IdentityHashMap<COSBase, Boolean> visited =
                 new IdentityHashMap<COSBase, Boolean>();
         while (current instanceof COSObject
                 && visited.put(current, Boolean.TRUE) == null) {
+            resources.checkpoint();
             current = ((COSObject) current).getObject();
         }
         return current;
@@ -286,25 +316,31 @@ final class PdfBoxPageContentSupport {
     private static COSObject contentStream(
             PDDocument document,
             byte[] operators,
+            WorkflowResourceContext resources,
             FailureFactory writeFailure) throws DocumentFailure {
         try {
             COSStream stream = document.getDocument().createCOSStream();
             try (OutputStream output = stream.createOutputStream()) {
-                output.write(operators);
+                resources.writeBytesAsIOException(output, operators);
             }
             return new COSObject(stream);
         } catch (IOException | RuntimeException backendFailure) {
+            resources.rethrowResourceOrTerminalFailure(backendFailure);
             throw writeFailure.create();
         }
     }
 
-    private static void requireBalancedExistingContent(byte[] content)
+    private static void requireBalancedExistingContent(
+            byte[] content,
+            WorkflowResourceContext resources)
             throws IOException {
         PDFStreamParser parser = new PDFStreamParser(content);
-        ExistingOperatorBalance balance = new ExistingOperatorBalance();
+        ExistingOperatorBalance balance = new ExistingOperatorBalance(
+                resources);
         try {
             Object token;
             while ((token = parser.parseNextToken()) != null) {
+                resources.checkpointAsIOException();
                 if (token instanceof Operator) {
                     balance.accept(((Operator) token).getName());
                 }
@@ -353,11 +389,63 @@ final class PdfBoxPageContentSupport {
         }
     }
 
+    private static final class ExistingContentOutput extends OutputStream {
+
+        private final WorkflowResourceContext.OwnedByteAccumulator output;
+        private final long maximum;
+        private long size;
+
+        private ExistingContentOutput(
+                WorkflowResourceContext.OwnedByteAccumulator output,
+                long maximum) {
+            this.output = output;
+            this.maximum = maximum;
+        }
+
+        @Override
+        public void write(int value) throws IOException {
+            requireCapacity(1);
+            output.write(value);
+        }
+
+        @Override
+        public void write(byte[] bytes, int offset, int length)
+                throws IOException {
+            if (bytes == null
+                    || offset < 0
+                    || length < 0
+                    || offset > bytes.length - length) {
+                throw new IndexOutOfBoundsException();
+            }
+            requireCapacity(length);
+            output.write(bytes, offset, length);
+        }
+
+        private void requireCapacity(int amount) throws IOException {
+            if (amount < 0 || size > maximum - amount) {
+                throw new ExistingContentLimitIOException();
+            }
+            size += amount;
+        }
+    }
+
+    private static final class ExistingContentLimitIOException
+            extends IOException {
+
+        private static final long serialVersionUID = 1L;
+    }
+
     private static final class ExistingOperatorBalance {
+        private final WorkflowResourceContext resources;
         private int graphicsDepth;
         private int markedContentDepth;
         private int compatibilityDepth;
         private boolean text;
+
+        private ExistingOperatorBalance(
+                WorkflowResourceContext resources) {
+            this.resources = resources;
+        }
 
         void accept(String operator) throws IOException {
             if ("BT".equals(operator)) {
@@ -375,6 +463,7 @@ final class PdfBoxPageContentSupport {
                     throw new IOException("invalid graphics save");
                 }
                 graphicsDepth++;
+                resources.requireNestingDepthAsIOException(graphicsDepth);
             } else if ("Q".equals(operator)) {
                 if (text || graphicsDepth == 0) {
                     throw new IOException("unmatched graphics restore");
@@ -385,6 +474,8 @@ final class PdfBoxPageContentSupport {
                     throw new IOException("marked-content depth overflow");
                 }
                 markedContentDepth++;
+                resources.requireNestingDepthAsIOException(
+                        markedContentDepth);
             } else if ("EMC".equals(operator)) {
                 if (markedContentDepth == 0) {
                     throw new IOException("unmatched marked-content end");
@@ -395,6 +486,8 @@ final class PdfBoxPageContentSupport {
                     throw new IOException("compatibility depth overflow");
                 }
                 compatibilityDepth++;
+                resources.requireNestingDepthAsIOException(
+                        compatibilityDepth);
             } else if ("EX".equals(operator)) {
                 if (compatibilityDepth == 0) {
                     throw new IOException("unmatched compatibility end");

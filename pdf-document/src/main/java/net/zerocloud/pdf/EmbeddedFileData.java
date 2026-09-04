@@ -36,7 +36,9 @@ public final class EmbeddedFileData {
         this.size = size;
         this.md5Hex = md5Hex;
         this.sha256Hex = sha256Hex;
-        this.content = content.clone();
+        // The package-private extraction path transfers an already detached,
+        // workflow-accounted array into this immutable result.
+        this.content = Objects.requireNonNull(content, "content");
     }
 
     /**

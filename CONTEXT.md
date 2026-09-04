@@ -50,6 +50,14 @@ Owns the logical PDF document, its pages and resources, and the lifecycle by whi
 The reusable Native Interface entry point that executes one isolated document transaction and owns its resource, error, and publication lifecycle.
 _Avoid_: document service, PDFBox wrapper
 
+**Workflow Resource Policy**:
+The immutable finite set of transaction-wide input, page, object, nesting, decompression, pixel, accounted owned-memory, temporary-storage, elapsed-time, and concurrency limits applied to trusted in-process Document Workflows. A request override wins over the shared Workflow Environment default; operation-local limits still apply and the stricter observed bound wins.
+_Avoid_: JVM sandbox, best-effort timeout, backend cache setting
+
+**Trusted In-process Profile**:
+The cooperative Document Workflow execution profile in which project-owned work observes the Workflow Resource Policy but arbitrary callback, backend, native, and JVM-wide work cannot be forcibly isolated or terminated. Hostile multi-tenant input belongs in the Hardened Worker Profile.
+_Avoid_: secure sandbox, hard resource isolation, worker mode
+
 **Document Session**:
 The thread-confined interaction scope supplied inside a Document Workflow. Queries observe earlier changes in the same session, and the session is invalid after the workflow returns.
 _Avoid_: PDF document object, backend document

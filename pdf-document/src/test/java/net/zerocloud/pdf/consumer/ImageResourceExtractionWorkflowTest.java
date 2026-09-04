@@ -1411,11 +1411,12 @@ public final class ImageResourceExtractionWorkflowTest {
                 "XObject",
                 "Im",
                 streamObject(
-                        "x",
+                        "78>",
                         "/Type /XObject /Subtype /Image "
                                 + "/Width 2147483647 /Height 2147483647 "
                                 + "/BitsPerComponent 16 "
-                                + "/ColorSpace /DeviceCMYK "));
+                                + "/ColorSpace /DeviceCMYK "
+                                + "/Filter /ASCIIHexDecode "));
         assertLimit(
                 source,
                 ResourceExtractionLimits.builder()

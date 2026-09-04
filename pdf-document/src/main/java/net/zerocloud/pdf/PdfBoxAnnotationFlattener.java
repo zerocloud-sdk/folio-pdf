@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.LinkedHashMap;
@@ -30,19 +30,37 @@ final class PdfBoxAnnotationFlattener {
     private static final COSName N = COSName.getPDFName("N");
     private final PDDocument document;
     private final PdfBoxAnnotationOperations annotationOperations;
+    private final WorkflowResourceContext resources;
 
     PdfBoxAnnotationFlattener(
             PDDocument document,
-            PdfBoxAnnotationOperations annotationOperations) {
+            PdfBoxAnnotationOperations annotationOperations,
+            WorkflowResourceContext resources) {
         this.document = document;
         this.annotationOperations = annotationOperations;
+        this.resources = resources;
     }
 
     void flatten(FlattenAnnotations command) throws DocumentFailure {
+        List<Annotation> decodedAnnotations = new ArrayList<Annotation>();
+        try {
+            flatten(command, decodedAnnotations);
+        } finally {
+            for (Annotation annotation : decodedAnnotations) {
+                annotationOperations.releaseAnnotationBytes(annotation);
+            }
+        }
+    }
+
+    private void flatten(
+            FlattenAnnotations command,
+            List<Annotation> decodedAnnotations) throws DocumentFailure {
+        resources.checkpoint();
         List<COSBase> pageReferences = pageReferencesForCommand();
         IdentityHashMap<COSDictionary, Integer> pageNumbers =
                 new IdentityHashMap<COSDictionary, Integer>();
         for (int index = 0; index < pageReferences.size(); index++) {
+            resources.checkpoint();
             pageNumbers.put(dictionary(pageReferences.get(index)),
                     Integer.valueOf(index + 1));
         }
@@ -53,6 +71,7 @@ final class PdfBoxAnnotationFlattener {
                 PdfBoxAnnotationDecodePolicy.newManagedGraphPass();
 
         for (int pageIndex = 0; pageIndex < pageReferences.size(); pageIndex++) {
+            resources.checkpoint();
             COSDictionary page = dictionary(pageReferences.get(pageIndex));
             COSBase rawAnnotations = dereference(page.getItem(COSName.ANNOTS));
             if (rawAnnotations == null) {
@@ -63,6 +82,7 @@ final class PdfBoxAnnotationFlattener {
             }
             COSArray array = (COSArray) rawAnnotations;
             for (int index = 0; index < array.size(); index++) {
+                resources.checkpoint();
                 COSDictionary raw;
                 Annotation annotation;
                 try {
@@ -71,7 +91,9 @@ final class PdfBoxAnnotationFlattener {
                             pageIndex + 1, page,
                             budgets.appearances(), budgets.attachments(),
                             pageNumbers);
+                    decodedAnnotations.add(annotation);
                 } catch (DocumentFailure invalid) {
+                    resources.rethrowTerminalFailure();
                     throw flatteningUnsupported();
                 }
                 String identifier = annotation.getProperties().getIdentifier();
@@ -88,6 +110,7 @@ final class PdfBoxAnnotationFlattener {
             throw annotationNotFound();
         }
         for (FlattenTarget target : targets.values()) {
+            resources.checkpoint();
             if (target.annotation.getType() == Annotation.Type.WIDGET
                     || !target.annotation.getProperties()
                             .getAppearance().isPresent()) {
@@ -98,6 +121,7 @@ final class PdfBoxAnnotationFlattener {
         Map<Integer, FlattenPageChange> changes =
                 new LinkedHashMap<Integer, FlattenPageChange>();
         for (FlattenTarget target : targets.values()) {
+            resources.checkpoint();
             Integer pageIndex = Integer.valueOf(target.pageIndex);
             FlattenPageChange change = changes.get(pageIndex);
             if (change == null) {
@@ -109,10 +133,12 @@ final class PdfBoxAnnotationFlattener {
         }
 
         for (FlattenPageChange change : changes.values()) {
+            resources.checkpoint();
             change.page.setItem(COSName.RESOURCES, change.resources);
             change.page.setItem(COSName.CONTENTS, change.contents);
         }
         for (FlattenPageChange change : changes.values()) {
+            resources.checkpoint();
             if (change.annotations.size() == 0) {
                 change.page.removeItem(COSName.ANNOTS);
             } else {
@@ -134,6 +160,7 @@ final class PdfBoxAnnotationFlattener {
         }
         COSArray existingAnnotations = (COSArray) rawAnnotations;
         for (int index = 0; index < existingAnnotations.size(); index++) {
+            resources.checkpoint();
             COSBase raw = existingAnnotations.get(index);
             COSDictionary annotation;
             String identifier;
@@ -157,13 +184,13 @@ final class PdfBoxAnnotationFlattener {
                     || rawXObjects instanceof COSStream) {
                 throw flatteningUnsupported();
             }
-            xObjects.addAll((COSDictionary) rawXObjects);
+            copyEntries((COSDictionary) rawXObjects, xObjects);
         }
         resources.setItem(COSName.XOBJECT, xObjects);
 
         COSArray contents = new COSArray();
         contents.setDirect(true);
-        contents.add(contentStream("q\n"));
+        contents.add(contentStream(new byte[] {'q', '\n'}));
         COSBase rawContents = page.getItem(COSName.CONTENTS);
         if (rawContents != null) {
             COSBase contentValue = dereference(rawContents);
@@ -172,6 +199,7 @@ final class PdfBoxAnnotationFlattener {
             } else if (contentValue instanceof COSArray) {
                 COSArray existing = (COSArray) contentValue;
                 for (int index = 0; index < existing.size(); index++) {
+                    this.resources.checkpoint();
                     if (!(dereference(existing.get(index)) instanceof COSStream)) {
                         throw flatteningUnsupported();
                     }
@@ -181,7 +209,7 @@ final class PdfBoxAnnotationFlattener {
                 throw flatteningUnsupported();
             }
         }
-        contents.add(contentStream("Q\n"));
+        contents.add(contentStream(new byte[] {'Q', '\n'}));
         return new FlattenPageChange(page, annotations,
                 resources, xObjects, contents);
     }
@@ -203,14 +231,23 @@ final class PdfBoxAnnotationFlattener {
         COSDictionary copied = new COSDictionary();
         copied.setDirect(true);
         if (rawResources != null) {
-            copied.addAll((COSDictionary) rawResources);
+            copyEntries((COSDictionary) rawResources, copied);
         }
         return copied;
+    }
+
+    private void copyEntries(COSDictionary source, COSDictionary target)
+            throws DocumentFailure {
+        for (COSName name : source.keySet()) {
+            resources.checkpoint();
+            target.setItem(name, source.getItem(name));
+        }
     }
 
     private void addFlattenedAppearance(
             FlattenPageChange change,
             FlattenTarget target) throws DocumentFailure {
+        resources.checkpoint();
         COSStream appearance = normalAppearanceStream(target.dictionary);
         String resourceName = availableAppearanceName(change.xObjects);
         change.xObjects.setItem(COSName.getPDFName(resourceName), appearance);
@@ -229,23 +266,44 @@ final class PdfBoxAnnotationFlattener {
                 box.getLeft().multiply(scaleX));
         BigDecimal translateY = rectangle.getBottom().subtract(
                 box.getBottom().multiply(scaleY));
-        String operators = "q\n"
-                + scaleX.toPlainString() + " 0 0 "
-                + scaleY.toPlainString() + " "
-                + translateX.toPlainString() + " "
-                + translateY.toPlainString() + " cm\n/"
-                + resourceName + " Do\nQ\n";
-        change.contents.add(contentStream(operators));
+        try (WorkflowAsciiOutput operators = new WorkflowAsciiOutput(
+                resources,
+                Integer.MAX_VALUE - 8L,
+                PdfBoxAnnotationFlattener::flatteningUnsupported)) {
+            operators.append("q\n");
+            operators.append(scaleX);
+            operators.append(" 0 0 ");
+            operators.append(scaleY);
+            operators.append(' ');
+            operators.append(translateX);
+            operators.append(' ');
+            operators.append(translateY);
+            operators.append(" cm\n/");
+            operators.append(resourceName);
+            operators.append(" Do\nQ\n");
+            try (WorkflowResourceContext.OwnedBytes content =
+                    operators.finishWorking()) {
+                change.contents.add(contentStream(content.getBytes()));
+            }
+        }
     }
 
-    private COSObject contentStream(String operators) throws DocumentFailure {
+    private COSObject contentStream(byte[] operators) throws DocumentFailure {
         try {
             COSStream content = document.getDocument().createCOSStream();
             try (OutputStream output = content.createOutputStream()) {
-                output.write(operators.getBytes(StandardCharsets.US_ASCII));
+                for (int offset = 0;
+                        offset < operators.length;
+                        offset += 8192) {
+                    resources.checkpoint();
+                    int length = Math.min(8192, operators.length - offset);
+                    output.write(operators, offset, length);
+                }
+                resources.checkpoint();
             }
             return new COSObject(content);
         } catch (IOException | RuntimeException failure) {
+            resources.rethrowResourceOrTerminalFailure(failure);
             throw flatteningUnsupported();
         }
     }
@@ -264,10 +322,12 @@ final class PdfBoxAnnotationFlattener {
         return (COSStream) normal;
     }
 
-    private static String availableAppearanceName(COSDictionary xObjects) {
+    private String availableAppearanceName(COSDictionary xObjects)
+            throws DocumentFailure {
         int suffix = 1;
         while (xObjects.containsKey(COSName.getPDFName(
                 "FolioT12" + suffix))) {
+            resources.checkpoint();
             suffix++;
         }
         return "FolioT12" + suffix;

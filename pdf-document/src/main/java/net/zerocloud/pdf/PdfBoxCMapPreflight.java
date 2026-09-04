@@ -17,14 +17,30 @@ final class PdfBoxCMapPreflight {
 
     private final TokenReader tokens;
     private final int maximumMappings;
+    private final WorkflowResourceContext resources;
+    private final List<WorkflowResourceContext.MemoryReservation>
+            memoryReservations =
+                    new ArrayList<WorkflowResourceContext.MemoryReservation>();
     private int mappings;
 
-    private PdfBoxCMapPreflight(byte[] bytes, int maximumMappings) {
+    private PdfBoxCMapPreflight(
+            byte[] bytes,
+            int maximumMappings,
+            WorkflowResourceContext resources) {
         this.tokens = new TokenReader(bytes, this);
         this.maximumMappings = maximumMappings;
+        this.resources = resources;
     }
 
     static int countMappings(byte[] bytes, int maximumMappings)
+            throws IOException, LimitExceededException {
+        return countMappings(bytes, maximumMappings, null);
+    }
+
+    static int countMappings(
+            byte[] bytes,
+            int maximumMappings,
+            WorkflowResourceContext resources)
             throws IOException, LimitExceededException {
         if (bytes == null) {
             throw new NullPointerException("bytes");
@@ -34,15 +50,21 @@ final class PdfBoxCMapPreflight {
                     "maximumMappings must not be negative");
         }
         PdfBoxCMapPreflight preflight =
-                new PdfBoxCMapPreflight(bytes, maximumMappings);
-        preflight.validate();
-        return preflight.mappings;
+                new PdfBoxCMapPreflight(
+                        bytes, maximumMappings, resources);
+        try {
+            preflight.validate();
+            return preflight.mappings;
+        } finally {
+            preflight.releaseMemory();
+        }
     }
 
     private void validate() throws IOException, LimitExceededException {
         Token previous = null;
         Token token;
         while ((token = tokens.next()) != null) {
+            checkpoint();
             if (token.isWord("endcmap")) {
                 return;
             }
@@ -66,6 +88,7 @@ final class PdfBoxCMapPreflight {
             throws IOException, LimitExceededException {
         requireDeclaredCount(count, "bfchar");
         for (int index = 0; index < count; index++) {
+            checkpoint();
             Token source = requiredToken("bfchar source");
             if (source.isWord("endbfchar")) {
                 throw new IOException("bfchar ended before its declared count");
@@ -85,6 +108,7 @@ final class PdfBoxCMapPreflight {
             throws IOException, LimitExceededException {
         requireDeclaredCount(count, "bfrange");
         for (int index = 0; index < count; index++) {
+            checkpoint();
             Token sourceStart = requiredToken("bfrange start");
             if (sourceStart.isWord("endbfrange")) {
                 throw new IOException(
@@ -118,6 +142,7 @@ final class PdfBoxCMapPreflight {
                             "ToUnicode range array has the wrong size");
                 }
                 for (Token element : target.elements) {
+                    checkpoint();
                     if (element.kind != Token.HEX) {
                         throw new IOException(
                                 "ToUnicode range array is malformed");
@@ -137,8 +162,10 @@ final class PdfBoxCMapPreflight {
             byte[] initialTarget)
             throws IOException, LimitExceededException {
         account(rangeSize);
+        reserveScratch(initialTarget.length);
         byte[] target = Arrays.copyOf(initialTarget, initialTarget.length);
         for (long index = 0L; index < rangeSize; index++) {
+            checkpoint();
             requireUnicodeDestination(target);
             if (index + 1L < rangeSize) {
                 incrementLikeEmbeddedFontCMap(target);
@@ -146,8 +173,10 @@ final class PdfBoxCMapPreflight {
         }
     }
 
-    private static void incrementLikeEmbeddedFontCMap(byte[] value) {
+    private void incrementLikeEmbeddedFontCMap(byte[] value)
+            throws IOException {
         for (int position = value.length - 1; position >= 0; position--) {
+            checkpointPeriodically(value.length - 1L - position);
             if (position > 0 && (value[position] & 0xff) == 0xff) {
                 value[position] = 0;
             } else {
@@ -157,13 +186,14 @@ final class PdfBoxCMapPreflight {
         }
     }
 
-    private static void requireUnicodeDestination(byte[] bytes)
+    private void requireUnicodeDestination(byte[] bytes)
             throws IOException {
         if (bytes.length == 0 || (bytes.length & 1) != 0) {
             throw new IOException(
                     "ToUnicode destination is not nonempty UTF-16BE");
         }
         for (int index = 0; index < bytes.length; index += 2) {
+            checkpointPeriodically(index);
             int unit = ((bytes[index] & 0xff) << 8)
                     | (bytes[index + 1] & 0xff);
             if (unit >= 0xd800 && unit <= 0xdbff) {
@@ -183,6 +213,42 @@ final class PdfBoxCMapPreflight {
                         "ToUnicode destination has an unpaired surrogate");
             }
         }
+    }
+
+    private void checkpoint() throws IOException {
+        if (resources != null) {
+            resources.checkpointAsIOException();
+        }
+    }
+
+    private void checkpointPeriodically(long progress) throws IOException {
+        if ((progress & 1023L) == 0L) {
+            checkpoint();
+        }
+    }
+
+    private void reserveScratch(int length) throws IOException {
+        if (resources != null) {
+            memoryReservations.add(
+                    resources.reserveOwnedMemoryAsIOException(length));
+        }
+    }
+
+    private WorkflowResourceContext.MemoryReservation reserveWorkingCharacters(
+            int length) throws IOException {
+        if (resources == null) {
+            return null;
+        }
+        return resources.reserveOwnedMemoryAsIOException(2L * length);
+    }
+
+    private void releaseMemory() {
+        for (int index = memoryReservations.size() - 1;
+                index >= 0;
+                index--) {
+            memoryReservations.get(index).close();
+        }
+        memoryReservations.clear();
     }
 
     private Token requiredToken(String description)
@@ -251,6 +317,7 @@ final class PdfBoxCMapPreflight {
         }
 
         Token next() throws IOException, LimitExceededException {
+            preflight.checkpoint();
             skipWhitespaceAndComments();
             if (position >= bytes.length) {
                 return null;
@@ -279,7 +346,8 @@ final class PdfBoxCMapPreflight {
                 return Token.other();
             }
             if (current == '/') {
-                return Token.name(readName());
+                skipName();
+                return Token.name();
             }
             if (isNumberStart(current)) {
                 return readNumber(current);
@@ -287,7 +355,7 @@ final class PdfBoxCMapPreflight {
             if (current == '>') {
                 throw new IOException("Unexpected CMap dictionary end");
             }
-            return Token.word(readWord(current));
+            return readWord();
         }
 
         private Token readArray()
@@ -314,6 +382,7 @@ final class PdfBoxCMapPreflight {
         private Token readNumber(int first) throws IOException {
             int start = position - 1;
             while (position < bytes.length) {
+                preflight.checkpointPeriodically(position);
                 int current = unsigned(bytes[position]);
                 if ((current >= '0' && current <= '9') || current == '.') {
                     position++;
@@ -327,30 +396,42 @@ final class PdfBoxCMapPreflight {
                     throw new IOException("Invalid CMap number");
                 }
             }
-            String value = ascii(start, position);
+            WorkflowResourceContext.MemoryReservation reservation =
+                    preflight.reserveWorkingCharacters(position - start);
             try {
+                preflight.checkpoint();
+                String value = new String(
+                        bytes,
+                        start,
+                        position - start,
+                        StandardCharsets.ISO_8859_1);
+                preflight.checkpoint();
                 if (value.indexOf('.') >= 0) {
                     return Token.number(Double.valueOf(value).intValue());
                 }
                 return Token.number(Integer.parseInt(value));
             } catch (NumberFormatException malformed) {
                 throw new IOException("Invalid CMap number");
+            } finally {
+                if (reservation != null) {
+                    reservation.close();
+                }
             }
         }
 
-        private String readName() {
-            int start = position;
+        private void skipName() throws IOException {
             while (position < bytes.length
                     && !isWhitespace(unsigned(bytes[position]))
                     && !isDelimiter(unsigned(bytes[position]))) {
+                preflight.checkpointPeriodically(position);
                 position++;
             }
-            return ascii(start, position);
         }
 
-        private String readWord(int first) {
+        private Token readWord() throws IOException {
             int start = position - 1;
             while (position < bytes.length) {
+                preflight.checkpointPeriodically(position);
                 int current = unsigned(bytes[position]);
                 if (isWhitespace(current)
                         || isDelimiter(current)) {
@@ -358,7 +439,7 @@ final class PdfBoxCMapPreflight {
                 }
                 position++;
             }
-            return ascii(start, position);
+            return Token.word(bytes, start, position);
         }
 
         private boolean isNumberStart(int first) {
@@ -381,6 +462,7 @@ final class PdfBoxCMapPreflight {
             int scan = position;
             int digits = 0;
             while (scan < bytes.length && unsigned(bytes[scan]) != '>') {
+                preflight.checkpointPeriodically(scan);
                 int current = unsigned(bytes[scan]);
                 if (!isWhitespace(current)) {
                     if (hexadecimal(current) < 0) {
@@ -399,9 +481,11 @@ final class PdfBoxCMapPreflight {
             if (length > 512) {
                 throw new IOException("CMap token exceeds backend policy");
             }
+            preflight.reserveScratch(length);
             byte[] result = new byte[length];
             int nibble = 0;
             for (int index = contentStart; index < scan; index++) {
+                preflight.checkpointPeriodically(index);
                 int value = hexadecimal(unsigned(bytes[index]));
                 if (value < 0) {
                     continue;
@@ -420,6 +504,7 @@ final class PdfBoxCMapPreflight {
         private void skipDictionary() throws IOException {
             int arrayDepth = 0;
             while (position < bytes.length) {
+                preflight.checkpointPeriodically(position);
                 int current = unsigned(bytes[position++]);
                 if (current == '%') {
                     skipComment();
@@ -458,6 +543,7 @@ final class PdfBoxCMapPreflight {
 
         private void skipLiteralString() throws IOException {
             while (position < bytes.length) {
+                preflight.checkpointPeriodically(position);
                 int current = unsigned(bytes[position++]);
                 // This is the same boundary used by FontBox's CMap parser.
                 if (current == ')') {
@@ -467,8 +553,9 @@ final class PdfBoxCMapPreflight {
             throw new IOException("Unterminated CMap string");
         }
 
-        private void skipWhitespaceAndComments() {
+        private void skipWhitespaceAndComments() throws IOException {
             while (position < bytes.length) {
+                preflight.checkpointPeriodically(position);
                 int current = unsigned(bytes[position]);
                 if (isWhitespace(current)) {
                     position++;
@@ -481,21 +568,14 @@ final class PdfBoxCMapPreflight {
             }
         }
 
-        private void skipComment() {
+        private void skipComment() throws IOException {
             while (position < bytes.length) {
+                preflight.checkpointPeriodically(position);
                 int current = unsigned(bytes[position++]);
                 if (current == '\r' || current == '\n') {
                     return;
                 }
             }
-        }
-
-        private String ascii(int start, int end) {
-            return new String(
-                    bytes,
-                    start,
-                    end - start,
-                    StandardCharsets.ISO_8859_1);
         }
 
         private static boolean isWhitespace(int value) {
@@ -541,52 +621,67 @@ final class PdfBoxCMapPreflight {
         private final int kind;
         private final int number;
         private final byte[] bytes;
-        private final String text;
         private final List<Token> elements;
+        private final byte[] wordSource;
+        private final int wordStart;
+        private final int wordEnd;
 
         private Token(
                 int kind,
                 int number,
                 byte[] bytes,
-                String text,
-                List<Token> elements) {
+                List<Token> elements,
+                byte[] wordSource,
+                int wordStart,
+                int wordEnd) {
             this.kind = kind;
             this.number = number;
             this.bytes = bytes;
-            this.text = text;
             this.elements = elements;
+            this.wordSource = wordSource;
+            this.wordStart = wordStart;
+            this.wordEnd = wordEnd;
         }
 
         boolean isWord(String value) {
-            return kind == WORD && value.equals(text);
+            if (kind != WORD || wordEnd - wordStart != value.length()) {
+                return false;
+            }
+            for (int index = 0; index < value.length(); index++) {
+                if ((wordSource[wordStart + index] & 0xff)
+                        != value.charAt(index)) {
+                    return false;
+                }
+            }
+            return true;
         }
 
         static Token other() {
-            return new Token(OTHER, 0, null, null, null);
+            return new Token(OTHER, 0, null, null, null, 0, 0);
         }
 
         static Token number(int value) {
-            return new Token(NUMBER, value, null, null, null);
+            return new Token(NUMBER, value, null, null, null, 0, 0);
         }
 
         static Token hex(byte[] value) {
-            return new Token(HEX, 0, value, null, null);
+            return new Token(HEX, 0, value, null, null, 0, 0);
         }
 
-        static Token name(String value) {
-            return new Token(NAME, 0, null, value, null);
+        static Token name() {
+            return new Token(NAME, 0, null, null, null, 0, 0);
         }
 
-        static Token word(String value) {
-            return new Token(WORD, 0, null, value, null);
+        static Token word(byte[] source, int start, int end) {
+            return new Token(WORD, 0, null, null, source, start, end);
         }
 
         static Token array(List<Token> value) {
-            return new Token(ARRAY, 0, null, null, value);
+            return new Token(ARRAY, 0, null, value, null, 0, 0);
         }
 
         static Token endArray() {
-            return new Token(END_ARRAY, 0, null, null, null);
+            return new Token(END_ARRAY, 0, null, null, null, 0, 0);
         }
     }
 

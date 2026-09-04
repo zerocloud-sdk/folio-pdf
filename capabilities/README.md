@@ -68,6 +68,11 @@ download nor require qpdf, PDFium, or ImageMagick. Missing, unreadable,
 incorrectly versioned, or digest-unmarked tools record the applicable chain as
 `indeterminate`, never `pass`.
 
+T20 currently records implementation evidence only. It adds no acceptance
+artifact to `scripts/acceptance` and claims no independent syntax, standards,
+semantic, or visual chain. Its Capability Matrix state therefore remains
+`experimental`, irrespective of the repository test and cross-JDK results.
+
 The acceptance command creates the blank PDF through
 `DocumentWorkflow.execute`, computes its ID-neutral input SHA-256, runs
 `qpdf --check` on the unmodified artifact, and then reopens that same artifact

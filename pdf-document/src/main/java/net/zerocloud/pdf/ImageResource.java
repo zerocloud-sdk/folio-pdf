@@ -329,7 +329,9 @@ public final class ImageResource extends DocumentResource {
             this.availability = Objects.requireNonNull(
                     availability,
                     "availability");
-            this.bytes = bytes == null ? null : bytes.clone();
+            // The package-private extraction path transfers an already
+            // detached, workflow-accounted array into this immutable value.
+            this.bytes = bytes;
             if (this.bytes != null
                     && (!selected || availability != ByteAvailability.AVAILABLE)) {
                 throw new IllegalArgumentException(

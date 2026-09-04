@@ -170,6 +170,10 @@ public final class CanvasProgram {
         public byte[] getGlyphCode() {
             return glyphCode == null ? null : glyphCode.clone();
         }
+        /** @return the exact glyph-code byte length, or zero when absent */
+        public int getGlyphCodeLength() {
+            return glyphCode == null ? 0 : glyphCode.length;
+        }
         /** @return the color operand, or {@code null} */
         public CanvasColor getColor() { return color; }
         /** @return the transparency-state operand, or {@code null} */

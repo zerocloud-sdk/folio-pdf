@@ -56,6 +56,12 @@ public final class PdfStream implements PdfValue {
         return access.readBytes();
     }
 
+    WorkflowResourceContext.OwnedBytes readBytesForWorkflow(
+            WorkflowResourceContext resources)
+            throws DocumentFailure {
+        return access.readBytesForWorkflow(resources);
+    }
+
     /**
      * Returns the Session Object Reference for an inspected stream.
      * Detached stream values have no reference until applied to a Session.
@@ -96,6 +102,12 @@ public final class PdfStream implements PdfValue {
         }
 
         @Override
+        public WorkflowResourceContext.OwnedBytes readBytesForWorkflow(
+                WorkflowResourceContext resources) throws DocumentFailure {
+            return resources.copyOwnedBytes(decodedBytes);
+        }
+
+        @Override
         public Optional<ObjectReference> getReference() {
             return Optional.empty();
         }
@@ -107,6 +119,9 @@ interface PdfStreamAccess {
     PdfDictionary getDictionary() throws DocumentFailure;
 
     byte[] readBytes() throws DocumentFailure;
+
+    WorkflowResourceContext.OwnedBytes readBytesForWorkflow(
+            WorkflowResourceContext resources) throws DocumentFailure;
 
     java.util.Optional<ObjectReference> getReference();
 }

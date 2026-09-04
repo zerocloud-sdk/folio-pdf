@@ -152,8 +152,8 @@ succeeds; the first excess and arithmetic overflow fail atomically with
 The existing T17 limits also remain active: 10,000 aggregate instructions,
 256 distinct Fonts, 1 MiB generated content, 8 MiB existing decoded page
 content, graphics-state depth 64, and effective-resource inheritance depth 64.
-These are trusted in-process ticket bounds, not T20 comprehensive hostile-
-input policy or T21 worker isolation.
+These ticket-local bounds compose with T20's finite transaction-wide trusted
+in-process policy. Neither layer is T21 Worker isolation.
 
 ## Preservation, publication, and failures
 
@@ -215,5 +215,5 @@ session.execute(DrawCanvas.version2(1, program, limits));
 The values are application examples, not universal safe defaults. T18 adds no
 font discovery or embedding, layout, inline-image parsing, patterns, shading,
 SVG, Forms UI, tagged-document construction, redaction, optimization, page
-rendering API, comprehensive hostile-input guarantee, Worker isolation,
+rendering API, hostile multi-tenant guarantee, Worker isolation,
 Migration Facade mapping, or certified-platform claim.

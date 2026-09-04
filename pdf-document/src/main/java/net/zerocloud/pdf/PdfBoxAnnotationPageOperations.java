@@ -1,8 +1,10 @@
 package net.zerocloud.pdf;
 
 import java.math.BigDecimal;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.LinkedHashMap;
@@ -37,18 +39,22 @@ final class PdfBoxAnnotationPageOperations {
     private final PDDocument document;
     private final PdfBoxMetadataOperations metadataOperations;
     private final PdfBoxAnnotationOperations annotationOperations;
+    private final WorkflowResourceContext resources;
 
     PdfBoxAnnotationPageOperations(
             PDDocument document,
             PdfBoxMetadataOperations metadataOperations,
-            PdfBoxAnnotationOperations annotationOperations) {
+            PdfBoxAnnotationOperations annotationOperations,
+            WorkflowResourceContext resources) {
         this.document = document;
         this.metadataOperations = metadataOperations;
         this.annotationOperations = annotationOperations;
+        this.resources = resources;
     }
 
     void requireSafeActionStructures(PDDocument candidate)
             throws DocumentFailure {
+        resources.checkpoint();
         try {
             List<COSBase> pageReferences = metadataOperations.rawPageReferences(
                     candidate,
@@ -67,6 +73,7 @@ final class PdfBoxAnnotationPageOperations {
                         namedDestinations);
             }
             for (COSBase pageReference : pageReferences) {
+                resources.checkpoint();
                 COSDictionary page = dictionary(pageReference);
                 COSBase rawAa = dereference(page.getItem(AA));
                 if (rawAa == null) {
@@ -93,8 +100,10 @@ final class PdfBoxAnnotationPageOperations {
                 }
             }
         } catch (DocumentFailure invalid) {
+            resources.rethrowTerminalFailure();
             throw preservationUnsupported();
         } catch (RuntimeException invalid) {
+            resources.rethrowResourceOrTerminalFailure(invalid);
             throw preservationUnsupported();
         }
     }
@@ -105,6 +114,7 @@ final class PdfBoxAnnotationPageOperations {
             COSBase rawAnnotations,
             PdfBoxAnnotationDecodePolicy.Budgets budgets)
             throws DocumentFailure {
+        resources.checkpoint();
         if (rawAnnotations == null) {
             return;
         }
@@ -124,6 +134,7 @@ final class PdfBoxAnnotationPageOperations {
             COSArray annotations = (COSArray) value;
             Set<String> identifiers = new HashSet<String>();
             for (int index = 0; index < annotations.size(); index++) {
+                resources.checkpoint();
                 COSDictionary rawAnnotation = dictionary(
                         annotations.get(index));
                 Annotation annotation = managedAnnotationOrNull(
@@ -132,22 +143,29 @@ final class PdfBoxAnnotationPageOperations {
                         page,
                         budgets,
                         pageNumbers);
-                if (annotation == null) {
-                    String identifier = identifierOf(rawAnnotation, true);
-                    if (identifier != null && !identifiers.add(identifier)) {
+                try {
+                    if (annotation == null) {
+                        String identifier = identifierOf(rawAnnotation, true);
+                        if (identifier != null
+                                && !identifiers.add(identifier)) {
+                            throw preservationUnsupported();
+                        }
+                        continue;
+                    }
+                    requireKnownNamedTarget(annotation, namedDestinations);
+                    if (!identifiers.add(
+                            annotation.getProperties().getIdentifier())) {
                         throw preservationUnsupported();
                     }
-                    continue;
-                }
-                requireKnownNamedTarget(annotation, namedDestinations);
-                if (!identifiers.add(
-                        annotation.getProperties().getIdentifier())) {
-                    throw preservationUnsupported();
+                } finally {
+                    releaseAnnotationBytes(annotation, resources);
                 }
             }
         } catch (DocumentFailure invalid) {
+            resources.rethrowTerminalFailure();
             throw preservationUnsupported();
         } catch (RuntimeException invalid) {
+            resources.rethrowResourceOrTerminalFailure(invalid);
             throw preservationUnsupported();
         }
     }
@@ -168,6 +186,7 @@ final class PdfBoxAnnotationPageOperations {
                     budgets.attachments(),
                     pageNumbers);
         } catch (DocumentFailure unsupportedManagedAnnotation) {
+            resources.rethrowTerminalFailure();
             if (unsupportedManagedAnnotation.getCode()
                     == DocumentFailureCode.ANNOTATION_LIMIT_EXCEEDED) {
                 throw unsupportedManagedAnnotation;
@@ -177,7 +196,7 @@ final class PdfBoxAnnotationPageOperations {
         }
     }
 
-    private static void requireSafeLegacyTextAnnotation(
+    private void requireSafeLegacyTextAnnotation(
             COSDictionary page,
             COSDictionary annotation) throws DocumentFailure {
         if (!COSName.getPDFName("Annot").equals(dereference(
@@ -224,6 +243,7 @@ final class PdfBoxAnnotationPageOperations {
             throw preservationUnsupported();
         }
         for (COSName name : annotation.keySet()) {
+            resources.checkpoint();
             if (!COSName.getPDFName("P").equals(name)
                     && !isSafeInlineValue(
                             annotation.getItem(name),
@@ -307,34 +327,45 @@ final class PdfBoxAnnotationPageOperations {
         }
     }
 
-    private static boolean isSafeInlineValue(
+    private boolean isSafeInlineValue(
             COSBase raw,
-            IdentityHashMap<COSBase, Boolean> visited) {
-        if (raw == null) {
-            return true;
-        }
-        if (raw instanceof COSObject || raw instanceof COSStream) {
-            return false;
-        }
-        if (raw instanceof COSArray) {
-            if (visited.put(raw, Boolean.TRUE) != null) {
+            IdentityHashMap<COSBase, Boolean> visited)
+            throws DocumentFailure {
+        Deque<InlineValueNode> pending = new ArrayDeque<InlineValueNode>();
+        pending.push(new InlineValueNode(raw, 1));
+        while (!pending.isEmpty()) {
+            resources.checkpoint();
+            InlineValueNode current = pending.pop();
+            COSBase value = current.value;
+            if (value == null) {
+                continue;
+            }
+            if (value instanceof COSObject || value instanceof COSStream) {
                 return false;
             }
-            COSArray array = (COSArray) raw;
-            for (int index = 0; index < array.size(); index++) {
-                if (!isSafeInlineValue(array.get(index), visited)) {
+            if (value instanceof COSArray) {
+                resources.requireNestingDepth(current.depth);
+                if (visited.put(value, Boolean.TRUE) != null) {
                     return false;
                 }
-            }
-            return true;
-        }
-        if (raw instanceof COSDictionary) {
-            if (visited.put(raw, Boolean.TRUE) != null) {
-                return false;
-            }
-            for (COSBase entry : ((COSDictionary) raw).getValues()) {
-                if (!isSafeInlineValue(entry, visited)) {
+                COSArray array = (COSArray) value;
+                for (int index = array.size() - 1; index >= 0; index--) {
+                    resources.checkpoint();
+                    pending.push(new InlineValueNode(
+                            array.get(index),
+                            current.depth + 1));
+                }
+            } else if (value instanceof COSDictionary) {
+                resources.requireNestingDepth(current.depth);
+                if (visited.put(value, Boolean.TRUE) != null) {
                     return false;
+                }
+                for (COSBase entry
+                        : ((COSDictionary) value).getValues()) {
+                    resources.checkpoint();
+                    pending.push(new InlineValueNode(
+                            entry,
+                            current.depth + 1));
                 }
             }
         }
@@ -344,6 +375,7 @@ final class PdfBoxAnnotationPageOperations {
     void requireNoDestinationConflict(
             PDDocument candidate,
             Set<Integer> removed) throws DocumentFailure {
+        resources.checkpoint();
         List<COSBase> pageReferences = metadataOperations.rawPageReferences(
                 candidate,
                 PdfBoxMetadataOperations.StructureFailure.PRESERVE);
@@ -360,6 +392,7 @@ final class PdfBoxAnnotationPageOperations {
         PdfBoxAnnotationDecodePolicy.Budgets budgets =
                 PdfBoxAnnotationDecodePolicy.newManagedGraphPass();
         for (int index = 0; index < pageReferences.size(); index++) {
+            resources.checkpoint();
             if (removed.contains(Integer.valueOf(index))) {
                 continue;
             }
@@ -388,17 +421,22 @@ final class PdfBoxAnnotationPageOperations {
             for (int annotationIndex = 0;
                     annotationIndex < annotations.size();
                     annotationIndex++) {
+                resources.checkpoint();
                 Annotation annotation = managedAnnotationOrNull(
                         dictionary(annotations.get(annotationIndex)),
                         index + 1,
                         page,
                         budgets,
                         pageNumbers);
-                if (annotation != null
-                        && annotation.getLinkActivation().isPresent()) {
-                    requireTargetSurvives(
-                            annotation.getLinkActivation().get().getTarget(),
-                            removed);
+                try {
+                    if (annotation != null
+                            && annotation.getLinkActivation().isPresent()) {
+                        requireTargetSurvives(
+                                annotation.getLinkActivation().get().getTarget(),
+                                removed);
+                    }
+                } finally {
+                    releaseAnnotationBytes(annotation, resources);
                 }
             }
         }
@@ -406,6 +444,7 @@ final class PdfBoxAnnotationPageOperations {
 
     void requireNamedDestinationRemovalSafe(List<String> removedNames)
             throws DocumentFailure {
+        resources.checkpoint();
         if (removedNames.isEmpty()) {
             return;
         }
@@ -436,6 +475,7 @@ final class PdfBoxAnnotationPageOperations {
             for (int pageIndex = 0;
                     pageIndex < pageReferences.size();
                     pageIndex++) {
+                resources.checkpoint();
                 COSDictionary page = dictionary(
                         pageReferences.get(pageIndex));
                 COSBase rawAa = dereference(page.getItem(AA));
@@ -472,6 +512,7 @@ final class PdfBoxAnnotationPageOperations {
                 for (int annotationIndex = 0;
                         annotationIndex < annotations.size();
                         annotationIndex++) {
+                    resources.checkpoint();
                     COSDictionary rawAnnotation = dictionary(
                             annotations.get(annotationIndex));
                     Annotation annotation = managedAnnotationOrNull(
@@ -480,19 +521,24 @@ final class PdfBoxAnnotationPageOperations {
                             page,
                             budgets,
                             pageNumbers);
-                    String identifier = annotation == null
-                            ? identifierOf(rawAnnotation, true)
-                            : annotation.getProperties().getIdentifier();
-                    if (identifier != null && !identifiers.add(identifier)) {
-                        throw preservationUnsupported();
-                    }
-                    if (annotation != null
-                            && annotation.getLinkActivation().isPresent()) {
-                        requireNamedTargetSurvives(
-                                annotation.getLinkActivation().get()
-                                        .getTarget(),
-                                namedDestinations,
-                                removed);
+                    try {
+                        String identifier = annotation == null
+                                ? identifierOf(rawAnnotation, true)
+                                : annotation.getProperties().getIdentifier();
+                        if (identifier != null
+                                && !identifiers.add(identifier)) {
+                            throw preservationUnsupported();
+                        }
+                        if (annotation != null
+                                && annotation.getLinkActivation().isPresent()) {
+                            requireNamedTargetSurvives(
+                                    annotation.getLinkActivation().get()
+                                            .getTarget(),
+                                    namedDestinations,
+                                    removed);
+                        }
+                    } finally {
+                        releaseAnnotationBytes(annotation, resources);
                     }
                 }
             }
@@ -501,8 +547,10 @@ final class PdfBoxAnnotationPageOperations {
                     == DocumentFailureCode.DESTINATION_CONFLICT) {
                 throw failure;
             }
+            resources.rethrowTerminalFailure();
             throw preservationUnsupported();
         } catch (RuntimeException failure) {
+            resources.rethrowResourceOrTerminalFailure(failure);
             throw preservationUnsupported();
         }
     }
@@ -574,34 +622,68 @@ final class PdfBoxAnnotationPageOperations {
         COSArray annotations = (COSArray) value;
         List<AnnotationSlot> slots = new ArrayList<AnnotationSlot>(
                 annotations.size());
-        for (int index = 0; index < annotations.size(); index++) {
-            COSDictionary rawAnnotation = dictionary(annotations.get(index));
-            Annotation managed = managedAnnotationOrNull(
-                    rawAnnotation,
-                    pageNumber,
-                    page,
-                    budgets,
-                    pageNumbers);
-            String identifier = managed == null
-                    ? identifierOf(rawAnnotation, true)
-                    : managed.getProperties().getIdentifier();
-            if (identifier != null && !identifiers.add(identifier)) {
-                throw preservationUnsupported();
+        try {
+            for (int index = 0; index < annotations.size(); index++) {
+                resources.checkpoint();
+                COSDictionary rawAnnotation = dictionary(
+                        annotations.get(index));
+                Annotation managed = managedAnnotationOrNull(
+                        rawAnnotation,
+                        pageNumber,
+                        page,
+                        budgets,
+                        pageNumbers);
+                String identifier = managed == null
+                        ? identifierOf(rawAnnotation, true)
+                        : managed.getProperties().getIdentifier();
+                slots.add(new AnnotationSlot(
+                        managed,
+                        managed == null ? identifier : null));
+                if (identifier != null && !identifiers.add(identifier)) {
+                    throw preservationUnsupported();
+                }
+                if (managed == null && identifier != null
+                        && legacyIdentifiers != null) {
+                    legacyIdentifiers.add(identifier);
+                }
             }
-            if (managed == null && identifier != null
-                    && legacyIdentifiers != null) {
-                legacyIdentifiers.add(identifier);
-            }
-            slots.add(new AnnotationSlot(
-                    managed,
-                    managed == null ? identifier : null));
+            return slots;
+        } catch (DocumentFailure | RuntimeException failure) {
+            releaseSlots(slots, resources);
+            throw failure;
         }
-        return slots;
+    }
+
+    private static void releaseSlots(
+            List<AnnotationSlot> slots,
+            WorkflowResourceContext resources) {
+        for (AnnotationSlot slot : slots) {
+            releaseAnnotationBytes(slot.managedAnnotation, resources);
+        }
+    }
+
+    private static void releaseAnnotationBytes(
+            Annotation annotation,
+            WorkflowResourceContext resources) {
+        if (annotation == null) {
+            return;
+        }
+        if (annotation.getProperties().getAppearance().isPresent()) {
+            resources.releaseRetainedOwnedMemory(
+                    annotation.getProperties().getAppearance().get()
+                            .contentForWorkflow().length);
+        }
+        if (annotation.getAttachment().isPresent()) {
+            resources.releaseRetainedOwnedMemory(
+                    annotation.getAttachment().get()
+                            .contentForWorkflow().length);
+        }
     }
 
     CopyStructures snapshotCopyStructures(
             PDDocument source,
             PageRange range) throws DocumentFailure {
+        resources.checkpoint();
         List<COSBase> pageReferences = metadataOperations.rawPageReferences(
                 source,
                 PdfBoxMetadataOperations.StructureFailure.PRESERVE);
@@ -613,7 +695,11 @@ final class PdfBoxAnnotationPageOperations {
         PdfBoxAnnotationDecodePolicy.Budgets budgets =
                 PdfBoxAnnotationDecodePolicy.newManagedGraphPass();
 
-        for (int pageIndex = 0; pageIndex < pageReferences.size(); pageIndex++) {
+        try {
+            for (int pageIndex = 0;
+                    pageIndex < pageReferences.size();
+                    pageIndex++) {
+            resources.checkpoint();
             COSDictionary page = dictionary(pageReferences.get(pageIndex));
             List<AnnotationSlot> annotationSlots = captureAnnotationSlots(
                     page,
@@ -641,13 +727,22 @@ final class PdfBoxAnnotationPageOperations {
                         annotationSlots,
                         open,
                         close));
+            } else {
+                releaseSlots(annotationSlots, resources);
             }
+            }
+            return new CopyStructures(
+                    range.getFirstPageNumber(),
+                    range.getLastPageNumber(),
+                    identifiers,
+                    selected,
+                    resources);
+        } catch (DocumentFailure | RuntimeException failure) {
+            for (CopiedPageStructures page : selected) {
+                releaseSlots(page.annotationSlots, resources);
+            }
+            throw failure;
         }
-        return new CopyStructures(
-                range.getFirstPageNumber(),
-                range.getLastPageNumber(),
-                identifiers,
-                selected);
     }
 
     private static COSArray requireImportedAnnotations(
@@ -667,9 +762,11 @@ final class PdfBoxAnnotationPageOperations {
         return (COSArray) rawAnnotations;
     }
 
-    private static int legacySlotCount(List<AnnotationSlot> slots) {
+    private int legacySlotCount(List<AnnotationSlot> slots)
+            throws DocumentFailure {
         int count = 0;
         for (AnnotationSlot slot : slots) {
+            resources.checkpoint();
             if (!slot.isManaged()) {
                 count++;
             }
@@ -681,10 +778,29 @@ final class PdfBoxAnnotationPageOperations {
             CopyStructures snapshot,
             int insertionPageNumber,
             int originalPageCount) throws DocumentFailure {
+        try (WorkflowResourceContext.OwnedMemoryScope ownership =
+                resources.ownedMemoryScope()) {
+            applyCopiedStructures(
+                    snapshot,
+                    insertionPageNumber,
+                    originalPageCount,
+                    ownership);
+            ownership.transfer();
+        }
+    }
+
+    private void applyCopiedStructures(
+            CopyStructures snapshot,
+            int insertionPageNumber,
+            int originalPageCount,
+            WorkflowResourceContext.OwnedMemoryScope ownership)
+            throws DocumentFailure {
+        resources.checkpoint();
         List<COSBase> pageReferences = pageReferencesForCommand();
         int copiedPageCount = snapshot.pages.size();
         Set<String> identifiers = new HashSet<String>(snapshot.identifiers);
         for (int offset = 0; offset < copiedPageCount; offset++) {
+            resources.checkpoint();
             int newPageNumber = insertionPageNumber + offset;
             COSBase pageReference = pageReferences.get(newPageNumber - 1);
             COSDictionary page = dictionary(pageReference);
@@ -697,15 +813,20 @@ final class PdfBoxAnnotationPageOperations {
             for (int slotIndex = 0;
                     slotIndex < source.annotationSlots.size();
                     slotIndex++) {
+                resources.checkpoint();
                 AnnotationSlot slot = source.annotationSlots.get(slotIndex);
                 if (!slot.isManaged()) {
                     COSBase copiedLegacy = imported.get(slotIndex);
                     if (slot.legacyIdentifier != null) {
                         dictionary(copiedLegacy).setItem(
                                 NM,
-                                new COSString(copiedIdentifier(
-                                        slot.legacyIdentifier,
-                                        identifiers)));
+                                PdfBoxStringSupport.backendString(
+                                        copiedIdentifier(
+                                                slot.legacyIdentifier,
+                                                identifiers),
+                                        resources,
+                                        ownership,
+                                        PdfBoxAnnotationPageOperations::preservationUnsupported));
                     }
                     annotations.add(copiedLegacy);
                 } else {
@@ -724,7 +845,8 @@ final class PdfBoxAnnotationPageOperations {
                     annotations.add(new COSObject(backendAnnotation(
                             copied,
                             pageReference,
-                            pageReferences)));
+                            pageReferences,
+                            ownership)));
                 }
             }
             if (annotations.size() == 0) {
@@ -742,7 +864,8 @@ final class PdfBoxAnnotationPageOperations {
                                 insertionPageNumber,
                                 copiedPageCount,
                                 originalPageCount),
-                        pageReferences));
+                        pageReferences,
+                        ownership));
             }
             if (source.closeTarget != null) {
                 aa.setItem(C, backendAction(
@@ -752,7 +875,8 @@ final class PdfBoxAnnotationPageOperations {
                                 insertionPageNumber,
                                 copiedPageCount,
                                 originalPageCount),
-                        pageReferences));
+                        pageReferences,
+                        ownership));
             }
             if (aa.size() == 0) {
                 page.removeItem(AA);
@@ -762,12 +886,13 @@ final class PdfBoxAnnotationPageOperations {
         }
     }
 
-    private static String copiedIdentifier(
+    private String copiedIdentifier(
             String original,
-            Set<String> identifiers) {
+            Set<String> identifiers) throws DocumentFailure {
         int suffix = 1;
         String candidate;
         do {
+            resources.checkpoint();
             candidate = original + "-" + suffix;
             suffix++;
         } while (!identifiers.add(candidate));
@@ -882,6 +1007,7 @@ final class PdfBoxAnnotationPageOperations {
 
     MergeStructures extractAndStripMergeStructures(PDDocument source)
             throws DocumentFailure {
+        resources.checkpoint();
         List<COSBase> pageReferences = metadataOperations.rawPageReferences(
                 source,
                 PdfBoxMetadataOperations.StructureFailure.PRESERVE);
@@ -894,7 +1020,11 @@ final class PdfBoxAnnotationPageOperations {
         PdfBoxAnnotationDecodePolicy.Budgets budgets =
                 PdfBoxAnnotationDecodePolicy.newManagedGraphPass();
 
-        for (int pageIndex = 0; pageIndex < pageReferences.size(); pageIndex++) {
+        try {
+            for (int pageIndex = 0;
+                    pageIndex < pageReferences.size();
+                    pageIndex++) {
+            resources.checkpoint();
             COSDictionary page = dictionary(pageReferences.get(pageIndex));
             List<AnnotationSlot> annotationSlots = captureAnnotationSlots(
                     page,
@@ -921,15 +1051,16 @@ final class PdfBoxAnnotationPageOperations {
                     annotationSlots,
                     open,
                     close));
-        }
+            }
 
-        COSDictionary catalog = source.getDocumentCatalog().getCOSObject();
+            COSDictionary catalog = source.getDocumentCatalog().getCOSObject();
         NavigationTarget documentOpen = catalog.getItem(OPEN_ACTION) == null
                 ? null
                 : actionTarget(catalog.getItem(OPEN_ACTION), pageNumbers);
 
         catalog.removeItem(OPEN_ACTION);
         for (int pageIndex = 0; pageIndex < pages.size(); pageIndex++) {
+            resources.checkpoint();
             COSDictionary page = dictionary(pageReferences.get(pageIndex));
             MergedPageStructures captured = pages.get(pageIndex);
             COSArray sourceAnnotations = requireImportedAnnotations(
@@ -940,6 +1071,7 @@ final class PdfBoxAnnotationPageOperations {
             for (int slotIndex = 0;
                     slotIndex < captured.annotationSlots.size();
                     slotIndex++) {
+                resources.checkpoint();
                 if (!captured.annotationSlots.get(slotIndex).isManaged()) {
                     legacyAnnotations.add(sourceAnnotations.get(slotIndex));
                 }
@@ -951,19 +1083,29 @@ final class PdfBoxAnnotationPageOperations {
             }
             page.removeItem(AA);
         }
-        return new MergeStructures(
-                pageReferences.size(),
-                pages,
-                documentOpen,
-                legacyIdentifiers);
+            return new MergeStructures(
+                    pageReferences.size(),
+                    pages,
+                    documentOpen,
+                    legacyIdentifiers,
+                    resources);
+        } catch (DocumentFailure | RuntimeException failure) {
+            for (MergedPageStructures page : pages) {
+                releaseSlots(page.annotationSlots, resources);
+            }
+            throw failure;
+        }
     }
 
     void requireMergeIdentifiersSafe(List<MergeStructures> sources)
             throws DocumentFailure {
+        resources.checkpoint();
         Set<String> identifiers = existingIdentifiers(
                 pageReferencesForCommand());
         for (MergeStructures source : sources) {
+            resources.checkpoint();
             for (String identifier : source.legacyIdentifiers) {
+                resources.checkpoint();
                 if (!identifiers.add(identifier)) {
                     throw preservationUnsupported();
                 }
@@ -976,6 +1118,24 @@ final class PdfBoxAnnotationPageOperations {
             int originalPageCount,
             List<Map<String, String>> destinationRenames)
             throws DocumentFailure {
+        try (WorkflowResourceContext.OwnedMemoryScope ownership =
+                resources.ownedMemoryScope()) {
+            applyMergedStructures(
+                    sources,
+                    originalPageCount,
+                    destinationRenames,
+                    ownership);
+            ownership.transfer();
+        }
+    }
+
+    private void applyMergedStructures(
+            List<MergeStructures> sources,
+            int originalPageCount,
+            List<Map<String, String>> destinationRenames,
+            WorkflowResourceContext.OwnedMemoryScope ownership)
+            throws DocumentFailure {
+        resources.checkpoint();
         if (sources.size() != destinationRenames.size()) {
             throw preservationUnsupported();
         }
@@ -988,11 +1148,13 @@ final class PdfBoxAnnotationPageOperations {
         for (int sourceIndex = 0;
                 sourceIndex < sources.size();
                 sourceIndex++) {
+            resources.checkpoint();
             MergeStructures source = sources.get(sourceIndex);
             Map<String, String> renames = destinationRenames.get(sourceIndex);
             for (int pageIndex = 0;
                     pageIndex < source.pages.size();
                     pageIndex++) {
+                resources.checkpoint();
                 int targetPageNumber = pageBase + pageIndex + 1;
                 COSBase pageReference = pageReferences.get(
                         targetPageNumber - 1);
@@ -1005,6 +1167,7 @@ final class PdfBoxAnnotationPageOperations {
                 COSArray annotations = new COSArray();
                 annotations.setDirect(true);
                 for (AnnotationSlot slot : captured.annotationSlots) {
+                    resources.checkpoint();
                     if (!slot.isManaged()) {
                         annotations.add(imported.get(legacyIndex));
                         legacyIndex++;
@@ -1023,7 +1186,8 @@ final class PdfBoxAnnotationPageOperations {
                         annotations.add(new COSObject(backendAnnotation(
                                 merged,
                                 pageReference,
-                                pageReferences)));
+                                pageReferences,
+                                ownership)));
                     }
                 }
                 if (annotations.size() == 0) {
@@ -1040,7 +1204,8 @@ final class PdfBoxAnnotationPageOperations {
                                     pageBase,
                                     source.pageCount,
                                     renames),
-                            pageReferences));
+                            pageReferences,
+                            ownership));
                 }
                 if (captured.closeTarget != null) {
                     aa.setItem(C, backendAction(
@@ -1049,7 +1214,8 @@ final class PdfBoxAnnotationPageOperations {
                                     pageBase,
                                     source.pageCount,
                                     renames),
-                            pageReferences));
+                            pageReferences,
+                            ownership));
                 }
                 if (aa.size() == 0) {
                     page.removeItem(AA);
@@ -1065,17 +1231,19 @@ final class PdfBoxAnnotationPageOperations {
                                 pageBase,
                                 source.pageCount,
                                 renames),
-                        pageReferences));
+                        pageReferences,
+                        ownership));
                 hasDocumentOpen = true;
             }
             pageBase += source.pageCount;
         }
     }
 
-    private static Set<String> existingIdentifiers(
+    private Set<String> existingIdentifiers(
             List<COSBase> pageReferences) throws DocumentFailure {
         Set<String> identifiers = new HashSet<String>();
         for (COSBase pageReference : pageReferences) {
+            resources.checkpoint();
             COSDictionary page = dictionary(pageReference);
             COSBase rawAnnotations = dereference(
                     page.getItem(COSName.ANNOTS));
@@ -1084,6 +1252,7 @@ final class PdfBoxAnnotationPageOperations {
             }
             COSArray array = (COSArray) rawAnnotations;
             for (int index = 0; index < array.size(); index++) {
+                resources.checkpoint();
                 String identifier = identifierOf(
                         dictionary(array.get(index)),
                         true);
@@ -1095,9 +1264,9 @@ final class PdfBoxAnnotationPageOperations {
         return identifiers;
     }
 
-    private static String availableIdentifier(
+    private String availableIdentifier(
             String preferred,
-            Set<String> identifiers) {
+            Set<String> identifiers) throws DocumentFailure {
         if (identifiers.add(preferred)) {
             return preferred;
         }
@@ -1147,12 +1316,14 @@ final class PdfBoxAnnotationPageOperations {
 
     MergeStructures snapshotSplitStructures(PDDocument source)
             throws DocumentFailure {
+        resources.checkpoint();
         List<COSBase> pageReferences = metadataOperations.rawPageReferences(
                 source,
                 PdfBoxMetadataOperations.StructureFailure.PRESERVE);
         List<COSBase> annotations = new ArrayList<COSBase>();
         List<COSBase> actions = new ArrayList<COSBase>();
         for (COSBase pageReference : pageReferences) {
+            resources.checkpoint();
             COSDictionary page = dictionary(pageReference);
             annotations.add(page.getItem(COSName.ANNOTS));
             actions.add(page.getItem(AA));
@@ -1166,6 +1337,7 @@ final class PdfBoxAnnotationPageOperations {
             catalog.setItem(OPEN_ACTION, openAction);
         }
         for (int index = 0; index < pageReferences.size(); index++) {
+            resources.checkpoint();
             COSDictionary page = dictionary(pageReferences.get(index));
             if (annotations.get(index) == null) {
                 page.removeItem(COSName.ANNOTS);
@@ -1185,25 +1357,37 @@ final class PdfBoxAnnotationPageOperations {
             PDDocument product,
             MergeStructures snapshot,
             int[] mapping) throws DocumentFailure {
+        resources.checkpoint();
         PdfBoxMetadataOperations productMetadata =
-                new PdfBoxMetadataOperations(product);
+                new PdfBoxMetadataOperations(product, resources);
         PdfBoxAnnotationOperations productOperations =
-                new PdfBoxAnnotationOperations(product, productMetadata);
+                new PdfBoxAnnotationOperations(
+                        product,
+                        productMetadata,
+                        resources);
         PdfBoxAnnotationPageOperations productPageOperations =
                 new PdfBoxAnnotationPageOperations(
                         product,
                         productMetadata,
-                        productOperations);
-        productPageOperations.applySplitStructures(
-                snapshot,
-                mapping,
-                productMetadata.namedDestinationNames(product));
+                        productOperations,
+                        resources);
+        try (WorkflowResourceContext.OwnedMemoryScope ownership =
+                resources.ownedMemoryScope()) {
+            productPageOperations.applySplitStructures(
+                    snapshot,
+                    mapping,
+                    productMetadata.namedDestinationNames(product),
+                    ownership);
+            ownership.transfer();
+        }
     }
 
     private void applySplitStructures(
             MergeStructures snapshot,
             int[] mapping,
-            Set<String> namedDestinations) throws DocumentFailure {
+            Set<String> namedDestinations,
+            WorkflowResourceContext.OwnedMemoryScope ownership)
+            throws DocumentFailure {
         if (mapping.length != snapshot.pageCount) {
             throw preservationUnsupported();
         }
@@ -1211,6 +1395,7 @@ final class PdfBoxAnnotationPageOperations {
         for (int sourcePageIndex = 0;
                 sourcePageIndex < snapshot.pages.size();
                 sourcePageIndex++) {
+            resources.checkpoint();
             int mappedPageNumber = mapping[sourcePageIndex];
             if (mappedPageNumber == 0) {
                 continue;
@@ -1226,6 +1411,7 @@ final class PdfBoxAnnotationPageOperations {
             for (int slotIndex = 0;
                     slotIndex < source.annotationSlots.size();
                     slotIndex++) {
+                resources.checkpoint();
                 AnnotationSlot slot = source.annotationSlots.get(slotIndex);
                 if (!slot.isManaged()) {
                     annotations.add(imported.get(slotIndex));
@@ -1249,7 +1435,8 @@ final class PdfBoxAnnotationPageOperations {
                     annotations.add(new COSObject(backendAnnotation(
                             filtered,
                             pageReference,
-                            pageReferences)));
+                            pageReferences,
+                            ownership)));
                 }
             }
             if (annotations.size() == 0) {
@@ -1272,10 +1459,12 @@ final class PdfBoxAnnotationPageOperations {
                             mapping,
                             namedDestinations);
             if (open != null) {
-                aa.setItem(O, backendAction(open, pageReferences));
+                aa.setItem(O, backendAction(
+                        open, pageReferences, ownership));
             }
             if (close != null) {
-                aa.setItem(C, backendAction(close, pageReferences));
+                aa.setItem(C, backendAction(
+                        close, pageReferences, ownership));
             }
             if (aa.size() == 0) {
                 page.removeItem(AA);
@@ -1295,7 +1484,8 @@ final class PdfBoxAnnotationPageOperations {
             catalog.removeItem(OPEN_ACTION);
         } else {
             catalog.setItem(OPEN_ACTION,
-                    backendAction(documentOpen, pageReferences));
+                    backendAction(
+                            documentOpen, pageReferences, ownership));
         }
     }
 
@@ -1375,33 +1565,49 @@ final class PdfBoxAnnotationPageOperations {
                                 GoToAction.version1(linkTarget)));
     }
 
-    private static IdentityHashMap<COSDictionary, Integer> pageNumbers(
+    private IdentityHashMap<COSDictionary, Integer> pageNumbers(
             List<COSBase> pageReferences) throws DocumentFailure {
         IdentityHashMap<COSDictionary, Integer> pageNumbers =
                 new IdentityHashMap<COSDictionary, Integer>();
         for (int index = 0; index < pageReferences.size(); index++) {
+            resources.checkpoint();
             pageNumbers.put(dictionary(pageReferences.get(index)),
                     Integer.valueOf(index + 1));
         }
         return pageNumbers;
     }
 
-    static final class CopyStructures {
+    static final class CopyStructures implements AutoCloseable {
 
         final int firstPageNumber;
         final int lastPageNumber;
         final Set<String> identifiers;
         final List<CopiedPageStructures> pages;
+        private final WorkflowResourceContext resources;
+        private boolean closed;
 
         CopyStructures(
                 int firstPageNumber,
                 int lastPageNumber,
                 Set<String> identifiers,
-                List<CopiedPageStructures> pages) {
+                List<CopiedPageStructures> pages,
+                WorkflowResourceContext resources) {
             this.firstPageNumber = firstPageNumber;
             this.lastPageNumber = lastPageNumber;
             this.identifiers = new HashSet<String>(identifiers);
             this.pages = new ArrayList<CopiedPageStructures>(pages);
+            this.resources = resources;
+        }
+
+        @Override
+        public void close() {
+            if (closed) {
+                return;
+            }
+            closed = true;
+            for (CopiedPageStructures page : pages) {
+                releaseSlots(page.annotationSlots, resources);
+            }
         }
     }
 
@@ -1422,22 +1628,37 @@ final class PdfBoxAnnotationPageOperations {
         }
     }
 
-    static final class MergeStructures {
+    static final class MergeStructures implements AutoCloseable {
 
         final int pageCount;
         final List<MergedPageStructures> pages;
         final NavigationTarget documentOpenTarget;
         final Set<String> legacyIdentifiers;
+        private final WorkflowResourceContext resources;
+        private boolean closed;
 
         MergeStructures(
                 int pageCount,
                 List<MergedPageStructures> pages,
                 NavigationTarget documentOpenTarget,
-                Set<String> legacyIdentifiers) {
+                Set<String> legacyIdentifiers,
+                WorkflowResourceContext resources) {
             this.pageCount = pageCount;
             this.pages = new ArrayList<MergedPageStructures>(pages);
             this.documentOpenTarget = documentOpenTarget;
             this.legacyIdentifiers = new HashSet<String>(legacyIdentifiers);
+            this.resources = resources;
+        }
+
+        @Override
+        public void close() {
+            if (closed) {
+                return;
+            }
+            closed = true;
+            for (MergedPageStructures page : pages) {
+                releaseSlots(page.annotationSlots, resources);
+            }
         }
     }
 
@@ -1475,6 +1696,17 @@ final class PdfBoxAnnotationPageOperations {
         }
     }
 
+    private static final class InlineValueNode {
+
+        private final COSBase value;
+        private final int depth;
+
+        private InlineValueNode(COSBase value, int depth) {
+            this.value = value;
+            this.depth = depth;
+        }
+    }
+
     private Annotation publicAnnotation(
             COSDictionary dictionary,
             int pageNumber,
@@ -1502,6 +1734,19 @@ final class PdfBoxAnnotationPageOperations {
                 pageReferences);
     }
 
+    private COSDictionary backendAnnotation(
+            Annotation annotation,
+            COSBase pageReference,
+            List<COSBase> pageReferences,
+            WorkflowResourceContext.OwnedMemoryScope ownership)
+            throws DocumentFailure {
+        return annotationOperations.backendAnnotation(
+                annotation,
+                pageReference,
+                pageReferences,
+                ownership);
+    }
+
     private NavigationTarget actionTarget(
             COSBase raw,
             IdentityHashMap<COSDictionary, Integer> pageNumbers)
@@ -1515,6 +1760,15 @@ final class PdfBoxAnnotationPageOperations {
         return annotationOperations.backendAction(target, pageReferences);
     }
 
+    private COSDictionary backendAction(
+            NavigationTarget target,
+            List<COSBase> pageReferences,
+            WorkflowResourceContext.OwnedMemoryScope ownership)
+            throws DocumentFailure {
+        return annotationOperations.backendAction(
+                target, pageReferences, ownership);
+    }
+
     private List<COSBase> pageReferencesForCommand()
             throws DocumentFailure {
         return annotationOperations.pageReferencesForCommand();
@@ -1525,10 +1779,10 @@ final class PdfBoxAnnotationPageOperations {
         return PdfBoxAnnotationOperations.dictionary(raw);
     }
 
-    private static void requireOnlyKeys(
+    private void requireOnlyKeys(
             COSDictionary dictionary,
             String... names) throws DocumentFailure {
-        PdfBoxAnnotationOperations.requireOnlyKeys(dictionary, names);
+        annotationOperations.requireOnlyKeys(dictionary, names);
     }
 
     private static COSBase dereference(COSBase value) {

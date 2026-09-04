@@ -29,7 +29,9 @@ public final class ExtractionDiagnostic {
         this.code = Objects.requireNonNull(code, "code");
         this.pageNumber = pageNumber;
         this.textItemIndex = textItemIndex;
-        this.sourceCode = Arrays.copyOf(sourceCode, sourceCode.length);
+        // Shared with the matching immutable CharacterMapping after the
+        // extraction path accounts and transfers the array.
+        this.sourceCode = Objects.requireNonNull(sourceCode, "sourceCode");
         this.message = Objects.requireNonNull(message, "message");
     }
 

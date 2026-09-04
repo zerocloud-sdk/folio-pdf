@@ -320,9 +320,10 @@ WorkflowOutcome<DocumentResourceInventory> outcome = workflow.execute(
                 ImageByteAccess.ENCODED_AND_DECODED)));
 ```
 
-These are example application bounds, not universal safe defaults.
-Comprehensive process, memory, time, concurrency, decompression-ratio, and
-hostile-input enforcement remains T20/T21 scope. T14 adds no inline-image
+These are example application bounds, not universal safe defaults. They
+compose with T20's finite transaction-wide trusted in-process policy. Hard
+process, memory, CPU, network, and termination isolation remains T21 scope.
+T14 adds no inline-image
 content extraction, rendering, image embedding, optimization, drawing,
 incremental publication, signature behavior, encryption, or Migration Facade
 surface. T18 consumes this inventory for same-Session existing-image borrowing

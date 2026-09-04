@@ -108,7 +108,8 @@ and deadline categories are normalized to stable Provider Failures.
 
 This adapter is not the Hardened Worker Profile. It does not claim hard memory,
 CPU, filesystem, network, hostile-PDF, pixel, page, object, decompression,
-temporary-storage, or concurrency isolation. Hostile multi-tenant documents
-remain out of scope until T20 and T21 provide their required enforcement. The
+temporary-storage, or concurrency isolation. T20 now bounds the surrounding
+trusted in-process Document Workflow cooperatively, but hostile multi-tenant
+documents remain out of scope until T21 provides hard isolation. The
 Java 8 adapter supervises its direct child only; descendant process-tree
 containment is part of T21 rather than this generic integration seam.

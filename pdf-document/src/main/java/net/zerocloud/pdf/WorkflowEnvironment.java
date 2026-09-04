@@ -1,5 +1,7 @@
 package net.zerocloud.pdf;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Clock;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,13 +14,15 @@ import net.zerocloud.pdf.provider.ProviderMetadata;
 /**
  * Immutable environment shared by reusable Document Workflow instances.
  *
- * <p>The environment owns deadline time, declaration-ordered Capability
- * Provider registrations, and an explicit reusable Reference Font Set instead
- * of exposing them as generic lookups on Document Session. The system defaults
- * contain neither Providers nor fonts and therefore cannot select a remote
- * engine, scan installed fonts, or perform implicit network access. A caller-
- * supplied Clock and every registered Provider must be safe for the way the
- * resulting environment is shared.</p>
+ * <p>The environment owns deadline and elapsed time, the finite default
+ * resource policy, shared concurrency admission, transaction temporary
+ * storage, declaration-ordered Capability Provider registrations, and an
+ * explicit reusable Reference Font Set instead of exposing them as generic
+ * lookups on Document Session. The system defaults contain neither Providers
+ * nor fonts and therefore cannot select a remote engine, scan installed fonts,
+ * or perform implicit network access. A caller-supplied Clock and every
+ * registered Provider must be safe for the way the resulting environment is
+ * shared.</p>
  *
  * @since 0.1.0
  */
@@ -28,19 +32,29 @@ public final class WorkflowEnvironment {
             new WorkflowEnvironment(
                     Clock.systemUTC(),
                     ProviderCatalog.empty(),
-                    ReferenceFontSet.empty());
+                    ReferenceFontSet.empty(),
+                    WorkflowResourcePolicy.safeDefaults(),
+                    systemTemporaryDirectory());
 
     private final Clock clock;
     private final ProviderCatalog providerCatalog;
     private final ReferenceFontSet referenceFontSet;
+    private final WorkflowResourcePolicy defaultResourcePolicy;
+    private final Path temporaryDirectory;
+    private final WorkflowConcurrencyGate concurrencyGate;
 
     private WorkflowEnvironment(
             Clock clock,
             ProviderCatalog providerCatalog,
-            ReferenceFontSet referenceFontSet) {
+            ReferenceFontSet referenceFontSet,
+            WorkflowResourcePolicy defaultResourcePolicy,
+            Path temporaryDirectory) {
         this.clock = clock;
         this.providerCatalog = providerCatalog;
         this.referenceFontSet = referenceFontSet;
+        this.defaultResourcePolicy = defaultResourcePolicy;
+        this.temporaryDirectory = temporaryDirectory;
+        this.concurrencyGate = new WorkflowConcurrencyGate();
     }
 
     /**
@@ -53,7 +67,7 @@ public final class WorkflowEnvironment {
     }
 
     /**
-     * Creates an immutable environment using an explicit deadline Clock.
+     * Creates an immutable environment using an explicit execution Clock.
      *
      * @param clock the execution clock
      * @return an environment owning the supplied Clock
@@ -62,11 +76,13 @@ public final class WorkflowEnvironment {
         return new WorkflowEnvironment(
                 Objects.requireNonNull(clock, "clock"),
                 ProviderCatalog.empty(),
-                ReferenceFontSet.empty());
+                ReferenceFontSet.empty(),
+                WorkflowResourcePolicy.safeDefaults(),
+                systemTemporaryDirectory());
     }
 
     /**
-     * Begins explicit immutable Clock, Provider, and font configuration.
+     * Begins explicit immutable workflow-environment configuration.
      *
      * @return a detached environment builder
      */
@@ -84,6 +100,15 @@ public final class WorkflowEnvironment {
         return providerCatalog.getMetadata();
     }
 
+    /**
+     * Returns the finite policy used when a request supplies no override.
+     *
+     * @return the immutable default resource policy
+     */
+    public WorkflowResourcePolicy getDefaultResourcePolicy() {
+        return defaultResourcePolicy;
+    }
+
     Clock getClock() {
         return clock;
     }
@@ -96,6 +121,20 @@ public final class WorkflowEnvironment {
         return referenceFontSet;
     }
 
+    Path getTemporaryDirectory() {
+        return temporaryDirectory;
+    }
+
+    WorkflowConcurrencyGate getConcurrencyGate() {
+        return concurrencyGate;
+    }
+
+    private static Path systemTemporaryDirectory() {
+        return Paths.get(System.getProperty("java.io.tmpdir", "."))
+                .toAbsolutePath()
+                .normalize();
+    }
+
     /** Builds immutable, declaration-ordered workflow configuration. */
     public static final class Builder {
 
@@ -103,6 +142,9 @@ public final class WorkflowEnvironment {
         private final List<CapabilityProvider> providers =
                 new ArrayList<CapabilityProvider>();
         private ReferenceFontSet referenceFontSet = ReferenceFontSet.empty();
+        private WorkflowResourcePolicy defaultResourcePolicy =
+                WorkflowResourcePolicy.safeDefaults();
+        private Path temporaryDirectory = systemTemporaryDirectory();
 
         private Builder() {
         }
@@ -144,6 +186,34 @@ public final class WorkflowEnvironment {
         }
 
         /**
+         * Sets the finite resource policy used by requests without an
+         * explicit override.
+         *
+         * @param policy the immutable environment default
+         * @return this builder
+         */
+        public Builder defaultResourcePolicy(WorkflowResourcePolicy policy) {
+            this.defaultResourcePolicy = Objects.requireNonNull(
+                    policy,
+                    "policy");
+            return this;
+        }
+
+        /**
+         * Sets the existing directory beneath which each transaction creates
+         * its private temporary root.
+         *
+         * @param directory the environment-owned temporary-storage directory
+         * @return this builder
+         */
+        public Builder temporaryDirectory(Path directory) {
+            this.temporaryDirectory = Objects.requireNonNull(
+                    directory,
+                    "directory").toAbsolutePath().normalize();
+            return this;
+        }
+
+        /**
          * Builds a detached immutable environment.
          *
          * @return the configured environment
@@ -152,7 +222,9 @@ public final class WorkflowEnvironment {
             return new WorkflowEnvironment(
                     clock,
                     ProviderCatalog.of(providers),
-                    referenceFontSet);
+                    referenceFontSet,
+                    defaultResourcePolicy,
+                    temporaryDirectory);
         }
     }
 }

@@ -52,6 +52,9 @@ public final class CanvasColor {
     /** @return a defensive component copy */
     public double[] getComponents() { return components.clone(); }
 
+    /** @return the exact component count without copying it */
+    public int getComponentCount() { return components.length; }
+
     @Override
     public boolean equals(Object candidate) {
         if (!(candidate instanceof CanvasColor)) {

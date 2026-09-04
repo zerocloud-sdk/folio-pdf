@@ -255,8 +255,9 @@ WorkflowOutcome<TextStructureExtraction> outcome = workflow.execute(
                 ExtractTextAndStructure.version1(limits)));
 ```
 
-These are example application bounds, not universal safe defaults.
-Comprehensive process, memory, time, concurrency, decompression-ratio, image,
-and hostile-input enforcement remains T20/T21 scope. T13 adds no Migration
+These are example application bounds, not universal safe defaults. They
+compose with T20's finite transaction-wide trusted in-process policy. Hard
+process, memory, CPU, network, and termination isolation remains T21 scope.
+T13 adds no Migration
 Facade mapping, OCR, image/resource extraction, layout reconstruction,
 incremental publication, signature handling, or encryption behavior.

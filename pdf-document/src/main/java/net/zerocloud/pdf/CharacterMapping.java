@@ -39,9 +39,9 @@ public final class CharacterMapping {
             String unicode,
             String explicitUnicode,
             String inferredUnicode) {
-        this.sourceCode = Arrays.copyOf(
-                Objects.requireNonNull(sourceCode, "sourceCode"),
-                sourceCode.length);
+        // The package-private extraction path transfers one immutable,
+        // workflow-accounted source-code array into its result values.
+        this.sourceCode = Objects.requireNonNull(sourceCode, "sourceCode");
         this.confidence = Objects.requireNonNull(confidence, "confidence");
         this.unicode = unicode;
         this.explicitUnicode = explicitUnicode;

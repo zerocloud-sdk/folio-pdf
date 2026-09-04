@@ -1049,5 +1049,63 @@ documentation, and project-owned tests are the permitted design inputs.
   therefore remains `experimental` with no compatible or certified-platform
   claim.
 
+## T20 trusted-in-process hostile-input-policy record
+
+- Authorship: OpenAI Codex generated and integrated the T20 implementation,
+  tests, inventories, evidence record, and documentation at repository
+  operator MaBaiqiu's direction. No T20 commit was created or authorized in
+  this execution.
+- Project inputs: GitHub issues #1 and #21; `CONTEXT.md`, `CONTRIBUTING.md`,
+  repository issue/domain instructions; ADR-0013, 0016, 0018, 0019, 0025,
+  0031, and 0033; the accepted T03 and T09 transaction, ownership, publication,
+  PDF Value, and failure seams; existing operation-local limit contracts; and
+  pre-implementation fixed point
+  `854fa233b16abf76afcc57ee99c374c2c78f0bd1`.
+- Public standards input: the Adobe-hosted authorized ISO 32000-1:2008 copy
+  already inventoried by prior tickets, SHA-256
+  `9de0ca9e8570d6209e8bd48a355be8eb6ec376acfc3fc3ae97cd8730351417ff`,
+  supplied public document, indirect-object, container, page-tree, stream-
+  filter, and Image XObject concepts. It was not redistributed and supplied
+  specification semantics only; no standards-conformance claim is inferred.
+- Backend and platform inputs: existing Apache PDFBox 3.0.8 public loading,
+  COS, filter, stream-cache, scratch-file, save, and split APIs remain private
+  implementation surfaces. Java 8 `Clock`, `Duration`, NIO storage, streams,
+  channels, synchronization, and POSIX permission APIs supply platform
+  contracts. T20 adds no dependency; all existing coordinates, roles, and
+  licenses remain recorded in [DEPENDENCIES.md](DEPENDENCIES.md).
+- Project-authored fixtures: `HostileInputWorkflowTest` constructs every PDF
+  byte sequence in memory and supplies deterministic clocks, bounded and
+  cancelling streams, cancelling outputs, and latch-controlled workflows.
+  Its files live only in temporary test directories. The updated snapshot-
+  permission regression inspects only files created beneath the current test
+  process's temporary directory. No external PDF, image, font, hostile-input
+  corpus, system file, or Reference Suite output is included.
+- Accounting and storage boundary: every Source is copied through actual-byte
+  accounting before PDFBox opens it; iterative parsed-graph preflight accounts
+  valid pages, objects, nesting, supported filter output, and materializable
+  image dimensions. PDFBox cache is temp-only under the environment-owned
+  transaction root. Source snapshots, filter spill, staged products, and
+  target-adjacent commit files share one quota and cleanup lifecycle. The
+  owned-memory policy models integrated Folio byte lifetimes and makes no
+  JVM-wide or backend-allocation hard-limit claim.
+- Generated documentation: `docs/generated/capability-matrix.md` and
+  `docs/generated/facade-surface.md` are regenerated deterministically from
+  the two YAML authorities and contain no copied external content.
+- Excluded inputs: no iText source, resource, fixture, binary, output,
+  decompiled or binary-derived implementation detail, closed add-on material,
+  proprietary differential evidence, unauthorized black-box observation,
+  downloaded hostile document, or Reference Suite behavioral oracle was used.
+- Scope: T20 adds only finite-default cooperative policy enforcement for the
+  trusted in-process Document Workflow. It does not implement T21 Worker IPC,
+  separate-process memory/CPU/time/filesystem/network isolation, hard
+  termination, T23 rendering, OCR, LibreOffice, redaction, Migration Facade
+  surface, or a new product module, and it makes no global publication-
+  atomicity or physical secure-erasure claim.
+- Compatibility Curator evidence: none; the role remains vacant. All four
+  mandatory Acceptance Evidence chains are absent, the T03 and T09 compatible-
+  status Dependency Gates remain open, and T06 remains a Promotion Gate. T20
+  therefore remains `experimental` with no compatible or certified-platform
+  claim.
+
 Future changes append or update a scoped record and supply the pull-request
 provenance statement required by [CONTRIBUTING.md](CONTRIBUTING.md).

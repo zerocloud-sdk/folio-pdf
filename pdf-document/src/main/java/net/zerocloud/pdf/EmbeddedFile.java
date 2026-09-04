@@ -52,14 +52,44 @@ public final class EmbeddedFile {
             String mimeSubtype,
             String description,
             Relationship relationship) {
+        this(name, content, mimeSubtype, description, relationship, true);
+    }
+
+    private EmbeddedFile(
+            String name,
+            byte[] content,
+            String mimeSubtype,
+            String description,
+            Relationship relationship,
+            boolean copyContent) {
         if (Objects.requireNonNull(name, "name").isEmpty()) {
             throw new IllegalArgumentException("name must not be empty");
         }
         this.name = name;
-        this.content = Objects.requireNonNull(content, "content").clone();
+        byte[] requiredContent = Objects.requireNonNull(content, "content");
+        this.content = copyContent ? requiredContent.clone() : requiredContent;
         this.mimeSubtype = mimeSubtype;
         this.description = description;
         this.relationship = relationship;
+    }
+
+    static EmbeddedFile fromOwnedContent(
+            String name,
+            byte[] content,
+            String mimeSubtype,
+            String description,
+            Relationship relationship) {
+        return new EmbeddedFile(
+                name,
+                content,
+                mimeSubtype,
+                description,
+                relationship,
+                false);
+    }
+
+    byte[] contentForWorkflow() {
+        return content;
     }
 
     /**

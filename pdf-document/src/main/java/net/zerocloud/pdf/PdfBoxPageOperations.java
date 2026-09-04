@@ -2,7 +2,10 @@ package net.zerocloud.pdf;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.IdentityHashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -50,6 +53,7 @@ final class PdfBoxPageOperations {
     private final PdfBoxValueAdapter valueAdapter;
     private final PdfBoxMetadataOperations metadataOperations;
     private final PdfBoxAnnotationPageOperations annotationOperations;
+    private final WorkflowResourceContext resources;
     private Map<String, PDDocument> splitDocuments;
 
     PdfBoxPageOperations(
@@ -62,7 +66,8 @@ final class PdfBoxPageOperations {
             PasswordEncryptionScope publicationScope,
             PdfBoxValueAdapter valueAdapter,
             PdfBoxMetadataOperations metadataOperations,
-            PdfBoxAnnotationPageOperations annotationOperations) {
+            PdfBoxAnnotationPageOperations annotationOperations,
+            WorkflowResourceContext resources) throws DocumentFailure {
         this.document = Objects.requireNonNull(document, "document");
         this.sources = Objects.requireNonNull(sources, "sources");
         this.publicationTargets = Objects.requireNonNull(
@@ -78,6 +83,7 @@ final class PdfBoxPageOperations {
         this.annotationOperations = Objects.requireNonNull(
                 annotationOperations,
                 "annotationOperations");
+        this.resources = Objects.requireNonNull(resources, "resources");
         if (libraryOwnedDocument) {
             makeLibraryOwnedPageTreeIndirect(document);
         }
@@ -97,6 +103,7 @@ final class PdfBoxPageOperations {
             throw new IllegalArgumentException("Unsupported page command.");
         }
         try {
+            resources.checkpoint();
             if (command instanceof InsertBlankPage) {
                 insert((InsertBlankPage) command);
             } else if (command instanceof RemovePages) {
@@ -113,6 +120,7 @@ final class PdfBoxPageOperations {
         } catch (DocumentFailure failure) {
             throw failure;
         } catch (RuntimeException backendFailure) {
+            resources.rethrowResourceOrTerminalFailure(backendFailure);
             throw failure(
                     DocumentFailureCode.DOCUMENT_WRITE_FAILED,
                     "The page operation could not be completed safely.");
@@ -144,6 +152,7 @@ final class PdfBoxPageOperations {
         } catch (DocumentFailure failure) {
             throw failure;
         } catch (RuntimeException backendFailure) {
+            resources.rethrowResourceOrTerminalFailure(backendFailure);
             throw failure(
                     DocumentFailureCode.QUERY_FAILED,
                     "The page Object Reference could not be evaluated.");
@@ -162,7 +171,7 @@ final class PdfBoxPageOperations {
         }
     }
 
-    void makeLibraryOwnedPageIndirect(PDPage page) {
+    void makeLibraryOwnedPageIndirect(PDPage page) throws DocumentFailure {
         COSDictionary pageDictionary = page.getCOSObject();
         COSBase parentValue = dereference(
                 pageDictionary.getItem(COSName.PARENT));
@@ -178,6 +187,7 @@ final class PdfBoxPageOperations {
         }
         COSArray kids = (COSArray) kidsValue;
         for (int index = 0; index < kids.size(); index++) {
+            resources.checkpoint();
             COSBase rawKid = kids.get(index);
             if (dereference(rawKid) == pageDictionary) {
                 if (!(rawKid instanceof COSObject)) {
@@ -190,8 +200,8 @@ final class PdfBoxPageOperations {
                 "A library-owned page must be present in its parent.");
     }
 
-    private static void makeLibraryOwnedPageTreeIndirect(
-            PDDocument generatedDocument) {
+    private void makeLibraryOwnedPageTreeIndirect(
+            PDDocument generatedDocument) throws DocumentFailure {
         COSDictionary catalog = generatedDocument.getDocumentCatalog()
                 .getCOSObject();
         COSBase rawRoot = catalog.getItem(COSName.PAGES);
@@ -203,38 +213,51 @@ final class PdfBoxPageOperations {
         if (!(rawRoot instanceof COSObject)) {
             catalog.setItem(COSName.PAGES, new COSObject(rootValue));
         }
-        makeLibraryOwnedPageTreeChildrenIndirect(
-                (COSDictionary) rootValue,
-                new IdentityHashMap<COSDictionary, Boolean>());
-    }
-
-    private static void makeLibraryOwnedPageTreeChildrenIndirect(
-            COSDictionary node,
-            IdentityHashMap<COSDictionary, Boolean> visited) {
-        if (visited.put(node, Boolean.TRUE) != null) {
-            throw new IllegalStateException(
-                    "A library-owned page tree must be acyclic.");
-        }
-        COSBase kidsValue = dereference(node.getItem(COSName.KIDS));
-        if (!(kidsValue instanceof COSArray)) {
-            throw new IllegalStateException(
-                    "A library-owned page tree node must have children.");
-        }
-        COSArray kids = (COSArray) kidsValue;
-        for (int index = 0; index < kids.size(); index++) {
-            COSBase rawKid = kids.get(index);
-            COSBase kidValue = dereference(rawKid);
-            if (!(kidValue instanceof COSDictionary)) {
+        Deque<PageTreeNode> pending = new ArrayDeque<PageTreeNode>();
+        IdentityHashMap<COSDictionary, Boolean> visited =
+                new IdentityHashMap<COSDictionary, Boolean>();
+        pending.push(new PageTreeNode(
+                catalog.getItem(COSName.PAGES),
+                1));
+        while (!pending.isEmpty()) {
+            resources.checkpoint();
+            PageTreeNode current = pending.pop();
+            resources.requireNestingDepth(current.depth);
+            COSBase currentValue = dereference(current.rawNode);
+            if (!(currentValue instanceof COSDictionary)) {
                 throw new IllegalStateException(
-                        "A library-owned page tree child must be a dictionary.");
+                        "A library-owned page tree node must be a dictionary.");
             }
-            if (!(rawKid instanceof COSObject)) {
-                kids.set(index, new COSObject(kidValue));
+            COSDictionary node = (COSDictionary) currentValue;
+            if (visited.put(node, Boolean.TRUE) != null) {
+                throw new IllegalStateException(
+                        "A library-owned page tree must be acyclic.");
             }
-            COSDictionary kid = (COSDictionary) kidValue;
-            if (COSName.PAGES.equals(dereference(
-                    kid.getItem(COSName.TYPE)))) {
-                makeLibraryOwnedPageTreeChildrenIndirect(kid, visited);
+            COSBase kidsValue = dereference(node.getItem(COSName.KIDS));
+            if (!(kidsValue instanceof COSArray)) {
+                throw new IllegalStateException(
+                        "A library-owned page tree node must have children.");
+            }
+            COSArray kids = (COSArray) kidsValue;
+            for (int index = 0; index < kids.size(); index++) {
+                resources.checkpoint();
+                COSBase rawKid = kids.get(index);
+                COSBase kidValue = dereference(rawKid);
+                if (!(kidValue instanceof COSDictionary)) {
+                    throw new IllegalStateException(
+                            "A library-owned page tree child must be a dictionary.");
+                }
+                if (!(rawKid instanceof COSObject)) {
+                    kids.set(index, new COSObject(kidValue));
+                    rawKid = kids.get(index);
+                }
+                COSDictionary kid = (COSDictionary) kidValue;
+                if (COSName.PAGES.equals(dereference(
+                        kid.getItem(COSName.TYPE)))) {
+                    pending.push(new PageTreeNode(
+                            rawKid,
+                            current.depth + 1));
+                }
             }
         }
     }
@@ -255,6 +278,7 @@ final class PdfBoxPageOperations {
             }
             makeLibraryOwnedPageIndirect(page);
         } catch (RuntimeException backendFailure) {
+            resources.rethrowResourceOrTerminalFailure(backendFailure);
             throw failure(
                     DocumentFailureCode.DOCUMENT_WRITE_FAILED,
                     "The blank page could not be inserted.");
@@ -269,6 +293,7 @@ final class PdfBoxPageOperations {
         for (int pageNumber = range.getFirstPageNumber();
                 pageNumber <= range.getLastPageNumber();
                 pageNumber++) {
+            resources.checkpoint();
             removed.add(Integer.valueOf(pageNumber - 1));
         }
         metadataOperations.requireNoDestinationConflict(document, removed);
@@ -277,9 +302,11 @@ final class PdfBoxPageOperations {
             for (int pageNumber = range.getLastPageNumber();
                     pageNumber >= range.getFirstPageNumber();
                     pageNumber--) {
+                resources.checkpoint();
                 document.removePage(pageNumber - 1);
             }
         } catch (RuntimeException backendFailure) {
+            resources.rethrowResourceOrTerminalFailure(backendFailure);
             throw failure(
                     DocumentFailureCode.DOCUMENT_WRITE_FAILED,
                     "The pages could not be removed.");
@@ -300,6 +327,7 @@ final class PdfBoxPageOperations {
             for (int pageNumber = range.getFirstPageNumber();
                     pageNumber <= range.getLastPageNumber();
                     pageNumber++) {
+                resources.checkpoint();
                 PDPage page = document.getPage(pageNumber - 1);
                 materializeInheritedPageAttributes(page);
                 selected.add(page);
@@ -307,10 +335,12 @@ final class PdfBoxPageOperations {
             for (int pageNumber = range.getLastPageNumber();
                     pageNumber >= range.getFirstPageNumber();
                     pageNumber--) {
+                resources.checkpoint();
                 document.removePage(pageNumber - 1);
             }
             int destination = movement.getDestinationPageNumber();
             for (PDPage page : selected) {
+                resources.checkpoint();
                 if (destination == document.getNumberOfPages() + 1) {
                     document.addPage(page);
                 } else {
@@ -322,6 +352,7 @@ final class PdfBoxPageOperations {
                 destination++;
             }
         } catch (RuntimeException backendFailure) {
+            resources.rethrowResourceOrTerminalFailure(backendFailure);
             throw failure(
                     DocumentFailureCode.DOCUMENT_WRITE_FAILED,
                     "The pages could not be moved.");
@@ -353,13 +384,16 @@ final class PdfBoxPageOperations {
             int insertion = copy.getInsertionPageNumber();
             List<PDPage> copiedPages = new ArrayList<PDPage>(copiedPageCount);
             for (int index = 0; index < copiedPageCount; index++) {
+                resources.checkpoint();
                 PDPage copiedPage = document.getPage(originalPageCount + index);
                 copiedPages.add(copiedPage);
             }
             for (int index = 0; index < copiedPageCount; index++) {
+                resources.checkpoint();
                 document.removePage(originalPageCount);
             }
             for (PDPage page : copiedPages) {
+                resources.checkpoint();
                 if (insertion == document.getNumberOfPages() + 1) {
                     document.addPage(page);
                 } else {
@@ -370,6 +404,7 @@ final class PdfBoxPageOperations {
                 insertion++;
             }
             for (PDPage copiedPage : copiedPages) {
+                resources.checkpoint();
                 makeLibraryOwnedPageIndirect(copiedPage);
             }
             repairPageParentReferences(document);
@@ -382,57 +417,67 @@ final class PdfBoxPageOperations {
             }
         } catch (DocumentFailure structureFailure) {
             closeQuietly(copiedDocuments);
+            annotationStructures.close();
             throw structureFailure;
         } catch (IOException | RuntimeException backendFailure) {
             closeQuietly(copiedDocuments);
+            annotationStructures.close();
+            resources.rethrowResourceOrTerminalFailure(backendFailure);
             throw failure(
                     DocumentFailureCode.DOCUMENT_WRITE_FAILED,
                     "The pages could not be copied.");
         }
-        closeForSuccess(copiedDocuments);
+        try {
+            closeForSuccess(copiedDocuments);
+        } finally {
+            annotationStructures.close();
+        }
     }
 
-    private static void repairPageParentReferences(PDDocument candidate)
+    private void repairPageParentReferences(PDDocument candidate)
             throws DocumentFailure {
         COSBase rawRoot = candidate.getDocumentCatalog()
                 .getCOSObject().getItem(COSName.PAGES);
-        repairPageParentReferences(
-                rawRoot,
-                new IdentityHashMap<COSDictionary, Boolean>());
-    }
-
-    private static void repairPageParentReferences(
-            COSBase rawNode,
-            IdentityHashMap<COSDictionary, Boolean> visited)
-            throws DocumentFailure {
-        if (!(rawNode instanceof COSObject)) {
-            throw preservationUnsupported();
-        }
-        COSBase nodeValue = dereference(rawNode);
-        if (!(nodeValue instanceof COSDictionary)) {
-            throw preservationUnsupported();
-        }
-        COSDictionary node = (COSDictionary) nodeValue;
-        if (visited.put(node, Boolean.TRUE) != null) {
-            throw preservationUnsupported();
-        }
-        COSBase kidsValue = dereference(node.getItem(COSName.KIDS));
-        if (!(kidsValue instanceof COSArray)) {
-            throw preservationUnsupported();
-        }
-        COSArray kids = (COSArray) kidsValue;
-        for (int index = 0; index < kids.size(); index++) {
-            COSBase rawChild = kids.get(index);
-            COSBase childValue = dereference(rawChild);
-            if (!(rawChild instanceof COSObject)
-                    || !(childValue instanceof COSDictionary)) {
+        Deque<PageTreeNode> pending = new ArrayDeque<PageTreeNode>();
+        IdentityHashMap<COSDictionary, Boolean> visited =
+                new IdentityHashMap<COSDictionary, Boolean>();
+        pending.push(new PageTreeNode(rawRoot, 1));
+        while (!pending.isEmpty()) {
+            resources.checkpoint();
+            PageTreeNode current = pending.pop();
+            resources.requireNestingDepth(current.depth);
+            if (!(current.rawNode instanceof COSObject)) {
                 throw preservationUnsupported();
             }
-            COSDictionary child = (COSDictionary) childValue;
-            child.setItem(COSName.PARENT, rawNode);
-            if (COSName.PAGES.equals(
-                    dereference(child.getItem(COSName.TYPE)))) {
-                repairPageParentReferences(rawChild, visited);
+            COSBase nodeValue = dereference(current.rawNode);
+            if (!(nodeValue instanceof COSDictionary)) {
+                throw preservationUnsupported();
+            }
+            COSDictionary node = (COSDictionary) nodeValue;
+            if (visited.put(node, Boolean.TRUE) != null) {
+                throw preservationUnsupported();
+            }
+            COSBase kidsValue = dereference(node.getItem(COSName.KIDS));
+            if (!(kidsValue instanceof COSArray)) {
+                throw preservationUnsupported();
+            }
+            COSArray kids = (COSArray) kidsValue;
+            for (int index = 0; index < kids.size(); index++) {
+                resources.checkpoint();
+                COSBase rawChild = kids.get(index);
+                COSBase childValue = dereference(rawChild);
+                if (!(rawChild instanceof COSObject)
+                        || !(childValue instanceof COSDictionary)) {
+                    throw preservationUnsupported();
+                }
+                COSDictionary child = (COSDictionary) childValue;
+                child.setItem(COSName.PARENT, current.rawNode);
+                if (COSName.PAGES.equals(
+                        dereference(child.getItem(COSName.TYPE)))) {
+                    pending.push(new PageTreeNode(
+                            rawChild,
+                            current.depth + 1));
+                }
             }
         }
     }
@@ -440,6 +485,7 @@ final class PdfBoxPageOperations {
     private void merge(MergeDocuments merge) throws DocumentFailure {
         LinkedHashSet<String> selectedSources = new LinkedHashSet<String>();
         for (String sourceName : merge.getSourceNames()) {
+            resources.checkpoint();
             if (!selectedSources.add(sourceName)
                     || !sources.containsKey(sourceName)) {
                 throw invalidMergeSources();
@@ -453,17 +499,19 @@ final class PdfBoxPageOperations {
                 .getItem(COSName.INFO) != null;
 
         List<PDDocument> mergeDocuments = new ArrayList<PDDocument>();
+        List<PdfBoxMetadataOperations.MergedStructures> structures =
+                new ArrayList<PdfBoxMetadataOperations.MergedStructures>();
+        List<PdfBoxAnnotationPageOperations.MergeStructures>
+                annotationStructures =
+                new ArrayList<
+                        PdfBoxAnnotationPageOperations.MergeStructures>();
         try {
-            PDDocument combinedSources = new PDDocument();
+            PDDocument combinedSources = new PDDocument(
+                    resources.streamCacheFactory());
             mergeDocuments.add(combinedSources);
             PDFMergerUtility merger = new PDFMergerUtility();
-            List<PdfBoxMetadataOperations.MergedStructures> structures =
-                    new ArrayList<PdfBoxMetadataOperations.MergedStructures>();
-            List<PdfBoxAnnotationPageOperations.MergeStructures>
-                    annotationStructures =
-                    new ArrayList<
-                            PdfBoxAnnotationPageOperations.MergeStructures>();
             for (String sourceName : merge.getSourceNames()) {
+                resources.checkpoint();
                 PdfBoxWorkflowEngine.PreparedNamedSource preparedSource =
                         sources.get(sourceName);
                 preparedSource.requireMergeAllowed(
@@ -489,6 +537,7 @@ final class PdfBoxPageOperations {
             for (int index = originalPageCount;
                     index < document.getNumberOfPages();
                     index++) {
+                resources.checkpoint();
                 makeLibraryOwnedPageIndirect(document.getPage(index));
             }
             repairPageParentReferences(document);
@@ -503,6 +552,9 @@ final class PdfBoxPageOperations {
                     destinationRenames);
         } catch (DocumentFailure sourceFailure) {
             closeQuietly(mergeDocuments);
+            closeMetadataStructures(structures);
+            closeAnnotationStructures(annotationStructures);
+            resources.rethrowTerminalFailure();
             if (PdfBoxWorkflowEngine.VERSION_SECURITY_CAPABILITY_ID.equals(
                     sourceFailure.getCapabilityId())) {
                 throw sourceFailure;
@@ -512,11 +564,19 @@ final class PdfBoxPageOperations {
                     sourceFailure.getDiagnostic());
         } catch (IOException | RuntimeException backendFailure) {
             closeQuietly(mergeDocuments);
+            closeMetadataStructures(structures);
+            closeAnnotationStructures(annotationStructures);
+            resources.rethrowResourceOrTerminalFailure(backendFailure);
             throw failure(
                     DocumentFailureCode.DOCUMENT_WRITE_FAILED,
                     "The named Sources could not be merged safely.");
         }
-        closeForSuccess(mergeDocuments);
+        try {
+            closeForSuccess(mergeDocuments);
+        } finally {
+            closeMetadataStructures(structures);
+            closeAnnotationStructures(annotationStructures);
+        }
     }
 
     private static PDDocument openAdditionalSource(
@@ -536,6 +596,7 @@ final class PdfBoxPageOperations {
                     "The split command must define every publication Target once.");
         }
         for (PageRange range : split.getTargetRanges().values()) {
+            resources.checkpoint();
             requireRange(range);
         }
         requirePreservable(document);
@@ -544,14 +605,16 @@ final class PdfBoxPageOperations {
 
         Map<String, PDDocument> created =
                 new LinkedHashMap<String, PDDocument>();
+        PdfBoxMetadataOperations.MergedStructures snapshot = null;
+        PdfBoxAnnotationPageOperations.MergeStructures annotationSnapshot =
+                null;
         try {
-            PdfBoxMetadataOperations.MergedStructures snapshot =
-                    metadataOperations.snapshotManagedStructures(document);
-            PdfBoxAnnotationPageOperations.MergeStructures
-                    annotationSnapshot =
+            snapshot = metadataOperations.snapshotManagedStructures(document);
+            annotationSnapshot =
                     annotationOperations.snapshotSplitStructures(document);
             for (Map.Entry<String, PageRange> product
                     : split.getTargetRanges().entrySet()) {
+                resources.checkpoint();
                 List<PDDocument> documents = splitter(product.getValue())
                         .split(document);
                 PDDocument productDocument = documents.get(0);
@@ -576,23 +639,63 @@ final class PdfBoxPageOperations {
             splitDocuments = created;
         } catch (DocumentFailure splitFailure) {
             closeQuietly(new ArrayList<PDDocument>(created.values()));
+            closeQuietly(snapshot);
+            closeQuietly(annotationSnapshot);
+            resources.rethrowTerminalFailure();
             throw failure(
                     splitFailure.getCode(),
                     splitFailure.getDiagnostic());
         } catch (IOException | RuntimeException backendFailure) {
             closeQuietly(new ArrayList<PDDocument>(created.values()));
+            closeQuietly(snapshot);
+            closeQuietly(annotationSnapshot);
+            resources.rethrowResourceOrTerminalFailure(backendFailure);
             throw failure(
                     DocumentFailureCode.DOCUMENT_WRITE_FAILED,
                     "The split products could not be created safely.");
         }
+        closeQuietly(snapshot);
+        closeQuietly(annotationSnapshot);
     }
 
-    private static int[] splitMapping(int pageCount, PageRange range) {
+    private static void closeAnnotationStructures(
+            List<PdfBoxAnnotationPageOperations.MergeStructures> structures) {
+        for (PdfBoxAnnotationPageOperations.MergeStructures structure
+                : structures) {
+            structure.close();
+        }
+    }
+
+    private static void closeMetadataStructures(
+            List<PdfBoxMetadataOperations.MergedStructures> structures) {
+        for (PdfBoxMetadataOperations.MergedStructures structure
+                : structures) {
+            structure.close();
+        }
+    }
+
+    private static void closeQuietly(
+            PdfBoxMetadataOperations.MergedStructures structures) {
+        if (structures != null) {
+            structures.close();
+        }
+    }
+
+    private static void closeQuietly(
+            PdfBoxAnnotationPageOperations.MergeStructures structures) {
+        if (structures != null) {
+            structures.close();
+        }
+    }
+
+    private int[] splitMapping(int pageCount, PageRange range)
+            throws DocumentFailure {
         int[] mapping = new int[pageCount];
         int position = 0;
         for (int pageNumber = range.getFirstPageNumber();
                 pageNumber <= range.getLastPageNumber();
                 pageNumber++) {
+            resources.checkpoint();
             mapping[pageNumber - 1] = ++position;
         }
         return mapping;
@@ -629,8 +732,10 @@ final class PdfBoxPageOperations {
         }
     }
 
-    private static Splitter splitter(PageRange range) {
+    private Splitter splitter(PageRange range) {
         Splitter splitter = new Splitter();
+        splitter.setStreamCacheCreateFunction(
+                resources.streamCacheFactory());
         splitter.setStartPage(range.getFirstPageNumber());
         splitter.setEndPage(range.getLastPageNumber());
         splitter.setSplitAtPage(
@@ -644,6 +749,79 @@ final class PdfBoxPageOperations {
             PageReferenceLookup lookup,
             IdentityHashMap<COSDictionary, Boolean> visited)
             throws DocumentFailure {
+        Deque<PageReferenceFrame> pending =
+                new ArrayDeque<PageReferenceFrame>();
+        pending.push(pageReferenceFrame(
+                rawNode,
+                expectedParent,
+                visited,
+                1));
+        long rootPageCount = 0L;
+        while (!pending.isEmpty()) {
+            resources.checkpoint();
+            PageReferenceFrame current = pending.peek();
+            if (current.index == current.kids.size()) {
+                COSBase count = dereference(
+                        current.node.getItem(COSName.COUNT));
+                if (!(count instanceof COSInteger)
+                        || ((COSInteger) count).longValue()
+                                != current.descendantPageCount) {
+                    throw invalidPageTreeForQuery();
+                }
+                pending.pop();
+                if (pending.isEmpty()) {
+                    rootPageCount = current.descendantPageCount;
+                } else {
+                    PageReferenceFrame parent = pending.peek();
+                    if (parent.descendantPageCount
+                            > Long.MAX_VALUE - current.descendantPageCount) {
+                        throw invalidPageTreeForQuery();
+                    }
+                    parent.descendantPageCount +=
+                            current.descendantPageCount;
+                }
+                continue;
+            }
+
+            COSBase rawChild = current.kids.get(current.index++);
+            COSBase childValue = dereference(rawChild);
+            if (!(childValue instanceof COSDictionary)) {
+                throw invalidPageTreeForQuery();
+            }
+            COSDictionary child = (COSDictionary) childValue;
+            COSBase type = dereference(child.getItem(COSName.TYPE));
+            if (COSName.PAGES.equals(type)) {
+                pending.push(pageReferenceFrame(
+                        rawChild,
+                        current.node,
+                        visited,
+                        current.depth + 1));
+            } else if (COSName.PAGE.equals(type)) {
+                if (!(rawChild instanceof COSObject)
+                        || visited.put(child, Boolean.TRUE) != null
+                        || dereference(child.getItem(COSName.PARENT))
+                                != current.node) {
+                    throw invalidPageTreeForQuery();
+                }
+                lookup.add(rawChild);
+                if (current.descendantPageCount == Long.MAX_VALUE) {
+                    throw invalidPageTreeForQuery();
+                }
+                current.descendantPageCount++;
+            } else {
+                throw invalidPageTreeForQuery();
+            }
+        }
+        return rootPageCount;
+    }
+
+    private PageReferenceFrame pageReferenceFrame(
+            COSBase rawNode,
+            COSDictionary expectedParent,
+            IdentityHashMap<COSDictionary, Boolean> visited,
+            int depth) throws DocumentFailure {
+        resources.checkpoint();
+        resources.requireNestingDepth(depth);
         if (!(rawNode instanceof COSObject)) {
             throw invalidPageTreeForQuery();
         }
@@ -667,42 +845,10 @@ final class PdfBoxPageOperations {
         if (!(kidsValue instanceof COSArray)) {
             throw invalidPageTreeForQuery();
         }
-        COSArray kids = (COSArray) kidsValue;
-        long descendantPageCount = 0L;
-        for (int index = 0; index < kids.size(); index++) {
-            COSBase rawChild = kids.get(index);
-            COSBase childValue = dereference(rawChild);
-            if (!(childValue instanceof COSDictionary)) {
-                throw invalidPageTreeForQuery();
-            }
-            COSDictionary child = (COSDictionary) childValue;
-            COSBase type = dereference(child.getItem(COSName.TYPE));
-            if (COSName.PAGES.equals(type)) {
-                descendantPageCount += collectPageReferences(
-                        rawChild,
-                        node,
-                        lookup,
-                        visited);
-            } else if (COSName.PAGE.equals(type)) {
-                if (!(rawChild instanceof COSObject)) {
-                    throw invalidPageTreeForQuery();
-                }
-                if (visited.put(child, Boolean.TRUE) != null
-                        || dereference(child.getItem(COSName.PARENT)) != node) {
-                    throw invalidPageTreeForQuery();
-                }
-                lookup.add(rawChild);
-                descendantPageCount++;
-            } else {
-                throw invalidPageTreeForQuery();
-            }
-        }
-        COSBase count = dereference(node.getItem(COSName.COUNT));
-        if (!(count instanceof COSInteger)
-                || ((COSInteger) count).longValue() != descendantPageCount) {
-            throw invalidPageTreeForQuery();
-        }
-        return descendantPageCount;
+        return new PageReferenceFrame(
+                node,
+                (COSArray) kidsValue,
+                depth);
     }
 
     private static void materializeInheritedPageAttributes(PDPage page) {
@@ -720,6 +866,7 @@ final class PdfBoxPageOperations {
         requireSafeTrailer(candidate);
         COSDictionary catalog = candidate.getDocumentCatalog().getCOSObject();
         for (COSName name : catalog.keySet()) {
+            resources.checkpoint();
             if (!COSName.TYPE.equals(name)
                     && !COSName.PAGES.equals(name)
                     && !COSName.VERSION.equals(name)
@@ -738,15 +885,18 @@ final class PdfBoxPageOperations {
             metadataOperations.requireSafeInfoPreservable(candidate);
             annotationOperations.requireSafeActionStructures(candidate);
         } catch (DocumentFailure metadataStructure) {
+            resources.rethrowTerminalFailure();
             throw preservationUnsupported();
         }
         requireSafePageTree(
                 catalog.getItem(COSName.PAGES),
                 null,
-                new IdentityHashMap<COSDictionary, Boolean>());
+                new IdentityHashMap<COSDictionary, Boolean>(),
+                1);
         PdfBoxAnnotationDecodePolicy.Budgets annotationBudgets =
                 PdfBoxAnnotationDecodePolicy.newManagedGraphPass();
         for (PDPage page : candidate.getPages()) {
+            resources.checkpoint();
             COSDictionary dictionary = page.getCOSObject();
             requireSafePage(dictionary);
             try {
@@ -756,18 +906,20 @@ final class PdfBoxPageOperations {
                         dictionary.getItem(COSName.ANNOTS),
                         annotationBudgets);
             } catch (DocumentFailure unsafeAnnotations) {
+                resources.rethrowTerminalFailure();
                 throw preservationUnsupported();
             }
         }
     }
 
-    private static void requireSafeTrailer(PDDocument candidate)
+    private void requireSafeTrailer(PDDocument candidate)
             throws DocumentFailure {
         COSDictionary trailer = candidate.getDocument().getTrailer();
         if (trailer == null) {
             return;
         }
         for (COSName name : trailer.keySet()) {
+            resources.checkpoint();
             if (!COSName.INFO.equals(name)
                     && !(candidate.isEncrypted()
                             && COSName.ENCRYPT.equals(name))
@@ -793,9 +945,11 @@ final class PdfBoxPageOperations {
         }
     }
 
-    private static void requireSafePage(COSDictionary page)
+    private void requireSafePage(COSDictionary page)
             throws DocumentFailure {
+        resources.checkpoint();
         for (COSName name : page.keySet()) {
+            resources.checkpoint();
             if (isOneOf(
                     name,
                     "Type",
@@ -843,11 +997,83 @@ final class PdfBoxPageOperations {
         requireSafeContents(page.getItem(COSName.CONTENTS));
     }
 
-    private static long requireSafePageTree(
+    private long requireSafePageTree(
             COSBase rawNode,
             COSDictionary expectedParent,
-            IdentityHashMap<COSDictionary, Boolean> visited)
+            IdentityHashMap<COSDictionary, Boolean> visited,
+            int depth)
             throws DocumentFailure {
+        Deque<SafePageTreeFrame> pending =
+                new ArrayDeque<SafePageTreeFrame>();
+        pending.push(safePageTreeFrame(
+                rawNode,
+                expectedParent,
+                visited,
+                depth));
+        long rootPageCount = 0L;
+        while (!pending.isEmpty()) {
+            resources.checkpoint();
+            SafePageTreeFrame current = pending.peek();
+            if (current.index == current.kids.size()) {
+                COSBase count = dereference(
+                        current.node.getItem(COSName.COUNT));
+                if (!(count instanceof COSInteger)
+                        || ((COSInteger) count).longValue()
+                                != current.descendantPageCount) {
+                    throw preservationUnsupported();
+                }
+                pending.pop();
+                if (pending.isEmpty()) {
+                    rootPageCount = current.descendantPageCount;
+                } else {
+                    SafePageTreeFrame parent = pending.peek();
+                    if (parent.descendantPageCount
+                            > Long.MAX_VALUE - current.descendantPageCount) {
+                        throw preservationUnsupported();
+                    }
+                    parent.descendantPageCount += current.descendantPageCount;
+                }
+                continue;
+            }
+
+            COSBase rawChild = current.kids.get(current.index++);
+            COSBase childValue = dereference(rawChild);
+            if (!(childValue instanceof COSDictionary)) {
+                throw preservationUnsupported();
+            }
+            COSDictionary child = (COSDictionary) childValue;
+            COSBase type = dereference(child.getItem(COSName.TYPE));
+            if (COSName.PAGES.equals(type)) {
+                pending.push(safePageTreeFrame(
+                        rawChild,
+                        current.node,
+                        visited,
+                        current.depth + 1));
+            } else if (COSName.PAGE.equals(type)) {
+                if (!(rawChild instanceof COSObject)
+                        || visited.put(child, Boolean.TRUE) != null
+                        || dereference(child.getItem(COSName.PARENT))
+                                != current.node) {
+                    throw preservationUnsupported();
+                }
+                if (current.descendantPageCount == Long.MAX_VALUE) {
+                    throw preservationUnsupported();
+                }
+                current.descendantPageCount++;
+            } else {
+                throw preservationUnsupported();
+            }
+        }
+        return rootPageCount;
+    }
+
+    private SafePageTreeFrame safePageTreeFrame(
+            COSBase rawNode,
+            COSDictionary expectedParent,
+            IdentityHashMap<COSDictionary, Boolean> visited,
+            int depth) throws DocumentFailure {
+        resources.checkpoint();
+        resources.requireNestingDepth(depth);
         if (!(rawNode instanceof COSObject)) {
             throw preservationUnsupported();
         }
@@ -869,6 +1095,7 @@ final class PdfBoxPageOperations {
             throw preservationUnsupported();
         }
         for (COSName name : node.keySet()) {
+            resources.checkpoint();
             if (!isOneOf(
                     name,
                     "Type",
@@ -887,43 +1114,13 @@ final class PdfBoxPageOperations {
         if (!(kidsValue instanceof COSArray)) {
             throw preservationUnsupported();
         }
-        COSArray kids = (COSArray) kidsValue;
-        long descendantPageCount = 0L;
-        for (int index = 0; index < kids.size(); index++) {
-            COSBase rawChild = kids.get(index);
-            COSBase childValue = dereference(rawChild);
-            if (!(childValue instanceof COSDictionary)) {
-                throw preservationUnsupported();
-            }
-            COSDictionary child = (COSDictionary) childValue;
-            COSBase type = dereference(child.getItem(COSName.TYPE));
-            if (COSName.PAGES.equals(type)) {
-                descendantPageCount += requireSafePageTree(
-                        rawChild,
-                        node,
-                        visited);
-            } else if (COSName.PAGE.equals(type)) {
-                if (!(rawChild instanceof COSObject)) {
-                    throw preservationUnsupported();
-                }
-                if (visited.put(child, Boolean.TRUE) != null
-                        || dereference(child.getItem(COSName.PARENT)) != node) {
-                    throw preservationUnsupported();
-                }
-                descendantPageCount++;
-            } else {
-                throw preservationUnsupported();
-            }
-        }
-        COSBase count = dereference(node.getItem(COSName.COUNT));
-        if (!(count instanceof COSInteger)
-                || ((COSInteger) count).longValue() != descendantPageCount) {
-            throw preservationUnsupported();
-        }
-        return descendantPageCount;
+        return new SafePageTreeFrame(
+                node,
+                (COSArray) kidsValue,
+                depth);
     }
 
-    private static void requireSafeInheritablePageAttributes(
+    private void requireSafeInheritablePageAttributes(
             COSDictionary dictionary) throws DocumentFailure {
         requireSafeRectangle(dictionary, COSName.MEDIA_BOX);
         requireSafeRectangle(dictionary, COSName.CROP_BOX);
@@ -971,7 +1168,7 @@ final class PdfBoxPageOperations {
         }
     }
 
-    private static void requireSafeResources(COSDictionary dictionary)
+    private void requireSafeResources(COSDictionary dictionary)
             throws DocumentFailure {
         COSBase rawResources = dictionary.getItem(COSName.RESOURCES);
         if (rawResources == null) {
@@ -986,45 +1183,57 @@ final class PdfBoxPageOperations {
                 new IdentityHashMap<COSBase, Boolean>());
     }
 
-    private static void requireResourceGraphDetachedFromPageTree(
+    private void requireResourceGraphDetachedFromPageTree(
             COSBase rawValue,
             IdentityHashMap<COSBase, Boolean> visited)
             throws DocumentFailure {
-        COSBase value = dereference(rawValue);
-        if (value == null) {
-            throw preservationUnsupported();
-        }
-        if (visited.put(value, Boolean.TRUE) != null) {
-            return;
-        }
-        if (value instanceof COSArray) {
-            COSArray array = (COSArray) value;
-            for (int index = 0; index < array.size(); index++) {
-                requireResourceGraphDetachedFromPageTree(
-                        array.get(index),
-                        visited);
+        Deque<InlineValueNode> pending = new ArrayDeque<InlineValueNode>();
+        pending.push(new InlineValueNode(rawValue, 1));
+        while (!pending.isEmpty()) {
+            resources.checkpoint();
+            InlineValueNode current = pending.pop();
+            resources.requireNestingDepth(current.depth);
+            COSBase value = dereference(current.value);
+            if (value == null) {
+                throw preservationUnsupported();
             }
-            return;
-        }
-        if (!(value instanceof COSDictionary)) {
-            return;
-        }
-        COSDictionary resource = (COSDictionary) value;
-        COSBase type = dereference(resource.getItem(COSName.TYPE));
-        if (COSName.PAGE.equals(type) || COSName.PAGES.equals(type)) {
-            throw preservationUnsupported();
-        }
-        for (COSBase entry : resource.getValues()) {
-            requireResourceGraphDetachedFromPageTree(entry, visited);
+            if (visited.put(value, Boolean.TRUE) != null) {
+                continue;
+            }
+            if (value instanceof COSArray) {
+                COSArray array = (COSArray) value;
+                for (int index = 0; index < array.size(); index++) {
+                    resources.checkpoint();
+                    pending.push(new InlineValueNode(
+                            array.get(index),
+                            current.depth + 1));
+                }
+                continue;
+            }
+            if (!(value instanceof COSDictionary)) {
+                continue;
+            }
+            COSDictionary resource = (COSDictionary) value;
+            COSBase type = dereference(resource.getItem(COSName.TYPE));
+            if (COSName.PAGE.equals(type) || COSName.PAGES.equals(type)) {
+                throw preservationUnsupported();
+            }
+            for (COSBase entry : resource.getValues()) {
+                resources.checkpoint();
+                pending.push(new InlineValueNode(
+                        entry,
+                        current.depth + 1));
+            }
         }
     }
 
-    private static void requireEffectiveMediaBox(COSDictionary page)
+    private void requireEffectiveMediaBox(COSDictionary page)
             throws DocumentFailure {
         COSDictionary current = page;
         IdentityHashMap<COSDictionary, Boolean> visited =
                 new IdentityHashMap<COSDictionary, Boolean>();
         while (visited.put(current, Boolean.TRUE) == null) {
+            resources.checkpoint();
             if (current.getItem(COSName.MEDIA_BOX) != null) {
                 return;
             }
@@ -1038,7 +1247,7 @@ final class PdfBoxPageOperations {
         throw preservationUnsupported();
     }
 
-    private static void requireSafeContents(COSBase rawContents)
+    private void requireSafeContents(COSBase rawContents)
             throws DocumentFailure {
         if (rawContents == null) {
             return;
@@ -1050,6 +1259,7 @@ final class PdfBoxPageOperations {
         if (contents instanceof COSArray) {
             COSArray streams = (COSArray) contents;
             for (int index = 0; index < streams.size(); index++) {
+                resources.checkpoint();
                 COSBase stream = dereference(streams.get(index));
                 if (!(stream instanceof COSStream)) {
                     throw preservationUnsupported();
@@ -1064,9 +1274,10 @@ final class PdfBoxPageOperations {
         requireSafeContentStream((COSStream) contents);
     }
 
-    private static void requireSafeContentStream(COSStream stream)
+    private void requireSafeContentStream(COSStream stream)
             throws DocumentFailure {
         for (COSName name : stream.keySet()) {
+            resources.checkpoint();
             if (!isOneOf(
                     name,
                     "Length",
@@ -1077,18 +1288,20 @@ final class PdfBoxPageOperations {
             }
         }
         requireSafeContentFilters(stream);
-        byte[] buffer = new byte[8192];
-        try (InputStream decoded = stream.createInputStream()) {
-            while (decoded.read(buffer) != -1) {
-                // Exhaust the decoder before PDFBox's page importer can hide
-                // a decoding failure and replace the content.
-            }
+        try {
+            PdfBoxHostileInputPreflight.decodeStream(
+                    stream,
+                    resources,
+                    new DiscardOutputStream());
+        } catch (DocumentFailure failure) {
+            throw failure;
         } catch (IOException | RuntimeException decodingFailure) {
+            resources.rethrowResourceOrTerminalFailure(decodingFailure);
             throw preservationUnsupported();
         }
     }
 
-    private static void requireSafeContentFilters(COSStream stream)
+    private void requireSafeContentFilters(COSStream stream)
             throws DocumentFailure {
         COSBase rawFilters = stream.getItem(COSName.FILTER);
         COSBase rawDecodeParameters = stream.getItem(COSName.DECODE_PARMS);
@@ -1119,12 +1332,13 @@ final class PdfBoxPageOperations {
         }
     }
 
-    private static void requireStrictFlateStream(COSStream stream)
+    private void requireStrictFlateStream(COSStream stream)
             throws DocumentFailure {
         Inflater inflater = new Inflater();
         byte[] encodedBuffer = new byte[8192];
         byte[] decodedBuffer = new byte[8192];
-        try (InputStream encoded = stream.createRawInputStream()) {
+        try (InputStream encoded = resources.checkpointedInput(
+                stream.createRawInputStream())) {
             while (!inflater.finished()) {
                 if (inflater.needsDictionary()) {
                     throw preservationUnsupported();
@@ -1140,6 +1354,7 @@ final class PdfBoxPageOperations {
                     inflater.setInput(encodedBuffer, 0, encodedCount);
                 }
                 int decodedCount = inflater.inflate(decodedBuffer);
+                resources.consumeDecompressedBytes(decodedCount);
                 if (decodedCount == 0
                         && !inflater.finished()
                         && !inflater.needsInput()
@@ -1151,40 +1366,58 @@ final class PdfBoxPageOperations {
                 throw preservationUnsupported();
             }
         } catch (IOException | DataFormatException | RuntimeException failure) {
+            resources.rethrowResourceOrTerminalFailure(failure);
             throw preservationUnsupported();
         } finally {
             inflater.end();
         }
     }
 
-    private static boolean isSafeInlineExtension(
+    private boolean isSafeInlineExtension(
             COSBase value,
-            IdentityHashMap<COSBase, Boolean> visited) {
-        if (value == null) {
-            return true;
-        }
-        if (value instanceof COSObject || value instanceof COSStream) {
-            return false;
-        }
-        if (value instanceof COSArray) {
-            if (visited.put(value, Boolean.TRUE) != null) {
+            IdentityHashMap<COSBase, Boolean> visited)
+            throws DocumentFailure {
+        Deque<InlineValueNode> pending = new ArrayDeque<InlineValueNode>();
+        pending.push(new InlineValueNode(value, 1));
+        while (!pending.isEmpty()) {
+            resources.checkpoint();
+            InlineValueNode current = pending.pop();
+            COSBase currentValue = current.value;
+            if (currentValue == null) {
+                continue;
+            }
+            if (currentValue instanceof COSObject
+                    || currentValue instanceof COSStream) {
                 return false;
             }
-            COSArray array = (COSArray) value;
-            for (int index = 0; index < array.size(); index++) {
-                if (!isSafeInlineExtension(array.get(index), visited)) {
+            if (currentValue instanceof COSArray) {
+                resources.requireNestingDepth(current.depth);
+                if (visited.put(currentValue, Boolean.TRUE) != null) {
                     return false;
                 }
-            }
-            return true;
-        }
-        if (value instanceof COSDictionary) {
-            if (visited.put(value, Boolean.TRUE) != null) {
-                return false;
-            }
-            for (COSBase entry : ((COSDictionary) value).getValues()) {
-                if (!isSafeInlineExtension(entry, visited)) {
+                COSArray array = (COSArray) currentValue;
+                for (int index = array.size() - 1; index >= 0; index--) {
+                    resources.checkpoint();
+                    pending.push(new InlineValueNode(
+                            array.get(index),
+                            current.depth + 1));
+                }
+            } else if (currentValue instanceof COSDictionary) {
+                resources.requireNestingDepth(current.depth);
+                if (visited.put(currentValue, Boolean.TRUE) != null) {
                     return false;
+                }
+                List<COSBase> values = new ArrayList<COSBase>();
+                for (COSBase entry
+                        : ((COSDictionary) currentValue).getValues()) {
+                    resources.checkpoint();
+                    values.add(entry);
+                }
+                for (int index = values.size() - 1; index >= 0; index--) {
+                    resources.checkpoint();
+                    pending.push(new InlineValueNode(
+                            values.get(index),
+                            current.depth + 1));
                 }
             }
         }
@@ -1236,6 +1469,64 @@ final class PdfBoxPageOperations {
         return new DocumentFailure(code, CAPABILITY_ID, diagnostic);
     }
 
+    private static final class SafePageTreeFrame {
+
+        private final COSDictionary node;
+        private final COSArray kids;
+        private final int depth;
+        private int index;
+        private long descendantPageCount;
+
+        private SafePageTreeFrame(
+                COSDictionary node,
+                COSArray kids,
+                int depth) {
+            this.node = node;
+            this.kids = kids;
+            this.depth = depth;
+        }
+    }
+
+    private static final class PageTreeNode {
+
+        private final COSBase rawNode;
+        private final int depth;
+
+        private PageTreeNode(COSBase rawNode, int depth) {
+            this.rawNode = rawNode;
+            this.depth = depth;
+        }
+    }
+
+    private static final class PageReferenceFrame {
+
+        private final COSDictionary node;
+        private final COSArray kids;
+        private final int depth;
+        private int index;
+        private long descendantPageCount;
+
+        private PageReferenceFrame(
+                COSDictionary node,
+                COSArray kids,
+                int depth) {
+            this.node = node;
+            this.kids = kids;
+            this.depth = depth;
+        }
+    }
+
+    private static final class InlineValueNode {
+
+        private final COSBase value;
+        private final int depth;
+
+        private InlineValueNode(COSBase value, int depth) {
+            this.value = value;
+            this.depth = depth;
+        }
+    }
+
     private static final class PageReferenceLookup {
 
         private final long requestedPageNumber;
@@ -1255,6 +1546,19 @@ final class PdfBoxPageOperations {
 
         COSBase getReference() {
             return reference;
+        }
+    }
+
+    private static final class DiscardOutputStream extends OutputStream {
+
+        @Override
+        public void write(int value) {
+            // Validation only.
+        }
+
+        @Override
+        public void write(byte[] bytes, int offset, int length) {
+            // Validation only.
         }
     }
 

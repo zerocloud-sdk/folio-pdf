@@ -18,10 +18,10 @@ import net.zerocloud.pdf.provider.ProviderPreference;
  * unique within their respective collections. A request with sources
  * explicitly names the primary source operated on by the supplied Document
  * Session. Every request explicitly selects a Save Mode and may also supply
- * cancellation, an absolute deadline, and a sanitized progress listener.
- * Capability Provider preferences retain declaration order. Remote document
- * disclosure is capability-scoped, absent by default, and never inferred from
- * registration or preference.</p>
+ * cancellation, an absolute deadline, a sanitized progress listener, and a
+ * finite resource-policy override. Capability Provider preferences retain
+ * declaration order. Remote document disclosure is capability-scoped, absent
+ * by default, and never inferred from registration or preference.</p>
  *
  * @since 0.1.0
  */
@@ -46,6 +46,7 @@ public final class WorkflowRequest {
     private final CancellationToken cancellationToken;
     private final Instant deadline;
     private final WorkflowProgressListener progressListener;
+    private final WorkflowResourcePolicy resourcePolicy;
     private final Map<String, ProviderPreference> providerPreferences;
     private final Set<String> remoteDisclosureAuthorizations;
 
@@ -61,6 +62,7 @@ public final class WorkflowRequest {
         this.cancellationToken = builder.cancellationToken;
         this.deadline = builder.deadline;
         this.progressListener = builder.progressListener;
+        this.resourcePolicy = builder.resourcePolicy;
         this.providerPreferences = Collections.unmodifiableMap(
                 new LinkedHashMap<String, ProviderPreference>(
                         builder.providerPreferences));
@@ -179,6 +181,18 @@ public final class WorkflowRequest {
         return progressListener;
     }
 
+    /**
+     * Returns the request-level resource policy override.
+     *
+     * <p>When absent, the finite default policy from the executing
+     * {@link WorkflowEnvironment} applies.</p>
+     *
+     * @return the optional immutable resource policy
+     */
+    public Optional<WorkflowResourcePolicy> getResourcePolicy() {
+        return Optional.ofNullable(resourcePolicy);
+    }
+
     Map<String, ProviderPreference> getProviderPreferences() {
         return providerPreferences;
     }
@@ -205,6 +219,7 @@ public final class WorkflowRequest {
         private CancellationToken cancellationToken = CancellationToken.none();
         private Instant deadline;
         private WorkflowProgressListener progressListener = NO_PROGRESS;
+        private WorkflowResourcePolicy resourcePolicy;
         private final Map<String, ProviderPreference> providerPreferences =
                 new LinkedHashMap<String, ProviderPreference>();
         private final Set<String> remoteDisclosureAuthorizations =
@@ -333,6 +348,22 @@ public final class WorkflowRequest {
             this.progressListener = Objects.requireNonNull(
                     progressListener,
                     "progressListener");
+            return this;
+        }
+
+        /**
+         * Overrides the environment's finite resource policy for this
+         * request. The same policy governs every named Source, operation,
+         * staged product, and publication target in the transaction.
+         *
+         * @param resourcePolicy the complete immutable request policy
+         * @return this builder
+         */
+        public Builder resourcePolicy(
+                WorkflowResourcePolicy resourcePolicy) {
+            this.resourcePolicy = Objects.requireNonNull(
+                    resourcePolicy,
+                    "resourcePolicy");
             return this;
         }
 

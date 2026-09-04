@@ -27,17 +27,21 @@ final class PdfBoxDocumentActionOperations {
     private final PDDocument document;
     private final PdfBoxMetadataOperations metadataOperations;
     private final PdfBoxAnnotationOperations annotationOperations;
+    private final WorkflowResourceContext resources;
 
     PdfBoxDocumentActionOperations(
             PDDocument document,
             PdfBoxMetadataOperations metadataOperations,
-            PdfBoxAnnotationOperations annotationOperations) {
+            PdfBoxAnnotationOperations annotationOperations,
+            WorkflowResourceContext resources) {
         this.document = document;
         this.metadataOperations = metadataOperations;
         this.annotationOperations = annotationOperations;
+        this.resources = resources;
     }
 
     void update(UpdateActions command) throws DocumentFailure {
+        resources.checkpoint();
         List<COSBase> pageReferences = pageReferencesForCommand();
         int pageCount = pageReferences.size();
         Set<String> namedDestinations;
@@ -45,6 +49,7 @@ final class PdfBoxDocumentActionOperations {
             namedDestinations = metadataOperations.namedDestinationNames(
                     document);
         } catch (DocumentFailure malformedDestinations) {
+            resources.rethrowTerminalFailure();
             throw invalidActionCommand();
         }
         requireActionTargets(command, pageCount, namedDestinations);
@@ -52,11 +57,12 @@ final class PdfBoxDocumentActionOperations {
         Map<Integer, COSDictionary> pageReplacements =
                 new LinkedHashMap<Integer, COSDictionary>();
         Set<Integer> touchedPages = new HashSet<Integer>();
-        touchedPages.addAll(command.getPageOpenActions().keySet());
-        touchedPages.addAll(command.getPageCloseActions().keySet());
-        touchedPages.addAll(command.getRemovedPageOpenActions());
-        touchedPages.addAll(command.getRemovedPageCloseActions());
+        addTouchedPages(touchedPages, command.getPageOpenActions().keySet());
+        addTouchedPages(touchedPages, command.getPageCloseActions().keySet());
+        addTouchedPages(touchedPages, command.getRemovedPageOpenActions());
+        addTouchedPages(touchedPages, command.getRemovedPageCloseActions());
         for (Integer pageNumber : touchedPages) {
+            resources.checkpoint();
             if (pageNumber.intValue() > pageCount) {
                 throw invalidActionCommand();
             }
@@ -72,9 +78,14 @@ final class PdfBoxDocumentActionOperations {
                 try {
                     requireOnlyKeys((COSDictionary) rawAa, "O", "C");
                 } catch (DocumentFailure invalid) {
+                    resources.rethrowTerminalFailure();
                     throw invalidActionCommand();
                 }
-                replacement.addAll((COSDictionary) rawAa);
+                COSDictionary existing = (COSDictionary) rawAa;
+                for (COSName name : existing.keySet()) {
+                    resources.checkpoint();
+                    replacement.setItem(name, existing.getItem(name));
+                }
             }
             GoToAction open = command.getPageOpenActions().get(pageNumber);
             if (open != null) {
@@ -113,6 +124,7 @@ final class PdfBoxDocumentActionOperations {
         }
         for (Map.Entry<Integer, COSDictionary> entry
                 : pageReplacements.entrySet()) {
+            resources.checkpoint();
             COSDictionary page = dictionary(
                     pageReferences.get(entry.getKey().intValue() - 1));
             if (entry.getValue().size() == 0) {
@@ -123,7 +135,16 @@ final class PdfBoxDocumentActionOperations {
         }
     }
 
-    private static void requireActionTargets(
+    private void addTouchedPages(
+            Set<Integer> target,
+            Iterable<Integer> pages) throws DocumentFailure {
+        for (Integer page : pages) {
+            resources.checkpoint();
+            target.add(page);
+        }
+    }
+
+    private void requireActionTargets(
             UpdateActions command,
             int pageCount,
             Set<String> namedDestinations) throws DocumentFailure {
@@ -134,9 +155,11 @@ final class PdfBoxDocumentActionOperations {
                     namedDestinations);
         }
         for (GoToAction action : command.getPageOpenActions().values()) {
+            resources.checkpoint();
             requireActionTarget(action, pageCount, namedDestinations);
         }
         for (GoToAction action : command.getPageCloseActions().values()) {
+            resources.checkpoint();
             requireActionTarget(action, pageCount, namedDestinations);
         }
     }
@@ -156,21 +179,25 @@ final class PdfBoxDocumentActionOperations {
     }
 
     DocumentActions evaluate(Actions query) throws DocumentFailure {
+        resources.checkpoint();
         List<COSBase> pageReferences = pageReferencesForQuery();
         Set<String> namedDestinations;
         try {
             namedDestinations = metadataOperations.namedDestinationNames(
                     document);
         } catch (DocumentFailure invalidDestinations) {
+            resources.rethrowTerminalFailure();
             throw invalidActionQuery();
         }
         IdentityHashMap<COSDictionary, Integer> pageNumbers =
                 new IdentityHashMap<COSDictionary, Integer>();
         for (int index = 0; index < pageReferences.size(); index++) {
+            resources.checkpoint();
             pageNumbers.put(dictionary(pageReferences.get(index)),
                     Integer.valueOf(index + 1));
         }
-        ActionBudget budget = new ActionBudget(query.getMaximumActions());
+        ActionBudget budget = new ActionBudget(
+                query.getMaximumActions(), resources);
         COSDictionary catalog = document.getDocumentCatalog().getCOSObject();
         GoToAction documentOpen = null;
         COSBase rawOpen = catalog.getItem(OPEN_ACTION);
@@ -184,6 +211,7 @@ final class PdfBoxDocumentActionOperations {
         }
         List<PageActions> pages = new ArrayList<PageActions>();
         for (int pageIndex = 0; pageIndex < pageReferences.size(); pageIndex++) {
+            resources.checkpoint();
             COSDictionary page = dictionary(pageReferences.get(pageIndex));
             COSBase rawAa = dereference(page.getItem(AA));
             if (rawAa == null) {
@@ -197,6 +225,7 @@ final class PdfBoxDocumentActionOperations {
             try {
                 requireOnlyKeys(aa, "O", "C");
             } catch (DocumentFailure invalid) {
+                resources.rethrowTerminalFailure();
                 throw invalidActionQuery();
             }
             GoToAction open = null;
@@ -259,10 +288,10 @@ final class PdfBoxDocumentActionOperations {
         return PdfBoxAnnotationOperations.dereference(value);
     }
 
-    private static void requireOnlyKeys(
+    private void requireOnlyKeys(
             COSDictionary dictionary,
             String... names) throws DocumentFailure {
-        PdfBoxAnnotationOperations.requireOnlyKeys(dictionary, names);
+        annotationOperations.requireOnlyKeys(dictionary, names);
     }
 
     private static boolean isKnownNamedTarget(
@@ -288,13 +317,18 @@ final class PdfBoxDocumentActionOperations {
     private static final class ActionBudget {
 
         private final int maximum;
+        private final WorkflowResourceContext resources;
         private int consumed;
 
-        ActionBudget(int maximum) {
+        ActionBudget(
+                int maximum,
+                WorkflowResourceContext resources) {
             this.maximum = maximum;
+            this.resources = resources;
         }
 
         void consume() throws DocumentFailure {
+            resources.checkpoint();
             if (consumed >= maximum) {
                 throw actionLimitExceeded();
             }

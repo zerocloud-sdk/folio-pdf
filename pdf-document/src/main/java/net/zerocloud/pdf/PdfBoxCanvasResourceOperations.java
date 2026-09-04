@@ -2,12 +2,9 @@ package net.zerocloud.pdf;
 
 import java.awt.color.ICC_Profile;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -20,6 +17,7 @@ import java.util.Set;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
+import javax.imageio.stream.ImageInputStreamImpl;
 import net.zerocloud.pdf.composition.CanvasColor;
 import net.zerocloud.pdf.composition.CanvasColorSpace;
 import net.zerocloud.pdf.composition.CanvasFont;
@@ -79,12 +77,13 @@ final class PdfBoxCanvasResourceOperations {
 
     private final PDDocument document;
     private final PdfBoxValueAdapter valueAdapter;
+    private final WorkflowResourceContext workflowResources;
     private final Map<CanvasImage, COSObject> imageCache =
-            new HashMap<CanvasImage, COSObject>();
+            new IdentityHashMap<CanvasImage, COSObject>();
     private final Map<CanvasMask, COSObject> maskCache =
-            new HashMap<CanvasMask, COSObject>();
+            new IdentityHashMap<CanvasMask, COSObject>();
     private final Map<CanvasColorSpace, COSBase> colorSpaceCache =
-            new HashMap<CanvasColorSpace, COSBase>();
+            new IdentityHashMap<CanvasColorSpace, COSBase>();
     private final Map<CanvasTransparencyState, COSObject> transparencyCache =
             new HashMap<CanvasTransparencyState, COSObject>();
     private final IdentityHashMap<CanvasTransparencyGroup, COSObject> groupCache =
@@ -92,9 +91,11 @@ final class PdfBoxCanvasResourceOperations {
 
     PdfBoxCanvasResourceOperations(
             PDDocument document,
-            PdfBoxValueAdapter valueAdapter) {
+            PdfBoxValueAdapter valueAdapter,
+            WorkflowResourceContext workflowResources) {
         this.document = document;
         this.valueAdapter = valueAdapter;
+        this.workflowResources = workflowResources;
     }
 
     static CanvasImageCapabilities capabilities() {
@@ -110,26 +111,36 @@ final class PdfBoxCanvasResourceOperations {
             CanvasProgram program,
             CanvasResourceLimits limits,
             boolean preserveExistingContent) throws DocumentFailure {
+        workflowResources.checkpoint();
         Validation validation = new Validation(limits);
-        validation.visitProgram(program, 0);
         RequestPlan requestPlan = new RequestPlan();
-        ProgramPreflight preflight = preflightProgram(
-                program,
-                effectiveResources,
-                validation,
-                requestPlan);
-        if (preserveExistingContent) {
-            validation.accountGenerated(6L);
+        ProgramPreflight preflight = null;
+        try {
+            validation.visitProgram(program, 0);
+            preflight = preflightProgram(
+                    program,
+                    effectiveResources,
+                    validation,
+                    requestPlan);
+            if (preserveExistingContent) {
+                validation.accountGenerated(6L);
+            }
+            ProgramPlan programPlan = materializeProgram(
+                    effectiveResources,
+                    validation,
+                    requestPlan,
+                    preflight);
+            return new Plan(
+                    programPlan.resources,
+                    programPlan.changed,
+                    programPlan.operatorBytes);
+        } finally {
+            if (preflight != null) {
+                preflight.close();
+            }
+            requestPlan.close();
+            validation.releaseMemory();
         }
-        ProgramPlan programPlan = materializeProgram(
-                effectiveResources,
-                validation,
-                requestPlan,
-                preflight);
-        return new Plan(
-                programPlan.resources,
-                programPlan.changed,
-                programPlan.operators);
     }
 
     private ProgramPreflight preflightProgram(
@@ -140,7 +151,11 @@ final class PdfBoxCanvasResourceOperations {
         COSDictionary resources = new COSDictionary();
         resources.setDirect(true);
         if (baseResources != null) {
-            resources.addAll(baseResources);
+            for (Map.Entry<COSName, COSBase> entry
+                    : baseResources.entrySet()) {
+                workflowResources.checkpoint();
+                resources.setItem(entry.getKey(), entry.getValue());
+            }
         }
 
         ProgramBindings bindings = new ProgramBindings();
@@ -150,6 +165,7 @@ final class PdfBoxCanvasResourceOperations {
         Category xobjects = null;
 
         for (CanvasProgram.Instruction instruction : program.getInstructions()) {
+            workflowResources.checkpoint();
             switch (instruction.getKind()) {
                 case BEGIN_TEXT:
                     if (bindings.fontNames.containsKey(instruction.getFont())) {
@@ -169,6 +185,7 @@ final class PdfBoxCanvasResourceOperations {
                 case SET_STROKE_COLOR:
                     CanvasColorSpace colorSpace = instruction.getColor()
                             .getColorSpace();
+                    colorSpace = validation.canonicalColorSpace(colorSpace);
                     if (!device(colorSpace)
                             && !bindings.colorNames.containsKey(colorSpace)) {
                         if (colors == null) {
@@ -180,6 +197,7 @@ final class PdfBoxCanvasResourceOperations {
                                 cached == null ? new COSDictionary() : cached,
                                 "FolioT18CS");
                         bindings.colorNames.put(colorSpace, colorName);
+                        bindings.colorOrder.add(colorSpace);
                     }
                     break;
                 case SET_TRANSPARENCY:
@@ -201,6 +219,7 @@ final class PdfBoxCanvasResourceOperations {
                     break;
                 case DRAW_IMAGE:
                     CanvasImage image = instruction.getImage();
+                    image = validation.canonicalImage(image);
                     if (bindings.imageNames.containsKey(image)) {
                         break;
                     }
@@ -216,6 +235,7 @@ final class PdfBoxCanvasResourceOperations {
                                     ? new COSDictionary() : cachedImage,
                             "FolioT18I");
                     bindings.imageNames.put(image, imageName);
+                    bindings.imageOrder.add(image);
                     break;
                 case DRAW_TRANSPARENCY_GROUP:
                     CanvasTransparencyGroup group =
@@ -251,14 +271,31 @@ final class PdfBoxCanvasResourceOperations {
             }
         }
 
-        byte[] operators = serialize(program, bindings);
-        validation.accountGenerated(operators.length);
+        WorkflowResourceContext.OwnedBytes operatorBytes = serialize(
+                program,
+                bindings,
+                validation.remainingGeneratedBytes(),
+                validation);
         try {
-            PdfBoxContentStreamPreflight.validate(operators);
-        } catch (IOException malformedGeneratedContent) {
-            throw invalidGraphics();
+            byte[] operators = operatorBytes.getBytes();
+            validation.accountGenerated(operators.length);
+            try {
+                PdfBoxContentStreamPreflight.validate(
+                        operators, workflowResources);
+            } catch (IOException malformedGeneratedContent) {
+                workflowResources.rethrowResourceOrTerminalFailure(
+                        malformedGeneratedContent);
+                throw invalidGraphics();
+            }
+            ProgramPreflight result = new ProgramPreflight(
+                    bindings, operatorBytes);
+            operatorBytes = null;
+            return result;
+        } finally {
+            if (operatorBytes != null) {
+                operatorBytes.close();
+            }
         }
-        return new ProgramPreflight(bindings, operators);
     }
 
     private ProgramPlan materializeProgram(
@@ -269,7 +306,11 @@ final class PdfBoxCanvasResourceOperations {
         COSDictionary resources = new COSDictionary();
         resources.setDirect(true);
         if (baseResources != null) {
-            resources.addAll(baseResources);
+            for (Map.Entry<COSName, COSBase> entry
+                    : baseResources.entrySet()) {
+                workflowResources.checkpoint();
+                resources.setItem(entry.getKey(), entry.getValue());
+            }
         }
         boolean changed = false;
 
@@ -277,6 +318,7 @@ final class PdfBoxCanvasResourceOperations {
             Category fonts = category(resources, COSName.FONT);
             for (Map.Entry<CanvasFont, COSName> entry
                     : preflight.bindings.fontNames.entrySet()) {
+                workflowResources.checkpoint();
                 install(fonts, entry.getValue(),
                         validation.fonts.get(entry.getKey()).raw);
             }
@@ -287,11 +329,14 @@ final class PdfBoxCanvasResourceOperations {
         }
         if (!preflight.bindings.colorNames.isEmpty()) {
             Category colors = category(resources, COLOR_SPACE);
-            for (Map.Entry<CanvasColorSpace, COSName> entry
-                    : preflight.bindings.colorNames.entrySet()) {
-                install(colors, entry.getValue(), materializeColorSpace(
-                        entry.getKey(),
-                        validation.colors.get(entry.getKey())));
+            for (CanvasColorSpace colorSpace
+                    : preflight.bindings.colorOrder) {
+                workflowResources.checkpoint();
+                install(colors,
+                        preflight.bindings.colorNames.get(colorSpace),
+                        materializeColorSpace(
+                                colorSpace,
+                                validation.colorInfo(colorSpace)));
             }
             if (colors.changed) {
                 resources.setItem(COLOR_SPACE, colors.values);
@@ -302,6 +347,7 @@ final class PdfBoxCanvasResourceOperations {
             Category states = category(resources, EXT_G_STATE);
             for (Map.Entry<CanvasTransparencyState, COSName> entry
                     : preflight.bindings.transparencyNames.entrySet()) {
+                workflowResources.checkpoint();
                 install(states, entry.getValue(),
                         materializeTransparency(entry.getKey()));
             }
@@ -313,16 +359,18 @@ final class PdfBoxCanvasResourceOperations {
         if (!preflight.bindings.imageNames.isEmpty()
                 || !preflight.bindings.groupNames.isEmpty()) {
             Category xobjects = category(resources, XOBJECT);
-            for (Map.Entry<CanvasImage, COSName> entry
-                    : preflight.bindings.imageNames.entrySet()) {
-                CanvasImage image = entry.getKey();
-                install(xobjects, entry.getValue(), materializeImage(
+            for (CanvasImage image : preflight.bindings.imageOrder) {
+                workflowResources.checkpoint();
+                install(xobjects,
+                        preflight.bindings.imageNames.get(image),
+                        materializeImage(
                         image,
                         validation.images.get(image),
                         validation));
             }
             for (CanvasTransparencyGroup group
                     : preflight.bindings.groupOrder) {
+                workflowResources.checkpoint();
                 install(xobjects, preflight.bindings.groupNames.get(group),
                         materializeGroup(
                                 group,
@@ -334,7 +382,8 @@ final class PdfBoxCanvasResourceOperations {
                 changed = true;
             }
         }
-        return new ProgramPlan(resources, changed, preflight.operators);
+        return new ProgramPlan(
+                resources, changed, preflight.takeOperators());
     }
 
     private COSObject materializeGroup(
@@ -354,7 +403,12 @@ final class PdfBoxCanvasResourceOperations {
                 validation,
                 requestPlan,
                 preflight);
-        COSStream stream = newStream(content.operators, true);
+        COSStream stream;
+        try {
+            stream = newStream(content.operators(), true);
+        } finally {
+            content.close();
+        }
         stream.setItem(COSName.TYPE, COSName.XOBJECT);
         stream.setItem(COSName.SUBTYPE, COSName.FORM);
         stream.setItem(FORM_TYPE, COSInteger.ONE);
@@ -367,8 +421,8 @@ final class PdfBoxCanvasResourceOperations {
         attributes.setItem(
                 COSName.CS,
                 materializeColorSpace(
-                        group.getColorSpace(),
-                        validation.colors.get(group.getColorSpace())));
+                        validation.canonicalColorSpace(group.getColorSpace()),
+                        validation.colorInfo(group.getColorSpace())));
         attributes.setBoolean(I, group.isIsolated());
         attributes.setBoolean(K, group.isKnockout());
         stream.setItem(GROUP, attributes);
@@ -382,6 +436,7 @@ final class PdfBoxCanvasResourceOperations {
             CanvasImage declaration,
             PreparedImage image,
             Validation validation) throws DocumentFailure {
+        declaration = validation.canonicalImage(declaration);
         if (image.existing != null) {
             return image.existing;
         }
@@ -408,12 +463,15 @@ final class PdfBoxCanvasResourceOperations {
         stream.setItem(COSName.SUBTYPE, COSName.IMAGE);
         stream.setInt(COSName.WIDTH, image.width);
         stream.setInt(COSName.HEIGHT, image.height);
+        workflowResources.recordConsumedImagePixels(
+                stream,
+                (long) image.width * (long) image.height);
         stream.setInt(COSName.BITS_PER_COMPONENT, image.bits);
         stream.setItem(
                 COSName.COLORSPACE,
                 materializeColorSpace(
-                        image.colorSpace,
-                        validation.colors.get(image.colorSpace)));
+                        validation.canonicalColorSpace(image.colorSpace),
+                        validation.colorInfo(image.colorSpace)));
         if (image.jpeg && image.components == 4) {
             COSArray decode = new COSArray();
             decode.setDirect(true);
@@ -424,22 +482,33 @@ final class PdfBoxCanvasResourceOperations {
             stream.setItem(COSName.DECODE, decode);
         }
         if (image.explicitMask != null) {
-            stream.setItem(MASK, materializeMask(image.explicitMask));
+            stream.setItem(
+                    MASK,
+                    materializeMask(image.explicitMask, validation));
         }
         if (image.softMask != null) {
-            stream.setItem(S_MASK, materializeMask(image.softMask));
+            stream.setItem(
+                    S_MASK,
+                    materializeMask(image.softMask, validation));
         }
         COSObject result = new COSObject(stream);
         imageCache.put(declaration, result);
         return result;
     }
 
-    private COSObject materializeMask(CanvasMask mask) throws DocumentFailure {
+    private COSObject materializeMask(
+            CanvasMask mask,
+            Validation validation) throws DocumentFailure {
+        mask = validation.canonicalMask(mask);
         COSObject cached = maskCache.get(mask);
         if (cached != null) {
             return cached;
         }
-        COSStream stream = newStream(mask.getSamples(), true);
+        byte[] samples = validation.maskSamples.get(mask);
+        if (samples == null) {
+            throw invalidImage();
+        }
+        COSStream stream = newStream(samples, true);
         stream.setItem(COSName.TYPE, COSName.XOBJECT);
         stream.setItem(COSName.SUBTYPE, COSName.IMAGE);
         stream.setInt(COSName.WIDTH, mask.getWidth());
@@ -528,21 +597,28 @@ final class PdfBoxCanvasResourceOperations {
             try (OutputStream output = flate
                     ? stream.createOutputStream(COSName.FLATE_DECODE)
                     : stream.createRawOutputStream()) {
-                output.write(bytes);
+                workflowResources.writeBytesAsIOException(output, bytes);
             }
             return stream;
         } catch (IOException | RuntimeException failure) {
+            workflowResources.rethrowResourceOrTerminalFailure(failure);
             throw writeFailure();
         }
     }
 
-    private static byte[] serialize(
+    private WorkflowResourceContext.OwnedBytes serialize(
             CanvasProgram program,
-            ProgramBindings bindings) throws DocumentFailure {
-        StringBuilder output = new StringBuilder();
-        output.append("q\n");
-        for (CanvasProgram.Instruction instruction : program.getInstructions()) {
-            switch (instruction.getKind()) {
+            ProgramBindings bindings,
+            long maximumBytes,
+            Validation validation) throws DocumentFailure {
+        try (WorkflowAsciiOutput output = new WorkflowAsciiOutput(
+                workflowResources,
+                maximumBytes,
+                PdfBoxCanvasResourceOperations::limitFailure)) {
+            output.append("q\n");
+            for (CanvasProgram.Instruction instruction
+                    : program.getInstructions()) {
+                switch (instruction.getKind()) {
                 case SAVE_STATE:
                     output.append("q\n");
                     break;
@@ -582,10 +658,12 @@ final class PdfBoxCanvasResourceOperations {
                 case BEGIN_TEXT:
                     output.append("BT\n");
                     appendName(output, bindings.fontNames.get(instruction.getFont()));
-                    output.append(' ').append(number(instruction.getNumbers()[0]))
-                            .append(" Tf\n");
-                    output.append(instruction.getRenderingMode().getOperatorValue())
-                            .append(" Tr\n");
+                    output.append(' ');
+                    appendNumber(output, instruction.getNumbers()[0]);
+                    output.append(" Tf\n");
+                    output.append(instruction.getRenderingMode()
+                            .getOperatorValue());
+                    output.append(" Tr\n");
                     appendMatrix(output, instruction.getMatrix());
                     output.append(" Tm\n");
                     break;
@@ -595,7 +673,7 @@ final class PdfBoxCanvasResourceOperations {
                     break;
                 case SHOW_GLYPH:
                     output.append('<');
-                    for (byte value : instruction.getGlyphCode()) {
+                    for (byte value : validation.glyphCode(instruction)) {
                         int unsigned = value & 0xff;
                         output.append(Character.forDigit((unsigned >>> 4) & 0xf, 16));
                         output.append(Character.forDigit(unsigned & 0xf, 16));
@@ -606,10 +684,20 @@ final class PdfBoxCanvasResourceOperations {
                     output.append("ET\n");
                     break;
                 case SET_FILL_COLOR:
-                    appendColor(output, instruction.getColor(), false, bindings);
+                    appendColor(
+                            output,
+                            instruction.getColor(),
+                            false,
+                            bindings,
+                            validation);
                     break;
                 case SET_STROKE_COLOR:
-                    appendColor(output, instruction.getColor(), true, bindings);
+                    appendColor(
+                            output,
+                            instruction.getColor(),
+                            true,
+                            bindings,
+                            validation);
                     break;
                 case SET_TRANSPARENCY:
                     appendName(output, bindings.transparencyNames.get(
@@ -620,7 +708,9 @@ final class PdfBoxCanvasResourceOperations {
                     appendPlacedXObject(
                             output,
                             instruction.getMatrix(),
-                            bindings.imageNames.get(instruction.getImage()));
+                            bindings.imageNames.get(
+                                    validation.canonicalImage(
+                                            instruction.getImage())));
                     break;
                 case DRAW_TRANSPARENCY_GROUP:
                     appendPlacedXObject(
@@ -631,14 +721,15 @@ final class PdfBoxCanvasResourceOperations {
                     break;
                 default:
                     throw invalidGraphics();
+                }
             }
+            output.append("Q\n");
+            return output.finishWorking();
         }
-        output.append("Q\n");
-        return output.toString().getBytes(StandardCharsets.US_ASCII);
     }
 
     private static void appendPlacedXObject(
-            StringBuilder output,
+            WorkflowAsciiOutput output,
             CanvasMatrix matrix,
             COSName name) throws DocumentFailure {
         output.append("q\n");
@@ -649,11 +740,13 @@ final class PdfBoxCanvasResourceOperations {
     }
 
     private static void appendColor(
-            StringBuilder output,
+            WorkflowAsciiOutput output,
             CanvasColor color,
             boolean stroking,
-            ProgramBindings bindings) throws DocumentFailure {
-        CanvasColorSpace space = color.getColorSpace();
+            ProgramBindings bindings,
+            Validation validation) throws DocumentFailure {
+        CanvasColorSpace space = validation.canonicalColorSpace(
+                color.getColorSpace());
         if (device(space)) {
             appendNumbers(output, color.getComponents());
             switch (space.getFamily()) {
@@ -676,23 +769,19 @@ final class PdfBoxCanvasResourceOperations {
         output.append(stroking ? " SCN\n" : " scn\n");
     }
 
-    private static void appendName(StringBuilder output, COSName name)
+    private static void appendName(WorkflowAsciiOutput output, COSName name)
             throws DocumentFailure {
         if (name == null) {
             throw invalidGraphics();
         }
-        try {
-            ByteArrayOutputStream encoded = new ByteArrayOutputStream();
-            name.writePDF(encoded);
-            output.append(new String(
-                    encoded.toByteArray(),
-                    StandardCharsets.US_ASCII));
-        } catch (IOException failure) {
-            throw invalidGraphics();
-        }
+        output.appendPdfName(
+                name,
+                PdfBoxCanvasResourceOperations::invalidGraphics);
     }
 
-    private static void appendMatrix(StringBuilder output, CanvasMatrix matrix)
+    private static void appendMatrix(
+            WorkflowAsciiOutput output,
+            CanvasMatrix matrix)
             throws DocumentFailure {
         appendNumbers(output, new double[] {
             matrix.getA(), matrix.getB(), matrix.getC(),
@@ -700,24 +789,30 @@ final class PdfBoxCanvasResourceOperations {
         });
     }
 
-    private static void appendNumbers(StringBuilder output, double[] values)
+    private static void appendNumbers(
+            WorkflowAsciiOutput output,
+            double[] values)
             throws DocumentFailure {
         for (int index = 0; index < values.length; index++) {
             if (index > 0) {
                 output.append(' ');
             }
-            output.append(number(values[index]));
+            appendNumber(output, values[index]);
         }
     }
 
-    private static String number(double value) throws DocumentFailure {
+    private static void appendNumber(
+            WorkflowAsciiOutput output,
+            double value) throws DocumentFailure {
         requireFinite(value);
-        return value == 0d
-                ? "0"
-                : BigDecimal.valueOf(value).stripTrailingZeros().toPlainString();
+        if (value == 0d) {
+            output.append('0');
+            return;
+        }
+        output.append(BigDecimal.valueOf(value).stripTrailingZeros());
     }
 
-    private static Category category(COSDictionary resources, COSName name)
+    private Category category(COSDictionary resources, COSName name)
             throws DocumentFailure {
         COSBase raw = resources.getItem(name);
         COSBase value = dereference(raw);
@@ -731,12 +826,18 @@ final class PdfBoxCanvasResourceOperations {
         }
         COSDictionary result = new COSDictionary();
         result.setDirect(true);
-        result.addAll((COSDictionary) value);
+        for (Map.Entry<COSName, COSBase> entry
+                : ((COSDictionary) value).entrySet()) {
+            workflowResources.checkpoint();
+            result.setItem(entry.getKey(), entry.getValue());
+        }
         return new Category(result);
     }
 
-    private static COSName nameFor(COSDictionary values, COSBase target) {
+    private COSName nameFor(COSDictionary values, COSBase target)
+            throws DocumentFailure {
         for (Map.Entry<COSName, COSBase> entry : values.entrySet()) {
+            workflowResources.checkpoint();
             if (dereference(entry.getValue()) == target) {
                 return entry.getKey();
             }
@@ -744,7 +845,7 @@ final class PdfBoxCanvasResourceOperations {
         return null;
     }
 
-    private static COSName plannedName(
+    private COSName plannedName(
             Category category,
             COSBase target,
             String prefix) throws DocumentFailure {
@@ -756,7 +857,7 @@ final class PdfBoxCanvasResourceOperations {
         return name;
     }
 
-    private static void install(
+    private void install(
             Category category,
             COSName name,
             COSBase value) throws DocumentFailure {
@@ -771,10 +872,11 @@ final class PdfBoxCanvasResourceOperations {
         }
     }
 
-    private static COSName availableName(
+    private COSName availableName(
             COSDictionary values,
             String prefix) throws DocumentFailure {
         for (int suffix = 1; suffix <= MAXIMUM_RESOURCE_NAMES; suffix++) {
+            workflowResources.checkpoint();
             COSName name = COSName.getPDFName(prefix + suffix);
             if (!values.containsKey(name)) {
                 return name;
@@ -834,12 +936,13 @@ final class PdfBoxCanvasResourceOperations {
                 || family == CanvasColorSpace.Family.DEVICE_CMYK;
     }
 
-    private static COSBase dereference(COSBase value) {
+    private COSBase dereference(COSBase value) throws DocumentFailure {
         COSBase current = value;
         IdentityHashMap<COSBase, Boolean> visited =
                 new IdentityHashMap<COSBase, Boolean>();
         while (current instanceof COSObject
                 && visited.put(current, Boolean.TRUE) == null) {
+            workflowResources.checkpoint();
             current = ((COSObject) current).getObject();
         }
         return current;
@@ -876,18 +979,41 @@ final class PdfBoxCanvasResourceOperations {
 
         private final CanvasResourceLimits limits;
         private final Map<CanvasImage, PreparedImage> images =
-                new LinkedHashMap<CanvasImage, PreparedImage>();
+                new IdentityHashMap<CanvasImage, PreparedImage>();
+        private final IdentityHashMap<CanvasImage, CanvasImage>
+                canonicalImagesByDeclaration =
+                        new IdentityHashMap<CanvasImage, CanvasImage>();
+        private final List<CanvasImage> canonicalImages =
+                new ArrayList<CanvasImage>();
         private final Map<CanvasColorSpace, ColorInfo> colors =
-                new LinkedHashMap<CanvasColorSpace, ColorInfo>();
+                new IdentityHashMap<CanvasColorSpace, ColorInfo>();
+        private final IdentityHashMap<CanvasColorSpace, CanvasColorSpace>
+                canonicalColorsByDeclaration =
+                        new IdentityHashMap<
+                                CanvasColorSpace, CanvasColorSpace>();
+        private final List<CanvasColorSpace> canonicalColors =
+                new ArrayList<CanvasColorSpace>();
         private final Map<CanvasFont, FontInfo> fonts =
                 new LinkedHashMap<CanvasFont, FontInfo>();
-        private final Set<CanvasMask> masks =
-                Collections.newSetFromMap(new HashMap<CanvasMask, Boolean>());
+        private final IdentityHashMap<CanvasProgram.Instruction, byte[]>
+                glyphCodes =
+                        new IdentityHashMap<CanvasProgram.Instruction, byte[]>();
+        private final Map<CanvasMask, byte[]> maskSamples =
+                new IdentityHashMap<CanvasMask, byte[]>();
+        private final IdentityHashMap<CanvasMask, CanvasMask>
+                canonicalMasksByDeclaration =
+                        new IdentityHashMap<CanvasMask, CanvasMask>();
+        private final List<CanvasMask> canonicalMasks =
+                new ArrayList<CanvasMask>();
         private final Set<CanvasTransparencyState> states =
                 Collections.newSetFromMap(
                         new HashMap<CanvasTransparencyState, Boolean>());
         private final IdentityHashMap<CanvasTransparencyGroup, Integer> groups =
                 new IdentityHashMap<CanvasTransparencyGroup, Integer>();
+        private final List<WorkflowResourceContext.MemoryReservation>
+                memoryReservations =
+                        new ArrayList<
+                                WorkflowResourceContext.MemoryReservation>();
         private long encodedBytes;
         private long decodedPixels;
         private long decodedBytes;
@@ -907,6 +1033,7 @@ final class PdfBoxCanvasResourceOperations {
             }
             CanvasFont activeFont = null;
             for (CanvasProgram.Instruction instruction : program.getInstructions()) {
+                workflowResources.checkpoint();
                 switch (instruction.getKind()) {
                     case BEGIN_TEXT:
                         activeFont = instruction.getFont();
@@ -917,10 +1044,19 @@ final class PdfBoxCanvasResourceOperations {
                         break;
                     case SHOW_GLYPH:
                         FontInfo font = fonts.get(activeFont);
+                        int glyphLength = instruction.getGlyphCodeLength();
                         if (font == null
-                                || instruction.getGlyphCode().length
-                                        != font.codeLength) {
+                                || glyphLength != font.codeLength) {
                             throw invalidFont();
+                        }
+                        if (!glyphCodes.containsKey(instruction)) {
+                            retainMemory(glyphLength);
+                            byte[] glyphCode = instruction.getGlyphCode();
+                            if (glyphCode == null
+                                    || glyphCode.length != glyphLength) {
+                                throw invalidFont();
+                            }
+                            glyphCodes.put(instruction, glyphCode);
                         }
                         break;
                     case END_TEXT:
@@ -940,6 +1076,7 @@ final class PdfBoxCanvasResourceOperations {
                         CanvasTransparencyGroup group =
                                 instruction.getTransparencyGroup();
                         int depth = groupDepth + 1;
+                        workflowResources.requireNestingDepth(depth);
                         if (depth > limits.getMaximumTransparencyGroupDepth()) {
                             throw limitFailure();
                         }
@@ -962,14 +1099,20 @@ final class PdfBoxCanvasResourceOperations {
         }
 
         void accountGenerated(long count) throws DocumentFailure {
-            long callerMaximum = limits.getMaximumGeneratedContentBytes();
-            long maximum = Math.min(
-                    callerMaximum,
-                    (long) PdfBoxCanvasOperations.MAXIMUM_PROGRAM_BYTES);
             generatedBytes = add(
                     generatedBytes,
                     count,
-                    maximum);
+                    maximumGeneratedBytes());
+        }
+
+        long remainingGeneratedBytes() {
+            return maximumGeneratedBytes() - generatedBytes;
+        }
+
+        private long maximumGeneratedBytes() {
+            return Math.min(
+                    limits.getMaximumGeneratedContentBytes(),
+                    (long) PdfBoxCanvasOperations.MAXIMUM_PROGRAM_BYTES);
         }
 
         private void validateColor(CanvasColor color) throws DocumentFailure {
@@ -977,10 +1120,10 @@ final class PdfBoxCanvasResourceOperations {
                 throw invalidGraphics();
             }
             ColorInfo info = validateColorSpace(color.getColorSpace());
-            double[] components = color.getComponents();
-            if (components.length != info.components) {
+            if (color.getComponentCount() != info.components) {
                 throw invalidGraphics();
             }
+            double[] components = color.getComponents();
             for (double component : components) {
                 requireUnit(component);
             }
@@ -993,6 +1136,16 @@ final class PdfBoxCanvasResourceOperations {
             }
             ColorInfo existing = colors.get(colorSpace);
             if (existing != null) {
+                return existing;
+            }
+            CanvasColorSpace canonical = equivalentColorSpace(colorSpace);
+            if (canonical != null) {
+                existing = colors.get(canonical);
+                if (existing == null) {
+                    throw invalidGraphics();
+                }
+                colors.put(colorSpace, existing);
+                canonicalColorsByDeclaration.put(colorSpace, canonical);
                 return existing;
             }
             ColorInfo info;
@@ -1017,8 +1170,16 @@ final class PdfBoxCanvasResourceOperations {
                     accountResource();
                     break;
                 case ICC_BASED:
-                    byte[] profile = colorSpace.getIccProfileBytes().orElse(null);
-                    if (profile == null || profile.length < 128) {
+                    int profileLength =
+                            colorSpace.getIccProfileByteLength();
+                    retainMemory(profileLength);
+                    byte[] profile =
+                            colorSpace.getIccProfileBytes().orElse(null);
+                    if (profile == null) {
+                        throw invalidGraphics();
+                    }
+                    if (profile.length != profileLength
+                            || profile.length < 128) {
                         throw invalidGraphics();
                     }
                     profileBytes = add(
@@ -1032,18 +1193,26 @@ final class PdfBoxCanvasResourceOperations {
                     throw unsupportedResource();
             }
             colors.put(colorSpace, info);
+            canonicalColorsByDeclaration.put(colorSpace, colorSpace);
+            canonicalColors.add(colorSpace);
             return info;
         }
 
         private void validateCalibrated(
                 CanvasColorSpace colorSpace,
                 int components) throws DocumentFailure {
+            int expectedGamma = components == 1 ? 1 : 3;
+            int expectedMatrix = components == 1 ? 0 : 9;
+            if (colorSpace.getWhitePointLength() != 3
+                    || colorSpace.getBlackPointLength() != 3
+                    || colorSpace.getGammaLength() != expectedGamma
+                    || colorSpace.getMatrixLength() != expectedMatrix) {
+                throw invalidGraphics();
+            }
             double[] white = colorSpace.getWhitePoint();
             double[] black = colorSpace.getBlackPoint();
             double[] gamma = colorSpace.getGamma();
-            if (white.length != 3
-                    || black.length != 3
-                    || white[0] <= 0d
+            if (white[0] <= 0d
                     || white[1] != 1d
                     || white[2] <= 0d) {
                 throw invalidGraphics();
@@ -1058,22 +1227,19 @@ final class PdfBoxCanvasResourceOperations {
                 }
             }
             if (components == 1) {
-                if (gamma.length != 1 || gamma[0] <= 0d
-                        || colorSpace.getMatrix().length != 0) {
+                if (gamma[0] <= 0d) {
                     throw invalidGraphics();
                 }
                 requireFinite(gamma[0]);
             } else {
-                if (gamma.length != 3 || colorSpace.getMatrix().length != 9) {
-                    throw invalidGraphics();
-                }
                 for (double value : gamma) {
                     requireFinite(value);
                     if (value <= 0d) {
                         throw invalidGraphics();
                     }
                 }
-                for (double value : colorSpace.getMatrix()) {
+                double[] matrix = colorSpace.getMatrix();
+                for (double value : matrix) {
                     requireFinite(value);
                 }
             }
@@ -1102,7 +1268,7 @@ final class PdfBoxCanvasResourceOperations {
                 if (components != 1 && components != 3 && components != 4) {
                     throw unsupportedResource();
                 }
-                return new ColorInfo(components, profile.clone());
+                return new ColorInfo(components, profile);
             } catch (DocumentFailure failure) {
                 throw failure;
             } catch (IllegalArgumentException runtimeFailure) {
@@ -1149,6 +1315,16 @@ final class PdfBoxCanvasResourceOperations {
             if (existing != null) {
                 return existing;
             }
+            CanvasImage canonical = equivalentImage(image);
+            if (canonical != null) {
+                existing = images.get(canonical);
+                if (existing == null) {
+                    throw invalidImage();
+                }
+                images.put(image, existing);
+                canonicalImagesByDeclaration.put(image, canonical);
+                return existing;
+            }
             accountResource();
             PreparedImage result;
             switch (image.getSourceKind()) {
@@ -1162,8 +1338,8 @@ final class PdfBoxCanvasResourceOperations {
                 case JPEG:
                     byte[] jpeg = requiredBytes(image);
                     accountEncoded(jpeg.length);
-                    JpegInfo jpegInfo = jpegInfo(jpeg);
-                    accountPixels(jpegInfo.width, jpegInfo.height);
+                    JpegInfo jpegInfo = jpegInfo(
+                            jpeg, workflowResources);
                     accountDecoded(multiply(
                             multiply(jpegInfo.width, jpegInfo.height),
                             jpegInfo.components));
@@ -1204,7 +1380,6 @@ final class PdfBoxCanvasResourceOperations {
                             || image.getBitsPerComponent() != 8) {
                         throw invalidImage();
                     }
-                    accountPixels(image.getWidth(), image.getHeight());
                     long expected = multiply(
                             multiply(image.getWidth(), image.getHeight()),
                             color.components);
@@ -1229,7 +1404,12 @@ final class PdfBoxCanvasResourceOperations {
                 default:
                     throw unsupportedResource();
             }
+            if (image.getSourceKind() != CanvasImage.SourceKind.EXISTING) {
+                accountPixels(result.width, result.height);
+            }
             images.put(image, result);
+            canonicalImagesByDeclaration.put(image, image);
+            canonicalImages.add(image);
             return result;
         }
 
@@ -1314,17 +1494,34 @@ final class PdfBoxCanvasResourceOperations {
             long expected = expectedKind == CanvasMask.Kind.EXPLICIT_IMAGE
                     ? multiply((width + 7L) / 8L, height)
                     : multiply(width, height);
-            byte[] samples = mask.getSamples();
-            if (expected != samples.length) {
+            int sampleLength = mask.getSampleByteLength();
+            if (expected != sampleLength) {
                 throw invalidImage();
             }
-            if (masks.add(mask)) {
-                maskBytes = add(
-                        maskBytes,
-                        samples.length,
-                        limits.getMaximumMaskBytes());
-                accountResource();
+            CanvasMask canonical = canonicalMasksByDeclaration.get(mask);
+            if (canonical == null) {
+                canonical = equivalentMask(mask);
             }
+            if (canonical != null) {
+                if (maskSamples.get(canonical) == null) {
+                    throw invalidImage();
+                }
+                canonicalMasksByDeclaration.put(mask, canonical);
+                return;
+            }
+            retainMemory(sampleLength);
+            byte[] samples = mask.getSamples();
+            if (samples.length != sampleLength) {
+                throw invalidImage();
+            }
+            maskSamples.put(mask, samples);
+            canonicalMasksByDeclaration.put(mask, mask);
+            canonicalMasks.add(mask);
+            maskBytes = add(
+                    maskBytes,
+                    samples.length,
+                    limits.getMaximumMaskBytes());
+            accountResource();
         }
 
         private PreparedImage decodeRaster(
@@ -1343,24 +1540,30 @@ final class PdfBoxCanvasResourceOperations {
                 if (reader == null) {
                     throw invalidImage();
                 }
-                try (ImageInputStream input = ImageIO.createImageInputStream(
-                        new ByteArrayInputStream(bytes))) {
-                    if (input == null) {
-                        throw invalidImage();
-                    }
+                try (ImageInputStream input = new ByteArrayImageInputStream(
+                        bytes, workflowResources)) {
                     reader.setInput(input, false, true);
                     if (requireSingleImage && reader.getNumImages(true) != 1) {
                         throw unsupportedResource();
                     }
                     int width = reader.getWidth(0);
                     int height = reader.getHeight(0);
-                    accountPixels(width, height);
+                    if (width < 1 || height < 1) {
+                        throw invalidImage();
+                    }
                     long pixels = multiply(width, height);
                     long colorBytes = multiply(pixels, 3L);
                     accountDecoded(colorBytes);
                     if (colorBytes > Integer.MAX_VALUE) {
                         throw limitFailure();
                     }
+                    long decodedMemory = addExactForMemory(
+                            colorBytes,
+                            multiply(pixels, 4L));
+                    decodedMemory = addExactForMemory(
+                            decodedMemory,
+                            multiply(width, 4L));
+                    retainMemory(decodedMemory);
                     BufferedImage decoded = reader.read(0);
                     if (decoded == null
                             || decoded.getWidth() != width
@@ -1368,15 +1571,23 @@ final class PdfBoxCanvasResourceOperations {
                         throw invalidImage();
                     }
                     byte[] samples = new byte[(int) colorBytes];
-                    byte[] alpha = decoded.getColorModel().hasAlpha()
-                            ? new byte[(int) pixels] : null;
+                    byte[] alpha = null;
+                    if (decoded.getColorModel().hasAlpha()) {
+                        retainMemory(pixels);
+                        alpha = new byte[(int) pixels];
+                    }
                     int[] row = new int[width];
                     int sampleOffset = 0;
                     int alphaOffset = 0;
+                    int processed = 0;
                     boolean transparent = false;
                     for (int y = 0; y < height; y++) {
+                        workflowResources.checkpoint();
                         decoded.getRGB(0, y, width, 1, row, 0, width);
                         for (int pixel : row) {
+                            if ((processed++ & 1023) == 0) {
+                                workflowResources.checkpoint();
+                            }
                             samples[sampleOffset++] =
                                     (byte) ((pixel >>> 16) & 0xff);
                             samples[sampleOffset++] =
@@ -1391,6 +1602,8 @@ final class PdfBoxCanvasResourceOperations {
                     }
                     CanvasMask softMask = null;
                     if (transparent) {
+                        // Reserve before CanvasMask takes its defensive copy.
+                        retainMemory(pixels);
                         softMask = CanvasMask.soft(width, height, alpha);
                         validateMask(
                                 softMask,
@@ -1414,6 +1627,8 @@ final class PdfBoxCanvasResourceOperations {
             } catch (DocumentFailure failure) {
                 throw failure;
             } catch (IOException | RuntimeException decodingFailure) {
+                workflowResources.rethrowResourceOrTerminalFailure(
+                        decodingFailure);
                 throw invalidImage();
             } finally {
                 if (reader != null) {
@@ -1443,11 +1658,252 @@ final class PdfBoxCanvasResourceOperations {
             int codeLength;
             try {
                 codeLength = PdfBoxCanvasOperations.validateFontDictionary(
-                        (COSDictionary) value);
+                        (COSDictionary) value,
+                        workflowResources);
             } catch (DocumentFailure invalidFont) {
                 throw invalidFont();
             }
             return new FontInfo(raw, codeLength);
+        }
+
+        private CanvasImage canonicalImage(CanvasImage image)
+                throws DocumentFailure {
+            CanvasImage canonical = canonicalImagesByDeclaration.get(image);
+            if (canonical == null) {
+                throw invalidImage();
+            }
+            return canonical;
+        }
+
+        private CanvasColorSpace canonicalColorSpace(
+                CanvasColorSpace colorSpace) throws DocumentFailure {
+            if (colorSpace == null) {
+                throw invalidGraphics();
+            }
+            CanvasColorSpace canonical =
+                    canonicalColorsByDeclaration.get(colorSpace);
+            if (canonical != null) {
+                return canonical;
+            }
+            if (device(colorSpace)) {
+                return colorSpace;
+            }
+            throw invalidGraphics();
+        }
+
+        private ColorInfo colorInfo(CanvasColorSpace colorSpace)
+                throws DocumentFailure {
+            CanvasColorSpace canonical = canonicalColorSpace(colorSpace);
+            ColorInfo info = colors.get(canonical);
+            if (info == null && !device(canonical)) {
+                throw invalidGraphics();
+            }
+            return info;
+        }
+
+        private CanvasMask canonicalMask(CanvasMask mask)
+                throws DocumentFailure {
+            CanvasMask canonical = canonicalMasksByDeclaration.get(mask);
+            if (canonical == null) {
+                throw invalidImage();
+            }
+            return canonical;
+        }
+
+        private CanvasImage equivalentImage(CanvasImage candidate)
+                throws DocumentFailure {
+            for (CanvasImage canonical : canonicalImages) {
+                workflowResources.checkpoint();
+                if (sameImage(candidate, canonical)) {
+                    return canonical;
+                }
+            }
+            return null;
+        }
+
+        private CanvasColorSpace equivalentColorSpace(
+                CanvasColorSpace candidate) throws DocumentFailure {
+            for (CanvasColorSpace canonical : canonicalColors) {
+                workflowResources.checkpoint();
+                if (sameColorSpace(candidate, canonical)) {
+                    return canonical;
+                }
+            }
+            return null;
+        }
+
+        private CanvasMask equivalentMask(CanvasMask candidate)
+                throws DocumentFailure {
+            for (CanvasMask canonical : canonicalMasks) {
+                workflowResources.checkpoint();
+                if (sameMask(candidate, canonical)) {
+                    return canonical;
+                }
+            }
+            return null;
+        }
+
+        private boolean sameImage(CanvasImage left, CanvasImage right)
+                throws DocumentFailure {
+            if (left == right) {
+                return true;
+            }
+            if (left.getSourceKind() != right.getSourceKind()
+                    || left.getWidth() != right.getWidth()
+                    || left.getHeight() != right.getHeight()
+                    || left.getBitsPerComponent()
+                            != right.getBitsPerComponent()
+                    || left.getByteLength() != right.getByteLength()) {
+                return false;
+            }
+            ObjectReference leftReference =
+                    left.getObjectReference().orElse(null);
+            ObjectReference rightReference =
+                    right.getObjectReference().orElse(null);
+            if (leftReference == null
+                    ? rightReference != null
+                    : !leftReference.equals(rightReference)) {
+                return false;
+            }
+            if (!sameNullableColorSpace(
+                            left.getColorSpace().orElse(null),
+                            right.getColorSpace().orElse(null))
+                    || !sameNullableMask(
+                            left.getExplicitMask().orElse(null),
+                            right.getExplicitMask().orElse(null))
+                    || !sameNullableMask(
+                            left.getSoftMask().orElse(null),
+                            right.getSoftMask().orElse(null))) {
+                return false;
+            }
+            int byteLength = left.getByteLength();
+            try (WorkflowResourceContext.MemoryReservation ignored =
+                    workflowResources.reserveOwnedMemory(2L * byteLength)) {
+                byte[] leftBytes = left.getBytes().orElse(null);
+                byte[] rightBytes = right.getBytes().orElse(null);
+                return sameBytes(leftBytes, rightBytes);
+            }
+        }
+
+        private boolean sameNullableColorSpace(
+                CanvasColorSpace left,
+                CanvasColorSpace right) throws DocumentFailure {
+            return left == right
+                    || (left != null
+                            && right != null
+                            && sameColorSpace(left, right));
+        }
+
+        private boolean sameColorSpace(
+                CanvasColorSpace left,
+                CanvasColorSpace right) throws DocumentFailure {
+            if (left == right) {
+                return true;
+            }
+            if (left.getFamily() != right.getFamily()
+                    || left.getWhitePointLength()
+                            != right.getWhitePointLength()
+                    || left.getBlackPointLength()
+                            != right.getBlackPointLength()
+                    || left.getGammaLength() != right.getGammaLength()
+                    || left.getMatrixLength() != right.getMatrixLength()
+                    || left.getIccProfileByteLength()
+                            != right.getIccProfileByteLength()) {
+                return false;
+            }
+            long doubleValues = (long) left.getWhitePointLength()
+                    + right.getWhitePointLength()
+                    + left.getBlackPointLength()
+                    + right.getBlackPointLength()
+                    + left.getGammaLength()
+                    + right.getGammaLength()
+                    + left.getMatrixLength()
+                    + right.getMatrixLength();
+            long copiedBytes = 8L * doubleValues
+                    + left.getIccProfileByteLength()
+                    + right.getIccProfileByteLength();
+            try (WorkflowResourceContext.MemoryReservation ignored =
+                    workflowResources.reserveOwnedMemory(copiedBytes)) {
+                if (!sameDoubles(
+                                left.getWhitePoint(),
+                                right.getWhitePoint())
+                        || !sameDoubles(
+                                left.getBlackPoint(),
+                                right.getBlackPoint())
+                        || !sameDoubles(
+                                left.getGamma(),
+                                right.getGamma())
+                        || !sameDoubles(
+                                left.getMatrix(),
+                                right.getMatrix())) {
+                    return false;
+                }
+                return sameBytes(
+                        left.getIccProfileBytes().orElse(null),
+                        right.getIccProfileBytes().orElse(null));
+            }
+        }
+
+        private boolean sameNullableMask(CanvasMask left, CanvasMask right)
+                throws DocumentFailure {
+            return left == right
+                    || (left != null && right != null && sameMask(left, right));
+        }
+
+        private boolean sameMask(CanvasMask left, CanvasMask right)
+                throws DocumentFailure {
+            if (left == right) {
+                return true;
+            }
+            if (left.getKind() != right.getKind()
+                    || left.getWidth() != right.getWidth()
+                    || left.getHeight() != right.getHeight()
+                    || left.isInverted() != right.isInverted()
+                    || left.getSampleByteLength()
+                            != right.getSampleByteLength()) {
+                return false;
+            }
+            int sampleLength = left.getSampleByteLength();
+            try (WorkflowResourceContext.MemoryReservation ignored =
+                    workflowResources.reserveOwnedMemory(2L * sampleLength)) {
+                return sameBytes(left.getSamples(), right.getSamples());
+            }
+        }
+
+        private boolean sameBytes(byte[] left, byte[] right)
+                throws DocumentFailure {
+            if (left == right) {
+                return true;
+            }
+            if (left == null || right == null || left.length != right.length) {
+                return false;
+            }
+            for (int index = 0; index < left.length; index++) {
+                if ((index & 8191) == 0) {
+                    workflowResources.checkpoint();
+                }
+                if (left[index] != right[index]) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private boolean sameDoubles(double[] left, double[] right)
+                throws DocumentFailure {
+            if (left.length != right.length) {
+                return false;
+            }
+            for (int index = 0; index < left.length; index++) {
+                if ((index & 8191) == 0) {
+                    workflowResources.checkpoint();
+                }
+                if (Double.doubleToLongBits(left[index])
+                        != Double.doubleToLongBits(right[index])) {
+                    return false;
+                }
+            }
+            return true;
         }
 
         private void accountEncoded(long count) throws DocumentFailure {
@@ -1461,10 +1917,12 @@ final class PdfBoxCanvasResourceOperations {
             if (width < 1 || height < 1) {
                 throw invalidImage();
             }
+            long pixels = multiply(width, height);
             decodedPixels = add(
                     decodedPixels,
-                    multiply(width, height),
+                    pixels,
                     limits.getMaximumDecodedImagePixels());
+            workflowResources.consumeDecodedPixels(pixels);
         }
 
         private void accountDecoded(long count) throws DocumentFailure {
@@ -1480,9 +1938,58 @@ final class PdfBoxCanvasResourceOperations {
             }
             resources++;
         }
+
+        private void retainMemory(long bytes) throws DocumentFailure {
+            memoryReservations.add(
+                    workflowResources.reserveOwnedMemory(bytes));
+        }
+
+        private byte[] requiredBytes(CanvasImage image)
+                throws DocumentFailure {
+            int byteLength = image.getByteLength();
+            if (byteLength == 0) {
+                throw invalidImage();
+            }
+            retainMemory(byteLength);
+            byte[] bytes = image.getBytes().orElse(null);
+            if (bytes == null || bytes.length != byteLength) {
+                throw invalidImage();
+            }
+            return bytes;
+        }
+
+        private byte[] glyphCode(CanvasProgram.Instruction instruction)
+                throws DocumentFailure {
+            byte[] glyphCode = glyphCodes.get(instruction);
+            if (glyphCode == null) {
+                throw invalidFont();
+            }
+            return glyphCode;
+        }
+
+        private long addExactForMemory(long left, long right)
+                throws DocumentFailure {
+            if (left < 0L || right < 0L || left > Long.MAX_VALUE - right) {
+                throw workflowResources.policyFailure(
+                        DocumentFailureCode.MEMORY_LIMIT_EXCEEDED,
+                        "The workflow owned-memory limit was exceeded.");
+            }
+            return left + right;
+        }
+
+        private void releaseMemory() {
+            for (int index = memoryReservations.size() - 1;
+                    index >= 0;
+                    index--) {
+                memoryReservations.get(index).close();
+            }
+            memoryReservations.clear();
+        }
     }
 
-    private static JpegInfo jpegInfo(byte[] bytes) throws DocumentFailure {
+    private static JpegInfo jpegInfo(
+            byte[] bytes,
+            WorkflowResourceContext resources) throws DocumentFailure {
         if (bytes.length < 6
                 || (bytes[0] & 0xff) != 0xff
                 || (bytes[1] & 0xff) != 0xd8
@@ -1493,10 +2000,14 @@ final class PdfBoxCanvasResourceOperations {
         int offset = 2;
         int colorTransform = -1;
         while (offset + 3 < bytes.length) {
+            resources.checkpoint();
             if ((bytes[offset] & 0xff) != 0xff) {
                 throw invalidImage();
             }
             while (offset < bytes.length && (bytes[offset] & 0xff) == 0xff) {
+                if ((offset & 1023) == 0) {
+                    resources.checkpoint();
+                }
                 offset++;
             }
             if (offset >= bytes.length) {
@@ -1592,7 +2103,7 @@ final class PdfBoxCanvasResourceOperations {
         }
     }
 
-    private static boolean supportedExistingFilter(COSBase raw)
+    private boolean supportedExistingFilter(COSBase raw)
             throws DocumentFailure {
         COSBase value = dereference(raw);
         if (value == null || value instanceof COSNull) {
@@ -1610,21 +2121,12 @@ final class PdfBoxCanvasResourceOperations {
         return false;
     }
 
-    private static long positiveInteger(COSBase raw) throws DocumentFailure {
+    private long positiveInteger(COSBase raw) throws DocumentFailure {
         COSBase value = dereference(raw);
         if (!(value instanceof COSInteger)) {
             return -1L;
         }
         return ((COSInteger) value).longValue();
-    }
-
-    private static byte[] requiredBytes(CanvasImage image)
-            throws DocumentFailure {
-        byte[] bytes = image.getBytes().orElse(null);
-        if (bytes == null || bytes.length == 0) {
-            throw invalidImage();
-        }
-        return bytes;
     }
 
     private static CanvasColorSpace colorSpace(int components)
@@ -1737,50 +2239,107 @@ final class PdfBoxCanvasResourceOperations {
         return new DocumentFailure(code, CAPABILITY_ID, diagnostic);
     }
 
-    static final class Plan {
+    static final class Plan implements AutoCloseable {
 
         final COSDictionary resources;
         final boolean resourcesChanged;
         final byte[] operators;
+        private WorkflowResourceContext.OwnedBytes operatorBytes;
 
         Plan(
                 COSDictionary resources,
                 boolean resourcesChanged,
-                byte[] operators) {
+                WorkflowResourceContext.OwnedBytes operatorBytes) {
             this.resources = resources;
             this.resourcesChanged = resourcesChanged;
-            this.operators = operators;
+            this.operatorBytes = operatorBytes;
+            this.operators = operatorBytes.getBytes();
+        }
+
+        @Override
+        public void close() {
+            WorkflowResourceContext.OwnedBytes current = operatorBytes;
+            if (current != null) {
+                operatorBytes = null;
+                current.close();
+            }
         }
     }
 
-    private static final class ProgramPlan {
+    private static final class ProgramPlan implements AutoCloseable {
 
         private final COSDictionary resources;
         private final boolean changed;
-        private final byte[] operators;
+        private WorkflowResourceContext.OwnedBytes operatorBytes;
 
-        ProgramPlan(COSDictionary resources, boolean changed, byte[] operators) {
+        ProgramPlan(
+                COSDictionary resources,
+                boolean changed,
+                WorkflowResourceContext.OwnedBytes operatorBytes) {
             this.resources = resources;
             this.changed = changed;
-            this.operators = operators;
+            this.operatorBytes = operatorBytes;
+        }
+
+        private byte[] operators() {
+            return operatorBytes.getBytes();
+        }
+
+        @Override
+        public void close() {
+            WorkflowResourceContext.OwnedBytes current = operatorBytes;
+            if (current != null) {
+                operatorBytes = null;
+                current.close();
+            }
         }
     }
 
-    private static final class RequestPlan {
+    private static final class RequestPlan implements AutoCloseable {
 
         private final IdentityHashMap<CanvasTransparencyGroup, ProgramPreflight>
                 groupPrograms =
                 new IdentityHashMap<CanvasTransparencyGroup, ProgramPreflight>();
+
+        @Override
+        public void close() {
+            for (ProgramPreflight preflight : groupPrograms.values()) {
+                if (preflight != null) {
+                    preflight.close();
+                }
+            }
+        }
     }
 
-    private static final class ProgramPreflight {
+    private static final class ProgramPreflight implements AutoCloseable {
 
         private final ProgramBindings bindings;
-        private final byte[] operators;
+        private WorkflowResourceContext.OwnedBytes operatorBytes;
 
-        ProgramPreflight(ProgramBindings bindings, byte[] operators) {
+        ProgramPreflight(
+                ProgramBindings bindings,
+                WorkflowResourceContext.OwnedBytes operatorBytes) {
             this.bindings = bindings;
-            this.operators = operators;
+            this.operatorBytes = operatorBytes;
+        }
+
+        private WorkflowResourceContext.OwnedBytes takeOperators() {
+            WorkflowResourceContext.OwnedBytes current = operatorBytes;
+            if (current == null) {
+                throw new IllegalStateException(
+                        "Canvas operators were already materialized");
+            }
+            operatorBytes = null;
+            return current;
+        }
+
+        @Override
+        public void close() {
+            WorkflowResourceContext.OwnedBytes current = operatorBytes;
+            if (current != null) {
+                operatorBytes = null;
+                current.close();
+            }
         }
     }
 
@@ -1789,15 +2348,76 @@ final class PdfBoxCanvasResourceOperations {
         private final Map<CanvasFont, COSName> fontNames =
                 new LinkedHashMap<CanvasFont, COSName>();
         private final Map<CanvasColorSpace, COSName> colorNames =
-                new LinkedHashMap<CanvasColorSpace, COSName>();
+                new IdentityHashMap<CanvasColorSpace, COSName>();
+        private final List<CanvasColorSpace> colorOrder =
+                new ArrayList<CanvasColorSpace>();
         private final Map<CanvasTransparencyState, COSName> transparencyNames =
                 new LinkedHashMap<CanvasTransparencyState, COSName>();
         private final Map<CanvasImage, COSName> imageNames =
-                new LinkedHashMap<CanvasImage, COSName>();
+                new IdentityHashMap<CanvasImage, COSName>();
+        private final List<CanvasImage> imageOrder =
+                new ArrayList<CanvasImage>();
         private final IdentityHashMap<CanvasTransparencyGroup, COSName> groupNames =
                 new IdentityHashMap<CanvasTransparencyGroup, COSName>();
         private final List<CanvasTransparencyGroup> groupOrder =
                 new ArrayList<CanvasTransparencyGroup>();
+    }
+
+    /** Seekable, zero-copy ImageIO input over an already-accounted array. */
+    private static final class ByteArrayImageInputStream
+            extends ImageInputStreamImpl {
+
+        private final byte[] bytes;
+        private final WorkflowResourceContext resources;
+
+        private ByteArrayImageInputStream(
+                byte[] bytes,
+                WorkflowResourceContext resources) {
+            this.bytes = bytes;
+            this.resources = resources;
+        }
+
+        @Override
+        public int read() throws IOException {
+            checkClosed();
+            resources.checkpointAsIOException();
+            bitOffset = 0;
+            if (streamPos >= bytes.length) {
+                return -1;
+            }
+            return bytes[(int) streamPos++] & 0xff;
+        }
+
+        @Override
+        public int read(byte[] target, int offset, int length)
+                throws IOException {
+            checkClosed();
+            if (target == null
+                    || offset < 0
+                    || length < 0
+                    || offset > target.length - length) {
+                throw new IndexOutOfBoundsException();
+            }
+            resources.checkpointAsIOException();
+            bitOffset = 0;
+            if (length == 0) {
+                return 0;
+            }
+            if (streamPos >= bytes.length) {
+                return -1;
+            }
+            int count = (int) Math.min(
+                    Math.min(length, 8192),
+                    bytes.length - streamPos);
+            System.arraycopy(bytes, (int) streamPos, target, offset, count);
+            streamPos += count;
+            return count;
+        }
+
+        @Override
+        public long length() {
+            return bytes.length;
+        }
     }
 
     private static final class Category {

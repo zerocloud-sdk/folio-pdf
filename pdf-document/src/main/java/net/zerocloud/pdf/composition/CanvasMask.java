@@ -75,6 +75,8 @@ public final class CanvasMask {
     public boolean isInverted() { return inverted; }
     /** @return a defensive sample copy */
     public byte[] getSamples() { return samples.clone(); }
+    /** @return the exact sample byte length without copying the samples */
+    public int getSampleByteLength() { return samples.length; }
 
     @Override
     public boolean equals(Object candidate) {

@@ -1,8 +1,6 @@
 package net.zerocloud.pdf;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -72,17 +70,22 @@ final class PdfBoxAnnotationOperations {
     private final PdfBoxMetadataOperations metadataOperations;
     private final PdfBoxAnnotationFlattener flattener;
     private final PdfBoxDocumentActionOperations actionOperations;
+    private final WorkflowResourceContext resources;
 
     PdfBoxAnnotationOperations(
             PDDocument document,
-            PdfBoxMetadataOperations metadataOperations) {
+            PdfBoxMetadataOperations metadataOperations,
+            WorkflowResourceContext resources) {
         this.document = document;
         this.metadataOperations = metadataOperations;
-        this.flattener = new PdfBoxAnnotationFlattener(document, this);
+        this.resources = resources;
+        this.flattener = new PdfBoxAnnotationFlattener(
+                document, this, resources);
         this.actionOperations = new PdfBoxDocumentActionOperations(
                 document,
                 metadataOperations,
-                this);
+                this,
+                resources);
     }
 
     static boolean isManagedCatalogEntry(COSName name) {
@@ -109,9 +112,11 @@ final class PdfBoxAnnotationOperations {
 
     void requireNonWidgetSignatureUpdate(UpdateAnnotations command)
             throws DocumentFailure {
+        resources.checkpoint();
         Set<String> selected = new HashSet<String>(
                 command.getRemovedIdentifiers());
         for (Annotation annotation : command.getAnnotations()) {
+            resources.checkpoint();
             if (annotation.getType() == Annotation.Type.WIDGET) {
                 throw PdfBoxWorkflowEngine.signaturePolicyFailure();
             }
@@ -122,6 +127,7 @@ final class PdfBoxAnnotationOperations {
         }
         try {
             for (COSBase rawPage : pageReferencesForCommand()) {
+                resources.checkpoint();
                 COSDictionary page = dictionary(rawPage);
                 COSBase rawAnnotations = page.getItem(COSName.ANNOTS);
                 if (rawAnnotations == null) {
@@ -133,6 +139,7 @@ final class PdfBoxAnnotationOperations {
                 }
                 COSArray annotations = (COSArray) value;
                 for (int index = 0; index < annotations.size(); index++) {
+                    resources.checkpoint();
                     COSDictionary existing = dictionary(annotations.get(index));
                     COSBase rawIdentifier = dereference(existing.getItem(NM));
                     if (!(rawIdentifier instanceof COSString)
@@ -149,6 +156,7 @@ final class PdfBoxAnnotationOperations {
         } catch (DocumentFailure failure) {
             throw failure;
         } catch (RuntimeException backendFailure) {
+            resources.rethrowResourceOrTerminalFailure(backendFailure);
             throw PdfBoxWorkflowEngine.signaturePolicyFailure();
         }
     }
@@ -158,6 +166,7 @@ final class PdfBoxAnnotationOperations {
             throw new IllegalArgumentException("Unsupported annotation command.");
         }
         try {
+            resources.checkpoint();
             if (command instanceof UpdateAnnotations) {
                 update((UpdateAnnotations) command);
             } else if (command instanceof UpdateActions) {
@@ -168,6 +177,7 @@ final class PdfBoxAnnotationOperations {
         } catch (DocumentFailure failure) {
             throw failure;
         } catch (RuntimeException backendFailure) {
+            resources.rethrowResourceOrTerminalFailure(backendFailure);
             throw failure(
                     DocumentFailureCode.DOCUMENT_WRITE_FAILED,
                     "The annotation update could not be completed safely.");
@@ -179,6 +189,7 @@ final class PdfBoxAnnotationOperations {
             throw new IllegalArgumentException("Unsupported annotation query.");
         }
         try {
+            resources.checkpoint();
             return query instanceof Annotations
                     ? annotations((Annotations) query)
                     : actionOperations.evaluate((Actions) query);
@@ -189,17 +200,30 @@ final class PdfBoxAnnotationOperations {
             }
             throw failure;
         } catch (RuntimeException backendFailure) {
+            resources.rethrowResourceOrTerminalFailure(backendFailure);
             throw invalidQuery();
         }
     }
 
     private void update(UpdateAnnotations command) throws DocumentFailure {
+        try (WorkflowResourceContext.OwnedMemoryScope ownership =
+                resources.ownedMemoryScope()) {
+            update(command, ownership);
+            ownership.transfer();
+        }
+    }
+
+    private void update(
+            UpdateAnnotations command,
+            WorkflowResourceContext.OwnedMemoryScope ownership)
+            throws DocumentFailure {
         List<COSBase> pageReferences = pageReferencesForCommand();
         Set<String> namedDestinations;
         try {
             namedDestinations = metadataOperations.namedDestinationNames(
                     document);
         } catch (DocumentFailure malformedDestinations) {
+            resources.rethrowTerminalFailure();
             throw invalidCommand();
         }
         Map<Integer, COSArray> replacements =
@@ -211,12 +235,14 @@ final class PdfBoxAnnotationOperations {
         IdentityHashMap<COSDictionary, Integer> pageNumbers =
                 new IdentityHashMap<COSDictionary, Integer>();
         for (int index = 0; index < pageReferences.size(); index++) {
+            resources.checkpoint();
             pageNumbers.put(dictionary(pageReferences.get(index)),
                     Integer.valueOf(index + 1));
         }
         PdfBoxAnnotationDecodePolicy.Budgets budgets =
                 PdfBoxAnnotationDecodePolicy.newManagedGraphPass();
         for (Annotation annotation : command.getAnnotations()) {
+            resources.checkpoint();
             int pageNumber = annotation.getProperties().getPageNumber();
             if (pageNumber > pageReferences.size()) {
                 throw invalidCommand();
@@ -236,6 +262,7 @@ final class PdfBoxAnnotationOperations {
         }
 
         for (int pageIndex = 0; pageIndex < pageReferences.size(); pageIndex++) {
+            resources.checkpoint();
             COSDictionary page = dictionary(pageReferences.get(pageIndex));
             COSArray copied = new COSArray();
             copied.setDirect(true);
@@ -247,6 +274,7 @@ final class PdfBoxAnnotationOperations {
                 }
                 COSArray existing = (COSArray) value;
                 for (int index = 0; index < existing.size(); index++) {
+                    resources.checkpoint();
                     COSBase raw = existing.get(index);
                     COSDictionary annotation;
                     String identifier;
@@ -263,8 +291,9 @@ final class PdfBoxAnnotationOperations {
                             && (replacing.contains(identifier)
                                     || removing.contains(identifier));
                     if (selected) {
+                        Annotation existingAnnotation = null;
                         try {
-                            Annotation existingAnnotation = publicAnnotation(
+                            existingAnnotation = publicAnnotation(
                                     annotation,
                                     pageIndex + 1,
                                     page,
@@ -282,7 +311,10 @@ final class PdfBoxAnnotationOperations {
                                 throw invalidCommand();
                             }
                         } catch (DocumentFailure invalidExistingAnnotation) {
+                            resources.rethrowTerminalFailure();
                             throw invalidCommand();
+                        } finally {
+                            releaseAnnotationBytes(existingAnnotation);
                         }
                     } else {
                         copied.add(raw);
@@ -296,17 +328,20 @@ final class PdfBoxAnnotationOperations {
         }
 
         for (Annotation annotation : command.getAnnotations()) {
+            resources.checkpoint();
             int pageIndex = annotation.getProperties().getPageNumber() - 1;
             COSBase pageReference = pageReferences.get(pageIndex);
             replacements.get(Integer.valueOf(pageIndex)).add(
                     new COSObject(backendAnnotation(
                             annotation,
                             pageReference,
-                            pageReferences)));
+                            pageReferences,
+                            ownership)));
         }
 
         for (Map.Entry<Integer, COSArray> replacement
                 : replacements.entrySet()) {
+            resources.checkpoint();
             COSDictionary page = dictionary(
                     pageReferences.get(replacement.getKey().intValue()));
             if (replacement.getValue().size() == 0) {
@@ -325,6 +360,7 @@ final class PdfBoxAnnotationOperations {
             namedDestinations = metadataOperations.namedDestinationNames(
                     document);
         } catch (DocumentFailure invalidDestinations) {
+            resources.rethrowTerminalFailure();
             throw invalidQuery();
         }
         List<Annotation> values = new ArrayList<Annotation>();
@@ -336,46 +372,57 @@ final class PdfBoxAnnotationOperations {
         IdentityHashMap<COSDictionary, Integer> pageNumbers =
                 new IdentityHashMap<COSDictionary, Integer>();
         for (int index = 0; index < pageReferences.size(); index++) {
+            resources.checkpoint();
             pageNumbers.put(dictionary(pageReferences.get(index)),
                     Integer.valueOf(index + 1));
         }
-        for (int pageIndex = 0; pageIndex < pageReferences.size(); pageIndex++) {
-            COSDictionary page = dictionary(pageReferences.get(pageIndex));
-            COSBase rawAnnotations = page.getItem(COSName.ANNOTS);
-            if (rawAnnotations == null) {
-                continue;
-            }
-            COSBase rawArray = dereference(rawAnnotations);
-            if (!(rawArray instanceof COSArray)) {
-                throw invalidQuery();
-            }
-            COSArray array = (COSArray) rawArray;
-            for (int index = 0; index < array.size(); index++) {
-                if (values.size() >= query.getMaximumAnnotations()) {
-                    throw limitExceeded();
+        try (WorkflowResourceContext.OwnedMemoryScope ownership =
+                resources.ownedMemoryScope()) {
+            for (int pageIndex = 0;
+                    pageIndex < pageReferences.size();
+                    pageIndex++) {
+                resources.checkpoint();
+                COSDictionary page = dictionary(pageReferences.get(pageIndex));
+                COSBase rawAnnotations = page.getItem(COSName.ANNOTS);
+                if (rawAnnotations == null) {
+                    continue;
                 }
-                Annotation annotation = publicAnnotation(
-                        dictionary(array.get(index)),
-                        pageIndex + 1,
-                        page,
-                        appearances,
-                        attachments,
-                        pageNumbers);
-                if (annotation.getLinkActivation().isPresent()
-                        && !isKnownNamedTarget(
-                                annotation.getLinkActivation().get()
-                                        .getTarget(),
-                                namedDestinations)) {
+                COSBase rawArray = dereference(rawAnnotations);
+                if (!(rawArray instanceof COSArray)) {
                     throw invalidQuery();
                 }
-                if (!identifiers.add(
-                        annotation.getProperties().getIdentifier())) {
-                    throw invalidQuery();
+                COSArray array = (COSArray) rawArray;
+                for (int index = 0; index < array.size(); index++) {
+                    resources.checkpoint();
+                    if (values.size() >= query.getMaximumAnnotations()) {
+                        throw limitExceeded();
+                    }
+                    Annotation annotation = decodePublicAnnotation(
+                            dictionary(array.get(index)),
+                            pageIndex + 1,
+                            page,
+                            appearances,
+                            attachments,
+                            pageNumbers,
+                            ownership);
+                    if (annotation.getLinkActivation().isPresent()
+                            && !isKnownNamedTarget(
+                                    annotation.getLinkActivation().get()
+                                            .getTarget(),
+                                    namedDestinations)) {
+                        throw invalidQuery();
+                    }
+                    if (!identifiers.add(
+                            annotation.getProperties().getIdentifier())) {
+                        throw invalidQuery();
+                    }
+                    values.add(annotation);
                 }
-                values.add(annotation);
             }
+            List<Annotation> result = Collections.unmodifiableList(values);
+            ownership.transfer();
+            return result;
         }
-        return Collections.unmodifiableList(values);
     }
 
     Annotation publicAnnotation(
@@ -385,6 +432,30 @@ final class PdfBoxAnnotationOperations {
             ByteBudget appearances,
             ByteBudget attachments,
             IdentityHashMap<COSDictionary, Integer> pageNumbers)
+            throws DocumentFailure {
+        try (WorkflowResourceContext.OwnedMemoryScope ownership =
+                resources.ownedMemoryScope()) {
+            Annotation result = decodePublicAnnotation(
+                    dictionary,
+                    pageNumber,
+                    page,
+                    appearances,
+                    attachments,
+                    pageNumbers,
+                    ownership);
+            ownership.transfer();
+            return result;
+        }
+    }
+
+    private Annotation decodePublicAnnotation(
+            COSDictionary dictionary,
+            int pageNumber,
+            COSDictionary page,
+            ByteBudget appearances,
+            ByteBudget attachments,
+            IdentityHashMap<COSDictionary, Integer> pageNumbers,
+            WorkflowResourceContext.OwnedMemoryScope ownership)
             throws DocumentFailure {
         COSBase type = dereference(dictionary.getItem(COSName.TYPE));
         COSBase subtype = dereference(dictionary.getItem(COSName.SUBTYPE));
@@ -419,7 +490,8 @@ final class PdfBoxAnnotationOperations {
         }
         COSBase rawAppearance = dictionary.getItem(AP);
         if (rawAppearance != null) {
-            properties.appearance(appearance(rawAppearance, appearances));
+            properties.appearance(appearance(
+                    rawAppearance, appearances, ownership));
         }
         if (TEXT.equals(subtype)) {
             Annotation.TextIcon icon = textIcon(
@@ -497,12 +569,13 @@ final class PdfBoxAnnotationOperations {
         }
         return Annotation.fileAttachment(
                 properties.build(),
-                fileSpecification(dictionary.getItem(FS), attachments),
+                fileSpecification(
+                        dictionary.getItem(FS), attachments, ownership),
                 fileAttachmentIcon(dereference(
                         dictionary.getItem(COSName.NAME))));
     }
 
-    private static void requireAnnotationKeys(
+    private void requireAnnotationKeys(
             COSDictionary dictionary,
             COSBase subtype) throws DocumentFailure {
         if (TEXT.equals(subtype)) {
@@ -536,6 +609,21 @@ final class PdfBoxAnnotationOperations {
             Annotation annotation,
             COSBase pageReference,
             List<COSBase> pageReferences) throws DocumentFailure {
+        try (WorkflowResourceContext.OwnedMemoryScope ownership =
+                resources.ownedMemoryScope()) {
+            COSDictionary result = backendAnnotation(
+                    annotation, pageReference, pageReferences, ownership);
+            ownership.transfer();
+            return result;
+        }
+    }
+
+    COSDictionary backendAnnotation(
+            Annotation annotation,
+            COSBase pageReference,
+            List<COSBase> pageReferences,
+            WorkflowResourceContext.OwnedMemoryScope ownership)
+            throws DocumentFailure {
         AnnotationProperties properties = annotation.getProperties();
         COSDictionary dictionary = new COSDictionary();
         dictionary.setItem(COSName.TYPE, ANNOT);
@@ -555,12 +643,20 @@ final class PdfBoxAnnotationOperations {
             throw invalidCommand();
         }
         dictionary.setItem(COSName.RECT,
-                backendRectangle(properties.getRectangle()));
+                backendRectangle(properties.getRectangle(), ownership));
         dictionary.setItem(P, pageReference);
-        dictionary.setItem(NM, new COSString(properties.getIdentifier()));
+        dictionary.setItem(NM, PdfBoxStringSupport.backendString(
+                properties.getIdentifier(),
+                resources,
+                ownership,
+                PdfBoxAnnotationOperations::invalidCommand));
         if (properties.getContents().isPresent()) {
             dictionary.setItem(COSName.CONTENTS,
-                    new COSString(properties.getContents().get()));
+                    PdfBoxStringSupport.backendString(
+                            properties.getContents().get(),
+                            resources,
+                            ownership,
+                            PdfBoxAnnotationOperations::invalidCommand));
         }
         int flags = flagBits(properties.getFlags());
         if (flags != 0) {
@@ -577,12 +673,13 @@ final class PdfBoxAnnotationOperations {
                     annotation.getStampName().get()));
         } else if (annotation.getType() == Annotation.Type.HIGHLIGHT) {
             dictionary.setItem(QUAD_POINTS,
-                    backendQuads(annotation.getQuads()));
+                    backendQuads(annotation.getQuads(), ownership));
             dictionary.setItem(COSName.C,
-                    backendColor(annotation.getColor().get()));
+                    backendColor(annotation.getColor().get(), ownership));
         } else if (annotation.getType() == Annotation.Type.FILE_ATTACHMENT) {
             dictionary.setItem(FS,
-                    backendFileSpecification(annotation.getAttachment().get()));
+                    backendFileSpecification(
+                            annotation.getAttachment().get(), ownership));
             dictionary.setItem(COSName.NAME, COSName.getPDFName(
                     fileAttachmentIconName(
                             annotation.getFileAttachmentIcon().get())));
@@ -592,10 +689,10 @@ final class PdfBoxAnnotationOperations {
             LinkActivation activation = annotation.getLinkActivation().get();
             if (activation.getKind() == LinkActivation.Kind.DESTINATION) {
                 dictionary.setItem(COSName.DEST, backendNavigationTarget(
-                        activation.getTarget(), pageReferences));
+                        activation.getTarget(), pageReferences, ownership));
             } else {
                 dictionary.setItem(A, backendAction(
-                        activation.getTarget(), pageReferences));
+                        activation.getTarget(), pageReferences, ownership));
             }
             COSArray border = new COSArray();
             border.setDirect(true);
@@ -608,7 +705,8 @@ final class PdfBoxAnnotationOperations {
         }
         if (properties.getAppearance().isPresent()) {
             dictionary.setItem(AP,
-                    backendAppearance(properties.getAppearance().get()));
+                    backendAppearance(
+                            properties.getAppearance().get(), ownership));
         }
         return dictionary;
     }
@@ -632,9 +730,24 @@ final class PdfBoxAnnotationOperations {
     COSDictionary backendAction(
             NavigationTarget target,
             List<COSBase> pageReferences) throws DocumentFailure {
+        try (WorkflowResourceContext.OwnedMemoryScope ownership =
+                resources.ownedMemoryScope()) {
+            COSDictionary result = backendAction(
+                    target, pageReferences, ownership);
+            ownership.transfer();
+            return result;
+        }
+    }
+
+    COSDictionary backendAction(
+            NavigationTarget target,
+            List<COSBase> pageReferences,
+            WorkflowResourceContext.OwnedMemoryScope ownership)
+            throws DocumentFailure {
         COSDictionary action = new COSDictionary();
         action.setItem(S, GO_TO);
-        action.setItem(D, backendNavigationTarget(target, pageReferences));
+        action.setItem(D, backendNavigationTarget(
+                target, pageReferences, ownership));
         return action;
     }
 
@@ -668,9 +781,15 @@ final class PdfBoxAnnotationOperations {
 
     private COSBase backendNavigationTarget(
             NavigationTarget target,
-            List<COSBase> pageReferences) throws DocumentFailure {
+            List<COSBase> pageReferences,
+            WorkflowResourceContext.OwnedMemoryScope ownership)
+            throws DocumentFailure {
         if (target.getKind() == NavigationTarget.Kind.NAMED) {
-            return new COSString(target.getNamedDestination().get());
+            return PdfBoxStringSupport.backendString(
+                    target.getNamedDestination().get(),
+                    resources,
+                    ownership,
+                    PdfBoxAnnotationOperations::invalidCommand);
         }
         PageDestination destination = target.getPageDestination().get();
         if (destination.getPageNumber() > pageReferences.size()) {
@@ -679,13 +798,15 @@ final class PdfBoxAnnotationOperations {
         try {
             return metadataOperations.destinationToArray(
                     destination,
-                    pageReferences.get(destination.getPageNumber() - 1));
+                    pageReferences.get(destination.getPageNumber() - 1),
+                    ownership);
         } catch (DocumentFailure failure) {
+            resources.rethrowTerminalFailure();
             throw invalidCommand();
         }
     }
 
-    private static void requireZeroBorder(COSBase raw)
+    private void requireZeroBorder(COSBase raw)
             throws DocumentFailure {
         if (raw == null) {
             return;
@@ -703,17 +824,21 @@ final class PdfBoxAnnotationOperations {
         }
     }
 
-    private COSDictionary backendFileSpecification(EmbeddedFile file)
+    private COSDictionary backendFileSpecification(
+            EmbeddedFile file,
+            WorkflowResourceContext.OwnedMemoryScope ownership)
             throws DocumentFailure {
         try {
             COSStream stream = document.getDocument().createCOSStream();
             stream.setItem(COSName.TYPE, COSName.EMBEDDED_FILE);
             if (file.getMimeSubtype().isPresent()) {
                 stream.setItem(COSName.SUBTYPE,
-                        mimeSubtypeName(file.getMimeSubtype().get()));
+                        mimeSubtypeName(
+                                file.getMimeSubtype().get(), ownership));
             }
             try (OutputStream output = stream.createOutputStream()) {
-                output.write(file.getContent());
+                resources.writeBytesAsIOException(
+                        output, file.contentForWorkflow());
             }
 
             COSDictionary ef = new COSDictionary();
@@ -724,11 +849,19 @@ final class PdfBoxAnnotationOperations {
             specification.setItem(COSName.TYPE,
                     COSName.getPDFName("Filespec"));
             specification.setItem(COSName.F,
-                    new COSString(file.getName()));
+                    PdfBoxStringSupport.backendString(
+                            file.getName(),
+                            resources,
+                            ownership,
+                            PdfBoxAnnotationOperations::invalidCommand));
             specification.setItem(COSName.EF, ef);
             if (file.getDescription().isPresent()) {
                 specification.setItem(COSName.DESC,
-                        new COSString(file.getDescription().get()));
+                        PdfBoxStringSupport.backendString(
+                                file.getDescription().get(),
+                                resources,
+                                ownership,
+                                PdfBoxAnnotationOperations::invalidCommand));
             }
             if (file.getRelationship()
                     != EmbeddedFile.Relationship.UNSPECIFIED) {
@@ -737,13 +870,16 @@ final class PdfBoxAnnotationOperations {
             }
             return specification;
         } catch (IOException | RuntimeException failure) {
+            resources.rethrowResourceOrTerminalFailure(failure);
             throw invalidCommand();
         }
     }
 
-    private static EmbeddedFile fileSpecification(
+    private EmbeddedFile fileSpecification(
             COSBase raw,
-            ByteBudget budget) throws DocumentFailure {
+            ByteBudget budget,
+            WorkflowResourceContext.OwnedMemoryScope ownership)
+            throws DocumentFailure {
         COSBase value = dereference(raw);
         if (!(value instanceof COSDictionary) || value instanceof COSStream) {
             throw invalidQuery();
@@ -798,23 +934,28 @@ final class PdfBoxAnnotationOperations {
         String description = rawDescription == null
                 ? null : ((COSString) rawDescription).getString();
         String mime = rawMime == null
-                ? null : mimeSubtypeFromName((COSName) rawMime);
-        byte[] content = decodedBytes(stream, budget);
+                ? null : mimeSubtypeFromName(
+                        (COSName) rawMime, ownership);
         if (mime == null) {
             if (description != null
                     || relationship != EmbeddedFile.Relationship.UNSPECIFIED) {
                 throw invalidQuery();
             }
-            return EmbeddedFile.version1(name, content);
+            byte[] content = ownership.hold(decodedBytesWorking(stream, budget));
+            return EmbeddedFile.fromOwnedContent(
+                    name, content, null, null, relationship);
         }
         if (description == null
                 && relationship == EmbeddedFile.Relationship.UNSPECIFIED) {
-            return EmbeddedFile.version1(name, content, mime);
+            byte[] content = ownership.hold(decodedBytesWorking(stream, budget));
+            return EmbeddedFile.fromOwnedContent(
+                    name, content, mime, null, relationship);
         }
         if (description == null) {
             throw invalidQuery();
         }
-        return EmbeddedFile.version1(
+        byte[] content = ownership.hold(decodedBytesWorking(stream, budget));
+        return EmbeddedFile.fromOwnedContent(
                 name,
                 content,
                 mime,
@@ -822,7 +963,7 @@ final class PdfBoxAnnotationOperations {
                 relationship);
     }
 
-    private static List<AnnotationQuad> quads(COSBase raw)
+    private List<AnnotationQuad> quads(COSBase raw)
             throws DocumentFailure {
         COSBase value = dereference(raw);
         if (!(value instanceof COSArray)
@@ -834,6 +975,7 @@ final class PdfBoxAnnotationOperations {
         List<AnnotationQuad> quads = new ArrayList<AnnotationQuad>(
                 array.size() / 8);
         for (int offset = 0; offset < array.size(); offset += 8) {
+            resources.checkpoint();
             BigDecimal[] coordinates = new BigDecimal[8];
             for (int index = 0; index < coordinates.length; index++) {
                 coordinates[index] = decimal(array.get(offset + index));
@@ -850,27 +992,34 @@ final class PdfBoxAnnotationOperations {
         return quads;
     }
 
-    private static COSArray backendQuads(List<AnnotationQuad> quads)
+    private COSArray backendQuads(
+            List<AnnotationQuad> quads,
+            WorkflowResourceContext.OwnedMemoryScope ownership)
             throws DocumentFailure {
         COSArray array = new COSArray();
         array.setDirect(true);
         for (AnnotationQuad quad : quads) {
+            resources.checkpoint();
             for (BigDecimal coordinate : quad.getCoordinates()) {
-                array.add(backendNumber(coordinate));
+                array.add(backendNumber(coordinate, ownership));
             }
         }
         return array;
     }
 
-    private static AnnotationColor color(COSBase raw)
+    private AnnotationColor color(COSBase raw)
             throws DocumentFailure {
         COSBase value = dereference(raw);
         if (!(value instanceof COSArray)) {
             throw invalidQuery();
         }
         COSArray array = (COSArray) value;
+        if (array.size() != 1 && array.size() != 3 && array.size() != 4) {
+            throw invalidQuery();
+        }
         List<BigDecimal> components = new ArrayList<BigDecimal>(array.size());
         for (int index = 0; index < array.size(); index++) {
+            resources.checkpoint();
             BigDecimal component = decimal(array.get(index));
             if (component == null) {
                 throw invalidQuery();
@@ -896,19 +1045,23 @@ final class PdfBoxAnnotationOperations {
         throw invalidQuery();
     }
 
-    private static COSArray backendColor(AnnotationColor color)
+    private COSArray backendColor(
+            AnnotationColor color,
+            WorkflowResourceContext.OwnedMemoryScope ownership)
             throws DocumentFailure {
         COSArray array = new COSArray();
         array.setDirect(true);
         for (BigDecimal component : color.getComponents()) {
-            array.add(backendNumber(component));
+            array.add(backendNumber(component, ownership));
         }
         return array;
     }
 
-    private COSDictionary backendAppearance(AnnotationAppearance appearance)
+    private COSDictionary backendAppearance(
+            AnnotationAppearance appearance,
+            WorkflowResourceContext.OwnedMemoryScope ownership)
             throws DocumentFailure {
-        byte[] content = appearance.getContent();
+        byte[] content = appearance.contentForWorkflow();
         requireSafeAppearanceContent(content, true);
         try {
             COSStream stream = document.getDocument().createCOSStream();
@@ -916,25 +1069,29 @@ final class PdfBoxAnnotationOperations {
             stream.setItem(COSName.SUBTYPE, COSName.FORM);
             stream.setItem(FORM_TYPE, COSInteger.ONE);
             stream.setItem(COSName.BBOX,
-                    backendRectangle(appearance.getBoundingBox()));
+                    backendRectangle(
+                            appearance.getBoundingBox(), ownership));
             COSDictionary resources = new COSDictionary();
             resources.setDirect(true);
             stream.setItem(COSName.RESOURCES, resources);
             try (OutputStream output = stream.createOutputStream()) {
-                output.write(content);
+                this.resources.writeBytesAsIOException(output, content);
             }
             COSDictionary appearances = new COSDictionary();
             appearances.setDirect(true);
             appearances.setItem(N, stream);
             return appearances;
         } catch (IOException | RuntimeException backendFailure) {
+            resources.rethrowResourceOrTerminalFailure(backendFailure);
             throw invalidCommand();
         }
     }
 
     private AnnotationAppearance appearance(
             COSBase rawAppearance,
-            ByteBudget budget) throws DocumentFailure {
+            ByteBudget budget,
+            WorkflowResourceContext.OwnedMemoryScope ownership)
+            throws DocumentFailure {
         COSBase value = dereference(rawAppearance);
         if (!(value instanceof COSDictionary) || value instanceof COSStream) {
             throw invalidQuery();
@@ -963,14 +1120,24 @@ final class PdfBoxAnnotationOperations {
                 || ((COSDictionary) resources).size() != 0) {
             throw invalidQuery();
         }
-        byte[] content = decodedBytes(stream, budget);
-        requireSafeAppearanceContent(content, false);
-        return AnnotationAppearance.version1(
-                rectangle(stream.getItem(COSName.BBOX)),
-                content);
+        WorkflowResourceContext.OwnedBytes decoded =
+                decodedBytesWorking(stream, budget);
+        try {
+            byte[] content = decoded.getBytes();
+            requireSafeAppearanceContent(content, false);
+            AnnotationRectangle boundingBox = rectangle(
+                    stream.getItem(COSName.BBOX));
+            ownership.hold(decoded);
+            return AnnotationAppearance.fromOwnedContent(
+                    boundingBox,
+                    content);
+        } catch (DocumentFailure | RuntimeException failure) {
+            decoded.close();
+            throw failure;
+        }
     }
 
-    private static void requireSafeAppearanceContent(
+    private void requireSafeAppearanceContent(
             byte[] content,
             boolean command) throws DocumentFailure {
         if (content.length == 0
@@ -981,7 +1148,9 @@ final class PdfBoxAnnotationOperations {
         try {
             List<Object> operands = new ArrayList<Object>();
             int savedGraphicsStates = 0;
-            for (Object token : parser.parse()) {
+            Object token;
+            while ((token = parser.parseNextToken()) != null) {
+                resources.checkpoint();
                 if (!(token instanceof Operator)) {
                     operands.add(token);
                     continue;
@@ -992,6 +1161,7 @@ final class PdfBoxAnnotationOperations {
                 }
                 if ("q".equals(name)) {
                     savedGraphicsStates++;
+                    resources.requireNestingDepth(savedGraphicsStates);
                 } else if ("Q".equals(name)) {
                     if (savedGraphicsStates == 0) {
                         throw command ? invalidCommand() : invalidQuery();
@@ -1006,6 +1176,7 @@ final class PdfBoxAnnotationOperations {
         } catch (DocumentFailure failure) {
             throw failure;
         } catch (IOException | RuntimeException invalidSyntax) {
+            resources.rethrowResourceOrTerminalFailure(invalidSyntax);
             throw command ? invalidCommand() : invalidQuery();
         } finally {
             try {
@@ -1016,9 +1187,9 @@ final class PdfBoxAnnotationOperations {
         }
     }
 
-    private static boolean validAppearanceOperands(
+    private boolean validAppearanceOperands(
             String operator,
-            List<Object> operands) {
+            List<Object> operands) throws DocumentFailure {
         if (isOneOf(operator,
                 "q", "Q", "h", "S", "s", "f", "F", "f*",
                 "B", "B*", "b", "b*", "n", "W", "W*")) {
@@ -1084,6 +1255,7 @@ final class PdfBoxAnnotationOperations {
             }
             boolean positive = false;
             for (int index = 0; index < pattern.size(); index++) {
+                resources.checkpoint();
                 BigDecimal length = decimal(pattern.get(index));
                 if (length == null
                         || length.compareTo(BigDecimal.ZERO) < 0) {
@@ -1096,9 +1268,9 @@ final class PdfBoxAnnotationOperations {
         return false;
     }
 
-    private static boolean numericOperandAtLeast(
+    private boolean numericOperandAtLeast(
             List<Object> operands,
-            BigDecimal minimum) {
+            BigDecimal minimum) throws DocumentFailure {
         if (operands.size() != 1) {
             return false;
         }
@@ -1106,10 +1278,10 @@ final class PdfBoxAnnotationOperations {
         return value != null && value.compareTo(minimum) >= 0;
     }
 
-    private static boolean integerOperandBetween(
+    private boolean integerOperandBetween(
             List<Object> operands,
             int minimum,
-            int maximum) {
+            int maximum) throws DocumentFailure {
         if (operands.size() != 1) {
             return false;
         }
@@ -1121,11 +1293,11 @@ final class PdfBoxAnnotationOperations {
                 && value.compareTo(BigDecimal.valueOf(maximum)) <= 0;
     }
 
-    private static boolean numericOperandsBetween(
+    private boolean numericOperandsBetween(
             List<Object> operands,
             int count,
             BigDecimal minimum,
-            BigDecimal maximum) {
+            BigDecimal maximum) throws DocumentFailure {
         if (operands.size() != count) {
             return false;
         }
@@ -1140,7 +1312,8 @@ final class PdfBoxAnnotationOperations {
         return true;
     }
 
-    private static BigDecimal appearanceNumber(Object operand) {
+    private BigDecimal appearanceNumber(Object operand)
+            throws DocumentFailure {
         return operand instanceof COSBase
                 ? decimal((COSBase) operand)
                 : null;
@@ -1169,25 +1342,28 @@ final class PdfBoxAnnotationOperations {
         return false;
     }
 
-    private static byte[] decodedBytes(COSStream stream, ByteBudget budget)
+    private WorkflowResourceContext.OwnedBytes decodedBytesWorking(
+            COSStream stream,
+            ByteBudget budget)
             throws DocumentFailure {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        byte[] buffer = new byte[8192];
-        try (InputStream input = stream.createInputStream()) {
-            int read;
-            while ((read = input.read(buffer)) != -1) {
-                budget.consume(read);
-                bytes.write(buffer, 0, read);
-            }
-            return bytes.toByteArray();
+        try (WorkflowResourceContext.OwnedByteAccumulator bytes =
+                resources.ownedByteAccumulator()) {
+            PdfBoxHostileInputPreflight.decodeStream(
+                    stream,
+                    resources,
+                    new AnnotationDecodedOutput(bytes, budget));
+            return bytes.finishWorking();
+        } catch (AnnotationBudgetIOException exhausted) {
+            throw exhausted.failure;
         } catch (DocumentFailure failure) {
             throw failure;
         } catch (IOException | RuntimeException failure) {
+            resources.rethrowResourceOrTerminalFailure(failure);
             throw invalidQuery();
         }
     }
 
-    private static AnnotationRectangle rectangle(COSBase raw)
+    private AnnotationRectangle rectangle(COSBase raw)
             throws DocumentFailure {
         COSBase value = dereference(raw);
         if (!(value instanceof COSArray) || ((COSArray) value).size() != 4) {
@@ -1208,42 +1384,43 @@ final class PdfBoxAnnotationOperations {
         }
     }
 
-    private static COSArray backendRectangle(AnnotationRectangle rectangle)
+    private COSArray backendRectangle(
+            AnnotationRectangle rectangle,
+            WorkflowResourceContext.OwnedMemoryScope ownership)
             throws DocumentFailure {
         COSArray array = new COSArray();
         array.setDirect(true);
-        array.add(backendNumber(rectangle.getLeft()));
-        array.add(backendNumber(rectangle.getBottom()));
-        array.add(backendNumber(rectangle.getRight()));
-        array.add(backendNumber(rectangle.getTop()));
+        array.add(backendNumber(rectangle.getLeft(), ownership));
+        array.add(backendNumber(rectangle.getBottom(), ownership));
+        array.add(backendNumber(rectangle.getRight(), ownership));
+        array.add(backendNumber(rectangle.getTop(), ownership));
         return array;
     }
 
-    private static COSBase backendNumber(BigDecimal decimal)
+    private COSBase backendNumber(
+            BigDecimal decimal,
+            WorkflowResourceContext.OwnedMemoryScope ownership)
             throws DocumentFailure {
-        if (decimal.scale() <= 0) {
-            try {
-                return COSInteger.get(decimal.longValueExact());
-            } catch (ArithmeticException outsideIntegerRange) {
-                // A lexical real retains exact values outside the integer range.
-            }
-        }
-        try {
-            return new COSFloat(decimal.toPlainString());
-        } catch (IOException | NumberFormatException invalid) {
-            throw invalidCommand();
-        }
+        return PdfBoxValueAdapter.backendNumber(
+                decimal,
+                resources,
+                ownership,
+                PdfBoxAnnotationOperations::invalidCommand);
     }
 
-    private static BigDecimal decimal(COSBase raw) {
+    private BigDecimal decimal(COSBase raw) throws DocumentFailure {
         COSBase value = dereference(raw);
         if (value instanceof COSInteger) {
             return BigDecimal.valueOf(((COSInteger) value).longValue());
         }
         if (value instanceof COSFloat) {
             try {
-                return PdfBoxValueAdapter.serializedNumber((COSFloat) value);
+                return PdfBoxValueAdapter.serializedNumber(
+                        (COSFloat) value, resources);
+            } catch (DocumentFailure failure) {
+                throw failure;
             } catch (IOException | NumberFormatException invalid) {
+                resources.rethrowResourceOrTerminalFailure(invalid);
                 return null;
             }
         }
@@ -1341,47 +1518,57 @@ final class PdfBoxAnnotationOperations {
         }
     }
 
-    private static COSName mimeSubtypeName(String mimeSubtype)
+    private COSName mimeSubtypeName(
+            String mimeSubtype,
+            WorkflowResourceContext.OwnedMemoryScope ownership)
             throws DocumentFailure {
-        StringBuilder encoded = new StringBuilder(mimeSubtype.length() + 4);
-        for (int index = 0; index < mimeSubtype.length(); index++) {
-            char character = mimeSubtype.charAt(index);
-            if (character > 0x7e) {
+        try (WorkflowResourceContext.OwnedTextAccumulator encoded =
+                resources.ownedTextAccumulator()) {
+            for (int index = 0; index < mimeSubtype.length(); index++) {
+                char character = mimeSubtype.charAt(index);
+                if (character > 0x7e) {
+                    throw invalidCommand();
+                }
+                if (character <= 0x20
+                        || "()<>[]{}/%#".indexOf(character) >= 0) {
+                    encoded.append('#');
+                    encoded.append(HEX_DIGITS[(character >> 4) & 0xf]);
+                    encoded.append(HEX_DIGITS[character & 0xf]);
+                } else {
+                    encoded.append(character);
+                }
+            }
+            try {
+                return COSName.getPDFName(encoded.finishHeld(ownership));
+            } catch (RuntimeException invalid) {
+                resources.rethrowResourceOrTerminalFailure(invalid);
                 throw invalidCommand();
             }
-            if (character <= 0x20
-                    || "()<>[]{}/%#".indexOf(character) >= 0) {
-                encoded.append('#');
-                encoded.append(HEX_DIGITS[(character >> 4) & 0xf]);
-                encoded.append(HEX_DIGITS[character & 0xf]);
-            } else {
-                encoded.append(character);
-            }
-        }
-        try {
-            return COSName.getPDFName(encoded.toString());
-        } catch (RuntimeException invalid) {
-            throw invalidCommand();
         }
     }
 
-    private static String mimeSubtypeFromName(COSName name) {
+    private String mimeSubtypeFromName(
+            COSName name,
+            WorkflowResourceContext.OwnedMemoryScope ownership)
+            throws DocumentFailure {
         String encoded = name.getName();
-        StringBuilder decoded = new StringBuilder(encoded.length());
-        for (int index = 0; index < encoded.length(); index++) {
-            char character = encoded.charAt(index);
-            if (character == '#' && index + 2 < encoded.length()) {
-                int high = Character.digit(encoded.charAt(index + 1), 16);
-                int low = Character.digit(encoded.charAt(index + 2), 16);
-                if (high >= 0 && low >= 0) {
-                    decoded.append((char) (high * 16 + low));
-                    index += 2;
-                    continue;
+        try (WorkflowResourceContext.OwnedTextAccumulator decoded =
+                resources.ownedTextAccumulator()) {
+            for (int index = 0; index < encoded.length(); index++) {
+                char character = encoded.charAt(index);
+                if (character == '#' && index + 2 < encoded.length()) {
+                    int high = Character.digit(encoded.charAt(index + 1), 16);
+                    int low = Character.digit(encoded.charAt(index + 2), 16);
+                    if (high >= 0 && low >= 0) {
+                        decoded.append((char) (high * 16 + low));
+                        index += 2;
+                        continue;
+                    }
                 }
+                decoded.append(character);
             }
-            decoded.append(character);
+            return decoded.finishHeld(ownership);
         }
-        return decoded.toString();
     }
 
     private static COSName relationshipName(
@@ -1437,6 +1624,7 @@ final class PdfBoxAnnotationOperations {
                     document,
                     PdfBoxMetadataOperations.StructureFailure.COMMAND);
         } catch (DocumentFailure failure) {
+            resources.rethrowTerminalFailure();
             throw invalidCommand();
         }
     }
@@ -1447,6 +1635,7 @@ final class PdfBoxAnnotationOperations {
                     document,
                     PdfBoxMetadataOperations.StructureFailure.QUERY);
         } catch (DocumentFailure failure) {
+            resources.rethrowTerminalFailure();
             throw invalidQuery();
         }
     }
@@ -1460,10 +1649,11 @@ final class PdfBoxAnnotationOperations {
         return (COSDictionary) value;
     }
 
-    static void requireOnlyKeys(
+    void requireOnlyKeys(
             COSDictionary dictionary,
             String... names) throws DocumentFailure {
         for (COSName key : dictionary.keySet()) {
+            resources.checkpoint();
             boolean found = false;
             for (String name : names) {
                 if (COSName.getPDFName(name).equals(key)) {
@@ -1475,6 +1665,22 @@ final class PdfBoxAnnotationOperations {
                 throw invalidQuery();
             }
         }
+    }
+
+    void releaseAnnotationBytes(Annotation annotation) {
+        if (annotation == null) {
+            return;
+        }
+        long bytes = 0L;
+        if (annotation.getProperties().getAppearance().isPresent()) {
+            bytes += annotation.getProperties().getAppearance().get()
+                    .contentForWorkflow().length;
+        }
+        if (annotation.getAttachment().isPresent()) {
+            bytes += annotation.getAttachment().get()
+                    .contentForWorkflow().length;
+        }
+        resources.releaseRetainedOwnedMemory(bytes);
     }
 
     static COSBase dereference(COSBase value) {
@@ -1563,6 +1769,58 @@ final class PdfBoxAnnotationOperations {
                 throw limitExceeded();
             }
             consumed += count;
+        }
+    }
+
+    private static final class AnnotationDecodedOutput extends OutputStream {
+
+        private final WorkflowResourceContext.OwnedByteAccumulator output;
+        private final ByteBudget budget;
+
+        private AnnotationDecodedOutput(
+                WorkflowResourceContext.OwnedByteAccumulator output,
+                ByteBudget budget) {
+            this.output = output;
+            this.budget = budget;
+        }
+
+        @Override
+        public void write(int value) throws IOException {
+            account(1);
+            output.write(value);
+        }
+
+        @Override
+        public void write(byte[] bytes, int offset, int length)
+                throws IOException {
+            if (bytes == null
+                    || offset < 0
+                    || length < 0
+                    || offset > bytes.length - length) {
+                throw new IndexOutOfBoundsException();
+            }
+            account(length);
+            output.write(bytes, offset, length);
+        }
+
+        private void account(int length) throws IOException {
+            try {
+                budget.consume(length);
+            } catch (DocumentFailure failure) {
+                throw new AnnotationBudgetIOException(failure);
+            }
+        }
+    }
+
+    private static final class AnnotationBudgetIOException
+            extends IOException {
+
+        private static final long serialVersionUID = 1L;
+        private final DocumentFailure failure;
+
+        private AnnotationBudgetIOException(DocumentFailure failure) {
+            super(failure.getDiagnostic());
+            this.failure = failure;
         }
     }
 

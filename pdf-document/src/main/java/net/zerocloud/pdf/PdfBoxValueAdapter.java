@@ -1,19 +1,21 @@
 package net.zerocloud.pdf;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigDecimal;
-import java.nio.charset.StandardCharsets;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import org.apache.pdfbox.cos.COSBase;
+import java.util.Set;
 import org.apache.pdfbox.cos.COSArray;
+import org.apache.pdfbox.cos.COSBase;
 import org.apache.pdfbox.cos.COSBoolean;
 import org.apache.pdfbox.cos.COSDictionary;
 import org.apache.pdfbox.cos.COSFloat;
@@ -29,10 +31,13 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 /** Keeps the low-level public model detached from PDFBox identity and types. */
 final class PdfBoxValueAdapter {
 
+    private static final int MAXIMUM_RECURSIVE_MATERIALIZATION_DEPTH = 256;
+
     static final String CAPABILITY_ID = "document.value.inspect-patch";
 
     private final PDDocument document;
     private final PdfBoxDocumentSession session;
+    private final WorkflowResourceContext resources;
     private final Object sessionIdentity = new Object();
     private final IdentityHashMap<COSBase, ObjectReference> references =
             new IdentityHashMap<COSBase, ObjectReference>();
@@ -40,9 +45,13 @@ final class PdfBoxValueAdapter {
             new HashMap<ObjectReference, ReferenceTarget>();
     private long nextReferenceIdentity = 1L;
 
-    PdfBoxValueAdapter(PDDocument document, PdfBoxDocumentSession session) {
+    PdfBoxValueAdapter(
+            PDDocument document,
+            PdfBoxDocumentSession session,
+            WorkflowResourceContext resources) {
         this.document = document;
         this.session = session;
+        this.resources = resources;
     }
 
     ObjectReference documentRootReference() throws DocumentFailure {
@@ -92,54 +101,76 @@ final class PdfBoxValueAdapter {
     }
 
     void apply(DocumentPatch patch) throws DocumentFailure {
-        List<PreparedChange> prepared = prepare(patch);
-        rejectReferenceCycles(prepared);
-        int applied = 0;
-        try {
-            for (PreparedChange change : prepared) {
-                change.target.setItem(change.name, change.value);
-                applied++;
+        resources.checkpoint();
+        try (PreparedPatch preparedPatch = prepare(patch)) {
+            List<PreparedChange> prepared = preparedPatch.changes;
+            rejectReferenceCycles(prepared);
+            int applied = 0;
+            try {
+                for (PreparedChange change : prepared) {
+                    resources.checkpoint();
+                    change.target.setItem(change.name, change.value);
+                    applied++;
+                }
+                preparedPatch.transfer();
+            } catch (DocumentFailure failure) {
+                rollback(prepared, applied);
+                throw failure;
+            } catch (RuntimeException applicationFailure) {
+                rollback(prepared, applied);
+                throw applicationFailure;
             }
-        } catch (RuntimeException applicationFailure) {
-            rollback(prepared, applied);
-            throw applicationFailure;
         }
     }
 
-    private List<PreparedChange> prepare(DocumentPatch patch)
+    private PreparedPatch prepare(DocumentPatch patch)
             throws DocumentFailure {
+        WorkflowResourceContext.OwnedMemoryScope ownership =
+                resources.ownedMemoryScope();
         List<PreparedChange> prepared = new ArrayList<PreparedChange>(
                 patch.getChanges().size());
-        for (DocumentPatch.DictionaryEntryChange change : patch.getChanges()) {
-            requireOwned(change.getTarget());
-            ReferenceTarget target = targets.get(change.getTarget());
-            if (target == null || !(target.value instanceof COSDictionary)) {
-                throw failure(
-                        DocumentFailureCode.COMMAND_REJECTED,
-                        "The Document Patch target is not a dictionary.");
+        try {
+            for (DocumentPatch.DictionaryEntryChange change
+                    : patch.getChanges()) {
+                resources.checkpoint();
+                requireOwned(change.getTarget());
+                ReferenceTarget target = targets.get(change.getTarget());
+                if (target == null || !(target.value instanceof COSDictionary)) {
+                    throw failure(
+                            DocumentFailureCode.COMMAND_REJECTED,
+                            "The Document Patch target is not a dictionary.");
+                }
+                if (target.value instanceof COSStream
+                        && isEngineOwnedStreamName(change.getName())) {
+                    throw illegalStreamChange();
+                }
+                COSDictionary dictionary = (COSDictionary) target.value;
+                COSName name = COSName.getPDFName(change.getName().getValue());
+                requireNoVersionSecurityChange(dictionary, name);
+                List<ObjectReference> referencedObjects =
+                        new ArrayList<ObjectReference>();
+                requirePatchNesting(change.getValue());
+                COSBase value = backendValue(
+                        change.getValue(),
+                        referencedObjects,
+                        ownership);
+                prepared.add(new PreparedChange(
+                        change.getTarget(),
+                        dictionary,
+                        name,
+                        value,
+                        referencedObjects,
+                        dictionary.containsKey(name),
+                        dictionary.getItem(name)));
             }
-            if (target.value instanceof COSStream
-                    && isEngineOwnedStreamName(change.getName())) {
-                throw illegalStreamChange();
-            }
-            COSDictionary dictionary = (COSDictionary) target.value;
-            COSName name = COSName.getPDFName(change.getName().getValue());
-            requireNoVersionSecurityChange(dictionary, name);
-            List<ObjectReference> referencedObjects =
-                    new ArrayList<ObjectReference>();
-            COSBase value = backendValue(
-                    change.getValue(),
-                    referencedObjects);
-            prepared.add(new PreparedChange(
-                    change.getTarget(),
-                    dictionary,
-                    name,
-                    value,
-                    referencedObjects,
-                    dictionary.containsKey(name),
-                    dictionary.getItem(name)));
+            return new PreparedPatch(prepared, ownership);
+        } catch (DocumentFailure failure) {
+            ownership.close();
+            throw failure;
+        } catch (RuntimeException | Error failure) {
+            ownership.close();
+            throw failure;
         }
-        return prepared;
     }
 
     private void requireNoVersionSecurityChange(
@@ -171,45 +202,49 @@ final class PdfBoxValueAdapter {
         }
     }
 
-    private static boolean containsDictionary(
+    private boolean containsDictionary(
             COSBase value,
             COSDictionary target,
-            IdentityHashMap<COSBase, Boolean> visited) {
-        if (value == null) {
-            return false;
-        }
-        if (value == target) {
-            return true;
-        }
-        if (visited.put(value, Boolean.TRUE) != null) {
-            return false;
-        }
-        if (value instanceof COSObject) {
-            return containsDictionary(
-                    ((COSObject) value).getObject(),
-                    target,
-                    visited);
-        }
-        if (value instanceof COSArray) {
-            COSArray array = (COSArray) value;
-            for (int index = 0; index < array.size(); index++) {
-                if (containsDictionary(
-                        array.get(index),
-                        target,
-                        visited)) {
-                    return true;
-                }
+            IdentityHashMap<COSBase, Boolean> visited)
+            throws DocumentFailure {
+        Deque<BackendValueNode> pending =
+                new ArrayDeque<BackendValueNode>();
+        pending.push(new BackendValueNode(value, 1));
+        while (!pending.isEmpty()) {
+            resources.checkpoint();
+            BackendValueNode current = pending.pop();
+            COSBase candidate = current.value;
+            if (candidate == null) {
+                continue;
             }
-            return false;
-        }
-        if (value instanceof COSDictionary) {
-            COSDictionary dictionary = (COSDictionary) value;
-            for (COSName key : dictionary.keySet()) {
-                if (containsDictionary(
-                        dictionary.getItem(key),
-                        target,
-                        visited)) {
-                    return true;
+            if (candidate == target) {
+                return true;
+            }
+            if (visited.put(candidate, Boolean.TRUE) != null) {
+                continue;
+            }
+            if (candidate instanceof COSObject) {
+                resources.requireNestingDepth(current.depth);
+                pending.push(new BackendValueNode(
+                        ((COSObject) candidate).getObject(),
+                        current.depth + 1));
+            } else if (candidate instanceof COSArray) {
+                resources.requireNestingDepth(current.depth);
+                COSArray array = (COSArray) candidate;
+                for (int index = array.size() - 1; index >= 0; index--) {
+                    resources.checkpoint();
+                    pending.push(new BackendValueNode(
+                            array.get(index),
+                            current.depth + 1));
+                }
+            } else if (candidate instanceof COSDictionary) {
+                resources.requireNestingDepth(current.depth);
+                COSDictionary dictionary = (COSDictionary) candidate;
+                for (COSBase entry : dictionary.getValues()) {
+                    resources.checkpoint();
+                    pending.push(new BackendValueNode(
+                            entry,
+                            current.depth + 1));
                 }
             }
         }
@@ -253,6 +288,7 @@ final class PdfBoxValueAdapter {
                 new IdentityHashMap<COSDictionary,
                         Map<COSName, PreparedChange>>();
         for (PreparedChange change : prepared) {
+            resources.checkpoint();
             Map<COSName, PreparedChange> dictionaryChanges =
                     finalChanges.get(change.target);
             if (dictionaryChanges == null) {
@@ -266,8 +302,10 @@ final class PdfBoxValueAdapter {
                 new IdentityHashMap<COSDictionary, Map<COSName, COSBase>>();
         for (Map.Entry<COSDictionary, Map<COSName, PreparedChange>> entry
                 : finalChanges.entrySet()) {
+            resources.checkpoint();
             Map<COSName, COSBase> values = new HashMap<COSName, COSBase>();
             for (PreparedChange change : entry.getValue().values()) {
+                resources.checkpoint();
                 values.put(change.name, change.value);
             }
             finalValues.put(entry.getKey(), values);
@@ -275,9 +313,12 @@ final class PdfBoxValueAdapter {
 
         for (Map<COSName, PreparedChange> dictionaryChanges
                 : finalChanges.values()) {
+            resources.checkpoint();
             for (PreparedChange change : dictionaryChanges.values()) {
+                resources.checkpoint();
                 for (ObjectReference referencedObject
                         : change.referencedObjects) {
+                    resources.checkpoint();
                     if (reaches(
                             referencedObject,
                             change.targetReference,
@@ -303,84 +344,71 @@ final class PdfBoxValueAdapter {
         }
         ReferenceTarget startTarget = targets.get(start);
         ReferenceTarget goalTarget = targets.get(goal);
-        return startTarget != null
-                && goalTarget != null
-                && reaches(
-                        startTarget.rawValue,
-                        goal,
-                        goalTarget,
-                        finalValues,
-                        visited);
-    }
+        if (startTarget == null || goalTarget == null) {
+            return false;
+        }
 
-    private boolean reaches(
-            COSBase value,
-            ObjectReference goal,
-            ReferenceTarget goalTarget,
-            IdentityHashMap<COSDictionary, Map<COSName, COSBase>> finalValues,
-            IdentityHashMap<COSBase, Boolean> visited)
-            throws DocumentFailure {
-        if (value == null) {
-            return false;
-        }
-        if (value == goalTarget.rawValue || value == goalTarget.value) {
-            return true;
-        }
-        if (visited.put(value, Boolean.TRUE) != null) {
-            return false;
-        }
-        if (value instanceof COSObject) {
-            ObjectReference reference = referenceFor(value);
-            return reference.equals(goal)
-                    || reaches(
-                            ((COSObject) value).getObject(),
-                            goal,
-                            goalTarget,
-                            finalValues,
-                            visited);
-        }
-        if (value instanceof COSArray) {
-            COSArray array = (COSArray) value;
-            for (int index = 0; index < array.size(); index++) {
-                if (reaches(
-                        array.get(index),
-                        goal,
-                        goalTarget,
-                        finalValues,
-                        visited)) {
+        Deque<BackendValueNode> pending =
+                new ArrayDeque<BackendValueNode>();
+        pending.push(new BackendValueNode(startTarget.rawValue, 1));
+        while (!pending.isEmpty()) {
+            resources.checkpoint();
+            BackendValueNode current = pending.pop();
+            COSBase candidate = current.value;
+            if (candidate == null) {
+                continue;
+            }
+            if (candidate == goalTarget.rawValue
+                    || candidate == goalTarget.value) {
+                return true;
+            }
+            if (visited.put(candidate, Boolean.TRUE) != null) {
+                continue;
+            }
+            int childDepth = current.depth + 1;
+            if (candidate instanceof COSObject) {
+                resources.requireNestingDepth(current.depth);
+                ObjectReference reference = referenceFor(candidate);
+                if (reference.equals(goal)) {
                     return true;
                 }
-            }
-            return false;
-        }
-        if (value instanceof COSDictionary) {
-            COSDictionary dictionary = (COSDictionary) value;
-            Map<COSName, COSBase> replacements = finalValues.get(dictionary);
-            for (Map.Entry<COSName, COSBase> entry : dictionary.entrySet()) {
-                COSBase finalValue = replacements != null
-                        && replacements.containsKey(entry.getKey())
-                        ? replacements.get(entry.getKey())
-                        : entry.getValue();
-                if (reaches(
-                        finalValue,
-                        goal,
-                        goalTarget,
-                        finalValues,
-                        visited)) {
-                    return true;
+                pending.push(new BackendValueNode(
+                        ((COSObject) candidate).getObject(),
+                        childDepth));
+            } else if (candidate instanceof COSArray) {
+                resources.requireNestingDepth(current.depth);
+                COSArray array = (COSArray) candidate;
+                for (int index = array.size() - 1; index >= 0; index--) {
+                    resources.checkpoint();
+                    pending.push(new BackendValueNode(
+                            array.get(index),
+                            childDepth));
                 }
-            }
-            if (replacements != null) {
-                for (Map.Entry<COSName, COSBase> replacement
-                        : replacements.entrySet()) {
-                    if (!dictionary.containsKey(replacement.getKey())
-                            && reaches(
+            } else if (candidate instanceof COSDictionary) {
+                resources.requireNestingDepth(current.depth);
+                COSDictionary dictionary = (COSDictionary) candidate;
+                Map<COSName, COSBase> replacements =
+                        finalValues.get(dictionary);
+                for (Map.Entry<COSName, COSBase> entry
+                        : dictionary.entrySet()) {
+                    resources.checkpoint();
+                    COSBase finalValue = replacements != null
+                            && replacements.containsKey(entry.getKey())
+                            ? replacements.get(entry.getKey())
+                            : entry.getValue();
+                    pending.push(new BackendValueNode(
+                            finalValue,
+                            childDepth));
+                }
+                if (replacements != null) {
+                    for (Map.Entry<COSName, COSBase> replacement
+                            : replacements.entrySet()) {
+                        resources.checkpoint();
+                        if (!dictionary.containsKey(replacement.getKey())) {
+                            pending.push(new BackendValueNode(
                                     replacement.getValue(),
-                                    goal,
-                                    goalTarget,
-                                    finalValues,
-                                    visited)) {
-                        return true;
+                                    childDepth));
+                        }
                     }
                 }
             }
@@ -460,15 +488,24 @@ final class PdfBoxValueAdapter {
         }
         if (value instanceof COSNumber) {
             try {
-                return PdfNumber.of(serializedNumber((COSFloat) value));
+                return PdfNumber.of(serializedNumber(
+                        (COSFloat) value, resources));
+            } catch (DocumentFailure failure) {
+                throw failure;
             } catch (IOException | NumberFormatException invalidNumber) {
+                resources.rethrowResourceOrTerminalFailure(invalidNumber);
                 throw failure(
                         DocumentFailureCode.QUERY_FAILED,
                         "The PDF number could not be inspected.");
             }
         }
         if (value instanceof COSString) {
-            return PdfString.of(((COSString) value).getBytes());
+            return PdfBoxStringSupport.detached(
+                    (COSString) value,
+                    resources,
+                    () -> failure(
+                            DocumentFailureCode.QUERY_FAILED,
+                            "The PDF string could not be inspected."));
         }
         if (value instanceof COSName) {
             return PdfName.of(((COSName) value).getName());
@@ -497,7 +534,8 @@ final class PdfBoxValueAdapter {
 
     private COSBase backendValue(
             PdfValue value,
-            List<ObjectReference> referencedObjects)
+            List<ObjectReference> referencedObjects,
+            WorkflowResourceContext.OwnedMemoryScope ownership)
             throws DocumentFailure {
         if (value == PdfNull.INSTANCE) {
             return COSNull.NULL;
@@ -506,10 +544,14 @@ final class PdfBoxValueAdapter {
             return COSBoolean.getBoolean(((PdfBoolean) value).booleanValue());
         }
         if (value instanceof PdfNumber) {
-            return backendNumber((PdfNumber) value);
+            return backendNumber((PdfNumber) value, ownership);
         }
         if (value instanceof PdfString) {
-            return new COSString(((PdfString) value).getBytes());
+            return PdfBoxStringSupport.backendCopy(
+                    (PdfString) value,
+                    resources,
+                    ownership,
+                    PdfBoxValueAdapter::invalidPatchValue);
         }
         if (value instanceof PdfName) {
             return COSName.getPDFName(((PdfName) value).getValue());
@@ -518,9 +560,11 @@ final class PdfBoxValueAdapter {
             PdfArray array = (PdfArray) value;
             COSArray converted = new COSArray();
             for (int index = 0; index < array.size(); index++) {
+                resources.checkpoint();
                 converted.add(backendValue(
                         array.get(index),
-                        referencedObjects));
+                        referencedObjects,
+                        ownership));
             }
             return converted;
         }
@@ -528,6 +572,7 @@ final class PdfBoxValueAdapter {
             return backendDictionary(
                     (PdfDictionary) value,
                     referencedObjects,
+                    ownership,
                     false);
         }
         if (value instanceof PdfIndirectReference) {
@@ -548,12 +593,20 @@ final class PdfBoxValueAdapter {
             COSDictionary attributes = backendDictionary(
                     publicStream.getDictionary(),
                     referencedObjects,
+                    ownership,
                     true);
             COSStream converted = document.getDocument().createCOSStream();
-            converted.addAll(attributes);
-            try (OutputStream output = converted.createOutputStream()) {
-                output.write(publicStream.readBytes());
+            for (COSName name : attributes.keySet()) {
+                resources.checkpoint();
+                converted.setItem(name, attributes.getItem(name));
+            }
+            try (OutputStream output = converted.createOutputStream();
+                    WorkflowResourceContext.OwnedBytes decoded =
+                            publicStream.readBytesForWorkflow(resources)) {
+                resources.writeBytesAsIOException(
+                        output, decoded.getBytes());
             } catch (IOException streamFailure) {
+                resources.rethrowResourceOrTerminalFailure(streamFailure);
                 throw failure(
                         DocumentFailureCode.COMMAND_REJECTED,
                         "The Document Patch stream could not be created.");
@@ -565,36 +618,27 @@ final class PdfBoxValueAdapter {
                 "The Document Patch contains a value not owned by Folio PDF.");
     }
 
-    private COSBase backendNumber(PdfNumber publicNumber)
+    private COSBase backendNumber(
+            PdfNumber publicNumber,
+            WorkflowResourceContext.OwnedMemoryScope ownership)
             throws DocumentFailure {
-        BigDecimal number = publicNumber.decimalValue();
-        if (number.scale() <= 0) {
-            try {
-                return COSInteger.get(number.longValueExact());
-            } catch (ArithmeticException outsideIntegerRange) {
-                // A valid PDF number outside the backend integer range is
-                // represented as a lexical real when it remains exact.
-            }
-        }
-        try {
-            COSFloat converted = new COSFloat(number.toPlainString());
-            if (serializedNumber(converted).compareTo(number) != 0) {
-                throw invalidPatchNumber();
-            }
-            return converted;
-        } catch (IOException | NumberFormatException invalidNumber) {
-            throw invalidPatchNumber();
-        }
+        return backendNumber(
+                publicNumber.decimalValue(),
+                resources,
+                ownership,
+                PdfBoxValueAdapter::invalidPatchNumber);
     }
 
     private COSDictionary backendDictionary(
             PdfDictionary dictionary,
             List<ObjectReference> referencedObjects,
+            WorkflowResourceContext.OwnedMemoryScope ownership,
             boolean streamAttributes)
             throws DocumentFailure {
         COSDictionary converted = new COSDictionary();
         converted.setDirect(true);
         for (int index = 0; index < dictionary.size(); index++) {
+            resources.checkpoint();
             PdfDictionaryEntry entry = dictionary.getEntry(index);
             if (streamAttributes
                     && isEngineOwnedStreamName(entry.getName())) {
@@ -602,24 +646,184 @@ final class PdfBoxValueAdapter {
             }
             converted.setItem(
                     COSName.getPDFName(entry.getName().getValue()),
-                    backendValue(entry.getValue(), referencedObjects));
+                    backendValue(
+                            entry.getValue(),
+                            referencedObjects,
+                            ownership));
         }
         return converted;
     }
 
-    static BigDecimal serializedNumber(COSFloat number)
-            throws IOException {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        number.writePDF(bytes);
-        return new BigDecimal(new String(
-                bytes.toByteArray(),
-                StandardCharsets.ISO_8859_1));
+    private void requirePatchNesting(PdfValue root)
+            throws DocumentFailure {
+        Deque<PublicValueNode> pending = new ArrayDeque<PublicValueNode>();
+        IdentityHashMap<PdfValue, Integer> maximumExpandedDepth =
+                new IdentityHashMap<PdfValue, Integer>();
+        pending.push(new PublicValueNode(root, 1));
+        while (!pending.isEmpty()) {
+            resources.checkpoint();
+            PublicValueNode node = pending.pop();
+            PdfValue value = node.value;
+            Integer previousDepth = maximumExpandedDepth.get(value);
+            if (previousDepth != null
+                    && previousDepth.intValue() >= node.depth) {
+                continue;
+            }
+            maximumExpandedDepth.put(value, Integer.valueOf(node.depth));
+            if (value instanceof PdfArray) {
+                requireMaterializationDepth(node.depth);
+                resources.requireNestingDepth(node.depth);
+                PdfArray array = (PdfArray) value;
+                int childDepth = node.depth + 1;
+                for (int index = array.size() - 1; index >= 0; index--) {
+                    resources.checkpoint();
+                    pending.push(new PublicValueNode(
+                            array.get(index),
+                            childDepth));
+                }
+            } else if (value instanceof PdfDictionary) {
+                requireMaterializationDepth(node.depth);
+                resources.requireNestingDepth(node.depth);
+                PdfDictionary dictionary = (PdfDictionary) value;
+                int childDepth = node.depth + 1;
+                for (int index = dictionary.size() - 1;
+                        index >= 0;
+                        index--) {
+                    resources.checkpoint();
+                    pending.push(new PublicValueNode(
+                            dictionary.getEntry(index).getValue(),
+                            childDepth));
+                }
+            } else if (value instanceof PdfStream) {
+                requireMaterializationDepth(node.depth);
+                resources.requireNestingDepth(node.depth);
+                pending.push(new PublicValueNode(
+                        ((PdfStream) value).getDictionary(),
+                        node.depth + 1));
+            }
+        }
+    }
+
+    private void requireMaterializationDepth(int depth)
+            throws DocumentFailure {
+        if (depth > MAXIMUM_RECURSIVE_MATERIALIZATION_DEPTH) {
+            throw resources.policyFailure(
+                    DocumentFailureCode.NESTING_LIMIT_EXCEEDED,
+                    "The workflow nesting-depth limit was exceeded.");
+        }
+    }
+
+    static BigDecimal serializedNumber(
+            COSFloat number,
+            WorkflowResourceContext resources)
+            throws IOException, DocumentFailure {
+        resources.checkpoint();
+        try (WorkflowResourceContext.OwnedByteAccumulator output =
+                resources.ownedByteAccumulator()) {
+            number.writePDF(output);
+            resources.checkpoint();
+            try (WorkflowResourceContext.OwnedBytes working =
+                    output.finishWorking()) {
+                byte[] bytes = working.getBytes();
+                try (WorkflowResourceContext.MemoryReservation characters =
+                        resources.reserveOwnedMemory(2L * bytes.length)) {
+                    char[] lexical = new char[bytes.length];
+                    for (int index = 0; index < bytes.length; index++) {
+                        if ((index & 1023) == 0) {
+                            resources.checkpoint();
+                        }
+                        int value = bytes[index] & 0xff;
+                        if (value > 0x7f) {
+                            throw new NumberFormatException(
+                                    "A PDF number must be ASCII.");
+                        }
+                        lexical[index] = (char) value;
+                    }
+                    return new BigDecimal(lexical);
+                }
+            }
+        } catch (IOException | RuntimeException failure) {
+            resources.rethrowResourceOrTerminalFailure(failure);
+            throw failure;
+        }
+    }
+
+    static COSBase backendNumber(
+            BigDecimal number,
+            WorkflowResourceContext resources,
+            WorkflowResourceContext.OwnedMemoryScope ownership,
+            PdfBoxPageContentSupport.FailureFactory failureFactory)
+            throws DocumentFailure {
+        resources.checkpoint();
+        if (number.scale() <= 0) {
+            try {
+                return COSInteger.get(number.longValueExact());
+            } catch (ArithmeticException outsideIntegerRange) {
+                // Values outside the backend integer range use a lexical real.
+            }
+        }
+
+        float parsed = number.floatValue();
+        resources.checkpoint();
+        if (Float.isInfinite(parsed)
+                || Float.isNaN(parsed)
+                || (parsed != 0.0f && Math.abs(parsed) < Float.MIN_NORMAL)) {
+            throw failureFactory.create();
+        }
+
+        long characters = plainStringLength(number);
+        long retainedBytes = 2L * characters;
+        long workingBytes = retainedBytes;
+        long totalBytes = retainedBytes + workingBytes;
+        ownership.retain(totalBytes);
+        boolean keepRetained = false;
+        try {
+            if (characters > Integer.MAX_VALUE - 8L) {
+                throw failureFactory.create();
+            }
+            String lexical = number.toPlainString();
+            resources.checkpoint();
+            if (lexical.length() != (int) characters) {
+                throw failureFactory.create();
+            }
+            COSFloat converted = new COSFloat(lexical);
+            resources.checkpoint();
+            keepRetained = true;
+            return converted;
+        } catch (DocumentFailure failure) {
+            throw failure;
+        } catch (IOException | RuntimeException invalidNumber) {
+            resources.rethrowResourceOrTerminalFailure(invalidNumber);
+            throw failureFactory.create();
+        } finally {
+            ownership.release(keepRetained ? workingBytes : totalBytes);
+        }
+    }
+
+    static long plainStringLength(BigDecimal number) {
+        long precision = number.precision();
+        long scale = number.scale();
+        long length;
+        if (scale <= 0L) {
+            length = precision - scale;
+        } else if (scale < precision) {
+            length = precision + 1L;
+        } else {
+            length = scale + 2L;
+        }
+        return number.signum() < 0 ? length + 1L : length;
     }
 
     private static DocumentFailure invalidPatchNumber() {
         return failure(
                 DocumentFailureCode.COMMAND_REJECTED,
                 "The Document Patch contains an invalid PDF number.");
+    }
+
+    private static DocumentFailure invalidPatchValue() {
+        return failure(
+                DocumentFailureCode.PATCH_VALUE_REJECTED,
+                "The Document Patch contains an invalid PDF string.");
     }
 
     private void requireOwned(ObjectReference reference)
@@ -671,6 +875,7 @@ final class PdfBoxValueAdapter {
             budget.consumeValue();
             int current = 0;
             for (Map.Entry<COSName, COSBase> entry : dictionary.entrySet()) {
+                resources.checkpoint();
                 if (current == index) {
                     return new PdfDictionaryEntry(
                             PdfName.of(entry.getKey().getName()),
@@ -730,16 +935,19 @@ final class PdfBoxValueAdapter {
         @Override
         public byte[] readBytes() throws DocumentFailure {
             session.requireActiveValueView();
-            try (InputStream input = stream.createInputStream();
-                    ByteArrayOutputStream bytes = new ByteArrayOutputStream()) {
-                byte[] buffer = new byte[8192];
-                int read;
-                while ((read = input.read(buffer)) != -1) {
-                    budget.consumeStreamBytes(read);
-                    bytes.write(buffer, 0, read);
-                }
-                return bytes.toByteArray();
+            try (WorkflowResourceContext.OwnedByteAccumulator bytes =
+                    resources.ownedByteAccumulator()) {
+                PdfBoxHostileInputPreflight.decodeStream(
+                        stream,
+                        resources,
+                        new StreamResultOutput(bytes, budget));
+                return bytes.finishRetained();
+            } catch (StreamResultIOException failure) {
+                throw failure.failure;
+            } catch (DocumentFailure failure) {
+                throw failure;
             } catch (IOException | RuntimeException streamFailure) {
+                resources.rethrowResourceOrTerminalFailure(streamFailure);
                 throw failure(
                         DocumentFailureCode.QUERY_FAILED,
                         "The PDF stream could not be decoded.");
@@ -747,8 +955,78 @@ final class PdfBoxValueAdapter {
         }
 
         @Override
+        public WorkflowResourceContext.OwnedBytes readBytesForWorkflow(
+                WorkflowResourceContext workflowResources)
+                throws DocumentFailure {
+            session.requireActiveValueView();
+            try (WorkflowResourceContext.OwnedByteAccumulator bytes =
+                    workflowResources.ownedByteAccumulator()) {
+                PdfBoxHostileInputPreflight.decodeStream(
+                        stream,
+                        workflowResources,
+                        new StreamResultOutput(bytes, budget));
+                return bytes.finishWorking();
+            } catch (StreamResultIOException failure) {
+                throw failure.failure;
+            } catch (DocumentFailure failure) {
+                throw failure;
+            } catch (IOException | RuntimeException streamFailure) {
+                workflowResources.rethrowResourceOrTerminalFailure(
+                        streamFailure);
+                throw failure(
+                        DocumentFailureCode.COMMAND_REJECTED,
+                        "The Document Patch stream could not be decoded.");
+            }
+        }
+
+        @Override
         public Optional<ObjectReference> getReference() {
             return Optional.of(reference);
+        }
+    }
+
+    private static final class StreamResultOutput extends OutputStream {
+
+        private final WorkflowResourceContext.OwnedByteAccumulator output;
+        private final InspectionBudget budget;
+
+        private StreamResultOutput(
+                WorkflowResourceContext.OwnedByteAccumulator output,
+                InspectionBudget budget) {
+            this.output = output;
+            this.budget = budget;
+        }
+
+        @Override
+        public void write(int value) throws IOException {
+            account(1);
+            output.write(value);
+        }
+
+        @Override
+        public void write(byte[] bytes, int offset, int length)
+                throws IOException {
+            account(length);
+            output.write(bytes, offset, length);
+        }
+
+        private void account(int length) throws IOException {
+            try {
+                budget.consumeStreamBytes(length);
+            } catch (DocumentFailure failure) {
+                throw new StreamResultIOException(failure);
+            }
+        }
+    }
+
+    private static final class StreamResultIOException extends IOException {
+
+        private static final long serialVersionUID = 1L;
+        private final DocumentFailure failure;
+
+        private StreamResultIOException(DocumentFailure failure) {
+            super(failure.getDiagnostic());
+            this.failure = failure;
         }
     }
 
@@ -783,6 +1061,28 @@ final class PdfBoxValueAdapter {
         }
     }
 
+    private static final class PublicValueNode {
+
+        private final PdfValue value;
+        private final int depth;
+
+        private PublicValueNode(PdfValue value, int depth) {
+            this.value = value;
+            this.depth = depth;
+        }
+    }
+
+    private static final class BackendValueNode {
+
+        private final COSBase value;
+        private final int depth;
+
+        private BackendValueNode(COSBase value, int depth) {
+            this.value = value;
+            this.depth = depth;
+        }
+    }
+
     private static final class PreparedChange {
 
         private final ObjectReference targetReference;
@@ -808,6 +1108,28 @@ final class PdfBoxValueAdapter {
             this.referencedObjects = referencedObjects;
             this.originallyPresent = originallyPresent;
             this.originalValue = originalValue;
+        }
+    }
+
+    private static final class PreparedPatch implements AutoCloseable {
+
+        private final List<PreparedChange> changes;
+        private final WorkflowResourceContext.OwnedMemoryScope ownership;
+
+        private PreparedPatch(
+                List<PreparedChange> changes,
+                WorkflowResourceContext.OwnedMemoryScope ownership) {
+            this.changes = changes;
+            this.ownership = ownership;
+        }
+
+        private void transfer() throws DocumentFailure {
+            ownership.transfer();
+        }
+
+        @Override
+        public void close() {
+            ownership.close();
         }
     }
 
