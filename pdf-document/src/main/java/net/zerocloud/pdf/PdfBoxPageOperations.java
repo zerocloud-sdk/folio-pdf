@@ -285,6 +285,18 @@ final class PdfBoxPageOperations {
         }
     }
 
+    void requireAppendPreservable() throws DocumentFailure {
+        requirePreservable(document);
+    }
+
+    void appendComposedPages(List<PDPage> pages) throws DocumentFailure {
+        for (PDPage page : pages) {
+            resources.checkpoint();
+            document.addPage(page);
+            makeLibraryOwnedPageIndirect(page);
+        }
+    }
+
     private void remove(RemovePages removal) throws DocumentFailure {
         PageRange range = removal.getRange();
         requireRange(range);

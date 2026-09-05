@@ -6,7 +6,7 @@ Behavioral authority: [`../../capabilities/capability-matrix.yaml`](../../capabi
 
 - Schema version: `1`
 - Release train: `0.1.0-SNAPSHOT`
-- Capabilities: `17`
+- Capabilities: `18`
 
 ## Capability summary
 
@@ -15,6 +15,7 @@ Behavioral authority: [`../../capabilities/capability-matrix.yaml`](../../capabi
 | [`composition.canvas.draw-positioned-text`](#capability-composition_dot_canvas_dot_draw_dash_positioned_dash_text) | `composition` | `experimental` | [excluded by `T17`](facade-surface.md#excluded-capability-composition_dot_canvas_dot_draw_dash_positioned_dash_text) |
 | [`composition.canvas.images-colors-transparency`](#capability-composition_dot_canvas_dot_images_dash_colors_dash_transparency) | `composition` | `experimental` | [excluded by `T18`](facade-surface.md#excluded-capability-composition_dot_canvas_dot_images_dash_colors_dash_transparency) |
 | [`composition.fonts.load-embed-subset-fallback`](#capability-composition_dot_fonts_dot_load_dash_embed_dash_subset_dash_fallback) | `composition` | `experimental` | [excluded by `T19`](facade-surface.md#excluded-capability-composition_dot_fonts_dot_load_dash_embed_dash_subset_dash_fallback) |
+| [`composition.layout.paragraph-areas`](#capability-composition_dot_layout_dot_paragraph_dash_areas) | `composition` | `experimental` | [excluded by `T24`](facade-surface.md#excluded-capability-composition_dot_layout_dot_paragraph_dash_areas) |
 | [`conversion.capability-provider.select-execute`](#capability-conversion_dot_capability_dash_provider_dot_select_dash_execute) | `conversion` | `experimental` | [excluded by `T05`](facade-surface.md#excluded-capability-conversion_dot_capability_dash_provider_dot_select_dash_execute) |
 | [`conversion.rendering`](#capability-conversion_dot_rendering) | `conversion` | `experimental` | [excluded by `T23`](facade-surface.md#excluded-capability-conversion_dot_rendering) |
 | [`document.annotations-actions.manage`](#capability-document_dot_annotations_dash_actions_dot_manage) | `document-engine` | `experimental` | [excluded by `T12`](facade-surface.md#excluded-capability-document_dot_annotations_dash_actions_dot_manage) |
@@ -267,6 +268,85 @@ Acceptance Evidence:
 - `visual`: `pass` — [`capabilities/evidence/T19-font-loading-embedding-subsetting-visual.md`](../../capabilities/evidence/T19-font-loading-embedding-subsetting-visual.md); producer `pdfium-cli@v0.11.2-pdfium-chromium-7881` (`external-tool`)
 
 Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T19 font-loading-embedding-subsetting record`.
+
+<a id="capability-composition_dot_layout_dot_paragraph_dash_areas"></a>
+## `composition.layout.paragraph-areas`
+
+Compose mixed semantic paragraphs across finite explicit new-page areas with margins, width wrapping, alignment, leading and area breaks.
+
+- Context: `composition`
+- Status: `experimental`
+- Reference Suite source: `Issue 25 T24 paragraph and page-area capability; existing project PDF and explicit-font contracts`
+- Reference role: capability inventory and public project contract; no Reference Suite output or implementation oracle
+- Acceptance Profile: `T24-paragraph-composition`
+- Mandatory evidence chains: `syntax`, `standards`, `semantic`, `visual`
+- Evidence record: [`capabilities/evidence/T24-paragraph-composition.md`](../../capabilities/evidence/T24-paragraph-composition.md)
+- Certified platforms: none
+
+### Native Interface mapping
+
+- `area`: `net.zerocloud.pdf.composition.CanvasRectangle`
+- `command`: `net.zerocloud.pdf.composition.command.ComposeParagraphs`
+- `entry-point`: `net.zerocloud.pdf.DocumentWorkflow#execute`
+- `execution-profile`: `net.zerocloud.pdf.WorkflowExecutionProfile`
+- `failure`: `net.zerocloud.pdf.DocumentFailure`
+- `flow`: `net.zerocloud.pdf.composition.ParagraphFlow`
+- `font-selection`: `net.zerocloud.pdf.composition.FontSelection`
+- `graphic`: `net.zerocloud.pdf.composition.CanvasTransparencyGroup`
+- `inline`: `net.zerocloud.pdf.composition.Paragraph.Inline`
+- `inspection-query`: `net.zerocloud.pdf.query.InspectObject`
+- `limits`: `net.zerocloud.pdf.composition.CompositionLimits`
+- `margins`: `net.zerocloud.pdf.composition.PageMargins`
+- `outcome`: `net.zerocloud.pdf.WorkflowOutcome`
+- `page`: `net.zerocloud.pdf.composition.LayoutPage`
+- `paragraph`: `net.zerocloud.pdf.composition.Paragraph`
+- `receipt`: `net.zerocloud.pdf.PublicationReceipt`
+- `text-query`: `net.zerocloud.pdf.query.ExtractTextAndStructure`
+
+### Migration Facade coverage
+
+- Stable: none
+- Preview: none
+- Explicit exclusion: [`T24`](facade-surface.md#excluded-capability-composition_dot_layout_dot_paragraph_dash_areas) — T24 introduces a Composition-owned semantic Paragraph Flow and explicit new-page Layout Areas through the Native Interface. The current Preview layout.Document only owns document closing and does not map this behavior; no approved paragraph mapping or stable/preview stub is introduced.
+
+### Gates and limitations
+
+- Dependency Gate: [`document.blank.create-publish-reopen`](#capability-document_dot_blank_dot_create_dash_publish_dash_reopen) must be `compatible`
+- Dependency Gate: [`composition.canvas.draw-positioned-text`](#capability-composition_dot_canvas_dot_draw_dash_positioned_dash_text) must be `compatible`
+- Dependency Gate: [`composition.canvas.images-colors-transparency`](#capability-composition_dot_canvas_dot_images_dash_colors_dash_transparency) must be `compatible`
+- Dependency Gate: [`composition.fonts.load-embed-subset-fallback`](#capability-composition_dot_fonts_dot_load_dash_embed_dash_subset_dash_fallback) must be `compatible`
+- Dependency Gate: [`document.hostile-input-limits`](#capability-document_dot_hostile_dash_input_dash_limits) must be `compatible`
+- Dependency Gate: [`document.hardened-worker`](#capability-document_dot_hardened_dash_worker) must be `compatible`
+- Promotion gate `T06`: Complete independent standards evidence and close all compatible-status Dependency Gates. Project font evidence does not certify the Foundation Noto set or its four required platform profiles.
+- Limitation: Version 1 appends the reached prefix of a finite list of new unrotated pages. Dimensions are positive and at most 14400 points; nonnegative margins leave a positive box. Areas are explicit rectangles relative to that box or the whole box when omitted. There is no implicit page-template repetition or existing-page-area insertion.
+- Limitation: Paragraphs contain unshaped Unicode text at explicit sizes and atomic Canvas Transparency Groups scaled to explicit dimensions. Fonts reuse T19 staging, ordered selection, exact integral CID widths, embedding/subsetting and ToUnicode. The T19 closed TrueType profile remains in force; no system or online font discovery or Foundation Noto certification is claimed.
+- Limitation: Greedy wrapping prefers ASCII spaces and boundaries after graphics, and splits overlong words at Unicode scalar boundaries. Spaces are preserved. LF explicitly ends a line and emits no glyph; other controls and unpaired surrogates are invalid. No bidi, shaping, kerning, language segmentation or hyphenation is performed.
+- Limitation: LEFT, CENTER and RIGHT align natural advances within the area's width or a paragraph width cap. JUSTIFIED expands nonterminal spaces on automatic nonfinal lines. Lines reserve max(leading, maximum source-font ascent plus descent and graphic height); graphics sit on the baseline. No implicit paragraph spacing is added.
+- Limitation: All declaration, inline, line and generated page-operator counts are finite. Font limits apply once to the whole flow; Canvas resource limits apply separately to each bounded inline graphic. Transaction-wide page, object, modeled memory, decompression, time and temporary-storage limits still apply. Exhaustion is COMPOSITION_AREA_EXHAUSTED, invalid declarations are COMPOSITION_INVALID, and composition bounds use COMPOSITION_LIMIT_EXCEEDED; dependency failures retain their codes and safe diagnostics.
+- Limitation: Layout and drawing occur before new pages join the document. Propagated failures leave targets NOT_ATTEMPTED. Commands remain ordered, queries remain barriers, Sessions expire, and caller streams/channels remain caller-owned. Unsigned REWRITE and INCREMENTAL are supported; signature restrictions and password modification plus assembly permission are enforced before caller font acquisition.
+- Limitation: Worker transport uses the same closed versioned declarations, existing bounded font-source requests, permission preflight, resource ledger, outcome/failure catalogs and verified class inventory. It transports no callbacks or user bytecode.
+- Limitation: T24 adds no indentation, tabs, keep, widow/orphan, advanced overflow/relayout, tables, Unicode layout, public backend SPI, module cycle, placeholder artifact or Migration Facade stub. The current Preview layout.Document close ownership is not a paragraph mapping.
+
+### Evidence
+
+Implementation evidence:
+
+- `public-paragraph-workflow-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/consumer/ParagraphCompositionWorkflowTest.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/consumer/ParagraphCompositionWorkflowTest.java) — Both profiles execute the same public paragraph contract and assert mixed cross-area/page order and geometry, page/margin/width breakpoints, area breaks, alignment, leading, deterministic fonts, barriers, ownership, stable failures, resource limits, permissions and Publication Receipts after reopening.
+- `independent-semantic-oracle`: [`pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T24ParagraphExpectations.java`](../../pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T24ParagraphExpectations.java) — Hand-calculated source widths and coordinates define every glyph and the graphic independently of the paragraph implementation.
+- `acceptance-negative-and-repeat-contract`: [`pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T24ParagraphEvidenceCommandTest.java`](../../pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T24ParagraphEvidenceCommandTest.java) — Independent assertions reject moved geometry and missing text; repeated records retain both page selections and remain indeterminate when pinned tools are unavailable.
+- `independent-semantic-observer`: [`pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T24ParagraphSemanticAssertions.java`](../../pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T24ParagraphSemanticAssertions.java) — Public reopen queries verify all text, matrices, advances, baselines, page boxes, embedded subsets and the transformed inline graphic bounds within 0.0001 point.
+- `acceptance-command`: [`pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T24ParagraphEvidenceCommand.java`](../../pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T24ParagraphEvidenceCommand.java) — The pinned qpdf chain and two independently rendered PDFium/ImageMagick page comparisons retain inputs, fixed-font and expectation hashes, profiles, observations and difference artifacts.
+- `authoritative-contract`: [`docs/paragraph-composition.md`](../paragraph-composition.md) — English API usage, finite layout semantics, font ownership, limits, failures, worker transport and exclusions are documented with a synchronized Chinese guide.
+- `public-api-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/contract/PublicApiLeakageIT.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/contract/PublicApiLeakageIT.java) — Public/protected signatures remain project-owned or JDK types; no backend type is introduced.
+- `cross-jdk-contract`: [`scripts/verify-jdk-matrix.sh`](../../scripts/verify-jdk-matrix.sh) — The required repository gate executes the public contract on JDK 8, 11, 17 and 21.
+
+Acceptance Evidence:
+
+- `syntax`: `pass` — [`capabilities/evidence/T24-paragraph-composition-syntax.md`](../../capabilities/evidence/T24-paragraph-composition-syntax.md); producer `qpdf@12.4.0` (`external-tool`)
+- `semantic`: `pass` — [`capabilities/evidence/T24-paragraph-composition-semantic.md`](../../capabilities/evidence/T24-paragraph-composition-semantic.md); producer `folio-pdf-t24-semantic-assertions@0.1.0-SNAPSHOT` (`project-test`)
+- `visual`: `pass` — [`capabilities/evidence/T24-paragraph-composition-visual.md`](../../capabilities/evidence/T24-paragraph-composition-visual.md); producer `pdfium-cli@v0.11.2-pdfium-chromium-7881` (`external-tool`)
+
+Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T24 paragraph-composition record`.
 
 <a id="capability-conversion_dot_capability_dash_provider_dot_select_dash_execute"></a>
 ## `conversion.capability-provider.select-execute`

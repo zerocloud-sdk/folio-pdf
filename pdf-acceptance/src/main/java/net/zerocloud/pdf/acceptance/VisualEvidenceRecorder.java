@@ -147,7 +147,7 @@ final class VisualEvidenceRecorder {
                     "--file-type",
                     "png",
                     "--pages",
-                    "first"));
+                    profile.pageNumber() == 1 ? "first" : Integer.toString(profile.pageNumber())));
             if (chain.usesPublicRendering()) { arguments.add("--render-annotations"); }
             render = ExternalProcess.run(pdfiumPin.executable(), artifacts, arguments.toArray(new String[0]));
             appendInvocation(
@@ -155,7 +155,8 @@ final class VisualEvidenceRecorder {
                     "PDFium render",
                     "pdfium render " + pdf.getFileName() + " "
                             + chain.pdfiumRasterName() + " --dpi " + profile.dpi()
-                            + " --file-type png --pages first"
+                            + " --file-type png --pages "
+                            + (profile.pageNumber() == 1 ? "first" : Integer.toString(profile.pageNumber()))
                             + (chain.usesPublicRendering() ? " --render-annotations" : ""),
                     render);
         } catch (IOException unavailable) {
@@ -541,6 +542,8 @@ final class VisualEvidenceRecorder {
                 .append("`\n\n")
                 .append("## Visual profile\n\n")
                 .append("- Page box: ").append(profile.pageBox()).append(".\n")
+                .append(profile.pageCount() == 1 ? "" : "- Page selection: `" + profile.pageNumber()
+                        + "` of `" + profile.pageCount() + "`.\n")
                 .append("- DPI: `").append(profile.dpi()).append("`.\n")
                 .append("- Color policy: ").append(profile.colorPolicy()).append(".\n")
                 .append("- Font policy: ").append(profile.fontPolicy()).append(".\n")

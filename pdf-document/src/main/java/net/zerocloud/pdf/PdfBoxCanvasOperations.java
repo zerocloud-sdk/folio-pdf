@@ -139,13 +139,28 @@ final class PdfBoxCanvasOperations {
     }
 
     private void executeVersion2(DrawCanvas command) throws DocumentFailure {
+        requireVersion2(command);
+        executeVersion2(command, selectedPage(command.getPageNumber()), Long.MAX_VALUE, false);
+    }
+
+    /** Draws onto a detached Composition page using the existing bounded Canvas path. */
+    long drawLayoutGraphic(DrawCanvas command, PDPage page, long maximumBytes)
+            throws DocumentFailure {
+        requireVersion2(command);
+        return executeVersion2(command, page, maximumBytes, true);
+    }
+
+    private void requireVersion2(DrawCanvas command) throws DocumentFailure {
         if (command.getProgram().getVersion() != CanvasProgram.VERSION_2
                 || !command.getResourceLimits().isPresent()
                 || command.getResourceLimits().get().getVersion()
                         != net.zerocloud.pdf.composition.CanvasResourceLimits.VERSION_1) {
             throw invalidProgram();
         }
-        PDPage page = selectedPage(command.getPageNumber());
+    }
+
+    private long executeVersion2(DrawCanvas command, PDPage page, long maximumBytes,
+            boolean isolatedPage) throws DocumentFailure {
         try (ValidatedProgram ignored = validate(
                 command.getProgram(),
                 CanvasProgram.VERSION_2,
@@ -173,8 +188,15 @@ final class PdfBoxCanvasOperations {
                         effectiveResources,
                         command.getProgram(),
                         command.getResourceLimits().get(),
-                        !existing.isEmpty())) {
-            PdfBoxPageContentSupport.apply(
+                        !isolatedPage && !existing.isEmpty())) {
+            if (plan.operators.length > maximumBytes) {
+                throw PdfBoxParagraphOperations.limitFailure();
+            }
+            if (isolatedPage) {
+                PdfBoxPageContentSupport.appendIsolated(document, page, plan.operators,
+                        plan.resources, plan.resourcesChanged, resources, PdfBoxCanvasOperations::writeFailure);
+            } else {
+                PdfBoxPageContentSupport.apply(
                     document,
                     page,
                     existing,
@@ -183,6 +205,8 @@ final class PdfBoxCanvasOperations {
                     plan.resourcesChanged,
                     resources,
                     PdfBoxCanvasOperations::writeFailure);
+            }
+            return plan.operators.length;
         }
     }
 

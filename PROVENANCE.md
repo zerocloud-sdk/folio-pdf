@@ -1359,5 +1359,47 @@ documentation, and project-owned tests are the permitted design inputs.
   implicit network/font download or external evidence-tool installation was
   performed. The Compatibility Curator role remains vacant.
 
+## T24 paragraph-composition record
+
+- Author: OpenAI Codex acting on the user's issue #25 implementation request.
+  The initial delivery was reviewed as uncommitted changes. The user subsequently
+  authorized a commit with DCO sign-off using the repository's configured Git
+  identity, a GitHub push, and closure of issue #25.
+- References: GitHub issues #25 and #1, the supplied goal text, AGENTS.md,
+  CONTRIBUTING.md, CONTEXT.md, the listed Composition/Workflow ADRs, existing
+  T17/T18 Canvas, T19 font, T20 resource and Worker code and public-workflow
+  tests, and the repository's acceptance/inventory/font documentation. Public
+  PDF/OpenType foundations remain those recorded for T17/T18/T19. No new
+  third-party source, fixture, font, resource or dependency was introduced.
+- Code: the paragraph, flow, page, margin and limit declarations, deterministic
+  wrapping and area progression, font-measurement integration, detached page
+  painting, Worker codecs/catalogs and T24 tests were authored for this project
+  under Apache-2.0. No backend SPI or placeholder module was added. Java 8 and
+  the locked dependency versions are retained.
+- Fonts: the existing Apache-2.0 project-authored FolioPrimary and FolioFallback
+  fixtures have decoded SHA-256
+  `e2fbb634c3c0fe78efb449bde4426d10a93aa813596ff5cf3360f02ec97673fb` and
+  `ced760bc126036779fa84ad3da4638733032512457bf599c44d8c455360f75e1`.
+  Tests and acceptance verify these hashes. These are test data, not a runtime
+  font bundle, Foundation Noto profile or installed-font dependency.
+- Graphics and expectations: the blue unit-square group, corpus, hand-calculated
+  placements and reference PDF are project-authored Apache-2.0 data.
+  `T24ParagraphExpectations` is independent of the layout algorithm.
+  `T24ParagraphProducts.createReference` positions that oracle through existing
+  Canvas/T19 commands and never calls paragraph composition. Expected PNGs
+  were rendered from this reference using pinned PDFium and visually inspected
+  on 2026-09-05; a T24-produced raster was not adopted as its own golden. Hashes
+  and regeneration inputs are in the T24 profile/evidence. All new PDF, PNG and
+  text evidence is project data under Apache-2.0.
+- Tools: existing offline hash-verified qpdf 12.4.0, pdfium-cli v0.11.2 / PDFium
+  chromium-7881 and ImageMagick 7.1.2-30. Distribution, executable, component and
+  license authorities remain `scripts/*-pin.properties` and `docs/third-party/`.
+  No tool or font download occurred. PDFBox is secondary disagreement evidence,
+  not the independent visual oracle.
+- Clean-room exposure: the implementing assistant did not access iText source,
+  resources, binary-derived implementation, closed add-on information or curator
+  black-box output during this work. Missing standards evidence, open Dependency
+  Gates and lack of Foundation compatibility certification remain explicit.
+
 Future changes append or update a scoped record and supply the pull-request
 provenance statement required by [CONTRIBUTING.md](CONTRIBUTING.md).

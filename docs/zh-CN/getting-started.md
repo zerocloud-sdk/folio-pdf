@@ -121,3 +121,33 @@ JPEG、JPX、JBIG2 只允许作为图像的唯一末端平台 codec；在平台�
 
 T23 的公共测试与三组独立 PDFium 视觉证据不构成兼容性认证；标准证据、正式语义
 证据和前置能力的 promotion/dependency gates 尚未满足，因此状态仍为 experimental。
+## 段落跨区域排版（T24，experimental）
+
+在 `DocumentWorkflow.execute` 中执行
+`ComposeParagraphs.version1(paragraphFlow, compositionLimits)`，可以把语义段落
+排入显式声明的多个区域，并跨页继续。`LayoutPage.version1(width, height,
+PageMargins.of(top, right, bottom, left), areas...)` 使用 PDF 点；显式区域坐标
+相对于边距框的左下角。省略区域时，整个边距框就是一个区域。页面按声明顺序追加，
+只创建内容或区域换页实际到达的页面前缀。
+
+`Paragraph.version1(leading)` 可组合 `text(text, fontSize)` 和
+`graphic(canvasTransparencyGroup, width, height)`，支持 LEFT、CENTER、RIGHT、
+JUSTIFIED 对齐及 `maximumWidth`。固定 leading 是行框最小高度，字体上下界或图形
+更高时行框随之扩大。行内图形底边与文本基线对齐，不拆分。普通空格提供优先换行点，
+长单词可按 Unicode 标量拆行；保留空格，LF 显式换行，tab、CR 和孤立代理项会失败。
+JUSTIFIED 只扩展自动换行且非末行中非末尾的空格。
+
+`ParagraphFlow.areaBreak()` 明确前进到下一个区域。页面声明是有限列表，区域耗尽或
+内容无法放入剩余区域时返回 `COMPOSITION_AREA_EXHAUSTED`，不会无限生成页面。
+非法几何返回 `COMPOSITION_INVALID`；声明、行数和页面操作字节超限返回
+`COMPOSITION_LIMIT_EXCEEDED`。完整 `CompositionLimits`、`FontLimits` 和每个图形的
+`CanvasResourceLimits` 都必须显式提供，并受工作流总资源策略约束。
+
+字体复用 T19 的显式 FontSource、ReferenceFontSet、确定性选字、嵌入与子集机制，
+不使用系统字体或联网查找。IN_PROCESS 与 HARDENED_WORKER 接受相同声明；命令顺序、
+Query barrier、Session 生命周期、调用方流/通道所有权及签名/密码权限约束继续有效。
+当前仅向文档追加新页面，不填充已有页面区域。缩进、tabs、keep、widow/orphan、
+高级 overflow/relayout、表格和 Unicode shaping/布局不在 T24 范围内。
+
+完整英文契约和示例见 [Paragraph composition](../paragraph-composition.md)。
+能力仍为 experimental；实现票关闭或本机验证通过都不代表 Foundation 兼容性认证。

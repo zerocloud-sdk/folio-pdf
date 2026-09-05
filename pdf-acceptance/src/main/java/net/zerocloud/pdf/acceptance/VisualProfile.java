@@ -65,6 +65,8 @@ final class VisualProfile {
     private final String expectedRasterSha256;
     private final String inputIdNeutralSha256;
     private final String renderDiagnostics;
+    private final int pageNumber;
+    private final int pageCount;
 
     private VisualProfile(
             String profileId,
@@ -84,7 +86,9 @@ final class VisualProfile {
             Path expectedRaster,
             String expectedRasterSha256,
             String inputIdNeutralSha256,
-            String renderDiagnostics) {
+            String renderDiagnostics,
+            int pageNumber,
+            int pageCount) {
         this.profileId = profileId;
         this.pageBox = pageBox;
         this.dpi = dpi;
@@ -103,6 +107,8 @@ final class VisualProfile {
         this.expectedRasterSha256 = expectedRasterSha256;
         this.inputIdNeutralSha256 = inputIdNeutralSha256;
         this.renderDiagnostics = renderDiagnostics;
+        this.pageNumber = pageNumber;
+        this.pageCount = pageCount;
     }
 
     static VisualProfile load(Path path) throws IOException {
@@ -113,6 +119,15 @@ final class VisualProfile {
         }
         String expectedReference = required(properties, "EXPECTED_RASTER");
         String profileId = required(properties, "PROFILE_ID");
+        int pageNumber = 1;
+        int pageCount = 1;
+        if (profileId.equals("T24-paragraph-composition")) {
+            pageNumber = positiveInt(properties, "PAGE_SELECTION");
+            pageCount = positiveInt(properties, "PAGE_COUNT");
+            if (pageCount != 2 || pageNumber > pageCount) {
+                throw new IOException("T24 requires one selected page of its two-page artifact");
+            }
+        }
         if (profileId.startsWith("T23-")) {
             requireSupported("SCALE", required(properties, "SCALE"), "1");
             requireSupported("PAGE_SELECTION", required(properties, "PAGE_SELECTION"), "1");
@@ -183,7 +198,9 @@ final class VisualProfile {
                 expected,
                 requiredSha256(properties, "EXPECTED_RASTER_SHA256"),
                 inputHash,
-                diagnostics);
+                diagnostics,
+                pageNumber,
+                pageCount);
     }
 
     String inputIdNeutralSha256() { return inputIdNeutralSha256; }
@@ -206,12 +223,16 @@ final class VisualProfile {
         policies.put("T23-page-rendering", policies.get(T18_PROFILE));
         policies.put("T23-page-rendering-images", policies.get(T18_PROFILE));
         policies.put("T23-page-rendering-fonts", policies.get(T19_PROFILE));
+        policies.put("T24-paragraph-composition", policies.get(T19_PROFILE));
         return Collections.unmodifiableMap(policies);
     }
 
     String profileId() {
         return profileId;
     }
+
+    int pageNumber() { return pageNumber; }
+    int pageCount() { return pageCount; }
 
     String pageBox() {
         return pageBox;

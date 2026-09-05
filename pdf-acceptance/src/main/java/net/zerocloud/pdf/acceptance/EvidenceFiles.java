@@ -42,6 +42,10 @@ final class EvidenceFiles {
         return hex(digest.digest(value.getBytes(StandardCharsets.UTF_8)));
     }
 
+    static String sha256(byte[] value) {
+        return hex(sha256Digest().digest(value));
+    }
+
     /**
      * Hashes a freshly created acceptance PDF while excluding its non-semantic
      * trailer identifier values. All other bytes retain their exact positions

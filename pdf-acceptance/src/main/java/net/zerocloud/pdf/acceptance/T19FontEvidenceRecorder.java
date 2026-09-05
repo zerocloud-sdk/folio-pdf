@@ -152,7 +152,7 @@ final class T19FontEvidenceRecorder {
                 .build();
     }
 
-    private static byte[] font(String name) throws IOException {
+    static byte[] font(String name) throws IOException {
         String resource = "/net/zerocloud/pdf/acceptance/fonts/" + name;
         try (InputStream input = T19FontEvidenceRecorder.class
                 .getResourceAsStream(resource)) {

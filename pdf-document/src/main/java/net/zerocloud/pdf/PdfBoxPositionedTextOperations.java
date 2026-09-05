@@ -25,6 +25,7 @@ import java.util.TreeMap;
 import net.zerocloud.pdf.composition.FontLimits;
 import net.zerocloud.pdf.composition.FontSelection;
 import net.zerocloud.pdf.composition.FontSource;
+import net.zerocloud.pdf.composition.CanvasMatrix;
 import net.zerocloud.pdf.composition.PositionedUnicodeText;
 import net.zerocloud.pdf.composition.command.DrawPositionedUnicodeText;
 import org.apache.fontbox.ttf.CmapLookup;
@@ -80,6 +81,85 @@ final class PdfBoxPositionedTextOperations {
 
     boolean supports(DocumentCommand command) {
         return command instanceof DrawPositionedUnicodeText;
+    }
+
+    /** Shares T19 staging, selection, widths and mapping checks with paragraph layout. */
+    PreparedText prepareLayoutText(String text, FontSelection selection, FontLimits limits)
+            throws DocumentFailure {
+        if (text.isEmpty()) {
+            return new PreparedText(Collections.<SourceProgram>emptyList(),
+                    Collections.<SelectedGlyph>emptyList());
+        }
+        PositionedUnicodeText declaration = PositionedUnicodeText.version1(
+                text, selection, 1, TextRenderingMode.FILL,
+                CanvasMatrix.of(1, 0, 0, 1, 0, 0));
+        List<Integer> codePoints = validateText(declaration, limits);
+        return prepareText(codePoints, selection, limits);
+    }
+
+    /** Owns the shared T19 selection and source lifetime for both drawing paths. */
+    private PreparedText prepareText(List<Integer> codePoints, FontSelection selection, FontLimits limits)
+            throws DocumentFailure {
+        List<FontSource> sources = selection.getKind() == FontSelection.Kind.EXPLICIT
+                ? selection.getSources() : referenceFonts;
+        if (sources.size() > limits.getMaximumFontSources()) {
+            throw limitFailure();
+        }
+        if (sources.isEmpty()) { throw missingGlyph(); }
+        List<SourceProgram> programs = stageAndParse(sources, codePoints, limits);
+        boolean complete = false;
+        try {
+            List<SelectedGlyph> selected = select(programs, codePoints, limits);
+            validateMappings(selected);
+            validatePublicationVersion(selected);
+            preflightSubsets(programs, selected);
+            PreparedText result = new PreparedText(programs, selected);
+            complete = true;
+            return result;
+        } finally {
+            if (!complete) { closePrograms(programs); }
+        }
+    }
+
+    /** Command-local measured glyphs; font programs are staged exactly once per flow. */
+    final class PreparedText implements AutoCloseable {
+        private final List<SourceProgram> programs;
+        private final List<SelectedGlyph> selected;
+
+        PreparedText(List<SourceProgram> programs, List<SelectedGlyph> selected) {
+            this.programs = programs;
+            this.selected = selected;
+        }
+
+        double width(int index, double size) { return selected.get(index).metric.width * size / 1000d; }
+        double ascent(int index, double size) { return selected.get(index).metric.ascent * size; }
+        double descent(int index, double size) { return selected.get(index).metric.descent * size; }
+
+        long draw(PDPage page, int first, int end, double size, double x, double y,
+                long maximumBytes) throws DocumentFailure {
+            resources.checkpoint();
+            List<SelectedGlyph> glyphs = selected.subList(first, end);
+            List<TextRun> runs = encodeRuns(glyphs);
+            try {
+                ResourcesPlan plan = prepareResources(page.getCOSObject(), runs);
+                PositionedUnicodeText declaration = PositionedUnicodeText.version1(
+                        "layout", FontSelection.referenceFontSet(), size, TextRenderingMode.FILL,
+                        CanvasMatrix.of(1, 0, 0, 1, x, y));
+                try (WorkflowResourceContext.OwnedBytes operators = serialize(
+                        declaration, runs, plan.names, maximumBytes)) {
+                    commitGlyphs(glyphs);
+                    PdfBoxPageContentSupport.appendIsolated(document, page,
+                            operators.getBytes(), plan.resources, plan.changed, resources,
+                            PdfBoxPositionedTextOperations::writeFailure);
+                    return operators.getBytes().length;
+                }
+            } finally {
+                closeRuns(runs);
+            }
+        }
+
+        @Override
+        public void close() { closePrograms(programs); }
     }
 
     void finalizeFonts() throws DocumentFailure {
@@ -293,27 +373,9 @@ final class PdfBoxPositionedTextOperations {
         PdfBoxPageContentSupport.ExistingContents existing =
                 takePreparedExistingContents(page);
 
-        List<FontSource> sources = declaration.getFontSelection().getKind()
-                == FontSelection.Kind.EXPLICIT
-                ? declaration.getFontSelection().getSources()
-                : referenceFonts;
-        if (sources.size() > command.getLimits().getMaximumFontSources()) {
-            throw limitFailure();
-        }
-        if (sources.isEmpty()) {
-            throw missingGlyph();
-        }
-
-        List<SourceProgram> programs = stageAndParse(
-                sources,
-                codePoints,
-                command.getLimits());
-        List<SelectedGlyph> selected;
-        try {
-            selected = select(programs, codePoints, command.getLimits());
-            validateMappings(selected);
-            validatePublicationVersion(selected);
-            preflightSubsets(programs, selected);
+        try (PreparedText prepared = prepareText(codePoints,
+                declaration.getFontSelection(), command.getLimits())) {
+            List<SelectedGlyph> selected = prepared.selected;
             List<TextRun> runs = encodeRuns(selected);
             try {
                 ResourcesPlan resources = prepareResources(
@@ -349,8 +411,6 @@ final class PdfBoxPositionedTextOperations {
             } finally {
                 closeRuns(runs);
             }
-        } finally {
-            closePrograms(programs);
         }
     }
 
@@ -772,7 +832,9 @@ final class PdfBoxPositionedTextOperations {
                     glyphs.put(codePoint, new GlyphMetric(
                             glyphId,
                             width,
-                            canonicalMapping));
+                            canonicalMapping,
+                            Math.max(0d, font.getHeader().getYMax()) / unitsPerEm,
+                            Math.max(0d, -font.getHeader().getYMin()) / unitsPerEm));
                 }
             }
             return new ParsedProgram(font, glyphs, embeddingProfile);
@@ -1549,11 +1611,16 @@ final class PdfBoxPositionedTextOperations {
         private final int glyphId;
         private final int width;
         private final boolean canonicalMapping;
+        private final double ascent;
+        private final double descent;
 
-        GlyphMetric(int glyphId, int width, boolean canonicalMapping) {
+        GlyphMetric(int glyphId, int width, boolean canonicalMapping,
+                double ascent, double descent) {
             this.glyphId = glyphId;
             this.width = width;
             this.canonicalMapping = canonicalMapping;
+            this.ascent = ascent;
+            this.descent = descent;
         }
     }
 

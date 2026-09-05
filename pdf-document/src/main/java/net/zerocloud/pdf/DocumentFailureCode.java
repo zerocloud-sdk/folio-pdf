@@ -258,6 +258,15 @@ public enum DocumentFailureCode {
     /** Existing page content or resources cannot be preserved for positioned text. */
     POSITIONED_TEXT_PRESERVATION_UNSUPPORTED,
 
+    /** A paragraph, page, margin, area or inline declaration is invalid. */
+    COMPOSITION_INVALID,
+
+    /** No remaining declared area can fit the next line or atomic inline. */
+    COMPOSITION_AREA_EXHAUSTED,
+
+    /** A finite paragraph-flow declaration, line or generated-content bound was exceeded. */
+    COMPOSITION_LIMIT_EXCEEDED,
+
     /** A staged document could not be written. */
     DOCUMENT_WRITE_FAILED,
 

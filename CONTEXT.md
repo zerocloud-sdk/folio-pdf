@@ -218,6 +218,18 @@ _Avoid_: system font, font URL, backend font
 An unshaped Unicode scalar sequence placed with an explicit text matrix, size, Text Rendering Mode, and deterministic Font Source selection. It is not bidi, shaping, line breaking, or paragraph layout.
 _Avoid_: paragraph, text layout, encoded glyph run
 
+**Paragraph Flow**:
+A versioned, finite declaration of semantic paragraphs and explicit area breaks over new pages. Composition converts it into positioned content using explicitly selected fonts and bounded Canvas graphics.
+_Avoid_: renderer callback, implicit page generator, positioned text run
+
+**Layout Area**:
+One explicitly ordered rectangular region inside a page's margin box. Paragraph content advances through areas in declaration order, including across pages; an Area Break advances exactly one area.
+_Avoid_: inferred column, text frame handle, page template
+
+**Paragraph**:
+An immutable sequence of unshaped Unicode text and atomic inline graphics with declared alignment, leading and an optional width cap. Its content order is semantic input, while line and page breaks are Composition results.
+_Avoid_: Canvas Program, string at a coordinate, backend paragraph
+
 ## Forms
 
 Owns interactive fields, form data, appearances, AcroForm behavior, and XFA processing.

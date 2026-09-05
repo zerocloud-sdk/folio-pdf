@@ -122,7 +122,8 @@ public final class WorkerCodecContractTest {
                 PdfBoxPositionedTextOperations.CAPABILITY_ID,
                 PdfBoxTextStructureExtractionOperations.CAPABILITY_ID,
                 PdfBoxImageResourceExtractionOperations.CAPABILITY_ID,
-                Rendering.CAPABILITY_ID);
+                Rendering.CAPABILITY_ID,
+                PdfBoxParagraphOperations.CAPABILITY_ID);
         for (String capabilityId : capabilities) {
             byte[] payload = WorkerMessages.encodeFinished(
                     outcome(capabilityId),
@@ -155,10 +156,15 @@ public final class WorkerCodecContractTest {
                     DocumentFailureCode.WORKER_MESSAGE_LIMIT_EXCEEDED,
                     failure.getCode());
         }
+        assertEquals(PdfBoxParagraphOperations.CAPABILITY_ID,
+                WorkerMessages.decodeFinished(values(output -> {
+                    output.writeInt(1);
+                    output.writeInt(14);
+                })));
         try {
             WorkerMessages.decodeFinished(values(output -> {
                 output.writeInt(1);
-                output.writeInt(14);
+                output.writeInt(15);
             }));
             fail("Expected unknown outcome token rejection");
         } catch (DocumentFailure failure) {

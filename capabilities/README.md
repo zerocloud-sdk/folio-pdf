@@ -23,7 +23,8 @@ The outputs are:
 - `docs/generated/capability-matrix.md`
 - `docs/generated/facade-surface.md`
 
-Record the built-in T03 blank-document, T18 Canvas-image, and T19 explicit-font
+Record the built-in T03 blank-document, T18 Canvas-image, T19 explicit-font,
+T23 rendering and T24 paragraph-composition
 Acceptance Profiles with the pinned external syntax validator, independent
 renderer, raster comparator, and project semantic assertions:
 
@@ -354,3 +355,35 @@ mismatched input, missing tool, or unresolved renderer disagreement cannot
 pass. The [T23 evidence](evidence/T23-page-rendering.md) retains original tool
 results and both expected and renderer difference PNGs, and lists the open
 formal evidence, dependency, and promotion gates. The status is experimental.
+
+## T24 paragraph composition acceptance
+
+The same acceptance command records a mixed paragraph flowing through two
+explicit areas on page 1 and onto page 2, using only the two hash-pinned T19
+project fonts. The [T24 record](evidence/T24-paragraph-composition.md) defines
+hand-calculated glyph and graphic geometry, a `0.0001`-point tolerance, and
+both 144-DPI sRGB page profiles. Each page requires PDFium/ImageMagick AE `0`;
+secondary PDFBox disagreement is bounded separately at AE `2500`.
+
+Generate into an independent temporary directory to preserve existing evidence:
+
+```sh
+t24_output=$(mktemp -d)
+./scripts/acceptance "$t24_output"
+```
+
+This produces both the actual paragraph PDF and a separate reference PDF
+positioned directly from `T24ParagraphExpectations` through T19/Canvas. The
+reference never invokes paragraph layout. Its expected rasters reproduce with:
+
+```sh
+./scripts/container-bin/pdfium render "$t24_output/artifacts/T24-paragraph-composition-reference.pdf" "$t24_output/reference-page-1.png" --dpi 144 --file-type png --pages 1
+./scripts/container-bin/pdfium render "$t24_output/artifacts/T24-paragraph-composition-reference.pdf" "$t24_output/reference-page-2.png" --dpi 144 --file-type png --pages 2
+```
+
+Their SHA-256 values must equal the two `T24-*-visual.properties` authorities
+before adopting a regenerated expected image. Retain only the T24 records and
+artifacts for this capability. Negative controls verify that moved geometry
+and deleted text fail the independent semantic oracle; missing pinned tools
+produce indeterminate chains. Standards, compatible-status dependencies and
+Foundation font/platform certification remain open.

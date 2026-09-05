@@ -13,6 +13,7 @@ import net.zerocloud.pdf.command.UpdateAnnotations;
 import net.zerocloud.pdf.composition.FontSource;
 import net.zerocloud.pdf.composition.command.DrawCanvas;
 import net.zerocloud.pdf.composition.command.DrawPositionedUnicodeText;
+import net.zerocloud.pdf.composition.command.ComposeParagraphs;
 import net.zerocloud.pdf.composition.query.InspectCanvasImageCapabilities;
 import net.zerocloud.pdf.query.DocumentRootReference;
 import net.zerocloud.pdf.query.DocumentSecurity;
@@ -38,6 +39,7 @@ final class PdfBoxDocumentSession implements DocumentSession {
     private final PdfBoxCanvasOperations canvasOperations;
     private final PdfBoxPositionedTextOperations positionedUnicodeTextOperations;
     private final PdfBoxPageOperations pageOperations;
+    private final PdfBoxParagraphOperations paragraphOperations;
     private final SaveMode saveMode;
     private final PdfBoxSignaturePolicy signaturePolicy;
     private final PdfVersionInfo versionInfo;
@@ -112,6 +114,8 @@ final class PdfBoxDocumentSession implements DocumentSession {
                 metadataOperations,
                 annotationPageOperations,
                 resources);
+        this.paragraphOperations = new PdfBoxParagraphOperations(
+                positionedUnicodeTextOperations, canvasOperations, pageOperations, resources);
         this.saveMode = Objects.requireNonNull(saveMode, "saveMode");
         this.signaturePolicy = Objects.requireNonNull(
                 signaturePolicy,
@@ -262,6 +266,14 @@ final class PdfBoxDocumentSession implements DocumentSession {
             outcomeCapabilityId = PdfBoxPositionedTextOperations.CAPABILITY_ID;
             positionedUnicodeTextOperations.execute(
                     (DrawPositionedUnicodeText) command);
+            mutationOccurred = true;
+            return;
+        }
+
+        if (command instanceof ComposeParagraphs) {
+            PdfBoxParagraphOperations.requirePermission(securityInfo);
+            outcomeCapabilityId = PdfBoxParagraphOperations.CAPABILITY_ID;
+            paragraphOperations.execute((ComposeParagraphs) command);
             mutationOccurred = true;
             return;
         }
@@ -527,6 +539,9 @@ final class PdfBoxDocumentSession implements DocumentSession {
                 PdfBoxPositionedTextOperations.requireModificationPermission(
                         securityInfo);
                 return;
+            case WorkerCommandCodec.PREFLIGHT_PARAGRAPHS:
+                PdfBoxParagraphOperations.requirePermission(securityInfo);
+                return;
             case WorkerCommandCodec.PREFLIGHT_PATCH:
                 PdfBoxPermissionPolicy.requireModification(securityInfo);
                 PdfBoxPermissionPolicy.requireAnnotationModification(
@@ -539,6 +554,9 @@ final class PdfBoxDocumentSession implements DocumentSession {
     }
 
     private static DocumentFailure workerSignatureFailure(int category) {
+        if (category == WorkerCommandCodec.PREFLIGHT_PARAGRAPHS) {
+            return PdfBoxParagraphOperations.signatureFailure();
+        }
         if (category == WorkerCommandCodec.PREFLIGHT_CANVAS_V1) {
             return PdfBoxCanvasOperations.signatureFailure(
                     net.zerocloud.pdf.composition.command.DrawCanvas.VERSION_1);
@@ -554,6 +572,9 @@ final class PdfBoxDocumentSession implements DocumentSession {
     }
 
     private static DocumentFailure signatureFailure(DocumentCommand command) {
+        if (command instanceof ComposeParagraphs) {
+            return PdfBoxParagraphOperations.signatureFailure();
+        }
         if (command instanceof DrawCanvas) {
             return PdfBoxCanvasOperations.signatureFailure(
                     (DrawCanvas) command);

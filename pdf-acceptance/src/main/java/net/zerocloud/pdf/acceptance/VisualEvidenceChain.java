@@ -66,6 +66,12 @@ final class VisualEvidenceChain {
         return conventional("T23", "conversion.rendering", profile);
     }
 
+    static VisualEvidenceChain t24(int page) {
+        return new VisualEvidenceChain("T24", "composition.layout.paragraph-areas",
+                "T24-paragraph-composition", "T24-paragraph-composition.pdf",
+                "T24-paragraph-composition-page-" + page);
+    }
+
     boolean usesPublicRendering() { return "T23".equals(label); }
 
     private static VisualEvidenceChain conventional(

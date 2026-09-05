@@ -19,11 +19,11 @@ final class ImplementationRenderer {
     static String render(Path pdf, Path raster, VisualProfile profile)
             throws IOException {
         try (PDDocument document = Loader.loadPDF(pdf.toFile())) {
-            if (document.getNumberOfPages() != 1) {
-                throw new IOException("Implementation renderer observed a non-single-page PDF");
+            if (document.getNumberOfPages() != profile.pageCount()) {
+                throw new IOException("Implementation renderer observed an unexpected page count");
             }
             BufferedImage image = new PDFRenderer(document).renderImageWithDPI(
-                    0,
+                    profile.pageNumber() - 1,
                     profile.dpi(),
                     ImageType.RGB);
             if (image.getWidth() != profile.rasterWidth()

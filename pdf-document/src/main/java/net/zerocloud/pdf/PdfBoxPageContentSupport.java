@@ -271,6 +271,26 @@ final class PdfBoxPageContentSupport {
         }
     }
 
+    /** Appends an already isolated stream to a newly constructed Composition page. */
+    static void appendIsolated(PDDocument document, PDPage page, byte[] operators,
+            COSDictionary resources, boolean resourcesChanged,
+            WorkflowResourceContext workflowResources, FailureFactory writeFailure)
+            throws DocumentFailure {
+        COSObject stream = contentStream(document, operators, workflowResources, writeFailure);
+        workflowResources.checkpoint();
+        COSBase raw = page.getCOSObject().getItem(COSName.CONTENTS);
+        COSArray contents;
+        if (raw == null) {
+            contents = new COSArray();
+            contents.setDirect(true);
+            page.getCOSObject().setItem(COSName.CONTENTS, contents);
+        } else {
+            contents = (COSArray) raw;
+        }
+        contents.add(stream);
+        if (resourcesChanged) { page.getCOSObject().setItem(COSName.RESOURCES, resources); }
+    }
+
     static boolean isValidNumber(double value) {
         return !Double.isNaN(value)
                 && !Double.isInfinite(value)

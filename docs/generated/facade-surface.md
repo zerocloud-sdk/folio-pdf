@@ -8,7 +8,7 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Release train: `0.1.0-SNAPSHOT`
 - Stable entries: `0`
 - Preview entries: `12`
-- Explicit capability exclusions: `16`
+- Explicit capability exclusions: `17`
 
 ## Stable surfaces
 
@@ -158,6 +158,13 @@ No stable surfaces are declared.
 - Behavioral capability: [`composition.fonts.load-embed-subset-fallback`](capability-matrix.md#capability-composition_dot_fonts_dot_load_dash_embed_dash_subset_dash_fallback)
 - Deferred ticket: `T19`
 - Reason: T19 is a Composition-owned Native Interface explicit font-source, embedding, subsetting, Unicode-mapping, metrics, and ordered-fallback seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+
+<a id="excluded-capability-composition_dot_layout_dot_paragraph_dash_areas"></a>
+### `composition.layout.paragraph-areas`
+
+- Behavioral capability: [`composition.layout.paragraph-areas`](capability-matrix.md#capability-composition_dot_layout_dot_paragraph_dash_areas)
+- Deferred ticket: `T24`
+- Reason: T24 introduces a Composition-owned semantic Paragraph Flow and explicit new-page Layout Areas through the Native Interface. The current Preview layout.Document only owns document closing and does not map this behavior; no approved paragraph mapping or stable/preview stub is introduced.
 
 <a id="excluded-capability-conversion_dot_capability_dash_provider_dot_select_dash_execute"></a>
 ### `conversion.capability-provider.select-execute`
