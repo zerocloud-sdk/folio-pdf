@@ -297,6 +297,34 @@ final class PdfBoxPageOperations {
         }
     }
 
+    /** Replaces only an unmodified composed tail; all new pages have already been painted. */
+    void replaceComposedPages(List<PDPage> previous, List<PDPage> replacement) throws DocumentFailure {
+        int first = document.getNumberOfPages() - previous.size();
+        if (first < 0) { throw unsafeRelayout(); }
+        for (int index = 0; index < previous.size(); index++) {
+            resources.checkpoint();
+            if (document.getPage(first + index).getCOSObject() != previous.get(index).getCOSObject()) {
+                throw unsafeRelayout();
+            }
+        }
+        resources.checkpoint();
+        try {
+            appendComposedPages(replacement);
+            for (int index = 0; index < previous.size(); index++) { document.removePage(first); }
+        } catch (DocumentFailure | RuntimeException failure) {
+            // Restore the original tail before exposing any recoverable failure.
+            while (document.getNumberOfPages() > first) { document.removePage(first); }
+            for (PDPage page : previous) { document.addPage(page); }
+            throw failure;
+        }
+    }
+
+    private static DocumentFailure unsafeRelayout() {
+        return new DocumentFailure(DocumentFailureCode.COMPOSITION_RELAYOUT_UNSAFE,
+                PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID,
+                "The paragraph flow is not available for safe relayout.");
+    }
+
     private void remove(RemovePages removal) throws DocumentFailure {
         PageRange range = removal.getRange();
         requireRange(range);

@@ -1678,3 +1678,107 @@ capabilities:
       record: T24 paragraph-composition record
     certified-platforms: []
     status: experimental
+
+  - id: composition.layout.paragraph-pagination
+    context: composition
+    summary: Apply indentation, aligned tabs, hard keep and widow/orphan rules, horizontal overflow policies and bounded buffered relayout to finite Paragraph Flows.
+    reference-suite:
+      source: Issue 26 T25 advanced paragraph pagination and parent issue 1; project-owned public contracts and numeric acceptance corpus
+      role: capability inventory and public project contract; no Reference Suite implementation or output oracle
+    native-interface:
+      entry-point: net.zerocloud.pdf.DocumentWorkflow#execute
+      command: net.zerocloud.pdf.composition.command.ComposeParagraphs
+      relayout: net.zerocloud.pdf.composition.command.RelayoutParagraphs
+      flush: net.zerocloud.pdf.composition.command.FlushParagraphs
+      flow: net.zerocloud.pdf.composition.ParagraphFlow
+      paragraph: net.zerocloud.pdf.composition.Paragraph
+      tabs: net.zerocloud.pdf.composition.TabStop
+      page: net.zerocloud.pdf.composition.LayoutPage
+      limits: net.zerocloud.pdf.composition.CompositionLimits
+      outcome: net.zerocloud.pdf.WorkflowOutcome
+      failure: net.zerocloud.pdf.DocumentFailure
+    migration-facade:
+      stable: []
+      preview: []
+    limitations:
+      - Version 2 is opt-in and preserves version 1 factories and behavior. It admits version 1 or 2 paragraphs but requires version 2 flow and complete limits. No source-breaking public signature change is introduced.
+      - Indentation is inside the width cap; nonnegative left/right insets and a signed first-line offset apply once per paragraph. Tab positions are relative to the left inset, with LEFT/CENTER/RIGHT/ANCHOR alignment and a positive repeating grid. Fields are atomic, absent anchors use the right edge, stops never move backwards, and tabbed lines remain left aligned. Tab leaders are excluded.
+      - Keep-with-next connects the final line to the next paragraph's first fragment; keep-together requires the whole paragraph in one area. Positive widow/orphan minima apply to every continuation/outgoing fragment, including column boundaries. Rules never relax silently; impossible constraints fail COMPOSITION_CONSTRAINT_UNSATISFIED. An explicit area break conflicts with a pending keep. A final keep is vacuous.
+      - WRAP permits scalar fallback inside long words; REJECT moves intact words to fitting areas; VISIBLE preserves complete overlong units beyond horizontal bounds. Graphics and tab fields never split. Vertical overflow always consumes finite declared areas; there is no implicit page repetition, clipping, truncation or lost/duplicated content.
+      - Mandatory maximumLayoutAttempts bounds candidate lines and search transitions per command; mandatory maximumRelayouts bounds all attempted relayouts of a buffered flow. Existing line, declaration, font, graphic and content-byte limits remain in force, alongside the Workflow Resource Policy. The search uses an explicit bounded stack and accounted memory.
+      - BUFFERED is the version 2 default and retains the current semantic declaration and prepared font selection. Queries preserve eligibility. Relayout replaces only the current unmodified composed tail after complete detached layout and painting; failure preserves the prior content. IMMEDIATE, explicit flush and later successful mutations seal the preceding flow. Flush never publishes early. Unsafe relayout returns COMPOSITION_RELAYOUT_UNSAFE.
+      - Publication expires the Session and further operations throw the established IllegalStateException. A reopened PDF contains no retained semantic flow and rejects relayout. Unsigned REWRITE/INCREMENTAL, signature/password permissions, caller font ownership, command ordering, query barriers and Worker resource/transport bounds are preserved.
+      - Twelve independent two-page profiles pin page count, full text order, all glyph geometry, fonts, 144 DPI, opaque white sRGB and zero-fuzz AE 0. The secondary renderer bound remains 2500, with exact changed RGB pixels additionally checked against the same bounds. This small project font corpus does not certify Foundation Noto typography or required platforms.
+      - T25 adds no table, Unicode layout, shaping, runtime font bundle, backend SPI, module cycle, placeholder artifact or Migration Facade mapping. Standards evidence and compatible-status Dependency Gates remain open.
+    dependency-gates:
+      - capability: composition.layout.paragraph-areas
+        required-status: compatible
+      - capability: composition.fonts.load-embed-subset-fallback
+        required-status: compatible
+      - capability: composition.canvas.images-colors-transparency
+        required-status: compatible
+      - capability: document.hostile-input-limits
+        required-status: compatible
+      - capability: document.hardened-worker
+        required-status: compatible
+    promotion-gates:
+      - ticket: T06
+        requirement: Complete independent standards evidence and close all compatible-status Dependency Gates; certify the Foundation font set and all required platform profiles before claiming Foundation compatibility.
+    acceptance-profile:
+      id: T25-paragraph-pagination
+      state: experimental
+      mandatory-evidence:
+        - syntax
+        - standards
+        - semantic
+        - visual
+      evidence-record: capabilities/evidence/T25-paragraph-pagination.md
+    evidence:
+      - kind: public-paragraph-pagination-contract
+        path: pdf-document/src/test/java/net/zerocloud/pdf/consumer/ParagraphPaginationWorkflowTest.java
+        assertion: Both execution profiles observe cross-area/page rule interactions, impossible boundaries, exact limits, relayout/flush/publication state, font snapshots, permissions, incremental revision preservation and batch barriers through DocumentWorkflow.execute and reopened output.
+      - kind: independent-numeric-oracle
+        path: pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T25ParagraphExpectations.java
+        assertion: Twelve independently specified profiles pin each scalar, page count, page box, run position, advance and baseline before rendering paragraph output.
+      - kind: independent-semantic-observer
+        path: pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T25ParagraphSemanticAssertions.java
+        assertion: Reopened public queries verify all page/text geometry within 0.0001 point, exact text order and embedded subset structure against the independent oracle.
+      - kind: acceptance-command
+        path: pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T25ParagraphEvidenceCommand.java
+        assertion: The repository recorder retains independent qpdf syntax, semantic/structure, state-rejection and all twenty-four PDFium/ImageMagick comparisons with fixed input/font/oracle/raster hashes and thresholds.
+      - kind: acceptance-negative-and-repeat-contract
+        path: pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T25ParagraphEvidenceCommandTest.java
+        assertion: Each profile rejects moved or missing text; its reference uses positioned text only; repeat runs preserve records and missing tools never yield a PASS.
+      - kind: authoritative-contract
+        path: docs/paragraph-pagination.md
+        assertion: The public defaults, boundaries, conflicts, finite search, buffering lifecycle, migration opt-in and exclusions are documented in English with synchronized Javadoc and Chinese usage.
+      - kind: cross-jdk-contract
+        path: scripts/verify-jdk-matrix.sh
+        assertion: The complete repository gate executes on JDK 8, 11, 17 and 21 with unchanged Java 8 public/runtime contracts.
+    acceptance-evidence:
+      - chain: syntax
+        result: pass
+        record: capabilities/evidence/T25-paragraph-pagination-syntax.md
+        producer:
+          kind: external-tool
+          name: qpdf
+          version: "12.4.0"
+      - chain: semantic
+        result: pass
+        record: capabilities/evidence/T25-paragraph-pagination-semantic.md
+        producer:
+          kind: project-test
+          name: folio-pdf-t25-semantic-assertions
+          version: "0.1.0-SNAPSHOT"
+      - chain: visual
+        result: pass
+        record: capabilities/evidence/T25-paragraph-pagination-visual.md
+        producer:
+          kind: external-tool
+          name: pdfium-cli
+          version: v0.11.2-pdfium-chromium-7881
+    provenance:
+      path: PROVENANCE.md
+      record: T25 advanced-paragraph-pagination record
+    certified-platforms: []
+    status: experimental

@@ -14,6 +14,8 @@ import net.zerocloud.pdf.composition.FontSource;
 import net.zerocloud.pdf.composition.command.DrawCanvas;
 import net.zerocloud.pdf.composition.command.DrawPositionedUnicodeText;
 import net.zerocloud.pdf.composition.command.ComposeParagraphs;
+import net.zerocloud.pdf.composition.command.RelayoutParagraphs;
+import net.zerocloud.pdf.composition.command.FlushParagraphs;
 import net.zerocloud.pdf.composition.query.InspectCanvasImageCapabilities;
 import net.zerocloud.pdf.query.DocumentRootReference;
 import net.zerocloud.pdf.query.DocumentSecurity;
@@ -134,6 +136,8 @@ final class PdfBoxDocumentSession implements DocumentSession {
         try {
             resources.checkpoint();
             executeChecked(command);
+            if (!(command instanceof ComposeParagraphs) && !(command instanceof RelayoutParagraphs)
+                    && !(command instanceof FlushParagraphs)) { paragraphOperations.flush(); }
             resources.audit(document);
             resources.checkpoint();
         } catch (DocumentFailure failure) {
@@ -271,9 +275,19 @@ final class PdfBoxDocumentSession implements DocumentSession {
         }
 
         if (command instanceof ComposeParagraphs) {
-            PdfBoxParagraphOperations.requirePermission(securityInfo);
-            outcomeCapabilityId = PdfBoxParagraphOperations.CAPABILITY_ID;
+            PdfBoxParagraphOperations.requirePermission(securityInfo,
+                    PdfBoxParagraphOperations.capability((ComposeParagraphs) command));
+            outcomeCapabilityId = PdfBoxParagraphOperations.capability((ComposeParagraphs) command);
             paragraphOperations.execute((ComposeParagraphs) command);
+            mutationOccurred = true;
+            return;
+        }
+
+        if (command instanceof RelayoutParagraphs || command instanceof FlushParagraphs) {
+            PdfBoxParagraphOperations.requirePermission(securityInfo, PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID);
+            outcomeCapabilityId = PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID;
+            if (command instanceof RelayoutParagraphs) { paragraphOperations.relayout((RelayoutParagraphs) command); }
+            else { paragraphOperations.flush(); }
             mutationOccurred = true;
             return;
         }
@@ -539,6 +553,9 @@ final class PdfBoxDocumentSession implements DocumentSession {
                 PdfBoxPositionedTextOperations.requireModificationPermission(
                         securityInfo);
                 return;
+            case WorkerCommandCodec.PREFLIGHT_PAGINATION:
+                PdfBoxParagraphOperations.requirePermission(securityInfo, PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID);
+                return;
             case WorkerCommandCodec.PREFLIGHT_PARAGRAPHS:
                 PdfBoxParagraphOperations.requirePermission(securityInfo);
                 return;
@@ -554,6 +571,9 @@ final class PdfBoxDocumentSession implements DocumentSession {
     }
 
     private static DocumentFailure workerSignatureFailure(int category) {
+        if (category == WorkerCommandCodec.PREFLIGHT_PAGINATION) {
+            return PdfBoxParagraphOperations.signatureFailure(PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID);
+        }
         if (category == WorkerCommandCodec.PREFLIGHT_PARAGRAPHS) {
             return PdfBoxParagraphOperations.signatureFailure();
         }
@@ -572,8 +592,11 @@ final class PdfBoxDocumentSession implements DocumentSession {
     }
 
     private static DocumentFailure signatureFailure(DocumentCommand command) {
-        if (command instanceof ComposeParagraphs) {
-            return PdfBoxParagraphOperations.signatureFailure();
+        if (command instanceof ComposeParagraphs || command instanceof RelayoutParagraphs
+                || command instanceof FlushParagraphs) {
+            return PdfBoxParagraphOperations.signatureFailure(command instanceof ComposeParagraphs
+                    ? PdfBoxParagraphOperations.capability((ComposeParagraphs) command)
+                    : PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID);
         }
         if (command instanceof DrawCanvas) {
             return PdfBoxCanvasOperations.signatureFailure(
@@ -760,6 +783,7 @@ final class PdfBoxDocumentSession implements DocumentSession {
     }
 
     void invalidate() {
+        paragraphOperations.flush();
         resources.expireRenderedPages();
         active = false;
     }

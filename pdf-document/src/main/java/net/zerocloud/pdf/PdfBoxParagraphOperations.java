@@ -1,6 +1,8 @@
 package net.zerocloud.pdf;
 
 import java.util.ArrayList;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.List;
 import net.zerocloud.pdf.composition.CanvasMatrix;
 import net.zerocloud.pdf.composition.CanvasProgram;
@@ -10,6 +12,8 @@ import net.zerocloud.pdf.composition.LayoutPage;
 import net.zerocloud.pdf.composition.PageMargins;
 import net.zerocloud.pdf.composition.Paragraph;
 import net.zerocloud.pdf.composition.ParagraphFlow;
+import net.zerocloud.pdf.composition.TabStop;
+import net.zerocloud.pdf.composition.command.RelayoutParagraphs;
 import net.zerocloud.pdf.composition.command.ComposeParagraphs;
 import net.zerocloud.pdf.composition.command.DrawCanvas;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -19,6 +23,12 @@ import org.apache.pdfbox.pdmodel.common.PDRectangle;
 /** Finite paragraph composition; T19 owns fonts and T18 owns inline painting. */
 final class PdfBoxParagraphOperations {
     static final String CAPABILITY_ID = "composition.layout.paragraph-areas";
+    static final String PAGINATION_CAPABILITY_ID = "composition.layout.paragraph-pagination";
+    private ComposeParagraphs buffered;
+    private PdfBoxPositionedTextOperations.PreparedText bufferedText;
+    private WorkflowResourceContext.MemoryReservation bufferedMemory;
+    private List<PDPage> bufferedPages;
+    private int relayouts;
     // Absorb double rounding at an exact fit, well below the PDF geometry tolerance.
     private static final double FIT_TOLERANCE = 0.000000001;
     private final PdfBoxPositionedTextOperations fonts;
@@ -36,10 +46,12 @@ final class PdfBoxParagraphOperations {
     }
 
     void execute(ComposeParagraphs command) throws DocumentFailure {
-        long modeledBytes = validateDeclarations(command, resources);
-        pages.requireAppendPreservable();
-        try (WorkflowResourceContext.MemoryReservation memory =
-                resources.reserveOwnedMemory(modeledBytes)) {
+        WorkflowResourceContext.MemoryReservation memory = null;
+        PdfBoxPositionedTextOperations.PreparedText prepared = null;
+        try {
+            long modeledBytes = validateDeclarations(command, resources);
+            pages.requireAppendPreservable();
+            memory = resources.reserveOwnedMemory(modeledBytes);
             StringBuilder text = new StringBuilder();
             for (ParagraphFlow.Item item : command.getFlow().getItems()) {
                 if (item.getKind() == ParagraphFlow.Item.Kind.PARAGRAPH) {
@@ -48,45 +60,136 @@ final class PdfBoxParagraphOperations {
                             String value = inline.getText();
                             for (int index = 0; index < value.length(); index++) {
                                 resources.checkpoint();
-                                if (value.charAt(index) != '\n') { text.append(value.charAt(index)); }
+                                char cp = value.charAt(index);
+                                if (cp != '\n' && cp != '\t') { text.append(cp); }
                             }
                         }
                     }
                 }
             }
-            try (PdfBoxPositionedTextOperations.PreparedText prepared = fonts.prepareLayoutText(
-                    text.toString(), command.getFlow().getFonts(), command.getLimits().getFontLimits())) {
-                Layout layout = new Layout(command, prepared);
-                layout.compose();
-                List<PDPage> detached = createPages(command.getFlow(), layout.lastPage + 1);
-                paint(layout, prepared, detached, command.getLimits());
-                fonts.finalizeFonts();
-                pages.appendComposedPages(detached);
+            prepared = fonts.prepareLayoutText(text.toString(), command.getFlow().getFonts(),
+                    command.getLimits().getFontLimits());
+            List<PDPage> detached = compose(command, prepared);
+            pages.appendComposedPages(detached);
+            flush();
+            if (command.getFlushMode() == ComposeParagraphs.FlushMode.BUFFERED) {
+                buffered = command;
+                bufferedText = prepared;
+                bufferedMemory = memory;
+                bufferedPages = detached;
+                prepared = null;
+                memory = null;
             }
         } catch (DocumentFailure failure) {
-            if (failure.getCapabilityId().equals(PdfBoxPositionedTextOperations.CAPABILITY_ID)
-                    || failure.getCapabilityId().equals(PdfBoxCanvasOperations.CAPABILITY_ID)
-                    || failure.getCapabilityId().equals(PdfBoxCanvasResourceOperations.CAPABILITY_ID)) {
-                throw failure(failure.getCode(), failure.getDiagnostic());
-            }
-            throw failure;
+            throw compositionFailure(failure, capability(command));
         } catch (RuntimeException failure) {
             resources.rethrowResourceOrTerminalFailure(failure);
-            throw failure(DocumentFailureCode.DOCUMENT_WRITE_FAILED,
-                    "The paragraph flow could not be applied safely.");
+            throw new DocumentFailure(DocumentFailureCode.DOCUMENT_WRITE_FAILED,
+                    capability(command), "The paragraph flow could not be applied safely.");
+        } finally {
+            if (prepared != null) { prepared.close(); }
+            if (memory != null) { memory.close(); }
         }
+    }
+
+    void relayout(RelayoutParagraphs command) throws DocumentFailure {
+        if (buffered == null) {
+            throw new DocumentFailure(DocumentFailureCode.COMPOSITION_RELAYOUT_UNSAFE,
+                    PAGINATION_CAPABILITY_ID, "The paragraph flow is not available for safe relayout.");
+        }
+        if (relayouts >= buffered.getLimits().getMaximumRelayouts()) {
+            throw compositionFailure(limitFailure(), PAGINATION_CAPABILITY_ID);
+        }
+        relayouts++;
+        WorkflowResourceContext.MemoryReservation memory = null;
+        try {
+            // Admit caller declarations and reserve all replacement storage before copying.
+            memory = resources.reserveOwnedMemory(scanDeclarations(buffered, command.getPages(), resources));
+            ParagraphFlow.Builder replacement = ParagraphFlow.version2(buffered.getFlow().getFonts());
+            for (LayoutPage page : command.getPages()) {
+                resources.checkpoint();
+                replacement.page(page);
+            }
+            for (ParagraphFlow.Item item : buffered.getFlow().getItems()) {
+                resources.checkpoint();
+                if (item.getKind() == ParagraphFlow.Item.Kind.AREA_BREAK) { replacement.areaBreak(); }
+                else { replacement.paragraph(item.getParagraph()); }
+            }
+            ComposeParagraphs next = ComposeParagraphs.version2(replacement.build(), buffered.getLimits());
+            pages.requireAppendPreservable();
+            List<PDPage> detached = compose(next, bufferedText);
+            pages.replaceComposedPages(bufferedPages, detached);
+            bufferedMemory.close();
+            bufferedMemory = memory;
+            memory = null;
+            buffered = next;
+            bufferedPages = detached;
+        } catch (DocumentFailure failure) {
+            throw compositionFailure(failure, PAGINATION_CAPABILITY_ID);
+        } catch (RuntimeException failure) {
+            resources.rethrowResourceOrTerminalFailure(failure);
+            throw new DocumentFailure(DocumentFailureCode.DOCUMENT_WRITE_FAILED,
+                    PAGINATION_CAPABILITY_ID, "The paragraph flow could not be relaid out safely.");
+        } finally {
+            if (memory != null) { memory.close(); }
+        }
+    }
+
+    void flush() {
+        buffered = null;
+        bufferedPages = null;
+        relayouts = 0;
+        if (bufferedText != null) { bufferedText.close(); bufferedText = null; }
+        if (bufferedMemory != null) { bufferedMemory.close(); bufferedMemory = null; }
+    }
+
+    static String capability(ComposeParagraphs command) {
+        return command.getVersion() == ComposeParagraphs.VERSION_2 ? PAGINATION_CAPABILITY_ID : CAPABILITY_ID;
+    }
+
+    private List<PDPage> compose(ComposeParagraphs command,
+            PdfBoxPositionedTextOperations.PreparedText prepared) throws DocumentFailure {
+        Layout layout = new Layout(command, prepared);
+        layout.compose();
+        List<PDPage> detached = createPages(command.getFlow(), layout.lastPage + 1);
+        paint(layout, prepared, detached, command.getLimits());
+        fonts.finalizeFonts();
+        return detached;
+    }
+
+    private static DocumentFailure compositionFailure(DocumentFailure failure, String capability) {
+        String source = failure.getCapabilityId();
+        if (source.equals(CAPABILITY_ID) || source.equals(PAGINATION_CAPABILITY_ID)
+                || source.equals(PdfBoxPositionedTextOperations.CAPABILITY_ID)
+                || source.equals(PdfBoxCanvasOperations.CAPABILITY_ID)
+                || source.equals(PdfBoxCanvasResourceOperations.CAPABILITY_ID)) {
+            return new DocumentFailure(failure.getCode(), capability, failure.getDiagnostic());
+        }
+        return failure;
     }
 
     /** Pure declaration scan also used before Worker transport; it never opens sources. */
     static long validateDeclarations(ComposeParagraphs command, WorkflowResourceContext resources)
             throws DocumentFailure {
+        try { return scanDeclarations(command, command.getFlow().getPages(), resources); }
+        catch (DocumentFailure failure) { throw compositionFailure(failure, capability(command)); }
+    }
+
+    private static long scanDeclarations(ComposeParagraphs command, List<LayoutPage> declaredPages,
+            WorkflowResourceContext resources)
+            throws DocumentFailure {
         ParagraphFlow flow = command.getFlow();
         CompositionLimits limits = command.getLimits();
-        if (flow.getPages().isEmpty() || flow.getItems().isEmpty()) { throw invalid(); }
-        if (flow.getPages().size() > limits.getMaximumPages()
+        if (flow.getVersion() != command.getVersion() || limits.getVersion() != command.getVersion()
+                || (command.getVersion() == ComposeParagraphs.VERSION_1
+                    && (limits.getMaximumLayoutAttempts() != 0 || limits.getMaximumRelayouts() != 0))) {
+            throw invalid();
+        }
+        if (declaredPages.isEmpty() || flow.getItems().isEmpty()) { throw invalid(); }
+        if (declaredPages.size() > limits.getMaximumPages()
                 || flow.getItems().size() > limits.getMaximumFlowItems()) { throw limitFailure(); }
         long areaCount = 0;
-        for (LayoutPage page : flow.getPages()) {
+        for (LayoutPage page : declaredPages) {
             resources.checkpoint();
             if (!positive(page.getWidth()) || !positive(page.getHeight())
                     || page.getWidth() > 14400 || page.getHeight() > 14400) { throw invalid(); }
@@ -105,6 +208,7 @@ final class PdfBoxParagraphOperations {
                         || exceeds(area.getUpperRightY(), height)) { throw invalid(); }
             }
         }
+        long tabCount = 0;
         long inlineCount = 0;
         long scalarCount = 0;
         long characterCount = 0;
@@ -114,6 +218,9 @@ final class PdfBoxParagraphOperations {
             Paragraph paragraph = item.getParagraph();
             if (!positive(paragraph.getLeading()) || !nonnegative(paragraph.getMaximumWidth())
                     || paragraph.getInlines().isEmpty()) { throw invalid(); }
+            if (paragraph.getVersion() > flow.getVersion()) { throw invalid(); }
+            validateParagraph(paragraph, resources);
+            tabCount += paragraph.getTabStops().size();
             inlineCount += paragraph.getInlines().size();
             if (inlineCount > limits.getMaximumInlines()) { throw limitFailure(); }
             for (Paragraph.Inline inline : paragraph.getInlines()) {
@@ -131,7 +238,8 @@ final class PdfBoxParagraphOperations {
                         int cp = value.codePointAt(index);
                         if (Character.isLowSurrogate(first)
                                 || (Character.isHighSurrogate(first) && cp <= Character.MAX_VALUE)
-                                || (Character.isISOControl(cp) && cp != '\n')) { throw invalid(); }
+                                || (Character.isISOControl(cp) && cp != '\n'
+                                    && !(cp == '\t' && paragraph.getVersion() == Paragraph.VERSION_2))) { throw invalid(); }
                         index += Character.charCount(cp);
                         if (++scalarCount > limits.getFontLimits().getMaximumCodePoints()) {
                             throw failure(DocumentFailureCode.FONT_LIMIT_EXCEEDED,
@@ -143,8 +251,32 @@ final class PdfBoxParagraphOperations {
         }
         // Upper bound for the modeled declarations, scalar atoms, line plans and
         // temporary UTF-16 copies, held for exactly this command's lifetime.
-        return 1024L * flow.getPages().size() + 128L * (areaCount + flow.getItems().size())
-                + 512L * (inlineCount + scalarCount) + 4L * characterCount;
+        return 1024L * declaredPages.size() + 128L * (areaCount + flow.getItems().size())
+                + 512L * (inlineCount + scalarCount) + 4L * characterCount + 64L * tabCount;
+    }
+
+    private static void validateParagraph(Paragraph paragraph, WorkflowResourceContext resources) throws DocumentFailure {
+        if (!nonnegative(paragraph.getLeftIndent()) || !nonnegative(paragraph.getRightIndent())
+                || !PdfBoxPageContentSupport.isValidNumber(paragraph.getFirstLineIndent())
+                || !nonnegative(paragraph.getLeftIndent() + paragraph.getFirstLineIndent())
+                || !positive(paragraph.getTabInterval()) || paragraph.getWidows() < 1 || paragraph.getOrphans() < 1) {
+            throw invalid();
+        }
+        double previous = 0;
+        for (TabStop stop : paragraph.getTabStops()) {
+            resources.checkpoint();
+            int anchor = stop.getAnchor();
+            if (!positive(stop.getPosition()) || stop.getPosition() <= previous
+                    || !Character.isValidCodePoint(anchor) || Character.isISOControl(anchor)
+                    || (anchor >= Character.MIN_SURROGATE && anchor <= Character.MAX_SURROGATE)) { throw invalid(); }
+            previous = stop.getPosition();
+        }
+        if (paragraph.getVersion() == Paragraph.VERSION_1
+                && (paragraph.getLeftIndent() != 0 || paragraph.getRightIndent() != 0
+                    || paragraph.getFirstLineIndent() != 0 || paragraph.getTabInterval() != 36
+                    || !paragraph.getTabStops().isEmpty() || paragraph.isKeepWithNext()
+                    || paragraph.isKeepTogether() || paragraph.getWidows() != 1 || paragraph.getOrphans() != 1
+                    || paragraph.getOverflow() != Paragraph.Overflow.WRAP)) { throw invalid(); }
     }
 
     private List<PDPage> createPages(ParagraphFlow flow, int count) throws DocumentFailure {
@@ -169,8 +301,8 @@ final class PdfBoxParagraphOperations {
             resources.checkpoint();
             PDPage page = detached.get(line.area.page);
             double spare = Math.max(0, line.availableWidth - line.width);
-            double x = line.area.box.getLowerLeftX();
-            Paragraph.Alignment alignment = line.paragraph.getAlignment();
+            double x = line.left;
+            Paragraph.Alignment alignment = line.tabbed ? Paragraph.Alignment.LEFT : line.paragraph.getAlignment();
             if (alignment == Paragraph.Alignment.CENTER) { x += spare / 2; }
             if (alignment == Paragraph.Alignment.RIGHT) { x += spare; }
             int spaces = 0;
@@ -183,6 +315,7 @@ final class PdfBoxParagraphOperations {
             for (int index = line.first; index < line.end;) {
                 resources.checkpoint();
                 Atom atom = line.atoms.get(index);
+                if (atom.codePoint == '\t') { x += line.advances[index - line.first]; index++; continue; }
                 long remaining = limits.getMaximumGeneratedContentBytes() - contentBytes;
                 long written;
                 if (atom.inline.getKind() == Paragraph.Inline.Kind.GRAPHIC) {
@@ -202,7 +335,7 @@ final class PdfBoxParagraphOperations {
                     double width = atom.width;
                     while (end < line.end && !(gap > 0 && line.atoms.get(end - 1).codePoint == ' ')) {
                         Atom next = line.atoms.get(end);
-                        if (next.inline.getKind() != Paragraph.Inline.Kind.TEXT
+                        if (next.codePoint == '\t' || next.inline.getKind() != Paragraph.Inline.Kind.TEXT
                                 || next.inline.getFontSize() != atom.inline.getFontSize()) { break; }
                         width += next.width;
                         end++;
@@ -256,6 +389,7 @@ final class PdfBoxParagraphOperations {
         }
 
         void compose() throws DocumentFailure {
+            if (command.getVersion() == ComposeParagraphs.VERSION_2) { composeAdvanced(); return; }
             for (ParagraphFlow.Item item : command.getFlow().getItems()) {
                 resources.checkpoint();
                 if (item.getKind() == ParagraphFlow.Item.Kind.AREA_BREAK) {
@@ -289,6 +423,129 @@ final class PdfBoxParagraphOperations {
             }
         }
 
+        private int attempts;
+        private boolean lineLimitReached;
+        private final List<List<Atom>> content = new ArrayList<List<Atom>>();
+
+        private void attempt() throws DocumentFailure {
+            resources.checkpoint();
+            if (attempts >= command.getLimits().getMaximumLayoutAttempts()) { throw limitFailure(); }
+            attempts++;
+        }
+
+        private void composeAdvanced() throws DocumentFailure {
+            boolean constrained = false;
+            for (ParagraphFlow.Item item : command.getFlow().getItems()) {
+                resources.checkpoint();
+                Paragraph paragraph = item.getParagraph();
+                content.add(paragraph == null ? null : atoms(paragraph));
+                if (paragraph != null && (paragraph.isKeepTogether() || paragraph.isKeepWithNext()
+                        || paragraph.getWidows() > 1 || paragraph.getOrphans() > 1)) { constrained = true; }
+            }
+            Deque<Frame> stack = new ArrayDeque<Frame>();
+            try {
+                stack.push(new Frame(new State(0, 0, 0, 0, 0, false)));
+                while (!stack.isEmpty()) {
+                    Frame frame = stack.peek();
+                    State next = frame.next();
+                    if (next == null) { stack.pop().close(); continue; }
+                    if (next.item == content.size()) {
+                        lastPage = areas.get(next.area).page;
+                        return;
+                    }
+                    stack.push(new Frame(next));
+                }
+            } finally {
+                while (!stack.isEmpty()) { stack.pop().close(); }
+            }
+            if (lineLimitReached) { throw limitFailure(); }
+            throw failure(constrained ? DocumentFailureCode.COMPOSITION_CONSTRAINT_UNSATISFIED
+                            : DocumentFailureCode.COMPOSITION_AREA_EXHAUSTED,
+                    constrained ? "The finite layout areas cannot satisfy the paragraph constraints."
+                            : "The remaining layout areas cannot contain the paragraph flow.");
+        }
+
+        private final class Frame implements AutoCloseable {
+            private final State state;
+            private final int base;
+            private final List<Line> candidates = new ArrayList<Line>();
+            private final WorkflowResourceContext.OwnedMemoryScope memory = resources.ownedMemoryScope();
+            private int count;
+            private boolean skipped;
+
+            Frame(State state) throws DocumentFailure {
+                this.state = state;
+                this.base = lines.size();
+                boolean ready = false;
+                try {
+                    memory.retain(128);
+                    if (content.get(state.item) != null) {
+                        Paragraph paragraph = command.getFlow().getItems().get(state.item).getParagraph();
+                        List<Atom> atoms = content.get(state.item);
+                        Area area = areas.get(state.area);
+                        double width = area.box.getUpperRightX() - area.box.getLowerLeftX();
+                        if (paragraph.getMaximumWidth() > 0) { width = Math.min(width, paragraph.getMaximumWidth()); }
+                        double height = state.used;
+                        double correction = state.correction;
+                        int first = state.first;
+                        while (first < atoms.size()) {
+                            attempt();
+                            Line candidate = line(atoms, first, paragraph, area, width);
+                            if (candidate == null || exceeds(height + candidate.height,
+                                    area.box.getUpperRightY() - area.box.getLowerLeftY())) { break; }
+                            if (base + candidates.size() >= command.getLimits().getMaximumLines()) {
+                                lineLimitReached = true; break;
+                            }
+                            memory.retain(256L + 8L * (candidate.end - candidate.first));
+                            candidate.baseline = area.box.getUpperRightY() - height - candidate.ascent;
+                            double increment = candidate.height - correction;
+                            double after = height + increment;
+                            correction = (after - height) - increment;
+                            height = after;
+                            candidate.usedAfter = height;
+                            candidate.correctionAfter = correction;
+                            candidates.add(candidate);
+                            first = candidate.next;
+                        }
+                    }
+                    count = candidates.size();
+                    ready = true;
+                } finally { if (!ready) { memory.close(); } }
+            }
+
+            State next() throws DocumentFailure {
+                while (lines.size() > base) { lines.remove(lines.size() - 1); }
+                if (content.get(state.item) == null) {
+                    attempt();
+                    if (skipped || state.keep || state.area + 1 >= areas.size()) { return null; }
+                    skipped = true;
+                    return new State(state.item + 1, 0, state.area + 1, 0, 0, false);
+                }
+                Paragraph paragraph = command.getFlow().getItems().get(state.item).getParagraph();
+                while (count > 0) {
+                    attempt();
+                    int size = count--;
+                    Line last = candidates.get(size - 1);
+                    boolean complete = last.next == content.get(state.item).size();
+                    if (state.first > 0 && size < paragraph.getWidows()) { continue; }
+                    if (!complete && (paragraph.isKeepTogether() || size < paragraph.getOrphans()
+                            || state.area + 1 >= areas.size())) { continue; }
+                    for (int index = 0; index < size; index++) { lines.add(candidates.get(index)); }
+                    if (complete) {
+                        return new State(state.item + 1, 0, state.area, last.usedAfter,
+                                last.correctionAfter, paragraph.isKeepWithNext());
+                    }
+                    return new State(state.item, last.next, state.area + 1, 0, 0, false);
+                }
+                attempt();
+                if (skipped || state.keep || state.area + 1 >= areas.size()) { return null; }
+                skipped = true;
+                return new State(state.item, state.first, state.area + 1, 0, 0, false);
+            }
+
+            @Override public void close() { memory.close(); }
+        }
+
         private void nextArea() throws DocumentFailure {
             if (areaIndex + 1 >= areas.size()) {
                 throw failure(DocumentFailureCode.COMPOSITION_AREA_EXHAUSTED,
@@ -311,7 +568,7 @@ final class PdfBoxParagraphOperations {
                         resources.checkpoint();
                         int cp = inline.getText().codePointAt(offset);
                         offset += Character.charCount(cp);
-                        if (cp == '\n') {
+                        if (cp == '\n' || cp == '\t') {
                             result.add(new Atom(inline, -1, cp, 0, 0, 0));
                         } else {
                             double size = inline.getFontSize();
@@ -328,6 +585,11 @@ final class PdfBoxParagraphOperations {
 
     private Line line(List<Atom> atoms, int first, Paragraph paragraph, Area area, double available)
             throws DocumentFailure {
+        double extra = first == 0 ? paragraph.getFirstLineIndent() : 0;
+        double left = area.box.getLowerLeftX() + paragraph.getLeftIndent() + extra;
+        available -= paragraph.getLeftIndent() + paragraph.getRightIndent() + extra;
+        if (!positive(available)) { return null; }
+        List<Double> advances = new ArrayList<Double>();
         int end = first;
         int lastBreak = -1;
         double width = 0;
@@ -336,19 +598,41 @@ final class PdfBoxParagraphOperations {
             resources.checkpoint();
             Atom atom = atoms.get(end);
             if (atom.codePoint == '\n') { break; }
-            double increment = atom.width - correction;
+            int unitEnd = end + 1;
+            double advance = atom.width;
+            if (atom.codePoint == '\t') {
+                while (unitEnd < atoms.size() && atoms.get(unitEnd).codePoint != '\t'
+                        && atoms.get(unitEnd).codePoint != '\n') { resources.checkpoint(); unitEnd++; }
+                advance = tabAdvance(paragraph, atoms, end, unitEnd, width + extra);
+            } else if (paragraph.getOverflow() != Paragraph.Overflow.WRAP && atom.codePoint != ' '
+                    && atom.inline.getKind() == Paragraph.Inline.Kind.TEXT) {
+                while (unitEnd < atoms.size()) {
+                    resources.checkpoint();
+                    Atom next = atoms.get(unitEnd);
+                    if (next.codePoint == ' ' || next.codePoint == '\n' || next.codePoint == '\t'
+                            || next.inline.getKind() == Paragraph.Inline.Kind.GRAPHIC) { break; }
+                    unitEnd++;
+                }
+            }
+            double unitWidth = advance;
+            for (int index = end + 1; index < unitEnd; index++) {
+                resources.checkpoint(); unitWidth += atoms.get(index).width;
+            }
+            double increment = unitWidth - correction;
             double nextWidth = width + increment;
-            if (exceeds(nextWidth, available)) {
+            if (exceeds(nextWidth, available)
+                    && !(end == first && paragraph.getOverflow() == Paragraph.Overflow.VISIBLE)) {
                 if (end == first) { return null; }
                 if (lastBreak > first) { end = lastBreak; }
                 break;
             }
             correction = (nextWidth - width) - increment;
             width = nextWidth;
-            end++;
-            if (atom.codePoint == ' ' || atom.inline.getKind() == Paragraph.Inline.Kind.GRAPHIC) {
-                lastBreak = end;
-            }
+            advances.add(Double.valueOf(advance));
+            for (int index = end + 1; index < unitEnd; index++) { advances.add(Double.valueOf(atoms.get(index).width)); }
+            end = unitEnd;
+            if (atom.codePoint == ' ' || atom.codePoint == '\t'
+                    || atom.inline.getKind() == Paragraph.Inline.Kind.GRAPHIC) { lastBreak = end; }
         }
         int next = end;
         boolean automatic = end < atoms.size() && atoms.get(end).codePoint != '\n';
@@ -357,18 +641,55 @@ final class PdfBoxParagraphOperations {
         double descent = 0;
         width = 0;
         correction = 0;
+        boolean tabbed = false;
+        double[] measured = new double[end - first];
         for (int index = first; index < end; index++) {
             resources.checkpoint();
             Atom atom = atoms.get(index);
-            double increment = atom.width - correction;
+            measured[index - first] = advances.get(index - first).doubleValue();
+            double increment = measured[index - first] - correction;
             double nextWidth = width + increment;
             correction = (nextWidth - width) - increment;
             width = nextWidth;
+            tabbed |= atom.codePoint == '\t';
             ascent = Math.max(ascent, atom.ascent);
             descent = Math.max(descent, atom.descent);
         }
-        return new Line(atoms, paragraph, area, first, end, next, width, available,
+        Line result = new Line(atoms, paragraph, area, first, end, next, width, available,
                 ascent, Math.max(paragraph.getLeading(), ascent + descent), automatic);
+        result.left = left;
+        result.advances = measured;
+        result.tabbed = tabbed;
+        return result;
+    }
+
+    private double tabAdvance(Paragraph paragraph, List<Atom> atoms, int tab, int end, double current)
+            throws DocumentFailure {
+        double fieldWidth = 0;
+        for (int index = tab + 1; index < end; index++) {
+            resources.checkpoint(); fieldWidth += atoms.get(index).width;
+        }
+        double lastStop = 0;
+        for (TabStop stop : paragraph.getTabStops()) {
+            resources.checkpoint();
+            lastStop = stop.getPosition();
+            double offset = 0;
+            if (stop.getAlignment() == TabStop.Alignment.RIGHT) { offset = fieldWidth; }
+            if (stop.getAlignment() == TabStop.Alignment.CENTER) { offset = fieldWidth / 2; }
+            if (stop.getAlignment() == TabStop.Alignment.ANCHOR) {
+                for (int index = tab + 1; index < end; index++) {
+                    resources.checkpoint();
+                    if (atoms.get(index).codePoint == stop.getAnchor()) { break; }
+                    offset += atoms.get(index).width;
+                }
+            }
+            double start = stop.getPosition() - offset;
+            if (start > current + FIT_TOLERANCE) { return start - current; }
+        }
+        double interval = paragraph.getTabInterval();
+        double start = (Math.floor(Math.max(current, lastStop) / interval) + 1) * interval;
+        if (!positive(start) || !positive(start - current)) { throw invalid(); }
+        return start - current;
     }
 
     private static boolean exceeds(double value, double available) { return value > available + FIT_TOLERANCE; }
@@ -388,19 +709,36 @@ final class PdfBoxParagraphOperations {
     static DocumentFailure limitFailure() {
         return failure(DocumentFailureCode.COMPOSITION_LIMIT_EXCEEDED, "The paragraph composition limit was exceeded.");
     }
-    static DocumentFailure signatureFailure() {
-        return failure(DocumentFailureCode.SIGNATURE_POLICY_REJECTED,
+    static DocumentFailure signatureFailure() { return signatureFailure(CAPABILITY_ID); }
+    static DocumentFailure signatureFailure(String capability) {
+        return new DocumentFailure(DocumentFailureCode.SIGNATURE_POLICY_REJECTED, capability,
                 "The Existing Signature policy does not permit paragraph composition.");
     }
     static void requirePermission(PasswordSecurityInfo security) throws DocumentFailure {
+        requirePermission(security, CAPABILITY_ID);
+    }
+    static void requirePermission(PasswordSecurityInfo security, String capability) throws DocumentFailure {
         if (security.isPasswordProtected() && (!security.getEffectivePermissions().canModify()
                 || !security.getEffectivePermissions().canAssembleDocument())) {
-            throw failure(DocumentFailureCode.DOCUMENT_PERMISSION_DENIED,
+            throw new DocumentFailure(DocumentFailureCode.DOCUMENT_PERMISSION_DENIED, capability,
                     "The Source credential does not authorize paragraph composition.");
         }
     }
     private static DocumentFailure failure(DocumentFailureCode code, String diagnostic) {
         return new DocumentFailure(code, CAPABILITY_ID, diagnostic);
+    }
+
+    private static final class State {
+        final int item;
+        final int first;
+        final int area;
+        final double used;
+        final double correction;
+        final boolean keep;
+        State(int item, int first, int area, double used, double correction, boolean keep) {
+            this.item = item; this.first = first; this.area = area;
+            this.used = used; this.correction = correction; this.keep = keep;
+        }
     }
 
     private static final class Area {
@@ -433,6 +771,11 @@ final class PdfBoxParagraphOperations {
         private final double height;
         private final boolean automatic;
         private double baseline;
+        private double left;
+        private double[] advances;
+        private boolean tabbed;
+        private double usedAfter;
+        private double correctionAfter;
         Line(List<Atom> atoms, Paragraph paragraph, Area area, int first, int end, int next,
                 double width, double availableWidth, double ascent, double height, boolean automatic) {
             this.atoms = atoms; this.paragraph = paragraph; this.area = area;

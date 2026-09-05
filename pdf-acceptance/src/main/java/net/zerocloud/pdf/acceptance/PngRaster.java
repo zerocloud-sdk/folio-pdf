@@ -32,6 +32,19 @@ final class PngRaster {
         require(path, expectedWidth, expectedHeight, false);
     }
 
+    /** Exact RGB pixel count supplements the pinned comparator's magnitude metric. */
+    static long changedPixels(Path first, Path second, int width, int height) throws IOException {
+        requireProfileRaster(first, width, height);
+        requireProfileRaster(second, width, height);
+        BufferedImage a = ImageIO.read(first.toFile());
+        BufferedImage b = ImageIO.read(second.toFile());
+        long changed = 0;
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) { if (a.getRGB(x, y) != b.getRGB(x, y)) { changed++; } }
+        }
+        return changed;
+    }
+
     private static void require(
             Path path,
             int expectedWidth,

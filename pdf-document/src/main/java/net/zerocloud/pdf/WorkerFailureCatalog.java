@@ -27,7 +27,8 @@ final class WorkerFailureCatalog {
         WorkflowResourceContext.CAPABILITY_ID,
         HardenedWorkerEngine.CAPABILITY_ID,
         Rendering.CAPABILITY_ID,
-        PdfBoxParagraphOperations.CAPABILITY_ID
+        PdfBoxParagraphOperations.CAPABILITY_ID,
+        PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID
     };
 
     private static final Descriptor[] SPECIFIC = {
@@ -776,7 +777,13 @@ final class WorkerFailureCatalog {
         descriptor(DocumentFailureCode.DOCUMENT_PERMISSION_DENIED,
                 "The Source credential does not authorize paragraph composition."),
         descriptor(DocumentFailureCode.DOCUMENT_WRITE_FAILED,
-                "The paragraph flow could not be applied safely.")
+                "The paragraph flow could not be applied safely."),
+        descriptor(DocumentFailureCode.DOCUMENT_WRITE_FAILED,
+                "The paragraph flow could not be relaid out safely."),
+        descriptor(DocumentFailureCode.COMPOSITION_CONSTRAINT_UNSATISFIED,
+                "The finite layout areas cannot satisfy the paragraph constraints."),
+        descriptor(DocumentFailureCode.COMPOSITION_RELAYOUT_UNSAFE,
+                "The paragraph flow is not available for safe relayout.")
     };
 
     private WorkerFailureCatalog() {
@@ -848,10 +855,13 @@ final class WorkerFailureCatalog {
             return mask(Rendering.CAPABILITY_ID);
         }
         switch (code) {
+            case COMPOSITION_CONSTRAINT_UNSATISFIED:
+            case COMPOSITION_RELAYOUT_UNSAFE:
+                return mask(PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID);
             case COMPOSITION_INVALID:
             case COMPOSITION_AREA_EXHAUSTED:
             case COMPOSITION_LIMIT_EXCEEDED:
-                return mask(PdfBoxParagraphOperations.CAPABILITY_ID);
+                return mask(PdfBoxParagraphOperations.CAPABILITY_ID, PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID);
             case RENDER_OPTIONS_INVALID:
             case RENDER_DIMENSIONS_EXCEEDED:
             case RENDER_FAILED:
@@ -871,14 +881,14 @@ final class WorkerFailureCatalog {
             case CANVAS_RESOURCE_LIMIT_EXCEEDED:
             case CANVAS_RESOURCE_UNSUPPORTED:
                 return mask(PdfBoxCanvasResourceOperations.CAPABILITY_ID,
-                        PdfBoxParagraphOperations.CAPABILITY_ID);
+                        PdfBoxParagraphOperations.CAPABILITY_ID, PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID);
             case CANVAS_PRESERVATION_UNSUPPORTED:
             case CANVAS_PROGRAM_INVALID:
             case CANVAS_RESOURCE_INVALID:
                 return mask(
                         PdfBoxCanvasOperations.CAPABILITY_ID,
                         PdfBoxCanvasResourceOperations.CAPABILITY_ID,
-                        PdfBoxParagraphOperations.CAPABILITY_ID);
+                        PdfBoxParagraphOperations.CAPABILITY_ID, PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID);
             case CAPABILITY_PROVIDER_FAILED:
             case CAPABILITY_PROVIDER_NOT_FOUND:
             case CAPABILITY_PROVIDER_UNAVAILABLE:
@@ -943,7 +953,7 @@ final class WorkerFailureCatalog {
             case POSITIONED_TEXT_INVALID:
             case POSITIONED_TEXT_PRESERVATION_UNSUPPORTED:
                 return mask(PdfBoxPositionedTextOperations.CAPABILITY_ID,
-                        PdfBoxParagraphOperations.CAPABILITY_ID);
+                        PdfBoxParagraphOperations.CAPABILITY_ID, PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID);
             case INCREMENTAL_COMMAND_REJECTED:
             case INCREMENTAL_SOURCE_REQUIRED:
             case SIGNATURE_STRUCTURE_INVALID:
@@ -973,7 +983,7 @@ final class WorkerFailureCatalog {
                 return diagnostic.startsWith("Positioned")
                         || diagnostic.startsWith("Supplementary")
                                 ? mask(PdfBoxPositionedTextOperations
-                                        .CAPABILITY_ID, PdfBoxParagraphOperations.CAPABILITY_ID)
+                                        .CAPABILITY_ID, PdfBoxParagraphOperations.CAPABILITY_ID, PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID)
                                 : mask(PdfBoxWorkflowEngine
                                         .VERSION_SECURITY_CAPABILITY_ID);
             case PRESERVATION_UNSUPPORTED:
@@ -1016,7 +1026,7 @@ final class WorkerFailureCatalog {
     }
 
     private static int permissionCapabilities(String diagnostic) {
-        if (diagnostic.contains("paragraph composition")) { return mask(PdfBoxParagraphOperations.CAPABILITY_ID); }
+        if (diagnostic.contains("paragraph composition")) { return mask(PdfBoxParagraphOperations.CAPABILITY_ID, PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID); }
         if (diagnostic.contains("Canvas")) {
             return mask(
                     PdfBoxCanvasOperations.CAPABILITY_ID,
@@ -1029,16 +1039,16 @@ final class WorkerFailureCatalog {
     }
 
     private static int writeFailureCapabilities(String diagnostic) {
-        if (diagnostic.contains("paragraph flow")) { return mask(PdfBoxParagraphOperations.CAPABILITY_ID); }
+        if (diagnostic.contains("paragraph flow")) { return mask(PdfBoxParagraphOperations.CAPABILITY_ID, PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID); }
         if (diagnostic.contains("Canvas Program")) {
             return mask(
                     PdfBoxCanvasOperations.CAPABILITY_ID,
                     PdfBoxCanvasResourceOperations.CAPABILITY_ID,
-                    PdfBoxParagraphOperations.CAPABILITY_ID);
+                    PdfBoxParagraphOperations.CAPABILITY_ID, PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID);
         }
         if (diagnostic.contains("positioned Unicode text")) {
             return mask(PdfBoxPositionedTextOperations.CAPABILITY_ID,
-                    PdfBoxParagraphOperations.CAPABILITY_ID);
+                    PdfBoxParagraphOperations.CAPABILITY_ID, PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID);
         }
         if (diagnostic.contains("annotation update")) {
             return mask(PdfBoxAnnotationOperations.CAPABILITY_ID);
@@ -1106,7 +1116,7 @@ final class WorkerFailureCatalog {
     }
 
     private static int signatureCapabilities(String diagnostic) {
-        if (diagnostic.contains("paragraph composition")) { return mask(PdfBoxParagraphOperations.CAPABILITY_ID); }
+        if (diagnostic.contains("paragraph composition")) { return mask(PdfBoxParagraphOperations.CAPABILITY_ID, PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID); }
         if (diagnostic.contains("Canvas")) {
             return mask(
                     PdfBoxCanvasOperations.CAPABILITY_ID,

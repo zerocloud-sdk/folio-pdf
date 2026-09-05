@@ -161,10 +161,15 @@ public final class WorkerCodecContractTest {
                     output.writeInt(1);
                     output.writeInt(14);
                 })));
+        assertEquals(PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID,
+                WorkerMessages.decodeFinished(values(output -> {
+                    output.writeInt(1);
+                    output.writeInt(15);
+                })));
         try {
             WorkerMessages.decodeFinished(values(output -> {
                 output.writeInt(1);
-                output.writeInt(15);
+                output.writeInt(16);
             }));
             fail("Expected unknown outcome token rejection");
         } catch (DocumentFailure failure) {

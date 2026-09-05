@@ -6,7 +6,7 @@ Behavioral authority: [`../../capabilities/capability-matrix.yaml`](../../capabi
 
 - Schema version: `1`
 - Release train: `0.1.0-SNAPSHOT`
-- Capabilities: `18`
+- Capabilities: `19`
 
 ## Capability summary
 
@@ -16,6 +16,7 @@ Behavioral authority: [`../../capabilities/capability-matrix.yaml`](../../capabi
 | [`composition.canvas.images-colors-transparency`](#capability-composition_dot_canvas_dot_images_dash_colors_dash_transparency) | `composition` | `experimental` | [excluded by `T18`](facade-surface.md#excluded-capability-composition_dot_canvas_dot_images_dash_colors_dash_transparency) |
 | [`composition.fonts.load-embed-subset-fallback`](#capability-composition_dot_fonts_dot_load_dash_embed_dash_subset_dash_fallback) | `composition` | `experimental` | [excluded by `T19`](facade-surface.md#excluded-capability-composition_dot_fonts_dot_load_dash_embed_dash_subset_dash_fallback) |
 | [`composition.layout.paragraph-areas`](#capability-composition_dot_layout_dot_paragraph_dash_areas) | `composition` | `experimental` | [excluded by `T24`](facade-surface.md#excluded-capability-composition_dot_layout_dot_paragraph_dash_areas) |
+| [`composition.layout.paragraph-pagination`](#capability-composition_dot_layout_dot_paragraph_dash_pagination) | `composition` | `experimental` | [excluded by `T25`](facade-surface.md#excluded-capability-composition_dot_layout_dot_paragraph_dash_pagination) |
 | [`conversion.capability-provider.select-execute`](#capability-conversion_dot_capability_dash_provider_dot_select_dash_execute) | `conversion` | `experimental` | [excluded by `T05`](facade-surface.md#excluded-capability-conversion_dot_capability_dash_provider_dot_select_dash_execute) |
 | [`conversion.rendering`](#capability-conversion_dot_rendering) | `conversion` | `experimental` | [excluded by `T23`](facade-surface.md#excluded-capability-conversion_dot_rendering) |
 | [`document.annotations-actions.manage`](#capability-document_dot_annotations_dash_actions_dot_manage) | `document-engine` | `experimental` | [excluded by `T12`](facade-surface.md#excluded-capability-document_dot_annotations_dash_actions_dot_manage) |
@@ -347,6 +348,78 @@ Acceptance Evidence:
 - `visual`: `pass` — [`capabilities/evidence/T24-paragraph-composition-visual.md`](../../capabilities/evidence/T24-paragraph-composition-visual.md); producer `pdfium-cli@v0.11.2-pdfium-chromium-7881` (`external-tool`)
 
 Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T24 paragraph-composition record`.
+
+<a id="capability-composition_dot_layout_dot_paragraph_dash_pagination"></a>
+## `composition.layout.paragraph-pagination`
+
+Apply indentation, aligned tabs, hard keep and widow/orphan rules, horizontal overflow policies and bounded buffered relayout to finite Paragraph Flows.
+
+- Context: `composition`
+- Status: `experimental`
+- Reference Suite source: `Issue 26 T25 advanced paragraph pagination and parent issue 1; project-owned public contracts and numeric acceptance corpus`
+- Reference role: capability inventory and public project contract; no Reference Suite implementation or output oracle
+- Acceptance Profile: `T25-paragraph-pagination`
+- Mandatory evidence chains: `syntax`, `standards`, `semantic`, `visual`
+- Evidence record: [`capabilities/evidence/T25-paragraph-pagination.md`](../../capabilities/evidence/T25-paragraph-pagination.md)
+- Certified platforms: none
+
+### Native Interface mapping
+
+- `command`: `net.zerocloud.pdf.composition.command.ComposeParagraphs`
+- `entry-point`: `net.zerocloud.pdf.DocumentWorkflow#execute`
+- `failure`: `net.zerocloud.pdf.DocumentFailure`
+- `flow`: `net.zerocloud.pdf.composition.ParagraphFlow`
+- `flush`: `net.zerocloud.pdf.composition.command.FlushParagraphs`
+- `limits`: `net.zerocloud.pdf.composition.CompositionLimits`
+- `outcome`: `net.zerocloud.pdf.WorkflowOutcome`
+- `page`: `net.zerocloud.pdf.composition.LayoutPage`
+- `paragraph`: `net.zerocloud.pdf.composition.Paragraph`
+- `relayout`: `net.zerocloud.pdf.composition.command.RelayoutParagraphs`
+- `tabs`: `net.zerocloud.pdf.composition.TabStop`
+
+### Migration Facade coverage
+
+- Stable: none
+- Preview: none
+- Explicit exclusion: [`T25`](facade-surface.md#excluded-capability-composition_dot_layout_dot_paragraph_dash_pagination) — T25 extends the Native Interface with advanced Paragraph Flow rules and bounded buffered relayout/flush. The existing Preview layout.Document does not map these semantics; no evidenced paragraph Migration Facade mapping exists and no stable or preview stub is introduced.
+
+### Gates and limitations
+
+- Dependency Gate: [`composition.layout.paragraph-areas`](#capability-composition_dot_layout_dot_paragraph_dash_areas) must be `compatible`
+- Dependency Gate: [`composition.fonts.load-embed-subset-fallback`](#capability-composition_dot_fonts_dot_load_dash_embed_dash_subset_dash_fallback) must be `compatible`
+- Dependency Gate: [`composition.canvas.images-colors-transparency`](#capability-composition_dot_canvas_dot_images_dash_colors_dash_transparency) must be `compatible`
+- Dependency Gate: [`document.hostile-input-limits`](#capability-document_dot_hostile_dash_input_dash_limits) must be `compatible`
+- Dependency Gate: [`document.hardened-worker`](#capability-document_dot_hardened_dash_worker) must be `compatible`
+- Promotion gate `T06`: Complete independent standards evidence and close all compatible-status Dependency Gates; certify the Foundation font set and all required platform profiles before claiming Foundation compatibility.
+- Limitation: Version 2 is opt-in and preserves version 1 factories and behavior. It admits version 1 or 2 paragraphs but requires version 2 flow and complete limits. No source-breaking public signature change is introduced.
+- Limitation: Indentation is inside the width cap; nonnegative left/right insets and a signed first-line offset apply once per paragraph. Tab positions are relative to the left inset, with LEFT/CENTER/RIGHT/ANCHOR alignment and a positive repeating grid. Fields are atomic, absent anchors use the right edge, stops never move backwards, and tabbed lines remain left aligned. Tab leaders are excluded.
+- Limitation: Keep-with-next connects the final line to the next paragraph's first fragment; keep-together requires the whole paragraph in one area. Positive widow/orphan minima apply to every continuation/outgoing fragment, including column boundaries. Rules never relax silently; impossible constraints fail COMPOSITION_CONSTRAINT_UNSATISFIED. An explicit area break conflicts with a pending keep. A final keep is vacuous.
+- Limitation: WRAP permits scalar fallback inside long words; REJECT moves intact words to fitting areas; VISIBLE preserves complete overlong units beyond horizontal bounds. Graphics and tab fields never split. Vertical overflow always consumes finite declared areas; there is no implicit page repetition, clipping, truncation or lost/duplicated content.
+- Limitation: Mandatory maximumLayoutAttempts bounds candidate lines and search transitions per command; mandatory maximumRelayouts bounds all attempted relayouts of a buffered flow. Existing line, declaration, font, graphic and content-byte limits remain in force, alongside the Workflow Resource Policy. The search uses an explicit bounded stack and accounted memory.
+- Limitation: BUFFERED is the version 2 default and retains the current semantic declaration and prepared font selection. Queries preserve eligibility. Relayout replaces only the current unmodified composed tail after complete detached layout and painting; failure preserves the prior content. IMMEDIATE, explicit flush and later successful mutations seal the preceding flow. Flush never publishes early. Unsafe relayout returns COMPOSITION_RELAYOUT_UNSAFE.
+- Limitation: Publication expires the Session and further operations throw the established IllegalStateException. A reopened PDF contains no retained semantic flow and rejects relayout. Unsigned REWRITE/INCREMENTAL, signature/password permissions, caller font ownership, command ordering, query barriers and Worker resource/transport bounds are preserved.
+- Limitation: Twelve independent two-page profiles pin page count, full text order, all glyph geometry, fonts, 144 DPI, opaque white sRGB and zero-fuzz AE 0. The secondary renderer bound remains 2500, with exact changed RGB pixels additionally checked against the same bounds. This small project font corpus does not certify Foundation Noto typography or required platforms.
+- Limitation: T25 adds no table, Unicode layout, shaping, runtime font bundle, backend SPI, module cycle, placeholder artifact or Migration Facade mapping. Standards evidence and compatible-status Dependency Gates remain open.
+
+### Evidence
+
+Implementation evidence:
+
+- `public-paragraph-pagination-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/consumer/ParagraphPaginationWorkflowTest.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/consumer/ParagraphPaginationWorkflowTest.java) — Both execution profiles observe cross-area/page rule interactions, impossible boundaries, exact limits, relayout/flush/publication state, font snapshots, permissions, incremental revision preservation and batch barriers through DocumentWorkflow.execute and reopened output.
+- `independent-numeric-oracle`: [`pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T25ParagraphExpectations.java`](../../pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T25ParagraphExpectations.java) — Twelve independently specified profiles pin each scalar, page count, page box, run position, advance and baseline before rendering paragraph output.
+- `independent-semantic-observer`: [`pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T25ParagraphSemanticAssertions.java`](../../pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T25ParagraphSemanticAssertions.java) — Reopened public queries verify all page/text geometry within 0.0001 point, exact text order and embedded subset structure against the independent oracle.
+- `acceptance-command`: [`pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T25ParagraphEvidenceCommand.java`](../../pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T25ParagraphEvidenceCommand.java) — The repository recorder retains independent qpdf syntax, semantic/structure, state-rejection and all twenty-four PDFium/ImageMagick comparisons with fixed input/font/oracle/raster hashes and thresholds.
+- `acceptance-negative-and-repeat-contract`: [`pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T25ParagraphEvidenceCommandTest.java`](../../pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T25ParagraphEvidenceCommandTest.java) — Each profile rejects moved or missing text; its reference uses positioned text only; repeat runs preserve records and missing tools never yield a PASS.
+- `authoritative-contract`: [`docs/paragraph-pagination.md`](../paragraph-pagination.md) — The public defaults, boundaries, conflicts, finite search, buffering lifecycle, migration opt-in and exclusions are documented in English with synchronized Javadoc and Chinese usage.
+- `cross-jdk-contract`: [`scripts/verify-jdk-matrix.sh`](../../scripts/verify-jdk-matrix.sh) — The complete repository gate executes on JDK 8, 11, 17 and 21 with unchanged Java 8 public/runtime contracts.
+
+Acceptance Evidence:
+
+- `syntax`: `pass` — [`capabilities/evidence/T25-paragraph-pagination-syntax.md`](../../capabilities/evidence/T25-paragraph-pagination-syntax.md); producer `qpdf@12.4.0` (`external-tool`)
+- `semantic`: `pass` — [`capabilities/evidence/T25-paragraph-pagination-semantic.md`](../../capabilities/evidence/T25-paragraph-pagination-semantic.md); producer `folio-pdf-t25-semantic-assertions@0.1.0-SNAPSHOT` (`project-test`)
+- `visual`: `pass` — [`capabilities/evidence/T25-paragraph-pagination-visual.md`](../../capabilities/evidence/T25-paragraph-pagination-visual.md); producer `pdfium-cli@v0.11.2-pdfium-chromium-7881` (`external-tool`)
+
+Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T25 advanced-paragraph-pagination record`.
 
 <a id="capability-conversion_dot_capability_dash_provider_dot_select_dash_execute"></a>
 ## `conversion.capability-provider.select-execute`

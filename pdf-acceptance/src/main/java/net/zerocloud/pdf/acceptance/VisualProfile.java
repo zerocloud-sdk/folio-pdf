@@ -121,11 +121,11 @@ final class VisualProfile {
         String profileId = required(properties, "PROFILE_ID");
         int pageNumber = 1;
         int pageCount = 1;
-        if (profileId.equals("T24-paragraph-composition")) {
+        if (profileId.equals("T24-paragraph-composition") || profileId.startsWith("T25-paragraph-")) {
             pageNumber = positiveInt(properties, "PAGE_SELECTION");
             pageCount = positiveInt(properties, "PAGE_COUNT");
             if (pageCount != 2 || pageNumber > pageCount) {
-                throw new IOException("T24 requires one selected page of its two-page artifact");
+                throw new IOException("Paragraph profiles require one selected page of their two-page artifact");
             }
         }
         if (profileId.startsWith("T23-")) {
@@ -224,6 +224,9 @@ final class VisualProfile {
         policies.put("T23-page-rendering-images", policies.get(T18_PROFILE));
         policies.put("T23-page-rendering-fonts", policies.get(T19_PROFILE));
         policies.put("T24-paragraph-composition", policies.get(T19_PROFILE));
+        for (T25ParagraphExpectations.Profile profile : T25ParagraphExpectations.PROFILES) {
+            policies.put(profile.id, policies.get(T19_PROFILE));
+        }
         return Collections.unmodifiableMap(policies);
     }
 
@@ -275,6 +278,10 @@ final class VisualProfile {
     }
 
     String comparisonDescription() {
+        if (profileId.startsWith("T25-paragraph-")) {
+            return "ImageMagick " + comparisonMetric + " magnitude with fuzz " + comparisonFuzzPercent
+                    + " percent; exact changed RGB pixels additionally enforce the same bounds";
+        }
         return "ImageMagick absolute error count (" + comparisonMetric
                 + ") with fuzz " + comparisonFuzzPercent + " percent";
     }

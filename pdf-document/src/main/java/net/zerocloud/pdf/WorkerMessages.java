@@ -41,6 +41,7 @@ final class WorkerMessages {
     private static final int OUTCOME_TEXT_STRUCTURE = 11;
     private static final int OUTCOME_IMAGE_RESOURCE = 12;
     private static final int OUTCOME_PARAGRAPHS = 14;
+    private static final int OUTCOME_PAGINATION = 15;
 
     static final int SOURCE_CREDENTIAL = 1;
     static final int OUTPUT_OWNER_CREDENTIAL = 2;
@@ -616,6 +617,7 @@ final class WorkerMessages {
 
     private static int outcomeCapabilityToken(String capabilityId)
             throws DocumentFailure {
+        if (PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID.equals(capabilityId)) { return OUTCOME_PAGINATION; }
         if (PdfBoxParagraphOperations.CAPABILITY_ID.equals(capabilityId)) { return OUTCOME_PARAGRAPHS; }
         if (Rendering.CAPABILITY_ID.equals(capabilityId)) { return OUTCOME_RENDERING; }
         if (PdfBoxWorkflowEngine.CAPABILITY_ID.equals(capabilityId)) {
@@ -662,6 +664,8 @@ final class WorkerMessages {
 
     private static String outcomeCapability(int token) throws DocumentFailure {
         switch (token) {
+            case OUTCOME_PAGINATION:
+                return PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID;
             case OUTCOME_PARAGRAPHS:
                 return PdfBoxParagraphOperations.CAPABILITY_ID;
             case OUTCOME_RENDERING:

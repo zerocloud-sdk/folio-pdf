@@ -1403,3 +1403,67 @@ documentation, and project-owned tests are the permitted design inputs.
 
 Future changes append or update a scoped record and supply the pull-request
 provenance statement required by [CONTRIBUTING.md](CONTRIBUTING.md).
+
+
+## T25 advanced-paragraph-pagination record
+
+- Author: OpenAI Codex acting on the user's issue #26 implementation goal.
+  The implementation was verified and reviewed as an uncommitted working tree.
+  The user subsequently authorized a DCO-signed commit, a GitHub push and closure
+  of issue #26.
+- References: the complete public GitHub issues #26 and #1 and their comments,
+  closed prerequisite #25, the user-supplied goal attachment, AGENTS.md,
+  CONTRIBUTING.md, CONTEXT.md, docs/agents/{issue-tracker,domain}.md and ADRs
+  0009, 0013, 0022, 0023, 0024, 0025 and 0029. Implementation references are
+  this repository's T24 paragraph declarations/layout, T19 explicit fonts,
+  T17/T18 Canvas, page operations, workflow resource/lifecycle/publication
+  contracts, Worker codecs/catalogs/class-inventory checks, and T24 independent
+  acceptance infrastructure. Public PDF/OpenType foundations remain the
+  previously recorded T17/T18/T19 sources. No new runtime dependency was
+  introduced; additional acceptance-tool references are recorded below.
+- Code: version 2 declarations, explicit tab stops and hard pagination search,
+  bounded buffered relayout/flush, page-tail replacement, Worker transport and
+  its closed outcome/failure vocabulary, public behavior tests and the T25
+  acceptance producer were authored for this Apache-2.0 project. Java 8 and
+  the existing locked dependencies remain in force. No table, Unicode layout,
+  shaping, backend SPI, runtime font bundle or Migration Facade stub is added.
+- Resources: the existing project-authored Apache-2.0 FolioPrimary and
+  FolioFallback fonts are reused without modification. Their SHA-256 values are
+  `e2fbb634c3c0fe78efb449bde4426d10a93aa813596ff5cf3360f02ec97673fb`
+  and `ced760bc126036779fa84ad3da4638733032512457bf599c44d8c455360f75e1`.
+  Signature/password test inputs reuse project-owned generators. There are no
+  new downloaded fixtures, system fonts, online font inputs or third-party
+  resources. Newly added PDF, PNG, Markdown, text and properties artifacts are
+  generated from project-owned declarations under Apache-2.0.
+- Oracle: `T25ParagraphExpectations` pins numeric coordinates, character widths,
+  page counts and order independently of the layout implementation. Each of
+  the twelve reference PDFs uses only `AddBlankPage` and the existing T19
+  positioned-text command. Its expected PNGs were rendered on 2026-09-05 with
+  the already pinned independent PDFium CLI v0.11.2 / Chromium 7881 at 144 DPI,
+  opaque white sRGB. Expected hashes, zero-fuzz AE 0 and the secondary-renderer
+  threshold of 2500 were fixed before rendering T25 paragraph products. No
+  actual paragraph raster was used as its own oracle, and no threshold was
+  widened to admit observed output. Negative tests move or remove text and
+  prove that each independent semantic observer rejects the mutation.
+- Tool provenance: qpdf 12.4.0, PDFium and ImageMagick 7.1.2-30 retain the
+  existing scripts/*-pin.properties authorities and third-party notices. These
+  are isolated acceptance tools and never production runtime dependencies.
+- Clean-room statement: this contribution does not copy/adapt iText source,
+  resources, fixtures, binary-derived implementation details or closed add-on
+  material, and no such material was accessed in this execution. Issue/API
+  inventory names are capability descriptions, not correctness goldens.
+  Standards evidence, compatibility Dependency Gates and all required
+  Foundation font/platform certifications remain open.
+- Additional acceptance-tool references: the public ImageMagick CLI documentation
+  at https://imagemagick.org/compare/ and the permissively licensed tagged
+  ImageMagick 7.1.2-30 files `MagickWand/compare.c` and `MagickCore/compare.c`
+  at https://github.com/ImageMagick/ImageMagick/tree/7.1.2-30 were inspected to
+  explain the actual comparator's nonzero AE with exit status 0. The tagged
+  command computes status from normalized distortion with a 1e-6 cutoff; its
+  printed AE is scaled by raster area. The recorder preserves the measured
+  value for the unchanged profile thresholds, and T25 additionally checks exact
+  changed RGB pixel counts. The two new acceptance regressions prove that a
+  tiny nonzero primary metric still fails AE 0 and that a usable secondary
+  result does not become INDETERMINATE merely because of the tool's exit cutoff.
+  No ImageMagick implementation code was copied. The existing tool license and
+  pinned distribution are unchanged.

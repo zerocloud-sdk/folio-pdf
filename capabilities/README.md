@@ -24,7 +24,7 @@ The outputs are:
 - `docs/generated/facade-surface.md`
 
 Record the built-in T03 blank-document, T18 Canvas-image, T19 explicit-font,
-T23 rendering and T24 paragraph-composition
+T23 rendering, T24 paragraph-composition and T25 advanced-pagination
 Acceptance Profiles with the pinned external syntax validator, independent
 renderer, raster comparator, and project semantic assertions:
 
@@ -387,3 +387,18 @@ artifacts for this capability. Negative controls verify that moved geometry
 and deleted text fail the independent semantic oracle; missing pinned tools
 produce indeterminate chains. Standards, compatible-status dependencies and
 Foundation font/platform certification remain open.
+
+
+T25 records twelve independent paragraph pagination profiles, each with two
+selected pages: indentation, tabs (six field-placement variants), keep-with-next,
+keep-together, widows, orphans, WRAP/REJECT/VISIBLE overflow, buffered relayout,
+immediate flush and post-publication rejection. The numeric oracle is
+`T25ParagraphExpectations`; reference PDFs are authored by positioned-text
+commands without invoking paragraph composition. Every glyph, page box, text
+sequence, advance and baseline is checked after reopening the actual product.
+Each page pins 144 DPI, opaque white sRGB, its expected raster SHA-256, AE 0
+with zero fuzz, and the existing secondary-renderer agreement bound of 2500.
+The [T25 profile record](evidence/T25-paragraph-pagination.md) links every
+independent chain and describes the outstanding standards and platform gates.
+The `--reference DIRECTORY` form of `T25ParagraphEvidenceCommand` regenerates
+only the hand-positioned PDFs; it does not adopt actual layout output as a golden.

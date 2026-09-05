@@ -1,0 +1,141 @@
+T25 / issue #26 reviewed working-tree verification receipt
+Date: 2026-09-05
+Implementation baseline HEAD: 3a3b9feae4b5069cb77969f5e9e75fe400895149
+Verification snapshot: main worktree before staging or commit.
+After verification, the user authorized a DCO-signed commit, GitHub push and closure of #26.
+Author: OpenAI Codex; project-authored Apache-2.0 verification record.
+
+Commands:
+./mvnw -B -ntp verify
+./scripts/verify-jdk-matrix.sh
+./scripts/acceptance /tmp/folio-t25/acceptance-final
+./scripts/inventory validate
+./scripts/inventory generate
+./scripts/inventory check
+
+Host build runtime: OpenJDK GraalVM CE 17.0.9+9.1 (17.0.9+9-jvmci-23.0-b22).
+Each matrix entry runs the complete verify reactor, including integration checks.
+T25: 32 IN_PROCESS + 32 HARDENED_WORKER public Workflow cases per runtime.
+T24: 21 IN_PROCESS + 21 HARDENED_WORKER public Workflow cases per runtime.
+The same three opt-in HardenedWorkerScaleProfileTest cases are skipped in the
+fresh baseline and all final builds; no T25 or T24 case is skipped.
+
+Fresh fixed-point baseline: BUILD SUCCESS
+  Completed: 2026-09-05T15:11:52+08:00; duration: 03:49 min
+  Suites: 44; totals: {"errors": 0, "failures": 0, "skipped": 3, "tests": 724}
+  Full local log: /tmp/folio-t25/baseline-verify.log
+  Log SHA-256: 4ad3631733c113e2f05e7535d2046a48ad74a16379e4b04939315c36125bf5bb
+Final host JDK 17 full verify: BUILD SUCCESS
+  Completed: 2026-09-05T16:23:10+08:00; duration: 04:50 min
+  Suites: 46; totals: {"errors": 0, "failures": 0, "skipped": 3, "tests": 792}
+  Full local log: /tmp/folio-t25/full-verify-final.log
+  Log SHA-256: 6767d881e1517ef2d5c6259e6a8635d93a4386122bdaf609e7567dd90f362c93
+Matrix JDK 8: BUILD SUCCESS
+  Completed: 2026-09-05T08:29:57Z; duration: 05:46 min
+  Suites: 46; totals: {"errors": 0, "failures": 0, "skipped": 3, "tests": 792}
+  Full local log: /tmp/folio-t25/jdk-matrix.log
+  Log SHA-256: efadd9f174cac34b2f7c672dce21ef9b7f6b8cd221a89fd5a72a83a0e64c94b7
+Matrix JDK 11: BUILD SUCCESS
+  Completed: 2026-09-05T08:35:23Z; duration: 05:24 min
+  Suites: 46; totals: {"errors": 0, "failures": 0, "skipped": 3, "tests": 792}
+  Full local log: /tmp/folio-t25/jdk-matrix.log
+  Log SHA-256: efadd9f174cac34b2f7c672dce21ef9b7f6b8cd221a89fd5a72a83a0e64c94b7
+Matrix JDK 17: BUILD SUCCESS
+  Completed: 2026-09-05T08:40:18Z; duration: 04:53 min
+  Suites: 46; totals: {"errors": 0, "failures": 0, "skipped": 3, "tests": 792}
+  Full local log: /tmp/folio-t25/jdk-matrix.log
+  Log SHA-256: efadd9f174cac34b2f7c672dce21ef9b7f6b8cd221a89fd5a72a83a0e64c94b7
+Matrix JDK 21: BUILD SUCCESS
+  Completed: 2026-09-05T08:45:26Z; duration: 05:06 min
+  Suites: 46; totals: {"errors": 0, "failures": 0, "skipped": 3, "tests": 792}
+  Full local log: /tmp/folio-t25/jdk-matrix.log
+  Log SHA-256: efadd9f174cac34b2f7c672dce21ef9b7f6b8cd221a89fd5a72a83a0e64c94b7
+
+Matrix image identities used by the repository script:
+  JDK 8: jdk8u502-b07
+  docker.io/library/eclipse-temurin:8-jdk
+  Image ID: abe8c22c734bcff3c2e9ec5f8549f9aeb9a27aabc7b53974ddadcc903d30644a
+  JDK 11: jdk-11.0.32+9
+  docker.io/library/eclipse-temurin:11-jdk
+  Image ID: e8dca93a5541cca084f88dceae31bdfdde0c15d1857c8f641f753c839538956f
+  JDK 17: jdk-17.0.20+8
+  docker.io/library/eclipse-temurin:17-jdk
+  Image ID: 20e832593c27816000db6315e1f554fcd0073c9ba95846ac117e5f3f5e0fea33
+  JDK 21: jdk-21.0.12+8
+  docker.io/library/eclipse-temurin:21-jdk
+  Image ID: bd15556c8747f309a3d9ac0ca190d7a67dbb131275a41df51041af8460ca03b2
+
+Independent acceptance:
+The complete acceptance script succeeded. After the reviewed resource-admission
+correction, T25ParagraphEvidenceCommand was rerun from a frozen copy of the final
+verified host runtime. Its arguments use the same qpdf, PDFium and ImageMagick
+pins, profiles directory and 0.1.0-SNAPSHOT release train as the script.
+All twelve syntax, semantic and visual profiles passed again.
+All 63 retained recorder Markdown files are identical to the complete recording.
+All 24 primary ImageMagick AE values and exact changed RGB pixel counts are zero.
+Maximum exact secondary changed RGB pixels: 2096 <= fixed 2500.
+Page count, text order, line breakpoints, matrices, advances and baselines agree
+with the hand-specified oracle at 0.0001 point; page selection, font hashes,
+144 DPI, opaque white sRGB, reference raster hashes and thresholds are unchanged.
+All retained T25 artifacts match the reviewed producer bytes and local links resolve.
+  /tmp/folio-t25/acceptance-final.log
+  SHA-256: 3e8c89cdb293d2aa9844b726d29a36bc241122a44a264e3e709cc71255d16198
+  /tmp/folio-t25/acceptance-reviewed.log
+  SHA-256: c1ef5192fa6ee044a905aca3bc12fec4eb38e0e9d6c7dd617c26a765bce9fe80
+  /tmp/folio-t25/retained-evidence-audit.log
+  SHA-256: a67052af0169c57c6c5081db178afff1039aabdc150fe93fc94e21857e223a3d
+  /tmp/folio-t25/reviewed-evidence-command.json
+  SHA-256: 2313cbf9f9af564c1b3fd090fa82b0b75bc11ac8644dce05b62ca721d6864ee8
+  /tmp/folio-t25/reviewed-runtime/manifest.json
+  SHA-256: ad5c559e93442415ff6e0f53f8f03c9588a2edb629f7175bb86e2648d6de8203
+
+Baseline and corrected findings:
+Fresh untouched baseline verify passed before implementation. Historical CI run
+33951171715 reported rendering failures on four JDKs and Worker timeout-code
+failures on JDK 21. Those tests passed in the final matrix; no unrelated fix or
+failure suppression is included.
+T25 implementation checks exposed an omitted Worker class-inventory SHA update
+and an old test treating newly assigned outcome token 15 as unknown. Both were
+corrected; the boundary test now admits 15 and rejects 16.
+Standards review found relayout copying before resource admission. It now scans
+immutable replacement declarations and reserves memory before checkpointed copies.
+The new public excessive-declaration test passes in both execution profiles.
+The retained comparator reproduction explains nonzero AE with exit status 0 in
+the pinned ImageMagick tool. Its status interpretation was corrected without
+widening any profile threshold; T25 also enforces exact changed RGB pixel bounds.
+
+Two-axis code review of tracked and untracked work against the fixed point:
+Standards: zero unresolved required findings; one nonblocking Data Clumps
+judgement about grouping the retained-flow fields, with no current lifecycle defect.
+Spec: zero unresolved findings. Both reviewers rechecked the admission correction.
+
+Scope of this receipt: implementation verification only. Capability remains
+experimental; independent standards evidence, compatible-status Dependency Gates,
+Foundation font coverage and required platform certifications remain open.
+
+Final inventory receipts:
+  ./scripts/inventory validate: PASS
+  Log: /tmp/folio-t25/inventory-validate-final.log
+  SHA-256: 18c81395df6737b4aa253292c55bd717e3df5e0e0afeb0afdd9df34f40ac6eba
+  ./scripts/inventory generate: PASS
+  Log: /tmp/folio-t25/inventory-generate-final.log
+  SHA-256: cd361fef24adf92d70e535cc07e4c334b6dccc60ad39218f4935ea8641a56fb6
+  ./scripts/inventory check: PASS
+  Log: /tmp/folio-t25/inventory-check-final.log
+  SHA-256: 996705bf0a6e8fee2fd7d4a0a9c3d049bd5ba92ead199bc6d84114decb470015
+  19 capabilities, 12 facade surfaces, 18 exclusions; generated views are current.
+  Final git diff --check: PASS. All new files are T25-scoped; no earlier evidence changed.
+
+Submission preparation follow-up:
+  Removed only the trailing separator space for an empty-page semantic observation.
+  Existing T25ParagraphEvidenceCommandTest: 2 tests, 0 failures, 0 errors.
+  Regenerated all 12 T25 syntax/semantic/visual profiles: PASS.
+  All 63 recorder Markdown records and 24 primary raster identities are unchanged.
+  Semantic reports differ only in that one empty-page trailing space; all observations
+  and fixed thresholds are unchanged. Retained artifacts come from this rerun.
+  Log/command: /tmp/folio-t25/precommit-evidence-tests.log
+  SHA-256: 13e9bc74e68441d5bb4c761fb42daabbe805ca88533b4a4a9ddeb3433a5f63f6
+  Log/command: /tmp/folio-t25/acceptance-precommit.log
+  SHA-256: c1ef5192fa6ee044a905aca3bc12fec4eb38e0e9d6c7dd617c26a765bce9fe80
+  Log/command: /tmp/folio-t25/precommit-evidence-command.json
+  SHA-256: a948f976c8504514c921f352292e94a06f8f2eaa06e869490026df44a9d78294

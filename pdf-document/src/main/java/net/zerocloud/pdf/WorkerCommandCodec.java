@@ -26,6 +26,8 @@ import net.zerocloud.pdf.command.UpdateDocumentInfo;
 import net.zerocloud.pdf.composition.command.DrawCanvas;
 import net.zerocloud.pdf.composition.command.DrawPositionedUnicodeText;
 import net.zerocloud.pdf.composition.command.ComposeParagraphs;
+import net.zerocloud.pdf.composition.command.RelayoutParagraphs;
+import net.zerocloud.pdf.composition.command.FlushParagraphs;
 
 /** Explicit versioned whitelist for every library-owned Document Command. */
 final class WorkerCommandCodec {
@@ -51,6 +53,8 @@ final class WorkerCommandCodec {
     private static final int DRAW_CANVAS = 17;
     private static final int DRAW_POSITIONED_UNICODE_TEXT = 18;
     private static final int COMPOSE_PARAGRAPHS = 19;
+    private static final int RELAYOUT_PARAGRAPHS = 20;
+    private static final int FLUSH_PARAGRAPHS = 21;
 
     static final int PREFLIGHT_UNKNOWN = 0;
     static final int PREFLIGHT_ASSEMBLY = 1;
@@ -65,6 +69,7 @@ final class WorkerCommandCodec {
     static final int PREFLIGHT_POSITIONED_TEXT = 10;
     static final int PREFLIGHT_PATCH = 11;
     static final int PREFLIGHT_PARAGRAPHS = 12;
+    static final int PREFLIGHT_PAGINATION = 13;
     static final int PREFLIGHT_DETAILS_NONE = 0;
     static final int PREFLIGHT_DETAILS_ANNOTATIONS = 1;
     static final int PREFLIGHT_DETAILS_POSITIONED_TEXT = 2;
@@ -161,7 +166,7 @@ final class WorkerCommandCodec {
                     || category == PREFLIGHT_CANVAS_V2
                     || category == PREFLIGHT_POSITIONED_TEXT;
             if (category < PREFLIGHT_UNKNOWN
-                    || category > PREFLIGHT_PARAGRAPHS
+                    || category > PREFLIGHT_PAGINATION
                     || (!pageCategory && pageNumber != 0)) {
                 throw rejected("The Worker Command preflight is invalid.");
             }
@@ -354,6 +359,10 @@ final class WorkerCommandCodec {
     }
 
     private static int preflightCategory(DocumentCommand command) {
+        if (command instanceof RelayoutParagraphs || command instanceof FlushParagraphs
+                || (command instanceof ComposeParagraphs && ((ComposeParagraphs) command).getVersion() == 2)) {
+            return PREFLIGHT_PAGINATION;
+        }
         if (command instanceof ComposeParagraphs) {
             return PREFLIGHT_PARAGRAPHS;
         }
@@ -722,6 +731,17 @@ final class WorkerCommandCodec {
                     fontSources);
             return;
         }
+        if (command instanceof RelayoutParagraphs) {
+            output.writeInt(RELAYOUT_PARAGRAPHS);
+            output.writeInt(((RelayoutParagraphs) command).getVersion());
+            WorkerCompositionCodec.writeLayoutPages(output, ((RelayoutParagraphs) command).getPages());
+            return;
+        }
+        if (command instanceof FlushParagraphs) {
+            output.writeInt(FLUSH_PARAGRAPHS);
+            output.writeInt(((FlushParagraphs) command).getVersion());
+            return;
+        }
         if (command instanceof ComposeParagraphs) {
             PdfBoxParagraphOperations.validateDeclarations((ComposeParagraphs) command, output.resources());
             output.writeInt(COMPOSE_PARAGRAPHS);
@@ -788,6 +808,12 @@ final class WorkerCommandCodec {
                 return WorkerCompositionCodec.readDrawCanvas(input, references);
             case COMPOSE_PARAGRAPHS:
                 return WorkerCompositionCodec.readParagraphs(input, references, remoteFonts);
+            case RELAYOUT_PARAGRAPHS:
+                requireVersion(input.readInt(), RelayoutParagraphs.VERSION_1);
+                return RelayoutParagraphs.version1(WorkerCompositionCodec.readLayoutPages(input));
+            case FLUSH_PARAGRAPHS:
+                requireVersion(input.readInt(), FlushParagraphs.VERSION_1);
+                return FlushParagraphs.version1();
             case DRAW_POSITIONED_UNICODE_TEXT:
                 return WorkerCompositionCodec.readPositionedTextCommand(
                         input,

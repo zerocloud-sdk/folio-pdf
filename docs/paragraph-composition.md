@@ -177,7 +177,7 @@ pages. Geometry tolerance is specific to that pinned corpus, not a blanket
 accuracy promise for arbitrary coordinates and fonts.
 
 Indentation, tabs, keep, widow/orphan behavior and advanced overflow/relayout
-belong to #26. Tables belong to #27/#28; Unicode layout belongs to #29.
+are available through the opt-in version 2 [T25 contract](paragraph-pagination.md). Tables belong to #27/#28; Unicode layout belongs to #29.
 No backend SPI, module cycle, placeholder artifact or Migration Facade stub
 is introduced. The existing Preview `layout.Document` is not a paragraph
 mapping. The Facade Surface Manifest records a T24 exclusion until an actual

@@ -14,19 +14,24 @@ import java.util.Objects;
  */
 public final class ParagraphFlow {
     /** Supported representation version. */ public static final int VERSION_1 = 1;
+    /** Advanced paragraph flow representation. */ public static final int VERSION_2 = 2;
+    private final int version;
     private final FontSelection fonts;
     private final List<LayoutPage> pages;
     private final List<Item> items;
 
     private ParagraphFlow(Builder builder) {
+        version = builder.version;
         fonts = builder.fonts;
         pages = Collections.unmodifiableList(new ArrayList<LayoutPage>(builder.pages));
         items = Collections.unmodifiableList(new ArrayList<Item>(builder.items));
     }
 
     /** Begins an explicitly ordered flow using one deterministic fallback selection. */
-    public static Builder version1(FontSelection fonts) { return new Builder(fonts); }
-    /** @return representation version */ public int getVersion() { return VERSION_1; }
+    public static Builder version1(FontSelection fonts) { return new Builder(VERSION_1, fonts); }
+    /** @return representation version */ public int getVersion() { return version; }
+    /** Begins a flow admitting version-1 and version-2 paragraphs. */
+    public static Builder version2(FontSelection fonts) { return new Builder(VERSION_2, fonts); }
     /** @return ordered font selection */ public FontSelection getFonts() { return fonts; }
     /** @return immutable page declarations */ public List<LayoutPage> getPages() { return pages; }
     /** @return immutable flow sequence */ public List<Item> getItems() { return items; }
@@ -44,10 +49,13 @@ public final class ParagraphFlow {
 
     /** Records an immutable flow without opening font resources or running layout. */
     public static final class Builder {
+        private final int version;
         private final FontSelection fonts;
         private final List<LayoutPage> pages = new ArrayList<LayoutPage>();
         private final List<Item> items = new ArrayList<Item>();
-        private Builder(FontSelection fonts) { this.fonts = Objects.requireNonNull(fonts, "fonts"); }
+        private Builder(int version, FontSelection fonts) {
+            this.version = version; this.fonts = Objects.requireNonNull(fonts, "fonts");
+        }
         /** Appends a page declaration. @return this builder */
         public Builder page(LayoutPage page) { pages.add(Objects.requireNonNull(page, "page")); return this; }
         /** Appends a paragraph. @return this builder */

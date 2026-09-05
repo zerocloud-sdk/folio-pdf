@@ -267,6 +267,12 @@ public enum DocumentFailureCode {
     /** A finite paragraph-flow declaration, line or generated-content bound was exceeded. */
     COMPOSITION_LIMIT_EXCEEDED,
 
+    /** Finite areas cannot satisfy the declared keep or widow/orphan rules. */
+    COMPOSITION_CONSTRAINT_UNSATISFIED,
+
+    /** No current unsealed buffered paragraph flow is available for relayout. */
+    COMPOSITION_RELAYOUT_UNSAFE,
+
     /** A staged document could not be written. */
     DOCUMENT_WRITE_FAILED,
 

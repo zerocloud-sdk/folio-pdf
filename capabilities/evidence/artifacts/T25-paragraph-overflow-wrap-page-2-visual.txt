@@ -1,0 +1,157 @@
+# T25 visual-chain raw findings
+
+Input ID-neutral SHA-256: `bd71ffdf7d881a4465b46eb601403d67f21a23abbf1937c6a0ac4c4c7f22a10b`
+
+Input hash policy: `SHA-256 of the exact PDF bytes after replacing only the two hexadecimal trailer /ID values with ASCII zeroes`
+
+Expected raster SHA-256: `b1781ae7669e2a3f5c6c840f9b709f3ee10d8dc506221f53b4e565a5432f1727`
+
+PDFium raster SHA-256: `b1781ae7669e2a3f5c6c840f9b709f3ee10d8dc506221f53b4e565a5432f1727`
+
+Implementation raster SHA-256: `5d0879ce2a6e97e40479573fd45231ce7484819ccb142288d022f2c8ffca127a`
+
+Difference raster SHA-256: `bbd7c41e15e07373f287f3bd9d043269a84f179e52133daeba63874d0780a100`
+
+Renderer difference raster SHA-256: `4a2414584735170a828d86b0fffb30e55a9fd8b983859fe831282e9af9e105e1`
+
+Profile: `T25-paragraph-overflow-wrap`
+
+Page box: `effective CropBox; CropBox is absent, so MediaBox [0 0 612 792] points is used`
+
+DPI: `144`
+
+Color policy: `sRGB, opaque 8-bit RGB PNG after compositing over opaque white`
+
+Font policy: `only the two embedded project-authored subsets; no system fonts`
+
+Antialiasing policy: `pinned PDFium default text smoothing`
+
+Raster dimensions: `1224x1584`
+
+Comparison metric: `AE`
+
+Comparison fuzz percent: `0`
+
+Comparison threshold: `0`
+
+Renderer agreement threshold: `2500`
+
+Expected comparison AE: `0`
+
+Renderer agreement AE: `3.83529`
+
+PDFium CLI version: `v0.11.2`
+
+PDFium engine version: `chromium-7881`
+
+ImageMagick version: `7.1.2-30`
+
+Implementation renderer version: `3.0.8`
+
+Review required: `false`
+
+## Process findings
+
+## PDFium identity
+
+Invocation: `pdfium --version`
+
+Exit code: `0`
+
+### Standard output
+
+```text
+pdfium version v0.11.2
+```
+
+### Standard error
+
+```text
+
+```
+
+## PDFium render
+
+Invocation: `pdfium render T25-paragraph-overflow-wrap.pdf T25-paragraph-overflow-wrap-page-2-pdfium.png --dpi 144 --file-type png --pages 2`
+
+Exit code: `0`
+
+### Standard output
+
+```text
+Rendered page 2 into T25-paragraph-overflow-wrap-page-2-pdfium.png
+```
+
+### Standard error
+
+```text
+
+```
+
+Secondary implementation renderer: `Apache PDFBox 3.0.8` at `144 DPI RGB`
+
+## ImageMagick identity
+
+Invocation: `magick --version`
+
+Exit code: `0`
+
+### Standard output
+
+```text
+Version: ImageMagick 7.1.2-30 Q16-HDRI x86_64 7d45ed032:20260823 https://imagemagick.org
+Copyright: (C) 1999 ImageMagick Studio LLC
+License: https://imagemagick.org/license/
+Features: Cipher DPC HDRI OpenMP(4.5)
+Delegates (built-in): bzlib djvu fontconfig freetype heic jbig jng jp2 jpeg lcms lqr lzma openexr png raqm tiff webp x xml zlib
+Compiler: gcc (11.4)
+```
+
+### Standard error
+
+```text
+
+```
+
+## Expected-to-PDFium raster comparison
+
+Invocation: `magick compare -metric AE -fuzz 0% -highlight-color #ff0000 -lowlight-color #ffffff -define png:exclude-chunk=time,date T25-paragraph-overflow-wrap-page-2-expected.png T25-paragraph-overflow-wrap-page-2-pdfium.png T25-paragraph-overflow-wrap-page-2-difference.png`
+
+Exit code: `0`
+
+### Standard output
+
+```text
+
+```
+
+### Standard error
+
+```text
+0 (0)
+```
+
+## PDFium-to-implementation renderer comparison
+
+Invocation: `magick compare -metric AE -fuzz 0% -highlight-color #ff0000 -lowlight-color #ffffff -define png:exclude-chunk=time,date T25-paragraph-overflow-wrap-page-2-pdfium.png T25-paragraph-overflow-wrap-page-2-implementation.png T25-paragraph-overflow-wrap-page-2-renderer-difference.png`
+
+Exit code: `1`
+
+### Standard output
+
+```text
+
+```
+
+### Standard error
+
+```text
+3.83529 (1.97816e-06)
+```
+
+Exact changed RGB pixels, expected to PDFium: 0
+Exact changed RGB pixels, PDFium to secondary: 786
+
+Final visual finding: The PDFium raster matched the project-owned expectation at AE `0`, and the secondary renderer agreement AE was `3.83529`.
+
+Final determination: `pass`

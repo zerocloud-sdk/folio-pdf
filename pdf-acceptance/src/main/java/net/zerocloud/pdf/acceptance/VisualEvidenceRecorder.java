@@ -313,6 +313,27 @@ final class VisualEvidenceRecorder {
                 rendererAgreement.absoluteError);
         state.rendererDifferenceHash = EvidenceFiles.sha256(rendererDifference);
 
+        if (profile.profileId().startsWith("T25-paragraph-")) {
+            // The pinned AE measures summed magnitudes. T25 also enforces the
+            // originally declared changed-pixel bounds without weakening them.
+            long primaryPixels;
+            long secondaryPixels;
+            try {
+                primaryPixels = PngRaster.changedPixels(expected, actual, profile.rasterWidth(), profile.rasterHeight());
+                secondaryPixels = PngRaster.changedPixels(actual, implementation, profile.rasterWidth(), profile.rasterHeight());
+            } catch (IOException failure) {
+                return indeterminate(state, "The exact changed-pixel observation was unavailable.", artifacts);
+            }
+            state.transcript.append("Exact changed RGB pixels, expected to PDFium: ").append(primaryPixels)
+                    .append("\nExact changed RGB pixels, PDFium to secondary: ").append(secondaryPixels).append("\n\n");
+            if (secondaryPixels > profile.rendererAgreementThreshold()) {
+                state.reviewRequired = true;
+                return indeterminate(state, "Secondary rendering exceeded the fixed changed-pixel bound.", artifacts);
+            }
+            if (primaryPixels > profile.comparisonThreshold()) {
+                return finish(state, EvidenceResult.FAIL, "The PDFium raster exceeded the fixed changed-pixel bound.", artifacts);
+            }
+        }
         if (rendererAgreement.absoluteError.compareTo(BigDecimal.valueOf(
                 profile.rendererAgreementThreshold())) > 0) {
             state.reviewRequired = true;
@@ -412,7 +433,11 @@ final class VisualEvidenceRecorder {
             return ComparisonObservation.unusable(
                     "ImageMagick emitted an out-of-range absolute-error metric.");
         }
-        if ((comparison.exitCode == 0 && absoluteError.signum() != 0)
+        // ImageMagick 7.1.2-30 bases its status on normalized distortion at 1e-6,
+        // while the printed AE is scaled by the compared raster area. Status 0
+        // does not round the measured AE to zero for our capability thresholds.
+        BigDecimal statusCutoff = BigDecimal.valueOf((long) profile.rasterWidth() * profile.rasterHeight()).movePointLeft(6);
+        if ((comparison.exitCode == 0 && absoluteError.compareTo(statusCutoff) > 0)
                 || (comparison.exitCode == 1 && absoluteError.signum() == 0)) {
             return ComparisonObservation.unusable(
                     "ImageMagick comparison status and metric disagreed.");

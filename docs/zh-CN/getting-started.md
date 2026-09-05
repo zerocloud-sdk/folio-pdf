@@ -151,3 +151,40 @@ Query barrier、Session 生命周期、调用方流/通道所有权及签名/密
 
 完整英文契约和示例见 [Paragraph composition](../paragraph-composition.md)。
 能力仍为 experimental；实现票关闭或本机验证通过都不代表 Foundation 兼容性认证。
+
+### 高级段落分页（T25）
+
+选择 `Paragraph.version2`、`ParagraphFlow.version2`、`ComposeParagraphs.version2`
+和 `CompositionLimits.version2()` 可启用高级分页。原来的 version1 调用保持原行为。
+新增限额 `maximumLayoutAttempts`（每次布局的候选行及搜索步数）和
+`maximumRelayouts`（当前缓冲流的重新布局尝试数）必须显式设置。
+
+`indentation(left, right, firstLine)` 设置左右缩进和仅首行生效的额外缩进，单位为点；
+左右非负，首行可为负，但与左缩进之和不能为负。跨区域、跨页续行不重复首行缩进。
+文本内的 tab 在 version2 中定位其后的完整字段，不输出字符。`tabStop` 支持左对齐、
+居中、右对齐及指定字符锚点；默认重复间距为 36 点，`tabInterval` 可修改。
+停靠点相对于段落左缩进，不会使笔位置后退；含 tab 的行保持左对齐。
+
+`keepTogether(true)` 要求整段位于同一区域；`keepWithNext(true)` 要求末行与下一段的
+首个片段同区。`widows(n)` 限制每个续行片段的最少行数，`orphans(n)` 限制每个跨区
+片段在分割前的最少行数，二者默认 1。规则也适用于同页多栏，且不会静默放宽。
+有限区域无法满足约束时返回 `COMPOSITION_CONSTRAINT_UNSATISFIED`；搜索超限时返回
+`COMPOSITION_LIMIT_EXCEEDED`。
+
+`overflow` 默认 WRAP，长词可按标量拆行；REJECT 保持单词完整并寻找能容纳它的区域；
+VISIBLE 允许完整长词、图形或 tab 字段的横向墨迹超出区域。所有模式的垂直溢出都只
+使用显式声明的有限区域，不截断、丢弃内容或无限增页。
+
+version2 默认 `FlushMode.BUFFERED`。在同一个 Session 内，查询能立即看到布局结果，
+随后可执行 `RelayoutParagraphs.version1(newPages...)`，使用原语义内容和已准备的字体
+重新布局。新结果成功后才替换该流追加的页面，失败保留上次成功的内容。
+`FlushMode.IMMEDIATE` 或 `FlushParagraphs.version1()` 释放缓冲并禁止 relayout；
+其他成功的修改命令也会封存之前的段落流。此时 relayout 返回
+`COMPOSITION_RELAYOUT_UNSAFE`。flush 不提前发布目标文件。
+
+回调结束后的 Session 已失效，继续 relayout 会抛出既有的 `IllegalStateException`；
+重开已发布 PDF 没有语义缓冲，返回 `COMPOSITION_RELAYOUT_UNSAFE`。
+无签名文件的 REWRITE/INCREMENTAL、命令顺序、字体所有权及密码权限合同继续适用。
+英文合同及完整边界见 [Advanced paragraph pagination](../paragraph-pagination.md)，
+[独立验收记录](../../capabilities/evidence/T25-paragraph-pagination.md) 分别记录每项规则。
+此能力仍为 experimental，不代表 standards、依赖门槛或 Foundation 字体平台认证已完成。

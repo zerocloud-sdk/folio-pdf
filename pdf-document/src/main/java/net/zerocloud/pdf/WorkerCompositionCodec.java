@@ -26,6 +26,7 @@ import net.zerocloud.pdf.composition.LayoutPage;
 import net.zerocloud.pdf.composition.PageMargins;
 import net.zerocloud.pdf.composition.Paragraph;
 import net.zerocloud.pdf.composition.ParagraphFlow;
+import net.zerocloud.pdf.composition.TabStop;
 import net.zerocloud.pdf.composition.command.ComposeParagraphs;
 import net.zerocloud.pdf.composition.command.DrawCanvas;
 import net.zerocloud.pdf.composition.command.DrawPositionedUnicodeText;
@@ -133,6 +134,7 @@ final class WorkerCompositionCodec {
             WorkerReferenceRegistry references, WorkerFontSourceCache fonts)
             throws IOException, DocumentFailure {
         output.writeInt(command.getVersion());
+        if (command.getVersion() == ComposeParagraphs.VERSION_2) { output.writeString(command.getFlushMode().name()); }
         CompositionLimits limits = command.getLimits();
         output.writeInt(limits.getVersion());
         output.writeInt(limits.getMaximumPages());
@@ -143,27 +145,14 @@ final class WorkerCompositionCodec {
         output.writeLong(limits.getMaximumGeneratedContentBytes());
         writeFontLimits(output, limits.getFontLimits());
         writeResourceLimits(output, limits.getGraphicLimits());
+        if (limits.getVersion() == CompositionLimits.VERSION_2) {
+            output.writeInt(limits.getMaximumLayoutAttempts());
+            output.writeInt(limits.getMaximumRelayouts());
+        }
         ParagraphFlow flow = command.getFlow();
         output.writeInt(flow.getVersion());
         writeFontSelection(output, flow.getFonts(), limits.getFontLimits(), fonts);
-        output.writeInt(flow.getPages().size());
-        for (LayoutPage page : flow.getPages()) {
-            output.writeInt(page.getVersion());
-            output.writeDouble(page.getWidth());
-            output.writeDouble(page.getHeight());
-            PageMargins margin = page.getMargins();
-            output.writeDouble(margin.getTop());
-            output.writeDouble(margin.getRight());
-            output.writeDouble(margin.getBottom());
-            output.writeDouble(margin.getLeft());
-            output.writeInt(page.getAreas().size());
-            for (CanvasRectangle area : page.getAreas()) {
-                output.writeDouble(area.getLowerLeftX());
-                output.writeDouble(area.getLowerLeftY());
-                output.writeDouble(area.getUpperRightX());
-                output.writeDouble(area.getUpperRightY());
-            }
-        }
+        writeLayoutPages(output, flow.getPages());
         output.writeInt(flow.getItems().size());
         for (ParagraphFlow.Item item : flow.getItems()) {
             output.writeString(item.getKind().name());
@@ -173,6 +162,24 @@ final class WorkerCompositionCodec {
             output.writeDouble(paragraph.getLeading());
             output.writeDouble(paragraph.getMaximumWidth());
             output.writeString(paragraph.getAlignment().name());
+            if (paragraph.getVersion() == Paragraph.VERSION_2) {
+                output.writeDouble(paragraph.getLeftIndent());
+                output.writeDouble(paragraph.getRightIndent());
+                output.writeDouble(paragraph.getFirstLineIndent());
+                output.writeDouble(paragraph.getTabInterval());
+                output.writeBoolean(paragraph.isKeepWithNext());
+                output.writeBoolean(paragraph.isKeepTogether());
+                output.writeInt(paragraph.getWidows());
+                output.writeInt(paragraph.getOrphans());
+                output.writeString(paragraph.getOverflow().name());
+                output.writeInt(paragraph.getTabStops().size());
+                for (TabStop stop : paragraph.getTabStops()) {
+                    output.writeInt(stop.getVersion());
+                    output.writeDouble(stop.getPosition());
+                    output.writeString(stop.getAlignment().name());
+                    output.writeInt(stop.getAnchor());
+                }
+            }
             output.writeInt(paragraph.getInlines().size());
             for (Paragraph.Inline inline : paragraph.getInlines()) {
                 output.writeString(inline.getKind().name());
@@ -190,30 +197,22 @@ final class WorkerCompositionCodec {
 
     static ComposeParagraphs readParagraphs(WorkerCodecIO.Input input,
             WorkerReferenceRegistry references, RemoteFontSource fonts) throws DocumentFailure {
-        WorkerCommandCodec.requireVersion(input.readInt(), ComposeParagraphs.VERSION_1);
-        WorkerCommandCodec.requireVersion(input.readInt(), CompositionLimits.VERSION_1);
-        CompositionLimits limits = CompositionLimits.builder()
-                .maximumPages(input.readInt()).maximumAreas(input.readInt())
+        int version = paragraphVersion(input);
+        ComposeParagraphs.FlushMode flush = version == 2 ? WorkerCommandCodec.enumValue(
+                ComposeParagraphs.FlushMode.class, input.readString(), "Paragraph flush mode")
+                : ComposeParagraphs.FlushMode.IMMEDIATE;
+        int limitVersion = paragraphVersion(input);
+        CompositionLimits.Builder bounds = limitVersion == 2 ? CompositionLimits.version2() : CompositionLimits.builder();
+        bounds.maximumPages(input.readInt()).maximumAreas(input.readInt())
                 .maximumFlowItems(input.readInt()).maximumInlines(input.readInt())
                 .maximumLines(input.readInt()).maximumGeneratedContentBytes(input.readLong())
-                .fontLimits(readFontLimits(input)).graphicLimits(readResourceLimits(input)).build();
-        WorkerCommandCodec.requireVersion(input.readInt(), ParagraphFlow.VERSION_1);
-        ParagraphFlow.Builder flow = ParagraphFlow.version1(readFontSelection(input, fonts));
-        int pageCount = WorkerCommandCodec.readCount(input, "Layout Page");
-        for (int index = 0; index < pageCount; index++) {
-            WorkerCommandCodec.requireVersion(input.readInt(), LayoutPage.VERSION_1);
-            double width = input.readDouble();
-            double height = input.readDouble();
-            PageMargins margin = PageMargins.of(input.readDouble(), input.readDouble(),
-                    input.readDouble(), input.readDouble());
-            int areaCount = WorkerCommandCodec.readCount(input, "Layout Area");
-            CanvasRectangle[] areas = new CanvasRectangle[areaCount];
-            for (int area = 0; area < areaCount; area++) {
-                areas[area] = CanvasRectangle.of(input.readDouble(), input.readDouble(),
-                        input.readDouble(), input.readDouble());
-            }
-            flow.page(LayoutPage.version1(width, height, margin, areas));
-        }
+                .fontLimits(readFontLimits(input)).graphicLimits(readResourceLimits(input));
+        if (limitVersion == 2) { bounds.maximumLayoutAttempts(input.readInt()).maximumRelayouts(input.readInt()); }
+        CompositionLimits limits = bounds.build();
+        int flowVersion = paragraphVersion(input);
+        FontSelection selection = readFontSelection(input, fonts);
+        ParagraphFlow.Builder flow = flowVersion == 2 ? ParagraphFlow.version2(selection) : ParagraphFlow.version1(selection);
+        for (LayoutPage page : readLayoutPages(input)) { flow.page(page); }
         int itemCount = WorkerCommandCodec.readCount(input, "Paragraph Flow Item");
         for (int index = 0; index < itemCount; index++) {
             ParagraphFlow.Item.Kind kind = WorkerCommandCodec.enumValue(ParagraphFlow.Item.Kind.class,
@@ -222,10 +221,27 @@ final class WorkerCompositionCodec {
                 flow.areaBreak();
                 continue;
             }
-            WorkerCommandCodec.requireVersion(input.readInt(), Paragraph.VERSION_1);
-            Paragraph.Builder paragraph = Paragraph.version1(input.readDouble())
-                    .maximumWidth(input.readDouble()).alignment(WorkerCommandCodec.enumValue(
-                            Paragraph.Alignment.class, input.readString(), "Paragraph alignment"));
+            int paragraphVersion = paragraphVersion(input);
+            double leading = input.readDouble();
+            Paragraph.Builder paragraph = paragraphVersion == 2 ? Paragraph.version2(leading) : Paragraph.version1(leading);
+            paragraph.maximumWidth(input.readDouble()).alignment(WorkerCommandCodec.enumValue(
+                    Paragraph.Alignment.class, input.readString(), "Paragraph alignment"));
+            if (paragraphVersion == 2) {
+                paragraph.indentation(input.readDouble(), input.readDouble(), input.readDouble())
+                        .tabInterval(input.readDouble()).keepWithNext(input.readBoolean())
+                        .keepTogether(input.readBoolean()).widows(input.readInt()).orphans(input.readInt())
+                        .overflow(WorkerCommandCodec.enumValue(Paragraph.Overflow.class, input.readString(), "Paragraph overflow"));
+                int stops = WorkerCommandCodec.readCount(input, "Paragraph tab stop");
+                for (int stop = 0; stop < stops; stop++) {
+                    WorkerCommandCodec.requireVersion(input.readInt(), TabStop.VERSION_1);
+                    double position = input.readDouble();
+                    TabStop.Alignment alignment = WorkerCommandCodec.enumValue(
+                            TabStop.Alignment.class, input.readString(), "Tab alignment");
+                    int anchor = input.readInt();
+                    paragraph.tabStop(alignment == TabStop.Alignment.ANCHOR ? TabStop.anchored(position, anchor)
+                            : TabStop.version1(position, alignment));
+                }
+            }
             int inlineCount = WorkerCommandCodec.readCount(input, "Paragraph Inline");
             for (int inline = 0; inline < inlineCount; inline++) {
                 Paragraph.Inline.Kind inlineKind = WorkerCommandCodec.enumValue(Paragraph.Inline.Kind.class,
@@ -240,7 +256,54 @@ final class WorkerCompositionCodec {
             }
             flow.paragraph(paragraph.build());
         }
-        return ComposeParagraphs.version1(flow.build(), limits);
+        return version == 2 ? ComposeParagraphs.version2(flow.build(), limits, flush)
+                : ComposeParagraphs.version1(flow.build(), limits);
+    }
+
+    private static int paragraphVersion(WorkerCodecIO.Input input) throws DocumentFailure {
+        int version = input.readInt();
+        WorkerCommandCodec.requireVersion(version, version == 2 ? 2 : 1);
+        return version;
+    }
+
+    static void writeLayoutPages(WorkerCodecIO.Output output, List<LayoutPage> pages)
+            throws IOException, DocumentFailure {
+        output.writeInt(pages.size());
+        for (LayoutPage page : pages) {
+            output.writeInt(page.getVersion());
+            output.writeDouble(page.getWidth());
+            output.writeDouble(page.getHeight());
+            PageMargins margin = page.getMargins();
+            output.writeDouble(margin.getTop());
+            output.writeDouble(margin.getRight());
+            output.writeDouble(margin.getBottom());
+            output.writeDouble(margin.getLeft());
+            output.writeInt(page.getAreas().size());
+            for (CanvasRectangle area : page.getAreas()) {
+                output.writeDouble(area.getLowerLeftX());
+                output.writeDouble(area.getLowerLeftY());
+                output.writeDouble(area.getUpperRightX());
+                output.writeDouble(area.getUpperRightY());
+            }
+        }
+    }
+
+    static LayoutPage[] readLayoutPages(WorkerCodecIO.Input input) throws DocumentFailure {
+        int count = WorkerCommandCodec.readCount(input, "Layout Page");
+        LayoutPage[] pages = new LayoutPage[count];
+        for (int index = 0; index < count; index++) {
+            WorkerCommandCodec.requireVersion(input.readInt(), LayoutPage.VERSION_1);
+            double width = input.readDouble();
+            double height = input.readDouble();
+            PageMargins margin = PageMargins.of(input.readDouble(), input.readDouble(), input.readDouble(), input.readDouble());
+            int areaCount = WorkerCommandCodec.readCount(input, "Layout Area");
+            CanvasRectangle[] areas = new CanvasRectangle[areaCount];
+            for (int area = 0; area < areaCount; area++) {
+                areas[area] = CanvasRectangle.of(input.readDouble(), input.readDouble(), input.readDouble(), input.readDouble());
+            }
+            pages[index] = LayoutPage.version1(width, height, margin, areas);
+        }
+        return pages;
     }
 
     private static void writeProgram(

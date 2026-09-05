@@ -1140,6 +1140,35 @@ public final class AcceptanceEvidenceCommandTest {
     }
 
     @Test
+    public void smallNormalizedImageMagickMetricDoesNotEraseANonzeroPrimaryDifference() throws Exception {
+        assertSmallNormalizedMetric(1, 0, "fail");
+    }
+
+    @Test
+    public void smallNormalizedSecondaryMetricIsUsableWithinTheFixedThreshold() throws Exception {
+        assertSmallNormalizedMetric(0, 1, "pass");
+    }
+
+    private void assertSmallNormalizedMetric(long primary, long secondary, String result) throws Exception {
+        Path output = temporaryFolder.newFolder().toPath();
+        Path qpdf = qpdfFixture("normalized-qpdf", "12.4.0", "exit 0");
+        VisualFixtures visuals = visualFixtures(output, "v0.11.2", "7.1.2-30", primary, secondary, null);
+        // This test's declared secondary budget is 8; the primary budget stays zero.
+        Files.write(visuals.profile, read(visuals.profile).replace("RENDERER_AGREEMENT_THRESHOLD=0",
+                "RENDERER_AGREEMENT_THRESHOLD=8").getBytes(StandardCharsets.UTF_8));
+        String script = read(visuals.imageMagick);
+        script = script.replace("  printf '%s (0)' \"${metric}\" >&2",
+                "  if [ \"${metric}\" -eq 0 ]; then printf '0 (0)' >&2; else printf '1.27843 (6.59388e-07)' >&2; fi")
+                .replace("  exit 1", "  exit 0");
+        Files.write(visuals.imageMagick, script.getBytes(StandardCharsets.UTF_8));
+        CommandResult recorded = runCommand(output, qpdf, visuals);
+        assertEquals(recorded.output, 0, recorded.exitCode);
+        String visual = read(output.resolve("T07-document-blank-visual.md"));
+        assertMetadata(visual, "Result", result);
+        assertTrue(visual.contains("1.27843"));
+    }
+
+    @Test
     public void unexpectedImageMagickStatusCannotProduceVisualPass()
             throws Exception {
         Path output = temporaryFolder.newFolder("unexpected-imagemagick").toPath();

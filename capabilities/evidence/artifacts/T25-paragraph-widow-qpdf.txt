@@ -1,0 +1,36 @@
+# T25 qpdf syntax findings
+
+Input ID-neutral SHA-256: `9dc8fb4f88eefb1173222360dd466011837c580609ab3371146677f4167d4842`
+
+Input hash policy: `SHA-256 of the exact PDF bytes after replacing only the two hexadecimal trailer /ID values with ASCII zeroes`
+
+Tool: `qpdf`
+
+Tool version: `12.4.0`
+
+Distribution SHA-256: `a3bca240f3bb61efdc3a90be89d1da4ed5e125326c3458c4e62df53ff4f153e3`
+
+Final determination: `pass`
+
+## T25-paragraph-widow.pdf
+
+Invocation: `qpdf --check T25-paragraph-widow.pdf`
+
+`T25-paragraph-widow.pdf` exit code: `0`
+
+### Standard output
+
+```text
+checking T25-paragraph-widow.pdf
+PDF Version: 1.7
+File is not encrypted
+File is not linearized
+No syntax or stream encoding errors found; the file may still contain
+errors that qpdf cannot detect
+```
+
+### Standard error
+
+```text
+
+```
