@@ -1467,3 +1467,46 @@ provenance statement required by [CONTRIBUTING.md](CONTRIBUTING.md).
   result does not become INDETERMINATE merely because of the tool's exit cutoff.
   No ImageMagick implementation code was copied. The existing tool license and
   pinned distribution are unchanged.
+
+## T26 bounded-table-composition record
+
+- Authorship: OpenAI Codex, implementing the user's approved issue-27 goal in
+  this repository. The implementation was verified and reviewed as an
+  uncommitted working tree. The user subsequently authorized a DCO-signed
+  commit using the repository's configured Git identity, a GitHub push and
+  closure of issue #27 after repairing the failing GitHub Actions checks.
+- References: public GitHub issues 27, 1, 25 and 28 and their comments; AGENTS.md,
+  CONTRIBUTING.md, CONTEXT.md and ADR-0009/0010/0013/0020/0022/0023/0026/0029;
+  existing T24/T25 paragraph, T19 explicit-font, Canvas, transactional Workflow,
+  Worker resource/codec/catalog and independent acceptance implementations.
+  Public PDF/OpenType foundations retain the previously recorded T17/T18/T19
+  references. No iText implementation or output was accessed.
+- Code: immutable table/row/cell/width/padding/border/limit declarations,
+  deterministic interval column solving and span geometry, mixed-flow
+  integration, Worker transport and public behavior/acceptance tests were
+  authored for this Apache-2.0 project. No dependency was added or upgraded;
+  Java 8 and existing backend isolation remain in force.
+- Resources: existing Apache-2.0 project-authored FolioPrimary and FolioFallback
+  are reused unchanged, with SHA-256
+  `e2fbb634c3c0fe78efb449bde4426d10a93aa813596ff5cf3360f02ec97673fb` and
+  `ced760bc126036779fa84ad3da4638733032512457bf599c44d8c455360f75e1`.
+  Signature and password fixtures reuse project-owned generators. New PDFs,
+  PNGs, Markdown, properties and text records derive solely from project-owned
+  declarations under Apache-2.0. No system/online font or third-party fixture
+  was introduced.
+- Oracle: docs/table-composition.md fixed numeric examples before implementation.
+  T26TableExpectations translates those coordinates onto the acceptance pages;
+  its reference producer uses AddBlankPage, T19 positioned text and Canvas only.
+  On 2026-09-05, the already pinned PDFium CLI v0.11.2 / Chromium 7881 rendered
+  that independent reference at 144 DPI, opaque-white sRGB. Coordinates,
+  zero-fuzz AE 0 and secondary changed-pixel bound 2500 preceded actual table
+  rendering. Expected PNG hashes are recorded in the three T26 profiles. No
+  threshold was widened and no table output was used as its own golden.
+- Tools: the existing qpdf 12.4.0, PDFium and ImageMagick 7.1.2-30 pins and
+  third-party notices are unchanged. Acceptance tools stay outside production
+  runtime; the additional exact changed-pixel check reuses the T25 recorder.
+- Clean-room statement: no iText source, resources, binary-derived details or
+  non-public/closed add-on material was read, copied, adapted or reverse
+  engineered for this work. Reference Suite names identify inventory scope,
+  never a correctness golden. Standards, dependency compatibility and
+  Foundation font/platform certification remain open.

@@ -27,6 +27,14 @@ import net.zerocloud.pdf.composition.PageMargins;
 import net.zerocloud.pdf.composition.Paragraph;
 import net.zerocloud.pdf.composition.ParagraphFlow;
 import net.zerocloud.pdf.composition.TabStop;
+import net.zerocloud.pdf.composition.Table;
+import net.zerocloud.pdf.composition.TableRow;
+import net.zerocloud.pdf.composition.TableCell;
+import net.zerocloud.pdf.composition.TableWidth;
+import net.zerocloud.pdf.composition.TableBorders;
+import net.zerocloud.pdf.composition.CellPadding;
+import net.zerocloud.pdf.composition.TableLimits;
+
 import net.zerocloud.pdf.composition.command.ComposeParagraphs;
 import net.zerocloud.pdf.composition.command.DrawCanvas;
 import net.zerocloud.pdf.composition.command.DrawPositionedUnicodeText;
@@ -149,6 +157,17 @@ final class WorkerCompositionCodec {
             output.writeInt(limits.getMaximumLayoutAttempts());
             output.writeInt(limits.getMaximumRelayouts());
         }
+        if (limits.getVersion() == CompositionLimits.VERSION_3) {
+            output.writeInt(limits.getMaximumLayoutAttempts());
+            TableLimits table = limits.getTableLimits();
+            output.writeInt(table.getVersion());
+            output.writeInt(table.getMaximumTables());
+            output.writeInt(table.getMaximumRows());
+            output.writeInt(table.getMaximumColumns());
+            output.writeInt(table.getMaximumCells());
+            output.writeLong(table.getMaximumGridSlots());
+            output.writeLong(table.getMaximumLayoutWork());
+        }
         ParagraphFlow flow = command.getFlow();
         output.writeInt(flow.getVersion());
         writeFontSelection(output, flow.getFonts(), limits.getFontLimits(), fonts);
@@ -157,61 +176,73 @@ final class WorkerCompositionCodec {
         for (ParagraphFlow.Item item : flow.getItems()) {
             output.writeString(item.getKind().name());
             if (item.getKind() == ParagraphFlow.Item.Kind.AREA_BREAK) { continue; }
-            Paragraph paragraph = item.getParagraph();
-            output.writeInt(paragraph.getVersion());
-            output.writeDouble(paragraph.getLeading());
-            output.writeDouble(paragraph.getMaximumWidth());
-            output.writeString(paragraph.getAlignment().name());
-            if (paragraph.getVersion() == Paragraph.VERSION_2) {
-                output.writeDouble(paragraph.getLeftIndent());
-                output.writeDouble(paragraph.getRightIndent());
-                output.writeDouble(paragraph.getFirstLineIndent());
-                output.writeDouble(paragraph.getTabInterval());
-                output.writeBoolean(paragraph.isKeepWithNext());
-                output.writeBoolean(paragraph.isKeepTogether());
-                output.writeInt(paragraph.getWidows());
-                output.writeInt(paragraph.getOrphans());
-                output.writeString(paragraph.getOverflow().name());
-                output.writeInt(paragraph.getTabStops().size());
-                for (TabStop stop : paragraph.getTabStops()) {
-                    output.writeInt(stop.getVersion());
-                    output.writeDouble(stop.getPosition());
-                    output.writeString(stop.getAlignment().name());
-                    output.writeInt(stop.getAnchor());
-                }
+            if (item.getKind() == ParagraphFlow.Item.Kind.TABLE) { writeTable(output, item.getTable(), references); }
+            else { writeParagraph(output, item.getParagraph(), references); }
+        }
+    }
+
+    private static void writeParagraph(WorkerCodecIO.Output output, Paragraph paragraph,
+            WorkerReferenceRegistry references) throws IOException, DocumentFailure {
+        output.writeInt(paragraph.getVersion());
+        output.writeDouble(paragraph.getLeading());
+        output.writeDouble(paragraph.getMaximumWidth());
+        output.writeString(paragraph.getAlignment().name());
+        if (paragraph.getVersion() == Paragraph.VERSION_2) {
+            output.writeDouble(paragraph.getLeftIndent());
+            output.writeDouble(paragraph.getRightIndent());
+            output.writeDouble(paragraph.getFirstLineIndent());
+            output.writeDouble(paragraph.getTabInterval());
+            output.writeBoolean(paragraph.isKeepWithNext());
+            output.writeBoolean(paragraph.isKeepTogether());
+            output.writeInt(paragraph.getWidows());
+            output.writeInt(paragraph.getOrphans());
+            output.writeString(paragraph.getOverflow().name());
+            output.writeInt(paragraph.getTabStops().size());
+            for (TabStop stop : paragraph.getTabStops()) {
+                output.writeInt(stop.getVersion());
+                output.writeDouble(stop.getPosition());
+                output.writeString(stop.getAlignment().name());
+                output.writeInt(stop.getAnchor());
             }
-            output.writeInt(paragraph.getInlines().size());
-            for (Paragraph.Inline inline : paragraph.getInlines()) {
-                output.writeString(inline.getKind().name());
-                if (inline.getKind() == Paragraph.Inline.Kind.TEXT) {
-                    output.writeString(inline.getText());
-                    output.writeDouble(inline.getFontSize());
-                } else {
-                    output.writeDouble(inline.getWidth());
-                    output.writeDouble(inline.getHeight());
-                    writeTransparencyGroup(output, inline.getGraphic(), references, 0);
-                }
+        }
+        output.writeInt(paragraph.getInlines().size());
+        for (Paragraph.Inline inline : paragraph.getInlines()) {
+            output.writeString(inline.getKind().name());
+            if (inline.getKind() == Paragraph.Inline.Kind.TEXT) {
+                output.writeString(inline.getText());
+                output.writeDouble(inline.getFontSize());
+            } else {
+                output.writeDouble(inline.getWidth());
+                output.writeDouble(inline.getHeight());
+                writeTransparencyGroup(output, inline.getGraphic(), references, 0);
             }
         }
     }
 
     static ComposeParagraphs readParagraphs(WorkerCodecIO.Input input,
             WorkerReferenceRegistry references, RemoteFontSource fonts) throws DocumentFailure {
-        int version = paragraphVersion(input);
+        int version = flowVersion(input);
         ComposeParagraphs.FlushMode flush = version == 2 ? WorkerCommandCodec.enumValue(
                 ComposeParagraphs.FlushMode.class, input.readString(), "Paragraph flush mode")
                 : ComposeParagraphs.FlushMode.IMMEDIATE;
-        int limitVersion = paragraphVersion(input);
-        CompositionLimits.Builder bounds = limitVersion == 2 ? CompositionLimits.version2() : CompositionLimits.builder();
+        int limitVersion = flowVersion(input);
+        CompositionLimits.Builder bounds = limitVersion == 3 ? CompositionLimits.version3() : limitVersion == 2 ? CompositionLimits.version2() : CompositionLimits.builder();
         bounds.maximumPages(input.readInt()).maximumAreas(input.readInt())
                 .maximumFlowItems(input.readInt()).maximumInlines(input.readInt())
                 .maximumLines(input.readInt()).maximumGeneratedContentBytes(input.readLong())
                 .fontLimits(readFontLimits(input)).graphicLimits(readResourceLimits(input));
         if (limitVersion == 2) { bounds.maximumLayoutAttempts(input.readInt()).maximumRelayouts(input.readInt()); }
+        if (limitVersion == 3) {
+            bounds.maximumLayoutAttempts(input.readInt());
+            WorkerCommandCodec.requireVersion(input.readInt(), TableLimits.VERSION_1);
+            bounds.tableLimits(TableLimits.builder().maximumTables(input.readInt()).maximumRows(input.readInt())
+                    .maximumColumns(input.readInt()).maximumCells(input.readInt())
+                    .maximumGridSlots(input.readLong()).maximumLayoutWork(input.readLong()).build());
+        }
         CompositionLimits limits = bounds.build();
-        int flowVersion = paragraphVersion(input);
+        int flowVersion = flowVersion(input);
         FontSelection selection = readFontSelection(input, fonts);
-        ParagraphFlow.Builder flow = flowVersion == 2 ? ParagraphFlow.version2(selection) : ParagraphFlow.version1(selection);
+        ParagraphFlow.Builder flow = flowVersion == 3 ? ParagraphFlow.version3(selection) : flowVersion == 2 ? ParagraphFlow.version2(selection) : ParagraphFlow.version1(selection);
         for (LayoutPage page : readLayoutPages(input)) { flow.page(page); }
         int itemCount = WorkerCommandCodec.readCount(input, "Paragraph Flow Item");
         for (int index = 0; index < itemCount; index++) {
@@ -221,43 +252,122 @@ final class WorkerCompositionCodec {
                 flow.areaBreak();
                 continue;
             }
-            int paragraphVersion = paragraphVersion(input);
-            double leading = input.readDouble();
-            Paragraph.Builder paragraph = paragraphVersion == 2 ? Paragraph.version2(leading) : Paragraph.version1(leading);
-            paragraph.maximumWidth(input.readDouble()).alignment(WorkerCommandCodec.enumValue(
-                    Paragraph.Alignment.class, input.readString(), "Paragraph alignment"));
-            if (paragraphVersion == 2) {
-                paragraph.indentation(input.readDouble(), input.readDouble(), input.readDouble())
-                        .tabInterval(input.readDouble()).keepWithNext(input.readBoolean())
-                        .keepTogether(input.readBoolean()).widows(input.readInt()).orphans(input.readInt())
-                        .overflow(WorkerCommandCodec.enumValue(Paragraph.Overflow.class, input.readString(), "Paragraph overflow"));
-                int stops = WorkerCommandCodec.readCount(input, "Paragraph tab stop");
-                for (int stop = 0; stop < stops; stop++) {
-                    WorkerCommandCodec.requireVersion(input.readInt(), TabStop.VERSION_1);
-                    double position = input.readDouble();
-                    TabStop.Alignment alignment = WorkerCommandCodec.enumValue(
-                            TabStop.Alignment.class, input.readString(), "Tab alignment");
-                    int anchor = input.readInt();
-                    paragraph.tabStop(alignment == TabStop.Alignment.ANCHOR ? TabStop.anchored(position, anchor)
-                            : TabStop.version1(position, alignment));
-                }
-            }
-            int inlineCount = WorkerCommandCodec.readCount(input, "Paragraph Inline");
-            for (int inline = 0; inline < inlineCount; inline++) {
-                Paragraph.Inline.Kind inlineKind = WorkerCommandCodec.enumValue(Paragraph.Inline.Kind.class,
-                        input.readString(), "Paragraph Inline kind");
-                if (inlineKind == Paragraph.Inline.Kind.TEXT) {
-                    paragraph.text(input.readString(), input.readDouble());
-                } else {
-                    double width = input.readDouble();
-                    double height = input.readDouble();
-                    paragraph.graphic(readTransparencyGroup(input, references, 0), width, height);
-                }
-            }
-            flow.paragraph(paragraph.build());
+            if (kind == ParagraphFlow.Item.Kind.TABLE) { flow.table(readTable(input, references)); }
+            else { flow.paragraph(readParagraph(input, references)); }
         }
-        return version == 2 ? ComposeParagraphs.version2(flow.build(), limits, flush)
+        return version == 3 ? ComposeParagraphs.version3(flow.build(), limits) : version == 2 ? ComposeParagraphs.version2(flow.build(), limits, flush)
                 : ComposeParagraphs.version1(flow.build(), limits);
+    }
+
+    private static Paragraph readParagraph(WorkerCodecIO.Input input,
+            WorkerReferenceRegistry references) throws DocumentFailure {
+        int paragraphVersion = paragraphVersion(input);
+        double leading = input.readDouble();
+        Paragraph.Builder paragraph = paragraphVersion == 2 ? Paragraph.version2(leading) : Paragraph.version1(leading);
+        paragraph.maximumWidth(input.readDouble()).alignment(WorkerCommandCodec.enumValue(
+                Paragraph.Alignment.class, input.readString(), "Paragraph alignment"));
+        if (paragraphVersion == 2) {
+            paragraph.indentation(input.readDouble(), input.readDouble(), input.readDouble())
+                    .tabInterval(input.readDouble()).keepWithNext(input.readBoolean())
+                    .keepTogether(input.readBoolean()).widows(input.readInt()).orphans(input.readInt())
+                    .overflow(WorkerCommandCodec.enumValue(Paragraph.Overflow.class, input.readString(), "Paragraph overflow"));
+            int stops = WorkerCommandCodec.readCount(input, "Paragraph tab stop");
+            for (int stop = 0; stop < stops; stop++) {
+                WorkerCommandCodec.requireVersion(input.readInt(), TabStop.VERSION_1);
+                double position = input.readDouble();
+                TabStop.Alignment alignment = WorkerCommandCodec.enumValue(
+                        TabStop.Alignment.class, input.readString(), "Tab alignment");
+                int anchor = input.readInt();
+                paragraph.tabStop(alignment == TabStop.Alignment.ANCHOR ? TabStop.anchored(position, anchor)
+                        : TabStop.version1(position, alignment));
+            }
+        }
+        int inlineCount = WorkerCommandCodec.readCount(input, "Paragraph Inline");
+        for (int inline = 0; inline < inlineCount; inline++) {
+            Paragraph.Inline.Kind inlineKind = WorkerCommandCodec.enumValue(Paragraph.Inline.Kind.class,
+                    input.readString(), "Paragraph Inline kind");
+            if (inlineKind == Paragraph.Inline.Kind.TEXT) {
+                paragraph.text(input.readString(), input.readDouble());
+            } else {
+                double width = input.readDouble();
+                double height = input.readDouble();
+                paragraph.graphic(readTransparencyGroup(input, references, 0), width, height);
+            }
+        }
+        return paragraph.build();
+    }
+
+    private static int flowVersion(WorkerCodecIO.Input input) throws DocumentFailure {
+        int version = input.readInt();
+        WorkerCommandCodec.requireVersion(version, version == 3 ? 3 : version == 2 ? 2 : 1);
+        return version;
+    }
+
+    private static void writeTable(WorkerCodecIO.Output output, Table table, WorkerReferenceRegistry references)
+            throws IOException, DocumentFailure {
+        output.writeInt(table.getVersion());
+        output.writeString(table.getLayout().name());
+        writeTableWidth(output, table.getWidth());
+        output.writeInt(table.getColumns().size());
+        for (TableWidth column : table.getColumns()) { writeTableWidth(output, column); }
+        output.writeInt(table.getRows().size());
+        for (TableRow row : table.getRows()) {
+            output.writeInt(row.getVersion()); output.writeDouble(row.getMinimumHeight());
+            output.writeInt(row.getCells().size());
+            for (TableCell cell : row.getCells()) {
+                output.writeInt(cell.getVersion()); output.writeInt(cell.getRowspan()); output.writeInt(cell.getColspan());
+                writeTableWidth(output, cell.getMinimumWidth());
+                CellPadding p = cell.getPadding(); TableBorders b = cell.getBorders();
+                output.writeDouble(p.getTop()); output.writeDouble(p.getRight());
+                output.writeDouble(p.getBottom()); output.writeDouble(p.getLeft());
+                output.writeDouble(b.getTop()); output.writeDouble(b.getRight());
+                output.writeDouble(b.getBottom()); output.writeDouble(b.getLeft());
+                output.writeInt(cell.getParagraphs().size());
+                for (Paragraph paragraph : cell.getParagraphs()) { writeParagraph(output, paragraph, references); }
+            }
+        }
+    }
+
+    private static Table readTable(WorkerCodecIO.Input input, WorkerReferenceRegistry references) throws DocumentFailure {
+        WorkerCommandCodec.requireVersion(input.readInt(), Table.VERSION_1);
+        Table.Layout layout = WorkerCommandCodec.enumValue(Table.Layout.class, input.readString(), "Table layout");
+        TableWidth width = readTableWidth(input);
+        int columns = WorkerCommandCodec.readCount(input, "Table Column");
+        TableWidth[] widths = new TableWidth[columns];
+        for (int c = 0; c < columns; c++) { widths[c] = readTableWidth(input); }
+        Table.Builder table = Table.version1(layout, width, widths);
+        int rows = WorkerCommandCodec.readCount(input, "Table Row");
+        for (int r = 0; r < rows; r++) {
+            WorkerCommandCodec.requireVersion(input.readInt(), TableRow.VERSION_1);
+            double height = input.readDouble();
+            int count = WorkerCommandCodec.readCount(input, "Table Cell");
+            TableCell[] cells = new TableCell[count];
+            for (int c = 0; c < count; c++) {
+                WorkerCommandCodec.requireVersion(input.readInt(), TableCell.VERSION_1);
+                TableCell.Builder cell = TableCell.version1().rowspan(input.readInt()).colspan(input.readInt())
+                        .minimumWidth(readTableWidth(input))
+                        .padding(CellPadding.of(input.readDouble(), input.readDouble(), input.readDouble(), input.readDouble()))
+                        .borders(TableBorders.of(input.readDouble(), input.readDouble(), input.readDouble(), input.readDouble()));
+                int paragraphs = WorkerCommandCodec.readCount(input, "Table Cell Paragraph");
+                for (int i = 0; i < paragraphs; i++) { cell.paragraph(readParagraph(input, references)); }
+                cells[c] = cell.build();
+            }
+            table.row(TableRow.version1(height, cells));
+        }
+        return table.build();
+    }
+
+    private static void writeTableWidth(WorkerCodecIO.Output output, TableWidth width) throws IOException, DocumentFailure {
+        output.writeString(width.getKind().name()); output.writeDouble(width.getValue());
+    }
+
+    private static TableWidth readTableWidth(WorkerCodecIO.Input input) throws DocumentFailure {
+        TableWidth.Kind kind = WorkerCommandCodec.enumValue(TableWidth.Kind.class, input.readString(), "Table width kind");
+        double value = input.readDouble();
+        if (kind == TableWidth.Kind.POINTS) { return TableWidth.points(value); }
+        if (kind == TableWidth.Kind.PERCENTAGE) { return TableWidth.percentage(value); }
+        if (value != 0) { throw WorkerCommandCodec.rejected("The Worker table width is invalid."); }
+        return TableWidth.auto();
     }
 
     private static int paragraphVersion(WorkerCodecIO.Input input) throws DocumentFailure {

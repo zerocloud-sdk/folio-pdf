@@ -6,7 +6,7 @@ import net.zerocloud.pdf.composition.CompositionLimits;
 import net.zerocloud.pdf.composition.ParagraphFlow;
 
 /**
- * Lays out a finite paragraph flow and appends its reached new pages in one command.
+ * Lays out a finite paragraph/table flow and appends its reached new pages in one command.
  * Existing pages retain their sizes and content. A failed flow appends no pages.
  *
  * @since 0.1.0
@@ -14,6 +14,7 @@ import net.zerocloud.pdf.composition.ParagraphFlow;
 public final class ComposeParagraphs implements DocumentCommand {
     /** Supported command representation version. */ public static final int VERSION_1 = 1;
     /** Advanced pagination command representation. */ public static final int VERSION_2 = 2;
+    /** Bounded table command representation. */ public static final int VERSION_3 = 3;
     /** Retention of semantic declarations after successful composition; neither mode publishes early. */
     public enum FlushMode {
         /** Retain the current declaration under finite limits for relayout. */ BUFFERED,
@@ -43,6 +44,10 @@ public final class ComposeParagraphs implements DocumentCommand {
     /** Declares advanced pagination with explicit retention. Publication remains transactional. */
     public static ComposeParagraphs version2(ParagraphFlow flow, CompositionLimits limits, FlushMode flushMode) {
         return new ComposeParagraphs(VERSION_2, flow, limits, flushMode);
+    }
+    /** Declares a mixed table flow with immediate semantic release and transactional publication. */
+    public static ComposeParagraphs version3(ParagraphFlow flow, CompositionLimits limits) {
+        return new ComposeParagraphs(VERSION_3, flow, limits, FlushMode.IMMEDIATE);
     }
     /** @return semantic declaration retention policy */ public FlushMode getFlushMode() { return flushMode; }
     /** @return immutable semantic flow */ public ParagraphFlow getFlow() { return flow; }

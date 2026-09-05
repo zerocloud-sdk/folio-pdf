@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Finite, versioned sequence of paragraphs and area breaks over explicitly declared
+ * Finite, versioned sequence of paragraphs, tables and area breaks over explicitly declared
  * new pages. Only the prefix of pages reached by content or an area break is appended.
  * Exhausting the declarations fails the command; no implicit page template repeats.
  *
@@ -15,6 +15,7 @@ import java.util.Objects;
 public final class ParagraphFlow {
     /** Supported representation version. */ public static final int VERSION_1 = 1;
     /** Advanced paragraph flow representation. */ public static final int VERSION_2 = 2;
+    /** Bounded table flow representation. */ public static final int VERSION_3 = 3;
     private final int version;
     private final FontSelection fonts;
     private final List<LayoutPage> pages;
@@ -32,19 +33,23 @@ public final class ParagraphFlow {
     /** @return representation version */ public int getVersion() { return version; }
     /** Begins a flow admitting version-1 and version-2 paragraphs. */
     public static Builder version2(FontSelection fonts) { return new Builder(VERSION_2, fonts); }
+    /** Begins a flow admitting paragraphs, bounded tables and area breaks. */
+    public static Builder version3(FontSelection fonts) { return new Builder(VERSION_3, fonts); }
     /** @return ordered font selection */ public FontSelection getFonts() { return fonts; }
     /** @return immutable page declarations */ public List<LayoutPage> getPages() { return pages; }
     /** @return immutable flow sequence */ public List<Item> getItems() { return items; }
 
     /** One closed flow item. */
     public static final class Item {
-        /** Supported flow operations. */ public enum Kind { PARAGRAPH, AREA_BREAK }
+        /** Supported flow operations. */ public enum Kind { PARAGRAPH, AREA_BREAK, TABLE }
         private final Paragraph paragraph;
-        private Item(Paragraph paragraph) { this.paragraph = paragraph; }
+        private final Table table;
+        private Item(Paragraph paragraph, Table table) { this.paragraph = paragraph; this.table = table; }
         /** @return operation kind */
-        public Kind getKind() { return paragraph == null ? Kind.AREA_BREAK : Kind.PARAGRAPH; }
-        /** @return paragraph, or null for an area break */
+        public Kind getKind() { return table != null ? Kind.TABLE : paragraph == null ? Kind.AREA_BREAK : Kind.PARAGRAPH; }
+        /** @return paragraph, or null for another item kind */
         public Paragraph getParagraph() { return paragraph; }
+        /** @return table, or null for another item kind */ public Table getTable() { return table; }
     }
 
     /** Records an immutable flow without opening font resources or running layout. */
@@ -60,11 +65,13 @@ public final class ParagraphFlow {
         public Builder page(LayoutPage page) { pages.add(Objects.requireNonNull(page, "page")); return this; }
         /** Appends a paragraph. @return this builder */
         public Builder paragraph(Paragraph paragraph) {
-            items.add(new Item(Objects.requireNonNull(paragraph, "paragraph")));
+            items.add(new Item(Objects.requireNonNull(paragraph, "paragraph"), null));
             return this;
         }
+        /** Appends a bounded table; only version 3 admits it at execution. @return this builder */
+        public Builder table(Table table) { items.add(new Item(null, Objects.requireNonNull(table, "table"))); return this; }
         /** Advances to the next declared area, even if the current area is empty. @return this builder */
-        public Builder areaBreak() { items.add(new Item(null)); return this; }
+        public Builder areaBreak() { items.add(new Item(null, null)); return this; }
         /** @return immutable flow */ public ParagraphFlow build() { return new ParagraphFlow(this); }
     }
 }

@@ -219,7 +219,7 @@ An unshaped Unicode scalar sequence placed with an explicit text matrix, size, T
 _Avoid_: paragraph, text layout, encoded glyph run
 
 **Paragraph Flow**:
-A versioned, finite declaration of semantic paragraphs and explicit area breaks over new pages. Composition converts it into positioned content using explicitly selected fonts and bounded Canvas graphics.
+A versioned, finite declaration of semantic paragraphs, tables and explicit area breaks over new pages. Composition converts it into positioned content using explicitly selected fonts and bounded Canvas graphics.
 _Avoid_: renderer callback, implicit page generator, positioned text run
 
 **Layout Area**:
@@ -229,6 +229,14 @@ _Avoid_: inferred column, text frame handle, page template
 **Paragraph**:
 An immutable sequence of unshaped Unicode text and atomic inline graphics with declared alignment, leading, an optional width cap, indentation, tabs, overflow and hard keep/widow/orphan constraints. Its content order is semantic input, while line and page breaks are Composition results.
 _Avoid_: Canvas Program, string at a coordinate, backend paragraph
+
+**Table**:
+An immutable ordered grid of rows and semantic cells whose declared widths, content and spans determine positioned page content.
+_Avoid_: backend table, renderer grid, Tagged PDF table
+
+**Table Cell**:
+An ordered sequence of paragraphs occupying one rectangular span of a Table, with explicit internal padding and borders.
+_Avoid_: glyph box, page area, structure element
 
 ## Forms
 

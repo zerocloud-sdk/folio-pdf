@@ -68,7 +68,7 @@ public final class InventoryCommandTest {
                 "`document.hardened-worker.recovery-scale`"));
         assertTrue(facades.contains("- Stable entries: `0`"));
         assertTrue(facades.contains("- Preview entries: `12`"));
-        assertTrue(facades.contains("- Explicit capability exclusions: `18`"));
+        assertTrue(facades.contains("- Explicit capability exclusions: `19`"));
         assertTrue(facades.contains("`conversion.rendering`"));
         assertTrue(facades.contains("`document.value.inspect-patch`"));
         assertTrue(facades.contains("`document.page.manipulate-merge-split`"));
@@ -90,6 +90,7 @@ public final class InventoryCommandTest {
                 "`composition.fonts.load-embed-subset-fallback`"));
         assertTrue(facades.contains("`composition.layout.paragraph-areas`"));
         assertTrue(facades.contains("`composition.layout.paragraph-pagination`"));
+        assertTrue(facades.contains("`composition.layout.tables`"));
         assertTrue(facades.contains("`document.hostile-input-limits`"));
         assertTrue(facades.contains("`document.hardened-worker`"));
         assertTrue(facades.contains(

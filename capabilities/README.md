@@ -402,3 +402,34 @@ The [T25 profile record](evidence/T25-paragraph-pagination.md) links every
 independent chain and describes the outstanding standards and platform gates.
 The `--reference DIRECTORY` form of `T25ParagraphEvidenceCommand` regenerates
 only the hand-positioned PDFs; it does not adopt actual layout output as a golden.
+
+
+## T26 bounded table acceptance
+
+The same `scripts/acceptance OUTPUT_DIRECTORY` command records three pages:
+fixed point/percentage/AUTO column widths, content-driven automatic widths,
+and a complete grid with rowspan and colspan. The
+[T26 profile record](evidence/T26-table-composition.md) links passing syntax,
+semantic and visual chains while retaining the open standards, dependency and
+Foundation typography/platform gates.
+
+`T26TableExpectations` fixes every scalar and cell-border rectangle before
+actual table rendering. Its reference producer invokes AddBlankPage, T19
+positioned text and Canvas, and never invokes table layout. Profiles require
+144 DPI, opaque-white sRGB, 1224x1584 pixels, zero-fuzz AE 0 and at most 2500
+secondary changed RGB pixels. All three page comparisons are mandatory.
+
+Use a fresh output directory to preserve earlier ticket evidence:
+
+```sh
+t26_output=$(mktemp -d)
+./scripts/acceptance "$t26_output"
+./scripts/container-bin/pdfium render "$t26_output/artifacts/T26-table-composition-reference.pdf" "$t26_output/reference-page-1.png" --dpi 144 --file-type png --pages 1
+```
+
+Repeat the reference render with pages 2 and 3. The three hashes must equal
+`profiles/T26-table-composition-page-*-visual.properties` before adopting any
+regenerated expected image. The `--reference OUTPUT.pdf` mode of
+`T26TableEvidenceCommand` authors only the independent reference. Negative
+controls move geometry, remove text or alter border color on each page; missing
+pinned tools remain indeterminate. Retain only T26 outputs for this capability.

@@ -72,6 +72,11 @@ final class VisualEvidenceChain {
                 "T24-paragraph-composition-page-" + page);
     }
 
+    static VisualEvidenceChain t26(int page) {
+        return new VisualEvidenceChain("T26", "composition.layout.tables", "T26-table-composition",
+                "T26-table-composition.pdf", "T26-table-composition-page-" + page);
+    }
+
     static VisualEvidenceChain t25(String profile, int page) {
         return new VisualEvidenceChain("T25", "composition.layout.paragraph-pagination", profile, profile + ".pdf",
                 profile + "-page-" + page);

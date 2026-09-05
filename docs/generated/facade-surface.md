@@ -8,7 +8,7 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Release train: `0.1.0-SNAPSHOT`
 - Stable entries: `0`
 - Preview entries: `12`
-- Explicit capability exclusions: `18`
+- Explicit capability exclusions: `19`
 
 ## Stable surfaces
 
@@ -172,6 +172,13 @@ No stable surfaces are declared.
 - Behavioral capability: [`composition.layout.paragraph-pagination`](capability-matrix.md#capability-composition_dot_layout_dot_paragraph_dash_pagination)
 - Deferred ticket: `T25`
 - Reason: T25 extends the Native Interface with advanced Paragraph Flow rules and bounded buffered relayout/flush. The existing Preview layout.Document does not map these semantics; no evidenced paragraph Migration Facade mapping exists and no stable or preview stub is introduced.
+
+<a id="excluded-capability-composition_dot_layout_dot_tables"></a>
+### `composition.layout.tables`
+
+- Behavioral capability: [`composition.layout.tables`](capability-matrix.md#capability-composition_dot_layout_dot_tables)
+- Deferred ticket: `T26`
+- Reason: T26 adds bounded tables to the Composition-owned Native Interface. The existing Preview layout.Document close-ownership surface does not map table layout, and no evidenced Reference Suite Table or Cell mapping exists; no stable or preview stub is introduced.
 
 <a id="excluded-capability-conversion_dot_capability_dash_provider_dot_select_dash_execute"></a>
 ### `conversion.capability-provider.select-execute`

@@ -13,6 +13,11 @@ import net.zerocloud.pdf.composition.PageMargins;
 import net.zerocloud.pdf.composition.Paragraph;
 import net.zerocloud.pdf.composition.ParagraphFlow;
 import net.zerocloud.pdf.composition.TabStop;
+import net.zerocloud.pdf.composition.TableRow;
+import net.zerocloud.pdf.composition.TableCell;
+import net.zerocloud.pdf.composition.CanvasColor;
+import net.zerocloud.pdf.composition.CanvasColorSpace;
+import net.zerocloud.pdf.composition.CanvasWindingRule;
 import net.zerocloud.pdf.composition.command.RelayoutParagraphs;
 import net.zerocloud.pdf.composition.command.ComposeParagraphs;
 import net.zerocloud.pdf.composition.command.DrawCanvas;
@@ -55,14 +60,11 @@ final class PdfBoxParagraphOperations {
             StringBuilder text = new StringBuilder();
             for (ParagraphFlow.Item item : command.getFlow().getItems()) {
                 if (item.getKind() == ParagraphFlow.Item.Kind.PARAGRAPH) {
-                    for (Paragraph.Inline inline : item.getParagraph().getInlines()) {
-                        if (inline.getKind() == Paragraph.Inline.Kind.TEXT) {
-                            String value = inline.getText();
-                            for (int index = 0; index < value.length(); index++) {
-                                resources.checkpoint();
-                                char cp = value.charAt(index);
-                                if (cp != '\n' && cp != '\t') { text.append(cp); }
-                            }
+                    appendText(text, item.getParagraph());
+                } else if (item.getKind() == ParagraphFlow.Item.Kind.TABLE) {
+                    for (TableRow row : item.getTable().getRows()) {
+                        for (TableCell cell : row.getCells()) {
+                            for (Paragraph paragraph : cell.getParagraphs()) { appendText(text, paragraph); }
                         }
                     }
                 }
@@ -89,6 +91,19 @@ final class PdfBoxParagraphOperations {
         } finally {
             if (prepared != null) { prepared.close(); }
             if (memory != null) { memory.close(); }
+        }
+    }
+
+    private void appendText(StringBuilder text, Paragraph paragraph) throws DocumentFailure {
+        for (Paragraph.Inline inline : paragraph.getInlines()) {
+            if (inline.getKind() == Paragraph.Inline.Kind.TEXT) {
+                String value = inline.getText();
+                for (int index = 0; index < value.length(); index++) {
+                    resources.checkpoint();
+                    char cp = value.charAt(index);
+                    if (cp != '\n' && cp != '\t') { text.append(cp); }
+                }
+            }
         }
     }
 
@@ -144,7 +159,8 @@ final class PdfBoxParagraphOperations {
     }
 
     static String capability(ComposeParagraphs command) {
-        return command.getVersion() == ComposeParagraphs.VERSION_2 ? PAGINATION_CAPABILITY_ID : CAPABILITY_ID;
+        return command.getVersion() == ComposeParagraphs.VERSION_3 ? PdfBoxTableLayout.CAPABILITY_ID
+                : command.getVersion() == ComposeParagraphs.VERSION_2 ? PAGINATION_CAPABILITY_ID : CAPABILITY_ID;
     }
 
     private List<PDPage> compose(ComposeParagraphs command,
@@ -159,7 +175,7 @@ final class PdfBoxParagraphOperations {
 
     private static DocumentFailure compositionFailure(DocumentFailure failure, String capability) {
         String source = failure.getCapabilityId();
-        if (source.equals(CAPABILITY_ID) || source.equals(PAGINATION_CAPABILITY_ID)
+        if (source.equals(CAPABILITY_ID) || source.equals(PAGINATION_CAPABILITY_ID) || source.equals(PdfBoxTableLayout.CAPABILITY_ID)
                 || source.equals(PdfBoxPositionedTextOperations.CAPABILITY_ID)
                 || source.equals(PdfBoxCanvasOperations.CAPABILITY_ID)
                 || source.equals(PdfBoxCanvasResourceOperations.CAPABILITY_ID)) {
@@ -181,6 +197,9 @@ final class PdfBoxParagraphOperations {
         ParagraphFlow flow = command.getFlow();
         CompositionLimits limits = command.getLimits();
         if (flow.getVersion() != command.getVersion() || limits.getVersion() != command.getVersion()
+                || (command.getVersion() < ComposeParagraphs.VERSION_3 && limits.getTableLimits() != null)
+                || (command.getVersion() == ComposeParagraphs.VERSION_3
+                    && (limits.getTableLimits() == null || limits.getMaximumRelayouts() != 0))
                 || (command.getVersion() == ComposeParagraphs.VERSION_1
                     && (limits.getMaximumLayoutAttempts() != 0 || limits.getMaximumRelayouts() != 0))) {
             throw invalid();
@@ -208,17 +227,42 @@ final class PdfBoxParagraphOperations {
                         || exceeds(area.getUpperRightY(), height)) { throw invalid(); }
             }
         }
-        long tabCount = 0;
-        long inlineCount = 0;
-        long scalarCount = 0;
-        long characterCount = 0;
+        DeclarationCounts counts = new DeclarationCounts(limits, resources);
+        PdfBoxTableLayout.Declarations tables = new PdfBoxTableLayout.Declarations();
         for (ParagraphFlow.Item item : flow.getItems()) {
             resources.checkpoint();
             if (item.getKind() == ParagraphFlow.Item.Kind.AREA_BREAK) { continue; }
-            Paragraph paragraph = item.getParagraph();
+            if (item.getKind() == ParagraphFlow.Item.Kind.TABLE) {
+                if (flow.getVersion() != ParagraphFlow.VERSION_3) { throw invalid(); }
+                tables.accept(item.getTable(), limits.getTableLimits(), resources);
+                for (TableRow row : item.getTable().getRows()) {
+                    for (TableCell cell : row.getCells()) {
+                        for (Paragraph paragraph : cell.getParagraphs()) { counts.accept(paragraph, Paragraph.VERSION_1); }
+                    }
+                }
+            } else { counts.accept(item.getParagraph(), Math.min(flow.getVersion(), Paragraph.VERSION_2)); }
+        }
+        return 1024L * declaredPages.size() + 128L * (areaCount + flow.getItems().size())
+                + counts.modeledBytes() + tables.modeledBytes();
+    }
+
+    private static final class DeclarationCounts {
+        private final CompositionLimits limits;
+        private final WorkflowResourceContext resources;
+        private long tabCount;
+        private long inlineCount;
+        private long scalarCount;
+        private long characterCount;
+        private long paragraphCount;
+        DeclarationCounts(CompositionLimits limits, WorkflowResourceContext resources) {
+            this.limits = limits; this.resources = resources;
+        }
+        void accept(Paragraph paragraph, int maximumVersion) throws DocumentFailure {
+            resources.checkpoint();
+            paragraphCount++;
             if (!positive(paragraph.getLeading()) || !nonnegative(paragraph.getMaximumWidth())
                     || paragraph.getInlines().isEmpty()) { throw invalid(); }
-            if (paragraph.getVersion() > flow.getVersion()) { throw invalid(); }
+            if (paragraph.getVersion() > maximumVersion) { throw invalid(); }
             validateParagraph(paragraph, resources);
             tabCount += paragraph.getTabStops().size();
             inlineCount += paragraph.getInlines().size();
@@ -249,10 +293,9 @@ final class PdfBoxParagraphOperations {
                 }
             }
         }
-        // Upper bound for the modeled declarations, scalar atoms, line plans and
-        // temporary UTF-16 copies, held for exactly this command's lifetime.
-        return 1024L * declaredPages.size() + 128L * (areaCount + flow.getItems().size())
-                + 512L * (inlineCount + scalarCount) + 4L * characterCount + 64L * tabCount;
+        long modeledBytes() {
+            return 512L * (inlineCount + scalarCount) + 4L * characterCount + 64L * tabCount + 128L * paragraphCount;
+        }
     }
 
     private static void validateParagraph(Paragraph paragraph, WorkflowResourceContext resources) throws DocumentFailure {
@@ -297,7 +340,25 @@ final class PdfBoxParagraphOperations {
             List<PDPage> detached, CompositionLimits limits) throws DocumentFailure {
         long contentBytes = 0;
         long textBytes = 0;
-        for (Line line : layout.lines) {
+        int tableIndex = 0;
+        for (int lineIndex = 0; lineIndex <= layout.lines.size(); lineIndex++) {
+            while (tableIndex < layout.tablePlans.size() && layout.tablePlans.get(tableIndex).lineOffset == lineIndex) {
+                PdfBoxTableLayout.Plan table = layout.tablePlans.get(tableIndex++);
+                for (CanvasRectangle box : table.borders) {
+                    resources.checkpoint();
+                    CanvasProgram border = CanvasProgram.version2()
+                            .setFillColor(CanvasColor.of(CanvasColorSpace.deviceGray(), 0))
+                            .moveTo(box.getLowerLeftX(), box.getLowerLeftY())
+                            .lineTo(box.getUpperRightX(), box.getLowerLeftY())
+                            .lineTo(box.getUpperRightX(), box.getUpperRightY())
+                            .lineTo(box.getLowerLeftX(), box.getUpperRightY()).closePath()
+                            .fill(CanvasWindingRule.NONZERO).build();
+                    contentBytes += canvas.drawLayoutGraphic(DrawCanvas.version2(1, border, limits.getGraphicLimits()),
+                            detached.get(table.area.page), limits.getMaximumGeneratedContentBytes() - contentBytes);
+                }
+            }
+            if (lineIndex == layout.lines.size()) { break; }
+            Line line = layout.lines.get(lineIndex);
             resources.checkpoint();
             PDPage page = detached.get(line.area.page);
             double spare = Math.max(0, line.availableWidth - line.width);
@@ -360,7 +421,12 @@ final class PdfBoxParagraphOperations {
         private final List<Area> areas = new ArrayList<Area>();
         private final List<Line> lines = new ArrayList<Line>();
         private int areaIndex;
-        private int glyphIndex;
+        private final int[] glyphIndex = {0};
+        private final PdfBoxTableLayout tables;
+        private final List<PdfBoxTableLayout.Plan> tablePlans = new ArrayList<PdfBoxTableLayout.Plan>();
+        private final List<PdfBoxTableLayout.Content> tableContent = new ArrayList<PdfBoxTableLayout.Content>();
+        private int furthestItem = -1;
+        private boolean furthestLineLimitReached;
         private int lastPage;
         private double usedHeight;
         private double heightCorrection;
@@ -369,6 +435,8 @@ final class PdfBoxParagraphOperations {
                 throws DocumentFailure {
             this.command = command;
             this.prepared = prepared;
+            tables = command.getVersion() == ComposeParagraphs.VERSION_3
+                    ? new PdfBoxTableLayout(PdfBoxParagraphOperations.this, resources, command.getLimits().getTableLimits()) : null;
             int pageIndex = 0;
             for (LayoutPage page : command.getFlow().getPages()) {
                 resources.checkpoint();
@@ -389,7 +457,7 @@ final class PdfBoxParagraphOperations {
         }
 
         void compose() throws DocumentFailure {
-            if (command.getVersion() == ComposeParagraphs.VERSION_2) { composeAdvanced(); return; }
+            if (command.getVersion() >= ComposeParagraphs.VERSION_2) { composeAdvanced(); return; }
             for (ParagraphFlow.Item item : command.getFlow().getItems()) {
                 resources.checkpoint();
                 if (item.getKind() == ParagraphFlow.Item.Kind.AREA_BREAK) {
@@ -397,7 +465,7 @@ final class PdfBoxParagraphOperations {
                     continue;
                 }
                 Paragraph paragraph = item.getParagraph();
-                List<Atom> atoms = atoms(paragraph);
+                List<Atom> atoms = atoms(paragraph, prepared, glyphIndex);
                 int first = 0;
                 while (first < atoms.size()) {
                     resources.checkpoint();
@@ -438,7 +506,9 @@ final class PdfBoxParagraphOperations {
             for (ParagraphFlow.Item item : command.getFlow().getItems()) {
                 resources.checkpoint();
                 Paragraph paragraph = item.getParagraph();
-                content.add(paragraph == null ? null : atoms(paragraph));
+                content.add(paragraph == null ? null : atoms(paragraph, prepared, glyphIndex));
+                tableContent.add(item.getKind() == ParagraphFlow.Item.Kind.TABLE
+                        ? tables.prepare(item.getTable(), prepared, glyphIndex) : null);
                 if (paragraph != null && (paragraph.isKeepTogether() || paragraph.isKeepWithNext()
                         || paragraph.getWidows() > 1 || paragraph.getOrphans() > 1)) { constrained = true; }
             }
@@ -458,7 +528,8 @@ final class PdfBoxParagraphOperations {
             } finally {
                 while (!stack.isEmpty()) { stack.pop().close(); }
             }
-            if (lineLimitReached) { throw limitFailure(); }
+            if (tables == null ? lineLimitReached : furthestLineLimitReached) { throw limitFailure(); }
+            if (tables != null && tableContent.get(furthestItem) != null) { throw PdfBoxTableLayout.unsatisfied(); }
             throw failure(constrained ? DocumentFailureCode.COMPOSITION_CONSTRAINT_UNSATISFIED
                             : DocumentFailureCode.COMPOSITION_AREA_EXHAUSTED,
                     constrained ? "The finite layout areas cannot satisfy the paragraph constraints."
@@ -468,6 +539,9 @@ final class PdfBoxParagraphOperations {
         private final class Frame implements AutoCloseable {
             private final State state;
             private final int base;
+            private final int tableBase;
+            private PdfBoxTableLayout.Plan tablePlan;
+            private boolean tableTried;
             private final List<Line> candidates = new ArrayList<Line>();
             private final WorkflowResourceContext.OwnedMemoryScope memory = resources.ownedMemoryScope();
             private int count;
@@ -476,10 +550,20 @@ final class PdfBoxParagraphOperations {
             Frame(State state) throws DocumentFailure {
                 this.state = state;
                 this.base = lines.size();
+                this.tableBase = tablePlans.size();
                 boolean ready = false;
                 try {
                     memory.retain(128);
-                    if (content.get(state.item) != null) {
+                    if (state.item > furthestItem) {
+                        furthestItem = state.item;
+                        furthestLineLimitReached = false;
+                    }
+                    if (tableContent.get(state.item) != null) {
+                        attempt();
+                        tablePlan = tables.layout(tableContent.get(state.item), areas.get(state.area), state.used,
+                                command.getLimits().getMaximumLines() - base, memory);
+                        if (tables.lineLimitReached && state.item == furthestItem) { furthestLineLimitReached = true; }
+                    } else if (content.get(state.item) != null) {
                         Paragraph paragraph = command.getFlow().getItems().get(state.item).getParagraph();
                         List<Atom> atoms = content.get(state.item);
                         Area area = areas.get(state.area);
@@ -494,7 +578,9 @@ final class PdfBoxParagraphOperations {
                             if (candidate == null || exceeds(height + candidate.height,
                                     area.box.getUpperRightY() - area.box.getLowerLeftY())) { break; }
                             if (base + candidates.size() >= command.getLimits().getMaximumLines()) {
-                                lineLimitReached = true; break;
+                                lineLimitReached = true;
+                                if (state.item == furthestItem) { furthestLineLimitReached = true; }
+                                break;
                             }
                             memory.retain(256L + 8L * (candidate.end - candidate.first));
                             candidate.baseline = area.box.getUpperRightY() - height - candidate.ascent;
@@ -515,6 +601,24 @@ final class PdfBoxParagraphOperations {
 
             State next() throws DocumentFailure {
                 while (lines.size() > base) { lines.remove(lines.size() - 1); }
+                while (tablePlans.size() > tableBase) { tablePlans.remove(tablePlans.size() - 1); }
+                if (tableContent.get(state.item) != null) {
+                    attempt();
+                    if (!tableTried) {
+                        tableTried = true;
+                        if (tablePlan != null) {
+                            tablePlan.lineOffset = base;
+                            tablePlans.add(tablePlan); lines.addAll(tablePlan.lines);
+                            double increment = tablePlan.height - state.correction;
+                            double after = state.used + increment;
+                            return new State(state.item + 1, 0, state.area, after,
+                                    (after - state.used) - increment, false);
+                        }
+                    }
+                    if (skipped || state.keep || state.area + 1 >= areas.size()) { return null; }
+                    skipped = true;
+                    return new State(state.item, 0, state.area + 1, 0, 0, false);
+                }
                 if (content.get(state.item) == null) {
                     attempt();
                     if (skipped || state.keep || state.area + 1 >= areas.size()) { return null; }
@@ -558,32 +662,33 @@ final class PdfBoxParagraphOperations {
             lastPage = area.page;
         }
 
-        private List<Atom> atoms(Paragraph paragraph) throws DocumentFailure {
-            List<Atom> result = new ArrayList<Atom>();
-            for (Paragraph.Inline inline : paragraph.getInlines()) {
-                if (inline.getKind() == Paragraph.Inline.Kind.GRAPHIC) {
-                    result.add(new Atom(inline, -1, -1, inline.getWidth(), inline.getHeight(), 0));
-                } else {
-                    for (int offset = 0; offset < inline.getText().length();) {
-                        resources.checkpoint();
-                        int cp = inline.getText().codePointAt(offset);
-                        offset += Character.charCount(cp);
-                        if (cp == '\n' || cp == '\t') {
-                            result.add(new Atom(inline, -1, cp, 0, 0, 0));
-                        } else {
-                            double size = inline.getFontSize();
-                            result.add(new Atom(inline, glyphIndex, cp, prepared.width(glyphIndex, size),
-                                    prepared.ascent(glyphIndex, size), prepared.descent(glyphIndex, size)));
-                            glyphIndex++;
-                        }
+    }
+
+    List<Atom> atoms(Paragraph paragraph, PdfBoxPositionedTextOperations.PreparedText prepared, int[] glyphIndex) throws DocumentFailure {
+        List<Atom> result = new ArrayList<Atom>();
+        for (Paragraph.Inline inline : paragraph.getInlines()) {
+            if (inline.getKind() == Paragraph.Inline.Kind.GRAPHIC) {
+                result.add(new Atom(inline, -1, -1, inline.getWidth(), inline.getHeight(), 0));
+            } else {
+                for (int offset = 0; offset < inline.getText().length();) {
+                    resources.checkpoint();
+                    int cp = inline.getText().codePointAt(offset);
+                    offset += Character.charCount(cp);
+                    if (cp == '\n' || cp == '\t') {
+                        result.add(new Atom(inline, -1, cp, 0, 0, 0));
+                    } else {
+                        double size = inline.getFontSize();
+                        result.add(new Atom(inline, glyphIndex[0], cp, prepared.width(glyphIndex[0], size),
+                                prepared.ascent(glyphIndex[0], size), prepared.descent(glyphIndex[0], size)));
+                        glyphIndex[0]++;
                     }
                 }
             }
-            return result;
         }
+        return result;
     }
 
-    private Line line(List<Atom> atoms, int first, Paragraph paragraph, Area area, double available)
+    Line line(List<Atom> atoms, int first, Paragraph paragraph, Area area, double available)
             throws DocumentFailure {
         double extra = first == 0 ? paragraph.getFirstLineIndent() : 0;
         double left = area.box.getLowerLeftX() + paragraph.getLeftIndent() + extra;
@@ -741,41 +846,41 @@ final class PdfBoxParagraphOperations {
         }
     }
 
-    private static final class Area {
-        private final int page;
-        private final CanvasRectangle box;
+    static final class Area {
+        final int page;
+        final CanvasRectangle box;
         Area(int page, CanvasRectangle box) { this.page = page; this.box = box; }
     }
-    private static final class Atom {
-        private final Paragraph.Inline inline;
-        private final int glyph;
-        private final int codePoint;
-        private final double width;
-        private final double ascent;
-        private final double descent;
+    static final class Atom {
+        final Paragraph.Inline inline;
+        final int glyph;
+        final int codePoint;
+        final double width;
+        final double ascent;
+        final double descent;
         Atom(Paragraph.Inline inline, int glyph, int codePoint, double width, double ascent, double descent) {
             this.inline = inline; this.glyph = glyph; this.codePoint = codePoint;
             this.width = width; this.ascent = ascent; this.descent = descent;
         }
     }
-    private static final class Line {
-        private final List<Atom> atoms;
-        private final Paragraph paragraph;
-        private final Area area;
-        private final int first;
-        private final int end;
-        private final int next;
-        private final double width;
-        private final double availableWidth;
-        private final double ascent;
-        private final double height;
-        private final boolean automatic;
-        private double baseline;
-        private double left;
+    static final class Line {
+        final List<Atom> atoms;
+        final Paragraph paragraph;
+        final Area area;
+        final int first;
+        final int end;
+        final int next;
+        final double width;
+        final double availableWidth;
+        final double ascent;
+        final double height;
+        final boolean automatic;
+        double baseline;
+        double left;
         private double[] advances;
-        private boolean tabbed;
-        private double usedAfter;
-        private double correctionAfter;
+        boolean tabbed;
+        double usedAfter;
+        double correctionAfter;
         Line(List<Atom> atoms, Paragraph paragraph, Area area, int first, int end, int next,
                 double width, double availableWidth, double ascent, double height, boolean automatic) {
             this.atoms = atoms; this.paragraph = paragraph; this.area = area;

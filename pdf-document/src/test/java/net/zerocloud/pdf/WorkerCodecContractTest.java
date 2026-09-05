@@ -123,7 +123,9 @@ public final class WorkerCodecContractTest {
                 PdfBoxTextStructureExtractionOperations.CAPABILITY_ID,
                 PdfBoxImageResourceExtractionOperations.CAPABILITY_ID,
                 Rendering.CAPABILITY_ID,
-                PdfBoxParagraphOperations.CAPABILITY_ID);
+                PdfBoxParagraphOperations.CAPABILITY_ID,
+                PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID,
+                PdfBoxTableLayout.CAPABILITY_ID);
         for (String capabilityId : capabilities) {
             byte[] payload = WorkerMessages.encodeFinished(
                     outcome(capabilityId),
@@ -166,10 +168,15 @@ public final class WorkerCodecContractTest {
                     output.writeInt(1);
                     output.writeInt(15);
                 })));
+        assertEquals(PdfBoxTableLayout.CAPABILITY_ID,
+                WorkerMessages.decodeFinished(values(output -> {
+                    output.writeInt(1);
+                    output.writeInt(16);
+                })));
         try {
             WorkerMessages.decodeFinished(values(output -> {
                 output.writeInt(1);
-                output.writeInt(16);
+                output.writeInt(17);
             }));
             fail("Expected unknown outcome token rejection");
         } catch (DocumentFailure failure) {

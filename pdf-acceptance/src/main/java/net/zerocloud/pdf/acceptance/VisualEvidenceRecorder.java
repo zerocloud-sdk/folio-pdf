@@ -313,8 +313,8 @@ final class VisualEvidenceRecorder {
                 rendererAgreement.absoluteError);
         state.rendererDifferenceHash = EvidenceFiles.sha256(rendererDifference);
 
-        if (profile.profileId().startsWith("T25-paragraph-")) {
-            // The pinned AE measures summed magnitudes. T25 also enforces the
+        if (profile.profileId().startsWith("T25-paragraph-") || profile.profileId().equals("T26-table-composition")) {
+            // The pinned AE measures summed magnitudes. These profiles also enforce the
             // originally declared changed-pixel bounds without weakening them.
             long primaryPixels;
             long secondaryPixels;

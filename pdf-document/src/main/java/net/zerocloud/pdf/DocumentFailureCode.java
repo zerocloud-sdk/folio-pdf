@@ -261,6 +261,12 @@ public enum DocumentFailureCode {
     /** A paragraph, page, margin, area or inline declaration is invalid. */
     COMPOSITION_INVALID,
 
+    /** A table span grid is incomplete, overlapping or outside its declared dimensions. */
+    TABLE_INVALID_SPAN,
+
+    /** The finite areas cannot satisfy the declared table geometry. */
+    TABLE_CONSTRAINT_UNSATISFIED,
+
     /** No remaining declared area can fit the next line or atomic inline. */
     COMPOSITION_AREA_EXHAUSTED,
 

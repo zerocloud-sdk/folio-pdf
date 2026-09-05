@@ -188,3 +188,55 @@ version2 默认 `FlushMode.BUFFERED`。在同一个 Session 内，查询能立�
 英文合同及完整边界见 [Advanced paragraph pagination](../paragraph-pagination.md)，
 [独立验收记录](../../capabilities/evidence/T25-paragraph-pagination.md) 分别记录每项规则。
 此能力仍为 experimental，不代表 standards、依赖门槛或 Foundation 字体平台认证已完成。
+
+
+## 有界表格组成（T26，experimental）
+
+使用 `ParagraphFlow.version3`、`ComposeParagraphs.version3` 和
+`CompositionLimits.version3`，即可在同一个 Document Workflow 中混排段落、
+表格和显式区域换行。字体仍需通过 `ReferenceFontSet` 或 `FontSelection.explicit`
+明确提供。已有 version 1/2 段落调用保持原有行为。
+
+```java
+Table table = Table.version1(Table.Layout.FIXED, TableWidth.points(200),
+        TableWidth.points(40), TableWidth.percentage(25), TableWidth.auto())
+        .row(TableRow.version1(
+                TableCell.version1().paragraph(Paragraph.version1(12).text("A", 10).build()).build(),
+                TableCell.version1().paragraph(Paragraph.version1(12).text("B", 10).build()).build(),
+                TableCell.version1().paragraph(Paragraph.version1(12).text("A", 10).build()).build()))
+        .build();
+ParagraphFlow flow = ParagraphFlow.version3(FontSelection.referenceFontSet())
+        .page(LayoutPage.version1(612, 792, PageMargins.of(72, 72, 72, 72)))
+        .table(table).build();
+workflow.execute(request, session -> {
+    session.execute(ComposeParagraphs.version3(flow, limits));
+    return session.query(PageCount.INSTANCE);
+});
+```
+
+此固定布局的列宽是 40、50、110 点。表格百分比相对当前 Layout Area，列宽和
+单元格最小宽度的百分比相对整张表。`AUTO` 布局保留显式列宽，根据内容最小宽度、
+自然行宽及跨度约束求解自动列；完整算法与独立数值样例见
+[英文公共契约](../table-composition.md)。
+该确定性算法不重新分配已满足的最小宽度；若跨度最小宽度占满整表而产生零宽列，
+会拒绝布局。可明确指定正列宽，或给整表留出剩余宽度。
+
+单元格的 `rowspan`、`colspan` 默认为 1；按声明顺序占据所在行第一个空闲列。
+每个网格位置必须恰好被一个单元格覆盖，跨行占满的后续行需显式声明为空行。
+`CellPadding` 和 `TableBorders` 按上、右、下、左声明点数，默认均为 0。
+黑色边条完全位于单元格内部，相邻边的可见厚度相加，跨度内部不画分隔线。
+单元格内容由零个或多个 version-1 Paragraph 组成，提取顺序遵循单元格声明顺序。
+
+`CompositionLimits.version3()` 要求完整的原有组成限制、`maximumLayoutAttempts`
+及 `tableLimits(TableLimits.builder()...)`。后者的 maximumTables、maximumRows、
+maximumCells、maximumGridSlots 和 maximumLayoutWork 按整次命令累计，
+maximumColumns 按每张表限制。字体、图形及 Workflow 的资源预算继续生效。
+
+整张表必须放入一个区域，放不下时尝试后续显式区域；不会拆表、拆行或自动补页。
+非法跨度返回 `TABLE_INVALID_SPAN`，无解几何返回 `TABLE_CONSTRAINT_UNSATISFIED`，
+超过资源预算返回相应稳定限制错误。传播到 Workflow 外的失败保留原目标并返回
+`NOT_ATTEMPTED`。version 3 不保留可 relayout 的表格；重复表头、分页拆行、表格
+keep 和增量大表 flushing 属于后续 #28。
+
+两种执行模式使用相同声明与公共行为测试。当前仍为 experimental，独立 standards
+验证、依赖兼容性与 Foundation 字体/平台认证尚未完成；T26 不表示完整表格能力已认证。

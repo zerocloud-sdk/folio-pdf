@@ -2,10 +2,12 @@ package net.zerocloud.pdf.composition;
 
 import java.util.Objects;
 
-/** Complete finite bounds for one paragraph flow. All builder fields are mandatory. */
+/** Complete finite bounds for one flow. All fields required by the selected version are mandatory. */
 public final class CompositionLimits {
     /** Supported representation version. */ public static final int VERSION_1 = 1;
     /** Includes bounded pagination search and relayout. */ public static final int VERSION_2 = 2;
+    /** Includes bounded tables. */ public static final int VERSION_3 = 3;
+    private final TableLimits tableLimits;
     private final int version;
     private final int maximumLayoutAttempts;
     private final int maximumRelayouts;
@@ -19,6 +21,7 @@ public final class CompositionLimits {
     private final CanvasResourceLimits graphicLimits;
 
     private CompositionLimits(Builder builder) {
+        tableLimits = builder.tableLimits;
         version = builder.version;
         maximumLayoutAttempts = builder.maximumLayoutAttempts;
         maximumRelayouts = builder.maximumRelayouts;
@@ -36,6 +39,9 @@ public final class CompositionLimits {
     /** @return representation version */ public int getVersion() { return version; }
     /** Begins complete limits including mandatory search and relayout bounds. */
     public static Builder version2() { return new Builder(VERSION_2); }
+    /** Begins complete version-3 limits; tables and layout attempts are mandatory, relayout is zero. */
+    public static Builder version3() { return new Builder(VERSION_3); }
+    /** @return table limits, or null for earlier representations */ public TableLimits getTableLimits() { return tableLimits; }
     /** @return candidate line and search transition bound per layout, zero for version 1 */
     public int getMaximumLayoutAttempts() { return maximumLayoutAttempts; }
     /** @return attempted relayout bound for the buffered flow, zero for version 1 */
@@ -54,6 +60,7 @@ public final class CompositionLimits {
 
     /** Builds explicit limits; exact nonnegative boundaries are admitted. */
     public static final class Builder {
+        private TableLimits tableLimits;
         private final int version;
         private int maximumLayoutAttempts;
         private int maximumRelayouts;
@@ -67,10 +74,12 @@ public final class CompositionLimits {
         private CanvasResourceLimits graphicLimits;
         private Builder(int version) {
             this.version = version;
-            maximumLayoutAttempts = version == VERSION_2 ? -1 : 0;
+            maximumLayoutAttempts = version >= VERSION_2 ? -1 : 0;
             maximumRelayouts = version == VERSION_2 ? -1 : 0;
         }
-        /** Sets the version-2 candidate line and search transition bound. @return this builder */
+        /** Sets mandatory version-3 table bounds. @return this builder */
+        public Builder tableLimits(TableLimits value) { tableLimits = Objects.requireNonNull(value, "tableLimits"); return this; }
+        /** Sets the version-2/3 candidate line and search transition bound. @return this builder */
         public Builder maximumLayoutAttempts(int value) {
             nonnegative(value); maximumLayoutAttempts = value; return this;
         }
@@ -98,7 +107,7 @@ public final class CompositionLimits {
         }
         /** @return complete immutable limits */
         public CompositionLimits build() {
-            if (maximumLayoutAttempts < 0 || maximumRelayouts < 0 || maximumPages < 0 || maximumAreas < 0 || maximumFlowItems < 0
+            if ((version == VERSION_3 && tableLimits == null) || maximumLayoutAttempts < 0 || maximumRelayouts < 0 || maximumPages < 0 || maximumAreas < 0 || maximumFlowItems < 0
                     || maximumInlines < 0 || maximumLines < 0
                     || maximumGeneratedContentBytes < 0 || fontLimits == null || graphicLimits == null) {
                 throw new IllegalStateException("Every Composition limit for the selected version must be declared.");

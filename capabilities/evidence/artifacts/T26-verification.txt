@@ -1,0 +1,193 @@
+T26 / issue #27 reviewed working-tree verification receipt
+Date: 2026-09-05
+Fixed-point HEAD: aac85ebae1dfe89813a5f16b7fc236cdfc232c79
+Branch: main. At verification time, no commit, push, PR, tracker mutation or release publication was authorized or performed.
+Author: OpenAI Codex; project-authored Apache-2.0 verification record.
+
+Required commands:
+./mvnw -B -ntp verify
+./scripts/verify-jdk-matrix.sh
+./scripts/acceptance /tmp/folio-t26-acceptance-w1tsx3qe
+./scripts/inventory validate
+./scripts/inventory generate
+./scripts/inventory check
+git diff --check
+
+Host build runtime: OpenJDK GraalVM CE 17.0.9+9.1 (17.0.9+9-jvmci-23.0-b22).
+Each matrix entry runs the complete verify reactor, including integration checks.
+T26 has 34 IN_PROCESS + 34 HARDENED_WORKER public Workflow cases per runtime.
+T24 has 42 and T25 has 64 public Workflow cases per runtime.
+The same three existing opt-in HardenedWorkerScaleProfileTest cases are skipped
+in each final build; no T24, T25 or T26 case is skipped.
+
+Fresh minimum baseline:
+./mvnw -B -ntp -pl pdf-document -am -Dtest=ParagraphCompositionWorkflowTest,ParagraphPaginationWorkflowTest,RenderingWorkflowContractTest,HardenedWorkerIsolationTest -Dsurefire.failIfNoSpecifiedTests=false test
+  BUILD SUCCESS; 187 tests, 0 failures, 0 errors, 0 skipped.
+  Completed: 2026-09-05T17:24:27+08:00; duration: 02:36 min.
+  Log: /tmp/folio-t26-baseline.log
+  SHA-256: 528d81b556a532cb3d8ab5499841cac4231011505e7ff5be33db30f55c794499
+
+Final host JDK 17 full verify: BUILD SUCCESS
+  Completed: 2026-09-05T18:32:10+08:00; duration: 05:53 min
+  48 suites; {"errors": 0, "failures": 0, "skipped": 3, "tests": 862}
+  Log: /tmp/folio-t26-verify.log
+  SHA-256: b899ff14950320162ee3a401aa3ee73959d7a27a7e2717beff1da2df6b72069b
+
+Matrix JDK 8: BUILD SUCCESS
+  Completed: 2026-09-05T10:39:55Z; duration: 06:46 min
+  48 suites; 862 tests, 0 failures, 0 errors, 3 existing opt-in skips.
+
+Matrix JDK 11: BUILD SUCCESS
+  Completed: 2026-09-05T10:46:36Z; duration: 06:39 min
+  48 suites; 862 tests, 0 failures, 0 errors, 3 existing opt-in skips.
+
+Matrix JDK 17: BUILD SUCCESS
+  Completed: 2026-09-05T10:52:37Z; duration: 05:59 min
+  48 suites; 862 tests, 0 failures, 0 errors, 3 existing opt-in skips.
+
+Matrix JDK 21: BUILD SUCCESS
+  Completed: 2026-09-05T10:58:54Z; duration: 06:15 min
+  48 suites; 862 tests, 0 failures, 0 errors, 3 existing opt-in skips.
+  Log: /tmp/folio-t26-jdk-matrix.log
+  SHA-256: 35a03e2847ba536c23ba5545df477a80a15ce0fe82da8523bc479abaa5d11742
+
+Matrix runtime and image identities observed locally:
+  JDK 8: Temurin 1.8.0_502-b07; docker.io/library/eclipse-temurin:8-jdk
+  Digest: sha256:3525194d19338fd143e2038bd5e848e335f50d04e89ba8734c0458df8d494254
+  JDK 11: Temurin 11.0.32+9; docker.io/library/eclipse-temurin:11-jdk
+  Digest: sha256:3b930c2092310a926036ea1bb4feb019e2a83c7c9e55fb739d9a8a78ffebcf55
+  JDK 17: Temurin 17.0.20+8; docker.io/library/eclipse-temurin:17-jdk
+  Digest: sha256:a27c79d44326d5f689668df5fedfee487652066d2a91e172747056cc7fbee6fc
+  JDK 21: Temurin 21.0.12+8; docker.io/library/eclipse-temurin:21-jdk
+  Digest: sha256:85f00967bcc624fc19fa9c2cf124ea426a5363898e267141726f31f358c2e14b
+
+Independent acceptance:
+The complete repository acceptance script passed. After the reviewed failure-
+attribution correction, the T26 producer was rerun from a copied reviewed runtime,
+using the identical pinned qpdf, PDFium and ImageMagick tools and profiles.
+Only T26 records/artifacts were retained; no earlier ticket evidence changed.
+All six retained recorder records and 22 artifacts match that reviewed rerun.
+qpdf 12.4.0 syntax: PASS. Independent scalar/geometry semantic observer: PASS.
+All three PDFium/ImageMagick primary profiles: PASS, AE 0, zero changed RGB pixels.
+Secondary changed RGB pixels: 257, 346, 369 <= the predeclared 2500 ceiling.
+Page boxes, text order, baselines, advances and inside black border rectangles
+match independent numeric expectations at 0.0001 point. Expected 144-DPI opaque-
+white sRGB rasters came from T19 positioned text + Canvas before table rendering.
+The reference never invokes table composition. No thresholds were widened.
+The ID-neutral PDF hash remains:
+  483a67ded611b2768595b079d7bf4a13634e78175ca479759c140262a435cdc9
+The acceptance suite rejects five mutations on each of three pages (15 total):
+shift content, remove text, shift borders, change border color, remove all content.
+Repeated missing-tool recordings remain INDETERMINATE, never fabricated PASS.
+  Log: /tmp/folio-t26-acceptance-record.log
+  SHA-256: 1d26bb5df69163744efa8a5a96895bf5eb6fcaa45629f5a92f5585fb84a9f94d
+  Log: /tmp/folio-t26-reviewed-msf_j0h_/record.log
+  SHA-256: 86c20b2973d52c155b77a9803ce565d82f910c27c51cc26c8d4a96f30093ce5d
+  Log: /tmp/folio-t26-reviewed-msf_j0h_/command.json
+  SHA-256: c8d13ac2cb881c75f7f28d3d54826394e91af000eede48beebe7a72fcc8dfd5e
+  Log: /tmp/folio-t26-reviewed-msf_j0h_/runtime-manifest.json
+  SHA-256: 40ace246ca0d6ce136585cc5143cc9fb363d1325a258db368250c18e18910721
+
+Baseline and corrected findings:
+The two historical CI failures supplied with the goal did not reproduce in the
+fresh minimum baseline or final host/matrix builds. No unrelated rendering-log
+privacy or Worker-timeout implementation was changed or suppressed.
+Implementation checks corrected a missing Worker class-inventory SHA update.
+The first full verify exposed the existing unknown-outcome test using token 16,
+which T26 now assigns; it now admits 16 and rejects 17. The next full verify
+exposed the old inventory snapshot of 18 exclusions; T26 correctly adds the 19th.
+Both existing test boundaries now match the extended contracts; final gates pass.
+Spec review found failure-code masking in mixed flows. The public red run had
+6 cases and 4 expected failures; after correction the focused gate passed all
+19 selected cases (6 public regressions, 11 existing Worker tests, 2 acceptance).
+Version-3 exhausted-search geometry/line-limit failures now refer to the furthest
+flow item reached. Discarded earlier candidates do not mask later failures.
+AUTO zero-column rejection follows the preimplementation deterministic algorithm;
+the contract and tests document surplus-width and explicit-column alternatives.
+  Log: /tmp/folio-t26-verify-initial.log
+  SHA-256: c15933d60443cd4443de61c4082317e362398effebfde6e9cd2ac3b3c6bcdfc5
+  Log: /tmp/folio-t26-verify-inventory-boundary.log
+  SHA-256: 172669236ed905657cf236c53f96ded461da29189db4375d88f9ba09d8bbae14
+  Log: /tmp/folio-t26-review-red.log
+  SHA-256: 81b1b3a3af660a6a29fd1d58216963796b39832018580b762dc2782027b3d555
+  Log: /tmp/folio-t26-review-green.log
+  SHA-256: 1e5e3bf1b8b098eda9fc9af5803f371e747e0fc43449367de4f976692e4f25ec
+
+Independent code review relative to the fixed point:
+Scope: tracked diff against the fixed point plus every new untracked T26 file.
+Standards: PASS, zero hard violations, two optional design judgments (shared
+one-element glyph cursor array and repeated compensated-sum arithmetic).
+Spec: PASS after correction, zero remaining findings and no scope creep.
+Both axes independently re-reviewed the corrections and final inventory delta.
+The separate reports are retained in capabilities/evidence/T26-code-review.md.
+
+Completion audit:
+- Public immutable table/row/cell/width/padding/border/limit declarations and
+  version-3 opt-in preserve Java 8, backend isolation and version-1/2 behavior.
+- Both width algorithms, percentages, overlap constraints, spans, row growth,
+  empty cells, graphics, padding, borders, reading order and repeatability have
+  public reopened-output checks plus the independent three-page oracle.
+- Malformed grids, impossible geometry, exact declaration/work/line/font/byte
+  boundaries, first excesses and Workflow memory/page bounds fail stably.
+- Transactions, NOT_ATTEMPTED targets, prior page observability after caught
+  failures, permissions, signatures, caller font ownership, query barriers,
+  batches, incremental revision preservation and Session expiry are exercised.
+- Native capability and explicit Facade exclusion, English/Javadoc and Chinese
+  contracts, migration notes, provenance and generated inventories are present.
+- No issue-28 table splitting, repeated headers/footers, table keep/relayout,
+  streaming flush, shaping, tagged-table claim, dependency or new SPI is added.
+- No source, fixture or output from iText was used as implementation or golden.
+
+Final inventories:
+  20 capabilities, 12 facade surfaces, 19 exclusions.
+  ./scripts/inventory validate: PASS
+  Log: /tmp/folio-t26-inventory-validate-final.log
+  SHA-256: 3386f3414828a8f9e9fc2c922dcc7ab9bf49bcfd4c8301c2cc9cce0b20f4d3e2
+  ./scripts/inventory generate: PASS
+  Log: /tmp/folio-t26-inventory-generate-final.log
+  SHA-256: e8688f942e3bc1a4ba28a3ac2eb50c3feed4e1871f76f3b3a322490aae3ce529
+  ./scripts/inventory check: PASS
+  Log: /tmp/folio-t26-inventory-check-final.log
+  SHA-256: dc42845c6c6cf1e94bde2e14920e9065b67b99685e0a2352a4a6dd8a43de3a8e
+  Generated views were updated only by inventory generate.
+  git diff --check: PASS; all changes belong to T26 or its required gate updates.
+
+Scope of receipt: implementation verification. Capability remains experimental.
+Independent standards/conformance evidence, compatible-status Dependency Gates,
+Foundation font coverage and required platform certification remain open.
+At verification time, no commit was authorized; all changes were reviewable in the working tree.
+
+Reviewed implementation/test/build/resource source manifest:
+  32 files; manifest SHA-256 b79416dc887a8131a3703b8350c1506ed7e742b45ec4645e7d058548c6c70b40
+94d140af204736f7346d1a5983d06f70a45efbeac4f57476876dd68789646541  build-tools/inventory/src/test/java/net/zerocloud/pdf/tools/inventory/InventoryCommandTest.java
+0aba338a40fae4a7f6cb7d75f5515f5dd757669c2e01ca2645843ebf1bc003ea  pdf-acceptance/pom.xml
+635c62c7bc88d017bc210a97480105f18d00629f4700a92c6044f0486f70463e  pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T26TableEvidenceCommand.java
+14f89bcbbe7ebd32e19fb8a3d8d5f9ab4db524c4e63238aa0e08ff42c1e446ff  pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T26TableExpectations.java
+5f3e57eb0ab5f27ca7b75206792dec43197e63cac2bd9a8c8e5cd9713c2dd52f  pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T26TableProducts.java
+6ebc8aa3410a7cee98708d13aaf757ff119278413146f42026d57a56b6420f13  pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T26TableSemanticAssertions.java
+cd210edd47ea0f9e22f473f94637fbd037c67d7424fd5767b466d4c888d01756  pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/VisualEvidenceChain.java
+031df42f456930d12cc3c2b4ff22be5fc4b6785f2b9f60b8ddab49f14b7e80f3  pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/VisualEvidenceRecorder.java
+0a8a1874b5d9f8887c5f6cc73959d860881d2349c67ec9e1164578f2fb90248b  pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/VisualProfile.java
+bdc580ecd304d4bd163e54f86d631a07aee9d381ebf79b681ce944a57c27ae52  pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T26TableEvidenceCommandTest.java
+7242a76eb2d068f142b5162613d99838bd4c9e2dd589eb883b9a2407f9cac361  pdf-document/src/main/java/net/zerocloud/pdf/DocumentFailureCode.java
+295618e1f6fda8732532407c07f15a2f86f7959b07e61a8b0431173574357633  pdf-document/src/main/java/net/zerocloud/pdf/HardenedWorkerEngine.java
+e4741a984c9c599b98212484ed7d7482e83f06695bfff105b97c73168da701a8  pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxDocumentSession.java
+92a4f0396b7851ac2532ec2adc43fa71d9d807370516e40a5920aa6541d8902c  pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxParagraphOperations.java
+01a18afdc1fa064df917839ae42711691cdd25169f0e5f87778954067d81d542  pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxTableLayout.java
+dc0dacde27b688138b62affa5a456bcb6fc2f62bd2c9c2bdc37b1fd465347431  pdf-document/src/main/java/net/zerocloud/pdf/WorkerCommandCodec.java
+84978e72b1cb7ea880c6b0eb76187b953cda336cf05f312f1ae35ff9fe666fee  pdf-document/src/main/java/net/zerocloud/pdf/WorkerCompositionCodec.java
+88bb2a83b110e21bcb42dbdfc44cc93a3cad63d71df04a1e6013cc1e65d498b0  pdf-document/src/main/java/net/zerocloud/pdf/WorkerFailureCatalog.java
+3e5be6754dade37330b98f70d29ad21201c774b95672edc9d6078d34d89783c2  pdf-document/src/main/java/net/zerocloud/pdf/WorkerMessages.java
+05bd3c68b7e2457c015281e2cae1ba1cc440e99ace77c0b348ca16a90f06e90b  pdf-document/src/main/java/net/zerocloud/pdf/composition/CellPadding.java
+339a3d09e5f1173422886a3b59540dcaa64740f7b330d2d73d920b2ce5b0a762  pdf-document/src/main/java/net/zerocloud/pdf/composition/CompositionLimits.java
+f6183a894c80555473a09f5b5cbddd2307252ff2696f8d287591b89c65a4d606  pdf-document/src/main/java/net/zerocloud/pdf/composition/ParagraphFlow.java
+ff6a7bd44ffea7b58226fad472047de9549279f29bf4a1f76196597b29e79dde  pdf-document/src/main/java/net/zerocloud/pdf/composition/Table.java
+0ef228539104a172febcc0b1ea4ce09fc51ec70f2dabfa8b99c5ea34df3dae36  pdf-document/src/main/java/net/zerocloud/pdf/composition/TableBorders.java
+e01b3c3c4c252ec3d3e93ac680d45eab606107200f9f2c04f3d7680a3d086f30  pdf-document/src/main/java/net/zerocloud/pdf/composition/TableCell.java
+82f156938a380633182fd4e5b63149aa54e2ee737c664b7c3291a62a3d84b338  pdf-document/src/main/java/net/zerocloud/pdf/composition/TableLimits.java
+93a5f09198c0359aaa4b362e2ba56fafb47b0bcd3f4b940794a605e588f039e4  pdf-document/src/main/java/net/zerocloud/pdf/composition/TableRow.java
+340ad3aa16060d1d0a108337645589b513c2aa3bed90c88151c169e1bbd1eba9  pdf-document/src/main/java/net/zerocloud/pdf/composition/TableWidth.java
+39baa1df54858b739e5773d8b1cdf13b211625f1e41f240325a4685e67415707  pdf-document/src/main/java/net/zerocloud/pdf/composition/command/ComposeParagraphs.java
+0c0fa9613666a035b79451058b2f142ab9a7065a0b1d9875d7bdcd2a2ba7f3c0  pdf-document/src/main/resources/META-INF/folio-pdf/document-worker-classes
+e1eba284a5b6e2e80001b3aa220a78cb5323e344589fafcb7e276c0fdc820dc0  pdf-document/src/test/java/net/zerocloud/pdf/WorkerCodecContractTest.java
+a6a300d4a1da3b33d2ca6bc7c3564d77b3bd53a0bc71fd33a6081bc6d7d842af  pdf-document/src/test/java/net/zerocloud/pdf/consumer/TableCompositionWorkflowTest.java

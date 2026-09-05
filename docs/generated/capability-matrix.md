@@ -6,7 +6,7 @@ Behavioral authority: [`../../capabilities/capability-matrix.yaml`](../../capabi
 
 - Schema version: `1`
 - Release train: `0.1.0-SNAPSHOT`
-- Capabilities: `19`
+- Capabilities: `20`
 
 ## Capability summary
 
@@ -17,6 +17,7 @@ Behavioral authority: [`../../capabilities/capability-matrix.yaml`](../../capabi
 | [`composition.fonts.load-embed-subset-fallback`](#capability-composition_dot_fonts_dot_load_dash_embed_dash_subset_dash_fallback) | `composition` | `experimental` | [excluded by `T19`](facade-surface.md#excluded-capability-composition_dot_fonts_dot_load_dash_embed_dash_subset_dash_fallback) |
 | [`composition.layout.paragraph-areas`](#capability-composition_dot_layout_dot_paragraph_dash_areas) | `composition` | `experimental` | [excluded by `T24`](facade-surface.md#excluded-capability-composition_dot_layout_dot_paragraph_dash_areas) |
 | [`composition.layout.paragraph-pagination`](#capability-composition_dot_layout_dot_paragraph_dash_pagination) | `composition` | `experimental` | [excluded by `T25`](facade-surface.md#excluded-capability-composition_dot_layout_dot_paragraph_dash_pagination) |
+| [`composition.layout.tables`](#capability-composition_dot_layout_dot_tables) | `composition` | `experimental` | [excluded by `T26`](facade-surface.md#excluded-capability-composition_dot_layout_dot_tables) |
 | [`conversion.capability-provider.select-execute`](#capability-conversion_dot_capability_dash_provider_dot_select_dash_execute) | `conversion` | `experimental` | [excluded by `T05`](facade-surface.md#excluded-capability-conversion_dot_capability_dash_provider_dot_select_dash_execute) |
 | [`conversion.rendering`](#capability-conversion_dot_rendering) | `conversion` | `experimental` | [excluded by `T23`](facade-surface.md#excluded-capability-conversion_dot_rendering) |
 | [`document.annotations-actions.manage`](#capability-document_dot_annotations_dash_actions_dot_manage) | `document-engine` | `experimental` | [excluded by `T12`](facade-surface.md#excluded-capability-document_dot_annotations_dash_actions_dot_manage) |
@@ -420,6 +421,82 @@ Acceptance Evidence:
 - `visual`: `pass` — [`capabilities/evidence/T25-paragraph-pagination-visual.md`](../../capabilities/evidence/T25-paragraph-pagination-visual.md); producer `pdfium-cli@v0.11.2-pdfium-chromium-7881` (`external-tool`)
 
 Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T25 advanced-paragraph-pagination record`.
+
+<a id="capability-composition_dot_layout_dot_tables"></a>
+## `composition.layout.tables`
+
+Compose bounded fixed and automatic tables with point/percentage widths, rows, cells, padding, inside borders and rectangular row/column spans in finite Paragraph Flows.
+
+- Context: `composition`
+- Status: `experimental`
+- Reference Suite source: `Issue 27 T26 bounded tables and parent issue 1; project-owned width/grid/geometry contract and numeric acceptance corpus`
+- Reference role: capability inventory and public project contract; no Reference Suite implementation or output oracle
+- Acceptance Profile: `T26-table-composition`
+- Mandatory evidence chains: `syntax`, `standards`, `semantic`, `visual`
+- Evidence record: [`capabilities/evidence/T26-table-composition.md`](../../capabilities/evidence/T26-table-composition.md)
+- Certified platforms: none
+
+### Native Interface mapping
+
+- `borders`: `net.zerocloud.pdf.composition.TableBorders`
+- `cell`: `net.zerocloud.pdf.composition.TableCell`
+- `command`: `net.zerocloud.pdf.composition.command.ComposeParagraphs`
+- `entry-point`: `net.zerocloud.pdf.DocumentWorkflow#execute`
+- `failure`: `net.zerocloud.pdf.DocumentFailure`
+- `flow`: `net.zerocloud.pdf.composition.ParagraphFlow`
+- `limits`: `net.zerocloud.pdf.composition.CompositionLimits`
+- `outcome`: `net.zerocloud.pdf.WorkflowOutcome`
+- `padding`: `net.zerocloud.pdf.composition.CellPadding`
+- `row`: `net.zerocloud.pdf.composition.TableRow`
+- `table`: `net.zerocloud.pdf.composition.Table`
+- `table-limits`: `net.zerocloud.pdf.composition.TableLimits`
+- `width`: `net.zerocloud.pdf.composition.TableWidth`
+
+### Migration Facade coverage
+
+- Stable: none
+- Preview: none
+- Explicit exclusion: [`T26`](facade-surface.md#excluded-capability-composition_dot_layout_dot_tables) — T26 adds bounded tables to the Composition-owned Native Interface. The existing Preview layout.Document close-ownership surface does not map table layout, and no evidenced Reference Suite Table or Cell mapping exists; no stable or preview stub is introduced.
+
+### Gates and limitations
+
+- Dependency Gate: [`composition.layout.paragraph-areas`](#capability-composition_dot_layout_dot_paragraph_dash_areas) must be `compatible`
+- Dependency Gate: [`composition.layout.paragraph-pagination`](#capability-composition_dot_layout_dot_paragraph_dash_pagination) must be `compatible`
+- Dependency Gate: [`composition.fonts.load-embed-subset-fallback`](#capability-composition_dot_fonts_dot_load_dash_embed_dash_subset_dash_fallback) must be `compatible`
+- Dependency Gate: [`composition.canvas.images-colors-transparency`](#capability-composition_dot_canvas_dot_images_dash_colors_dash_transparency) must be `compatible`
+- Dependency Gate: [`document.hostile-input-limits`](#capability-document_dot_hostile_dash_input_dash_limits) must be `compatible`
+- Dependency Gate: [`document.hardened-worker`](#capability-document_dot_hardened_dash_worker) must be `compatible`
+- Promotion gate `T06`: Complete independent standards evidence and compatible-status Dependency Gates; certify the Foundation reference fonts and all required platforms before claiming Foundation compatibility.
+- Limitation: Version 3 is opt-in for flow, command and complete limits; version 1/2 contracts remain available and reject table items. Version 3 admits ordinary version 1/2 paragraphs and bounded version-1 tables, and releases declarations immediately after composition. The added TABLE enum value is documented for exhaustive caller switches.
+- Limitation: Table widths are positive points or percentages of the current area; explicit column widths are exact points or percentages of the table. FIXED divides the remainder equally among AUTO columns. AUTO solves content and declared minimum span constraints with deterministic interval allocation, preferred widths and interpolation or equal surplus. There is no implicit normalization; zero columns fail even when a different allocation could be positive, so spanning minima that consume the full width may require explicit columns or surplus width.
+- Limitation: Cells contain zero or more version-1 paragraphs, using existing explicit fonts, mixed text/graphics, leading, scalar wrapping and alignment. Nested tables, version-2 cell paragraphs, Unicode shaping and inferred reading order are outside this representation.
+- Limitation: Row/cell declaration order defines reading order. Cells occupy the first available column, and every rectangular grid slot must be covered once. Nonpositive, overflowing, overlapping and incomplete spans fail TABLE_INVALID_SPAN before font acquisition. Explicit empty continuation rows are admitted.
+- Limitation: Row heights satisfy content, padding, borders and declared minima; spanning deficits are shared equally in increasing rowspan and declaration order. Content aligns inside the top/left insets. Solid black borders lie entirely inside each cell; adjacent widths add and spans contain no internal grid lines.
+- Limitation: Every table fits wholly within one remaining Layout Area or fails TABLE_CONSTRAINT_UNSATISFIED. Widths recompute when moving to later declared areas. Tables do not split, repeat headers/footers, expose keep options, relayout or flush incrementally; those remain issue 28 work.
+- Limitation: Finite aggregate table/row/cell/grid-slot counts, per-table columns and deterministic layout-work units supplement the existing flow, inline, scalar, font, line, attempt, generated-byte and graphic limits. Discarded candidates consume work. The Workflow Resource Policy, modeled owned-memory accounting and bounded versioned Worker transport remain in force.
+- Limitation: Layout and painting complete on detached pages before append. Propagated failures preserve all targets with NOT_ATTEMPTED receipts. Queries, batching, caller font ownership, incremental revision preservation, signature/password permissions and expired Session behavior retain their existing contracts. Successful table composition seals preceding buffered paragraph relayout.
+- Limitation: Three independent fixed-font page profiles cover fixed widths, content-driven automatic widths and rowspan/colspan reading order, cell geometry and borders. The reference is hand-positioned through T19 and Canvas, with 0.0001-point semantic tolerance, 144 DPI, opaque-white sRGB, zero-fuzz AE 0 and secondary changed-pixel bound 2500.
+- Limitation: Standards evidence, compatible-status dependencies and Foundation font/platform certification remain open. No dependency, module, backend SPI, tagged-table conformance claim or Migration Facade stub is introduced.
+
+### Evidence
+
+Implementation evidence:
+
+- `public-table-workflow-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/consumer/TableCompositionWorkflowTest.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/consumer/TableCompositionWorkflowTest.java) — Both execution profiles assert independent fixed/automatic widths, span grids, row heights, padding/borders, reading order, deterministic geometry, exact limits, ownership, permissions, ordering, lifecycle and transactional failures through DocumentWorkflow.execute and reopened public queries.
+- `independent-numeric-oracle`: [`pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T26TableExpectations.java`](../../pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T26TableExpectations.java) — Hand-calculated glyph and cell-border coordinates for three fixed-font pages precede actual table rendering; the reference path invokes only positioned text and Canvas.
+- `independent-semantic-observer`: [`pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T26TableSemanticAssertions.java`](../../pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T26TableSemanticAssertions.java) — Reopened public values verify complete scalar order and metrics, page geometry, embedded subsets, transformed black border paths and missing/extraneous border detection against independent expectations.
+- `acceptance-command`: [`pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T26TableEvidenceCommand.java`](../../pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T26TableEvidenceCommand.java) — The repository recorder retains separate pinned qpdf syntax, semantic and three PDFium/ImageMagick page chains with input, font, oracle and raster hashes and fixed thresholds.
+- `acceptance-negative-and-repeat-contract`: [`pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T26TableEvidenceCommandTest.java`](../../pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T26TableEvidenceCommandTest.java) — Moved content, missing text and changed border geometry/color invalidate the semantic oracle; repeated recordings agree and missing pinned tools remain indeterminate.
+- `authoritative-contract`: [`docs/table-composition.md`](../table-composition.md) — English declarations, deterministic solving, grid rules, inside-border geometry, exact limits, failures, migration and scope boundaries agree with Javadoc and the Chinese usage guide.
+- `cross-jdk-contract`: [`scripts/verify-jdk-matrix.sh`](../../scripts/verify-jdk-matrix.sh) — The repository gate runs the same Java-8-compatible artifacts on JDK 8, 11, 17 and 21.
+
+Acceptance Evidence:
+
+- `syntax`: `pass` — [`capabilities/evidence/T26-table-composition-syntax.md`](../../capabilities/evidence/T26-table-composition-syntax.md); producer `qpdf@12.4.0` (`external-tool`)
+- `semantic`: `pass` — [`capabilities/evidence/T26-table-composition-semantic.md`](../../capabilities/evidence/T26-table-composition-semantic.md); producer `folio-pdf-t26-semantic-assertions@0.1.0-SNAPSHOT` (`project-test`)
+- `visual`: `pass` — [`capabilities/evidence/T26-table-composition-visual.md`](../../capabilities/evidence/T26-table-composition-visual.md); producer `pdfium-cli@v0.11.2-pdfium-chromium-7881` (`external-tool`)
+
+Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T26 bounded-table-composition record`.
 
 <a id="capability-conversion_dot_capability_dash_provider_dot_select_dash_execute"></a>
 ## `conversion.capability-provider.select-execute`

@@ -553,6 +553,9 @@ final class PdfBoxDocumentSession implements DocumentSession {
                 PdfBoxPositionedTextOperations.requireModificationPermission(
                         securityInfo);
                 return;
+            case WorkerCommandCodec.PREFLIGHT_TABLES:
+                PdfBoxParagraphOperations.requirePermission(securityInfo, PdfBoxTableLayout.CAPABILITY_ID);
+                break;
             case WorkerCommandCodec.PREFLIGHT_PAGINATION:
                 PdfBoxParagraphOperations.requirePermission(securityInfo, PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID);
                 return;
@@ -571,6 +574,9 @@ final class PdfBoxDocumentSession implements DocumentSession {
     }
 
     private static DocumentFailure workerSignatureFailure(int category) {
+        if (category == WorkerCommandCodec.PREFLIGHT_TABLES) {
+            return PdfBoxParagraphOperations.signatureFailure(PdfBoxTableLayout.CAPABILITY_ID);
+        }
         if (category == WorkerCommandCodec.PREFLIGHT_PAGINATION) {
             return PdfBoxParagraphOperations.signatureFailure(PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID);
         }

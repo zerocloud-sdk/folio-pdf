@@ -42,6 +42,7 @@ final class WorkerMessages {
     private static final int OUTCOME_IMAGE_RESOURCE = 12;
     private static final int OUTCOME_PARAGRAPHS = 14;
     private static final int OUTCOME_PAGINATION = 15;
+    private static final int OUTCOME_TABLES = 16;
 
     static final int SOURCE_CREDENTIAL = 1;
     static final int OUTPUT_OWNER_CREDENTIAL = 2;
@@ -617,6 +618,7 @@ final class WorkerMessages {
 
     private static int outcomeCapabilityToken(String capabilityId)
             throws DocumentFailure {
+        if (PdfBoxTableLayout.CAPABILITY_ID.equals(capabilityId)) { return OUTCOME_TABLES; }
         if (PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID.equals(capabilityId)) { return OUTCOME_PAGINATION; }
         if (PdfBoxParagraphOperations.CAPABILITY_ID.equals(capabilityId)) { return OUTCOME_PARAGRAPHS; }
         if (Rendering.CAPABILITY_ID.equals(capabilityId)) { return OUTCOME_RENDERING; }
@@ -664,6 +666,8 @@ final class WorkerMessages {
 
     private static String outcomeCapability(int token) throws DocumentFailure {
         switch (token) {
+            case OUTCOME_TABLES:
+                return PdfBoxTableLayout.CAPABILITY_ID;
             case OUTCOME_PAGINATION:
                 return PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID;
             case OUTCOME_PARAGRAPHS:

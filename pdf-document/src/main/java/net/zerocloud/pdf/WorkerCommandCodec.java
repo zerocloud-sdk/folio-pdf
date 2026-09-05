@@ -70,6 +70,7 @@ final class WorkerCommandCodec {
     static final int PREFLIGHT_PATCH = 11;
     static final int PREFLIGHT_PARAGRAPHS = 12;
     static final int PREFLIGHT_PAGINATION = 13;
+    static final int PREFLIGHT_TABLES = 14;
     static final int PREFLIGHT_DETAILS_NONE = 0;
     static final int PREFLIGHT_DETAILS_ANNOTATIONS = 1;
     static final int PREFLIGHT_DETAILS_POSITIONED_TEXT = 2;
@@ -166,7 +167,7 @@ final class WorkerCommandCodec {
                     || category == PREFLIGHT_CANVAS_V2
                     || category == PREFLIGHT_POSITIONED_TEXT;
             if (category < PREFLIGHT_UNKNOWN
-                    || category > PREFLIGHT_PAGINATION
+                    || category > PREFLIGHT_TABLES
                     || (!pageCategory && pageNumber != 0)) {
                 throw rejected("The Worker Command preflight is invalid.");
             }
@@ -359,6 +360,7 @@ final class WorkerCommandCodec {
     }
 
     private static int preflightCategory(DocumentCommand command) {
+        if (command instanceof ComposeParagraphs && ((ComposeParagraphs) command).getVersion() == 3) { return PREFLIGHT_TABLES; }
         if (command instanceof RelayoutParagraphs || command instanceof FlushParagraphs
                 || (command instanceof ComposeParagraphs && ((ComposeParagraphs) command).getVersion() == 2)) {
             return PREFLIGHT_PAGINATION;
