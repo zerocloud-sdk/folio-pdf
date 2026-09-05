@@ -1510,3 +1510,27 @@ provenance statement required by [CONTRIBUTING.md](CONTRIBUTING.md).
   engineered for this work. Reference Suite names identify inventory scope,
   never a correctness golden. Standards, dependency compatibility and
   Foundation font/platform certification remain open.
+
+## CI cold-font-discovery and Worker-stop record
+
+- Authorship: OpenAI Codex at repository operator MaBaiqiu's direction. The
+  user authorized fixing GitHub Actions, committing with the configured real
+  Git identity and DCO sign-off, pushing GitHub, and closing #27 after CI passes.
+- References: CI run 33957144822 on aac85eb, existing public rendering and real
+  Worker tests, CONTEXT.md, ADR-0024/0025/0031, and the project-owned rendering
+  log scope, Worker protocol and resource-failure implementations.
+- Backend references: the locally resolved official Apache PDFBox and FontBox
+  3.0.8 source artifacts, specifically FileSystemFontProvider, TTFParser,
+  FontFileFinder and UnixFontDirFinder, were inspected to distinguish a skipped
+  installed-font discovery warning from a page rendering failure. These
+  dependencies retain their recorded Apache-2.0 licenses and pinned versions;
+  no dependency implementation was copied or adapted.
+- Fixtures: the cold-start test authors a 12-byte sfnt header with no font
+  tables inside an isolated temporary home. It reuses the project's existing
+  public Workflow rendering, privacy and missing-resource assertions. No
+  external font or new dependency is added. Existing installed NotoColorEmoji
+  triggered the original local reproduction; its bytes are not retained and
+  its rendering is not used as compatibility evidence.
+- The fixes and regression tests are original contributions to this Apache-2.0
+  project. No iText source, non-public implementation, closed add-on material
+  or restricted fixture was accessed.

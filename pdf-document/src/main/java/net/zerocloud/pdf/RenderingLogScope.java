@@ -81,6 +81,13 @@ final class RenderingLogScope implements AutoCloseable {
                     if (record.getMessage() != null && record.getMessage().startsWith("Using fallback font ")
                             && record.getLevel().intValue() < Level.SEVERE.intValue()) {
                         scope.diagnostics.add(RenderDiagnostic.FONT_SUBSTITUTED);
+                    } else if ("org.apache.pdfbox.pdmodel.font.FileSystemFontProvider".equals(name)
+                            && record.getLevel().intValue() < Level.SEVERE.intValue()
+                            && record.getMessage() != null
+                            && record.getMessage().startsWith("Could not load font file '")) {
+                        // First-use discovery records and skips unreadable installed
+                        // fonts. This says nothing about the page's selected font.
+                        // Keep the path private without rejecting a successful render.
                     } else if ("org.apache.pdfbox.io.IOUtils".equals(name)
                             && record.getMessage() != null
                             && record.getMessage().startsWith("Unmapping is not supported")) {

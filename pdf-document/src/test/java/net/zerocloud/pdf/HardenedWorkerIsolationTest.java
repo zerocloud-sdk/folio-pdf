@@ -21,6 +21,9 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.PosixFilePermission;
 import java.time.Duration;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -440,6 +443,38 @@ public final class HardenedWorkerIsolationTest {
             Files.deleteIfExists(residue);
         }
         assertTrue(children(temporaryParent).isEmpty());
+    }
+
+    @Test
+    public void physicalElapsedLimitDuringStartupPreservesItsFailureCode()
+            throws Exception {
+        Path target = temporaryFolder.getRoot().toPath().resolve("startup-timeout.pdf");
+        byte[] original = new byte[] {1, 2, 3, 4};
+        Files.write(target, original);
+        WorkflowEnvironment environment = WorkflowEnvironment.withClock(
+                Clock.fixed(Instant.parse("2000-01-01T00:00:00Z"), ZoneOffset.UTC));
+        WorkflowResourcePolicy shortRun = copyWithElapsed(
+                WorkflowResourcePolicy.safeDefaults(), Duration.ofMillis(75L));
+        // A fixed logical Clock leaves the physical Worker watchdog responsible
+        // for stopping startup while the caller waits for the first response.
+        try {
+            new DocumentWorkflow(environment).execute(
+                    WorkflowRequest.builder()
+                            .target("result", PublicationTarget.path(target))
+                            .saveMode(SaveMode.REWRITE)
+                            .resourcePolicy(shortRun)
+                            .executionProfile(WorkflowExecutionProfile.HARDENED_WORKER)
+                            .build(),
+                    session -> {
+                        session.execute(AddBlankPage.INSTANCE);
+                        return null;
+                    });
+            fail("Expected physical elapsed-time termination");
+        } catch (DocumentFailure failure) {
+            assertEquals(DocumentFailureCode.ELAPSED_TIME_LIMIT_EXCEEDED,
+                    failure.getCode());
+        }
+        assertArrayEquals(original, Files.readAllBytes(target));
     }
 
     @Test

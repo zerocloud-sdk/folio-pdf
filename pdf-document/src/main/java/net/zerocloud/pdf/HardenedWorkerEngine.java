@@ -2064,6 +2064,12 @@ final class HardenedWorkerEngine {
             if (failure.getDocumentFailure() != null) {
                 return failure.getDocumentFailure();
             }
+            StopReason reason = stopReason.get();
+            if (reason == StopReason.CANCELLED || reason == StopReason.ELAPSED) {
+                // Killing the Worker can truncate a frame before the waiting
+                // caller polls again. Preserve the established stop reason.
+                return stoppedOrTerminated();
+            }
             return terminalIfWorkerFailure(
                     WorkerCodecIO.workerFailure(
                             failure.getCode(),
