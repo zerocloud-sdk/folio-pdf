@@ -17,6 +17,7 @@ import net.zerocloud.pdf.composition.ReferenceFontSet;
 final class WorkerMessages {
 
     static final int MEMORY_AMOUNT_BYTES = 12;
+    static final int RESOURCE_USAGE_BYTES = 72;
 
     private static final int INITIALIZATION_VERSION = 1;
     private static final int RESULT_VERSION = 1;
@@ -24,6 +25,7 @@ final class WorkerMessages {
     private static final int INPUT_VERSION = 1;
     private static final int FONT_VERSION = 1;
     private static final int MEMORY_VERSION = 1;
+    private static final int RESOURCE_USAGE_VERSION = 1;
 
     private static final int OUTCOME_WORKFLOW = 1;
     private static final int OUTCOME_INCREMENTAL = 2;
@@ -550,6 +552,64 @@ final class WorkerMessages {
         String capabilityId = outcomeCapability(input.readInt());
         input.requireFullyConsumed();
         return capabilityId;
+    }
+
+    static byte[] encodeResourceUsage(
+            final WorkflowResourceUsage usage,
+            int maximumBytes) throws DocumentFailure {
+        return WorkerCodecIO.encode(maximumBytes, output -> {
+            output.writeInt(RESOURCE_USAGE_VERSION);
+            output.writeLong(usage.getAcceptedInputBytes());
+            output.writeLong(usage.getObservedPages());
+            output.writeLong(usage.getObservedObjects());
+            output.writeLong(usage.getDecompressedBytes());
+            output.writeLong(usage.getDecodedPixels());
+            output.writeLong(usage.getPeakOwnedMemoryBytes());
+            output.writeLong(usage.getPeakTemporaryStorageBytes());
+            output.writeLong(usage.getElapsedTime().getSeconds());
+            output.writeInt(usage.getElapsedTime().getNano());
+        });
+    }
+
+    static WorkflowResourceUsage decodeResourceUsage(
+            byte[] payload,
+            WorkflowResourceContext resources) throws DocumentFailure {
+        WorkerCodecIO.Input input = resources == null
+                ? WorkerCodecIO.input(payload)
+                : WorkerCodecIO.accountedInput(payload, resources);
+        try {
+            requireVersion(input.readInt(), RESOURCE_USAGE_VERSION);
+            long acceptedInputBytes = input.readLong();
+            long observedPages = input.readLong();
+            long observedObjects = input.readLong();
+            long decompressedBytes = input.readLong();
+            long decodedPixels = input.readLong();
+            long peakOwnedMemoryBytes = input.readLong();
+            long peakTemporaryStorageBytes = input.readLong();
+            long elapsedSeconds = input.readLong();
+            int elapsedNanos = input.readInt();
+            input.requireFullyConsumed();
+            if (elapsedSeconds < 0L
+                    || elapsedNanos < 0
+                    || elapsedNanos >= 1_000_000_000) {
+                throw rejected("The Worker resource usage is invalid.");
+            }
+            try {
+                return new WorkflowResourceUsage(
+                        acceptedInputBytes,
+                        observedPages,
+                        observedObjects,
+                        decompressedBytes,
+                        decodedPixels,
+                        peakOwnedMemoryBytes,
+                        peakTemporaryStorageBytes,
+                        Duration.ofSeconds(elapsedSeconds, elapsedNanos));
+            } catch (IllegalArgumentException failure) {
+                throw rejected("The Worker resource usage is invalid.");
+            }
+        } finally {
+            input.releaseDecodedMemory();
+        }
     }
 
     private static int outcomeCapabilityToken(String capabilityId)

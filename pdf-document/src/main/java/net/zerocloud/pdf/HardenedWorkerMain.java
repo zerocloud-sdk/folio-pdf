@@ -134,6 +134,14 @@ final class HardenedWorkerMain {
                                         root);
                             },
                             activeInputResolver);
+            byte[] usage = WorkerMessages.encodeResourceUsage(
+                    outcome.getResourceUsage(),
+                    maximumMessageBytes);
+            try {
+                endpoint.send(WorkerProtocol.RESOURCE_USAGE, usage);
+            } finally {
+                Arrays.fill(usage, (byte) 0);
+            }
             byte[] finished = WorkerMessages.encodeFinished(
                     outcome,
                     maximumMessageBytes);
@@ -224,12 +232,12 @@ final class HardenedWorkerMain {
         @Override
         public synchronized void reserveProtocolPayload(long amount)
                 throws DocumentFailure {
-            if (amount != pendingProtocolPayloadGrant) {
+            if (amount > pendingProtocolPayloadGrant) {
                 throw WorkerCodecIO.workerFailure(
                         DocumentFailureCode.WORKER_PROTOCOL_REJECTED,
                         "The Worker receive-memory grant is unavailable.");
             }
-            pendingProtocolPayloadGrant = 0L;
+            pendingProtocolPayloadGrant -= amount;
         }
 
         @Override
@@ -743,6 +751,18 @@ final class HardenedWorkerMain {
                                 resources,
                                 root);
                         break;
+                    case WorkerProtocol.MALFORMED_RESPONSE_PROBE:
+                        if (frame.getPayload().length != 0) {
+                            throw WorkerCodecIO.workerFailure(
+                                    DocumentFailureCode.WORKER_PROTOCOL_REJECTED,
+                                    "The Worker fault probe is invalid.");
+                        }
+                        sendEmpty(
+                                endpoint,
+                                Short.MAX_VALUE,
+                                resources,
+                                maximumMessageBytes);
+                        break;
                     case WorkerProtocol.FINISH:
                         if (frame.getPayload().length != 0) {
                             throw WorkerCodecIO.workerFailure(
@@ -1163,13 +1183,17 @@ final class HardenedWorkerMain {
                         ? valueViews.encodeRoot(
                                 (PdfValue) result,
                                 resources,
-                                maximumMessageBytes)
+                                maximumEncodedValueBytes(
+                                        resources,
+                                        maximumMessageBytes))
                         : WorkerQueryCodec.encodeResult(
                                 query,
                                 result,
                                 references,
                                 resources,
-                                maximumMessageBytes);
+                                maximumEncodedValueBytes(
+                                        resources,
+                                        maximumMessageBytes));
                 try {
                     endpoint.send(WorkerProtocol.QUERY_COMPLETED, encoded);
                 } catch (WorkerProtocol.ProtocolException failure) {
@@ -1229,7 +1253,9 @@ final class HardenedWorkerMain {
             byte[] encoded = valueViews.respond(
                     payload,
                     resources,
-                    maximumMessageBytes);
+                    maximumEncodedValueBytes(
+                            resources,
+                            maximumMessageBytes));
             try {
                 endpoint.send(WorkerProtocol.VALUE_VIEW_COMPLETED, encoded);
             } catch (WorkerProtocol.ProtocolException failure) {
@@ -1439,6 +1465,17 @@ final class HardenedWorkerMain {
                 }
             }
         }
+    }
+
+    private static int maximumEncodedValueBytes(
+            WorkflowResourceContext resources,
+            int maximumMessageBytes) {
+        long maximumChunkedPayload = resources.getPolicy()
+                .getMaximumOwnedMemoryBytes() - maximumMessageBytes;
+        long maximum = Math.max(
+                (long) maximumMessageBytes,
+                maximumChunkedPayload);
+        return (int) Math.min(Integer.MAX_VALUE, Math.max(0L, maximum));
     }
 
     private static void executeIsolationProbe(

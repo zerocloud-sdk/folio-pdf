@@ -4,16 +4,20 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * A checked operational failure with a stable code, capability identifier,
- * safe diagnostic, and any known per-target publication outcomes.
+ * safe diagnostic, any known per-target publication outcomes, and the optional
+ * identity of an identified logical transaction.
  *
  * <p>Backend exceptions and document-sensitive details are deliberately not
- * retained as causes or exposed through this value. When failure occurs before
- * publication, every declared target is reported as
- * {@link PublicationStatus#NOT_ATTEMPTED}. A caller callback's unchecked
- * exception is not wrapped in this type.</p>
+ * retained as causes or exposed through this value. When bounded publication
+ * state is available before publication, every declared target is reported as
+ * {@link PublicationStatus#NOT_ATTEMPTED}. A transaction-retention refusal
+ * may omit receipts when copying the declaration would itself exceed the
+ * retention policy. A caller callback's unchecked exception is not wrapped in
+ * this type.</p>
  *
  * @since 0.1.0
  */
@@ -25,6 +29,7 @@ public final class DocumentFailure extends Exception {
     private final String capabilityId;
     private final String diagnostic;
     private final List<PublicationReceipt> publicationReceipts;
+    private final WorkflowTransactionId transactionId;
 
     DocumentFailure(
             DocumentFailureCode code,
@@ -34,7 +39,8 @@ public final class DocumentFailure extends Exception {
                 code,
                 capabilityId,
                 diagnostic,
-                Collections.<PublicationReceipt>emptyList());
+                Collections.<PublicationReceipt>emptyList(),
+                null);
     }
 
     DocumentFailure(
@@ -42,6 +48,15 @@ public final class DocumentFailure extends Exception {
             String capabilityId,
             String diagnostic,
             List<PublicationReceipt> publicationReceipts) {
+        this(code, capabilityId, diagnostic, publicationReceipts, null);
+    }
+
+    DocumentFailure(
+            DocumentFailureCode code,
+            String capabilityId,
+            String diagnostic,
+            List<PublicationReceipt> publicationReceipts,
+            WorkflowTransactionId transactionId) {
         super(Objects.requireNonNull(diagnostic, "diagnostic"));
         this.code = Objects.requireNonNull(code, "code");
         this.capabilityId = Objects.requireNonNull(capabilityId, "capabilityId");
@@ -51,6 +66,7 @@ public final class DocumentFailure extends Exception {
                         Objects.requireNonNull(
                                 publicationReceipts,
                                 "publicationReceipts")));
+        this.transactionId = transactionId;
     }
 
     /**
@@ -88,5 +104,26 @@ public final class DocumentFailure extends Exception {
      */
     public List<PublicationReceipt> getPublicationReceipts() {
         return publicationReceipts;
+    }
+
+    /** @return the optional identity of the failed logical transaction */
+    public Optional<WorkflowTransactionId> getTransactionId() {
+        return Optional.ofNullable(transactionId);
+    }
+
+    DocumentFailure withTransactionId(WorkflowTransactionId value) {
+        if (transactionId != null) {
+            return this;
+        }
+        DocumentFailure copy = new DocumentFailure(
+                code,
+                capabilityId,
+                diagnostic,
+                publicationReceipts,
+                value);
+        for (Throwable suppressed : getSuppressed()) {
+            copy.addSuppressed(suppressed);
+        }
+        return copy;
     }
 }

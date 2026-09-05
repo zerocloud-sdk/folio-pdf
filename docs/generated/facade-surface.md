@@ -8,7 +8,7 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Release train: `0.1.0-SNAPSHOT`
 - Stable entries: `0`
 - Preview entries: `12`
-- Explicit capability exclusions: `14`
+- Explicit capability exclusions: `15`
 
 ## Stable surfaces
 
@@ -179,6 +179,13 @@ No stable surfaces are declared.
 - Behavioral capability: [`document.hardened-worker`](capability-matrix.md#capability-document_dot_hardened_dash_worker)
 - Deferred ticket: `T21`
 - Reason: T21 is a Native Interface execution profile and authenticated local Worker boundary with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+
+<a id="excluded-capability-document_dot_hardened_dash_worker_dot_recovery_dash_scale"></a>
+### `document.hardened-worker.recovery-scale`
+
+- Behavioral capability: [`document.hardened-worker.recovery-scale`](capability-matrix.md#capability-document_dot_hardened_dash_worker_dot_recovery_dash_scale)
+- Deferred ticket: `T22`
+- Reason: T22 is a Native Interface transaction-recovery, bounded Worker-transport, resource-observation, and controlled-scale extension with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
 
 <a id="excluded-capability-document_dot_hostile_dash_input_dash_limits"></a>
 ### `document.hostile-input-limits`

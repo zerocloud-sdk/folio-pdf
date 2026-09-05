@@ -75,6 +75,8 @@ final class WorkflowResourceContext implements AutoCloseable {
     private long decodedPixels;
     private long ownedMemoryBytes;
     private long temporaryBytes;
+    private long peakOwnedMemoryBytes;
+    private long peakTemporaryBytes;
     private DocumentFailure terminalFailure;
     private boolean closed;
 
@@ -153,6 +155,52 @@ final class WorkflowResourceContext implements AutoCloseable {
 
     synchronized long getRemainingOwnedMemoryBytes() {
         return policy.getMaximumOwnedMemoryBytes() - ownedMemoryBytes;
+    }
+
+    synchronized WorkflowResourceUsage snapshotUsage() {
+        Instant now = clock.instant();
+        Duration elapsed = now.isBefore(startedAt)
+                ? Duration.ZERO : Duration.between(startedAt, now);
+        return new WorkflowResourceUsage(
+                inputBytes,
+                pageCount,
+                objectCount,
+                decompressedBytes,
+                decodedPixels,
+                peakOwnedMemoryBytes,
+                peakTemporaryBytes,
+                elapsed);
+    }
+
+    synchronized void mergeWorkerUsage(WorkflowResourceUsage usage)
+            throws DocumentFailure {
+        Objects.requireNonNull(usage, "usage");
+        if (!usage.isWithin(policy)) {
+            throw WorkerCodecIO.workerFailure(
+                    DocumentFailureCode.WORKER_PROTOCOL_REJECTED,
+                    "The Worker resource usage exceeds its declared policy.");
+        }
+        long workerTemporary = usage.getPeakTemporaryStorageBytes();
+        if (temporaryBytes
+                > policy.getMaximumTemporaryStorageBytes()
+                        - workerTemporary) {
+            throw stopFailure(
+                    DocumentFailureCode.TEMPORARY_STORAGE_LIMIT_EXCEEDED,
+                    "The workflow temporary-storage limit was exceeded.");
+        }
+        inputBytes = Math.max(inputBytes, usage.getAcceptedInputBytes());
+        pageCount = Math.max(pageCount, usage.getObservedPages());
+        objectCount = Math.max(objectCount, usage.getObservedObjects());
+        decompressedBytes = Math.max(
+                decompressedBytes,
+                usage.getDecompressedBytes());
+        decodedPixels = Math.max(decodedPixels, usage.getDecodedPixels());
+        peakOwnedMemoryBytes = Math.max(
+                peakOwnedMemoryBytes,
+                usage.getPeakOwnedMemoryBytes());
+        peakTemporaryBytes = Math.max(
+                peakTemporaryBytes,
+                temporaryBytes + workerTemporary);
     }
 
     boolean isOpen() {
@@ -319,6 +367,9 @@ final class WorkflowResourceContext implements AutoCloseable {
             }
         }
         ownedMemoryBytes += amount;
+        peakOwnedMemoryBytes = Math.max(
+                peakOwnedMemoryBytes,
+                ownedMemoryBytes);
     }
 
     OwnedByteAccumulator ownedByteAccumulator() {
@@ -572,6 +623,7 @@ final class WorkflowResourceContext implements AutoCloseable {
                 policy.getMaximumTemporaryStorageBytes(),
                 DocumentFailureCode.TEMPORARY_STORAGE_LIMIT_EXCEEDED,
                 "The workflow temporary-storage limit was exceeded.");
+        peakTemporaryBytes = Math.max(peakTemporaryBytes, temporaryBytes);
     }
 
     private void accountTemporaryWrite(Path file, int length)

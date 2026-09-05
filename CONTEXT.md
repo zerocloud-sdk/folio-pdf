@@ -51,8 +51,20 @@ The reusable Native Interface entry point that executes one isolated document tr
 _Avoid_: document service, PDFBox wrapper
 
 **Workflow Resource Policy**:
-The immutable finite set of transaction-wide input, page, object, nesting, decompression, pixel, accounted owned-memory, temporary-storage, elapsed-time, and concurrency limits applied to trusted in-process Document Workflows. A request override wins over the shared Workflow Environment default; operation-local limits still apply and the stricter observed bound wins.
+The immutable finite set of transaction-wide input, page, object, nesting, decompression, pixel, accounted owned-memory, temporary-storage, elapsed-time, and concurrency limits applied to a Document Workflow. A request override wins over the shared Workflow Environment default; operation-local limits still apply and the stricter observed bound wins.
 _Avoid_: JVM sandbox, best-effort timeout, backend cache setting
+
+**Workflow Resource Usage**:
+A detached account of observed input, page, object, decompression, pixel, modeled owned-memory high-water, temporary-storage high-water, and elapsed usage for one successful Document Workflow. It describes Folio PDF's policy ledger, not JVM heap, process RSS, native allocation, or kernel resource consumption.
+_Avoid_: process metrics, RSS measurement, profiler result
+
+**Workflow Transaction Identity**:
+An optional bounded, non-secret caller identifier for one logical Hardened Worker request within one Workflow Environment. It binds the material request envelope; the caller must preserve callback meaning and mutable path contents and restore caller-owned Source positions when retrying.
+_Avoid_: worker transaction key, durable job ID, global idempotency key
+
+**Workflow Transaction Status**:
+The retained environment-local state of an identified Workflow Transaction: running, recoverable, completed, or failed, with declaration-ordered Publication Receipts and any stable failure code. Retention has finite record-count and per-record modeled-metadata bounds, is non-evicting, and ends with the Workflow Environment; it is not a durable recovery log or a JVM-memory measurement.
+_Avoid_: database record, global status, distributed transaction
 
 **Trusted In-process Profile**:
 The cooperative Document Workflow execution profile in which project-owned work observes the Workflow Resource Policy but arbitrary callback, backend, native, and JVM-wide work cannot be forcibly isolated or terminated. Hostile multi-tenant input belongs in the Hardened Worker Profile.
@@ -155,7 +167,7 @@ The result of publishing one workflow's outputs, recording whether each destinat
 _Avoid_: transaction result, global commit
 
 **Hardened Worker Profile**:
-The process-isolated execution profile required for hostile multi-tenant input, with enforced memory, CPU, time, temporary-storage, and network limits.
+The process-isolated execution profile required for hostile multi-tenant input, with authenticated bounded transport, enforced modeled memory, CPU, time, temporary-storage, and network limits, plus optional environment-local Workflow Transaction recovery.
 _Avoid_: safe mode, background thread
 
 **Document Failure**:

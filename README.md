@@ -19,7 +19,11 @@ request/environment policy for input, page, object, nesting, decompression,
 pixel, accounted owned-memory, temporary-storage, elapsed-time, and concurrency
 limits. The policy is cooperative; hostile multi-tenant input still requires
 the opt-in T21 Hardened Worker Profile, which is implemented for the documented
-Linux/JDK support envelope.
+Linux/JDK support envelope. T22 adds optional environment-local transaction
+identity and status lookup, bounded authenticated multi-frame values, public
+modeled resource high-water marks, and generated 5,000-page, exact 1-GiB, and
+configured-concurrency scale profiles. Recovery is finite and in-memory, not
+durable or automatic.
 
 T04 packages the Stable and Experimental Migration Facades. The first mapped
 document-creation workflow remains experimental, so it is available only from
@@ -39,6 +43,12 @@ No system Maven installation is required. The wrapper uses Maven 3.9.16:
 
 ```text
 ./mvnw -B -ntp verify
+```
+
+Run all opt-in generated T22 scale profiles with:
+
+```text
+./scripts/t22-scale all
 ```
 
 Run the repository-owned container matrix with Podman:
@@ -288,14 +298,16 @@ environment-owned temporary root for service deployments. See the
 [trusted in-process hostile-input policy](docs/hostile-input-policy.md) for
 the exact defaults, accounting model, and failure/receipt behavior.
 
-The T21 [Hardened Worker guide](docs/hardened-worker.md) documents the
+The T21/T22 [Hardened Worker guide](docs/hardened-worker.md) documents the
 authenticated closed protocol, callback/query ordering, parent-owned Source
 and Target adapters, exact classpath authority, INET and Unix-domain network
 denial, filesystem/process controls, cleanup, stable Worker failures,
-configuration, supported Linux/JDK envelope, and explicit non-certification
-boundaries. Selecting the profile never silently falls back to in-process
-execution. Remote Capability Providers remain parent-brokered and separately
-require Remote Disclosure Authorization.
+count- and per-record-bounded transaction retention and retry rules, target-specific uncertainty, bounded
+multi-frame transport, controlled scale profiles, configuration, supported
+Linux/JDK envelope, and explicit non-certification boundaries. Selecting the
+profile never silently falls back to in-process execution. Remote Capability
+Providers remain parent-brokered and separately require Remote Disclosure
+Authorization.
 
 The Native Interface uses only `net.zerocloud.pdf` and JDK types. Sources may
 be Paths, caller-owned streams, caller-owned channels, or bounded bytes.
@@ -396,7 +408,13 @@ failures, publication policy, evidence status, and exclusions.
 
 Successful `WorkflowOutcome` values identify the capability, the actual
 selected execution profile, the selected Save Mode, safe diagnostics, and every Target
-receipt, plus any declaration-ordered Capability Provider selections. A
+receipt, plus any declaration-ordered Capability Provider selections. They
+also report the optional Workflow Transaction Identity and detached Folio-
+owned resource high-water observations. Identified Worker workflows can query
+their environment-local `RUNNING`, `RECOVERABLE`, `COMPLETED`, or `FAILED`
+status and ordered receipts through `DocumentWorkflow.lookupTransaction`.
+Final and mismatched identities fail before callback or publication; possibly
+partial streams are final and never replayed. A
 deterministic deadline Clock is configured through
 `WorkflowEnvironment.withClock(clock)` or `WorkflowEnvironment.builder()` and
 supplied when constructing a workflow; `DocumentWorkflow` does not accept a

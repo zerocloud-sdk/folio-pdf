@@ -1,0 +1,23 @@
+#!/usr/bin/env sh
+set -eu
+
+script_directory=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+repository_root=$(CDPATH= cd -- "${script_directory}/.." && pwd)
+profile=${1:-all}
+
+case ${profile} in
+    all|pages|input|concurrency) ;;
+    *)
+        echo "Usage: ./scripts/t22-scale [all|pages|input|concurrency]" >&2
+        exit 2
+        ;;
+esac
+
+exec "${repository_root}/mvnw" \
+    -B -ntp \
+    -pl pdf-document \
+    -am \
+    -Dtest=HardenedWorkerScaleProfileTest \
+    -Dsurefire.failIfNoSpecifiedTests=false \
+    -Dfolio.pdf.t22.scale="${profile}" \
+    test

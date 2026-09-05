@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -159,6 +160,102 @@ public final class WorkerCodecContractTest {
                 output.writeInt(13);
             }));
             fail("Expected unknown outcome token rejection");
+        } catch (DocumentFailure failure) {
+            assertEquals(
+                    DocumentFailureCode.WORKER_PROTOCOL_REJECTED,
+                    failure.getCode());
+        }
+        assertInvalidResourceUsage(values(output -> {
+            output.writeInt(2);
+            for (int index = 0; index < 8; index++) {
+                output.writeLong(0L);
+            }
+            output.writeInt(0);
+        }));
+        assertInvalidResourceUsage(values(output -> {
+            output.writeInt(1);
+            for (int index = 0; index < 7; index++) {
+                output.writeLong(0L);
+            }
+            output.writeLong(1L);
+            output.writeInt(-1);
+        }));
+        assertInvalidResourceUsage(values(output -> {
+            output.writeInt(1);
+            for (int index = 0; index < 8; index++) {
+                output.writeLong(0L);
+            }
+            output.writeInt(1_000_000_000);
+        }));
+    }
+
+    private static void assertInvalidResourceUsage(byte[] payload)
+            throws Exception {
+        try {
+            WorkerMessages.decodeResourceUsage(payload, null);
+            fail("Expected invalid resource usage rejection");
+        } catch (DocumentFailure failure) {
+            assertEquals(
+                    DocumentFailureCode.WORKER_PROTOCOL_REJECTED,
+                    failure.getCode());
+        } finally {
+            Arrays.fill(payload, (byte) 0);
+        }
+    }
+
+    @Test
+    public void resourceUsageControlIsFixedBoundedAndValidated()
+            throws Exception {
+        WorkflowResourceUsage usage = new WorkflowResourceUsage(
+                11L,
+                12L,
+                13L,
+                14L,
+                15L,
+                16L,
+                17L,
+                Duration.ofSeconds(18L, 19));
+        byte[] payload = WorkerMessages.encodeResourceUsage(
+                usage,
+                WorkerMessages.RESOURCE_USAGE_BYTES);
+        try {
+            assertEquals(WorkerMessages.RESOURCE_USAGE_BYTES, payload.length);
+            WorkflowResourceUsage decoded =
+                    WorkerMessages.decodeResourceUsage(payload, null);
+            assertEquals(11L, decoded.getAcceptedInputBytes());
+            assertEquals(12L, decoded.getObservedPages());
+            assertEquals(13L, decoded.getObservedObjects());
+            assertEquals(14L, decoded.getDecompressedBytes());
+            assertEquals(15L, decoded.getDecodedPixels());
+            assertEquals(16L, decoded.getPeakOwnedMemoryBytes());
+            assertEquals(17L, decoded.getPeakTemporaryStorageBytes());
+            assertEquals(Duration.ofSeconds(18L, 19),
+                    decoded.getElapsedTime());
+        } finally {
+            Arrays.fill(payload, (byte) 0);
+        }
+
+        try {
+            WorkerMessages.encodeResourceUsage(
+                    usage,
+                    WorkerMessages.RESOURCE_USAGE_BYTES - 1);
+            fail("Expected the first excess usage control");
+        } catch (DocumentFailure failure) {
+            assertEquals(
+                    DocumentFailureCode.WORKER_MESSAGE_LIMIT_EXCEEDED,
+                    failure.getCode());
+        }
+        try {
+            WorkerMessages.decodeResourceUsage(values(output -> {
+                output.writeInt(1);
+                output.writeLong(-1L);
+                for (int index = 0; index < 6; index++) {
+                    output.writeLong(0L);
+                }
+                output.writeLong(0L);
+                output.writeInt(0);
+            }), null);
+            fail("Expected negative resource usage rejection");
         } catch (DocumentFailure failure) {
             assertEquals(
                     DocumentFailureCode.WORKER_PROTOCOL_REJECTED,

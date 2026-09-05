@@ -48,6 +48,7 @@ import net.zerocloud.pdf.WorkflowExecutionProfile;
 import net.zerocloud.pdf.WorkflowEnvironment;
 import net.zerocloud.pdf.WorkflowOutcome;
 import net.zerocloud.pdf.WorkflowRequest;
+import net.zerocloud.pdf.WorkflowResourceUsage;
 import net.zerocloud.pdf.WorkflowResourcePolicy;
 import net.zerocloud.pdf.command.AddBlankPage;
 import net.zerocloud.pdf.command.EmbedFile;
@@ -416,7 +417,7 @@ public final class HardenedWorkerWorkflowTest {
     }
 
     @Test
-    public void caughtMessageLimitRemainsTerminalAndCannotPublish()
+    public void valuesLargerThanOneMessageRoundTripAndPublish()
             throws Exception {
         Path target = temporaryFolder.getRoot().toPath()
                 .resolve("message-limit.pdf");
@@ -428,36 +429,54 @@ public final class HardenedWorkerWorkflowTest {
                                         .DEFAULT_MAXIMUM_HEAP_BYTES)
                         .build())
                 .build();
-        final DocumentFailure[] observed = new DocumentFailure[1];
-        try {
-            new DocumentWorkflow(environment).execute(
-                    WorkflowRequest.builder()
-                            .target("result",
-                                    net.zerocloud.pdf.PublicationTarget.path(target))
-                            .saveMode(SaveMode.REWRITE)
-                            .executionProfile(
-                                    WorkflowExecutionProfile.HARDENED_WORKER)
-                            .build(),
-                    session -> {
-                        try {
-                            session.execute(UpdateDocumentInfo.version1()
-                                    .set("large", PdfString.of(
-                                            new byte[4_096]))
-                                    .build());
-                        } catch (DocumentFailure failure) {
-                            observed[0] = failure;
-                        }
-                        return null;
-                    });
-            fail("Expected the terminal message-size failure");
-        } catch (DocumentFailure failure) {
-            assertEquals(DocumentFailureCode.WORKER_MESSAGE_LIMIT_EXCEEDED,
-                    failure.getCode());
-        }
-        assertNotNull(observed[0]);
-        assertEquals(DocumentFailureCode.WORKER_MESSAGE_LIMIT_EXCEEDED,
-                observed[0].getCode());
-        assertTrue(!Files.exists(target));
+        PdfString large = PdfString.of(new byte[4_096]);
+        PdfString observed = new DocumentWorkflow(environment).execute(
+                WorkflowRequest.builder()
+                        .target("result",
+                                net.zerocloud.pdf.PublicationTarget.path(target))
+                        .saveMode(SaveMode.REWRITE)
+                        .executionProfile(
+                                WorkflowExecutionProfile.HARDENED_WORKER)
+                        .build(),
+                session -> {
+                    session.execute(AddBlankPage.INSTANCE);
+                    session.execute(UpdateDocumentInfo.version1()
+                            .set("large", large)
+                            .build());
+                    return (PdfString) session.query(DocumentInfo.INSTANCE)
+                            .get(PdfName.of("large"));
+                }).getResult();
+
+        assertEquals(large, observed);
+        assertTrue(Files.exists(target));
+        assertEquals(large, new DocumentWorkflow().execute(
+                WorkflowRequest.open(target, SaveMode.REWRITE),
+                session -> (PdfString) session.query(DocumentInfo.INSTANCE)
+                        .get(PdfName.of("large"))).getResult());
+    }
+
+    @Test
+    public void outcomeReportsTransactionResourceHighWaterMarks()
+            throws Exception {
+        Path target = temporaryFolder.getRoot().toPath()
+                .resolve("resource-usage.pdf");
+        WorkflowResourcePolicy policy = WorkflowResourcePolicy.safeDefaults();
+        WorkflowOutcome<Integer> outcome = new DocumentWorkflow().execute(
+                request(target),
+                session -> {
+                    session.execute(AddBlankPage.INSTANCE);
+                    return session.query(PageCount.INSTANCE);
+                });
+
+        WorkflowResourceUsage usage = outcome.getResourceUsage();
+        assertEquals(Integer.valueOf(1), outcome.getResult());
+        assertTrue(usage.getObservedPages() >= 1L);
+        assertTrue(usage.getObservedObjects() >= 1L);
+        assertTrue(usage.getPeakOwnedMemoryBytes() > 0L);
+        assertTrue(usage.getPeakTemporaryStorageBytes() >= Files.size(target));
+        assertTrue(usage.getElapsedTime().compareTo(
+                policy.getMaximumElapsedTime()) <= 0);
+        assertTrue(usage.isWithin(policy));
     }
 
     @Test

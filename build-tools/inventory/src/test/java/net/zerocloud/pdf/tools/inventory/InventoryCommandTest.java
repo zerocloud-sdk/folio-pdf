@@ -64,9 +64,11 @@ public final class InventoryCommandTest {
         assertTrue(capabilities.contains("- Promotion gate `T06`:"));
         assertTrue(capabilities.contains(
                 "`document.blank.create-publish-reopen`"));
+        assertTrue(capabilities.contains(
+                "`document.hardened-worker.recovery-scale`"));
         assertTrue(facades.contains("- Stable entries: `0`"));
         assertTrue(facades.contains("- Preview entries: `12`"));
-        assertTrue(facades.contains("- Explicit capability exclusions: `14`"));
+        assertTrue(facades.contains("- Explicit capability exclusions: `15`"));
         assertTrue(facades.contains("`document.value.inspect-patch`"));
         assertTrue(facades.contains("`document.page.manipulate-merge-split`"));
         assertTrue(facades.contains(
@@ -87,6 +89,8 @@ public final class InventoryCommandTest {
                 "`composition.fonts.load-embed-subset-fallback`"));
         assertTrue(facades.contains("`document.hostile-input-limits`"));
         assertTrue(facades.contains("`document.hardened-worker`"));
+        assertTrue(facades.contains(
+                "`document.hardened-worker.recovery-scale`"));
         assertTrue(facades.contains("`itext7.kernel.pdf-document.add-new-page`"));
     }
 

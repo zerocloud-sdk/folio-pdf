@@ -90,6 +90,18 @@ public enum DocumentFailureCode {
     /** The Worker exited, was forcibly stopped, or returned no valid result. */
     WORKER_TERMINATED,
 
+    /** Another attempt with the same transaction identity is still running. */
+    TRANSACTION_IN_PROGRESS,
+
+    /** The transaction identity already has a final retained outcome. */
+    TRANSACTION_ALREADY_FINAL,
+
+    /** An identity was reused for a materially different workflow request. */
+    TRANSACTION_IDENTITY_MISMATCH,
+
+    /** The finite environment transaction ledger cannot admit another identity. */
+    TRANSACTION_RETENTION_LIMIT_EXCEEDED,
+
     /** Legacy result retained for prerelease outcome compatibility. */
     SAVE_MODE_UNSUPPORTED,
 

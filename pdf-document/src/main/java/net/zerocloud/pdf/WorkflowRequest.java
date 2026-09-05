@@ -21,7 +21,9 @@ import net.zerocloud.pdf.provider.ProviderPreference;
  * cancellation, an absolute deadline, a sanitized progress listener, and a
  * finite resource-policy override. Capability Provider preferences retain
  * declaration order. Remote document disclosure is capability-scoped, absent
- * by default, and never inferred from registration or preference.</p>
+ * by default, and never inferred from registration or preference. An optional
+ * transaction identity requests environment-local recovery and is valid only
+ * for the Hardened Worker Profile.</p>
  *
  * @since 0.1.0
  */
@@ -50,6 +52,7 @@ public final class WorkflowRequest {
     private final Map<String, ProviderPreference> providerPreferences;
     private final Set<String> remoteDisclosureAuthorizations;
     private final WorkflowExecutionProfile executionProfile;
+    private final WorkflowTransactionId transactionId;
 
     private WorkflowRequest(Builder builder) {
         this.sources = Collections.unmodifiableMap(
@@ -71,6 +74,7 @@ public final class WorkflowRequest {
                 new LinkedHashSet<String>(
                         builder.remoteDisclosureAuthorizations));
         this.executionProfile = builder.executionProfile;
+        this.transactionId = builder.transactionId;
     }
 
     /**
@@ -212,6 +216,16 @@ public final class WorkflowRequest {
         return executionProfile;
     }
 
+    /**
+     * Returns the explicit logical transaction identity, when recovery was
+     * requested.
+     *
+     * @return the optional transaction identity
+     */
+    public Optional<WorkflowTransactionId> getTransactionId() {
+        return Optional.ofNullable(transactionId);
+    }
+
     WorkflowRequest withProgressListener(
             WorkflowProgressListener replacement) {
         Builder copy = new Builder();
@@ -231,6 +245,7 @@ public final class WorkflowRequest {
         copy.remoteDisclosureAuthorizations.addAll(
                 remoteDisclosureAuthorizations);
         copy.executionProfile = executionProfile;
+        copy.transactionId = transactionId;
         return new WorkflowRequest(copy);
     }
 
@@ -259,6 +274,7 @@ public final class WorkflowRequest {
                 new LinkedHashSet<String>();
         private WorkflowExecutionProfile executionProfile =
                 WorkflowExecutionProfile.IN_PROCESS;
+        private WorkflowTransactionId transactionId;
 
         private Builder() {
         }
@@ -413,6 +429,17 @@ public final class WorkflowRequest {
             this.executionProfile = Objects.requireNonNull(
                     profile,
                     "profile");
+            return this;
+        }
+
+        /**
+         * Identifies this request as one retryable logical transaction.
+         *
+         * @param value the caller-stable transaction identity
+         * @return this builder
+         */
+        public Builder transactionId(WorkflowTransactionId value) {
+            transactionId = Objects.requireNonNull(value, "value");
             return this;
         }
 

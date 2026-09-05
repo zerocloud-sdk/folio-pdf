@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import net.zerocloud.pdf.provider.ProviderSelection;
 
 /**
  * The caller result, capability and execution information, safe diagnostics,
- * publication receipts, and declaration-ordered Capability Provider selection
- * metadata of a completed workflow.
+ * publication receipts, transaction identity and resource observations, and
+ * declaration-ordered Capability Provider selection metadata of a completed
+ * workflow.
  *
  * @param <R> the caller result type
  * @since 0.1.0
@@ -23,6 +25,8 @@ public final class WorkflowOutcome<R> {
     private final List<String> diagnostics;
     private final List<PublicationReceipt> publicationReceipts;
     private final List<ProviderSelection> providerSelections;
+    private final WorkflowTransactionId transactionId;
+    private final WorkflowResourceUsage resourceUsage;
 
     WorkflowOutcome(
             R result,
@@ -32,6 +36,48 @@ public final class WorkflowOutcome<R> {
             List<String> diagnostics,
             List<PublicationReceipt> publicationReceipts,
             List<ProviderSelection> providerSelections) {
+        this(
+                result,
+                capabilityId,
+                executionProfile,
+                saveMode,
+                diagnostics,
+                publicationReceipts,
+                providerSelections,
+                null);
+    }
+
+    WorkflowOutcome(
+            R result,
+            String capabilityId,
+            WorkflowExecutionProfile executionProfile,
+            SaveMode saveMode,
+            List<String> diagnostics,
+            List<PublicationReceipt> publicationReceipts,
+            List<ProviderSelection> providerSelections,
+            WorkflowTransactionId transactionId) {
+        this(
+                result,
+                capabilityId,
+                executionProfile,
+                saveMode,
+                diagnostics,
+                publicationReceipts,
+                providerSelections,
+                transactionId,
+                null);
+    }
+
+    private WorkflowOutcome(
+            R result,
+            String capabilityId,
+            WorkflowExecutionProfile executionProfile,
+            SaveMode saveMode,
+            List<String> diagnostics,
+            List<PublicationReceipt> publicationReceipts,
+            List<ProviderSelection> providerSelections,
+            WorkflowTransactionId transactionId,
+            WorkflowResourceUsage resourceUsage) {
         this.result = result;
         this.capabilityId = Objects.requireNonNull(capabilityId, "capabilityId");
         this.executionProfile = Objects.requireNonNull(
@@ -51,6 +97,8 @@ public final class WorkflowOutcome<R> {
                         Objects.requireNonNull(
                                 providerSelections,
                                 "providerSelections")));
+        this.transactionId = transactionId;
+        this.resourceUsage = resourceUsage;
     }
 
     /**
@@ -117,5 +165,34 @@ public final class WorkflowOutcome<R> {
      */
     public List<ProviderSelection> getProviderSelections() {
         return providerSelections;
+    }
+
+    /** @return the optional identity of this logical workflow transaction */
+    public Optional<WorkflowTransactionId> getTransactionId() {
+        return Optional.ofNullable(transactionId);
+    }
+
+    /**
+     * Returns the completed transaction's Folio-owned resource observations.
+     *
+     * @return detached resource usage
+     */
+    public WorkflowResourceUsage getResourceUsage() {
+        return Objects.requireNonNull(
+                resourceUsage,
+                "Resource usage is attached by DocumentWorkflow.execute.");
+    }
+
+    WorkflowOutcome<R> withResourceUsage(WorkflowResourceUsage value) {
+        return new WorkflowOutcome<R>(
+                result,
+                capabilityId,
+                executionProfile,
+                saveMode,
+                diagnostics,
+                publicationReceipts,
+                providerSelections,
+                transactionId,
+                Objects.requireNonNull(value, "value"));
     }
 }

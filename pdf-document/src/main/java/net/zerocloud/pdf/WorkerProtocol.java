@@ -19,6 +19,11 @@ final class WorkerProtocol {
     static final short VERSION_1 = 1;
     static final int AUTHENTICATION_KEY_BYTES = 32;
     static final int AUTHENTICATION_TAG_BYTES = 32;
+    private static final short TRANSFER_START = -1;
+    private static final short TRANSFER_CHUNK = -2;
+    private static final int TRANSFER_ID_BYTES = 16;
+    private static final int TRANSFER_START_BYTES = 58;
+    private static final int TRANSFER_CHUNK_HEADER_BYTES = 20;
     private static final byte[] EMPTY_PAYLOAD = new byte[0];
 
     static final short INITIALIZE = 1;
@@ -43,6 +48,7 @@ final class WorkerProtocol {
     static final short MEMORY_RESERVE = 20;
     static final short MEMORY_RELEASE = 21;
     static final short MEMORY_SYNCHRONIZE = 22;
+    static final short MALFORMED_RESPONSE_PROBE = 23;
 
     static final short READY = 101;
     static final short COMMAND_COMPLETED = 102;
@@ -64,6 +70,8 @@ final class WorkerProtocol {
     static final short COMMAND_PREFLIGHT_DETAILS_REQUIRED = 118;
     static final short MEMORY_GRANTED = 119;
     static final short MEMORY_SYNCHRONIZED = 120;
+    static final short MALFORMED_RESPONSE_COMPLETED = 121;
+    static final short RESOURCE_USAGE = 122;
 
     private WorkerProtocol() {
     }
@@ -103,6 +111,7 @@ final class WorkerProtocol {
                 key,
                 maximumPayloadBytes,
                 maximumPayloadBytes,
+                maximumPayloadBytes,
                 null);
     }
 
@@ -117,6 +126,7 @@ final class WorkerProtocol {
                 output,
                 key,
                 maximumPayloadBytes,
+                maximumUnaccountedPayloadBytes,
                 maximumUnaccountedPayloadBytes,
                 null);
     }
@@ -133,6 +143,7 @@ final class WorkerProtocol {
                 key,
                 maximumPayloadBytes,
                 maximumPayloadBytes,
+                resources.getPolicy().getMaximumOwnedMemoryBytes(),
                 resources);
     }
 
@@ -143,6 +154,7 @@ final class WorkerProtocol {
         private final byte[] key;
         private final int maximumPayloadBytes;
         private final long maximumUnaccountedPayloadBytes;
+        private final long maximumTransferMemoryBytes;
         private WorkflowResourceContext resources;
         private MemoryGrantConsumer memoryGrantConsumer;
         private long nextSendSequence = 1L;
@@ -155,6 +167,7 @@ final class WorkerProtocol {
                 byte[] key,
                 int maximumPayloadBytes,
                 long maximumUnaccountedPayloadBytes,
+                long maximumTransferMemoryBytes,
                 WorkflowResourceContext resources) {
             if (maximumPayloadBytes < 0) {
                 throw new IllegalArgumentException(
@@ -168,12 +181,17 @@ final class WorkerProtocol {
                 throw new IllegalArgumentException(
                         "maximumUnaccountedPayloadBytes must not be negative");
             }
+            if (maximumTransferMemoryBytes < 0L) {
+                throw new IllegalArgumentException(
+                        "maximumTransferMemoryBytes must not be negative");
+            }
             this.input = new DataInputStream(input);
             this.output = new DataOutputStream(output);
             this.key = key.clone();
             this.maximumPayloadBytes = maximumPayloadBytes;
             this.maximumUnaccountedPayloadBytes =
                     maximumUnaccountedPayloadBytes;
+            this.maximumTransferMemoryBytes = maximumTransferMemoryBytes;
             this.resources = resources;
         }
 
@@ -203,11 +221,117 @@ final class WorkerProtocol {
                 throws IOException, ProtocolException {
             requireOpen();
             byte[] requiredPayload = payload == null ? EMPTY_PAYLOAD : payload;
-            if (requiredPayload.length > maximumPayloadBytes) {
+            if (requiredPayload.length <= maximumPayloadBytes) {
+                sendFrame(opcode, requiredPayload);
+                return;
+            }
+            if (isMemoryControl(opcode)
+                    || isTransferOpcode(opcode)
+                    || maximumPayloadBytes < TRANSFER_START_BYTES
+                    || maximumPayloadBytes <= TRANSFER_CHUNK_HEADER_BYTES
+                    || requiredReceiveMemory(requiredPayload.length)
+                            > maximumTransferMemoryBytes) {
                 throw new ProtocolException(
                         DocumentFailureCode.WORKER_MESSAGE_LIMIT_EXCEEDED,
                         "The Worker message-size limit was exceeded.");
             }
+            sendTransfer(opcode, requiredPayload);
+        }
+
+        synchronized long requiredReceiveMemory(int payloadLength) {
+            if (payloadLength <= maximumPayloadBytes) {
+                return payloadLength;
+            }
+            return payloadLength > Long.MAX_VALUE - maximumPayloadBytes
+                    ? Long.MAX_VALUE
+                    : (long) payloadLength + maximumPayloadBytes;
+        }
+
+        private void sendTransfer(short opcode, byte[] payload)
+                throws IOException, ProtocolException {
+            int chunkCapacity = maximumPayloadBytes
+                    - TRANSFER_CHUNK_HEADER_BYTES;
+            long requiredChunkCount = ((long) payload.length
+                    + chunkCapacity - 1L) / chunkCapacity;
+            if (requiredChunkCount > Integer.MAX_VALUE) {
+                throw new ProtocolException(
+                        DocumentFailureCode.WORKER_MESSAGE_LIMIT_EXCEEDED,
+                        "The Worker transfer-size limit was exceeded.");
+            }
+            int chunkCount = (int) requiredChunkCount;
+            long frameCount = 1L + chunkCount;
+            if (nextSendSequence > Long.MAX_VALUE - frameCount) {
+                throw new ProtocolException(
+                        DocumentFailureCode.WORKER_PROTOCOL_REJECTED,
+                        "The Worker frame sequence was exhausted.");
+            }
+            byte[] transferId = new byte[TRANSFER_ID_BYTES];
+            writeLong(transferId, 0, nextSendSequence);
+            writeLong(
+                    transferId,
+                    8,
+                    ((long) opcode << 48) ^ (long) payload.length);
+            byte[] digest = transferDigest(payload, chunkCapacity);
+            byte[] start = new byte[TRANSFER_START_BYTES];
+            writeShort(start, 0, opcode);
+            System.arraycopy(
+                    transferId,
+                    0,
+                    start,
+                    2,
+                    transferId.length);
+            writeInt(start, 18, payload.length);
+            writeInt(start, 22, chunkCount);
+            System.arraycopy(digest, 0, start, 26, digest.length);
+            try {
+                sendFrame(TRANSFER_START, start);
+                int offset = 0;
+                for (int index = 0; index < chunkCount; index++) {
+                    checkpointTransfer();
+                    int count = Math.min(
+                            chunkCapacity,
+                            payload.length - offset);
+                    sendChunkFrame(
+                            transferId,
+                            index,
+                            payload,
+                            offset,
+                            count);
+                    offset += count;
+                }
+            } finally {
+                Arrays.fill(start, (byte) 0);
+                Arrays.fill(digest, (byte) 0);
+                Arrays.fill(transferId, (byte) 0);
+            }
+        }
+
+        private byte[] transferDigest(byte[] payload, int chunkCapacity)
+                throws ProtocolException {
+            MessageDigest digest = sha256();
+            int offset = 0;
+            while (offset < payload.length) {
+                checkpointTransfer();
+                int count = Math.min(chunkCapacity, payload.length - offset);
+                digest.update(payload, offset, count);
+                offset += count;
+            }
+            return digest.digest();
+        }
+
+        private void checkpointTransfer() throws ProtocolException {
+            if (resources == null) {
+                return;
+            }
+            try {
+                resources.checkpoint();
+            } catch (DocumentFailure failure) {
+                throw new ProtocolException(failure);
+            }
+        }
+
+        private void sendFrame(short opcode, byte[] payload)
+                throws IOException, ProtocolException {
             long sequence = nextSendSequence;
             if (sequence == Long.MAX_VALUE) {
                 throw new ProtocolException(
@@ -219,14 +343,53 @@ final class WorkerProtocol {
                     VERSION_1,
                     opcode,
                     sequence,
-                    requiredPayload);
+                    payload);
             try {
                 output.writeInt(MAGIC);
                 output.writeShort(VERSION_1);
                 output.writeShort(opcode);
                 output.writeLong(sequence);
-                output.writeInt(requiredPayload.length);
-                output.write(requiredPayload);
+                output.writeInt(payload.length);
+                output.write(payload);
+                output.write(tag);
+                output.flush();
+                nextSendSequence = sequence + 1L;
+            } finally {
+                Arrays.fill(tag, (byte) 0);
+            }
+        }
+
+        /** Writes a chunk from the retained logical payload without copying it. */
+        private void sendChunkFrame(
+                byte[] transferId,
+                int index,
+                byte[] payload,
+                int offset,
+                int count) throws IOException, ProtocolException {
+            long sequence = nextSendSequence;
+            if (sequence == Long.MAX_VALUE) {
+                throw new ProtocolException(
+                        DocumentFailureCode.WORKER_PROTOCOL_REJECTED,
+                        "The Worker frame sequence was exhausted.");
+            }
+            int framePayloadLength = TRANSFER_CHUNK_HEADER_BYTES + count;
+            byte[] tag = authenticateChunk(
+                    key,
+                    sequence,
+                    transferId,
+                    index,
+                    payload,
+                    offset,
+                    count);
+            try {
+                output.writeInt(MAGIC);
+                output.writeShort(VERSION_1);
+                output.writeShort(TRANSFER_CHUNK);
+                output.writeLong(sequence);
+                output.writeInt(framePayloadLength);
+                output.write(transferId);
+                output.writeInt(index);
+                output.write(payload, offset, count);
                 output.write(tag);
                 output.flush();
                 nextSendSequence = sequence + 1L;
@@ -238,6 +401,14 @@ final class WorkerProtocol {
         synchronized Frame receive() throws IOException, ProtocolException {
             while (true) {
                 Frame frame = receiveFrame();
+                if (frame.getOpcode() == TRANSFER_START) {
+                    frame = receiveTransfer(frame);
+                } else if (frame.getOpcode() == TRANSFER_CHUNK) {
+                    frame.clear();
+                    throw new ProtocolException(
+                            DocumentFailureCode.WORKER_PROTOCOL_REJECTED,
+                            "The Worker transfer sequence is invalid.");
+                }
                 if (memoryGrantConsumer == null
                         || frame.getOpcode() != MEMORY_GRANTED) {
                     if (memoryGrantConsumer != null) {
@@ -262,6 +433,138 @@ final class WorkerProtocol {
             }
         }
 
+        private Frame receiveTransfer(Frame startFrame)
+                throws IOException, ProtocolException {
+            WorkflowResourceContext.MemoryReservation scratchReservation =
+                    startFrame.takeReservation();
+            byte[] transferId = null;
+            byte[] expectedDigest = null;
+            WorkflowResourceContext.MemoryReservation payloadReservation = null;
+            byte[] payload = null;
+            try {
+                byte[] start = startFrame.getPayload();
+                short applicationOpcode;
+                int totalLength;
+                int chunkCount;
+                try {
+                    if (start.length != TRANSFER_START_BYTES) {
+                        throw new ProtocolException(
+                                DocumentFailureCode.WORKER_PROTOCOL_REJECTED,
+                                "The Worker transfer declaration is invalid.");
+                    }
+                    applicationOpcode = readShort(start, 0);
+                    if (isTransferOpcode(applicationOpcode)
+                            || isMemoryControl(applicationOpcode)) {
+                        throw new ProtocolException(
+                                DocumentFailureCode.WORKER_PROTOCOL_REJECTED,
+                                "The Worker transfer opcode is invalid.");
+                    }
+                    transferId = Arrays.copyOfRange(
+                            start,
+                            2,
+                            2 + TRANSFER_ID_BYTES);
+                    totalLength = readInt(start, 18);
+                    chunkCount = readInt(start, 22);
+                    expectedDigest = Arrays.copyOfRange(
+                            start,
+                            26,
+                            TRANSFER_START_BYTES);
+                } finally {
+                    startFrame.clear();
+                }
+
+                int chunkCapacity = maximumPayloadBytes
+                        - TRANSFER_CHUNK_HEADER_BYTES;
+                long requiredMemory = requiredReceiveMemory(totalLength);
+                long expectedChunkCount = totalLength <= 0
+                                || chunkCapacity <= 0
+                        ? -1
+                        : ((long) totalLength + chunkCapacity - 1L)
+                                / chunkCapacity;
+                if (totalLength <= maximumPayloadBytes
+                        || chunkCount != expectedChunkCount) {
+                    throw new ProtocolException(
+                            DocumentFailureCode.WORKER_PROTOCOL_REJECTED,
+                            "The Worker transfer declaration is invalid.");
+                }
+                if (requiredMemory > maximumTransferMemoryBytes
+                        || resources == null
+                                && requiredMemory
+                                        > maximumUnaccountedPayloadBytes) {
+                    throw new ProtocolException(
+                            DocumentFailureCode.WORKER_MESSAGE_LIMIT_EXCEEDED,
+                            "The Worker transfer-size limit was exceeded.");
+                }
+
+                if (resources != null) {
+                    try {
+                        payloadReservation = resources
+                                .reserveProtocolPayloadMemory(totalLength);
+                    } catch (DocumentFailure failure) {
+                        throw new ProtocolException(failure);
+                    }
+                }
+                payload = new byte[totalLength];
+                MessageDigest actualDigest = sha256();
+                int offset = 0;
+                for (int index = 0; index < chunkCount; index++) {
+                    Frame chunkFrame = receiveFrame(true);
+                    try {
+                        byte[] chunk = chunkFrame.getPayload();
+                        int count = Math.min(
+                                chunkCapacity,
+                                totalLength - offset);
+                        if (chunkFrame.getOpcode() != TRANSFER_CHUNK
+                                || chunk.length
+                                        != TRANSFER_CHUNK_HEADER_BYTES + count
+                                || !matches(
+                                        transferId,
+                                        chunk,
+                                        0)
+                                || readInt(chunk, TRANSFER_ID_BYTES) != index) {
+                            throw new ProtocolException(
+                                    DocumentFailureCode.WORKER_PROTOCOL_REJECTED,
+                                    "The Worker transfer order or length is invalid.");
+                        }
+                        actualDigest.update(
+                                chunk,
+                                TRANSFER_CHUNK_HEADER_BYTES,
+                                count);
+                        System.arraycopy(
+                                chunk,
+                                TRANSFER_CHUNK_HEADER_BYTES,
+                                payload,
+                                offset,
+                                count);
+                        offset += count;
+                    } finally {
+                        chunkFrame.clear();
+                    }
+                }
+                byte[] actual = actualDigest.digest();
+                boolean intact = MessageDigest.isEqual(expectedDigest, actual);
+                Arrays.fill(actual, (byte) 0);
+                if (!intact) {
+                    throw new ProtocolException(
+                            DocumentFailureCode.WORKER_AUTHENTICATION_FAILED,
+                            "Worker transfer integrity validation failed.");
+                }
+                Frame result = new Frame(
+                        applicationOpcode,
+                        payload,
+                        payloadReservation);
+                payload = null;
+                payloadReservation = null;
+                return result;
+            } finally {
+                clear(payload);
+                clear(transferId);
+                clear(expectedDigest);
+                closeReservation(scratchReservation);
+                closeReservation(payloadReservation);
+            }
+        }
+
         synchronized void receiveMemoryGrant(long expectedAmount)
                 throws IOException, ProtocolException {
             Frame frame = receiveFrame();
@@ -281,6 +584,11 @@ final class WorkerProtocol {
         }
 
         private Frame receiveFrame() throws IOException, ProtocolException {
+            return receiveFrame(false);
+        }
+
+        private Frame receiveFrame(boolean transferScratchReserved)
+                throws IOException, ProtocolException {
             requireOpen();
             int magic;
             short version;
@@ -313,9 +621,8 @@ final class WorkerProtocol {
                         DocumentFailureCode.WORKER_PROTOCOL_REJECTED,
                         "The Worker frame length is invalid.");
             }
-            boolean memoryControl = opcode == MEMORY_RESERVE
-                    || opcode == MEMORY_RELEASE
-                    || opcode == MEMORY_GRANTED;
+            boolean memoryControl = isMemoryControl(opcode);
+            boolean transferControl = isTransferOpcode(opcode);
             if (memoryControl
                     && payloadLength != WorkerMessages.MEMORY_AMOUNT_BYTES) {
                 throw new ProtocolException(
@@ -327,17 +634,22 @@ final class WorkerProtocol {
                         DocumentFailureCode.WORKER_MESSAGE_LIMIT_EXCEEDED,
                         "The Worker message-size limit was exceeded.");
             }
-            if (resources == null && !memoryControl
-                    && payloadLength > maximumUnaccountedPayloadBytes) {
+            long reservationBytes = transferControl
+                    && !transferScratchReserved
+                    ? maximumPayloadBytes : payloadLength;
+            boolean requiresReservation = !memoryControl
+                    && (!transferControl || !transferScratchReserved);
+            if (resources == null && requiresReservation
+                    && reservationBytes > maximumUnaccountedPayloadBytes) {
                 throw new ProtocolException(
                         DocumentFailureCode.MEMORY_LIMIT_EXCEEDED,
                         "The workflow owned-memory limit was exceeded.");
             }
             WorkflowResourceContext.MemoryReservation reservation = null;
-            if (resources != null && !memoryControl) {
+            if (resources != null && requiresReservation) {
                 try {
                     reservation = resources.reserveProtocolPayloadMemory(
-                            payloadLength);
+                            reservationBytes);
                 } catch (DocumentFailure failure) {
                     throw new ProtocolException(failure);
                 }
@@ -436,7 +748,7 @@ final class WorkerProtocol {
 
         private final short opcode;
         private byte[] payload;
-        private final WorkflowResourceContext.MemoryReservation reservation;
+        private WorkflowResourceContext.MemoryReservation reservation;
 
         private Frame(
                 short opcode,
@@ -455,12 +767,21 @@ final class WorkerProtocol {
             return payload;
         }
 
+        private WorkflowResourceContext.MemoryReservation takeReservation() {
+            WorkflowResourceContext.MemoryReservation current = reservation;
+            reservation = null;
+            return current;
+        }
+
         void clear() {
             byte[] current = payload;
             if (current != null) {
                 Arrays.fill(current, (byte) 0);
                 payload = null;
-                closeReservation(reservation);
+                WorkflowResourceContext.MemoryReservation currentReservation =
+                        reservation;
+                reservation = null;
+                closeReservation(currentReservation);
             }
         }
     }
@@ -502,6 +823,76 @@ final class WorkerProtocol {
         }
     }
 
+    private static boolean isMemoryControl(short opcode) {
+        return opcode == MEMORY_RESERVE
+                || opcode == MEMORY_RELEASE
+                || opcode == MEMORY_GRANTED;
+    }
+
+    private static boolean isTransferOpcode(short opcode) {
+        return opcode == TRANSFER_START || opcode == TRANSFER_CHUNK;
+    }
+
+    private static boolean matches(
+            byte[] expected,
+            byte[] actual,
+            int offset) {
+        if (expected == null || actual.length - offset < expected.length) {
+            return false;
+        }
+        int difference = 0;
+        for (int index = 0; index < expected.length; index++) {
+            difference |= expected[index] ^ actual[offset + index];
+        }
+        return difference == 0;
+    }
+
+    private static MessageDigest sha256() throws ProtocolException {
+        try {
+            return MessageDigest.getInstance("SHA-256");
+        } catch (GeneralSecurityException failure) {
+            throw new ProtocolException(
+                    DocumentFailureCode.WORKER_UNAVAILABLE,
+                    "The Worker integrity primitive is unavailable.");
+        }
+    }
+
+    private static void clear(byte[] value) {
+        if (value != null) {
+            Arrays.fill(value, (byte) 0);
+        }
+    }
+
+    private static void writeShort(byte[] target, int offset, short value) {
+        target[offset] = (byte) (value >>> 8);
+        target[offset + 1] = (byte) value;
+    }
+
+    private static short readShort(byte[] source, int offset) {
+        return (short) (((source[offset] & 0xff) << 8)
+                | (source[offset + 1] & 0xff));
+    }
+
+    private static void writeInt(byte[] target, int offset, int value) {
+        target[offset] = (byte) (value >>> 24);
+        target[offset + 1] = (byte) (value >>> 16);
+        target[offset + 2] = (byte) (value >>> 8);
+        target[offset + 3] = (byte) value;
+    }
+
+    private static int readInt(byte[] source, int offset) {
+        return (source[offset] & 0xff) << 24
+                | (source[offset + 1] & 0xff) << 16
+                | (source[offset + 2] & 0xff) << 8
+                | source[offset + 3] & 0xff;
+    }
+
+    private static void writeLong(byte[] target, int offset, long value) {
+        for (int index = 0; index < 8; index++) {
+            target[offset + index] = (byte) (value >>> (56 - 8 * index));
+        }
+    }
+
     private static byte[] authenticate(
             byte[] key,
             short version,
@@ -516,6 +907,32 @@ final class WorkerProtocol {
             updateLong(mac, sequence);
             updateInt(mac, payload.length);
             mac.update(payload);
+            return mac.doFinal();
+        } catch (GeneralSecurityException failure) {
+            throw new ProtocolException(
+                    DocumentFailureCode.WORKER_UNAVAILABLE,
+                    "The Worker authentication primitive is unavailable.");
+        }
+    }
+
+    private static byte[] authenticateChunk(
+            byte[] key,
+            long sequence,
+            byte[] transferId,
+            int index,
+            byte[] payload,
+            int offset,
+            int count) throws ProtocolException {
+        try {
+            Mac mac = Mac.getInstance("HmacSHA256");
+            mac.init(new SecretKeySpec(key, "HmacSHA256"));
+            updateShort(mac, VERSION_1);
+            updateShort(mac, TRANSFER_CHUNK);
+            updateLong(mac, sequence);
+            updateInt(mac, TRANSFER_CHUNK_HEADER_BYTES + count);
+            mac.update(transferId);
+            updateInt(mac, index);
+            mac.update(payload, offset, count);
             return mac.doFinal();
         } catch (GeneralSecurityException failure) {
             throw new ProtocolException(

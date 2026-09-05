@@ -1197,5 +1197,99 @@ documentation, and project-owned tests are the permitted design inputs.
   therefore remains `experimental` with no compatible or certified-platform
   claim.
 
+## T22 worker-recovery-scale record
+
+- Authorship: OpenAI Codex generated and integrated the T22 implementation,
+  tests, controlled profiles, inventories, evidence record, domain decision,
+  and documentation at repository operator MaBaiqiu's direction. No T22 commit
+  was created or authorized in this execution.
+- Project inputs: GitHub issues #1 and #23; `CONTEXT.md`, `CONTRIBUTING.md`,
+  repository issue/domain instructions; ADR-0013, 0016, 0018, 0023, 0024,
+  0025, and 0031; the accepted T03 transaction, ownership, publication,
+  receipt, outcome, failure, and callback seams; the T20 resource policy and
+  accounting model; the T21 Worker, closed protocol, process isolation,
+  classpath authority, parent-side publication, and cleanup contract; and
+  pre-implementation/code-review fixed point
+  `7c12104960045f3069843f850c4e782cb4d63c77`.
+- Public platform inputs: Java SE 8 object identity, weak-reference, digest,
+  stream, NIO, duration, synchronization, concurrency, process, and resource-
+  ownership contracts plus the existing Linux `/usr/bin/prlimit` execution
+  envelope supplied public interface semantics. These were platform contracts
+  only; no external idempotency implementation, retry protocol, IPC transfer
+  format, scale product, fixture, output, or benchmark was used as a behavioral
+  oracle.
+- Backend and dependency inputs: existing Apache PDFBox 3.0.8 public loading,
+  COS, validation, cache, save, and reopen APIs remain private Worker
+  implementation surfaces. T22 adds no dependency, product module, shaded
+  code, or redistributed artifact. Existing dependency coordinates, origins,
+  licenses, notices, and exact Worker-runtime hashes remain authoritative in
+  [DEPENDENCIES.md](DEPENDENCIES.md).
+- Project-authored recovery fixtures: public tests use temporary Paths and
+  byte/stream Targets, latches, cancellation tokens, short elapsed policies,
+  safe callback exceptions that simulate lost caller acknowledgement, a
+  caller-owned partial-failure stream, and bounded application transaction
+  identifiers. They also use an oversized project-authored Target name under a
+  512-byte modeled per-record retention policy and reconstructed equal and
+  unequal byte-source declarations. The lower-level fault seam only terminates the real project
+  Worker or emits a project-authored authenticated malformed response. No
+  external PDF, service, database, durable recovery system, hostile corpus,
+  credential, authentication key, or Reference Suite output is included.
+- Project-authored transfer fixtures: the multi-frame declaration and chunk
+  format, transfer identity, total-length/chunk-count rules, SHA-256 integrity,
+  aggregate payload-plus-frame memory admission, and stable failure mappings
+  are project-authored. Hostile boundary tests synthesize missing, reordered,
+  duplicate, corrupted, wrong-identity, wrong-length, wrong-digest, and excess
+  frames with deterministic package-private keys, including an authenticated
+  trailing chunk presented while less than one frame of modeled scratch is
+  available. Public workflow tests create
+  4-KiB metadata against a 2-KiB physical-message bound and validate it only
+  through publish/reopen semantics.
+- Project-authored scale fixtures: the 5,000-page profile constructs 5,000
+  `AddBlankPage` commands through the public API. The exact 1-GiB profile uses
+  a constant-memory clean-room InputStream that emits a short PDF header,
+  newline fill, and a hand-authored valid one-page indirect-object/xref tail at
+  byte 1,073,741,824. The concurrency profile uses two latch-held public
+  workflows and one first-excess request. Every product and transaction root
+  exists only beneath a test temporary directory and is removed; no large
+  fixture or product is committed.
+- Controlled observations: on 2026-09-04, Linux 6.8.0-136-generic amd64 and
+  GraalVM Community Java 17.0.9 completed the opt-in page, input, and
+  concurrency profiles. Their exact construction, complete policy, modeled
+  memory and temporary-storage high-water marks, accounted elapsed time, wall
+  time, and concurrency are recorded in
+  [the T22 evidence record](capabilities/evidence/T22-worker-recovery-scale.md).
+  These are implementation observations, not independent evidence, a
+  benchmark, whole-process measurement, or certified-platform result.
+- Generated documentation: `docs/generated/capability-matrix.md` and
+  `docs/generated/facade-surface.md` are regenerated deterministically from
+  the two YAML authorities and contain no copied external content. The exact
+  first-party Worker inventory remains generated from project production
+  classes and adds no artifact or external source.
+- Clean-room and excluded inputs: no iText source, binary, resource, fixture,
+  output, decompiled or binary-derived detail, closed add-on material,
+  proprietary differential evidence, unauthorized black-box observation,
+  downloaded large document, third-party recovery/transfer protocol, external
+  scale corpus, or Reference Suite behavioral oracle was used. qpdf was
+  already present locally, while PDFium and ImageMagick were absent from their
+  documented cache paths; no external evidence tool was downloaded,
+  provisioned, or used to convert an incomplete T22 evidence chain into a
+  pass.
+- Scope: T22 adds optional environment-local finite idempotency state and
+  lookup, deterministic recoverable/final classification, no-replay Path and
+  stream uncertainty semantics, bounded authenticated large-value chunking,
+  authenticated public resource observations, and opt-in generated controlled
+  scale profiles. It adds no remote Worker, durable or distributed recovery,
+  automatic retry service, renderer, downstream-ticket behavior, public
+  backend SPI, arbitrary extension mechanism, Migration Facade surface,
+  dependency, product module, cross-Target atomicity, whole-process RSS/native-
+  memory guarantee, kernel-container certification, or physical secure-
+  erasure claim.
+- Compatibility Curator evidence: none; the role remains vacant. The T22
+  syntax, standards, semantic, and visual chains are `INDETERMINATE`; project-
+  authored contracts and controlled observations are implementation evidence
+  only. The T21 compatible-status Dependency Gate and T06 Promotion Gate
+  remain open. T22 therefore remains `experimental` with no compatible or
+  certified-platform claim.
+
 Future changes append or update a scoped record and supply the pull-request
 provenance statement required by [CONTRIBUTING.md](CONTRIBUTING.md).

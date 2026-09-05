@@ -3,6 +3,8 @@ package net.zerocloud.pdf;
 import java.io.InputStream;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Path;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -11,7 +13,7 @@ import java.util.Objects;
  *
  * <p>Path resources are opened and closed by the workflow. Streams and
  * channels remain caller-owned and are never closed by the workflow. Byte
- * sources are defensively copied when declared.</p>
+ * sources are defensively copied and content-digested when declared.</p>
  *
  * @since 0.1.0
  */
@@ -29,6 +31,7 @@ public final class DocumentSource {
     private final InputStream stream;
     private final ReadableByteChannel channel;
     private final byte[] bytes;
+    private final byte[] byteDigest;
     private final long maximumBytes;
     private final PasswordCredential credential;
     private final boolean workflowSnapshot;
@@ -39,6 +42,7 @@ public final class DocumentSource {
             InputStream stream,
             ReadableByteChannel channel,
             byte[] bytes,
+            byte[] byteDigest,
             long maximumBytes,
             PasswordCredential credential,
             boolean workflowSnapshot) {
@@ -47,6 +51,7 @@ public final class DocumentSource {
         this.stream = stream;
         this.channel = channel;
         this.bytes = bytes;
+        this.byteDigest = byteDigest;
         this.maximumBytes = maximumBytes;
         this.credential = credential;
         this.workflowSnapshot = workflowSnapshot;
@@ -62,6 +67,7 @@ public final class DocumentSource {
         return new DocumentSource(
                 Kind.PATH,
                 Objects.requireNonNull(path, "path"),
+                null,
                 null,
                 null,
                 null,
@@ -84,6 +90,7 @@ public final class DocumentSource {
                 Kind.STREAM,
                 null,
                 stream,
+                null,
                 null,
                 null,
                 maximumBytes,
@@ -109,13 +116,16 @@ public final class DocumentSource {
                 null,
                 channel,
                 null,
+                null,
                 maximumBytes,
                 null,
                 false);
     }
 
     /**
-     * Creates a defensively copied bounded byte source.
+     * Creates a defensively copied bounded byte source. Its content digest is
+     * captured with the copy so identified-request admission never rereads the
+     * complete byte array.
      *
      * @param bytes the PDF bytes
      * @param maximumBytes the maximum accepted byte count
@@ -124,12 +134,14 @@ public final class DocumentSource {
     public static DocumentSource bytes(byte[] bytes, long maximumBytes) {
         Objects.requireNonNull(bytes, "bytes");
         requireMaximumBytes(maximumBytes);
+        byte[] copy = Arrays.copyOf(bytes, bytes.length);
         return new DocumentSource(
                 Kind.BYTES,
                 null,
                 null,
                 null,
-                Arrays.copyOf(bytes, bytes.length),
+                copy,
+                digest(copy),
                 maximumBytes,
                 null,
                 false);
@@ -149,6 +161,7 @@ public final class DocumentSource {
                 stream,
                 channel,
                 bytes,
+                byteDigest,
                 maximumBytes,
                 Objects.requireNonNull(credential, "credential"),
                 workflowSnapshot);
@@ -161,6 +174,7 @@ public final class DocumentSource {
                 null,
                 null,
                 null,
+                null,
                 Long.MAX_VALUE,
                 null,
                 true);
@@ -170,6 +184,14 @@ public final class DocumentSource {
         if (maximumBytes < 0L) {
             throw new IllegalArgumentException(
                     "maximumBytes must be non-negative.");
+        }
+    }
+
+    private static byte[] digest(byte[] value) {
+        try {
+            return MessageDigest.getInstance("SHA-256").digest(value);
+        } catch (NoSuchAlgorithmException failure) {
+            throw new IllegalStateException("SHA-256 is unavailable.", failure);
         }
     }
 
@@ -191,6 +213,10 @@ public final class DocumentSource {
 
     byte[] getBytes() {
         return bytes;
+    }
+
+    void updateByteDigest(MessageDigest digest) {
+        digest.update(byteDigest);
     }
 
     long getMaximumBytes() {

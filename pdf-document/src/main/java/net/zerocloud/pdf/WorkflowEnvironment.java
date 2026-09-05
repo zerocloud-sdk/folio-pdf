@@ -16,14 +16,16 @@ import net.zerocloud.pdf.provider.ProviderMetadata;
  * Immutable environment shared by reusable Document Workflow instances.
  *
  * <p>The environment owns deadline and elapsed time, the finite default
- * resource policy, shared concurrency admission, transaction temporary
+ * resource and transaction-retention policies, shared concurrency admission,
+ * retained identified-transaction status, transaction temporary
  * storage, declaration-ordered Capability Provider registrations, and an
  * explicit reusable Reference Font Set instead of exposing them as generic
  * lookups on Document Session. The system defaults contain neither Providers
  * nor fonts and therefore cannot select a remote engine, scan installed fonts,
  * or perform implicit network access. A caller-supplied Clock and every
  * registered Provider must be safe for the way the resulting environment is
- * shared.</p>
+ * shared. Retained transaction status is in-memory and exists only for this
+ * environment's lifetime.</p>
  *
  * @since 0.1.0
  */
@@ -35,6 +37,7 @@ public final class WorkflowEnvironment {
                     ProviderCatalog.empty(),
                     ReferenceFontSet.empty(),
                     WorkflowResourcePolicy.safeDefaults(),
+                    WorkflowTransactionPolicy.safeDefaults(),
                     systemTemporaryDirectory(),
                     HardenedWorkerSettings.safeDefaults(),
                     new SecureRandom(),
@@ -44,18 +47,21 @@ public final class WorkflowEnvironment {
     private final ProviderCatalog providerCatalog;
     private final ReferenceFontSet referenceFontSet;
     private final WorkflowResourcePolicy defaultResourcePolicy;
+    private final WorkflowTransactionPolicy transactionPolicy;
     private final Path temporaryDirectory;
     private final WorkflowConcurrencyGate concurrencyGate;
     private final HardenedWorkerSettings hardenedWorkerSettings;
     private final SecureRandom secureRandom;
     private final WorkflowResourceContext.OwnedMemoryAuthority
             ownedMemoryAuthority;
+    private final WorkflowTransactionRegistry transactionRegistry;
 
     private WorkflowEnvironment(
             Clock clock,
             ProviderCatalog providerCatalog,
             ReferenceFontSet referenceFontSet,
             WorkflowResourcePolicy defaultResourcePolicy,
+            WorkflowTransactionPolicy transactionPolicy,
             Path temporaryDirectory,
             HardenedWorkerSettings hardenedWorkerSettings,
             SecureRandom secureRandom,
@@ -65,11 +71,14 @@ public final class WorkflowEnvironment {
         this.providerCatalog = providerCatalog;
         this.referenceFontSet = referenceFontSet;
         this.defaultResourcePolicy = defaultResourcePolicy;
+        this.transactionPolicy = transactionPolicy;
         this.temporaryDirectory = temporaryDirectory;
         this.concurrencyGate = new WorkflowConcurrencyGate();
         this.hardenedWorkerSettings = hardenedWorkerSettings;
         this.secureRandom = secureRandom;
         this.ownedMemoryAuthority = ownedMemoryAuthority;
+        this.transactionRegistry = new WorkflowTransactionRegistry(
+                transactionPolicy);
     }
 
     /**
@@ -93,6 +102,7 @@ public final class WorkflowEnvironment {
                 ProviderCatalog.empty(),
                 ReferenceFontSet.empty(),
                 WorkflowResourcePolicy.safeDefaults(),
+                WorkflowTransactionPolicy.safeDefaults(),
                 systemTemporaryDirectory(),
                 HardenedWorkerSettings.safeDefaults(),
                 new SecureRandom(),
@@ -125,6 +135,11 @@ public final class WorkflowEnvironment {
      */
     public WorkflowResourcePolicy getDefaultResourcePolicy() {
         return defaultResourcePolicy;
+    }
+
+    /** @return the finite environment-lifetime transaction retention policy */
+    public WorkflowTransactionPolicy getTransactionPolicy() {
+        return transactionPolicy;
     }
 
     /** Returns the immutable local Worker transport and isolation settings. */
@@ -160,6 +175,10 @@ public final class WorkflowEnvironment {
         return ownedMemoryAuthority;
     }
 
+    WorkflowTransactionRegistry getTransactionRegistry() {
+        return transactionRegistry;
+    }
+
     private static Path systemTemporaryDirectory() {
         return Paths.get(System.getProperty("java.io.tmpdir", "."))
                 .toAbsolutePath()
@@ -175,6 +194,8 @@ public final class WorkflowEnvironment {
         private ReferenceFontSet referenceFontSet = ReferenceFontSet.empty();
         private WorkflowResourcePolicy defaultResourcePolicy =
                 WorkflowResourcePolicy.safeDefaults();
+        private WorkflowTransactionPolicy transactionPolicy =
+                WorkflowTransactionPolicy.safeDefaults();
         private Path temporaryDirectory = systemTemporaryDirectory();
         private HardenedWorkerSettings hardenedWorkerSettings =
                 HardenedWorkerSettings.safeDefaults();
@@ -236,6 +257,17 @@ public final class WorkflowEnvironment {
         }
 
         /**
+         * Sets the finite environment-lifetime transaction retention policy.
+         *
+         * @param policy the immutable transaction policy
+         * @return this builder
+         */
+        public Builder transactionPolicy(WorkflowTransactionPolicy policy) {
+            transactionPolicy = Objects.requireNonNull(policy, "policy");
+            return this;
+        }
+
+        /**
          * Sets the existing directory beneath which each transaction creates
          * its private temporary root.
          *
@@ -280,6 +312,7 @@ public final class WorkflowEnvironment {
                     ProviderCatalog.of(providers),
                     referenceFontSet,
                     defaultResourcePolicy,
+                    transactionPolicy,
                     temporaryDirectory,
                     hardenedWorkerSettings,
                     secureRandom,

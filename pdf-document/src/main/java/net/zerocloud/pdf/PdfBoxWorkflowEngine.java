@@ -506,7 +506,8 @@ final class PdfBoxWorkflowEngine {
                 request.getSaveMode(),
                 Collections.<String>emptyList(),
                 receipts,
-                context.providerSelections);
+                context.providerSelections,
+                request.getTransactionId().orElse(null));
     }
 
     private static String outcomeCapabilityId(

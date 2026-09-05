@@ -5,9 +5,10 @@ Folio PDF treats every PDF as potentially malicious. Public limits cover input s
 ## Execution profiles
 
 - In-process execution is for trusted desktop and controlled batch workloads.
-- The opt-in Hardened Worker Profile is the T21 boundary for hostile
+- The opt-in Hardened Worker Profile is the T21/T22 boundary for hostile
   multi-tenant uploads on its supported Linux/JDK envelope. It uses a
-  separately limited local JVM, authenticated length-bounded pipes, a closed
+  separately limited local JVM, authenticated length-bounded frames and
+  bounded authenticated multi-frame values, a closed
   Command/Query schema, private transaction files, hard parent termination,
   an inventory/hash-checked dependency-only runtime class path, contained
   process creation, and denied INET and Unix-domain network access. The
@@ -22,7 +23,9 @@ Folio PDF treats every PDF as potentially malicious. Public limits cover input s
 The current Worker requires Linux `/usr/bin/prlimit` and a JDK 8, 11, 17, or
 21 runtime with the legacy Java Security Manager available. The project makes
 no certified-platform, whole-process RSS/native-memory, physical secure-
-erasure, arbitrary-bytecode sandbox, or post-crash retry claim. See the
+erasure, or arbitrary-bytecode sandbox claim. T22 retry protection is an
+optional finite in-memory ledger in one `WorkflowEnvironment`; it is not a
+durable post-process-crash, cross-host, or distributed recovery service. See the
 [Hardened Worker guide](docs/hardened-worker.md) before production deployment.
 The launcher also requires separate, unshaded Folio PDF production artifacts
 or project-only exploded production class directories; it refuses mixed
@@ -31,6 +34,36 @@ path. First-party class-name inventories and exact dependency-JAR hashes are
 recorded in the [Hardened Worker guide](docs/hardened-worker.md) and
 [dependency record](DEPENDENCIES.md). Classpath paths containing a platform
 delimiter or JVM wildcard syntax are also refused.
+
+Every physical Worker frame remains independently sequence-checked,
+length-bounded, and HMAC-SHA-256-authenticated. A logical value that exceeds
+one configured frame is declared with a direction-unique transfer identity, exact total
+length and chunk count, and SHA-256 digest; chunks repeat the identity and
+ordered index. The complete logical allocation plus one-frame receive scratch
+must fit the shared modeled-memory policy before transfer begins. A standalone
+or trailing transfer control must reserve the same frame scratch before its
+payload allocation; a valid transfer reuses the declaration's reservation.
+Transfer buffers are cleared and reservations released on failure. This is bounded
+in-memory transport, not unbounded streaming or a whole-process memory claim.
+
+Caller-supplied `WorkflowTransactionId` values are application identifiers,
+not authentication keys or secrets. They may be returned in public outcomes,
+failures, and status. The environment-local ledger is finite and non-evicting
+so it never silently forgets a final decision while it remains live; full
+capacity rejects a new identity before caller work. Its defaults bound both
+record count (4,096) and modeled request/status/receipt metadata per record
+(64 KiB), for a 256 MiB aggregate modeled ceiling; this is not a JVM-heap or
+RSS bound. Oversized request metadata is rejected before admission and may
+omit receipts rather than copying an over-limit Target declaration. Byte
+Sources are content-digested with their defensive copy, and bounded request
+fingerprinting occurs outside the synchronized ledger. It retains request-shape
+digests, retained statuses and receipts (including declared Target Paths), and
+weak resource identities, not document bytes, passwords, or strong
+references that keep caller-owned streams, channels, outputs, or credentials
+alive. Applications must not put secrets in an identity and must preserve the
+same callback meaning and mutable Path contents on a recoverable retry. A
+caller-owned Source stream or channel must be restored to the same readable
+position; an unrepeatable one-shot Source is unsuitable for retry.
 
 ## Capability Providers
 
@@ -85,9 +118,10 @@ transaction teardown. The parent clears the descriptor-only initialization
 payload immediately after authenticated `READY`. Normal active-context failure
 envelopes are also accounted. Bootstrap and post-context failures have no live
 transaction ledger and use only a fixed eight-byte allowlisted descriptor,
-independently bounded by the message limit like the fixed eight-byte post-
-context finished control. The same bounded codec is permitted as an emergency
-exception path
+independently bounded by the message limit. An active Worker sends a fixed
+72-byte authenticated resource-usage record before the fixed eight-byte post-
+context finished control. The same bounded failure codec is permitted as an
+emergency exception path
 when a primary failure has already exhausted or poisoned an active modeled
 budget, so the stable cause is not silently replaced by connection loss. Fixed
 12-byte authenticated memory reserve, release, and grant payloads remain outside

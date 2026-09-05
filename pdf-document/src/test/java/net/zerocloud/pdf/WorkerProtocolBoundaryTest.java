@@ -14,6 +14,8 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Clock;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -22,6 +24,8 @@ import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -243,6 +247,327 @@ public final class WorkerProtocolBoundaryTest {
                     receiveFailure(worker.endpoint).getCode());
             worker.assertProductUnchanged();
         }
+    }
+
+    @Test
+    public void authenticatedTransferCrossesOneFrameAtAnExactAggregateBound()
+            throws Exception {
+        final int maximumFrameBytes = 96;
+        final int maximumTransferMemoryBytes = 368;
+        byte[] key = key(63);
+        byte[] exact = new byte[maximumTransferMemoryBytes
+                - maximumFrameBytes];
+        for (int index = 0; index < exact.length; index++) {
+            exact[index] = (byte) (index * 31);
+        }
+        ByteArrayOutputStream wire = new ByteArrayOutputStream();
+        WorkerProtocol.Endpoint sender = WorkerProtocol.endpoint(
+                new ByteArrayInputStream(new byte[0]),
+                wire,
+                key,
+                maximumFrameBytes,
+                maximumTransferMemoryBytes);
+        sender.send(WorkerProtocol.QUERY, exact);
+
+        WorkerProtocol.Endpoint receiver = WorkerProtocol.endpoint(
+                new ByteArrayInputStream(wire.toByteArray()),
+                new ByteArrayOutputStream(),
+                key,
+                maximumFrameBytes,
+                maximumTransferMemoryBytes);
+        WorkerProtocol.Frame received = receiver.receive();
+        try {
+            assertEquals(WorkerProtocol.QUERY, received.getOpcode());
+            assertArrayEquals(exact, received.getPayload());
+        } finally {
+            received.clear();
+            sender.close();
+            receiver.close();
+            Arrays.fill(exact, (byte) 0);
+            Arrays.fill(key, (byte) 0);
+        }
+
+        ByteArrayOutputStream rejectedWire = new ByteArrayOutputStream();
+        WorkerProtocol.Endpoint firstExcess = WorkerProtocol.endpoint(
+                new ByteArrayInputStream(new byte[0]),
+                rejectedWire,
+                key(64),
+                maximumFrameBytes,
+                maximumTransferMemoryBytes);
+        try {
+            firstExcess.send(
+                    WorkerProtocol.QUERY,
+                    new byte[maximumTransferMemoryBytes
+                            - maximumFrameBytes + 1]);
+            org.junit.Assert.fail("Expected the first excess transfer byte");
+        } catch (WorkerProtocol.ProtocolException failure) {
+            assertEquals(
+                    DocumentFailureCode.WORKER_MESSAGE_LIMIT_EXCEEDED,
+                    failure.getCode());
+        } finally {
+            firstExcess.close();
+        }
+        assertEquals(0, rejectedWire.size());
+    }
+
+    @Test
+    public void authenticatedTransferRejectsHostileIdentityOrderLengthAndData()
+            throws Exception {
+        final int maximumFrameBytes = 96;
+        final int maximumTransferMemoryBytes = 368;
+        byte[] authenticationKey = key(65);
+        byte[] value = new byte[maximumTransferMemoryBytes
+                - maximumFrameBytes];
+        for (int index = 0; index < value.length; index++) {
+            value[index] = (byte) (index * 17 + 3);
+        }
+        byte[] encoded = encodedTransfer(
+                authenticationKey,
+                maximumFrameBytes,
+                maximumTransferMemoryBytes,
+                value);
+        List<byte[]> frames = physicalFrames(encoded);
+        assertTrue(frames.size() > 3);
+
+        assertTransferFailure(
+                joinFrames(frames.subList(0, frames.size() - 1)),
+                authenticationKey,
+                maximumFrameBytes,
+                maximumTransferMemoryBytes,
+                DocumentFailureCode.WORKER_PROTOCOL_REJECTED);
+
+        List<byte[]> reordered = copiedFrames(frames);
+        Collections.swap(reordered, 1, 2);
+        assertTransferFailure(
+                joinFrames(reordered),
+                authenticationKey,
+                maximumFrameBytes,
+                maximumTransferMemoryBytes,
+                DocumentFailureCode.WORKER_AUTHENTICATION_FAILED);
+
+        List<byte[]> duplicated = copiedFrames(frames);
+        duplicated.add(2, duplicated.get(1).clone());
+        assertTransferFailure(
+                joinFrames(duplicated),
+                authenticationKey,
+                maximumFrameBytes,
+                maximumTransferMemoryBytes,
+                DocumentFailureCode.WORKER_AUTHENTICATION_FAILED);
+
+        List<byte[]> corrupted = copiedFrames(frames);
+        corrupted.get(1)[40] ^= 1;
+        assertTransferFailure(
+                joinFrames(corrupted),
+                authenticationKey,
+                maximumFrameBytes,
+                maximumTransferMemoryBytes,
+                DocumentFailureCode.WORKER_AUTHENTICATION_FAILED);
+
+        List<byte[]> wrongIdentity = copiedFrames(frames);
+        wrongIdentity.get(1)[20] ^= 1;
+        retag(wrongIdentity.get(1), authenticationKey);
+        assertTransferFailure(
+                joinFrames(wrongIdentity),
+                authenticationKey,
+                maximumFrameBytes,
+                maximumTransferMemoryBytes,
+                DocumentFailureCode.WORKER_PROTOCOL_REJECTED);
+
+        List<byte[]> wrongLength = copiedFrames(frames);
+        writeInt(wrongLength.get(0), 38, value.length - 1);
+        retag(wrongLength.get(0), authenticationKey);
+        assertTransferFailure(
+                joinFrames(wrongLength),
+                authenticationKey,
+                maximumFrameBytes,
+                maximumTransferMemoryBytes,
+                DocumentFailureCode.WORKER_PROTOCOL_REJECTED);
+
+        List<byte[]> wrongIntegrity = copiedFrames(frames);
+        wrongIntegrity.get(1)[40] ^= 1;
+        retag(wrongIntegrity.get(1), authenticationKey);
+        assertTransferFailure(
+                joinFrames(wrongIntegrity),
+                authenticationKey,
+                maximumFrameBytes,
+                maximumTransferMemoryBytes,
+                DocumentFailureCode.WORKER_AUTHENTICATION_FAILED);
+
+        assertTransferFailure(
+                encoded,
+                authenticationKey,
+                maximumFrameBytes,
+                maximumTransferMemoryBytes - 1L,
+                DocumentFailureCode.WORKER_MESSAGE_LIMIT_EXCEEDED);
+
+        Arrays.fill(value, (byte) 0);
+        Arrays.fill(encoded, (byte) 0);
+        Arrays.fill(authenticationKey, (byte) 0);
+    }
+
+    @Test
+    public void trailingTransferChunkRequiresAvailableFrameScratch()
+            throws Exception {
+        final int maximumFrameBytes = 96;
+        final int maximumTransferMemoryBytes = 368;
+        byte[] authenticationKey = key(67);
+        byte[] value = new byte[maximumTransferMemoryBytes
+                - maximumFrameBytes];
+        byte[] encoded = encodedTransfer(
+                authenticationKey,
+                maximumFrameBytes,
+                maximumTransferMemoryBytes,
+                value);
+        List<byte[]> frames = physicalFrames(encoded);
+        byte[] excess = frames.get(1).clone();
+        overwriteSequence(excess, frames.size() + 1L);
+        retag(excess, authenticationKey);
+        frames.add(excess);
+        byte[] hostile = joinFrames(frames);
+
+        WorkflowResourcePolicy defaults =
+                WorkflowResourcePolicy.safeDefaults();
+        WorkflowResourcePolicy policy = WorkflowResourcePolicy.builder()
+                .maximumInputBytes(defaults.getMaximumInputBytes())
+                .maximumPages(defaults.getMaximumPages())
+                .maximumObjects(defaults.getMaximumObjects())
+                .maximumNestingDepth(defaults.getMaximumNestingDepth())
+                .maximumDecompressedBytes(
+                        defaults.getMaximumDecompressedBytes())
+                .maximumDecodedPixels(defaults.getMaximumDecodedPixels())
+                .maximumOwnedMemoryBytes(maximumTransferMemoryBytes)
+                .maximumTemporaryStorageBytes(
+                        defaults.getMaximumTemporaryStorageBytes())
+                .maximumElapsedTime(defaults.getMaximumElapsedTime())
+                .maximumConcurrentWorkflows(
+                        defaults.getMaximumConcurrentWorkflows())
+                .build();
+        WorkflowResourceContext resources = WorkflowResourceContext.open(
+                policy,
+                Clock.systemUTC(),
+                CancellationToken.none(),
+                null,
+                temporaryFolder.newFolder("transfer-excess").toPath());
+        WorkerProtocol.Endpoint receiver = WorkerProtocol.endpoint(
+                new ByteArrayInputStream(hostile),
+                new ByteArrayOutputStream(),
+                authenticationKey,
+                maximumFrameBytes,
+                resources);
+        WorkflowResourceContext.MemoryReservation pressure = null;
+        try {
+            WorkerProtocol.Frame received = receiver.receive();
+            try {
+                assertArrayEquals(value, received.getPayload());
+            } finally {
+                received.clear();
+            }
+            pressure = resources.reserveOwnedMemory(
+                    maximumTransferMemoryBytes - maximumFrameBytes + 1L);
+            try {
+                receiver.receive();
+                org.junit.Assert.fail(
+                        "Expected excess transfer scratch refusal");
+            } catch (WorkerProtocol.ProtocolException failure) {
+                assertEquals(
+                        DocumentFailureCode.MEMORY_LIMIT_EXCEEDED,
+                        failure.getCode());
+            }
+        } finally {
+            if (pressure != null) {
+                pressure.close();
+            }
+            receiver.close();
+            resources.close();
+            Arrays.fill(value, (byte) 0);
+            Arrays.fill(encoded, (byte) 0);
+            Arrays.fill(hostile, (byte) 0);
+            Arrays.fill(authenticationKey, (byte) 0);
+            for (byte[] frame : frames) {
+                Arrays.fill(frame, (byte) 0);
+            }
+        }
+    }
+
+    @Test
+    public void failedAuthenticatedTransferReleasesOwnedMemoryAndStorage()
+            throws Exception {
+        final int maximumFrameBytes = 96;
+        final int maximumTransferMemoryBytes = 368;
+        byte[] authenticationKey = key(66);
+        byte[] value = new byte[maximumTransferMemoryBytes
+                - maximumFrameBytes];
+        byte[] encoded = encodedTransfer(
+                authenticationKey,
+                maximumFrameBytes,
+                maximumTransferMemoryBytes,
+                value);
+        List<byte[]> frames = physicalFrames(encoded);
+        frames.get(1)[40] ^= 1;
+        retag(frames.get(1), authenticationKey);
+        byte[] hostile = joinFrames(frames);
+
+        Path parent = temporaryFolder.newFolder("transfer-cleanup").toPath();
+        Path target = parent.resolve("uncommitted-target.pdf");
+        byte[] sentinel = new byte[] {71, 72, 73};
+        Files.write(target, sentinel);
+        WorkflowResourcePolicy defaults =
+                WorkflowResourcePolicy.safeDefaults();
+        WorkflowResourcePolicy policy = WorkflowResourcePolicy.builder()
+                .maximumInputBytes(defaults.getMaximumInputBytes())
+                .maximumPages(defaults.getMaximumPages())
+                .maximumObjects(defaults.getMaximumObjects())
+                .maximumNestingDepth(defaults.getMaximumNestingDepth())
+                .maximumDecompressedBytes(
+                        defaults.getMaximumDecompressedBytes())
+                .maximumDecodedPixels(defaults.getMaximumDecodedPixels())
+                .maximumOwnedMemoryBytes(maximumTransferMemoryBytes)
+                .maximumTemporaryStorageBytes(
+                        defaults.getMaximumTemporaryStorageBytes())
+                .maximumElapsedTime(defaults.getMaximumElapsedTime())
+                .maximumConcurrentWorkflows(
+                        defaults.getMaximumConcurrentWorkflows())
+                .build();
+        WorkflowResourceContext resources = WorkflowResourceContext.open(
+                policy,
+                Clock.systemUTC(),
+                CancellationToken.none(),
+                null,
+                parent);
+        Path ownedRoot = resources.getTemporaryRoot();
+        WorkerProtocol.Endpoint receiver = WorkerProtocol.endpoint(
+                new ByteArrayInputStream(hostile),
+                new ByteArrayOutputStream(),
+                authenticationKey,
+                maximumFrameBytes,
+                resources);
+        try {
+            try {
+                WorkerProtocol.Frame received = receiver.receive();
+                received.clear();
+                org.junit.Assert.fail("Expected transfer integrity failure");
+            } catch (WorkerProtocol.ProtocolException failure) {
+                assertEquals(
+                        DocumentFailureCode.WORKER_AUTHENTICATION_FAILED,
+                        failure.getCode());
+            }
+            assertEquals(
+                    maximumTransferMemoryBytes,
+                    resources.getRemainingOwnedMemoryBytes());
+            assertArrayEquals(sentinel, Files.readAllBytes(target));
+        } finally {
+            receiver.close();
+            Arrays.fill(value, (byte) 0);
+            Arrays.fill(encoded, (byte) 0);
+            Arrays.fill(hostile, (byte) 0);
+            Arrays.fill(authenticationKey, (byte) 0);
+            for (byte[] frame : frames) {
+                Arrays.fill(frame, (byte) 0);
+            }
+            resources.close();
+        }
+        assertFalse(Files.exists(ownedRoot));
+        assertArrayEquals(sentinel, Files.readAllBytes(target));
     }
 
     @Test
@@ -860,7 +1185,8 @@ public final class WorkerProtocolBoundaryTest {
             short opcode,
             byte[] payload) throws Exception {
         if (payload.length != 0) {
-            byte[] grant = WorkerMessages.encodeMemoryAmount(payload.length);
+            byte[] grant = WorkerMessages.encodeMemoryAmount(
+                    endpoint.requiredReceiveMemory(payload.length));
             try {
                 endpoint.send(WorkerProtocol.MEMORY_GRANTED, grant);
             } finally {
@@ -892,6 +1218,11 @@ public final class WorkerProtocolBoundaryTest {
             }
             if (frame.getOpcode() == WorkerProtocol.MEMORY_RELEASE) {
                 WorkerMessages.decodeMemoryAmount(frame.getPayload());
+                frame.clear();
+                continue;
+            }
+            if (frame.getOpcode() == WorkerProtocol.RESOURCE_USAGE) {
+                WorkerMessages.decodeResourceUsage(frame.getPayload(), null);
                 frame.clear();
                 continue;
             }
@@ -985,6 +1316,115 @@ public final class WorkerProtocolBoundaryTest {
                 key,
                 Math.max(payload.length, 1)).send(opcode, payload);
         return output.toByteArray();
+    }
+
+    private static byte[] encodedTransfer(
+            byte[] key,
+            int maximumFrameBytes,
+            long maximumTransferMemoryBytes,
+            byte[] payload) throws Exception {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        WorkerProtocol.Endpoint endpoint = WorkerProtocol.endpoint(
+                new ByteArrayInputStream(new byte[0]),
+                output,
+                key,
+                maximumFrameBytes,
+                maximumTransferMemoryBytes);
+        try {
+            endpoint.send(WorkerProtocol.QUERY, payload);
+            return output.toByteArray();
+        } finally {
+            endpoint.close();
+        }
+    }
+
+    private static void assertTransferFailure(
+            byte[] encoded,
+            byte[] key,
+            int maximumFrameBytes,
+            long maximumTransferMemoryBytes,
+            DocumentFailureCode expectedCode) throws Exception {
+        WorkerProtocol.Endpoint endpoint = WorkerProtocol.endpoint(
+                new ByteArrayInputStream(encoded),
+                new ByteArrayOutputStream(),
+                key,
+                maximumFrameBytes,
+                maximumTransferMemoryBytes);
+        try {
+            WorkerProtocol.Frame frame = endpoint.receive();
+            frame.clear();
+            org.junit.Assert.fail("Expected a hostile transfer failure");
+        } catch (WorkerProtocol.ProtocolException failure) {
+            assertEquals(expectedCode, failure.getCode());
+        } finally {
+            endpoint.close();
+        }
+    }
+
+    private static List<byte[]> physicalFrames(byte[] encoded) {
+        List<byte[]> frames = new ArrayList<byte[]>();
+        int offset = 0;
+        while (offset < encoded.length) {
+            if (encoded.length - offset < 20) {
+                throw new AssertionError("Truncated encoded frame header");
+            }
+            int payloadLength = readInt(encoded, offset + 16);
+            int frameLength = 20 + payloadLength
+                    + WorkerProtocol.AUTHENTICATION_TAG_BYTES;
+            if (payloadLength < 0 || frameLength < 0
+                    || frameLength > encoded.length - offset) {
+                throw new AssertionError("Invalid encoded frame length");
+            }
+            frames.add(Arrays.copyOfRange(
+                    encoded,
+                    offset,
+                    offset + frameLength));
+            offset += frameLength;
+        }
+        return frames;
+    }
+
+    private static List<byte[]> copiedFrames(List<byte[]> frames) {
+        List<byte[]> copy = new ArrayList<byte[]>(frames.size());
+        for (byte[] frame : frames) {
+            copy.add(frame.clone());
+        }
+        return copy;
+    }
+
+    private static byte[] joinFrames(List<byte[]> frames) {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        for (byte[] frame : frames) {
+            output.write(frame, 0, frame.length);
+        }
+        return output.toByteArray();
+    }
+
+    private static void retag(byte[] frame, byte[] key) throws Exception {
+        int payloadLength = readInt(frame, 16);
+        Mac mac = Mac.getInstance("HmacSHA256");
+        mac.init(new SecretKeySpec(key, "HmacSHA256"));
+        mac.update(frame, 4, 16 + payloadLength);
+        byte[] tag = mac.doFinal();
+        try {
+            System.arraycopy(tag, 0, frame, 20 + payloadLength, tag.length);
+        } finally {
+            Arrays.fill(tag, (byte) 0);
+        }
+    }
+
+    private static int readInt(byte[] source, int offset) {
+        return (source[offset] & 0xff) << 24
+                | (source[offset + 1] & 0xff) << 16
+                | (source[offset + 2] & 0xff) << 8
+                | source[offset + 3] & 0xff;
+    }
+
+    private static void writeInt(byte[] target, int offset, int value) {
+        target[offset] = (byte) (value >>> 24);
+        target[offset + 1] = (byte) (value >>> 16);
+        target[offset + 2] = (byte) (value >>> 8);
+        target[offset + 3] = (byte) value;
     }
 
     private static byte[] header(

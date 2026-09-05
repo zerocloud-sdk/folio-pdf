@@ -17,7 +17,8 @@ import net.zerocloud.pdf.provider.ProviderSelection;
  *
  * <p>The workflow owns document opening, staged publication, validation, and
  * cleanup, finite resource accounting, cooperative cancellation/deadline/time
- * checks, shared-environment concurrency admission, and sanitized progress.
+ * checks, shared-environment concurrency admission, optional environment-local
+ * transaction status, and sanitized progress.
  * Instances contain no per-execution state and may be reused by independent
  * callers; each supplied session remains thread-confined.</p>
  *
@@ -63,6 +64,19 @@ public final class DocumentWorkflow {
         return execute(request, work, null);
     }
 
+    /**
+     * Looks up the environment-retained state of an identified transaction.
+     *
+     * @param transactionId the caller-supplied identity
+     * @return the current detached status, or empty when this environment has
+     *     never admitted the identity
+     */
+    public java.util.Optional<WorkflowTransactionStatus> lookupTransaction(
+            WorkflowTransactionId transactionId) {
+        return environment.getTransactionRegistry().lookup(
+                Objects.requireNonNull(transactionId, "transactionId"));
+    }
+
     <R> WorkflowOutcome<R> executeWithInputResolver(
             WorkflowRequest request,
             DocumentWork<R> work,
@@ -81,6 +95,47 @@ public final class DocumentWorkflow {
             throws DocumentFailure {
         Objects.requireNonNull(request, "request");
         Objects.requireNonNull(work, "work");
+        WorkflowTransactionRegistry.Attempt transaction =
+                environment.getTransactionRegistry().begin(request);
+        WorkflowRequest executingRequest = transaction == null
+                ? request : transaction.trackProgress(request);
+        try {
+            WorkflowOutcome<R> outcome = executeOnce(
+                    executingRequest,
+                    work,
+                    inputResolver);
+            if (transaction != null) {
+                transaction.completed(outcome.getPublicationReceipts());
+            }
+            return outcome;
+        } catch (DocumentFailure failure) {
+            if (transaction == null) {
+                throw failure;
+            }
+            DocumentFailure identified = failure.withTransactionId(
+                    transaction.getTransactionId());
+            transaction.failed(
+                    identified.getCode(),
+                    identified.getPublicationReceipts());
+            throw identified;
+        } catch (RuntimeException failure) {
+            if (transaction != null) {
+                transaction.runtimeFailure();
+            }
+            throw failure;
+        } catch (Error failure) {
+            if (transaction != null) {
+                transaction.runtimeFailure();
+            }
+            throw failure;
+        }
+    }
+
+    private <R> WorkflowOutcome<R> executeOnce(
+            WorkflowRequest request,
+            DocumentWork<R> work,
+            PdfBoxWorkflowEngine.InputResolver inputResolver)
+            throws DocumentFailure {
         WorkflowResourcePolicy policy = request.getResourcePolicy()
                 .orElse(environment.getDefaultResourcePolicy());
         WorkflowConcurrencyGate.Permit permit =
@@ -131,6 +186,8 @@ public final class DocumentWorkflow {
                                 resources,
                                 inputResolver));
             }
+            completedOutcome = completedOutcome.withResourceUsage(
+                    resources.snapshotUsage());
             return completedOutcome;
         } catch (DocumentFailure failure) {
             DocumentFailure reported = withReceipts(failure, request);

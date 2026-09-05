@@ -54,7 +54,7 @@ final class HardenedWorkerEngine {
     private static final String DOCUMENT_CLASS_INVENTORY =
             "META-INF/folio-pdf/document-worker-classes";
     private static final String DOCUMENT_CLASS_INVENTORY_SHA256 =
-            "5cae2b530397a18823848b085499b9c88e6f8ec573eea38df3d7c92eba3dc220";
+            "0e41d0f7efb2520ab707b2c4ddf4f518c1cb16b2cfeea5ff459f59d29f1f69bc";
     private static final String PROVIDER_CLASS_INVENTORY =
             "META-INF/folio-pdf/provider-contract-worker-classes";
     private static final String PROVIDER_CLASS_INVENTORY_SHA256 =
@@ -118,6 +118,24 @@ final class HardenedWorkerEngine {
         }
         return ((ProxyDocumentSession) session).probeOwnedMemoryBoundary(
                 firstExcess);
+    }
+
+    static void terminateWorkerForTest(DocumentSession session) {
+        if (!(session instanceof ProxyDocumentSession)) {
+            throw new IllegalArgumentException(
+                    "Worker termination probes require a Hardened Worker Session.");
+        }
+        ((ProxyDocumentSession) session).terminateWorkerForTest();
+    }
+
+    static Void requestMalformedResponseForTest(DocumentSession session)
+            throws DocumentFailure {
+        if (!(session instanceof ProxyDocumentSession)) {
+            throw new IllegalArgumentException(
+                    "Protocol fault probes require a Hardened Worker Session.");
+        }
+        ((ProxyDocumentSession) session).requestMalformedResponseForTest();
+        return null;
     }
 
     static <R> WorkflowOutcome<R> execute(
@@ -240,6 +258,7 @@ final class HardenedWorkerEngine {
                 finished.clear();
             }
             connection.requireExited();
+            resources.mergeWorkerUsage(connection.requireWorkerResourceUsage());
 
             List<Path> products = new ArrayList<Path>(targetPaths.size());
             for (Path product : targetPaths.values()) {
@@ -298,7 +317,8 @@ final class HardenedWorkerEngine {
                 request.getSaveMode(),
                 Collections.<String>emptyList(),
                 receipts,
-                providerSelections);
+                providerSelections,
+                request.getTransactionId().orElse(null));
     }
 
     private static Map<String, Path> stagePrimarySource(
@@ -364,6 +384,17 @@ final class HardenedWorkerEngine {
                 ? Long.MAX_VALUE : left + right;
     }
 
+    private static int maximumEncodedValueBytes(
+            WorkflowResourceContext resources,
+            int maximumMessageBytes) {
+        long maximumChunkedPayload = resources.getPolicy()
+                .getMaximumOwnedMemoryBytes() - maximumMessageBytes;
+        long maximum = Math.max(
+                (long) maximumMessageBytes,
+                maximumChunkedPayload);
+        return (int) Math.min(Integer.MAX_VALUE, Math.max(0L, maximum));
+    }
+
     private static void writeLong(byte[] target, int offset, long value) {
         for (int index = 0; index < 8; index++) {
             target[offset + index] = (byte) (value >>> (56 - 8 * index));
@@ -415,6 +446,7 @@ final class HardenedWorkerEngine {
         private final WorkerConnection connection;
         private final WorkflowResourceContext resources;
         private final int maximumMessageBytes;
+        private final int maximumValueBytes;
         private final Object sessionIdentity = new Object();
         private final WorkerReferenceRegistry references =
                 WorkerReferenceRegistry.forProxy(sessionIdentity);
@@ -431,6 +463,9 @@ final class HardenedWorkerEngine {
             this.connection = connection;
             this.resources = resources;
             this.maximumMessageBytes = maximumMessageBytes;
+            this.maximumValueBytes = maximumEncodedValueBytes(
+                    resources,
+                    maximumMessageBytes);
             this.fontSources = new WorkerFontSourceCache(
                     resources,
                     referenceFonts);
@@ -482,7 +517,7 @@ final class HardenedWorkerEngine {
 
                 @Override
                 public int maximumMessageBytes() {
-                    return ProxyDocumentSession.this.maximumMessageBytes;
+                    return ProxyDocumentSession.this.maximumValueBytes;
                 }
             };
         }
@@ -538,7 +573,7 @@ final class HardenedWorkerEngine {
                         preflight = WorkerCommandCodec.encodePreflight(
                                 copied.get(index),
                                 resources,
-                                maximumMessageBytes);
+                                maximumValueBytes);
                     } catch (DocumentFailure failure) {
                         throw abortCommandBatchPreserving(abort, failure);
                     }
@@ -573,7 +608,7 @@ final class HardenedWorkerEngine {
                                             detailKind,
                                             fontSources,
                                             resources,
-                                            maximumMessageBytes);
+                                            maximumValueBytes);
                         } catch (DocumentFailure failure) {
                             throw abortCommandBatchPreserving(
                                     abort,
@@ -600,7 +635,7 @@ final class HardenedWorkerEngine {
                                 references,
                                 fontSources,
                                 resources,
-                                maximumMessageBytes);
+                                maximumValueBytes);
                     } catch (WorkerCommandCodec.CommandEncodingFailure failure) {
                         throw abortCommandBatchPreserving(
                                 abort,
@@ -870,7 +905,7 @@ final class HardenedWorkerEngine {
             byte[] preflight = WorkerQueryCodec.encodePreflight(
                     query,
                     resources,
-                    maximumMessageBytes);
+                    maximumValueBytes);
             WorkerProtocol.Frame preflightResponse;
             try {
                 preflightResponse = connection.exchange(
@@ -898,7 +933,7 @@ final class HardenedWorkerEngine {
                         query,
                         references,
                         resources,
-                        maximumMessageBytes);
+                        maximumValueBytes);
             } catch (DocumentFailure failure) {
                 throw connection.terminalIfWorkerFailure(failure);
             }
@@ -967,6 +1002,28 @@ final class HardenedWorkerEngine {
         private IsolationProbe probeIsolation(String siblingRootName)
                 throws DocumentFailure {
             return probeIsolation(siblingRootName, 0L);
+        }
+
+        private void terminateWorkerForTest() {
+            requireActiveOwner();
+            connection.terminateForTest();
+        }
+
+        private void requestMalformedResponseForTest()
+                throws DocumentFailure {
+            requireActiveOwner();
+            WorkerProtocol.Frame response = connection.exchange(
+                    WorkerProtocol.MALFORMED_RESPONSE_PROBE,
+                    new byte[0]);
+            try {
+                requireOpcode(
+                        response,
+                        WorkerProtocol.MALFORMED_RESPONSE_COMPLETED);
+            } catch (DocumentFailure failure) {
+                throw connection.terminalIfWorkerFailure(failure);
+            } finally {
+                response.clear();
+            }
         }
 
         private IsolationProbe probeIsolation(
@@ -1155,6 +1212,7 @@ final class HardenedWorkerEngine {
         private final WorkerProtocol.Endpoint endpoint;
         private final WorkflowResourceContext resources;
         private final int maximumMessageBytes;
+        private final int maximumValueBytes;
         private final ExecutorService reader;
         private final ScheduledExecutorService watchdog;
         private final WorkflowRequest request;
@@ -1166,6 +1224,7 @@ final class HardenedWorkerEngine {
         private boolean materializedOutputOwnerCredential;
         private boolean materializedOutputUserCredential;
         private WorkerFontSourceCache fontSources;
+        private WorkflowResourceUsage workerResourceUsage;
         private int nextDeferredSource;
         private long childOwnedMemoryBytes;
         private long bootstrapMemoryBytes;
@@ -1189,6 +1248,9 @@ final class HardenedWorkerEngine {
             this.resources = resources;
             this.request = request;
             this.maximumMessageBytes = maximumMessageBytes;
+            this.maximumValueBytes = maximumEncodedValueBytes(
+                    resources,
+                    maximumMessageBytes);
             this.childOwnedMemoryBytes = bootstrapMemoryBytes;
             this.bootstrapMemoryBytes = bootstrapMemoryBytes;
             for (String name : sourcePaths.keySet()) {
@@ -1343,7 +1405,8 @@ final class HardenedWorkerEngine {
                 boolean synchronizeMemory) throws DocumentFailure {
             try {
                 if (opcode != WorkerProtocol.INITIALIZE) {
-                    grantChildMemory(payload.length);
+                    grantChildMemory(
+                            endpoint.requiredReceiveMemory(payload.length));
                 }
                 endpoint.send(opcode, payload);
             } catch (WorkerProtocol.ProtocolException failure) {
@@ -1372,6 +1435,25 @@ final class HardenedWorkerEngine {
                         try {
                             releaseChildMemory(WorkerMessages
                                     .decodeMemoryAmount(frame.getPayload()));
+                        } finally {
+                            frame.clear();
+                        }
+                        response = receive();
+                        continue;
+                    }
+                    if (frame.getOpcode() == WorkerProtocol.RESOURCE_USAGE) {
+                        try {
+                            if (opcode != WorkerProtocol.FINISH
+                                    || workerResourceUsage != null) {
+                                throw WorkerCodecIO.workerFailure(
+                                        DocumentFailureCode
+                                                .WORKER_PROTOCOL_REJECTED,
+                                        "The Worker resource usage is inapplicable.");
+                            }
+                            workerResourceUsage =
+                                    WorkerMessages.decodeResourceUsage(
+                                            frame.getPayload(),
+                                            resources);
                         } finally {
                             frame.clear();
                         }
@@ -1564,6 +1646,16 @@ final class HardenedWorkerEngine {
             }
         }
 
+        private WorkflowResourceUsage requireWorkerResourceUsage()
+                throws DocumentFailure {
+            if (workerResourceUsage == null) {
+                throw terminalIfWorkerFailure(WorkerCodecIO.workerFailure(
+                        DocumentFailureCode.WORKER_PROTOCOL_REJECTED,
+                        "The Worker resource usage is missing."));
+            }
+            return workerResourceUsage;
+        }
+
         private static boolean isQuiescentResponse(short opcode) {
             return opcode == WorkerProtocol.READY
                     || opcode == WorkerProtocol.COMMANDS_ACCEPTED
@@ -1706,7 +1798,7 @@ final class HardenedWorkerEngine {
                     canonicalName,
                     path,
                     resources,
-                    maximumMessageBytes);
+                    maximumValueBytes);
             sendInputResponse(
                     WorkerProtocol.SOURCE_MATERIALIZED,
                     responsePayload);
@@ -1771,7 +1863,7 @@ final class HardenedWorkerEngine {
                     sourceName,
                     credential,
                     resources,
-                    maximumMessageBytes);
+                    maximumValueBytes);
             sendInputResponse(
                     WorkerProtocol.CREDENTIAL_MATERIALIZED,
                     responsePayload);
@@ -1785,7 +1877,7 @@ final class HardenedWorkerEngine {
                         identifier,
                         value,
                         resources,
-                        maximumMessageBytes);
+                        maximumValueBytes);
                 sendInputResponse(WorkerProtocol.FONT_VALUE, responsePayload);
             } catch (DocumentFailure failure) {
                 byte[] responsePayload = WorkerMessages.encodeFailure(
@@ -1801,7 +1893,8 @@ final class HardenedWorkerEngine {
         private void sendInputResponse(short opcode, byte[] payload)
                 throws DocumentFailure {
             try {
-                grantChildMemory(payload.length);
+                grantChildMemory(
+                        endpoint.requiredReceiveMemory(payload.length));
                 endpoint.send(opcode, payload);
             } catch (WorkerProtocol.ProtocolException failure) {
                 throw protocolFailure(failure);
@@ -1868,6 +1961,10 @@ final class HardenedWorkerEngine {
                     | WorkerProtocol.ProtocolException ignored) {
                 // Teardown below remains authoritative.
             }
+        }
+
+        private void terminateForTest() {
+            process.destroyForcibly();
         }
 
         void requireExited() throws DocumentFailure {

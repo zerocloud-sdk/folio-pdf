@@ -1,14 +1,18 @@
 # Hardened Worker profile
 
-T21 adds an opt-in local process boundary to the existing Document Workflow.
-Callers keep the same callback shape and explicitly select
+T21 adds an opt-in local process boundary to the existing Document Workflow;
+T22 adds environment-local idempotent recovery, authenticated large-value
+transport, public resource high-water marks, and controlled Foundation-scale
+profiles to that boundary. Callers keep the same callback shape and explicitly select
 `WorkflowExecutionProfile.HARDENED_WORKER` on the request. The callback,
 progress listener, caller result, caller-owned streams and channels, Capability
 Provider selection, and final publication all remain in the caller JVM. Only
 library-owned Commands, Queries, and closed project values cross the boundary.
 
 ```java
+WorkflowEnvironment environment = WorkflowEnvironment.builder().build();
 WorkflowRequest request = WorkflowRequest.builder()
+        .transactionId(WorkflowTransactionId.of("upload-2026-09-04-001"))
         .source("upload", DocumentSource.path(upload))
         .primarySource("upload")
         .target("result", PublicationTarget.path(result))
@@ -16,16 +20,23 @@ WorkflowRequest request = WorkflowRequest.builder()
         .executionProfile(WorkflowExecutionProfile.HARDENED_WORKER)
         .build();
 
-WorkflowOutcome<Integer> outcome = new DocumentWorkflow().execute(
+DocumentWorkflow workflow = new DocumentWorkflow(environment);
+WorkflowOutcome<Integer> outcome = workflow.execute(
         request,
         session -> {
             session.execute(AddBlankPage.INSTANCE);
             return session.query(PageCount.INSTANCE);
         });
+
+WorkflowTransactionStatus status = workflow.lookupTransaction(
+        WorkflowTransactionId.of("upload-2026-09-04-001")).get();
+WorkflowResourceUsage usage = outcome.getResourceUsage();
 ```
 
-A successful outcome reports `HARDENED_WORKER`. `IN_PROCESS` remains the
-default for source and binary compatibility.
+A successful outcome reports `HARDENED_WORKER`, its optional transaction
+identity, and the observed resource usage. `IN_PROCESS` remains the default
+for source and binary compatibility; transaction identities are accepted only
+with `HARDENED_WORKER`.
 
 ## Protocol and ordering
 
@@ -43,12 +54,38 @@ The default payload maximum is 64 MiB and is configurable with immutable
 `HardenedWorkerSettings` on `WorkflowEnvironment`. There is no Java object
 serialization, dynamic class name, lambda, reflection target, script, raw PDF
 operator, or arbitrary URI field. Version-1 codecs enumerate all Commands and
-Queries owned by `PdfBoxDocumentSession` at the T21 fixed point. Unknown
+Queries owned by `PdfBoxDocumentSession` at the T22 fixed point. Unknown
 versions, opcodes, value tags, enum values, trailing data, and caller-defined
 Command or Query implementations are rejected with stable failures. Protocol
 Strings carry length-bounded UTF-16 code units rather than a replacement-prone
 character conversion, so invalid surrogate input reaches the same public
 domain validator and stable failure in both profiles.
+
+The configured message maximum bounds every physical frame, not every logical
+application value. A logical payload larger than one frame uses an
+authenticated transfer declaration followed by authenticated chunks. The
+declaration fixes the original application opcode, a direction-unique 128-bit transfer
+identity, total byte length, exact chunk count, and SHA-256 digest. Each chunk
+repeats the transfer identity and its zero-based index; its expected length is
+derived from the declaration. Ordinary frame version, sequence, length, and
+HMAC checks still apply to every declaration and chunk.
+
+The sender computes the complete digest and preflights the receiver's modeled
+peak—logical payload plus one maximum-sized physical frame—before writing the
+declaration. The receiver checks the aggregate bound before allocating the
+logical payload. Every top-level transfer declaration or chunk must first
+reserve one maximum-frame scratch allowance before its payload is allocated;
+a valid declaration carries that reservation through all expected chunks
+while the logical payload is separately reserved. Thus a stray or trailing
+transfer control cannot bypass owned-memory admission. The receiver then
+accepts only the declared identity, order, count, lengths, and digest.
+Missing, reordered, duplicated, corrupted, wrong-identity, wrong-length,
+wrong-digest, or excess data fails with `WORKER_PROTOCOL_REJECTED`,
+`WORKER_AUTHENTICATION_FAILED`, or `WORKER_MESSAGE_LIMIT_EXCEEDED` as
+appropriate. Logical and chunk buffers are cleared and resource reservations
+are released on every exit. Transfers do not use a staging file and occur
+before parent-owned publication, so a transfer failure cannot mutate an
+uncommitted Target.
 
 `DocumentSession.executeBatch` has two closed transport shapes. A batch made
 only of `AddBlankPage`, `InsertBlankPage`, `CopyPages`, `MovePages`, and
@@ -90,12 +127,6 @@ caller's listener synchronously on the caller execution thread, then checks
 the original environment Clock, deadline, and cancellation state before
 allowing the Worker to continue. All other progress phases remain parent-owned.
 
-Large-value staging, chunking, idempotent transaction identities, lost-
-acknowledgement recovery, and uncertain-publication lookup are deliberately
-not part of T21; those are T22 concerns. A caller must not treat an abnormal
-process loss as safely retryable unless its own application protocol supplies
-that guarantee.
-
 ## Files, publication, and credentials
 
 Before launch, the parent copies the primary Source, when present, to a
@@ -129,6 +160,75 @@ unchanged on Worker, protocol, caller, validation, or staging failure. Ordered
 publication receipts, stream partial-output reporting, lack of cross-Target
 atomicity, explicit Save Mode, and caller ownership are the same as for the
 in-process profile.
+
+## Transaction recovery and uncertainty
+
+`WorkflowTransactionId` is an optional application identifier containing one
+to 128 URL-safe ASCII characters. It is not the protocol authentication key,
+is not secret, and may appear in application-visible outcomes, failures, and
+status. An identity is scoped to the exact `WorkflowEnvironment` used by the
+`DocumentWorkflow`; lookup from a different environment returns empty. The
+environment owns a finite, non-evicting in-memory ledger configured by
+`WorkflowTransactionPolicy`. The defaults allow 4,096 records and 64 KiB of
+modeled retained metadata per record, an aggregate modeled ceiling of 256 MiB.
+The per-record model covers the retained request shape, weak resource
+identities, status, and receipts; it is not JVM heap or process RSS. Once the
+record count is full or one request exceeds its per-record bound, the ledger
+rejects the new identity before callback or publication with
+`TRANSACTION_RETENTION_LIMIT_EXCEEDED`. Destroying the environment loses the
+ledger: there is no disk log, restart recovery, global registry, or distributed
+transaction protocol.
+
+Admission performs a cheap ledger-capacity check, then computes the bounded
+request fingerprint outside the synchronized ledger. Byte Sources are
+content-digested when their defensive copy is declared, so admission never
+rescans an entire byte Source and cannot hold up lookup behind that work. An
+oversized request creates no status and may report no receipts because copying
+the Target declaration would itself exceed its retention bound. After bounded
+admission and before resource-concurrency admission, an identified request
+records `RUNNING`. `lookupTransaction` returns its immutable retained
+`WorkflowTransactionStatus`, including declaration-ordered Publication
+Receipts and any stable failure code. The states are:
+
+- `RUNNING`: an accepted attempt is active; another submission fails with
+  `TRANSACTION_IN_PROGRESS` before caller work.
+- `RECOVERABLE`: the attempt ended with a cancellation, deadline, elapsed-time,
+  concurrency, Worker-unavailable, authentication, protocol, or termination
+  failure and every receipt remains `NOT_ATTEMPTED`. Submitting the same
+  logical request may start one new attempt with fresh deadline,
+  cancellation, progress-listener, and resource-policy controls.
+- `COMPLETED`: all products were committed. A repeated submission fails with
+  `TRANSACTION_ALREADY_FINAL` and cannot execute or publish again.
+- `FAILED`: the outcome is terminal, including any attempted or possibly
+  partial publication. A repeated submission also fails with
+  `TRANSACTION_ALREADY_FINAL` and cannot replay output.
+
+The identity binds execution profile, Save Mode, primary Source name, ordered
+Source and Target declarations, Path locations, precomputed byte-source content
+digests,
+caller-owned stream/channel/output and credential object identities, output
+security, and Provider preferences and authorizations. A conflicting envelope
+fails with `TRANSACTION_IDENTITY_MISMATCH`. Deadline, cancellation, progress
+listener, and resource policy are attempt controls and may be refreshed. The
+callback itself and mutable data at a Path cannot be fingerprinted: the
+application must keep their logical meaning unchanged for every attempt under
+one identity. A retry that uses a caller-owned Source stream or channel must
+also restore that same object's readable position; an unrepeatable one-shot
+Source is unsuitable for retry. The ledger holds weak references to caller-owned streams,
+channels, outputs, and credentials, so status retention does not keep those
+resources alive; if such an identity is no longer resolvable, a retry is
+treated as a mismatch.
+
+Publication remains ordered and non-atomic across Targets. Progress observed
+by the parent updates retained receipts as each Target commits. If the caller
+loses the acknowledgement after every Target committed, lookup reports
+`COMPLETED` with those exact ordered receipts, and retry resolves that final
+state before callback or publication. The same rule applies to a fully
+committed stream Target. A stream write that may have emitted partial bytes is
+recorded `FAILED` with `partialOutputPossible=true`; it is terminal because a
+stream cannot be inspected or rolled back safely. A recognized recoverable
+failure can retry a Path only while its receipt is `NOT_ATTEMPTED`. Folio PDF
+does not automatically retry any transaction.
 
 The initialization message carries only password-security descriptors and
 booleans that identify which Sources have credentials; credential characters
@@ -197,7 +297,7 @@ JDK compilers while rejecting any missing or additional class entry.
 
 | Artifact | Inventory resource | Entries | Inventory SHA-256 |
 | --- | --- | ---: | --- |
-| `pdf-document` | `META-INF/folio-pdf/document-worker-classes` | 557 | `5cae2b530397a18823848b085499b9c88e6f8ec573eea38df3d7c92eba3dc220` |
+| `pdf-document` | `META-INF/folio-pdf/document-worker-classes` | 571 | `0e41d0f7efb2520ab707b2c4ddf4f518c1cb16b2cfeea5ff459f59d29f1f69bc` |
 | `pdf-provider-contract` | `META-INF/folio-pdf/provider-contract-worker-classes` | 20 | `c7a7bb193dcfa656ba13af311ce2d7654a5aaac962b8804481a77d14013a25b6` |
 
 Every third-party entry must be a regular JAR whose complete bytes have the
@@ -228,7 +328,7 @@ native-memory ceiling, RLIMIT_CPU is not a wall clock, and the Java Security
 Manager is unavailable in newer JDKs that permanently disable it. Deployment
 must treat `WORKER_UNAVAILABLE` as a hard refusal, not silently fall back to
 `IN_PROCESS`. Stronger OS container, cgroup, seccomp, or MAC profiles may be
-layered by an operator, but Folio PDF does not certify one in T21.
+layered by an operator, but Folio PDF does not certify one.
 
 The T20 `WorkflowResourcePolicy` still governs input, pages, objects, nesting,
 decompression, pixels, modeled owned memory, aggregate temporary storage,
@@ -254,6 +354,8 @@ the aggregate ledger without running caller Clock policy on the reader thread.
 Active-context application payload buffers, decoded String/byte defensive
 copies, decoded collection capacity, credential copies, and normal failure
 envelopes are reserved before allocation and released at their actual lifetime.
+Transfer declarations and chunks use the admitted maximum-frame scratch
+described above, including when a transfer control is unexpected or trailing.
 The authenticated memory reserve, release, and grant controls are the sole
 active control-plane exception: each has a fixed 12-byte payload allocated
 outside the ledger so accounting the ledger protocol cannot recurse, and each
@@ -264,14 +366,71 @@ remains charged after `READY` for the active transaction. Counts are checked
 against remaining wire bytes and charged conservatively before capacity-bearing
 arrays or collections are created. Pre-context bootstrap failures and post-
 context failures use a fixed eight-byte allowlisted descriptor, independently
-message-bounded because no transaction ledger is live. The post-context
-`FINISHED` control is likewise fixed at eight bytes and contains only a version
-and allowlisted capability token. If a primary resource failure
+message-bounded because no resource ledger is live. After its execution
+context closes, the Worker sends one authenticated fixed 72-byte resource-
+usage control. The post-context `FINISHED` control remains fixed at eight bytes and
+contains only a version and allowlisted capability token. If a primary resource failure
 has already poisoned or exhausted an active context, the fixed failure codec
 may use the bounded emergency reporting path solely to preserve that cause. A
 Worker crash, authentication failure, unsupported message, message-limit
 failure, or unavailable launcher has a distinct stable `DocumentFailureCode`
 and a fixed content-free diagnostic.
+
+## Resource observations and controlled scale profiles
+
+Every successful `WorkflowOutcome` includes a detached
+`WorkflowResourceUsage`. It reports accepted Source bytes, observed pages and
+objects, decoded-stream bytes, decoded pixels, peak modeled Folio-owned memory,
+peak transaction temporary storage, and elapsed time observed through the
+environment Clock. Parent and authenticated child observations are combined;
+`isWithin(policy)` compares every represented value with its inclusive policy
+bound. Nesting and concurrency are admission properties and are not represented
+by one workflow's usage value. These observations do not measure JVM heap,
+process RSS, native/backend allocations, operating-system cache, or kernel
+resource consumption.
+
+The opt-in command below generates all T22 workloads at run time and retains no
+large fixture:
+
+```text
+./scripts/t22-scale all
+```
+
+`pages`, `input`, and `concurrency` may replace `all` to select one profile.
+The command prints a machine-readable `T22_SCALE` line containing the exact
+platform, input construction, complete policy, usage, wall time, and configured
+concurrency. The profiles exercise only the public workflow, result, failure,
+transaction-status, receipt, and file seams:
+
+- `pages` builds 5,000 project-owned `AddBlankPage` commands, publishes the
+  product, reopens it through another Worker workflow, and observes exactly
+  5,000 pages.
+- `input` uses a constant-memory clean-room `InputStream` that emits an exact
+  1-GiB PDF from a header, newline fill, and valid one-page xref tail. It proves
+  exact source consumption, one-page semantics, caller ownership, quota
+  accounting, and transaction-root cleanup without committing the input.
+- `concurrency` holds two public workflows under a policy limit of two,
+  observes both admissions, rejects the first excess before callback or
+  publication with `CONCURRENCY_LIMIT_EXCEEDED`, and successfully retries its
+  retained `RECOVERABLE` identity after capacity is released.
+
+On 2026-09-04 the three profiles passed on Linux 6.8.0-136-generic amd64 with
+GraalVM Community Java 17.0.9. They used the safe-default bounds: 1,073,741,824
+input bytes; 5,000 pages; 2,000,000 objects; nesting 16,384;
+4,294,967,296 decoded bytes; 1,000,000,000 pixels; 268,435,456 modeled-owned-
+memory bytes; 4,294,967,296 temporary bytes; five minutes; and concurrency
+four, except that the concurrency profile deliberately set concurrency two.
+
+| Profile | Result usage | Accounted elapsed | Wall time |
+| --- | --- | ---: | ---: |
+| 5,000 pages | input 0; pages 5,000; objects 5,001; decompressed/pixels 0; peak modeled memory 105,676 B; peak temporary 391,570 B | 34.934889449 s | 34,936 ms |
+| 1-GiB input | input 1,073,741,824 B; pages 1; objects 3; decompressed/pixels 0; peak modeled memory 1,072 B; peak temporary 1,073,741,824 B | 4.960837881 s | 5,048 ms |
+| concurrency 2 | retried workflow input 0; pages 1; objects 2; decompressed/pixels 0; peak modeled memory 784 B; peak temporary 12,893 B | 0.45396107 s | 1,236 ms |
+
+Each reported usage was within the declared modeled-memory, temporary-storage,
+and elapsed bounds. These are controlled implementation observations for one
+platform, not a whole-process resource measurement, cross-platform benchmark,
+compatible-status Acceptance Evidence chain, or certified-platform claim.
 
 ## Capability Providers and exclusions
 
@@ -281,7 +440,9 @@ require capability-scoped Remote Disclosure Authorization; choosing the
 Hardened Worker profile neither grants disclosure nor gives the Worker network
 access.
 
-T21 adds no remote Worker, public backend SPI, user extension mechanism,
-rendering, crash recovery, scale certification, Migration Facade mapping, or
-independent Acceptance Evidence. The capability remains `experimental` with
-an empty certified-platform list.
+T22 adds no remote Worker, durable or cross-environment recovery store,
+automatic retry service, public backend SPI, user extension mechanism,
+renderer, Migration Facade mapping, or independent standards, semantic,
+syntax, or visual Acceptance Evidence. It does not make publication atomic
+across Targets. The capability remains `experimental` with an empty
+certified-platform list.
