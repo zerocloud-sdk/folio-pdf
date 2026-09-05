@@ -49,6 +49,8 @@ final class WorkerProtocol {
     static final short MEMORY_RELEASE = 21;
     static final short MEMORY_SYNCHRONIZE = 22;
     static final short MALFORMED_RESPONSE_PROBE = 23;
+    static final short TEMPORARY_RESERVE = 24;
+    static final short TEMPORARY_RELEASE = 25;
 
     static final short READY = 101;
     static final short COMMAND_COMPLETED = 102;
@@ -72,6 +74,7 @@ final class WorkerProtocol {
     static final short MEMORY_SYNCHRONIZED = 120;
     static final short MALFORMED_RESPONSE_COMPLETED = 121;
     static final short RESOURCE_USAGE = 122;
+    static final short TEMPORARY_GRANTED = 123;
 
     private WorkerProtocol() {
     }
@@ -225,7 +228,7 @@ final class WorkerProtocol {
                 sendFrame(opcode, requiredPayload);
                 return;
             }
-            if (isMemoryControl(opcode)
+            if (isResourceControl(opcode)
                     || isTransferOpcode(opcode)
                     || maximumPayloadBytes < TRANSFER_START_BYTES
                     || maximumPayloadBytes <= TRANSFER_CHUNK_HEADER_BYTES
@@ -454,7 +457,7 @@ final class WorkerProtocol {
                     }
                     applicationOpcode = readShort(start, 0);
                     if (isTransferOpcode(applicationOpcode)
-                            || isMemoryControl(applicationOpcode)) {
+                            || isResourceControl(applicationOpcode)) {
                         throw new ProtocolException(
                                 DocumentFailureCode.WORKER_PROTOCOL_REJECTED,
                                 "The Worker transfer opcode is invalid.");
@@ -567,9 +570,14 @@ final class WorkerProtocol {
 
         synchronized void receiveMemoryGrant(long expectedAmount)
                 throws IOException, ProtocolException {
+            receiveResourceGrant(MEMORY_GRANTED, expectedAmount);
+        }
+
+        synchronized void receiveResourceGrant(short expectedOpcode, long expectedAmount)
+                throws IOException, ProtocolException {
             Frame frame = receiveFrame();
             try {
-                if (frame.getOpcode() != MEMORY_GRANTED
+                if (frame.getOpcode() != expectedOpcode
                         || WorkerMessages.decodeMemoryAmount(
                                 frame.getPayload()) != expectedAmount) {
                     throw new ProtocolException(
@@ -621,7 +629,7 @@ final class WorkerProtocol {
                         DocumentFailureCode.WORKER_PROTOCOL_REJECTED,
                         "The Worker frame length is invalid.");
             }
-            boolean memoryControl = isMemoryControl(opcode);
+            boolean memoryControl = isResourceControl(opcode);
             boolean transferControl = isTransferOpcode(opcode);
             if (memoryControl
                     && payloadLength != WorkerMessages.MEMORY_AMOUNT_BYTES) {
@@ -823,10 +831,13 @@ final class WorkerProtocol {
         }
     }
 
-    private static boolean isMemoryControl(short opcode) {
+    private static boolean isResourceControl(short opcode) {
         return opcode == MEMORY_RESERVE
                 || opcode == MEMORY_RELEASE
-                || opcode == MEMORY_GRANTED;
+                || opcode == MEMORY_GRANTED
+                || opcode == TEMPORARY_RESERVE
+                || opcode == TEMPORARY_RELEASE
+                || opcode == TEMPORARY_GRANTED;
     }
 
     private static boolean isTransferOpcode(short opcode) {

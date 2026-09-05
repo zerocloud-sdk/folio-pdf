@@ -297,7 +297,7 @@ JDK compilers while rejecting any missing or additional class entry.
 
 | Artifact | Inventory resource | Entries | Inventory SHA-256 |
 | --- | --- | ---: | --- |
-| `pdf-document` | `META-INF/folio-pdf/document-worker-classes` | 571 | `0e41d0f7efb2520ab707b2c4ddf4f518c1cb16b2cfeea5ff459f59d29f1f69bc` |
+| `pdf-document` | `META-INF/folio-pdf/document-worker-classes` | 601 | `6755b30eae00e6c0c4ee773568ef85540aa2ba96b342499f98f5040553ed6d27` |
 | `pdf-provider-contract` | `META-INF/folio-pdf/provider-contract-worker-classes` | 20 | `c7a7bb193dcfa656ba13af311ce2d7654a5aaac962b8804481a77d14013a25b6` |
 
 Every third-party entry must be a regular JAR whose complete bytes have the
@@ -333,8 +333,10 @@ layered by an operator, but Folio PDF does not certify one.
 The T20 `WorkflowResourcePolicy` still governs input, pages, objects, nesting,
 decompression, pixels, modeled owned memory, aggregate temporary storage,
 elapsed time, and shared concurrency. The child receives the same non-time
-semantic bounds, with its temporary-storage allowance reduced by parent-owned
-staging already live in the transaction. The parent remains authoritative for
+semantic bounds. Authenticated temporary-storage grants enforce the same live
+parent/child limit before child file and cache growth; a retained parent PNG
+reduces immediately available capacity. Parent-owned Source snapshots are
+borrowed by the child and charged once. The parent remains authoritative for
 elapsed time and deadlines because an injected Clock cannot be reconstructed
 faithfully in another process. The injected Clock is sampled only on the caller
 execution thread. The same configured maximum duration also supplies a
@@ -356,7 +358,7 @@ copies, decoded collection capacity, credential copies, and normal failure
 envelopes are reserved before allocation and released at their actual lifetime.
 Transfer declarations and chunks use the admitted maximum-frame scratch
 described above, including when a transfer control is unexpected or trailing.
-The authenticated memory reserve, release, and grant controls are the sole
+The authenticated memory and temporary-storage reserve, release, and grant controls are the sole
 active control-plane exception: each has a fixed 12-byte payload allocated
 outside the ledger so accounting the ledger protocol cannot recurse, and each
 is still authenticated and checked against the message limit before allocation.
@@ -446,3 +448,25 @@ renderer, Migration Facade mapping, or independent standards, semantic,
 syntax, or visual Acceptance Evidence. It does not make publication atomic
 across Targets. The capability remains `experimental` with an empty
 certified-platform list.
+
+## T23 Rendering values
+
+`RenderPage.version1` and its closed options/diagnostic enums use the existing
+authenticated query protocol and bounded multi-frame transfer. The child closes
+its PNG result after encoding; the parent adopts a temporary PNG and exposes
+only a thread-confined `RenderedPage` until close or callback completion.
+Both copies and staging during transfer share the resource ledger. No callback,
+Provider adapter, backend object, filename, or arbitrary diagnostic crosses as
+a rendering value. A logical value still needs its bounded in-memory payload.
+
+Temporary reserve/release/grant controls use opcodes 24/25/123 and the same
+fixed 12-byte authenticated control envelope as memory grants. They cannot be
+chunked. The parent checks release amounts against outstanding child grants
+and releases any remaining grant after Worker termination. This lets rendering
+retain parent results while subsequent child Commands or Queries grow staging.
+
+External Rendering Providers are invoked in the parent. The child prepares a
+bounded one-page snapshot using an internal closed Query; the parent validates
+and executes the selected Provider under capability-scoped disclosure consent.
+The PDF Worker does not sandbox caller-side adapters. See [Rendering](rendering.md)
+for the byte profile, raster accounting, diagnostics, and lifetime contract.

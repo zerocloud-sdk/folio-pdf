@@ -5,6 +5,9 @@ import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -71,6 +74,10 @@ final class VisualEvidenceRecorder {
                 chain.rendererDifferenceRasterName());
         clearOutputs(expected, actual, implementation, difference, rendererDifference);
 
+        if (chain.usesPublicRendering() && !inputHash.equals(profile.inputIdNeutralSha256())) {
+            return indeterminate(state, "The T23 input did not match its pinned ID-neutral SHA-256.", artifacts);
+        }
+
         try {
             state.expectedHash = EvidenceFiles.sha256(profile.expectedRaster());
             if (!profile.expectedRasterSha256().equals(state.expectedHash)) {
@@ -131,9 +138,7 @@ final class VisualEvidenceRecorder {
 
         ProcessResult render;
         try {
-            render = ExternalProcess.run(
-                    pdfiumPin.executable(),
-                    artifacts,
+            List<String> arguments = new ArrayList<String>(Arrays.asList(
                     "render",
                     pdf.getFileName().toString(),
                     chain.pdfiumRasterName(),
@@ -142,13 +147,16 @@ final class VisualEvidenceRecorder {
                     "--file-type",
                     "png",
                     "--pages",
-                    "first");
+                    "first"));
+            if (chain.usesPublicRendering()) { arguments.add("--render-annotations"); }
+            render = ExternalProcess.run(pdfiumPin.executable(), artifacts, arguments.toArray(new String[0]));
             appendInvocation(
                     state.transcript,
                     "PDFium render",
                     "pdfium render " + pdf.getFileName() + " "
                             + chain.pdfiumRasterName() + " --dpi " + profile.dpi()
-                            + " --file-type png --pages first",
+                            + " --file-type png --pages first"
+                            + (chain.usesPublicRendering() ? " --render-annotations" : ""),
                     render);
         } catch (IOException unavailable) {
             state.transcript.append("PDFium render: tool unavailable.\n\n");
@@ -187,32 +195,49 @@ final class VisualEvidenceRecorder {
         }
 
         try {
-            state.implementationVersion = ImplementationRenderer.render(
-                    pdf,
-                    implementation,
-                    profile);
+            state.implementationVersion = chain.usesPublicRendering()
+                    ? PublicRenderingRenderer.render(pdf, implementation, profile)
+                    : ImplementationRenderer.render(pdf, implementation, profile);
             PngRaster.requireProfileRaster(
                     implementation,
                     profile.rasterWidth(),
                     profile.rasterHeight());
             state.implementationHash = EvidenceFiles.sha256(implementation);
-            state.transcript.append("Secondary implementation renderer: `Apache PDFBox ")
+            if (chain.usesPublicRendering()) {
+                state.transcript.append("Implementation under test: `DocumentWorkflow.execute` / `RenderPage.version1`; "
+                        + "Provider `folio.pdfbox-renderer`; PNG consumed through `RenderedPage.writePngTo`.\n\n");
+                state.transcript.append("Pinned/observed diagnostics: `")
+                        .append(profile.renderDiagnostics()).append("`.\n\n")
+                        .append("Scale: `1`; page selection: `1`; alpha: `OPAQUE`; annotations: `SHOW`; ")
+                        .append("rounding: `").append(VisualProfile.T23_ROUNDING).append("`.\n\n");
+            }
+            state.transcript.append(chain.usesPublicRendering()
+                    ? "Default Rendering Provider engine: `Apache PDFBox "
+                    : "Secondary implementation renderer: `Apache PDFBox ")
                     .append(state.implementationVersion)
                     .append("` at `")
                     .append(profile.dpi())
                     .append(" DPI RGB`\n\n");
         } catch (IOException unusableSecondary) {
-            state.transcript.append("Secondary renderer validation: `indeterminate`\n\n")
+            state.transcript.append(chain.usesPublicRendering()
+                    ? "Public Rendering validation: `indeterminate`\n\n"
+                    : "Secondary renderer validation: `indeterminate`\n\n")
                     .append(safeMessage(unusableSecondary)).append("\n\n");
             return indeterminate(
                     state,
-                    "The secondary implementation-renderer evidence was unusable.",
+                    chain.usesPublicRendering()
+                            ? "The public Rendering output was unusable."
+                            : "The secondary implementation-renderer evidence was unusable.",
                     artifacts);
         } catch (RuntimeException unexpectedSecondary) {
-            state.transcript.append("Secondary renderer validation: `indeterminate`\n\n");
+            state.transcript.append(chain.usesPublicRendering()
+                    ? "Public Rendering validation: `indeterminate`\n\n"
+                    : "Secondary renderer validation: `indeterminate`\n\n");
             return indeterminate(
                     state,
-                    "The secondary implementation renderer ended unexpectedly.",
+                    chain.usesPublicRendering()
+                            ? "The public Rendering path ended unexpectedly."
+                            : "The secondary implementation renderer ended unexpectedly.",
                     artifacts);
         }
 
@@ -275,7 +300,9 @@ final class VisualEvidenceRecorder {
                 chain.pdfiumRasterName(),
                 chain.implementationRasterName(),
                 chain.rendererDifferenceRasterName(),
-                "PDFium-to-implementation renderer comparison",
+                chain.usesPublicRendering()
+                        ? "PDFium-to-public Rendering comparison"
+                        : "PDFium-to-implementation renderer comparison",
                 state.transcript,
                 profile);
         if (!rendererAgreement.usable) {
@@ -291,7 +318,9 @@ final class VisualEvidenceRecorder {
             return finish(
                     state,
                     EvidenceResult.INDETERMINATE,
-                    "PDFium and the secondary implementation renderer disagreed at AE `"
+                    (chain.usesPublicRendering()
+                            ? "PDFium and the public Rendering output disagreed at AE `"
+                            : "PDFium and the secondary implementation renderer disagreed at AE `")
                             + rendererAgreement.absoluteError
                             + "`; review is required and the visual chain cannot pass.",
                     artifacts);
@@ -310,7 +339,9 @@ final class VisualEvidenceRecorder {
                 EvidenceResult.PASS,
                 "The PDFium raster matched the project-owned expectation at AE `"
                         + primary.absoluteError
-                        + "`, and the secondary renderer agreement AE was `"
+                        + (chain.usesPublicRendering()
+                                ? "`, and the public Rendering agreement AE was `"
+                                : "`, and the secondary renderer agreement AE was `")
                         + rendererAgreement.absoluteError + "`.",
                 artifacts);
     }
@@ -549,9 +580,16 @@ final class VisualEvidenceRecorder {
                 .append(chain.findingsName()).append(")\n")
                 .append("- ").append(finding).append("\n\n")
                 .append("ImageMagick receives only validated PNG raster paths in both ")
-                .append("comparison invocations; it is never given the PDF. Apache PDFBox ")
-                .append("Renderer is secondary disagreement evidence only and cannot make ")
-                .append("this chain pass.\n");
+                .append("comparison invocations; it is never given the PDF. ");
+        if (chain.usesPublicRendering()) {
+            record.append("The public Rendering output is the implementation under test and ")
+                    .append("must satisfy the renderer-agreement ceiling; only the independent ")
+                    .append("PDFium comparison against the project-owned expectation determines ")
+                    .append("the primary capability threshold.\n");
+        } else {
+            record.append("Apache PDFBox Renderer is secondary disagreement evidence only and ")
+                    .append("cannot make this chain pass.\n");
+        }
         return record.toString();
     }
 

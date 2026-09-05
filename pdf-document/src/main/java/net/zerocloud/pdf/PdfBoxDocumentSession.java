@@ -602,6 +602,26 @@ final class PdfBoxDocumentSession implements DocumentSession {
     private <R> R evaluate(DocumentQuery<R> query) throws DocumentFailure {
         positionedUnicodeTextOperations.finalizeFonts();
 
+        if (query instanceof net.zerocloud.pdf.query.RenderPage) {
+            PdfBoxPermissionPolicy.requireExtraction(securityInfo);
+            outcomeCapabilityId = Rendering.CAPABILITY_ID;
+            net.zerocloud.pdf.query.RenderPage render = (net.zerocloud.pdf.query.RenderPage) query;
+            if (!resources.rendering().usesDefault()) {
+                try (RenderingSnapshot snapshot = PdfBoxRenderingOperations.snapshot(document, render, resources)) {
+                    return queryResult(resources.rendering().renderExternal(render, snapshot, resources));
+                }
+            }
+            return queryResult(PdfBoxRenderingOperations.render(document,
+                    render, resources));
+        }
+
+        if (query instanceof RenderSnapshotQuery) {
+            PdfBoxPermissionPolicy.requireExtraction(securityInfo);
+            outcomeCapabilityId = Rendering.CAPABILITY_ID;
+            return queryResult(PdfBoxRenderingOperations.snapshot(document,
+                    ((RenderSnapshotQuery) query).render, resources));
+        }
+
         if (query == PageCount.INSTANCE) {
             try {
                 return pageCountResult(document.getNumberOfPages());
@@ -719,6 +739,7 @@ final class PdfBoxDocumentSession implements DocumentSession {
     }
 
     void invalidate() {
+        resources.expireRenderedPages();
         active = false;
     }
 

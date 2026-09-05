@@ -168,6 +168,8 @@ public final class DocumentWorkflow {
             resources.checkpoint();
             List<ProviderSelection> providerSelections =
                     selectProviders(request, resources);
+            resources.configureRendering(new RenderingCoordinator(
+                    environment.getProviderCatalog(), request, providerSelections));
             if (request.getExecutionProfile()
                     == WorkflowExecutionProfile.HARDENED_WORKER) {
                 completedOutcome = HardenedWorkerEngine.execute(
@@ -188,6 +190,8 @@ public final class DocumentWorkflow {
             }
             completedOutcome = completedOutcome.withResourceUsage(
                     resources.snapshotUsage());
+            completedOutcome = completedOutcome.withAdditionalDiagnostics(resources.renderingDiagnostics());
+            completedOutcome = completedOutcome.withProviderSelections(providerSelections);
             return completedOutcome;
         } catch (DocumentFailure failure) {
             DocumentFailure reported = withReceipts(failure, request);
@@ -279,9 +283,12 @@ public final class DocumentWorkflow {
             for (Map.Entry<String, ProviderPreference> entry
                     : request.getProviderPreferences().entrySet()) {
                 resources.checkpoint();
-                selections.add(environment.getProviderCatalog().select(
-                        entry.getValue(),
-                        request.isRemoteDisclosureAuthorized(entry.getKey())));
+                selections.add(Rendering.CAPABILITY_ID.equals(entry.getKey())
+                        ? environment.getProviderCatalog().select(entry.getValue(),
+                                request.isRemoteDisclosureAuthorized(entry.getKey()),
+                                RenderingCoordinator.DEFAULT_METADATA)
+                        : environment.getProviderCatalog().select(entry.getValue(),
+                                request.isRemoteDisclosureAuthorized(entry.getKey())));
             }
         } catch (ProviderFailure failure) {
             throw new DocumentFailure(
@@ -304,7 +311,7 @@ public final class DocumentWorkflow {
         return copied;
     }
 
-    private static DocumentFailureCode documentFailureCode(
+    static DocumentFailureCode documentFailureCode(
             ProviderFailureCode providerCode) {
         switch (providerCode) {
             case PROVIDER_NOT_FOUND:

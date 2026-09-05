@@ -27,5 +27,10 @@
  * glyph composition. Its state, resource, preservation, and publication
  * contracts are documented in
  * {@code docs/canvas-vector-positioned-text.md}.</p>
+ *
+ * <p>T23 {@link net.zerocloud.pdf.Rendering} provides versioned page Queries
+ * and callback-scoped PNG consumption under the shared resource policy. Its
+ * geometry, pixel profiles, Provider envelope, diagnostics, and lifetime
+ * contracts are documented in {@code docs/rendering.md}.</p>
  */
 package net.zerocloud.pdf;

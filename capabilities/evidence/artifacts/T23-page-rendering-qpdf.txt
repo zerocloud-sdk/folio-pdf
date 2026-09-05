@@ -1,0 +1,36 @@
+# T23 qpdf syntax findings
+
+Input ID-neutral SHA-256: `0fb21c7dca14068cbebeafac3d08df6a0d16fb3286fe785c4bd0deb47beaa72c`
+
+Input hash policy: `SHA-256 of the exact PDF bytes after replacing only the two hexadecimal trailer /ID values with ASCII zeroes`
+
+Tool: `qpdf`
+
+Tool version: `12.4.0`
+
+Distribution SHA-256: `a3bca240f3bb61efdc3a90be89d1da4ed5e125326c3458c4e62df53ff4f153e3`
+
+Final determination: `pass`
+
+## T23-page-rendering.pdf
+
+Invocation: `qpdf --check T23-page-rendering.pdf`
+
+`T23-page-rendering.pdf` exit code: `0`
+
+### Standard output
+
+```text
+checking T23-page-rendering.pdf
+PDF Version: 1.7
+File is not encrypted
+File is not linearized
+No syntax or stream encoding errors found; the file may still contain
+errors that qpdf cannot detect
+```
+
+### Standard error
+
+```text
+
+```

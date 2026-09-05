@@ -25,10 +25,27 @@ final class WorkerFailureCatalog {
         PdfBoxTextStructureExtractionOperations.CAPABILITY_ID,
         PdfBoxImageResourceExtractionOperations.CAPABILITY_ID,
         WorkflowResourceContext.CAPABILITY_ID,
-        HardenedWorkerEngine.CAPABILITY_ID
+        HardenedWorkerEngine.CAPABILITY_ID,
+        Rendering.CAPABILITY_ID
     };
 
     private static final Descriptor[] SPECIFIC = {
+        descriptor(DocumentFailureCode.RENDER_OPTIONS_INVALID,
+                "Rendering requires finite positive dimensions, valid colors, and a contained crop."),
+        descriptor(DocumentFailureCode.RENDER_DIMENSIONS_EXCEEDED,
+                "The requested raster dimensions exceed the supported address space."),
+        descriptor(DocumentFailureCode.RENDER_FAILED,
+                "The page could not be rendered under the declared profile."),
+        descriptor(DocumentFailureCode.RENDER_RESULT_EXPIRED,
+                "The rendered page is no longer active."),
+        descriptor(DocumentFailureCode.RENDER_OUTPUT_FAILED,
+                "PNG consumption failed; the caller stream may contain partial output."),
+        descriptor(DocumentFailureCode.PAGE_RANGE_INVALID,
+                "The rendering page is outside the current document."),
+        descriptor(DocumentFailureCode.WORKER_PROTOCOL_REJECTED,
+                "The Worker rendering value is invalid."),
+        descriptor(DocumentFailureCode.WORKER_PROTOCOL_REJECTED,
+                "The Worker temporary-storage release is inapplicable."),
         descriptor(DocumentFailureCode.ACTION_INVALID,
                 "The supported Actions could not be updated safely."),
         descriptor(DocumentFailureCode.ACTION_LIMIT_EXCEEDED,
@@ -814,7 +831,16 @@ final class WorkerFailureCatalog {
     private static int permittedCapabilities(
             DocumentFailureCode code,
             String diagnostic) {
+        if (diagnostic.equals("The rendering page is outside the current document.")) {
+            return mask(Rendering.CAPABILITY_ID);
+        }
         switch (code) {
+            case RENDER_OPTIONS_INVALID:
+            case RENDER_DIMENSIONS_EXCEEDED:
+            case RENDER_FAILED:
+            case RENDER_RESULT_EXPIRED:
+            case RENDER_OUTPUT_FAILED:
+                return mask(Rendering.CAPABILITY_ID);
             case ACTION_INVALID:
             case ACTION_LIMIT_EXCEEDED:
             case ANNOTATION_FLATTENING_UNSUPPORTED:

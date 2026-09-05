@@ -3,7 +3,16 @@
 Capability Providers are explicitly registered adapters for boundary
 capabilities such as OCR, Office conversion, rendering, or native shaping.
 The T05 contract does not ship any of those downstream engines. The default
-Workflow Environment contains no registration and remains fully offline.
+Workflow Environment contains no caller registration and remains fully offline.
+T23 [Rendering](rendering.md) supplies a real bundled fallback in the Document
+Engine; its metadata is available from `Rendering.getDefaultProviderMetadata()`.
+An unqualified selection tries eligible registrations first, then that fallback.
+Explicit preferences require the exact ID. The reserved `folio.pdfbox-renderer`
+ID cannot be registered by a caller. `ProviderCatalog.select` has a fallback-
+metadata overload for this selection contract; capability-owned execution remains
+private. Actual Rendering selections, including implicit use, appear in the
+Workflow Outcome. External Rendering adapters execute in the parent in either
+Workflow profile; remote content requires the same scoped authorization.
 
 ## Artifacts and metadata
 

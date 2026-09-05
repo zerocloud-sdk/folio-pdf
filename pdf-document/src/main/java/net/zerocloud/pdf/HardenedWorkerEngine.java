@@ -54,7 +54,7 @@ final class HardenedWorkerEngine {
     private static final String DOCUMENT_CLASS_INVENTORY =
             "META-INF/folio-pdf/document-worker-classes";
     private static final String DOCUMENT_CLASS_INVENTORY_SHA256 =
-            "0e41d0f7efb2520ab707b2c4ddf4f518c1cb16b2cfeea5ff459f59d29f1f69bc";
+            "6755b30eae00e6c0c4ee773568ef85540aa2ba96b342499f98f5040553ed6d27";
     private static final String PROVIDER_CLASS_INVENTORY =
             "META-INF/folio-pdf/provider-contract-worker-classes";
     private static final String PROVIDER_CLASS_INVENTORY_SHA256 =
@@ -351,7 +351,7 @@ final class HardenedWorkerEngine {
                 .maximumDecodedPixels(policy.getMaximumDecodedPixels())
                 .maximumOwnedMemoryBytes(policy.getMaximumOwnedMemoryBytes())
                 .maximumTemporaryStorageBytes(
-                        resources.getRemainingTemporaryStorageBytes())
+                        policy.getMaximumTemporaryStorageBytes())
                 .maximumElapsedTime(Duration.ofNanos(Long.MAX_VALUE))
                 .maximumConcurrentWorkflows(policy.getMaximumConcurrentWorkflows())
                 .build();
@@ -902,6 +902,15 @@ final class HardenedWorkerEngine {
             requireActiveOwner();
             java.util.Objects.requireNonNull(query, "query");
             resources.checkpoint();
+            if (query instanceof net.zerocloud.pdf.query.RenderPage
+                    && !resources.rendering().usesDefault()) {
+                net.zerocloud.pdf.query.RenderPage render = (net.zerocloud.pdf.query.RenderPage) query;
+                try (RenderingSnapshot snapshot = query(new RenderSnapshotQuery(render))) {
+                    @SuppressWarnings("unchecked")
+                    R result = (R) resources.rendering().renderExternal(render, snapshot, resources);
+                    return result;
+                }
+            }
             byte[] preflight = WorkerQueryCodec.encodePreflight(
                     query,
                     resources,
@@ -971,6 +980,7 @@ final class HardenedWorkerEngine {
 
         private void invalidate() {
             if (active) {
+                resources.expireRenderedPages();
                 active = false;
                 fontSources.close();
             }
@@ -1227,6 +1237,7 @@ final class HardenedWorkerEngine {
         private WorkflowResourceUsage workerResourceUsage;
         private int nextDeferredSource;
         private long childOwnedMemoryBytes;
+        private long childTemporaryBytes;
         private long bootstrapMemoryBytes;
         private long reportedChildMemoryBytes;
         private final long physicalStartedNanos;
@@ -1421,6 +1432,30 @@ final class HardenedWorkerEngine {
                     WorkerProtocol.Frame frame = response.get(
                             RESPONSE_POLL_MILLIS,
                             TimeUnit.MILLISECONDS);
+                    if (frame.getOpcode() == WorkerProtocol.TEMPORARY_RESERVE
+                            || frame.getOpcode() == WorkerProtocol.TEMPORARY_RELEASE) {
+                        try {
+                            long amount = WorkerMessages.decodeMemoryAmount(frame.getPayload());
+                            if (frame.getOpcode() == WorkerProtocol.TEMPORARY_RESERVE) {
+                                resources.reserveTemporaryBytes(amount);
+                                childTemporaryBytes += amount;
+                                byte[] granted = WorkerMessages.encodeMemoryAmount(amount);
+                                try { endpoint.send(WorkerProtocol.TEMPORARY_GRANTED, granted); }
+                                catch (WorkerProtocol.ProtocolException failure) { throw protocolFailure(failure); }
+                                catch (IOException failure) { throw stoppedOrTerminated(); }
+                                finally { Arrays.fill(granted, (byte) 0); }
+                            } else {
+                                if (amount > childTemporaryBytes) {
+                                    throw WorkerCodecIO.workerFailure(DocumentFailureCode.WORKER_PROTOCOL_REJECTED,
+                                            "The Worker temporary-storage release is inapplicable.");
+                                }
+                                childTemporaryBytes -= amount;
+                                resources.releaseTemporaryBytes(amount);
+                            }
+                        } finally { frame.clear(); }
+                        response = receive();
+                        continue;
+                    }
                     if (frame.getOpcode() == WorkerProtocol.MEMORY_RESERVE) {
                         try {
                             grantChildMemory(WorkerMessages
@@ -2076,6 +2111,10 @@ final class HardenedWorkerEngine {
             closeQuietly(process.getErrorStream());
             shutdownAndAwait(reader);
             endpoint.close();
+            if (childTemporaryBytes != 0L) {
+                resources.releaseTemporaryBytes(childTemporaryBytes);
+                childTemporaryBytes = 0L;
+            }
             long remainingChildMemory = childOwnedMemoryBytes;
             childOwnedMemoryBytes = 0L;
             bootstrapMemoryBytes = 0L;

@@ -252,6 +252,27 @@ final class WorkerCodecIO {
             output.write(value);
         }
 
+        void writeFile(java.nio.file.Path file) throws IOException, DocumentFailure {
+            long length = java.nio.file.Files.size(file);
+            if (length > Integer.MAX_VALUE) { throw new MessageLimitException(); }
+            capacity.requireCapacity(4L + length);
+            try (WorkflowResourceContext.MemoryReservation memory =
+                    resources.reserveOwnedMemory(8192);
+                    java.io.InputStream source = java.nio.file.Files.newInputStream(file)) {
+                writeInt((int) length);
+                byte[] buffer = new byte[8192];
+                long remaining = length;
+                while (remaining > 0) {
+                    resources.checkpoint();
+                    int count = source.read(buffer, 0, (int) Math.min(remaining, buffer.length));
+                    if (count < 0) { throw new EOFException(); }
+                    output.write(buffer, 0, count);
+                    remaining -= count;
+                }
+                if (source.read() != -1) { throw new IOException("Staging length changed"); }
+            }
+        }
+
         void writeBytes(byte[] value, int offset, int length)
                 throws IOException {
             if (offset < 0 || length < 0
@@ -546,6 +567,26 @@ final class WorkerCodecIO {
             } catch (DocumentFailure | RuntimeException | Error failure) {
                 closeReservation(reservation);
                 throw failure;
+            }
+        }
+
+        void readFile(java.nio.file.Path file, WorkflowResourceContext resources)
+                throws DocumentFailure {
+            int remaining = readLength();
+            try (WorkflowResourceContext.MemoryReservation memory =
+                    resources.reserveOwnedMemory(8192);
+                    OutputStream target = resources.openTemporaryOutput(file)) {
+                byte[] buffer = new byte[8192];
+                while (remaining > 0) {
+                    resources.checkpoint();
+                    int count = Math.min(remaining, buffer.length);
+                    input.readFully(buffer, 0, count);
+                    target.write(buffer, 0, count);
+                    remaining -= count;
+                }
+            } catch (IOException failure) {
+                resources.rethrowResourceOrTerminalFailure(failure);
+                throw truncated();
             }
         }
 

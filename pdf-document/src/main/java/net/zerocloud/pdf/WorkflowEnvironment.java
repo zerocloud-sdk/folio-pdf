@@ -225,6 +225,10 @@ public final class WorkflowEnvironment {
          * @return this builder
          */
         public Builder provider(CapabilityProvider provider) {
+            Objects.requireNonNull(provider, "provider");
+            if (Rendering.DEFAULT_PROVIDER_ID.equals(provider.getMetadata().getProviderId())) {
+                throw new IllegalArgumentException("The built-in Rendering Provider ID is reserved");
+            }
             providers.add(Objects.requireNonNull(provider, "provider"));
             return this;
         }

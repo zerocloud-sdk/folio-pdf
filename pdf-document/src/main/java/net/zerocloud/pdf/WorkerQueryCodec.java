@@ -24,6 +24,7 @@ import net.zerocloud.pdf.query.OutlineTree;
 import net.zerocloud.pdf.query.PageCount;
 import net.zerocloud.pdf.query.PageObjectReference;
 import net.zerocloud.pdf.query.ReadEmbeddedFile;
+import net.zerocloud.pdf.query.RenderPage;
 import net.zerocloud.pdf.query.XmpMetadata;
 
 /** Explicit versioned whitelist for all library-owned Document Queries. */
@@ -49,6 +50,8 @@ final class WorkerQueryCodec {
     private static final int ACTIONS = 15;
     private static final int EXTRACT_TEXT_STRUCTURE = 16;
     private static final int EXTRACT_IMAGES_RESOURCES = 17;
+    private static final int RENDER_PAGE = 18;
+    private static final int RENDER_SNAPSHOT = 19;
 
     private WorkerQueryCodec() {
     }
@@ -94,7 +97,9 @@ final class WorkerQueryCodec {
                 || query instanceof Annotations
                 || query instanceof Actions
                 || query instanceof ExtractTextAndStructure
-                || query instanceof ExtractImagesAndResources;
+                || query instanceof ExtractImagesAndResources
+                || query instanceof RenderPage
+                || query instanceof RenderSnapshotQuery;
     }
 
     static byte[] encodeQuery(
@@ -167,7 +172,11 @@ final class WorkerQueryCodec {
                 input.readInt(),
                 RESULT_VERSION);
         try {
-            Object result = readResult(input, query, references);
+            Object result = query instanceof RenderPage
+                    ? WorkerRenderingCodec.readResult(input, (RenderPage) query, resources)
+                    : query instanceof RenderSnapshotQuery
+                            ? WorkerRenderingCodec.readSnapshot(input, resources)
+                            : readResult(input, query, references);
             input.requireFullyConsumed();
             return (R) result;
         } catch (DocumentFailure failure) {
@@ -254,6 +263,12 @@ final class WorkerQueryCodec {
         } else if (query instanceof ExtractTextAndStructure) {
             output.writeInt(EXTRACT_TEXT_STRUCTURE);
             writeExtractionQuery(output, (ExtractTextAndStructure) query);
+        } else if (query instanceof RenderSnapshotQuery) {
+            output.writeInt(RENDER_SNAPSHOT);
+            WorkerRenderingCodec.writeQuery(output, ((RenderSnapshotQuery) query).render);
+        } else if (query instanceof RenderPage) {
+            output.writeInt(RENDER_PAGE);
+            WorkerRenderingCodec.writeQuery(output, (RenderPage) query);
         } else if (query instanceof ExtractImagesAndResources) {
             output.writeInt(EXTRACT_IMAGES_RESOURCES);
             writeResourceQuery(output, (ExtractImagesAndResources) query);
@@ -270,6 +285,10 @@ final class WorkerQueryCodec {
             WorkerReferenceRegistry references) throws DocumentFailure {
         int opcode = input.readInt();
         switch (opcode) {
+            case RENDER_PAGE:
+                return WorkerRenderingCodec.readQuery(input);
+            case RENDER_SNAPSHOT:
+                return new RenderSnapshotQuery(WorkerRenderingCodec.readQuery(input));
             case PAGE_COUNT:
                 WorkerCommandCodec.requireVersion(input.readInt(), 1);
                 return PageCount.INSTANCE;
@@ -422,6 +441,10 @@ final class WorkerQueryCodec {
             WorkerTextExtractionCodec.write(
                     output,
                     (TextStructureExtraction) result);
+        } else if (query instanceof RenderSnapshotQuery) {
+            WorkerRenderingCodec.writeSnapshot(output, (RenderingSnapshot) result);
+        } else if (query instanceof RenderPage) {
+            WorkerRenderingCodec.writeResult(output, (RenderedPage) result);
         } else if (query instanceof ExtractImagesAndResources) {
             WorkerResourceInventoryCodec.write(
                     output,

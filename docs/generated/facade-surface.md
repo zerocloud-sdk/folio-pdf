@@ -8,7 +8,7 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Release train: `0.1.0-SNAPSHOT`
 - Stable entries: `0`
 - Preview entries: `12`
-- Explicit capability exclusions: `15`
+- Explicit capability exclusions: `16`
 
 ## Stable surfaces
 
@@ -165,6 +165,13 @@ No stable surfaces are declared.
 - Behavioral capability: [`conversion.capability-provider.select-execute`](capability-matrix.md#capability-conversion_dot_capability_dash_provider_dot_select_dash_execute)
 - Deferred ticket: `T05`
 - Reason: T05 is a Native Interface provider seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+
+<a id="excluded-capability-conversion_dot_rendering"></a>
+### `conversion.rendering`
+
+- Behavioral capability: [`conversion.rendering`](capability-matrix.md#capability-conversion_dot_rendering)
+- Deferred ticket: `T23`
+- Reason: T23 is a Native Interface bounded Rendering Query, PNG-consumption, and Provider integration seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
 
 <a id="excluded-capability-document_dot_annotations_dash_actions_dot_manage"></a>
 ### `document.annotations-actions.manage`

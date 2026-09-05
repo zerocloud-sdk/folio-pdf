@@ -93,16 +93,28 @@ Queries, Patches, named Sources, split products, or publication Targets.
   declared filter stage. Intermediate filter results use quota-controlled
   temporary files. Each distinct PDF stream is preflighted once, while later
   project-owned lazy byte reads charge their newly emitted bytes again; a
-  repeated read therefore cannot reset the budget. Unsupported or malformed
-  filter declarations retain their established format/operation result.
+  repeated read therefore cannot reset the budget. A successful Patch to a
+  stream dictionary invalidates its preflight decision so the changed stream is
+  checked again. Unsupported or malformed filter declarations retain their
+  established format/operation result.
 - Pixels are width multiplied by height for each distinct, materializable
   existing image stream and for image preparation performed by the Canvas
   resource path. Increasing an already observed stream's dimensions charges
   the previously unaccounted difference; decreasing them does not refund the
   transaction counter. A declaration whose dimensions cannot enter an existing
   in-process preparation path remains that path's format or local-limit error;
-  no pixels are claimed as decoded. T20 establishes the shared counter that a
-  later renderer must consume, but does not implement T23 rendering.
+  no pixels are claimed as decoded. T23 Rendering additionally consumes width
+  times height for every rendered viewport, including repeated page Queries.
+  Before JPEG, JPX, or JBIG2 image decoding, a bounded header read must agree
+  with the already admitted declaration; the platform codec must be the single
+  terminal filter. Resource streams are read from raw bytes, and every prefix
+  filter is decoded in declaration order with its original DecodeParms into
+  quota-controlled temporary staging before header inspection. A previously
+  rejected platform image can be checked again after its declaration changes;
+  successful revalidation clears the format rejection, while emitted filter
+  output remains cumulative.
+  See [Rendering](rendering.md) for its requested ARGB buffer, bounded PNG
+  encoder/consumer, Provider-envelope, and retained-result accounting.
 - Owned memory is a model of byte arrays retained or allocated by Folio PDF in
   the bounded paths integrated by T20, including byte Sources, public decoded
   stream results, Canvas image preparation, execution-local credential copies
@@ -123,7 +135,7 @@ Queries, Patches, named Sources, split products, or publication Targets.
   without a static split: the parent grants each nonempty application payload,
   the child reports other reserve/release events, and an acknowledged empty
   synchronization follows each quiescent response before another parent
-  allocation. The authenticated memory reserve, release, and grant controls
+  allocation. The authenticated memory and temporary-storage reserve, release, and grant controls
   are the sole active control-plane exception: their fixed 12-byte payloads
   remain outside the ledger to prevent recursive accounting, while still being
   authenticated and message-bounded before allocation. Declared collection
@@ -150,7 +162,11 @@ Queries, Patches, named Sources, split products, or publication Targets.
   heap cache. In the T21 child, every committed Worker product remains charged
   through completion, so later products cannot reuse the earlier product's
   live bytes; the parent adopts the same files into its transaction accounting
-  after confirmed Worker exit.
+  after confirmed Worker exit. T23 extends the live parent grant ledger to
+  temporary storage before child file/cache growth. Parent-retained PNGs and
+  child work therefore share the same current bound without a static split.
+  Parent-owned Source snapshots are borrowed without duplicate child charges;
+  rendered PNGs and external-Provider snapshots release storage at close.
 - Elapsed time starts when the admitted transaction resource context opens and
   is measured by the environment `Clock`. Exact elapsed time is allowed; the
   first later checkpoint fails. A backwards-moving Clock contributes zero
@@ -226,8 +242,8 @@ uses caller-thread environment-Clock/deadline checkpoints plus a monotonic
 hard-stop watchdog, denies descendant process creation and INET/Unix-domain
 network access, confines Worker file access to a random owner-only transaction
 root, and leaves actual Target publication in the parent. The same T20 policy
-continues inside the child, with remaining shared temporary-storage capacity
-after parent staging and parent authority for the logical time dimensions.
+continues inside the child, with parent grants for shared live temporary-storage
+capacity and parent authority for the logical time dimensions.
 
 The in-process profile remains the backward-compatible default and is still
 not a hostile multi-tenant boundary. Deployments selecting the Worker must meet

@@ -274,6 +274,14 @@ _Avoid_: creation check, self-validation
 
 Owns transformations between PDF and external representations such as HTML, SVG, images, recognized text, and office documents.
 
+**Rendering**:
+The conversion of a selected document page into a raster under an explicit geometry, color, transparency, annotation, and resource policy.
+_Avoid_: image extraction, screen capture, backend renderer
+
+**Rendered Page**:
+A completed page raster with detached geometry and safe diagnostics, whose staged bytes remain owned by its Document Workflow until consumed or released.
+_Avoid_: Image Resource, live page, published document
+
 **Capability Provider**:
 A replaceable implementation of a conversion capability. Providers may use different local or remote technologies while the default distribution remains usable offline.
 _Avoid_: built-in converter, mandatory cloud service

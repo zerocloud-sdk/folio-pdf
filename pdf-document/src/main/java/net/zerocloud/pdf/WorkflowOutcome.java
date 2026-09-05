@@ -148,6 +148,21 @@ public final class WorkflowOutcome<R> {
         return diagnostics;
     }
 
+    WorkflowOutcome<R> withAdditionalDiagnostics(List<String> additional) {
+        if (additional.isEmpty()) { return this; }
+        List<String> combined = new ArrayList<String>(diagnostics);
+        for (String diagnostic : additional) {
+            if (!combined.contains(diagnostic)) { combined.add(diagnostic); }
+        }
+        return new WorkflowOutcome<R>(result, capabilityId, executionProfile, saveMode,
+                combined, publicationReceipts, providerSelections, transactionId, resourceUsage);
+    }
+
+    WorkflowOutcome<R> withProviderSelections(List<ProviderSelection> selections) {
+        return new WorkflowOutcome<R>(result, capabilityId, executionProfile, saveMode,
+                diagnostics, publicationReceipts, selections, transactionId, resourceUsage);
+    }
+
     /**
      * Returns immutable publication receipts, or an empty list for read-only work.
      *

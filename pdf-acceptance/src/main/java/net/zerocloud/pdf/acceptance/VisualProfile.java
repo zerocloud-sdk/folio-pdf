@@ -11,6 +11,7 @@ import java.util.Properties;
 
 /** Immutable visual Acceptance Profile loaded from its repository authority. */
 final class VisualProfile {
+    static final String T23_ROUNDING = "max(1,floor(binary32(widthInPoints*binary32(dpi/72*scale*UserUnit)))); quarter-turn rotation swaps axes";
 
     private static final String SUPPORTED_PAGE_BOX =
             "effective CropBox; CropBox is absent, so MediaBox "
@@ -62,6 +63,8 @@ final class VisualProfile {
     private final String expectedRasterReference;
     private final Path expectedRaster;
     private final String expectedRasterSha256;
+    private final String inputIdNeutralSha256;
+    private final String renderDiagnostics;
 
     private VisualProfile(
             String profileId,
@@ -79,7 +82,9 @@ final class VisualProfile {
             long rendererAgreementThreshold,
             String expectedRasterReference,
             Path expectedRaster,
-            String expectedRasterSha256) {
+            String expectedRasterSha256,
+            String inputIdNeutralSha256,
+            String renderDiagnostics) {
         this.profileId = profileId;
         this.pageBox = pageBox;
         this.dpi = dpi;
@@ -96,6 +101,8 @@ final class VisualProfile {
         this.expectedRasterReference = expectedRasterReference;
         this.expectedRaster = expectedRaster;
         this.expectedRasterSha256 = expectedRasterSha256;
+        this.inputIdNeutralSha256 = inputIdNeutralSha256;
+        this.renderDiagnostics = renderDiagnostics;
     }
 
     static VisualProfile load(Path path) throws IOException {
@@ -106,6 +113,15 @@ final class VisualProfile {
         }
         String expectedReference = required(properties, "EXPECTED_RASTER");
         String profileId = required(properties, "PROFILE_ID");
+        if (profileId.startsWith("T23-")) {
+            requireSupported("SCALE", required(properties, "SCALE"), "1");
+            requireSupported("PAGE_SELECTION", required(properties, "PAGE_SELECTION"), "1");
+            requireSupported("ALPHA_POLICY", required(properties, "ALPHA_POLICY"), "OPAQUE");
+            requireSupported("ANNOTATION_POLICY", required(properties, "ANNOTATION_POLICY"), "SHOW");
+            requireSupported("ROUNDING_POLICY", required(properties, "ROUNDING_POLICY"), T23_ROUNDING);
+            requireSupported("RENDER_DIAGNOSTICS", required(properties, "RENDER_DIAGNOSTICS"),
+                    profileId.endsWith("-images") ? "[PLATFORM_IMAGE_CODEC]" : "[]");
+        }
         Path relativeExpected = java.nio.file.Paths.get(expectedReference);
         if (relativeExpected.isAbsolute()) {
             throw new IOException("EXPECTED_RASTER must be relative to the profile");
@@ -145,6 +161,10 @@ final class VisualProfile {
             throw new IOException(
                     "Visual profile COMPARISON_FUZZ_PERCENT must be at most 100");
         }
+        String inputHash = profileId.startsWith("T23-")
+                ? requiredSha256(properties, "INPUT_ID_NEUTRAL_SHA256") : null;
+        String diagnostics = profileId.startsWith("T23-")
+                ? required(properties, "RENDER_DIAGNOSTICS") : null;
         return new VisualProfile(
                 profileId,
                 pageBox,
@@ -161,8 +181,13 @@ final class VisualProfile {
                 nonnegativeLong(properties, "RENDERER_AGREEMENT_THRESHOLD"),
                 expectedReference,
                 expected,
-                requiredSha256(properties, "EXPECTED_RASTER_SHA256"));
+                requiredSha256(properties, "EXPECTED_RASTER_SHA256"),
+                inputHash,
+                diagnostics);
     }
+
+    String inputIdNeutralSha256() { return inputIdNeutralSha256; }
+    String renderDiagnostics() { return renderDiagnostics; }
 
     private static Map<String, RenderingPolicy> supportedPolicies() {
         Map<String, RenderingPolicy> policies = new HashMap<>();
@@ -178,6 +203,9 @@ final class VisualProfile {
                 OPAQUE_SRGB_COLOR_POLICY,
                 T19_FONT_POLICY,
                 T19_ANTIALIASING_POLICY));
+        policies.put("T23-page-rendering", policies.get(T18_PROFILE));
+        policies.put("T23-page-rendering-images", policies.get(T18_PROFILE));
+        policies.put("T23-page-rendering-fonts", policies.get(T19_PROFILE));
         return Collections.unmodifiableMap(policies);
     }
 

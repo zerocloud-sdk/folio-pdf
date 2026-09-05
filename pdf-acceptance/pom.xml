@@ -91,6 +91,23 @@
                   </arguments>
                 </configuration>
               </execution>
+              <execution>
+                <id>record-rendering-evidence</id>
+                <phase>verify</phase>
+                <goals><goal>java</goal></goals>
+                <configuration>
+                  <mainClass>net.zerocloud.pdf.acceptance.T23RenderingEvidenceCommand</mainClass>
+                  <classpathScope>runtime</classpathScope>
+                  <arguments>
+                    <argument>${acceptance.output}</argument>
+                    <argument>${maven.multiModuleProjectDirectory}/scripts/qpdf-pin.properties</argument>
+                    <argument>${maven.multiModuleProjectDirectory}/scripts/pdfium-pin.properties</argument>
+                    <argument>${maven.multiModuleProjectDirectory}/scripts/imagemagick-pin.properties</argument>
+                    <argument>${maven.multiModuleProjectDirectory}/capabilities/profiles</argument>
+                    <argument>${project.version}</argument>
+                  </arguments>
+                </configuration>
+              </execution>
             </executions>
           </plugin>
         </plugins>

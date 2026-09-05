@@ -135,6 +135,21 @@ public enum DocumentFailureCode {
     /** A supported query could not be evaluated. */
     QUERY_FAILED,
 
+    /** Rendering contains non-finite numbers, invalid colors or an invalid crop. */
+    RENDER_OPTIONS_INVALID,
+
+    /** Rendering cannot represent the requested raster dimensions safely. */
+    RENDER_DIMENSIONS_EXCEEDED,
+
+    /** A page cannot be rendered under the declared rendering profile. */
+    RENDER_FAILED,
+
+    /** PNG consumption failed and a caller stream may contain partial bytes. */
+    RENDER_OUTPUT_FAILED,
+
+    /** A staged rendered page was closed or its workflow callback ended. */
+    RENDER_RESULT_EXPIRED,
+
     /** A page range is outside the current document or is not ordered. */
     PAGE_RANGE_INVALID,
 

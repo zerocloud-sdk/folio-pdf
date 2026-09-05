@@ -113,6 +113,12 @@ final class PdfBoxValueAdapter {
                     applied++;
                 }
                 preparedPatch.transfer();
+                for (PreparedChange change : prepared) {
+                    if (change.target instanceof COSStream) {
+                        resources.invalidateStreamPreflight(
+                                (COSStream) change.target);
+                    }
+                }
             } catch (DocumentFailure failure) {
                 rollback(prepared, applied);
                 throw failure;

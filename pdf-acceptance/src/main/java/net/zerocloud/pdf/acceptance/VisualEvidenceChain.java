@@ -25,7 +25,8 @@ final class VisualEvidenceChain {
         this.label = label;
         this.capability = capability;
         this.acceptanceProfile = acceptanceProfile;
-        this.profileRecord = "capabilities/evidence/" + acceptanceProfile + ".md";
+        this.profileRecord = "capabilities/evidence/"
+                + ("T23".equals(label) ? "T23-page-rendering" : acceptanceProfile) + ".md";
         this.inputArtifact = inputArtifact;
         this.recordName = visualArtifactStem + "-visual.md";
         this.findingsName = visualArtifactStem + "-visual.txt";
@@ -60,6 +61,12 @@ final class VisualEvidenceChain {
                 "composition.fonts.load-embed-subset-fallback",
                 "T19-font-loading-embedding-subsetting");
     }
+
+    static VisualEvidenceChain t23(String profile) {
+        return conventional("T23", "conversion.rendering", profile);
+    }
+
+    boolean usesPublicRendering() { return "T23".equals(label); }
 
     private static VisualEvidenceChain conventional(
             String label,

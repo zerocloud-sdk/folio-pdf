@@ -37,6 +37,12 @@ default Workflow Environment registers no Provider, remains offline, and
 performs no implicit network access. A generic bounded subprocess adapter is
 included, but no external engine is bundled.
 
+T23 adds the offline `Rendering` capability with a bundled PDFBox Renderer
+fallback, versioned page Queries, configurable geometry and pixel profiles,
+session-scoped PNG consumption, and shared resource limits in both execution
+profiles. See [bounded page rendering](docs/rendering.md) for the public
+contract, Provider integration, and experimental evidence boundary.
+
 ## Build
 
 No system Maven installation is required. The wrapper uses Maven 3.9.16:

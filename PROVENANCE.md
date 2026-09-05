@@ -1291,5 +1291,73 @@ documentation, and project-owned tests are the permitted design inputs.
   remain open. T22 therefore remains `experimental` with no compatible or
   certified-platform claim.
 
+## T23 bounded-rendering record
+
+- Authorship: OpenAI Codex authored this contribution at the repository
+  operator's direction. The work is an uncommitted implementation of #24;
+  no DCO sign-off or commit has been created.
+- Requirements and permitted references: GitHub #24 and parent #1, the
+  repository instructions, CONTEXT.md, applicable ADRs, the existing T05
+  Provider, T20 resource, T21/T22 Worker, T18 image/color, T19 font, and
+  acceptance contracts, plus existing public workflow tests and fixtures.
+- Backend reference: the existing Apache-2.0 PDFBox 3.0.8 source archive and
+  official tagged [PDFRenderer.java](https://raw.githubusercontent.com/apache/pdfbox/3.0.8/pdfbox/src/main/java/org/apache/pdfbox/rendering/PDFRenderer.java),
+  [PageDrawer.java](https://raw.githubusercontent.com/apache/pdfbox/3.0.8/pdfbox/src/main/java/org/apache/pdfbox/rendering/PageDrawer.java),
+  PDFStreamEngine, PDFGraphicsStreamEngine, FontMappers, and FontMapperImpl
+  were inspected to check geometry, cooperative operator hooks, existing
+  annotation appearance behavior, font fallback, and image-codec boundaries.
+  The integration calls/subclasses the approved private dependency; it copies
+  no backend implementation into the public interface. Existing coordinates,
+  licenses, artifact hashes, and notices remain in DEPENDENCIES.md.
+- Public implementation and protocol: requests/results, numeric profile,
+  fixed PNG assembly using JDK Deflater/CRC32, Provider FRQ1/FRS1 envelopes,
+  enum diagnostics, result lifetime, bounded Worker values, and shared live
+  temporary-storage grants are project-authored. Bounded ImageIO header reads
+  verify terminal JPEG/JPX/JBIG2 dimensions before platform decoding. Java 8
+  JDK APIs and the existing project codecs supply the foundations. No new production or Maven
+  dependency, font, codec bundle, module, or public backend SPI is added.
+- Test fixtures: the public Rendering suite authors small PDF object/xref
+  documents, axis-aligned colors, normal/missing annotation appearances,
+  explicit half alpha, a referenced nonembedded standard font for diagnostic
+  behavior, and deterministic seeded raw image samples. These project-authored
+  Apache-2.0 fixtures are generated in test memory and never use another
+  implementation's output as the public-test oracle. Temporary files,
+  failure streams, clocks, and Providers are also project-authored. Runtime
+  system-font substitution is tested only for diagnostics, not compatibility.
+- Independent visual inputs: the base T23 PDF is created through public
+  Commands and contains red page content and a resource-free green stamp
+  appearance. Its analytical expected raster is reproducible with
+  [generate-t23-expected.py](scripts/generate-t23-expected.py), authored with
+  already installed Pillow 10.2.0 (HPND license) as an offline fixture tool
+  outside Maven and published artifacts. The expected SHA-256 is
+  `ba2aa587629d5e67d7659ca3ac34933fb15e7d9fdff0fa76976f1aceebc6a4e9`.
+  The image and font profiles reuse the existing project-owned T18/T19
+  acceptance products and expected rasters unchanged. Their origins and
+  licenses remain covered by the T18/T19 records and the
+  [font fixture authority](pdf-document/src/test/resources/net/zerocloud/pdf/fixtures/README.md).
+  The font profile uses only the two embedded project subsets with their
+  pinned source hashes, never an installed font as evidence.
+- Evidence tools: already provisioned, hash-checked qpdf 12.4.0, pdfium-cli
+  v0.11.2 / PDFium chromium-7881, and ImageMagick 7.1.2-30 ran offline on
+  2026-09-05. Exact distribution/component hashes, licenses, and notices remain
+  in scripts/*-pin.properties and capabilities/README.md. The public
+  RenderPage/RenderedPage implementation is under test; the acceptance-only
+  ImplementationRenderer is not the T23 implementation. Raw command results,
+  both renderer PNGs, expected PNGs, difference PNGs, input hashes, and fixed
+  profiles are retained under capabilities/evidence and capabilities/profiles.
+  Initial annotation disagreement was resolved by adding the documented
+  PDFium --render-annotations option; no threshold was relaxed. The existing
+  T18 JPEG produces the pinned PLATFORM_IMAGE_CODEC diagnostic.
+- Inventory/documents: the two YAML authorities, their generated Markdown,
+  Worker class inventory/hash, English contract, and Chinese usage guide
+  describe this scoped behavior. Required independent standards and formal
+  semantic evidence, compatible prerequisites, and promotion/platform gates
+  remain open. The capability remains experimental.
+- Clean-room statement: no iText source, binary-derived implementation,
+  proprietary add-on material, restricted fixture, Reference Suite output,
+  external hostile corpus, or Compatibility Curator evidence was used. No
+  implicit network/font download or external evidence-tool installation was
+  performed. The Compatibility Curator role remains vacant.
+
 Future changes append or update a scoped record and supply the pull-request
 provenance statement required by [CONTRIBUTING.md](CONTRIBUTING.md).

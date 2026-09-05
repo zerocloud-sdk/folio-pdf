@@ -1200,7 +1200,10 @@ public final class WorkerProtocolBoundaryTest {
             WorkerProtocol.Endpoint endpoint) throws Exception {
         while (true) {
             WorkerProtocol.Frame frame = endpoint.receive();
-            if (frame.getOpcode() == WorkerProtocol.MEMORY_RESERVE) {
+            if (frame.getOpcode() == WorkerProtocol.MEMORY_RESERVE
+                    || frame.getOpcode() == WorkerProtocol.TEMPORARY_RESERVE) {
+                short grantOpcode = frame.getOpcode() == WorkerProtocol.MEMORY_RESERVE
+                        ? WorkerProtocol.MEMORY_GRANTED : WorkerProtocol.TEMPORARY_GRANTED;
                 long amount;
                 try {
                     amount = WorkerMessages.decodeMemoryAmount(
@@ -1210,13 +1213,14 @@ public final class WorkerProtocolBoundaryTest {
                 }
                 byte[] grant = WorkerMessages.encodeMemoryAmount(amount);
                 try {
-                    endpoint.send(WorkerProtocol.MEMORY_GRANTED, grant);
+                    endpoint.send(grantOpcode, grant);
                 } finally {
                     Arrays.fill(grant, (byte) 0);
                 }
                 continue;
             }
-            if (frame.getOpcode() == WorkerProtocol.MEMORY_RELEASE) {
+            if (frame.getOpcode() == WorkerProtocol.MEMORY_RELEASE
+                    || frame.getOpcode() == WorkerProtocol.TEMPORARY_RELEASE) {
                 WorkerMessages.decodeMemoryAmount(frame.getPayload());
                 frame.clear();
                 continue;

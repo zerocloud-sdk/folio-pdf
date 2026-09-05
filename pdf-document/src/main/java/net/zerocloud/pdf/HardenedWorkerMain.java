@@ -194,6 +194,7 @@ final class HardenedWorkerMain {
 
     private static final class ParentMemoryAuthority
             implements WorkflowResourceContext.OwnedMemoryAuthority,
+            WorkflowResourceContext.TemporaryStorageAuthority,
             WorkerProtocol.MemoryGrantConsumer {
 
         private final WorkerProtocol.Endpoint endpoint;
@@ -210,10 +211,20 @@ final class HardenedWorkerMain {
         @Override
         public synchronized void reserve(long amount)
                 throws DocumentFailure {
+            reserveResource(amount, WorkerProtocol.MEMORY_RESERVE, WorkerProtocol.MEMORY_GRANTED);
+        }
+
+        @Override
+        public synchronized void reserveTemporary(long amount) throws DocumentFailure {
+            reserveResource(amount, WorkerProtocol.TEMPORARY_RESERVE, WorkerProtocol.TEMPORARY_GRANTED);
+        }
+
+        private void reserveResource(long amount, short opcode, short granted)
+                throws DocumentFailure {
             byte[] payload = WorkerMessages.encodeMemoryAmount(amount);
             try {
-                endpoint.send(WorkerProtocol.MEMORY_RESERVE, payload);
-                endpoint.receiveMemoryGrant(amount);
+                endpoint.send(opcode, payload);
+                endpoint.receiveResourceGrant(granted, amount);
             } catch (WorkerProtocol.ProtocolException failure) {
                 if (failure.getDocumentFailure() != null) {
                     throw failure.getDocumentFailure();
@@ -264,9 +275,18 @@ final class HardenedWorkerMain {
 
         @Override
         public void release(long amount) {
+            releaseResource(amount, WorkerProtocol.MEMORY_RELEASE);
+        }
+
+        @Override
+        public void releaseTemporary(long amount) {
+            releaseResource(amount, WorkerProtocol.TEMPORARY_RELEASE);
+        }
+
+        private void releaseResource(long amount, short opcode) {
             byte[] payload = WorkerMessages.encodeMemoryAmount(amount);
             try {
-                endpoint.send(WorkerProtocol.MEMORY_RELEASE, payload);
+                endpoint.send(opcode, payload);
             } catch (IOException | WorkerProtocol.ProtocolException failure) {
                 throw new MemoryAuthorityFailure();
             } finally {
@@ -339,7 +359,8 @@ final class HardenedWorkerMain {
                         name,
                         root,
                         resources);
-                resources.registerTemporaryFile(path);
+                // The parent owns and accounts this snapshot for the whole
+                // transaction; the child only borrows its authenticated handle.
                 DocumentSource resolved = DocumentSource.workflowSnapshot(
                         path);
                 return source.getCredential() == null

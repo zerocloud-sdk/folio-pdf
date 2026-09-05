@@ -1386,6 +1386,115 @@ capabilities:
     certified-platforms: []
     status: experimental
 
+  - id: conversion.rendering
+    context: conversion
+    summary: Render selected current pages to bounded, session-scoped PNGs through a replaceable offline default Provider.
+    reference-suite:
+      source: Fixed Reference Suite rendering integration boundary and project-owned T23 contract
+      role: capability inventory only; not an implementation or behavioral oracle
+    native-interface:
+      entry-point: net.zerocloud.pdf.DocumentWorkflow#execute
+      capability: net.zerocloud.pdf.Rendering
+      query: net.zerocloud.pdf.query.RenderPage
+      options: net.zerocloud.pdf.RenderOptions
+      result: net.zerocloud.pdf.RenderedPage
+      diagnostic: net.zerocloud.pdf.RenderDiagnostic
+      provider: net.zerocloud.pdf.provider.CapabilityProvider
+      environment: net.zerocloud.pdf.WorkflowEnvironment
+      resource-policy: net.zerocloud.pdf.WorkflowResourcePolicy
+      execution-profile: net.zerocloud.pdf.WorkflowExecutionProfile
+    migration-facade:
+      stable: []
+      preview: []
+    limitations:
+      - Version 1 renders one current one-based page per Query; the streaming helper preserves selection order and duplicates and closes each result after its caller-thread consumer returns. Earlier completed Commands and font-subset finalization are visible. Streaming is page-at-a-time, not tiled rasterization. PNG staging and byte consumption expire at close or callback completion; detached dimensions and enum diagnostics remain readable.
+      - DPI and scale must be positive finite values. MediaBox or effective CropBox and a wholly contained optional unrotated crop determine binary32 geometry. The effective binary32 scale includes UserUnit; dimensions are max(1,floor(binary32(points*scale))) and 90/270-degree rotation swaps axes. Invalid page, options, or address-space overflow have stable explicit failures before raster allocation.
+      - RGB and equal-component GRAY use sRGB samples. OPAQUE composites straight alpha over the declared 24-bit background before integer luma conversion; PRESERVE keeps straight alpha and ignores background. PNG is noninterlaced 8-bit RGB/RGBA with an sRGB chunk; compressed byte identity across JVMs is not promised.
+      - SHOW renders visible existing normal annotation appearances in viewing intent; HIDE omits annotations. Hidden, NoView, and Invisible flags omit them. Missing appearances report ANNOTATION_APPEARANCE_MISSING. No appearance synthesis is permitted; a rotated NoRotate appearance requiring PDFBox transparency reconstruction fails with RENDER_FAILED. No actions are executed.
+      - Nonembedded or damaged fonts and missing glyphs report closed FONT_SUBSTITUTED and GLYPH_SUBSTITUTED diagnostics. Platform JPEG/JPX/JBIG2 codecs, including inline images and masks, report PLATFORM_IMAGE_CODEC; exactly one is permitted as the terminal image filter, and bounded header dimensions must agree with the admitted declaration before platform decoding. Rendering/decode errors are failures. Diagnostics expose no content, names, paths, or backend exceptions. System font substitution is not compatibility evidence; independent font profiles use only pinned embedded project fonts.
+      - Every viewport charges width times height cumulatively to the existing shared decoded-pixel ledger in addition to source image charges. Requested ARGB storage, PNG buffers, retained-result metadata, Provider envelopes/copies, and Worker transport are modeled Folio-owned memory over their actual holding periods. This is not total JVM heap, PDFBox/ImageIO internal allocation, native memory, or RSS accounting.
+      - PNG and Provider snapshot staging share temporary storage with existing spill and publications. Authenticated child temporary reserve/release grants share the live parent ledger, including retained parent PNGs, without a static split or duplicate charge for borrowed Source snapshots. The existing bounded and chunked Worker protocol carries closed rendering values and still requires a bounded logical payload in modeled memory.
+      - Default PDFBox 3.0.8 is private implementation code. Explicit Provider preferences never fall back; unqualified requests try eligible registrations then the reserved folio.pdfbox-renderer. Remote content disclosure requires capability-scoped authorization at selection and execution. External Providers run caller-side in both profiles with a bounded one-page PDF snapshot and the closed FRQ1/FRS1 RGBA envelope; snapshots can contain linked document objects. Provider adapters retain their own time enforcement and isolation obligations.
+      - Rendering retains cancellation, deadline, elapsed-time, environment concurrency, extraction-permission, cleanup, signature, and PDF publication contracts. PNG consumption is immediate caller-owned output with possible partial bytes and no Publication Receipt. Escaping rendering failures abort PDF Targets; subsequent PDF publication keeps ordered Path and stream receipt semantics.
+      - The independent profiles cover page content plus a normal stamp appearance, the T18 image/color/transparency corpus, and the T19 embedded-font corpus at fixed DPI 144, scale 1, page 1, effective CropBox, opaque white sRGB, and SHOW annotations. Other options have public behavioral tests but no independent visual compatibility claim. T23 adds no OCR, Office conversion, paragraph layout, shaping, Migration Facade surface, or platform certification.
+    dependency-gates:
+      - capability: conversion.capability-provider.select-execute
+        required-status: compatible
+      - capability: document.blank.create-publish-reopen
+        required-status: compatible
+      - capability: document.value.inspect-patch
+        required-status: compatible
+      - capability: composition.canvas.images-colors-transparency
+        required-status: compatible
+      - capability: composition.fonts.load-embed-subset-fallback
+        required-status: compatible
+      - capability: document.hostile-input-limits
+        required-status: compatible
+      - capability: document.hardened-worker
+        required-status: compatible
+      - capability: document.hardened-worker.recovery-scale
+        required-status: compatible
+    promotion-gates:
+      - ticket: T06
+        requirement: Independent standards and formal semantic evidence remain absent; close all mandatory evidence and compatible-status Dependency Gates before promotion. Closed implementation issues alone do not satisfy them.
+    acceptance-profile:
+      id: T23-page-rendering
+      state: experimental
+      mandatory-evidence:
+        - syntax
+        - standards
+        - semantic
+        - visual
+      evidence-record: capabilities/evidence/T23-page-rendering.md
+    evidence:
+      - kind: public-rendering-workflow-contract
+        path: pdf-document/src/test/java/net/zerocloud/pdf/consumer/RenderingWorkflowContractTest.java
+        assertion: Both execution profiles share public geometry, prior-command ordering, pixels, annotation, Provider selection/disclosure, streaming, lifetime, inclusive memory/pixel/temporary boundaries, time/cancellation/concurrency, cleanup, and publication tests; path-independent exact first-excess cases and a 2-KiB Worker frame case prove that transport cannot reset image or viewport accounting.
+      - kind: public-api-contract
+        path: pdf-document/src/test/java/net/zerocloud/pdf/contract/PublicApiLeakageIT.java
+        assertion: Public and protected signatures expose no PDFBox or backend types.
+      - kind: artifact-contract
+        path: pdf-document/src/test/java/net/zerocloud/pdf/contract/JarContractIT.java
+        assertion: Java 8 class files, module identity, dependency direction, unshaded dependencies, and production-only jar contents remain intact.
+      - kind: acceptance-command
+        path: pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T23RenderingEvidenceCommand.java
+        assertion: The public Rendering Query and PNG consumer produce the implementation output compared to pinned independent PDFium with explicit annotations and fixed ImageMagick thresholds; input and expected-raster hashes are checked.
+      - kind: acceptance-reproducibility-contract
+        path: pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/AcceptanceEvidenceCommandTest.java
+        assertion: T23 exercises the production public renderer and refuses missing tools or an input hash mismatch; existing evidence tests retain renderer-disagreement, version, malformed-raster, and threshold failure behavior.
+      - kind: image-visual-profile
+        path: capabilities/evidence/T23-page-rendering-images-visual.md
+        assertion: Pinned PDFium and the actual public Rendering output satisfy the predeclared T18 image/color/transparency thresholds with the expected platform codec diagnostic.
+      - kind: font-visual-profile
+        path: capabilities/evidence/T23-page-rendering-fonts-visual.md
+        assertion: Pinned PDFium and the actual public Rendering output satisfy the predeclared T19 embedded-font thresholds without system fonts or substitutions.
+      - kind: authoritative-contract
+        path: docs/rendering.md
+        assertion: Public usage, numeric profile, Provider envelope, resource model, failure behavior, lifecycle, evidence, and limitations are documented.
+      - kind: cross-jdk-contract
+        path: scripts/verify-jdk-matrix.sh
+        assertion: The repository verifies shipped Java 8 code and public/transport/artifact contracts on JDK 8, 11, 17, and 21.
+    acceptance-evidence:
+      - chain: syntax
+        result: pass
+        record: capabilities/evidence/T23-page-rendering-syntax.md
+        producer:
+          kind: external-tool
+          name: qpdf
+          version: "12.4.0"
+      - chain: visual
+        result: pass
+        record: capabilities/evidence/T23-page-rendering-visual.md
+        producer:
+          kind: external-tool
+          name: pdfium-cli
+          version: v0.11.2-pdfium-chromium-7881
+    provenance:
+      path: PROVENANCE.md
+      record: T23 bounded-rendering record
+    certified-platforms: []
+    status: experimental
+
   - id: conversion.capability-provider.select-execute
     context: conversion
     summary: Register, inspect, deterministically select, and safely execute project-owned Capability Providers.

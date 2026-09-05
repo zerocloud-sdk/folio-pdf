@@ -1464,6 +1464,43 @@ public final class AcceptanceEvidenceCommandTest {
         assertTrue(result.output, result.output.endsWith("verify\n"));
     }
 
+
+    @Test public void t23RecordsThePublicRendererAndRefusesMissingToolsOrUnpinnedInputs() throws Exception {
+        Path output = temporaryFolder.newFolder("t23-evidence").toPath();
+        Path qpdf = qpdfFixture("t23-qpdf", "12.4.0", "exit 0");
+        VisualFixtures fixtures = visualFixtures(output, "v0.11.2", "7.1.2-30", 0, 0, null);
+        assertEquals(0, runCommand(output, qpdf, fixtures).exitCode);
+        Path root = Paths.get(requiredProperty("repositoryRoot"));
+        String[] arguments = {
+            output.toString(), output.resolve("qpdf-fixture-pin.properties").toString(),
+            output.resolve("pdfium-fixture-pin.properties").toString(),
+            output.resolve("imagemagick-fixture-pin.properties").toString(),
+            root.resolve("capabilities/profiles").toString(), "0.1.0-SNAPSHOT"
+        };
+        T23RenderingEvidenceCommand.main(arguments);
+        String record = read(output.resolve("T23-page-rendering-visual.md"));
+        assertMetadata(record, "Result", "pass");
+        BufferedImage actual = ImageIO.read(output.resolve("artifacts/T23-page-rendering-implementation.png").toFile());
+        assertEquals(0xffff0000, actual.getRGB(100, 100));
+        assertEquals(0xff00ff00, actual.getRGB(1000, 100));
+        assertTrue(read(output.resolve("artifacts/T23-page-rendering-visual.txt")).contains("RenderPage.version1"));
+        assertTrue(read(output.resolve("pdfium-arguments.txt")).contains("--render-annotations"));
+
+        Path artifacts = output.resolve("artifacts");
+        VisualProfile profile = VisualProfile.load(root.resolve("capabilities/profiles/T23-page-rendering-visual.properties"));
+        VisualEvidence wrongInput = VisualEvidenceRecorder.record(VisualEvidenceChain.t23("T23-page-rendering"),
+                artifacts.resolve("T23-page-rendering.pdf"), "unmatched-input", artifacts,
+                PdfiumPin.load(Paths.get(arguments[2])), ImageMagickPin.load(Paths.get(arguments[3])), profile, "0.1.0-SNAPSHOT");
+        assertEquals(EvidenceResult.INDETERMINATE, wrongInput.result());
+        assertTrue(wrongInput.rawFindings().contains("pinned ID-neutral SHA-256"));
+
+        Files.delete(fixtures.pdfium);
+        T23RenderingEvidenceCommand.main(arguments);
+        for (String name : Arrays.asList("T23-page-rendering", "T23-page-rendering-images", "T23-page-rendering-fonts")) {
+            assertMetadata(read(output.resolve(name + "-visual.md")), "Result", "indeterminate");
+        }
+    }
+
     private Path executable(String name, Iterable<String> lines) throws IOException {
         Path executable = temporaryFolder.newFile(name).toPath();
         Files.write(executable, lines, StandardCharsets.UTF_8);

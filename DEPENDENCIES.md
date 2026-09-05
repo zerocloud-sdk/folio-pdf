@@ -298,3 +298,9 @@ and calculate the outer bundle hash; none enter Maven artifacts. The production
 workflow pins `actions/checkout`, `actions/setup-java`, and
 `actions/upload-artifact` to complete commit SHAs. Release-only tools, reports,
 and repository modules are excluded from the BOM and product runtime.
+
+T23 uses the already approved PDFBox 3.0.8 Renderer from the private
+`pdf-document` dependency. Rendering adds no dependency, shaded class, runtime
+font bundle, external codec bundle, or production dependency on acceptance.
+The JDK supplies AWT and the fixed PNG encoder's Deflater/CRC32 primitives.
+PDFium and ImageMagick remain separately pinned, offline acceptance tools.

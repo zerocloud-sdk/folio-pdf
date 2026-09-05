@@ -50,6 +50,7 @@ final class WorkflowResourceContext implements AutoCloseable {
     private final Instant startedAt;
     private final Path temporaryRoot;
     private final OwnedMemoryAuthority ownedMemoryAuthority;
+    private final TemporaryStorageAuthority temporaryStorageAuthority;
     private final Map<Path, Long> temporaryFiles =
             new LinkedHashMap<Path, Long>();
     private final List<RandomAccessStreamCache> streamCaches =
@@ -67,6 +68,9 @@ final class WorkflowResourceContext implements AutoCloseable {
             new IdentityHashMap<COSStream, Long>();
     private final Map<COSStream, Long> imagePixelsAccounted =
             new IdentityHashMap<COSStream, Long>();
+    private final Set<COSStream> rejectedPlatformImages =
+            Collections.newSetFromMap(
+                    new IdentityHashMap<COSStream, Boolean>());
 
     private long inputBytes;
     private long pageCount;
@@ -79,6 +83,31 @@ final class WorkflowResourceContext implements AutoCloseable {
     private long peakTemporaryBytes;
     private DocumentFailure terminalFailure;
     private boolean closed;
+    private RenderingCoordinator rendering;
+    private final Set<RenderedPage> renderedPages =
+            Collections.newSetFromMap(new IdentityHashMap<RenderedPage, Boolean>());
+    private final Set<RenderDiagnostic> renderingDiagnostics = EnumSet.noneOf(RenderDiagnostic.class);
+
+    void configureRendering(RenderingCoordinator coordinator) { rendering = coordinator; }
+    RenderingCoordinator rendering() { return rendering; }
+    void retainRenderedPage(RenderedPage page) throws DocumentFailure {
+        retainOwnedMemory(512);
+        renderedPages.add(page);
+    }
+    void releaseRenderedPage(RenderedPage page) {
+        if (renderedPages.remove(page)) { releaseRetainedOwnedMemory(512); }
+    }
+    void expireRenderedPages() {
+        while (!renderedPages.isEmpty()) { renderedPages.iterator().next().close(); }
+    }
+    void recordRenderingDiagnostics(List<RenderDiagnostic> diagnostics) {
+        renderingDiagnostics.addAll(diagnostics);
+    }
+    List<String> renderingDiagnostics() {
+        List<String> result = new ArrayList<String>();
+        for (RenderDiagnostic diagnostic : renderingDiagnostics) { result.add(diagnostic.name()); }
+        return result;
+    }
 
     private WorkflowResourceContext(
             WorkflowResourcePolicy policy,
@@ -94,6 +123,8 @@ final class WorkflowResourceContext implements AutoCloseable {
         this.startedAt = clock.instant();
         this.temporaryRoot = temporaryRoot;
         this.ownedMemoryAuthority = ownedMemoryAuthority;
+        this.temporaryStorageAuthority = ownedMemoryAuthority instanceof TemporaryStorageAuthority
+                ? (TemporaryStorageAuthority) ownedMemoryAuthority : null;
     }
 
     static WorkflowResourceContext open(
@@ -149,6 +180,19 @@ final class WorkflowResourceContext implements AutoCloseable {
         return policy;
     }
 
+    Duration remainingExecutionTime() throws DocumentFailure {
+        checkpoint();
+        Instant now = clock.instant();
+        Duration elapsed = now.isBefore(startedAt) ? Duration.ZERO : Duration.between(startedAt, now);
+        Duration remaining = policy.getMaximumElapsedTime().minus(elapsed);
+        if (absoluteDeadline != null) {
+            Duration deadlineRemaining = Duration.between(now, absoluteDeadline);
+            if (deadlineRemaining.compareTo(remaining) < 0) { remaining = deadlineRemaining; }
+        }
+        // The elapsed-time boundary is inclusive, while Provider timeouts must be positive.
+        return remaining.isNegative() || remaining.isZero() ? Duration.ofNanos(1) : remaining;
+    }
+
     long getRemainingTemporaryStorageBytes() {
         return policy.getMaximumTemporaryStorageBytes() - temporaryBytes;
     }
@@ -181,13 +225,6 @@ final class WorkflowResourceContext implements AutoCloseable {
                     "The Worker resource usage exceeds its declared policy.");
         }
         long workerTemporary = usage.getPeakTemporaryStorageBytes();
-        if (temporaryBytes
-                > policy.getMaximumTemporaryStorageBytes()
-                        - workerTemporary) {
-            throw stopFailure(
-                    DocumentFailureCode.TEMPORARY_STORAGE_LIMIT_EXCEEDED,
-                    "The workflow temporary-storage limit was exceeded.");
-        }
         inputBytes = Math.max(inputBytes, usage.getAcceptedInputBytes());
         pageCount = Math.max(pageCount, usage.getObservedPages());
         objectCount = Math.max(objectCount, usage.getObservedObjects());
@@ -200,7 +237,7 @@ final class WorkflowResourceContext implements AutoCloseable {
                 usage.getPeakOwnedMemoryBytes());
         peakTemporaryBytes = Math.max(
                 peakTemporaryBytes,
-                temporaryBytes + workerTemporary);
+                workerTemporary);
     }
 
     boolean isOpen() {
@@ -581,6 +618,24 @@ final class WorkflowResourceContext implements AutoCloseable {
         return materializableImageLengths.get(stream);
     }
 
+    void rejectPlatformImage(COSStream stream) {
+        rejectedPlatformImages.add(stream);
+    }
+
+    void acceptPlatformImage(COSStream stream) {
+        rejectedPlatformImages.remove(stream);
+    }
+
+    boolean isRejectedPlatformImage(COSStream stream) {
+        return rejectedPlatformImages.contains(stream);
+    }
+
+    void invalidateStreamPreflight(COSStream stream) {
+        streamsPreflighted.remove(stream);
+        materializableImageLengths.remove(stream);
+        rejectedPlatformImages.remove(stream);
+    }
+
     void consumeImagePixels(COSStream stream, long pixels)
             throws DocumentFailure {
         Long previous = imagePixelsAccounted.get(stream);
@@ -616,13 +671,22 @@ final class WorkflowResourceContext implements AutoCloseable {
         return current + amount;
     }
 
-    private void reserveTemporaryBytes(long amount) throws DocumentFailure {
-        temporaryBytes = checkedConsume(
+    void reserveTemporaryBytes(long amount) throws DocumentFailure {
+        long next = checkedConsume(
                 temporaryBytes,
                 amount,
                 policy.getMaximumTemporaryStorageBytes(),
                 DocumentFailureCode.TEMPORARY_STORAGE_LIMIT_EXCEEDED,
                 "The workflow temporary-storage limit was exceeded.");
+        if (temporaryStorageAuthority != null && amount != 0L) {
+            try {
+                temporaryStorageAuthority.reserveTemporary(amount);
+            } catch (DocumentFailure failure) {
+                poison(failure);
+                throw failure;
+            }
+        }
+        temporaryBytes = next;
         peakTemporaryBytes = Math.max(peakTemporaryBytes, temporaryBytes);
     }
 
@@ -669,8 +733,11 @@ final class WorkflowResourceContext implements AutoCloseable {
         releaseOwnedMemory(amount);
     }
 
-    private void releaseTemporaryBytes(long amount) {
+    void releaseTemporaryBytes(long amount) {
         temporaryBytes -= amount;
+        if (temporaryStorageAuthority != null && amount != 0L) {
+            temporaryStorageAuthority.releaseTemporary(amount);
+        }
         if (temporaryBytes < 0L) {
             throw new IllegalStateException(
                     "Temporary-storage accounting became negative.");
@@ -823,6 +890,10 @@ final class WorkflowResourceContext implements AutoCloseable {
         }
     }
 
+    IOException failureAsIOException(DocumentFailure failure) {
+        return new WorkflowResourceIOException(failure);
+    }
+
     private DocumentFailure stopFailure(
             DocumentFailureCode code,
             String diagnostic) {
@@ -872,8 +943,13 @@ final class WorkflowResourceContext implements AutoCloseable {
         }
         streamCaches.clear();
         materializableImageLengths.clear();
+        rejectedPlatformImages.clear();
         temporaryFiles.clear();
+        long remainingTemporaryBytes = temporaryBytes;
         temporaryBytes = 0L;
+        if (temporaryStorageAuthority != null && remainingTemporaryBytes != 0L) {
+            temporaryStorageAuthority.releaseTemporary(remainingTemporaryBytes);
+        }
         long remainingOwnedMemory = ownedMemoryBytes;
         ownedMemoryBytes = 0L;
         if (ownedMemoryAuthority != null && remainingOwnedMemory != 0L) {
@@ -1059,6 +1135,11 @@ final class WorkflowResourceContext implements AutoCloseable {
         void reserveProtocolPayload(long amount) throws DocumentFailure;
 
         void release(long amount);
+    }
+
+    interface TemporaryStorageAuthority {
+        void reserveTemporary(long amount) throws DocumentFailure;
+        void releaseTemporary(long amount);
     }
 
     /**

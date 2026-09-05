@@ -182,8 +182,17 @@ final class PdfBoxHostileInputPreflight {
         if (!resources.markStreamPreflighted(stream)) {
             return;
         }
+        boolean platformImage = false;
         try {
-            preflightFilterStages(stream, resources);
+            platformImage = PdfBoxRenderingImages.isPlatformImage(stream);
+            if (platformImage) {
+                PdfBoxRenderingImages.admitPlatformImageDeclaration(
+                        stream, resources);
+            }
+            preflightFilterStages(stream, resources, platformImage);
+            if (platformImage) {
+                resources.acceptPlatformImage(stream);
+            }
         } catch (PreflightResourceIOException failure) {
             throw failure;
         } catch (IOException | RuntimeException malformed) {
@@ -192,6 +201,9 @@ final class PdfBoxHostileInputPreflight {
                             malformed, resources);
             if (exhausted != null) {
                 throw exhausted;
+            }
+            if (platformImage) {
+                resources.rejectPlatformImage(stream);
             }
             // Format and operation adapters retain their more specific
             // failure semantics for malformed or unsupported declarations.
@@ -210,7 +222,8 @@ final class PdfBoxHostileInputPreflight {
 
     private static void preflightFilterStages(
             COSStream stream,
-            WorkflowResourceContext resources)
+            WorkflowResourceContext resources,
+            boolean validatePlatformHeader)
             throws IOException, DocumentFailure {
         COSBase filterDeclaration = stream.getFilters();
         int filterCount = filterCount(filterDeclaration);
@@ -223,7 +236,34 @@ final class PdfBoxHostileInputPreflight {
                 filterDeclaration,
                 filterCount,
                 resources,
-                new CountingDiscardOutputStream());
+                new CountingDiscardOutputStream(),
+                validatePlatformHeader,
+                true);
+    }
+
+    /** Validates the terminal platform-codec header without decoding it. */
+    static void validatePlatformImageHeaderBeforeDecode(
+            COSStream stream,
+            WorkflowResourceContext resources) throws IOException {
+        COSBase filterDeclaration = stream.getFilters();
+        int filterCount = filterCount(filterDeclaration);
+        if (filterCount == 0) {
+            throw new IOException("A platform image codec filter is missing.");
+        }
+        try {
+            decodeFilterStages(
+                    stream,
+                    filterDeclaration,
+                    filterCount,
+                    resources,
+                    new CountingDiscardOutputStream(),
+                    true,
+                    false);
+        } catch (PreflightResourceIOException failure) {
+            throw resources.failureAsIOException(failure.failure);
+        } catch (DocumentFailure failure) {
+            throw resources.failureAsIOException(failure);
+        }
     }
 
     /** Decodes one stream while charging every declared filter-stage output. */
@@ -242,7 +282,9 @@ final class PdfBoxHostileInputPreflight {
                         filterDeclaration,
                         filterCount,
                         resources,
-                        output);
+                        output,
+                        false,
+                        true);
             }
         } catch (PreflightResourceIOException failure) {
             throw failure.failure;
@@ -271,7 +313,9 @@ final class PdfBoxHostileInputPreflight {
             COSBase filterDeclaration,
             int filterCount,
             WorkflowResourceContext resources,
-            OutputStream finalOutput)
+            OutputStream finalOutput,
+            boolean validatePlatformHeader,
+            boolean decodeTerminalFilter)
             throws IOException, DocumentFailure {
 
         InputStream input = null;
@@ -284,6 +328,27 @@ final class PdfBoxHostileInputPreflight {
                 resources.checkpoint();
                 Filter filter = filterAt(filterDeclaration, index);
                 boolean finalStage = index == filterCount - 1;
+                if (finalStage && validatePlatformHeader) {
+                    if (previousStage == null) {
+                        Path encodedStage = resources.createTemporaryFile(
+                                ".platform-header-",
+                                ".bin");
+                        pendingStage = encodedStage;
+                        copyToTemporary(input, encodedStage, resources);
+                        input.close();
+                        input = resources.checkpointedInput(
+                                Files.newInputStream(encodedStage));
+                        previousStage = encodedStage;
+                        pendingStage = null;
+                    }
+                    PdfBoxRenderingImages.requireStreamCodecGeometry(
+                            stream,
+                            previousStage,
+                            resources);
+                    if (!decodeTerminalFilter) {
+                        break;
+                    }
+                }
                 Path outputStage = null;
                 OutputStream destination;
                 if (finalStage) {
@@ -342,6 +407,26 @@ final class PdfBoxHostileInputPreflight {
             }
             resources.releaseTemporaryFile(pendingStage);
             resources.releaseTemporaryFile(previousStage);
+        }
+    }
+
+    private static void copyToTemporary(
+            InputStream input,
+            Path target,
+            WorkflowResourceContext resources)
+            throws IOException, DocumentFailure {
+        try (WorkflowResourceContext.MemoryReservation scratch =
+                        resources.reserveOwnedMemory(8192);
+                OutputStream output = resources.openTemporaryOutput(target)) {
+            byte[] buffer = new byte[8192];
+            int count;
+            while ((count = input.read(buffer)) != -1) {
+                resources.writeBytesAsIOException(
+                        output,
+                        buffer,
+                        0,
+                        count);
+            }
         }
     }
 

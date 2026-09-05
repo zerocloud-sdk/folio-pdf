@@ -1287,6 +1287,9 @@ final class PdfBoxImageResourceExtractionOperations {
             builder.decodedAvailability = decodedAvailability;
 
             if (pixelPreflight) {
+                if (workflowResources.isRejectedPlatformImage(stream)) {
+                    return false;
+                }
                 if (!metadata.external
                         && metadata.filters.hasOnly(FilterKind.DCT)) {
                     return true;
@@ -1318,6 +1321,9 @@ final class PdfBoxImageResourceExtractionOperations {
             }
             if (byteAccess.includesDecoded()
                     && decodedAvailability == ByteAvailability.AVAILABLE) {
+                if (workflowResources.isRejectedPlatformImage(stream)) {
+                    throw new IOException("The platform image header is inconsistent with its declaration.");
+                }
                 preflightDecodedCapacity(metadata);
                 byte[] decoded = decodedBytes(stream, metadata);
                 builder.decodedBytes = decoded;

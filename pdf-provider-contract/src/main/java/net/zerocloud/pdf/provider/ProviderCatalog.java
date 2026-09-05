@@ -101,6 +101,47 @@ public final class ProviderCatalog {
     }
 
     /**
+     * Selects a registration, with a capability-owned built-in implementation
+     * appended as the final candidate. The fallback supplies metadata only;
+     * the owning capability executes its internal implementation. Registered
+     * IDs must not collide with the fallback's reserved ID.
+     *
+     * @param preference capability and optional exact Provider ID
+     * @param remoteDisclosureAuthorized explicit capability-scoped consent
+     * @param fallback immutable facts for a real capability-owned implementation
+     * @return the selected metadata
+     * @throws ProviderFailure if no eligible candidate can be selected
+     */
+    public ProviderSelection select(ProviderPreference preference,
+            boolean remoteDisclosureAuthorized, ProviderMetadata fallback)
+            throws ProviderFailure {
+        Objects.requireNonNull(fallback, "fallback");
+        if (providersById.containsKey(fallback.getProviderId())) {
+            throw new IllegalArgumentException("A registration collides with the built-in Provider ID");
+        }
+        if (!fallback.getCapabilityIds().contains(preference.getCapabilityId())) {
+            return select(preference, remoteDisclosureAuthorized);
+        }
+        if (preference.getPreferredProviderId().isPresent()) {
+            if (!fallback.getProviderId().equals(preference.getPreferredProviderId().get())) {
+                return select(preference, remoteDisclosureAuthorized);
+            }
+        } else {
+            try {
+                return select(preference, remoteDisclosureAuthorized);
+            } catch (ProviderFailure failure) {
+                if (failure.getCode() != ProviderFailureCode.PROVIDER_NOT_FOUND
+                        && failure.getCode() != ProviderFailureCode.PROVIDER_UNAVAILABLE
+                        && failure.getCode() != ProviderFailureCode.REMOTE_DISCLOSURE_NOT_AUTHORIZED) {
+                    throw failure;
+                }
+            }
+        }
+        requireEligible(fallback, preference.getCapabilityId(), remoteDisclosureAuthorized);
+        return new ProviderSelection(fallback);
+    }
+
+    /**
      * Selects and executes one Provider at the real external seam.
      * Remote authorization is read from the request and checked before adapter
      * code executes.

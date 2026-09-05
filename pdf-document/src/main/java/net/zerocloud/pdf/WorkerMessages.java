@@ -27,6 +27,7 @@ final class WorkerMessages {
     private static final int MEMORY_VERSION = 1;
     private static final int RESOURCE_USAGE_VERSION = 1;
 
+    private static final int OUTCOME_RENDERING = 13;
     private static final int OUTCOME_WORKFLOW = 1;
     private static final int OUTCOME_INCREMENTAL = 2;
     private static final int OUTCOME_VERSION_SECURITY = 3;
@@ -614,6 +615,7 @@ final class WorkerMessages {
 
     private static int outcomeCapabilityToken(String capabilityId)
             throws DocumentFailure {
+        if (Rendering.CAPABILITY_ID.equals(capabilityId)) { return OUTCOME_RENDERING; }
         if (PdfBoxWorkflowEngine.CAPABILITY_ID.equals(capabilityId)) {
             return OUTCOME_WORKFLOW;
         }
@@ -658,6 +660,8 @@ final class WorkerMessages {
 
     private static String outcomeCapability(int token) throws DocumentFailure {
         switch (token) {
+            case OUTCOME_RENDERING:
+                return Rendering.CAPABILITY_ID;
             case OUTCOME_WORKFLOW:
                 return PdfBoxWorkflowEngine.CAPABILITY_ID;
             case OUTCOME_INCREMENTAL:

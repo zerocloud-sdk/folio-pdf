@@ -83,3 +83,41 @@ Source 的全部字节作为不变前缀，并按版本 1 命令策略追加非�
 英文 README、Javadoc、ADR、Capability Matrix 和 API 契约是权威规范；本页
 提供中文使用说明。如有安全问题，请按 [SECURITY.md](../../SECURITY.md) 中的
 临时私密报告方式联系维护者。
+
+## T23 页面渲染
+
+`Rendering` 通过项目自有 `RenderPage` Query 渲染当前页面，默认使用离线的
+PDFBox Renderer。下例在同一个 Workflow 中按 144 DPI 消费第一页 PNG：
+
+```java
+workflow.execute(inspect, session -> {
+    try (RenderedPage page = session.query(RenderPage.version1(1,
+            RenderOptions.builder().dpi(144).build()))) {
+        page.writePngTo(callerOwnedPngStream);
+    }
+    return null;
+});
+```
+
+页码从 1 开始；Query 观察此前完成的 Commands。`Rendering.renderPages` 按
+传入顺序逐页渲染，保留重复页，并在每次 consumer 返回后关闭结果。DPI、scale、
+CropBox/MediaBox、显式裁剪、RGB/GRAY、背景、透明度和批注显示策略均有明确规则；
+完整尺寸舍入与失败契约见英文权威文档 [页面渲染](../rendering.md)。
+
+结果字节只能在当前线程、当前 callback 内消费，提前 `close()` 可释放暂存；
+未关闭结果在 callback 结束时失效。PNG 写入不会关闭或 flush 调用方 stream，
+失败可能留下部分字节。PNG 消费不生成 Publication Receipt；Workflow 中另行
+声明的 PDF Targets 保留既有 Path/stream 发布与收据语义。
+
+两种执行模式共享累计 decoded-pixel、Folio-owned 内存、暂存、时间、取消与并发
+配额。逐页处理仍需容纳一页光栅，内存计量不等于整个 JVM 或 RSS 硬隔离。替代字体、
+缺失字形、平台 codec 和缺失批注外观通过安全枚举诊断报告。注册的替代 Provider
+遵守既有选择规则；远程内容披露必须显式授权。恶意多租户输入使用
+`HARDENED_WORKER` 并遵守其部署要求。
+
+JPEG、JPX、JBIG2 只允许作为图像的唯一末端平台 codec；在平台解码前，受限的头部
+读取必须确认实际尺寸与已计入配额的 PDF 声明一致。该规则同样适用于内联图像、资源
+图像和遮罩，不一致时返回稳定的渲染失败。
+
+T23 的公共测试与三组独立 PDFium 视觉证据不构成兼容性认证；标准证据、正式语义
+证据和前置能力的 promotion/dependency gates 尚未满足，因此状态仍为 experimental。

@@ -336,3 +336,21 @@ non-publishing Maven Central rehearsal and protected production staging
 contract. It does not add a behavioral capability, Native Interface member, or
 Migration Facade surface, so the Capability Matrix and Facade Surface
 authorities remain unchanged.
+
+## T23 public Rendering acceptance
+
+The same `scripts/acceptance OUTPUT_DIRECTORY` command now records T23 page
+rendering plus the reused T18 image/color/transparency and T19 embedded-font
+corpora. T23 invokes the production `DocumentWorkflow.execute` / `RenderPage`
+Query and consumes `RenderedPage` PNG bytes; the acceptance-only
+`ImplementationRenderer` remains an auxiliary producer for older tickets.
+PDFium receives `--render-annotations` to match T23's SHOW policy.
+
+The three `profiles/T23-*-visual.properties` authorities pin the ID-neutral
+PDF input hash, expected raster hash, page/box/DPI/scale/rounding, opaque white
+sRGB output, annotation policy, diagnostic set, and fixed thresholds. The
+existing tool pin authorities supply exact versions and artifact hashes. A
+mismatched input, missing tool, or unresolved renderer disagreement cannot
+pass. The [T23 evidence](evidence/T23-page-rendering.md) retains original tool
+results and both expected and renderer difference PNGs, and lists the open
+formal evidence, dependency, and promotion gates. The status is experimental.

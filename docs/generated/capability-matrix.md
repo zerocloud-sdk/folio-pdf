@@ -6,7 +6,7 @@ Behavioral authority: [`../../capabilities/capability-matrix.yaml`](../../capabi
 
 - Schema version: `1`
 - Release train: `0.1.0-SNAPSHOT`
-- Capabilities: `16`
+- Capabilities: `17`
 
 ## Capability summary
 
@@ -16,6 +16,7 @@ Behavioral authority: [`../../capabilities/capability-matrix.yaml`](../../capabi
 | [`composition.canvas.images-colors-transparency`](#capability-composition_dot_canvas_dot_images_dash_colors_dash_transparency) | `composition` | `experimental` | [excluded by `T18`](facade-surface.md#excluded-capability-composition_dot_canvas_dot_images_dash_colors_dash_transparency) |
 | [`composition.fonts.load-embed-subset-fallback`](#capability-composition_dot_fonts_dot_load_dash_embed_dash_subset_dash_fallback) | `composition` | `experimental` | [excluded by `T19`](facade-surface.md#excluded-capability-composition_dot_fonts_dot_load_dash_embed_dash_subset_dash_fallback) |
 | [`conversion.capability-provider.select-execute`](#capability-conversion_dot_capability_dash_provider_dot_select_dash_execute) | `conversion` | `experimental` | [excluded by `T05`](facade-surface.md#excluded-capability-conversion_dot_capability_dash_provider_dot_select_dash_execute) |
+| [`conversion.rendering`](#capability-conversion_dot_rendering) | `conversion` | `experimental` | [excluded by `T23`](facade-surface.md#excluded-capability-conversion_dot_rendering) |
 | [`document.annotations-actions.manage`](#capability-document_dot_annotations_dash_actions_dot_manage) | `document-engine` | `experimental` | [excluded by `T12`](facade-surface.md#excluded-capability-document_dot_annotations_dash_actions_dot_manage) |
 | [`document.blank.create-publish-reopen`](#capability-document_dot_blank_dot_create_dash_publish_dash_reopen) | `document-engine` | `experimental` | [`itext7.kernel.pdf-document.add-new-page`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_add_dash_new_dash_page), [`itext7.kernel.pdf-document.close`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_close), [`itext7.kernel.pdf-document.constructor-reader`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_constructor_dash_reader), [`itext7.kernel.pdf-document.constructor-writer`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_constructor_dash_writer), [`itext7.kernel.pdf-document.get-number-of-pages`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_number_dash_of_dash_pages), [`itext7.kernel.pdf-exception.constructor-message-cause`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_exception_dot_constructor_dash_message_dash_cause), [`itext7.kernel.pdf-page.type`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_page_dot_type), [`itext7.kernel.pdf-reader.close`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_reader_dot_close), [`itext7.kernel.pdf-reader.constructor-string`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_reader_dot_constructor_dash_string), [`itext7.kernel.pdf-writer.constructor-string`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_writer_dot_constructor_dash_string), [`itext7.layout.document.close`](facade-surface.md#facade-surface-itext7_dot_layout_dot_document_dot_close), [`itext7.layout.document.constructor-pdf-document`](facade-surface.md#facade-surface-itext7_dot_layout_dot_document_dot_constructor_dash_pdf_dash_document) |
 | [`document.hardened-worker`](#capability-document_dot_hardened_dash_worker) | `document-engine` | `experimental` | [excluded by `T21`](facade-surface.md#excluded-capability-document_dot_hardened_dash_worker) |
@@ -327,6 +328,82 @@ Implementation evidence:
 Acceptance Evidence: incomplete; no independent chain has been recorded as passing.
 
 Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T05 capability-provider record`.
+
+<a id="capability-conversion_dot_rendering"></a>
+## `conversion.rendering`
+
+Render selected current pages to bounded, session-scoped PNGs through a replaceable offline default Provider.
+
+- Context: `conversion`
+- Status: `experimental`
+- Reference Suite source: `Fixed Reference Suite rendering integration boundary and project-owned T23 contract`
+- Reference role: capability inventory only; not an implementation or behavioral oracle
+- Acceptance Profile: `T23-page-rendering`
+- Mandatory evidence chains: `syntax`, `standards`, `semantic`, `visual`
+- Evidence record: [`capabilities/evidence/T23-page-rendering.md`](../../capabilities/evidence/T23-page-rendering.md)
+- Certified platforms: none
+
+### Native Interface mapping
+
+- `capability`: `net.zerocloud.pdf.Rendering`
+- `diagnostic`: `net.zerocloud.pdf.RenderDiagnostic`
+- `entry-point`: `net.zerocloud.pdf.DocumentWorkflow#execute`
+- `environment`: `net.zerocloud.pdf.WorkflowEnvironment`
+- `execution-profile`: `net.zerocloud.pdf.WorkflowExecutionProfile`
+- `options`: `net.zerocloud.pdf.RenderOptions`
+- `provider`: `net.zerocloud.pdf.provider.CapabilityProvider`
+- `query`: `net.zerocloud.pdf.query.RenderPage`
+- `resource-policy`: `net.zerocloud.pdf.WorkflowResourcePolicy`
+- `result`: `net.zerocloud.pdf.RenderedPage`
+
+### Migration Facade coverage
+
+- Stable: none
+- Preview: none
+- Explicit exclusion: [`T23`](facade-surface.md#excluded-capability-conversion_dot_rendering) — T23 is a Native Interface bounded Rendering Query, PNG-consumption, and Provider integration seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+
+### Gates and limitations
+
+- Dependency Gate: [`conversion.capability-provider.select-execute`](#capability-conversion_dot_capability_dash_provider_dot_select_dash_execute) must be `compatible`
+- Dependency Gate: [`document.blank.create-publish-reopen`](#capability-document_dot_blank_dot_create_dash_publish_dash_reopen) must be `compatible`
+- Dependency Gate: [`document.value.inspect-patch`](#capability-document_dot_value_dot_inspect_dash_patch) must be `compatible`
+- Dependency Gate: [`composition.canvas.images-colors-transparency`](#capability-composition_dot_canvas_dot_images_dash_colors_dash_transparency) must be `compatible`
+- Dependency Gate: [`composition.fonts.load-embed-subset-fallback`](#capability-composition_dot_fonts_dot_load_dash_embed_dash_subset_dash_fallback) must be `compatible`
+- Dependency Gate: [`document.hostile-input-limits`](#capability-document_dot_hostile_dash_input_dash_limits) must be `compatible`
+- Dependency Gate: [`document.hardened-worker`](#capability-document_dot_hardened_dash_worker) must be `compatible`
+- Dependency Gate: [`document.hardened-worker.recovery-scale`](#capability-document_dot_hardened_dash_worker_dot_recovery_dash_scale) must be `compatible`
+- Promotion gate `T06`: Independent standards and formal semantic evidence remain absent; close all mandatory evidence and compatible-status Dependency Gates before promotion. Closed implementation issues alone do not satisfy them.
+- Limitation: Version 1 renders one current one-based page per Query; the streaming helper preserves selection order and duplicates and closes each result after its caller-thread consumer returns. Earlier completed Commands and font-subset finalization are visible. Streaming is page-at-a-time, not tiled rasterization. PNG staging and byte consumption expire at close or callback completion; detached dimensions and enum diagnostics remain readable.
+- Limitation: DPI and scale must be positive finite values. MediaBox or effective CropBox and a wholly contained optional unrotated crop determine binary32 geometry. The effective binary32 scale includes UserUnit; dimensions are max(1,floor(binary32(points*scale))) and 90/270-degree rotation swaps axes. Invalid page, options, or address-space overflow have stable explicit failures before raster allocation.
+- Limitation: RGB and equal-component GRAY use sRGB samples. OPAQUE composites straight alpha over the declared 24-bit background before integer luma conversion; PRESERVE keeps straight alpha and ignores background. PNG is noninterlaced 8-bit RGB/RGBA with an sRGB chunk; compressed byte identity across JVMs is not promised.
+- Limitation: SHOW renders visible existing normal annotation appearances in viewing intent; HIDE omits annotations. Hidden, NoView, and Invisible flags omit them. Missing appearances report ANNOTATION_APPEARANCE_MISSING. No appearance synthesis is permitted; a rotated NoRotate appearance requiring PDFBox transparency reconstruction fails with RENDER_FAILED. No actions are executed.
+- Limitation: Nonembedded or damaged fonts and missing glyphs report closed FONT_SUBSTITUTED and GLYPH_SUBSTITUTED diagnostics. Platform JPEG/JPX/JBIG2 codecs, including inline images and masks, report PLATFORM_IMAGE_CODEC; exactly one is permitted as the terminal image filter, and bounded header dimensions must agree with the admitted declaration before platform decoding. Rendering/decode errors are failures. Diagnostics expose no content, names, paths, or backend exceptions. System font substitution is not compatibility evidence; independent font profiles use only pinned embedded project fonts.
+- Limitation: Every viewport charges width times height cumulatively to the existing shared decoded-pixel ledger in addition to source image charges. Requested ARGB storage, PNG buffers, retained-result metadata, Provider envelopes/copies, and Worker transport are modeled Folio-owned memory over their actual holding periods. This is not total JVM heap, PDFBox/ImageIO internal allocation, native memory, or RSS accounting.
+- Limitation: PNG and Provider snapshot staging share temporary storage with existing spill and publications. Authenticated child temporary reserve/release grants share the live parent ledger, including retained parent PNGs, without a static split or duplicate charge for borrowed Source snapshots. The existing bounded and chunked Worker protocol carries closed rendering values and still requires a bounded logical payload in modeled memory.
+- Limitation: Default PDFBox 3.0.8 is private implementation code. Explicit Provider preferences never fall back; unqualified requests try eligible registrations then the reserved folio.pdfbox-renderer. Remote content disclosure requires capability-scoped authorization at selection and execution. External Providers run caller-side in both profiles with a bounded one-page PDF snapshot and the closed FRQ1/FRS1 RGBA envelope; snapshots can contain linked document objects. Provider adapters retain their own time enforcement and isolation obligations.
+- Limitation: Rendering retains cancellation, deadline, elapsed-time, environment concurrency, extraction-permission, cleanup, signature, and PDF publication contracts. PNG consumption is immediate caller-owned output with possible partial bytes and no Publication Receipt. Escaping rendering failures abort PDF Targets; subsequent PDF publication keeps ordered Path and stream receipt semantics.
+- Limitation: The independent profiles cover page content plus a normal stamp appearance, the T18 image/color/transparency corpus, and the T19 embedded-font corpus at fixed DPI 144, scale 1, page 1, effective CropBox, opaque white sRGB, and SHOW annotations. Other options have public behavioral tests but no independent visual compatibility claim. T23 adds no OCR, Office conversion, paragraph layout, shaping, Migration Facade surface, or platform certification.
+
+### Evidence
+
+Implementation evidence:
+
+- `public-rendering-workflow-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/consumer/RenderingWorkflowContractTest.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/consumer/RenderingWorkflowContractTest.java) — Both execution profiles share public geometry, prior-command ordering, pixels, annotation, Provider selection/disclosure, streaming, lifetime, inclusive memory/pixel/temporary boundaries, time/cancellation/concurrency, cleanup, and publication tests; path-independent exact first-excess cases and a 2-KiB Worker frame case prove that transport cannot reset image or viewport accounting.
+- `public-api-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/contract/PublicApiLeakageIT.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/contract/PublicApiLeakageIT.java) — Public and protected signatures expose no PDFBox or backend types.
+- `artifact-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/contract/JarContractIT.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/contract/JarContractIT.java) — Java 8 class files, module identity, dependency direction, unshaded dependencies, and production-only jar contents remain intact.
+- `acceptance-command`: [`pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T23RenderingEvidenceCommand.java`](../../pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T23RenderingEvidenceCommand.java) — The public Rendering Query and PNG consumer produce the implementation output compared to pinned independent PDFium with explicit annotations and fixed ImageMagick thresholds; input and expected-raster hashes are checked.
+- `acceptance-reproducibility-contract`: [`pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/AcceptanceEvidenceCommandTest.java`](../../pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/AcceptanceEvidenceCommandTest.java) — T23 exercises the production public renderer and refuses missing tools or an input hash mismatch; existing evidence tests retain renderer-disagreement, version, malformed-raster, and threshold failure behavior.
+- `image-visual-profile`: [`capabilities/evidence/T23-page-rendering-images-visual.md`](../../capabilities/evidence/T23-page-rendering-images-visual.md) — Pinned PDFium and the actual public Rendering output satisfy the predeclared T18 image/color/transparency thresholds with the expected platform codec diagnostic.
+- `font-visual-profile`: [`capabilities/evidence/T23-page-rendering-fonts-visual.md`](../../capabilities/evidence/T23-page-rendering-fonts-visual.md) — Pinned PDFium and the actual public Rendering output satisfy the predeclared T19 embedded-font thresholds without system fonts or substitutions.
+- `authoritative-contract`: [`docs/rendering.md`](../rendering.md) — Public usage, numeric profile, Provider envelope, resource model, failure behavior, lifecycle, evidence, and limitations are documented.
+- `cross-jdk-contract`: [`scripts/verify-jdk-matrix.sh`](../../scripts/verify-jdk-matrix.sh) — The repository verifies shipped Java 8 code and public/transport/artifact contracts on JDK 8, 11, 17, and 21.
+
+Acceptance Evidence:
+
+- `syntax`: `pass` — [`capabilities/evidence/T23-page-rendering-syntax.md`](../../capabilities/evidence/T23-page-rendering-syntax.md); producer `qpdf@12.4.0` (`external-tool`)
+- `visual`: `pass` — [`capabilities/evidence/T23-page-rendering-visual.md`](../../capabilities/evidence/T23-page-rendering-visual.md); producer `pdfium-cli@v0.11.2-pdfium-chromium-7881` (`external-tool`)
+
+Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T23 bounded-rendering record`.
 
 <a id="capability-document_dot_annotations_dash_actions_dot_manage"></a>
 ## `document.annotations-actions.manage`
