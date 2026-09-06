@@ -192,7 +192,7 @@ final class PdfBoxLargeTableOperations {
             }
             try (PdfBoxPositionedTextOperations.PreparedText prepared = fonts.prepareLayoutText(text.toString(),
                     selection, limits.getFontLimits(), fallbackChecks)) {
-                PdfBoxTableLayout.Content content = tables.prepare(table, prepared, new int[] {0});
+                PdfBoxTableLayout.Content content = tables.prepare(table, prepared, new int[] {0}, memory);
                 List<PdfBoxTableLayout.Plan> plans = new ArrayList<PdfBoxTableLayout.Plan>();
                 int row = 0;
                 PdfBoxTableLayout.Cursor cursor = null;
@@ -200,13 +200,16 @@ final class PdfBoxLargeTableOperations {
                 while (row < ready && reached < areas.size()) {
                     if (attempts >= limits.getMaximumLayoutAttempts()) { throw PdfBoxParagraphOperations.limitFailure(); }
                     attempts++;
-                    PdfBoxTableLayout.Plan plan = tables.layout(content, areas.get(reached++), 0, row, cursor,
-                            Double.MAX_VALUE, limits.getMaximumLines(), memory);
-                    if (plan == null) {
-                        if (tables.lineLimitReached) { throw PdfBoxParagraphOperations.limitFailure(); }
-                        continue;
+                    try (WorkflowResourceContext.OwnedMemoryScope candidate = resources.ownedMemoryScope()) {
+                        PdfBoxTableLayout.Plan plan = tables.layout(content, areas.get(reached++), 0, row, cursor,
+                                Double.MAX_VALUE, limits.getMaximumLines(), candidate);
+                        if (plan == null) {
+                            if (tables.lineLimitReached) { throw PdfBoxParagraphOperations.limitFailure(); }
+                            continue;
+                        }
+                        candidate.transferTo(memory);
+                        plans.add(plan); row = plan.nextRow; cursor = plan.continuation;
                     }
-                    plans.add(plan); row = plan.nextRow; cursor = plan.continuation;
                 }
                 if (complete && row < ready) { throw PdfBoxTableLayout.unsatisfied(); }
                 int count = complete ? plans.size() : 0;

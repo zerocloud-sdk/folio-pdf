@@ -12,6 +12,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
+import net.zerocloud.pdf.provider.CapabilityProvider;
+import net.zerocloud.pdf.provider.ProviderFailure;
+import net.zerocloud.pdf.provider.ProviderFailureCode;
+import net.zerocloud.pdf.provider.ProviderMetadata;
+import net.zerocloud.pdf.provider.ProviderRequest;
+import net.zerocloud.pdf.provider.ProviderResult;
+import net.zerocloud.pdf.provider.ShapingRequest;
 
 /** Dedicated JVM entry point. It is not a supported application entry point. */
 final class HardenedWorkerMain {
@@ -91,12 +98,15 @@ final class HardenedWorkerMain {
                             maximumOwnedMemoryBytes);
             endpoint.acceptMemoryGrantsWith(
                     (ParentMemoryAuthority) memoryAuthority);
-            WorkflowEnvironment environment = WorkflowEnvironment.builder()
+            WorkflowEnvironment.Builder environmentBuilder = WorkflowEnvironment.builder()
                     .temporaryDirectory(root)
                     .defaultResourcePolicy(initialization.getPolicy())
                     .referenceFontSet(initialization.getReferenceFontSet())
-                    .ownedMemoryAuthority(memoryAuthority)
-                    .build();
+                    .ownedMemoryAuthority(memoryAuthority);
+            if (initialization.getShaping() != null) {
+                environmentBuilder.provider(new ParentShapingProvider(initialization.getShaping(), endpoint));
+            }
+            WorkflowEnvironment environment = environmentBuilder.build();
             java.lang.management.ManagementFactory
                     .getRuntimeMXBean()
                     .getName();
@@ -292,6 +302,40 @@ final class HardenedWorkerMain {
             } finally {
                 Arrays.fill(payload, (byte) 0);
             }
+        }
+    }
+
+    /** The native engine remains in the parent's explicitly selected Provider. */
+    private static final class ParentShapingProvider extends CapabilityProvider {
+        private final WorkerProtocol.Endpoint endpoint;
+
+        ParentShapingProvider(ProviderMetadata metadata, WorkerProtocol.Endpoint endpoint) {
+            super(metadata);
+            this.endpoint = endpoint;
+        }
+
+        @Override
+        protected ProviderResult perform(ProviderRequest request) throws ProviderFailure {
+            byte[] payload = request.getInput();
+            try {
+                endpoint.send(WorkerProtocol.SHAPING_REQUIRED, payload);
+                WorkerProtocol.Frame response = receiveApplicationFrame(endpoint);
+                try {
+                    if (response.getOpcode() != WorkerProtocol.SHAPING_RESULT) {
+                        throw failed(ProviderFailureCode.MALFORMED_OUTPUT);
+                    }
+                    if (response.getPayload().length > getMetadata().getLimits().getMaximumOutputBytes()) {
+                        throw failed(ProviderFailureCode.OUTPUT_LIMIT_EXCEEDED);
+                    }
+                    return ProviderResult.of(response.getPayload());
+                } finally { response.clear(); }
+            } catch (IOException | WorkerProtocol.ProtocolException | DocumentFailure failure) {
+                throw failed(ProviderFailureCode.EXECUTION_FAILED);
+            } finally { Arrays.fill(payload, (byte) 0); }
+        }
+
+        private ProviderFailure failed(ProviderFailureCode code) {
+            return ProviderFailure.forProvider(code, getMetadata().getProviderId(), ShapingRequest.CAPABILITY_ID);
         }
     }
 

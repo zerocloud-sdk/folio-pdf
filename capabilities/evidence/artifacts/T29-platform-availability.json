@@ -1,0 +1,42 @@
+{
+  "observed_utc": "2026-09-06T14:59:42.132305+00:00",
+  "host": {
+    "system": "Linux",
+    "machine": "x86_64",
+    "kernel": "6.8.0-136-generic"
+  },
+  "local_execution_tools": {
+    "sw_vers": null,
+    "xcrun": null,
+    "powershell": null,
+    "pwsh": null,
+    "wine": null,
+    "ssh": "/usr/bin/ssh"
+  },
+  "repository_runner_query": {
+    "command": [
+      "gh",
+      "api",
+      "repos/zerocloud-sdk/folio-pdf/actions/runners"
+    ],
+    "exit_code": 0,
+    "stdout": {
+      "total_count": 0,
+      "runners": []
+    },
+    "stderr": ""
+  },
+  "ci_workflow": {
+    "path": ".github/workflows/ci.yml",
+    "sha256": "4694de5e4073fe9d53438fa8f4ca64c13550d2c8b2101f3ab7f2ddd20ca3942a",
+    "runner_declaration": [
+      "runs-on: ubuntu-24.04"
+    ]
+  },
+  "required_missing_platforms": [
+    "Windows x86-64",
+    "macOS x86-64",
+    "macOS arm64"
+  ],
+  "limitation": "No actual execution receipts or supplied authorized access for these targets. Absence of repository self-hosted runners does not imply that all external services or GitHub-hosted runner types are unavailable. Existing repository CI declares Linux only; adding a runnable non-Linux workflow revision would require a push prohibited by this delivery contract. No suitable external execution endpoint has been provided. The current native startup observer implements Linux only."
+}

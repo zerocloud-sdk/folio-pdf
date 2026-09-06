@@ -19,7 +19,7 @@ final class WorkerMessages {
     static final int MEMORY_AMOUNT_BYTES = 12;
     static final int RESOURCE_USAGE_BYTES = 72;
 
-    private static final int INITIALIZATION_VERSION = 1;
+    private static final int INITIALIZATION_VERSION = 2;
     private static final int RESULT_VERSION = 1;
     private static final int PROGRESS_VERSION = 1;
     private static final int INPUT_VERSION = 1;
@@ -108,6 +108,7 @@ final class WorkerMessages {
             for (Path path : referenceFontPaths) {
                 output.writeString(fileName(path));
             }
+            WorkerShapingCodec.write(output, request, resources);
         });
     }
 
@@ -215,6 +216,7 @@ final class WorkerMessages {
                         input.readString(),
                         true));
             }
+            net.zerocloud.pdf.provider.ProviderMetadata shaping = WorkerShapingCodec.read(input, request);
             input.requireFullyConsumed();
 
             if (deadline != null) {
@@ -235,7 +237,7 @@ final class WorkerMessages {
                             : ReferenceFontSet.version1(fonts),
                     maximumMessageBytes,
                     input.getStandaloneRetainedMemory(),
-                    credentials);
+                    credentials, shaping);
         } catch (DocumentFailure | RuntimeException failure) {
             closeCredentials(credentials);
             if (failure instanceof DocumentFailure) {
@@ -1158,6 +1160,7 @@ final class WorkerMessages {
         private WorkflowResourcePolicy policy;
         private Map<String, Path> targetPaths;
         private ReferenceFontSet referenceFontSet;
+        private final net.zerocloud.pdf.provider.ProviderMetadata shaping;
         private final int maximumMessageBytes;
         private final long retainedOwnedMemoryBytes;
         private final List<PasswordCredential> credentials;
@@ -1169,7 +1172,8 @@ final class WorkerMessages {
                 ReferenceFontSet referenceFontSet,
                 int maximumMessageBytes,
                 long retainedOwnedMemoryBytes,
-                List<PasswordCredential> credentials) {
+                List<PasswordCredential> credentials,
+                net.zerocloud.pdf.provider.ProviderMetadata shaping) {
             this.request = request;
             this.policy = policy;
             this.targetPaths = targetPaths;
@@ -1177,6 +1181,7 @@ final class WorkerMessages {
             this.maximumMessageBytes = maximumMessageBytes;
             this.retainedOwnedMemoryBytes = retainedOwnedMemoryBytes;
             this.credentials = credentials;
+            this.shaping = shaping;
         }
 
         WorkflowRequest getRequest() {
@@ -1194,6 +1199,8 @@ final class WorkerMessages {
         ReferenceFontSet getReferenceFontSet() {
             return referenceFontSet;
         }
+
+        net.zerocloud.pdf.provider.ProviderMetadata getShaping() { return shaping; }
 
         int getMaximumMessageBytes() {
             return maximumMessageBytes;

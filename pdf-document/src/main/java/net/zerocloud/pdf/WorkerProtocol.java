@@ -51,6 +51,7 @@ final class WorkerProtocol {
     static final short MALFORMED_RESPONSE_PROBE = 23;
     static final short TEMPORARY_RESERVE = 24;
     static final short TEMPORARY_RELEASE = 25;
+    static final short SHAPING_RESULT = 26;
 
     static final short READY = 101;
     static final short COMMAND_COMPLETED = 102;
@@ -75,6 +76,7 @@ final class WorkerProtocol {
     static final short MALFORMED_RESPONSE_COMPLETED = 121;
     static final short RESOURCE_USAGE = 122;
     static final short TEMPORARY_GRANTED = 123;
+    static final short SHAPING_REQUIRED = 124;
 
     private WorkerProtocol() {
     }

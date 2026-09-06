@@ -196,3 +196,6 @@ excluded-capabilities:
   - id: composition.layout.tables
     ticket: T27
     reason: T26 and T27 provide bounded table layout, pagination, repeated sections, keeps, relayout and incremental row release through the Native Interface. The existing Preview layout.Document close-ownership surface does not map these semantics, and no evidenced Reference Suite Table or Cell mapping exists; no stable or preview stub is introduced.
+  - id: composition.shaping.harf-buzz
+    ticket: T29
+    reason: T29 adds explicit Provider selection and native glyph shaping to existing Native Interface Composition commands. The current Preview layout.Document close-ownership surface does not map this contract, no approved shaping Migration Facade mapping exists, and no stable or preview stub is introduced.

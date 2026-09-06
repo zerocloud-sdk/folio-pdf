@@ -1,0 +1,37 @@
+{
+  "observed_utc": "2026-09-06T17:26:09.976913+00:00",
+  "local_platform": {
+    "system": "Linux",
+    "machine": "x86_64",
+    "kernel": "6.8.0-136-generic"
+  },
+  "local_platform_tools": {
+    "sw_vers": null,
+    "xcrun": null,
+    "powershell": null,
+    "pwsh": null,
+    "wine": null,
+    "wine64": null,
+    "ssh": "/usr/bin/ssh"
+  },
+  "repository_self_hosted_runners": {
+    "command": [
+      "gh",
+      "api",
+      "repos/zerocloud-sdk/folio-pdf/actions/runners"
+    ],
+    "exit_code": 0,
+    "observation": {
+      "total_count": 0,
+      "runner_count_returned": 0
+    }
+  },
+  "user_supplied_non_linux_execution_endpoint": null,
+  "required_platform_results": {
+    "Linux x86-64": "Actual Linux x86-64 environment available. Acceptance and full test status are recorded separately in T29-linux-run.json and T29-verified-jdk-matrix.json.",
+    "Windows x86-64": "INDETERMINATE: no actual native/IN_PROCESS execution receipt or supplied endpoint.",
+    "macOS x86-64": "INDETERMINATE: no actual native/IN_PROCESS execution receipt or supplied endpoint.",
+    "macOS arm64": "INDETERMINATE: no actual native/IN_PROCESS execution receipt or supplied endpoint."
+  },
+  "scope": "This environment and repository self-hosted runner query do not establish that all GitHub-hosted runner types are unavailable. Existing CI uses Ubuntu; no new source revision was pushed or published. The owned live-engine observer currently implements Linux only. No Windows/macOS execution is inferred from installation recipes or Linux results."
+}

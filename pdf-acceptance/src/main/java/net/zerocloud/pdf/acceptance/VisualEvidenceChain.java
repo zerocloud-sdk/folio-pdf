@@ -26,7 +26,8 @@ final class VisualEvidenceChain {
         this.capability = capability;
         this.acceptanceProfile = acceptanceProfile;
         this.profileRecord = "capabilities/evidence/"
-                + ("T23".equals(label) ? "T23-page-rendering" : acceptanceProfile) + ".md";
+                + ("T23".equals(label) ? "T23-page-rendering"
+                    : "T29".equals(label) ? "T29-shaping" : acceptanceProfile) + ".md";
         this.inputArtifact = inputArtifact;
         this.recordName = visualArtifactStem + "-visual.md";
         this.findingsName = visualArtifactStem + "-visual.txt";
@@ -84,6 +85,12 @@ final class VisualEvidenceChain {
 
     static VisualEvidenceChain t28(String profile) {
         return new VisualEvidenceChain("T28", "composition.layout.paragraph-areas", profile, "T28-unicode.pdf", profile);
+    }
+
+    static VisualEvidenceChain t29(String profile, boolean worker) {
+        String suffix = worker ? "-worker" : "";
+        return new VisualEvidenceChain("T29", "composition.shaping.harf-buzz", profile,
+                "T29-shaping" + suffix + ".pdf", profile + suffix);
     }
 
     static VisualEvidenceChain t25(String profile, int page) {

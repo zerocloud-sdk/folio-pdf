@@ -6,7 +6,7 @@ Behavioral authority: [`../../capabilities/capability-matrix.yaml`](../../capabi
 
 - Schema version: `1`
 - Release train: `0.1.0-SNAPSHOT`
-- Capabilities: `20`
+- Capabilities: `21`
 
 ## Capability summary
 
@@ -18,6 +18,7 @@ Behavioral authority: [`../../capabilities/capability-matrix.yaml`](../../capabi
 | [`composition.layout.paragraph-areas`](#capability-composition_dot_layout_dot_paragraph_dash_areas) | `composition` | `experimental` | [excluded by `T28`](facade-surface.md#excluded-capability-composition_dot_layout_dot_paragraph_dash_areas) |
 | [`composition.layout.paragraph-pagination`](#capability-composition_dot_layout_dot_paragraph_dash_pagination) | `composition` | `experimental` | [excluded by `T25`](facade-surface.md#excluded-capability-composition_dot_layout_dot_paragraph_dash_pagination) |
 | [`composition.layout.tables`](#capability-composition_dot_layout_dot_tables) | `composition` | `experimental` | [excluded by `T27`](facade-surface.md#excluded-capability-composition_dot_layout_dot_tables) |
+| [`composition.shaping.harf-buzz`](#capability-composition_dot_shaping_dot_harf_dash_buzz) | `composition` | `experimental` | [excluded by `T29`](facade-surface.md#excluded-capability-composition_dot_shaping_dot_harf_dash_buzz) |
 | [`conversion.capability-provider.select-execute`](#capability-conversion_dot_capability_dash_provider_dot_select_dash_execute) | `conversion` | `experimental` | [excluded by `T05`](facade-surface.md#excluded-capability-conversion_dot_capability_dash_provider_dot_select_dash_execute) |
 | [`conversion.rendering`](#capability-conversion_dot_rendering) | `conversion` | `experimental` | [excluded by `T23`](facade-surface.md#excluded-capability-conversion_dot_rendering) |
 | [`document.annotations-actions.manage`](#capability-document_dot_annotations_dash_actions_dot_manage) | `document-engine` | `experimental` | [excluded by `T12`](facade-surface.md#excluded-capability-document_dot_annotations_dash_actions_dot_manage) |
@@ -321,7 +322,7 @@ Compose mixed semantic paragraphs across finite explicit new-page areas with mar
 - Dependency Gate: [`document.hardened-worker`](#capability-document_dot_hardened_dash_worker) must be `compatible`
 - Promotion gate `T06`: Complete independent standards evidence and close all compatible-status Dependency Gates. Project font evidence does not certify the Foundation Noto set or its four required platform profiles.
 - Limitation: Version 1 appends the reached prefix of a finite list of new unrotated pages. Dimensions are positive and at most 14400 points; nonnegative margins leave a positive box. Areas are explicit rectangles relative to that box or the whole box when omitted. There is no implicit page-template repetition or existing-page-area insertion.
-- Limitation: Paragraphs contain logical unshaped Unicode text at explicit sizes and atomic Canvas Transparency Groups. Fonts reuse T19 staging, explicit ordered fallback, integral CID widths, embedding/subsetting and ToUnicode, including the T28 static TrueType extension. No system or online fonts are discovered. Seven pinned Noto reference profiles are tested; complete Foundation font and four-platform certification remains open.
+- Limitation: Paragraphs contain logical Unicode text at explicit sizes and atomic Canvas Transparency Groups. Without a T29 shaping preference, fonts reuse T19 staging, explicit ordered scalar fallback, integral CID widths, embedding/subsetting and ToUnicode, including the T28 static TrueType extension. T29 separately supplies opt-in native shaping. No system or online fonts are discovered. Seven pinned unshaped Noto reference profiles are tested; complete Foundation font and four-platform certification remains open.
 - Limitation: ICU4J 77.1 uses explicit root-locale grapheme, word and line segmentation, script classification and paragraph bidi analysis. Wrapping prefers Unicode line opportunities and emergency complete-grapheme boundaries; clusters survive adjacent inlines, justification and visual reordering. LF, U+2028 and U+2029 force breaks; bidi controls affect order without glyph selection. All input scalars count toward limits. Other ISO controls and unpaired surrogates remain invalid except version-2 tabs. First-strong direction falls back to LTR; line whitespace reset and odd-level mirror mapping determine visual output. Public text queries observe displayed scalar order, not reconstructed logical input. No shaping, normalization, kerning, mark attachment, GSUB/GPOS, hyphenation or vertical text is supplied.
 - Limitation: LEFT, CENTER and RIGHT align natural advances within the area's width or a paragraph width cap. JUSTIFIED expands nonterminal spaces on automatic nonfinal lines. Lines reserve max(leading, maximum source-font ascent plus descent and graphic height); graphics sit on the baseline. No implicit paragraph spacing is added.
 - Limitation: All declaration, inline, line and generated page-operator counts are finite. Font limits apply once to the whole flow; Canvas resource limits apply separately to each bounded inline graphic. Transaction-wide page, object, modeled memory, decompression, time and temporary-storage limits still apply. Exhaustion is COMPOSITION_AREA_EXHAUSTED, invalid declarations are COMPOSITION_INVALID, and composition bounds use COMPOSITION_LIMIT_EXCEEDED; dependency failures retain their codes and safe diagnostics.
@@ -483,7 +484,7 @@ Compose bounded FIXED/AUTO tables across finite areas and pages with split rows 
 - Promotion gate `T06`: Complete independent standards evidence and compatible-status Dependency Gates; certify the Foundation reference fonts and all required platforms before claiming Foundation compatibility.
 - Limitation: Version 3 and Table.version1 retain T26 whole-table single-area immediate behavior. Version 1/2 flows reject table items. Version 4 flow/command/limits admit Table.version2 pagination and buffered or immediate composition, preserving ordinary version-1/2 paragraphs and version-1 tables. The TABLE enum value remains an exhaustive-switch migration concern.
 - Limitation: Table widths are positive points or percentages of the current area; explicit column widths are exact points or percentages of the table. FIXED divides the remainder equally among AUTO columns. AUTO solves content and declared minimum span constraints with deterministic interval allocation, preferred widths and interpolation or equal surplus. There is no implicit normalization; zero columns fail even when a different allocation could be positive, so spanning minima that consume the full width may require explicit columns or surplus width.
-- Limitation: Cells contain zero or more version-1 paragraphs, using existing explicit fonts, mixed text/graphics, leading, complete-grapheme wrapping and alignment. Nested tables, version-2 cell paragraphs, Unicode shaping and inferred reading order are outside this representation.
+- Limitation: Cells contain zero or more version-1 paragraphs, using existing explicit fonts, mixed text/graphics, leading, complete-grapheme wrapping and alignment. T29 separately supplies explicitly selected native shaping in these cells. Nested tables, version-2 cell paragraphs and inferred reading order are outside this representation.
 - Limitation: Row/cell declaration order defines reading order. Cells occupy the first available column, and every rectangular grid slot must be covered once. Nonpositive, overflowing, overlapping and incomplete spans fail TABLE_INVALID_SPAN before font acquisition. Explicit empty continuation rows are admitted.
 - Limitation: Row heights satisfy content, padding, borders and declared minima; spanning deficits are shared equally in increasing rowspan and declaration order. Content aligns inside the top/left insets. Solid black borders lie entirely inside each cell; adjacent widths add and spans contain no internal grid lines.
 - Limitation: Version-2 tables visit explicit areas/pages in declaration order, recomputing FIXED/AUTO widths per area. Whole-line row fragments retain remaining spans and receive their own padding and inside borders; row minima are consumed across fragments. Inline graphics are atomic. Header/footer grids remain whole and repeat around each nonempty body fragment, with optional first-header/final-footer omission. The footer follows the body, not the area bottom.
@@ -519,6 +520,87 @@ Acceptance Evidence:
 - `visual`: `pass` — [`capabilities/evidence/T27-table-pagination-visual.md`](../../capabilities/evidence/T27-table-pagination-visual.md); producer `pdfium-cli@v0.11.2-pdfium-chromium-7881` (`external-tool`)
 
 Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T27 table-pagination record`.
+
+<a id="capability-composition_dot_shaping_dot_harf_dash_buzz"></a>
+## `composition.shaping.harf-buzz`
+
+Shape explicitly selected fonts through the project-owned HarfBuzz Provider and retain native glyphs, clusters and positions through Composition publication.
+
+- Context: `composition`
+- Status: `experimental`
+- Reference Suite source: `iText Core 7.2.6 typography capability inventory`
+- Reference role: inventory context only; no Reference Suite or closed add-on implementation or output is used as an oracle
+- Acceptance Profile: `T29-shaping`
+- Mandatory evidence chains: `syntax`, `standards`, `semantic`, `visual`
+- Evidence record: [`capabilities/evidence/T29-shaping.md`](../../capabilities/evidence/T29-shaping.md)
+- Certified platforms: none
+
+### Native Interface mapping
+
+- `append-table-rows`: `net.zerocloud.pdf.composition.command.AppendTableRows`
+- `command`: `net.zerocloud.pdf.composition.command.ComposeParagraphs`
+- `complete-table`: `net.zerocloud.pdf.composition.command.CompleteTable`
+- `entry-point`: `net.zerocloud.pdf.DocumentWorkflow#execute`
+- `environment`: `net.zerocloud.pdf.WorkflowEnvironment`
+- `failure`: `net.zerocloud.pdf.DocumentFailure`
+- `font-selection`: `net.zerocloud.pdf.composition.FontSelection`
+- `outcome`: `net.zerocloud.pdf.WorkflowOutcome`
+- `preference`: `net.zerocloud.pdf.provider.ProviderPreference`
+- `provider`: `net.zerocloud.pdf.conversion.HarfBuzzCapabilityProvider`
+- `provider-limits`: `net.zerocloud.pdf.provider.ProviderLimits`
+- `relayout`: `net.zerocloud.pdf.composition.command.RelayoutParagraphs`
+- `request`: `net.zerocloud.pdf.WorkflowRequest`
+- `shaping-request`: `net.zerocloud.pdf.provider.ShapingRequest`
+- `shaping-result`: `net.zerocloud.pdf.provider.ShapingResult`
+
+### Migration Facade coverage
+
+- Stable: none
+- Preview: none
+- Explicit exclusion: [`T29`](facade-surface.md#excluded-capability-composition_dot_shaping_dot_harf_dash_buzz) — T29 adds explicit Provider selection and native glyph shaping to existing Native Interface Composition commands. The current Preview layout.Document close-ownership surface does not map this contract, no approved shaping Migration Facade mapping exists, and no stable or preview stub is introduced.
+
+### Gates and limitations
+
+- Dependency Gate: [`conversion.capability-provider.select-execute`](#capability-conversion_dot_capability_dash_provider_dot_select_dash_execute) must be `compatible`
+- Dependency Gate: [`composition.fonts.load-embed-subset-fallback`](#capability-composition_dot_fonts_dot_load_dash_embed_dash_subset_dash_fallback) must be `compatible`
+- Dependency Gate: [`composition.layout.paragraph-areas`](#capability-composition_dot_layout_dot_paragraph_dash_areas) must be `compatible`
+- Dependency Gate: [`composition.layout.paragraph-pagination`](#capability-composition_dot_layout_dot_paragraph_dash_pagination) must be `compatible`
+- Dependency Gate: [`composition.layout.tables`](#capability-composition_dot_layout_dot_tables) must be `compatible`
+- Dependency Gate: [`document.hostile-input-limits`](#capability-document_dot_hostile_dash_input_dash_limits) must be `compatible`
+- Dependency Gate: [`document.hardened-worker`](#capability-document_dot_hardened_dash_worker) must be `compatible`
+- Promotion gate `T29`: Retain actual pinned native, installation, subset, geometry and eight-page raster observations for Linux x86-64, Windows x86-64, macOS x86-64 and macOS arm64; missing tools or platform evidence remain indeterminate.
+- Promotion gate `T06`: Complete independent standards evidence and compatible-status Dependency Gates before compatibility promotion.
+- Limitation: The caller separately installs HarfBuzz 10.2.0 and the project-owned C helper, registers the Java Provider and explicitly selects the shaping capability in the Workflow Request. Registration alone does not change Composition. No unofficial Java wrapper, native runtime bundle, system-font search or runtime download is introduced.
+- Limitation: Static admitted TrueType fonts and horizontal OpenType shaping use default features, monotone grapheme clusters and explicit run direction/script/language. The fixed Arabic, Hebrew, Devanagari and Thai corpus includes marks, ligatures or reordering, mixed Latin, narrow lines and ordered explicit fallback. Vertical text, variable-font instances, feature overrides and a public per-run language selector are outside this profile.
+- Limitation: Original ICU extended graphemes remain indivisible for font selection and line layout. Candidate line fragments are reshaped at actual boundaries. Font-size boundaries retain declared sizes but can split a native run inside one outer grapheme; cross-style mark attachment is not promised.
+- Limitation: Native source GIDs, input cluster ranges and independent x/y advances/offsets survive embedding. Subsets contain transitive composite glyphs, separate CIDToGID mappings and complete cluster ToUnicode values. ActualText records each native run's logical input and requires effective PDF 1.5 or newer; older incremental Sources fail before publication even for BMP-only mappings. It does not reconstruct whole-paragraph logical order across bidi runs or create tagged structure.
+- Limitation: Direct DrawPositionedUnicodeText retains its unshaped scalar-order contract. Composition without a shaping preference retains the existing T28 contract. Opting in can change glyph counts, advances, line/page breaks, text mappings and PDF bytes without changing paragraph/table command versions.
+- Limitation: Existing Provider, font, Composition, table and Workflow resource limits apply. Table shaping minima consider legal grapheme partitions under the existing finite work budget. Candidate plans release reservations when rejected; chosen plans live through painting. Native intermediate allocation is not a certified heap or RSS bound.
+- Limitation: In both modes the native helper runs through the parent-side Provider subprocess. It is not fully contained by the PDF Worker's filesystem, network, CPU or memory restrictions. HARDENED_WORKER retains its existing Linux/JDK envelope; other required T29 platforms still need native and IN_PROCESS evidence.
+- Limitation: All four platform receipts are required. Windows x86-64 and macOS x86-64/arm64 have no actual execution evidence. The live engine observer currently implements Linux startup mappings only; ambiguous preload interposition and unavailable observations remain indeterminate. No platform is certified by installation or local unit tests alone.
+
+### Evidence
+
+Implementation evidence:
+
+- `public-shaping-workflow-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/consumer/ShapingCompositionWorkflowTest.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/consumer/ShapingCompositionWorkflowTest.java) — Public Workflow publication and reopening cover glyph/cluster geometry, actual-line reshaping, fallback, subsets, exact limits, preserved unshaped behavior, ownership, relayout and incremental table release in both supported execution modes.
+- `native-provider-boundary-contract`: [`pdf-conversion/src/test/java/net/zerocloud/pdf/conversion/HarfBuzzCapabilityProviderTest.java`](../../pdf-conversion/src/test/java/net/zerocloud/pdf/conversion/HarfBuzzCapabilityProviderTest.java) — Tests invoke the real external Provider protocol against the separately installed engine, including malformed input, unavailable or mismatched engine and bounded request/result behavior.
+- `independent-reference-profile`: [`capabilities/profiles/T29-shaping-reference.md`](../../capabilities/profiles/T29-shaping-reference.md) — Four scripts and eight fixed pages pin source/font/tool hashes, manual inputs and line geometry, exact native metrics, 0.0001-point geometry and unchanged raster tolerances before implementation comparisons.
+- `independent-reference-authoring`: [`scripts/t29-shaping-reference.py`](../../scripts/t29-shaping-reference.py) — Official hb-shape and a separate fontTools/raw-PDF writer supply expected GIDs, clusters, positions and source-glyph subsets without the product adapter, Folio, PDFBox or ICU.
+- `independent-subset-observer`: [`scripts/t29-verify-subsets.py`](../../scripts/t29-verify-subsets.py) — Pinned qpdf and fontTools follow painted CIDToGID mappings and compare actual embedded outlines, composite dependencies and ToUnicode input clusters against the frozen oracle.
+- `native-installation-contract`: [`scripts/tests/test_t29_native_installation.py`](../../scripts/tests/test_t29_native_installation.py) — Real source builds verify source pins, caller-directory ownership, relocation and the actual effective compiler, linker and build-tool identities.
+- `native-installation-observation`: [`scripts/t29-native-observation.py`](../../scripts/t29-native-observation.py) — A separate explicit helper invocation records its installation and live Linux startup mappings; changed artifacts, incomplete receipts and ambiguous loader interposition cannot establish passing traceability.
+- `acceptance-command-contract`: [`pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T29ShapingEvidenceCommandTest.java`](../../pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T29ShapingEvidenceCommandTest.java) — Public products and reopened observations cover all fixed runs, five effective semantic negative controls, explicit Worker applicability, unavailable Worker preservation and indeterminate missing-tool records.
+- `repository-evidence-entry-contract`: [`scripts/tests/test_t29_acceptance_entry.py`](../../scripts/tests/test_t29_acceptance_entry.py) — The canonical scripts/acceptance entry records T29 native, installation, semantic, syntax, subset and visual chains after explicit native and Python setup.
+- `authoritative-contract`: [`docs/harfbuzz-shaping.md`](../harfbuzz-shaping.md) — Installation, opt-in selection, layout and embedding semantics, protocol limits, ownership, Worker boundaries and behavior migration are documented alongside the Chinese guide.
+
+Acceptance Evidence:
+
+- `syntax`: `pass` — [`capabilities/evidence/T29-shaping-syntax.md`](../../capabilities/evidence/T29-shaping-syntax.md); producer `qpdf@12.4.0` (`external-tool`)
+- `semantic`: `pass` — [`capabilities/evidence/T29-shaping-semantic.md`](../../capabilities/evidence/T29-shaping-semantic.md); producer `folio-pdf-t29-semantic-assertions@0.1.0-SNAPSHOT` (`project-test`)
+- `visual`: `pass` — [`capabilities/evidence/T29-shaping-visual.md`](../../capabilities/evidence/T29-shaping-visual.md); producer `pdfium-cli@v0.11.2-pdfium-chromium-7881` (`external-tool`)
+
+Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T29 shaping contribution`.
 
 <a id="capability-conversion_dot_capability_dash_provider_dot_select_dash_execute"></a>
 ## `conversion.capability-provider.select-execute`

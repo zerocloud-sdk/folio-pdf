@@ -84,12 +84,16 @@ final class WorkflowResourceContext implements AutoCloseable {
     private DocumentFailure terminalFailure;
     private boolean closed;
     private RenderingCoordinator rendering;
+    private ShapingCoordinator shaping;
     private final Set<RenderedPage> renderedPages =
             Collections.newSetFromMap(new IdentityHashMap<RenderedPage, Boolean>());
     private final Set<RenderDiagnostic> renderingDiagnostics = EnumSet.noneOf(RenderDiagnostic.class);
 
     void configureRendering(RenderingCoordinator coordinator) { rendering = coordinator; }
     RenderingCoordinator rendering() { return rendering; }
+    void configureShaping(ShapingCoordinator coordinator) { shaping = coordinator; }
+    ShapingCoordinator shaping() { return shaping; }
+    boolean shapesComposition() { return shaping != null && shaping.enabled(); }
     void retainRenderedPage(RenderedPage page) throws DocumentFailure {
         retainOwnedMemory(512);
         renderedPages.add(page);

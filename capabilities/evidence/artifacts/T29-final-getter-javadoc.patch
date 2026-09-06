@@ -1,0 +1,124 @@
+--- a/pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingRequest.java
++++ b/pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingRequest.java
+@@ -99,17 +99,35 @@
+         return new ShapingRequest(font, text, script, language, direction, maximumGlyphs);
+     }
+ 
+-    /** @return a fresh copy of the complete explicit font program */
++    /**
++     * Returns the explicit font program.
++     * @return a fresh copy of the complete explicit font program
++     */
+     public byte[] getFont() { return font.clone(); }
+-    /** @return the logical input whose UTF-16 indices identify clusters */
++    /**
++     * Returns the logical input.
++     * @return the logical input whose UTF-16 indices identify clusters
++     */
+     public String getText() { return text; }
+-    /** @return the declared four-letter script tag */
++    /**
++     * Returns the script tag.
++     * @return the declared four-letter script tag
++     */
+     public String getScript() { return script; }
+-    /** @return the declared language token */
++    /**
++     * Returns the language token.
++     * @return the declared language token
++     */
+     public String getLanguage() { return language; }
+-    /** @return the declared horizontal direction */
++    /**
++     * Returns the shaping direction.
++     * @return the declared horizontal direction
++     */
+     public Direction getDirection() { return direction; }
+-    /** @return the requested glyph-count ceiling */
++    /**
++     * Returns the glyph-count limit.
++     * @return the requested glyph-count ceiling
++     */
+     public int getMaximumGlyphs() { return maximumGlyphs; }
+ 
+     /**
+--- a/pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingResult.java
++++ b/pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingResult.java
+@@ -35,13 +35,25 @@
+         this.glyphs = Collections.unmodifiableList(glyphs);
+     }
+ 
+-    /** @return the engine's reported major.minor.micro version */
++    /**
++     * Returns the reported engine version.
++     * @return the engine's reported major.minor.micro version
++     */
+     public String getEngineVersion() { return engineVersion; }
+-    /** @return the native font scale, between 16 and 16384 units per em */
++    /**
++     * Returns the native font scale.
++     * @return the native font scale, between 16 and 16384 units per em
++     */
+     public int getUnitsPerEm() { return unitsPerEm; }
+-    /** @return the horizontal direction, checked against the request */
++    /**
++     * Returns the validated shaping direction.
++     * @return the horizontal direction, checked against the request
++     */
+     public ShapingRequest.Direction getDirection() { return direction; }
+-    /** @return an unmodifiable list of immutable glyphs in visual order */
++    /**
++     * Returns the shaped glyphs in visual order.
++     * @return an unmodifiable list of immutable glyphs in visual order
++     */
+     public List<Glyph> getGlyphs() { return glyphs; }
+ 
+     /**
+@@ -140,19 +152,40 @@
+             this.yOffset = yOffset;
+         }
+ 
+-        /** @return original font glyph ID, between 1 and 65535 */
++        /**
++         * Returns the source font glyph ID.
++         * @return original font glyph ID, between 1 and 65535
++         */
+         public int getGlyphId() { return glyphId; }
+-        /** @return inclusive UTF-16 start in the logical request */
++        /**
++         * Returns the inclusive cluster start.
++         * @return inclusive UTF-16 start in the logical request
++         */
+         public int getClusterStart() { return clusterStart; }
+-        /** @return exclusive UTF-16 end at the next distinct logical cluster boundary */
++        /**
++         * Returns the exclusive cluster end.
++         * @return exclusive UTF-16 end at the next distinct logical cluster boundary
++         */
+         public int getClusterEnd() { return clusterEnd; }
+-        /** @return signed horizontal pen advance in font units */
++        /**
++         * Returns the horizontal pen advance.
++         * @return signed horizontal pen advance in font units
++         */
+         public int getXAdvance() { return xAdvance; }
+-        /** @return signed vertical pen advance in font units */
++        /**
++         * Returns the vertical pen advance.
++         * @return signed vertical pen advance in font units
++         */
+         public int getYAdvance() { return yAdvance; }
+-        /** @return signed horizontal drawing offset from the pen in font units */
++        /**
++         * Returns the horizontal drawing offset.
++         * @return signed horizontal drawing offset from the pen in font units
++         */
+         public int getXOffset() { return xOffset; }
+-        /** @return signed vertical drawing offset from the pen in font units */
++        /**
++         * Returns the vertical drawing offset.
++         * @return signed vertical drawing offset from the pen in font units
++         */
+         public int getYOffset() { return yOffset; }
+     }
+ }

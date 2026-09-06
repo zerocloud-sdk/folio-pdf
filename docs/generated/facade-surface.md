@@ -8,7 +8,7 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Release train: `0.1.0-SNAPSHOT`
 - Stable entries: `0`
 - Preview entries: `12`
-- Explicit capability exclusions: `19`
+- Explicit capability exclusions: `20`
 
 ## Stable surfaces
 
@@ -179,6 +179,13 @@ No stable surfaces are declared.
 - Behavioral capability: [`composition.layout.tables`](capability-matrix.md#capability-composition_dot_layout_dot_tables)
 - Deferred ticket: `T27`
 - Reason: T26 and T27 provide bounded table layout, pagination, repeated sections, keeps, relayout and incremental row release through the Native Interface. The existing Preview layout.Document close-ownership surface does not map these semantics, and no evidenced Reference Suite Table or Cell mapping exists; no stable or preview stub is introduced.
+
+<a id="excluded-capability-composition_dot_shaping_dot_harf_dash_buzz"></a>
+### `composition.shaping.harf-buzz`
+
+- Behavioral capability: [`composition.shaping.harf-buzz`](capability-matrix.md#capability-composition_dot_shaping_dot_harf_dash_buzz)
+- Deferred ticket: `T29`
+- Reason: T29 adds explicit Provider selection and native glyph shaping to existing Native Interface Composition commands. The current Preview layout.Document close-ownership surface does not map this contract, no approved shaping Migration Facade mapping exists, and no stable or preview stub is introduced.
 
 <a id="excluded-capability-conversion_dot_capability_dash_provider_dot_select_dash_execute"></a>
 ### `conversion.capability-provider.select-execute`

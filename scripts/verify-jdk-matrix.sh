@@ -10,6 +10,18 @@ if ! command -v "${podman_command}" >/dev/null 2>&1; then
     exit 1
 fi
 
+native_helper=${FOLIO_HARFBUZZ_HELPER:-}
+if [[ "${native_helper}" != /* || ! -x "${native_helper}" ]]; then
+    echo "Set FOLIO_HARFBUZZ_HELPER to the absolute bin/folio-harfbuzz path from scripts/install-harfbuzz.py." >&2
+    exit 2
+fi
+native_installation=$(cd -- "$(dirname -- "${native_helper}")/.." && pwd)
+if [[ ! -f "${native_installation}/installation.json" \
+        || ! "${native_installation}/bin/folio-harfbuzz" -ef "${native_helper}" ]]; then
+    echo "The JDK matrix requires the complete explicit native installation directory." >&2
+    exit 2
+fi
+
 if (( $# == 0 )); then
     jdk_versions=(8 11 17 21)
 else
@@ -32,8 +44,10 @@ for jdk_version in "${jdk_versions[@]}"; do
     "${podman_command}" run --rm \
         --userns=keep-id \
         --volume "${repository_root}:/workspace:Z" \
+        --volume "${native_installation}:/folio-harfbuzz:ro,Z" \
         --workdir /workspace \
         --env MAVEN_USER_HOME=/workspace/.build-cache/maven \
+        --env FOLIO_HARFBUZZ_HELPER=/folio-harfbuzz/bin/folio-harfbuzz \
         "${image}" \
         sh -c 'PATH=/workspace/scripts/container-bin:"${PATH}"; export PATH; exec ./mvnw "$@"' \
         folio-pdf-matrix \

@@ -6,6 +6,12 @@ and both execution profiles remain the entry points. No ICU type appears in
 a public or protected signature. Direct `DrawPositionedUnicodeText` remains
 an unshaped, scalar-order positioning command.
 
+This page describes Composition without an explicit shaping preference.
+Opting into [T29 HarfBuzz shaping](harfbuzz-shaping.md) retains ICU analysis
+and adds native glyph substitution/positioning, whole-grapheme font fallback,
+boundary reshaping and per-run logical ActualText. That opt-in contract also
+describes its different text observations and native execution boundary.
+
 ## Text, boundaries and direction
 
 Paragraph text is supplied in logical Unicode order. All adjacent text inlines
@@ -64,8 +70,9 @@ GSUB substitution and GPOS positioning are not applied. There is no ligature sub
 mark attachment, contextual Arabic/Indic shaping, Hangul Jamo syllable
 composition, variation-sequence glyph selection, hyphenation or vertical
 writing. Precomposed supported glyphs can be drawn; a missing scalar mapping
-retains the existing font failure. HarfBuzz (#30), the Asian resource product
-(#34) and full Foundation certification (#33) remain separate work.
+retains the existing font failure. Explicit native shaping uses the separate
+[T29 contract](harfbuzz-shaping.md). The Asian resource product (#34) and full
+Foundation certification (#33) remain separate work.
 
 ## Limits, execution and migration
 

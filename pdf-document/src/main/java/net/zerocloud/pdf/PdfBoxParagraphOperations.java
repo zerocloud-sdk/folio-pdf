@@ -30,6 +30,7 @@ import net.zerocloud.pdf.composition.CanvasWindingRule;
 import net.zerocloud.pdf.composition.command.RelayoutParagraphs;
 import net.zerocloud.pdf.composition.command.ComposeParagraphs;
 import net.zerocloud.pdf.composition.command.DrawCanvas;
+import net.zerocloud.pdf.provider.ShapingRequest;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDResources;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
@@ -116,7 +117,8 @@ final class PdfBoxParagraphOperations {
                 resources.checkpoint();
                 int cp = inline.getText().codePointAt(index);
                 if (!hardBreak(cp) && cp != '\t' && !bidiControl(cp)) {
-                    text.appendCodePoint((bidi.getLevelAt(offset) & 1) == 0 ? cp : UCharacter.getMirror(cp));
+                    text.appendCodePoint(resources.shapesComposition() || (bidi.getLevelAt(offset) & 1) == 0
+                            ? cp : UCharacter.getMirror(cp));
                 }
                 int length = Character.charCount(cp);
                 index += length;
@@ -220,12 +222,13 @@ final class PdfBoxParagraphOperations {
 
     private List<PDPage> compose(ComposeParagraphs command,
             PdfBoxPositionedTextOperations.PreparedText prepared) throws DocumentFailure {
-        Layout layout = new Layout(command, prepared);
-        layout.compose();
-        List<PDPage> detached = createPages(command.getFlow(), layout.lastPage + 1);
-        paint(layout.lines, layout.tablePlans, prepared, detached, command.getLimits(), 0, 0);
-        fonts.finalizeFonts();
-        return detached;
+        try (Layout layout = new Layout(command, prepared)) {
+            layout.compose();
+            List<PDPage> detached = createPages(command.getFlow(), layout.lastPage + 1);
+            paint(layout.lines, layout.tablePlans, prepared, detached, command.getLimits(), 0, 0);
+            fonts.finalizeFonts();
+            return detached;
+        }
     }
 
     static DocumentFailure compositionFailure(DocumentFailure failure, String capability) {
@@ -528,11 +531,34 @@ final class PdfBoxParagraphOperations {
             for (int index = 0; index < order.length;) {
                 resources.checkpoint();
                 Atom atom = line.atoms.get(order[index]);
+                if (atom.shapedContinuation) { index++; continue; }
                 if (atom.codePoint == '\t') { x += line.advances[order[index] - line.first]; index++; continue; }
                 if (atom.glyph < 0 && atom.inline.getKind() == Paragraph.Inline.Kind.TEXT) { index++; continue; }
                 long remaining = limits.getMaximumGeneratedContentBytes() - contentBytes;
                 long written;
-                if (atom.inline.getKind() == Paragraph.Inline.Kind.GRAPHIC) {
+                if (atom.shaped != null) {
+                    List<PdfBoxPositionedTextOperations.ShapedCluster> clusters =
+                            new ArrayList<PdfBoxPositionedTextOperations.ShapedCluster>();
+                    clusters.add(atom.shaped);
+                    int end = index + 1;
+                    double width = atom.width;
+                    while (end < order.length) {
+                        Atom next = line.atoms.get(order[end]);
+                        if (next.shapedContinuation) { end++; continue; }
+                        if (next.shaped == null || !atom.shaped.sameRun(next.shaped)
+                                || (gap > 0 && line.atoms.get(order[end - 1]).justificationSpace)) { break; }
+                        clusters.add(next.shaped);
+                        width += next.width;
+                        end++;
+                    }
+                    long textRemaining = limits.getFontLimits().getMaximumGeneratedContentBytes() - textBytes;
+                    written = atom.shaped.draw(page, clusters, atom.inline.getFontSize(), x, line.baseline, textRemaining);
+                    if (written > remaining) { throw limitFailure(); }
+                    textBytes += written;
+                    x += width;
+                    if (line.atoms.get(order[end - 1]).justificationSpace && end < order.length) { x += gap; }
+                    index = end;
+                } else if (atom.inline.getKind() == Paragraph.Inline.Kind.GRAPHIC) {
                     CanvasRectangle box = atom.inline.getGraphic().getBox();
                     double sx = atom.width / (box.getUpperRightX() - box.getLowerLeftX());
                     double sy = atom.ascent / (box.getUpperRightY() - box.getLowerLeftY());
@@ -618,7 +644,8 @@ final class PdfBoxParagraphOperations {
         return order;
     }
 
-    private final class Layout {
+    private final class Layout implements AutoCloseable {
+        private final WorkflowResourceContext.OwnedMemoryScope shapingPlans = resources.ownedMemoryScope();
         private final ComposeParagraphs command;
         private final PdfBoxPositionedTextOperations.PreparedText prepared;
         private final List<Area> areas = new ArrayList<Area>();
@@ -670,7 +697,7 @@ final class PdfBoxParagraphOperations {
                     continue;
                 }
                 Paragraph paragraph = item.getParagraph();
-                List<Atom> atoms = atoms(paragraph, prepared, glyphIndex);
+                List<Atom> atoms = atoms(paragraph, prepared, glyphIndex, shapingPlans);
                 int first = 0;
                 while (first < atoms.size()) {
                     resources.checkpoint();
@@ -678,20 +705,25 @@ final class PdfBoxParagraphOperations {
                     double width = area.box.getUpperRightX() - area.box.getLowerLeftX();
                     if (paragraph.getMaximumWidth() > 0) { width = Math.min(width, paragraph.getMaximumWidth()); }
                     Line line = line(atoms, first, paragraph, area, width);
-                    double areaHeight = area.box.getUpperRightY() - area.box.getLowerLeftY();
-                    if (line == null || exceeds(usedHeight + line.height, areaHeight)) {
-                        nextArea();
-                        continue;
+                    try {
+                        double areaHeight = area.box.getUpperRightY() - area.box.getLowerLeftY();
+                        if (line == null || exceeds(usedHeight + line.height, areaHeight)) {
+                            nextArea();
+                            continue;
+                        }
+                        if (lines.size() >= command.getLimits().getMaximumLines()) { throw limitFailure(); }
+                        retainCandidate(line, shapingPlans);
+                        line.baseline = area.box.getUpperRightY() - usedHeight - line.ascent;
+                        lines.add(line);
+                        first = line.next;
+                        // Compensated accumulation avoids drift over many fractional lines.
+                        double increment = line.height - heightCorrection;
+                        double nextHeight = usedHeight + increment;
+                        heightCorrection = (nextHeight - usedHeight) - increment;
+                        usedHeight = nextHeight;
+                    } finally {
+                        releaseCandidate(line);
                     }
-                    if (lines.size() >= command.getLimits().getMaximumLines()) { throw limitFailure(); }
-                    line.baseline = area.box.getUpperRightY() - usedHeight - line.ascent;
-                    lines.add(line);
-                    first = line.next;
-                    // Compensated accumulation avoids drift over many fractional lines.
-                    double increment = line.height - heightCorrection;
-                    double nextHeight = usedHeight + increment;
-                    heightCorrection = (nextHeight - usedHeight) - increment;
-                    usedHeight = nextHeight;
                 }
             }
         }
@@ -711,9 +743,9 @@ final class PdfBoxParagraphOperations {
             for (ParagraphFlow.Item item : command.getFlow().getItems()) {
                 resources.checkpoint();
                 Paragraph paragraph = item.getParagraph();
-                content.add(paragraph == null ? null : atoms(paragraph, prepared, glyphIndex));
+                content.add(paragraph == null ? null : atoms(paragraph, prepared, glyphIndex, shapingPlans));
                 tableContent.add(item.getKind() == ParagraphFlow.Item.Kind.TABLE
-                        ? tables.prepare(item.getTable(), prepared, glyphIndex) : null);
+                        ? tables.prepare(item.getTable(), prepared, glyphIndex, shapingPlans) : null);
                 if (paragraph != null && (paragraph.isKeepTogether() || paragraph.isKeepWithNext()
                         || paragraph.getWidows() > 1 || paragraph.getOrphans() > 1)) { constrained = true; }
             }
@@ -725,6 +757,10 @@ final class PdfBoxParagraphOperations {
                     State next = frame.next();
                     if (next == null) { stack.pop().close(); continue; }
                     if (next.item == content.size()) {
+                        for (Line line : lines) { retainCandidate(line, shapingPlans); }
+                        for (Frame selected : stack) {
+                            if (selected.tableSelected) { selected.tableMemory.transferTo(shapingPlans); }
+                        }
                         lastPage = areas.get(next.area).page;
                         return;
                     }
@@ -750,6 +786,7 @@ final class PdfBoxParagraphOperations {
             private PdfBoxTableLayout.Plan tablePlan;
             private WorkflowResourceContext.OwnedMemoryScope tableMemory;
             private boolean tableTried;
+            private boolean tableSelected;
             private final List<Line> candidates = new ArrayList<Line>();
             private final WorkflowResourceContext.OwnedMemoryScope memory = resources.ownedMemoryScope();
             private int count;
@@ -776,6 +813,7 @@ final class PdfBoxParagraphOperations {
                         tableMemory = resources.ownedMemoryScope();
                         tablePlan = tables.layout(tableContent.get(state.item), areas.get(state.area), state.used, state.first,
                                 state.tableCursor, Double.POSITIVE_INFINITY, command.getLimits().getMaximumLines() - base, tableMemory);
+                        if (tablePlan == null) { tableMemory.close(); tableMemory = null; }
                         if (tables.lineLimitReached && state.item == furthestItem) { furthestLineLimitReached = true; }
                     } else if (content.get(state.item) != null) {
                         Paragraph paragraph = command.getFlow().getItems().get(state.item).getParagraph();
@@ -789,23 +827,27 @@ final class PdfBoxParagraphOperations {
                         while (first < atoms.size()) {
                             attempt();
                             Line candidate = line(atoms, first, paragraph, area, width);
-                            if (candidate == null || exceeds(height + candidate.height,
-                                    area.box.getUpperRightY() - area.box.getLowerLeftY())) { break; }
-                            if (base + candidates.size() >= command.getLimits().getMaximumLines()) {
-                                lineLimitReached = true;
-                                if (state.item == furthestItem) { furthestLineLimitReached = true; }
-                                break;
-                            }
-                            memory.retain(256L + 8L * (candidate.end - candidate.first));
-                            candidate.baseline = area.box.getUpperRightY() - height - candidate.ascent;
-                            double increment = candidate.height - correction;
-                            double after = height + increment;
-                            correction = (after - height) - increment;
-                            height = after;
-                            candidate.usedAfter = height;
-                            candidate.correctionAfter = correction;
-                            candidates.add(candidate);
-                            first = candidate.next;
+                            boolean retained = false;
+                            try {
+                                if (candidate == null || exceeds(height + candidate.height,
+                                        area.box.getUpperRightY() - area.box.getLowerLeftY())) { break; }
+                                if (base + candidates.size() >= command.getLimits().getMaximumLines()) {
+                                    lineLimitReached = true;
+                                    if (state.item == furthestItem) { furthestLineLimitReached = true; }
+                                    break;
+                                }
+                                memory.retain(256L + 8L * (candidate.end - candidate.first));
+                                candidate.baseline = area.box.getUpperRightY() - height - candidate.ascent;
+                                double increment = candidate.height - correction;
+                                double after = height + increment;
+                                correction = (after - height) - increment;
+                                height = after;
+                                candidate.usedAfter = height;
+                                candidate.correctionAfter = correction;
+                                candidates.add(candidate);
+                                retained = true;
+                                first = candidate.next;
+                            } finally { if (!retained) { releaseCandidate(candidate); } }
                         }
                     }
                     count = candidates.size();
@@ -814,6 +856,7 @@ final class PdfBoxParagraphOperations {
             }
 
             State next() throws DocumentFailure {
+                tableSelected = false;
                 while (lines.size() > base) { lines.remove(lines.size() - 1); }
                 while (tablePlans.size() > tableBase) { tablePlans.remove(tablePlans.size() - 1); }
                 if (tableContent.get(state.item) != null) {
@@ -825,6 +868,7 @@ final class PdfBoxParagraphOperations {
                         tableMemory = resources.ownedMemoryScope();
                         tablePlan = tables.layout(tableContent.get(state.item), areas.get(state.area), state.used, state.first,
                                 state.tableCursor, height, command.getLimits().getMaximumLines() - base, tableMemory);
+                        if (tablePlan == null) { tableMemory.close(); tableMemory = null; }
                         if (tables.lineLimitReached && state.item == furthestItem) { furthestLineLimitReached = true; }
                         tableTried = false;
                     }
@@ -835,6 +879,7 @@ final class PdfBoxParagraphOperations {
                             if (!complete && state.area + 1 >= areas.size()) { return null; }
                             tablePlan.lineOffset = base;
                             tablePlans.add(tablePlan); lines.addAll(tablePlan.lines);
+                            tableSelected = true;
                             if (!complete) {
                                 return new State(state.item, tablePlan.nextRow, state.area + 1, 0, 0, false, tablePlan.continuation);
                             }
@@ -877,6 +922,7 @@ final class PdfBoxParagraphOperations {
             }
 
             @Override public void close() {
+                for (Line candidate : candidates) { releaseCandidate(candidate); }
                 if (tableMemory != null) { tableMemory.close(); }
                 memory.close();
             }
@@ -894,9 +940,12 @@ final class PdfBoxParagraphOperations {
             lastPage = area.page;
         }
 
+        @Override public void close() { shapingPlans.close(); }
+
     }
 
-    List<Atom> atoms(Paragraph paragraph, PdfBoxPositionedTextOperations.PreparedText prepared, int[] glyphIndex) throws DocumentFailure {
+    List<Atom> atoms(Paragraph paragraph, PdfBoxPositionedTextOperations.PreparedText prepared, int[] glyphIndex,
+            WorkflowResourceContext.OwnedMemoryScope ownership) throws DocumentFailure {
         List<Atom> result = new ArrayList<Atom>();
         for (Paragraph.Inline inline : paragraph.getInlines()) {
             if (inline.getKind() == Paragraph.Inline.Kind.GRAPHIC) {
@@ -939,18 +988,108 @@ final class PdfBoxParagraphOperations {
             while (boundary < offset && boundary != BreakIterator.DONE) { boundary = clusters.next(); }
             while (lineBoundary < offset && lineBoundary != BreakIterator.DONE) { lineBoundary = breaks.next(); }
             while (wordBoundary < offset && wordBoundary != BreakIterator.DONE) { wordBoundary = words.next(); }
-            atom.clusterEnd = boundary == offset;
+            atom.graphemeEnd = boundary == offset;
+            atom.clusterEnd = atom.graphemeEnd;
             spaceCluster |= atom.codePoint == ' ';
             atom.justificationSpace = atom.clusterEnd && spaceCluster;
             if (atom.clusterEnd) { spaceCluster = false; }
             atom.lineBreakAfter = atom.clusterEnd && lineBoundary == offset;
             atom.wordBreakAfter = atom.clusterEnd && wordBoundary == offset;
+            atom.unicodeLineBreakAfter = atom.lineBreakAfter;
+            atom.unicodeWordBreakAfter = atom.wordBreakAfter;
+            atom.shapingSource = prepared.shapes() ? prepared : null;
+            atom.shapingLevel = bidi.getLevelAt(atom.characterOffset);
             int resolved = atom.codePoint < 0 ? UScript.COMMON : UScript.getScript(atom.codePoint);
             if (resolved != UScript.COMMON && resolved != UScript.INHERITED) { script = resolved; }
             atom.script = script;
             if (atom.wordBreakAfter) { script = UScript.COMMON; }
         }
+        if (prepared.shapes()) { shapeAtoms(result, prepared, ownership); }
         return result;
+    }
+
+    private void shapeAtoms(List<Atom> atoms, PdfBoxPositionedTextOperations.PreparedText prepared,
+            WorkflowResourceContext.OwnedMemoryScope ownership)
+            throws DocumentFailure {
+        int inheritedScript = UScript.LATIN;
+        for (int first = 0; first < atoms.size();) {
+            Atom atom = atoms.get(first);
+            if (atom.glyph < 0) { first++; continue; }
+            int end = first + 1;
+            while (end < atoms.size() && !atoms.get(end - 1).clusterEnd) { end++; }
+            int script = inheritedScript;
+            for (int index = first; index < end; index++) {
+                int candidate = UScript.getScript(atoms.get(index).codePoint);
+                if (candidate != UScript.COMMON && candidate != UScript.INHERITED) { script = candidate; break; }
+            }
+            inheritedScript = script;
+            int font = prepared.fontForCluster(atom.glyph, atoms.get(end - 1).glyph + 1);
+            for (int index = first; index < end; index++) {
+                Atom member = atoms.get(index);
+                if (member.glyph < 0) { throw ShapingCoordinator.failed(); }
+                member.shapingFont = font;
+                member.script = script;
+            }
+            first = end;
+        }
+        shapeRuns(atoms, prepared, ownership);
+    }
+
+    private void shapeRuns(List<Atom> atoms, PdfBoxPositionedTextOperations.PreparedText prepared,
+            WorkflowResourceContext.OwnedMemoryScope ownership) throws DocumentFailure {
+        for (int first = 0; first < atoms.size();) {
+            Atom atom = atoms.get(first);
+            if (atom.glyph < 0) { first++; continue; }
+            int end = first + 1;
+            int level = atom.shapingLevel;
+            while (end < atoms.size()) {
+                Atom next = atoms.get(end);
+                if (next.glyph < 0 || next.shapingFont != atom.shapingFont || next.script != atom.script
+                        || next.inline.getFontSize() != atom.inline.getFontSize()
+                        || next.shapingLevel != level) { break; }
+                end++;
+            }
+            List<PdfBoxPositionedTextOperations.ShapedCluster> clusters = prepared.shape(atom.glyph,
+                    atoms.get(end - 1).glyph + 1, atom.shapingFont, UScript.getShortName(atom.script),
+                    shapingLanguage(atom.script), (level & 1) == 0 ? ShapingRequest.Direction.LEFT_TO_RIGHT
+                            : ShapingRequest.Direction.RIGHT_TO_LEFT, atom.inline.getFontSize(), ownership);
+            int next = first;
+            for (PdfBoxPositionedTextOperations.ShapedCluster cluster : clusters) {
+                int startOffset = atom.characterOffset + cluster.start;
+                int endOffset = atom.characterOffset + cluster.end;
+                if (atoms.get(next).characterOffset != startOffset) { throw ShapingCoordinator.failed(); }
+                int clusterLimit = next;
+                while (clusterLimit < end && atoms.get(clusterLimit).characterOffset < endOffset) { clusterLimit++; }
+                // A style run may end inside a grapheme. Its internal native
+                // clusters still must respect ICU; layout retains the outer grapheme.
+                if (clusterLimit == next || (clusterLimit < end && !atoms.get(clusterLimit - 1).graphemeEnd)
+                        || (clusterLimit < end && atoms.get(clusterLimit).characterOffset != endOffset)) {
+                    throw ShapingCoordinator.failed();
+                }
+                Atom owner = atoms.get(next);
+                owner.shaped = cluster;
+                while (next < clusterLimit) {
+                    Atom member = atoms.get(next++);
+                    member.width = member == owner ? cluster.width : 0;
+                    member.ascent = cluster.ascent;
+                    member.descent = cluster.descent;
+                    member.shapedContinuation = member != owner;
+                    member.clusterEnd = member.graphemeEnd && next == clusterLimit;
+                    member.lineBreakAfter &= member.clusterEnd;
+                    member.wordBreakAfter &= member.clusterEnd;
+                }
+            }
+            if (next != end) { throw ShapingCoordinator.failed(); }
+            first = end;
+        }
+    }
+
+    private static String shapingLanguage(int script) {
+        if (script == UScript.ARABIC) { return "ar"; }
+        if (script == UScript.HEBREW) { return "he"; }
+        if (script == UScript.DEVANAGARI) { return "hi"; }
+        if (script == UScript.THAI) { return "th"; }
+        return "und";
     }
 
     Line line(List<Atom> atoms, int first, Paragraph paragraph, Area area, double available)
@@ -960,7 +1099,15 @@ final class PdfBoxParagraphOperations {
 
     Line line(List<Atom> atoms, int first, Paragraph paragraph, Area area, double available, Paragraph.Overflow overflow)
             throws DocumentFailure {
-        double extra = first == 0 ? paragraph.getFirstLineIndent() : 0;
+        if (first < atoms.size() && atoms.get(first).shapingSource != null && !hardBreak(atoms.get(first).codePoint)) {
+            return shapedLine(atoms, first, paragraph, area, available, overflow);
+        }
+        return measureLine(atoms, first, paragraph, area, available, overflow, first == 0);
+    }
+
+    private Line measureLine(List<Atom> atoms, int first, Paragraph paragraph, Area area, double available,
+            Paragraph.Overflow overflow, boolean initial) throws DocumentFailure {
+        double extra = initial ? paragraph.getFirstLineIndent() : 0;
         double left = area.box.getLowerLeftX() + paragraph.getLeftIndent() + extra;
         available -= paragraph.getLeftIndent() + paragraph.getRightIndent() + extra;
         if (!positive(available)) { return null; }
@@ -973,26 +1120,8 @@ final class PdfBoxParagraphOperations {
             resources.checkpoint();
             Atom atom = atoms.get(end);
             if (hardBreak(atom.codePoint)) { break; }
-            int unitEnd = end + 1;
-            double advance = atom.width;
-            if (atom.codePoint == '\t') {
-                while (unitEnd < atoms.size() && atoms.get(unitEnd).codePoint != '\t'
-                        && !hardBreak(atoms.get(unitEnd).codePoint)) { resources.checkpoint(); unitEnd++; }
-                advance = tabAdvance(paragraph, atoms, end, unitEnd, width + extra);
-            } else if (overflow != Paragraph.Overflow.WRAP
-                    && atom.inline.getKind() == Paragraph.Inline.Kind.TEXT) {
-                while (unitEnd < atoms.size()) {
-                    resources.checkpoint();
-                    if (atoms.get(unitEnd - 1).lineBreakAfter) { break; }
-                    Atom next = atoms.get(unitEnd);
-                    if (hardBreak(next.codePoint) || next.codePoint == '\t'
-                            || next.inline.getKind() == Paragraph.Inline.Kind.GRAPHIC) { break; }
-                    unitEnd++;
-                }
-            }
-            while (unitEnd < atoms.size() && !atoms.get(unitEnd - 1).clusterEnd) {
-                resources.checkpoint(); unitEnd++;
-            }
+            int unitEnd = nextUnit(atoms, end, atoms.size(), overflow, false);
+            double advance = atom.codePoint == '\t' ? tabAdvance(paragraph, atoms, end, unitEnd, width + extra) : atom.width;
             double unitWidth = advance;
             for (int index = end + 1; index < unitEnd; index++) {
                 resources.checkpoint(); unitWidth += atoms.get(index).width;
@@ -1040,6 +1169,160 @@ final class PdfBoxParagraphOperations {
         result.advances = measured;
         result.tabbed = tabbed;
         return result;
+    }
+
+    /** Candidate lines own their shaping data; rejected attempts release it immediately. */
+    private Line shapedLine(List<Atom> atoms, int first, Paragraph paragraph, Area area,
+            double available, Paragraph.Overflow overflow) throws DocumentFailure {
+        int limit = first;
+        while (limit < atoms.size() && !hardBreak(atoms.get(limit).codePoint)) { resources.checkpoint(); limit++; }
+        Line estimate = measureLine(atoms, first, paragraph, area, available, overflow, first == 0);
+        int end = estimate == null || estimate.end == first ? nextUnit(atoms, first, limit, overflow, true) : estimate.end;
+        Line best = null;
+        try {
+            // Whole-run metrics provide a starting estimate. Refit after every changed boundary.
+            best = fitShapedCandidate(atoms, first, end, paragraph, area, available, overflow);
+            if (best == null) { return null; }
+            end = first + best.end;
+            while (end < limit) {
+                int longer = nextUnit(atoms, end, limit, overflow, true);
+                Line candidate = shapeCandidate(atoms, first, longer, paragraph, area, available, overflow);
+                if (candidate == null || candidate.end != longer - first) { releaseCandidate(candidate); break; }
+                releaseCandidate(best);
+                best = candidate;
+                end = longer;
+            }
+            // At an automatic wrap, preserve the established preference for Unicode opportunities.
+            if (end < limit) {
+                int preferred = first;
+                for (int unit = first; unit < end;) {
+                    int next = nextUnit(atoms, unit, end, overflow, true);
+                    Atom atom = atoms.get(unit);
+                    if (atoms.get(next - 1).unicodeLineBreakAfter || atom.codePoint == '\t'
+                            || atom.inline.getKind() == Paragraph.Inline.Kind.GRAPHIC) { preferred = next; }
+                    unit = next;
+                }
+                if (preferred > first && preferred < end) {
+                    releaseCandidate(best); best = null; end = preferred;
+                    best = fitShapedCandidate(atoms, first, end, paragraph, area, available, overflow);
+                    if (best == null) { return null; }
+                    end = first + best.end;
+                }
+            }
+            int next = end < atoms.size() && hardBreak(atoms.get(end).codePoint) ? end + 1 : end;
+            Line result = new Line(best.atoms, paragraph, area, 0, best.end, next, best.width, best.availableWidth,
+                    best.ascent, best.height, end < limit);
+            result.left = best.left; result.advances = best.advances; result.tabbed = best.tabbed;
+            result.shapingMemory = best.shapingMemory;
+            best.shapingMemory = null;
+            return result;
+        } finally { releaseCandidate(best); }
+    }
+
+    private Line fitShapedCandidate(List<Atom> atoms, int first, int end, Paragraph paragraph, Area area,
+            double available, Paragraph.Overflow overflow) throws DocumentFailure {
+        while (end > first) {
+            Line candidate = shapeCandidate(atoms, first, end, paragraph, area, available, overflow);
+            if (candidate != null && candidate.end == end - first) { return candidate; }
+            int shorter = candidate == null ? previousUnit(atoms, first, end, overflow) : first + candidate.end;
+            releaseCandidate(candidate);
+            end = shorter;
+        }
+        return null;
+    }
+
+    private Line shapeCandidate(List<Atom> atoms, int first, int end, Paragraph paragraph, Area area,
+            double available, Paragraph.Overflow overflow) throws DocumentFailure {
+        WorkflowResourceContext.OwnedMemoryScope memory = resources.ownedMemoryScope();
+        boolean retained = false;
+        try {
+            List<Atom> copy = shapeFragment(atoms, first, end, memory);
+            Line result = measureLine(copy, 0, paragraph, area, available, overflow, first == 0);
+            if (result != null) { result.shapingMemory = memory; retained = true; }
+            return result;
+        } finally { if (!retained) { memory.close(); } }
+    }
+
+    private List<Atom> shapeFragment(List<Atom> atoms, int first, int end,
+            WorkflowResourceContext.OwnedMemoryScope memory) throws DocumentFailure {
+        memory.retain(256L + 192L * (end - first));
+        List<Atom> copy = new ArrayList<Atom>(end - first);
+        Atom initial = atoms.get(first);
+        Atom last = atoms.get(end - 1);
+        Bidi bidi = initial.bidi.setLine(initial.characterOffset,
+                last.characterOffset + Character.charCount(last.codePoint < 0 ? 0xfffc : last.codePoint));
+        for (int index = first; index < end; index++) {
+            resources.checkpoint();
+            Atom source = atoms.get(index);
+            Atom atom = new Atom(source.inline, source.glyph, source.codePoint, source.width, source.ascent, source.descent);
+            atom.bidi = source.bidi; atom.characterOffset = source.characterOffset;
+            atom.shapingSource = source.shapingSource; atom.shapingFont = source.shapingFont; atom.script = source.script;
+            atom.shapingLevel = bidi.getLevelAt(source.characterOffset - initial.characterOffset);
+            atom.graphemeEnd = source.graphemeEnd; atom.clusterEnd = source.graphemeEnd;
+            atom.justificationSpace = source.justificationSpace;
+            atom.lineBreakAfter = source.unicodeLineBreakAfter; atom.wordBreakAfter = source.unicodeWordBreakAfter;
+            copy.add(atom);
+        }
+        shapeRuns(copy, initial.shapingSource, memory);
+        return copy;
+    }
+
+    /** Measures one original-grapheme-aligned fragment with its actual shaping boundaries. */
+    double shapedFragmentAdvance(List<Atom> atoms, int first, int end) throws DocumentFailure {
+        try (WorkflowResourceContext.OwnedMemoryScope memory = resources.ownedMemoryScope()) {
+            List<Atom> fragment = shapeFragment(atoms, first, end, memory);
+            double width = 0, correction = 0;
+            for (Atom atom : fragment) {
+                resources.checkpoint();
+                double increment = atom.width - correction;
+                double next = width + increment;
+                correction = (next - width) - increment;
+                width = next;
+            }
+            return width;
+        }
+    }
+
+    static void retainCandidate(Line line, WorkflowResourceContext.OwnedMemoryScope ownership) throws DocumentFailure {
+        if (line.shapingMemory != null) {
+            line.shapingMemory.transferTo(ownership);
+            releaseCandidate(line);
+        }
+    }
+
+    static void releaseCandidate(Line line) {
+        if (line != null && line.shapingMemory != null) {
+            line.shapingMemory.close(); line.shapingMemory = null;
+        }
+    }
+
+    private int previousUnit(List<Atom> atoms, int first, int end, Paragraph.Overflow overflow) throws DocumentFailure {
+        int previous = first;
+        for (int next = first; next < end;) { previous = next; next = nextUnit(atoms, next, end, overflow, true); }
+        return previous;
+    }
+
+    /** Uses source boundaries for reshaping and native cluster boundaries for measuring a fixed fragment. */
+    private int nextUnit(List<Atom> atoms, int first, int limit, Paragraph.Overflow overflow,
+            boolean originalBoundaries) throws DocumentFailure {
+        int end = first + 1;
+        Atom atom = atoms.get(first);
+        if (atom.codePoint == '\t') {
+            while (end < limit && atoms.get(end).codePoint != '\t' && !hardBreak(atoms.get(end).codePoint)) {
+                resources.checkpoint(); end++;
+            }
+        } else if (overflow != Paragraph.Overflow.WRAP && atom.inline.getKind() == Paragraph.Inline.Kind.TEXT) {
+            while (end < limit && !(originalBoundaries ? atoms.get(end - 1).unicodeLineBreakAfter : atoms.get(end - 1).lineBreakAfter)
+                    && !hardBreak(atoms.get(end).codePoint)
+                    && atoms.get(end).codePoint != '\t' && atoms.get(end).inline.getKind() != Paragraph.Inline.Kind.GRAPHIC) {
+                resources.checkpoint(); end++;
+            }
+        }
+        // A line fragment can break a native ligature, but never an original ICU grapheme.
+        while (end < limit && !(originalBoundaries ? atoms.get(end - 1).graphemeEnd : atoms.get(end - 1).clusterEnd)) {
+            resources.checkpoint(); end++;
+        }
+        return end;
     }
 
     private double tabAdvance(Paragraph paragraph, List<Atom> atoms, int tab, int end, double current)
@@ -1138,10 +1421,18 @@ final class PdfBoxParagraphOperations {
         final Paragraph.Inline inline;
         final int glyph;
         final int codePoint;
-        final double width;
-        final double ascent;
-        final double descent;
+        double width;
+        double ascent;
+        double descent;
+        PdfBoxPositionedTextOperations.ShapedCluster shaped;
+        boolean shapedContinuation;
+        int shapingFont;
         boolean clusterEnd = true;
+        boolean graphemeEnd = true;
+        boolean unicodeLineBreakAfter;
+        boolean unicodeWordBreakAfter;
+        int shapingLevel;
+        PdfBoxPositionedTextOperations.PreparedText shapingSource;
         boolean justificationSpace;
         boolean lineBreakAfter;
         boolean wordBreakAfter;
@@ -1168,6 +1459,7 @@ final class PdfBoxParagraphOperations {
         double baseline;
         double left;
         private double[] advances;
+        private WorkflowResourceContext.OwnedMemoryScope shapingMemory;
         boolean tabbed;
         double usedAfter;
         double correctionAfter;

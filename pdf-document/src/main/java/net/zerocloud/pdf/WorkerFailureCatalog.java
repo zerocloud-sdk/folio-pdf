@@ -29,10 +29,17 @@ final class WorkerFailureCatalog {
         Rendering.CAPABILITY_ID,
         PdfBoxParagraphOperations.CAPABILITY_ID,
         PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID,
-        PdfBoxTableLayout.CAPABILITY_ID
+        PdfBoxTableLayout.CAPABILITY_ID,
+        net.zerocloud.pdf.provider.ShapingRequest.CAPABILITY_ID
     };
 
     private static final Descriptor[] SPECIFIC = {
+        descriptor(DocumentFailureCode.CAPABILITY_PROVIDER_FAILED,
+                "The Shaping Provider did not satisfy the declared profile."),
+        descriptor(DocumentFailureCode.WORKER_PROTOCOL_REJECTED,
+                "The Worker shaping value is invalid."),
+        descriptor(DocumentFailureCode.WORKER_PROTOCOL_REJECTED,
+                "The Worker shaping request is inapplicable."),
         descriptor(DocumentFailureCode.RENDER_OPTIONS_INVALID,
                 "Rendering requires finite positive dimensions, valid colors, and a contained crop."),
         descriptor(DocumentFailureCode.RENDER_DIMENSIONS_EXCEEDED,
@@ -360,6 +367,8 @@ final class WorkerFailureCatalog {
                 "Positioned Unicode text requires PDF 1.2 or newer."),
         descriptor(DocumentFailureCode.PDF_VERSION_UNSUPPORTED,
                 "Supplementary Unicode mappings require PDF 1.5 or newer."),
+        descriptor(DocumentFailureCode.PDF_VERSION_UNSUPPORTED,
+                "Shaped replacement text requires PDF 1.5 or newer."),
         descriptor(DocumentFailureCode.PDF_VERSION_UNSUPPORTED,
                 "The declared PDF version is not supported."),
         descriptor(DocumentFailureCode.PIXEL_LIMIT_EXCEEDED,
@@ -900,6 +909,8 @@ final class WorkerFailureCatalog {
             case CAPABILITY_PROVIDER_FAILED:
             case CAPABILITY_PROVIDER_NOT_FOUND:
             case CAPABILITY_PROVIDER_UNAVAILABLE:
+                return mask(PdfBoxWorkflowEngine.CAPABILITY_ID,
+                        net.zerocloud.pdf.provider.ShapingRequest.CAPABILITY_ID);
             case CONCURRENCY_LIMIT_EXCEEDED:
             case INVALID_REQUEST:
             case PUBLICATION_FAILED:
@@ -990,6 +1001,7 @@ final class WorkerFailureCatalog {
             case PDF_VERSION_UNSUPPORTED:
                 return diagnostic.startsWith("Positioned")
                         || diagnostic.startsWith("Supplementary")
+                        || diagnostic.startsWith("Shaped replacement")
                                 ? mask(PdfBoxPositionedTextOperations
                                         .CAPABILITY_ID, PdfBoxParagraphOperations.CAPABILITY_ID, PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID, PdfBoxTableLayout.CAPABILITY_ID)
                                 : mask(PdfBoxWorkflowEngine

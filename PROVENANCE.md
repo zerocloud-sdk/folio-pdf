@@ -1678,3 +1678,107 @@ provenance statement required by [CONTRIBUTING.md](CONTRIBUTING.md).
   Reference Suite output acts as the oracle. Full Foundation standards,
   dependency and required font/platform gates remain open; test results do
   not imply compatible status.
+
+## T29 shaping contribution (in progress)
+
+- Author: Codex, working from the user-provided #30 execution contract,
+  public #30/#1 issue bodies and comments, and this repository's ADRs.
+- Native reference: unchanged HarfBuzz 10.2.0 source archive and official
+  public C buffer/shaping documentation. Its MIT-Old notice, source hash,
+  explicit local build recipe and observed tool/library closure are retained
+  in [the native dependency record](docs/third-party/harfbuzz-10.2.0.md).
+- Fonts: complete static Noto Sans Arabic 2.009, Devanagari 2.002 and Thai
+  2.000 from noto-fonts commit `ffebf8c1ee449e544955a7e813c54f9b73848eac`.
+  These are copied without modification, retain the existing upstream OFL
+  notice, and have individual URLs, hashes, lengths and glyph counts in the
+  Noto resource manifests. Existing Sans/Hebrew reference resources are reused.
+- The four short logical corpora and manual line/visual-run declarations are
+  project-authored. Official `hb-shape` produced glyph IDs, clusters, advances
+  and offsets before the product adapter or Composition shaping existed.
+  The separate reference writer uses those results and already-pinned
+  fontTools 4.59.2 subsets by glyph ID, reusing only T28's independent raw PDF
+  object/xref writer. It never calls Folio, PDFBox, ICU or the project adapter.
+- The reference generation CLI has recorded Red/Green tests for numeric/PDF
+  output and independence from the native installation path. Fixed font-unit,
+  geometry, pagination and visual tolerances are declared in
+  [the T29 profile](capabilities/profiles/T29-shaping-reference.md) before
+  comparing any implementation output.
+- The project-owned explicit installation CLI consumes that pinned upstream
+  archive without downloading or modifying it. Its Meson adapter build uses
+  the public [executable/install-rpath](https://mesonbuild.com/Reference-manual_functions_executable.html)
+  and [pkg-config](https://mesonbuild.com/Dependencies.html#pkg-config)
+  contracts, consulted 2026-09-06. HarfBuzz 10.2.0's permissively licensed
+  `meson.build` was read to establish why a disabled FreeType option still
+  performs an optional pkg-config probe. The installer isolates that search
+  and records actual build/source/tool/library hashes. No upstream build or
+  engine implementation was copied into the project adapter.
+- Linker provenance uses the compiler's public `-print-prog-name` query with
+  effective `-B` and linker-selection options; the GCC
+  [link options](https://gcc.gnu.org/onlinedocs/gcc/Link-Options.html) and
+  [developer options](https://gcc.gnu.org/onlinedocs/gcc/Developer-Options.html)
+  were consulted on 2026-09-06. The real Linux CLI regression copies the
+  installed GNU linker only into a disposable fixture directory, changes its
+  file identity with a trailing marker, and verifies the selected executable
+  hash. No compiler/linker binary enters repository or product artifacts.
+- The repository-only native observation CLI uses the documented Linux
+  [procfs process mappings](https://docs.kernel.org/filesystems/proc.html),
+  consulted 2026-09-06. It reads a real owned helper's startup mappings and
+  compares installed and loaded-file hashes; no kernel implementation code
+  was copied. Preload/audit interposition is not certified. The negative
+  fixture temporarily copies the MIT-Old HarfBuzz engine and changes its ELF
+  SONAME string to demonstrate that file-name selection cannot establish
+  symbol ownership. This disposable copy is not distributed.
+- The Java Provider, detached request/result types, parent/Worker shaping
+  exchange, original-grapheme line refitting, shaped subset writer and owned
+  plan lifetimes are project-authored extensions of the repository's existing
+  Provider/font/ICU/Workflow seams. Direct positioned text remains unshaped.
+  Public Workflow and reopened-output tests supply product observations;
+  actual external helper tests supply the native protocol boundary. T29's
+  independent qpdf/fontTools subset verifier compares glyph outlines and
+  transitive composite dependencies with the pinned original fonts.
+- Marked-content replacement text follows
+  [ISO 32000-1 §14.9.4](https://opensource.adobe.com/dc-acrobat-sdk-docs/standards/pdfstandards/pdf/PDF32000_2008.pdf),
+  cross-checked with the PDF Association's
+  [published clause and errata](https://pdf-issues.pdfa.org/32000-2-2020/clause14.html)
+  on 2026-09-06. It requires PDF 1.5; the public regression reuses the
+  project-authored BMP-only T19 font and constructs a minimal older-version
+  PDF from project-authored PDF object declarations. No external fixture or
+  implementation is copied.
+- The evidence entry adds T29 records to the existing repository-only Maven
+  execution. The root test profile consumes only an explicitly supplied
+  helper path; the Linux JDK matrix mounts the separate installation. Native
+  libraries are absent from Maven artifacts. Capability/facade authorities
+  retain experimental state and an explicit shaping mapping exclusion.
+- The required JDK 8 regression gate exposed Worker heap exhaustion while
+  loading full CJK fonts. Disposable diagnostic runs used OpenJDK 8's heap
+  dump and jhat tools; the public
+  [HPROF record format](https://github.com/openjdk/jdk8u/blob/master/hotspot/src/share/vm/services/heapDumper.cpp)
+  was consulted on 2026-09-06 to hash the captured font arrays. No debugger
+  implementation or heap dump is distributed. Aggregate observations found
+  duplicate private snapshots retained for distinct borrowed declarations.
+  Project-authored repair shares only byte-identical immutable snapshots
+  while charging both unique content and every retained declaration. Public
+  Workflow regressions establish bounded repeated use, declaration accounting,
+  read-once borrowed ownership and reopened embedded-font output. Diagnostic
+  changes and JVM heap flags remain outside product source; resource defaults
+  and Worker heap settings are unchanged. This establishes a repair for the
+  observed failure, not that T29 introduced the pre-existing cache behavior.
+- No iText source, resources, fixtures, non-public implementation details or
+  closed add-on material was accessed or used. Reference Suite binaries and
+  output are not correctness oracles. The post-review Linux run retains six
+  passing chains and exact source/artifact identities in
+  [its run receipt](capabilities/evidence/artifacts/T29-linux-run.json).
+  Independent Standards and Spec review closed the three initial source
+  defects after public regressions. The
+  earlier [full root verify](capabilities/evidence/artifacts/T29-final-root-verification.json)
+  and inventory check passed before the font snapshot repair. A separately recorded
+  [Javadoc-only delta](capabilities/evidence/artifacts/T29-final-javadoc-delta.json)
+  preserves the tested source identities and verifies identical executable
+  instructions and metadata apart from changed debug line numbers for that
+  intermediate revision. The current source includes the font snapshot repair
+  and its public regression. Current-source Linux acceptance passes all six
+  chains. Complete [root verification](capabilities/evidence/artifacts/T29-verified-root-verification.json)
+  and each of the [four JDK gates](capabilities/evidence/artifacts/T29-verified-jdk-matrix.json)
+  pass 1019 tests, with zero failures/errors and three unchanged optional
+  scale skips. Actual Windows x86-64/macOS x86-64/arm64 evidence remains
+  incomplete.

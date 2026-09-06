@@ -1,0 +1,1134 @@
+T29 historical development observations; not final completion certification.
+Fixed review baseline: dd4cda28c24a304258e75f0854d86852275f5320
+These receipts retain original local log paths, byte hashes and verbatim result excerpts.
+A filename containing red or green is not itself a verdict. Failed green attempts remain failures.
+Native installation environment-green contains a corrected test-fixture error: CFLAGS was expected in C++ commands; CXXFLAGS was then supplied and the full rerun passed.
+Matrix-native-red demonstrates the missing Maven forwarding of the explicit helper; matrix-native-green is the actual JDK 8 run before subsequent recorder/inventory additions, not the final four-JDK gate.
+All missing Windows/macOS observations remain INDETERMINATE. No checkbox is certified by this development log.
+Final acceptance and repository verification have separate receipts.
+
+/tmp/folio-t29/apt-install.log
+SHA-256: 9c0a538286db83d6084680e88e895f6608f9c11daddcd11258076d77ad0c1673
+Bytes: 23598
+No test-result excerpt; this is a build/provisioning or raw observation log.
+
+/tmp/folio-t29/apt-update.log
+SHA-256: 9586bfc02c8ded42286b20898cd954f7afbcda07e05bf101085525147775fb20
+Bytes: 2546
+No test-result excerpt; this is a build/provisioning or raw observation log.
+
+/tmp/folio-t29/arabic-font-green.log
+SHA-256: dd6c53a5568b623b35591e356d6d3d0bf9ab9efd1c85d5a7cf05b5d090fd50a6
+Bytes: 6653
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.575 s -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/arabic-font-red.log
+SHA-256: 63a6d145e8e517860ecda74454869943746e76c3840ba460d4ff0e842ce8097a
+Bytes: 11018
+[ERROR] Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.263 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[ERROR] Tests run: 1, Failures: 0, Errors: 1, Skipped: 0
+[INFO] BUILD FAILURE
+
+/tmp/folio-t29/download-harfbuzz.log
+SHA-256: edbe1a9a8fba47bf5380520b3f59c71b208e599f1222119f2f5d3fa179a65af3
+Bytes: 1029
+No test-result excerpt; this is a build/provisioning or raw observation log.
+
+/tmp/folio-t29/evidence-linux-layout-fixes.log
+SHA-256: b40dacf1c383246dbf22a98c52a8bd8be050952293d15869b2191f403583ee46
+Bytes: 2074
+T29 local chains: native=PASS, semantic=PASS, syntax=PASS, subsets=PASS, visual=PASS
+
+/tmp/folio-t29/harfbuzz-build.log
+SHA-256: 1cbe02546908824f6177d5a33d18c8ab3bb288a4fe09329ce1a3c56edec55fa8
+Bytes: 16729
+No test-result excerpt; this is a build/provisioning or raw observation log.
+
+/tmp/folio-t29/native-installation-destdir-review-red.log
+SHA-256: 6562fee8029c4567556c1df229db3aedeed919ba4a63fa03dc6758afceb527a2
+Bytes: 27230
+No test-result excerpt; this is a build/provisioning or raw observation log.
+
+/tmp/folio-t29/native-installation-environment-green.log
+SHA-256: 17ab41388abc0060a76691c54617f52af08ac7f88f00da2cb834b5da731d6bf5
+Bytes: 52555
+FAIL: test_recorded_tools_are_used_and_effective_compiler_flags_are_retained (test_t29_native_installation.NativeInstallationTest.test_recorded_tools_are_used_and_effective_compiler_flags_are_retained)
+Ran 4 tests in 287.748s
+FAILED (failures=1)
+
+/tmp/folio-t29/native-installation-environment-refactor.log
+SHA-256: 52f173c71d3b7aac779f2d7a6e2b68dcf6dfcfcfeadce0b7f0fb7b39170bc41a
+Bytes: 104
+Ran 4 tests in 283.621s
+OK
+
+/tmp/folio-t29/native-installation-final.log
+SHA-256: 068e519b43fb9171f3ec539f2f810c23a373c40aa9c2c247a5ef6076e519c215
+Bytes: 228
+No test-result excerpt; this is a build/provisioning or raw observation log.
+
+/tmp/folio-t29/native-installation-green.log
+SHA-256: 30b146c435005fd4a8f900aea5435d95da16c5d5e6f2876e226fcfc59687ec0e
+Bytes: 103
+Ran 3 tests in 140.986s
+OK
+
+/tmp/folio-t29/native-installation-linker-green.log
+SHA-256: 9e1d6abc41451e75be6f34f7dd672a49dedf58c10c67d179dfefd197ea497394
+Bytes: 100
+Ran 1 test in 141.902s
+OK
+
+/tmp/folio-t29/native-installation-linker-red.log
+SHA-256: 30700bd314c5051c8f83ac335f67f670dc610df62fae4ea8296b274de4730558
+Bytes: 856
+FAIL: test_recorded_tools_are_used_and_effective_compiler_flags_are_retained (scripts.tests.test_t29_native_installation.NativeInstallationTest.test_recorded_tools_are_used_and_effective_compiler_flags_are_retained)
+Ran 1 test in 140.918s
+FAILED (failures=1)
+
+/tmp/folio-t29/native-installation-linker-refactor.log
+SHA-256: 870bcc819f7042ac2aa83dcc21b68b4b5e960da273325f420e3b4c6810709ad7
+Bytes: 104
+Ran 4 tests in 282.369s
+OK
+
+/tmp/folio-t29/native-installation-linker-review-red.log
+SHA-256: 0d1b030a51daeab4d775ffce1ecd1a8ec9d5a64d6d2080be5825e55246b0d93d
+Bytes: 39598
+No test-result excerpt; this is a build/provisioning or raw observation log.
+
+/tmp/folio-t29/native-installation-local.log
+SHA-256: 26d725f4b25bcd852feee295d413898d584bd3fbdd5e1066257160dcc58d8e87
+Bytes: 216
+No test-result excerpt; this is a build/provisioning or raw observation log.
+
+/tmp/folio-t29/native-installation-red.log
+SHA-256: 75158f967b634af9c11eb69a7e15e783462cddf70fc6822851fa4e5f0ce5c2f1
+Bytes: 2504
+FAIL: test_existing_installation_is_not_overwritten (test_t29_native_installation.NativeInstallationTest.test_existing_installation_is_not_overwritten)
+FAIL: test_explicit_installation_records_its_artifacts_and_shapes_through_the_external_protocol (test_t29_native_installation.NativeInstallationTest.test_explicit_installation_records_its_artifacts_and_shapes_through_the_external_protocol)
+FAIL: test_wrong_archive_fails_before_creating_an_installation (test_t29_native_installation.NativeInstallationTest.test_wrong_archive_fails_before_creating_an_installation)
+Ran 3 tests in 0.047s
+FAILED (failures=3)
+
+/tmp/folio-t29/native-installation-refactor.log
+SHA-256: 0ad3d73751b9d6575beed7f8ae36ae47e17e1d190e7e73d0133df9ef763fb670
+Bytes: 103
+Ran 3 tests in 139.251s
+OK
+
+/tmp/folio-t29/native-installation-reviewed.log
+SHA-256: 63fcbd3bbd803a08f99c201d23b353fbfd1764257806a4f88c3308478e395d94
+Bytes: 234
+No test-result excerpt; this is a build/provisioning or raw observation log.
+
+/tmp/folio-t29/native-installation-tool-provenance-green.log
+SHA-256: 20c2b3dd39f896051a59f62e069cd1bcea1d27798c22c3efae6335be5feae33f
+Bytes: 100
+Ran 1 test in 146.209s
+OK
+
+/tmp/folio-t29/native-installation-tool-provenance-red.log
+SHA-256: 14513b2cbb77d7cff53083e67decb8a51d3502b0e14b1e384d6a1de79a92ecc2
+Bytes: 7637
+FAIL: test_recorded_tools_are_used_and_effective_compiler_flags_are_retained (scripts.tests.test_t29_native_installation.NativeInstallationTest.test_recorded_tools_are_used_and_effective_compiler_flags_are_retained)
+ERROR: Could not detect Ninja v1.8.2 or newer
+Ran 1 test in 4.826s
+FAILED (failures=1)
+
+/tmp/folio-t29/native-observation-green.log
+SHA-256: 35bd5ffac8c810804bac06e9cf25514a6c6482f32dd5798ebf076b5d6b312b4b
+Bytes: 102
+Ran 4 tests in 0.465s
+OK
+
+/tmp/folio-t29/native-observation-malformed-receipt-review-red.log
+SHA-256: e79204abab43b192e521f3edd6a498a5224a3d0a6cfe2ff45b133115c656e56c
+Bytes: 994
+No test-result excerpt; this is a build/provisioning or raw observation log.
+
+/tmp/folio-t29/native-observation-preload-review-red.log
+SHA-256: 45f784b4a1286c5a305f7b0870829af3dc01ec8aa37c84e5deac9b6549dd1f16
+Bytes: 6703
+No test-result excerpt; this is a build/provisioning or raw observation log.
+
+/tmp/folio-t29/native-observation-red.log
+SHA-256: abed753871692d9b0183989563f616748b22d282488d3d88b6a50864319d51f5
+Bytes: 3950
+FAIL: test_actual_loaded_engine_and_installation_receipt_are_traceable (test_t29_native_observation.NativeObservationTest.test_actual_loaded_engine_and_installation_receipt_are_traceable)
+FAIL: test_changed_helper_cannot_reuse_an_installation_receipt (test_t29_native_observation.NativeObservationTest.test_changed_helper_cannot_reuse_an_installation_receipt)
+FAIL: test_loader_override_cannot_claim_the_installed_engine_hash (test_t29_native_observation.NativeObservationTest.test_loader_override_cannot_claim_the_installed_engine_hash)
+FAIL: test_missing_installation_is_indeterminate (test_t29_native_observation.NativeObservationTest.test_missing_installation_is_indeterminate)
+Ran 4 tests in 0.077s
+FAILED (failures=4)
+
+/tmp/folio-t29/native-observation-refactor.log
+SHA-256: 886ddc87d42dce4977248ad528630df488de6888cfc4d33fc23b1ce5d9832fa4
+Bytes: 102
+Ran 4 tests in 0.456s
+OK
+
+/tmp/folio-t29/native-observation-review-green.log
+SHA-256: 1d7ff3887d1d8c7de192cb4cd4a7fc6d90315b26559b3f8d5da0ccfc7e204532
+Bytes: 104
+Ran 6 tests in 0.780s
+OK
+
+/tmp/folio-t29/native-observation-review-red.log
+SHA-256: 11b643dba46c70d592b26c34e857038348b4bd2d0353fba390507fb2c46f17bb
+Bytes: 2990
+FAIL: test_malformed_or_unknown_receipt_schema_is_a_failure_record (test_t29_native_observation.NativeObservationTest.test_malformed_or_unknown_receipt_schema_is_a_failure_record) (field='compile_commands')
+FAIL: test_malformed_or_unknown_receipt_schema_is_a_failure_record (test_t29_native_observation.NativeObservationTest.test_malformed_or_unknown_receipt_schema_is_a_failure_record) (field='schema_version')
+FAIL: test_preloaded_engine_with_another_soname_cannot_produce_passing_traceability (test_t29_native_observation.NativeObservationTest.test_preloaded_engine_with_another_soname_cannot_produce_passing_traceability)
+Ran 6 tests in 0.982s
+FAILED (failures=3)
+
+/tmp/folio-t29/native-observation-review-refactor.log
+SHA-256: 36da4d0bc59d74fb790a1b7b114b9aeb4ceba3534e9c56dbad2fdb37a8345879
+Bytes: 104
+Ran 6 tests in 0.781s
+OK
+
+/tmp/folio-t29/native-observation-schema-green.log
+SHA-256: f22b840e34976cfe701c9a3239343dd9b12c3dc264ccd8966a4632bc8a0b268e
+Bytes: 104
+Ran 6 tests in 0.975s
+OK
+
+/tmp/folio-t29/native-observation-schema-red.log
+SHA-256: e0194df07e0a2876766b411c8d59c2d86ae016d2997a0c462887deec2124e6ca
+Bytes: 1372
+FAIL: test_malformed_or_unknown_receipt_schema_is_a_failure_record (test_t29_native_observation.NativeObservationTest.test_malformed_or_unknown_receipt_schema_is_a_failure_record) (field='schema_version', value=True)
+FAIL: test_malformed_or_unknown_receipt_schema_is_a_failure_record (test_t29_native_observation.NativeObservationTest.test_malformed_or_unknown_receipt_schema_is_a_failure_record) (field='compile_commands', value={})
+Ran 6 tests in 1.183s
+FAILED (failures=2)
+
+/tmp/folio-t29/native-observation-schema-refactor.log
+SHA-256: 2ad5f5682a75c7a3f34269edbb6509398a53d7c17a4e1bc66adc235d82993cd5
+Bytes: 104
+Ran 6 tests in 1.002s
+OK
+
+/tmp/folio-t29/native-observation-schema-review-red.log
+SHA-256: 5341c99a47a9ad261a0143c43e835c5045001b5c3d880984e91d002b3493d253
+Bytes: 1411
+No test-result excerpt; this is a build/provisioning or raw observation log.
+
+/tmp/folio-t29/native-provider-focused.log
+SHA-256: 891fb1fec236cbc9cba3af7b91371c9341d5039a78d23e356a27c10a6e0155b9
+Bytes: 5101
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.131 s -- in net.zerocloud.pdf.conversion.HarfBuzzCapabilityProviderTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.141 s -- in net.zerocloud.pdf.conversion.SubprocessCapabilityProviderTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/native-provider-green.log
+SHA-256: 2d509a140668955dc63165d9ae79f01080401476c6b7c1315706f84fa493856e
+Bytes: 5166
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.097 s -- in net.zerocloud.pdf.conversion.HarfBuzzCapabilityProviderTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/native-provider-red.log
+SHA-256: e5def81e6fc919e51141a72f3883ff7656ed81637f6ed07bcc30b579ce24b2f1
+Bytes: 11798
+[INFO] BUILD FAILURE
+
+/tmp/folio-t29/reference-all-green.log
+SHA-256: 56e376dcf242a99efce65b7bb836c5ec216d285ca51652d2f0c3106a271f0c2c
+Bytes: 106
+Ran 8 tests in 3.879s
+OK
+
+/tmp/folio-t29/reference-cid-map-green.log
+SHA-256: 886940f18e666429fdfc4ad5e9e1029cfee0e49f87206c7605740bbe9938f289
+Bytes: 101
+Ran 3 tests in 0.898s
+OK
+
+/tmp/folio-t29/reference-cid-map-red.log
+SHA-256: da56172e0494ddb0bc788982f87550bd2f13c74ace8b04e71a05d707db13cee1
+Bytes: 1123
+FAIL: test_reopened_cid_to_gid_mapping_selects_the_required_substituted_outline (test_t29_reference_subsets.ReferenceSubsetsTest.test_reopened_cid_to_gid_mapping_selects_the_required_substituted_outline)
+Ran 3 tests in 0.913s
+FAILED (failures=1)
+
+/tmp/folio-t29/reference-fallback-green.log
+SHA-256: 31b6ec00f150da0dee93a67af1550e1f4d9f77f412d730405bcb6ee35102d7f0
+Bytes: 104
+Ran 6 tests in 3.362s
+OK
+
+/tmp/folio-t29/reference-fallback-red.log
+SHA-256: 070ab1453870cf2f0e25e94d4586ce953d207a8cf144a4b2b6715ec4ce86df68
+Bytes: 2862
+ERROR: test_fallback_oracle_keeps_a_space_and_script_mark_in_one_script_font (test_t29_shaping_reference.ShapingReferenceTest.test_fallback_oracle_keeps_a_space_and_script_mark_in_one_script_font) (profile='arabic')
+ERROR: test_fallback_oracle_keeps_a_space_and_script_mark_in_one_script_font (test_t29_shaping_reference.ShapingReferenceTest.test_fallback_oracle_keeps_a_space_and_script_mark_in_one_script_font) (profile='hebrew')
+ERROR: test_fallback_oracle_keeps_a_space_and_script_mark_in_one_script_font (test_t29_shaping_reference.ShapingReferenceTest.test_fallback_oracle_keeps_a_space_and_script_mark_in_one_script_font) (profile='devanagari')
+ERROR: test_fallback_oracle_keeps_a_space_and_script_mark_in_one_script_font (test_t29_shaping_reference.ShapingReferenceTest.test_fallback_oracle_keeps_a_space_and_script_mark_in_one_script_font) (profile='thai')
+Ran 4 tests in 2.463s
+FAILED (errors=4)
+
+/tmp/folio-t29/reference-green.log
+SHA-256: eabb7fa905de0ebe681929e17c4949d8b8b4a6a9fb1d21c49f69cf4c51e50b75
+Bytes: 98
+Ran 1 test in 0.522s
+OK
+
+/tmp/folio-t29/reference-java-rows-green.log
+SHA-256: 36d50376b9c7db6aef663237fe8b2cd645b18ab3013246fad5e6e094233a5d73
+Bytes: 105
+Ran 7 tests in 3.834s
+OK
+
+/tmp/folio-t29/reference-java-rows-red.log
+SHA-256: c7e2c70803ddfb3137e3590b78463d13555cc28cd707bf58fcc3a9b7ef24c2cc
+Bytes: 1076
+ERROR: test_java_acceptance_inputs_keep_the_frozen_numeric_and_logical_run_values (test_t29_shaping_reference.ShapingReferenceTest.test_java_acceptance_inputs_keep_the_frozen_numeric_and_logical_run_values)
+Ran 5 tests in 3.078s
+FAILED (errors=1)
+
+/tmp/folio-t29/reference-library-red.log
+SHA-256: 124353bb0814b5fe9b47f312b7b51b1c8e70d517ef4b37856f82727fc4947d06
+Bytes: 780
+ERROR: test_reference_retains_ligatures_clusters_offsets_and_glyph_only_subsets (test_t29_shaping_reference.ShapingReferenceTest.test_reference_retains_ligatures_clusters_offsets_and_glyph_only_subsets)
+Ran 3 tests in 1.912s
+FAILED (errors=1)
+
+/tmp/folio-t29/reference-native-rows-green.log
+SHA-256: 8d2efc9041eec46294c5d78a4404456197c0464042e4480db7d42a2c254f44b2
+Bytes: 106
+Ran 8 tests in 4.028s
+OK
+
+/tmp/folio-t29/reference-native-rows-red.log
+SHA-256: cca0dc6cc071a0bcd07201b4b6bba504a60c9d73f3d09245317a492ec689220b
+Bytes: 849
+ERROR: test_java_acceptance_inputs_keep_the_frozen_numeric_and_logical_run_values (test_t29_shaping_reference.ShapingReferenceTest.test_java_acceptance_inputs_keep_the_frozen_numeric_and_logical_run_values)
+Ran 8 tests in 3.949s
+FAILED (errors=1)
+
+/tmp/folio-t29/reference-qpdf.log
+SHA-256: b35072a31ab65954da17dfc31a2efc493abbdd1e6c8f6a290e89b1539320d635
+Bytes: 223
+No test-result excerpt; this is a build/provisioning or raw observation log.
+
+/tmp/folio-t29/reference-red.log
+SHA-256: 08203a707afc97cf38012fe21ab650ca29e3a6ff7de8c2a38f6a754ddf594ed9
+Bytes: 894
+FAIL: test_reference_retains_ligatures_clusters_offsets_and_glyph_only_subsets (test_t29_shaping_reference.ShapingReferenceTest.test_reference_retains_ligatures_clusters_offsets_and_glyph_only_subsets)
+Ran 1 test in 0.016s
+FAILED (failures=1)
+
+/tmp/folio-t29/reference-refreshed-green.log
+SHA-256: 0ca5f4a1444e0355ca80979f5de0573fdfe2dada33149c34e828708331992ff9
+Bytes: 104
+Ran 6 tests in 3.288s
+OK
+
+/tmp/folio-t29/reference-relocation-green.log
+SHA-256: 3486c852a36ee41ea9fe2ca09d99702d8fa5bae38ef1c8e9873b75e603d071f9
+Bytes: 100
+Ran 2 tests in 1.604s
+OK
+
+/tmp/folio-t29/reference-relocation-red.log
+SHA-256: a09a3cdbfd46fd1214593bbf90021a82494a5435640880ff98a1d8276c9c2222
+Bytes: 919
+FAIL: test_oracle_and_pdf_do_not_depend_on_native_installation_path (test_t29_shaping_reference.ShapingReferenceTest.test_oracle_and_pdf_do_not_depend_on_native_installation_path)
+Ran 2 tests in 1.586s
+FAILED (failures=1)
+
+/tmp/folio-t29/reference-render.log
+SHA-256: 35e7b83a06cec136b5c86bbb6eb054a8f6f873acdc4ac60fc175d3eefc73d4b8
+Bytes: 456
+No test-result excerpt; this is a build/provisioning or raw observation log.
+
+/tmp/folio-t29/reference-review-green.log
+SHA-256: 8d8d201c1b0374e7a6d8a9c4f10c09aa211c9eea18fab63f0095af8c941e50d9
+Bytes: 103
+Ran 5 tests in 2.633s
+OK
+
+/tmp/folio-t29/reference-subsets-green.log
+SHA-256: d10df881b011b8e607710ab2f89708a67f0fdeccde27851f98b50bf7049f0bb3
+Bytes: 98
+Ran 1 test in 0.154s
+OK
+
+/tmp/folio-t29/reference-subsets-red.log
+SHA-256: 2fa21b8a832cbf25b1aee107694cd11a77038b3ec1fc7143428be272290cdb7c
+Bytes: 903
+FAIL: test_reopened_subsets_preserve_substituted_outlines_and_composite_components (test_t29_reference_subsets.ReferenceSubsetsTest.test_reopened_subsets_preserve_substituted_outlines_and_composite_components)
+Ran 1 test in 0.017s
+FAILED (failures=1)
+
+/tmp/folio-t29/reference-version-green.log
+SHA-256: ab7db582df32ba046f60e7cabed4351dfb0c2eab364bf86900849bcb8083ce5a
+Bytes: 101
+Ran 3 tests in 1.884s
+OK
+
+/tmp/folio-t29/reference-version-red.log
+SHA-256: 7a6b319267c59776b5fc53a1dd7bbed529b82131614116033e80e9351769798c
+Bytes: 771
+FAIL: test_official_tool_reporting_a_mismatched_linked_engine_cannot_publish_a_reference (test_t29_shaping_reference.ShapingReferenceTest.test_official_tool_reporting_a_mismatched_linked_engine_cannot_publish_a_reference)
+Ran 3 tests in 2.150s
+FAILED (failures=1)
+
+/tmp/folio-t29/shaping-acceptance-entry-green.log
+SHA-256: f1fd05f47a5ddb93b8b734d8c233111737c1f7507000031c47235a09d2d93d72
+Bytes: 100
+Ran 1 test in 519.623s
+OK
+
+/tmp/folio-t29/shaping-acceptance-entry-red.log
+SHA-256: 981c273565c29edf1a6953ce9572d9edc5c365cde4393e0c27b368fdab5c3ffe
+Bytes: 820
+FAIL: test_repository_entry_generates_the_native_and_published_t29_chains (test_t29_acceptance_entry.AcceptanceEntryTest.test_repository_entry_generates_the_native_and_published_t29_chains)
+Ran 1 test in 470.936s
+FAILED (failures=1)
+
+/tmp/folio-t29/shaping-compact-ligature-oracle.log
+SHA-256: b0bf12e23fbdd87bf62a0268a05e0f4a3a458e5b1e2999a5bef743a897283cea
+Bytes: 49
+No test-result excerpt; this is a build/provisioning or raw observation log.
+
+/tmp/folio-t29/shaping-final-layout-acceptance.log
+SHA-256: eedce9f2bcbf90e6fc8ae65533f9f00c6b9ffd482a4acbd187ea6c775a477acb
+Bytes: 7787
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.432 s -- in net.zerocloud.pdf.acceptance.T29NativeShapingAssertionsTest
+T29 local chains: native=PASS, semantic=PASS, syntax=INDETERMINATE, subsets=INDETERMINATE, visual=INDETERMINATE
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 11.86 s -- in net.zerocloud.pdf.acceptance.T29ShapingEvidenceCommandTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-four-profiles-green.log
+SHA-256: 299ccf88b9b8492c608136a6710b6ba808d4d09d0f9d801edf578292c9ef888f
+Bytes: 8752
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.498 s -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.257 s -- in net.zerocloud.pdf.acceptance.T29ShapingEvidenceCommandTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-four-profiles-red.log
+SHA-256: c72eca0c8429cdc40b96f40a129890a097752a32bc45dae8675dc7e3e072e12f
+Bytes: 8440
+[INFO] BUILD FAILURE
+
+/tmp/folio-t29/shaping-grapheme-negative-green.log
+SHA-256: 4ac717aa29c79764cab5c13325c7bf032990e1f8b7787d8192203cf41eaecf8a
+Bytes: 6751
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.420 s -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-grapheme-negative-red.log
+SHA-256: 5e90e282f4acb02ab8b721715ad278f3398f062c48547cb0901bdce2b61600a8
+Bytes: 14482
+[ERROR] Tests run: 6, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 4.706 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[ERROR] Tests run: 6, Failures: 2, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+
+/tmp/folio-t29/shaping-grapheme-refactor.log
+SHA-256: ccf343b4e8e719da683282eddcd41510e065501a7820e884b48c413214512ba8
+Bytes: 6751
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.376 s -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-installed-boundaries.log
+SHA-256: 460d24ef6cb57d9d703ce9b158b12d31e453dd42e7ebd746b5144beee287e956
+Bytes: 10026
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.138 s -- in net.zerocloud.pdf.conversion.HarfBuzzCapabilityProviderTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 10.26 s -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.419 s -- in net.zerocloud.pdf.acceptance.T29NativeShapingAssertionsTest
+T29 local chains: native=PASS, semantic=PASS, syntax=INDETERMINATE, subsets=INDETERMINATE, visual=INDETERMINATE
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 11.53 s -- in net.zerocloud.pdf.acceptance.T29ShapingEvidenceCommandTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-inventory-generate.log
+SHA-256: ff30538ea7b24b73c853cdd677d9a7feb9c59f04846c611ba1c09b1a02cd32ca
+Bytes: 1580
+Inventory validation passed: 21 capabilities, 12 facade surfaces, 20 exclusions.
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-inventory-green.log
+SHA-256: 8737ba5bc6ecfac389748f0b7a8a27ff766f1b5331c1511a0312ac36536b6331
+Bytes: 3359
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.632 s -- in net.zerocloud.pdf.tools.inventory.InventoryCommandTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-inventory-red.log
+SHA-256: 3e532e3870dcd1fcd7b37531a780593d6450b635d71db99851b6337c31d36e7e
+Bytes: 7157
+[ERROR] Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.640 s <<< FAILURE! -- in net.zerocloud.pdf.tools.inventory.InventoryCommandTest
+[ERROR] Tests run: 1, Failures: 1, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+
+/tmp/folio-t29/shaping-inventory-refactor-generate.log
+SHA-256: 7d5206339a0d931622e0c85fd75672a4fc442d109946a0ffb154054b746021ec
+Bytes: 1580
+Inventory validation passed: 21 capabilities, 12 facade surfaces, 20 exclusions.
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-inventory-refactor.log
+SHA-256: 535d39f6dfcae2a6cceaaa585e6a9292ffa90bccc5545b55b11be8048a6b698c
+Bytes: 3359
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.672 s -- in net.zerocloud.pdf.tools.inventory.InventoryCommandTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-layout-regression.log
+SHA-256: 438d1630bc81a4f5aaa59ca1867cb6494b30e9997b00307c54924bf8554c097f
+Bytes: 11854
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.295 s -- in net.zerocloud.pdf.consumer.FontLoadingWorkflowTest
+[INFO] Tests run: 32, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 56.29 s -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Tests run: 42, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 59.65 s -- in net.zerocloud.pdf.consumer.ParagraphCompositionWorkflowTest
+[INFO] Tests run: 64, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 68.38 s -- in net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 14.53 s -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 83.32 s -- in net.zerocloud.pdf.consumer.TableCompositionWorkflowTest
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 36.97 s -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Tests run: 48, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 139.0 s -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s -- in net.zerocloud.pdf.consumer.WorkflowCapabilityProviderTest
+[INFO] Tests run: 318, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-ligature-wrap-green.log
+SHA-256: c1f16f6bf4282a989ee2489353488ef464a5a9b8e1cfc02381acec7a42c534ca
+Bytes: 6753
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 18.02 s -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-ligature-wrap-red.log
+SHA-256: 563036f2fb44c71976720e264b39ce6695c959a9543aa7d5dd34954ec233b6f1
+Bytes: 15204
+[ERROR] Tests run: 14, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 16.69 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[ERROR] Tests run: 14, Failures: 0, Errors: 2, Skipped: 0
+[INFO] BUILD FAILURE
+
+/tmp/folio-t29/shaping-ligature-wrap-refactor.log
+SHA-256: 8776a8d286718a35c1a8137138931218d54136d18418dc132d45f43dbb27f63f
+Bytes: 9851
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 17.73 s -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[INFO] Tests run: 48, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 137.4 s -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[INFO] Tests run: 62, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-line-boundary-green.log
+SHA-256: f974b5677f160e67d996d8e5bab969a5a73dbc1df67354869b38befbe6a9914f
+Bytes: 8972
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.919 s -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.424 s -- in net.zerocloud.pdf.acceptance.T29NativeShapingAssertionsTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.324 s -- in net.zerocloud.pdf.acceptance.T29ShapingEvidenceCommandTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-line-boundary-red.log
+SHA-256: a307bc3da65a6db4d5a3bdf209c82302cbf1a0316a9bbc04ff711acb524f4bed
+Bytes: 14698
+[ERROR] Tests run: 8, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 6.108 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[ERROR] Tests run: 8, Failures: 2, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+
+/tmp/folio-t29/shaping-line-boundary-refactor.log
+SHA-256: ef23afb664dbd7eb22073f311854efa00fb96444e53093604786a73991392bef
+Bytes: 8972
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.770 s -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.436 s -- in net.zerocloud.pdf.acceptance.T29NativeShapingAssertionsTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.535 s -- in net.zerocloud.pdf.acceptance.T29ShapingEvidenceCommandTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-matrix-native-green.log
+SHA-256: 0911117b27cbae4140f2465aa1d6bc36e29927208fb32c260cf7835105bd19b4
+Bytes: 66295
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.313 s -- in net.zerocloud.pdf.itext7.consumer.PreviewBlankDocumentFacadeTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.882 s -- in net.zerocloud.pdf.migration.itext7.contract.ClasspathExclusivityIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.013 s -- in net.zerocloud.pdf.migration.itext7.contract.JarContractIT
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.549 s -- in net.zerocloud.pdf.tools.inventory.InventoryCommandTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0
+Inventory validation passed: 20 capabilities, 12 facade surfaces, 19 exclusions.
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.052 s -- in net.zerocloud.pdf.tools.release.ReleasePolicyContractTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.990 s -- in net.zerocloud.pdf.tools.release.ReleaseRehearsalCommandTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-matrix-native-red.log
+SHA-256: 3a3d6fcf101daf6c200480c59eb6d8fea0433feac008fa9500aab94eee57a816
+Bytes: 20441
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.049 s -- in net.zerocloud.pdf.provider.ProviderCatalogTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0
+[ERROR] Tests run: 4, Failures: 4, Errors: 0, Skipped: 0, Time elapsed: 0.076 s <<< FAILURE! -- in net.zerocloud.pdf.conversion.HarfBuzzCapabilityProviderTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.056 s -- in net.zerocloud.pdf.conversion.SubprocessCapabilityProviderTest
+[ERROR] Tests run: 12, Failures: 4, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+
+/tmp/folio-t29/shaping-maven-environment-green.log
+SHA-256: 4b3c4cdf59c2023650c5d68446d648d2dc8d6daa3560d32e1d87287c6d98644e
+Bytes: 4775
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.127 s -- in net.zerocloud.pdf.conversion.HarfBuzzCapabilityProviderTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-maven-environment-red.log
+SHA-256: fd23724d31c7732844cb1940f7e1a1a6d5f5f08dee17f010a32668537c00e4a4
+Bytes: 17982
+[ERROR] Tests run: 4, Failures: 4, Errors: 0, Skipped: 0, Time elapsed: 0.083 s <<< FAILURE! -- in net.zerocloud.pdf.conversion.HarfBuzzCapabilityProviderTest
+[ERROR] Tests run: 4, Failures: 4, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+
+/tmp/folio-t29/shaping-maven-environment-refactor.log
+SHA-256: 4679d79b818a54b98999efd837ff678489709ad0b1acca57a389462ef79a1d72
+Bytes: 8339
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.128 s -- in net.zerocloud.pdf.conversion.HarfBuzzCapabilityProviderTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.393 s -- in net.zerocloud.pdf.acceptance.T29NativeShapingAssertionsTest
+T29 local chains: native=PASS, semantic=PASS, syntax=INDETERMINATE, subsets=INDETERMINATE, visual=INDETERMINATE
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 11.87 s -- in net.zerocloud.pdf.acceptance.T29ShapingEvidenceCommandTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-mixed-size-green.log
+SHA-256: e28a56734bd9464c6de86716da0c41a57900f40630f52d0393f42ad2b0991ae5
+Bytes: 8974
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 11.21 s -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.399 s -- in net.zerocloud.pdf.acceptance.T29NativeShapingAssertionsTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.201 s -- in net.zerocloud.pdf.acceptance.T29ShapingEvidenceCommandTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-mixed-size-native-refactor.log
+SHA-256: 04537a094fd5cbd70f27b286fe26215a601d15e25418d065bea5719843fd56d2
+Bytes: 8974
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 11.58 s -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.411 s -- in net.zerocloud.pdf.acceptance.T29NativeShapingAssertionsTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.292 s -- in net.zerocloud.pdf.acceptance.T29ShapingEvidenceCommandTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-mixed-size-red.log
+SHA-256: 3909bb50b54ddd7927b86fb50c0d3e2819265ee4749bacb2a48ceed1f2dbdeea
+Bytes: 15672
+[ERROR] Tests run: 10, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 8.588 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[ERROR] Tests run: 10, Failures: 0, Errors: 2, Skipped: 0
+[INFO] BUILD FAILURE
+
+/tmp/folio-t29/shaping-native-observation-entry-green.log
+SHA-256: 52698cd7f7508368baf6e8fd3473c0767659e4f4bbe6563ed503e53d95cc9772
+Bytes: 7764
+T29 local chains: native=PASS, semantic=PASS, syntax=INDETERMINATE, subsets=INDETERMINATE, visual=INDETERMINATE
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.424 s -- in net.zerocloud.pdf.acceptance.T29ShapingEvidenceCommandTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-native-observation-entry-red.log
+SHA-256: 16747c4d267b3640da2ead902034e87bb1dfbea167b37a4bdb31f00413371f7f
+Bytes: 15877
+T29 local chains: native=PASS, semantic=PASS, syntax=INDETERMINATE, subsets=INDETERMINATE, visual=INDETERMINATE
+[ERROR] Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 6.364 s <<< FAILURE! -- in net.zerocloud.pdf.acceptance.T29ShapingEvidenceCommandTest
+[ERROR] Tests run: 2, Failures: 0, Errors: 2, Skipped: 0
+[INFO] BUILD FAILURE
+
+/tmp/folio-t29/shaping-native-observation-entry-refactor.log
+SHA-256: 60791b175fa5c4db9a2eb96a4a3a3a6defeed4858f700621f277c16a65f590bb
+Bytes: 7908
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.405 s -- in net.zerocloud.pdf.acceptance.T29NativeShapingAssertionsTest
+T29 local chains: native=PASS, semantic=INDETERMINATE, syntax=INDETERMINATE, subsets=INDETERMINATE, visual=INDETERMINATE
+T29 local chains: native=PASS, semantic=PASS, syntax=INDETERMINATE, subsets=INDETERMINATE, visual=INDETERMINATE
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 12.84 s -- in net.zerocloud.pdf.acceptance.T29ShapingEvidenceCommandTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-native-observation-tool-red.log
+SHA-256: 3d73561e8732472db40621370cfb0605fb2b4f2b998aed19b8ac6a06e186276a
+Bytes: 12130
+[ERROR] Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.128 s <<< FAILURE! -- in net.zerocloud.pdf.acceptance.T29ShapingEvidenceCommandTest
+[ERROR] Tests run: 1, Failures: 0, Errors: 1, Skipped: 0
+[INFO] BUILD FAILURE
+
+/tmp/folio-t29/shaping-native-oracle-green.log
+SHA-256: f1e56a7a15d334b0ab9b2392b5ce63b7c2759e7a986838d34de69132c0d88c6f
+Bytes: 7871
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.412 s -- in net.zerocloud.pdf.acceptance.T29NativeShapingAssertionsTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.267 s -- in net.zerocloud.pdf.acceptance.T29ShapingEvidenceCommandTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-native-oracle-red.log
+SHA-256: cc29f884a6cf3ed5284bead6ac9e59da133a62a660b20b64573efe55e42ff83c
+Bytes: 9861
+[INFO] BUILD FAILURE
+
+/tmp/folio-t29/shaping-recorder-green.log
+SHA-256: d690b72f762ff37ce3af640d90f4a6aabc4612c83e9971efa112c1a4cec9d212
+Bytes: 7984
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.442 s -- in net.zerocloud.pdf.acceptance.T29NativeShapingAssertionsTest
+T29 local chains: native=PASS, semantic=PASS, syntax=INDETERMINATE, subsets=INDETERMINATE, visual=INDETERMINATE
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 12.02 s -- in net.zerocloud.pdf.acceptance.T29ShapingEvidenceCommandTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-recorder-red.log
+SHA-256: 57f048f7bc9f9e274389990ceb597e4d2b7abd8c2c58e4e95f5fc6888f119e52
+Bytes: 9065
+[INFO] BUILD FAILURE
+
+/tmp/folio-t29/shaping-recorder-refactor.log
+SHA-256: f980a1d1a5ef9298b8f67d0f0df623bb5871a1c10ce7f20a9c55f2c1ca47ccb3
+Bytes: 13057
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 80.83 s -- in net.zerocloud.pdf.acceptance.T28UnicodeEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.249 s -- in net.zerocloud.pdf.acceptance.T29NativeShapingAssertionsTest
+T29 local chains: native=PASS, semantic=PASS, syntax=INDETERMINATE, subsets=INDETERMINATE, visual=INDETERMINATE
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 10.56 s -- in net.zerocloud.pdf.acceptance.T29ShapingEvidenceCommandTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-rejected-ownership-green.log
+SHA-256: d71f2a59a3b8c590d7862cb11b719ad1e671ce2bcd60d81d146abea736ee02cd
+Bytes: 6754
+[INFO] Tests run: 18, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 86.51 s -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[INFO] Tests run: 18, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-rejected-ownership-red.log
+SHA-256: 76e209d047b4225c87811a85c03a2f8ebefe56259e308d9dcc74f199a127dbe4
+Bytes: 15495
+[ERROR] Tests run: 18, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 44.93 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[ERROR] Tests run: 18, Failures: 0, Errors: 2, Skipped: 0
+[INFO] BUILD FAILURE
+
+/tmp/folio-t29/shaping-rejected-ownership-refactor.log
+SHA-256: 8dde0076daf4f5eb265cb3299beff3f994815ec1040d5087fdaa3091cda09a50
+Bytes: 7820
+[INFO] Tests run: 32, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 57.38 s -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Tests run: 42, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 60.28 s -- in net.zerocloud.pdf.consumer.ParagraphCompositionWorkflowTest
+[INFO] Tests run: 64, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 68.14 s -- in net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest
+[INFO] Tests run: 18, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 85.53 s -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 75.87 s -- in net.zerocloud.pdf.consumer.TableCompositionWorkflowTest
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 36.60 s -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Tests run: 248, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-related-regression.log
+SHA-256: f011f99e86b152abf66c9618db2410127d7fb9957f2c15b4a5a5bc7d3145997a
+Bytes: 10787
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.141 s -- in net.zerocloud.pdf.conversion.HarfBuzzCapabilityProviderTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.140 s -- in net.zerocloud.pdf.conversion.SubprocessCapabilityProviderTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.204 s -- in net.zerocloud.pdf.consumer.FontLoadingWorkflowTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.886 s -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[INFO] Tests run: 48, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 137.1 s -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.012 s -- in net.zerocloud.pdf.consumer.WorkflowCapabilityProviderTest
+[INFO] Tests run: 80, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-semantic-green.log
+SHA-256: 81a6976109320c281f8e74b05035e3b6d68fe74a64289b51d457a571532e3422
+Bytes: 7555
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.739 s -- in net.zerocloud.pdf.acceptance.T29ShapingEvidenceCommandTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-semantic-red.log
+SHA-256: 80ccfe3244c483cd2bee0b465986c2dbc9019e7a712a792e9cbf5cf2bf006853
+Bytes: 9473
+[INFO] BUILD FAILURE
+
+/tmp/folio-t29/shaping-semantic-refactor.log
+SHA-256: 0bced80ae3101429a04e5a4f7951b3c49443db0c83f41e3469c572d55c841db5
+Bytes: 7651
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.559 s -- in net.zerocloud.pdf.acceptance.T29ShapingEvidenceCommandTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-subset-tags-green.log
+SHA-256: 332a79c0796c14b8a50ba901a39e10b59fba3549db7580808c669095a2f36bb5
+Bytes: 8974
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 15.95 s -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.412 s -- in net.zerocloud.pdf.acceptance.T29NativeShapingAssertionsTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.312 s -- in net.zerocloud.pdf.acceptance.T29ShapingEvidenceCommandTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-subset-tags-red.log
+SHA-256: e0d0ad42e0b76c8099abedc818920eca3041ab5fa9cf8a2f19512b50e189c0ed
+Bytes: 14718
+[ERROR] Tests run: 12, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 12.91 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[ERROR] Tests run: 12, Failures: 2, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+
+/tmp/folio-t29/shaping-subset-tags-refactor.log
+SHA-256: bd0417a99e2713bf9159930e3fbba3da8cb241323ff69d11a4f7f5b76c955b7f
+Bytes: 8974
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 15.65 s -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.425 s -- in net.zerocloud.pdf.acceptance.T29NativeShapingAssertionsTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.337 s -- in net.zerocloud.pdf.acceptance.T29ShapingEvidenceCommandTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-table-ligature-minimum-green.log
+SHA-256: f6d367eeb47ad722b8fff20241ec93de3e1c106056e370316afeeb67a528512d
+Bytes: 6751
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 11.99 s -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-table-ligature-minimum-red.log
+SHA-256: a21f5e0096802e7d32406521b27326d0060a9b6ed273c6a7115544fddae96e41
+Bytes: 15457
+[ERROR] Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 1.411 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[ERROR] Tests run: 2, Failures: 0, Errors: 2, Skipped: 0
+[INFO] BUILD FAILURE
+
+/tmp/folio-t29/shaping-table-ligature-minimum-refactor.log
+SHA-256: dcbab6ed58064727d9c6408dbf5e7c017a950453b8e6a3e43c2afffbbde5fa85
+Bytes: 7380
+[INFO] Tests run: 32, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 56.34 s -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Tests run: 20, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 87.85 s -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 76.02 s -- in net.zerocloud.pdf.consumer.TableCompositionWorkflowTest
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 36.25 s -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Tests run: 144, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-table-minimum-green.log
+SHA-256: 8e3a42d7b0e4835d2ee33c7d878b69e6b856494ee23eef3ed8e69ff782c78fca
+Bytes: 6753
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 25.18 s -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-table-minimum-red.log
+SHA-256: a25969b2524d0fe6de871065734aa80af97f3e07679cecaeca621f1ced63b47c
+Bytes: 15388
+[ERROR] Tests run: 16, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 18.44 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[ERROR] Tests run: 16, Failures: 0, Errors: 2, Skipped: 0
+[INFO] BUILD FAILURE
+
+/tmp/folio-t29/shaping-table-minimum-refactor.log
+SHA-256: e15ab2790671e633eaa7e93dfb5feae73c864ec3e207842ff49c2b57d69665d2
+Bytes: 7179
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 25.36 s -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 75.87 s -- in net.zerocloud.pdf.consumer.TableCompositionWorkflowTest
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 36.31 s -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Tests run: 108, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-worker-applicability-green.log
+SHA-256: 711dce551bfc756228577bc00374a3cf24e3fa15052c77b000c38e5a95306663
+Bytes: 7764
+T29 local chains: native=PASS, semantic=PASS, syntax=INDETERMINATE, subsets=INDETERMINATE, visual=INDETERMINATE
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.132 s -- in net.zerocloud.pdf.acceptance.T29ShapingEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-worker-applicability-red.log
+SHA-256: 4e6b6b5f8fc1da3634af6f4bfc9f8ef7893fef6253b5e41e0dc3bdf5d29e6eed
+Bytes: 14482
+T29 local chains: native=PASS, semantic=PASS, syntax=INDETERMINATE, subsets=INDETERMINATE, visual=INDETERMINATE
+[ERROR] Tests run: 2, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 9.184 s <<< FAILURE! -- in net.zerocloud.pdf.acceptance.T29ShapingEvidenceCommandTest
+[ERROR] Tests run: 2, Failures: 2, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+
+/tmp/folio-t29/shaping-worker-applicability-refactor.log
+SHA-256: a1c43ec2a4a931f38d47ebb2800432430e158958841e1e7edbdb4941e36414b3
+Bytes: 7764
+T29 local chains: native=PASS, semantic=PASS, syntax=INDETERMINATE, subsets=INDETERMINATE, visual=INDETERMINATE
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 11.75 s -- in net.zerocloud.pdf.acceptance.T29ShapingEvidenceCommandTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-worker-green.log
+SHA-256: e6f89ce4d66ce79a7593faa637458702e67e87682ab810f23b91136bd948629c
+Bytes: 6751
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.459 s -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-worker-red.log
+SHA-256: d20f30aaa3821fedf90e1ac60f66b74256b58828b687a5023daf47bc84f6777f
+Bytes: 11200
+[ERROR] Tests run: 4, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 3.477 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[ERROR] Tests run: 4, Failures: 1, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+
+/tmp/folio-t29/shaping-worker-unavailable-green.log
+SHA-256: c91b8984073ddb2168ddd6d1cf67bfe89fdeedee49ec813a9e41d6048f2d71f8
+Bytes: 7772
+T29 local chains: native=PASS, semantic=INDETERMINATE, syntax=INDETERMINATE, subsets=INDETERMINATE, visual=INDETERMINATE
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.693 s -- in net.zerocloud.pdf.acceptance.T29ShapingEvidenceCommandTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-worker-unavailable-red.log
+SHA-256: 258742cba9abc2005978f94dd976812b379ef47ef6cd99f6ccba1e9ddfc98eca
+Bytes: 11974
+[ERROR] Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 3.634 s <<< FAILURE! -- in net.zerocloud.pdf.acceptance.T29ShapingEvidenceCommandTest
+[ERROR] Tests run: 1, Failures: 0, Errors: 1, Skipped: 0
+[INFO] BUILD FAILURE
+
+/tmp/folio-t29/shaping-worker-unavailable-refactor.log
+SHA-256: 55b5adc581537530688386bc9854679e482bbcdbe344a481d95d23377ccef2bf
+Bytes: 7688
+T29 local chains: native=PASS, semantic=INDETERMINATE, syntax=INDETERMINATE, subsets=INDETERMINATE, visual=INDETERMINATE
+T29 local chains: native=PASS, semantic=PASS, syntax=INDETERMINATE, subsets=INDETERMINATE, visual=INDETERMINATE
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 14.19 s -- in net.zerocloud.pdf.acceptance.T29ShapingEvidenceCommandTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-workflow-green.log
+SHA-256: d1e37e2bf8bd8462d272766b351923f5fb5a69e407ccf54f5f7561e533df9469
+Bytes: 6751
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.665 s -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-workflow-red.log
+SHA-256: fd46e197866172849b4b9d7f2b132b0c37b8d13125608aff62843607d8da6367
+Bytes: 11051
+[ERROR] Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.254 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[ERROR] Tests run: 1, Failures: 0, Errors: 1, Skipped: 0
+[INFO] BUILD FAILURE
+
+/tmp/folio-t29/shaping-workflow-refactor.log
+SHA-256: a4b3594370a0ce253ee8c8bd57c9edf24081121d394c191848138812184243fd
+Bytes: 7303
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.138 s -- in net.zerocloud.pdf.conversion.HarfBuzzCapabilityProviderTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.633 s -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+Additional completed development observations, 2026-09-06.
+The canonical acceptance entry listed below finished with all six T29 chains before the final runtime review repairs.
+The empty-selection PDF-version invocation ran zero tests and is not Red/Green proof; the later wildcard selection ran both parameterized modes.
+The first PDF-version green still failed Worker diagnostic transport, then the Worker-specific green and refactor passed.
+The first relayout-memory green passed its memory budget but found an incorrect secondary TextItem contribution assertion; the documented CharacterMapping observation was used in the passing mapping-green and refactor.
+The standalone current-evidence exec invocation failed Maven dependency resolution for an unflattened local SNAPSHOT POM and is setup failure, not product/TDD evidence. The dedicated reactor profile later passed.
+
+/tmp/folio-t29/evidence-linux-current-reactor.log
+SHA-256: 88b216777b12d01a5af10b4967d8a29800a1798bbb310ca4e2f04f0f762aa23b
+Bytes: 7862
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/evidence-linux-current.log
+SHA-256: c227b6f94139b5c6b06afe1756ec21eb04a9729d969d85402cbfb115a328ee41
+Bytes: 1991
+[INFO] BUILD FAILURE
+
+/tmp/folio-t29/shaping-acceptance-entry-installation-green.log
+SHA-256: e6ead9053d3274f3aba3dae324468141ee842bfd9abf9759091d72660960060d
+Bytes: 100
+Ran 1 test in 511.476s
+OK
+
+/tmp/folio-t29/shaping-fallback-visits-review-green.log
+SHA-256: 4b80535cc59af970edd454aea52edc40052be23cfaf867d09a9c7f8121c04fde
+Bytes: 6751
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.654 s -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-fallback-visits-review-red.log
+SHA-256: dea810f05e0061d284285b77f9cebd7c2c850c57450269554739791704367926
+Bytes: 14789
+[ERROR] Tests run: 2, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 1.719 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[ERROR] Tests run: 2, Failures: 2, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+
+/tmp/folio-t29/shaping-local-artifact-setup.log
+SHA-256: da0662241869088a61dfb2ef59bc8a6976dd5ca600742eca1d78edb0d16bf16e
+Bytes: 9538
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-pdf-version-review-empty-selection.log
+SHA-256: c7e4df2d1acb9fb76914205483cc2729845947978e867f346fb69387b9f45ea2
+Bytes: 6653
+[INFO] Tests run: 0, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.061 s -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[INFO] Tests run: 0, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-pdf-version-review-green.log
+SHA-256: 8cff62a7e320c3233e56ca1161f7409de40a01b54a9dd8fa454ec40f3f943f91
+Bytes: 11303
+[ERROR] Tests run: 2, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 1.194 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[ERROR] Tests run: 2, Failures: 1, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+
+/tmp/folio-t29/shaping-pdf-version-review-red.log
+SHA-256: 0cddedd98d9c640fcfa7d12065196f1f35c8fee09a3418c44a3e6597f3fdf337
+Bytes: 14127
+[ERROR] Tests run: 2, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 1.286 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[ERROR] Tests run: 2, Failures: 2, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+
+/tmp/folio-t29/shaping-pdf-version-review-refactor.log
+SHA-256: b06e4a3233a5abd4f115cdff2a81689b5f2df0be0f1a4be8193b6bd7afc91b3c
+Bytes: 6751
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.953 s -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-pdf-version-review-worker-green.log
+SHA-256: 3300feb5966ca6314587bec78e470e3a277507dc02319c9d8a9a81e2dab80197
+Bytes: 6751
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.092 s -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-relayout-memory-review-green.log
+SHA-256: 2cfe740f96b87b77253fa62a9b17d91663544824b829d41c8ebbd68268eb75a5
+Bytes: 14629
+[ERROR] Tests run: 2, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 7.188 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[ERROR] Tests run: 2, Failures: 2, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+
+/tmp/folio-t29/shaping-relayout-memory-review-mapping-green.log
+SHA-256: 1bcc0218935db1b97871cff249ddc1dd57cd95c93100c7925a3c139d4444984e
+Bytes: 6654
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.057 s -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-relayout-memory-review-red.log
+SHA-256: 515272184d9b6b7f33c1475fb1cfa36206a256277a0151a2b4059cefb6f38ffd
+Bytes: 15471
+[ERROR] Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 6.220 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[ERROR] Tests run: 2, Failures: 0, Errors: 2, Skipped: 0
+[INFO] BUILD FAILURE
+
+/tmp/folio-t29/shaping-relayout-memory-review-refactor.log
+SHA-256: 8c4777020d63d459f2191b4b9182214f9e7659a525502d76789b441012f319bc
+Bytes: 6654
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 10.87 s -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-t29-profile-green.log
+SHA-256: d2e4087bf6883e895d3f07cc5343545fff2005a424cab049331801607661edb6
+Bytes: 99
+Ran 1 test in 82.071s
+OK
+
+/tmp/folio-t29/shaping-t29-profile-red.log
+SHA-256: 72144c78874e5c4dfb6dd610fa7bc542690a4efd40541c1cac92b396e4a45595
+Bytes: 835
+FAIL: test_t29_profile_records_its_platform_scope_without_running_earlier_suites (test_t29_acceptance_entry.AcceptanceEntryTest.test_t29_profile_records_its_platform_scope_without_running_earlier_suites)
+AssertionError: False is not true : The T29 platform entry must record native
+Ran 1 test in 2.634s
+FAILED (failures=1)
+
+/tmp/folio-t29/shaping-t29-profile-refactor.log
+SHA-256: b63cfd6a8fdf5b176086c63417ea47937185445db7b3e533d03f56f5af145bb5
+Bytes: 99
+Ran 1 test in 81.169s
+OK
+
+
+Final review repair regression and inventory regeneration; repository/JDK gates follow separately.
+
+/tmp/folio-t29/shaping-final-review-refactor.log
+SHA-256: 2138a84ac3031a4c8fbe16ce775c7e649d190d58eb2a13f547587ae3579ac595
+Bytes: 6754
+[INFO] Tests run: 34, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 104.4 s -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[INFO] Tests run: 34, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+/tmp/folio-t29/shaping-final-inventory-generate.log
+SHA-256: b02aac098f56f3eacd0311b102fe226d320e6f75077f3c4df5da741f6f240ce7
+Bytes: 1580
+Inventory validation passed: 21 capabilities, 12 facade surfaces, 20 exclusions.
+Generated docs/generated/capability-matrix.md
+Generated docs/generated/facade-surface.md
+[INFO] BUILD SUCCESS
+
+
+Supplemental getter Javadoc checks; failed intermediate attempts remain failures. No executable source changed.
+
+/tmp/folio-t29/final-public-javadoc.log
+SHA-256: b48d13d9abc79d646cd3f3c05cb472e8c560925bb482d29745286924a9662dd1
+Bytes: 3404
+pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingRequest.java:102: warning: no main description
+pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingRequest.java:104: warning: no main description
+pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingRequest.java:106: warning: no main description
+pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingRequest.java:108: warning: no main description
+pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingRequest.java:110: warning: no main description
+pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingRequest.java:112: warning: no main description
+pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingResult.java:38: warning: no main description
+pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingResult.java:40: warning: no main description
+pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingResult.java:42: warning: no main description
+pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingResult.java:44: warning: no main description
+pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingResult.java:143: warning: no main description
+pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingResult.java:145: warning: no main description
+pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingResult.java:147: warning: no main description
+pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingResult.java:149: warning: no main description
+pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingResult.java:151: warning: no main description
+pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingResult.java:153: warning: no main description
+pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingResult.java:155: warning: no main description
+17 warnings
+
+/tmp/folio-t29/final-public-javadoc-green.log
+SHA-256: c7429af740217de2416661d9865fbdaaf603ad052894bd6ba3549c5aa5cb7349
+Bytes: 3198
+pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingRequest.java:103: warning: no @return
+pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingRequest.java:105: warning: no @return
+pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingRequest.java:107: warning: no @return
+pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingRequest.java:109: warning: no @return
+pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingRequest.java:111: warning: no @return
+pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingRequest.java:113: warning: no @return
+pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingResult.java:39: warning: no @return
+pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingResult.java:41: warning: no @return
+pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingResult.java:43: warning: no @return
+pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingResult.java:45: warning: no @return
+pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingResult.java:144: warning: no @return
+pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingResult.java:146: warning: no @return
+pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingResult.java:148: warning: no @return
+pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingResult.java:150: warning: no @return
+pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingResult.java:152: warning: no @return
+pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingResult.java:154: warning: no @return
+pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingResult.java:156: warning: no @return
+17 warnings
+
+/tmp/folio-t29/final-public-javadoc-block-green.log
+SHA-256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+Bytes: 0
+Empty diagnostic output; actual process exit 0 is recorded in the final Javadoc delta receipt.
+
+/tmp/folio-t29/final-public-javadoc-refactor.log
+SHA-256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+Bytes: 0
+Empty diagnostic output; actual process exit 0 is recorded in the final Javadoc delta receipt.
+
+/tmp/folio-t29/final-javadoc-bytecode-build.log
+SHA-256: fe70a6f8264f7b5e4ecf8c16a48ea425a2b1592c228f67e81dab1c86cefdd0e7
+Bytes: 5047
+[INFO] BUILD SUCCESS
+[INFO] Total time:  3.796 s
+[INFO] Finished at: 2026-09-06T23:16:29+08:00
+
+/tmp/folio-t29/final-javadoc-block-bytecode-build.log
+SHA-256: 4d4ec3f4f873fadf7a5e544db836222e3cf45d6d629e41cb574f83c3c1eac1b7
+Bytes: 5047
+[INFO] BUILD SUCCESS
+[INFO] Total time:  4.031 s
+[INFO] Finished at: 2026-09-06T23:22:19+08:00
+
+Post-verification JDK 8 font snapshot repair
+The separately archived T29-font-cache-repair.json preserves diagnosis, failed probes, meaningful Red/Green logs and both focused refactor runs. The first incomplete-policy fixture error is explicitly not the meaningful Red. Final focused result: 58 tests, 0 failures, 0 errors, 0 skips. Current-source full verification and Linux acceptance have separate source-linked receipts; prior full-gate passes remain historical.

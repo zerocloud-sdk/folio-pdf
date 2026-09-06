@@ -1,0 +1,149 @@
+{
+  "schema": 1,
+  "recorded_utc": "2026-09-06T16:35:01.115141+00:00",
+  "status": "Public Red/Green/Refactor complete. Current-source full root and JDK 8/11/17/21 gates all pass, 1019 tests/0 failures/0 errors/3 existing optional scale skips each. Linux six-chain acceptance passes.",
+  "scope": "Historical diagnosis and regression development; use later current-source receipts for final gate status.",
+  "failure": "java.lang.OutOfMemoryError: Java heap space while FontBox loads CJK glyph data in the existing T28 HARDENED_WORKER acceptance transaction.",
+  "diagnostic_boundary": "Disposable baseline/current clones only; no instrumentation, diagnostic JVM flags, collector changes, heap/default resource increase or heap dump enters product source or this evidence archive.",
+  "cause_claim_limit": "Repeated observations establish the failing Worker heap allocation and duplicate retained private font snapshots. A one-run fixed-baseline pass and isolated current pass do not establish that T29 introduced the pre-existing cache.",
+  "cache_entries": {
+    "jp": 5,
+    "sc": 2,
+    "tc": 2,
+    "kr": 2,
+    "sans": 7,
+    "hebrew": 1,
+    "total": 19,
+    "full_cjk_arrays": 11
+  },
+  "prototype_memory_observation": {
+    "metric": "WorkflowResourceUsage.peakOwnedMemoryBytes; modeled usage, not JVM RSS",
+    "worker_before": 1449636850,
+    "worker_prototype_after": 1294493250,
+    "difference": 155143600,
+    "duplicate_payload_bytes_removed": 155144368,
+    "unique_content_key_count": 6,
+    "prototype_extra_content_metadata_bytes": 768,
+    "later_declaration_metadata_not_in_prototype": true
+  },
+  "repair": "Canonicalize private immutable borrowed-font snapshots by full-byte equality while retaining per-declaration read-once identity. Charge unique bytes/content keys and each retained declaration. Preserve ownership, per-occurrence source limits, path/byte source behavior, unshaped direct text and resource defaults.",
+  "public_regression": "FontLoadingWorkflowTest.equalBorrowedDeclarationsKeepRepeatedFontUseWithinABoundedBudget: 128 borrowed stream/channel declarations; bounded owned-memory usage, declaration accounting, handles remain open/read once, COMMITTED publication, reopened embedded font and ToUnicode.",
+  "fast_regression_command": "./mvnw -B -ntp -pl pdf-document -am '-Dtest=FontLoadingWorkflowTest#equalBorrowedDeclarationsKeepRepeatedFontUseWithinABoundedBudget' -Dsurefire.failIfNoSpecifiedTests=false test",
+  "narrowed_diagnostic_maven_arguments": "-B -ntp -Dmaven.repo.local=/workspace/.build-cache/maven/repository -pl pdf-acceptance -am '-Dtest=*EvidenceCommandTest,T29NativeShapingAssertionsTest' -Dsurefire.failIfNoSpecifiedTests=false test",
+  "baseline_narrowed_test_selector": "*EvidenceCommandTest",
+  "format_source": "https://raw.githubusercontent.com/openjdk/jdk8u/master/hotspot/src/share/vm/services/heapDumper.cpp",
+  "font_array_hashes": {
+    "path": "capabilities/evidence/artifacts/T29-repair-heap-font-identities.json",
+    "sha256": "ee4581720534bf0101dba9bb7c230fd3ae5d7c7df12f8d1fb8669341025d1219",
+    "bytes": 7741
+  },
+  "cache_owner_observations": {
+    "path": "capabilities/evidence/artifacts/T29-repair-cached-font-identities.html",
+    "sha256": "51827c506b89df21f89842f44e9950ad84cf752a88a18848f42dac4127784184",
+    "bytes": 1451
+  },
+  "logs": [
+    {
+      "path": "capabilities/evidence/artifacts/T29-repair-final-jdk8-acceptance-diagnostic.txt",
+      "sha256": "a1554868eaff237ed32ed2b6cee54bdbf230142480422c9c11939b5e8dd59f55",
+      "bytes": 41456,
+      "observed_exit_code": 1,
+      "observation": "Narrowed acceptance: same public T28 Worker failure, instrumented Java heap space error."
+    },
+    {
+      "path": "capabilities/evidence/artifacts/T29-repair-final-jdk8-acceptance-diagnostic-repeat.txt",
+      "sha256": "0dce5c05d0d23333d0279d870d3f9708d0da80d5325894a0da0ebcc25ecf1ef6",
+      "bytes": 40755,
+      "observed_exit_code": 1,
+      "observation": "Repeated narrowed acceptance: same Java heap space error."
+    },
+    {
+      "path": "capabilities/evidence/artifacts/T29-repair-final-jdk8-baseline-diagnostic.txt",
+      "sha256": "d7e8c7191bcafd1b02431091459241d0d5d81407064c0d524e66ee51084b1a25",
+      "bytes": 23979,
+      "observed_exit_code": 0,
+      "observation": "Fixed-baseline narrowed acceptance passed once; not proof of a T29 cause."
+    },
+    {
+      "path": "capabilities/evidence/artifacts/T29-repair-final-jdk8-acceptance-heap-stderr-diagnostic.txt",
+      "sha256": "0c73c1e7ebfe8b507e03dd585716036b2c508af983bdd549ee48dd862297553c",
+      "bytes": 41614,
+      "observed_exit_code": 1,
+      "observation": "Same failure with a complete diagnostic heap dump; dump itself is not distributed."
+    },
+    {
+      "path": "capabilities/evidence/artifacts/T29-repair-final-jdk8-layout-liveness-probe.txt",
+      "sha256": "b5302905b0e463cb8861f607e1b875994b698f86743e8c635caf4f51246ab714",
+      "bytes": 41628,
+      "observed_exit_code": 1,
+      "observation": "Layout liveness hypothesis probe failed with the same error; not adopted."
+    },
+    {
+      "path": "capabilities/evidence/artifacts/T29-repair-final-jdk8-font-cache-probe.txt",
+      "sha256": "e334bd9d50f98d21841fd14fed051f792fcdcdfee6a7f17732818e70505fa344",
+      "bytes": 37427,
+      "observed_exit_code": 0,
+      "observation": "Private content snapshot canonicalization prototype passed 41 acceptance cases. Later per-declaration accounting was not yet present in this prototype."
+    },
+    {
+      "path": "capabilities/evidence/artifacts/T29-repair-font-snapshot-canonicalization-red.txt",
+      "sha256": "2e93cb236f15b143a0208ac23c552bd89c26e10dddad0649ba13ca3327c56e51",
+      "bytes": 10551,
+      "observed_exit_code": 1,
+      "observation": "Fixture preparation failure: resource policy incomplete. This is not the meaningful Red."
+    },
+    {
+      "path": "capabilities/evidence/artifacts/T29-repair-font-snapshot-canonicalization-policy-red.txt",
+      "sha256": "9baaed2384a6f8a214053567bb1f2dfc9dd359ba5abe7d9b668ed2c082e09c0d",
+      "bytes": 10988,
+      "observed_exit_code": 1,
+      "observation": "Meaningful Red: bounded repeated borrowed declarations exceed owned-memory policy before repair."
+    },
+    {
+      "path": "capabilities/evidence/artifacts/T29-repair-font-snapshot-canonicalization-green.txt",
+      "sha256": "11329c9d80f9efbad2a5eec4027e185db26aa2b1a1e96681a3b80e290e364097",
+      "bytes": 6737,
+      "observed_exit_code": 0,
+      "observation": "Minimal canonicalization Green."
+    },
+    {
+      "path": "capabilities/evidence/artifacts/T29-repair-font-snapshot-canonicalization-refactor.txt",
+      "sha256": "d6b10a40009bb3c9158e1fec4c411052255144f04c45fcc57d38a72167bc736f",
+      "bytes": 14140,
+      "observed_exit_code": 0,
+      "observation": "Canonicalization focused regression: 58 cases pass before declaration accounting supplement."
+    },
+    {
+      "path": "capabilities/evidence/artifacts/T29-repair-font-declaration-accounting-red.txt",
+      "sha256": "cbe3287e5e648737cace36321caaa36406fbda92a2c0a984c888083171f11ed0",
+      "bytes": 10584,
+      "observed_exit_code": 1,
+      "observation": "Meaningful Red: distinct declarations do not contribute to the reported memory peak."
+    },
+    {
+      "path": "capabilities/evidence/artifacts/T29-repair-font-declaration-accounting-green.txt",
+      "sha256": "911b946e04f3d1cce71efeb24ed4439582a06b6dc9e11d10c8ee60594f07930b",
+      "bytes": 6737,
+      "observed_exit_code": 0,
+      "observation": "Minimal declaration accounting Green."
+    }
+  ],
+  "final_focused_refactor": {
+    "path": "capabilities/evidence/artifacts/T29-repair-font-declaration-accounting-refactor.txt",
+    "sha256": "1a56928fbda9b0169eecbca64f08937b214d581be313248ea9b6394ab43df8e1",
+    "bytes": 14140,
+    "observed_exit_code": 0,
+    "tests": 58,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "worker_modeled_peak_bytes": 1294495682,
+    "source_snapshot_sha256": "94b628481751378665a40a3b033430b1224ec0adc817f811386bc44db59ef24f"
+  },
+  "current_verification": {
+    "source_snapshot_sha256": "94b628481751378665a40a3b033430b1224ec0adc817f811386bc44db59ef24f",
+    "root_receipt": "capabilities/evidence/artifacts/T29-verified-root-verification.json",
+    "matrix_receipt": "capabilities/evidence/artifacts/T29-verified-jdk-matrix.json",
+    "linux_receipt": "capabilities/evidence/artifacts/T29-linux-run.json"
+  }
+}

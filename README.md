@@ -45,9 +45,14 @@ contract, Provider integration, and experimental evidence boundary.
 
 ## Build
 
-No system Maven installation is required. The wrapper uses Maven 3.9.16:
+No system Maven installation is required. The wrapper uses Maven 3.9.16.
+T29 tests require the separately installed HarfBuzz 10.2.0 helper. Prepare the
+pinned source archive and native build tools using the
+[explicit installation instructions](docs/harfbuzz-shaping.md#explicit-installation),
+then select that installation for verification:
 
-```text
+```sh
+export FOLIO_HARFBUZZ_HELPER=/explicit/folio-harfbuzz-10.2.0/bin/folio-harfbuzz
 ./mvnw -B -ntp verify
 ```
 
@@ -66,15 +71,18 @@ Run the repository-owned container matrix with Podman:
 Both commands compile shipped code for Java release 8. The local matrix runs
 the same Maven verification contract on JDK 8, 11, 17, and 21.
 
-The repository-only T06/T07 Acceptance Evidence path is separate from the
-normal build and published artifacts. Supply the pinned release assets locally
-and run the offline provisioners before recording evidence:
+The repository-only Acceptance Evidence path is separate from the normal
+build and published artifacts. Supply the pinned release assets locally and
+run the offline provisioners before recording evidence. T29 also uses the
+explicit HarfBuzz installation above and a Python environment with fontTools
+4.59.2 for independent embedded-subset checks:
 
 ```text
 ./scripts/provision-qpdf /path/to/qpdf-12.4.0-bin-linux-x86_64.zip
 ./scripts/provision-pdfium /path/to/pdfium-webassembly-linux-amd64
 ./scripts/provision-imagemagick /path/to/ImageMagick-7.1.2-30-gcc-x86_64.AppImage
-./scripts/acceptance capabilities/evidence
+export FOLIO_SHAPING_PYTHON=/absolute/python-with-fonttools-4.59.2
+./scripts/acceptance /new/evidence-directory
 ```
 
 This records qpdf syntax, project semantic, and PDFium/ImageMagick visual
@@ -86,6 +94,12 @@ Interface, or published artifacts. See
 licenses and bundled-component notice manifests, the documented ID-neutral
 input-hash policy, profile settings, output artifacts, and conservative
 determination rules.
+
+T29 records native glyph/cluster metrics, reopened semantic geometry, embedded
+subsets, syntax and all eight fixed visual pages. The installed engine and
+local chains do not certify Windows x86-64 or macOS x86-64/arm64; each required
+platform needs its own actual observations. See [HarfBuzz shaping](docs/harfbuzz-shaping.md)
+for selection, installation, execution-mode and migration contracts.
 
 Validate or regenerate the machine-readable compatibility inventories and
 their cross-linked human-readable views with:

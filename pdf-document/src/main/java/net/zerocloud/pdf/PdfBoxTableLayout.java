@@ -127,7 +127,8 @@ final class PdfBoxTableLayout {
         return Arrays.asList(table.getHeaderRows(), table.getRows(), table.getFooterRows());
     }
 
-    Content prepare(Table table, PdfBoxPositionedTextOperations.PreparedText prepared, int[] glyph) throws DocumentFailure {
+    Content prepare(Table table, PdfBoxPositionedTextOperations.PreparedText prepared, int[] glyph,
+            WorkflowResourceContext.OwnedMemoryScope ownership) throws DocumentFailure {
         List<Cell> cells = new ArrayList<Cell>();
         int textCount = 0;
         List<TableRow> rows = new ArrayList<TableRow>();
@@ -142,15 +143,13 @@ final class PdfBoxTableLayout {
                 for (int c = column; c < column + declaration.getColspan(); c++) { until[c] = row + declaration.getRowspan(); }
                 column += declaration.getColspan();
                 for (Paragraph paragraph : declaration.getParagraphs()) {
-                    List<Atom> atoms = paragraphs.atoms(paragraph, prepared, glyph);
+                    List<Atom> atoms = paragraphs.atoms(paragraph, prepared, glyph, ownership);
                     cell.paragraphs.add(new Text(paragraph, atoms, textCount++));
+                    cell.minimum = Math.max(cell.minimum, minimumAdvance(atoms));
                     double line = 0;
                     double correction = 0;
-                    double cluster = 0;
                     for (Atom atom : atoms) {
                         resources.checkpoint();
-                        cluster += atom.width;
-                        if (atom.clusterEnd) { cell.minimum = Math.max(cell.minimum, cluster); cluster = 0; }
                         if (PdfBoxParagraphOperations.hardBreak(atom.codePoint)) {
                             cell.preferred = Math.max(cell.preferred, line); line = 0; correction = 0;
                         } else {
@@ -167,8 +166,68 @@ final class PdfBoxTableLayout {
         return new Content(table, rows, cells, textCount);
     }
 
+    private double minimumAdvance(List<Atom> atoms) throws DocumentFailure {
+        double minimum = 0;
+        if (atoms.isEmpty() || atoms.get(0).shapingSource == null) {
+            double cluster = 0;
+            for (Atom atom : atoms) {
+                resources.checkpoint(); cluster += atom.width;
+                if (atom.clusterEnd) { minimum = Math.max(minimum, cluster); cluster = 0; }
+            }
+            return minimum;
+        }
+        for (int first = 0; first < atoms.size();) {
+            int end = first;
+            while (end < atoms.size() && !PdfBoxParagraphOperations.hardBreak(atoms.get(end).codePoint)) { tick(1); end++; }
+            if (end > first) { minimum = Math.max(minimum, minimumFragmentAdvance(atoms, first, end)); }
+            first = end + 1;
+        }
+        return minimum;
+    }
+
+    /** Minimax partition over original graphemes; contextual forms can either grow or shrink a fragment. */
+    private double minimumFragmentAdvance(List<Atom> atoms, int first, int end) throws DocumentFailure {
+        try (WorkflowResourceContext.OwnedMemoryScope memory = resources.ownedMemoryScope()) {
+            memory.retain(64L + 12L * (end - first + 1));
+            int[] boundaries = new int[end - first + 1];
+            double[] best = new double[boundaries.length];
+            Arrays.fill(best, Double.POSITIVE_INFINITY);
+            boundaries[0] = first; best[0] = 0;
+            int count = 1;
+            for (int index = first; index < end; index++) {
+                tick(1);
+                if (atoms.get(index).graphemeEnd || index + 1 == end) { boundaries[count++] = index + 1; }
+            }
+            for (int limit = 1; limit < count; limit++) {
+                for (int start = limit - 1; start >= 0; start--) {
+                    tick(1);
+                    if (best[start] >= best[limit]) { continue; }
+                    tick(1L + boundaries[limit] - boundaries[start]);
+                    double width = paragraphs.shapedFragmentAdvance(atoms, boundaries[start], boundaries[limit]);
+                    best[limit] = Math.min(best[limit], Math.max(best[start], width));
+                }
+            }
+            return best[count - 1];
+        }
+    }
+
     Plan layout(Content content, Area area, double used, int firstRow, Cursor cursor, double maximumHeight, int remainingLines,
             WorkflowResourceContext.OwnedMemoryScope memory) throws DocumentFailure {
+        List<Line> candidates = new ArrayList<Line>();
+        try {
+            Plan result = layoutCandidate(content, area, used, firstRow, cursor, maximumHeight, remainingLines, memory, candidates);
+            if (result != null) {
+                // Only emitted lines survive this candidate's height and row selection.
+                for (Line line : result.lines) { PdfBoxParagraphOperations.retainCandidate(line, memory); }
+            }
+            return result;
+        } finally {
+            for (Line line : candidates) { PdfBoxParagraphOperations.releaseCandidate(line); }
+        }
+    }
+
+    private Plan layoutCandidate(Content content, Area area, double used, int firstRow, Cursor cursor, double maximumHeight, int remainingLines,
+            WorkflowResourceContext.OwnedMemoryScope memory, List<Line> candidates) throws DocumentFailure {
         lineLimitReached = false;
         Table table = content.table;
         boolean paginated = table.getVersion() == Table.VERSION_2;
@@ -266,6 +325,7 @@ final class PdfBoxTableLayout {
                     memory.retain(256L + 8L * (text.atoms.size() - first));
                     Line line = paragraphs.line(text.atoms, first, text.paragraph, area, available, table.getOverflow());
                     if (line == null) { return null; }
+                    candidates.add(line);
                     line.left = x[cell.column] + cell.declaration.getPadding().getLeft()
                             + cell.declaration.getBorders().getLeft();
                     line.baseline = -height - line.ascent;

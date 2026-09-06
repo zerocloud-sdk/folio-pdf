@@ -1,0 +1,759 @@
+{
+  "schema": 1,
+  "archived_utc": "2026-09-06T16:33:42.161538+00:00",
+  "scope": "Historical Linux six-chain run before font-snapshot canonicalization and declaration accounting; not final current-source evidence. Extract archive at repository root to restore original relative evidence paths.",
+  "run_manifest_path": "capabilities/evidence/artifacts/T29-linux-run.json",
+  "artifact_count": 136,
+  "all_original_artifact_hashes_verified_before_and_after_archive": true,
+  "archive": {
+    "path": "capabilities/evidence/artifacts/T29-linux-before-font-cache-repair.zip",
+    "sha256": "651865271754e8c09f9e7eb6dfa860139659ac22643e11eb49a8ed5afbea02a9",
+    "bytes": 363344
+  },
+  "run_manifest": {
+    "schema": 1,
+    "recorded_utc": "2026-09-06T14:47:45.270923+00:00",
+    "platform": "Linux x86-64",
+    "status": "local six-chain pass; other required platforms and final repository gates remain incomplete",
+    "command": "./mvnw -B -ntp -pl pdf-acceptance -am -Pacceptance-t29-record -DskipTests -Dacceptance.output=/tmp/folio-t29/evidence-linux-final verify",
+    "environment": {
+      "FOLIO_HARFBUZZ_HELPER": "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/harfbuzz/10.2.0-final/bin/folio-harfbuzz",
+      "FOLIO_SHAPING_PYTHON": "/usr/bin/python3",
+      "PYTHONPATH": "/tmp/folio-t28/python"
+    },
+    "command_exit_code": 0,
+    "command_log": {
+      "path": "/tmp/folio-t29/evidence-linux-final-reactor.log",
+      "sha256": "18c8bfa9762cfcaf4306a3efa1a703415f7cfb0ae1ae2eb3c413923afdfe6bb7",
+      "bytes": 8278
+    },
+    "source_snapshot": {
+      "path": "capabilities/evidence/artifacts/T29-final-source-snapshot.json",
+      "sha256": "8e677bb64ecb6a6b3c8c3b6edb333a1e0932be8f1ac14d6bbda07ea95867e423",
+      "snapshot_sha256": "39b761992f1677fe25ee7c4d5796c1505a024a890880d51aca95ed516024565f",
+      "identical_before_and_after_run": true
+    },
+    "chains": {
+      "native": "pass",
+      "installation": "pass",
+      "semantic": "pass",
+      "syntax": "pass",
+      "subsets": "pass",
+      "visual": "pass"
+    },
+    "mode_coverage": [
+      "IN_PROCESS",
+      "HARDENED_WORKER"
+    ],
+    "reactor_artifacts": [
+      {
+        "path": "pdf-provider-contract/target/pdf-provider-contract-0.1.0-SNAPSHOT.jar",
+        "sha256": "b7f58d682e28c86ecc406d4aabf56ed9262944dd9f200448a700411db7eafd57",
+        "bytes": 37953
+      },
+      {
+        "path": "pdf-conversion/target/pdf-conversion-0.1.0-SNAPSHOT.jar",
+        "sha256": "2d7aa8f09641946a558c92757d28908e08b17f407fb7ed22296aec94a14788d0",
+        "bytes": 21271
+      },
+      {
+        "path": "pdf-document/target/pdf-document-0.1.0-SNAPSHOT.jar",
+        "sha256": "84254e5129fcf9c6ecfe5a0ebb32ea71635aa34ca900349ac970e4a43e875eb7",
+        "bytes": 1407016
+      },
+      {
+        "path": "pdf-acceptance/target/pdf-acceptance-0.1.0-SNAPSHOT.jar",
+        "sha256": "1cbf8201ab3c42812542241619974bb950dec01f02ebee457097c7234178d578",
+        "bytes": 47188400
+      }
+    ],
+    "archived_artifacts": [
+      {
+        "path": "capabilities/evidence/T29-shaping-arabic-page-1-visual.md",
+        "sha256": "69851c294ba74c3565a3b4ecd93e7bd1370f782386404111cfde6cc89107f02e",
+        "bytes": 4335
+      },
+      {
+        "path": "capabilities/evidence/T29-shaping-arabic-page-1-worker-visual.md",
+        "sha256": "9af85c53863e4fa2d2e6bddb35fbd81579eb46963181e1a8ca80eb758acf9d68",
+        "bytes": 4433
+      },
+      {
+        "path": "capabilities/evidence/T29-shaping-arabic-page-2-visual.md",
+        "sha256": "4e71e8d6104c2b475ea4e3c2de715bebc3773ffbd0224ed391302bb5283517fb",
+        "bytes": 4333
+      },
+      {
+        "path": "capabilities/evidence/T29-shaping-arabic-page-2-worker-visual.md",
+        "sha256": "7c6620fa9d79ad6cd13b36ba8994360e67d9b3d02350861d632d16fc9e8eaa11",
+        "bytes": 4431
+      },
+      {
+        "path": "capabilities/evidence/T29-shaping-devanagari-page-1-visual.md",
+        "sha256": "91b47397f55d87754a58184cd9351ca6fdf95663335b5440bf01f5a3adcdad65",
+        "bytes": 4395
+      },
+      {
+        "path": "capabilities/evidence/T29-shaping-devanagari-page-1-worker-visual.md",
+        "sha256": "bc8c55f19269fb4c4fb382be31cb0b9154485301530ccf361a0e25d37ba92d9a",
+        "bytes": 4493
+      },
+      {
+        "path": "capabilities/evidence/T29-shaping-devanagari-page-2-visual.md",
+        "sha256": "1b9c7fe40241470190a35664ca9742e46dd0a1f192e0ee817864a41066e740fe",
+        "bytes": 4395
+      },
+      {
+        "path": "capabilities/evidence/T29-shaping-devanagari-page-2-worker-visual.md",
+        "sha256": "eeb506134955d6aa4ba34d6c05ad8e4614dff90d5b54f3f732027a328cc1a4ff",
+        "bytes": 4493
+      },
+      {
+        "path": "capabilities/evidence/T29-shaping-hebrew-page-1-visual.md",
+        "sha256": "3c6b102d693d97e3574914e4b6ca9fd0b0c7e614300a261337ae51471d454d63",
+        "bytes": 4333
+      },
+      {
+        "path": "capabilities/evidence/T29-shaping-hebrew-page-1-worker-visual.md",
+        "sha256": "dc1826d805eac0e9d6d1b5396ea54976a94a5d3a5b24d74ef1e7c5f0b69dd1a7",
+        "bytes": 4431
+      },
+      {
+        "path": "capabilities/evidence/T29-shaping-hebrew-page-2-visual.md",
+        "sha256": "1d69741b76c3fa2d863d42796ad67cfc2ded3013f362ccee464d56be15f8c4cb",
+        "bytes": 4335
+      },
+      {
+        "path": "capabilities/evidence/T29-shaping-hebrew-page-2-worker-visual.md",
+        "sha256": "a38d1373b5df98768803b42762f9c485fb33eeec586c7d592a6994cd9ce42516",
+        "bytes": 4433
+      },
+      {
+        "path": "capabilities/evidence/T29-shaping-in-process-syntax.md",
+        "sha256": "e7dc8f376dcf40c7b49aa4163b732ac7d304134ebb51214d8925ead48dc57654",
+        "bytes": 967
+      },
+      {
+        "path": "capabilities/evidence/T29-shaping-installation.md",
+        "sha256": "27817d68bcbd1ca50e7095233b1cebd85bd56850225dd14fba30068df5fd183a",
+        "bytes": 2130
+      },
+      {
+        "path": "capabilities/evidence/T29-shaping-native.md",
+        "sha256": "511c986cb42f7f86fa7e4a0637d3a0dc25c99b017d00ebc377d9a4898caf3af6",
+        "bytes": 1866
+      },
+      {
+        "path": "capabilities/evidence/T29-shaping-semantic.md",
+        "sha256": "4b51371d18f0a0be6520015bc1e486e5814955b1288de7f3c3a2b9f61b6f241f",
+        "bytes": 2551
+      },
+      {
+        "path": "capabilities/evidence/T29-shaping-subsets.md",
+        "sha256": "222df2922c8f23c722269d84a537db9f409c2c55d2ad5b5411ec855c8deeee3d",
+        "bytes": 2632
+      },
+      {
+        "path": "capabilities/evidence/T29-shaping-syntax.md",
+        "sha256": "689b9510caac0cce2970fde339d1ab767a80b54ace203b356ab12b79ab49f900",
+        "bytes": 2301
+      },
+      {
+        "path": "capabilities/evidence/T29-shaping-thai-page-1-visual.md",
+        "sha256": "f06c6fc8465eca576289b01205f849cffb2c9ee084845347163d325957126aa8",
+        "bytes": 4305
+      },
+      {
+        "path": "capabilities/evidence/T29-shaping-thai-page-1-worker-visual.md",
+        "sha256": "d1e53cb6148604875e1acbe39e7a1105a752f1d0f794f3552b0cdffd12db28ca",
+        "bytes": 4403
+      },
+      {
+        "path": "capabilities/evidence/T29-shaping-thai-page-2-visual.md",
+        "sha256": "30e31c0f3098e9e9a526c7b1daecb4ac53bf8888839a9555ba23605f090c4bec",
+        "bytes": 4305
+      },
+      {
+        "path": "capabilities/evidence/T29-shaping-thai-page-2-worker-visual.md",
+        "sha256": "94abe47e9b39298b3623a47f52d476f65ccfc9961d62cc3d26bada2e59d8d706",
+        "bytes": 4403
+      },
+      {
+        "path": "capabilities/evidence/T29-shaping-visual.md",
+        "sha256": "4fae6363ee332cdd34dbb0e110062d8b6bcd9f62910cbd4ac241c36cd5b487fa",
+        "bytes": 3478
+      },
+      {
+        "path": "capabilities/evidence/T29-shaping-worker-syntax.md",
+        "sha256": "d9d96d00c4def13f9c60850fdd4c72acbc065e3bb5de6e6dde282564e7ccfd34",
+        "bytes": 995
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-corpus.json",
+        "sha256": "29bd0d8090a78b1b6a6e11e95f35fa673614bd7bd2b448cb8fd36a9b980d2bf2",
+        "bytes": 14087
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-corpus.properties",
+        "sha256": "00621fa88a8a2c159de40551008de4fa66e3d5aeccc110a42b4c36490e3a5c50",
+        "bytes": 1284
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-fonts.properties",
+        "sha256": "fb8a3aa15177106dd75a808afb637d4b8f823a54e7e59ad4bb5527949aef5905",
+        "bytes": 2234
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-glyphs.tsv",
+        "sha256": "a89dbb43a2d96375cd0cbf8f3a2b181eef4916ac8ee7535baf31f3c5864624ff",
+        "bytes": 10346
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-oracle.json",
+        "sha256": "3f96696998c0bd8f0c521fbcbd0e20eda1e1a01bd4de92f9d025bb9ee7c7ed82",
+        "bytes": 49552
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-reference-receipt.json",
+        "sha256": "d4402f407cbdefdbb63d062a787c29b3d109bd451fbb2814738f88c57c45e8a6",
+        "bytes": 1643
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-arabic-page-1-difference.png",
+        "sha256": "99cf1825874b910e22f8daa39707f4edbc95e01f4b8ebe2c7c3dec12db4e2561",
+        "bytes": 234
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-arabic-page-1-expected.png",
+        "sha256": "ec41f859c304393f1d5315c7f3bb4374e1e6b59f1f2c331970b946ee3bc6b377",
+        "bytes": 6027
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-arabic-page-1-implementation.png",
+        "sha256": "b38ea66483a82bdd1350b62d88b51ff87e0c4f0cd5100273ae79ea7814c22bb5",
+        "bytes": 5047
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-arabic-page-1-pdfium.png",
+        "sha256": "ec41f859c304393f1d5315c7f3bb4374e1e6b59f1f2c331970b946ee3bc6b377",
+        "bytes": 6027
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-arabic-page-1-renderer-difference.png",
+        "sha256": "00c59e061b1eb0de246a865b139cbae2589a6e6fb20116350a420e85ff8d6d74",
+        "bytes": 592
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-arabic-page-1-visual.txt",
+        "sha256": "26dbd1ae0a72affed097f723e33f1123313896396599a732599649fab6c36b5e",
+        "bytes": 3610
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-arabic-page-1-worker-difference.png",
+        "sha256": "99cf1825874b910e22f8daa39707f4edbc95e01f4b8ebe2c7c3dec12db4e2561",
+        "bytes": 234
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-arabic-page-1-worker-expected.png",
+        "sha256": "ec41f859c304393f1d5315c7f3bb4374e1e6b59f1f2c331970b946ee3bc6b377",
+        "bytes": 6027
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-arabic-page-1-worker-implementation.png",
+        "sha256": "b38ea66483a82bdd1350b62d88b51ff87e0c4f0cd5100273ae79ea7814c22bb5",
+        "bytes": 5047
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-arabic-page-1-worker-pdfium.png",
+        "sha256": "ec41f859c304393f1d5315c7f3bb4374e1e6b59f1f2c331970b946ee3bc6b377",
+        "bytes": 6027
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-arabic-page-1-worker-renderer-difference.png",
+        "sha256": "00c59e061b1eb0de246a865b139cbae2589a6e6fb20116350a420e85ff8d6d74",
+        "bytes": 592
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-arabic-page-1-worker-visual.txt",
+        "sha256": "0d729ff39cbdd1e139069cee6773283c1c40424a2de8f73daecef14103192560",
+        "bytes": 3673
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-arabic-page-2-difference.png",
+        "sha256": "99cf1825874b910e22f8daa39707f4edbc95e01f4b8ebe2c7c3dec12db4e2561",
+        "bytes": 234
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-arabic-page-2-expected.png",
+        "sha256": "1744d99f5830a1c2a22f5f43c046d2bd9bbb23a84d99a4b8c2066b717957de5f",
+        "bytes": 3029
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-arabic-page-2-implementation.png",
+        "sha256": "2cc11a38ad08f1af7d7cff96e694a68bd601715675b94eb32cb3d8f6f094dcf0",
+        "bytes": 2741
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-arabic-page-2-pdfium.png",
+        "sha256": "1744d99f5830a1c2a22f5f43c046d2bd9bbb23a84d99a4b8c2066b717957de5f",
+        "bytes": 3029
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-arabic-page-2-renderer-difference.png",
+        "sha256": "3802ad477227fd1384c5458e9b2b098598cc16167b22a8d4d8b2f5b69b7466df",
+        "bytes": 372
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-arabic-page-2-visual.txt",
+        "sha256": "c6edd6645d833d1e032b8445ec58f00a772f646d2654cfe9b7603796e7c0a0f7",
+        "bytes": 3603
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-arabic-page-2-worker-difference.png",
+        "sha256": "99cf1825874b910e22f8daa39707f4edbc95e01f4b8ebe2c7c3dec12db4e2561",
+        "bytes": 234
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-arabic-page-2-worker-expected.png",
+        "sha256": "1744d99f5830a1c2a22f5f43c046d2bd9bbb23a84d99a4b8c2066b717957de5f",
+        "bytes": 3029
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-arabic-page-2-worker-implementation.png",
+        "sha256": "2cc11a38ad08f1af7d7cff96e694a68bd601715675b94eb32cb3d8f6f094dcf0",
+        "bytes": 2741
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-arabic-page-2-worker-pdfium.png",
+        "sha256": "1744d99f5830a1c2a22f5f43c046d2bd9bbb23a84d99a4b8c2066b717957de5f",
+        "bytes": 3029
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-arabic-page-2-worker-renderer-difference.png",
+        "sha256": "3802ad477227fd1384c5458e9b2b098598cc16167b22a8d4d8b2f5b69b7466df",
+        "bytes": 372
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-arabic-page-2-worker-visual.txt",
+        "sha256": "a8918600d8c59a105e7061b89e481583f7708fb1b271d26aebfc518f8e78f9b0",
+        "bytes": 3666
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-devanagari-page-1-difference.png",
+        "sha256": "99cf1825874b910e22f8daa39707f4edbc95e01f4b8ebe2c7c3dec12db4e2561",
+        "bytes": 234
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-devanagari-page-1-expected.png",
+        "sha256": "a0ee4de06f45edc6321e0898d34cdbada53f19b0984f714f04ecd88b945674f2",
+        "bytes": 5730
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-devanagari-page-1-implementation.png",
+        "sha256": "0d63c917070ae4ad1c209dc88d41f211781ccdae2b81cd46155d8750b8d02070",
+        "bytes": 4569
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-devanagari-page-1-pdfium.png",
+        "sha256": "a0ee4de06f45edc6321e0898d34cdbada53f19b0984f714f04ecd88b945674f2",
+        "bytes": 5730
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-devanagari-page-1-renderer-difference.png",
+        "sha256": "8168155531d91927ef21e94221531406e8249e0149934951339845fe06018143",
+        "bytes": 582
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-devanagari-page-1-visual.txt",
+        "sha256": "e154f7ab251a4806377d67cd48d851d06bed063d465cb3c5dc1fa0e822df16be",
+        "bytes": 3642
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-devanagari-page-1-worker-difference.png",
+        "sha256": "99cf1825874b910e22f8daa39707f4edbc95e01f4b8ebe2c7c3dec12db4e2561",
+        "bytes": 234
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-devanagari-page-1-worker-expected.png",
+        "sha256": "a0ee4de06f45edc6321e0898d34cdbada53f19b0984f714f04ecd88b945674f2",
+        "bytes": 5730
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-devanagari-page-1-worker-implementation.png",
+        "sha256": "0d63c917070ae4ad1c209dc88d41f211781ccdae2b81cd46155d8750b8d02070",
+        "bytes": 4569
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-devanagari-page-1-worker-pdfium.png",
+        "sha256": "a0ee4de06f45edc6321e0898d34cdbada53f19b0984f714f04ecd88b945674f2",
+        "bytes": 5730
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-devanagari-page-1-worker-renderer-difference.png",
+        "sha256": "8168155531d91927ef21e94221531406e8249e0149934951339845fe06018143",
+        "bytes": 582
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-devanagari-page-1-worker-visual.txt",
+        "sha256": "78fae549033e5bdf0bfac6bc0fd6cfd6e87a79e0778bc9087439c16e52d3e3b6",
+        "bytes": 3705
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-devanagari-page-2-difference.png",
+        "sha256": "99cf1825874b910e22f8daa39707f4edbc95e01f4b8ebe2c7c3dec12db4e2561",
+        "bytes": 234
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-devanagari-page-2-expected.png",
+        "sha256": "c1fbbdd034042515a701b348131ebe18995bee570093110232c8a947465c228a",
+        "bytes": 4871
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-devanagari-page-2-implementation.png",
+        "sha256": "e15a67a1aa00096aec823881325a51d89044c61f488d070b937f059f10df7713",
+        "bytes": 3903
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-devanagari-page-2-pdfium.png",
+        "sha256": "c1fbbdd034042515a701b348131ebe18995bee570093110232c8a947465c228a",
+        "bytes": 4871
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-devanagari-page-2-renderer-difference.png",
+        "sha256": "2b139467cc765f5598e9ae7d85f26e1efb7ba076804c47e1c1a56c5b49e33136",
+        "bytes": 452
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-devanagari-page-2-visual.txt",
+        "sha256": "58e563f3d4afeec17aa64262cd506be5d37228231ddef062b3b635f87f646498",
+        "bytes": 3642
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-devanagari-page-2-worker-difference.png",
+        "sha256": "99cf1825874b910e22f8daa39707f4edbc95e01f4b8ebe2c7c3dec12db4e2561",
+        "bytes": 234
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-devanagari-page-2-worker-expected.png",
+        "sha256": "c1fbbdd034042515a701b348131ebe18995bee570093110232c8a947465c228a",
+        "bytes": 4871
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-devanagari-page-2-worker-implementation.png",
+        "sha256": "e15a67a1aa00096aec823881325a51d89044c61f488d070b937f059f10df7713",
+        "bytes": 3903
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-devanagari-page-2-worker-pdfium.png",
+        "sha256": "c1fbbdd034042515a701b348131ebe18995bee570093110232c8a947465c228a",
+        "bytes": 4871
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-devanagari-page-2-worker-renderer-difference.png",
+        "sha256": "2b139467cc765f5598e9ae7d85f26e1efb7ba076804c47e1c1a56c5b49e33136",
+        "bytes": 452
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-devanagari-page-2-worker-visual.txt",
+        "sha256": "8e1060dde0399027e4db9c0718ad4c45c8371ff6eb941269c7588bd45c3f2186",
+        "bytes": 3705
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-hebrew-page-1-difference.png",
+        "sha256": "99cf1825874b910e22f8daa39707f4edbc95e01f4b8ebe2c7c3dec12db4e2561",
+        "bytes": 234
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-hebrew-page-1-expected.png",
+        "sha256": "e88fe2dcb5ff2bfa1d8a08d0e999b76b682ca577e5095732b39d7d2123ae9644",
+        "bytes": 5205
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-hebrew-page-1-implementation.png",
+        "sha256": "de18f30cb847f4fd9bdceef7aec43c8915ccfb2ecbb620a6136098704ee797a7",
+        "bytes": 4178
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-hebrew-page-1-pdfium.png",
+        "sha256": "e88fe2dcb5ff2bfa1d8a08d0e999b76b682ca577e5095732b39d7d2123ae9644",
+        "bytes": 5205
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-hebrew-page-1-renderer-difference.png",
+        "sha256": "d5d79efaa2ce57c39ced431bf5114d5e3473ee7c984ea922780e438e9d7410e9",
+        "bytes": 517
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-hebrew-page-1-visual.txt",
+        "sha256": "f96fb0b1842c76c8346d9928a3f5b3882ca688efe32fb3501bc2b0045667c1fc",
+        "bytes": 3604
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-hebrew-page-1-worker-difference.png",
+        "sha256": "99cf1825874b910e22f8daa39707f4edbc95e01f4b8ebe2c7c3dec12db4e2561",
+        "bytes": 234
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-hebrew-page-1-worker-expected.png",
+        "sha256": "e88fe2dcb5ff2bfa1d8a08d0e999b76b682ca577e5095732b39d7d2123ae9644",
+        "bytes": 5205
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-hebrew-page-1-worker-implementation.png",
+        "sha256": "de18f30cb847f4fd9bdceef7aec43c8915ccfb2ecbb620a6136098704ee797a7",
+        "bytes": 4178
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-hebrew-page-1-worker-pdfium.png",
+        "sha256": "e88fe2dcb5ff2bfa1d8a08d0e999b76b682ca577e5095732b39d7d2123ae9644",
+        "bytes": 5205
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-hebrew-page-1-worker-renderer-difference.png",
+        "sha256": "d5d79efaa2ce57c39ced431bf5114d5e3473ee7c984ea922780e438e9d7410e9",
+        "bytes": 517
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-hebrew-page-1-worker-visual.txt",
+        "sha256": "c3afaacf07dfae3d6cc0400dbd6323bef3ba0a29615198ddbf1ecebd43ca9d8c",
+        "bytes": 3667
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-hebrew-page-2-difference.png",
+        "sha256": "99cf1825874b910e22f8daa39707f4edbc95e01f4b8ebe2c7c3dec12db4e2561",
+        "bytes": 234
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-hebrew-page-2-expected.png",
+        "sha256": "d11f8b3f10bb3dea86618d7e0e6ca7668be75190b2c452458de53ea6545c9e7a",
+        "bytes": 3451
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-hebrew-page-2-implementation.png",
+        "sha256": "9c091af7f04c90e6902f72d96c596635fc149a5f64b64bb6e102cee3dbbe1254",
+        "bytes": 2888
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-hebrew-page-2-pdfium.png",
+        "sha256": "d11f8b3f10bb3dea86618d7e0e6ca7668be75190b2c452458de53ea6545c9e7a",
+        "bytes": 3451
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-hebrew-page-2-renderer-difference.png",
+        "sha256": "e6da621e26a10c6506f04c28f016d1c2f060b84bfe1419d24b5b22744dfb5591",
+        "bytes": 407
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-hebrew-page-2-visual.txt",
+        "sha256": "ef49dd1d7d72eb265151843f5559dfeedc1de7580a4c2d0cc84dcde66bbc8234",
+        "bytes": 3606
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-hebrew-page-2-worker-difference.png",
+        "sha256": "99cf1825874b910e22f8daa39707f4edbc95e01f4b8ebe2c7c3dec12db4e2561",
+        "bytes": 234
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-hebrew-page-2-worker-expected.png",
+        "sha256": "d11f8b3f10bb3dea86618d7e0e6ca7668be75190b2c452458de53ea6545c9e7a",
+        "bytes": 3451
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-hebrew-page-2-worker-implementation.png",
+        "sha256": "9c091af7f04c90e6902f72d96c596635fc149a5f64b64bb6e102cee3dbbe1254",
+        "bytes": 2888
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-hebrew-page-2-worker-pdfium.png",
+        "sha256": "d11f8b3f10bb3dea86618d7e0e6ca7668be75190b2c452458de53ea6545c9e7a",
+        "bytes": 3451
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-hebrew-page-2-worker-renderer-difference.png",
+        "sha256": "e6da621e26a10c6506f04c28f016d1c2f060b84bfe1419d24b5b22744dfb5591",
+        "bytes": 407
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-hebrew-page-2-worker-visual.txt",
+        "sha256": "51c72239db617548358a216acc9fb5910ff4cb55b88434806cdbe5dfed414f64",
+        "bytes": 3669
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-installation.txt",
+        "sha256": "5f21dfca431b7b8cd363fa0648ecbb9ff6be8f231a701bd9e4ad79c8d6ef0015",
+        "bytes": 65969
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-native.txt",
+        "sha256": "09109f39cd07ff36573dfd2ea7c844460a5851063c766506d5fbbbdd90da2caa",
+        "bytes": 12595
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-qpdf.txt",
+        "sha256": "4fe2f0d6f8a252663265f68a3e99a1a35cbde573a41a4a7b984d7cb1d93a8dc7",
+        "bytes": 763
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-reference.pdf",
+        "sha256": "fcfb9619614d6618a81396913bcc9d0e351d23adc9a7a815e80780946d02854a",
+        "bytes": 30847
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-semantic.txt",
+        "sha256": "413b3ce51021c635e66977f4b605c77968cdddfa3658c5c4515dfc29d27e1216",
+        "bytes": 18859
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-subsets.txt",
+        "sha256": "59b6b28af29e9932962480cf23c2cf4a38d1ccd66f1908a0380ee3ed4cc7fd8a",
+        "bytes": 14240
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-thai-page-1-difference.png",
+        "sha256": "99cf1825874b910e22f8daa39707f4edbc95e01f4b8ebe2c7c3dec12db4e2561",
+        "bytes": 234
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-thai-page-1-expected.png",
+        "sha256": "7ac0d1028f6738306ef42dfb0100489ff5709ae668a6da05e2932cd7d79c96e6",
+        "bytes": 4563
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-thai-page-1-implementation.png",
+        "sha256": "f437bd76610dc1d412656c5ed4866a3f481cd83ddc1be4c9e5ed146876b52d50",
+        "bytes": 3555
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-thai-page-1-pdfium.png",
+        "sha256": "7ac0d1028f6738306ef42dfb0100489ff5709ae668a6da05e2932cd7d79c96e6",
+        "bytes": 4563
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-thai-page-1-renderer-difference.png",
+        "sha256": "f762797b21806d75c3198f2c4dfa60e77ffce2f88ffcbf75a5610b3701cd0f1d",
+        "bytes": 470
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-thai-page-1-visual.txt",
+        "sha256": "ba65954e5c0d1fa7882bfa27e29cfc58705b2796faabbedb39753a0bd6e75564",
+        "bytes": 3589
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-thai-page-1-worker-difference.png",
+        "sha256": "99cf1825874b910e22f8daa39707f4edbc95e01f4b8ebe2c7c3dec12db4e2561",
+        "bytes": 234
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-thai-page-1-worker-expected.png",
+        "sha256": "7ac0d1028f6738306ef42dfb0100489ff5709ae668a6da05e2932cd7d79c96e6",
+        "bytes": 4563
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-thai-page-1-worker-implementation.png",
+        "sha256": "f437bd76610dc1d412656c5ed4866a3f481cd83ddc1be4c9e5ed146876b52d50",
+        "bytes": 3555
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-thai-page-1-worker-pdfium.png",
+        "sha256": "7ac0d1028f6738306ef42dfb0100489ff5709ae668a6da05e2932cd7d79c96e6",
+        "bytes": 4563
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-thai-page-1-worker-renderer-difference.png",
+        "sha256": "f762797b21806d75c3198f2c4dfa60e77ffce2f88ffcbf75a5610b3701cd0f1d",
+        "bytes": 470
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-thai-page-1-worker-visual.txt",
+        "sha256": "b13aa015d7ac54bb65cebace5fd759b6d869aa987997861e3be3bd35ece418e8",
+        "bytes": 3652
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-thai-page-2-difference.png",
+        "sha256": "99cf1825874b910e22f8daa39707f4edbc95e01f4b8ebe2c7c3dec12db4e2561",
+        "bytes": 234
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-thai-page-2-expected.png",
+        "sha256": "e5c971fed6080f677490286533524d28aadc25f6f98f64b5bec1feba8b52e546",
+        "bytes": 3079
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-thai-page-2-implementation.png",
+        "sha256": "ddbf42c85115d9e2e3270f85eae31b4870d54c931e27caae7c53cddf2cad6342",
+        "bytes": 2544
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-thai-page-2-pdfium.png",
+        "sha256": "e5c971fed6080f677490286533524d28aadc25f6f98f64b5bec1feba8b52e546",
+        "bytes": 3079
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-thai-page-2-renderer-difference.png",
+        "sha256": "f1fdb9a5dcf9c866c3c5d872e11565eebc5aee6d95dab564b3cb063c9548d2b9",
+        "bytes": 340
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-thai-page-2-visual.txt",
+        "sha256": "8546b377b74ae3f8902e566a53053437eb798c31680345c92eec66d4fe81a1b1",
+        "bytes": 3588
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-thai-page-2-worker-difference.png",
+        "sha256": "99cf1825874b910e22f8daa39707f4edbc95e01f4b8ebe2c7c3dec12db4e2561",
+        "bytes": 234
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-thai-page-2-worker-expected.png",
+        "sha256": "e5c971fed6080f677490286533524d28aadc25f6f98f64b5bec1feba8b52e546",
+        "bytes": 3079
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-thai-page-2-worker-implementation.png",
+        "sha256": "ddbf42c85115d9e2e3270f85eae31b4870d54c931e27caae7c53cddf2cad6342",
+        "bytes": 2544
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-thai-page-2-worker-pdfium.png",
+        "sha256": "e5c971fed6080f677490286533524d28aadc25f6f98f64b5bec1feba8b52e546",
+        "bytes": 3079
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-thai-page-2-worker-renderer-difference.png",
+        "sha256": "f1fdb9a5dcf9c866c3c5d872e11565eebc5aee6d95dab564b3cb063c9548d2b9",
+        "bytes": 340
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-thai-page-2-worker-visual.txt",
+        "sha256": "b8c19533c9e13a9113aace33263da6f052ea3287bd7f94e690c07dfa67e1e750",
+        "bytes": 3651
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-worker-qpdf.txt",
+        "sha256": "7006aaa07ad91523f601193b05f3edd011b93b0c012422bbd79f39a115986ba8",
+        "bytes": 791
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-worker-subsets.txt",
+        "sha256": "59b6b28af29e9932962480cf23c2cf4a38d1ccd66f1908a0380ee3ed4cc7fd8a",
+        "bytes": 14240
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping-worker.pdf",
+        "sha256": "059eeae4d84cda335188ce02d8dc153b1e30bc2f05e152f750c02e372fd213a3",
+        "bytes": 38878
+      },
+      {
+        "path": "capabilities/evidence/artifacts/T29-shaping.pdf",
+        "sha256": "8a7a2fbc5e8a2b51e1450a5a39eb7b2dd6d8aa09862ec9c7a5535bbb9db79c9a",
+        "bytes": 38878
+      }
+    ]
+  },
+  "source_snapshot": {
+    "path": "capabilities/evidence/artifacts/T29-final-source-snapshot.json",
+    "sha256": "8e677bb64ecb6a6b3c8c3b6edb333a1e0932be8f1ac14d6bbda07ea95867e423",
+    "snapshot_sha256": "39b761992f1677fe25ee7c4d5796c1505a024a890880d51aca95ed516024565f",
+    "identical_before_and_after_run": true
+  }
+}

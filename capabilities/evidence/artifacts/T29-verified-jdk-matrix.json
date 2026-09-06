@@ -1,0 +1,101 @@
+{
+  "recorded_utc": "2026-09-06T17:32:07.844603+00:00",
+  "result": "PASS",
+  "source_snapshot_sha256": "94b628481751378665a40a3b033430b1224ec0adc817f811386bc44db59ef24f",
+  "source_snapshot": {
+    "path": "capabilities/evidence/artifacts/T29-verified-source-snapshot.json",
+    "sha256": "6521fd111a3f69bec58ec024ace436e4c48f0a827fb2599142c5000bf541751a",
+    "bytes": 139143
+  },
+  "source_hashes_match_after_all_gates": [
+    "/home/ubuntu/IdeaProjects/open-pdf",
+    "/tmp/folio-t29/matrix-font-cache-8-11",
+    "/tmp/folio-t29/matrix-font-cache-17-21"
+  ],
+  "jdk_results": [
+    {
+      "jdk": 8,
+      "maven_exit_code": 0,
+      "finished_record": "2026-09-06T16:56:11Z",
+      "total_time": "18:16 min",
+      "test_totals_from_per_class_log_records": {
+        "tests": 1019,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 3
+      },
+      "t28_worker_modeled_peak_bytes": 1294495682,
+      "image_id": "abe8c22c734bcff3c2e9ec5f8549f9aeb9a27aabc7b53974ddadcc903d30644a",
+      "java_version_output": "openjdk version \"1.8.0_502\"\nOpenJDK Runtime Environment (Temurin)(build 1.8.0_502-b07)\nOpenJDK 64-Bit Server VM (Temurin)(build 25.502-b07, mixed mode)\n"
+    },
+    {
+      "jdk": 11,
+      "maven_exit_code": 0,
+      "finished_record": "2026-09-06T17:14:22Z",
+      "total_time": "18:08 min",
+      "test_totals_from_per_class_log_records": {
+        "tests": 1019,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 3
+      },
+      "t28_worker_modeled_peak_bytes": 1294495682,
+      "image_id": "e8dca93a5541cca084f88dceae31bdfdde0c15d1857c8f641f753c839538956f",
+      "java_version_output": "openjdk version \"11.0.32\" 2026-07-21\nOpenJDK Runtime Environment Temurin-11.0.32+9 (build 11.0.32+9)\nOpenJDK 64-Bit Server VM Temurin-11.0.32+9 (build 11.0.32+9, mixed mode, sharing)\n"
+    },
+    {
+      "jdk": 17,
+      "maven_exit_code": 0,
+      "finished_record": "2026-09-06T17:15:26Z",
+      "total_time": "17:28 min",
+      "test_totals_from_per_class_log_records": {
+        "tests": 1019,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 3
+      },
+      "t28_worker_modeled_peak_bytes": 1294495682,
+      "image_id": "20e832593c27816000db6315e1f554fcd0073c9ba95846ac117e5f3f5e0fea33",
+      "java_version_output": "openjdk version \"17.0.20\" 2026-07-21\nOpenJDK Runtime Environment Temurin-17.0.20+8 (build 17.0.20+8)\nOpenJDK 64-Bit Server VM Temurin-17.0.20+8 (build 17.0.20+8, mixed mode, sharing)\n"
+    },
+    {
+      "jdk": 21,
+      "maven_exit_code": 0,
+      "finished_record": "2026-09-06T17:29:27Z",
+      "total_time": "14:16 min",
+      "test_totals_from_per_class_log_records": {
+        "tests": 1019,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 3
+      },
+      "t28_worker_modeled_peak_bytes": 1294495682,
+      "image_id": "bd15556c8747f309a3d9ac0ca190d7a67dbb131275a41df51041af8460ca03b2",
+      "java_version_output": "openjdk version \"21.0.12\" 2026-07-21 LTS\nOpenJDK Runtime Environment Temurin-21.0.12+8 (build 21.0.12+8-LTS)\nOpenJDK 64-Bit Server VM Temurin-21.0.12+8 (build 21.0.12+8-LTS, mixed mode, sharing)\n"
+    }
+  ],
+  "image_observations": {
+    "path": "capabilities/evidence/artifacts/T29-verified-jdk-images.json",
+    "sha256": "a33f6937b094ca35411cb532ca7994320d6b731cebb8ac0563374e88aa9a7600",
+    "bytes": 4226
+  },
+  "command_receipts": [
+    {
+      "path": "capabilities/evidence/artifacts/T29-verified-jdk8-11.json",
+      "sha256": "09d10f804393889d29023b28e98c9c93ef9e163df3b7ab8cc50b4eb2d3696e66",
+      "bytes": 1465
+    },
+    {
+      "path": "capabilities/evidence/artifacts/T29-verified-jdk17.json",
+      "sha256": "b25aaddac659da97d731540ddeaeb4cac7840372cf01576fa106673e28369b28",
+      "bytes": 1029
+    },
+    {
+      "path": "capabilities/evidence/artifacts/T29-verified-jdk21.json",
+      "sha256": "7c576b6bf3b1512fe870fd0f6ca2aa1df4532ead60984f10ed462d0a3206c457",
+      "bytes": 1010
+    }
+  ],
+  "all_three_enclosing_commands_exited_zero": true,
+  "scope": "Four actual Linux x86-64 JDK gates. This does not establish Windows or macOS compatibility or close #30."
+}

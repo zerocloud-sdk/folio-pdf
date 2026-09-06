@@ -14,6 +14,12 @@ private. Actual Rendering selections, including implicit use, appear in the
 Workflow Outcome. External Rendering adapters execute in the parent in either
 Workflow profile; remote content requires the same scoped authorization.
 
+T29 [HarfBuzz shaping](harfbuzz-shaping.md) supplies a project-owned native
+adapter in `pdf-conversion`. Its helper and engine are separately installed.
+Composition uses it only when the Workflow Request explicitly selects
+`composition.shaping.harf-buzz`; registration alone preserves unshaped T28
+behavior. Native calls remain parent-brokered in both Workflow profiles.
+
 ## Artifacts and metadata
 
 Use `net.zerocloud:pdf-provider-contract` for the Provider seam and

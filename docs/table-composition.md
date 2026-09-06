@@ -46,11 +46,17 @@ this is semantic input order, not Tagged PDF table structure.
 In FIXED layout, explicit column widths are exact. AUTO columns equally divide
 the remaining table width. With no AUTO column, explicit widths must sum to
 the table width. Every resolved column must be positive. Each cell must satisfy
-its minimum width and contain its largest complete grapheme advance or atomic graphic,
-padding and borders. Failure to fit is never clipping or silent truncation.
+its intrinsic minimum, padding and borders. Without a shaping preference, the
+intrinsic text minimum is the largest complete grapheme advance or atomic
+graphic. With [T29 shaping](harfbuzz-shaping.md), it is the smallest achievable
+largest fragment advance over partitions at original grapheme boundaries,
+with forced separators preserved and every candidate boundary reshaped.
+Joined fragments can be narrower than their isolated graphemes. Actual greedy
+line fitting still validates the resolved cell widths. Failure to fit is never
+clipping or silent truncation.
 
 AUTO keeps explicit columns exact. For each cell, intrinsic minimum is its
-largest complete grapheme advance or graphic width plus horizontal padding and borders,
+intrinsic text/graphic advance described above plus horizontal padding and borders,
 raised to its declared minimum width. Preferred width is the largest sum of
 advances between forced line separators (LF, U+2028 or U+2029) plus these insets,
 raised to intrinsic minimum. Paragraph

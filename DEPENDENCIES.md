@@ -29,6 +29,18 @@ under MIT and its retained external notices. It is not a Maven/runtime
 dependency. Font data is restricted to pdf-acceptance and pdf-document's test
 resources. This adds no runtime font bundle or implicit font discovery.
 
+T29's independent reference data adds unmodified OFL-1.1 Noto Sans Arabic
+2.009, Devanagari 2.002 and Thai 2.000 and reuses Hebrew 3.000. The same Noto
+manifests pin their upstream commit, file hashes and notices. The separately
+installed [HarfBuzz 10.2.0 engine and build tools](docs/third-party/harfbuzz-10.2.0.md)
+are explicitly recorded; they are not part of the default Java runtime or
+product JARs. No unofficial Java HarfBuzz wrapper is selected.
+The offline installer uses Python 3.12+, Meson, Ninja, pkg-config and the
+explicit native C/C++ toolchain; actual versions, executable hashes, source
+archives and licenses are retained in the native dependency record and each
+installation receipt. The repository-only live observation command uses
+Python's standard library and Linux procfs. It adds no Java dependency.
+
 The verification and repository build-tool dependency graph does not enter the
 published runtime:
 

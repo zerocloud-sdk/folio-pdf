@@ -1,0 +1,42 @@
+{
+  "observed_utc": "2026-09-06T17:15:10.719855+00:00",
+  "command": "FOLIO_HARFBUZZ_HELPER=/home/ubuntu/IdeaProjects/open-pdf/.build-cache/harfbuzz/10.2.0-final/bin/folio-harfbuzz ./scripts/verify-jdk-matrix.sh 8 11",
+  "working_directory": "/tmp/folio-t29/matrix-font-cache-8-11",
+  "command_exit_code": 0,
+  "source_snapshot_sha256": "94b628481751378665a40a3b033430b1224ec0adc817f811386bc44db59ef24f",
+  "source_hashes_match_after_build": true,
+  "jdk_results": [
+    {
+      "jdk": 8,
+      "maven_exit_code": 0,
+      "finished_record": "2026-09-06T16:56:11Z",
+      "total_time": "18:16 min",
+      "test_totals_from_per_class_log_records": {
+        "tests": 1019,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 3
+      },
+      "t28_worker_modeled_peak_bytes": 1294495682
+    },
+    {
+      "jdk": 11,
+      "maven_exit_code": 0,
+      "finished_record": "2026-09-06T17:14:22Z",
+      "total_time": "18:08 min",
+      "test_totals_from_per_class_log_records": {
+        "tests": 1019,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 3
+      },
+      "t28_worker_modeled_peak_bytes": 1294495682
+    }
+  ],
+  "log": {
+    "path": "capabilities/evidence/artifacts/T29-verified-jdk8-11.txt",
+    "sha256": "d727830f0292af38dcfe3b7d568acb514a0e54ea64a08ebd6beeddcbf1e83ca4",
+    "bytes": 132314
+  },
+  "scope": "Complete current-source JDK 8 and 11 gates; JDK 17/21 pending. Required non-Linux platform evidence remains absent."
+}

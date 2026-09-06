@@ -1,0 +1,3335 @@
+{
+  "schema": 1,
+  "created_utc": "2026-09-06T16:36:56.518983+00:00",
+  "fixed_review_baseline": "dd4cda28c24a304258e75f0854d86852275f5320",
+  "head": "dd4cda28c24a304258e75f0854d86852275f5320",
+  "state": "uncommitted working-tree plus relevant untracked source",
+  "scope": "All module src trees, Maven POMs/wrappers/config, repository scripts, CI workflow, LICENSE/NOTICE and frozen acceptance profiles/rasters. Documentation, inventory authority and run receipts are reviewed separately and are not inputs to the Java product snapshot.",
+  "snapshot_sha256": "94b628481751378665a40a3b033430b1224ec0adc817f811386bc44db59ef24f",
+  "snapshot_hash_definition": "SHA-256 of sorted UTF-8 lines: file SHA-256, two spaces, repository-relative path, newline.",
+  "files": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "4694de5e4073fe9d53438fa8f4ca64c13550d2c8b2101f3ab7f2ddd20ca3942a",
+      "bytes": 1296
+    },
+    {
+      "path": ".mvn/maven.config",
+      "sha256": "51eb7ca6cee79d7d692565bfb30a3e9e611430f46532b144c239c19910ef962d",
+      "bytes": 26
+    },
+    {
+      "path": ".mvn/wrapper/maven-wrapper.properties",
+      "sha256": "9e702bcd7e68ba1cace0a3382a7082e6e1e1b321688a7a3fbf4d5ae7eb0af533",
+      "bytes": 255
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "bytes": 11357
+    },
+    {
+      "path": "NOTICE",
+      "sha256": "4bc3ce2a96dcaaf9985fa60017b6bba13614144b7a646fbc0fe2df4a0700e16d",
+      "bytes": 756
+    },
+    {
+      "path": "build-tools/inventory/pom.xml",
+      "sha256": "dc5b14431becf22f26e8b50db91a25be6d368482abc31ef563f41ef7a0852566",
+      "bytes": 2750
+    },
+    {
+      "path": "build-tools/inventory/src/main/java/net/zerocloud/pdf/tools/inventory/EvidenceRecordValidator.java",
+      "sha256": "7694229df3c23cee92e1a30ca0ad9bc825256408043d58f79ae845144b964fb1",
+      "bytes": 4449
+    },
+    {
+      "path": "build-tools/inventory/src/main/java/net/zerocloud/pdf/tools/inventory/InventoryCommand.java",
+      "sha256": "c1651c06af8b031ccb74aa7a2fc8b1ad4641cedcd8e6d1968f207e0dcca77cef",
+      "bytes": 4774
+    },
+    {
+      "path": "build-tools/inventory/src/main/java/net/zerocloud/pdf/tools/inventory/InventoryCrossValidator.java",
+      "sha256": "f8bdfe4c0ee485ee2c4fec2e684913557a81e3779ea2140c8c5887da97598369",
+      "bytes": 9432
+    },
+    {
+      "path": "build-tools/inventory/src/main/java/net/zerocloud/pdf/tools/inventory/InventoryModel.java",
+      "sha256": "b06c9be75cec6e5ea4385595df088c634f5990e6c0fc7dd4d444c969207fb18a",
+      "bytes": 3201
+    },
+    {
+      "path": "build-tools/inventory/src/main/java/net/zerocloud/pdf/tools/inventory/InventoryValidator.java",
+      "sha256": "c43696b8db3a3bd99cd2ba9c9b3f841e458cde075e61f41e57edc97085255d42",
+      "bytes": 40273
+    },
+    {
+      "path": "build-tools/inventory/src/main/java/net/zerocloud/pdf/tools/inventory/InventoryVocabulary.java",
+      "sha256": "cc2ac470fbc696f3f760d420881a1a631fe7600832bb123d8e9a4c184b5452aa",
+      "bytes": 2779
+    },
+    {
+      "path": "build-tools/inventory/src/main/java/net/zerocloud/pdf/tools/inventory/MarkdownGenerator.java",
+      "sha256": "9caa38390b71c97b785b0f53950fb5bc6dcc557f5f979882aa0c4384a0ddc956",
+      "bytes": 20009
+    },
+    {
+      "path": "build-tools/inventory/src/main/java/net/zerocloud/pdf/tools/inventory/ReleaseTrainValidator.java",
+      "sha256": "dcd551c980b1f790a2d90cfe5fdc2508e4a03c9ab727bba9abca72e420793408",
+      "bytes": 4092
+    },
+    {
+      "path": "build-tools/inventory/src/main/java/net/zerocloud/pdf/tools/inventory/RepositoryFileResolver.java",
+      "sha256": "9006c99d20024157e984bf9482859fbb2b625160df9750f2ee5f3bba97bff02c",
+      "bytes": 2744
+    },
+    {
+      "path": "build-tools/inventory/src/main/java/net/zerocloud/pdf/tools/inventory/ValidationResult.java",
+      "sha256": "4c332ca162abf3974f80f442f82547b3bf7028ef8dbf6e33966b7bf8f4e4d9a7",
+      "bytes": 603
+    },
+    {
+      "path": "build-tools/inventory/src/test/java/net/zerocloud/pdf/tools/inventory/InventoryCommandTest.java",
+      "sha256": "c544ea95324b2562c259650c75b1aaf36a97fbedd4600ac5d500fcfc79223078",
+      "bytes": 18042
+    },
+    {
+      "path": "build-tools/inventory/src/test/resources/fixtures/base/PROVENANCE.md",
+      "sha256": "927b1e913a242a25edfe8a94d18c45ca2ef3b9df76d3470010f98724399055ee",
+      "bytes": 100
+    },
+    {
+      "path": "build-tools/inventory/src/test/resources/fixtures/base/capabilities/capability-matrix.yaml",
+      "sha256": "3bdd28e22b4a2ef03b8aca6afb17a3a43d7cc97b3ba31c7be437016ffbbe62e2",
+      "bytes": 7348
+    },
+    {
+      "path": "build-tools/inventory/src/test/resources/fixtures/base/capabilities/facade-surface.yaml",
+      "sha256": "da575f8d8fda3641d6fd8b105b8111d464818d1b2a2027141fcc85cf92cb1d49",
+      "bytes": 1336
+    },
+    {
+      "path": "build-tools/inventory/src/test/resources/fixtures/base/evidence/compatible-profile.md",
+      "sha256": "ebc80594fe8207db47c4a8c90225b49a5523eb34883a8fb07bdcca478aca86eb",
+      "bytes": 163
+    },
+    {
+      "path": "build-tools/inventory/src/test/resources/fixtures/base/evidence/compatible-semantic.md",
+      "sha256": "64cefdcf5ed2b0c40be9abe375869598942215eb0a073ee88ad9ef23efb88e32",
+      "bytes": 324
+    },
+    {
+      "path": "build-tools/inventory/src/test/resources/fixtures/base/evidence/compatible-standards.md",
+      "sha256": "e347970e5cc4dc96163be1519f907a1e551ab97fd1e57e44d973b43974b40027",
+      "bytes": 327
+    },
+    {
+      "path": "build-tools/inventory/src/test/resources/fixtures/base/evidence/compatible-syntax.md",
+      "sha256": "255ebe07b4641a75353671ee97e6012f3b7550cf2291bb207fcfbce97c76767e",
+      "bytes": 318
+    },
+    {
+      "path": "build-tools/inventory/src/test/resources/fixtures/base/evidence/compatible-visual.md",
+      "sha256": "08be49e3cc6f94385f36bcf102ffa2f412bc0b973e99ebb558a33b1648b805bc",
+      "bytes": 317
+    },
+    {
+      "path": "build-tools/inventory/src/test/resources/fixtures/base/evidence/experimental-profile.md",
+      "sha256": "29c3f4499b589a7f123b99ecb1d0b3ab2badef3eee50601715835501444f5720",
+      "bytes": 171
+    },
+    {
+      "path": "build-tools/inventory/src/test/resources/fixtures/base/evidence/experimental-syntax.md",
+      "sha256": "9c29dac32a77a35b4439e8363c78c2881c2286b1d67b9c36e1af9a4fd48c968d",
+      "bytes": 335
+    },
+    {
+      "path": "build-tools/inventory/src/test/resources/fixtures/base/evidence/implementation.md",
+      "sha256": "57023d8f5cfcdd383beb047bbf5219121feb868eaf9e5b6d932a5edf9f8f2a78",
+      "bytes": 34
+    },
+    {
+      "path": "build-tools/inventory/src/test/resources/fixtures/base/evidence/limited-profile.md",
+      "sha256": "e48cab8b9899e49268778f747b7a320d679b0956d5a046eb82d2e9d9db753abd",
+      "bytes": 151
+    },
+    {
+      "path": "build-tools/inventory/src/test/resources/fixtures/base/evidence/limited-semantic.md",
+      "sha256": "5cee2267e62ed68e497494f5549694bca6b231838a7ca8d89bbbcd97787377ae",
+      "bytes": 312
+    },
+    {
+      "path": "build-tools/inventory/src/test/resources/fixtures/base/evidence/limited-standards.md",
+      "sha256": "36ec10694b19def01f473e5c9338f011ca8031d454d3dc37a02a8896186ec70a",
+      "bytes": 315
+    },
+    {
+      "path": "build-tools/inventory/src/test/resources/fixtures/base/evidence/limited-syntax.md",
+      "sha256": "3de69de0bc25d1046d52a1befdb6f858d0a6e1369a4009cccb36b00b0c17cb1d",
+      "bytes": 306
+    },
+    {
+      "path": "build-tools/inventory/src/test/resources/fixtures/base/evidence/limited-visual.md",
+      "sha256": "79b7a20f815b0c9f97b06141227a94babb7c021559ad32c89b67a42c0e09283c",
+      "bytes": 305
+    },
+    {
+      "path": "build-tools/inventory/src/test/resources/fixtures/base/pom.xml",
+      "sha256": "9993f9ebfaeb9b990ffb7ae293f352e49c0ad07fcd32a0f80cad50dd30af15f1",
+      "bytes": 245
+    },
+    {
+      "path": "build-tools/inventory/src/test/resources/fixtures/invalid/blocked-compatible-dependency/capability-matrix.yaml",
+      "sha256": "b6cbbbc7370610187403e352e2634bf4314be0c6fd2bd1b863d7fbfa6f5d7cec",
+      "bytes": 2934
+    },
+    {
+      "path": "build-tools/inventory/src/test/resources/fixtures/invalid/common/facade-surface.yaml",
+      "sha256": "f6ba8dcf9e42ba4d0ab544c297b667a3c07afe6f298b9eee48cb12caf58e26af",
+      "bytes": 236
+    },
+    {
+      "path": "build-tools/inventory/src/test/resources/fixtures/invalid/compatible-without-acceptance/capability-matrix.yaml",
+      "sha256": "975ba61a2dd8e2df6328edab7754e24b5ce43c03f07e581f4ffc6f539f90ff53",
+      "bytes": 1286
+    },
+    {
+      "path": "build-tools/inventory/src/test/resources/fixtures/invalid/conflicting-evidence-metadata/evidence/experimental-profile.md",
+      "sha256": "2506ba95e56d160bfb731ebfb32763f2f9217499e5ab630d8dfff50647784ac9",
+      "bytes": 193
+    },
+    {
+      "path": "build-tools/inventory/src/test/resources/fixtures/invalid/cyclic-dependency/capability-matrix.yaml",
+      "sha256": "80f46417a018fc051784a45b207ad25856f75b9ce635c91a7d36c499e62ff4cc",
+      "bytes": 1784
+    },
+    {
+      "path": "build-tools/inventory/src/test/resources/fixtures/invalid/experimental-without-evidence/capability-matrix.yaml",
+      "sha256": "216d32ec2b9e91ae4246cca4ecf328e313314358a85facb90ee1e5a6c0340cec",
+      "bytes": 983
+    },
+    {
+      "path": "build-tools/inventory/src/test/resources/fixtures/invalid/facade-suffix-mismatch/facade-surface.yaml",
+      "sha256": "bb3317f9bbe98d3c0cf2125d94e3423076a4993d1743e7a27a592875224f11de",
+      "bytes": 1314
+    },
+    {
+      "path": "build-tools/inventory/src/test/resources/fixtures/invalid/limited-without-acceptance/capability-matrix.yaml",
+      "sha256": "4d7cdaf8d9307798ab64623932a289cba4724a80b634145c8db8027e1e590de7",
+      "bytes": 1682
+    },
+    {
+      "path": "build-tools/inventory/src/test/resources/fixtures/invalid/missing-identifier/capability-matrix.yaml",
+      "sha256": "65dd8b93fdd6ebbe2ee067e312191fcaf868415194c6623e3005b646093330e5",
+      "bytes": 855
+    },
+    {
+      "path": "build-tools/inventory/src/test/resources/fixtures/invalid/planned-with-evidence/capability-matrix.yaml",
+      "sha256": "0c35573cbdc4c1963f5869f2c874dc8bc434b95fde6536adab5d3976441d514b",
+      "bytes": 1068
+    },
+    {
+      "path": "build-tools/inventory/src/test/resources/fixtures/invalid/release-train-mismatch/pom.xml",
+      "sha256": "d69fd62aebe37b8f7a276d737b4a00dd87700e1609ed240208a5d8f25bdd04eb",
+      "bytes": 245
+    },
+    {
+      "path": "build-tools/inventory/src/test/resources/fixtures/invalid/shared-evidence-producer/capability-matrix.yaml",
+      "sha256": "636554cc7dfdcc08e88227fbc6220547585fd4d41330813939c6482de943ee66",
+      "bytes": 1875
+    },
+    {
+      "path": "build-tools/inventory/src/test/resources/fixtures/invalid/shared-evidence-producer/evidence/compatible-standards.md",
+      "sha256": "2d0116cabeb0667d5dfd63809b08b84e6d165d79b3ee805406f70a3157ee6fb3",
+      "bytes": 324
+    },
+    {
+      "path": "build-tools/inventory/src/test/resources/fixtures/invalid/shared-evidence-producer/facade-surface.yaml",
+      "sha256": "48792369f7c8279fbeb6093266c30e2544dcba6dee28263a0c8f6498893b2d7a",
+      "bytes": 251
+    },
+    {
+      "path": "build-tools/inventory/src/test/resources/fixtures/invalid/stable-facade-noncompatible/facade-surface.yaml",
+      "sha256": "4f5ac418217f8a91934dfac5faf10f9ee701127c8965301fecce2f2d1ca38eb0",
+      "bytes": 1319
+    },
+    {
+      "path": "build-tools/inventory/src/test/resources/fixtures/invalid/unknown-dependency/capability-matrix.yaml",
+      "sha256": "43b43c0ed96fe1e90fceb3a197509f39311e678637a6ba786000bea94ceb45fe",
+      "bytes": 946
+    },
+    {
+      "path": "build-tools/inventory/src/test/resources/fixtures/invalid/unknown-facade-capability/facade-surface.yaml",
+      "sha256": "ddc4399571490e2e958de4a4f404f4dc00f29cceb6d8f5775a7d302d3946bb58",
+      "bytes": 1666
+    },
+    {
+      "path": "build-tools/inventory/src/test/resources/fixtures/invalid/unsupported-state/capability-matrix.yaml",
+      "sha256": "c25c24897a6bb584dd0365052ef784d720b8362a59d97279dab5dd0e1656de51",
+      "bytes": 815
+    },
+    {
+      "path": "build-tools/release/pom.xml",
+      "sha256": "eab05d72b5bc3ee0af41ea7627bbcebbdb482b69d62fc14cc0f7c7227dfcdaea",
+      "bytes": 2561
+    },
+    {
+      "path": "build-tools/release/src/main/java/net/zerocloud/pdf/tools/release/ReleaseBundleAssembler.java",
+      "sha256": "a34d74c9c8d850e2b5f30c6c0781a7a1244c2eb2a2f195dda6cec0281b56c938",
+      "bytes": 7748
+    },
+    {
+      "path": "build-tools/release/src/main/java/net/zerocloud/pdf/tools/release/ReleaseBundleCommand.java",
+      "sha256": "fafe33b8f90d4b7f5cd774195cf39d1cf5b17bd0162a8b4c4c83c5fecd0e1708",
+      "bytes": 4098
+    },
+    {
+      "path": "build-tools/release/src/main/java/net/zerocloud/pdf/tools/release/ReleaseBundleValidator.java",
+      "sha256": "d1770cd01110f1aa6a1d990639aa5f521ac49fb6c04280ddb48cbaea4655356d",
+      "bytes": 37456
+    },
+    {
+      "path": "build-tools/release/src/main/java/net/zerocloud/pdf/tools/release/ReleaseChecksums.java",
+      "sha256": "89913532284508d62c8259c19b60cdf9831f3a7f34a6eaff8f6958025aa27057",
+      "bytes": 1422
+    },
+    {
+      "path": "build-tools/release/src/main/java/net/zerocloud/pdf/tools/release/ReleaseModuleSet.java",
+      "sha256": "a9090cf2fe350f925031f49d083fac5b2a1ecfd2567fa951a8a23f831bcf3746",
+      "bytes": 4159
+    },
+    {
+      "path": "build-tools/release/src/main/java/net/zerocloud/pdf/tools/release/ReleaseReproducibility.java",
+      "sha256": "c150cb1a026c5174ae57ae93473d971d44c62ba8cedbd903ec9dde0f43c87ee0",
+      "bytes": 5548
+    },
+    {
+      "path": "build-tools/release/src/test/java/net/zerocloud/pdf/tools/release/ReleaseBundleFixture.java",
+      "sha256": "7dfa8cba7d725c86f86b0e8a8e7c145cf3d4e21cc34a331d47bd69214abec59a",
+      "bytes": 20398
+    },
+    {
+      "path": "build-tools/release/src/test/java/net/zerocloud/pdf/tools/release/ReleasePolicyContractTest.java",
+      "sha256": "07ecb1de9f8dc4cd46696d41c9aac4b8a94240c02e166cc282e4965de8a82fb0",
+      "bytes": 10982
+    },
+    {
+      "path": "build-tools/release/src/test/java/net/zerocloud/pdf/tools/release/ReleaseRehearsalCommandTest.java",
+      "sha256": "9472dccbcc79f9b11d11ac0db4e57d99df4d44fd6293e2be1972bd715f3e4c9d",
+      "bytes": 11571
+    },
+    {
+      "path": "capabilities/expected/T03-document-blank-144dpi-srgb.png",
+      "sha256": "c7bbf03603aee1dba4ef80c9eee9abb93b7f3adfb94b84e4abf0203d78f89011",
+      "bytes": 8999
+    },
+    {
+      "path": "capabilities/expected/T18-canvas-images-colors-transparency-144dpi-srgb.png",
+      "sha256": "4027a0a929494c49051a3039be5bd1c06d2a6624ba7c161acb8c1bfe0780024a",
+      "bytes": 9802
+    },
+    {
+      "path": "capabilities/expected/T19-font-loading-embedding-subsetting-144dpi-srgb.png",
+      "sha256": "d5a0c880a7a58bd0de6a1b7e887b6fe6b5a73f14608355434ee8cf022eb04a31",
+      "bytes": 15970
+    },
+    {
+      "path": "capabilities/expected/T23-page-rendering-144dpi-srgb.png",
+      "sha256": "ba2aa587629d5e67d7659ca3ac34933fb15e7d9fdff0fa76976f1aceebc6a4e9",
+      "bytes": 9012
+    },
+    {
+      "path": "capabilities/expected/T24-paragraph-composition-page-1-144dpi-srgb.png",
+      "sha256": "bef7957b4fca61e9db7272f78f28f12c47bf1ddefa268d5aacd0c5c8440c03ec",
+      "bytes": 12561
+    },
+    {
+      "path": "capabilities/expected/T24-paragraph-composition-page-2-144dpi-srgb.png",
+      "sha256": "3f1862180e89dae9c30757c3fea836695d276b8ceaa0eb49b19fc2b32277f8ce",
+      "bytes": 10661
+    },
+    {
+      "path": "capabilities/expected/T25-paragraph-immediate-flush-page-1-144dpi-srgb.png",
+      "sha256": "b7a56c3228294e3ea48ca4ba3ba22b9d23812095fc9e263c8f02f3f7caaeb581",
+      "bytes": 11533
+    },
+    {
+      "path": "capabilities/expected/T25-paragraph-immediate-flush-page-2-144dpi-srgb.png",
+      "sha256": "e5c953af1e569df8c0568e5b477f97c5c91872e81f467608895b10c9baad853d",
+      "bytes": 9842
+    },
+    {
+      "path": "capabilities/expected/T25-paragraph-indentation-page-1-144dpi-srgb.png",
+      "sha256": "1502247d078d7c818181d5dcdf54be1ffa27503e2b4fa2acea948fdec962f60b",
+      "bytes": 11510
+    },
+    {
+      "path": "capabilities/expected/T25-paragraph-indentation-page-2-144dpi-srgb.png",
+      "sha256": "680f28a20b4f88df030823ab833f4098c62dbbbd81ad1751f1b5603736250f63",
+      "bytes": 11813
+    },
+    {
+      "path": "capabilities/expected/T25-paragraph-keep-next-page-1-144dpi-srgb.png",
+      "sha256": "ebd5edcf526bfd972a6b61a2ef1fad00ad8219d53f81dbc9ab7032d525cb85d8",
+      "bytes": 10852
+    },
+    {
+      "path": "capabilities/expected/T25-paragraph-keep-next-page-2-144dpi-srgb.png",
+      "sha256": "67029d8406ae4f3d249ff590e1312e37a52cb90e80d754465d150199cd133714",
+      "bytes": 11806
+    },
+    {
+      "path": "capabilities/expected/T25-paragraph-keep-together-page-1-144dpi-srgb.png",
+      "sha256": "ebd5edcf526bfd972a6b61a2ef1fad00ad8219d53f81dbc9ab7032d525cb85d8",
+      "bytes": 10852
+    },
+    {
+      "path": "capabilities/expected/T25-paragraph-keep-together-page-2-144dpi-srgb.png",
+      "sha256": "fde842f5a041ed160e619a623870954ab1a5343709aace7e555827570330bc46",
+      "bytes": 8999
+    },
+    {
+      "path": "capabilities/expected/T25-paragraph-orphan-page-1-144dpi-srgb.png",
+      "sha256": "fdbdaa823cdbb70b55782954fb094e9e52f787a3715dbb1fff7d3bf0bcbbe919",
+      "bytes": 10673
+    },
+    {
+      "path": "capabilities/expected/T25-paragraph-orphan-page-2-144dpi-srgb.png",
+      "sha256": "6b1bb66285770eac1e65feb3f574dab8f0702ca86f0228a8e543a2f02eda728c",
+      "bytes": 10490
+    },
+    {
+      "path": "capabilities/expected/T25-paragraph-overflow-reject-page-1-144dpi-srgb.png",
+      "sha256": "e9d0376a37a8578fe71c97d5503a1460cd2e97f8b563bf2b8a2ada84c3373705",
+      "bytes": 8958
+    },
+    {
+      "path": "capabilities/expected/T25-paragraph-overflow-reject-page-2-144dpi-srgb.png",
+      "sha256": "d4d099c6a9e34bfa4780e2b4a0d91d7e1c793a5aab60009cccdd6cf83115bd25",
+      "bytes": 10058
+    },
+    {
+      "path": "capabilities/expected/T25-paragraph-overflow-visible-page-1-144dpi-srgb.png",
+      "sha256": "2cc006aa7a01e83c1e3914f5c577854a0ca3df1f1e5ad765d0cd9fc969e6ab0e",
+      "bytes": 12046
+    },
+    {
+      "path": "capabilities/expected/T25-paragraph-overflow-visible-page-2-144dpi-srgb.png",
+      "sha256": "d4d099c6a9e34bfa4780e2b4a0d91d7e1c793a5aab60009cccdd6cf83115bd25",
+      "bytes": 10058
+    },
+    {
+      "path": "capabilities/expected/T25-paragraph-overflow-wrap-page-1-144dpi-srgb.png",
+      "sha256": "b1781ae7669e2a3f5c6c840f9b709f3ee10d8dc506221f53b4e565a5432f1727",
+      "bytes": 11816
+    },
+    {
+      "path": "capabilities/expected/T25-paragraph-overflow-wrap-page-2-144dpi-srgb.png",
+      "sha256": "b1781ae7669e2a3f5c6c840f9b709f3ee10d8dc506221f53b4e565a5432f1727",
+      "bytes": 11816
+    },
+    {
+      "path": "capabilities/expected/T25-paragraph-publication-page-1-144dpi-srgb.png",
+      "sha256": "b7a56c3228294e3ea48ca4ba3ba22b9d23812095fc9e263c8f02f3f7caaeb581",
+      "bytes": 11533
+    },
+    {
+      "path": "capabilities/expected/T25-paragraph-publication-page-2-144dpi-srgb.png",
+      "sha256": "e5c953af1e569df8c0568e5b477f97c5c91872e81f467608895b10c9baad853d",
+      "bytes": 9842
+    },
+    {
+      "path": "capabilities/expected/T25-paragraph-relayout-page-1-144dpi-srgb.png",
+      "sha256": "2dfd972a268c28fd22d503cdbecc3423282bdc4546d10740ade585a4bd1bf96e",
+      "bytes": 10178
+    },
+    {
+      "path": "capabilities/expected/T25-paragraph-relayout-page-2-144dpi-srgb.png",
+      "sha256": "cfe5820225f460d0da46e3c6ea75f8920e28f167797211baffb9fa77547c4ec5",
+      "bytes": 11034
+    },
+    {
+      "path": "capabilities/expected/T25-paragraph-tabs-page-1-144dpi-srgb.png",
+      "sha256": "08de3b604e782bc293e1e0b3e58b4cde24ac84930561c3de5e5e2c5babef5137",
+      "bytes": 14820
+    },
+    {
+      "path": "capabilities/expected/T25-paragraph-tabs-page-2-144dpi-srgb.png",
+      "sha256": "08de3b604e782bc293e1e0b3e58b4cde24ac84930561c3de5e5e2c5babef5137",
+      "bytes": 14820
+    },
+    {
+      "path": "capabilities/expected/T25-paragraph-widow-page-1-144dpi-srgb.png",
+      "sha256": "fdbdaa823cdbb70b55782954fb094e9e52f787a3715dbb1fff7d3bf0bcbbe919",
+      "bytes": 10673
+    },
+    {
+      "path": "capabilities/expected/T25-paragraph-widow-page-2-144dpi-srgb.png",
+      "sha256": "66f9d1c973d99c1aa65d0c24eae2e636c3cb58915da8e5aeab5be570e7cb8cb8",
+      "bytes": 9869
+    },
+    {
+      "path": "capabilities/expected/T26-table-composition-page-1-144dpi-srgb.png",
+      "sha256": "27de5f02e6a6e4a3cf834cf1a6e23764d0a0a0b09c6ddc4eff510c47e1c0d8a2",
+      "bytes": 9841
+    },
+    {
+      "path": "capabilities/expected/T26-table-composition-page-2-144dpi-srgb.png",
+      "sha256": "a394d8b00d705e73ddb64986f965f0ecd2e1f47163e3d0162207b6de27ccee61",
+      "bytes": 9374
+    },
+    {
+      "path": "capabilities/expected/T26-table-composition-page-3-144dpi-srgb.png",
+      "sha256": "f12b3618baeb2f5670fdca9ec6e346854c9f68e772ed9f63226ffdd97973a246",
+      "bytes": 9911
+    },
+    {
+      "path": "capabilities/expected/T27-table-pagination-page-1-144dpi-srgb.png",
+      "sha256": "089b5862f456ca619631f3ecd48602d4a7740f0ad94986958fd4b8181ab619b7",
+      "bytes": 9842
+    },
+    {
+      "path": "capabilities/expected/T27-table-pagination-page-10-144dpi-srgb.png",
+      "sha256": "e254e5e82e3043513e45f8f6f8639ac88b3348f49577c084a3558066313034e0",
+      "bytes": 9494
+    },
+    {
+      "path": "capabilities/expected/T27-table-pagination-page-11-144dpi-srgb.png",
+      "sha256": "3a2f960f17e2245130bef3b613caa2bcedeb9ade059e474487249731f46d06b6",
+      "bytes": 9364
+    },
+    {
+      "path": "capabilities/expected/T27-table-pagination-page-12-144dpi-srgb.png",
+      "sha256": "9f40ab19f29d1f4053ad29c4aab0a81d2e24a48ef94200d5dc1f2d6cdcf79201",
+      "bytes": 9508
+    },
+    {
+      "path": "capabilities/expected/T27-table-pagination-page-13-144dpi-srgb.png",
+      "sha256": "efab3f5d90d7461566370131dd7da192110e4851be20e7c1b25d193d71de73ec",
+      "bytes": 9262
+    },
+    {
+      "path": "capabilities/expected/T27-table-pagination-page-14-144dpi-srgb.png",
+      "sha256": "7b31c9aff034f1a81133654df942863148a8b6e8898f2ff43715df5c522d8b74",
+      "bytes": 9555
+    },
+    {
+      "path": "capabilities/expected/T27-table-pagination-page-15-144dpi-srgb.png",
+      "sha256": "7d4905c21a7fd8a0f1808ca04e8df53ca558833655df134fd65396bc21fbbb45",
+      "bytes": 9132
+    },
+    {
+      "path": "capabilities/expected/T27-table-pagination-page-16-144dpi-srgb.png",
+      "sha256": "31cf974d8334468c6bf2a4e3853929406ee0bcd175ff6626e4df0b6161da4d8e",
+      "bytes": 9350
+    },
+    {
+      "path": "capabilities/expected/T27-table-pagination-page-17-144dpi-srgb.png",
+      "sha256": "efab3f5d90d7461566370131dd7da192110e4851be20e7c1b25d193d71de73ec",
+      "bytes": 9262
+    },
+    {
+      "path": "capabilities/expected/T27-table-pagination-page-18-144dpi-srgb.png",
+      "sha256": "3a2f960f17e2245130bef3b613caa2bcedeb9ade059e474487249731f46d06b6",
+      "bytes": 9364
+    },
+    {
+      "path": "capabilities/expected/T27-table-pagination-page-19-144dpi-srgb.png",
+      "sha256": "7d4905c21a7fd8a0f1808ca04e8df53ca558833655df134fd65396bc21fbbb45",
+      "bytes": 9132
+    },
+    {
+      "path": "capabilities/expected/T27-table-pagination-page-2-144dpi-srgb.png",
+      "sha256": "63628220b3d9c0e9ba8bf9173549a140d489d38bf1eccb0d976f1f254c6ae804",
+      "bytes": 9374
+    },
+    {
+      "path": "capabilities/expected/T27-table-pagination-page-3-144dpi-srgb.png",
+      "sha256": "4bbfe064061ce1a4994284ce872c2838d2bb46111a245b6319a7dfa25f33165e",
+      "bytes": 9831
+    },
+    {
+      "path": "capabilities/expected/T27-table-pagination-page-4-144dpi-srgb.png",
+      "sha256": "a394d8b00d705e73ddb64986f965f0ecd2e1f47163e3d0162207b6de27ccee61",
+      "bytes": 9374
+    },
+    {
+      "path": "capabilities/expected/T27-table-pagination-page-5-144dpi-srgb.png",
+      "sha256": "4bdc4a5001f4f8525f8ecdace67744bfcbc0f95ddcdcec18b9e9d169d27d3b2b",
+      "bytes": 9364
+    },
+    {
+      "path": "capabilities/expected/T27-table-pagination-page-6-144dpi-srgb.png",
+      "sha256": "4a192e03fa9ef4c94286eef16a61436a737e50f23904ce92674342803aa847db",
+      "bytes": 9819
+    },
+    {
+      "path": "capabilities/expected/T27-table-pagination-page-7-144dpi-srgb.png",
+      "sha256": "557de8dc7d8f3768949f9ba1a0ed00dc84f9e0849bc1f0bf6145ac79f2c3c1b9",
+      "bytes": 9976
+    },
+    {
+      "path": "capabilities/expected/T27-table-pagination-page-8-144dpi-srgb.png",
+      "sha256": "2246a838b0685744c7955f2a77270c27d13a165605d4fb0cd5cbf5ad8e5b45c8",
+      "bytes": 9919
+    },
+    {
+      "path": "capabilities/expected/T27-table-pagination-page-9-144dpi-srgb.png",
+      "sha256": "557de8dc7d8f3768949f9ba1a0ed00dc84f9e0849bc1f0bf6145ac79f2c3c1b9",
+      "bytes": 9976
+    },
+    {
+      "path": "capabilities/expected/T28-unicode-cjk-jp-144dpi-srgb.png",
+      "sha256": "6e5c26414dcfdf9d3ba8014b6201ab8be768ce0448d91cb46cac9ce971549b55",
+      "bytes": 17551
+    },
+    {
+      "path": "capabilities/expected/T28-unicode-cjk-kr-144dpi-srgb.png",
+      "sha256": "1044fcca2da7a9eb271c9e06695c6079f10e9c1826235f46c66b3db9e4273398",
+      "bytes": 16136
+    },
+    {
+      "path": "capabilities/expected/T28-unicode-cjk-sc-144dpi-srgb.png",
+      "sha256": "5e4fd270a8ddaf129bf9f0aa31b4859fbfcf914b2f6750302fc85b9bba8546b1",
+      "bytes": 15925
+    },
+    {
+      "path": "capabilities/expected/T28-unicode-cjk-tc-144dpi-srgb.png",
+      "sha256": "05ebb165da6aab64297bc14b8cee893e7a2763ca941d59435b7718e745226bc9",
+      "bytes": 17471
+    },
+    {
+      "path": "capabilities/expected/T28-unicode-cyrillic-144dpi-srgb.png",
+      "sha256": "dd36aaea288563a1154480f4397afbc8ec65fe1d8d979f8851239d2de87c9df3",
+      "bytes": 12627
+    },
+    {
+      "path": "capabilities/expected/T28-unicode-greek-144dpi-srgb.png",
+      "sha256": "402c0063a6e41691485398c5be6c1c4155a30828991dd406acf3e0b0a9889fd7",
+      "bytes": 14330
+    },
+    {
+      "path": "capabilities/expected/T28-unicode-latin-144dpi-srgb.png",
+      "sha256": "898ff8fdf2cf0ba70cf43e52f83ace8ecdcea98609eb933b47fb3313ceea97ec",
+      "bytes": 20743
+    },
+    {
+      "path": "capabilities/expected/T29-shaping-arabic-page-1-144dpi-srgb.png",
+      "sha256": "ec41f859c304393f1d5315c7f3bb4374e1e6b59f1f2c331970b946ee3bc6b377",
+      "bytes": 6027
+    },
+    {
+      "path": "capabilities/expected/T29-shaping-arabic-page-2-144dpi-srgb.png",
+      "sha256": "1744d99f5830a1c2a22f5f43c046d2bd9bbb23a84d99a4b8c2066b717957de5f",
+      "bytes": 3029
+    },
+    {
+      "path": "capabilities/expected/T29-shaping-devanagari-page-1-144dpi-srgb.png",
+      "sha256": "a0ee4de06f45edc6321e0898d34cdbada53f19b0984f714f04ecd88b945674f2",
+      "bytes": 5730
+    },
+    {
+      "path": "capabilities/expected/T29-shaping-devanagari-page-2-144dpi-srgb.png",
+      "sha256": "c1fbbdd034042515a701b348131ebe18995bee570093110232c8a947465c228a",
+      "bytes": 4871
+    },
+    {
+      "path": "capabilities/expected/T29-shaping-hebrew-page-1-144dpi-srgb.png",
+      "sha256": "e88fe2dcb5ff2bfa1d8a08d0e999b76b682ca577e5095732b39d7d2123ae9644",
+      "bytes": 5205
+    },
+    {
+      "path": "capabilities/expected/T29-shaping-hebrew-page-2-144dpi-srgb.png",
+      "sha256": "d11f8b3f10bb3dea86618d7e0e6ca7668be75190b2c452458de53ea6545c9e7a",
+      "bytes": 3451
+    },
+    {
+      "path": "capabilities/expected/T29-shaping-thai-page-1-144dpi-srgb.png",
+      "sha256": "7ac0d1028f6738306ef42dfb0100489ff5709ae668a6da05e2932cd7d79c96e6",
+      "bytes": 4563
+    },
+    {
+      "path": "capabilities/expected/T29-shaping-thai-page-2-144dpi-srgb.png",
+      "sha256": "e5c971fed6080f677490286533524d28aadc25f6f98f64b5bec1feba8b52e546",
+      "bytes": 3079
+    },
+    {
+      "path": "capabilities/profiles/T03-document-blank-visual.properties",
+      "sha256": "776c29a721fb7c7e5c41520177453125943c63b0ef319e71ad7f8ddea0571802",
+      "bytes": 803
+    },
+    {
+      "path": "capabilities/profiles/T18-canvas-images-colors-transparency-visual.properties",
+      "sha256": "e943f5f4946929f25ab5add2e16f66ee5282d40bd6288e2ddca13ea5466c90a0",
+      "bytes": 855
+    },
+    {
+      "path": "capabilities/profiles/T19-font-loading-embedding-subsetting-visual.properties",
+      "sha256": "1a3d0f438a6699bfd17424a83031fb8717e0a54f23a7729de7f015e52e33b385",
+      "bytes": 749
+    },
+    {
+      "path": "capabilities/profiles/T23-page-rendering-fonts-visual.properties",
+      "sha256": "071c48a438191e5042a6328ffad7f2bebb5c0babe6ebfb55d1155922bc97fa65",
+      "bytes": 1469
+    },
+    {
+      "path": "capabilities/profiles/T23-page-rendering-images-visual.properties",
+      "sha256": "8d5ccf0f658553924316b308b58040c69b9754a50045ae8daeb62ce6583cf68e",
+      "bytes": 1202
+    },
+    {
+      "path": "capabilities/profiles/T23-page-rendering-visual.properties",
+      "sha256": "997098163a6d1ee74a387f60dc3fc7b56a1639496f15357b8e7d2e75d93bd8b0",
+      "bytes": 1153
+    },
+    {
+      "path": "capabilities/profiles/T24-paragraph-composition-page-1-visual.properties",
+      "sha256": "517d9cd218931fe55cc672dfc002063c3ba7a3e79e532e04f1fc15218e508d38",
+      "bytes": 784
+    },
+    {
+      "path": "capabilities/profiles/T24-paragraph-composition-page-2-visual.properties",
+      "sha256": "11aebc5ee1cadf7e547dcfd1645c8fcc4d27f0c2bfd4693147c8953b4a06b059",
+      "bytes": 784
+    },
+    {
+      "path": "capabilities/profiles/T25-paragraph-immediate-flush-page-1-visual.properties",
+      "sha256": "6fb6fc9d5fd16f26342e0469ab34cfe50eb87f68a851c961d8035428bb32fb3d",
+      "bytes": 811
+    },
+    {
+      "path": "capabilities/profiles/T25-paragraph-immediate-flush-page-2-visual.properties",
+      "sha256": "da2eb1696c9c448644c7b48595324e184cef1d0a38e901ab6fae8a8eadec4a30",
+      "bytes": 811
+    },
+    {
+      "path": "capabilities/profiles/T25-paragraph-indentation-page-1-visual.properties",
+      "sha256": "3d0402066104fa2fbdd5de9d9cb83aca32971dc7000c3e6c11136c0351b7d7b9",
+      "bytes": 803
+    },
+    {
+      "path": "capabilities/profiles/T25-paragraph-indentation-page-2-visual.properties",
+      "sha256": "7be54313407f4e34c66ffa1a88041c95a1713ddc2e32c615dca1a74e37c30c69",
+      "bytes": 803
+    },
+    {
+      "path": "capabilities/profiles/T25-paragraph-keep-next-page-1-visual.properties",
+      "sha256": "1b2c26df82be018cf5c05cee0658b290dad58145088caeebabb1ca59f3b6015e",
+      "bytes": 799
+    },
+    {
+      "path": "capabilities/profiles/T25-paragraph-keep-next-page-2-visual.properties",
+      "sha256": "172561df717965d9ae003dc4d030cdfd13c4bb783794081a87cfe51739e24ce7",
+      "bytes": 799
+    },
+    {
+      "path": "capabilities/profiles/T25-paragraph-keep-together-page-1-visual.properties",
+      "sha256": "d39cad47c8fd43fe604f865d10387df1aaa456fe0aeeb2ebff7ea3053b5af609",
+      "bytes": 807
+    },
+    {
+      "path": "capabilities/profiles/T25-paragraph-keep-together-page-2-visual.properties",
+      "sha256": "490a8bda4a7906f7f2db7e278c7248591346a9220b584e6e44a8d006f5381dfc",
+      "bytes": 807
+    },
+    {
+      "path": "capabilities/profiles/T25-paragraph-orphan-page-1-visual.properties",
+      "sha256": "7d3e67f27c9ded135b76cbccf3ac70ab411fde2350a6d3d3ea3b173454f3e2a4",
+      "bytes": 793
+    },
+    {
+      "path": "capabilities/profiles/T25-paragraph-orphan-page-2-visual.properties",
+      "sha256": "3b892b3e87a6092135376bc624765c24ed35a2bee76d84ebb0573ad78f5a4695",
+      "bytes": 793
+    },
+    {
+      "path": "capabilities/profiles/T25-paragraph-overflow-reject-page-1-visual.properties",
+      "sha256": "9c0132790510c5537d2d9acdb570a5d7e859fdbf8c65704cf4cd9b3ed69a9725",
+      "bytes": 811
+    },
+    {
+      "path": "capabilities/profiles/T25-paragraph-overflow-reject-page-2-visual.properties",
+      "sha256": "a73f93abfbc3dcd2030ed7a1bef0c3c540e11ad792d63ad85909a3fd30af941c",
+      "bytes": 811
+    },
+    {
+      "path": "capabilities/profiles/T25-paragraph-overflow-visible-page-1-visual.properties",
+      "sha256": "0427aecafd2e07611b05b5cd434a6fdd67539103122713b0c5d4038e7415cda1",
+      "bytes": 813
+    },
+    {
+      "path": "capabilities/profiles/T25-paragraph-overflow-visible-page-2-visual.properties",
+      "sha256": "97e22266639db1e98071291035a52042777573e312e94d93caa9d683c5b425da",
+      "bytes": 813
+    },
+    {
+      "path": "capabilities/profiles/T25-paragraph-overflow-wrap-page-1-visual.properties",
+      "sha256": "9eb3382648a3b8444bf3334d5d1c6d436090bdecdc02461046d2c50616c73121",
+      "bytes": 807
+    },
+    {
+      "path": "capabilities/profiles/T25-paragraph-overflow-wrap-page-2-visual.properties",
+      "sha256": "f1f1a14b7033c2df9e98c21a0bc40cfc4e4ff51ca649c45a165384aefb3d0683",
+      "bytes": 807
+    },
+    {
+      "path": "capabilities/profiles/T25-paragraph-publication-page-1-visual.properties",
+      "sha256": "6af8804b110a44ce6ff624468f43f73839e7eecae26fa5c81b75f0748abf69d0",
+      "bytes": 803
+    },
+    {
+      "path": "capabilities/profiles/T25-paragraph-publication-page-2-visual.properties",
+      "sha256": "49957a6e924511fd05e6a8185aafdf690838f85a7807d6ffdb8dc3a438dbfe4b",
+      "bytes": 803
+    },
+    {
+      "path": "capabilities/profiles/T25-paragraph-relayout-page-1-visual.properties",
+      "sha256": "cef2963adf72a308d93d99a9a7376b820ee73eaeef74a60948f9aeacf7299a8d",
+      "bytes": 797
+    },
+    {
+      "path": "capabilities/profiles/T25-paragraph-relayout-page-2-visual.properties",
+      "sha256": "2dbc80f5f3fc959c39f29cbd80e926d130d65ff6649abcfca0d5713e8128b4ca",
+      "bytes": 797
+    },
+    {
+      "path": "capabilities/profiles/T25-paragraph-tabs-page-1-visual.properties",
+      "sha256": "1832314cf0c762c7f4103dd5e3fb6acbd869b8a4584708be7df8b1e4f6e1a53c",
+      "bytes": 789
+    },
+    {
+      "path": "capabilities/profiles/T25-paragraph-tabs-page-2-visual.properties",
+      "sha256": "d691d63da1c57b4b62c7b53286cb15e8a3f600916b3d98cb92e1195f17325704",
+      "bytes": 789
+    },
+    {
+      "path": "capabilities/profiles/T25-paragraph-widow-page-1-visual.properties",
+      "sha256": "15b1b0e2d6c9daec722515d2bfa384ea0a5a2a1ae4e4dc02d1e957a5877c7cf7",
+      "bytes": 791
+    },
+    {
+      "path": "capabilities/profiles/T25-paragraph-widow-page-2-visual.properties",
+      "sha256": "50c8248c49996ab3eb068cb03e1301bc23a10493b6ee523ba65a9a33ac3da49b",
+      "bytes": 791
+    },
+    {
+      "path": "capabilities/profiles/T26-table-composition-page-1-visual.properties",
+      "sha256": "32aed1a9bad8dd26f5a0b7b50077ee8751b6ca8aa57baa17323d1b7879d8394e",
+      "bytes": 781
+    },
+    {
+      "path": "capabilities/profiles/T26-table-composition-page-2-visual.properties",
+      "sha256": "652f5fcc4f1565a45abeca9ddf8a18742b92c0e701703caaf6cdf3c791387f50",
+      "bytes": 781
+    },
+    {
+      "path": "capabilities/profiles/T26-table-composition-page-3-visual.properties",
+      "sha256": "e1b657cabe18bf825c58f455132d3f4da8c1757a32565d52867a06bf87478e33",
+      "bytes": 781
+    },
+    {
+      "path": "capabilities/profiles/T27-table-pagination-page-1-visual.properties",
+      "sha256": "8325c22d735193941be4c1ad2cff16cc40ef2a4a7aad998c873a1a62e4cb516c",
+      "bytes": 783
+    },
+    {
+      "path": "capabilities/profiles/T27-table-pagination-page-10-visual.properties",
+      "sha256": "a7f9d50d21ce8bebce26010c19f033e6eb7ca5481996fe4d468d9f42116fed8a",
+      "bytes": 785
+    },
+    {
+      "path": "capabilities/profiles/T27-table-pagination-page-11-visual.properties",
+      "sha256": "c00fea037572921d35077dc4b82fad7927cd97b985bbd630b07c7a838943066b",
+      "bytes": 785
+    },
+    {
+      "path": "capabilities/profiles/T27-table-pagination-page-12-visual.properties",
+      "sha256": "32078e219fef3fb482f728a509e905a4876bd66f839b4062ec25637e47690ae7",
+      "bytes": 785
+    },
+    {
+      "path": "capabilities/profiles/T27-table-pagination-page-13-visual.properties",
+      "sha256": "1349d759ad9b29c072c4bb2c89568fd7885f3095034736901b0f8f2c8cb95587",
+      "bytes": 785
+    },
+    {
+      "path": "capabilities/profiles/T27-table-pagination-page-14-visual.properties",
+      "sha256": "e91f8fbd314023771cc91780ffd44198eec29905df5f6bf27d1023e429e75ad6",
+      "bytes": 785
+    },
+    {
+      "path": "capabilities/profiles/T27-table-pagination-page-15-visual.properties",
+      "sha256": "f2fb6b2b6ff19e590661cb1aa24a7656d9b92df5722d24ae69366d2d835cf720",
+      "bytes": 785
+    },
+    {
+      "path": "capabilities/profiles/T27-table-pagination-page-16-visual.properties",
+      "sha256": "1dcd8ffcf104d020a1a92101f0f2fc4fb6584ef4bdae227589a247e29bb7c6b4",
+      "bytes": 785
+    },
+    {
+      "path": "capabilities/profiles/T27-table-pagination-page-17-visual.properties",
+      "sha256": "457ef3809088c8bb4df1285966d7181e224a79507d4cd7f67f7037762fc9bf20",
+      "bytes": 785
+    },
+    {
+      "path": "capabilities/profiles/T27-table-pagination-page-18-visual.properties",
+      "sha256": "244196401f578428af3fdfbb07fcca7c37eaee14abe90faeec11dbf096335b49",
+      "bytes": 785
+    },
+    {
+      "path": "capabilities/profiles/T27-table-pagination-page-19-visual.properties",
+      "sha256": "c368fb9faaf34f38033deca2d5ff7bce6e6dfdcffa81e5f9c0e9b7a2ef564151",
+      "bytes": 785
+    },
+    {
+      "path": "capabilities/profiles/T27-table-pagination-page-2-visual.properties",
+      "sha256": "a83eb7f469953f5534b9d20abc72b7bfcd679a789de4ac9a9073686a2632a317",
+      "bytes": 783
+    },
+    {
+      "path": "capabilities/profiles/T27-table-pagination-page-3-visual.properties",
+      "sha256": "5b52b03bd82097e1c9bd897ef42d417377661fc492997275d67e9c6cfeb96838",
+      "bytes": 783
+    },
+    {
+      "path": "capabilities/profiles/T27-table-pagination-page-4-visual.properties",
+      "sha256": "effd569d65f948a110f74834857db365d427aa964e8a9cde96f643ccb1c4eaf2",
+      "bytes": 783
+    },
+    {
+      "path": "capabilities/profiles/T27-table-pagination-page-5-visual.properties",
+      "sha256": "ae976b430b7c4095a7380c152737b663462469786dcb5bbceb762250a3c5ea92",
+      "bytes": 783
+    },
+    {
+      "path": "capabilities/profiles/T27-table-pagination-page-6-visual.properties",
+      "sha256": "e2c194b5bfe35ace26ad304817ecbad69f8677c551c689827908fdbc4a8c5e9d",
+      "bytes": 783
+    },
+    {
+      "path": "capabilities/profiles/T27-table-pagination-page-7-visual.properties",
+      "sha256": "6975e806796fbcb526650f258fdb6e79d87128b17dd5327c4a6173629cd34166",
+      "bytes": 783
+    },
+    {
+      "path": "capabilities/profiles/T27-table-pagination-page-8-visual.properties",
+      "sha256": "9765b4d4b46ecc84295b3e7eb2b5e9e53f604aa27868b0b26100beff168086ab",
+      "bytes": 783
+    },
+    {
+      "path": "capabilities/profiles/T27-table-pagination-page-9-visual.properties",
+      "sha256": "ac6e23513932b16ce6e5b4cb440917e60a5e40415c8f92fcb6fef13489b5c4e2",
+      "bytes": 783
+    },
+    {
+      "path": "capabilities/profiles/T28-unicode-cjk-jp-visual.properties",
+      "sha256": "2b13232dc7103e3ea7599f41dac05661baa5571f6a0d5f816d937487c0a0a246",
+      "bytes": 789
+    },
+    {
+      "path": "capabilities/profiles/T28-unicode-cjk-kr-visual.properties",
+      "sha256": "2beed0c26b448cf3f57145377a7c5a79f85fa4e62104f39ae018786008bd5197",
+      "bytes": 789
+    },
+    {
+      "path": "capabilities/profiles/T28-unicode-cjk-sc-visual.properties",
+      "sha256": "d8bc9f53e35028e5ec4a28cc7fb1d869213ed159e8ec2423b4d3dbf37e0fac2b",
+      "bytes": 789
+    },
+    {
+      "path": "capabilities/profiles/T28-unicode-cjk-tc-visual.properties",
+      "sha256": "b4db3ae7cb757f318aecdd6505b878dfbb6c7873597946550ce85a5aec8dd789",
+      "bytes": 789
+    },
+    {
+      "path": "capabilities/profiles/T28-unicode-cyrillic-visual.properties",
+      "sha256": "078b09188bcd7a7aa4ae71cd797ee5de57ec8ace1c18a5b00c0a0b11e0b25d94",
+      "bytes": 793
+    },
+    {
+      "path": "capabilities/profiles/T28-unicode-greek-visual.properties",
+      "sha256": "0e8784ad754f3327f95bf16447301ff23473ad4c56414887ed1f1c6844f74595",
+      "bytes": 787
+    },
+    {
+      "path": "capabilities/profiles/T28-unicode-latin-visual.properties",
+      "sha256": "60c010e0112411ee855a6bf5ab36d22f714b021b01383a0e37f79cabb7e8e638",
+      "bytes": 787
+    },
+    {
+      "path": "capabilities/profiles/T28-unicode-reference.md",
+      "sha256": "8e2b2c75e5ac11dc8ed50f2956e9efaff1917aea0e9fb90305d3a9a6f57c9913",
+      "bytes": 6887
+    },
+    {
+      "path": "capabilities/profiles/T29-shaping-arabic-page-1-visual.properties",
+      "sha256": "36565b79c3dd8e1ab12f4afa2c0b90747e02b85eecdc1863d6905bef66485f20",
+      "bytes": 801
+    },
+    {
+      "path": "capabilities/profiles/T29-shaping-arabic-page-2-visual.properties",
+      "sha256": "3fde4f13cf58a7f01310ec4fc499fd4c769a39843907f484305f149330452f5f",
+      "bytes": 801
+    },
+    {
+      "path": "capabilities/profiles/T29-shaping-devanagari-page-1-visual.properties",
+      "sha256": "9a74cb6471d0d1546509ebd0347e70277a3cc52b495f2d1d7a31520509c06ff8",
+      "bytes": 809
+    },
+    {
+      "path": "capabilities/profiles/T29-shaping-devanagari-page-2-visual.properties",
+      "sha256": "8f998c20b3632ff42c93eba2a36adf378d17404283da858e6716b9e94f0b4c7a",
+      "bytes": 809
+    },
+    {
+      "path": "capabilities/profiles/T29-shaping-hebrew-page-1-visual.properties",
+      "sha256": "c61197eda5792ed6d55f6ceaa1a70da52956bf442e4bbeb1cf2222eb54fe78ab",
+      "bytes": 801
+    },
+    {
+      "path": "capabilities/profiles/T29-shaping-hebrew-page-2-visual.properties",
+      "sha256": "da15b6c37ddc75c87a8112a1a20e789e951529a5424a078e0112e739d97d912c",
+      "bytes": 801
+    },
+    {
+      "path": "capabilities/profiles/T29-shaping-reference.md",
+      "sha256": "bc2160ee42fe176b42c72b4b79edd5d61dd1b293d9458f8b36aa65f0cf0f18ac",
+      "bytes": 7188
+    },
+    {
+      "path": "capabilities/profiles/T29-shaping-thai-page-1-visual.properties",
+      "sha256": "88692a22c21fcc2c9d8cccfcc082234f55fca8ae5c5162fe15345cd17bc567b2",
+      "bytes": 797
+    },
+    {
+      "path": "capabilities/profiles/T29-shaping-thai-page-2-visual.properties",
+      "sha256": "0ff9fa03ae92565500ed4ff42b3458bd28e04f1ba8f6778090e23e2d163199b3",
+      "bytes": 797
+    },
+    {
+      "path": "mvnw",
+      "sha256": "cae96cef89ebea3531221f4ae17c23cf8edf67d00eae8306d4186ae1bbed4d02",
+      "bytes": 11790
+    },
+    {
+      "path": "mvnw.cmd",
+      "sha256": "46eedb8419bd14fe70d5bb2916d7b6f51806e51b39d5b76a42610384ca929c1c",
+      "bytes": 8481
+    },
+    {
+      "path": "pdf-acceptance/pom.xml",
+      "sha256": "a4f6f95b1015890381de8096c892e798ebbd3261a12224222140df418068ca17",
+      "bytes": 12688
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/AcceptanceEvidenceCommand.java",
+      "sha256": "f6bc4a7b6f0eea5456a068ca1f7d30b28ad8a1d9e1cd5ca6a1fcc83b1e2648e2",
+      "bytes": 117494
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/CanvasSemanticAssertions.java",
+      "sha256": "7de0b3a04a518d31e88bb6ec281ad7495316e7aa253704f44ffb2a1f8a13dfcf",
+      "bytes": 18525
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/CanvasSemanticObservation.java",
+      "sha256": "3bd5d4d6539a10a86a6b7760f583639556d8fb4bd886c0e56b76c1a78a64f1eb",
+      "bytes": 4899
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/EvidenceFiles.java",
+      "sha256": "fc7ce9d481a47d396ee2946b018a3bebdd64d1ae5f8bd34c8215b7528fb444e6",
+      "bytes": 5433
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/EvidenceResult.java",
+      "sha256": "485178b6ea372b5e3e517f6f2b2d7402df1146df3fcd16fb8f89b9cf3faf933f",
+      "bytes": 681
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/ExternalProcess.java",
+      "sha256": "5ec83a7e933ec92f9b1ebee5413da80f8e9eb2cb63ee5f1d692d689d655af588",
+      "bytes": 2930
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/ImageMagickPin.java",
+      "sha256": "0624542717b41f64df7fda80510db4947e5e0c42f84062ae89d71b38df63fed0",
+      "bytes": 2232
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/ImplementationRenderer.java",
+      "sha256": "534e8ffe496fd2f9eee7cbb215dbf831175a14719bc4bf5a0ce53539d3993ac5",
+      "bytes": 1559
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/PdfiumPin.java",
+      "sha256": "2f59776188276b695aee0c55ba1ec01dcfca1350ea090bc573217d6c27a47c14",
+      "bytes": 3382
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/PinProperties.java",
+      "sha256": "cae7311d52e7f80d6fac2f0f9d873ef2e026f99fc09f47b2e88421cb79887c25",
+      "bytes": 1960
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/PngRaster.java",
+      "sha256": "3999c8cff4826283590091b3101925b417903188320d46cd9d5a7e163310f666",
+      "bytes": 3810
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/PublicRenderingRenderer.java",
+      "sha256": "e5efe9c3a72f9a22bdbde2fbccd6ce1220a959a74670dca2ca698032a6374e9b",
+      "bytes": 2585
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/QpdfPin.java",
+      "sha256": "357bd7950a1c8506910a9b076f6ea51a0131c55e3117c28c40e1d9ecc0f1481c",
+      "bytes": 1037
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/QpdfSyntaxRecorder.java",
+      "sha256": "048503d88f21cd4589ce44f36715e062888ba99d3cef2c7bc56cf728a4a35f9a",
+      "bytes": 14239
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/SemanticAssertions.java",
+      "sha256": "ca96e1031f03129ef3abbc36dba53a76ae2404144fc09d786312689e6868cd3f",
+      "bytes": 2020
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/SemanticObservation.java",
+      "sha256": "908d2254b05fb77935bb5e4e28434d1a1656eccd0d821fd92ffaee8193891436",
+      "bytes": 4212
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T18CanvasSemanticAssertions.java",
+      "sha256": "16b4286c62f422b088c495927b3ba9170ba74b4d9a642fd9b38fae8a2e0845ec",
+      "bytes": 31706
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T18CanvasSemanticObservation.java",
+      "sha256": "5147df5f998013e6320ffe28f86d20df0fef4c0e776efaae1a53bf9d9187d76f",
+      "bytes": 5557
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T19FontEvidenceRecorder.java",
+      "sha256": "0854660f701646f451df785594ac8af6c4944b883af87f4ce0d83702ece2ac74",
+      "bytes": 9737
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T19FontSemanticAssertions.java",
+      "sha256": "2e94d00f7a4c78c2b35d88ee6c7fa6845f0a0a38052561ef705cf5748c758c01",
+      "bytes": 11477
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T19FontSemanticChecks.java",
+      "sha256": "5669aa532c6fd1b39f656a4fba1adaf923fa3dd44bdd22a3f39b9003cd655d7a",
+      "bytes": 1458
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T19FontSemanticObservation.java",
+      "sha256": "85cf57d66431cdb673285e8ae4c90eba0b5cd6ef2d94640571f7a7f561fe80d5",
+      "bytes": 4040
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T23RenderingEvidenceCommand.java",
+      "sha256": "8d53dd0f19e30fa9244f7fe4a35bb1b880a995525c077477716a80896289b9ba",
+      "bytes": 5380
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T24ParagraphEvidenceCommand.java",
+      "sha256": "ed5d9dde557d5a227bdffe502442d47b9f1449f3eff19ba21db2c904ed517a97",
+      "bytes": 6773
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T24ParagraphExpectations.java",
+      "sha256": "328decca12af5543715c5b0df056bb4380c2e12f2a416badaac737f12f89d001",
+      "bytes": 1588
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T24ParagraphProducts.java",
+      "sha256": "3b610a8d96e5af4ee86d4e8e08bf08051250ec03c43dc3c007f32596a168766f",
+      "bytes": 5613
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T24ParagraphSemanticAssertions.java",
+      "sha256": "04b2a817efcbd985a9557945216975560f3ca9eb76b2dfd80fb08d75b00a0515",
+      "bytes": 12517
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T25ParagraphEvidenceCommand.java",
+      "sha256": "cbaaad43d1a60846fc139e4b0b7fb3c8930baa96249c3c28f43cd4b68792f052",
+      "bytes": 8941
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T25ParagraphExpectations.java",
+      "sha256": "66c4f18171c3cbf33fa6b28b233a01e9bd19b271cb189a7cda406e4bb3f633da",
+      "bytes": 4516
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T25ParagraphProducts.java",
+      "sha256": "20ef6e27493e25fa74f282351709fa8c3fe317d88440bf571ab17b0b11a228a4",
+      "bytes": 10605
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T25ParagraphSemanticAssertions.java",
+      "sha256": "5c27af67667001b0d7c6557ebd8e697d7129914cd685288419da2e73883fa29f",
+      "bytes": 7401
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T26TableEvidenceCommand.java",
+      "sha256": "635c62c7bc88d017bc210a97480105f18d00629f4700a92c6044f0486f70463e",
+      "bytes": 6798
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T26TableExpectations.java",
+      "sha256": "14f89bcbbe7ebd32e19fb8a3d8d5f9ab4db524c4e63238aa0e08ff42c1e446ff",
+      "bytes": 2338
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T26TableProducts.java",
+      "sha256": "5f3e57eb0ab5f27ca7b75206792dec43197e63cac2bd9a8c8e5cd9713c2dd52f",
+      "bytes": 6878
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T26TableSemanticAssertions.java",
+      "sha256": "6ebc8aa3410a7cee98708d13aaf757ff119278413146f42026d57a56b6420f13",
+      "bytes": 12850
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T27TableEvidenceCommand.java",
+      "sha256": "05d283be240de7c2c3c5b6ff3bf4d4c47571fc521b0f85a43ef6d8812a907c46",
+      "bytes": 6988
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T27TableExpectations.java",
+      "sha256": "3ee7450d14fd63a66b6aaedc653ea7f0ea986500e7fb3849730581936c40f88d",
+      "bytes": 5044
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T27TableProducts.java",
+      "sha256": "f0612a70709b6e8d82aa0235c4bca9905922d8626fefb38d445bedd65e9b4678",
+      "bytes": 10791
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T27TableSemanticAssertions.java",
+      "sha256": "72c0027abcbb5e7e9baa7222aeb21d1ddcbf538337f646da1a0609d41cff787e",
+      "bytes": 12999
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T28UnicodeEvidenceCommand.java",
+      "sha256": "5497a1d808e93cf1eb46c323c610eebece22d51a1a442127dfd2103b2fc3faee",
+      "bytes": 7380
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T28UnicodeProducts.java",
+      "sha256": "594693a8b4aceda23610f158cff8ff0a867c32a3152e3438debd46c6c9dae1f2",
+      "bytes": 7067
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T28UnicodeSemanticAssertions.java",
+      "sha256": "4cf0fee5d3cf72a3d88a07a78fa2d4227ab6f02ca0e8f158687cb1858b0532a7",
+      "bytes": 8354
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T29NativeShapingAssertions.java",
+      "sha256": "6338fe3a6910fe82abbe14a95b2388a9364d93c8c8a165ce16ddc52f7051f12e",
+      "bytes": 5866
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T29ShapingEvidenceCommand.java",
+      "sha256": "f63361ac701ae809b5c78b5919b1e723872a3bfdc9b7eec4a706a05a5ef494ff",
+      "bytes": 17035
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T29ShapingProducts.java",
+      "sha256": "ef2a6fe01b916ae1a2a2b3ae5ec4b2e6a839e2596913a5c3e5fcc2b4c319eef0",
+      "bytes": 5918
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T29ShapingReference.java",
+      "sha256": "ea2413481af9979234937e9674edaffac1ffa789c2878d1422a1e539ef95b0c2",
+      "bytes": 1176
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T29ShapingSemanticAssertions.java",
+      "sha256": "67850da03d5af2fb9041082cc3367ebea090d38df4ffd9e9600d028b27f71009",
+      "bytes": 8078
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/VisualEvidence.java",
+      "sha256": "2d2baf0e90355ce4aec5cc9a52379515072f8c70f4cb184e97475f94aa12b90a",
+      "bytes": 646
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/VisualEvidenceChain.java",
+      "sha256": "9407c0617cd9ace551039b7a9cca87fcc32825c42a7facbaf38ced9d0eadbb51",
+      "bytes": 5371
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/VisualEvidenceRecorder.java",
+      "sha256": "dd242459fd9242f08cde47a8c01a228def3aa62ed1793551cb917249870ded0a",
+      "bytes": 39190
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/VisualProfile.java",
+      "sha256": "30f5043322862df90e04339ed953d308d8f3a9673934533d3c0ff8261a64de38",
+      "bytes": 17141
+    },
+    {
+      "path": "pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/FolioFallback.ttf.base64",
+      "sha256": "cc05540a35e631ea63736eaa442660dc7bf24558fdfbb359f25e1b091d7f5375",
+      "bytes": 1373
+    },
+    {
+      "path": "pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/FolioPrimary.ttf.base64",
+      "sha256": "dfc7c4e468a17242508d906e7177608769b06b55b7e9cb9cc895adef7d53970f",
+      "bytes": 1297
+    },
+    {
+      "path": "pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/README.md",
+      "sha256": "769644ee0dfe79a2d3064ed8a70db67fa4f54585fe43db037fc41b50a996c008",
+      "bytes": 348
+    },
+    {
+      "path": "pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto/NotoSans-Regular.ttf",
+      "sha256": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+      "bytes": 569208
+    },
+    {
+      "path": "pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto/NotoSansArabic-Regular.ttf",
+      "sha256": "ceea25b464a656dc3b26849bab9356740401af62aedf1bfa8b7f0d9b75925b1b",
+      "bytes": 240456
+    },
+    {
+      "path": "pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto/NotoSansCJKjp-Regular.ttf",
+      "sha256": "4ac0da084f0d7dd07de051b64f1509f6d051e492c62de256f48000381cb1483b",
+      "bytes": 21689052
+    },
+    {
+      "path": "pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto/NotoSansCJKkr-Regular.ttf",
+      "sha256": "970b7a45e3acac4af0872129243880e3c14aba0cea4dec3d7bcc407601ee269d",
+      "bytes": 21655284
+    },
+    {
+      "path": "pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto/NotoSansCJKsc-Regular.ttf",
+      "sha256": "3012a9b63f5eca3e3b38f23a1be5ed504675e394abf8e7a4fa981506582c04aa",
+      "bytes": 21659544
+    },
+    {
+      "path": "pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto/NotoSansCJKtc-Regular.ttf",
+      "sha256": "488c05689f2bddeb30ecf8d268ef162793826b410ac5c9a8863ec440c8540638",
+      "bytes": 21658084
+    },
+    {
+      "path": "pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto/NotoSansDevanagari-Regular.ttf",
+      "sha256": "385e78e6359a9d88a0f243d53b1209d7548361ba2194e2b9ec779bcaa7e8949d",
+      "bytes": 219212
+    },
+    {
+      "path": "pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto/NotoSansHebrew-Regular.ttf",
+      "sha256": "a7fa16fffb27bedb060a0866267c29e9859aeb9c21cc33f5b3aaf6eb062eca85",
+      "bytes": 26900
+    },
+    {
+      "path": "pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto/NotoSansThai-Regular.ttf",
+      "sha256": "404ddfb5ed0aaa6b6ec8a85700d682978992062d67da93903967b56cbd9a4acc",
+      "bytes": 37752
+    },
+    {
+      "path": "pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto/OFL-noto-cjk.txt",
+      "sha256": "6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2",
+      "bytes": 4301
+    },
+    {
+      "path": "pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto/OFL-noto-fonts.txt",
+      "sha256": "0dab92d0544f7b233403f14b84a663bdbfa746982eda629e7f4f9ffe1b036feb",
+      "bytes": 4377
+    },
+    {
+      "path": "pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto/README.md",
+      "sha256": "15652f9f095e0237708e1c001b42c62564a3c9f9669419ffe2f30f61a4a43d69",
+      "bytes": 3603
+    },
+    {
+      "path": "pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto/fonts.properties",
+      "sha256": "fb8a3aa15177106dd75a808afb637d4b8f823a54e7e59ad4bb5527949aef5905",
+      "bytes": 2234
+    },
+    {
+      "path": "pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto/instances.json",
+      "sha256": "8d0ac7ba38b71072153c05a51f7cebebe04c2d34b472b355e045e58981bc506a",
+      "bytes": 855
+    },
+    {
+      "path": "pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto/sources.json",
+      "sha256": "d5756f9082b8e4c1fc5aa3eb7de16aa4204829c38c17670dcc0a201702522cd6",
+      "bytes": 3271
+    },
+    {
+      "path": "pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/shaping/T29-corpus.json",
+      "sha256": "29bd0d8090a78b1b6a6e11e95f35fa673614bd7bd2b448cb8fd36a9b980d2bf2",
+      "bytes": 14087
+    },
+    {
+      "path": "pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/shaping/T29-corpus.properties",
+      "sha256": "00621fa88a8a2c159de40551008de4fa66e3d5aeccc110a42b4c36490e3a5c50",
+      "bytes": 1284
+    },
+    {
+      "path": "pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/shaping/T29-glyphs.tsv",
+      "sha256": "a89dbb43a2d96375cd0cbf8f3a2b181eef4916ac8ee7535baf31f3c5864624ff",
+      "bytes": 10346
+    },
+    {
+      "path": "pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/shaping/T29-oracle.json",
+      "sha256": "3f96696998c0bd8f0c521fbcbd0e20eda1e1a01bd4de92f9d025bb9ee7c7ed82",
+      "bytes": 49552
+    },
+    {
+      "path": "pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/shaping/T29-reference-receipt.json",
+      "sha256": "d4402f407cbdefdbb63d062a787c29b3d109bd451fbb2814738f88c57c45e8a6",
+      "bytes": 1643
+    },
+    {
+      "path": "pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/shaping/T29-shaping-reference.pdf",
+      "sha256": "fcfb9619614d6618a81396913bcc9d0e351d23adc9a7a815e80780946d02854a",
+      "bytes": 30847
+    },
+    {
+      "path": "pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/unicode/T28-corpus.properties",
+      "sha256": "eeea1f4c28a704d7c55b409ffb4c4a8b8bbc029cbf5ec5287d7ff1f3f2d7d2b5",
+      "bytes": 2282
+    },
+    {
+      "path": "pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/unicode/T28-glyphs.tsv",
+      "sha256": "170fce06d3baffdab6aa350255097b85b5401db6e616f127b05a30e6281dbc19",
+      "bytes": 8610
+    },
+    {
+      "path": "pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/unicode/T28-reference-receipt.json",
+      "sha256": "da5f6a859ef587daa845f88531044d8a707d934eb61d348f29083bffb0314daa",
+      "bytes": 327
+    },
+    {
+      "path": "pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/unicode/T28-unicode-reference.pdf",
+      "sha256": "4992be611d8a3b22bbcd18676a9829270cfcc3743176ac4c2e29fbdaa8bce26d",
+      "bytes": 37776
+    },
+    {
+      "path": "pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/AcceptanceEvidenceCommandTest.java",
+      "sha256": "324e11337fc2646454eb7f15a6f307e8186dc3eda3b0fd18b6e526cba92a3443",
+      "bytes": 89988
+    },
+    {
+      "path": "pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T24ParagraphEvidenceCommandTest.java",
+      "sha256": "dd1a24b534ad7912eb14882417e13aa1ea3d84acf202845454959135f52dcd9f",
+      "bytes": 6781
+    },
+    {
+      "path": "pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T25ParagraphEvidenceCommandTest.java",
+      "sha256": "7912f520943869ab87b7fa4a5b159bcf862dcb0cc8485af3d72cb9fc6aa625df",
+      "bytes": 7625
+    },
+    {
+      "path": "pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T26TableEvidenceCommandTest.java",
+      "sha256": "bdc580ecd304d4bd163e54f86d631a07aee9d381ebf79b681ce944a57c27ae52",
+      "bytes": 7582
+    },
+    {
+      "path": "pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T27TableEvidenceCommandTest.java",
+      "sha256": "940367ad8c27ed72950ddb9f4d0688e1b58650a6a3417ba43c0b16fca9f82d92",
+      "bytes": 7450
+    },
+    {
+      "path": "pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T28UnicodeEvidenceCommandTest.java",
+      "sha256": "7aa9820c463b10e98dc1620d5797e778a835cb7e56b032b0ef73b30675526403",
+      "bytes": 7789
+    },
+    {
+      "path": "pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T29NativeShapingAssertionsTest.java",
+      "sha256": "aac0dfafc10d9079d4298f8ba45ed898f8a5d604e32fb4117c0ca9427186d2b8",
+      "bytes": 1586
+    },
+    {
+      "path": "pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T29ShapingEvidenceCommandTest.java",
+      "sha256": "8843609d9646ddc9f47c1098187ede3fbdbf799861b69ac72ce7ca69500c8ba1",
+      "bytes": 13923
+    },
+    {
+      "path": "pdf-bom/pom.xml",
+      "sha256": "020ff15eac7bc2f6d1e43dc30f0a86789cdf5b7414db681a263a21a191d2aaa3",
+      "bytes": 1677
+    },
+    {
+      "path": "pdf-conversion/pom.xml",
+      "sha256": "1f83cf06b3e8451a3666e26b9ecf8aa15db762b32ae97921e76935c9bd832cb3",
+      "bytes": 3112
+    },
+    {
+      "path": "pdf-conversion/src/main/java/net/zerocloud/pdf/conversion/HarfBuzzCapabilityProvider.java",
+      "sha256": "df8d71ebb70c42365183912e51ec43bf6a47531213897cb05ecd613dc37e3c4d",
+      "bytes": 4486
+    },
+    {
+      "path": "pdf-conversion/src/main/java/net/zerocloud/pdf/conversion/SubprocessCapabilityProvider.java",
+      "sha256": "cc8287fd144b25ecfc0c2b0ea3f10ba0c7a526c85c6fdace9093a25e102d738e",
+      "bytes": 19549
+    },
+    {
+      "path": "pdf-conversion/src/main/java/net/zerocloud/pdf/conversion/package-info.java",
+      "sha256": "b7773671555c3be36ae90658eabf16720a868e1f48bbf3901e112bd7515c5c8a",
+      "bytes": 105
+    },
+    {
+      "path": "pdf-conversion/src/main/native/folio-harfbuzz.c",
+      "sha256": "aa5fee1936316050ca764bcd32ba811aaeefd05239631f8b92a2df9416186d1d",
+      "bytes": 7711
+    },
+    {
+      "path": "pdf-conversion/src/main/native/meson.build",
+      "sha256": "9baa7df666e880d575777152f9c617a38f9a8325ac01b9fccaa2478a62d0bc49",
+      "bytes": 534
+    },
+    {
+      "path": "pdf-conversion/src/test/java/net/zerocloud/pdf/conversion/HarfBuzzCapabilityProviderTest.java",
+      "sha256": "854cba7a0180513323758102f815a0fbb19b3aec4d123f8ebaf97901b47c116c",
+      "bytes": 7205
+    },
+    {
+      "path": "pdf-conversion/src/test/java/net/zerocloud/pdf/conversion/ProviderProcessFixture.java",
+      "sha256": "26dd9736672e2ed939e5223c50f667e58909784cc17313be75178ba8181066cf",
+      "bytes": 3857
+    },
+    {
+      "path": "pdf-conversion/src/test/java/net/zerocloud/pdf/conversion/SubprocessCapabilityProviderTest.java",
+      "sha256": "eab551aa3ef5ba920ff4e1a334af68f6ab0e0a9f2c51e0b616fe6fc87132d9fa",
+      "bytes": 12168
+    },
+    {
+      "path": "pdf-conversion/src/test/java/net/zerocloud/pdf/conversion/contract/JarContractIT.java",
+      "sha256": "8cc6bf3b4c18bee5363f5fa6d533e93ba9a175edc70aecaef2a503e05ec455d3",
+      "bytes": 3515
+    },
+    {
+      "path": "pdf-conversion/src/test/java/net/zerocloud/pdf/conversion/contract/PublicApiLeakageIT.java",
+      "sha256": "42588f3987866384e9928b957969732967fa35b0e1c2a3f94aee3fca39eada75",
+      "bytes": 6699
+    },
+    {
+      "path": "pdf-document/pom.xml",
+      "sha256": "c9a65c167c4bd73f00932ecf1eade7ddd5bbbc8c8cbd4c51f8140286344a20e9",
+      "bytes": 3583
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/Annotation.java",
+      "sha256": "f17b5140380053c0aed9932218e0f2d5e6ca7297b7689f26ba97aaed26ae1360",
+      "bytes": 10747
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/AnnotationAppearance.java",
+      "sha256": "7cc69d25fda936376d67de13c55d9991408bd57da39a12ffa02d99f5361cc2e0",
+      "bytes": 3318
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/AnnotationColor.java",
+      "sha256": "873ae2c37c60f1a52c29e5996c4e0a387b5dc72a95aae05f180ae5a4007df8c5",
+      "bytes": 3169
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/AnnotationFlag.java",
+      "sha256": "1909b23f3d9f10f861bec191a05d3c1c987e8c06ec8431fe2d864e5211bc38eb",
+      "bytes": 918
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/AnnotationProperties.java",
+      "sha256": "ab08ddbd65398116a04bd75a9540757e22d8e5d482bb4ed890fb1823fa79751d",
+      "bytes": 6027
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/AnnotationQuad.java",
+      "sha256": "53142710a29548f3b5a912e101304e002b15bff8cb3b7622d7c820ffb1209aa7",
+      "bytes": 2650
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/AnnotationRectangle.java",
+      "sha256": "8d0f0080e7fce97e965a17cf06ce93ab65a3e62798b02c362a3e6fa6b0eafc44",
+      "bytes": 3494
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/CancellationToken.java",
+      "sha256": "be1d4c09a1fa037d24135a6291d15c867f9b2d8b809c2d9097f28abd734326fc",
+      "bytes": 1059
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/CharacterMapping.java",
+      "sha256": "059f2545411b86aa431efc980a9a0739ced0a76a7a6a325d84a3136e69e17243",
+      "bytes": 2706
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/CredentialAuthority.java",
+      "sha256": "9eb5548f51295dcadd1c76aaf9d87b76af5fbaaf7ec5cbcd9cbf7cd1669a61eb",
+      "bytes": 528
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/DocumentActions.java",
+      "sha256": "d4556451d5774a9e2413d2874e946ced460c21aa6aba2a55070c1d939b717cfa",
+      "bytes": 1653
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/DocumentCommand.java",
+      "sha256": "5ea07730069cc8a697485c9b82199d043f8797b153477e69bf05991d679b32dc",
+      "bytes": 316
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/DocumentFailure.java",
+      "sha256": "1b27cd3ad017602a67780b637332973c7b223546fb004766cbfd8d3e9dbe7b9e",
+      "bytes": 4139
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/DocumentFailureCode.java",
+      "sha256": "7242a76eb2d068f142b5162613d99838bd4c9e2dd589eb883b9a2407f9cac361",
+      "bytes": 10717
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/DocumentPatch.java",
+      "sha256": "de2a734a3f57a2d7bb9bb42b5cc45f0a1e4940cd6805575658fcd9f366051b19",
+      "bytes": 3213
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/DocumentPermissions.java",
+      "sha256": "b640bb474e664420fae3a0b3913c4c4427b4b4a93442719cad295900b7e51e88",
+      "bytes": 4168
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/DocumentQuery.java",
+      "sha256": "84f139cba29b829bf709032e8378d0855730836daa52059af3e51dcdb6f50bcc",
+      "bytes": 436
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/DocumentResource.java",
+      "sha256": "1dc3be93ada2a14ef4513a8a297404b058150b4975b3516bee509c0b2b8b797e",
+      "bytes": 2814
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/DocumentResourceInventory.java",
+      "sha256": "836f5ca32b8375445813a6505c39ba0af3dc9f5cf9ba8070f6df92b8b6af3446",
+      "bytes": 1617
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/DocumentSession.java",
+      "sha256": "fdb1789a7fce1f728b9a0756a07b90ab12805f31f8a31e1313d050c77301feac",
+      "bytes": 1772
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/DocumentSource.java",
+      "sha256": "30a46455bf178379d22e5f943a0df9d0fea3195bb21d8e6b8f7105752f2ad70e",
+      "bytes": 6452
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/DocumentWork.java",
+      "sha256": "3e6e29ea43576b0d4a1c90d7952943b64d929f3cc42088d43aa58911bc1aac5c",
+      "bytes": 520
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/DocumentWorkflow.java",
+      "sha256": "59bd1eea1050cf9176dca904bea20c9e00abe5e5c27664816a8e4d010eb818e0",
+      "bytes": 13619
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/EmbeddedFile.java",
+      "sha256": "f2f97a099714a814295735d156c4538612e6047351ae2840a57daa2c4954e988",
+      "bytes": 7027
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/EmbeddedFileData.java",
+      "sha256": "43e7c2ab6a2ff0eed1f5ceea7a7bb13f0205509b932580acee3699d0a2101ffe",
+      "bytes": 5054
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/EmbeddedFileSummary.java",
+      "sha256": "a9d708387c73cccbf479cc2ceb597fbc177e999b0597e8c3b18345cb567b003a",
+      "bytes": 3801
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/ExtractionDiagnostic.java",
+      "sha256": "5feb10bca0dd71e486381a9c0909d5f8e815ad21b97bc0e884a645f510cb1b4f",
+      "bytes": 1847
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/ExtractionLimits.java",
+      "sha256": "f1464cd272c15f8cef758dc18aaa887cec9c993cb7bde85583e88009c0dd5df5",
+      "bytes": 13011
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/FontResource.java",
+      "sha256": "8a2a945d74e67e6ff5b9a24fbeb8c38291951b7ac05d7353f6b37a3ae948d340",
+      "bytes": 2574
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/GoToAction.java",
+      "sha256": "b2c0ce1877fc79176f6b9190f1702611e9592bd63ac7073added64f3b425b5b3",
+      "bytes": 1541
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/HardenedWorkerEngine.java",
+      "sha256": "27441bea7832aeccc43a2b604acb22c67ae54d28f3b683b29d56bbe14cd13304",
+      "bytes": 113703
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/HardenedWorkerMain.java",
+      "sha256": "12bc2a8ef1882784d1de680dd99425843d243a94d6138a7c2a6adfcd094da224",
+      "bytes": 73491
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/HardenedWorkerSecurityManager.java",
+      "sha256": "23a60578390c0095d0158814f5b5cea2b8378f9a53226a109ea14b3792db8611",
+      "bytes": 8574
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/HardenedWorkerSettings.java",
+      "sha256": "2f9832bbf4a6d1419039d2c98b53cdf9946204394177a832a7865796430189f9",
+      "bytes": 3352
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/ImageByteAccess.java",
+      "sha256": "081014028b3e6b7024fe5d15a256bcaee183856e300a07a175c5350be9dc196e",
+      "bytes": 985
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/ImageResource.java",
+      "sha256": "8ceb47088686b81d2910e1c44d2585a6b0adcb30def3ba8d80d44009ad2ec853",
+      "bytes": 14947
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/LegacySecurityMode.java",
+      "sha256": "670e135a21097fc0bc21fb75517b2a65ed5b5b9e29d66bcc393ac546acf0c647",
+      "bytes": 395
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/LinkActivation.java",
+      "sha256": "c1c5e5d6a566f88c6f0a3277c4cb0066f09369bfce945c32a7fb458f29b90e00",
+      "bytes": 2144
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/LogicalStructureElement.java",
+      "sha256": "58ab7f37b8e3fc9ed3ffd2b42417b5cbcc3481cc4d51aa96747738d7726f10bb",
+      "bytes": 4257
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/LogicalStructureItem.java",
+      "sha256": "be285f85d713c0823041722d21af7280dea7893fa958cea1119fc1dabe4d5a0f",
+      "bytes": 1804
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/MarkedContentReference.java",
+      "sha256": "8f4b2600b529297c8e710067c4a552ec2cc6f84f51a76c995ca9d79fd386d45e",
+      "bytes": 1188
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/MarkedContentSequence.java",
+      "sha256": "a6e07009622c30cd83f9a1f0f9ffae5ff41042063287958ee123bd72caebc3fb",
+      "bytes": 2706
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/NavigationTarget.java",
+      "sha256": "d0f519b51f0da4b9c84631c76e5794a33620f62e1866b637e65f7dcac2d137d7",
+      "bytes": 2709
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/ObjectReference.java",
+      "sha256": "ad8d8d1512b0bf69262689276d74ef52b20059165a678f38e0e455b57ee632fa",
+      "bytes": 1394
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/OutlineItem.java",
+      "sha256": "dae3c0928f0287655d4b75124d4dc302ae57ce14845c4f2316de54bde2ed0e65",
+      "bytes": 4715
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PageActions.java",
+      "sha256": "bcf5cdf6764ac681e3ada0da9138640e42919267ca6919c877b737df8b839fd5",
+      "bytes": 1786
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PageDestination.java",
+      "sha256": "2c653c400579b4ae2e309c2b8c61f8e0012c0a9e3542e7c6be8dab785725a86a",
+      "bytes": 7468
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PageRange.java",
+      "sha256": "59bd2e452947c36950b5c551cd8c3a2abe091fc6bab47b0fdafae0fb508deb73",
+      "bytes": 1101
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PageText.java",
+      "sha256": "094d48229a61091cae8f38e721fa6a0750fb5cb0c17f4506475cad9275d4aa67",
+      "bytes": 3266
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PasswordCredential.java",
+      "sha256": "38620d93b23d543f0cf15722c59799085cfdb25b994ff37adb4f9b869d11bb67",
+      "bytes": 2850
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PasswordEncryptionAlgorithm.java",
+      "sha256": "73d9d70f1a4f38541edd1ec1a7aebc6b26500b26e8ab62e7defb56b339c09939",
+      "bytes": 456
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PasswordEncryptionScope.java",
+      "sha256": "2a9e71492499ae194bd395f61a4a0ec21463aae94330d5c06369aaf390d25e66",
+      "bytes": 384
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PasswordSecurityInfo.java",
+      "sha256": "fa3e9bcd7b720a168394a9205633e3ebc3dc5c07c81b90ef8fe988e8df81bb3b",
+      "bytes": 1897
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PasswordSecurityPolicy.java",
+      "sha256": "7dfb28dd1d5ec6927394ae43d6f313af56c8d9316bf8c731266de630fcf5e57e",
+      "bytes": 3247
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfArray.java",
+      "sha256": "aa2f43243878394515d6995d337ea455858edd66a52c16fe179fa0a462188f04",
+      "bytes": 2214
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoolean.java",
+      "sha256": "54a9e86a27427a535c3bc96553790557b3f0dc71760d73ac95bf4130ce4806dc",
+      "bytes": 1256
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxAnnotationDecodePolicy.java",
+      "sha256": "ef81494c82e5ed3b600a46bb581a15664cac92c8e3033f4189958e060ef00f8a",
+      "bytes": 1292
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxAnnotationFlattener.java",
+      "sha256": "69ee18868f131a18612b446b02fda1677bb301b7b63b62cd4dc6634ee6659bbc",
+      "bytes": 16659
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxAnnotationOperations.java",
+      "sha256": "ea79670dc5737f720d779ce91b6ac8ce61d71370ce65693dfad517c0aab3384a",
+      "bytes": 73602
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxAnnotationPageOperations.java",
+      "sha256": "f538db82e8b53d2837893464765f763bf9d2a9c7215971151165cd5cfc97dca8",
+      "bytes": 72521
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxCMapPreflight.java",
+      "sha256": "16da45504a6dd37b181502dcd006ba3199e5e4ab97d3a88859e8f80693b777bd",
+      "bytes": 24858
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxCanvasOperations.java",
+      "sha256": "772e5f6314d12d7e7251fe83d1547a070bef1e3dda5bf74e17bf0ec56880f65e",
+      "bytes": 41586
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxCanvasResourceOperations.java",
+      "sha256": "cf34375ec1b69a7b47f9faa5c22a0f0bc9576d12c875d8d48702556965cc2ecb",
+      "bytes": 99523
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxContentStreamPreflight.java",
+      "sha256": "698f52bb8b8aefceddbb77075dce3e051470a88364c9f5e7ffea02de6b3e31c9",
+      "bytes": 2748
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxDocumentActionOperations.java",
+      "sha256": "a5ca49ad77b3cb6f65e86c5815a01f6083ecdf3a3cf5309e5c56d4b405a4650e",
+      "bytes": 13142
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxDocumentSession.java",
+      "sha256": "817ff9948cd735c49f634312df79050d3861edf774631a182491a6969257d734",
+      "bytes": 37102
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxFontFailures.java",
+      "sha256": "9217f28b26dda0746f8613a0b6211760b2c2fd5c423cd8dc4ec21047bfd81056",
+      "bytes": 1271
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxFontMetricPreflight.java",
+      "sha256": "4c9dbdb42eddba1aaf01b11e3438850f1531270bcc34bc4bd6901c2aca5b0069",
+      "bytes": 9666
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxGsubPreflight.java",
+      "sha256": "38c64f00789094f9771ea41d8ca4bb780f6f5a9841301ae59995f37d3b053cb8",
+      "bytes": 10101
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxHostileInputPreflight.java",
+      "sha256": "58c7508b58e3a196b2a1b5936d677de8dd7f867b2665d96f3821e4bd6ccd143d",
+      "bytes": 21558
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxImageResourceExtractionOperations.java",
+      "sha256": "261945b272f8a6b7fcf8372289e1b1d8eba8eebbc5b509cff4a552db21ae5f03",
+      "bytes": 155575
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxIncrementalCommandPolicy.java",
+      "sha256": "fda78072aee15bc58ea60204d029dc5ca35bd523fd7f171849d1d6b0da170a59",
+      "bytes": 2416
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxLargeTableOperations.java",
+      "sha256": "26ef38ce285904ae7561660e469f0c901f8ebd5295d3725489e175a713b2fc84",
+      "bytes": 19792
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxMetadataOperations.java",
+      "sha256": "4012c0b2e45afea71d21d16a75235201e850f49b863d1c4d9af2740175a46112",
+      "bytes": 151930
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxPageContentSupport.java",
+      "sha256": "8bed9c67ccef6acc46c26d15feffc4e6b31773152bc8f9059ebf471bd41aac8d",
+      "bytes": 20563
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxPageOperations.java",
+      "sha256": "faea0549c685497b86464353a15b0a1482e8f120092e2e4a58d2574dbe9fde86",
+      "bytes": 67099
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxPageTreePreflight.java",
+      "sha256": "410397decafb629628e7d316351f2fb2e271c639daa0483b2b105c328126d2f7",
+      "bytes": 12999
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxParagraphOperations.java",
+      "sha256": "0f3aeed1fed4ec924c39c7ca9905e4c48579a425025025c25e4a29df3c717d04",
+      "bytes": 80467
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxPasswordSecurity.java",
+      "sha256": "a4f3653fa2b3515bbdf2ee23f3f96aafb53b1091bde4994660616b1fd998f181",
+      "bytes": 50267
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxPermissionPolicy.java",
+      "sha256": "f5882400d98412915b1e2708a43b2faf70dbf286ece85976aab5a6019aa14f6d",
+      "bytes": 1635
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxPositionedTextOperations.java",
+      "sha256": "be977f475dcb93b8965bce990c991817c02e7da1d5d54cb9e5e73bd8321162a5",
+      "bytes": 81843
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxRenderingImages.java",
+      "sha256": "8b08dee0aab16b61f1e0b437f16863f39c87ff52f7edba0e6881762bacf09e45",
+      "bytes": 13942
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxRenderingOperations.java",
+      "sha256": "802289a5168d9196ad550056a7a2fb5407d58bb99face4a6934b7d661bb40c48",
+      "bytes": 13946
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxShapedFont.java",
+      "sha256": "e05727d58721a901b7413053e784242a079461b30d91368b44f0813adc256cdd",
+      "bytes": 14031
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxSignaturePolicy.java",
+      "sha256": "47492da5f2814f5a0c7ae04a5409d50494cc5e33bdd9caa8de022fd73279531d",
+      "bytes": 19606
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxSplitProductWriter.java",
+      "sha256": "c14eb6b0f099fa00cd3ef9933ad892bb1c7794397f602ec8888b7d33edab9632",
+      "bytes": 4384
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxStringSupport.java",
+      "sha256": "345799c6fed1de2e47fd7f3627d808b35badd3ddffebeb897ad2b5e1e8a90d45",
+      "bytes": 17390
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxSubsetNames.java",
+      "sha256": "810f3d34cd00bb303920d3bdb36faab70bb253a0f7aac8de637cd5c7949a0b26",
+      "bytes": 5103
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxTableLayout.java",
+      "sha256": "67a578a3a96affb752c280ec1b02f06841d2a2e37145deb916552f8529e8ddf6",
+      "bytes": 33113
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxTextStructureExtractionOperations.java",
+      "sha256": "d8348393fec3b9a513c363b149af5a66636d26a69b7cc0269e02b68a85664658",
+      "bytes": 99182
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxTrueTypePreflight.java",
+      "sha256": "6d30d55cae4d7b0f535ffa0c16ca2fab80784f335afb9bc3d60536cbac78954b",
+      "bytes": 92146
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxValueAdapter.java",
+      "sha256": "f05d181b6af893b54f9c225462e41c80bc939613f7258b83d2427e7a6ab1adb9",
+      "bytes": 44584
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxVersionPolicy.java",
+      "sha256": "fe1712a07c5f7be9bd0775395d046591e1a02a07689d299d953a158f8bd00a65",
+      "bytes": 6568
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxWorkflowEngine.java",
+      "sha256": "44720d1695da88d95dff6f1047894c80bf8df0689f13e0f72b86d6b261797834",
+      "bytes": 79834
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfDictionary.java",
+      "sha256": "2ddbc1cd09aa6b9e9b446595235eb04e7c59e2cc5beed0402464666552761102",
+      "bytes": 4313
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfDictionaryEntry.java",
+      "sha256": "75a60a5d7ac8d51bac400504399587b926076367267ddb9a2ff60a5bf8f9b4a4",
+      "bytes": 766
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfIndirectReference.java",
+      "sha256": "34bcba423b8c68c0155825133959aa1375562dd225ac41f495d1d18b521d18a2",
+      "bytes": 1455
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfInspectionLimits.java",
+      "sha256": "cfefc7db56231a6c76dbea088453abef748a9615a8382084e57fd3dbc019308d",
+      "bytes": 1882
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfName.java",
+      "sha256": "bbcad61edbfd2f5cdd46deea659fe0c196a3795378be3426e4c9c862be7a880f",
+      "bytes": 1150
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfNull.java",
+      "sha256": "ac23a313bab3564f645f720bc802280b978146506be06c1c8ed71f9fac93fea2",
+      "bytes": 443
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfNumber.java",
+      "sha256": "30011efefbe67c188de619940606a0faa94c8a03f65532f2124cce6f102c0640",
+      "bytes": 1689
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfOutputPolicy.java",
+      "sha256": "9b3b4d958fc6e43829f1753dbedf756698d75ddd34eaaeeed51a53940d7f5d31",
+      "bytes": 1706
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfStream.java",
+      "sha256": "c9ded78522d000672115b4bdbc1f7643e0a12777f6af323098470e815940a01d",
+      "bytes": 3767
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfString.java",
+      "sha256": "a5e453b330739c8e2cb4249b043ae0d04f7f2113a86a360c1087a7ae646e4195",
+      "bytes": 1659
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfValue.java",
+      "sha256": "1ee0092813940abc6f0bea7be6a6ab10cd5dc360eff0ac9c959d13e56612072c",
+      "bytes": 368
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfValueKind.java",
+      "sha256": "088d74b62e56b8f45d6fb9947af2fbb058dc67db56d087371f3c19376122220c",
+      "bytes": 569
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfVersion.java",
+      "sha256": "cf66e11d119b3cc697913abcd2b64248e4037a68f89027a37d56c206376087fb",
+      "bytes": 1375
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfVersionInfo.java",
+      "sha256": "f7b9b3a69ec8c098440101870b33c18a754c79d0ff73483ebed96f5e1c3c5b5f",
+      "bytes": 1228
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PublicationReceipt.java",
+      "sha256": "dd66a8276aa60485549387b59ddb15472cc081591b3acfdf7103af05287593cf",
+      "bytes": 3559
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PublicationStatus.java",
+      "sha256": "98e54fcb847a998de9b5e5d8a72ab82a6640db4cc179655c8d35ce6a0860b114",
+      "bytes": 349
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PublicationTarget.java",
+      "sha256": "414048adb4034908b0a9a5c20314b7b7316f550a3c39360fe39a87a7d43afe7b",
+      "bytes": 2170
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/RenderDiagnostic.java",
+      "sha256": "1db6ea035d20f5b659ac0196d1fbf48049dba523bc86d94c739552eb452edd66",
+      "bytes": 538
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/RenderGeometry.java",
+      "sha256": "b8568823a71f9a2539bc58e65711521f72ed63eaf520c2ba25f6a4d9bb77bb90",
+      "bytes": 3380
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/RenderOptions.java",
+      "sha256": "9b1ee37fde26644dac3e43f649341107ce64f45761d6b9029e0b5b2be0238bab",
+      "bytes": 4472
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/RenderSnapshotQuery.java",
+      "sha256": "ad9c560cb5294b8a86e71280e55c4c8e06038db148bc468cd32053a3131cdde2",
+      "bytes": 324
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/RenderedPage.java",
+      "sha256": "2e7af9a80e66c7b81b67605b837d2c89778599b3bc551a80e5a6f23fabbff293",
+      "bytes": 4261
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/Rendering.java",
+      "sha256": "2bcc3cdf8649e5b873f7ac19da471ba3478327552bb735cc9ee34f962777b1db",
+      "bytes": 1789
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/RenderingCoordinator.java",
+      "sha256": "0fb4d1884f5267664ffa4bdb3bd3aafa1ee22ed5fcb2dd9526ea70306ab3b33f",
+      "bytes": 9004
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/RenderingLogScope.java",
+      "sha256": "eb6f23328c61f22be2e6592b25db6aa16a75031961c0a43e936279c4acea0951",
+      "bytes": 4903
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/RenderingPngWriter.java",
+      "sha256": "099055a0e6594538e67a41f09bc8c0f7d824f82fb0cfab5a507ec432743e4430",
+      "bytes": 5232
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/RenderingSnapshot.java",
+      "sha256": "e16c8a0c52c3325c69ad5790c84bd4a75d549fa52ad098f502ade864ee750467",
+      "bytes": 659
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/ResourceDeclaration.java",
+      "sha256": "87ff3b70cc7694f7ca92baa6a82509b23b43518b7c698a155aff16dd72c4d8f1",
+      "bytes": 2891
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/ResourceExtractionLimits.java",
+      "sha256": "f48922071b1a474986b7d1a509a296c4526e2f185176cc5070872d68d8be7a5b",
+      "bytes": 7013
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/SaveMode.java",
+      "sha256": "f864c11b5f73cbdee19cc277948dfe52304ae6f34b5e4dbc524d11057c342701",
+      "bytes": 430
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/ShapingCoordinator.java",
+      "sha256": "6cb9e778c49c9e5faab8bb81ce9741ebcc40eb13f4ac1039ee75e6a47446e98d",
+      "bytes": 5720
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/TextGeometry.java",
+      "sha256": "5c7f88ca2022756e878aec9978a55cd0f112943c49bbc16f6b733067551c52a4",
+      "bytes": 2881
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/TextItem.java",
+      "sha256": "bdffeb0708226e863a9491a25b5a08c303b9da9c6ab0801933a3249b36f65afc",
+      "bytes": 2647
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/TextRenderingMode.java",
+      "sha256": "b2304a380b14565545823c3e1d537b73833ab477ca4d5834ef6b45a145d21495",
+      "bytes": 1552
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/TextStructureExtraction.java",
+      "sha256": "dad46a56040e5b500670220693469c6af4629564ed130ccac2ba4d73eba605df",
+      "bytes": 1512
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/WorkerAnnotationCodec.java",
+      "sha256": "039095665c29838f75c7450b5d09e0ab9c1228321215b51be1355e9e7cfe93a5",
+      "bytes": 10262
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/WorkerCodecIO.java",
+      "sha256": "fe345113024f9ef661870ed2046c393d7d0e4542eb8b00df3cee21dc03fc9aa9",
+      "bytes": 32679
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/WorkerCommandCodec.java",
+      "sha256": "9bfdf7ed0e5ef1e4898ae9c3254e8c10ba5497c1fe11dd12d98e6f219577749b",
+      "bytes": 69758
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/WorkerCompositionCodec.java",
+      "sha256": "f48565792ed1cb4696e77d7236b66276dbfef4a180d1873f7044790b341e18e4",
+      "bytes": 51131
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/WorkerFailureCatalog.java",
+      "sha256": "0250027ac8ea7e4f6ebca172bc81be4b782bc3f03e44be6e665eee281fd47ab1",
+      "bytes": 70856
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/WorkerFontSourceCache.java",
+      "sha256": "cd0c7a4a869b3cbfddda8da9b4f58f2b478d41dad799f60d58f0e738d6495f41",
+      "bytes": 12904
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/WorkerMessages.java",
+      "sha256": "7a72d171df5df9f7235380d4544c0f1c88dbbb8338427af5f5b447ead9755b61",
+      "bytes": 48343
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/WorkerProtocol.java",
+      "sha256": "0395d865b863d31c2c455b7045c90cd7debaaf465a741b3eb6bcfef5ed61b19e",
+      "bytes": 38589
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/WorkerQueryCodec.java",
+      "sha256": "8c0bf86a3d11e961252b442d90193b981e7b456023002b3d01c8f50e58c69d10",
+      "bytes": 39971
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/WorkerReferenceRegistry.java",
+      "sha256": "2e883f0df09a6e004bea9ef897ea4b4b9b9ae58edc596554a67d90af9a08e5c1",
+      "bytes": 2783
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/WorkerRenderingCodec.java",
+      "sha256": "85714d469f6b01e1a44c86f5a8cabccbd866de41eab7b0b2a862cafe8321d706",
+      "bytes": 5368
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/WorkerResourceInventoryCodec.java",
+      "sha256": "98ab63c720c7b0871acd09d7450862d5a164c633b2b5d3c4f76cab0e683925f7",
+      "bytes": 25531
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/WorkerShapingCodec.java",
+      "sha256": "2b6b54dd3d1d39e8bca487e84a63614e0d5bf22977a21cce46dc88bdbc49c81c",
+      "bytes": 3146
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/WorkerTextExtractionCodec.java",
+      "sha256": "b017d2e023045b22742a62001f94e3a03cef161a529e37c39333c852c3b6b8d3",
+      "bytes": 17886
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/WorkerValueViewCodec.java",
+      "sha256": "d12407e4958aa3b22a4ceed02967c387ea395be1ac0f2b636dce02037f93cd59",
+      "bytes": 21871
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/WorkflowAsciiOutput.java",
+      "sha256": "c6d76a8b3fb44aba47df6b32e493c30becb126efd3e6f682d4c90073b8ccb536",
+      "bytes": 6117
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/WorkflowConcurrencyGate.java",
+      "sha256": "5d22fcfb045d8b8b9ec96d36cc050848d7dd56c9e4862ce230bcd2e1fe84afe0",
+      "bytes": 1621
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/WorkflowCredentialCharacters.java",
+      "sha256": "f923ef949680cd707c18771e97b2a535848a210e200a33c9bd66a038ff2d0019",
+      "bytes": 2639
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/WorkflowEnvironment.java",
+      "sha256": "709eb83233ff8b3829c691615f64272649c650e0d5bca901f858d1f1002a463d",
+      "bytes": 11821
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/WorkflowExecutionProfile.java",
+      "sha256": "d7022fb589f1ff9d1c7f68847ae4638a87195e3ffa0c1ceebfa3a942a42c2011",
+      "bytes": 587
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/WorkflowOutcome.java",
+      "sha256": "8abffb8d4ef75c4e32de5e02b5513798abd2b50dddd8c16419d150a29b8fe0ae",
+      "bytes": 7230
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/WorkflowProgressListener.java",
+      "sha256": "8454b6dbc01e91044e538ce6edc0a7ed40cd46951e91946386722b9d82302f4f",
+      "bytes": 507
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/WorkflowProgressPhase.java",
+      "sha256": "7ea9e915276818dcd60771e59b8b5414f1f97a834baaaae965c176c9a835bb1a",
+      "bytes": 943
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/WorkflowRequest.java",
+      "sha256": "459959d3c4b4790f3f967b4216eec63254a2b7e6608db95def1d6e8342182580",
+      "bytes": 18225
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/WorkflowRequestFingerprint.java",
+      "sha256": "a1b4a8371b3258c32dd9c16d61ca57fa1651b823bd7cb88faa9cb985a8748606",
+      "bytes": 12913
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/WorkflowResourceContext.java",
+      "sha256": "f0c8d60c307fb01cb695a9d9e9425d4f718e1a4c9318f62abfc07316217b5b0b",
+      "bytes": 73106
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/WorkflowResourcePolicy.java",
+      "sha256": "d457c713f124679a25416c792666f1bdb11934c8f30a2cbdc51f1ce4281c5bc3",
+      "bytes": 12048
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/WorkflowResourceUsage.java",
+      "sha256": "bd370380220dfa2f5e1904218903d0ea1f1b1ffdb07fa38fb6b862fc776de00e",
+      "bytes": 4764
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/WorkflowTransactionId.java",
+      "sha256": "c383e0646f2ed78571e45c3911d8c33538e832df726eb8f7a0d808630856d288",
+      "bytes": 2348
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/WorkflowTransactionPolicy.java",
+      "sha256": "56673f55cc8af16903efbded1817e19723b1db5eb23d44fb485b2cd0dca62ea2",
+      "bytes": 4787
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/WorkflowTransactionRegistry.java",
+      "sha256": "085719d182a06e3105d0609ed3906425f01579fe8c3f17c8394a1df8faefe3eb",
+      "bytes": 13977
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/WorkflowTransactionState.java",
+      "sha256": "dda22e5f40794cab62288fd5d61a85cab2a7a85c1b4485dc6594669c00ef9c74",
+      "bytes": 518
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/WorkflowTransactionStatus.java",
+      "sha256": "6ebc509ae20dee5e2ff02ed2164e25b3aef52952bd8dac01e0f5541d950fe850",
+      "bytes": 2115
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/command/AddBlankPage.java",
+      "sha256": "57bc81e618b25ab98bb7e99d31fbfefb80d472bdbfd8144ea1263e13f6eedba6",
+      "bytes": 381
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/command/CopyPages.java",
+      "sha256": "abc9856917a6be18391873ebe2937f0cfe5c41f93e2cd5663b16561207091bdd",
+      "bytes": 1677
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/command/EmbedFile.java",
+      "sha256": "d1e4b796b356e0b2bcde63a5bd1d74d87ebb71e9dd4d85b6ab2974905e0bc532",
+      "bytes": 1297
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/command/FlattenAnnotations.java",
+      "sha256": "06387f5046b6d7cfb85645b13670403b38a745160bcb2de8876597e7e8530224",
+      "bytes": 2470
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/command/InsertBlankPage.java",
+      "sha256": "ed74da3888eb4abe9edf4bcfec894c5ed6c2509b3752c6059c2ce170515180cc",
+      "bytes": 1138
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/command/MergeDocuments.java",
+      "sha256": "f77788a81aa8b1c53033f8c67c75d02aff2dca65ef69a298aef885f65b4f1f6f",
+      "bytes": 1927
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/command/MovePages.java",
+      "sha256": "0d5f304debe876319e2551c323a717d0de539a879664ac29f30dbbd570e189a1",
+      "bytes": 1719
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/command/RemovePages.java",
+      "sha256": "1ff69403e528b1829c273a06d16483b22fa5612629b690c6d4ceab04c9c7f05d",
+      "bytes": 1160
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/command/ReplaceOutlineTree.java",
+      "sha256": "1e330a225e1f20b509ccb7b8391e0d2ea62587833a6f537377c5f0afb8b68f7e",
+      "bytes": 1841
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/command/SetNamedDestinations.java",
+      "sha256": "c6872750c6ded59d22ab6cfaf99e8851391b50d07251c029062c6fa3abd6e1fe",
+      "bytes": 4089
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/command/SetXmpMetadata.java",
+      "sha256": "e352fdf0be081bafddc7eb2ed5d13a844311acab62e950084d5151ee48911cb1",
+      "bytes": 1653
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/command/SplitDocument.java",
+      "sha256": "6a818208a604cb7df8dcad2efeaad7e4fba77f810f515d41b232dd61b777ee78",
+      "bytes": 3079
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/command/UpdateActions.java",
+      "sha256": "48ec61890ee771a8befa5b3a6eac375adde3f0a438a05696853aad2c72d1327c",
+      "bytes": 6380
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/command/UpdateAnnotations.java",
+      "sha256": "9668185441870e5e6df490a31e55226469c616af75b2c6dbee09fe30461cd820",
+      "bytes": 3798
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/command/UpdateDocumentInfo.java",
+      "sha256": "536f608d9a5c4344fddd3cad35dce2396ff900c113e7319d45059a3a51811377",
+      "bytes": 3867
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/command/package-info.java",
+      "sha256": "3013c46067616a35854bf22841285a3ce895f775759560052f78cf6aed6bac2a",
+      "bytes": 184
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/CanvasBlendMode.java",
+      "sha256": "9e1481c781dda09ffe64001156d307583cf5d5662272530d27e6ce52815dc8c1",
+      "bytes": 792
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/CanvasColor.java",
+      "sha256": "b5f62e74ba0643c25a9daf7ee6eed96b2cf6831d96f0d0e395d8f7f1738e4032",
+      "bytes": 2405
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/CanvasColorSpace.java",
+      "sha256": "de37ee444de4e412a80059ab84269d3ed45a7577db1f57077607d376aaa8d692",
+      "bytes": 6457
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/CanvasFont.java",
+      "sha256": "ee0ea419a08002d3f9050f681b279709080c99428df76f704508521f2f240133",
+      "bytes": 1753
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/CanvasImage.java",
+      "sha256": "d1ff9c524d9e7cd46c617233b4370aa956f96630b5bd65f6e063863fa115f518",
+      "bytes": 7701
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/CanvasImageCapabilities.java",
+      "sha256": "0500a97a294502927264cb07c6595059bf1bb7d212a1d62ad99a684c5c0094b1",
+      "bytes": 3642
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/CanvasMask.java",
+      "sha256": "6e4b7c8ceae6ca6fa89971942f25ddf1af7d79931a37ec28fbba388e4d9a8115",
+      "bytes": 3258
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/CanvasMatrix.java",
+      "sha256": "f8467d6efc2d4354424eed4323b99baa224b9ae0c614902ed67d65d67d26b32f",
+      "bytes": 2835
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/CanvasProgram.java",
+      "sha256": "e45d603d440b3e510383fb5a92a71b30e6968b26a00b39b8e159033200055b27",
+      "bytes": 15566
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/CanvasRectangle.java",
+      "sha256": "420c27cd266e63e80582fbecfd90d9a99120af62c476ba59f8d90f80798af809",
+      "bytes": 2297
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/CanvasResourceLimits.java",
+      "sha256": "b075012e408484e2e6ec5fb02562f45d508ac8ec883e24c158689fc682cc6c3a",
+      "bytes": 7454
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/CanvasTransparencyGroup.java",
+      "sha256": "68cbce681bac48fa2974af677cbbb280db52148a20693f6ececa24c2805ed92d",
+      "bytes": 2071
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/CanvasTransparencyState.java",
+      "sha256": "2949c131dc2b898e2bf5b9036bb357d345b37da7390b8ce21cbbd4682a41dc79",
+      "bytes": 2281
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/CanvasWindingRule.java",
+      "sha256": "852e6b5d56d71f235a27154d6accf3ac8652eee532609bbcb9974adbc75b3594",
+      "bytes": 260
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/CellPadding.java",
+      "sha256": "05bd3c68b7e2457c015281e2cae1ba1cc440e99ace77c0b348ca16a90f06e90b",
+      "bytes": 993
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/CompositionLimits.java",
+      "sha256": "1f6d9fbf3d24b4fd9a905285cc9910782d8269243210e843ce7dad9a595dc77d",
+      "bytes": 7724
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/FontLimits.java",
+      "sha256": "fcc23ad1ec0e17d22210e748e244b801b809d8dbd1761bb512893bb1b39bf626",
+      "bytes": 4427
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/FontSelection.java",
+      "sha256": "180ba76aa7855cc3b4ffffdcde324485b4a055acd67c738f1c1d495ec1308b1b",
+      "bytes": 1808
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/FontSource.java",
+      "sha256": "5daf9e203427ad1a9bf50758c5002f7531d2328820a03b7d3e6ccd3f01879f38",
+      "bytes": 4480
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/LargeTableState.java",
+      "sha256": "61dcff8253aa64bd00a1bc4b968b4aefb62c5feb48bc58a269538da5cd20e11e",
+      "bytes": 1777
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/LayoutPage.java",
+      "sha256": "e5f84d2e6d7e5b28c317942dad7151b51a4c8ff23c74da37e23583a770a71c9b",
+      "bytes": 1883
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/PageMargins.java",
+      "sha256": "58e006a3105d23b93800a2b53ce4b2279de3e79ca5925342763d61449ffb8e96",
+      "bytes": 989
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/Paragraph.java",
+      "sha256": "8341fb452c78b1f14fd01f4cc5eea2a56b7379b13c2605d8b82349f92db0e556",
+      "bytes": 10157
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/ParagraphFlow.java",
+      "sha256": "12e1893f19422a2eefcfcc62c8ad204e61e2ce1196a0e40f197afa4f8f2d8f2e",
+      "bytes": 4503
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/PositionedUnicodeText.java",
+      "sha256": "1a8458a0977b3e8ea4ae311cea084c11d08bf120c38e3b61d97c683e795b8a51",
+      "bytes": 2518
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/ReferenceFontSet.java",
+      "sha256": "e810f9e45aa24bd4a4cbff267b91dc335b0df14c39fdfa4e8bb942a689efdc49",
+      "bytes": 2129
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/TabStop.java",
+      "sha256": "8df54cbe791fe2c9cf0e95733a852d38a390af723c007a7c42d8ad51228b1ad4",
+      "bytes": 1685
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/Table.java",
+      "sha256": "6b711dab4f08a814ad2e1451b86aae6ec530f41b1240a2dd123b8799921088c8",
+      "bytes": 6852
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/TableBorders.java",
+      "sha256": "0ef228539104a172febcc0b1ea4ce09fc51ec70f2dabfa8b99c5ea34df3dae36",
+      "bytes": 1065
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/TableCell.java",
+      "sha256": "e01b3c3c4c252ec3d3e93ac680d45eab606107200f9f2c04f3d7680a3d086f30",
+      "bytes": 3402
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/TableLimits.java",
+      "sha256": "82f156938a380633182fd4e5b63149aa54e2ee737c664b7c3291a62a3d84b338",
+      "bytes": 4250
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/TableRow.java",
+      "sha256": "93a5f09198c0359aaa4b362e2ba56fafb47b0bcd3f4b940794a605e588f039e4",
+      "bytes": 1450
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/TableWidth.java",
+      "sha256": "340ad3aa16060d1d0a108337645589b513c2aa3bed90c88151c169e1bbd1eba9",
+      "bytes": 1108
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/command/AppendTableRows.java",
+      "sha256": "5c33e0c58aa36ce347e3b518247342533f66a00357dac5b8a427d3db01fc3328",
+      "bytes": 1152
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/command/BeginLargeTable.java",
+      "sha256": "2daa90af42bc3a69ca257ebd5b610e0543443343e302cebf29c002ecd28ede85",
+      "bytes": 1595
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/command/CompleteTable.java",
+      "sha256": "d64bba0789a63af3069bc3ebcc347deabd1b3dd3aacaacab5c564850fac68bdb",
+      "bytes": 658
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/command/ComposeParagraphs.java",
+      "sha256": "58a82e6a641299e5415377438a5bd1012e2c9ec2e8ccb6087ce22b9b95aecc5f",
+      "bytes": 3653
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/command/DrawCanvas.java",
+      "sha256": "a378b5a612f17c2105d8a6fe9fe98cfdd419c62d2a78c76d17d36a6b2152bbfd",
+      "bytes": 2733
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/command/DrawPositionedUnicodeText.java",
+      "sha256": "1297ba4d4d26f8ce7c01e408dc834fe6772ddc0cfaef3fd11c46b9ebec3d61fe",
+      "bytes": 1886
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/command/FlushParagraphs.java",
+      "sha256": "2a0d5e46e76bae69f921ec70a843441fdba9802be563ecf718ed67b29927a6e3",
+      "bytes": 678
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/command/FlushTable.java",
+      "sha256": "c7d0ab3e55d1ab6eb6353de2fd5184e4332ce96cf326fd169e82013c0540529c",
+      "bytes": 661
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/command/RelayoutParagraphs.java",
+      "sha256": "ed66127a3c0744789c19f38b648aa9c874cfa3230a21a31c7766c246bb4bf791",
+      "bytes": 1406
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/command/package-info.java",
+      "sha256": "347cdcdda9cf8a7d34a0dd522c78395d09e49e6386f96b77c728d4fd8507e3ae",
+      "bytes": 111
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/package-info.java",
+      "sha256": "3f49feff952f887481c93081815cccc0e04e336a817637a7532a5a2366df3da0",
+      "bytes": 122
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/query/InspectCanvasImageCapabilities.java",
+      "sha256": "407ee2ad2c48ebdc3e81d612b4879d8fc8e85051fa9cebb7b9c88bbb9c5bfca7",
+      "bytes": 839
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/composition/query/InspectLargeTable.java",
+      "sha256": "0091706d8b224a4334bd37807ae882334edbc2f674d2361401891ccf247001aa",
+      "bytes": 686
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/package-info.java",
+      "sha256": "f6b67488e59b902038cbc31a2cf2eabdc4f2939aeb066f99411a62f609fae52c",
+      "bytes": 1829
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/query/Actions.java",
+      "sha256": "8c498c8815ae2389a211f5d0497f914f776e39917bfbba5e4039ff2a340b0e5d",
+      "bytes": 1467
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/query/Annotations.java",
+      "sha256": "7ce5853176693a6f7637ceb68d63e2032ed934d4528a2899a53649a5e78352c1",
+      "bytes": 2796
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/query/DocumentInfo.java",
+      "sha256": "5b91bf7a52d9697d9cf250942efc4798f2d295fdf4dcea1647141a7e48cbaa82",
+      "bytes": 1034
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/query/DocumentRootReference.java",
+      "sha256": "90e580325f37f1647385e4304f71043b1fc5d92fcc0c6e1eb9aea2ad799a8759",
+      "bytes": 764
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/query/DocumentSecurity.java",
+      "sha256": "6c78469872b705fa9a4439295d845716c0cc69c2611a08c009cf46bd89912e7e",
+      "bytes": 435
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/query/DocumentVersion.java",
+      "sha256": "3cb759813d72c897a816e5be6a83daf622cddbca2459bce3e0de566c06ea8ba1",
+      "bytes": 424
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/query/EmbeddedFiles.java",
+      "sha256": "271d56093e347ceccfe1d040f3fdb19fce5c72187513214fb82952135bb12c1c",
+      "bytes": 1708
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/query/ExtractImagesAndResources.java",
+      "sha256": "083663a2c63f7826692abc695c461afd996912bf83aee1f2d5ee43242996b79f",
+      "bytes": 1937
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/query/ExtractTextAndStructure.java",
+      "sha256": "60b47259be1cb6a8860360f786e390b540d97507fdbff824e74e7c8f2cebdb7f",
+      "bytes": 1561
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/query/InspectObject.java",
+      "sha256": "3ea225657bdfd069416ef809ce0b9af717845c8023aef72e109ce5108180c857",
+      "bytes": 1906
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/query/NamedDestinations.java",
+      "sha256": "6a7687d8e82fe319f22ba73764bc46d2a9750f3abdece0bb76747fb2c397d591",
+      "bytes": 1734
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/query/OutlineTree.java",
+      "sha256": "830824b9db77b598136937976134439d595e1d62a3c4df10a2b1e30aca8e68d2",
+      "bytes": 1654
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/query/PageCount.java",
+      "sha256": "8b2569b442b2a1b94b45bb1fa2fb447092069ccef8f9f05d23a33229540b5f81",
+      "bytes": 375
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/query/PageObjectReference.java",
+      "sha256": "d361cb34c24b0f1743d20697a317ea0707b4b61f5c8524f0bc5b395f6d1457b5",
+      "bytes": 1181
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/query/ReadEmbeddedFile.java",
+      "sha256": "6c0b1f75055a0b1c3345ea973280933843e07049003f44bc7a962af3de70dbcf",
+      "bytes": 2132
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/query/RenderPage.java",
+      "sha256": "bce744a9af3fe3c00f5948d94f2f309fc969a3d58165a084d3b9b3e122c39774",
+      "bytes": 1099
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/query/XmpMetadata.java",
+      "sha256": "28b39b4845bff8c9d0167477c725522bae521c690b962ff6167c919d053ce457",
+      "bytes": 1914
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/query/package-info.java",
+      "sha256": "85047274aa6e76a5fdbeff5db35cefaa4c037ca35a747e36259bc7928d5aa024",
+      "bytes": 232
+    },
+    {
+      "path": "pdf-document/src/main/resources/META-INF/folio-pdf/document-worker-classes",
+      "sha256": "c07502e776f31812de5570344e8f98f9cc86f8083b3f20f95f9959d170f39c58",
+      "bytes": 37308
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/HardenedWorkerIsolationTest.java",
+      "sha256": "5c76e23e86e054cf33727792271b95a671dd36426fceba145cd463f8dc973be5",
+      "bytes": 30382
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/HardenedWorkerRecoveryFaultTest.java",
+      "sha256": "7962cc6ebfb813efdbd677b9cd15435d395d75c35a3fb9ef2cd7b6eda9b03c8d",
+      "bytes": 4347
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/PdfBoxCMapPreflightTest.java",
+      "sha256": "e75fe95208efe11f481d8e6218f23736e8d448609e990e5414893df197c484f2",
+      "bytes": 4903
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/PdfBoxFontMetricPreflightTest.java",
+      "sha256": "6e6e6e879248c40a3b52fe6ef86b68d71452b7972a72ebaecbef782a9a7a392d",
+      "bytes": 5038
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/WorkerCodecContractTest.java",
+      "sha256": "e1eba284a5b6e2e80001b3aa220a78cb5323e344589fafcb7e276c0fdc820dc0",
+      "bytes": 28422
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/WorkerProtocolBoundaryTest.java",
+      "sha256": "56cbbb8de9ccfb88b750326ac3e9ae59e03603071eeac7b6780a42098bd78da3",
+      "bytes": 58897
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/WorkflowResourceCacheAccountingTest.java",
+      "sha256": "dc8fd3a5938d72e9fb99c8b81eddaea428b04b81bc4303b7a1141665b3b86490",
+      "bytes": 24820
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/AnnotationWorkflowTest.java",
+      "sha256": "48d590445a014339fad93165af9f773f30cdb2e0dabe381a7074181024b62853",
+      "bytes": 115575
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/BlankDocumentWorkflowTest.java",
+      "sha256": "d62a205796d4964a05bf8528376ae6451452c0e2a3906b62f5ba1ffc2cf98bad",
+      "bytes": 2062
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/CanvasImageColorTransparencyWorkflowTest.java",
+      "sha256": "828035a015d7b191bae6b83031d610700dd98668b98f120483b843445f7f9a97",
+      "bytes": 81633
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/CanvasWorkflowTest.java",
+      "sha256": "37910fd0643ffeeee8fac048d5d9dc8def8963b3eaf7ce5e0cab694887a8617d",
+      "bytes": 55292
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/DocumentMetadataWorkflowTest.java",
+      "sha256": "16048ed7f5d94a1d2aa8e7613430b371360d572d6de5af00a8cfe8b7d94e8b60",
+      "bytes": 118052
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/FontLoadingWorkflowTest.java",
+      "sha256": "eb83e2d8b4e3069bf510f7cf54b5c3070fcc4b0f3762df0c87a2a2dbe394521d",
+      "bytes": 125260
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/HardenedWorkerRecoveryTest.java",
+      "sha256": "0b96fe440e941debb89d3fabdb188782fd204bde79d996b29f6349cf03f11223",
+      "bytes": 38651
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/HardenedWorkerScaleProfileTest.java",
+      "sha256": "1194350721052bcca6e1dddf69ca22b26ade5d979255dc92b66735565ad8a20d",
+      "bytes": 21948
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/HardenedWorkerWorkflowTest.java",
+      "sha256": "680d1bc0ce1136431918c58a7acc1b818c08242e0f6037546d240d6a17af76ab",
+      "bytes": 30529
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/HostileInputWorkflowTest.java",
+      "sha256": "4a9468b5d6461d3ff1ddfd68d2815fbd0765cdb5d228e73edce80ba44c8cc206",
+      "bytes": 79185
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/ImageResourceExtractionWorkflowTest.java",
+      "sha256": "11e06fd7fe5ab764cd6ea9cfe5468a10a11f3ce4ecd1ec27c276b64dadd531fc",
+      "bytes": 114383
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/IncrementalSignatureWorkflowTest.java",
+      "sha256": "7bc08b242a4108fa0815f6da2257deb723875e90a4d1cd8672c03910a7f3c16b",
+      "bytes": 29770
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/LargeTableWorkflowTest.java",
+      "sha256": "3babcc1f66cb06a0e88f9d6dc5b005503c45596b386b2c1f2314293d49925580",
+      "bytes": 60823
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/PageManipulationWorkflowTest.java",
+      "sha256": "6e8c6941b32bd8705dbddd3f51dda3283918b387a976560b14bc3e77fdf50eaf",
+      "bytes": 103823
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/ParagraphCompositionWorkflowTest.java",
+      "sha256": "2a093b9b1152e747e2f2ffcd1997e7aeb2549765a667ea034e2687c7c6f11b3d",
+      "bytes": 39288
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/ParagraphPaginationWorkflowTest.java",
+      "sha256": "a9eccd89c7cf4dbb8438813d9f383c261a94f0b70788ca51b3480cf85c2b761e",
+      "bytes": 38291
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/PdfValueWorkflowTest.java",
+      "sha256": "14e902048d3ddbb6ea95a1c45d4c71067907021ebd2f69cd4a7365bb7ce14b0b",
+      "bytes": 28960
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/PdfVersionPasswordSecurityWorkflowTest.java",
+      "sha256": "84a7afcf29f586e9f8bc7c01b2166d96fd6493c5eed5ec3d4255fede51bd09bd",
+      "bytes": 118791
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/ProjectOwnedSignatureFixtures.java",
+      "sha256": "1154d92bf71a627058e795ddaf055cbaeb2e02c9733ea8992978db3b05706083",
+      "bytes": 18017
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/RenderingColdStartTest.java",
+      "sha256": "784aade8e8283e63d80cad15b6e9bf517c42a846cd2ab1b7f68a82c8e7ca4cae",
+      "bytes": 2979
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/RenderingWorkflowContractTest.java",
+      "sha256": "3284ea8e31acec31fdee35bdfe13d48ad4b39bd7a0d7f16c82548dbd9e331c0a",
+      "bytes": 61835
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/ShapingCompositionWorkflowTest.java",
+      "sha256": "ccf0cbf02cb051b9b6ef66d9f37c33784cef69b2f97cb632d1525e838efd3a36",
+      "bytes": 48536
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TableCompositionWorkflowTest.java",
+      "sha256": "a6a300d4a1da3b33d2ca6bc7c3564d77b3bd53a0bc71fd33a6081bc6d7d842af",
+      "bytes": 52186
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TablePaginationWorkflowTest.java",
+      "sha256": "cb688c8ea9fe9de481df2bbc0cf93324cd50103e0a636e278f1e0e2061f5ba9b",
+      "bytes": 30070
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+      "sha256": "3ae8bb7bfb415c33f7d7a1f62d85d102cba1613a869017bd647725d372f8e960",
+      "bytes": 131079
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/UnicodeCompositionWorkflowTest.java",
+      "sha256": "bf72d8b93b2106013bd89b7a4b9c7ac37a9770da819f44a6c9f312acebfecd7e",
+      "bytes": 33063
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/WorkflowCapabilityProviderTest.java",
+      "sha256": "b771770b1975eb727bd832d1458a4b88b1406cb27d0d06a2c484b488dd7efd3c",
+      "bytes": 14348
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/WorkflowExecutionProfileContractTest.java",
+      "sha256": "ecec450da92b15af41f201a4ba0b2b814617d80597b3aecfcee1063ccb268f58",
+      "bytes": 86301
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/WorkflowLifecycleTest.java",
+      "sha256": "97506e6e98f622f0f00887853efdc01ce31f6c8f52b528509d56478025774150",
+      "bytes": 9717
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/WorkflowResourceOwnershipTest.java",
+      "sha256": "25cd38c1199a043c563f4637373b9c4d0d8ad9966b3051fd00636c565b1bd120",
+      "bytes": 32908
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/WorkflowTransactionContractTest.java",
+      "sha256": "5f76460d13c1bb5e51bd0b33221e5888b63402d632edeca00855125c671fe71f",
+      "bytes": 37656
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/contract/JarContractIT.java",
+      "sha256": "8caaf86f6c0a46d68e25c4e7e8aa957897b858602fd5109584ec233da742cc8d",
+      "bytes": 6399
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/contract/PublicApiLeakageIT.java",
+      "sha256": "d328b577201efada5b7a6842fe4478243ffe7ee6cca37a0a4a0d90ab2ac45ab5",
+      "bytes": 8991
+    },
+    {
+      "path": "pdf-document/src/test/resources/net/zerocloud/pdf/fixtures/FolioFallback.ttf.base64",
+      "sha256": "cc05540a35e631ea63736eaa442660dc7bf24558fdfbb359f25e1b091d7f5375",
+      "bytes": 1373
+    },
+    {
+      "path": "pdf-document/src/test/resources/net/zerocloud/pdf/fixtures/FolioPrimary.ttf.base64",
+      "sha256": "dfc7c4e468a17242508d906e7177608769b06b55b7e9cb9cc895adef7d53970f",
+      "bytes": 1297
+    },
+    {
+      "path": "pdf-document/src/test/resources/net/zerocloud/pdf/fixtures/README.md",
+      "sha256": "9aee504b5bf70fc4934e5dd58d358f602f977fa2f1481ef5f4b1973621e1a3f9",
+      "bytes": 933
+    },
+    {
+      "path": "pdf-migration-itext7-preview/pom.xml",
+      "sha256": "11ac64a9cf98f7af686e6226b0d48d448362a7f4a16b2c845f851b932b00fa69",
+      "bytes": 2978
+    },
+    {
+      "path": "pdf-migration-itext7-preview/src/main/java/net/zerocloud/pdf/itext7/kernel/exceptions/PdfException.java",
+      "sha256": "1bfa5b58f5fb779bf52467d79231a6f48e5071ad104d6fec366239caf514f5d8",
+      "bytes": 1053
+    },
+    {
+      "path": "pdf-migration-itext7-preview/src/main/java/net/zerocloud/pdf/itext7/kernel/pdf/FacadeClasspathGuard.java",
+      "sha256": "b123775a1d46242dea33a3e67aee4fda76d33740a5366821725dd92f4ec7a83f",
+      "bytes": 2126
+    },
+    {
+      "path": "pdf-migration-itext7-preview/src/main/java/net/zerocloud/pdf/itext7/kernel/pdf/PdfDocument.java",
+      "sha256": "89c1965b0ae90908e41c8c15cc65e4737eabd4f8aeaa0972637a48b81355f2c7",
+      "bytes": 3670
+    },
+    {
+      "path": "pdf-migration-itext7-preview/src/main/java/net/zerocloud/pdf/itext7/kernel/pdf/PdfPage.java",
+      "sha256": "ffbd3e4254286559d1c4e05a81b163fd9eaa37656b7ba8142ded088b2fa7b804",
+      "bytes": 332
+    },
+    {
+      "path": "pdf-migration-itext7-preview/src/main/java/net/zerocloud/pdf/itext7/kernel/pdf/PdfReader.java",
+      "sha256": "1e7b50ec1ec50a5b3ae81c8748c8342d503e7416663d8cf87caaf007b4f81101",
+      "bytes": 1924
+    },
+    {
+      "path": "pdf-migration-itext7-preview/src/main/java/net/zerocloud/pdf/itext7/kernel/pdf/PdfWriter.java",
+      "sha256": "82ddc1d3fd3e870ddccf05865c8b18672790f0181eca4c42403fcc97a9aec433",
+      "bytes": 1312
+    },
+    {
+      "path": "pdf-migration-itext7-preview/src/main/java/net/zerocloud/pdf/itext7/layout/Document.java",
+      "sha256": "5651151d4df645a475cc8854d81aedf00135b60994561cc29d7be84a1b170786",
+      "bytes": 1399
+    },
+    {
+      "path": "pdf-migration-itext7-preview/src/main/resources/META-INF/folio-pdf/migration-itext7.edition",
+      "sha256": "82fc410073be3424185bc2cf6d8a4016d15251a69a015214db9f2858fbd78bb1",
+      "bytes": 8
+    },
+    {
+      "path": "pdf-migration-itext7-preview/src/test/java/net/zerocloud/pdf/itext7/consumer/PreviewBlankDocumentFacadeTest.java",
+      "sha256": "8ffee11845aeba2b01cc08b2711963d183bc05f01c851888ebd0fb19e9eab751",
+      "bytes": 3625
+    },
+    {
+      "path": "pdf-migration-itext7-preview/src/test/java/net/zerocloud/pdf/migration/itext7/contract/ClasspathExclusivityIT.java",
+      "sha256": "8243ee0082d943348b2c2320579bf0b92706c1ee0697b4b111d306439370f463",
+      "bytes": 3495
+    },
+    {
+      "path": "pdf-migration-itext7-preview/src/test/java/net/zerocloud/pdf/migration/itext7/contract/ClasspathProbe.java",
+      "sha256": "f930604d9978dc24d8c0c5c5fc1dbc551c1f16093d85d48b43e28197ca66b7d1",
+      "bytes": 286
+    },
+    {
+      "path": "pdf-migration-itext7-preview/src/test/java/net/zerocloud/pdf/migration/itext7/contract/ContractTestProperties.java",
+      "sha256": "5c766e9edf8f479cbb7aa134718266535dc9cef490dd89b0647582de88fbdfac",
+      "bytes": 398
+    },
+    {
+      "path": "pdf-migration-itext7-preview/src/test/java/net/zerocloud/pdf/migration/itext7/contract/JarContractIT.java",
+      "sha256": "00247157fe2c68bd3315ffe73717d7d13094b57c2a6f12a4ea22c39c8865233e",
+      "bytes": 11405
+    },
+    {
+      "path": "pdf-migration-itext7/pom.xml",
+      "sha256": "e97679a50d7f893938d1eab056e5dc56c2de670fe5e7ddc408d0af0cbc2b0bb7",
+      "bytes": 2068
+    },
+    {
+      "path": "pdf-migration-itext7/src/main/javadoc-resource-contract/index.html",
+      "sha256": "c94655d33defa7f50981224089f8a2555cb59d0e5606b59851a2acc1eeb97679",
+      "bytes": 467
+    },
+    {
+      "path": "pdf-migration-itext7/src/main/resources/META-INF/folio-pdf/migration-itext7.edition",
+      "sha256": "2b92ea252be0fbc26f70317cdaa7b6411ea634b50d55338cd8c495e4dbf25d1d",
+      "bytes": 7
+    },
+    {
+      "path": "pdf-provider-contract/pom.xml",
+      "sha256": "8f3a2f10b73825dda65c511b5f18f5597c406774215f770a943fda418ffee5ae",
+      "bytes": 1746
+    },
+    {
+      "path": "pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/CapabilityProvider.java",
+      "sha256": "0fc239133acc9b020c7824e5259afdf7150e1f53afdb98d394c1d1ac7874c2f2",
+      "bytes": 4644
+    },
+    {
+      "path": "pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ProviderAvailability.java",
+      "sha256": "cc9d3ca883c369bb51b022901e904e6060751ea86f17e0f4b6b8cc483de19adb",
+      "bytes": 309
+    },
+    {
+      "path": "pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ProviderCatalog.java",
+      "sha256": "8708a5529a9a373f3c7ad56d32079e3e8db769bfec44144fae9ce6a7c5f2cf87",
+      "bytes": 10763
+    },
+    {
+      "path": "pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ProviderDistribution.java",
+      "sha256": "e771ea028103ca37a35d37c76f93e37c94e871a2474d093f782e35f4ded02cfd",
+      "bytes": 486
+    },
+    {
+      "path": "pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ProviderExecution.java",
+      "sha256": "4e6e3529270bde4f7e8813e2248e09ce525432a45a998ad0c4df0a35ae700a9f",
+      "bytes": 640
+    },
+    {
+      "path": "pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ProviderExecutionMode.java",
+      "sha256": "eff2adea481e9beec3bf39ecc15f79a34f8d03473d02ee689c475f35634ed555",
+      "bytes": 646
+    },
+    {
+      "path": "pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ProviderFailure.java",
+      "sha256": "0ce1d663e1e71ac9f98c5d550dab1fed9e207fc96c285cea6db19ba52e1cad38",
+      "bytes": 1709
+    },
+    {
+      "path": "pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ProviderFailureCode.java",
+      "sha256": "ac49c431036c8263765871ba11ad4f79dbdf49682ab134dd53046f7876f9a31e",
+      "bytes": 1024
+    },
+    {
+      "path": "pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ProviderIdentifiers.java",
+      "sha256": "ede6a6299b3b1a37ee9186d12d05927ecc5e6dee0c08480b4c8685cf78765d96",
+      "bytes": 904
+    },
+    {
+      "path": "pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ProviderLimits.java",
+      "sha256": "06db0a174d7c5495b494d81e69d670e0efa01d4a9982ae9d88516291b5356990",
+      "bytes": 2862
+    },
+    {
+      "path": "pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ProviderMetadata.java",
+      "sha256": "001e3cb74b255c727155f6ef1fd3227c169ca9fcacac3f6bef6fe7df6da2fa97",
+      "bytes": 6440
+    },
+    {
+      "path": "pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ProviderPreference.java",
+      "sha256": "78bd00fa365b651e595213717f6e1fa8bf9158efededf04408261277027042c3",
+      "bytes": 1147
+    },
+    {
+      "path": "pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ProviderRequest.java",
+      "sha256": "2a0872afb41bb552af3cf63d5400b4fc13dc0c36097cc3013d18368afb008d0b",
+      "bytes": 3318
+    },
+    {
+      "path": "pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ProviderResult.java",
+      "sha256": "f22250c2ba3cee5e97241b9dc1d76b55637e1ba60a292c4611ebd98562bcc2b4",
+      "bytes": 572
+    },
+    {
+      "path": "pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ProviderSelection.java",
+      "sha256": "b36fb5c541973ba9332496b8f361b9065d7bfe7b0e41ef7b7f5f18e45288ee83",
+      "bytes": 516
+    },
+    {
+      "path": "pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingRequest.java",
+      "sha256": "f073f8e80947c1ace7fc8490e128e59810f7fb7299646fb7e4cc5f7249bfe56b",
+      "bytes": 9110
+    },
+    {
+      "path": "pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingResult.java",
+      "sha256": "0c94c09d7685dbb6b632d2be4f129e0fdf8433a19a209008e01ad870e108fabd",
+      "bytes": 8344
+    },
+    {
+      "path": "pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/package-info.java",
+      "sha256": "53fedaa7c60ae3ea31e6bd8ac6be74a3afedaa1e3643cef5b6d84d7ebd759958",
+      "bytes": 308
+    },
+    {
+      "path": "pdf-provider-contract/src/main/resources/META-INF/folio-pdf/provider-contract-worker-classes",
+      "sha256": "56340dc06714414d32db2af86d87db696cbe05de93b4ece4571bb3b412a76f16",
+      "bytes": 1287
+    },
+    {
+      "path": "pdf-provider-contract/src/test/java/net/zerocloud/pdf/provider/ProviderCatalogTest.java",
+      "sha256": "90a30499cdaba2c10713a27b872912dd9f23c7d76a41fa69da2fd63614ae4b2c",
+      "bytes": 11763
+    },
+    {
+      "path": "pom.xml",
+      "sha256": "9ffd3d585c57064076e0f759509de5f4059c7632ddaebd2eacdd09207cc7a0e3",
+      "bytes": 17682
+    },
+    {
+      "path": "scripts/acceptance",
+      "sha256": "3c296fe008051aeffd54592794f2c24a98b8667a681204b697513631c1e47c1f",
+      "bytes": 608
+    },
+    {
+      "path": "scripts/container-bin/imagemagick",
+      "sha256": "4d7f92edc5e0049857b4d3e62783fd46e283bc75c54ae80f6adfe5fb8e0f42da",
+      "bytes": 1456
+    },
+    {
+      "path": "scripts/container-bin/pdfium",
+      "sha256": "0f70c799873c653909831297fd7df274e631d93790f0a4436246d3997af7b6b1",
+      "bytes": 1498
+    },
+    {
+      "path": "scripts/container-bin/qpdf",
+      "sha256": "a12d5a4e48fd37e8aefa3b92b30f002c25d2de9f96944fb68efeb64f2b79431e",
+      "bytes": 1400
+    },
+    {
+      "path": "scripts/container-bin/unzip",
+      "sha256": "0d59f25d01b64c724284e99bd1089ca0a872f8e32a83e986096b589e67f1245e",
+      "bytes": 825
+    },
+    {
+      "path": "scripts/generate-t23-expected.py",
+      "sha256": "022ffa40afc9ddba04d09d1fb2f722d04b9d1a163da15e6cef5cc2eb338bad20",
+      "bytes": 687
+    },
+    {
+      "path": "scripts/harfbuzz-pin.properties",
+      "sha256": "20ec016fe6728f485c9bf86f28555da14730f56ff025a35ee484ce8a7fbf2207",
+      "bytes": 344
+    },
+    {
+      "path": "scripts/imagemagick-pin.properties",
+      "sha256": "0cbd171a2ac7bf35623c4a2cf83f0a3850b15efe3873cb7b40b4e765c5458374",
+      "bytes": 810
+    },
+    {
+      "path": "scripts/install-harfbuzz.py",
+      "sha256": "896cbd5f2f9f59ffaff6956baa6b74d281dbcb3f41aabce955f4b887348d828c",
+      "bytes": 12123
+    },
+    {
+      "path": "scripts/inventory",
+      "sha256": "27973ce442f99f86293a634aef9fa898e1b713953ba25cca2749e5f7e6ea6852",
+      "bytes": 693
+    },
+    {
+      "path": "scripts/pdfium-pin.properties",
+      "sha256": "0037480e2d77ae1a6d72566c43cf4c5fb9ccf9bb446b31b2c124e0e51c52ac0e",
+      "bytes": 1046
+    },
+    {
+      "path": "scripts/provision-imagemagick",
+      "sha256": "204bbe9bcfc8dbd3cd90a2c0bc24e20262e7db0ce07c79fa9cb0cb2f4f66488a",
+      "bytes": 3124
+    },
+    {
+      "path": "scripts/provision-pdfium",
+      "sha256": "b9bef148b475033a05a48cd8209e461ca5682fef1a414a3adb1cf815ea879ea6",
+      "bytes": 3160
+    },
+    {
+      "path": "scripts/provision-qpdf",
+      "sha256": "eb6e64b942b0f10f102027f92535f3aa7482297cc496abd95d7df5c1ee9fb374",
+      "bytes": 3976
+    },
+    {
+      "path": "scripts/qpdf-pin.properties",
+      "sha256": "62c63de3d888ba08b60df9e3c33c9ebefe4cc0c8ee747cc5269390017b57169c",
+      "bytes": 440
+    },
+    {
+      "path": "scripts/release-central",
+      "sha256": "9784557b109bd7d53561c5de5502517c159d93fefa3229d809f563765cf1531c",
+      "bytes": 1380
+    },
+    {
+      "path": "scripts/release-preflight",
+      "sha256": "baa9a73b0eb1838a4dd450c9455c4d42c88d743a80757e3e0d0bc168f66ca9ec",
+      "bytes": 1702
+    },
+    {
+      "path": "scripts/release-rehearsal",
+      "sha256": "25876123611a779596d1199596dd70b6112c1adaa9dafff7deba679ee68d51bc",
+      "bytes": 11906
+    },
+    {
+      "path": "scripts/t22-scale",
+      "sha256": "c8cad93eaf3c1dae939192d532bd4c87b29da8a4d2ffeaaf57aed136267e6940",
+      "bytes": 563
+    },
+    {
+      "path": "scripts/t28-reference-fonts.py",
+      "sha256": "6fd904fc98a02cf7cd3512db0309a38f88c64e5328bc124020e03b7d60d6635c",
+      "bytes": 1783
+    },
+    {
+      "path": "scripts/t28-unicode-reference.py",
+      "sha256": "acecca82ed6a01787356c0cbe74bba96217cc1aa6c915d8f9ba24dae0f042969",
+      "bytes": 8745
+    },
+    {
+      "path": "scripts/t29-native-observation.py",
+      "sha256": "51130d9e80f258de2ce23f0ca2c26f30ad616c4fe21c3674ef98ac3a2e53217a",
+      "bytes": 6718
+    },
+    {
+      "path": "scripts/t29-shaping-reference.py",
+      "sha256": "cb5455845f1050451072cbe56df80678571b3f451b22bc1c24f519821d2b8b6a",
+      "bytes": 11605
+    },
+    {
+      "path": "scripts/t29-verify-subsets.py",
+      "sha256": "fdc08212cbc2efba9166b71100cd3841b5700e09f0a90329992154a57d346888",
+      "bytes": 11223
+    },
+    {
+      "path": "scripts/tests/fixtures/t29-version-mismatch.c",
+      "sha256": "086734262365eef31a94e0c409cec8025086baef1a0570844243222c0b3079ca",
+      "bytes": 141
+    },
+    {
+      "path": "scripts/tests/test_t28_reference_fonts.py",
+      "sha256": "76eb8e1129c218c727ff6ec835f5089f985f737de49727a14d45455336cd493c",
+      "bytes": 2789
+    },
+    {
+      "path": "scripts/tests/test_t28_unicode_reference.py",
+      "sha256": "820f35d6393490a0f959c85ad4c85d44591eba2d8f5ba7a0fe6e46e78c973a97",
+      "bytes": 1665
+    },
+    {
+      "path": "scripts/tests/test_t29_acceptance_entry.py",
+      "sha256": "d4de370cf58a76fc5edc8a601428d10aaf8b898c25014dc744ff9fe8496a9d76",
+      "bytes": 2891
+    },
+    {
+      "path": "scripts/tests/test_t29_native_installation.py",
+      "sha256": "241be1f687583128e357128c4ec1bf180d545fcb45d27e0f9ef1be28318b3c1e",
+      "bytes": 7876
+    },
+    {
+      "path": "scripts/tests/test_t29_native_observation.py",
+      "sha256": "db9b61414dbc84eaf8103a4e2b4e80443153fabef671db61bd2f62fd5ff96f46",
+      "bytes": 6421
+    },
+    {
+      "path": "scripts/tests/test_t29_reference_subsets.py",
+      "sha256": "1de7d130dfbf46d8c0629eb26de976007d8b12a2cfcbeda47832423879603a63",
+      "bytes": 5727
+    },
+    {
+      "path": "scripts/tests/test_t29_shaping_reference.py",
+      "sha256": "31ee2678e3ba2146781eb4183e822573096cc6d4ad27f0ac2cbb4454af9f6aa5",
+      "bytes": 7780
+    },
+    {
+      "path": "scripts/verify-jdk-matrix.sh",
+      "sha256": "5b86f20b390f99a759c1050120529e8ffa7226e4882ab29af652280c92a41faa",
+      "bytes": 1998
+    },
+    {
+      "path": "scripts/visual-tool-common",
+      "sha256": "8f4be4b8808db5fd28d8a1b6809ae9795083977bb28942c7e59cc66a76513e43",
+      "bytes": 1750
+    }
+  ],
+  "supersedes_for_current_source": "T29-final-source-snapshot.json",
+  "changed_inputs_since_prior_snapshot": [
+    "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxPositionedTextOperations.java",
+    "pdf-document/src/test/java/net/zerocloud/pdf/consumer/FontLoadingWorkflowTest.java",
+    "pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingRequest.java",
+    "pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingResult.java"
+  ],
+  "notes": "Includes getter Javadocs, private borrowed-font snapshot canonicalization, per-declaration memory accounting and public regression. Final current-source gates must refer to this identity."
+}

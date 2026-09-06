@@ -25,7 +25,7 @@ The outputs are:
 
 Record the built-in T03 blank-document, T18 Canvas-image, T19 explicit-font,
 T23 rendering, T24 paragraph-composition, T25 advanced-pagination,
-T26/T27 table composition/pagination and seven T28 Unicode
+T26/T27 table composition/pagination, seven T28 Unicode and four T29 shaping
 Acceptance Profiles with the pinned external syntax validator, independent
 renderer, raster comparator, and project semantic assertions:
 
@@ -33,7 +33,9 @@ renderer, raster comparator, and project semantic assertions:
 ./scripts/provision-qpdf /path/to/qpdf-12.4.0-bin-linux-x86_64.zip
 ./scripts/provision-pdfium /path/to/pdfium-webassembly-linux-amd64
 ./scripts/provision-imagemagick /path/to/ImageMagick-7.1.2-30-gcc-x86_64.AppImage
-./scripts/acceptance capabilities/evidence
+export FOLIO_HARFBUZZ_HELPER=/explicit/folio-harfbuzz-10.2.0/bin/folio-harfbuzz
+export FOLIO_SHAPING_PYTHON=/absolute/python-with-fonttools-4.59.2
+./scripts/acceptance /new/evidence-directory
 ```
 
 Provisioning is deliberately offline. The operator supplies each release
@@ -475,3 +477,48 @@ reversed RTL letters, the wrong regional font and shifted geometry. The
 visual and verification evidence. Missing tools remain indeterminate; shaping,
 full Foundation font/platform certification and compatibility promotion remain
 outside this ticket's demonstrated evidence.
+
+## T29 explicit native shaping acceptance
+
+The [frozen four-script reference](profiles/T29-shaping-reference.md) fixes
+Arabic, Hebrew, Devanagari and Thai before product comparisons. Official
+HarfBuzz 10.2.0 `hb-shape` supplies source GIDs, UTF-16 clusters, direction and
+signed advances/offsets. A separate fontTools/raw-PDF writer supplies the eight
+reference pages without calling the product adapter or layout engine.
+
+Use the [explicit native installation procedure](../docs/harfbuzz-shaping.md)
+and export the two executable paths shown above. The same acceptance entry
+records five behavior chains (`native`, `semantic`, `syntax`, `subsets`,
+`visual`) and a separate `installation` traceability record. Every page keeps
+the original 0.0001-point geometry tolerance, 144-DPI opaque-white sRGB,
+zero-fuzz AE 0 primary threshold and 3000 changed-pixel secondary limit. No
+expected value comes from a product recording.
+
+The installation observer verifies the installer receipt, source and actual
+artifact hashes. On Linux it starts the explicit helper, records live
+`/proc/PID/maps` files and hashes, then closes that probe without shaping.
+This separate startup observation uses the inherited loader environment; it
+does not inspect each Workflow subprocess. Changed helper/engine bytes fail.
+`LD_PRELOAD` or `LD_AUDIT` can interpose symbols, so those environments remain
+INDETERMINATE even if the expected library is mapped. Missing Python, malformed
+or incomplete receipts, and unavailable observations cannot produce PASS.
+
+The recorder states Worker applicability and completed mode coverage. A
+missing required Linux Worker keeps the IN_PROCESS artifact but leaves
+combined product evidence INDETERMINATE. The existing other-platform Worker
+exclusion does not remove the Windows x86-64 and macOS x86-64/arm64 native and
+IN_PROCESS requirements. The current observer and pinned raster-tool assets
+are Linux-specific; installation alone supplies no other-platform execution
+evidence. The [T29 delivery record](evidence/T29-shaping.md) tracks the gaps.
+
+The `acceptance-t29-record` Maven profile is the dedicated platform entry:
+
+```sh
+./mvnw -B -ntp -pl pdf-acceptance -am -Pacceptance-t29-record \
+  -DskipTests -Dacceptance.output=/new/t29-evidence verify
+```
+
+Use `mvnw.cmd` on Windows with host-specific absolute executable/output paths.
+This profile keeps current dependencies in the reactor and records only T29.
+The canonical acceptance command still records T29 with the other suites.
+No Windows or macOS execution is claimed from these instructions.

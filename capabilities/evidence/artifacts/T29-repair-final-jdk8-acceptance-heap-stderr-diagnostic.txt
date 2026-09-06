@@ -1,0 +1,558 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent                                    [pom]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract              [jar]
+[INFO] Folio PDF by ZeroCloud - Conversion                                [jar]
+[INFO] Folio PDF by ZeroCloud - Document Engine                           [jar]
+[INFO] Folio PDF by ZeroCloud - Acceptance Evidence                       [jar]
+[INFO] 
+[INFO] ----------------------< net.zerocloud:pdf-parent >----------------------
+[INFO] Building Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT            [1/5]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-parent ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.version.RequireMavenVersion passed
+[INFO] Rule 1: org.apache.maven.enforcer.rules.version.RequireJavaVersion passed
+[INFO] 
+[INFO] ----------------< net.zerocloud:pdf-provider-contract >-----------------
+[INFO] Building Folio PDF by ZeroCloud - Capability Provider Contract 0.1.0-SNAPSHOT [2/5]
+[INFO]   from pdf-provider-contract/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-provider-contract ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-provider-contract ---
+[INFO] skip non existing resourceDirectory /workspace/pdf-provider-contract/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --------------------< net.zerocloud:pdf-conversion >--------------------
+[INFO] Building Folio PDF by ZeroCloud - Conversion 0.1.0-SNAPSHOT        [3/5]
+[INFO]   from pdf-conversion/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-conversion ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /workspace/pdf-conversion/src/main/resources
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /workspace/pdf-conversion/src/test/resources
+[INFO] Copying 1 resource from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-conversion ---
+[INFO] 
+[INFO] ---------------------< net.zerocloud:pdf-document >---------------------
+[INFO] Building Folio PDF by ZeroCloud - Document Engine 0.1.0-SNAPSHOT   [4/5]
+[INFO]   from pdf-document/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-document ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-document ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-document ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 243 source files with javac [debug parameters release 8] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-document ---
+[INFO] Copying 3 resources from src/test/resources to target/test-classes
+[INFO] Copying 15 resources from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-document ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 40 source files with javac [debug parameters release 8] to target/test-classes
+[INFO] /workspace/pdf-document/src/test/java/net/zerocloud/pdf/consumer/BlankDocumentWorkflowTest.java: Some input files use or override a deprecated API.
+[INFO] /workspace/pdf-document/src/test/java/net/zerocloud/pdf/consumer/BlankDocumentWorkflowTest.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-document ---
+[INFO] 
+[INFO] --------------------< net.zerocloud:pdf-acceptance >--------------------
+[INFO] Building Folio PDF by ZeroCloud - Acceptance Evidence 0.1.0-SNAPSHOT [5/5]
+[INFO]   from pdf-acceptance/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-acceptance ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-acceptance ---
+[INFO] Copying 28 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-acceptance ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 51 source files with javac [debug parameters release 8] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-acceptance ---
+[INFO] skip non existing resourceDirectory /workspace/pdf-acceptance/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-acceptance ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 8 source files with javac [debug parameters release 8] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-acceptance ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.acceptance.AcceptanceEvidenceCommandTest
+T23-page-rendering: syntax=PASS, visual=PASS
+T23-page-rendering-images: syntax=PASS, visual=INDETERMINATE
+T23-page-rendering-fonts: syntax=PASS, visual=PASS
+T23-page-rendering: syntax=PASS, visual=INDETERMINATE
+T23-page-rendering-images: syntax=PASS, visual=INDETERMINATE
+T23-page-rendering-fonts: syntax=PASS, visual=INDETERMINATE
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 67.11 s -- in net.zerocloud.pdf.acceptance.AcceptanceEvidenceCommandTest
+[INFO] Running net.zerocloud.pdf.acceptance.T24ParagraphEvidenceCommandTest
+T24: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE; standards and compatibility remain indeterminate.
+T24: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE; standards and compatibility remain indeterminate.
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.633 s -- in net.zerocloud.pdf.acceptance.T24ParagraphEvidenceCommandTest
+[INFO] Running net.zerocloud.pdf.acceptance.T25ParagraphEvidenceCommandTest
+T25-paragraph-indentation: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-tabs: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-keep-next: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-keep-together: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-widow: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-orphan: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-overflow-wrap: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-overflow-reject: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-overflow-visible: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-relayout: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-immediate-flush: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-publication: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE; standards and compatibility remain indeterminate.
+T25-paragraph-indentation: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-tabs: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-keep-next: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-keep-together: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-widow: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-orphan: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-overflow-wrap: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-overflow-reject: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-overflow-visible: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-relayout: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-immediate-flush: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-publication: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE; standards and compatibility remain indeterminate.
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.012 s -- in net.zerocloud.pdf.acceptance.T25ParagraphEvidenceCommandTest
+[INFO] Running net.zerocloud.pdf.acceptance.T26TableEvidenceCommandTest
+T26: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE; standards and compatibility remain indeterminate.
+T26: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE; standards and compatibility remain indeterminate.
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.772 s -- in net.zerocloud.pdf.acceptance.T26TableEvidenceCommandTest
+[INFO] Running net.zerocloud.pdf.acceptance.T27TableEvidenceCommandTest
+T27: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE; standards and compatibility remain indeterminate.
+T27: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE; standards and compatibility remain indeterminate.
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.715 s -- in net.zerocloud.pdf.acceptance.T27TableEvidenceCommandTest
+[INFO] Running net.zerocloud.pdf.acceptance.T28UnicodeEvidenceCommandTest
+Sep 06, 2026 3:59:13 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:59:13 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:59:14 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:59:15 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:59:16 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:59:16 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:59:17 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:59:17 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:59:18 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:59:18 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:59:19 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:59:19 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:59:21 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:59:23 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:59:24 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:59:24 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+T28: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE; standards, dependency gates and full Foundation certification remain open.
+Sep 06, 2026 3:59:25 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:59:25 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:59:26 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:59:27 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:59:28 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:59:28 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:59:28 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:59:29 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:59:30 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:59:30 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:59:31 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:59:32 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:59:33 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:59:35 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:59:36 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:59:36 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+T28 IN_PROCESS peak owned memory bytes: 1207232298
+Sep 06, 2026 3:59:47 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:59:48 PM org.apache.pdfbox.io.IOUtils unmapper
+SEVERE: Unmapping is not supported because of missing permissions. Please grant at least the following permissions: RuntimePermission("accessClassInPackage.sun.misc")  and ReflectPermission("suppressAccessChecks")
+java.lang.SecurityException: Deep reflection is disabled in the Hardened Worker.
+	at net.zerocloud.pdf.HardenedWorkerSecurityManager.denied(HardenedWorkerSecurityManager.java:246)
+	at net.zerocloud.pdf.HardenedWorkerSecurityManager.checkPermission(HardenedWorkerSecurityManager.java:46)
+	at java.lang.reflect.AccessibleObject.setAccessible(AccessibleObject.java:128)
+	at org.apache.pdfbox.io.IOUtils.unmapper(IOUtils.java:284)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at org.apache.pdfbox.io.IOUtils.<clinit>(IOUtils.java:105)
+	at org.apache.pdfbox.io.ScratchFile.enlarge(ScratchFile.java:258)
+	at org.apache.pdfbox.io.ScratchFile.getNewPage(ScratchFile.java:202)
+	at org.apache.pdfbox.io.ScratchFileBuffer.addPage(ScratchFileBuffer.java:120)
+	at org.apache.pdfbox.io.ScratchFileBuffer.<init>(ScratchFileBuffer.java:78)
+	at org.apache.pdfbox.io.ScratchFile.createBuffer(ScratchFile.java:446)
+	at net.zerocloud.pdf.WorkflowResourceContext$AccountingStreamCache.createBuffer(WorkflowResourceContext.java:1881)
+	at org.apache.pdfbox.cos.COSStream.createOutputStream(COSStream.java:232)
+	at org.apache.pdfbox.cos.COSStream.createOutputStream(COSStream.java:207)
+	at net.zerocloud.pdf.PdfBoxPageContentSupport.contentStream(PdfBoxPageContentSupport.java:351)
+	at net.zerocloud.pdf.PdfBoxPageContentSupport.appendIsolated(PdfBoxPageContentSupport.java:279)
+	at net.zerocloud.pdf.PdfBoxPositionedTextOperations$PreparedText.draw(PdfBoxPositionedTextOperations.java:258)
+	at net.zerocloud.pdf.PdfBoxParagraphOperations.paint(PdfBoxParagraphOperations.java:587)
+	at net.zerocloud.pdf.PdfBoxParagraphOperations.compose(PdfBoxParagraphOperations.java:228)
+	at net.zerocloud.pdf.PdfBoxParagraphOperations.execute(PdfBoxParagraphOperations.java:86)
+	at net.zerocloud.pdf.PdfBoxDocumentSession.executeChecked(PdfBoxDocumentSession.java:293)
+	at net.zerocloud.pdf.PdfBoxDocumentSession.execute(PdfBoxDocumentSession.java:142)
+	at net.zerocloud.pdf.HardenedWorkerMain.executeCommandItem(HardenedWorkerMain.java:1228)
+	at net.zerocloud.pdf.HardenedWorkerMain.executeCommandBatch(HardenedWorkerMain.java:997)
+	at net.zerocloud.pdf.HardenedWorkerMain.runRequests(HardenedWorkerMain.java:776)
+	at net.zerocloud.pdf.HardenedWorkerMain.lambda$main$1(HardenedWorkerMain.java:140)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.executeWithDocument(PdfBoxWorkflowEngine.java:346)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.executeChecked(PdfBoxWorkflowEngine.java:238)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.execute(PdfBoxWorkflowEngine.java:41)
+	at net.zerocloud.pdf.DocumentWorkflow.executeOnce(DocumentWorkflow.java:184)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:103)
+	at net.zerocloud.pdf.DocumentWorkflow.executeWithInputResolver(DocumentWorkflow.java:85)
+	at net.zerocloud.pdf.HardenedWorkerMain.main(HardenedWorkerMain.java:137)
+
+Sep 06, 2026 3:59:48 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:59:55 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 4:00:02 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 4:00:08 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 4:00:13 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 4:00:13 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 4:00:19 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 4:00:24 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 4:00:24 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 4:00:30 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 4:00:35 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 4:00:36 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 4:00:43 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 4:00:49 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+java.lang.OutOfMemoryError: Java heap space
+Dumping heap to /workspace/diagnostic-oom-stderr.hprof ...
+Heap dump file created [877186843 bytes in 1.727 secs]
+[DEBUG-t29-jdk8] Uncaught Worker throwable
+java.lang.OutOfMemoryError: Java heap space
+	at org.apache.fontbox.ttf.RandomAccessReadDataStream.<init>(RandomAccessReadDataStream.java:57)
+	at org.apache.fontbox.ttf.GlyphTable.read(GlyphTable.java:85)
+	at org.apache.fontbox.ttf.TrueTypeFont.readTable(TrueTypeFont.java:409)
+	at org.apache.fontbox.ttf.TTFParser.parseTables(TTFParser.java:186)
+	at org.apache.fontbox.ttf.TTFParser.parse(TTFParser.java:165)
+	at org.apache.fontbox.ttf.TTFParser.parse(TTFParser.java:66)
+	at org.apache.pdfbox.pdmodel.font.PDType0Font.load(PDType0Font.java:203)
+	at org.apache.pdfbox.pdmodel.font.PDType0Font.load(PDType0Font.java:186)
+	at net.zerocloud.pdf.PdfBoxPositionedTextOperations.loadedFont(PdfBoxPositionedTextOperations.java:1248)
+	at net.zerocloud.pdf.PdfBoxPositionedTextOperations.encodeRuns(PdfBoxPositionedTextOperations.java:1158)
+	at net.zerocloud.pdf.PdfBoxPositionedTextOperations.access$2300(PdfBoxPositionedTextOperations.java:50)
+	at net.zerocloud.pdf.PdfBoxPositionedTextOperations$PreparedText.draw(PdfBoxPositionedTextOperations.java:249)
+	at net.zerocloud.pdf.PdfBoxParagraphOperations.paint(PdfBoxParagraphOperations.java:587)
+	at net.zerocloud.pdf.PdfBoxParagraphOperations.compose(PdfBoxParagraphOperations.java:228)
+	at net.zerocloud.pdf.PdfBoxParagraphOperations.execute(PdfBoxParagraphOperations.java:86)
+	at net.zerocloud.pdf.PdfBoxDocumentSession.executeChecked(PdfBoxDocumentSession.java:293)
+	at net.zerocloud.pdf.PdfBoxDocumentSession.execute(PdfBoxDocumentSession.java:142)
+	at net.zerocloud.pdf.HardenedWorkerMain.executeCommandItem(HardenedWorkerMain.java:1228)
+	at net.zerocloud.pdf.HardenedWorkerMain.executeCommandBatch(HardenedWorkerMain.java:997)
+	at net.zerocloud.pdf.HardenedWorkerMain.runRequests(HardenedWorkerMain.java:776)
+	at net.zerocloud.pdf.HardenedWorkerMain.lambda$main$1(HardenedWorkerMain.java:140)
+	at net.zerocloud.pdf.HardenedWorkerMain$$Lambda$2/2046562095.perform(Unknown Source)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.executeWithDocument(PdfBoxWorkflowEngine.java:346)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.executeChecked(PdfBoxWorkflowEngine.java:238)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.execute(PdfBoxWorkflowEngine.java:41)
+	at net.zerocloud.pdf.DocumentWorkflow.executeOnce(DocumentWorkflow.java:184)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:103)
+	at net.zerocloud.pdf.DocumentWorkflow.executeWithInputResolver(DocumentWorkflow.java:85)
+	at net.zerocloud.pdf.HardenedWorkerMain.main(HardenedWorkerMain.java:137)
+[ERROR] Tests run: 2, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 99.18 s <<< FAILURE! -- in net.zerocloud.pdf.acceptance.T28UnicodeEvidenceCommandTest
+[ERROR] net.zerocloud.pdf.acceptance.T28UnicodeEvidenceCommandTest.sevenProfilesMatchTheIndependentGlyphGeometryInBothExecutionModes -- Time elapsed: 87.07 s <<< ERROR!
+net.zerocloud.pdf.DocumentFailure: The Worker could not complete the transaction.
+	at net.zerocloud.pdf.DocumentWorkflow.withReceipts(DocumentWorkflow.java:274)
+	at net.zerocloud.pdf.DocumentWorkflow.withReceipts(DocumentWorkflow.java:258)
+	at net.zerocloud.pdf.DocumentWorkflow.executeOnce(DocumentWorkflow.java:199)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:103)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:64)
+	at net.zerocloud.pdf.acceptance.T28UnicodeProducts.create(T28UnicodeProducts.java:41)
+	at net.zerocloud.pdf.acceptance.T28UnicodeEvidenceCommandTest.sevenProfilesMatchTheIndependentGlyphGeometryInBothExecutionModes(T28UnicodeEvidenceCommandTest.java:41)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:316)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:214)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:155)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[INFO] Running net.zerocloud.pdf.acceptance.T29NativeShapingAssertionsTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.253 s -- in net.zerocloud.pdf.acceptance.T29NativeShapingAssertionsTest
+[INFO] Running net.zerocloud.pdf.acceptance.T29ShapingEvidenceCommandTest
+Sep 06, 2026 4:00:54 PM org.apache.pdfbox.io.IOUtils unmapper
+SEVERE: Unmapping is not supported because of missing permissions. Please grant at least the following permissions: RuntimePermission("accessClassInPackage.sun.misc")  and ReflectPermission("suppressAccessChecks")
+java.lang.SecurityException: Deep reflection is disabled in the Hardened Worker.
+	at net.zerocloud.pdf.HardenedWorkerSecurityManager.denied(HardenedWorkerSecurityManager.java:246)
+	at net.zerocloud.pdf.HardenedWorkerSecurityManager.checkPermission(HardenedWorkerSecurityManager.java:46)
+	at java.lang.reflect.AccessibleObject.setAccessible(AccessibleObject.java:128)
+	at org.apache.pdfbox.io.IOUtils.unmapper(IOUtils.java:284)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at org.apache.pdfbox.io.IOUtils.<clinit>(IOUtils.java:105)
+	at org.apache.pdfbox.io.ScratchFile.enlarge(ScratchFile.java:258)
+	at org.apache.pdfbox.io.ScratchFile.getNewPage(ScratchFile.java:202)
+	at org.apache.pdfbox.io.ScratchFileBuffer.addPage(ScratchFileBuffer.java:120)
+	at org.apache.pdfbox.io.ScratchFileBuffer.<init>(ScratchFileBuffer.java:78)
+	at org.apache.pdfbox.io.ScratchFile.createBuffer(ScratchFile.java:446)
+	at net.zerocloud.pdf.WorkflowResourceContext$AccountingStreamCache.createBuffer(WorkflowResourceContext.java:1881)
+	at org.apache.pdfbox.cos.COSStream.createOutputStream(COSStream.java:232)
+	at org.apache.pdfbox.cos.COSStream.createOutputStream(COSStream.java:207)
+	at net.zerocloud.pdf.PdfBoxPageContentSupport.contentStream(PdfBoxPageContentSupport.java:351)
+	at net.zerocloud.pdf.PdfBoxPageContentSupport.appendIsolated(PdfBoxPageContentSupport.java:279)
+	at net.zerocloud.pdf.PdfBoxShapedFont.draw(PdfBoxShapedFont.java:101)
+	at net.zerocloud.pdf.PdfBoxPositionedTextOperations$ShapedCluster.draw(PdfBoxPositionedTextOperations.java:301)
+	at net.zerocloud.pdf.PdfBoxParagraphOperations.paint(PdfBoxParagraphOperations.java:555)
+	at net.zerocloud.pdf.PdfBoxParagraphOperations.compose(PdfBoxParagraphOperations.java:228)
+	at net.zerocloud.pdf.PdfBoxParagraphOperations.execute(PdfBoxParagraphOperations.java:86)
+	at net.zerocloud.pdf.PdfBoxDocumentSession.executeChecked(PdfBoxDocumentSession.java:293)
+	at net.zerocloud.pdf.PdfBoxDocumentSession.execute(PdfBoxDocumentSession.java:142)
+	at net.zerocloud.pdf.HardenedWorkerMain.executeCommandItem(HardenedWorkerMain.java:1228)
+	at net.zerocloud.pdf.HardenedWorkerMain.executeCommandBatch(HardenedWorkerMain.java:997)
+	at net.zerocloud.pdf.HardenedWorkerMain.runRequests(HardenedWorkerMain.java:776)
+	at net.zerocloud.pdf.HardenedWorkerMain.lambda$main$1(HardenedWorkerMain.java:140)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.executeWithDocument(PdfBoxWorkflowEngine.java:346)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.executeChecked(PdfBoxWorkflowEngine.java:238)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.execute(PdfBoxWorkflowEngine.java:41)
+	at net.zerocloud.pdf.DocumentWorkflow.executeOnce(DocumentWorkflow.java:184)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:103)
+	at net.zerocloud.pdf.DocumentWorkflow.executeWithInputResolver(DocumentWorkflow.java:85)
+	at net.zerocloud.pdf.HardenedWorkerMain.main(HardenedWorkerMain.java:137)
+
+Sep 06, 2026 4:00:57 PM org.apache.pdfbox.io.IOUtils unmapper
+SEVERE: Unmapping is not supported because of missing permissions. Please grant at least the following permissions: RuntimePermission("accessClassInPackage.sun.misc")  and ReflectPermission("suppressAccessChecks")
+java.lang.SecurityException: Deep reflection is disabled in the Hardened Worker.
+	at net.zerocloud.pdf.HardenedWorkerSecurityManager.denied(HardenedWorkerSecurityManager.java:246)
+	at net.zerocloud.pdf.HardenedWorkerSecurityManager.checkPermission(HardenedWorkerSecurityManager.java:46)
+	at java.lang.reflect.AccessibleObject.setAccessible(AccessibleObject.java:128)
+	at org.apache.pdfbox.io.IOUtils.unmapper(IOUtils.java:284)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at org.apache.pdfbox.io.IOUtils.<clinit>(IOUtils.java:105)
+	at org.apache.pdfbox.filter.FlateFilter.decode(FlateFilter.java:45)
+	at org.apache.pdfbox.filter.Filter.decode(Filter.java:107)
+	at org.apache.pdfbox.filter.Filter.decode(Filter.java:295)
+	at org.apache.pdfbox.cos.COSStream.createView(COSStream.java:196)
+	at org.apache.pdfbox.pdfparser.PDFXrefStreamParser.<init>(PDFXrefStreamParser.java:55)
+	at org.apache.pdfbox.pdfparser.COSParser.parseXrefObjStream(COSParser.java:482)
+	at org.apache.pdfbox.pdfparser.COSParser.parseXref(COSParser.java:420)
+	at org.apache.pdfbox.pdfparser.COSParser.retrieveTrailer(COSParser.java:263)
+	at org.apache.pdfbox.pdfparser.PDFParser.initialParse(PDFParser.java:107)
+	at org.apache.pdfbox.pdfparser.PDFParser.parse(PDFParser.java:171)
+	at org.apache.pdfbox.pdfparser.PDFParser.parse(PDFParser.java:136)
+	at org.apache.pdfbox.Loader.loadPDF(Loader.java:483)
+	at org.apache.pdfbox.Loader.loadPDF(Loader.java:359)
+	at org.apache.pdfbox.Loader.loadPDF(Loader.java:276)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.loadPathDocument(PdfBoxWorkflowEngine.java:1093)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.loadPathDocument(PdfBoxWorkflowEngine.java:1074)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.openPrimaryDocument(PdfBoxWorkflowEngine.java:967)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.executeChecked(PdfBoxWorkflowEngine.java:105)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.execute(PdfBoxWorkflowEngine.java:41)
+	at net.zerocloud.pdf.DocumentWorkflow.executeOnce(DocumentWorkflow.java:184)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:103)
+	at net.zerocloud.pdf.DocumentWorkflow.executeWithInputResolver(DocumentWorkflow.java:85)
+	at net.zerocloud.pdf.HardenedWorkerMain.main(HardenedWorkerMain.java:137)
+
+T29 local chains: native=PASS, semantic=INDETERMINATE, syntax=INDETERMINATE, subsets=INDETERMINATE, visual=INDETERMINATE
+Sep 06, 2026 4:01:01 PM org.apache.pdfbox.io.IOUtils unmapper
+SEVERE: Unmapping is not supported because of missing permissions. Please grant at least the following permissions: RuntimePermission("accessClassInPackage.sun.misc")  and ReflectPermission("suppressAccessChecks")
+java.lang.SecurityException: Deep reflection is disabled in the Hardened Worker.
+	at net.zerocloud.pdf.HardenedWorkerSecurityManager.denied(HardenedWorkerSecurityManager.java:246)
+	at net.zerocloud.pdf.HardenedWorkerSecurityManager.checkPermission(HardenedWorkerSecurityManager.java:46)
+	at java.lang.reflect.AccessibleObject.setAccessible(AccessibleObject.java:128)
+	at org.apache.pdfbox.io.IOUtils.unmapper(IOUtils.java:284)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at org.apache.pdfbox.io.IOUtils.<clinit>(IOUtils.java:105)
+	at org.apache.pdfbox.io.ScratchFile.enlarge(ScratchFile.java:258)
+	at org.apache.pdfbox.io.ScratchFile.getNewPage(ScratchFile.java:202)
+	at org.apache.pdfbox.io.ScratchFileBuffer.addPage(ScratchFileBuffer.java:120)
+	at org.apache.pdfbox.io.ScratchFileBuffer.<init>(ScratchFileBuffer.java:78)
+	at org.apache.pdfbox.io.ScratchFile.createBuffer(ScratchFile.java:446)
+	at net.zerocloud.pdf.WorkflowResourceContext$AccountingStreamCache.createBuffer(WorkflowResourceContext.java:1881)
+	at org.apache.pdfbox.cos.COSStream.createOutputStream(COSStream.java:232)
+	at org.apache.pdfbox.cos.COSStream.createOutputStream(COSStream.java:207)
+	at net.zerocloud.pdf.PdfBoxPageContentSupport.contentStream(PdfBoxPageContentSupport.java:351)
+	at net.zerocloud.pdf.PdfBoxPageContentSupport.appendIsolated(PdfBoxPageContentSupport.java:279)
+	at net.zerocloud.pdf.PdfBoxShapedFont.draw(PdfBoxShapedFont.java:101)
+	at net.zerocloud.pdf.PdfBoxPositionedTextOperations$ShapedCluster.draw(PdfBoxPositionedTextOperations.java:301)
+	at net.zerocloud.pdf.PdfBoxParagraphOperations.paint(PdfBoxParagraphOperations.java:555)
+	at net.zerocloud.pdf.PdfBoxParagraphOperations.compose(PdfBoxParagraphOperations.java:228)
+	at net.zerocloud.pdf.PdfBoxParagraphOperations.execute(PdfBoxParagraphOperations.java:86)
+	at net.zerocloud.pdf.PdfBoxDocumentSession.executeChecked(PdfBoxDocumentSession.java:293)
+	at net.zerocloud.pdf.PdfBoxDocumentSession.execute(PdfBoxDocumentSession.java:142)
+	at net.zerocloud.pdf.HardenedWorkerMain.executeCommandItem(HardenedWorkerMain.java:1228)
+	at net.zerocloud.pdf.HardenedWorkerMain.executeCommandBatch(HardenedWorkerMain.java:997)
+	at net.zerocloud.pdf.HardenedWorkerMain.runRequests(HardenedWorkerMain.java:776)
+	at net.zerocloud.pdf.HardenedWorkerMain.lambda$main$1(HardenedWorkerMain.java:140)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.executeWithDocument(PdfBoxWorkflowEngine.java:346)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.executeChecked(PdfBoxWorkflowEngine.java:238)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.execute(PdfBoxWorkflowEngine.java:41)
+	at net.zerocloud.pdf.DocumentWorkflow.executeOnce(DocumentWorkflow.java:184)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:103)
+	at net.zerocloud.pdf.DocumentWorkflow.executeWithInputResolver(DocumentWorkflow.java:85)
+	at net.zerocloud.pdf.HardenedWorkerMain.main(HardenedWorkerMain.java:137)
+
+Sep 06, 2026 4:01:04 PM org.apache.pdfbox.io.IOUtils unmapper
+SEVERE: Unmapping is not supported because of missing permissions. Please grant at least the following permissions: RuntimePermission("accessClassInPackage.sun.misc")  and ReflectPermission("suppressAccessChecks")
+java.lang.SecurityException: Deep reflection is disabled in the Hardened Worker.
+	at net.zerocloud.pdf.HardenedWorkerSecurityManager.denied(HardenedWorkerSecurityManager.java:246)
+	at net.zerocloud.pdf.HardenedWorkerSecurityManager.checkPermission(HardenedWorkerSecurityManager.java:46)
+	at java.lang.reflect.AccessibleObject.setAccessible(AccessibleObject.java:128)
+	at org.apache.pdfbox.io.IOUtils.unmapper(IOUtils.java:284)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at org.apache.pdfbox.io.IOUtils.<clinit>(IOUtils.java:105)
+	at org.apache.pdfbox.filter.FlateFilter.decode(FlateFilter.java:45)
+	at org.apache.pdfbox.filter.Filter.decode(Filter.java:107)
+	at org.apache.pdfbox.filter.Filter.decode(Filter.java:295)
+	at org.apache.pdfbox.cos.COSStream.createView(COSStream.java:196)
+	at org.apache.pdfbox.pdfparser.PDFXrefStreamParser.<init>(PDFXrefStreamParser.java:55)
+	at org.apache.pdfbox.pdfparser.COSParser.parseXrefObjStream(COSParser.java:482)
+	at org.apache.pdfbox.pdfparser.COSParser.parseXref(COSParser.java:420)
+	at org.apache.pdfbox.pdfparser.COSParser.retrieveTrailer(COSParser.java:263)
+	at org.apache.pdfbox.pdfparser.PDFParser.initialParse(PDFParser.java:107)
+	at org.apache.pdfbox.pdfparser.PDFParser.parse(PDFParser.java:171)
+	at org.apache.pdfbox.pdfparser.PDFParser.parse(PDFParser.java:136)
+	at org.apache.pdfbox.Loader.loadPDF(Loader.java:483)
+	at org.apache.pdfbox.Loader.loadPDF(Loader.java:359)
+	at org.apache.pdfbox.Loader.loadPDF(Loader.java:276)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.loadPathDocument(PdfBoxWorkflowEngine.java:1093)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.loadPathDocument(PdfBoxWorkflowEngine.java:1074)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.openPrimaryDocument(PdfBoxWorkflowEngine.java:967)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.executeChecked(PdfBoxWorkflowEngine.java:105)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.execute(PdfBoxWorkflowEngine.java:41)
+	at net.zerocloud.pdf.DocumentWorkflow.executeOnce(DocumentWorkflow.java:184)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:103)
+	at net.zerocloud.pdf.DocumentWorkflow.executeWithInputResolver(DocumentWorkflow.java:85)
+	at net.zerocloud.pdf.HardenedWorkerMain.main(HardenedWorkerMain.java:137)
+
+T29 local chains: native=PASS, semantic=PASS, syntax=INDETERMINATE, subsets=INDETERMINATE, visual=INDETERMINATE
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 12.25 s -- in net.zerocloud.pdf.acceptance.T29ShapingEvidenceCommandTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Errors: 
+[ERROR]   T28UnicodeEvidenceCommandTest.sevenProfilesMatchTheIndependentGlyphGeometryInBothExecutionModes:41 » DocumentFailure The Worker could not complete the transaction.
+[INFO] 
+[ERROR] Tests run: 41, Failures: 0, Errors: 1, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent .................... SUCCESS [  0.659 s]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract SUCCESS [  0.553 s]
+[INFO] Folio PDF by ZeroCloud - Conversion ................ SUCCESS [  0.088 s]
+[INFO] Folio PDF by ZeroCloud - Document Engine ........... SUCCESS [  7.478 s]
+[INFO] Folio PDF by ZeroCloud - Acceptance Evidence ....... FAILURE [03:09 min]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  03:18 min
+[INFO] Finished at: 2026-09-06T16:01:04Z
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.5.4:test (default-test) on project pdf-acceptance: 
+[ERROR] 
+[ERROR] See /workspace/pdf-acceptance/target/surefire-reports for the individual test results.
+[ERROR] See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+[ERROR] 
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :pdf-acceptance

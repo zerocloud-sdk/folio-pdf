@@ -44,6 +44,12 @@ and aggregate-byte limits even when its bytes equal an earlier occurrence.
 Folio PDF never scans installed-font directories, asks a backend font mapper
 for a substitute, resolves a URI, or performs a network request.
 
+Distinct borrowed stream or channel declarations are each read once. Within
+one Document Session, byte-identical private snapshots may share storage;
+each declaration still retains its own read-once identity and contributes to
+owned-memory accounting. This does not change per-occurrence source-count or
+aggregate-byte limits, font selection, or caller ownership.
+
 `FontSelection.explicit(...)` accepts all four forms. A
 `ReferenceFontSet` is immutable, declaration ordered, and may contain only the
 reusable byte and path forms; streams and channels cannot be installed in the
@@ -155,11 +161,21 @@ The directory, alignment/padding, checksums, permissions, quadratic outlines,
 metrics, bounds, component graph and glyph maxima are still checked.
 
 This form additionally admits bounded glyph hint instructions, `maxZones=2`
-and nonzero hint VM maxima/flags. Translation-only composites may use
-`USE_MY_METRICS`; transforms and point attachments remain unsupported. Long
+and nonzero hint VM maxima/flags. Composites may use `USE_MY_METRICS` and
+integer translations. T29 additionally admits exact axis scales of +1 or -1,
+including the reflected components in the complete Noto Sans Arabic source.
+Fractional scaling, shear, two-by-two transforms, scaled-offset flags and
+point attachments remain unsupported. Long
 `loca` entries are actual byte offsets and may be odd; short offsets still use
 their specified two-byte units. These are necessary properties of the complete
 static Noto references, which are not modified to fit the old validator.
+
+With an explicit [T29 shaping preference](harfbuzz-shaping.md), Composition
+selects fallback for complete ICU graphemes and embeds the native glyph IDs,
+including substituted glyphs without cmap entries and their composite
+dependencies. Painted CID mappings and native advances are recorded separately
+from the nominal cmap metrics. Direct positioning retains the scalar-based
+contract below.
 
 Format-0 names may share bounded storage, include additional valid name IDs
 and Windows language records, and carry Macintosh Roman metadata. Unicode

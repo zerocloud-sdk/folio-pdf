@@ -16,6 +16,8 @@ final class VisualProfile {
     private static final String SUPPORTED_PAGE_BOX =
             "effective CropBox; CropBox is absent, so MediaBox "
                     + "[0 0 612 792] points is used";
+    private static final String T29_PAGE_BOX =
+            "effective CropBox; CropBox is absent, so MediaBox [0 0 240 192] points is used";
     private static final String T03_PROFILE =
             "T03-document-workflow-transaction";
     private static final String T18_PROFILE =
@@ -119,14 +121,15 @@ final class VisualProfile {
         }
         String expectedReference = required(properties, "EXPECTED_RASTER");
         String profileId = required(properties, "PROFILE_ID");
+        boolean shaping = profileId.startsWith("T29-shaping-");
         int pageNumber = 1;
         int pageCount = 1;
         if (profileId.equals("T24-paragraph-composition") || profileId.startsWith("T25-paragraph-")
                 || profileId.equals("T26-table-composition") || profileId.equals("T27-table-pagination")
-                || profileId.startsWith("T28-unicode-")) {
+                || profileId.startsWith("T28-unicode-") || shaping) {
             pageNumber = positiveInt(properties, "PAGE_SELECTION");
             pageCount = positiveInt(properties, "PAGE_COUNT");
-            int expectedPages = profileId.startsWith("T28-unicode-") ? 7
+            int expectedPages = shaping ? 8 : profileId.startsWith("T28-unicode-") ? 7
                     : profileId.equals("T27-table-pagination") ? T27TableExpectations.PAGE_COUNT
                     : profileId.equals("T26-table-composition") ? 3 : 2;
             if (pageCount != expectedPages || pageNumber > pageCount) {
@@ -159,7 +162,7 @@ final class VisualProfile {
         String antialiasingPolicy = required(properties, "ANTIALIASING_POLICY");
         String background = required(properties, "BACKGROUND");
         String comparisonMetric = required(properties, "COMPARISON_METRIC");
-        requireSupported("PAGE_BOX", pageBox, SUPPORTED_PAGE_BOX);
+        requireSupported("PAGE_BOX", pageBox, shaping ? T29_PAGE_BOX : SUPPORTED_PAGE_BOX);
         RenderingPolicy supportedPolicy = SUPPORTED_POLICIES.get(profileId);
         if (supportedPolicy == null) {
             throw new IOException("Unsupported visual profile ID: " + profileId);
@@ -238,6 +241,11 @@ final class VisualProfile {
         for (T25ParagraphExpectations.Profile profile : T25ParagraphExpectations.PROFILES) {
             policies.put(profile.id, policies.get(T19_PROFILE));
         }
+        for (String script : new String[] {"arabic", "hebrew", "devanagari", "thai"}) {
+            for (int page = 1; page <= 2; page++) {
+                policies.put("T29-shaping-" + script + "-page-" + page, policies.get("T28-unicode-latin"));
+            }
+        }
         return Collections.unmodifiableMap(policies);
     }
 
@@ -299,7 +307,8 @@ final class VisualProfile {
 
     boolean requiresExactChangedPixels() {
         return profileId.startsWith("T25-paragraph-") || profileId.equals("T26-table-composition")
-                || profileId.equals("T27-table-pagination") || profileId.startsWith("T28-unicode-");
+                || profileId.equals("T27-table-pagination") || profileId.startsWith("T28-unicode-")
+                || profileId.startsWith("T29-shaping-");
     }
 
     long comparisonThreshold() {

@@ -170,6 +170,8 @@ public final class DocumentWorkflow {
                     selectProviders(request, resources);
             resources.configureRendering(new RenderingCoordinator(
                     environment.getProviderCatalog(), request, providerSelections));
+            resources.configureShaping(new ShapingCoordinator(
+                    environment.getProviderCatalog(), request, providerSelections));
             if (request.getExecutionProfile()
                     == WorkflowExecutionProfile.HARDENED_WORKER) {
                 completedOutcome = HardenedWorkerEngine.execute(

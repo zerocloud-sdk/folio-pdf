@@ -68,7 +68,9 @@ public final class InventoryCommandTest {
                 "`document.hardened-worker.recovery-scale`"));
         assertTrue(facades.contains("- Stable entries: `0`"));
         assertTrue(facades.contains("- Preview entries: `12`"));
-        assertTrue(facades.contains("- Explicit capability exclusions: `19`"));
+        assertTrue(facades.contains("- Explicit capability exclusions: `20`"));
+        assertTrue(capabilities.contains("`composition.shaping.harf-buzz`"));
+        assertTrue(facades.contains("`composition.shaping.harf-buzz`"));
         assertTrue(facades.contains("`conversion.rendering`"));
         assertTrue(facades.contains("`document.value.inspect-patch`"));
         assertTrue(facades.contains("`document.page.manipulate-merge-split`"));

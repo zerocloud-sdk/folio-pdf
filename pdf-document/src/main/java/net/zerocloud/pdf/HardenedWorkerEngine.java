@@ -55,11 +55,11 @@ final class HardenedWorkerEngine {
     private static final String DOCUMENT_CLASS_INVENTORY =
             "META-INF/folio-pdf/document-worker-classes";
     private static final String DOCUMENT_CLASS_INVENTORY_SHA256 =
-            "a3cb0921c6d1b4d5ca5b09c727e5320b24896a6bd22fbafcbc0ad266fdd4e826";
+            "c07502e776f31812de5570344e8f98f9cc86f8083b3f20f95f9959d170f39c58";
     private static final String PROVIDER_CLASS_INVENTORY =
             "META-INF/folio-pdf/provider-contract-worker-classes";
     private static final String PROVIDER_CLASS_INVENTORY_SHA256 =
-            "c7a7bb193dcfa656ba13af311ce2d7654a5aaac962b8804481a77d14013a25b6";
+            "56340dc06714414d32db2af86d87db696cbe05de93b4ece4571bb3b412a76f16";
     private static final String PDFBOX_SHA256 =
             "97647cfbde61ebcfc06b4cf8c9b0ffcaaee073396eceb4a7f6836a9b9128903c";
     private static final String PDFBOX_IO_SHA256 =
@@ -1560,6 +1560,19 @@ final class HardenedWorkerEngine {
                             frame.clear();
                         }
                         serviceFontRequest(fontIdentifier);
+                        response = receive();
+                        continue;
+                    }
+                    if (frame.getOpcode() == WorkerProtocol.SHAPING_REQUIRED) {
+                        try {
+                            if (!resources.shapesComposition() || (opcode != WorkerProtocol.COMMAND_ITEM
+                                    && opcode != WorkerProtocol.COMMANDS && opcode != WorkerProtocol.COMMAND_BATCH)) {
+                                throw WorkerCodecIO.workerFailure(DocumentFailureCode.WORKER_PROTOCOL_REJECTED,
+                                        "The Worker shaping request is inapplicable.");
+                            }
+                            sendInputResponse(WorkerProtocol.SHAPING_RESULT,
+                                    resources.shaping().executeForWorker(frame.getPayload(), resources));
+                        } finally { frame.clear(); }
                         response = receive();
                         continue;
                     }

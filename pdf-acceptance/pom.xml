@@ -34,6 +34,11 @@
       <version>${pdfbox.version}</version>
     </dependency>
     <dependency>
+      <groupId>net.zerocloud</groupId>
+      <artifactId>pdf-conversion</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
       <groupId>com.twelvemonkeys.imageio</groupId>
       <artifactId>imageio-tiff</artifactId>
       <version>${twelvemonkeys.version}</version>
@@ -62,6 +67,38 @@
   </build>
 
   <profiles>
+    <profile>
+      <id>acceptance-t29-record</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>record-shaping-evidence</id>
+                <phase>verify</phase>
+                <goals><goal>java</goal></goals>
+                <configuration>
+                  <mainClass>net.zerocloud.pdf.acceptance.T29ShapingEvidenceCommand</mainClass>
+                  <classpathScope>runtime</classpathScope>
+                  <arguments>
+                    <argument>${acceptance.output}</argument>
+                    <argument>${maven.multiModuleProjectDirectory}/scripts/qpdf-pin.properties</argument>
+                    <argument>${maven.multiModuleProjectDirectory}/scripts/pdfium-pin.properties</argument>
+                    <argument>${maven.multiModuleProjectDirectory}/scripts/imagemagick-pin.properties</argument>
+                    <argument>${maven.multiModuleProjectDirectory}/capabilities/profiles</argument>
+                    <argument>${project.version}</argument>
+                    <argument>${folio.harfBuzzHelper}</argument>
+                    <argument>${env.FOLIO_SHAPING_PYTHON}</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
     <profile>
       <id>acceptance-record</id>
       <build>
@@ -190,6 +227,25 @@
                     <argument>${maven.multiModuleProjectDirectory}/scripts/imagemagick-pin.properties</argument>
                     <argument>${maven.multiModuleProjectDirectory}/capabilities/profiles</argument>
                     <argument>${project.version}</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+              <execution>
+                <id>record-shaping-evidence</id>
+                <phase>verify</phase>
+                <goals><goal>java</goal></goals>
+                <configuration>
+                  <mainClass>net.zerocloud.pdf.acceptance.T29ShapingEvidenceCommand</mainClass>
+                  <classpathScope>runtime</classpathScope>
+                  <arguments>
+                    <argument>${acceptance.output}</argument>
+                    <argument>${maven.multiModuleProjectDirectory}/scripts/qpdf-pin.properties</argument>
+                    <argument>${maven.multiModuleProjectDirectory}/scripts/pdfium-pin.properties</argument>
+                    <argument>${maven.multiModuleProjectDirectory}/scripts/imagemagick-pin.properties</argument>
+                    <argument>${maven.multiModuleProjectDirectory}/capabilities/profiles</argument>
+                    <argument>${project.version}</argument>
+                    <argument>${folio.harfBuzzHelper}</argument>
+                    <argument>${env.FOLIO_SHAPING_PYTHON}</argument>
                   </arguments>
                 </configuration>
               </execution>

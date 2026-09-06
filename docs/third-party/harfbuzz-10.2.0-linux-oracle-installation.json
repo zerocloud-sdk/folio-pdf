@@ -1,0 +1,291 @@
+{
+  "status": "INDETERMINATE",
+  "purpose": "Independent oracle installation only; no product or four-platform claim",
+  "platform": "Linux-6.8.0-136-generic-x86_64-with-glibc2.39",
+  "machine": "x86_64",
+  "harfbuzz": "10.2.0",
+  "source": {
+    "url": "https://github.com/harfbuzz/harfbuzz/releases/download/10.2.0/harfbuzz-10.2.0.tar.xz",
+    "sha256": "620e3468faec2ea8685d32c46a58469b850ef63040b3565cde05959825b48227"
+  },
+  "artifacts": [
+    {
+      "file": "/tmp/folio-t29/native/bin/hb-shape",
+      "sha256": "efd07617a878dddf0d1ef86be848051db4282eee8cacb66253b437cdb6def3fb",
+      "bytes": 70632
+    },
+    {
+      "file": "/tmp/folio-t29/native/lib/libharfbuzz.so.0.61020.0",
+      "sha256": "c1f95d16a61a8eb4f0c60f980522d57bf0c8fddbf62851c49cf77d2664b8044b",
+      "bytes": 1708344
+    }
+  ],
+  "linked_libraries": {
+    "libharfbuzz.so.0": {
+      "file": "/tmp/folio-t29/native/lib/libharfbuzz.so.0.61020.0",
+      "sha256": "c1f95d16a61a8eb4f0c60f980522d57bf0c8fddbf62851c49cf77d2664b8044b",
+      "bytes": 1708344
+    },
+    "libglib-2.0.so.0": {
+      "file": "/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.8000.0",
+      "sha256": "42467d0dbcc0a6c9e0a31f05a5944095504ce98f093c3fe0825f0a1533fa8207",
+      "bytes": 1343056
+    },
+    "libm.so.6": {
+      "file": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+      "sha256": "1b87a1a50b496cfead2b0ad134c2ff536705c82608db240c7e8aa48d6c0e4217",
+      "bytes": 952616
+    },
+    "libc.so.6": {
+      "file": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "d8db8739a1633c972cec6a4fe0566bdcec6fd088f98723492ab0361f66238f75",
+      "bytes": 2125328
+    },
+    "libfreetype.so.6": {
+      "file": "/usr/lib/x86_64-linux-gnu/libfreetype.so.6.20.1",
+      "sha256": "c14c53c5baff12afafb610c6312fb879e9bb77e80dd42e27504d52d6d8bcd059",
+      "bytes": 833608
+    },
+    "libpcre2-8.so.0": {
+      "file": "/usr/lib/x86_64-linux-gnu/libpcre2-8.so.0.11.2",
+      "sha256": "e00576d71d81d3ba0cfa4903c835a44a8723aac96f72f79ff75200b4cff9071b",
+      "bytes": 625344
+    },
+    "ld-linux-x86-64.so.2": {
+      "file": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+      "sha256": "1cd555ac46b7887edeaf3c42aac5408c8135e52f6b37870da2cf82d5fe14e829",
+      "bytes": 236616
+    },
+    "libz.so.1": {
+      "file": "/usr/lib/x86_64-linux-gnu/libz.so.1.3",
+      "sha256": "9b64150b28505a33d6bc3ecf709c279f6de97a1c184dbda65d06ee4537f6d286",
+      "bytes": 113000
+    },
+    "libbz2.so.1.0": {
+      "file": "/usr/lib/x86_64-linux-gnu/libbz2.so.1.0.4",
+      "sha256": "cc08c9f50a8009ffd6391e0116a100369b11ca9238fa52392c019e6645b122a1",
+      "bytes": 78944
+    },
+    "libpng16.so.16": {
+      "file": "/usr/lib/x86_64-linux-gnu/libpng16.so.16.43.0",
+      "sha256": "eac265b3506df0d9110dd9143e1d0503e2daabafe1d98b23fac8ca17b71d1f6b",
+      "bytes": 223304
+    },
+    "libbrotlidec.so.1": {
+      "file": "/usr/lib/x86_64-linux-gnu/libbrotlidec.so.1.1.0",
+      "sha256": "64d8a5019d4c294b89fde1193343ea324bbd8603652554e5545f0a01595fa2c5",
+      "bytes": 51512
+    },
+    "libbrotlicommon.so.1": {
+      "file": "/usr/lib/x86_64-linux-gnu/libbrotlicommon.so.1.1.0",
+      "sha256": "a91ead095d2c80520c55a89057bbe10b031a075340442e63f44b310f93883a1b",
+      "bytes": 141640
+    }
+  },
+  "tools": {
+    "gcc": {
+      "file": "/usr/bin/x86_64-linux-gnu-gcc-13",
+      "sha256": "1b99826121ae6682a634e5efe09bd3e3df58ce58e0b28f849114ab5b89139c26",
+      "bytes": 1023032,
+      "version": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+    },
+    "g++": {
+      "file": "/usr/bin/x86_64-linux-gnu-g++-13",
+      "sha256": "1353e9bdd29a7295c7226bf6c63abccce056d8cac31f112e5cdbecc3f28c2769",
+      "bytes": 1027128,
+      "version": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+    },
+    "meson": {
+      "file": "/usr/bin/meson",
+      "sha256": "86ce39b460ec729602cd68281c44fce77779aaf7fe0bca39a840d73fe63033e0",
+      "bytes": 1507,
+      "version": "1.3.2"
+    },
+    "ninja": {
+      "file": "/usr/bin/ninja",
+      "sha256": "5965527e09fe2b3787772aa4f711d6a36b393e7f2fcaa744a7a96c5a4ddf59cb",
+      "bytes": 248040,
+      "version": "1.11.1"
+    },
+    "pkg-config": {
+      "file": "/usr/bin/pkgconf",
+      "sha256": "7e8152db1b0c7e49d47b4b82a70dc9997b557951c5d4d938b0e7f208ce9eb10b",
+      "bytes": 45168,
+      "version": "1.8.1"
+    },
+    "ld": {
+      "file": "/usr/bin/x86_64-linux-gnu-ld.bfd",
+      "sha256": "e9ceb054c12207970f2726dfc07e9a66b411602748628baf27399f02a9bbb31b",
+      "bytes": 1359128,
+      "version": "GNU ld (GNU Binutils for Ubuntu) 2.42"
+    },
+    "as": {
+      "file": "/usr/bin/x86_64-linux-gnu-as",
+      "sha256": "21aff249b692b5c31a44007491f922dcb49f41323e362c57d2ada3f52eddb7f0",
+      "bytes": 745768,
+      "version": "GNU assembler (GNU Binutils for Ubuntu) 2.42"
+    },
+    "python3": {
+      "file": "/usr/bin/python3.12",
+      "sha256": "1643dacd9feaedc58f3cc581e4d22577dfe25c09b10282936186ccf0f2e61118",
+      "bytes": 8020928,
+      "version": "Python 3.12.3"
+    }
+  },
+  "packages": [
+    {
+      "package": "gcc-13",
+      "version": "13.3.0-6ubuntu2~24.04.1",
+      "source_url": "https://archive.ubuntu.com/ubuntu/pool/main/g/gcc-13/gcc-13_13.3.0-6ubuntu2~24.04.1_amd64.deb",
+      "package_sha256": "7438ff160b020a74970672189ecae25d0ca650de6d7f543f12a3134192cffbd9",
+      "copyright_record": {
+        "file": "/usr/share/doc/gcc-13-base/copyright",
+        "sha256": "08c6f3dee4c19aa1e57eb7d4ad45829b2e99656313bd07fa0922e2553f500be5",
+        "bytes": 69100
+      }
+    },
+    {
+      "package": "g++-13",
+      "version": "13.3.0-6ubuntu2~24.04.1",
+      "source_url": "https://archive.ubuntu.com/ubuntu/pool/main/g/gcc-13/g++-13_13.3.0-6ubuntu2~24.04.1_amd64.deb",
+      "package_sha256": "0f3ef964b8a91a9cd7bebfd126839a21941c55547cadcf4aa00204bc8cc43985",
+      "copyright_record": {
+        "file": "/usr/share/doc/gcc-13-base/copyright",
+        "sha256": "08c6f3dee4c19aa1e57eb7d4ad45829b2e99656313bd07fa0922e2553f500be5",
+        "bytes": 69100
+      }
+    },
+    {
+      "package": "binutils",
+      "version": "2.42-4ubuntu2.10",
+      "source_url": "https://archive.ubuntu.com/ubuntu/pool/main/b/binutils/binutils_2.42-4ubuntu2.10_amd64.deb",
+      "package_sha256": "b3b5a84181a38fd191820b2cdcc1a3eeb1cd6333ad472f2092f96e81047e9c74",
+      "copyright_record": {
+        "file": "/usr/share/doc/binutils/copyright",
+        "sha256": "a81bdd422c2c015deca84bf6ad249bf0d7d19885fc01d1894463291b0b7313e1",
+        "bytes": 1795
+      }
+    },
+    {
+      "package": "meson",
+      "version": "1.3.2-1ubuntu1",
+      "source_url": "https://archive.ubuntu.com/ubuntu/pool/universe/m/meson/meson_1.3.2-1ubuntu1_all.deb",
+      "package_sha256": "5a9ab497255cc51f97866c359fc5cc75a1be4890ad376e471ca45d76bbea4803",
+      "copyright_record": {
+        "file": "/usr/share/doc/meson/copyright",
+        "sha256": "cfee5dfb6033652725a18a630ae6e7db244138ea3ca34b7f620cfc6a648f6e8c",
+        "bytes": 910
+      }
+    },
+    {
+      "package": "ninja-build",
+      "version": "1.11.1-2",
+      "source_url": "https://archive.ubuntu.com/ubuntu/pool/universe/n/ninja-build/ninja-build_1.11.1-2_amd64.deb",
+      "package_sha256": "6a17f76a0f75586f1292f6c61a9b07fd0dec963baf6a102b17673f601c6b323a",
+      "copyright_record": {
+        "file": "/usr/share/doc/ninja-build/copyright",
+        "sha256": "1134fe05b5a52ce2a81fb233e421655bb45e5f5db74164478ea85343baf52b86",
+        "bytes": 1350
+      }
+    },
+    {
+      "package": "pkgconf",
+      "version": "1.8.1-2build1",
+      "source_url": "https://archive.ubuntu.com/ubuntu/pool/main/p/pkgconf/pkgconf_1.8.1-2build1_amd64.deb",
+      "package_sha256": "834a58031069d97d7cfb8b2f5bfd5effc69cecf7f30cc362071875f1f8dc1828",
+      "copyright_record": {
+        "file": "/usr/share/doc/pkgconf/copyright",
+        "sha256": "676c75e54ff7e3b9892940fbf1b31763cb6f2a6527a5607a3640ac59a2441fba",
+        "bytes": 7501
+      }
+    },
+    {
+      "package": "libglib2.0-0t64",
+      "version": "2.80.0-6ubuntu3.8",
+      "source_url": "https://archive.ubuntu.com/ubuntu/pool/main/g/glib2.0/libglib2.0-0t64_2.80.0-6ubuntu3.8_amd64.deb",
+      "package_sha256": "ca4eda0e01c76ba2e5e501e77decce53d98a641234b517eb98fc5d74980f913f",
+      "copyright_record": {
+        "file": "/usr/share/doc/libglib2.0-0t64/copyright",
+        "sha256": "b52574b109fb876dfa71dea7a98b8aee1bb583f6aa90c327d1e4dc0a1d59f211",
+        "bytes": 54957
+      }
+    },
+    {
+      "package": "libfreetype6",
+      "version": "2.13.2+dfsg-1ubuntu0.1",
+      "source_url": "https://archive.ubuntu.com/ubuntu/pool/main/f/freetype/libfreetype6_2.13.2+dfsg-1ubuntu0.1_amd64.deb",
+      "package_sha256": "f6937fd8a77e83001dcfd3857d5a5cfbd4caaeb297c7fdb71ec50514843e48af",
+      "copyright_record": {
+        "file": "/usr/share/doc/libfreetype6/copyright",
+        "sha256": "ce6d766883ea111e7f47acc09e9d49be8827daa6a03f2c2707243a425d41f0e9",
+        "bytes": 31209
+      }
+    },
+    {
+      "package": "libpcre2-8-0",
+      "version": "10.42-4ubuntu2.1",
+      "source_url": "https://archive.ubuntu.com/ubuntu/pool/main/p/pcre2/libpcre2-8-0_10.42-4ubuntu2.1_amd64.deb",
+      "package_sha256": "110a797a57673d3ee497a141cf988199258058c57525799c63194d81822529a0",
+      "copyright_record": {
+        "file": "/usr/share/doc/libpcre2-8-0/copyright",
+        "sha256": "030511beb4d9d620ad09914c369c36ec0528dcf301d1923cc643c948ee7c6a38",
+        "bytes": 6626
+      }
+    },
+    {
+      "package": "libc6",
+      "version": "2.39-0ubuntu8.7",
+      "source_url": "https://archive.ubuntu.com/ubuntu/",
+      "package_sha256": null,
+      "copyright_record": {
+        "file": "/usr/share/doc/libc6/copyright",
+        "sha256": "d3c95b56fa33e28b57860580f0baf4e4f4de2a268a2b80f1d031a5191bade265",
+        "bytes": 26462
+      }
+    },
+    {
+      "package": "zlib1g",
+      "version": "1:1.3.dfsg-3.1ubuntu2.1",
+      "source_url": "https://archive.ubuntu.com/ubuntu/",
+      "package_sha256": null,
+      "copyright_record": {
+        "file": "/usr/share/doc/zlib1g/copyright",
+        "sha256": "9e5b96d63773a5d177ba264254390f792be07e41748ebd94730981c6cac31cc6",
+        "bytes": 2927
+      }
+    },
+    {
+      "package": "libbz2-1.0",
+      "version": "1.0.8-5.1ubuntu0.1",
+      "source_url": "https://archive.ubuntu.com/ubuntu/pool/main/b/bzip2/libbz2-1.0_1.0.8-5.1ubuntu0.1_amd64.deb",
+      "package_sha256": "36ee08b00b1ee5018b2fce02881b7d2d73c9b4e32990bde3388400d86c48126a",
+      "copyright_record": {
+        "file": "/usr/share/doc/libbz2-1.0/copyright",
+        "sha256": "832ed535ff3c3d025a8d2348eb1b697b89addcf2eaadbc17650262040b9145e2",
+        "bytes": 2228
+      }
+    },
+    {
+      "package": "libpng16-16t64",
+      "version": "1.6.43-5ubuntu0.6",
+      "source_url": "https://archive.ubuntu.com/ubuntu/pool/main/libp/libpng1.6/libpng16-16t64_1.6.43-5ubuntu0.6_amd64.deb",
+      "package_sha256": "ac0163f58b8aa52dfdd17cdc10a83f3db084cb91a62686023f5c983d6ff89f8b",
+      "copyright_record": {
+        "file": "/usr/share/doc/libpng16-16t64/copyright",
+        "sha256": "4620d402b97601a910946acccbbe2e15bdffac11615bf9046520990d3b00f2b9",
+        "bytes": 13051
+      }
+    },
+    {
+      "package": "libbrotli1",
+      "version": "1.1.0-2build2",
+      "source_url": "https://archive.ubuntu.com/ubuntu/pool/main/b/brotli/libbrotli1_1.1.0-2build2_amd64.deb",
+      "package_sha256": "74492419b8fda803774b8c9acef6afc5d2f9ff31782635aae212906adae7b277",
+      "copyright_record": {
+        "file": "/usr/share/doc/libbrotli1/copyright",
+        "sha256": "24a64e5bb83d0960d1835696a1e23c0896ad6055b0ca47c66ab0eb9a766324b1",
+        "bytes": 1354
+      }
+    }
+  ]
+}

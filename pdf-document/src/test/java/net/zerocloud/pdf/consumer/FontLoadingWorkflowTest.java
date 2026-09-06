@@ -16,8 +16,10 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.List;
 import java.util.Locale;
 import net.zerocloud.pdf.CharacterMapping;
 import net.zerocloud.pdf.DocumentResourceInventory;
@@ -51,6 +53,7 @@ import net.zerocloud.pdf.TextRenderingMode;
 import net.zerocloud.pdf.WorkflowEnvironment;
 import net.zerocloud.pdf.WorkflowOutcome;
 import net.zerocloud.pdf.WorkflowRequest;
+import net.zerocloud.pdf.WorkflowResourcePolicy;
 import net.zerocloud.pdf.command.AddBlankPage;
 import net.zerocloud.pdf.composition.CanvasMatrix;
 import net.zerocloud.pdf.composition.FontLimits;
@@ -311,6 +314,80 @@ public final class FontLoadingWorkflowTest {
                     failure.getCode());
             assertEquals(CAPABILITY, failure.getCapabilityId());
         }
+    }
+
+    @Test
+    public void equalBorrowedDeclarationsKeepRepeatedFontUseWithinABoundedBudget()
+            throws Exception {
+        WorkflowResourcePolicy defaults = WorkflowResourcePolicy.safeDefaults();
+        WorkflowOutcome<Void> control = repeatedBorrowedFontDeclarations(
+                false, temporaryFolder.newFile().toPath(), defaults);
+        long budget = control.getResourceUsage().getPeakOwnedMemoryBytes() + 65536L;
+        Path target = temporaryFolder.newFile("equal-borrowed-fonts.pdf").toPath();
+        WorkflowOutcome<Void> repeated = repeatedBorrowedFontDeclarations(true, target,
+                WorkflowResourcePolicy.builder().maximumOwnedMemoryBytes(budget)
+                        .maximumInputBytes(defaults.getMaximumInputBytes()).maximumPages(defaults.getMaximumPages())
+                        .maximumObjects(defaults.getMaximumObjects()).maximumNestingDepth(defaults.getMaximumNestingDepth())
+                        .maximumDecompressedBytes(defaults.getMaximumDecompressedBytes())
+                        .maximumDecodedPixels(defaults.getMaximumDecodedPixels())
+                        .maximumTemporaryStorageBytes(defaults.getMaximumTemporaryStorageBytes())
+                        .maximumElapsedTime(defaults.getMaximumElapsedTime())
+                        .maximumConcurrentWorkflows(defaults.getMaximumConcurrentWorkflows()).build());
+        assertEquals(PublicationStatus.COMMITTED, repeated.getPublicationReceipts().get(0).getStatus());
+        assertTrue(repeated.getResourceUsage().getPeakOwnedMemoryBytes() <= budget);
+        assertTrue("distinct borrowed declarations remain visible in owned-memory accounting",
+                repeated.getResourceUsage().getPeakOwnedMemoryBytes()
+                        > control.getResourceUsage().getPeakOwnedMemoryBytes());
+        new DocumentWorkflow().execute(WorkflowRequest.open(target, SaveMode.REWRITE), session -> {
+            DocumentResourceInventory inventory = session.query(ExtractImagesAndResources.version1(
+                    resourceLimits(), ImageByteAccess.NONE));
+            assertEquals(1, inventory.getFonts().size());
+            FontResource font = inventory.getFonts().get(0);
+            assertEquals(FontResource.Embedding.EMBEDDED, font.getEmbedding());
+            assertTrue(new String(toUnicodeBytes(session, font), StandardCharsets.ISO_8859_1)
+                    .contains("<0041>"));
+            return null;
+        });
+    }
+
+    private WorkflowOutcome<Void> repeatedBorrowedFontDeclarations(boolean distinct,
+            Path target, WorkflowResourcePolicy policy) throws Exception {
+        byte[] bytes = fontBytes("FolioPrimary.ttf.base64");
+        List<TrackingInputStream> streams = new ArrayList<TrackingInputStream>();
+        List<TrackingChannel> channels = new ArrayList<TrackingChannel>();
+        TrackingInputStream first = new TrackingInputStream(bytes);
+        streams.add(first);
+        FontSource shared = FontSource.stream(first);
+        WorkflowOutcome<Void> outcome = new DocumentWorkflow().execute(WorkflowRequest.builder()
+                .target("result", PublicationTarget.path(target)).saveMode(SaveMode.REWRITE)
+                .resourcePolicy(policy).build(), session -> {
+                    session.execute(AddBlankPage.INSTANCE);
+                    for (int index = 0; index < 128; index++) {
+                        FontSource source = shared;
+                        if (distinct && index > 0) {
+                            if ((index & 1) == 0) {
+                                TrackingInputStream input = new TrackingInputStream(bytes);
+                                streams.add(input);
+                                source = FontSource.stream(input);
+                            } else {
+                                TrackingChannel channel = new TrackingChannel(bytes);
+                                channels.add(channel);
+                                source = FontSource.channel(channel);
+                            }
+                        }
+                        session.execute(positioned(1, "A", source));
+                    }
+                    return null;
+                });
+        for (TrackingInputStream stream : streams) {
+            assertFalse("borrowed streams stay open", stream.closed);
+            assertEquals(bytes.length, stream.bytesRead);
+        }
+        for (TrackingChannel channel : channels) {
+            assertTrue("borrowed channels stay open", channel.isOpen());
+            assertEquals(bytes.length, channel.bytesRead);
+        }
+        return outcome;
     }
 
     @Test

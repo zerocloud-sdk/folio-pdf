@@ -1,0 +1,29 @@
+{
+  "observed_utc": "2026-09-06T16:57:18.980831+00:00",
+  "jdk": 8,
+  "jdk_version": "1.8.0_502-b07",
+  "image_id": "abe8c22c734bcff3c2e9ec5f8549f9aeb9a27aabc7b53974ddadcc903d30644a",
+  "command": "FOLIO_HARFBUZZ_HELPER=/home/ubuntu/IdeaProjects/open-pdf/.build-cache/harfbuzz/10.2.0-final/bin/folio-harfbuzz ./scripts/verify-jdk-matrix.sh 8 11",
+  "working_directory": "/tmp/folio-t29/matrix-font-cache-8-11",
+  "jdk8_maven_exit_code": 0,
+  "exit_evidence": "The set -e matrix script advanced to JDK 11 after the complete JDK 8 Maven success; the enclosing 8/11 command has now returned actual exit 0.",
+  "finished_record": "2026-09-06T16:56:11Z",
+  "total_time": " 18:16 min",
+  "test_totals_from_per_class_log_records": {
+    "tests": 1019,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 3
+  },
+  "source_snapshot_sha256": "94b628481751378665a40a3b033430b1224ec0adc817f811386bc44db59ef24f",
+  "t28_worker_modeled_peak_bytes": 1294495682,
+  "log": {
+    "path": "capabilities/evidence/artifacts/T29-verified-jdk8.txt",
+    "sha256": "e62012ee722edc0ff663d033a3c6dc943d6db47c9661cfe2ff3a642f469ea860",
+    "bytes": 67214,
+    "scope": "Exact first complete JDK block from the combined invocation, stopping before the JDK 11 banner."
+  },
+  "scope": "Complete current-source JDK 8 gate. Other required JDK gates and actual Windows/macOS evidence are separate requirements.",
+  "enclosing_command_exit_code": 0,
+  "completed_combined_receipt": "capabilities/evidence/artifacts/T29-verified-jdk8-11.json"
+}

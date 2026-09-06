@@ -11,7 +11,7 @@ permissions:
 jobs:
   verify:
     name: JDK ${{ matrix.java }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     strategy:
       fail-fast: false
@@ -28,6 +28,16 @@ jobs:
           distribution: temurin
           java-version: ${{ matrix.java }}
           cache: maven
+
+      - name: Install the explicit T29 native test engine
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends meson ninja-build pkg-config
+          source scripts/harfbuzz-pin.properties
+          curl --fail --location --output "${RUNNER_TEMP}/${HARFBUZZ_ARCHIVE_NAME}" "${HARFBUZZ_ARCHIVE_URL}"
+          python3 scripts/install-harfbuzz.py "${RUNNER_TEMP}/${HARFBUZZ_ARCHIVE_NAME}" "${RUNNER_TEMP}/folio-harfbuzz"
+          echo "FOLIO_HARFBUZZ_HELPER=${RUNNER_TEMP}/folio-harfbuzz/bin/folio-harfbuzz" >> "${GITHUB_ENV}"
 
       - name: Verify
         run: ./mvnw -B -ntp verify

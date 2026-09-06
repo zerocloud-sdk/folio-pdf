@@ -1,0 +1,243 @@
+{
+  "observed_utc": "2026-09-06T15:22:58.916973+00:00",
+  "tested_source_snapshot_sha256": "39b761992f1677fe25ee7c4d5796c1505a024a890880d51aca95ed516024565f",
+  "scope": "17 getter Javadocs in two provider-contract source files; all executable source outside Javadoc comments is identical. Full root and JDK gates refer to the preserved tested snapshot.",
+  "strict_javadoc_command": "javadoc -quiet -Werror -Xdoclint:all --release 8 -d /tmp/folio-t29/javadoc-final -classpath pdf-provider-contract/target/classes:pdf-conversion/target/classes pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingRequest.java pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingResult.java pdf-conversion/src/main/java/net/zerocloud/pdf/conversion/HarfBuzzCapabilityProvider.java",
+  "strict_javadoc_exit_code": 0,
+  "strict_javadoc_log": {
+    "path": "/tmp/folio-t29/final-public-javadoc-refactor.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "recompile_command": "./mvnw -B -ntp -pl pdf-conversion -am -DskipTests package",
+  "recompile_exit_code": 0,
+  "source_changes": [
+    {
+      "path": "pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingRequest.java",
+      "tested_sha256": "5b14e6758a7fc56e3b1b11a2d64ce7a0bd74409ce216b163ec9236fd2e5ab797",
+      "current_sha256": "f073f8e80947c1ace7fc8490e128e59810f7fb7299646fb7e4cc5f7249bfe56b",
+      "only_javadoc_comments_changed": true
+    },
+    {
+      "path": "pdf-provider-contract/src/main/java/net/zerocloud/pdf/provider/ShapingResult.java",
+      "tested_sha256": "039d11c4e8b1c22b1efcc9df07077dc904e30379f5c3ef5c47d3316c71f88a7d",
+      "current_sha256": "0c94c09d7685dbb6b632d2be4f129e0fdf8433a19a209008e01ad870e108fabd",
+      "only_javadoc_comments_changed": true
+    }
+  ],
+  "source_patch_sha256": "224bc59eefe6cb2a8d8aa4b041d6d6b09b1f4dea89b00e85b6a70f5a1da01def",
+  "class_files": [
+    {
+      "path": "pdf-provider-contract/target/classes/net/zerocloud/pdf/provider/CapabilityProvider.class",
+      "tested_sha256": "08bc644d83135895644f7d219b258de3f8fdaa0a31eb0c96cf05373ba647f572",
+      "current_sha256": "08bc644d83135895644f7d219b258de3f8fdaa0a31eb0c96cf05373ba647f572",
+      "byte_identical": true
+    },
+    {
+      "path": "pdf-provider-contract/target/classes/net/zerocloud/pdf/provider/ProviderMetadata$Builder.class",
+      "tested_sha256": "df264b7dabad58b13311b98689078402459f84d8e92fa28f65e164f283455866",
+      "current_sha256": "df264b7dabad58b13311b98689078402459f84d8e92fa28f65e164f283455866",
+      "byte_identical": true
+    },
+    {
+      "path": "pdf-provider-contract/target/classes/net/zerocloud/pdf/provider/ProviderMetadata$1.class",
+      "tested_sha256": "7e93e6f996c72bc637517204cf616131d3ac3e970c41ff30bcdb56a1e2ddaf0f",
+      "current_sha256": "7e93e6f996c72bc637517204cf616131d3ac3e970c41ff30bcdb56a1e2ddaf0f",
+      "byte_identical": true
+    },
+    {
+      "path": "pdf-provider-contract/target/classes/net/zerocloud/pdf/provider/ProviderMetadata.class",
+      "tested_sha256": "ed8a753e6755a15ceed80936e27ea97cd039be8c2c127bf9111707b5f879206d",
+      "current_sha256": "ed8a753e6755a15ceed80936e27ea97cd039be8c2c127bf9111707b5f879206d",
+      "byte_identical": true
+    },
+    {
+      "path": "pdf-provider-contract/target/classes/net/zerocloud/pdf/provider/ProviderRequest$Builder.class",
+      "tested_sha256": "871773527090a8f6c9800e609942083fbaac5868f67608556a3b762873223fa8",
+      "current_sha256": "871773527090a8f6c9800e609942083fbaac5868f67608556a3b762873223fa8",
+      "byte_identical": true
+    },
+    {
+      "path": "pdf-provider-contract/target/classes/net/zerocloud/pdf/provider/ProviderRequest$1.class",
+      "tested_sha256": "11390f352bb6092604ee8264009a65cfc69996369433836c7ee12dc7d7a3ab14",
+      "current_sha256": "11390f352bb6092604ee8264009a65cfc69996369433836c7ee12dc7d7a3ab14",
+      "byte_identical": true
+    },
+    {
+      "path": "pdf-provider-contract/target/classes/net/zerocloud/pdf/provider/ProviderRequest.class",
+      "tested_sha256": "3573f219a36d8a471b973b42bb441a1c2400eb35842dcf232408b12601516ace",
+      "current_sha256": "3573f219a36d8a471b973b42bb441a1c2400eb35842dcf232408b12601516ace",
+      "byte_identical": true
+    },
+    {
+      "path": "pdf-provider-contract/target/classes/net/zerocloud/pdf/provider/ProviderResult.class",
+      "tested_sha256": "06563b6fdd16f89958b45532d3fce92156589b44a598c2b471415c19713fd567",
+      "current_sha256": "06563b6fdd16f89958b45532d3fce92156589b44a598c2b471415c19713fd567",
+      "byte_identical": true
+    },
+    {
+      "path": "pdf-provider-contract/target/classes/net/zerocloud/pdf/provider/ProviderFailure.class",
+      "tested_sha256": "6eedc1d59a207b5d6f54c4ee06dea10ce71a41c2641f95dbfa8eda9911f77be6",
+      "current_sha256": "6eedc1d59a207b5d6f54c4ee06dea10ce71a41c2641f95dbfa8eda9911f77be6",
+      "byte_identical": true
+    },
+    {
+      "path": "pdf-provider-contract/target/classes/net/zerocloud/pdf/provider/ProviderFailureCode.class",
+      "tested_sha256": "bd40e6ad970494758b1e2751d53a09331439cfa1da4c921c8c6be9f1ad5cea48",
+      "current_sha256": "bd40e6ad970494758b1e2751d53a09331439cfa1da4c921c8c6be9f1ad5cea48",
+      "byte_identical": true
+    },
+    {
+      "path": "pdf-provider-contract/target/classes/net/zerocloud/pdf/provider/ProviderExecutionMode.class",
+      "tested_sha256": "ef348579c1387b5585719f4dd1d73bd28e10c83abb604be00f7319f6000d744c",
+      "current_sha256": "ef348579c1387b5585719f4dd1d73bd28e10c83abb604be00f7319f6000d744c",
+      "byte_identical": true
+    },
+    {
+      "path": "pdf-provider-contract/target/classes/net/zerocloud/pdf/provider/ProviderAvailability.class",
+      "tested_sha256": "f58663316e20ccedf6727e8adbb11f39019bac574bf435d487d74d89fd971d75",
+      "current_sha256": "f58663316e20ccedf6727e8adbb11f39019bac574bf435d487d74d89fd971d75",
+      "byte_identical": true
+    },
+    {
+      "path": "pdf-provider-contract/target/classes/net/zerocloud/pdf/provider/ProviderLimits.class",
+      "tested_sha256": "c88057a52f26af20cdb98471394ca37bd6b5b7a971e0b888b60c373d9747cd4e",
+      "current_sha256": "c88057a52f26af20cdb98471394ca37bd6b5b7a971e0b888b60c373d9747cd4e",
+      "byte_identical": true
+    },
+    {
+      "path": "pdf-provider-contract/target/classes/net/zerocloud/pdf/provider/ProviderDistribution.class",
+      "tested_sha256": "75a99f13d8ee7b0fda96c27956abe67b8c604d6228c9257448f645ea0f4f7ffc",
+      "current_sha256": "75a99f13d8ee7b0fda96c27956abe67b8c604d6228c9257448f645ea0f4f7ffc",
+      "byte_identical": true
+    },
+    {
+      "path": "pdf-provider-contract/target/classes/net/zerocloud/pdf/provider/ProviderCatalog.class",
+      "tested_sha256": "382fdb96ed739768d53b536032ebe0327a2bafd17ff1b8b713d9eb1bf40d8e02",
+      "current_sha256": "382fdb96ed739768d53b536032ebe0327a2bafd17ff1b8b713d9eb1bf40d8e02",
+      "byte_identical": true
+    },
+    {
+      "path": "pdf-provider-contract/target/classes/net/zerocloud/pdf/provider/ProviderPreference.class",
+      "tested_sha256": "f34b85395a4bc02b4b334ca2991eb81b337a480bfebaab81e0b5e9c1ef25ed20",
+      "current_sha256": "f34b85395a4bc02b4b334ca2991eb81b337a480bfebaab81e0b5e9c1ef25ed20",
+      "byte_identical": true
+    },
+    {
+      "path": "pdf-provider-contract/target/classes/net/zerocloud/pdf/provider/ProviderSelection.class",
+      "tested_sha256": "00057249fe8c1492651c8591aeb48d5913b773e022f96b38e5c01b83cff1fdec",
+      "current_sha256": "00057249fe8c1492651c8591aeb48d5913b773e022f96b38e5c01b83cff1fdec",
+      "byte_identical": true
+    },
+    {
+      "path": "pdf-provider-contract/target/classes/net/zerocloud/pdf/provider/ProviderExecution.class",
+      "tested_sha256": "2ddd05922945268e6b94c411ce55b7ec4de5b98b8300181c043b091c03aafcbf",
+      "current_sha256": "2ddd05922945268e6b94c411ce55b7ec4de5b98b8300181c043b091c03aafcbf",
+      "byte_identical": true
+    },
+    {
+      "path": "pdf-provider-contract/target/classes/net/zerocloud/pdf/provider/ProviderIdentifiers.class",
+      "tested_sha256": "e8d805febec86050eb9690cec9916d942daa2e473edc83acac973ed32badee19",
+      "current_sha256": "e8d805febec86050eb9690cec9916d942daa2e473edc83acac973ed32badee19",
+      "byte_identical": true
+    },
+    {
+      "path": "pdf-provider-contract/target/classes/net/zerocloud/pdf/provider/ShapingRequest$Direction.class",
+      "tested_sha256": "978806863b411f0c6af06e2b1740427ece6e2e4e41706de8c84f2637f789fa79",
+      "current_sha256": "978806863b411f0c6af06e2b1740427ece6e2e4e41706de8c84f2637f789fa79",
+      "byte_identical": true
+    },
+    {
+      "path": "pdf-provider-contract/target/classes/net/zerocloud/pdf/provider/ShapingRequest.class",
+      "tested_sha256": "a7137056a6ce87f5de902df69bb3153ab944c666ba87891dfbd59fbeffda7d30",
+      "current_sha256": "bfb4aea462a7c6870b7a652f0212604e586aea50425cb6e9c11d18e895973c91",
+      "byte_identical": false,
+      "complete_javap_views_equal_except_line_number_tables": true,
+      "normalized_view_sha256": "29f855b39757482daa1141607a74ad1e86e6373b3a9d8d24a40db2d538e66cae"
+    },
+    {
+      "path": "pdf-provider-contract/target/classes/net/zerocloud/pdf/provider/ShapingResult$Glyph.class",
+      "tested_sha256": "695c221512059c2f8ec9dc99b193d93655ce9b481a8eafb674961d67a4e20662",
+      "current_sha256": "e5c6327a8158720b44365468b43437fb4cd96c58c7bc9f8d421f657d6b33dc01",
+      "byte_identical": false,
+      "complete_javap_views_equal_except_line_number_tables": true,
+      "normalized_view_sha256": "a5be99861f7a789b2a1ae2ccc186ee8b67269733606bd4dc8b7febfe9443b1f1"
+    },
+    {
+      "path": "pdf-provider-contract/target/classes/net/zerocloud/pdf/provider/ShapingResult$1.class",
+      "tested_sha256": "4f87ca150b9593278115bf39539c96bf9723a40f0d935b35638292d0ca7bd437",
+      "current_sha256": "4f87ca150b9593278115bf39539c96bf9723a40f0d935b35638292d0ca7bd437",
+      "byte_identical": true
+    },
+    {
+      "path": "pdf-provider-contract/target/classes/net/zerocloud/pdf/provider/ShapingResult.class",
+      "tested_sha256": "1f4b89ef56d158188b4f52ab513ae09a98f661a613daed096b33c267d51fcdcf",
+      "current_sha256": "6337cfbbb456d16b8cbb9dea33bf093c8ddad505897cf4ccb55c6c2513ae499b",
+      "byte_identical": false,
+      "complete_javap_views_equal_except_line_number_tables": true,
+      "normalized_view_sha256": "99e2e82917c57bc5c3b70035e3f504a3ba9cc95edb674518fe54baedb0f26fb1"
+    },
+    {
+      "path": "pdf-provider-contract/target/classes/net/zerocloud/pdf/provider/package-info.class",
+      "tested_sha256": "5ad5ffb1c04e22e681970a219e929f63d1efefb7b66e2cafd8abb480ac990378",
+      "current_sha256": "5ad5ffb1c04e22e681970a219e929f63d1efefb7b66e2cafd8abb480ac990378",
+      "byte_identical": true
+    },
+    {
+      "path": "pdf-conversion/target/classes/net/zerocloud/pdf/conversion/HarfBuzzCapabilityProvider.class",
+      "tested_sha256": "fa01f6d8c9b5cf91b490f546e2ede5d0e3109ac45894cff5cfc4d26f86e28374",
+      "current_sha256": "fa01f6d8c9b5cf91b490f546e2ede5d0e3109ac45894cff5cfc4d26f86e28374",
+      "byte_identical": true
+    },
+    {
+      "path": "pdf-conversion/target/classes/net/zerocloud/pdf/conversion/SubprocessCapabilityProvider$1.class",
+      "tested_sha256": "b9e92455579545254292209ca27c326311b176961e248e5457f0bc8f619472a9",
+      "current_sha256": "b9e92455579545254292209ca27c326311b176961e248e5457f0bc8f619472a9",
+      "byte_identical": true
+    },
+    {
+      "path": "pdf-conversion/target/classes/net/zerocloud/pdf/conversion/SubprocessCapabilityProvider$2.class",
+      "tested_sha256": "87fee80c1fcdb73ec732e3a6b81a0adb2f20049e3ca4e878e54cfccfbb22ede6",
+      "current_sha256": "87fee80c1fcdb73ec732e3a6b81a0adb2f20049e3ca4e878e54cfccfbb22ede6",
+      "byte_identical": true
+    },
+    {
+      "path": "pdf-conversion/target/classes/net/zerocloud/pdf/conversion/SubprocessCapabilityProvider$3.class",
+      "tested_sha256": "e87de37ad2e24d38a508559ae189f8cc7a3552fe6d844374c5c203aa293a3682",
+      "current_sha256": "e87de37ad2e24d38a508559ae189f8cc7a3552fe6d844374c5c203aa293a3682",
+      "byte_identical": true
+    },
+    {
+      "path": "pdf-conversion/target/classes/net/zerocloud/pdf/conversion/SubprocessCapabilityProvider$4.class",
+      "tested_sha256": "e5f5b7f9c44c462846347e226af6b8e66dc57e776cd87ec8044681db4ccffb22",
+      "current_sha256": "e5f5b7f9c44c462846347e226af6b8e66dc57e776cd87ec8044681db4ccffb22",
+      "byte_identical": true
+    },
+    {
+      "path": "pdf-conversion/target/classes/net/zerocloud/pdf/conversion/SubprocessCapabilityProvider.class",
+      "tested_sha256": "ee9ceaa74f081be77f102210b360bc3bd9fec1ee942ec41e7945108c053dd290",
+      "current_sha256": "ee9ceaa74f081be77f102210b360bc3bd9fec1ee942ec41e7945108c053dd290",
+      "byte_identical": true
+    },
+    {
+      "path": "pdf-conversion/target/classes/net/zerocloud/pdf/conversion/package-info.class",
+      "tested_sha256": "3afb6665d295aad617c7bcbe35f945a68acdc9f8fc9b6953340853438f0b25d2",
+      "current_sha256": "3afb6665d295aad617c7bcbe35f945a68acdc9f8fc9b6953340853438f0b25d2",
+      "byte_identical": true
+    }
+  ],
+  "comparison_policy": "Byte hashes for all 32 class entries (including nested types). For changed entries, complete javap -v -p views compare after excluding only the path/date/size/checksum header and LineNumberTable headings/line entries; constant pool, executable instructions, signatures and remaining metadata are retained. This is not a claim of complete class-byte identity when debug line numbers move.",
+  "final_source_snapshot_sha256": "7d640b293ce2e3bc534d91ece203ac9f9203493377a6cddc594a9469dc891a16",
+  "final_source_snapshot_definition": "Use the preserved 663-file tested manifest, replacing only the two source hashes recorded in source_changes; canonical sorted UTF-8 hash lines retain the original definition.",
+  "source_patch_artifact": "T29-final-getter-javadoc.patch",
+  "recompile_log_artifact": "T29-final-javadoc-build.txt",
+  "class_observations_artifact": {
+    "path": "T29-final-javadoc-class-observations.json",
+    "sha256": "21de7709c070653ff8280b035a312142d1e5f22bb7b9f5b19e3531d23521021d"
+  },
+  "recompile_log": {
+    "path": "/tmp/folio-t29/final-javadoc-block-bytecode-build.log",
+    "artifact": "T29-final-javadoc-build.txt",
+    "sha256": "4d4ec3f4f873fadf7a5e544db836222e3cf45d6d629e41cb574f83c3c1eac1b7",
+    "bytes": 5047
+  }
+}

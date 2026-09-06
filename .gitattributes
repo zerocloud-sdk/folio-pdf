@@ -3,6 +3,10 @@
 # Preserve PDF stream bytes and cross-reference offsets.
 *.pdf binary
 
+# Preserve exact T29 tool output and patch bytes referenced by evidence hashes.
+capabilities/evidence/artifacts/T29-*.txt -text whitespace=-blank-at-eol,-blank-at-eof
+capabilities/evidence/artifacts/T29-final-getter-javadoc.patch -text whitespace=-blank-at-eol,-blank-at-eof
+
 *.sh text eol=lf
 mvnw text eol=lf
 *.cmd text eol=crlf

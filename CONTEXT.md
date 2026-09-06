@@ -114,6 +114,10 @@ _Avoid_: plain text, reading order, OCR text
 The explicit strength of the evidence connecting a PDF character code to Unicode: explicit, inferred from a standard mapping, contradictory, or missing. Contradictory and missing mappings remain uncertain rather than becoming guessed characters.
 _Avoid_: encoding quality, guessed character
 
+**PDF Character Code**:
+A code interpreted through the selected PDF Font resource to identify a painted glyph and any declared Unicode mapping. It is distinct from a Unicode scalar and from a Glyph ID in a source or embedded font program.
+_Avoid_: code point, source glyph ID, Unicode character
+
 **Marked Content**:
 Page content bracketed by PDF marked-content operators and identified by a tag and optional marked-content identifier. Its association with Logical Structure is explicit document data, not implied by operator nesting alone.
 _Avoid_: tag node, structure element
@@ -218,6 +222,22 @@ _Avoid_: system font, font URL, backend font
 An unshaped Unicode scalar sequence placed with an explicit text matrix, size, Text Rendering Mode, and deterministic Font Source selection. It is not bidi, shaping, line breaking, or paragraph layout.
 _Avoid_: paragraph, text layout, encoded glyph run
 
+**Glyph Shaping**:
+The conversion of logical text into ordered glyphs and their advances and drawing offsets for an explicit font, script, language and direction. It is separate from segmentation, bidi ordering and line breaking.
+_Avoid_: Unicode processing, glyph encoding, bidi
+
+**Shaping Cluster**:
+A logical input range associated with one or more Shaped Glyphs; several input characters may share one glyph, and several glyphs may share one input range. It need not coincide with a single grapheme or scalar.
+_Avoid_: character, grapheme, glyph
+
+**Glyph ID**:
+The identity of a glyph within one particular font program. Source and embedded subset programs can assign different Glyph IDs to the same outline.
+_Avoid_: PDF Character Code, Unicode scalar, global glyph identity
+
+**Shaped Glyph**:
+A source Glyph ID together with its Shaping Cluster, pen advances and drawing offsets. Its identity and placement can differ from the nominal glyph mapped from an individual Unicode scalar.
+_Avoid_: character, positioned scalar, PDF Character Code
+
 **Paragraph Flow**:
 A versioned, finite declaration of semantic paragraphs, tables and explicit area breaks over new pages. Composition converts it into positioned content using explicitly selected fonts and bounded Canvas graphics.
 _Avoid_: renderer callback, implicit page generator, positioned text run
@@ -303,7 +323,7 @@ A completed page raster with detached geometry and safe diagnostics, whose stage
 _Avoid_: Image Resource, live page, published document
 
 **Capability Provider**:
-A replaceable implementation of a conversion capability. Providers may use different local or remote technologies while the default distribution remains usable offline.
+A replaceable implementation of one declared capability, including conversion or Glyph Shaping. Providers may use different local or remote technologies while the default distribution remains usable offline.
 _Avoid_: built-in converter, mandatory cloud service
 
 **Provider Registration**:

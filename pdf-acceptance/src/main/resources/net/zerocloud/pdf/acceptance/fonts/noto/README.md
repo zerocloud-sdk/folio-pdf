@@ -1,6 +1,6 @@
-# T28 Noto reference data (OFL-1.1)
+# T28/T29 Noto reference data (OFL-1.1)
 
-These complete fonts are test and independent acceptance inputs for #29. They
+These complete fonts are test and independent acceptance inputs for #29/#30. They
 are packaged only by the repository-only pdf-acceptance artifact and copied
 into pdf-document's **test** resources. They are never runtime defaults,
 downloaded by a workflow, or included in the shipped pdf-document JAR.
@@ -14,6 +14,9 @@ links each derived CJK file to its original and its generation settings.
 | --- | --- | --- |
 | Noto Sans Regular (Latin/Greek/Cyrillic) | 2.008, noto-fonts `ffebf8c1ee449e544955a7e813c54f9b73848eac` | Unmodified static hinted TrueType, 3,748 glyphs |
 | Noto Sans Hebrew Regular (bidi probe) | 3.000, same commit | Unmodified static hinted TrueType, 149 glyphs |
+| Noto Sans Arabic Regular (T29 shaping) | 2.009, same commit | Unmodified static hinted TrueType, 1,661 glyphs |
+| Noto Sans Devanagari Regular (T29 shaping) | 2.002, same commit | Unmodified static hinted TrueType, 954 glyphs |
+| Noto Sans Thai Regular (T29 shaping) | 2.000, same commit | Unmodified static hinted TrueType, 140 glyphs |
 | Noto Sans CJK SC/TC/JP/KR Regular | 2.004, noto-cjk `523d033d6cb47f4a80c58a35753646f5c3608a78` (Sans2.004) | Full static `wght=400` instance of each region's official TrueType variable font, 65,535 glyphs each |
 
 The static CJK instances retain all source glyphs, names and license metadata,
@@ -45,6 +48,8 @@ The recipe rejects incorrect source SHA-256 values before writing, pins the
 complete tool version, preserves source timestamps, sets only `wght=400`, and
 reports the result's SHA-256. Compare it to `fonts.properties`/`instances.json`.
 The regular Sans/Hebrew files and both OFL notices are copied without changes.
+T29 likewise copies the complete static Arabic, Devanagari and Thai files
+without transformation; Hebrew is reused for its separate shaping profile.
 
 OFL copyright and permission notices are in `OFL-noto-fonts.txt` and
 `OFL-noto-cjk.txt`; their terms govern these font files separately from the

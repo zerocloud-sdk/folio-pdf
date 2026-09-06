@@ -793,7 +793,8 @@ final class PdfBoxTrueTypePreflight {
                             && (flags & 0x0020) != 0)) {
                 throw sourceInvalid();
             }
-            if ((flags & 0x00c8) != 0
+            if ((flags & 0x0080) != 0
+                    || (!extended && (flags & 0x0048) != 0)
                     || (flags & 0x1800) != 0
                     || (!extended && (flags & 0x0200) != 0)) {
                 throw formatUnsupported();
@@ -813,8 +814,24 @@ final class PdfBoxTrueTypePreflight {
                     ? signedShort(bytes, cursor + 2)
                     : bytes[cursor + 1];
             cursor += argumentBytes;
+            int xScale = 1;
+            int yScale = 1;
+            // Static Noto Arabic uses exact axis reflections. Other affine
+            // transforms retain the existing unsupported-format contract.
+            if ((flags & 0x0048) != 0) {
+                int transformBytes = (flags & 0x0040) != 0 ? 4 : 2;
+                if (cursor > end - transformBytes) { throw sourceInvalid(); }
+                int horizontal = signedShort(bytes, cursor);
+                int vertical = transformBytes == 2 ? horizontal : signedShort(bytes, cursor + 2);
+                if (Math.abs(horizontal) != 16384 || Math.abs(vertical) != 16384) {
+                    throw formatUnsupported();
+                }
+                xScale = horizontal / 16384;
+                yScale = vertical / 16384;
+                cursor += transformBytes;
+            }
             components.add(new CompositeComponent(
-                    component, xOffset, yOffset));
+                    component, xOffset, yOffset, xScale, yScale));
         } while ((flags & 0x0020) != 0);
 
         int instructionLength = 0;
@@ -2102,12 +2119,12 @@ final class PdfBoxTrueTypePreflight {
                     candidate.maximumY);
         }
 
-        GlyphBounds translated(int horizontal, int vertical) {
+        GlyphBounds transformed(CompositeComponent component) {
             return new GlyphBounds(
-                    minimumX + horizontal,
-                    minimumY + vertical,
-                    maximumX + horizontal,
-                    maximumY + vertical);
+                    (component.xScale > 0 ? minimumX : -maximumX) + component.xOffset,
+                    (component.yScale > 0 ? minimumY : -maximumY) + component.yOffset,
+                    (component.xScale > 0 ? maximumX : -minimumX) + component.xOffset,
+                    (component.yScale > 0 ? maximumY : -minimumY) + component.yOffset);
         }
 
         GlyphBounds union(GlyphBounds other) {
@@ -2241,11 +2258,15 @@ final class PdfBoxTrueTypePreflight {
         private final int glyph;
         private final int xOffset;
         private final int yOffset;
+        private final int xScale;
+        private final int yScale;
 
-        CompositeComponent(int glyph, int xOffset, int yOffset) {
+        CompositeComponent(int glyph, int xOffset, int yOffset, int xScale, int yScale) {
             this.glyph = glyph;
             this.xOffset = xOffset;
             this.yOffset = yOffset;
+            this.xScale = xScale;
+            this.yScale = yScale;
         }
     }
 
@@ -2305,8 +2326,7 @@ final class PdfBoxTrueTypePreflight {
             if (!nested.hasOutline) {
                 return;
             }
-            GlyphBounds shifted = nested.bounds.translated(
-                    component.xOffset, component.yOffset);
+            GlyphBounds shifted = nested.bounds.transformed(component);
             bounds = hasOutline ? bounds.union(shifted) : shifted;
             hasOutline = true;
         }

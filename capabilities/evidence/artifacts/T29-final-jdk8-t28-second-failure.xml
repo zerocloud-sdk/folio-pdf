@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="net.zerocloud.pdf.acceptance.T28UnicodeEvidenceCommandTest" time="112.805" tests="2" errors="1" skipped="0" failures="0">
+  <properties>
+    <property name="awt.toolkit" value="sun.awt.X11.XToolkit"/>
+    <property name="file.encoding.pkg" value="sun.io"/>
+    <property name="java.specification.version" value="1.8"/>
+    <property name="folio.harfBuzzHelper" value="/folio-harfbuzz/bin/folio-harfbuzz"/>
+    <property name="sun.cpu.isalist" value=""/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="/workspace/pdf-acceptance/target/test-classes:/workspace/pdf-acceptance/target/classes:/workspace/pdf-document/target/pdf-document-0.1.0-SNAPSHOT.jar:/workspace/pdf-provider-contract/target/pdf-provider-contract-0.1.0-SNAPSHOT.jar:/workspace/.build-cache/maven/repository/com/ibm/icu/icu4j/77.1/icu4j-77.1.jar:/workspace/.build-cache/maven/repository/org/apache/pdfbox/pdfbox/3.0.8/pdfbox-3.0.8.jar:/workspace/.build-cache/maven/repository/org/apache/pdfbox/pdfbox-io/3.0.8/pdfbox-io-3.0.8.jar:/workspace/.build-cache/maven/repository/org/apache/pdfbox/fontbox/3.0.8/fontbox-3.0.8.jar:/workspace/.build-cache/maven/repository/commons-logging/commons-logging/1.4.0/commons-logging-1.4.0.jar:/workspace/pdf-conversion/target/pdf-conversion-0.1.0-SNAPSHOT.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/imageio/imageio-tiff/3.14.0/imageio-tiff-3.14.0.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/imageio/imageio-core/3.14.0/imageio-core-3.14.0.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/imageio/imageio-metadata/3.14.0/imageio-metadata-3.14.0.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/common/common-lang/3.14.0/common-lang-3.14.0.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/common/common-io/3.14.0/common-io-3.14.0.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/common/common-image/3.14.0/common-image-3.14.0.jar:/workspace/.build-cache/maven/repository/junit/junit/4.13.2/junit-4.13.2.jar:/workspace/.build-cache/maven/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:"/>
+    <property name="java.vm.vendor" value="Temurin"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="sun.font.fontmanager" value="sun.awt.X11FontManager"/>
+    <property name="java.vendor.url" value="https://adoptium.net/"/>
+    <property name="user.timezone" value=""/>
+    <property name="java.vm.specification.version" value="1.8"/>
+    <property name="os.name" value="Linux"/>
+    <property name="user.country" value="US"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="sun.boot.library.path" value="/opt/java/openjdk/jre/lib/amd64"/>
+    <property name="sun.java.command" value="/workspace/pdf-acceptance/target/surefire/surefirebooter-20260906152829368_53.jar /workspace/pdf-acceptance/target/surefire 2026-09-06T15-13-40_629-jvmRun1 surefire-20260906152829368_51tmp surefire_3-20260906152829368_52tmp"/>
+    <property name="surefire.test.class.path" value="/workspace/pdf-acceptance/target/test-classes:/workspace/pdf-acceptance/target/classes:/workspace/pdf-document/target/pdf-document-0.1.0-SNAPSHOT.jar:/workspace/pdf-provider-contract/target/pdf-provider-contract-0.1.0-SNAPSHOT.jar:/workspace/.build-cache/maven/repository/com/ibm/icu/icu4j/77.1/icu4j-77.1.jar:/workspace/.build-cache/maven/repository/org/apache/pdfbox/pdfbox/3.0.8/pdfbox-3.0.8.jar:/workspace/.build-cache/maven/repository/org/apache/pdfbox/pdfbox-io/3.0.8/pdfbox-io-3.0.8.jar:/workspace/.build-cache/maven/repository/org/apache/pdfbox/fontbox/3.0.8/fontbox-3.0.8.jar:/workspace/.build-cache/maven/repository/commons-logging/commons-logging/1.4.0/commons-logging-1.4.0.jar:/workspace/pdf-conversion/target/pdf-conversion-0.1.0-SNAPSHOT.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/imageio/imageio-tiff/3.14.0/imageio-tiff-3.14.0.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/imageio/imageio-core/3.14.0/imageio-core-3.14.0.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/imageio/imageio-metadata/3.14.0/imageio-metadata-3.14.0.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/common/common-lang/3.14.0/common-lang-3.14.0.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/common/common-io/3.14.0/common-io-3.14.0.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/common/common-image/3.14.0/common-image-3.14.0.jar:/workspace/.build-cache/maven/repository/junit/junit/4.13.2/junit-4.13.2.jar:/workspace/.build-cache/maven/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="/home/ubuntu"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.home" value="/opt/java/openjdk/jre"/>
+    <property name="revision" value="0.1.0-SNAPSHOT"/>
+    <property name="basedir" value="/workspace/pdf-acceptance"/>
+    <property name="file.separator" value="/"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment"/>
+    <property name="surefire.real.class.path" value="/workspace/pdf-acceptance/target/surefire/surefirebooter-20260906152829368_53.jar"/>
+    <property name="sun.boot.class.path" value="/opt/java/openjdk/jre/lib/resources.jar:/opt/java/openjdk/jre/lib/rt.jar:/opt/java/openjdk/jre/lib/sunrsasign.jar:/opt/java/openjdk/jre/lib/jsse.jar:/opt/java/openjdk/jre/lib/jce.jar:/opt/java/openjdk/jre/lib/charsets.jar:/opt/java/openjdk/jre/lib/jfr.jar:/opt/java/openjdk/jre/classes"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="1.8.0_502-b07"/>
+    <property name="user.name" value="ubuntu"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="6.8.0-136-generic"/>
+    <property name="java.endorsed.dirs" value="/opt/java/openjdk/jre/lib/endorsed"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="repositoryRoot" value="/workspace"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="localRepository" value="/workspace/.build-cache/maven/repository"/>
+    <property name="java.vendor.url.bug" value="https://github.com/adoptium/adoptium-support/issues"/>
+    <property name="java.io.tmpdir" value="/tmp"/>
+    <property name="java.version" value="1.8.0_502"/>
+    <property name="user.dir" value="/workspace/pdf-acceptance"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="java.awt.printerjob" value="sun.print.PSPrinterJob"/>
+    <property name="sun.os.patch.level" value="unknown"/>
+    <property name="java.library.path" value="/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib"/>
+    <property name="java.vm.info" value="mixed mode"/>
+    <property name="java.vendor" value="Temurin"/>
+    <property name="java.vm.version" value="25.502-b07"/>
+    <property name="java.specification.maintenance.version" value="6"/>
+    <property name="java.ext.dirs" value="/opt/java/openjdk/jre/lib/ext:/usr/java/packages/lib/ext"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="maven.repo.local" value="/workspace/.build-cache/maven/repository"/>
+    <property name="java.class.version" value="52.0"/>
+  </properties>
+  <testcase name="sevenVisualSelectionsAreRecordedAndUnavailableToolsRemainIndeterminate" classname="net.zerocloud.pdf.acceptance.T28UnicodeEvidenceCommandTest" time="11.192">
+    <system-out><![CDATA[T28: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE; standards, dependency gates and full Foundation certification remain open.
+]]></system-out>
+    <system-err><![CDATA[Sep 06, 2026 3:29:54 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:29:55 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:29:55 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:29:56 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:29:57 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:29:58 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:29:58 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:29:59 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:29:59 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:29:59 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:30:00 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:30:01 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:30:02 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:30:03 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:30:04 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:30:04 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+]]></system-err>
+  </testcase>
+  <testcase name="sevenProfilesMatchTheIndependentGlyphGeometryInBothExecutionModes" classname="net.zerocloud.pdf.acceptance.T28UnicodeEvidenceCommandTest" time="101.611">
+    <error message="The Worker could not complete the transaction." type="net.zerocloud.pdf.DocumentFailure"><![CDATA[net.zerocloud.pdf.DocumentFailure: The Worker could not complete the transaction.
+	at net.zerocloud.pdf.DocumentWorkflow.withReceipts(DocumentWorkflow.java:274)
+	at net.zerocloud.pdf.DocumentWorkflow.withReceipts(DocumentWorkflow.java:258)
+	at net.zerocloud.pdf.DocumentWorkflow.executeOnce(DocumentWorkflow.java:199)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:103)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:64)
+	at net.zerocloud.pdf.acceptance.T28UnicodeProducts.create(T28UnicodeProducts.java:41)
+	at net.zerocloud.pdf.acceptance.T28UnicodeEvidenceCommandTest.sevenProfilesMatchTheIndependentGlyphGeometryInBothExecutionModes(T28UnicodeEvidenceCommandTest.java:41)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:316)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:214)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:155)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+]]></error>
+    <system-out><![CDATA[T28 IN_PROCESS peak owned memory bytes: 1207232298
+]]></system-out>
+    <system-err><![CDATA[Sep 06, 2026 3:30:06 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:30:06 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:30:06 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:30:07 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:30:08 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:30:09 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:30:09 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:30:10 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:30:10 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:30:10 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:30:11 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:30:12 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:30:12 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:30:14 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:30:15 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 3:30:15 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+]]></system-err>
+  </testcase>
+</testsuite>

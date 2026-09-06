@@ -1,0 +1,65 @@
+{
+  "observed_utc": "2026-09-06T16:57:57.065704+00:00",
+  "command": "FOLIO_HARFBUZZ_HELPER=/home/ubuntu/IdeaProjects/open-pdf/.build-cache/harfbuzz/10.2.0-final/bin/folio-harfbuzz ./mvnw -B -ntp verify",
+  "working_directory": "/home/ubuntu/IdeaProjects/open-pdf",
+  "exit_code": 0,
+  "finished_record": "2026-09-07T00:57:03+08:00",
+  "total_time": "16:38 min",
+  "test_totals_from_per_class_log_records": {
+    "tests": 1019,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 3
+  },
+  "log": {
+    "path": "capabilities/evidence/artifacts/T29-verified-root-verify.txt",
+    "sha256": "75d5350e31f8c36625aedbe5c597207d3692b1914722c8dc97758495f102b55e",
+    "bytes": 55053
+  },
+  "tested_source_snapshot_sha256": "94b628481751378665a40a3b033430b1224ec0adc817f811386bc44db59ef24f",
+  "source_hashes_match_after_build": true,
+  "environment": {
+    "path": "capabilities/evidence/artifacts/T29-verified-root-environment.json",
+    "sha256": "c0df111b20b860a845068b2f5089e8246f9e56cbd34a25ac33541cf10cdb882f",
+    "bytes": 1214
+  },
+  "runtime_jar_inspection": [
+    {
+      "path": "pdf-provider-contract/target/pdf-provider-contract-0.1.0-SNAPSHOT.jar",
+      "sha256": "4525d30b0b362a659cbdcb20fa873c49883a00d4c7aa53b1ea5deb2aea8d0792",
+      "bytes": 37955,
+      "native_binary_entries": [],
+      "unofficial_wrapper_entries": []
+    },
+    {
+      "path": "pdf-conversion/target/pdf-conversion-0.1.0-SNAPSHOT.jar",
+      "sha256": "6e1d9d53d4df9fb36fa35a1f3f81bef4b02016baf9c72b26de2ab4d6bf657ea5",
+      "bytes": 21271,
+      "native_binary_entries": [],
+      "unofficial_wrapper_entries": []
+    },
+    {
+      "path": "pdf-document/target/pdf-document-0.1.0-SNAPSHOT.jar",
+      "sha256": "ed8fbc85bb0e79eae06c025d1f434b6d58ded1e11fb542e0c689e0668d422d39",
+      "bytes": 1407252,
+      "native_binary_entries": [],
+      "unofficial_wrapper_entries": []
+    },
+    {
+      "path": "pdf-migration-itext7/target/pdf-migration-itext7-0.1.0-SNAPSHOT.jar",
+      "sha256": "a408eb637b54f53e09caea784c2ae2810cd1de430310e638d49c156591fc233e",
+      "bytes": 6888,
+      "native_binary_entries": [],
+      "unofficial_wrapper_entries": []
+    },
+    {
+      "path": "pdf-migration-itext7-preview/target/pdf-migration-itext7-preview-0.1.0-SNAPSHOT.jar",
+      "sha256": "c87389e372e7e92c9cb93d2181caa99dd1eed97ca9c476c91446bb8ce219f9d7",
+      "bytes": 17567,
+      "native_binary_entries": [],
+      "unofficial_wrapper_entries": []
+    }
+  ],
+  "scope": "Current-source full root gate. Other JDK gates and absent Windows/macOS platforms have independent requirements.",
+  "runtime_jar_inspection_scope": "Five current runtime JARs after the successful complete root verification. Archive signatures, native filename/suffix checks and known wrapper package scan supplement the independent full dependency/source review; package scan alone is not a comprehensive source audit."
+}

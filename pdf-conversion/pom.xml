@@ -33,6 +33,14 @@
   </dependencies>
 
   <build>
+    <testResources>
+      <testResource><directory>src/test/resources</directory></testResource>
+      <testResource>
+        <directory>../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto</directory>
+        <targetPath>net/zerocloud/pdf/fixtures/noto</targetPath>
+        <includes><include>NotoSansArabic-Regular.ttf</include></includes>
+      </testResource>
+    </testResources>
     <resources>
       <resource>
         <directory>src/main/resources</directory>

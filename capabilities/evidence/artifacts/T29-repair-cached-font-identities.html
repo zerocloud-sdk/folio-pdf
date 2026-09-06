@@ -1,0 +1,25 @@
+<html><title>Object Query Language (OQL) query</title>
+<body bgcolor="#ffffff"><center><h1>
+Object Query Language (OQL) query</h1></center>
+<p align='center'><table>
+<tr><td><b>
+<a href='/'>All Classes (excluding platform)</a>
+</b></td>
+<td><b><a href='/oqlhelp/'>OQL Help</a></b></td></tr>
+</table></p>
+<form action='/oql/' method='get'>
+<p align='center'>
+<textarea name='query' cols=80 rows=10>
+select map(filter(heap.findObject(&quot;0xc29a6ea8&quot;).stagedOneShotSources.table, &quot;it != null &amp;&amp; classof(it).name == &#039;[B&#039;&quot;), &quot;{id:objectid(it), length:it.length}&quot;)
+</textarea>
+</p>
+<p align='center'>
+<input type='submit' value='Execute'></input>
+</p>
+</form>
+<table border='1'>
+<tr><td>
+[ { id:0xc7c1d1c0, length:569208, }, { id:0xd3cf7100, length:21689052, }, { id:0xc7ddf700, length:569208, }, { id:0xc96a2998, length:21659544, }, { id:0xd6764920, length:569208, }, { id:0xcd6d20d8, length:569208, }, { id:0xe0bb5d48, length:21655284, }, { id:0xc2b70688, length:569208, }, { id:0xc2c85560, length:26900, }, { id:0xc6027508, length:21689052, }, { id:0xcbff2958, length:21658084, }, { id:0xda2639f8, length:21655284, }, { id:0xd8db4708, length:21689052, }, { id:0xe5886f18, length:21659544, }, { id:0xc00465b0, length:21689052, }, { id:0xdcf1af30, length:569208, }, { id:0xd284f708, length:21658084, }, { id:0xc95cfba8, length:569208, }, { id:0xc7f28530, length:21689052, } ]
+</td></tr>
+</table>
+</body></html>

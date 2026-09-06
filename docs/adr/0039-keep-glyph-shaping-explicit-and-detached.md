@@ -1,0 +1,5 @@
+# Keep Glyph Shaping explicit and detached
+
+Composition needs source Glyph IDs, shared input clusters and independent advances/offsets that the scalar-based Positioned Unicode Text contract cannot express. Following ADR-0010, ADR-0026 and ADR-0033, an explicit Provider Preference enables a project-owned C subprocess adapter, with HarfBuzz installed separately and detached versioned request/result values owned by `pdf-provider-contract`. This preserves dependency direction and the existing unshaped contracts while allowing Composition to subset substituted glyphs and the parent Workflow to broker native calls in both execution profiles.
+
+Line candidates are reshaped at their actual input boundaries because Arabic joining and ligatures can change both forms and widths when a line is split. The resulting extra native calls count against existing Provider and layout limits, and temporary plans are released when candidates are rejected. Native process memory and containment remain separate from Hardened Worker guarantees; this decision makes no new platform certification claim.

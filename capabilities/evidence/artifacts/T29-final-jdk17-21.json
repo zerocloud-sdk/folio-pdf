@@ -1,0 +1,40 @@
+{
+  "observed_utc": "2026-09-06T15:42:51.049860+00:00",
+  "working_directory": "/tmp/folio-t29/matrix-17-21",
+  "command": "FOLIO_HARFBUZZ_HELPER=/home/ubuntu/IdeaProjects/open-pdf/.build-cache/harfbuzz/10.2.0-final/bin/folio-harfbuzz ./scripts/verify-jdk-matrix.sh 17 21",
+  "actual_process_exit_code": 0,
+  "tested_source_snapshot_sha256": "39b761992f1677fe25ee7c4d5796c1505a024a890880d51aca95ed516024565f",
+  "log": {
+    "original_path": "/tmp/folio-t29/final-matrix-17-21.log",
+    "artifact": "T29-final-jdk17-21.txt",
+    "sha256": "9d2afb7025722f2351f62477efe7be2f276d7f35b89901070895fce1a892c7dd",
+    "bytes": 132549
+  },
+  "runs": [
+    {
+      "jdk": 17,
+      "result": "PASS",
+      "test_totals_from_per_class_log_records": {
+        "tests": 1018,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 3
+      },
+      "total_time": "16:15 min",
+      "finished_at": "2026-09-06T15:24:37Z"
+    },
+    {
+      "jdk": 21,
+      "result": "PASS",
+      "test_totals_from_per_class_log_records": {
+        "tests": 1018,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 3
+      },
+      "total_time": "16:13 min",
+      "finished_at": "2026-09-06T15:40:52Z"
+    }
+  ],
+  "scope": "Actual Linux JDK17/21 full repository gates. Does not close JDK8/11 or required non-Linux platform evidence."
+}

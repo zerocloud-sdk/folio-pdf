@@ -470,3 +470,22 @@ bounded one-page snapshot using an internal closed Query; the parent validates
 and executes the selected Provider under capability-scoped disclosure consent.
 The PDF Worker does not sandbox caller-side adapters. See [Rendering](rendering.md)
 for the byte profile, raster accounting, diagnostics, and lifetime contract.
+
+## T29 native shaping exchange
+
+An explicit `composition.shaping.harf-buzz` preference enables the closed
+shaping exchange during Composition. Initialization carries only the selected
+Provider's immutable metadata and finite limits. The child submits explicit
+font bytes, logical text, direction, script and language; the parent invokes
+the registered Provider and returns a bounded, validated glyph result. The
+child validates the result against its own font and ICU boundaries before
+using it in layout. Input/result transport and project-owned copies share the
+Workflow memory and deadline ledgers. No Provider object or arbitrary command
+line crosses into the child.
+
+The native helper runs outside the PDF Worker's containment. Its protections
+are the existing parent-side subprocess byte limits, deadline and cleanup
+contract, not the Worker's filesystem/network/CPU/native-memory restrictions.
+This addition does not extend the supported Worker operating-system/JDK
+envelope. See [HarfBuzz shaping](harfbuzz-shaping.md) for the shaping, font,
+publication and platform-evidence requirements.

@@ -28,6 +28,8 @@ import net.zerocloud.pdf.composition.FontSource;
 import net.zerocloud.pdf.composition.CanvasMatrix;
 import net.zerocloud.pdf.composition.PositionedUnicodeText;
 import net.zerocloud.pdf.composition.command.DrawPositionedUnicodeText;
+import net.zerocloud.pdf.provider.ShapingRequest;
+import net.zerocloud.pdf.provider.ShapingResult;
 import org.apache.fontbox.ttf.CmapLookup;
 import org.apache.fontbox.ttf.TrueTypeFont;
 import org.apache.fontbox.ttf.TTFParser;
@@ -61,10 +63,15 @@ final class PdfBoxPositionedTextOperations {
     private final List<FontSource> referenceFonts;
     private final PdfVersion publicationVersion;
     private final WorkflowResourceContext resources;
+    private final PdfBoxSubsetNames subsetNames;
     private final Map<FontProgramKey, LoadedFont> loadedFonts =
             new LinkedHashMap<FontProgramKey, LoadedFont>();
+    private final List<PdfBoxShapedFont> shapedFonts = new ArrayList<PdfBoxShapedFont>();
     private final IdentityHashMap<FontSource, byte[]> stagedOneShotSources =
             new IdentityHashMap<FontSource, byte[]>();
+    // Freeze each borrowed declaration once, sharing identical private snapshots across declarations.
+    private final Map<FontProgramKey, byte[]> stagedOneShotPrograms =
+            new HashMap<FontProgramKey, byte[]>();
     private PreparedWorkerCommand preparedWorkerCommand;
 
     PdfBoxPositionedTextOperations(
@@ -77,6 +84,7 @@ final class PdfBoxPositionedTextOperations {
                 new ArrayList<FontSource>(referenceFonts));
         this.publicationVersion = publicationVersion;
         this.resources = resources;
+        this.subsetNames = new PdfBoxSubsetNames(document, resources);
     }
 
     boolean supports(DocumentCommand command) {
@@ -99,7 +107,7 @@ final class PdfBoxPositionedTextOperations {
                 text, selection, 1, TextRenderingMode.FILL,
                 CanvasMatrix.of(1, 0, 0, 1, 0, 0));
         List<Integer> codePoints = validateText(declaration, limits);
-        return prepareText(codePoints, selection, limits, fallbackChecks);
+        return prepareText(codePoints, selection, limits, fallbackChecks, resources.shapesComposition());
     }
 
     /** Freezes request-scoped Worker sources while the begin command still owns their transport. */
@@ -129,6 +137,15 @@ final class PdfBoxPositionedTextOperations {
 
     private PreparedText prepareText(List<Integer> codePoints, FontSelection selection, FontLimits limits,
             long[] fallbackChecks) throws DocumentFailure {
+        return prepareText(codePoints, selection, limits, fallbackChecks, false);
+    }
+
+    private PreparedText prepareText(List<Integer> codePoints, FontSelection selection, FontLimits limits,
+            long[] fallbackChecks, boolean shaping) throws DocumentFailure {
+        if (shaping && publicationVersion != null
+                && publicationVersion.ordinal() < PdfVersion.PDF_1_5.ordinal()) {
+            throw shapingVersionUnsupported();
+        }
         List<FontSource> sources = selection.getKind() == FontSelection.Kind.EXPLICIT
                 ? selection.getSources() : referenceFonts;
         if (sources.size() > limits.getMaximumFontSources()) {
@@ -139,10 +156,13 @@ final class PdfBoxPositionedTextOperations {
         boolean complete = false;
         try {
             List<SelectedGlyph> selected = select(programs, codePoints, limits, fallbackChecks);
-            validateMappings(selected);
+            if (!shaping) { validateMappings(selected); }
             validatePublicationVersion(selected);
-            preflightSubsets(programs, selected);
+            if (!shaping) { preflightSubsets(programs, selected); }
             PreparedText result = new PreparedText(programs, selected);
+            result.shaping = shaping;
+            result.limits = limits;
+            result.fallbackChecks = fallbackChecks;
             complete = true;
             return result;
         } finally {
@@ -154,6 +174,10 @@ final class PdfBoxPositionedTextOperations {
     final class PreparedText implements AutoCloseable {
         private final List<SourceProgram> programs;
         private final List<SelectedGlyph> selected;
+        private final Map<Integer, PdfBoxShapedFont> shapingFonts = new LinkedHashMap<Integer, PdfBoxShapedFont>();
+        private boolean shaping;
+        private FontLimits limits;
+        private long[] fallbackChecks;
 
         PreparedText(List<SourceProgram> programs, List<SelectedGlyph> selected) {
             this.programs = programs;
@@ -163,6 +187,63 @@ final class PdfBoxPositionedTextOperations {
         double width(int index, double size) { return selected.get(index).metric.width * size / 1000d; }
         double ascent(int index, double size) { return selected.get(index).metric.ascent * size; }
         double descent(int index, double size) { return selected.get(index).metric.descent * size; }
+
+        boolean shapes() { return shaping; }
+
+        int fontForCluster(int first, int end) throws DocumentFailure {
+            for (int candidate = 0; candidate < programs.size(); candidate++) {
+                resources.checkpoint();
+                SourceProgram source = programs.get(candidate);
+                boolean covers = true;
+                for (int index = first; index < end; index++) {
+                    resources.checkpoint();
+                    if (fallbackChecks[0] >= limits.getMaximumFallbackChecks()) { throw limitFailure(); }
+                    fallbackChecks[0]++;
+                    if (source.parsed.glyphs.get(selected.get(index).codePoint).glyphId == 0) {
+                        covers = false; break;
+                    }
+                }
+                if (covers) { return candidate; }
+            }
+            throw missingGlyph();
+        }
+
+        List<ShapedCluster> shape(int first, int end, int fontIndex, String script, String language,
+                ShapingRequest.Direction direction, double size, WorkflowResourceContext.OwnedMemoryScope ownership) throws DocumentFailure {
+            SourceProgram source = programs.get(fontIndex);
+            StringBuilder text = new StringBuilder();
+            for (int index = first; index < end; index++) { text.appendCodePoint(selected.get(index).codePoint); }
+            String logical = text.toString();
+            ShapingResult result = resources.shaping().shape(source.key.bytes, logical, script,
+                    language, direction, resources, ownership);
+            try {
+                if (result.getUnitsPerEm() != source.parsed.font.getUnitsPerEm()) { throw ShapingCoordinator.failed(); }
+                PdfBoxShapedFont font = shapingFonts.get(fontIndex);
+                if (font == null) {
+                    font = new PdfBoxShapedFont(document, source.parsed.font, source.key.bytes,
+                            source.parsed.embeddingProfile.requiresFullEmbedding(),
+                            source.parsed.embeddingProfile.isExtended(), resources, shapedFonts, subsetNames);
+                    shapingFonts.put(fontIndex, font);
+                }
+                Map<Integer, ShapedCluster> clusters = new TreeMap<Integer, ShapedCluster>();
+                double ascent = Math.max(0d, source.parsed.font.getHeader().getYMax()) * size / result.getUnitsPerEm();
+                double descent = Math.max(0d, -source.parsed.font.getHeader().getYMin()) * size / result.getUnitsPerEm();
+                for (ShapingResult.Glyph glyph : result.getGlyphs()) {
+                    resources.checkpoint();
+                    if (glyph.getGlyphId() >= source.parsed.font.getNumberOfGlyphs()
+                            || glyph.getYAdvance() != 0) { throw ShapingCoordinator.failed(); }
+                    ShapedCluster cluster = clusters.get(glyph.getClusterStart());
+                    if (cluster == null) {
+                        cluster = new ShapedCluster(font, logical,
+                                glyph.getClusterStart(), glyph.getClusterEnd(), ascent, descent, size / result.getUnitsPerEm());
+                        clusters.put(glyph.getClusterStart(), cluster);
+                    }
+                    cluster.glyphs.add(glyph);
+                    cluster.width += glyph.getXAdvance() * cluster.scale;
+                }
+                return new ArrayList<ShapedCluster>(clusters.values());
+            } catch (IOException failure) { throw sourceInvalid(); }
+        }
 
         long draw(PDPage page, int first, int end, double size, double x, double y,
                 long maximumBytes) throws DocumentFailure {
@@ -191,7 +272,42 @@ final class PdfBoxPositionedTextOperations {
         public void close() { closePrograms(programs); }
     }
 
+    static final class ShapedCluster {
+        final int start;
+        final int end;
+        final double ascent;
+        final double descent;
+        final double scale;
+        double width;
+        private final PdfBoxShapedFont font;
+        private final String runText;
+        private final List<ShapingResult.Glyph> glyphs = new ArrayList<ShapingResult.Glyph>();
+
+        ShapedCluster(PdfBoxShapedFont font, String runText, int start, int end,
+                double ascent, double descent, double scale) {
+            this.font = font; this.runText = runText; this.start = start; this.end = end;
+            this.ascent = ascent; this.descent = descent; this.scale = scale;
+        }
+
+        boolean sameRun(ShapedCluster other) { return runText == other.runText && font == other.font; }
+
+        long draw(PDPage page, List<ShapedCluster> clusters, double size, double x, double y,
+                long maximumBytes) throws DocumentFailure {
+            List<ShapingResult.Glyph> visual = new ArrayList<ShapingResult.Glyph>();
+            int first = start;
+            int last = end;
+            for (ShapedCluster cluster : clusters) {
+                first = Math.min(first, cluster.start);
+                last = Math.max(last, cluster.end);
+                visual.addAll(cluster.glyphs);
+            }
+            return font.draw(page, runText, first, last, visual, size, x, y, maximumBytes);
+        }
+    }
+
     void finalizeFonts() throws DocumentFailure {
+        for (PdfBoxShapedFont shaped : shapedFonts) { resources.checkpoint(); shaped.finish(); }
+        shapedFonts.clear();
         for (LoadedFont loaded : loadedFonts.values()) {
             resources.checkpoint();
             if (loaded.finalized) {
@@ -746,9 +862,18 @@ final class PdfBoxPositionedTextOperations {
                                         source.getChannel().get());
                         try (StagedFontBytes staged =
                                 read(input, remaining)) {
-                            resources.retainOwnedMemory(staged.bytes.length);
-                            stagedOneShotSources.put(source, staged.bytes);
-                            return StagedFontBytes.borrowed(staged.bytes);
+                            FontProgramKey content = new FontProgramKey(staged.bytes, resources);
+                            byte[] canonical = stagedOneShotPrograms.get(content);
+                            if (canonical == null) {
+                                // Includes the content key and map entry as well as the retained bytes.
+                                resources.retainOwnedMemory(128L + staged.bytes.length);
+                                canonical = staged.bytes;
+                                stagedOneShotPrograms.put(content, canonical);
+                            }
+                            // Each declaration retains its own read-once identity entry.
+                            resources.retainOwnedMemory(128L);
+                            stagedOneShotSources.put(source, canonical);
+                            return StagedFontBytes.borrowed(canonical);
                         }
                     } else if (cached.length > remaining) {
                         throw limitFailure();
@@ -1402,6 +1527,11 @@ final class PdfBoxPositionedTextOperations {
                 "Supplementary Unicode mappings require PDF 1.5 or newer.");
     }
 
+    private static DocumentFailure shapingVersionUnsupported() {
+        return failure(DocumentFailureCode.PDF_VERSION_UNSUPPORTED,
+                "Shaped replacement text requires PDF 1.5 or newer.");
+    }
+
     private static DocumentFailure missingGlyph() {
         return failure(
                 DocumentFailureCode.FONT_GLYPH_MISSING,
@@ -1519,7 +1649,15 @@ final class PdfBoxPositionedTextOperations {
         FontProgramKey(
                 WorkflowResourceContext.OwnedBytes ownedBytes,
                 WorkflowResourceContext resources) throws DocumentFailure {
-            byte[] source = ownedBytes.getBytes();
+            this(ownedBytes.getBytes(), ownedBytes, resources);
+        }
+
+        FontProgramKey(byte[] source, WorkflowResourceContext resources) throws DocumentFailure {
+            this(source, null, resources);
+        }
+
+        private FontProgramKey(byte[] source, WorkflowResourceContext.OwnedBytes ownedBytes,
+                WorkflowResourceContext resources) throws DocumentFailure {
             int hash = 1;
             try {
                 for (int index = 0; index < source.length; index++) {
@@ -1529,7 +1667,7 @@ final class PdfBoxPositionedTextOperations {
                     hash = 31 * hash + source[index];
                 }
             } catch (DocumentFailure | RuntimeException failure) {
-                ownedBytes.close();
+                if (ownedBytes != null) { ownedBytes.close(); }
                 throw failure;
             }
             this.ownedBytes = ownedBytes;

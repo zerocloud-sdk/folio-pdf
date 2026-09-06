@@ -1,0 +1,977 @@
+==> Verifying Folio PDF on JDK 17 (docker.io/library/eclipse-temurin:17-jdk)
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent                                    [pom]
+[INFO] Folio PDF by ZeroCloud - BOM                                       [pom]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract              [jar]
+[INFO] Folio PDF by ZeroCloud - Conversion                                [jar]
+[INFO] Folio PDF by ZeroCloud - Document Engine                           [jar]
+[INFO] Folio PDF by ZeroCloud - Acceptance Evidence                       [jar]
+[INFO] Folio PDF by ZeroCloud - Stable iText 7 Migration Facade           [jar]
+[INFO] Folio PDF by ZeroCloud - Preview iText 7 Migration Facade          [jar]
+[INFO] Folio PDF by ZeroCloud - Inventory Build Tool                      [jar]
+[INFO] Folio PDF by ZeroCloud - Release Rehearsal Tool                    [jar]
+[INFO] 
+[INFO] ----------------------< net.zerocloud:pdf-parent >----------------------
+[INFO] Building Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT           [1/10]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-parent ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.version.RequireMavenVersion passed
+[INFO] Rule 1: org.apache.maven.enforcer.rules.version.RequireJavaVersion passed
+[INFO] 
+[INFO] -----------------------< net.zerocloud:pdf-bom >------------------------
+[INFO] Building Folio PDF by ZeroCloud - BOM 0.1.0-SNAPSHOT              [2/10]
+[INFO]   from pdf-bom/pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-bom ---
+[INFO] 
+[INFO] ----------------< net.zerocloud:pdf-provider-contract >-----------------
+[INFO] Building Folio PDF by ZeroCloud - Capability Provider Contract 0.1.0-SNAPSHOT [3/10]
+[INFO]   from pdf-provider-contract/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-provider-contract ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-provider-contract ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 18 source files with javac [debug parameters release 8] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-provider-contract ---
+[INFO] skip non existing resourceDirectory /workspace/pdf-provider-contract/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-provider-contract ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug parameters release 8] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-provider-contract ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.provider.ProviderCatalogTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.071 s -- in net.zerocloud.pdf.provider.ProviderCatalogTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ pdf-provider-contract ---
+[INFO] Building jar: /workspace/pdf-provider-contract/target/pdf-provider-contract-0.1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --------------------< net.zerocloud:pdf-conversion >--------------------
+[INFO] Building Folio PDF by ZeroCloud - Conversion 0.1.0-SNAPSHOT       [4/10]
+[INFO]   from pdf-conversion/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-conversion ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /workspace/pdf-conversion/src/main/resources
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-conversion ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 3 source files with javac [debug parameters release 8] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /workspace/pdf-conversion/src/test/resources
+[INFO] Copying 1 resource from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-conversion ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 5 source files with javac [debug parameters release 8] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-conversion ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.conversion.HarfBuzzCapabilityProviderTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.186 s -- in net.zerocloud.pdf.conversion.HarfBuzzCapabilityProviderTest
+[INFO] Running net.zerocloud.pdf.conversion.SubprocessCapabilityProviderTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.040 s -- in net.zerocloud.pdf.conversion.SubprocessCapabilityProviderTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ pdf-conversion ---
+[INFO] Building jar: /workspace/pdf-conversion/target/pdf-conversion-0.1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- failsafe:3.5.4:integration-test (default) @ pdf-conversion ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.conversion.contract.JarContractIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.083 s -- in net.zerocloud.pdf.conversion.contract.JarContractIT
+[INFO] Running net.zerocloud.pdf.conversion.contract.PublicApiLeakageIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.035 s -- in net.zerocloud.pdf.conversion.contract.PublicApiLeakageIT
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- failsafe:3.5.4:verify (default) @ pdf-conversion ---
+[INFO] 
+[INFO] ---------------------< net.zerocloud:pdf-document >---------------------
+[INFO] Building Folio PDF by ZeroCloud - Document Engine 0.1.0-SNAPSHOT  [5/10]
+[INFO]   from pdf-document/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-document ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-document ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-document ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 243 source files with javac [debug parameters release 8] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-document ---
+[INFO] Copying 3 resources from src/test/resources to target/test-classes
+[INFO] Copying 15 resources from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-document ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 40 source files with javac [debug parameters release 8] to target/test-classes
+[INFO] /workspace/pdf-document/src/test/java/net/zerocloud/pdf/consumer/BlankDocumentWorkflowTest.java: Some input files use or override a deprecated API.
+[INFO] /workspace/pdf-document/src/test/java/net/zerocloud/pdf/consumer/BlankDocumentWorkflowTest.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-document ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.HardenedWorkerIsolationTest
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 10.65 s -- in net.zerocloud.pdf.HardenedWorkerIsolationTest
+[INFO] Running net.zerocloud.pdf.HardenedWorkerRecoveryFaultTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.455 s -- in net.zerocloud.pdf.HardenedWorkerRecoveryFaultTest
+[INFO] Running net.zerocloud.pdf.PdfBoxCMapPreflightTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s -- in net.zerocloud.pdf.PdfBoxCMapPreflightTest
+[INFO] Running net.zerocloud.pdf.PdfBoxFontMetricPreflightTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.030 s -- in net.zerocloud.pdf.PdfBoxFontMetricPreflightTest
+[INFO] Running net.zerocloud.pdf.WorkerCodecContractTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.433 s -- in net.zerocloud.pdf.WorkerCodecContractTest
+[INFO] Running net.zerocloud.pdf.WorkerProtocolBoundaryTest
+[INFO] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 10.88 s -- in net.zerocloud.pdf.WorkerProtocolBoundaryTest
+[INFO] Running net.zerocloud.pdf.WorkflowResourceCacheAccountingTest
+[INFO] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.144 s -- in net.zerocloud.pdf.WorkflowResourceCacheAccountingTest
+[INFO] Running net.zerocloud.pdf.consumer.AnnotationWorkflowTest
+[INFO] Tests run: 33, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.531 s -- in net.zerocloud.pdf.consumer.AnnotationWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.BlankDocumentWorkflowTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s -- in net.zerocloud.pdf.consumer.BlankDocumentWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.CanvasImageColorTransparencyWorkflowTest
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.762 s -- in net.zerocloud.pdf.consumer.CanvasImageColorTransparencyWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.CanvasWorkflowTest
+Sep 06, 2026 4:58:42 PM org.apache.pdfbox.pdmodel.font.FileSystemFontProvider loadDiskCache
+INFO: 8 new font files found, font cache will be re-built
+Sep 06, 2026 4:58:42 PM org.apache.pdfbox.pdmodel.font.FileSystemFontProvider <init>
+INFO: Building on-disk font cache, this may take a while
+Sep 06, 2026 4:58:42 PM org.apache.pdfbox.pdmodel.font.FileSystemFontProvider <init>
+INFO: Finished building on-disk font cache, found 8 fonts
+Sep 06, 2026 4:58:42 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 4:58:42 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 4:58:42 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 4:58:42 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 4:58:42 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 4:58:42 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 4:58:42 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 4:58:42 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 4:58:42 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 4:58:42 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.413 s -- in net.zerocloud.pdf.consumer.CanvasWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.DocumentMetadataWorkflowTest
+Sep 06, 2026 4:58:48 PM org.apache.pdfbox.multipdf.Splitter createNewDocument
+WARNING: Nested entry for key 'T11Custom' skipped in document information dictionary
+Sep 06, 2026 4:58:48 PM org.apache.pdfbox.multipdf.Splitter createNewDocument
+WARNING: Nested entry for key 'T11Custom' skipped in document information dictionary
+[INFO] Tests run: 55, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 12.18 s -- in net.zerocloud.pdf.consumer.DocumentMetadataWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.FontLoadingWorkflowTest
+Sep 06, 2026 4:58:55 PM org.apache.fontbox.ttf.PostScriptTable read
+WARNING: No PostScript name data is provided for the font FolioPrimary-Regular
+Sep 06, 2026 4:58:55 PM org.apache.fontbox.ttf.PostScriptTable read
+WARNING: No PostScript name data is provided for the font FolioPrimary-Regular
+[INFO] Tests run: 22, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.730 s -- in net.zerocloud.pdf.consumer.FontLoadingWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.HardenedWorkerRecoveryTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 9.422 s -- in net.zerocloud.pdf.consumer.HardenedWorkerRecoveryTest
+[INFO] Running net.zerocloud.pdf.consumer.HardenedWorkerScaleProfileTest
+[WARNING] Tests run: 3, Failures: 0, Errors: 0, Skipped: 3, Time elapsed: 0.004 s -- in net.zerocloud.pdf.consumer.HardenedWorkerScaleProfileTest
+[INFO] Running net.zerocloud.pdf.consumer.HardenedWorkerWorkflowTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 11.17 s -- in net.zerocloud.pdf.consumer.HardenedWorkerWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.HostileInputWorkflowTest
+[INFO] Tests run: 19, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.326 s -- in net.zerocloud.pdf.consumer.HostileInputWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.ImageResourceExtractionWorkflowTest
+Sep 06, 2026 4:59:17 PM org.apache.pdfbox.filter.ASCIIHexFilter decode
+SEVERE: Invalid hex, int: 71 char: G
+Sep 06, 2026 4:59:17 PM org.apache.pdfbox.filter.ASCIIHexFilter decode
+SEVERE: Invalid hex, int: 120 char: x
+Sep 06, 2026 4:59:17 PM org.apache.pdfbox.filter.ASCIIHexFilter decode
+SEVERE: Invalid hex, int: 71 char: G
+Sep 06, 2026 4:59:17 PM org.apache.pdfbox.filter.ASCIIHexFilter decode
+SEVERE: Invalid hex, int: 71 char: G
+Sep 06, 2026 4:59:17 PM org.apache.pdfbox.filter.ASCIIHexFilter decode
+SEVERE: Invalid hex, int: 71 char: G
+Sep 06, 2026 4:59:17 PM org.apache.pdfbox.filter.LZWFilter doLZWDecode
+WARNING: Premature EOF in LZW stream, EOD code missing
+java.io.EOFException
+	at java.desktop/javax.imageio.stream.ImageInputStreamImpl.readBits(ImageInputStreamImpl.java:687)
+	at org.apache.pdfbox.filter.LZWFilter.doLZWDecode(LZWFilter.java:82)
+	at org.apache.pdfbox.filter.LZWFilter.decode(LZWFilter.java:67)
+	at org.apache.pdfbox.filter.Filter.decode(Filter.java:107)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.decodeFilterStages(PdfBoxHostileInputPreflight.java:368)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.preflightFilterStages(PdfBoxHostileInputPreflight.java:234)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.auditStream(PdfBoxHostileInputPreflight.java:192)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.traverse(PdfBoxHostileInputPreflight.java:156)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.audit(PdfBoxHostileInputPreflight.java:41)
+	at net.zerocloud.pdf.WorkflowResourceContext.audit(WorkflowResourceContext.java:604)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.executeChecked(PdfBoxWorkflowEngine.java:119)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.execute(PdfBoxWorkflowEngine.java:41)
+	at net.zerocloud.pdf.DocumentWorkflow.executeOnce(DocumentWorkflow.java:184)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:103)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:64)
+	at net.zerocloud.pdf.consumer.ImageResourceExtractionWorkflowTest.query(ImageResourceExtractionWorkflowTest.java:2213)
+	at net.zerocloud.pdf.consumer.ImageResourceExtractionWorkflowTest.nullOptionalDecodeParametersUseTheirEffectiveDefaults(ImageResourceExtractionWorkflowTest.java:447)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:316)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:214)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:155)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+Sep 06, 2026 4:59:18 PM org.apache.pdfbox.filter.LZWFilter doLZWDecode
+WARNING: Premature EOF in LZW stream, EOD code missing
+java.io.EOFException: Invalid LZW code: 489
+	at org.apache.pdfbox.filter.LZWFilter.doLZWDecode(LZWFilter.java:119)
+	at org.apache.pdfbox.filter.LZWFilter.decode(LZWFilter.java:67)
+	at org.apache.pdfbox.filter.Filter.decode(Filter.java:107)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.decodeFilterStages(PdfBoxHostileInputPreflight.java:368)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.preflightFilterStages(PdfBoxHostileInputPreflight.java:234)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.auditStream(PdfBoxHostileInputPreflight.java:192)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.traverse(PdfBoxHostileInputPreflight.java:156)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.audit(PdfBoxHostileInputPreflight.java:41)
+	at net.zerocloud.pdf.WorkflowResourceContext.audit(WorkflowResourceContext.java:604)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.executeChecked(PdfBoxWorkflowEngine.java:119)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.execute(PdfBoxWorkflowEngine.java:41)
+	at net.zerocloud.pdf.DocumentWorkflow.executeOnce(DocumentWorkflow.java:184)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:103)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:64)
+	at net.zerocloud.pdf.consumer.ImageResourceExtractionWorkflowTest.query(ImageResourceExtractionWorkflowTest.java:2213)
+	at net.zerocloud.pdf.consumer.ImageResourceExtractionWorkflowTest.unsupportedFilterKeepsEncodedBytesAndReportsDecodedAvailability(ImageResourceExtractionWorkflowTest.java:591)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:316)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:214)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:155)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[INFO] Tests run: 27, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.646 s -- in net.zerocloud.pdf.consumer.ImageResourceExtractionWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.IncrementalSignatureWorkflowTest
+Sep 06, 2026 4:59:18 PM org.apache.pdfbox.pdfparser.COSParser parseFileObject
+WARNING: Object (5:0) at offset 277 does not end with 'endobj' but with '0'
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.696 s -- in net.zerocloud.pdf.consumer.IncrementalSignatureWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Tests run: 32, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 74.69 s -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.PageManipulationWorkflowTest
+Sep 06, 2026 5:00:33 PM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Sep 06, 2026 5:00:33 PM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Sep 06, 2026 5:00:33 PM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Sep 06, 2026 5:00:33 PM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Sep 06, 2026 5:00:33 PM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Sep 06, 2026 5:00:33 PM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Sep 06, 2026 5:00:33 PM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Sep 06, 2026 5:00:33 PM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Sep 06, 2026 5:00:33 PM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Sep 06, 2026 5:00:33 PM org.apache.pdfbox.filter.FlateFilterDecoderStream fetch
+WARNING: FlateFilter: premature end of stream due to a DataFormatException = invalid distance too far back
+Sep 06, 2026 5:00:33 PM org.apache.pdfbox.filter.FlateFilterDecoderStream fetch
+WARNING: FlateFilter: premature end of stream due to a DataFormatException = invalid distance too far back
+Sep 06, 2026 5:00:33 PM org.apache.pdfbox.filter.FlateFilterDecoderStream fetch
+WARNING: FlateFilter: premature end of stream due to a DataFormatException = invalid distance too far back
+Sep 06, 2026 5:00:33 PM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Sep 06, 2026 5:00:33 PM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Sep 06, 2026 5:00:33 PM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Sep 06, 2026 5:00:33 PM org.apache.pdfbox.filter.Filter getDecodeParams
+SEVERE: Expected DecodeParams to be an Array or Dictionary but found org.apache.pdfbox.cos.COSName
+Sep 06, 2026 5:00:33 PM org.apache.pdfbox.filter.Filter getDecodeParams
+SEVERE: Expected DecodeParams to be an Array or Dictionary but found org.apache.pdfbox.cos.COSName
+Sep 06, 2026 5:00:33 PM org.apache.pdfbox.filter.Filter getDecodeParams
+SEVERE: Expected DecodeParams to be an Array or Dictionary but found org.apache.pdfbox.cos.COSName
+[INFO] Tests run: 52, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.455 s -- in net.zerocloud.pdf.consumer.PageManipulationWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.ParagraphCompositionWorkflowTest
+[INFO] Tests run: 42, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 76.15 s -- in net.zerocloud.pdf.consumer.ParagraphCompositionWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest
+[INFO] Tests run: 64, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 86.47 s -- in net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.PdfValueWorkflowTest
+[INFO] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.139 s -- in net.zerocloud.pdf.consumer.PdfValueWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.PdfVersionPasswordSecurityWorkflowTest
+Sep 06, 2026 5:03:17 PM org.apache.pdfbox.pdmodel.encryption.StandardSecurityHandler validatePerms
+WARNING: Verification of permissions failed (constant)
+Sep 06, 2026 5:03:17 PM org.apache.pdfbox.pdmodel.encryption.StandardSecurityHandler validatePerms
+WARNING: Verification of permissions failed (4E7C9376 != FFFFF0C4)
+Sep 06, 2026 5:03:17 PM org.apache.pdfbox.pdmodel.encryption.StandardSecurityHandler validatePerms
+WARNING: Verification of permissions failed (EncryptMetadata)
+[INFO] Tests run: 26, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.354 s -- in net.zerocloud.pdf.consumer.PdfVersionPasswordSecurityWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.RenderingColdStartTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.697 s -- in net.zerocloud.pdf.consumer.RenderingColdStartTest
+[INFO] Running net.zerocloud.pdf.consumer.WorkflowLifecycleTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.018 s -- in net.zerocloud.pdf.consumer.WorkflowLifecycleTest
+[INFO] Running net.zerocloud.pdf.consumer.RenderingWorkflowContractTest
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 43.94 s -- in net.zerocloud.pdf.consumer.RenderingWorkflowContractTest
+[INFO] Running net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[INFO] Tests run: 34, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 129.4 s -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.TableCompositionWorkflowTest
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 94.80 s -- in net.zerocloud.pdf.consumer.TableCompositionWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 44.22 s -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT13
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT13
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdfparser.BaseParser parseDirObject
+WARNING: Skipped unexpected dir object = '__folio_pdf_content_stream_terminal_probe__' at offset 68 (start offset: 25)
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdfparser.BaseParser parseCOSArray
+WARNING: Corrupt array element at offset 68, start offset: 23
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdfparser.BaseParser parseDirObject
+WARNING: Skipped unexpected dir object = '__folio_pdf_content_stream_terminal_probe__' at offset 68 (start offset: 25)
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdfparser.BaseParser parseCOSArray
+WARNING: Corrupt array element at offset 68, start offset: 23
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Sep 06, 2026 5:08:31 PM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+[INFO] Tests run: 44, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.789 s -- in net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+Sep 06, 2026 5:08:32 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:08:32 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:08:33 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:08:33 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:08:34 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:08:34 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:08:35 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:08:35 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:08:35 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:08:36 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:08:37 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:08:37 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:08:37 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:08:38 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:08:38 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:08:39 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:08:39 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:08:39 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:08:40 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:08:40 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+[INFO] Tests run: 48, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 185.0 s -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.WorkflowCapabilityProviderTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 s -- in net.zerocloud.pdf.consumer.WorkflowCapabilityProviderTest
+[INFO] Running net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest
+[INFO] Tests run: 82, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 29.32 s -- in net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest
+[INFO] Running net.zerocloud.pdf.consumer.WorkflowResourceOwnershipTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.049 s -- in net.zerocloud.pdf.consumer.WorkflowResourceOwnershipTest
+[INFO] Running net.zerocloud.pdf.consumer.WorkflowTransactionContractTest
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.033 s -- in net.zerocloud.pdf.consumer.WorkflowTransactionContractTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 932, Failures: 0, Errors: 0, Skipped: 3
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ pdf-document ---
+[INFO] Building jar: /workspace/pdf-document/target/pdf-document-0.1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- failsafe:3.5.4:integration-test (default) @ pdf-document ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.contract.JarContractIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.074 s -- in net.zerocloud.pdf.contract.JarContractIT
+[INFO] Running net.zerocloud.pdf.contract.PublicApiLeakageIT
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.342 s -- in net.zerocloud.pdf.contract.PublicApiLeakageIT
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- failsafe:3.5.4:verify (default) @ pdf-document ---
+[INFO] 
+[INFO] --------------------< net.zerocloud:pdf-acceptance >--------------------
+[INFO] Building Folio PDF by ZeroCloud - Acceptance Evidence 0.1.0-SNAPSHOT [6/10]
+[INFO]   from pdf-acceptance/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-acceptance ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-acceptance ---
+[INFO] Copying 28 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-acceptance ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 51 source files with javac [debug parameters release 8] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-acceptance ---
+[INFO] skip non existing resourceDirectory /workspace/pdf-acceptance/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-acceptance ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 8 source files with javac [debug parameters release 8] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-acceptance ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.acceptance.AcceptanceEvidenceCommandTest
+T23-page-rendering: syntax=PASS, visual=PASS
+T23-page-rendering-images: syntax=PASS, visual=INDETERMINATE
+T23-page-rendering-fonts: syntax=PASS, visual=PASS
+T23-page-rendering: syntax=PASS, visual=INDETERMINATE
+T23-page-rendering-images: syntax=PASS, visual=INDETERMINATE
+T23-page-rendering-fonts: syntax=PASS, visual=INDETERMINATE
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 57.45 s -- in net.zerocloud.pdf.acceptance.AcceptanceEvidenceCommandTest
+[INFO] Running net.zerocloud.pdf.acceptance.T24ParagraphEvidenceCommandTest
+T24: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE; standards and compatibility remain indeterminate.
+T24: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE; standards and compatibility remain indeterminate.
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.666 s -- in net.zerocloud.pdf.acceptance.T24ParagraphEvidenceCommandTest
+[INFO] Running net.zerocloud.pdf.acceptance.T25ParagraphEvidenceCommandTest
+T25-paragraph-indentation: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-tabs: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-keep-next: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-keep-together: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-widow: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-orphan: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-overflow-wrap: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-overflow-reject: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-overflow-visible: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-relayout: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-immediate-flush: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-publication: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE; standards and compatibility remain indeterminate.
+T25-paragraph-indentation: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-tabs: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-keep-next: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-keep-together: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-widow: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-orphan: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-overflow-wrap: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-overflow-reject: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-overflow-visible: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-relayout: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-immediate-flush: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-publication: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE; standards and compatibility remain indeterminate.
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.951 s -- in net.zerocloud.pdf.acceptance.T25ParagraphEvidenceCommandTest
+[INFO] Running net.zerocloud.pdf.acceptance.T26TableEvidenceCommandTest
+T26: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE; standards and compatibility remain indeterminate.
+T26: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE; standards and compatibility remain indeterminate.
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.759 s -- in net.zerocloud.pdf.acceptance.T26TableEvidenceCommandTest
+[INFO] Running net.zerocloud.pdf.acceptance.T27TableEvidenceCommandTest
+T27: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE; standards and compatibility remain indeterminate.
+T27: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE; standards and compatibility remain indeterminate.
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.909 s -- in net.zerocloud.pdf.acceptance.T27TableEvidenceCommandTest
+[INFO] Running net.zerocloud.pdf.acceptance.T28UnicodeEvidenceCommandTest
+Sep 06, 2026 5:13:16 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:13:16 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:13:17 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:13:17 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:13:18 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:13:19 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:13:19 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:13:19 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:13:20 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:13:20 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:13:21 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:13:21 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:13:22 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:13:24 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:13:25 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:13:25 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+T28: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE; standards, dependency gates and full Foundation certification remain open.
+Sep 06, 2026 5:13:25 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:13:26 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:13:26 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:13:27 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:13:27 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:13:28 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:13:28 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:13:28 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:13:29 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:13:29 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:13:29 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:13:30 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:13:31 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:13:33 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:13:33 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 5:13:33 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+T28 IN_PROCESS peak owned memory bytes: 1207232298
+T28 HARDENED_WORKER peak owned memory bytes: 1294495682
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 97.79 s -- in net.zerocloud.pdf.acceptance.T28UnicodeEvidenceCommandTest
+[INFO] Running net.zerocloud.pdf.acceptance.T29NativeShapingAssertionsTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.222 s -- in net.zerocloud.pdf.acceptance.T29NativeShapingAssertionsTest
+[INFO] Running net.zerocloud.pdf.acceptance.T29ShapingEvidenceCommandTest
+T29 local chains: native=PASS, semantic=INDETERMINATE, syntax=INDETERMINATE, subsets=INDETERMINATE, visual=INDETERMINATE
+T29 local chains: native=PASS, semantic=PASS, syntax=INDETERMINATE, subsets=INDETERMINATE, visual=INDETERMINATE
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 12.48 s -- in net.zerocloud.pdf.acceptance.T29ShapingEvidenceCommandTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 41, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ pdf-acceptance ---
+[INFO] Building jar: /workspace/pdf-acceptance/target/pdf-acceptance-0.1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] -----------------< net.zerocloud:pdf-migration-itext7 >-----------------
+[INFO] Building Folio PDF by ZeroCloud - Stable iText 7 Migration Facade 0.1.0-SNAPSHOT [7/10]
+[INFO]   from pdf-migration-itext7/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-migration-itext7 ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-migration-itext7 ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-migration-itext7 ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-migration-itext7 ---
+[INFO] skip non existing resourceDirectory /workspace/pdf-migration-itext7/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-migration-itext7 ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-migration-itext7 ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ pdf-migration-itext7 ---
+[INFO] Building jar: /workspace/pdf-migration-itext7/target/pdf-migration-itext7-0.1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- jar:3.4.2:jar (attach-resource-contract-javadocs) @ pdf-migration-itext7 ---
+[INFO] Building jar: /workspace/pdf-migration-itext7/target/pdf-migration-itext7-0.1.0-SNAPSHOT-javadoc.jar
+[INFO] 
+[INFO] -------------< net.zerocloud:pdf-migration-itext7-preview >-------------
+[INFO] Building Folio PDF by ZeroCloud - Preview iText 7 Migration Facade 0.1.0-SNAPSHOT [8/10]
+[INFO]   from pdf-migration-itext7-preview/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-migration-itext7-preview ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-migration-itext7-preview ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-migration-itext7-preview ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 7 source files with javac [debug parameters release 8] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-migration-itext7-preview ---
+[INFO] skip non existing resourceDirectory /workspace/pdf-migration-itext7-preview/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-migration-itext7-preview ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 5 source files with javac [debug parameters release 8] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-migration-itext7-preview ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.itext7.consumer.PreviewBlankDocumentFacadeTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.313 s -- in net.zerocloud.pdf.itext7.consumer.PreviewBlankDocumentFacadeTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ pdf-migration-itext7-preview ---
+[INFO] Building jar: /workspace/pdf-migration-itext7-preview/target/pdf-migration-itext7-preview-0.1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- failsafe:3.5.4:integration-test (default) @ pdf-migration-itext7-preview ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.migration.itext7.contract.ClasspathExclusivityIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.755 s -- in net.zerocloud.pdf.migration.itext7.contract.ClasspathExclusivityIT
+[INFO] Running net.zerocloud.pdf.migration.itext7.contract.JarContractIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 s -- in net.zerocloud.pdf.migration.itext7.contract.JarContractIT
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- failsafe:3.5.4:verify (default) @ pdf-migration-itext7-preview ---
+[INFO] 
+[INFO] ------------------< net.zerocloud:pdf-inventory-tool >------------------
+[INFO] Building Folio PDF by ZeroCloud - Inventory Build Tool 0.1.0-SNAPSHOT [9/10]
+[INFO]   from build-tools/inventory/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-inventory-tool ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-inventory-tool ---
+[INFO] skip non existing resourceDirectory /workspace/build-tools/inventory/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-inventory-tool ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 10 source files with javac [debug parameters release 8] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-inventory-tool ---
+[INFO] Copying 35 resources from src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-inventory-tool ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug parameters release 8] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-inventory-tool ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.tools.inventory.InventoryCommandTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.638 s -- in net.zerocloud.pdf.tools.inventory.InventoryCommandTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ pdf-inventory-tool ---
+[INFO] Building jar: /workspace/build-tools/inventory/target/pdf-inventory-tool-0.1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- exec:3.6.3:java (check-compatibility-inventories) @ pdf-inventory-tool ---
+Inventory validation passed: 21 capabilities, 12 facade surfaces, 20 exclusions.
+Generated inventory documentation is current.
+[INFO] 
+[INFO] -------------------< net.zerocloud:pdf-release-tool >-------------------
+[INFO] Building Folio PDF by ZeroCloud - Release Rehearsal Tool 0.1.0-SNAPSHOT [10/10]
+[INFO]   from build-tools/release/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-release-tool ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-release-tool ---
+[INFO] skip non existing resourceDirectory /workspace/build-tools/release/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-release-tool ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 6 source files with javac [debug parameters release 8] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-release-tool ---
+[INFO] skip non existing resourceDirectory /workspace/build-tools/release/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-release-tool ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 3 source files with javac [debug parameters release 8] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-release-tool ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.tools.release.ReleasePolicyContractTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.157 s -- in net.zerocloud.pdf.tools.release.ReleasePolicyContractTest
+[INFO] Running net.zerocloud.pdf.tools.release.ReleaseRehearsalCommandTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.955 s -- in net.zerocloud.pdf.tools.release.ReleaseRehearsalCommandTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ pdf-release-tool ---
+[INFO] Building jar: /workspace/build-tools/release/target/pdf-release-tool-0.1.0-SNAPSHOT.jar
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent .................... SUCCESS [  0.502 s]
+[INFO] Folio PDF by ZeroCloud - BOM ....................... SUCCESS [  0.004 s]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract SUCCESS [  3.208 s]
+[INFO] Folio PDF by ZeroCloud - Conversion ................ SUCCESS [  2.997 s]
+[INFO] Folio PDF by ZeroCloud - Document Engine ........... SUCCESS [14:02 min]
+[INFO] Folio PDF by ZeroCloud - Acceptance Evidence ....... SUCCESS [03:00 min]
+[INFO] Folio PDF by ZeroCloud - Stable iText 7 Migration Facade SUCCESS [  0.038 s]
+[INFO] Folio PDF by ZeroCloud - Preview iText 7 Migration Facade SUCCESS [  1.712 s]
+[INFO] Folio PDF by ZeroCloud - Inventory Build Tool ...... SUCCESS [  8.662 s]
+[INFO] Folio PDF by ZeroCloud - Release Rehearsal Tool .... SUCCESS [  8.903 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  17:28 min
+[INFO] Finished at: 2026-09-06T17:15:26Z
+[INFO] ------------------------------------------------------------------------

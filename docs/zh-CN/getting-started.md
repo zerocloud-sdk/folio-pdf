@@ -9,9 +9,13 @@ Folio PDF 是采用 Apache-2.0 许可证的 Java 组件套件，Maven 坐标位�
 
 ## 构建
 
-无需安装系统 Maven；仓库内的 Maven Wrapper 固定使用 Maven 3.9.16：
+无需安装系统 Maven；仓库内的 Maven Wrapper 固定使用 Maven 3.9.16。
+T29 测试需要单独安装 HarfBuzz 10.2.0 及项目 helper，准备方式见下方的
+[显式塑形](#显式-harfbuzz-塑形t29experimental) 和
+[完整安装合同](../harfbuzz-shaping.md#explicit-installation)。构建前声明其绝对路径：
 
-```text
+```sh
+export FOLIO_HARFBUZZ_HELPER=/explicit/folio-harfbuzz-10.2.0/bin/folio-harfbuzz
 ./mvnw -B -ntp verify
 ```
 
@@ -121,7 +125,78 @@ JPEG、JPX、JBIG2 只允许作为图像的唯一末端平台 codec；在平台�
 
 T23 的公共测试与三组独立 PDFium 视觉证据不构成兼容性认证；标准证据、正式语义
 证据和前置能力的 promotion/dependency gates 尚未满足，因此状态仍为 experimental。
+## 显式 HarfBuzz 塑形（T29，experimental）
+
+T29 为既有 Composition 命令接入项目自有的 HarfBuzz C 适配器。验收固定使用
+HarfBuzz 10.2.0 和附有哈希的显式 Noto 字体，覆盖 Arabic、Hebrew、Devanagari、Thai。
+原生库和 helper 必须另行安装，默认产品不捆绑它们，也不发现系统字体或在线下载字体。
+
+源码包及哈希固定在 `scripts/harfbuzz-pin.properties`。准备 Python 3.12+、Meson
+1.3.2+、Ninja、pkg-config 和本机 C/C++ 编译器后，执行：
+
+```sh
+python3 scripts/install-harfbuzz.py /explicit/harfbuzz-10.2.0.tar.xz \
+  /explicit/folio-harfbuzz-10.2.0
+```
+
+安装目录必须不存在。命令不会下载依赖；`installation.json` 记录实际构建产物、
+工具及源码哈希。安装成功只说明本机构建完成，不代表四平台验收通过。
+
+仓库验证先显式导出 helper 路径。独立验收还需准备固定版本的 qpdf、PDFium、
+ImageMagick，以及安装了 fontTools 4.59.2 的 Python 环境：
+
+```sh
+export FOLIO_HARFBUZZ_HELPER=/explicit/folio-harfbuzz-10.2.0/bin/folio-harfbuzz
+export FOLIO_SHAPING_PYTHON=/absolute/python-with-fonttools-4.59.2
+./scripts/acceptance /new/evidence-directory
+```
+
+入口输出原生数值、重开语义、实际嵌入子集、语法和八页视觉记录，并单独记录安装
+追溯结果。Linux 观察器核对回执和文件哈希，再读取一次真实 helper 启动的加载映射；
+它不逐次观察每个 Workflow 原生调用。存在 `LD_PRELOAD`/`LD_AUDIT` 符号插入时，
+加载归属不能由该观察证明，结果保持 `INDETERMINATE`。其他平台的加载观察尚未实现。
+
+使用 `pdf-conversion` 中的 `HarfBuzzCapabilityProvider`，提供 helper 的绝对路径、
+已有的 staging 目录、精确版本 `"10.2.0"` 和有限的 `ProviderLimits`，再注册到
+`WorkflowEnvironment`。在 `WorkflowRequest` 上显式选择：
+
+```java
+.providerPreference(ProviderPreference.prefer(
+        ShapingRequest.CAPABILITY_ID, HarfBuzzCapabilityProvider.PROVIDER_ID))
+```
+
+仅注册 Provider 不开启塑形。开启后仍传入逻辑顺序文本，并声明 `FontSelection.explicit`
+及既有排版/字体上限。每个完整 ICU 字素选择第一个能覆盖全簇的字体；不同字体分别
+覆盖基字和附加符并不足以满足这个合同。相邻 inline 一起分段；字素内部若改变字号，
+保留各自字号与整体断行边界，但分段塑形不保证跨字号附加符定位，可能出现原生引擎
+插入的 dotted-circle 字形。
+fallback 预算包含初始选字和整字素覆盖检查中的每次字符探测。
+
+候选行按实际边界重新塑形和测量，窄行可以在原始 ICU 字素边界拆开先前形成的连字。
+表格最小宽度比较原始字素边界上的合法片段划分，同时考虑独立字形与更窄的连字；
+候选搜索及片段长度计入既有表格工作上限，实际断行仍须通过。嵌入子集包含实际替换字形及组合依赖；
+ToUnicode 映射完整输入簇，ActualText 保存每个原生 run 的逻辑文本。公开查询仍按
+绘制顺序返回 TextItem，不承诺跨 bidi run 重建整个原始段落，也不添加 Tagged PDF。
+这类 ActualText 要求有效 PDF 版本至少为 1.5；较旧 Source 的增量塑形会以
+`PDF_VERSION_UNSUPPORTED` 在发布前失败，即使文本和字体映射都只包含 BMP 字符，
+也不会隐式升级 Source 版本。
+开启塑形可能改变字形数、行数、页数和提取结果。直接 `DrawPositionedUnicodeText`
+仍按既有未塑形合同执行。
+
+IN_PROCESS 与既有 Linux/JDK 支持范围内的 HARDENED_WORKER 使用相同公开合同。
+两者的原生 Provider 都由父进程调用；原生 helper 不受 PDF Worker 全面的文件系统、
+网络、内存或 CPU 隔离。Provider 的字节上限、超时、进程终止与 staging 清理继续生效。
+缺引擎、版本不匹配、错误结果或超限在发布前失败，目标保持原内容。
+验收记录明确列出 Worker 的适用范围；Linux Worker 不可用时保留 IN_PROCESS
+产物，但合并证据保持 `INDETERMINATE`。当前迁移 Facade 没有塑形映射，需通过
+Native Interface 显式选择 Provider。
+
+完整边界、注册示例、迁移与协议见 [HarfBuzz shaping](../harfbuzz-shaping.md)。
+四平台证据尚未完整，缺失平台/工具记为 `INDETERMINATE`；本机测试不代表兼容性认证。
+
 ## Unicode 分段与双向排版（T28，experimental）
+
+本节描述未显式选择 T29 塑形时的行为。
 
 现有 `ComposeParagraphs` 各版本及表格段落现在使用固定 ICU4J 77.1 处理字素、词、
 断行、script 和 bidi。相邻 text inline 合并分析，换行和视觉重排都不拆开组合序列。
@@ -144,7 +219,7 @@ SC、TC、JP、KR 的顺序决定区域字形；默认 Locale、系统字体和�
 
 ICU 不负责 shaping：此处没有 GSUB/GPOS、连字、kerning、组合附加符定位、阿拉伯或
 印度文字上下文塑形、韩文 Jamo 合成、变体序列选字、断字或竖排。已编码的预组合字形
-可以正常选取。HarfBuzz 属于 #30，亚洲字体资源产品属于 #34。
+可以正常选取。显式 HarfBuzz 塑形见上节；亚洲字体资源产品属于 #34。
 
 公开重开查询观察 PDF 绘制顺序，因此 `PageText` 返回视觉顺序与实际镜像字符，
 不包含方向控制符或强制换行符，也不重建原始逻辑段落；需要逻辑文本的应用应保存
@@ -157,6 +232,10 @@ ICU 不负责 shaping：此处没有 GSUB/GPOS、连字、kerning、组合附加
 计量内存并保留默认 Worker 设置，32/160 MiB 负例验证资源拒绝与目标文件保留。产品
 默认值没有修改。完整英文边界和迁移说明见 [Unicode Composition](../unicode-composition.md)。
 Linux/JDK 验证不代表 Windows、macOS 或完整 Foundation 认证；能力仍为 experimental。
+
+借入的流和通道按声明各读取一次，保持打开。一个 Session 内，字节完全相同的私有
+字体快照可以共享存储；每个声明仍计入内存用量，每次使用仍消耗字体来源数量与
+累计字节配额。字体选择和调用方所有权不变。
 
 ## 段落跨区域排版（T24，experimental）
 
@@ -185,7 +264,7 @@ JUSTIFIED 对齐及 `maximumWidth`。固定 leading 是行框最小高度，字�
 不使用系统字体或联网查找。IN_PROCESS 与 HARDENED_WORKER 接受相同声明；命令顺序、
 Query barrier、Session 生命周期、调用方流/通道所有权及签名/密码权限约束继续有效。
 当前仅向文档追加新页面，不填充已有页面区域。缩进、tabs、keep、widow/orphan、
-高级 overflow/relayout 和表格使用后续版本；Unicode 行为见 T28，shaping 仍单独规划。
+高级 overflow/relayout 和表格使用后续版本；Unicode 行为见 T28，显式 shaping 见 T29。
 
 完整英文契约和示例见 [Paragraph composition](../paragraph-composition.md)。
 能力仍为 experimental；实现票关闭或本机验证通过都不代表 Foundation 兼容性认证。
