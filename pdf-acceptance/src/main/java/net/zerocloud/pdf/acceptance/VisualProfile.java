@@ -122,10 +122,12 @@ final class VisualProfile {
         int pageNumber = 1;
         int pageCount = 1;
         if (profileId.equals("T24-paragraph-composition") || profileId.startsWith("T25-paragraph-")
-                || profileId.equals("T26-table-composition") || profileId.equals("T27-table-pagination")) {
+                || profileId.equals("T26-table-composition") || profileId.equals("T27-table-pagination")
+                || profileId.startsWith("T28-unicode-")) {
             pageNumber = positiveInt(properties, "PAGE_SELECTION");
             pageCount = positiveInt(properties, "PAGE_COUNT");
-            int expectedPages = profileId.equals("T27-table-pagination") ? T27TableExpectations.PAGE_COUNT
+            int expectedPages = profileId.startsWith("T28-unicode-") ? 7
+                    : profileId.equals("T27-table-pagination") ? T27TableExpectations.PAGE_COUNT
                     : profileId.equals("T26-table-composition") ? 3 : 2;
             if (pageCount != expectedPages || pageNumber > pageCount) {
                 throw new IOException("Composition profiles require a selected page of their declared finite artifact");
@@ -229,6 +231,10 @@ final class VisualProfile {
         policies.put("T24-paragraph-composition", policies.get(T19_PROFILE));
         policies.put("T26-table-composition", policies.get(T19_PROFILE));
         policies.put("T27-table-pagination", policies.get(T19_PROFILE));
+        for (String profile : new String[] {"latin", "greek", "cyrillic", "cjk-sc", "cjk-tc", "cjk-jp", "cjk-kr"}) {
+            policies.put("T28-unicode-" + profile, new RenderingPolicy(OPAQUE_SRGB_COLOR_POLICY,
+                    "only the explicit embedded hash-pinned Noto subsets; no system fonts", T19_ANTIALIASING_POLICY));
+        }
         for (T25ParagraphExpectations.Profile profile : T25ParagraphExpectations.PROFILES) {
             policies.put(profile.id, policies.get(T19_PROFILE));
         }
@@ -283,13 +289,17 @@ final class VisualProfile {
     }
 
     String comparisonDescription() {
-        if (profileId.startsWith("T25-paragraph-") || profileId.equals("T26-table-composition")
-                || profileId.equals("T27-table-pagination")) {
+        if (requiresExactChangedPixels()) {
             return "ImageMagick " + comparisonMetric + " magnitude with fuzz " + comparisonFuzzPercent
                     + " percent; exact changed RGB pixels additionally enforce the same bounds";
         }
         return "ImageMagick absolute error count (" + comparisonMetric
                 + ") with fuzz " + comparisonFuzzPercent + " percent";
+    }
+
+    boolean requiresExactChangedPixels() {
+        return profileId.startsWith("T25-paragraph-") || profileId.equals("T26-table-composition")
+                || profileId.equals("T27-table-pagination") || profileId.startsWith("T28-unicode-");
     }
 
     long comparisonThreshold() {

@@ -1584,3 +1584,97 @@ provenance statement required by [CONTRIBUTING.md](CONTRIBUTING.md).
 - The fixes and regression tests are original contributions to this Apache-2.0
   project. No iText source, non-public implementation, closed add-on material
   or restricted fixture was accessed.
+
+## T28 unicode-composition record
+
+- Authorship: original implementation, public contract tests, offline reference
+  tooling and documentation authored by OpenAI Codex at the user's direction
+  on 2026-09-06. The review fixed point is
+  `875c140fc4617f8a9649f1c9bed8034c52bd6dfa`. The initial delivery was verified
+  and independently reviewed as an uncommitted working tree. The user
+  subsequently authorized a DCO-signed commit, pushing it to GitHub and
+  closing issue #29 after the push. Publication uses the repository's
+  configured Git identity.
+- Scope and architectural inputs: issue #29 and its parent #1; the existing
+  project-owned T19 font, T24/T25 paragraph, T26/T27 table, Workflow and Worker
+  contracts; CONTRIBUTING, CONTEXT and ADR-0010/0022/0023/0026. No new module,
+  backend SPI, Facade stub, HarfBuzz adapter, Asian resource product or
+  Foundation platform certification is claimed.
+- Unicode authority: Unicode 16
+  [UAX #9 revision 50](https://www.unicode.org/reports/tr9/tr9-50.html),
+  [UAX #14 revision 53](https://www.unicode.org/reports/tr14/tr14-53.html),
+  [UAX #24 revision 38](https://www.unicode.org/reports/tr24/tr24-38.html),
+  [UAX #29 revision 45](https://www.unicode.org/reports/tr29/tr29-45.html),
+  and the [ICU boundary-analysis documentation](https://unicode-org.github.io/icu/userguide/boundaryanalysis/).
+  ICU4J 77.1 is the only new product dependency. Its complete unbundled JAR,
+  full SHA-256 and consolidated Unicode/third-party notices are recorded in
+  [the dependency notice](docs/third-party/icu4j-77.1.md) and root NOTICE.
+  Its responsibility is segmentation, script classification and bidi, not shaping.
+- Font-format inputs: the public Microsoft OpenType TrueType, cmap, glyf,
+  head, hhea, hmtx, loca, maxp, name, post and OS/2 specifications. In
+  particular, the [loca specification](https://learn.microsoft.com/en-us/typography/opentype/spec/loca)
+  defines long entries as actual byte offsets. Permissively licensed
+  PDFBox/FontBox 3.0.8 parser, cmap and subsetter source/API behavior was
+  inspected to establish safe supported format boundaries. No dependency
+  source was copied into this implementation.
+- Metadata accounting additionally uses the public OpenType
+  [GSUB structures](https://learn.microsoft.com/en-us/typography/opentype/spec/gsub)
+  and [common layout tables](https://learn.microsoft.com/en-us/typography/opentype/spec/chapter2).
+  The pinned FontBox `GlyphSubstitutionTable`, `GlyphSubstitutionDataExtractor`
+  and `Language` source artifacts were inspected to identify eagerly read data
+  and object lifetimes. The original preflight bounds those records and counts
+  parsed aliases and materialized maps without executing substitution. The
+  new negative fixtures change only a GSUB version, lookup reference or glyph
+  delta, or a vertical-metric count in a pinned Noto copy and repair ordinary
+  sfnt checksums. The [vhea](https://learn.microsoft.com/en-us/typography/opentype/spec/vhea)
+  and [vmtx](https://learn.microsoft.com/en-us/typography/opentype/spec/vmtx)
+  specifications define the checked header/count/length relationship; pinned
+  FontBox vertical-table readers establish the eager allocation boundary.
+  Original font resources
+  and independent expected data remain unchanged.
+- Full fonts: Noto Sans Regular 2.008 and Noto Sans Hebrew Regular 3.000 are
+  unchanged static files from notofonts/noto-fonts commit
+  `ffebf8c1ee449e544955a7e813c54f9b73848eac`. CJK SC/TC/JP/KR are complete
+  65,535-glyph Regular static instances of the regional TrueType variable
+  sources from notofonts/noto-cjk Sans2.004, commit
+  `523d033d6cb47f4a80c58a35753646f5c3608a78`. The offline fontTools 4.59.2
+  recipe pins source/tool hashes, preserves source timestamps, sets only
+  `wght=400` and updates names from source STAT metadata. It does not reduce
+  coverage or strip tables to accommodate the validator. Original/final
+  SHA-256 values, URLs, byte lengths, instance settings and both unchanged
+  OFL-1.1 notices are retained with [the Noto resources](pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto/README.md).
+  These files enter only acceptance and test resources, never default
+  product runtime or system-font discovery.
+- Test tooling: [fontTools 4.59.2](docs/third-party/fonttools-4.59.2.md) is a
+  separately installed MIT-licensed Python tool, not a Maven dependency.
+  Its wheel SHA-256 and both complete LICENSE files are retained. Source-pin
+  rejection and full static generation have command-level Red/Green tests.
+- Independent oracle: the short multilingual corpus, manual line lists and
+  bidi display order are project-authored examples based on the Unicode
+  rules. JDK java.text.Bidi/BreakIterator supplied independent cross-checks,
+  without invoking ICU or Folio. Before executing the CJK punctuation probe,
+  a transcription that incorrectly made the parenthesized phrase atomic was
+  corrected using the legal offsets `0,1,2,4,6,7,9`. Source hmtx inspection
+  also fixed each Jamo advance at 920 units, hence 22.08 points per two-scalar
+  cluster. Neither correction used producer output or relaxed a threshold.
+- The [raw reference writer](scripts/t28-unicode-reference.py) uses source
+  cmap/head/hmtx values and fontTools subsets with retained original GIDs to
+  write an independent seven-page PDF and tab-separated expected geometry.
+  It performs no segmentation, bidi, shaping or Folio calls. Those artifacts,
+  corpus and generation hashes are retained in acceptance resources. Pinned
+  PDFium CLI v0.11.2 / chromium-7881 renders the reference to the seven expected
+  PNGs. The 0.0001-point geometry tolerance, 144-DPI opaque-white sRGB policy,
+  zero-fuzz primary AE/changed-pixel limit zero and secondary changed-pixel
+  bound 12000 were fixed before implementation comparisons. qpdf 12.4.0 and
+  ImageMagick 7.1.2-30 reuse the already-noticed repository tools.
+- Public observations: all product contracts use DocumentWorkflow.execute,
+  public Commands/Queries and published/reopened results. Independent
+  negative artifacts are changed through DocumentPatch to split a cluster,
+  reverse the Hebrew pair, substitute a different regional font resource or
+  displace geometry by one point. The observer checks their independently
+  declared text, original glyph IDs, font names and coordinates.
+- No iText source, resource, fixture, binary-derived implementation detail,
+  non-public or closed add-on material was accessed or used for T28. No
+  Reference Suite output acts as the oracle. Full Foundation standards,
+  dependency and required font/platform gates remain open; test results do
+  not imply compatible status.

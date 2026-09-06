@@ -227,7 +227,7 @@ One explicitly ordered rectangular region inside a page's margin box. Paragraph 
 _Avoid_: inferred column, text frame handle, page template
 
 **Paragraph**:
-An immutable sequence of unshaped Unicode text and atomic inline graphics with declared alignment, leading, an optional width cap, indentation, tabs, overflow and hard keep/widow/orphan constraints. Its content order is semantic input, while line and page breaks are Composition results.
+An immutable sequence of unshaped Unicode text and atomic inline graphics with declared alignment, leading, an optional width cap, indentation, tabs, overflow and hard keep/widow/orphan constraints. Its content order is logical semantic input; Unicode cluster/line boundaries, visual bidi order and page breaks are Composition results. Segmentation and bidi do not imply glyph shaping.
 _Avoid_: Canvas Program, string at a coordinate, backend paragraph
 
 **Table**:

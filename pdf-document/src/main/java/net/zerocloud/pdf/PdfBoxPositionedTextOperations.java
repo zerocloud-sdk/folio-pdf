@@ -200,7 +200,7 @@ final class PdfBoxPositionedTextOperations {
             try {
                 if (loaded.subset) {
                     loaded.font.subset();
-                    normalizeEmbeddedSubset(loaded.font.getCOSObject());
+                    normalizeEmbeddedSubset(loaded.font.getCOSObject(), loaded.extended);
                 }
                 writeExactWidths(
                         loaded.font.getCOSObject(), loaded.widthByGlyph);
@@ -216,7 +216,7 @@ final class PdfBoxPositionedTextOperations {
         }
     }
 
-    private void normalizeEmbeddedSubset(COSDictionary type0Font)
+    private void normalizeEmbeddedSubset(COSDictionary type0Font, boolean extended)
             throws IOException, DocumentFailure {
         COSDictionary descendant = descendantFont(type0Font, resources);
         COSDictionary descriptor = dictionary(
@@ -235,10 +235,11 @@ final class PdfBoxPositionedTextOperations {
                             staged.finishWorking();
                     WorkflowResourceContext.MemoryReservation normalizedBytes =
                             resources.reserveOwnedMemory(
-                                    stagedBytes.getBytes().length)) {
+                                    stagedBytes.getBytes().length
+                                            + (extended ? 2L * stagedBytes.getBytes().length + 512L * 65535 : 0))) {
                 byte[] normalized =
                         PdfBoxTrueTypePreflight.normalizeSubsetMetrics(
-                                stagedBytes.getBytes(), resources);
+                                stagedBytes.getBytes(), resources, extended);
                 try (OutputStream output = program.createOutputStream(
                         COSName.FLATE_DECODE)) {
                     resources.writeBytesAsIOException(output, normalized);
@@ -795,6 +796,8 @@ final class PdfBoxPositionedTextOperations {
                 PdfBoxTrueTypePreflight.validateForEmbedding(
                         key.bytes, resources);
         TrueTypeFont font = null;
+        WorkflowResourceContext.MemoryReservation parsingMemory =
+                resources.reserveOwnedMemory(embeddingProfile.getParsingMemoryBytes());
         try {
             font = new TTFParser().parse(new RandomAccessReadBuffer(key.bytes));
             if (font.getHeader() == null
@@ -866,13 +869,18 @@ final class PdfBoxPositionedTextOperations {
                             Math.max(0d, -font.getHeader().getYMin()) / unitsPerEm));
                 }
             }
-            return new ParsedProgram(font, glyphs, embeddingProfile);
+            ParsedProgram result = new ParsedProgram(font, glyphs, embeddingProfile, parsingMemory);
+            parsingMemory = null;
+            return result;
         } catch (DocumentFailure failure) {
+            closeQuietly(font);
             throw failure;
         } catch (IOException | RuntimeException failure) {
             closeQuietly(font);
             resources.rethrowResourceOrTerminalFailure(failure);
             throw sourceInvalid();
+        } finally {
+            if (parsingMemory != null) { parsingMemory.close(); }
         }
     }
 
@@ -1123,6 +1131,7 @@ final class PdfBoxPositionedTextOperations {
             return replacementFont(glyph.key, loaded);
         }
         try {
+            resources.retainOwnedMemory(glyph.embeddingProfile.getParsingMemoryBytes());
             PDType0Font font = PDType0Font.load(
                     document,
                     new ByteArrayInputStream(glyph.key.bytes),
@@ -1133,6 +1142,8 @@ final class PdfBoxPositionedTextOperations {
                     raw,
                     font.getCOSObject(),
                     !glyph.embeddingProfile.requiresFullEmbedding(),
+                    glyph.embeddingProfile.isExtended(),
+                    glyph.embeddingProfile.getParsingMemoryBytes(),
                     resources);
             loadedFonts.put(glyph.key, loaded);
             glyph.key.retainForSession();
@@ -1147,6 +1158,7 @@ final class PdfBoxPositionedTextOperations {
             FontProgramKey key,
             LoadedFont finalized) throws DocumentFailure {
         try {
+            resources.retainOwnedMemory(finalized.parsingMemoryBytes);
             PDType0Font font = PDType0Font.load(
                     document,
                     new ByteArrayInputStream(key.bytes),
@@ -1160,6 +1172,8 @@ final class PdfBoxPositionedTextOperations {
                     finalized.persistentFontResource,
                     finalized.resourceDictionary,
                     true,
+                    finalized.extended,
+                    finalized.parsingMemoryBytes,
                     resources);
             for (Map.Entry<Integer, Integer> entry
                     : finalized.unicodeByGlyph.entrySet()) {
@@ -1334,7 +1348,7 @@ final class PdfBoxPositionedTextOperations {
                 new IdentityHashMap<FontProgramKey, Boolean>();
         for (SourceProgram program : programs) {
             if (closed.put(program.parsed, Boolean.TRUE) == null) {
-                closeQuietly(program.parsed.font);
+                program.parsed.close();
             }
             if (closedKeys.put(program.key, Boolean.TRUE) == null) {
                 program.key.close();
@@ -1356,7 +1370,7 @@ final class PdfBoxPositionedTextOperations {
 
     private static void closeParsed(Iterable<ParsedProgram> programs) {
         for (ParsedProgram program : programs) {
-            closeQuietly(program.font);
+            program.close();
         }
     }
 
@@ -1614,14 +1628,22 @@ final class PdfBoxPositionedTextOperations {
         private final Map<Integer, GlyphMetric> glyphs;
         private final PdfBoxTrueTypePreflight.EmbeddingProfile
                 embeddingProfile;
+        private final WorkflowResourceContext.MemoryReservation parsingMemory;
 
         ParsedProgram(
                 TrueTypeFont font,
                 Map<Integer, GlyphMetric> glyphs,
-                PdfBoxTrueTypePreflight.EmbeddingProfile embeddingProfile) {
+                PdfBoxTrueTypePreflight.EmbeddingProfile embeddingProfile,
+                WorkflowResourceContext.MemoryReservation parsingMemory) {
             this.font = font;
             this.glyphs = glyphs;
             this.embeddingProfile = embeddingProfile;
+            this.parsingMemory = parsingMemory;
+        }
+
+        void close() {
+            closeQuietly(font);
+            parsingMemory.close();
         }
     }
 
@@ -1680,6 +1702,8 @@ final class PdfBoxPositionedTextOperations {
         private final COSBase descriptorItem;
         private final COSDictionary descriptorDictionary;
         private final boolean subset;
+        private final boolean extended;
+        private final long parsingMemoryBytes;
         private final Map<Integer, Integer> unicodeByGlyph =
                 new LinkedHashMap<Integer, Integer>();
         private final Map<Integer, Integer> widthByGlyph =
@@ -1691,6 +1715,8 @@ final class PdfBoxPositionedTextOperations {
                 COSObject persistentFontResource,
                 COSDictionary resourceDictionary,
                 boolean subset,
+                boolean extended,
+                long parsingMemoryBytes,
                 WorkflowResourceContext resources) throws DocumentFailure {
             this.font = font;
             this.persistentFontResource = persistentFontResource;
@@ -1704,6 +1730,8 @@ final class PdfBoxPositionedTextOperations {
                     COSName.FONT_DESC);
             this.descriptorDictionary = dictionary(descriptorItem, resources);
             this.subset = subset;
+            this.extended = extended;
+            this.parsingMemoryBytes = parsingMemoryBytes;
         }
 
         void replaceManagedFontEntries(WorkflowResourceContext resources)

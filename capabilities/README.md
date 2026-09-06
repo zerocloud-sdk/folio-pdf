@@ -24,7 +24,8 @@ The outputs are:
 - `docs/generated/facade-surface.md`
 
 Record the built-in T03 blank-document, T18 Canvas-image, T19 explicit-font,
-T23 rendering, T24 paragraph-composition and T25 advanced-pagination
+T23 rendering, T24 paragraph-composition, T25 advanced-pagination,
+T26/T27 table composition/pagination and seven T28 Unicode
 Acceptance Profiles with the pinned external syntax validator, independent
 renderer, raster comparator, and project semantic assertions:
 
@@ -454,3 +455,23 @@ predeclared 144-DPI opaque-white sRGB profile, zero-fuzz AE 0, zero changed RGB
 pixels and the separate secondary-renderer bound of 2500. Missing tools remain
 indeterminate. The [T27 delivery record](evidence/T27-table-pagination.md)
 tracks actual chain results and the outstanding compatibility gates.
+
+## T28 Unicode composition acceptance
+
+The recorder produces seven profiles using the complete pinned static Noto
+fonts: Latin, Greek, Cyrillic, CJK SC, TC, JP and KR. The
+[reference declaration](profiles/T28-unicode-reference.md) fixes logical input,
+visual order, clusters, lines, font selection and all thresholds before the
+implementation is run. The offline `scripts/t28-unicode-reference.py NEW_DIRECTORY`
+command uses fontTools 4.59.2 and original source metrics to write an independent
+PDF directly; it uses neither Folio composition nor ICU.
+
+Run `./scripts/acceptance NEW_OUTPUT_DIRECTORY` and retain only T28 outputs.
+All seven pages require the fixed 0.0001-point geometry tolerance, 144-DPI
+opaque-white sRGB, zero-fuzz AE 0, zero changed primary RGB pixels and at most
+12,000 secondary changed pixels. Public observers also reject displaced marks,
+reversed RTL letters, the wrong regional font and shifted geometry. The
+[delivery record](evidence/T28-unicode.md) links syntax, semantic, geometry,
+visual and verification evidence. Missing tools remain indeterminate; shaping,
+full Foundation font/platform certification and compatibility promotion remain
+outside this ticket's demonstrated evidence.

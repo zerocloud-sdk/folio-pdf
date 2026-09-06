@@ -28,7 +28,7 @@ paragraphs, positive `rowspan` and `colspan` (both default to 1),
 width defaults to zero points; AUTO is invalid for a cell minimum. Empty cells
 are explicit and legal. Nested tables and version-2 cell paragraphs are outside
 this representation. The existing T24 text, graphics, alignment, leading,
-font, whitespace and scalar-wrapping rules apply inside each cell.
+font, whitespace and [Unicode cluster/line rules](unicode-composition.md) apply inside each cell.
 
 Rows are visited in declaration order. Within a row the next cell starts at
 the first unoccupied column; its rectangular span must fit within declared
@@ -46,13 +46,14 @@ this is semantic input order, not Tagged PDF table structure.
 In FIXED layout, explicit column widths are exact. AUTO columns equally divide
 the remaining table width. With no AUTO column, explicit widths must sum to
 the table width. Every resolved column must be positive. Each cell must satisfy
-its minimum width and contain its largest scalar advance or atomic graphic,
+its minimum width and contain its largest complete grapheme advance or atomic graphic,
 padding and borders. Failure to fit is never clipping or silent truncation.
 
 AUTO keeps explicit columns exact. For each cell, intrinsic minimum is its
-largest scalar advance or graphic width plus horizontal padding and borders,
+largest complete grapheme advance or graphic width plus horizontal padding and borders,
 raised to its declared minimum width. Preferred width is the largest sum of
-advances between LFs plus these insets, raised to intrinsic minimum. Paragraph
+advances between forced line separators (LF, U+2028 or U+2029) plus these insets,
+raised to intrinsic minimum. Paragraph
 width caps affect line layout, not these intrinsic measurements.
 
 Start AUTO columns at zero and explicit columns at their exact widths. Visit

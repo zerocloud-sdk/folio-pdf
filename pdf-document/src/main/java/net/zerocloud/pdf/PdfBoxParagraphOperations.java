@@ -1,5 +1,11 @@
 package net.zerocloud.pdf;
 
+import com.ibm.icu.text.BreakIterator;
+import com.ibm.icu.text.Bidi;
+import com.ibm.icu.lang.UCharacter;
+import com.ibm.icu.lang.UScript;
+import com.ibm.icu.lang.UProperty;
+import com.ibm.icu.util.ULocale;
 import java.util.ArrayList;
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -100,16 +106,53 @@ final class PdfBoxParagraphOperations {
     }
 
     void appendText(StringBuilder text, Paragraph paragraph) throws DocumentFailure {
+        String unicode = paragraphUnicode(paragraph);
+        Bidi bidi = paragraphBidi(unicode);
+        int offset = 0;
+        for (Paragraph.Inline inline : paragraph.getInlines()) {
+            resources.checkpoint();
+            if (inline.getKind() == Paragraph.Inline.Kind.GRAPHIC) { offset++; continue; }
+            for (int index = 0; index < inline.getText().length();) {
+                resources.checkpoint();
+                int cp = inline.getText().codePointAt(index);
+                if (!hardBreak(cp) && cp != '\t' && !bidiControl(cp)) {
+                    text.appendCodePoint((bidi.getLevelAt(offset) & 1) == 0 ? cp : UCharacter.getMirror(cp));
+                }
+                int length = Character.charCount(cp);
+                index += length;
+                offset += length;
+            }
+        }
+    }
+
+    private String paragraphUnicode(Paragraph paragraph) throws DocumentFailure {
+        StringBuilder text = new StringBuilder();
         for (Paragraph.Inline inline : paragraph.getInlines()) {
             if (inline.getKind() == Paragraph.Inline.Kind.TEXT) {
                 String value = inline.getText();
                 for (int index = 0; index < value.length(); index++) {
                     resources.checkpoint();
-                    char cp = value.charAt(index);
-                    if (cp != '\n' && cp != '\t') { text.append(cp); }
+                    text.append(value.charAt(index));
                 }
-            }
+            } else { text.append('\ufffc'); }
         }
+        return text.toString();
+    }
+
+    private Bidi paragraphBidi(String unicode) throws DocumentFailure {
+        resources.checkpoint();
+        Bidi bidi = new Bidi();
+        bidi.setPara(unicode, Bidi.LEVEL_DEFAULT_LTR, null);
+        resources.checkpoint();
+        return bidi;
+    }
+
+    private static boolean bidiControl(int codePoint) {
+        return UCharacter.hasBinaryProperty(codePoint, UProperty.BIDI_CONTROL);
+    }
+
+    static boolean hardBreak(int codePoint) {
+        return codePoint == '\n' || codePoint == 0x2028 || codePoint == 0x2029;
     }
 
     void relayout(RelayoutParagraphs command) throws DocumentFailure {
@@ -475,16 +518,18 @@ final class PdfBoxParagraphOperations {
             if (alignment == Paragraph.Alignment.CENTER) { x += spare / 2; }
             if (alignment == Paragraph.Alignment.RIGHT) { x += spare; }
             int spaces = 0;
+            int[] order = visualOrder(line);
             if (alignment == Paragraph.Alignment.JUSTIFIED && line.automatic) {
-                for (int index = line.first; index < line.end - 1; index++) {
-                    if (line.atoms.get(index).codePoint == ' ') { spaces++; }
+                for (int index = 0; index < order.length - 1; index++) {
+                    if (line.atoms.get(order[index]).justificationSpace) { spaces++; }
                 }
             }
             double gap = spaces == 0 ? 0 : spare / spaces;
-            for (int index = line.first; index < line.end;) {
+            for (int index = 0; index < order.length;) {
                 resources.checkpoint();
-                Atom atom = line.atoms.get(index);
-                if (atom.codePoint == '\t') { x += line.advances[index - line.first]; index++; continue; }
+                Atom atom = line.atoms.get(order[index]);
+                if (atom.codePoint == '\t') { x += line.advances[order[index] - line.first]; index++; continue; }
+                if (atom.glyph < 0 && atom.inline.getKind() == Paragraph.Inline.Kind.TEXT) { index++; continue; }
                 long remaining = limits.getMaximumGeneratedContentBytes() - contentBytes;
                 long written;
                 if (atom.inline.getKind() == Paragraph.Inline.Kind.GRAPHIC) {
@@ -502,26 +547,75 @@ final class PdfBoxParagraphOperations {
                 } else {
                     int end = index + 1;
                     double width = atom.width;
-                    while (end < line.end && !(gap > 0 && line.atoms.get(end - 1).codePoint == ' ')) {
-                        Atom next = line.atoms.get(end);
+                    while (end < order.length && !line.atoms.get(order[end - 1]).wordBreakAfter
+                            && !(gap > 0 && line.atoms.get(order[end - 1]).justificationSpace)) {
+                        Atom next = line.atoms.get(order[end]);
                         if (next.codePoint == '\t' || next.inline.getKind() != Paragraph.Inline.Kind.TEXT
+                                || next.glyph != line.atoms.get(order[end - 1]).glyph + 1
+                                || next.script != atom.script
                                 || next.inline.getFontSize() != atom.inline.getFontSize()) { break; }
                         width += next.width;
                         end++;
                     }
                     long textRemaining = limits.getFontLimits().getMaximumGeneratedContentBytes() - textBytes;
-                    written = prepared.draw(page, atom.glyph, line.atoms.get(end - 1).glyph + 1,
+                    written = prepared.draw(page, atom.glyph, line.atoms.get(order[end - 1]).glyph + 1,
                             atom.inline.getFontSize(), x, line.baseline, textRemaining);
                     if (written > remaining) { throw limitFailure(); }
                     textBytes += written;
                     x += width;
-                    if (line.atoms.get(end - 1).codePoint == ' ' && end < line.end) { x += gap; }
+                    if (line.atoms.get(order[end - 1]).justificationSpace && end < order.length) { x += gap; }
                     index = end;
                 }
                 contentBytes += written;
             }
         }
         return new long[] {contentBytes, textBytes};
+    }
+
+    /** Absolute tab fields retain declaration order; each field has its own visual order. */
+    private int[] visualOrder(Line line) throws DocumentFailure {
+        int[] order = new int[line.end - line.first];
+        int first = line.first;
+        int target = 0;
+        for (int end = first; end <= line.end; end++) {
+            resources.checkpoint();
+            if (end == line.end || line.atoms.get(end).codePoint == '\t') {
+                int[] field = visualOrder(line.atoms, first, end);
+                for (int index : field) { order[target++] = index; }
+                if (end < line.end) { order[target++] = end; }
+                first = end + 1;
+            }
+        }
+        return order;
+    }
+
+    /** UAX #9 line reordering operates on complete UAX #29 clusters (L3). */
+    private int[] visualOrder(List<Atom> atoms, int from, int to) throws DocumentFailure {
+        int length = to - from;
+        int[] order = new int[length];
+        if (length == 0) { return order; }
+        Atom first = atoms.get(from);
+        Atom last = atoms.get(to - 1);
+        int end = last.characterOffset + Character.charCount(last.codePoint < 0 ? 0xfffc : last.codePoint);
+        Bidi bidi = first.bidi.setLine(first.characterOffset, end);
+        int[] starts = new int[length + 1];
+        byte[] levels = new byte[length];
+        int count = 0;
+        for (int index = from; index < to; index++) {
+            resources.checkpoint();
+            if (index == from || atoms.get(index - 1).clusterEnd) {
+                starts[count] = index;
+                levels[count++] = bidi.getLevelAt(atoms.get(index).characterOffset - first.characterOffset);
+            }
+        }
+        starts[count] = to;
+        int[] clusters = Bidi.reorderVisual(java.util.Arrays.copyOf(levels, count));
+        int target = 0;
+        for (int cluster : clusters) {
+            resources.checkpoint();
+            for (int index = starts[cluster]; index < starts[cluster + 1]; index++) { order[target++] = index; }
+        }
+        return order;
     }
 
     private final class Layout {
@@ -812,7 +906,7 @@ final class PdfBoxParagraphOperations {
                     resources.checkpoint();
                     int cp = inline.getText().codePointAt(offset);
                     offset += Character.charCount(cp);
-                    if (cp == '\n' || cp == '\t') {
+                    if (hardBreak(cp) || cp == '\t' || bidiControl(cp)) {
                         result.add(new Atom(inline, -1, cp, 0, 0, 0));
                     } else {
                         double size = inline.getFontSize();
@@ -822,6 +916,39 @@ final class PdfBoxParagraphOperations {
                     }
                 }
             }
+        }
+        BreakIterator clusters = BreakIterator.getCharacterInstance(ULocale.ROOT);
+        String value = paragraphUnicode(paragraph);
+        clusters.setText(value);
+        BreakIterator breaks = BreakIterator.getLineInstance(ULocale.ROOT);
+        breaks.setText(value);
+        BreakIterator words = BreakIterator.getWordInstance(ULocale.ROOT);
+        words.setText(value);
+        Bidi bidi = paragraphBidi(value);
+        int boundary = clusters.next();
+        int lineBoundary = breaks.next();
+        int wordBoundary = words.next();
+        int offset = 0;
+        int script = UScript.COMMON;
+        boolean spaceCluster = false;
+        for (Atom atom : result) {
+            resources.checkpoint();
+            atom.characterOffset = offset;
+            atom.bidi = bidi;
+            offset += Character.charCount(atom.codePoint < 0 ? 0xfffc : atom.codePoint);
+            while (boundary < offset && boundary != BreakIterator.DONE) { boundary = clusters.next(); }
+            while (lineBoundary < offset && lineBoundary != BreakIterator.DONE) { lineBoundary = breaks.next(); }
+            while (wordBoundary < offset && wordBoundary != BreakIterator.DONE) { wordBoundary = words.next(); }
+            atom.clusterEnd = boundary == offset;
+            spaceCluster |= atom.codePoint == ' ';
+            atom.justificationSpace = atom.clusterEnd && spaceCluster;
+            if (atom.clusterEnd) { spaceCluster = false; }
+            atom.lineBreakAfter = atom.clusterEnd && lineBoundary == offset;
+            atom.wordBreakAfter = atom.clusterEnd && wordBoundary == offset;
+            int resolved = atom.codePoint < 0 ? UScript.COMMON : UScript.getScript(atom.codePoint);
+            if (resolved != UScript.COMMON && resolved != UScript.INHERITED) { script = resolved; }
+            atom.script = script;
+            if (atom.wordBreakAfter) { script = UScript.COMMON; }
         }
         return result;
     }
@@ -845,22 +972,26 @@ final class PdfBoxParagraphOperations {
         while (end < atoms.size()) {
             resources.checkpoint();
             Atom atom = atoms.get(end);
-            if (atom.codePoint == '\n') { break; }
+            if (hardBreak(atom.codePoint)) { break; }
             int unitEnd = end + 1;
             double advance = atom.width;
             if (atom.codePoint == '\t') {
                 while (unitEnd < atoms.size() && atoms.get(unitEnd).codePoint != '\t'
-                        && atoms.get(unitEnd).codePoint != '\n') { resources.checkpoint(); unitEnd++; }
+                        && !hardBreak(atoms.get(unitEnd).codePoint)) { resources.checkpoint(); unitEnd++; }
                 advance = tabAdvance(paragraph, atoms, end, unitEnd, width + extra);
-            } else if (overflow != Paragraph.Overflow.WRAP && atom.codePoint != ' '
+            } else if (overflow != Paragraph.Overflow.WRAP
                     && atom.inline.getKind() == Paragraph.Inline.Kind.TEXT) {
                 while (unitEnd < atoms.size()) {
                     resources.checkpoint();
+                    if (atoms.get(unitEnd - 1).lineBreakAfter) { break; }
                     Atom next = atoms.get(unitEnd);
-                    if (next.codePoint == ' ' || next.codePoint == '\n' || next.codePoint == '\t'
+                    if (hardBreak(next.codePoint) || next.codePoint == '\t'
                             || next.inline.getKind() == Paragraph.Inline.Kind.GRAPHIC) { break; }
                     unitEnd++;
                 }
+            }
+            while (unitEnd < atoms.size() && !atoms.get(unitEnd - 1).clusterEnd) {
+                resources.checkpoint(); unitEnd++;
             }
             double unitWidth = advance;
             for (int index = end + 1; index < unitEnd; index++) {
@@ -879,12 +1010,12 @@ final class PdfBoxParagraphOperations {
             advances.add(Double.valueOf(advance));
             for (int index = end + 1; index < unitEnd; index++) { advances.add(Double.valueOf(atoms.get(index).width)); }
             end = unitEnd;
-            if (atom.codePoint == ' ' || atom.codePoint == '\t'
+            if (atoms.get(end - 1).lineBreakAfter || atom.codePoint == '\t'
                     || atom.inline.getKind() == Paragraph.Inline.Kind.GRAPHIC) { lastBreak = end; }
         }
         int next = end;
-        boolean automatic = end < atoms.size() && atoms.get(end).codePoint != '\n';
-        if (end < atoms.size() && atoms.get(end).codePoint == '\n') { next++; }
+        boolean automatic = end < atoms.size() && !hardBreak(atoms.get(end).codePoint);
+        if (end < atoms.size() && hardBreak(atoms.get(end).codePoint)) { next++; }
         double ascent = 0;
         double descent = 0;
         width = 0;
@@ -925,9 +1056,13 @@ final class PdfBoxParagraphOperations {
             if (stop.getAlignment() == TabStop.Alignment.RIGHT) { offset = fieldWidth; }
             if (stop.getAlignment() == TabStop.Alignment.CENTER) { offset = fieldWidth / 2; }
             if (stop.getAlignment() == TabStop.Alignment.ANCHOR) {
-                for (int index = tab + 1; index < end; index++) {
+                int anchor = tab + 1;
+                while (anchor < end && atoms.get(anchor).codePoint != stop.getAnchor()) {
+                    resources.checkpoint(); anchor++;
+                }
+                for (int index : visualOrder(atoms, tab + 1, end)) {
                     resources.checkpoint();
-                    if (atoms.get(index).codePoint == stop.getAnchor()) { break; }
+                    if (index == anchor) { break; }
                     offset += atoms.get(index).width;
                 }
             }
@@ -1006,6 +1141,13 @@ final class PdfBoxParagraphOperations {
         final double width;
         final double ascent;
         final double descent;
+        boolean clusterEnd = true;
+        boolean justificationSpace;
+        boolean lineBreakAfter;
+        boolean wordBreakAfter;
+        int script;
+        int characterOffset;
+        Bidi bidi;
         Atom(Paragraph.Inline inline, int glyph, int codePoint, double width, double ascent, double descent) {
             this.inline = inline; this.glyph = glyph; this.codePoint = codePoint;
             this.width = width; this.ascent = ascent; this.descent = descent;

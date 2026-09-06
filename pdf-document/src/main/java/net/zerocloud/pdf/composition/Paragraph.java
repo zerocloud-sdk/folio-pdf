@@ -7,9 +7,12 @@ import java.util.Objects;
 
 /**
  * Immutable semantic paragraph of unshaped Unicode text and atomic inline graphics.
- * Version 1 wraps at ASCII spaces and falls back to Unicode scalar boundaries for
- * an overlong word. LF is an explicit line break; tabs and other control characters
- * are rejected. Version 2 adds tabs, insets and hard pagination constraints. Spaces are preserved, including at automatic line boundaries.
+ * Text is supplied in logical Unicode order. Unicode line opportunities and
+ * indivisible extended grapheme clusters determine wrapping; paragraph bidi
+ * analysis determines visual order and mirrored glyphs without shaping.
+ * LF, U+2028 and U+2029 force line breaks; bidi controls are not painted.
+ * Version 2 adds tabs, insets and hard pagination constraints. Spaces are
+ * preserved, including at automatic line boundaries.
  *
  * @since 0.1.0
  */
@@ -20,8 +23,8 @@ public final class Paragraph {
 
     /** Horizontal handling of an overlong atomic unit; vertical flow always uses finite areas. */
     public enum Overflow {
-        /** Wrap words at scalar boundaries; graphics and tab fields remain atomic. */ WRAP,
-        /** Move an unbreakable word, graphic or tab field to a fitting area, or fail. */ REJECT,
+        /** Wrap at complete grapheme boundaries; graphics and tab fields remain atomic. */ WRAP,
+        /** Move a unit between line opportunities, graphic or tab field to a fitting area, or fail. */ REJECT,
         /** Preserve an overlong unit and its ink beyond the line's right edge. */ VISIBLE
     }
 

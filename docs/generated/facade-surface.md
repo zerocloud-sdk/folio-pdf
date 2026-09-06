@@ -163,8 +163,8 @@ No stable surfaces are declared.
 ### `composition.layout.paragraph-areas`
 
 - Behavioral capability: [`composition.layout.paragraph-areas`](capability-matrix.md#capability-composition_dot_layout_dot_paragraph_dash_areas)
-- Deferred ticket: `T24`
-- Reason: T24 introduces a Composition-owned semantic Paragraph Flow and explicit new-page Layout Areas through the Native Interface. The current Preview layout.Document only owns document closing and does not map this behavior; no approved paragraph mapping or stable/preview stub is introduced.
+- Deferred ticket: `T28`
+- Reason: T24 Paragraph Flow and T28 Unicode segmentation, script/bidi processing and explicit regional fallback remain Native Interface behavior. The current Preview layout.Document only owns document closing and does not map these semantics. No evidenced paragraph or Unicode Migration Facade mapping exists, and no stable or preview stub is introduced.
 
 <a id="excluded-capability-composition_dot_layout_dot_paragraph_dash_pagination"></a>
 ### `composition.layout.paragraph-pagination`

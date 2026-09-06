@@ -82,6 +82,10 @@ final class VisualEvidenceChain {
                 "T27-table-pagination.pdf", "T27-table-pagination-page-" + page);
     }
 
+    static VisualEvidenceChain t28(String profile) {
+        return new VisualEvidenceChain("T28", "composition.layout.paragraph-areas", profile, "T28-unicode.pdf", profile);
+    }
+
     static VisualEvidenceChain t25(String profile, int page) {
         return new VisualEvidenceChain("T25", "composition.layout.paragraph-pagination", profile, profile + ".pdf",
                 profile + "-page-" + page);

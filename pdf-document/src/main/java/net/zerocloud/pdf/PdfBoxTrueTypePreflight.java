@@ -26,6 +26,10 @@ final class PdfBoxTrueTypePreflight {
             "name", "OS/2", "post");
     private static final List<String> SUBSET_TABLES = Arrays.asList(
             "head", "hhea", "maxp", "hmtx", "loca", "glyf");
+    // Static OpenType metadata and hint programs are retained, never interpreted as shaping.
+    private static final List<String> STATIC_TABLES = Arrays.asList(
+            "BASE", "GDEF", "GPOS", "GSUB", "STAT", "DSIG", "cvt ", "fpgm", "prep", "gasp",
+            "vhea", "vmtx");
     private static final byte GLYPH_UNSEEN = 0;
     private static final byte GLYPH_VISITING = 1;
     private static final byte GLYPH_RESOLVED = 2;
@@ -35,7 +39,8 @@ final class PdfBoxTrueTypePreflight {
 
     static byte[] normalizeSubsetMetrics(
             byte[] bytes,
-            WorkflowResourceContext resources)
+            WorkflowResourceContext resources,
+            boolean extended)
             throws DocumentFailure {
         byte[] normalized = new byte[bytes.length];
         for (int offset = 0; offset < bytes.length; offset += 8192) {
@@ -45,7 +50,7 @@ final class PdfBoxTrueTypePreflight {
         }
         resources.checkpoint();
         ValidatedOutline outline = validateOutline(
-                normalized, SUBSET_TABLES, resources);
+                normalized, SUBSET_TABLES, resources, extended);
         HorizontalSummary horizontal = horizontalSummary(
                 outline.head,
                 outline.horizontalMetrics,
@@ -69,7 +74,7 @@ final class PdfBoxTrueTypePreflight {
         writeShort(normalized, headTable.offset + 40, bounds.maximumX);
         writeShort(normalized, headTable.offset + 42, bounds.maximumY);
         repairChecksums(normalized, outline.tables, resources);
-        HeadInfo repairedHead = validateHead(normalized, headTable);
+        HeadInfo repairedHead = validateHead(normalized, headTable, extended);
         HorizontalHeader repairedHhea = validateHorizontalHeader(
                 normalized, hhea, outline.maximum.glyphCount);
         validateHorizontalMetrics(
@@ -88,15 +93,23 @@ final class PdfBoxTrueTypePreflight {
             WorkflowResourceContext resources)
             throws DocumentFailure {
         resources.checkpoint();
+        boolean extended = bytes.length >= 12 && unsignedShort(bytes, 4) > REQUIRED_TABLES.size();
+        // Covers the additional full-font outline/metadata arrays before parsing them.
+        try (WorkflowResourceContext.MemoryReservation memory = resources.reserveOwnedMemory(
+                extended ? 2L * bytes.length + 512L * 65535 : 0)) {
         ValidatedOutline outline = validateOutline(
-                bytes, REQUIRED_TABLES, resources);
+                bytes, REQUIRED_TABLES, resources, extended);
+        validateVerticalMetrics(bytes, outline.tables, outline.maximum.glyphCount);
+        TableRange substitutions = outline.tables.get("GSUB");
+        long metadataMemory = substitutions == null ? 0 : PdfBoxGsubPreflight.validate(bytes,
+                substitutions.offset, substitutions.length, outline.maximum.glyphCount, resources);
         validateHorizontalMetrics(
                 outline.head,
                 outline.horizontalHeader,
                 outline.horizontalMetrics,
                 outline.glyphs,
                 resources);
-        validateNames(bytes, outline.tables.get("name"), resources);
+        validateNames(bytes, outline.tables.get("name"), resources, extended);
         validatePost(
                 bytes,
                 outline.tables.get("post"),
@@ -107,28 +120,90 @@ final class PdfBoxTrueTypePreflight {
                 bytes,
                 outline.tables.get("cmap"),
                 outline.maximum.glyphCount,
-                resources);
+                resources, extended);
         boolean noSubsetting = validateOs2(
                 bytes,
                 outline.tables.get("OS/2"),
                 outline.head.macStyle,
                 cmap);
+        if (extended) {
+            metadataMemory += staticMetadataMemory(bytes, outline.tables.get("name"),
+                    outline.tables.get("cmap"), outline.maximum.glyphCount, resources);
+        }
         resources.checkpoint();
         return new EmbeddingProfile(
                 noSubsetting,
-                cmap.hasSupplementaryMapping());
+                cmap.hasSupplementaryMapping(), extended,
+                extended ? 2L * bytes.length + 256L * outline.maximum.glyphCount + metadataMemory : 0);
+        }
+    }
+
+    /** Vertical data is not used for layout, but FontBox eagerly allocates its metric arrays. */
+    private static void validateVerticalMetrics(byte[] bytes, Map<String, TableRange> tables, int glyphs)
+            throws DocumentFailure {
+        TableRange header = tables.get("vhea");
+        TableRange metrics = tables.get("vmtx");
+        if (header == null && metrics == null) { return; }
+        if (header == null || metrics == null || header.length != 36) { throw sourceInvalid(); }
+        long version = unsignedInt(bytes, header.offset);
+        if (version != 0x00010000L && version != 0x00011000L) { throw formatUnsupported(); }
+        for (int offset = 24; offset <= 32; offset += 2) {
+            if (unsignedShort(bytes, header.offset + offset) != 0) { throw sourceInvalid(); }
+        }
+        int count = unsignedShort(bytes, header.offset + 34);
+        if (count < 1 || count > glyphs || metrics.length != 2L * glyphs + 2L * count) {
+            throw sourceInvalid();
+        }
+    }
+
+    /** Shared name/cmap storage is decoded per record by the backend, so aliases count again. */
+    private static long staticMetadataMemory(byte[] bytes, TableRange names, TableRange cmap,
+            int glyphs, WorkflowResourceContext resources) throws DocumentFailure {
+        long memory = 0;
+        int nameCount = unsignedShort(bytes, names.offset + 2);
+        for (int index = 0; index < nameCount; index++) {
+            resources.checkpoint();
+            memory += 256L + 2L * unsignedShort(bytes, names.offset + 6 + 12 * index + 8);
+        }
+        int count = unsignedShort(bytes, cmap.offset + 2);
+        for (int index = 0; index < count; index++) {
+            resources.checkpoint();
+            int sub = cmap.offset + (int) unsignedInt(bytes, cmap.offset + 8 + 8 * index);
+            int format = unsignedShort(bytes, sub);
+            long mappings = 0;
+            if (format == 4) {
+                int segments = unsignedShort(bytes, sub + 6) / 2;
+                for (int segment = 0; segment < segments; segment++) {
+                    resources.checkpoint();
+                    mappings += unsignedShort(bytes, sub + 14 + 2 * segment)
+                            - unsignedShort(bytes, sub + 16 + 2 * segments + 2 * segment) + 1L;
+                }
+            } else if (format == 12) {
+                int groups = (int) unsignedInt(bytes, sub + 12);
+                for (int group = 0; group < groups; group++) {
+                    resources.checkpoint();
+                    mappings += unsignedInt(bytes, sub + 20 + 12 * group)
+                            - unsignedInt(bytes, sub + 16 + 12 * group) + 1;
+                }
+            } else if (format == 6) {
+                mappings = unsignedShort(bytes, sub + 8);
+            }
+            memory += 512L + 8L * glyphs + 256L * mappings;
+        }
+        return memory;
     }
 
     private static ValidatedOutline validateOutline(
             byte[] bytes,
             List<String> profileTables,
-            WorkflowResourceContext resources) throws DocumentFailure {
+            WorkflowResourceContext resources,
+            boolean extended) throws DocumentFailure {
         Map<String, TableRange> tables = inspectDirectory(
-                bytes, profileTables, resources);
+                bytes, profileTables, resources, extended);
         validateChecksums(bytes, tables.values(), resources);
-        HeadInfo head = validateHead(bytes, tables.get("head"));
+        HeadInfo head = validateHead(bytes, tables.get("head"), extended);
         MaximumProfile maximum = validateMaximumProfile(
-                bytes, tables.get("maxp"));
+                bytes, tables.get("maxp"), extended);
         HorizontalHeader horizontalHeader = validateHorizontalHeader(
                 bytes, tables.get("hhea"), maximum.glyphCount);
         HorizontalMetrics horizontalMetrics = validateHorizontalMetrics(
@@ -143,13 +218,13 @@ final class PdfBoxTrueTypePreflight {
                 tables.get("glyf"),
                 maximum.glyphCount,
                 head.indexToLocFormat,
-                resources);
+                resources, extended);
         GlyphInfo[] glyphs = validateGlyphs(
                 bytes,
                 tables.get("glyf"),
                 glyphOffsets,
                 maximum,
-                resources);
+                resources, extended);
         return new ValidatedOutline(
                 tables,
                 head,
@@ -162,7 +237,8 @@ final class PdfBoxTrueTypePreflight {
     private static Map<String, TableRange> inspectDirectory(
             byte[] bytes,
             List<String> profileTables,
-            WorkflowResourceContext resources)
+            WorkflowResourceContext resources,
+            boolean extended)
             throws DocumentFailure {
         if (bytes.length < 12) {
             throw sourceInvalid();
@@ -255,7 +331,7 @@ final class PdfBoxTrueTypePreflight {
         }
         for (String tag : tables.keySet()) {
             resources.checkpoint();
-            if (!profileTables.contains(tag)) {
+            if (!profileTables.contains(tag) && !(extended && STATIC_TABLES.contains(tag))) {
                 throw formatUnsupported();
             }
         }
@@ -304,7 +380,7 @@ final class PdfBoxTrueTypePreflight {
         }
     }
 
-    private static HeadInfo validateHead(byte[] bytes, TableRange head)
+    private static HeadInfo validateHead(byte[] bytes, TableRange head, boolean extended)
             throws DocumentFailure {
         if (head.length != 54
                 || unsignedInt(bytes, head.offset) != 0x00010000L
@@ -327,7 +403,7 @@ final class PdfBoxTrueTypePreflight {
         if ((flags & 0x4000) != 0) {
             throw formatUnsupported();
         }
-        if ((flags & 0x07fc) != 0) {
+        if (!extended && (flags & 0x07fc) != 0) {
             throw formatUnsupported();
         }
         if (unitsPerEm < 16
@@ -351,22 +427,22 @@ final class PdfBoxTrueTypePreflight {
 
     private static MaximumProfile validateMaximumProfile(
             byte[] bytes,
-            TableRange maxp) throws DocumentFailure {
+            TableRange maxp, boolean extended) throws DocumentFailure {
         if (maxp.length != 32
                 || unsignedInt(bytes, maxp.offset) != 0x00010000L) {
             throw sourceInvalid();
         }
         int glyphCount = unsignedShort(bytes, maxp.offset + 4);
         int maximumZones = unsignedShort(bytes, maxp.offset + 14);
-        if (glyphCount == 0 || maximumZones != 1) {
+        if (glyphCount == 0 || (maximumZones != 1 && !(extended && maximumZones == 2))) {
             throw sourceInvalid();
         }
-        if (unsignedShort(bytes, maxp.offset + 16) != 0
+        if (!extended && (unsignedShort(bytes, maxp.offset + 16) != 0
                 || unsignedShort(bytes, maxp.offset + 18) != 0
                 || unsignedShort(bytes, maxp.offset + 20) != 0
                 || unsignedShort(bytes, maxp.offset + 22) != 0
                 || unsignedShort(bytes, maxp.offset + 24) != 0
-                || unsignedShort(bytes, maxp.offset + 26) != 0) {
+                || unsignedShort(bytes, maxp.offset + 26) != 0)) {
             throw formatUnsupported();
         }
         return new MaximumProfile(
@@ -376,7 +452,8 @@ final class PdfBoxTrueTypePreflight {
                 unsignedShort(bytes, maxp.offset + 10),
                 unsignedShort(bytes, maxp.offset + 12),
                 unsignedShort(bytes, maxp.offset + 28),
-                unsignedShort(bytes, maxp.offset + 30));
+                unsignedShort(bytes, maxp.offset + 30),
+                unsignedShort(bytes, maxp.offset + 26));
     }
 
     private static HorizontalHeader validateHorizontalHeader(
@@ -441,7 +518,7 @@ final class PdfBoxTrueTypePreflight {
             TableRange glyf,
             int glyphCount,
             int indexToLocFormat,
-            WorkflowResourceContext resources) throws DocumentFailure {
+            WorkflowResourceContext resources, boolean extended) throws DocumentFailure {
         int entryBytes = indexToLocFormat == 0 ? 2 : 4;
         long requiredLength = (long) (glyphCount + 1) * entryBytes;
         if (loca.length != requiredLength) {
@@ -455,7 +532,7 @@ final class PdfBoxTrueTypePreflight {
             long current = indexToLocFormat == 0
                     ? 2L * unsignedShort(bytes, offset)
                     : unsignedInt(bytes, offset);
-            if ((current & 1L) != 0L
+            if ((!extended && (current & 1L) != 0L)
                     || current < previous
                     || current > glyf.length) {
                 throw sourceInvalid();
@@ -474,14 +551,14 @@ final class PdfBoxTrueTypePreflight {
             TableRange glyf,
             int[] offsets,
             MaximumProfile maximum,
-            WorkflowResourceContext resources) throws DocumentFailure {
+            WorkflowResourceContext resources, boolean extended) throws DocumentFailure {
         GlyphInfo[] glyphs = new GlyphInfo[maximum.glyphCount];
         for (int glyph = 0; glyph < glyphs.length; glyph++) {
             checkpointPeriodically(resources, glyph);
             int start = glyf.offset + offsets[glyph];
             int end = glyf.offset + offsets[glyph + 1];
             glyphs[glyph] = parseGlyph(
-                    bytes, start, end, glyphs.length, resources);
+                    bytes, start, end, glyphs.length, resources, extended, maximum.maximumInstructions);
             if (!glyphs[glyph].composite
                     && (glyphs[glyph].points > maximum.maximumPoints
                             || glyphs[glyph].contours
@@ -518,7 +595,7 @@ final class PdfBoxTrueTypePreflight {
             int start,
             int end,
             int glyphCount,
-            WorkflowResourceContext resources) throws DocumentFailure {
+            WorkflowResourceContext resources, boolean extended, int maximumInstructions) throws DocumentFailure {
         if (start == end) {
             return GlyphInfo.empty();
         }
@@ -541,7 +618,7 @@ final class PdfBoxTrueTypePreflight {
                     end,
                     contourCount,
                     bounds,
-                    resources);
+                    resources, extended, maximumInstructions);
         }
         if (contourCount != -1) {
             throw formatUnsupported();
@@ -552,7 +629,7 @@ final class PdfBoxTrueTypePreflight {
                 end,
                 glyphCount,
                 bounds,
-                resources);
+                resources, extended, maximumInstructions);
     }
 
     private static GlyphInfo parseSimpleGlyph(
@@ -561,7 +638,7 @@ final class PdfBoxTrueTypePreflight {
             int end,
             int contourCount,
             GlyphBounds bounds,
-            WorkflowResourceContext resources) throws DocumentFailure {
+            WorkflowResourceContext resources, boolean extended, int maximumInstructions) throws DocumentFailure {
         int cursor = start + 10;
         if (contourCount == 0 && cursor == end) {
             if (!bounds.isZero()) {
@@ -588,7 +665,8 @@ final class PdfBoxTrueTypePreflight {
         if (instructionLength > end - cursor) {
             throw sourceInvalid();
         }
-        if (instructionLength != 0) {
+        if (extended && instructionLength > maximumInstructions) { throw sourceInvalid(); }
+        if (!extended && instructionLength != 0) {
             throw formatUnsupported();
         }
         cursor += instructionLength;
@@ -693,7 +771,7 @@ final class PdfBoxTrueTypePreflight {
             int end,
             int glyphCount,
             GlyphBounds bounds,
-            WorkflowResourceContext resources) throws DocumentFailure {
+            WorkflowResourceContext resources, boolean extended, int maximumInstructions) throws DocumentFailure {
         int cursor = start + 10;
         List<CompositeComponent> components =
                 new ArrayList<CompositeComponent>();
@@ -717,7 +795,7 @@ final class PdfBoxTrueTypePreflight {
             }
             if ((flags & 0x00c8) != 0
                     || (flags & 0x1800) != 0
-                    || (flags & 0x0200) != 0) {
+                    || (!extended && (flags & 0x0200) != 0)) {
                 throw formatUnsupported();
             }
             if ((flags & 0x0002) == 0) {
@@ -749,7 +827,8 @@ final class PdfBoxTrueTypePreflight {
             if (instructionLength > end - cursor) {
                 throw sourceInvalid();
             }
-            if (instructionLength != 0) {
+            if (extended && instructionLength > maximumInstructions) { throw sourceInvalid(); }
+            if (!extended && instructionLength != 0) {
                 throw formatUnsupported();
             }
             cursor += instructionLength;
@@ -909,7 +988,7 @@ final class PdfBoxTrueTypePreflight {
     private static void validateNames(
             byte[] bytes,
             TableRange name,
-            WorkflowResourceContext resources)
+            WorkflowResourceContext resources, boolean extended)
             throws DocumentFailure {
         if (name.length < 6) {
             throw sourceInvalid();
@@ -927,7 +1006,7 @@ final class PdfBoxTrueTypePreflight {
         if (storageOffset < recordsEnd || storageOffset > name.length) {
             throw sourceInvalid();
         }
-        if (storageOffset != recordsEnd) {
+        if (!extended && storageOffset != recordsEnd) {
             throw formatUnsupported();
         }
         boolean postScriptName = false;
@@ -948,20 +1027,25 @@ final class PdfBoxTrueTypePreflight {
                 throw sourceInvalid();
             }
             previousKey = key;
+            requireNameStringRange(length, offset, storageOffset, name.length);
+            if (extended && platform == 1 && encoding == 0) {
+                if (!validNameId(nameId)) { throw sourceInvalid(); }
+                continue; // Bounded Macintosh metadata; not used for selection or PostScript identity.
+            }
             if (platform != 3
                     || encoding != 1
-                    || language != 0x0409
+                    || (!extended && language != 0x0409)
                     || (length & 1) != 0) {
                 throw formatUnsupported();
             }
             if (!validNameId(nameId)) {
                 throw sourceInvalid();
             }
-            if (!supportedNameId(nameId)) {
+            if (!extended && !supportedNameId(nameId)) {
                 throw formatUnsupported();
             }
             requireNameStringRange(length, offset, storageOffset, name.length);
-            if (length == 0 || offset != expectedStringOffset) {
+            if (length == 0 || (!extended && offset != expectedStringOffset)) {
                 throw formatUnsupported();
             }
             validateBmpUtf16Be(
@@ -984,7 +1068,7 @@ final class PdfBoxTrueTypePreflight {
                 postScriptName = true;
             }
         }
-        if (expectedStringOffset != name.length - storageOffset) {
+        if (!extended && expectedStringOffset != name.length - storageOffset) {
             throw formatUnsupported();
         }
         if (!postScriptName) {
@@ -1290,7 +1374,7 @@ final class PdfBoxTrueTypePreflight {
             byte[] bytes,
             TableRange cmap,
             int glyphCount,
-            WorkflowResourceContext resources) throws DocumentFailure {
+            WorkflowResourceContext resources, boolean extended) throws DocumentFailure {
         if (cmap.length < 4
                 || unsignedShort(bytes, cmap.offset) != 0) {
             throw sourceInvalid();
@@ -1300,6 +1384,7 @@ final class PdfBoxTrueTypePreflight {
         if (count == 0 || recordsEnd > cmap.length) {
             throw sourceInvalid();
         }
+        if (extended) { return validateStaticCmap(bytes, cmap, glyphCount, resources, count); }
         if (count != 1) {
             throw formatUnsupported();
         }
@@ -1347,6 +1432,110 @@ final class PdfBoxTrueTypePreflight {
             throw formatUnsupported();
         }
         return result;
+    }
+
+    private static CmapInfo validateStaticCmap(byte[] bytes, TableRange cmap, int glyphCount,
+            WorkflowResourceContext resources, int count) throws DocumentFailure {
+        CmapInfo result = new CmapInfo();
+        Map<Integer, Integer> ranges = new TreeMap<Integer, Integer>();
+        for (int index = 0; index < count; index++) {
+            resources.checkpoint();
+            int record = cmap.offset + 4 + 8 * index;
+            int platform = unsignedShort(bytes, record);
+            int encoding = unsignedShort(bytes, record + 2);
+            long offset = unsignedInt(bytes, record + 4);
+            if (offset < 4L + 8L * count || offset > cmap.length - 4L) { throw sourceInvalid(); }
+            int start = cmap.offset + (int) offset;
+            int format = unsignedShort(bytes, start);
+            boolean unicode = isUsableUnicodeRecord(platform, encoding, format)
+                    || (platform == 3 && encoding == 10 && format == 12);
+            boolean legacy = platform == 1 && format == 6;
+            boolean variations = platform == 0 && encoding == 5 && format == 14;
+            if (!unicode && !legacy && !variations) { throw formatUnsupported(); }
+            int minimum = format == 12 ? 16 : format == 4 ? 6 : 10;
+            if (start > cmap.offset + cmap.length - minimum) { throw sourceInvalid(); }
+            long length = format == 4 || format == 6 ? unsignedShort(bytes, start + 2)
+                    : unsignedInt(bytes, start + (format == 14 ? 2 : 4));
+            if (length == 0 || length > cmap.offset + cmap.length - start) { throw sourceInvalid(); }
+            int end = start + (int) length;
+            Integer previous = ranges.put(start, end);
+            if (previous != null) {
+                if (previous.intValue() != end) { throw sourceInvalid(); }
+                continue;
+            }
+            TableRange subtable = new TableRange(start, (int) length, end, 0, false);
+            if (legacy) { validateLegacyCmap(bytes, subtable, glyphCount, resources); }
+            else if (variations) { validateVariationCmap(bytes, subtable, glyphCount, resources); }
+            else {
+                if (format == 4) { validateFormat4(bytes, subtable, start, glyphCount, result, resources); }
+                else { validateFormat12(bytes, subtable, start, glyphCount, result, resources); }
+                long language = format == 4 ? unsignedShort(bytes, start + 4) : unsignedInt(bytes, start + 8);
+                if (language != 0) { throw sourceInvalid(); }
+            }
+        }
+        int previousEnd = cmap.offset + 4 + 8 * count;
+        for (Map.Entry<Integer, Integer> range : ranges.entrySet()) {
+            resources.checkpoint();
+            if (range.getKey().intValue() < previousEnd) { throw sourceInvalid(); }
+            previousEnd = range.getValue().intValue();
+        }
+        if (!result.hasMapping()) { throw formatUnsupported(); }
+        return result;
+    }
+
+    /** Legacy and variation cmaps are checked as font data; scalar selection never consults them. */
+    private static void validateLegacyCmap(byte[] bytes, TableRange table, int glyphCount,
+            WorkflowResourceContext resources) throws DocumentFailure {
+        if (table.length < 10) { throw sourceInvalid(); }
+        int first = unsignedShort(bytes, table.offset + 6);
+        int count = unsignedShort(bytes, table.offset + 8);
+        if (first + count > 65536 || table.length != 10 + 2 * count) { throw sourceInvalid(); }
+        for (int i = 0; i < count; i++) {
+            checkpointPeriodically(resources, i);
+            if (unsignedShort(bytes, table.offset + 10 + 2 * i) >= glyphCount) { throw sourceInvalid(); }
+        }
+    }
+
+    private static void validateVariationCmap(byte[] bytes, TableRange table, int glyphCount,
+            WorkflowResourceContext resources) throws DocumentFailure {
+        if (table.length < 10) { throw sourceInvalid(); }
+        long count = unsignedInt(bytes, table.offset + 6);
+        long recordsEnd = 10L + 11L * count;
+        if (recordsEnd > table.length) { throw sourceInvalid(); }
+        int previous = -1;
+        for (int i = 0; i < count; i++) {
+            resources.checkpoint();
+            int record = table.offset + 10 + 11 * i;
+            int selector = unsigned24(bytes, record);
+            if (selector <= previous || !((selector >= 0xfe00 && selector <= 0xfe0f)
+                    || (selector >= 0xe0100 && selector <= 0xe01ef))) { throw sourceInvalid(); }
+            previous = selector;
+            for (int kind = 0; kind < 2; kind++) {
+                long offset = unsignedInt(bytes, record + 3 + 4 * kind);
+                if (offset == 0) { continue; }
+                if (offset < recordsEnd || offset > table.length - 4L) { throw sourceInvalid(); }
+                int start = table.offset + (int) offset;
+                long entries = unsignedInt(bytes, start);
+                int size = kind == 0 ? 4 : 5;
+                if (entries > (table.length - offset - 4L) / size) { throw sourceInvalid(); }
+                int last = -1;
+                for (int entry = 0; entry < entries; entry++) {
+                    checkpointPeriodically(resources, entry);
+                    int at = start + 4 + size * entry;
+                    int cp = unsigned24(bytes, at);
+                    int end = cp + (kind == 0 ? bytes[at + 3] & 255 : 0);
+                    if (cp <= last || end > 0x10ffff || (cp <= 0xdfff && end >= 0xd800)) {
+                        throw sourceInvalid();
+                    }
+                    if (kind == 1 && unsignedShort(bytes, at + 3) >= glyphCount) { throw sourceInvalid(); }
+                    last = end;
+                }
+            }
+        }
+    }
+
+    private static int unsigned24(byte[] bytes, int offset) {
+        return (bytes[offset] & 255) << 16 | (bytes[offset + 1] & 255) << 8 | bytes[offset + 2] & 255;
     }
 
     private static boolean isUsableUnicodeRecord(
@@ -1796,6 +1985,7 @@ final class PdfBoxTrueTypePreflight {
         private final int maximumCompositeContours;
         private final int maximumComponentElements;
         private final int maximumComponentDepth;
+        private final int maximumInstructions;
 
         MaximumProfile(
                 int glyphCount,
@@ -1804,7 +1994,7 @@ final class PdfBoxTrueTypePreflight {
                 int maximumCompositePoints,
                 int maximumCompositeContours,
                 int maximumComponentElements,
-                int maximumComponentDepth) {
+                int maximumComponentDepth, int maximumInstructions) {
             this.glyphCount = glyphCount;
             this.maximumPoints = maximumPoints;
             this.maximumContours = maximumContours;
@@ -1812,6 +2002,7 @@ final class PdfBoxTrueTypePreflight {
             this.maximumCompositeContours = maximumCompositeContours;
             this.maximumComponentElements = maximumComponentElements;
             this.maximumComponentDepth = maximumComponentDepth;
+            this.maximumInstructions = maximumInstructions;
         }
     }
 
@@ -1962,12 +2153,16 @@ final class PdfBoxTrueTypePreflight {
     static final class EmbeddingProfile {
         private final boolean fullEmbedding;
         private final boolean supplementaryMapping;
+        private final boolean extended;
+        private final long parsingMemoryBytes;
 
         EmbeddingProfile(
                 boolean fullEmbedding,
-                boolean supplementaryMapping) {
+                boolean supplementaryMapping, boolean extended, long parsingMemoryBytes) {
             this.fullEmbedding = fullEmbedding;
             this.supplementaryMapping = supplementaryMapping;
+            this.extended = extended;
+            this.parsingMemoryBytes = parsingMemoryBytes;
         }
 
         boolean requiresFullEmbedding() {
@@ -1977,6 +2172,9 @@ final class PdfBoxTrueTypePreflight {
         boolean hasSupplementaryMapping() {
             return supplementaryMapping;
         }
+
+        boolean isExtended() { return extended; }
+        long getParsingMemoryBytes() { return parsingMemoryBytes; }
     }
 
     private static final class GlyphInfo {

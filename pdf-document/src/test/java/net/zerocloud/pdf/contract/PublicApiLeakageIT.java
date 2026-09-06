@@ -1,6 +1,8 @@
 package net.zerocloud.pdf.contract;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertThrows;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
@@ -26,8 +28,20 @@ public final class PublicApiLeakageIT {
         "org.apache.pdfbox",
         "org.apache.fontbox",
         "com.twelvemonkeys",
+        "com.ibm.icu",
         "javax.imageio"
     };
+
+    @Test
+    public void rejectsIcuTypesInProtectedGenericSurfaces() {
+        AssertionError failure = assertThrows(AssertionError.class, () -> inspectClass(IcuLeakProbe.class));
+        assertTrue(failure.getMessage().contains("com.ibm.icu.text.BreakIterator"));
+    }
+
+    /** Deliberate test-only leak; never part of the scanned shipped artifact. */
+    public static final class IcuLeakProbe {
+        protected java.util.List<? extends com.ibm.icu.text.BreakIterator> boundaries;
+    }
 
     @Test
     public void publicAndProtectedSignaturesContainNoBackendTypes()

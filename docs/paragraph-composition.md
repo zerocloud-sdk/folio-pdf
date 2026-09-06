@@ -51,14 +51,15 @@ Numbers must be finite and within the existing Canvas absolute bound of
 content validation occurs during command execution. Null required values and
 incomplete or negative limit declarations are programming errors.
 
-Version 1 uses greedy advance-width wrapping. ASCII space is a preferred
-break opportunity, as is the boundary after an inline graphic. A word wider
-than a line can break at Unicode scalar boundaries. Graphics never split.
+All versions now use the [T28 Unicode contract](unicode-composition.md): greedy
+advance-width wrapping prefers Unicode line opportunities, with complete
+extended grapheme clusters as the emergency boundary. Graphics never split.
 Spaces are preserved, including at automatic line boundaries; there is no
-whitespace collapse or silently discarded trailing text. LF is an explicit
-line break and contributes no PDF glyph. Consecutive LFs reserve empty lines.
-A terminal LF finishes its current line and does not create another empty
-line. Other ISO control characters, including tab and CR, are rejected.
+whitespace collapse or silently discarded trailing text. LF, U+2028 and U+2029
+are explicit line breaks and contribute no PDF glyph. Consecutive separators
+reserve empty lines. A terminal separator finishes its current line and does
+not create another empty line. Bidi controls affect visual ordering but are
+not painted. Other ISO control characters, including version-1 tab and CR, are rejected.
 Unpaired surrogates are rejected.
 
 Width and height fits allow `0.000000001` point for floating-point rounding;
@@ -70,8 +71,10 @@ ToUnicode, subset rebuilding and exact integral PDF CID widths are reused
 from [T19](font-loading.md). Each source is staged once for the entire flow;
 path contents are observed at command execution and caller streams/channels
 remain caller-owned. The same one-shot source declaration is cached for the
-Session. No system font discovery, network lookup, normalization, bidi,
-shaping, kerning, language-specific breaking or hyphenation occurs.
+Session. ICU supplies root-locale segmentation, script analysis and bidi;
+source strings remain logical input and published text queries observe visual
+painting order. No system font discovery, network lookup, normalization,
+shaping, kerning or hyphenation occurs.
 
 For each line, ascent and descent are the maximum selected source-font
 `head` bounds scaled by the explicit text sizes, with graphic height included
@@ -82,8 +85,9 @@ content extents therefore produce baseline distances controlled by leading.
 Content taller than the specified leading enlarges the line box.
 
 LEFT, CENTER and RIGHT place the natural advance width against the available
-width. JUSTIFIED distributes remaining width after nonterminal ASCII spaces
-on automatic, nonfinal lines. Final lines and lines ended by LF remain left
+width. JUSTIFIED distributes remaining width after nonterminal clusters that
+contain ASCII spaces on automatic, nonfinal lines. It never inserts the gap
+between a space and its combining mark. Final lines and lines ended explicitly remain left
 aligned. A line without an expandable space also remains left aligned.
 
 ## Finite limits and failure behavior
@@ -101,8 +105,8 @@ Every `CompositionLimits` builder field is mandatory:
 | `fontLimits` | One aggregate T19 source, byte, scalar, fallback-check and text-operator budget |
 | `graphicLimits` | T18 resource limits applied separately to each atomic graphic |
 
-The scalar budget includes LF; fallback visits exclude LF because it is not
-drawn. Graphic resource streams are bounded by the per-graphic Canvas limits
+The scalar budget includes forced separators and bidi controls; fallback visits
+exclude them because they are not drawn. Graphic resource streams are bounded by the per-graphic Canvas limits
 and the finite aggregate inline count. The workflow's page, object, modeled
 owned-memory, decompression, time and temporary-storage policy also applies.
 Composition accounts its temporary text copies, atoms, areas and line plans
@@ -177,7 +181,10 @@ pages. Geometry tolerance is specific to that pinned corpus, not a blanket
 accuracy promise for arbitrary coordinates and fonts.
 
 Indentation, tabs, keep, widow/orphan behavior and advanced overflow/relayout
-are available through the opt-in version 2 [T25 contract](paragraph-pagination.md). Tables belong to #27/#28; Unicode layout belongs to #29.
+are available through the opt-in version 2 [T25 contract](paragraph-pagination.md).
+[Tables](table-pagination.md) reuse the same Unicode paragraph processing.
+The [T28 contract](unicode-composition.md) documents the seven static Noto
+reference profiles, behavior migration and the separate shaping boundary.
 No backend SPI, module cycle, placeholder artifact or Migration Facade stub
 is introduced. The existing Preview `layout.Document` is not a paragraph
 mapping. The Facade Surface Manifest records a T24 exclusion until an actual

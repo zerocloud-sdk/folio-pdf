@@ -146,10 +146,12 @@ final class PdfBoxTableLayout {
                     cell.paragraphs.add(new Text(paragraph, atoms, textCount++));
                     double line = 0;
                     double correction = 0;
+                    double cluster = 0;
                     for (Atom atom : atoms) {
                         resources.checkpoint();
-                        cell.minimum = Math.max(cell.minimum, atom.width);
-                        if (atom.codePoint == '\n') {
+                        cluster += atom.width;
+                        if (atom.clusterEnd) { cell.minimum = Math.max(cell.minimum, cluster); cluster = 0; }
+                        if (PdfBoxParagraphOperations.hardBreak(atom.codePoint)) {
                             cell.preferred = Math.max(cell.preferred, line); line = 0; correction = 0;
                         } else {
                             double increment = atom.width - correction;

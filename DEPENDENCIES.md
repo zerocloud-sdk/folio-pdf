@@ -1,7 +1,7 @@
 # Dependency and license information
 
-T01 has one direct runtime dependency: Apache PDFBox 3.0.8. Maven resolves the
-following required runtime artifacts. All are permissively licensed and remain
+The required implementation dependencies are Apache PDFBox 3.0.8 and
+ICU4J 77.1. Maven resolves the following runtime artifacts. They remain
 implementation details of `pdf-document`.
 
 | Maven coordinate | Relationship | License | Resolved JAR SHA-256 |
@@ -10,9 +10,24 @@ implementation details of `pdf-document`.
 | `org.apache.pdfbox:pdfbox-io:3.0.8` | transitive | Apache License 2.0 | `36a0e04001010b4c764857817412b96339930b19755e728959805cc0352061b2` |
 | `org.apache.pdfbox:fontbox:3.0.8` | transitive | Apache License 2.0 | `a1915c24e3edbe0ecec93896dfbf6d41427810b663ade97bd4e8bae86ec3fdab` |
 | `commons-logging:commons-logging:1.4.0` | transitive | Apache License 2.0 | `d175dbd751dd782a63bde28c7a039520e971f25e84b79c19b8435edc3603e0dc` |
+| `com.ibm.icu:icu4j:77.1` | direct, T28 Unicode processing | Unicode License V3 and upstream third-party notices | `b3640b9f416a4411fd33c59abbeea8fd57d024c23e1819bf9673220a97499fe3` |
 
 PDFBox declares Bouncy Castle support as optional; T01 does not select or use
 those artifacts.
+
+T28 uses ICU4J internally for grapheme, word and line segmentation, script
+classification and bidi processing. The exact JAR is admitted by the Hardened
+Worker; it is not shaded into pdf-document. See the
+[ICU dependency notice](docs/third-party/icu4j-77.1.md). ICU is not a shaping
+engine; HarfBuzz is outside this dependency change.
+
+T28's separate [Noto reference data](pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto/README.md)
+uses OFL-1.1 Noto Sans 2.008, Noto Sans Hebrew 3.000 and full static instances
+of Noto Sans CJK 2.004 SC/TC/JP/KR. The offline preparation tool
+[fontTools 4.59.2](docs/third-party/fonttools-4.59.2.md) is separately installed
+under MIT and its retained external notices. It is not a Maven/runtime
+dependency. Font data is restricted to pdf-acceptance and pdf-document's test
+resources. This adds no runtime font bundle or implicit font discovery.
 
 The verification and repository build-tool dependency graph does not enter the
 published runtime:

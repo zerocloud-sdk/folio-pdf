@@ -42,6 +42,8 @@ public final class JarContractIT {
             assertTrue(notice.contains("TwelveMonkeys ImageIO 3.14.0"));
             assertTrue(notice.contains("Copyright (c) 2008-2020, Harald Kuhr"));
             assertTrue(notice.contains("BSD 3-Clause License"));
+            assertTrue(notice.contains("ICU4J 77.1"));
+            assertTrue(notice.contains("docs/third-party/icu4j-77.1.md"));
             assertTrue(notice.contains(
                     "docs/third-party/twelvemonkeys-imageio-tiff-3.14.0.md"));
 
@@ -54,6 +56,8 @@ public final class JarContractIT {
                         entry.getName().startsWith("org/apache/fontbox/"));
                 assertFalse("TwelveMonkeys classes must not be bundled in pdf-document",
                         entry.getName().startsWith("com/twelvemonkeys/"));
+                assertFalse("ICU classes and data must not be bundled in pdf-document",
+                        entry.getName().startsWith("com/ibm/icu/"));
                 String lowerName = entry.getName().toLowerCase(Locale.ROOT);
                 assertFalse("Font fixtures must not be bundled in pdf-document",
                         lowerName.endsWith(".ttf")
@@ -74,6 +78,7 @@ public final class JarContractIT {
                 StandardCharsets.UTF_8);
         assertTrue(parentPom.contains(
                 "<twelvemonkeys.version>3.14.0</twelvemonkeys.version>"));
+        assertTrue(parentPom.contains("<icu4j.version>77.1</icu4j.version>"));
         String documentPom = new String(
                 Files.readAllBytes(repository.resolve("pdf-document/pom.xml")),
                 StandardCharsets.UTF_8);
@@ -87,6 +92,11 @@ public final class JarContractIT {
         assertTrue(declaration.contains(
                 "<version>${twelvemonkeys.version}</version>"));
         assertTrue(declaration.contains("<optional>true</optional>"));
+        int icu = documentPom.indexOf("<artifactId>icu4j</artifactId>");
+        assertTrue("Missing ICU4J implementation dependency", icu >= 0);
+        String icuDeclaration = documentPom.substring(icu, documentPom.indexOf("</dependency>", icu));
+        assertTrue(icuDeclaration.contains("<version>${icu4j.version}</version>"));
+        assertFalse(icuDeclaration.contains("<optional>true</optional>"));
     }
 
     private static String readText(JarFile jar, JarEntry entry)

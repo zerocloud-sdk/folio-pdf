@@ -31,17 +31,20 @@ as page boundaries. Empty LF lines count. Inline graphics stay atomic and
 their heights participate in every fit decision.
 
 Tabs in version 2 text are positioning controls and emit no glyph. The field
-after a tab extends to the next tab, LF or paragraph end; it is atomic.
+after a tab extends to the next tab, forced line separator or paragraph end; it is atomic.
 `TabStop.Alignment` supports LEFT, CENTER, RIGHT and ANCHOR. ANCHOR aligns the
 first declared Unicode scalar in the field; an absent anchor aligns the field's
-right edge. Stops never move the pen backwards: the first eligible stop whose
+right edge. The anchor offset uses the field's visual bidi order. Fields retain
+their physical declaration order, with bidi reordering applied within each
+field. Stops never move the pen backwards: the first eligible stop whose
 aligned field start is ahead of the pen is selected. Leading/consecutive tabs
 are meaningful. A tabbed line remains left aligned, including under JUSTIFIED,
 so alignment cannot displace absolute tab positions. Tab leaders are excluded.
 
-WRAP preserves greedy space wrapping and scalar fallback for overlong words.
-REJECT wraps at spaces and graphic boundaries but never splits words. VISIBLE
-uses those same boundaries and admits an overlong atomic unit at the beginning
+WRAP uses Unicode line opportunities and complete-grapheme fallback under
+the [T28 Unicode contract](unicode-composition.md).
+REJECT preserves complete units between Unicode line opportunities. VISIBLE
+uses those same boundaries and admits an overlong unit at the beginning
 of a line, preserving its full text and ink outside the horizontal area.
 Graphics and tab fields are atomic under all three policies. Ordinary vertical
 overflow always advances through the finite areas; no mode repeats pages,

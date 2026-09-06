@@ -1,0 +1,643 @@
+T28 development receipt (historical Red/Green observations; not final completion certification).
+Fixed base: 875c140fc4617f8a9649f1c9bed8034c52bd6dfa
+All Java behavioral slices use DocumentWorkflow.execute, public commands/queries and publication/reopen.
+Python slices invoke the offline generation commands and verify pinned source data.
+Additional already-supported regression probes (e.g. Jamo, supplementary Han) are not claimed as novel behavior Reds.
+Missing classes/commands are construction-seam Reds; invalid fixtures and zero selections are setup failures.
+Final repository/JDK/acceptance certification belongs in T28-verification.txt.
+
+acceptance-initial.log
+Original log: /tmp/folio-t28/acceptance-initial.log
+SHA-256: 638ff886358f8ef4e8226c5628f6e665d80ffea64e0629a901fef1be3b5ceef7
+Interpretation: Pre-review actual external-tool PASS; must be superseded by post-review acceptance receipt.
+[INFO] BUILD SUCCESS
+
+bidi-control-green.log
+Original log: /tmp/folio-t28/bidi-control-green.log
+SHA-256: c44d43ed83de38cf86aef27dd8c675019866877d2a6588258240bc7426a2326a
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 14.78 s -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+bidi-control-red.log
+Original log: /tmp/folio-t28/bidi-control-red.log
+SHA-256: 0cef54b7b0a3b2d9293fd46294e741981365d79cf08ca5fc2327192a9c3d09ab
+[ERROR] Tests run: 2, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 2.862 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[ERROR]   UnicodeCompositionWorkflowTest.explicitBidiIsolatesAffectOrderWithoutRequestingControlGlyphs:155 expected:<A [12 בא] Z> but was:<A [⁧12 בא⁩] Z>
+[ERROR]   UnicodeCompositionWorkflowTest.explicitBidiIsolatesAffectOrderWithoutRequestingControlGlyphs:155 expected:<A [12 בא] Z> but was:<A [⁧12 בא⁩] Z>
+[ERROR] Tests run: 2, Failures: 2, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+
+bidi-green.log
+Original log: /tmp/folio-t28/bidi-green.log
+SHA-256: 5d5905ca2e103533b170920e4c88c8749aa0c0f9905898216a8e42b8ca98ea32
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.761 s -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+bidi-mirror-green.log
+Original log: /tmp/folio-t28/bidi-mirror-green.log
+SHA-256: bc08aa76eecc5798d69e370da3699fe6e6e8b9380ecf36ce45f7aa927526f0ad
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.776 s -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+bidi-mirror-red.log
+Original log: /tmp/folio-t28/bidi-mirror-red.log
+SHA-256: 5a37abc0533181bb821ce50db24a00f4fb4f429b7ea4bf19efc40c16a5382d83
+[ERROR] Tests run: 2, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 3.039 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[ERROR]   UnicodeCompositionWorkflowTest.rightToLeftBaseMirrorsPairedPunctuationWithoutReversingDigits:124 expected:<A [(12)] בא> but was:<A [)12(] בא>
+[ERROR]   UnicodeCompositionWorkflowTest.rightToLeftBaseMirrorsPairedPunctuationWithoutReversingDigits:124 expected:<A [(12)] בא> but was:<A [)12(] בא>
+[ERROR] Tests run: 2, Failures: 2, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+
+bidi-red.log
+Original log: /tmp/folio-t28/bidi-red.log
+SHA-256: b2f84f3a93bee5b1d233998d0b8aa490818ba5cd2de66db44e1d81c71053acfd
+[ERROR] Tests run: 2, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 2.990 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[ERROR]   UnicodeCompositionWorkflowTest.mixedBidiRunsKeepNumbersAndPunctuationInTheReferenceOrder:111 expected:<A [12 בא], B> but was:<A [אב 12], B>
+[ERROR]   UnicodeCompositionWorkflowTest.mixedBidiRunsKeepNumbersAndPunctuationInTheReferenceOrder:111 expected:<A [12 בא], B> but was:<A [אב 12], B>
+[ERROR] Tests run: 2, Failures: 2, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+
+focused-baseline.log
+Original log: /tmp/folio-t28/focused-baseline.log
+SHA-256: 3a730a17007e5e7d4dcc171e7e7e4bffca3eabca72f2648c486f61ef1f25c775
+[INFO] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.300 s -- in net.zerocloud.pdf.consumer.FontLoadingWorkflowTest
+[INFO] Tests run: 42, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 54.83 s -- in net.zerocloud.pdf.consumer.ParagraphCompositionWorkflowTest
+[INFO] Tests run: 63, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+font-generator-green-2.log
+Original log: /tmp/folio-t28/font-generator-green-2.log
+SHA-256: 69a70f7e6d2083192ddb15fb248583e80b78f08de20fc4130dbcd7f674536143
+OK
+
+font-generator-green.log
+Original log: /tmp/folio-t28/font-generator-green.log
+SHA-256: 39643c5d1b25d2000ff54b1cc4dbc9f2d3a21ad44bad6b4afc9a9f3cfbbf25e8
+Interpretation: Intermediate generation failure, not a passing receipt.
+FAILED (failures=1)
+
+font-generator-red.log
+Original log: /tmp/folio-t28/font-generator-red.log
+SHA-256: 93f2c05aa122659164a76a633df3d1ebb5e1e7fe47423a566b86938565b6ecc4
+FAILED (failures=1)
+
+font-source-pin-green.log
+Original log: /tmp/folio-t28/font-source-pin-green.log
+SHA-256: baadc227843b26795bf1eb1fdab755cd4b95ad4cf2f222d8133668742abd8fcb
+Ran 2 tests in 44.824s
+OK
+
+font-source-pin-red.log
+Original log: /tmp/folio-t28/font-source-pin-red.log
+SHA-256: 0af4e30aac1c3199fb5a6cf8cf356816957e203b3e616d9abcefe3aa6f1f5f36
+FAILED (failures=1)
+
+grapheme-green-attempt.log
+Original log: /tmp/folio-t28/grapheme-green-attempt.log
+SHA-256: 3e8f31fddc47969aee3b95c79a2e56ffb33530ee55ecf74367a90e9fabd8f93a
+Interpretation: Worker ICU classpath admission missing in first green attempt; fixed before green.
+[ERROR] Tests run: 2, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 1.618 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[ERROR]   UnicodeCompositionWorkflowTest.combiningClusterAcrossInlinesCannotSplitAtItsSpace:83->publishAndRead:113 » DocumentFailure The Worker could not complete the transaction.
+[ERROR] Tests run: 2, Failures: 0, Errors: 1, Skipped: 0
+[INFO] BUILD FAILURE
+
+grapheme-green.log
+Original log: /tmp/folio-t28/grapheme-green.log
+SHA-256: a6d8c40138cd82579e63933e398260c4628f8d871e2ab8e02447a58c664dbb80
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.753 s -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+grapheme-red-2.log
+Original log: /tmp/folio-t28/grapheme-red-2.log
+SHA-256: 1e62cb6341e1480a86a1f011a112a0e32d8c2f7fa9910ed770c9bb14873dda24
+[ERROR] Tests run: 2, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 2.641 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[ERROR]   UnicodeCompositionWorkflowTest.combiningClusterAcrossInlinesCannotSplitAtItsSpace:87->position:188 expected:<82.788> but was:<72.0>
+[ERROR]   UnicodeCompositionWorkflowTest.combiningClusterAcrossInlinesCannotSplitAtItsSpace:87->position:188 expected:<82.788> but was:<72.0>
+[ERROR] Tests run: 2, Failures: 2, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+
+grapheme-red.log
+Original log: /tmp/folio-t28/grapheme-red.log
+SHA-256: bf20a10d3ddc72dd85183dd084d9bc8a6e9b16b25fcf57ae6d6c9fe5280a55c4
+Interpretation: Selector selected zero tests; NOT a behavioral Red.
+[INFO] Tests run: 0, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.055 s -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[INFO] Tests run: 0, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+icu-api-guard-green.log
+Original log: /tmp/folio-t28/icu-api-guard-green.log
+SHA-256: f791700317f78cf6d1bfa991444427aeb9e872e1111d7cc6f793aa06fb35d494
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.052 s -- in net.zerocloud.pdf.contract.PublicApiLeakageIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+icu-api-guard-red.log
+Original log: /tmp/folio-t28/icu-api-guard-red.log
+SHA-256: 43d78bc08141bd11248b6b4b8edf3e7c5adafab2caac2ca9863af8dc82cef09e
+[ERROR] Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.055 s <<< FAILURE! -- in net.zerocloud.pdf.contract.PublicApiLeakageIT
+[ERROR]   PublicApiLeakageIT.rejectsIcuTypesInProtectedGenericSurfaces:36 expected java.lang.AssertionError to be thrown, but nothing was thrown
+[ERROR] Tests run: 1, Failures: 1, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+
+jamo-regression.log
+Original log: /tmp/folio-t28/jamo-regression.log
+SHA-256: f6afcd92eb62cf3b59845325b61dee6048c9fc68b2cdc085abbaaae51e4fce0f
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 20.71 s -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+justification-green.log
+Original log: /tmp/folio-t28/justification-green.log
+SHA-256: 6c423f10666a9c3cb59ac0ed48a9af9dbfd1048d2be93697e884b1697bc01fe8
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.727 s -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+justification-red.log
+Original log: /tmp/folio-t28/justification-red.log
+SHA-256: b3e9b6709a0ba0f564ec412411caa59159f9d6bba6a26fd9474972068a5299be
+[ERROR] Tests run: 2, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 2.897 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[ERROR]   UnicodeCompositionWorkflowTest.justificationExpandsAfterTheWholeSpaceCombiningCluster:178->position:283 expected:<82.788> but was:<85.08>
+[ERROR]   UnicodeCompositionWorkflowTest.justificationExpandsAfterTheWholeSpaceCombiningCluster:178->position:283 expected:<82.788> but was:<85.08>
+[ERROR] Tests run: 2, Failures: 2, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+
+line-green.log
+Original log: /tmp/folio-t28/line-green.log
+SHA-256: 6140a1efe92e1436fa4a71aeeffabd98ca5bc6836317f03ca623c9212e284e4a
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.725 s -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+line-red.log
+Original log: /tmp/folio-t28/line-red.log
+SHA-256: 596bcfd97b6496ce13fb9fd5652e23b50ac9d147fec0b3e8ac2ae9f8f3cfdf45
+[ERROR] Tests run: 2, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 2.765 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[ERROR]   UnicodeCompositionWorkflowTest.unicodeLineOpportunityPrecedesEmergencyGraphemeWrapping:100->position:201 expected:<72.0> but was:<83.532>
+[ERROR]   UnicodeCompositionWorkflowTest.unicodeLineOpportunityPrecedesEmergencyGraphemeWrapping:100->position:201 expected:<72.0> but was:<83.532>
+[ERROR] Tests run: 2, Failures: 2, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+
+literal-object-green.log
+Original log: /tmp/folio-t28/literal-object-green.log
+SHA-256: 3eb433df63ea7ffc62a8198f9b2988c78d9608effc6d512236c0bc351387b8ba
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 10.61 s -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+literal-object-red.log
+Original log: /tmp/folio-t28/literal-object-red.log
+SHA-256: 11053eee35ab4f7d3ac711630597de55ea45f16dfa9161b50a58192c86511852
+[ERROR] Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 1.398 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[ERROR]   UnicodeCompositionWorkflowTest.literalObjectReplacementCharacterIsTextRatherThanAnInlineGraphic:133->publishAndRead:157 » DocumentFailure The paragraph flow could not be applied safely.
+[ERROR]   UnicodeCompositionWorkflowTest.literalObjectReplacementCharacterIsTextRatherThanAnInlineGraphic:133->publishAndRead:157 » DocumentFailure The paragraph flow could not be applied safely.
+[ERROR] Tests run: 2, Failures: 0, Errors: 2, Skipped: 0
+[INFO] BUILD FAILURE
+
+noto-cjk-green-attempt-2.log
+Original log: /tmp/folio-t28/noto-cjk-green-attempt-2.log
+SHA-256: 95b883a4bace0eb690639891162493616387bb2d09fe99e42351921bed7a2f2b
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 54.08 s -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+noto-cjk-green-attempt.log
+Original log: /tmp/folio-t28/noto-cjk-green-attempt.log
+SHA-256: c4a342bcba6873c5e47d346603b9c82442b359aa181fe4795dcbd8abbda1606b
+[ERROR] Tests run: 4, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 4.348 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[ERROR]   UnicodeCompositionWorkflowTest.completeCjkFontsUseTheExplicitRegionAndPreserveSubsetMappings:88->publishAndRead:99 » DocumentFailure The font source could not be loaded safely.
+[ERROR]   UnicodeCompositionWorkflowTest.completeCjkFontsUseTheExplicitRegionAndPreserveSubsetMappings:88->publishAndRead:99 » DocumentFailure The font source could not be loaded safely.
+[ERROR] Tests run: 4, Failures: 0, Errors: 2, Skipped: 0
+[INFO] BUILD FAILURE
+
+noto-cjk-red.log
+Original log: /tmp/folio-t28/noto-cjk-red.log
+SHA-256: 44f7ff4182ab8e9f686e045447f2af88af78dde306d1b6a15bbd8848e1b8ceb7
+[ERROR] Tests run: 4, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 4.244 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[ERROR]   UnicodeCompositionWorkflowTest.completeCjkFontsUseTheExplicitRegionAndPreserveSubsetMappings:88->publishAndRead:99 » DocumentFailure The font format or profile is unsupported.
+[ERROR]   UnicodeCompositionWorkflowTest.completeCjkFontsUseTheExplicitRegionAndPreserveSubsetMappings:88->publishAndRead:99 » DocumentFailure The font format or profile is unsupported.
+[ERROR] Tests run: 4, Failures: 0, Errors: 2, Skipped: 0
+[INFO] BUILD FAILURE
+
+noto-cjk-trace.log
+Original log: /tmp/folio-t28/noto-cjk-trace.log
+SHA-256: f20066dcd3e07901ec010382e0853d8ab591a893ba186fcd11cbb2931a19d4d5
+[ERROR] Tests run: 4, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 4.404 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[ERROR]   UnicodeCompositionWorkflowTest.completeCjkFontsUseTheExplicitRegionAndPreserveSubsetMappings:88->publishAndRead:99 » DocumentFailure The font source could not be loaded safely.
+[ERROR]   UnicodeCompositionWorkflowTest.completeCjkFontsUseTheExplicitRegionAndPreserveSubsetMappings:88->publishAndRead:99 » DocumentFailure The font source could not be loaded safely.
+[ERROR] Tests run: 4, Failures: 0, Errors: 2, Skipped: 0
+[INFO] BUILD FAILURE
+
+noto-sans-regression.log
+Original log: /tmp/folio-t28/noto-sans-regression.log
+SHA-256: 443b6d037bb63db67db35321a1af2251e5d191f37153721547ec786ecfac0cbb
+[INFO] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.280 s -- in net.zerocloud.pdf.consumer.FontLoadingWorkflowTest
+[INFO] Tests run: 42, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 53.92 s -- in net.zerocloud.pdf.consumer.ParagraphCompositionWorkflowTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.661 s -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s -- in net.zerocloud.pdf.PdfBoxFontMetricPreflightTest
+[INFO] Tests run: 70, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+noto-workflow-green-attempt.log
+Original log: /tmp/folio-t28/noto-workflow-green-attempt.log
+SHA-256: adb6c3ba3d03b2846321b246465aed07b2d279077738a699d9361a3b564930ff
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.518 s -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+noto-workflow-red-2.log
+Original log: /tmp/folio-t28/noto-workflow-red-2.log
+SHA-256: 15cb7621e9c8ea305c678ead4f9e4a5650878f4f61a67c8088e8d05434c3e0bc
+[ERROR] Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 0.770 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[ERROR]   UnicodeCompositionWorkflowTest.staticNotoSansPreservesLatinGreekAndCyrillicThroughPublication:66->publishAndRead:76 » DocumentFailure The font format or profile is unsupported.
+[ERROR]   UnicodeCompositionWorkflowTest.staticNotoSansPreservesLatinGreekAndCyrillicThroughPublication:66->publishAndRead:76 » DocumentFailure The font format or profile is unsupported.
+[ERROR] Tests run: 2, Failures: 0, Errors: 2, Skipped: 0
+[INFO] BUILD FAILURE
+
+noto-workflow-red.log
+Original log: /tmp/folio-t28/noto-workflow-red.log
+SHA-256: ab7b20ef4e87ae686670ed8db69335b6b9e2523ddf6511917574001c1baffccb
+Interpretation: Initial setup/compile attempt; use noto-workflow-red-2 for actual behavior.
+[INFO] BUILD FAILURE
+
+oracle-generator-green.log
+Original log: /tmp/folio-t28/oracle-generator-green.log
+SHA-256: 8788638390511377b8a5de6e1c88307241047742ad6128325fccff76f3ab0e78
+OK
+
+oracle-generator-red.log
+Original log: /tmp/folio-t28/oracle-generator-red.log
+SHA-256: 5d0fdf7035b77906f48a909a905081dbe85734b7c8a5ac9abe1821170d625d8c
+FAILED (failures=1)
+
+python-final-2.log
+Original log: /tmp/folio-t28/python-final-2.log
+SHA-256: b960b27a66c3339b12514630f45ede38081b32a707efd8468189c2c3a43d2dce
+Ran 3 tests in 50.264s
+OK
+
+python-final.log
+Original log: /tmp/folio-t28/python-final.log
+SHA-256: 552533aa886c7929e7dc20f10b1b59c690b95fb89fb4023e53e70c1b7d008f7a
+Interpretation: Missing T28_UPSTREAM environment; setup failure, corrected in python-final-2.
+Ran 3 tests in 5.542s
+FAILED (errors=2)
+
+recorder-green-2.log
+Original log: /tmp/folio-t28/recorder-green-2.log
+SHA-256: 95df80959d6506895f8a9b3a196af3cb4eab6273def96e00c65a123f846f386d
+Interpretation: Independent-reference observer limits still incomplete; fixed before reference-negative-green-2.
+[ERROR] Tests run: 2, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 17.43 s <<< FAILURE! -- in net.zerocloud.pdf.acceptance.T28UnicodeEvidenceCommandTest
+[ERROR] Tests run: 2, Failures: 1, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+
+recorder-green.log
+Original log: /tmp/folio-t28/recorder-green.log
+SHA-256: 38bb9f3c5dd224ab0f870d22641c607390b97a9fc7b31178a4b00ce5df09e14f
+Interpretation: Page selection and independent-reference observer limits still incomplete.
+[ERROR] Tests run: 2, Failures: 1, Errors: 1, Skipped: 0, Time elapsed: 16.88 s <<< FAILURE! -- in net.zerocloud.pdf.acceptance.T28UnicodeEvidenceCommandTest
+[ERROR] Tests run: 2, Failures: 1, Errors: 1, Skipped: 0
+[INFO] BUILD FAILURE
+
+recorder-red.log
+Original log: /tmp/folio-t28/recorder-red.log
+SHA-256: 91e997281c6275f09d6c2487805f8373da5bf98fc070bdabbb04cbb85ed1d124
+[INFO] BUILD FAILURE
+
+reference-negative-green-2.log
+Original log: /tmp/folio-t28/reference-negative-green-2.log
+SHA-256: 5a6740ea6f976fcaab48ac6b099c3e09023e8a49e8809fc9fe0c3f18980bc7fb
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 69.42 s -- in net.zerocloud.pdf.acceptance.T28UnicodeEvidenceCommandTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+reference-negative-green.log
+Original log: /tmp/folio-t28/reference-negative-green.log
+SHA-256: d77b2b899e7f3f3db9ae869d6290f0870274bafafd134401c4c86f4b88451f72
+Interpretation: Reference observer decoded-byte limit still too small; corrected observer bound before green-2.
+[ERROR] Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 9.364 s <<< FAILURE! -- in net.zerocloud.pdf.acceptance.T28UnicodeEvidenceCommandTest
+[ERROR] Tests run: 1, Failures: 1, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+
+related-regressions.log
+Original log: /tmp/folio-t28/related-regressions.log
+SHA-256: 7f3aff95e8fe42e43b90f00303c9d08b04f2f552b5f1958163aca471bff8dfe5
+[INFO] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.369 s -- in net.zerocloud.pdf.consumer.FontLoadingWorkflowTest
+[INFO] Tests run: 32, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 56.26 s -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Tests run: 42, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 59.30 s -- in net.zerocloud.pdf.consumer.ParagraphCompositionWorkflowTest
+[INFO] Tests run: 64, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 68.22 s -- in net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 75.55 s -- in net.zerocloud.pdf.consumer.TableCompositionWorkflowTest
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 38.03 s -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Tests run: 32, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 105.7 s -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s -- in net.zerocloud.pdf.PdfBoxFontMetricPreflightTest
+[INFO] Tests run: 288, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.833 s -- in net.zerocloud.pdf.acceptance.T27TableEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 76.20 s -- in net.zerocloud.pdf.acceptance.T28UnicodeEvidenceCommandTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+review-delta-green.log
+Original log: /tmp/folio-t28/review-delta-green.log
+SHA-256: 68ba4b27064460ac0a6c57b1752bc3a6f56575f547edd048e8de1fdd320fdf1c
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 13.24 s -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+review-delta-red.log
+Original log: /tmp/folio-t28/review-delta-red.log
+SHA-256: b83c03661c75764b19c37918398d402df4a79ef9b994f120c738a117e866db27
+[ERROR] Tests run: 2, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 1.893 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[ERROR]   UnicodeCompositionWorkflowTest.layoutMetadataRejectsDeltaSubstitutionsOutsideTheFontGlyphDomain:323->expectFailure:521 Expected FONT_SOURCE_INVALID
+[ERROR]   UnicodeCompositionWorkflowTest.layoutMetadataRejectsDeltaSubstitutionsOutsideTheFontGlyphDomain:323->expectFailure:521 Expected FONT_SOURCE_INVALID
+[ERROR] Tests run: 2, Failures: 2, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+
+review-font-memory-green-2.log
+Original log: /tmp/folio-t28/review-font-memory-green-2.log
+SHA-256: 9192a4059e2e7ba7e5576df90da7e0dac76a9b86f902014490dd087acac817c4
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 61.01 s -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+review-font-memory-green.log
+Original log: /tmp/folio-t28/review-font-memory-green.log
+SHA-256: 38da0a348baa9eb367e2cbe7db4d3485e069dafe8366b40d613d45ca5b798581
+Interpretation: One positive Worker budget failure; repeated with an explicit positive budget, negatives unchanged.
+[ERROR] Tests run: 6, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 24.99 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[ERROR]   UnicodeCompositionWorkflowTest.completeCjkFontsUseTheExplicitRegionAndPreserveSubsetMappings:359->publishAndRead:370 » DocumentFailure The workflow owned-memory limit was exceeded.
+[ERROR] Tests run: 6, Failures: 0, Errors: 1, Skipped: 0
+[INFO] BUILD FAILURE
+
+review-font-memory-red.log
+Original log: /tmp/folio-t28/review-font-memory-red.log
+SHA-256: b459b02e705b5c81a4ab760bf54e3a899eca49a54f92cd49f7c134ce0a51d0be
+[ERROR] Tests run: 2, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 13.67 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[ERROR]   UnicodeCompositionWorkflowTest.simultaneouslyParsedFullFontsStayWithinTheOwnedMemoryBudget:282->expectFailure:483 Expected MEMORY_LIMIT_EXCEEDED
+[ERROR]   UnicodeCompositionWorkflowTest.simultaneouslyParsedFullFontsStayWithinTheOwnedMemoryBudget:282->expectFailure:483 Expected MEMORY_LIMIT_EXCEEDED
+[ERROR] Tests run: 2, Failures: 2, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+
+review-metadata-green.log
+Original log: /tmp/folio-t28/review-metadata-green.log
+SHA-256: 1542dd2990f55318ae07edaf2a6b6ebb16187863903e185a05b1c94e1236ce37
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.966 s -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+review-metadata-red.log
+Original log: /tmp/folio-t28/review-metadata-red.log
+SHA-256: 3ae63359a2b867cc357a6128159a16f8abfcf23eb0feac7d23c0d810f4951f80
+[ERROR] Tests run: 2, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 1.779 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[ERROR]   UnicodeCompositionWorkflowTest.unsupportedLayoutMetadataVersionFailsBeforePublication:303->expectFailure:472 Expected FONT_FORMAT_UNSUPPORTED
+[ERROR]   UnicodeCompositionWorkflowTest.unsupportedLayoutMetadataVersionFailsBeforePublication:303->expectFailure:472 Expected FONT_FORMAT_UNSUPPORTED
+[ERROR] Tests run: 2, Failures: 2, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+
+review-metadata-reference-green.log
+Original log: /tmp/folio-t28/review-metadata-reference-green.log
+SHA-256: 6930bb9c4a54d1f9020e2c4ac4320b4a46afbcec58bcfeb189b81ccc07b95586
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 57.51 s -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+review-metadata-reference-red.log
+Original log: /tmp/folio-t28/review-metadata-reference-red.log
+SHA-256: 512b4a40e51047305c1a8d167ec5d77254ba81f8a182abd907bc748d680dce58
+[ERROR] Tests run: 2, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 1.743 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[ERROR]   UnicodeCompositionWorkflowTest.layoutMetadataRejectsReferencesOutsideItsDeclaredLookupList:309->expectFailure:507 Expected FONT_SOURCE_INVALID
+[ERROR]   UnicodeCompositionWorkflowTest.layoutMetadataRejectsReferencesOutsideItsDeclaredLookupList:309->expectFailure:507 Expected FONT_SOURCE_INVALID
+[ERROR] Tests run: 2, Failures: 2, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+
+review-overflow-green.log
+Original log: /tmp/folio-t28/review-overflow-green.log
+SHA-256: d6284422bc8ced1dbebff013f86f53395b84ca0749d78b846549761b107ef3ca
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.435 s -- in net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.746 s -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+review-overflow-red.log
+Original log: /tmp/folio-t28/review-overflow-red.log
+SHA-256: 055beb44acc26ce75e6b1b100af1ae100e5fc4da610e4ca73c29399d81cb809f
+[ERROR] Tests run: 2, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 1.780 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[ERROR]   UnicodeCompositionWorkflowTest.nonWrappingOverflowPreservesSpacesUntilTheUnicodeLineOpportunity:165->expectFailure:439 Expected COMPOSITION_AREA_EXHAUSTED
+[ERROR]   UnicodeCompositionWorkflowTest.nonWrappingOverflowPreservesSpacesUntilTheUnicodeLineOpportunity:165->expectFailure:439 Expected COMPOSITION_AREA_EXHAUSTED
+[ERROR] Tests run: 2, Failures: 2, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+
+review-tabs-green.log
+Original log: /tmp/folio-t28/review-tabs-green.log
+SHA-256: c33439f06e60e38c023b702f1d156eed546310efb1dbd46d97aced4eaa86aef8
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 18.41 s -- in net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.813 s -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+review-tabs-red-2.log
+Original log: /tmp/folio-t28/review-tabs-red-2.log
+SHA-256: 471e56385710e08f054ca1f886dd1ee0c6cdd83de48732011094dd677bc71907
+[ERROR] Tests run: 2, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 2.973 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[ERROR]   UnicodeCompositionWorkflowTest.bidiTabAnchorsUseVisualOffsetsAndFieldsKeepTheirPhysicalPositions:211->position:443 expected:<87.408> but was:<108.0>
+[ERROR]   UnicodeCompositionWorkflowTest.bidiTabAnchorsUseVisualOffsetsAndFieldsKeepTheirPhysicalPositions:211->position:443 expected:<87.408> but was:<108.0>
+[ERROR] Tests run: 2, Failures: 2, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+
+review-tabs-red.log
+Original log: /tmp/folio-t28/review-tabs-red.log
+SHA-256: ad17d8c4e6cd782e243e5226019f532c36cb59798fa85638fe100642219dbb00
+Interpretation: Selector selected zero tests; NOT a behavioral Red.
+[INFO] Tests run: 0, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.065 s -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[INFO] Tests run: 0, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+review-unicode-regression.log
+Original log: /tmp/folio-t28/review-unicode-regression.log
+SHA-256: 9c501d7106483c707a9b971778bc35ea7d4fad15dcc291db6260c0a2469bf4ec
+Interpretation: Per-record metadata model exceeded 512MiB positive profile in both modes. Public independent measurements justify 1 GiB; this run is NOT final passing evidence.
+[ERROR] Tests run: 44, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 89.66 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[ERROR]   UnicodeCompositionWorkflowTest.completeCjkFontsUseTheExplicitRegionAndPreserveSubsetMappings:366->publishAndRead:377 » DocumentFailure The workflow owned-memory limit was exceeded.
+[ERROR]   UnicodeCompositionWorkflowTest.completeCjkFontsUseTheExplicitRegionAndPreserveSubsetMappings:366->publishAndRead:377 » DocumentFailure The workflow owned-memory limit was exceeded.
+[ERROR] Tests run: 44, Failures: 0, Errors: 2, Skipped: 0
+[INFO] BUILD FAILURE
+
+review-vertical-green.log
+Original log: /tmp/folio-t28/review-vertical-green.log
+SHA-256: 12a74e9f5fe9ef489e15251c7cd28fc59353a97954320004f8394d079c7dc062
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 60.87 s -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+review-vertical-red.log
+Original log: /tmp/folio-t28/review-vertical-red.log
+SHA-256: e38d4588753208177a5d2dec32adc090545a0fd4bb9619557a3d8093890781d9
+[ERROR] Tests run: 2, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 8.062 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[ERROR]   UnicodeCompositionWorkflowTest.unusedVerticalMetricsStillRequireAValidCountAndMatchingTableLength:334->expectFailure:532 Expected FONT_SOURCE_INVALID
+[ERROR]   UnicodeCompositionWorkflowTest.unusedVerticalMetricsStillRequireAValidCountAndMatchingTableLength:334->expectFailure:532 Expected FONT_SOURCE_INVALID
+[ERROR] Tests run: 2, Failures: 2, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+
+separator-green.log
+Original log: /tmp/folio-t28/separator-green.log
+SHA-256: f4b026bbcd9b13eca566454157181774fad9d5dc95661f0f1ced62f6c3401915
+[INFO] Tests run: 18, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 18.37 s -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[INFO] Tests run: 18, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+separator-red.log
+Original log: /tmp/folio-t28/separator-red.log
+SHA-256: 07f1de1c18a8a501e91b261fc28f3ede2e70dc5dc770ce124dcdfa11487268ba
+[ERROR] Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 1.466 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[ERROR]   UnicodeCompositionWorkflowTest.unicodeLineAndParagraphSeparatorsForceLinesWithoutDrawingControlGlyphs:163->publishAndRead:191 » DocumentFailure The paragraph flow could not be applied safely.
+[ERROR]   UnicodeCompositionWorkflowTest.unicodeLineAndParagraphSeparatorsForceLinesWithoutDrawingControlGlyphs:163->publishAndRead:191 » DocumentFailure The paragraph flow could not be applied safely.
+[ERROR] Tests run: 2, Failures: 0, Errors: 2, Skipped: 0
+[INFO] BUILD FAILURE
+
+table-cluster-green.log
+Original log: /tmp/folio-t28/table-cluster-green.log
+SHA-256: 86b8f7ea011e06a48633db667936fa6f57fef47461bb5c6e4505cb1e87a20638
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.773 s -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+table-cluster-red-2.log
+Original log: /tmp/folio-t28/table-cluster-red-2.log
+SHA-256: 80f3f15c9e7fa5911ab0c6c4ad275ca321baabe6adedccebb986a494ebc4ff7d
+[ERROR] Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 7.497 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[ERROR]   UnicodeCompositionWorkflowTest.automaticTableWidthsReserveTheWholeGraphemeCluster:258->publishAndRead:287 » DocumentFailure The finite layout areas cannot satisfy the table geometry.
+[ERROR]   UnicodeCompositionWorkflowTest.automaticTableWidthsReserveTheWholeGraphemeCluster:258->publishAndRead:287 » DocumentFailure The finite layout areas cannot satisfy the table geometry.
+[ERROR] Tests run: 2, Failures: 0, Errors: 2, Skipped: 0
+[INFO] BUILD FAILURE
+
+table-cluster-red.log
+Original log: /tmp/folio-t28/table-cluster-red.log
+SHA-256: 1b4edeb5852184c196808bff6e368431dc94dae3c52558877a20778258a71177
+Interpretation: Invalid version-3 relayout fixture; NOT the table-cluster behavioral Red.
+[ERROR] Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 0.929 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[ERROR]   UnicodeCompositionWorkflowTest.automaticTableWidthsReserveTheWholeGraphemeCluster:258->publishAndRead:287 » DocumentFailure The paragraph flow declaration is invalid.
+[ERROR]   UnicodeCompositionWorkflowTest.automaticTableWidthsReserveTheWholeGraphemeCluster:258->publishAndRead:287 » DocumentFailure The paragraph flow declaration is invalid.
+[ERROR] Tests run: 2, Failures: 0, Errors: 2, Skipped: 0
+[INFO] BUILD FAILURE
+
+table-separator-green.log
+Original log: /tmp/folio-t28/table-separator-green.log
+SHA-256: 44902e47f75856f90bf867640c5a1b3dd636c914d4c34a1392a8f16db300942f
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 10.68 s -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+table-separator-red.log
+Original log: /tmp/folio-t28/table-separator-red.log
+SHA-256: 0e2fe2ccc3329a7b583c7c45b5d39f064c26bf2a8425cf046418e2b36fb47641
+[ERROR] Tests run: 2, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 2.790 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[ERROR]   UnicodeCompositionWorkflowTest.tablePreferredWidthsRecognizeUnicodeHardLineBreaks:278->position:411 expected:<107.992> but was:<111.784>
+[ERROR]   UnicodeCompositionWorkflowTest.tablePreferredWidthsRecognizeUnicodeHardLineBreaks:278->position:411 expected:<107.992> but was:<111.784>
+[ERROR] Tests run: 2, Failures: 2, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+
+unicode-acceptance-green-2.log
+Original log: /tmp/folio-t28/unicode-acceptance-green-2.log
+SHA-256: 75d30f621cb0c72fbc1b1688b825533e6cc2a73f327ce971ff41280fc507f7c8
+Interpretation: 512MiB Worker heap insufficient for combined six-font transaction; explicit1GiB heap subsequently passed.
+[ERROR] Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 35.07 s <<< FAILURE! -- in net.zerocloud.pdf.acceptance.T28UnicodeEvidenceCommandTest
+[ERROR] Tests run: 1, Failures: 0, Errors: 1, Skipped: 0
+[INFO] BUILD FAILURE
+
+unicode-acceptance-green-3.log
+Original log: /tmp/folio-t28/unicode-acceptance-green-3.log
+SHA-256: 1dcc0aadfde08a0948a650c0c670413c3e3d48902a1814eb9c5e16c381b2915a
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 66.90 s -- in net.zerocloud.pdf.acceptance.T28UnicodeEvidenceCommandTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+unicode-acceptance-green.log
+Original log: /tmp/folio-t28/unicode-acceptance-green.log
+SHA-256: 9db6aef66ed4568576532ee6c1c08738848f8a92598991696dddff69a7b1f5ee
+Interpretation: Initial 256MiB modeled budget insufficient for full-font transaction.
+[ERROR] Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 35.87 s <<< FAILURE! -- in net.zerocloud.pdf.acceptance.T28UnicodeEvidenceCommandTest
+[ERROR] Tests run: 1, Failures: 0, Errors: 1, Skipped: 0
+[INFO] BUILD FAILURE
+
+unicode-acceptance-red.log
+Original log: /tmp/folio-t28/unicode-acceptance-red.log
+SHA-256: cd64c36aa4ef840584c7284ac235e2073493d6af122fdc7c9bbca9c89a65bad4
+[INFO] BUILD FAILURE
+
+unicode-focused.log
+Original log: /tmp/folio-t28/unicode-focused.log
+SHA-256: 925c026fcee4042690158db2b499faf4ff492e0ee27168484544ddba94a32e05
+Interpretation: Two incorrect expected failure-code assertions; implementation already used contract AREA_EXHAUSTED. Corrected fixture in jamo-regression.
+[ERROR] Tests run: 28, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 88.09 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[ERROR]   UnicodeCompositionWorkflowTest.koreanJamoClustersWrapAtomicallyAndOverwideClustersDoNotPublish:212->expectFailure:351 expected:<COMPOSITION_CONSTRAINT_UNSATISFIED> but was:<COMPOSITION_AREA_EXHAUSTED>
+[ERROR]   UnicodeCompositionWorkflowTest.koreanJamoClustersWrapAtomicallyAndOverwideClustersDoNotPublish:212->expectFailure:351 expected:<COMPOSITION_CONSTRAINT_UNSATISFIED> but was:<COMPOSITION_AREA_EXHAUSTED>
+[ERROR] Tests run: 28, Failures: 2, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+
+word-script-green.log
+Original log: /tmp/folio-t28/word-script-green.log
+SHA-256: 4ce4ea70f8c18c8971b98c6736ca20e26c034614d8357fba15172f832eee3924
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 12.71 s -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+word-script-red.log
+Original log: /tmp/folio-t28/word-script-red.log
+SHA-256: aea5fde1d1067c0bfaf7ef54debae9b50863be04513242dec0bd66f6c35a1ce8
+[ERROR] Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 1.421 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[ERROR]   UnicodeCompositionWorkflowTest.wordAndScriptRunsWrapAtUnicodeOpportunitiesUnderRejectOverflow:141->publishAndRead:171 » DocumentFailure The remaining layout areas cannot contain the paragraph flow.
+[ERROR]   UnicodeCompositionWorkflowTest.wordAndScriptRunsWrapAtUnicodeOpportunitiesUnderRejectOverflow:141->publishAndRead:171 » DocumentFailure The remaining layout areas cannot contain the paragraph flow.
+[ERROR] Tests run: 2, Failures: 0, Errors: 2, Skipped: 0
+[INFO] BUILD FAILURE
+
+Final focused follow-ups (before repository gates)
+
+review-unicode-regression-2.log
+Original log: /tmp/folio-t28/review-unicode-regression-2.log
+SHA-256: cb62002dcb16dc3d109707a2e972484e55924fb7dd08cec5afca46ce8cf383d0
+Interpretation: all 48 Unicode contracts passed; this combined run then failed because 1 GiB was below the six-font live model. The two acceptance cases are superseded by review-receipt-budget-green at 2 GiB.
+[INFO] Tests run: 48, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 136.4 s -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[INFO] Tests run: 48, Failures: 0, Errors: 0, Skipped: 0
+[ERROR] Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 16.17 s <<< FAILURE! -- in net.zerocloud.pdf.acceptance.T28UnicodeEvidenceCommandTest
+[ERROR] Tests run: 2, Failures: 0, Errors: 2, Skipped: 0
+[INFO] BUILD FAILURE
+
+review-receipt-budget-red.log
+Original log: /tmp/folio-t28/review-receipt-budget-red.log
+SHA-256: 0a3667e52eaa135d0dbf4aad90add07ec7e67f05c6e283bd0f9759ce2600b339
+Interpretation: 2 GiB producer succeeded but record still said 512 MiB; literal provenance assertion failed before shared-authority fix.
+[ERROR] Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 9.533 s <<< FAILURE! -- in net.zerocloud.pdf.acceptance.T28UnicodeEvidenceCommandTest
+[ERROR] Tests run: 1, Failures: 1, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+
+review-receipt-budget-green.log
+Original log: /tmp/folio-t28/review-receipt-budget-green.log
+SHA-256: 415fe6ba94c082f3b9d3393ea79659d30fb48ea921af4b46eee922aea351d3d2
+T28 IN_PROCESS peak owned memory bytes: 1207232298
+T28 HARDENED_WORKER peak owned memory bytes: 1449636850
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 80.07 s -- in net.zerocloud.pdf.acceptance.T28UnicodeEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+Independent public normal-font resource observations (Spec reviewer, exact version 1/default Worker).
+T28MemoryProbeV1.java SHA-256: 2ffb68ef8fbdbf0a029606616de13116d2a50b536eb8a4e21f8ccc7d3ba5fe62
+memory-v1-observation-IN_PROCESS.txt SHA-256: 9b5c8a0032da0d3c3e381bbb654478201f73a07e07543a939cd3cadc6e9df2f7
+IN_PROCESS budgetBytes=1073741824 peakOwnedMemoryBytes=540656281 publication=COMMITTED output=/tmp/t28-spec-probes/normal-font-memory-v1-IN_PROCESS.pdf
+reopened=A骨 peakOwnedMemoryBytes=884
+Sep 06, 2026 2:37:58 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 2:37:58 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 06, 2026 2:37:59 PM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+
+memory-v1-observation-HARDENED_WORKER.txt SHA-256: 58bef93dfd6fbf94821774eeca15c97d8783724400fddad2715484c0f5fcc6f1
+HARDENED_WORKER budgetBytes=1073741824 peakOwnedMemoryBytes=584571171 publication=COMMITTED output=/tmp/t28-spec-probes/normal-font-memory-v1-HARDENED_WORKER.pdf
+reopened=A骨 peakOwnedMemoryBytes=6748
+
+The three-font case measured 540,656,281 and 584,571,171 bytes; the positive 1 GiB policy has margin.
+The full seven-profile transaction measured 1,207,232,298 and 1,449,636,850 bytes; its positive 2 GiB policy has margin.
+These are modeled Workflow-owned observations, not JVM/RSS measurements. 32/160 MiB negative policies and all visual tolerances remain unchanged.

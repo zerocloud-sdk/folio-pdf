@@ -1,5 +1,6 @@
 package net.zerocloud.pdf;
 
+import com.ibm.icu.text.BreakIterator;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -54,7 +55,7 @@ final class HardenedWorkerEngine {
     private static final String DOCUMENT_CLASS_INVENTORY =
             "META-INF/folio-pdf/document-worker-classes";
     private static final String DOCUMENT_CLASS_INVENTORY_SHA256 =
-            "dc63db72cf1d338b5c3aebafdba32b941ba57fcb1fef3bb8d2aff8964d24c649";
+            "a3cb0921c6d1b4d5ca5b09c727e5320b24896a6bd22fbafcbc0ad266fdd4e826";
     private static final String PROVIDER_CLASS_INVENTORY =
             "META-INF/folio-pdf/provider-contract-worker-classes";
     private static final String PROVIDER_CLASS_INVENTORY_SHA256 =
@@ -65,6 +66,8 @@ final class HardenedWorkerEngine {
             "36a0e04001010b4c764857817412b96339930b19755e728959805cc0352061b2";
     private static final String FONTBOX_SHA256 =
             "a1915c24e3edbe0ecec93896dfbf6d41427810b663ade97bd4e8bae86ec3fdab";
+    private static final String ICU4J_SHA256 =
+            "b3640b9f416a4411fd33c59abbeea8fd57d024c23e1819bf9673220a97499fe3";
     private static final String COMMONS_LOGGING_SHA256 =
             "d175dbd751dd782a63bde28c7a039520e971f25e84b79c19b8435edc3603e0dc";
     private static final String TIFF_SHA256 =
@@ -2211,6 +2214,7 @@ final class HardenedWorkerEngine {
                 RandomAccessRead.class,
                 PDFBOX_IO_SHA256);
         addDependencyCodeSource(entries, TrueTypeFont.class, FONTBOX_SHA256);
+        addDependencyCodeSource(entries, BreakIterator.class, ICU4J_SHA256);
         addDependencyCodeSource(entries, Log.class, COMMONS_LOGGING_SHA256);
         addOptionalTiffCodeSources(entries);
         StringBuilder result = new StringBuilder();

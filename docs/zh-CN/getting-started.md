@@ -121,6 +121,43 @@ JPEG、JPX、JBIG2 只允许作为图像的唯一末端平台 codec；在平台�
 
 T23 的公共测试与三组独立 PDFium 视觉证据不构成兼容性认证；标准证据、正式语义
 证据和前置能力的 promotion/dependency gates 尚未满足，因此状态仍为 experimental。
+## Unicode 分段与双向排版（T28，experimental）
+
+现有 `ComposeParagraphs` 各版本及表格段落现在使用固定 ICU4J 77.1 处理字素、词、
+断行、script 和 bidi。相邻 text inline 合并分析，换行和视觉重排都不拆开组合序列。
+请传入逻辑顺序文本，不要事先把 RTL 字符倒序。方向按首个强方向字符确定，没有时
+使用 LTR；数字保持内部顺序，奇数方向层级的括号等字符使用镜像映射。方向控制符
+参与分析但不绘制，仍计入输入配额。
+
+字体必须显式提供，按声明顺序逐标量回退。例如：
+
+```java
+FontSelection fonts = FontSelection.explicit(
+        FontSource.path(Paths.get("/my/fonts/NotoSans-Regular.ttf")),
+        FontSource.path(Paths.get("/my/fonts/NotoSansCJKsc-Regular.ttf")));
+```
+
+SC、TC、JP、KR 的顺序决定区域字形；默认 Locale、系统字体和联网查找不参与选择。
+项目测试使用的完整静态 Noto 字体附有版本、SHA-256、来源与 OFL notices，只属于
+测试/验收资源，不随默认产品提供。产品支持所述静态 TrueType 格式，不会自动把
+可变字体实例化。缺字仍通过既有错误返回。
+
+ICU 不负责 shaping：此处没有 GSUB/GPOS、连字、kerning、组合附加符定位、阿拉伯或
+印度文字上下文塑形、韩文 Jamo 合成、变体序列选字、断字或竖排。已编码的预组合字形
+可以正常选取。HarfBuzz 属于 #30，亚洲字体资源产品属于 #34。
+
+公开重开查询观察 PDF 绘制顺序，因此 `PageText` 返回视觉顺序与实际镜像字符，
+不包含方向控制符或强制换行符，也不重建原始逻辑段落；需要逻辑文本的应用应保存
+输入声明。本次没有源代码或二进制接口破坏，但旧版的 ASCII/标量断行、页数和操作
+字节数可能改变。已有资源上限与失败前不发布约束继续生效；过宽的完整簇不会被拆碎。
+
+两种模式执行同一处理。完整字体的名称、cmap 别名与 GSUB 元数据按解析生命周期
+计入预算，已加载字体保持 Session 计量。七配置合并验收为同时保留六个完整字体，
+显式使用 2 GiB 计量内存预算和 1 GiB Worker 堆；单独 Unicode 公共测试声明 1 GiB
+计量内存并保留默认 Worker 设置，32/160 MiB 负例验证资源拒绝与目标文件保留。产品
+默认值没有修改。完整英文边界和迁移说明见 [Unicode Composition](../unicode-composition.md)。
+Linux/JDK 验证不代表 Windows、macOS 或完整 Foundation 认证；能力仍为 experimental。
+
 ## 段落跨区域排版（T24，experimental）
 
 在 `DocumentWorkflow.execute` 中执行
@@ -133,9 +170,10 @@ PageMargins.of(top, right, bottom, left), areas...)` 使用 PDF 点；显式区�
 `Paragraph.version1(leading)` 可组合 `text(text, fontSize)` 和
 `graphic(canvasTransparencyGroup, width, height)`，支持 LEFT、CENTER、RIGHT、
 JUSTIFIED 对齐及 `maximumWidth`。固定 leading 是行框最小高度，字体上下界或图形
-更高时行框随之扩大。行内图形底边与文本基线对齐，不拆分。普通空格提供优先换行点，
-长单词可按 Unicode 标量拆行；保留空格，LF 显式换行，tab、CR 和孤立代理项会失败。
-JUSTIFIED 只扩展自动换行且非末行中非末尾的空格。
+更高时行框随之扩大。行内图形底边与文本基线对齐，不拆分。T28 现在使用 Unicode
+断行机会，过长内容只在完整字素簇边界拆行；空格会保留。LF、U+2028、U+2029 显式
+换行，版本 1 的 tab、CR 和孤立代理项会失败。JUSTIFIED 在含空格的完整簇之后扩展
+字距，不把空格与随后的组合附加符推开。
 
 `ParagraphFlow.areaBreak()` 明确前进到下一个区域。页面声明是有限列表，区域耗尽或
 内容无法放入剩余区域时返回 `COMPOSITION_AREA_EXHAUSTED`，不会无限生成页面。
@@ -147,7 +185,7 @@ JUSTIFIED 只扩展自动换行且非末行中非末尾的空格。
 不使用系统字体或联网查找。IN_PROCESS 与 HARDENED_WORKER 接受相同声明；命令顺序、
 Query barrier、Session 生命周期、调用方流/通道所有权及签名/密码权限约束继续有效。
 当前仅向文档追加新页面，不填充已有页面区域。缩进、tabs、keep、widow/orphan、
-高级 overflow/relayout、表格和 Unicode shaping/布局不在 T24 范围内。
+高级 overflow/relayout 和表格使用后续版本；Unicode 行为见 T28，shaping 仍单独规划。
 
 完整英文契约和示例见 [Paragraph composition](../paragraph-composition.md)。
 能力仍为 experimental；实现票关闭或本机验证通过都不代表 Foundation 兼容性认证。

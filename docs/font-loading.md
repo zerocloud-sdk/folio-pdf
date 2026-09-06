@@ -65,11 +65,11 @@ declarations remain cached only for the life of the proxy Session, while path
 sources retain command-time observation. Each requested font program must fit
 the configured Worker message limit; it is not embedded in the Command frame.
 
-## Closed version-1 profile matrix
+## Closed TrueType profile matrix
 
 | Font data or profile | Version-1 outcome |
 | --- | --- |
-| Standalone TrueType sfnt with `00010000` or `true` scaler and exactly the ten version-1 tables described below | Supported as a horizontal Type 0/CIDFontType2 Font. |
+| Standalone TrueType sfnt with `00010000` or `true` scaler, in the legacy ten-table form or T28 static extension below | Supported as a horizontal Type 0/CIDFontType2 Font. |
 | OpenType CFF or CFF2 (`OTTO`, `CFF `, or `CFF2`) | `FONT_FORMAT_UNSUPPORTED`. |
 | TrueType/OpenType Collection (`ttcf`) | `FONT_FORMAT_UNSUPPORTED`. |
 | WOFF 1 or WOFF 2 (`wOFF` or `wOF2`) | `FONT_FORMAT_UNSUPPORTED`. |
@@ -82,7 +82,9 @@ Unknown scaler signatures are unsupported only when they identify a known
 font container; truncated, overlapping, out-of-range, duplicate-table, or
 otherwise inconsistent sfnt structures are corrupt font data.
 
-For the supported row, version 1 requires exactly `OS/2`, `cmap`, `glyf`,
+### Legacy ten-table form
+
+The legacy form requires exactly `OS/2`, `cmap`, `glyf`,
 `head`, `hhea`, `hmtx`, `loca`, `maxp`, `name`, and `post`; every additional
 table is outside the profile. The ascending unique directory has contiguous
 zero-filled aligned ranges, exact offset-table search fields, exact table
@@ -94,7 +96,7 @@ the glyphs and OS/2 data. Declared glyph maxima are enforced as upper bounds;
 conservative overestimates are supported. `head` flags 2 through 10 must be
 clear; flag 14
 is the unsupported Last Resort profile and reserved flag 15 is corrupt.
-Version 1 is instruction-free: glyph instruction lengths and the `maxp`
+The ten-table form is instruction-free: glyph instruction lengths and the `maxp`
 twilight, storage, function, instruction-definition, stack, and
 instruction-size maxima must all be zero. Short and long `loca` are supported.
 `hmtx` has the exact full or compact length implied by `numberOfHMetrics`,
@@ -143,6 +145,58 @@ complete, contain valid Unicode scalars and glyph IDs, and provide at least
 one nonzero mapping. Structurally valid profiles outside this exact set are
 unsupported; inconsistent values are corrupt.
 
+### T28 static extension
+
+The static extension retains the same ten required tables and admits only
+these additional tags: `BASE`, `GDEF`, `GPOS`, `GSUB`, `STAT`, `DSIG`, `cvt `,
+`fpgm`, `prep`, `gasp`, `vhea` and `vmtx`. A font with more than ten tables uses
+this form. Unknown, variable, CFF, color and bitmap tables remain unsupported.
+The directory, alignment/padding, checksums, permissions, quadratic outlines,
+metrics, bounds, component graph and glyph maxima are still checked.
+
+This form additionally admits bounded glyph hint instructions, `maxZones=2`
+and nonzero hint VM maxima/flags. Translation-only composites may use
+`USE_MY_METRICS`; transforms and point attachments remain unsupported. Long
+`loca` entries are actual byte offsets and may be odd; short offsets still use
+their specified two-byte units. These are necessary properties of the complete
+static Noto references, which are not modified to fit the old validator.
+
+Format-0 names may share bounded storage, include additional valid name IDs
+and Windows language records, and carry Macintosh Roman metadata. Unicode
+names remain validated BMP UTF-16BE, including the required PostScript name.
+Multiple Unicode format-4/12 cmap records, including Windows 3/10 format 12,
+may share identical subtable ranges; partial overlaps are invalid. Macintosh
+format 6 and Unicode variation-selector format 14 data receive structural,
+range and glyph-ID checks but do not drive scalar glyph selection. This does
+not implement variation-sequence selection or shaping. The other `post` and
+OS/2 restrictions above remain in force.
+
+GSUB metadata must use version 1.0 or static version 1.1 without feature
+variations. Preflight bounds script/language and feature/lookup references,
+coverage ranges, glyph IDs, extension offsets and the single, multiple,
+alternate and ligature records read by the pinned backend. Contextual and
+reverse-chaining bodies are not read or applied. Delta-generated targets are
+checked in the OpenType modulo-65536 glyph domain. Paired `vhea`/`vmtx` data
+requires a supported 36-byte header, a positive metric count no larger than
+the glyph count, zero reserved/format fields and the matching compact/full
+table length. The remaining admitted layout tables stay opaque; accepting
+these tables does not enable their typographic features or vertical writing.
+
+The owned-memory model counts parsed font data for its complete lifetime,
+including name and cmap aliases decoded separately and GSUB arrays and maps.
+Loaded-font data stays charged for the Session, and subset normalization has a
+separate scratch reservation. This is a conservative Workflow accounting
+model; callers must also configure the Worker heap independently. The complete
+seven-profile T28 transaction uses a 2 GiB owned-memory budget and a 1 GiB
+Worker heap. Smaller budgets fail before publication when the live model
+cannot fit; the tests retain explicit 32 MiB and 160 MiB failure cases.
+
+The [separately licensed Noto data](../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto/README.md)
+pins complete Sans 2.008, Hebrew 3.000 and full CJK 2.004 Regular static
+instances for SC/TC/JP/KR, with source hashes, fontTools 4.59.2 recipes and OFL
+notices. They are only test/acceptance resources. The product never downloads
+fonts, loads system fonts or instantiates variable fonts implicitly.
+
 ## Selection, mapping, metrics, and reuse
 
 Selection visits input Unicode scalars in source order. For each scalar it
@@ -182,7 +236,8 @@ selected glyph map, not from host state. Requested mappings take priority in
 the generated ToUnicode CMap; PDFBox may also retain source-cmap mappings for
 full fonts or unrequested composite dependencies. T19 writes exact width
 entries for the selected glyphs. Before embedding, the generated
-six-table `head`/`hhea`/`maxp`/`hmtx`/`loca`/`glyf` subset is revalidated,
+`head`/`hhea`/`maxp`/`hmtx`/`loca`/`glyf` subset, plus permitted retained
+hint tables in the static extension, is revalidated,
 its global outline bounds and horizontal extrema are normalized to its retained
 glyphs, and its table and whole-font checksums are repaired and checked.
 
