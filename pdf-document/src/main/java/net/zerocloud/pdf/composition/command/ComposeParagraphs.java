@@ -15,6 +15,7 @@ public final class ComposeParagraphs implements DocumentCommand {
     /** Supported command representation version. */ public static final int VERSION_1 = 1;
     /** Advanced pagination command representation. */ public static final int VERSION_2 = 2;
     /** Bounded table command representation. */ public static final int VERSION_3 = 3;
+    /** Paginated table command representation. */ public static final int VERSION_4 = 4;
     /** Retention of semantic declarations after successful composition; neither mode publishes early. */
     public enum FlushMode {
         /** Retain the current declaration under finite limits for relayout. */ BUFFERED,
@@ -48,6 +49,14 @@ public final class ComposeParagraphs implements DocumentCommand {
     /** Declares a mixed table flow with immediate semantic release and transactional publication. */
     public static ComposeParagraphs version3(ParagraphFlow flow, CompositionLimits limits) {
         return new ComposeParagraphs(VERSION_3, flow, limits, FlushMode.IMMEDIATE);
+    }
+    /** Declares table pagination with buffered semantic retention. */
+    public static ComposeParagraphs version4(ParagraphFlow flow, CompositionLimits limits) {
+        return version4(flow, limits, FlushMode.BUFFERED);
+    }
+    /** Declares table pagination with explicit semantic retention and transactional publication. */
+    public static ComposeParagraphs version4(ParagraphFlow flow, CompositionLimits limits, FlushMode flushMode) {
+        return new ComposeParagraphs(VERSION_4, flow, limits, flushMode);
     }
     /** @return semantic declaration retention policy */ public FlushMode getFlushMode() { return flushMode; }
     /** @return immutable semantic flow */ public ParagraphFlow getFlow() { return flow; }

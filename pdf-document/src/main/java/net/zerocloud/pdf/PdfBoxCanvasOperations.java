@@ -183,8 +183,12 @@ final class PdfBoxCanvasOperations {
                     PdfBoxCanvasOperations::preservationUnsupported,
                     resources);
         }
+        // Composition owns declaration lifetimes. Its painted graphics must not enter
+        // Session caches that would keep original payloads alive after semantic flush.
+        PdfBoxCanvasResourceOperations drawingResources = isolatedPage
+                ? new PdfBoxCanvasResourceOperations(document, valueAdapter, resources) : resourceOperations;
         try (PdfBoxCanvasResourceOperations.Plan plan =
-                resourceOperations.prepare(
+                drawingResources.prepare(
                         effectiveResources,
                         command.getProgram(),
                         command.getResourceLimits().get(),

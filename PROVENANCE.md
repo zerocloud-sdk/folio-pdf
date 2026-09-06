@@ -1511,6 +1511,56 @@ provenance statement required by [CONTRIBUTING.md](CONTRIBUTING.md).
   never a correctness golden. Standards, dependency compatibility and
   Foundation font/platform certification remain open.
 
+## T27 table-pagination implementation record
+
+- Authorship: OpenAI Codex implementing the user's issue-28 execution contract
+  as an uncommitted diff based on
+  `1d1bf4a92eecf42dc370872fe1bcf5b142e42452`. Full verification and separate
+  independent Standards/Spec reviews are complete. The user subsequently
+  authorized committing the reviewed changes, pushing them to GitHub and
+  closing issue #28. Publication uses the repository's configured Git identity
+  and required DCO sign-off. This scoped delivery does not establish Foundation
+  compatibility.
+- References: public GitHub issues 28 and 1, prerequisite issues 26 and 27,
+  including their comments; AGENTS.md, CONTRIBUTING.md, CONTEXT.md,
+  docs/agents, and ADR-0002/0006/0009/0013/0018/0022/0023/0024/0025/0026/0029;
+  the existing project T24/T25/T26 Composition, T19 fonts, Canvas, Workflow,
+  Worker resource/transport and independent acceptance code and contracts.
+  The public [iText 7.2.6 Table API](https://api.itextpdf.com/iText/java/7.2.6/com/itextpdf/layout/element/Table.html)
+  supplies fixed-reference facts about fixed large-table layout, retained
+  table width, repeated headers/footers, flush and complete. Its implementation
+  and output were not consulted.
+- New code and declarations: project-owned versioned pagination and tests;
+  no dependency addition or upgrade, public backend SPI, module restructuring
+  or Migration Facade stub. Java 8 and backend isolation remain constraints.
+- Resources: unchanged Apache-2.0 project-authored T19 FolioPrimary and
+  FolioFallback with SHA-256
+  `e2fbb634c3c0fe78efb449bde4426d10a93aa813596ff5cf3360f02ec97673fb` and
+  `ced760bc126036779fa84ad3da4638733032512457bf599c44d8c455360f75e1`.
+  New input declarations, tests and numeric examples are authored for this
+  Apache-2.0 project. No system font, online font or third-party fixture is
+  introduced. The retained-graphics regression generates its own 512x512
+  grayscale samples and nested unit-square groups in Java; no image asset,
+  encoded third-party resource or external fixture was added.
+- Oracle: docs/table-pagination.md fixes numerical examples and geometry /
+  raster thresholds before paginator implementation. T27TableExpectations
+  independently declares all scalar and border coordinates for nineteen pages.
+  T27TableProducts creates the reference with AddBlankPage, positioned T19
+  text and Canvas rectangles only; that path invokes no paragraph/table layout
+  or incremental table Commands. The nineteen new Apache-2.0 expected PNGs in
+  capabilities/expected were rendered from that reference with pinned PDFium
+  CLI v0.11.2 / chromium-7881 and visually inspected before actual-product
+  comparison. Their SHA-256 values are fixed in the nineteen T27 visual
+  profiles. No actual paginator output generated its own correctness golden.
+  The recorder and public semantic observer extend the project-owned T26
+  evidence pattern; missing text, wrong repetition and a one-point movement
+  are independently authored negative controls. Existing qpdf 12.4.0 and
+  ImageMagick 7.1.2-30 pins and licenses are unchanged.
+- Clean-room statement: no iText source, resources, binary-derived details,
+  non-public implementation details or closed add-on material was accessed,
+  copied, adapted or reverse engineered for T27. Separate standards evidence,
+  dependency compatibility and Foundation font/platform gates remain open.
+
 ## CI cold-font-discovery and Worker-stop record
 
 - Authorship: OpenAI Codex at repository operator MaBaiqiu's direction. The

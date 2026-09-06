@@ -1,0 +1,845 @@
+T27 development receipt — work in progress, no completion/review claim.
+Base: 1d1bf4a92eecf42dc370872fe1bcf5b142e42452
+Date: 2026-09-05
+
+Baseline command:
+./mvnw -B -ntp -pl pdf-document -am -Dtest=TableCompositionWorkflowTest,ParagraphPaginationWorkflowTest,ParagraphCompositionWorkflowTest -Dsurefire.failIfNoSpecifiedTests=false test
+
+Focused T27 command for each Red/Green cycle:
+./mvnw -B -ntp -pl pdf-document -am -Dtest=TablePaginationWorkflowTest -Dsurefire.failIfNoSpecifiedTests=false test
+
+Log: /tmp/t27-baseline.log
+[INFO] Tests run: 42, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 54.15 s -- in net.zerocloud.pdf.consumer.ParagraphCompositionWorkflowTest
+[INFO] Tests run: 64, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 60.02 s -- in net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 65.68 s -- in net.zerocloud.pdf.consumer.TableCompositionWorkflowTest
+[INFO] Tests run: 174, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+Log: /tmp/t27-row-red.log
+  symbol:   method version2(net.zerocloud.pdf.composition.Table.Layout,net.zerocloud.pdf.composition.TableWidth,layout == [...]uto(),net.zerocloud.pdf.composition.TableWidth)
+  symbol:   method version4(net.zerocloud.pdf.composition.FontSelection)
+  symbol:   method version4(net.zerocloud.pdf.composition.ParagraphFlow,net.zerocloud.pdf.composition.CompositionLimits)
+  symbol:   method version4()
+[INFO] BUILD FAILURE
+[ERROR]   symbol:   method version2(net.zerocloud.pdf.composition.Table.Layout,net.zerocloud.pdf.composition.TableWidth,layout == [...]uto(),net.zerocloud.pdf.composition.TableWidth)
+[ERROR]   symbol:   method version4(net.zerocloud.pdf.composition.FontSelection)
+[ERROR]   symbol:   method version4(net.zerocloud.pdf.composition.ParagraphFlow,net.zerocloud.pdf.composition.CompositionLimits)
+[ERROR]   symbol:   method version4()
+
+Log: /tmp/t27-row-behavior-red.log
+[ERROR] Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 0.876 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[ERROR]   TablePaginationWorkflowTest.fixedAndAutomaticTablesFillOrderedAreasBeforeAdvancingToTheNextPage:74->publish:89 » DocumentFailure The finite layout areas cannot satisfy the table geometry.
+[ERROR]   TablePaginationWorkflowTest.fixedAndAutomaticTablesFillOrderedAreasBeforeAdvancingToTheNextPage:74->publish:89 » DocumentFailure The finite layout areas cannot satisfy the table geometry.
+[ERROR] Tests run: 2, Failures: 0, Errors: 2, Skipped: 0
+[INFO] BUILD FAILURE
+
+Log: /tmp/t27-row-green.log
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.256 s -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+Log: /tmp/t27-split-red.log
+[ERROR] Tests run: 4, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 4.697 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[ERROR]   TablePaginationWorkflowTest.anOversizedRowContinuesAtWholeLinesWithoutRepeatingOrDroppingText:93->publish:102 » DocumentFailure The finite layout areas cannot satisfy the table geometry.
+[ERROR]   TablePaginationWorkflowTest.anOversizedRowContinuesAtWholeLinesWithoutRepeatingOrDroppingText:93->publish:102 » DocumentFailure The finite layout areas cannot satisfy the table geometry.
+[ERROR] Tests run: 4, Failures: 0, Errors: 2, Skipped: 0
+[INFO] BUILD FAILURE
+
+Log: /tmp/t27-split-green.log
+[ERROR] /home/ubuntu/IdeaProjects/open-pdf/pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxTableLayout.java:[278,28] variable height is already defined in method layout(net.zerocloud.pdf.PdfBoxTableLayout.Content,net.zerocloud.pdf.PdfBoxParagraphOperations.Area,double,int,net.zerocloud.pdf.PdfBoxTableLayout.Cursor,int,net.zerocloud.pdf.WorkflowResourceContext.OwnedMemoryScope)
+[ERROR] /home/ubuntu/IdeaProjects/open-pdf/pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxTableLayout.java:[325,20] variable minimum is already defined in method layout(net.zerocloud.pdf.PdfBoxTableLayout.Content,net.zerocloud.pdf.PdfBoxParagraphOperations.Area,double,int,net.zerocloud.pdf.PdfBoxTableLayout.Cursor,int,net.zerocloud.pdf.WorkflowResourceContext.OwnedMemoryScope)
+[INFO] BUILD FAILURE
+[ERROR] /home/ubuntu/IdeaProjects/open-pdf/pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxTableLayout.java:[278,28] variable height is already defined in method layout(net.zerocloud.pdf.PdfBoxTableLayout.Content,net.zerocloud.pdf.PdfBoxParagraphOperations.Area,double,int,net.zerocloud.pdf.PdfBoxTableLayout.Cursor,int,net.zerocloud.pdf.WorkflowResourceContext.OwnedMemoryScope)
+[ERROR] /home/ubuntu/IdeaProjects/open-pdf/pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxTableLayout.java:[325,20] variable minimum is already defined in method layout(net.zerocloud.pdf.PdfBoxTableLayout.Content,net.zerocloud.pdf.PdfBoxParagraphOperations.Area,double,int,net.zerocloud.pdf.PdfBoxTableLayout.Cursor,int,net.zerocloud.pdf.WorkflowResourceContext.OwnedMemoryScope)
+
+Log: /tmp/t27-split-green-2.log
+[ERROR] Tests run: 4, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 0.719 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[ERROR]   TablePaginationWorkflowTest.anOversizedRowContinuesAtWholeLinesWithoutRepeatingOrDroppingText:93->publish:102 » DocumentFailure The supported local Worker launcher is unavailable.
+[ERROR]   TablePaginationWorkflowTest.fixedAndAutomaticTablesFillOrderedAreasBeforeAdvancingToTheNextPage:74->publish:102 » DocumentFailure The supported local Worker launcher is unavailable.
+[ERROR] Tests run: 4, Failures: 0, Errors: 2, Skipped: 0
+[INFO] BUILD FAILURE
+
+Log: /tmp/t27-split-green-3.log
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.655 s -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+Log: /tmp/t27-span-red.log
+[ERROR] Tests run: 6, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 6.016 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[ERROR]   TablePaginationWorkflowTest.rowAndColumnSpansContinueWithIndependentFragmentBordersAndReadingOrder:123->publish:135 » DocumentFailure The finite layout areas cannot satisfy the table geometry.
+[ERROR]   TablePaginationWorkflowTest.rowAndColumnSpansContinueWithIndependentFragmentBordersAndReadingOrder:123->publish:135 » DocumentFailure The finite layout areas cannot satisfy the table geometry.
+[ERROR] Tests run: 6, Failures: 0, Errors: 2, Skipped: 0
+[INFO] BUILD FAILURE
+
+Log: /tmp/t27-span-green.log
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.307 s -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+Log: /tmp/t27-keep-red.log
+  symbol:   method keepTogether(boolean)
+[INFO] BUILD FAILURE
+[ERROR]   symbol:   method keepTogether(boolean)
+
+Log: /tmp/t27-keep-green.log
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 10.85 s -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+Log: /tmp/t27-repeat-red.log
+  symbol:   method header(net.zerocloud.pdf.composition.TableRow)
+[INFO] BUILD FAILURE
+[ERROR]   symbol:   method header(net.zerocloud.pdf.composition.TableRow)
+
+Log: /tmp/t27-repeat-green.log
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 15.47 s -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+Log: /tmp/t27-relayout-red.log
+[ERROR] Tests run: 12, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 16.40 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[ERROR]   TablePaginationWorkflowTest.bufferedTableRelayoutIsAtomicAndFlushSealsItsLastSuccessfulPages:190 » DocumentFailure The paragraph flow could not be relaid out safely.
+[ERROR]   TablePaginationWorkflowTest.bufferedTableRelayoutIsAtomicAndFlushSealsItsLastSuccessfulPages:190 » DocumentFailure The paragraph flow could not be relaid out safely.
+[ERROR] Tests run: 12, Failures: 0, Errors: 2, Skipped: 0
+[INFO] BUILD FAILURE
+
+Log: /tmp/t27-relayout-green.log
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 16.89 s -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+Log: /tmp/t27-overflow-red.log
+  symbol:   method overflow(net.zerocloud.pdf.composition.Paragraph.Overflow)
+[INFO] BUILD FAILURE
+[ERROR]   symbol:   method overflow(net.zerocloud.pdf.composition.Paragraph.Overflow)
+
+Log: /tmp/t27-overflow-green.log
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 20.88 s -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+Log: /tmp/t27-tail-fragment-red.log
+[ERROR] Tests run: 16, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 21.94 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[ERROR]   TablePaginationWorkflowTest.aRowFragmentFillsTheSpaceAfterEarlierCompleteRows:248 expected:<A[BB]> but was:<A[]>
+[ERROR]   TablePaginationWorkflowTest.aRowFragmentFillsTheSpaceAfterEarlierCompleteRows:248 expected:<A[BB]> but was:<A[]>
+[ERROR] Tests run: 16, Failures: 2, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+[INFO] Finished at: 2026-09-05T20:50:55+08:00
+
+Log: /tmp/t27-tail-fragment-green.log
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 22.20 s -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-05T20:52:39+08:00
+
+Log: /tmp/t27-no-split-red.log
+  symbol:   method splitRows(boolean)
+[INFO] BUILD FAILURE
+[INFO] Finished at: 2026-09-05T20:53:38+08:00
+[ERROR]   symbol:   method splitRows(boolean)
+
+Log: /tmp/t27-no-split-green.log
+[INFO] Tests run: 18, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 24.95 s -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Tests run: 18, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-05T20:54:50+08:00
+
+Log: /tmp/t27-work-boundary.log
+[INFO] Tests run: 20, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 27.56 s -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Tests run: 20, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-05T20:56:37+08:00
+
+Log: /tmp/t27-focused-pagination.log
+Command: ./mvnw -B -ntp -pl pdf-document -am -Dtest=TablePaginationWorkflowTest,TableCompositionWorkflowTest,ParagraphPaginationWorkflowTest,ParagraphCompositionWorkflowTest -Dsurefire.failIfNoSpecifiedTests=false test
+[INFO] Tests run: 42, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 53.64 s -- in net.zerocloud.pdf.consumer.ParagraphCompositionWorkflowTest
+[INFO] Tests run: 64, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 59.97 s -- in net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 65.76 s -- in net.zerocloud.pdf.consumer.TableCompositionWorkflowTest
+[INFO] Tests run: 20, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 25.73 s -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Tests run: 194, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-05T21:03:26+08:00
+
+Current gate: git diff --check -> exit 0.
+No completion checkboxes marked; independent Standards/Spec review, incremental lifecycle, acceptance profiles, and full gates remain pending.
+
+Incremental lifecycle development, 2026-09-05, Asia/Shanghai.
+
+Log: /tmp/t27-incremental-red.log
+Command: ./mvnw -B -ntp -pl pdf-document -am -Dtest=LargeTableWorkflowTest,TablePaginationWorkflowTest -Dsurefire.failIfNoSpecifiedTests=false test
+  symbol:   class BeginLargeTable
+[INFO] BUILD FAILURE
+[INFO] Finished at: 2026-09-05T21:18:24+08:00
+[ERROR]   symbol:   class BeginLargeTable
+
+Log: /tmp/t27-incremental-green-attempt2.log
+[ERROR] Tests run: 2, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 1.117 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Tests run: 20, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 26.72 s -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[ERROR]   LargeTableWorkflowTest.flushReleasesRowsBeforeAllRowsArriveAndCompleteUsesFinalFooterSpace:75 » DocumentFailure The font source could not be loaded safely.
+[ERROR] Tests run: 22, Failures: 0, Errors: 1, Skipped: 0
+[INFO] BUILD FAILURE
+[INFO] Finished at: 2026-09-05T21:38:13+08:00
+
+Log: /tmp/t27-incremental-green.log
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.514 s -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Tests run: 20, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 25.94 s -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Tests run: 22, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-05T21:39:53+08:00
+
+Log: /tmp/t27-cumulative-red.log
+Command: ./mvnw -B -ntp -pl pdf-document -am -Dtest=LargeTableWorkflowTest -Dsurefire.failIfNoSpecifiedTests=false test
+[ERROR] Tests run: 4, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 6.317 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[ERROR]   LargeTableWorkflowTest.cumulativeDeclarationLimitsSurviveFlushAndRejectTheFirstExtraBatchAtomically:120->lambda$cumulativeDeclarationLimitsSurviveFlushAndRejectTheFirstExtraBatchAtomically$2:131 Cumulative dimension 1 reset after flush
+[ERROR]   LargeTableWorkflowTest.cumulativeDeclarationLimitsSurviveFlushAndRejectTheFirstExtraBatchAtomically:120->lambda$cumulativeDeclarationLimitsSurviveFlushAndRejectTheFirstExtraBatchAtomically$2:131 Cumulative dimension 1 reset after flush
+[ERROR] Tests run: 4, Failures: 2, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+[INFO] Finished at: 2026-09-05T21:41:50+08:00
+
+Log: /tmp/t27-cumulative-green.log
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 11.28 s -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-05T21:43:14+08:00
+
+Log: /tmp/t27-open-span-red.log
+[ERROR] Tests run: 6, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 12.13 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[ERROR]   LargeTableWorkflowTest.incompleteSpanWaitsForLaterRowsAndFlushReleasesTheCompletedSpanGroup:161 » DocumentFailure The table span grid is invalid.
+[ERROR]   LargeTableWorkflowTest.incompleteSpanWaitsForLaterRowsAndFlushReleasesTheCompletedSpanGroup:161 » DocumentFailure The table span grid is invalid.
+[ERROR] Tests run: 6, Failures: 0, Errors: 2, Skipped: 0
+[INFO] BUILD FAILURE
+[INFO] Finished at: 2026-09-05T21:45:26+08:00
+
+Log: /tmp/t27-open-span-green.log
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 12.79 s -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-05T21:46:52+08:00
+
+Log: /tmp/t27-lifecycle-red.log
+[ERROR] Tests run: 8, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 13.56 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[ERROR]   LargeTableWorkflowTest.openTableRejectsInterleavedMutationAndPublicationAndFlushedTableRejectsRelayout:201->lambda$openTableRejectsInterleavedMutationAndPublicationAndFlushedTableRejectsRelayout$6:208 An unrelated mutation must not displace the open table's pages
+[ERROR]   LargeTableWorkflowTest.openTableRejectsInterleavedMutationAndPublicationAndFlushedTableRejectsRelayout:201->lambda$openTableRejectsInterleavedMutationAndPublicationAndFlushedTableRejectsRelayout$6:208 An unrelated mutation must not displace the open table's pages
+[ERROR] Tests run: 8, Failures: 2, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+[INFO] Finished at: 2026-09-05T21:49:39+08:00
+
+Log: /tmp/t27-lifecycle-green.log
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 14.27 s -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-05T21:51:37+08:00
+
+Log: /tmp/t27-fallback-red.log
+[ERROR] Tests run: 10, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 16.01 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[ERROR]   LargeTableWorkflowTest.fallbackWorkIsCumulativeIncludingRepeatedHeadersAndRetainedRows:264 Fallback visits reset between flush and complete
+[ERROR]   LargeTableWorkflowTest.fallbackWorkIsCumulativeIncludingRepeatedHeadersAndRetainedRows:264 Fallback visits reset between flush and complete
+[ERROR] Tests run: 10, Failures: 2, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+[INFO] Finished at: 2026-09-05T21:53:46+08:00
+
+Log: /tmp/t27-fallback-green.log
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 15.68 s -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-05T21:55:40+08:00
+
+Log: /tmp/t27-generated-red.log
+[ERROR] Tests run: 12, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 16.94 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[ERROR]   LargeTableWorkflowTest.generatedRowsRemainBoundedAndContinueInLaterAreasOfTheSamePhysicalPage:290 » DocumentFailure The workflow page-count limit was exceeded.
+[ERROR]   LargeTableWorkflowTest.generatedRowsRemainBoundedAndContinueInLaterAreasOfTheSamePhysicalPage:290 » DocumentFailure The workflow page-count limit was exceeded.
+[ERROR] Tests run: 12, Failures: 0, Errors: 2, Skipped: 0
+[INFO] BUILD FAILURE
+[INFO] Finished at: 2026-09-05T21:58:05+08:00
+
+Log: /tmp/t27-generated-green.log
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 21.46 s -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-05T22:00:12+08:00
+
+12 incremental parameterized cases pass; 125 generated rows retain at most three semantic rows and produce 32 pages under a 32-page Workflow policy. This is modeled owned-state observation, not RSS.
+
+Additional streaming boundary validation.
+
+Log: /tmp/t27-focused-incremental.log
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 21.20 s -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Tests run: 42, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 52.83 s -- in net.zerocloud.pdf.consumer.ParagraphCompositionWorkflowTest
+[INFO] Tests run: 64, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 60.28 s -- in net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 67.03 s -- in net.zerocloud.pdf.consumer.TableCompositionWorkflowTest
+[INFO] Tests run: 20, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 25.89 s -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Tests run: 206, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-05T22:04:43+08:00
+
+Log: /tmp/t27-minimum-fragment-red.log
+[ERROR] Tests run: 14, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 21.59 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[ERROR]   LargeTableWorkflowTest.minimumOnlyRowFragmentRemainsRetainedUntilItsCompleteGroupCanBeReleased:340->lambda$minimumOnlyRowFragmentRemainsRetainedUntilItsCompleteGroupCanBeReleased$10:346 expected:<0> but was:<1>
+[ERROR]   LargeTableWorkflowTest.minimumOnlyRowFragmentRemainsRetainedUntilItsCompleteGroupCanBeReleased:340->lambda$minimumOnlyRowFragmentRemainsRetainedUntilItsCompleteGroupCanBeReleased$10:346 expected:<0> but was:<1>
+[ERROR] Tests run: 14, Failures: 2, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+[INFO] Finished at: 2026-09-05T22:06:48+08:00
+
+Log: /tmp/t27-minimum-fragment-green.log
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 22.82 s -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Tests run: 20, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 25.76 s -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Tests run: 34, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-05T22:09:20+08:00
+
+Log: /tmp/t27-stream-budget-boundaries.log
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 27.03 s -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-05T22:13:49+08:00
+
+Log: /tmp/t27-incremental-save-red.log
+[ERROR] Tests run: 22, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 30.13 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[ERROR]   LargeTableWorkflowTest.largeTableFlushParticipatesInIncrementalPublicationWithoutChangingTheSourcePrefix:490 » DocumentFailure The command is not supported for INCREMENTAL publication.
+[ERROR]   LargeTableWorkflowTest.largeTableFlushParticipatesInIncrementalPublicationWithoutChangingTheSourcePrefix:490 » DocumentFailure The command is not supported for INCREMENTAL publication.
+[ERROR] Tests run: 22, Failures: 0, Errors: 2, Skipped: 0
+[INFO] BUILD FAILURE
+[INFO] Finished at: 2026-09-05T22:17:19+08:00
+
+Log: /tmp/t27-incremental-save-green.log
+[INFO] Tests run: 22, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 31.14 s -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Tests run: 22, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-05T22:20:31+08:00
+
+Log: /tmp/t27-stream-transport-boundary.log
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 36.65 s -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-05T22:24:00+08:00
+
+Log: /tmp/t27-fontless-stream-red.log
+[ERROR] Tests run: 26, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 37.73 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[ERROR]   LargeTableWorkflowTest.fontlessRowsFlushUnderZeroFontAndLineBudgets:554 » DocumentFailure No declared font contains every requested Unicode scalar.
+[ERROR]   LargeTableWorkflowTest.fontlessRowsFlushUnderZeroFontAndLineBudgets:554 » DocumentFailure No declared font contains every requested Unicode scalar.
+[ERROR] Tests run: 26, Failures: 0, Errors: 2, Skipped: 0
+[INFO] BUILD FAILURE
+[INFO] Finished at: 2026-09-05T22:30:43+08:00
+
+Log: /tmp/t27-focused-streaming-final.log
+Command: ./mvnw -B -ntp -pl pdf-document -am -Dtest=LargeTableWorkflowTest,TablePaginationWorkflowTest,TableCompositionWorkflowTest,ParagraphPaginationWorkflowTest,ParagraphCompositionWorkflowTest -Dsurefire.failIfNoSpecifiedTests=false test
+[INFO] Tests run: 26, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 38.09 s -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Tests run: 42, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 53.20 s -- in net.zerocloud.pdf.consumer.ParagraphCompositionWorkflowTest
+[INFO] Tests run: 64, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 60.57 s -- in net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 66.16 s -- in net.zerocloud.pdf.consumer.TableCompositionWorkflowTest
+[INFO] Tests run: 20, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 25.50 s -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Tests run: 220, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-05T22:35:31+08:00
+
+Current focused gate: 220 tests, zero failures/errors/skips. Full Maven/JDK gates, T27 independent acceptance, inventories and clean-context dual-axis review remain pending. No completion checkboxes marked.
+
+Source log: /tmp/t27-acceptance-semantic-red.log
+[ERROR] COMPILATION ERROR :
+[ERROR] /home/ubuntu/IdeaProjects/open-pdf/pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T27TableEvidenceCommandTest.java:[38,42] cannot find symbol
+[ERROR] /home/ubuntu/IdeaProjects/open-pdf/pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T27TableEvidenceCommandTest.java:[39,35] package T27TableSemanticAssertions does not exist
+[ERROR] /home/ubuntu/IdeaProjects/open-pdf/pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T27TableEvidenceCommandTest.java:[39,57] cannot find symbol
+[ERROR] /home/ubuntu/IdeaProjects/open-pdf/pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T27TableEvidenceCommandTest.java:[42,9] cannot find symbol
+[ERROR] /home/ubuntu/IdeaProjects/open-pdf/pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T27TableEvidenceCommandTest.java:[43,35] package T27TableSemanticAssertions does not exist
+[ERROR] /home/ubuntu/IdeaProjects/open-pdf/pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T27TableEvidenceCommandTest.java:[43,65] cannot find symbol
+[ERROR] /home/ubuntu/IdeaProjects/open-pdf/pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T27TableEvidenceCommandTest.java:[65,21] cannot find symbol
+[INFO] BUILD FAILURE
+[INFO] Finished at: 2026-09-05T22:43:01+08:00
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.15.0:testCompile (default-testCompile) on project pdf-acceptance: Compilation failure: Compilation failure:
+[ERROR] /home/ubuntu/IdeaProjects/open-pdf/pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T27TableEvidenceCommandTest.java:[38,42] cannot find symbol
+[ERROR]   symbol:   variable T27TableProducts
+[ERROR]   location: class net.zerocloud.pdf.acceptance.T27TableEvidenceCommandTest
+[ERROR] /home/ubuntu/IdeaProjects/open-pdf/pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T27TableEvidenceCommandTest.java:[39,35] package T27TableSemanticAssertions does not exist
+[ERROR] /home/ubuntu/IdeaProjects/open-pdf/pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T27TableEvidenceCommandTest.java:[39,57] cannot find symbol
+[ERROR]   symbol:   variable T27TableSemanticAssertions
+[ERROR]   location: class net.zerocloud.pdf.acceptance.T27TableEvidenceCommandTest
+[ERROR] /home/ubuntu/IdeaProjects/open-pdf/pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T27TableEvidenceCommandTest.java:[42,9] cannot find symbol
+[ERROR]   symbol:   variable T27TableProducts
+[ERROR]   location: class net.zerocloud.pdf.acceptance.T27TableEvidenceCommandTest
+[ERROR] /home/ubuntu/IdeaProjects/open-pdf/pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T27TableEvidenceCommandTest.java:[43,35] package T27TableSemanticAssertions does not exist
+[ERROR] /home/ubuntu/IdeaProjects/open-pdf/pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T27TableEvidenceCommandTest.java:[43,65] cannot find symbol
+[ERROR]   symbol:   variable T27TableSemanticAssertions
+[ERROR]   location: class net.zerocloud.pdf.acceptance.T27TableEvidenceCommandTest
+[ERROR] /home/ubuntu/IdeaProjects/open-pdf/pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T27TableEvidenceCommandTest.java:[65,21] cannot find symbol
+[ERROR]   symbol:   variable T27TableSemanticAssertions
+[ERROR]   location: class net.zerocloud.pdf.acceptance.T27TableEvidenceCommandTest
+[ERROR] -> [Help 1]
+[ERROR]
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR]
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+[ERROR]
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :pdf-acceptance
+
+Source log: /tmp/t27-acceptance-semantic-green.log
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.584 s -- in net.zerocloud.pdf.acceptance.T27TableEvidenceCommandTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-05T22:51:42+08:00
+
+Source log: /tmp/t27-acceptance-recorder-red.log
+[ERROR] COMPILATION ERROR :
+[ERROR] /home/ubuntu/IdeaProjects/open-pdf/pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T27TableEvidenceCommandTest.java:[83,13] cannot find symbol
+[INFO] BUILD FAILURE
+[INFO] Finished at: 2026-09-05T22:59:07+08:00
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.15.0:testCompile (default-testCompile) on project pdf-acceptance: Compilation failure
+[ERROR] /home/ubuntu/IdeaProjects/open-pdf/pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T27TableEvidenceCommandTest.java:[83,13] cannot find symbol
+[ERROR]   symbol:   variable T27TableEvidenceCommand
+[ERROR]   location: class net.zerocloud.pdf.acceptance.T27TableEvidenceCommandTest
+[ERROR] -> [Help 1]
+[ERROR]
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR]
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+[ERROR]
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :pdf-acceptance
+
+Source log: /tmp/t27-acceptance-recorder-fixtures-pending.log
+[ERROR] Tests run: 2, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 4.160 s <<< FAILURE! -- in net.zerocloud.pdf.acceptance.T27TableEvidenceCommandTest
+[ERROR] net.zerocloud.pdf.acceptance.T27TableEvidenceCommandTest.repeatableRecordsCoverEveryPageAndMissingToolsRemainIndeterminate -- Time elapsed: 0.621 s <<< ERROR!
+[ERROR] Errors:
+[ERROR]   T27TableEvidenceCommandTest.repeatableRecordsCoverEveryPageAndMissingToolsRemainIndeterminate:83 » NoSuchFile /home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T27-table-pagination-page-1-visual.properties
+[ERROR] Tests run: 2, Failures: 0, Errors: 1, Skipped: 0
+[INFO] BUILD FAILURE
+[INFO] Finished at: 2026-09-05T23:02:04+08:00
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.5.4:test (default-test) on project pdf-acceptance:
+[ERROR]
+[ERROR] See /home/ubuntu/IdeaProjects/open-pdf/pdf-acceptance/target/surefire-reports for the individual test results.
+[ERROR] See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR]
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR]
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+[ERROR]
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :pdf-acceptance
+
+Source log: /tmp/t27-acceptance-recorder-green.log
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.708 s -- in net.zerocloud.pdf.acceptance.T26TableEvidenceCommandTest
+T27: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE; standards and compatibility remain indeterminate.
+[ERROR] Tests run: 2, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 3.622 s <<< FAILURE! -- in net.zerocloud.pdf.acceptance.T27TableEvidenceCommandTest
+[ERROR] net.zerocloud.pdf.acceptance.T27TableEvidenceCommandTest.repeatableRecordsCoverEveryPageAndMissingToolsRemainIndeterminate -- Time elapsed: 1.069 s <<< FAILURE!
+[ERROR] Failures:
+[ERROR]   T27TableEvidenceCommandTest.repeatableRecordsCoverEveryPageAndMissingToolsRemainIndeterminate:95
+[ERROR] Tests run: 4, Failures: 1, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+[INFO] Finished at: 2026-09-05T23:07:12+08:00
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.5.4:test (default-test) on project pdf-acceptance: There are test failures.
+[ERROR]
+[ERROR] See /home/ubuntu/IdeaProjects/open-pdf/pdf-acceptance/target/surefire-reports for the individual test results.
+[ERROR] See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR]
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR]
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+[ERROR]
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :pdf-acceptance
+
+Source log: /tmp/t27-acceptance-recorder-green-corrected.log
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.773 s -- in net.zerocloud.pdf.acceptance.T26TableEvidenceCommandTest
+T27: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE; standards and compatibility remain indeterminate.
+T27: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE; standards and compatibility remain indeterminate.
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.576 s -- in net.zerocloud.pdf.acceptance.T27TableEvidenceCommandTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-05T23:15:09+08:00
+
+Source log: /tmp/t27-acceptance-full.log
+T27: syntax=PASS, semantic=PASS, visual=PASS; standards and compatibility remain indeterminate.
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-05T23:21:39+08:00
+
+Source log: /tmp/t27-pagination-lifecycle-coverage.log
+[ERROR] COMPILATION ERROR :
+[ERROR] /home/ubuntu/IdeaProjects/open-pdf/pdf-document/src/test/java/net/zerocloud/pdf/consumer/TablePaginationWorkflowTest.java:[247,96] unreported exception java.lang.Exception; must be caught or declared to be thrown
+[INFO] BUILD FAILURE
+[INFO] Finished at: 2026-09-05T23:22:38+08:00
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.15.0:testCompile (default-testCompile) on project pdf-document: Compilation failure
+[ERROR] /home/ubuntu/IdeaProjects/open-pdf/pdf-document/src/test/java/net/zerocloud/pdf/consumer/TablePaginationWorkflowTest.java:[247,96] unreported exception java.lang.Exception; must be caught or declared to be thrown
+[ERROR] -> [Help 1]
+[ERROR]
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR]
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+[ERROR]
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :pdf-document
+
+Source log: /tmp/t27-pagination-lifecycle-coverage-compiled.log
+[ERROR] Tests run: 22, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 28.92 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[ERROR] net.zerocloud.pdf.consumer.TablePaginationWorkflowTest.tableKeepsBacktrackToASmallerFragmentOrMoveTheCompleteTable[IN_PROCESS] -- Time elapsed: 0.056 s <<< FAILURE!
+[ERROR] net.zerocloud.pdf.consumer.TablePaginationWorkflowTest.tableKeepsBacktrackToASmallerFragmentOrMoveTheCompleteTable[HARDENED_WORKER] -- Time elapsed: 3.152 s <<< FAILURE!
+[ERROR] Failures:
+[ERROR]   TablePaginationWorkflowTest.tableKeepsBacktrackToASmallerFragmentOrMoveTheCompleteTable:160->expectFailure:363 expected:<TABLE_CONSTRAINT_UNSATISFIED> but was:<COMPOSITION_AREA_EXHAUSTED>
+[ERROR]   TablePaginationWorkflowTest.tableKeepsBacktrackToASmallerFragmentOrMoveTheCompleteTable:160->expectFailure:363 expected:<TABLE_CONSTRAINT_UNSATISFIED> but was:<COMPOSITION_AREA_EXHAUSTED>
+[ERROR] Tests run: 22, Failures: 2, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+[INFO] Finished at: 2026-09-05T23:23:39+08:00
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.5.4:test (default-test) on project pdf-document: There are test failures.
+[ERROR]
+[ERROR] See /home/ubuntu/IdeaProjects/open-pdf/pdf-document/target/surefire-reports for the individual test results.
+[ERROR] See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR]
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR]
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+[ERROR]
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :pdf-document
+
+Source log: /tmp/t27-keep-failure-green.log
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 68.10 s -- in net.zerocloud.pdf.consumer.TableCompositionWorkflowTest
+[INFO] Tests run: 22, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 27.48 s -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Tests run: 90, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-05T23:26:56+08:00
+
+Source log: /tmp/t27-width-continuation-coverage.log
+[ERROR] COMPILATION ERROR :
+[ERROR] /home/ubuntu/IdeaProjects/open-pdf/pdf-document/src/test/java/net/zerocloud/pdf/consumer/TablePaginationWorkflowTest.java:[172,59] cannot find symbol
+[INFO] BUILD FAILURE
+[INFO] Finished at: 2026-09-05T23:29:09+08:00
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.15.0:testCompile (default-testCompile) on project pdf-document: Compilation failure
+[ERROR] /home/ubuntu/IdeaProjects/open-pdf/pdf-document/src/test/java/net/zerocloud/pdf/consumer/TablePaginationWorkflowTest.java:[172,59] cannot find symbol
+[ERROR]   symbol:   method percent(int)
+[ERROR]   location: class net.zerocloud.pdf.composition.TableWidth
+[ERROR] -> [Help 1]
+[ERROR]
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR]
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+[ERROR]
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :pdf-document
+
+Source log: /tmp/t27-width-continuation-coverage-compiled.log
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 33.73 s -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-05T23:30:16+08:00
+
+Independent-review P1 correction: retained graphic declaration memory
+
+Method selector without wildcard ran zero parameterized cases; NOT a Red.
+Original log: /tmp/t27-retained-graphics-red.log
+SHA-256: 0f3cd94de4312db09eda91d38c107a275e8db1da66485d9461e341c16961aaf3
+[INFO] Tests run: 0, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.063 s -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Tests run: 0, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-06T10:28:34+08:00
+
+Public Red: full LargeTableWorkflowTest; 28 tests, 2 failures for admitting 16 MiB samples under 8 MiB.
+Original log: /tmp/t27-retained-graphics-red-executed.log
+SHA-256: 130aa8815bf14a958a591c108cb9d4ae3c7a31aaf05a076d71b381317a4906a9
+[ERROR] Tests run: 28, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 40.54 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[ERROR] net.zerocloud.pdf.consumer.LargeTableWorkflowTest.retainedGraphicPayloadsAreChargedBeforeAnotherAppend[IN_PROCESS] -- Time elapsed: 0.092 s <<< FAILURE!
+	at net.zerocloud.pdf.consumer.LargeTableWorkflowTest.retainedGraphicPayloadsAreChargedBeforeAnotherAppend(LargeTableWorkflowTest.java:600)
+[ERROR] net.zerocloud.pdf.consumer.LargeTableWorkflowTest.retainedGraphicPayloadsAreChargedBeforeAnotherAppend[HARDENED_WORKER] -- Time elapsed: 2.007 s <<< FAILURE!
+	at net.zerocloud.pdf.consumer.LargeTableWorkflowTest.retainedGraphicPayloadsAreChargedBeforeAnotherAppend(LargeTableWorkflowTest.java:600)
+[ERROR]   LargeTableWorkflowTest.retainedGraphicPayloadsAreChargedBeforeAnotherAppend:600->lambda$retainedGraphicPayloadsAreChargedBeforeAnotherAppend$25:608 16 MiB of retained image samples cannot fit an 8 MiB owned-memory budget before flush
+[ERROR]   LargeTableWorkflowTest.retainedGraphicPayloadsAreChargedBeforeAnotherAppend:600->lambda$retainedGraphicPayloadsAreChargedBeforeAnotherAppend$25:608 16 MiB of retained image samples cannot fit an 8 MiB owned-memory budget before flush
+[ERROR] Tests run: 28, Failures: 2, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+[INFO] Finished at: 2026-09-06T10:32:36+08:00
+
+Append correction Green: wildcard selector, 2 actual parameterized cases.
+Original log: /tmp/t27-retained-graphics-green.log
+SHA-256: 1d2b8d18ba8b3daa1097babd8c77f30353051374bd94ac49d8a4c8d66f7b59a6
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.339 s -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-06T10:34:36+08:00
+
+Initial repeated-section Red: 2 cases, 1 in-process failure; Worker transport already rejected the large message.
+Original log: /tmp/t27-initial-graphics-red.log
+SHA-256: 795561a0b33e9fc1fea6849df66096fb33c40465f478a47558503bb71b3b08f7
+[ERROR] Tests run: 2, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 3.781 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[ERROR] net.zerocloud.pdf.consumer.LargeTableWorkflowTest.beginChargesGraphicsInBothRepeatedSections[IN_PROCESS] -- Time elapsed: 0.304 s <<< FAILURE!
+	at net.zerocloud.pdf.consumer.LargeTableWorkflowTest.beginChargesGraphicsInBothRepeatedSections(LargeTableWorkflowTest.java:633)
+[ERROR]   LargeTableWorkflowTest.beginChargesGraphicsInBothRepeatedSections:633->lambda$beginChargesGraphicsInBothRepeatedSections$26:637 Begin must charge 16 MiB of repeated-section graphics before retaining them
+[ERROR] Tests run: 2, Failures: 1, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+[INFO] Finished at: 2026-09-06T10:35:48+08:00
+
+Shared retained-graphics admission Green: 4 actual parameterized cases.
+Original log: /tmp/t27-initial-and-retained-graphics-green.log
+SHA-256: d69e2011fa99a2853afdd65f55d5e0bd1fc61d91fe23b98b00f83c2f5f7a5e7e
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.426 s -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-06T10:37:11+08:00
+
+Supplemental exact public-peak boundary coverage initially failed compilation for a missing assertTrue import; not a behavioral Red.
+Original log: /tmp/t27-review-correction-focused.log
+SHA-256: 4c8f18a92df4ab0363229ab1fd0a241a9732b5937951a306b834a197c0045984
+[ERROR] /home/ubuntu/IdeaProjects/open-pdf/pdf-document/src/test/java/net/zerocloud/pdf/consumer/LargeTableWorkflowTest.java:[601,13] cannot find symbol
+[INFO] BUILD FAILURE
+[INFO] Finished at: 2026-09-06T10:38:34+08:00
+[ERROR] /home/ubuntu/IdeaProjects/open-pdf/pdf-document/src/test/java/net/zerocloud/pdf/consumer/LargeTableWorkflowTest.java:[601,13] cannot find symbol
+
+P1 commands (repository root; all use the existing Maven wrapper and dependencies):
+Zero-case selector, not a Red:
+./mvnw -B -ntp -pl pdf-document -am -Dtest=LargeTableWorkflowTest#retainedGraphicPayloadsAreChargedBeforeAnotherAppend -Dsurefire.failIfNoSpecifiedTests=false test
+Actual append Red:
+./mvnw -B -ntp -pl pdf-document -am -Dtest=LargeTableWorkflowTest -Dsurefire.failIfNoSpecifiedTests=false test
+Append Green:
+./mvnw -B -ntp -pl pdf-document -am '-Dtest=LargeTableWorkflowTest#retainedGraphicPayloadsAreChargedBeforeAnotherAppend*' -Dsurefire.failIfNoSpecifiedTests=false test
+Initial-section Red:
+./mvnw -B -ntp -pl pdf-document -am '-Dtest=LargeTableWorkflowTest#beginChargesGraphicsInBothRepeatedSections*' -Dsurefire.failIfNoSpecifiedTests=false test
+Combined graphics Green:
+./mvnw -B -ntp -pl pdf-document -am '-Dtest=LargeTableWorkflowTest#*Graphic*' -Dsurefire.failIfNoSpecifiedTests=false test
+The deterministic IN_PROCESS exact/public-peak and peak-minus-one-byte assertions are supplemental regression coverage; no new production implementation was required for them. HARDENED_WORKER asserts a retained-payload budget independently of timing-sensitive parent/child transport peak overlap.
+
+Remaining P1: Composition cache lifetime. Public seam: incrementalGraphicsReleaseAllowsAStreamLargerThanTheWorkerHeap, both execution profiles.
+Command for each cache Red/Green: ./mvnw -B -ntp -pl pdf-document -am '-Dtest=LargeTableWorkflowTest#incrementalGraphicsReleaseAllowsAStreamLargerThanTheWorkerHeap*' -Dsurefire.failIfNoSpecifiedTests=false test
+
+Initial fixture: two errors, including an unrelated cumulative decompression bound in-process.
+Original log: /tmp/t27-graphic-cache-red.log
+SHA-256: 7ddc35611235b5757bf5ebc490fd013432969f7a1cdd7e743bea2b51feff4645
+[ERROR] Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 5.369 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[ERROR] net.zerocloud.pdf.consumer.LargeTableWorkflowTest.incrementalGraphicsReleaseAllowsAStreamLargerThanTheWorkerHeap[IN_PROCESS] -- Time elapsed: 1.720 s <<< ERROR!
+	at net.zerocloud.pdf.consumer.LargeTableWorkflowTest.incrementalGraphicsReleaseAllowsAStreamLargerThanTheWorkerHeap(LargeTableWorkflowTest.java:693)
+[ERROR] net.zerocloud.pdf.consumer.LargeTableWorkflowTest.incrementalGraphicsReleaseAllowsAStreamLargerThanTheWorkerHeap[HARDENED_WORKER] -- Time elapsed: 3.581 s <<< ERROR!
+	at net.zerocloud.pdf.consumer.LargeTableWorkflowTest.incrementalGraphicsReleaseAllowsAStreamLargerThanTheWorkerHeap(LargeTableWorkflowTest.java:693)
+[ERROR]   LargeTableWorkflowTest.incrementalGraphicsReleaseAllowsAStreamLargerThanTheWorkerHeap:693 » DocumentFailure The Worker could not complete the transaction.
+[ERROR]   LargeTableWorkflowTest.incrementalGraphicsReleaseAllowsAStreamLargerThanTheWorkerHeap:693 » DocumentFailure The workflow decompression limit was exceeded.
+[ERROR] Tests run: 2, Failures: 0, Errors: 2, Skipped: 0
+[INFO] BUILD FAILURE
+[INFO] Finished at: 2026-09-06T10:53:12+08:00
+
+Isolated behavioral Red after allowing256MiB cumulative decompression: Worker terminates under32MiB heap; in-process passes.
+Original log: /tmp/t27-graphic-cache-isolated-red.log
+SHA-256: 096cce13670e61ebfeae9c10d428cc5afdb4365eaffb2fd6fd0f487785f710cb
+[ERROR] Tests run: 2, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 6.328 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[ERROR] net.zerocloud.pdf.consumer.LargeTableWorkflowTest.incrementalGraphicsReleaseAllowsAStreamLargerThanTheWorkerHeap[HARDENED_WORKER] -- Time elapsed: 3.770 s <<< ERROR!
+	at net.zerocloud.pdf.consumer.LargeTableWorkflowTest.incrementalGraphicsReleaseAllowsAStreamLargerThanTheWorkerHeap(LargeTableWorkflowTest.java:693)
+[ERROR]   LargeTableWorkflowTest.incrementalGraphicsReleaseAllowsAStreamLargerThanTheWorkerHeap:693 » DocumentFailure The Worker could not complete the transaction.
+[ERROR] Tests run: 2, Failures: 0, Errors: 1, Skipped: 0
+[INFO] BUILD FAILURE
+[INFO] Finished at: 2026-09-06T10:54:33+08:00
+
+Green with unchanged32MiB Worker heap/8MiB owned budget/128fresh256KiB samples/64pages: both profiles pass after call-scoped Composition caches.
+Original log: /tmp/t27-graphic-cache-green.log
+SHA-256: 04626006c72827b983844dd80c058bf887e0a0e7ebd10255cceda797db5bd22c
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 10.56 s -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-06T10:55:30+08:00
+
+HISTORICAL DELIVERY NARRATIVE (retained before replacing it with the final receipt; pending statements below describe their original development stage)
+# T27 table pagination delivery record
+
+Status: `experimental`
+Capability: `composition.layout.tables`
+Acceptance Profile: `T27-table-pagination`
+Release train: `0.1.0-SNAPSHOT`
+
+Issue: [#28](https://github.com/zerocloud-sdk/folio-pdf/issues/28)
+Parent specification: [#1](https://github.com/zerocloud-sdk/folio-pdf/issues/1)
+Fixed implementation/review base: `1d1bf4a92eecf42dc370872fe1bcf5b142e42452`
+
+Implementation and independent syntax/semantic/visual acceptance are present.
+The initial full verification passed. Independent Standards and Spec reviews
+then found a retained-graphics memory-budget defect; its public Red/Green
+correction is recorded in [the review receipt](T27-code-review.md). Both required parts of that P1 are now independently resolved on source/test
+snapshot `cce6f26c…2447c9`. Final focused validation passes 256 cases; full Maven
+verification passes 922/0/0/3. The final four-JDK matrix is running. No completion
+criterion has been marked complete. The authorized deliverable is a reviewed,
+verified **uncommitted** diff; no commit, push or issue mutation is authorized.
+
+## Baseline and sources
+
+On 2026-09-05 the initial worktree was clean on `main` at the fixed base.
+GitHub showed #26 and #27 closed, and #28 open with no comments. The full issue
+bodies/comments and the parent specification were read along with the
+repository contribution/domain instructions, applicable ADRs, T24/T25/T26
+implementation and acceptance contracts. The public iText 7.2.6 Table API was
+consulted only for large-table fixed-layout, width, flush and completion rules.
+
+Baseline command:
+
+```sh
+./mvnw -B -ntp -pl pdf-document -am -Dtest=TableCompositionWorkflowTest,ParagraphPaginationWorkflowTest,ParagraphCompositionWorkflowTest -Dsurefire.failIfNoSpecifiedTests=false test
+```
+
+Result: BUILD SUCCESS; 174 tests, zero failures/errors/skips (T24 42, T25 64,
+T26 68), both execution profiles. Original log: `/tmp/t27-baseline.log`.
+
+## Development evidence
+
+The authorized test seam is `DocumentWorkflow.execute`, public Commands and
+Queries, reopened published output, Publication Receipts and stable failures.
+Independent acceptance uses the existing repository acceptance entry point and
+public Workflow observers. There are no private-layout unit-test seams.
+
+The [T27 contract](../../docs/table-pagination.md) fixes intended pagination,
+span fragments, repeated header/footer, keep, overflow, relayout, incremental
+retention and independent numerical/raster expectations before implementation.
+
+Focused development command (the named class grows one behavior at a time):
+
+```sh
+./mvnw -B -ntp -pl pdf-document -am -Dtest=TablePaginationWorkflowTest -Dsurefire.failIfNoSpecifiedTests=false test
+```
+
+- Whole-row pagination: compilation Red for missing version factories
+  (`/tmp/t27-row-red.log`); after version/Worker declarations, behavioral Red in
+  both profiles with `TABLE_CONSTRAINT_UNSATISFIED`
+  (`/tmp/t27-row-behavior-red.log`); minimal pagination Green, two parameterized
+  cases covering FIXED and AUTO (`/tmp/t27-row-green.log`).
+- Oversized-row line splitting: behavioral Red in both profiles, then Green
+  after line continuation and explicit Worker class inventory updates.
+- Cross-page rowspan/colspan: behavioral Red in both profiles, then Green
+  including every fragment's hand-declared border strips and text order.
+- Keep, repeated header/footer, relayout and overflow slices each recorded Red
+  before their implementation and Green afterward in both profiles.
+- Filling a partial row after earlier whole rows recorded an observable
+  breakpoint Red (`A` instead of `ABB`) in both profiles, followed by Green.
+- Disabling row splitting recorded a missing-factory Red, then Green for intact
+  movement and an impossible-height failure in both profiles.
+- Independent budget calculation admitted four attempts / 39 table-work units
+  for two A rows in two 18-point areas, and rejected the first excess. The
+  T27-focused suite now reports 20 tests, zero failures/errors/skips.
+- Combined T24/T25/T26/T27 regression: BUILD SUCCESS on 2026-09-05 at 21:03
+  Asia/Shanghai, 194 tests, zero failures/errors/skips. Command:
+
+  ```sh
+  ./mvnw -B -ntp -pl pdf-document -am -Dtest=TablePaginationWorkflowTest,TableCompositionWorkflowTest,ParagraphPaginationWorkflowTest,ParagraphCompositionWorkflowTest -Dsurefire.failIfNoSpecifiedTests=false test
+  ```
+
+  Original log: `/tmp/t27-focused-pagination.log`. This includes all 174
+  original T24/T25/T26 cases. `git diff --check` also passes for the current
+  worktree. Neither result substitutes for full Maven/JDK verification or
+  independent review, which remain pending until implementation is complete.
+
+The [development receipt](artifacts/T27-development.txt) retains commands and
+selected raw Red/Green output. The full original logs remain under `/tmp` during
+development. Full resource, lifecycle and behavior coverage is still pending;
+these initial passing examples do not establish completion.
+
+Incremental slices now pass in both profiles (`LargeTableWorkflowTest`, 12
+parameterized cases; `/tmp/t27-generated-green.log`, 2026-09-05 22:00
+Asia/Shanghai). The first Red was missing public lifecycle declarations. The
+Worker then exposed request-scoped font ownership; begin now freezes the
+selection under owned-memory reservations before that request ends. Subsequent
+behavioral Red/Green cycles covered cumulative declaration counters, unfinished
+row spans, interleaved mutation / incomplete-publication rejection, cumulative
+fallback work, and page identity across repeated flushes.
+
+The generated stream admits 125 body rows over 32 finite pages, two areas per
+page, while retaining at most three semantic body rows. Every intermediate
+flush releases two rows and retains one, before all rows arrive. The first
+fourth retained row is rejected, and a Workflow page policy of exactly 32
+succeeds. Reopened output has the independent expected page text and geometry.
+This demonstrates finite semantic retention and preserves physical page
+identity; it makes no JVM heap or RSS claim. Independent T27 acceptance and the
+full verification/review gates remain pending.
+
+The subsequent streaming boundary set reaches 26 parameterized cases: minimum-
+only row fragments; exact cumulative attempts/work/lines and content/font bytes;
+frozen path/borrowed-stream font ownership; invalid FIXED/AUTO declarations and
+unfinished-span bounds; INCREMENTAL prefix preservation; 2 KiB Worker frames
+carrying 8192 admitted scalars and rejecting the next batch; and fontless rows
+under zero source/scalar/fallback/text-byte/line budgets. Work bounds are the
+independent 39-unit two-row flush plus the 14-unit retained-row completion.
+
+Latest focused command is the earlier combined regression with
+`LargeTableWorkflowTest` included. `/tmp/t27-focused-streaming-final.log` reports
+BUILD SUCCESS at 2026-09-05 22:35 Asia/Shanghai: **220 tests, zero failures,
+errors or skips** (26 incremental, 20 pagination, 174 T24/T25/T26).
+Pinned tools are available: qpdf 12.4.0, PDFium CLI v0.11.2 with the existing
+chromium-7881 pin, and ImageMagick 7.1.2-30. Tool availability alone is not an
+acceptance PASS.
+
+The final combined document/acceptance command includes the five public
+Composition suites plus T26/T27 evidence tests. It completed on 2026-09-05 at
+23:36:14 Asia/Shanghai with **228 tests, zero failures/errors/skips**: 224 in
+pdf-document and four in pdf-acceptance. The exact command and retained
+terminal summary appear in the [verification receipt](artifacts/T27-verification.txt).
+Inventory validate/generate/check also pass with no generated-document drift.
+
+## Independent acceptance
+
+The final coverage extension records a behavioral Red for impossible table
+keep-with-next: both profiles returned COMPOSITION_AREA_EXHAUSTED instead of
+TABLE_CONSTRAINT_UNSATISFIED. Tracking item and intra-item search progress
+corrected that attribution; the T26/T27 focused command then passed 90 tests.
+It preserves ordinary paragraph exhaustion after the table's kept first
+fragment has already fit. Both profiles also explicitly verify failed relayout
+budget consumption, later-mutation/publication sealing and remaining-text
+rewrapping across different-width areas for FIXED and AUTO. The pagination
+suite now has 24 passing cases. Regression cases already supported by the
+implementation are recorded as coverage passes, not fabricated TDD Reds.
+
+The nineteen-page oracle and its thresholds were declared in the English
+contract before the producer was implemented. The reference uses only
+AddBlankPage, positioned text and Canvas rectangles, never table/paragraph
+layout or incremental Commands. The expected rasters were generated from that
+reference, hash-pinned and visually inspected before actual-product comparison.
+The [reference raster receipt](artifacts/T27-reference-raster-receipt.json)
+retains the generation invocations and PNG hashes.
+
+The recorder and semantic observer were developed after failing tests for their
+missing seams. The final T26/T27 acceptance test command reports four tests,
+zero failures/errors/skips. Its negative controls remove the final split-row
+scalar, duplicate a repeated header and translate a page by one point; all
+three invalidate the independent oracle. Repeated recordings agree, and absent
+pinned tools remain indeterminate with explicit tool-unavailable findings.
+
+```sh
+./mvnw -B -ntp -pl pdf-acceptance -am -Dtest=T27TableEvidenceCommandTest,T26TableEvidenceCommandTest -Dsurefire.failIfNoSpecifiedTests=false test
+./scripts/acceptance /tmp/folio-t27-acceptance-GFPwo5tw
+```
+
+The required full recorder completed with BUILD SUCCESS on 2026-09-05 at
+23:21:39 Asia/Shanghai. Only the 140 T27 records/artifacts were retained from
+that fresh temporary directory. The [syntax](T27-table-pagination-syntax.md),
+[semantic](T27-table-pagination-semantic.md) and
+[visual](T27-table-pagination-visual.md) chains all pass against the same
+19-page PDF with ID-neutral SHA-256
+`95e2fe473a70bc8d4204e30647ec32cbeccc9d9c49a939ee5d9a4a4d9dcfab70`.
+Every page has primary AE 0 and exactly zero changed RGB pixels. Secondary
+PDFBox disagreement ranges from 61 to 1384 changed pixels, below the unchanged
+2500 bound. Per-page records retain exact pinned tool versions, all input and
+raster hashes, actual metrics and both difference images. Semantic tolerance
+remains 0.0001 point. No threshold was relaxed.
+
+Syntax success is not standards conformance. Independent standards evidence,
+compatible-status Dependency Gates and Foundation font/platform certification
+remain open; the capability stays experimental.
+
+## Full verification and remaining review gate
+
+`./mvnw -B -ntp verify` completed successfully on the host with 916 tests,
+zero failures/errors and the three existing optional scale-profile skips.
+`./scripts/verify-jdk-matrix.sh` completed successfully on JDK 8, 11, 17 and 21,
+each with the same 916/0/0/3 totals. The final JDK 21 stage finished at
+2026-09-05 16:17:24 UTC (2026-09-06 00:17:24 Asia/Shanghai). The full command's
+exit status, source/test tree identity, image versions/identities, per-JDK
+counts and terminal summaries are retained in the
+[verification receipt](artifacts/T27-verification.txt).
+
+Separate clean-context Standards and Spec reviews of
+`git diff 1d1bf4a92eecf42dc370872fe1bcf5b142e42452` plus all untracked delivery
+files remain required. No completion checkbox may be marked before those
+reviews, correction of required findings and the final delivery audit.

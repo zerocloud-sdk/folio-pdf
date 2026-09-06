@@ -42,6 +42,7 @@ final class PdfBoxDocumentSession implements DocumentSession {
     private final PdfBoxPositionedTextOperations positionedUnicodeTextOperations;
     private final PdfBoxPageOperations pageOperations;
     private final PdfBoxParagraphOperations paragraphOperations;
+    private final PdfBoxLargeTableOperations largeTableOperations;
     private final SaveMode saveMode;
     private final PdfBoxSignaturePolicy signaturePolicy;
     private final PdfVersionInfo versionInfo;
@@ -118,6 +119,8 @@ final class PdfBoxDocumentSession implements DocumentSession {
                 resources);
         this.paragraphOperations = new PdfBoxParagraphOperations(
                 positionedUnicodeTextOperations, canvasOperations, pageOperations, resources);
+        this.largeTableOperations = new PdfBoxLargeTableOperations(
+                paragraphOperations, positionedUnicodeTextOperations, pageOperations, resources);
         this.saveMode = Objects.requireNonNull(saveMode, "saveMode");
         this.signaturePolicy = Objects.requireNonNull(
                 signaturePolicy,
@@ -135,6 +138,7 @@ final class PdfBoxDocumentSession implements DocumentSession {
         Objects.requireNonNull(command, "command");
         try {
             resources.checkpoint();
+            largeTableOperations.requireCommand(command);
             executeChecked(command);
             if (!(command instanceof ComposeParagraphs) && !(command instanceof RelayoutParagraphs)
                     && !(command instanceof FlushParagraphs)) { paragraphOperations.flush(); }
@@ -274,6 +278,14 @@ final class PdfBoxDocumentSession implements DocumentSession {
             return;
         }
 
+        if (PdfBoxLargeTableOperations.supports(command)) {
+            PdfBoxParagraphOperations.requirePermission(securityInfo, PdfBoxTableLayout.CAPABILITY_ID);
+            outcomeCapabilityId = PdfBoxTableLayout.CAPABILITY_ID;
+            largeTableOperations.execute(command);
+            mutationOccurred = true;
+            return;
+        }
+
         if (command instanceof ComposeParagraphs) {
             PdfBoxParagraphOperations.requirePermission(securityInfo,
                     PdfBoxParagraphOperations.capability((ComposeParagraphs) command));
@@ -284,8 +296,8 @@ final class PdfBoxDocumentSession implements DocumentSession {
         }
 
         if (command instanceof RelayoutParagraphs || command instanceof FlushParagraphs) {
-            PdfBoxParagraphOperations.requirePermission(securityInfo, PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID);
-            outcomeCapabilityId = PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID;
+            PdfBoxParagraphOperations.requirePermission(securityInfo, paragraphOperations.bufferedCapability());
+            outcomeCapabilityId = paragraphOperations.bufferedCapability();
             if (command instanceof RelayoutParagraphs) { paragraphOperations.relayout((RelayoutParagraphs) command); }
             else { paragraphOperations.flush(); }
             mutationOccurred = true;
@@ -630,6 +642,8 @@ final class PdfBoxDocumentSession implements DocumentSession {
         return mutationOccurred;
     }
 
+    void requireCompleteComposition() throws DocumentFailure { largeTableOperations.requireComplete(); }
+
     @Override
     public <R> R query(DocumentQuery<R> query) throws DocumentFailure {
         requireActiveOwner();
@@ -651,6 +665,10 @@ final class PdfBoxDocumentSession implements DocumentSession {
 
     private <R> R evaluate(DocumentQuery<R> query) throws DocumentFailure {
         positionedUnicodeTextOperations.finalizeFonts();
+
+        if (query instanceof net.zerocloud.pdf.composition.query.InspectLargeTable) {
+            return queryResult(largeTableOperations.state());
+        }
 
         if (query instanceof net.zerocloud.pdf.query.RenderPage) {
             PdfBoxPermissionPolicy.requireExtraction(securityInfo);
@@ -790,6 +808,7 @@ final class PdfBoxDocumentSession implements DocumentSession {
 
     void invalidate() {
         paragraphOperations.flush();
+        largeTableOperations.close();
         resources.expireRenderedPages();
         active = false;
     }

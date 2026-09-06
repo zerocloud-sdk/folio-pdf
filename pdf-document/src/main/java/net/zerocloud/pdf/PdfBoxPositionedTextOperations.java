@@ -86,6 +86,11 @@ final class PdfBoxPositionedTextOperations {
     /** Shares T19 staging, selection, widths and mapping checks with paragraph layout. */
     PreparedText prepareLayoutText(String text, FontSelection selection, FontLimits limits)
             throws DocumentFailure {
+        return prepareLayoutText(text, selection, limits, new long[] {0});
+    }
+
+    PreparedText prepareLayoutText(String text, FontSelection selection, FontLimits limits, long[] fallbackChecks)
+            throws DocumentFailure {
         if (text.isEmpty()) {
             return new PreparedText(Collections.<SourceProgram>emptyList(),
                     Collections.<SelectedGlyph>emptyList());
@@ -94,12 +99,36 @@ final class PdfBoxPositionedTextOperations {
                 text, selection, 1, TextRenderingMode.FILL,
                 CanvasMatrix.of(1, 0, 0, 1, 0, 0));
         List<Integer> codePoints = validateText(declaration, limits);
-        return prepareText(codePoints, selection, limits);
+        return prepareText(codePoints, selection, limits, fallbackChecks);
+    }
+
+    /** Freezes request-scoped Worker sources while the begin command still owns their transport. */
+    FontSelection freezeLayoutSelection(FontSelection selection, FontLimits limits,
+            WorkflowResourceContext.OwnedMemoryScope memory) throws DocumentFailure {
+        List<FontSource> sources = selection.getKind() == FontSelection.Kind.EXPLICIT
+                ? selection.getSources() : referenceFonts;
+        if (sources.size() > limits.getMaximumFontSources()) { throw limitFailure(); }
+        if (sources.isEmpty()) { return FontSelection.referenceFontSet(); }
+        List<FontSource> frozen = new ArrayList<FontSource>();
+        long bytes = 0;
+        for (FontSource source : sources) {
+            try (StagedFontBytes staged = stage(source, limits.getMaximumSourceBytes() - bytes)) {
+                bytes += staged.bytes.length;
+                memory.retain(staged.bytes.length);
+                frozen.add(FontSource.bytes(staged.bytes));
+            }
+        }
+        return FontSelection.explicit(frozen.toArray(new FontSource[frozen.size()]));
     }
 
     /** Owns the shared T19 selection and source lifetime for both drawing paths. */
     private PreparedText prepareText(List<Integer> codePoints, FontSelection selection, FontLimits limits)
             throws DocumentFailure {
+        return prepareText(codePoints, selection, limits, new long[] {0});
+    }
+
+    private PreparedText prepareText(List<Integer> codePoints, FontSelection selection, FontLimits limits,
+            long[] fallbackChecks) throws DocumentFailure {
         List<FontSource> sources = selection.getKind() == FontSelection.Kind.EXPLICIT
                 ? selection.getSources() : referenceFonts;
         if (sources.size() > limits.getMaximumFontSources()) {
@@ -109,7 +138,7 @@ final class PdfBoxPositionedTextOperations {
         List<SourceProgram> programs = stageAndParse(sources, codePoints, limits);
         boolean complete = false;
         try {
-            List<SelectedGlyph> selected = select(programs, codePoints, limits);
+            List<SelectedGlyph> selected = select(programs, codePoints, limits, fallbackChecks);
             validateMappings(selected);
             validatePublicationVersion(selected);
             preflightSubsets(programs, selected);
@@ -864,19 +893,18 @@ final class PdfBoxPositionedTextOperations {
     private List<SelectedGlyph> select(
             List<SourceProgram> programs,
             List<Integer> codePoints,
-            FontLimits limits) throws DocumentFailure {
+            FontLimits limits, long[] checks) throws DocumentFailure {
         List<SelectedGlyph> selected =
                 new ArrayList<SelectedGlyph>(codePoints.size());
-        long checks = 0L;
         for (Integer codePoint : codePoints) {
             resources.checkpoint();
             SelectedGlyph match = null;
             for (SourceProgram program : programs) {
                 resources.checkpoint();
-                if (checks >= limits.getMaximumFallbackChecks()) {
+                if (checks[0] >= limits.getMaximumFallbackChecks()) {
                     throw limitFailure();
                 }
-                checks++;
+                checks[0]++;
                 GlyphMetric glyph = program.parsed.glyphs.get(codePoint);
                 if (glyph != null && glyph.glyphId != 0) {
                     match = new SelectedGlyph(

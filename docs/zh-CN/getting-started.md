@@ -240,3 +240,64 @@ keep 和增量大表 flushing 属于后续 #28。
 
 两种执行模式使用相同声明与公共行为测试。当前仍为 experimental，独立 standards
 验证、依赖兼容性与 Foundation 字体/平台认证尚未完成；T26 不表示完整表格能力已认证。
+
+## 表格分页扩展（T27，experimental）
+
+T27 使用 `Table.version2`，配合 `ParagraphFlow.version4`、
+`ComposeParagraphs.version4` 和 `CompositionLimits.version4` 显式启用分页。
+已有 version-3 整表布局仍可继续使用；不能在旧版本流中混入新版本表格。
+版本 4 的限制包含 tableLimits、maximumLayoutAttempts 和 maximumRelayouts。
+
+新表格按显式 Layout Area 的顺序跨区域、跨页排版，FIXED/AUTO 列宽在当前
+区域重新求解。行可在完整文本行之间拆分；每个续接单元格片段重新应用内边距和
+内部边框。rowspan/colspan 保留其剩余跨度，已经输出的正文不会在续页重复。
+使用 `splitRows(false)` 可要求整行放置。页声明用尽时会明确失败，不自动补页。
+
+`header(TableRow)` 和 `footer(TableRow)` 分别添加重复表头、表尾。
+它们使用相同的列声明，各自必须是完整网格，跨度不能跨越表头、正文或表尾。
+每个正文片段依次输出表头、正文、表尾；表尾紧接正文。
+`skipFirstHeader(true)` 只省略首片段表头，`skipLastFooter(true)` 只省略
+末片段表尾，省下的空间参与布局计算。重复输出的文本行同样消耗行数预算。
+
+`keepTogether(true)` 要求整表放入一个区域；`keepWithNext(true)` 把末片段
+与下一个流元素绑定。约束无法满足时返回 `TABLE_CONSTRAINT_UNSATISFIED`。
+`overflow(Paragraph.Overflow.WRAP / REJECT / VISIBLE)` 控制单元格的水平溢出：
+按字符兜底换行、拒绝拆开过长单词，或完整绘制超出内容框的单词/图形。
+三种模式都不允许垂直裁掉内容；超高原子图形必须移到可容纳它的区域，否则失败。
+
+版本 4 默认 BUFFERED，也可显式传入 `ComposeParagraphs.FlushMode.IMMEDIATE`。
+`RelayoutParagraphs.version1(pages...)` 用新页面声明替换保留布局；失败时保留
+上一次成功结果，并消耗一次重排预算。`FlushParagraphs` 释放声明后禁止重排；
+flush 不会提前发布文件。所有输出仍由 Document Workflow 成功结束后统一进入
+既有发布流程。
+
+增量大表使用 `BeginLargeTable.version1(flow, limits, maximumRetainedRows)`，
+其中版本 4 的 flow 只包含一张尚无正文行的版本 2 FIXED 表和有限页面声明。
+AUTO 表格布局、AUTO 或缺失表宽不适用。begin 固定表头、表尾、列宽和字体快照；
+随后用 `AppendTableRows.version1(rows...)` 追加正文。
+
+`FlushTable.version1()` 输出已确定的片段并释放完整行跨度组；暂留最后一个
+未确定片段和未完成的 rowspan。`InspectLargeTable.version1()` 返回累计接收、
+当前保留、已完全释放的正文行数。保留行数上限和 Workflow owned-memory 预算
+在接收新批次前生效；它们不表示 JVM heap 或 RSS。行数、单元格、网格槽位、
+inline、字符以及布局和 fallback 工作量使用累计预算，flush 不会重置。
+
+保留内存包含嵌套图形程序、图片字节、显式/软蒙版、ICC 与颜色空间数组、
+字形数据和固定元数据；接收前只读取长度，不复制载荷或打开资源。同一声明
+的重复引用按保守估算分别计费。初始表头/表尾保留到 complete，正文图形预算
+随保留行一起释放；临时布局和 Worker 传输还会占用重叠预算。超出 Workflow
+内存预算返回 `MEMORY_LIMIT_EXCEEDED`，既有目标保持原样，发布为 `NOT_ATTEMPTED`。
+每个 Composition 图形只在单次绘制期间保留声明缓存，递归绘制内部仍可复用资源；
+不同摆放位置和重复表头/表尾可分别生成 PDF 资源，并受累计对象/存储预算约束。
+输出页面持有 PDF 资源，原始图形声明随对应表格状态释放。
+
+最后必须调用 `CompleteTable.version1()`，完成末片段并处理最终表尾省略。
+开放中的表格拒绝无关修改及 `RelayoutParagraphs`；可重排的表格流应使用前述
+BUFFERED `ComposeParagraphs.version4`。遗漏 complete 会使 Workflow 失败，
+保留既有目标，并返回 `NOT_ATTEMPTED`；flush 始终不会提前发布。
+
+T27 的固定字体 qpdf、独立语义与 19 页 PDFium/ImageMagick 验收链均通过，
+当前仍为 experimental；独立 standards、依赖兼容性与 Foundation 字体/平台
+认证尚未完成。完整规则与固定数值样例见
+[英文 T27 契约](../table-pagination.md)，完整验证与独立代码评审结果见
+[T27 记录](../../capabilities/evidence/T27-table-pagination.md)。

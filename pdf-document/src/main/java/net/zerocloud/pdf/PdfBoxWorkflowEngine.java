@@ -344,6 +344,7 @@ final class PdfBoxWorkflowEngine {
             R result;
             try {
                 result = context.work.perform(session);
+                session.requireCompleteComposition();
             } catch (DocumentFailure workFailure) {
                 context.resources.rethrowTerminalFailure();
                 throw failure(

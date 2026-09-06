@@ -297,7 +297,7 @@ JDK compilers while rejecting any missing or additional class entry.
 
 | Artifact | Inventory resource | Entries | Inventory SHA-256 |
 | --- | --- | ---: | --- |
-| `pdf-document` | `META-INF/folio-pdf/document-worker-classes` | 601 | `6755b30eae00e6c0c4ee773568ef85540aa2ba96b342499f98f5040553ed6d27` |
+| `pdf-document` | `META-INF/folio-pdf/document-worker-classes` | 667 | `dc63db72cf1d338b5c3aebafdba32b941ba57fcb1fef3bb8d2aff8964d24c649` |
 | `pdf-provider-contract` | `META-INF/folio-pdf/provider-contract-worker-classes` | 20 | `c7a7bb193dcfa656ba13af311ce2d7654a5aaac962b8804481a77d14013a25b6` |
 
 Every third-party entry must be a regular JAR whose complete bytes have the

@@ -46,6 +46,7 @@ final class PdfBoxIncrementalCommandPolicy {
                 || command instanceof RelayoutParagraphs
                 || command instanceof FlushParagraphs
                 || command instanceof ComposeParagraphs
+                || PdfBoxLargeTableOperations.supports(command)
                 || command instanceof DocumentPatch;
     }
 }

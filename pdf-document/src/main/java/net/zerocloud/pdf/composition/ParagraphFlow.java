@@ -16,6 +16,7 @@ public final class ParagraphFlow {
     /** Supported representation version. */ public static final int VERSION_1 = 1;
     /** Advanced paragraph flow representation. */ public static final int VERSION_2 = 2;
     /** Bounded table flow representation. */ public static final int VERSION_3 = 3;
+    /** Paginated table flow representation. */ public static final int VERSION_4 = 4;
     private final int version;
     private final FontSelection fonts;
     private final List<LayoutPage> pages;
@@ -35,6 +36,8 @@ public final class ParagraphFlow {
     public static Builder version2(FontSelection fonts) { return new Builder(VERSION_2, fonts); }
     /** Begins a flow admitting paragraphs, bounded tables and area breaks. */
     public static Builder version3(FontSelection fonts) { return new Builder(VERSION_3, fonts); }
+    /** Begins a flow admitting paginated tables. */
+    public static Builder version4(FontSelection fonts) { return new Builder(VERSION_4, fonts); }
     /** @return ordered font selection */ public FontSelection getFonts() { return fonts; }
     /** @return immutable page declarations */ public List<LayoutPage> getPages() { return pages; }
     /** @return immutable flow sequence */ public List<Item> getItems() { return items; }
@@ -68,7 +71,7 @@ public final class ParagraphFlow {
             items.add(new Item(Objects.requireNonNull(paragraph, "paragraph"), null));
             return this;
         }
-        /** Appends a bounded table; only version 3 admits it at execution. @return this builder */
+        /** Appends a bounded table; version 3 or later admits it at execution. @return this builder */
         public Builder table(Table table) { items.add(new Item(null, Objects.requireNonNull(table, "table"))); return this; }
         /** Advances to the next declared area, even if the current area is empty. @return this builder */
         public Builder areaBreak() { items.add(new Item(null, null)); return this; }

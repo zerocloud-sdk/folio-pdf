@@ -28,6 +28,11 @@ import net.zerocloud.pdf.composition.command.DrawPositionedUnicodeText;
 import net.zerocloud.pdf.composition.command.ComposeParagraphs;
 import net.zerocloud.pdf.composition.command.RelayoutParagraphs;
 import net.zerocloud.pdf.composition.command.FlushParagraphs;
+import net.zerocloud.pdf.composition.command.BeginLargeTable;
+import net.zerocloud.pdf.composition.command.AppendTableRows;
+import net.zerocloud.pdf.composition.command.FlushTable;
+import net.zerocloud.pdf.composition.command.CompleteTable;
+import net.zerocloud.pdf.composition.TableRow;
 
 /** Explicit versioned whitelist for every library-owned Document Command. */
 final class WorkerCommandCodec {
@@ -55,6 +60,10 @@ final class WorkerCommandCodec {
     private static final int COMPOSE_PARAGRAPHS = 19;
     private static final int RELAYOUT_PARAGRAPHS = 20;
     private static final int FLUSH_PARAGRAPHS = 21;
+    private static final int BEGIN_LARGE_TABLE = 22;
+    private static final int APPEND_TABLE_ROWS = 23;
+    private static final int FLUSH_TABLE = 24;
+    private static final int COMPLETE_TABLE = 25;
 
     static final int PREFLIGHT_UNKNOWN = 0;
     static final int PREFLIGHT_ASSEMBLY = 1;
@@ -360,7 +369,8 @@ final class WorkerCommandCodec {
     }
 
     private static int preflightCategory(DocumentCommand command) {
-        if (command instanceof ComposeParagraphs && ((ComposeParagraphs) command).getVersion() == 3) { return PREFLIGHT_TABLES; }
+        if (PdfBoxLargeTableOperations.supports(command)
+                || (command instanceof ComposeParagraphs && ((ComposeParagraphs) command).getVersion() >= 3)) { return PREFLIGHT_TABLES; }
         if (command instanceof RelayoutParagraphs || command instanceof FlushParagraphs
                 || (command instanceof ComposeParagraphs && ((ComposeParagraphs) command).getVersion() == 2)) {
             return PREFLIGHT_PAGINATION;
@@ -733,6 +743,28 @@ final class WorkerCommandCodec {
                     fontSources);
             return;
         }
+        if (command instanceof BeginLargeTable) {
+            BeginLargeTable begin = (BeginLargeTable) command;
+            try { PdfBoxLargeTableOperations.validateBegin(begin, output.resources()); }
+            catch (DocumentFailure failure) {
+                throw PdfBoxParagraphOperations.compositionFailure(failure, PdfBoxTableLayout.CAPABILITY_ID);
+            }
+            output.writeInt(BEGIN_LARGE_TABLE); output.writeInt(begin.getVersion());
+            output.writeInt(begin.getMaximumRetainedRows());
+            WorkerCompositionCodec.writeParagraphs(output, ComposeParagraphs.version4(begin.getFlow(), begin.getLimits()),
+                    references, fontSources);
+            return;
+        }
+        if (command instanceof AppendTableRows) {
+            output.writeInt(APPEND_TABLE_ROWS); output.writeInt(((AppendTableRows) command).getVersion());
+            WorkerCompositionCodec.writeTableRows(output, ((AppendTableRows) command).getRows(), references);
+            return;
+        }
+        if (command instanceof FlushTable || command instanceof CompleteTable) {
+            output.writeInt(command instanceof FlushTable ? FLUSH_TABLE : COMPLETE_TABLE);
+            output.writeInt(1);
+            return;
+        }
         if (command instanceof RelayoutParagraphs) {
             output.writeInt(RELAYOUT_PARAGRAPHS);
             output.writeInt(((RelayoutParagraphs) command).getVersion());
@@ -810,6 +842,21 @@ final class WorkerCommandCodec {
                 return WorkerCompositionCodec.readDrawCanvas(input, references);
             case COMPOSE_PARAGRAPHS:
                 return WorkerCompositionCodec.readParagraphs(input, references, remoteFonts);
+            case BEGIN_LARGE_TABLE:
+                requireVersion(input.readInt(), BeginLargeTable.VERSION_1);
+                int maximumRetainedRows = input.readInt();
+                ComposeParagraphs large = WorkerCompositionCodec.readParagraphs(input, references, remoteFonts);
+                return BeginLargeTable.version1(large.getFlow(), large.getLimits(), maximumRetainedRows);
+            case APPEND_TABLE_ROWS:
+                requireVersion(input.readInt(), AppendTableRows.VERSION_1);
+                List<TableRow> rows = WorkerCompositionCodec.readTableRows(input, references);
+                return AppendTableRows.version1(rows.toArray(new TableRow[rows.size()]));
+            case FLUSH_TABLE:
+                requireVersion(input.readInt(), FlushTable.VERSION_1);
+                return FlushTable.version1();
+            case COMPLETE_TABLE:
+                requireVersion(input.readInt(), CompleteTable.VERSION_1);
+                return CompleteTable.version1();
             case RELAYOUT_PARAGRAPHS:
                 requireVersion(input.readInt(), RelayoutParagraphs.VERSION_1);
                 return RelayoutParagraphs.version1(WorkerCompositionCodec.readLayoutPages(input));

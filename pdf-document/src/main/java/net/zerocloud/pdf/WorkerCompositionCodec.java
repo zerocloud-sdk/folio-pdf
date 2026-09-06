@@ -142,7 +142,7 @@ final class WorkerCompositionCodec {
             WorkerReferenceRegistry references, WorkerFontSourceCache fonts)
             throws IOException, DocumentFailure {
         output.writeInt(command.getVersion());
-        if (command.getVersion() == ComposeParagraphs.VERSION_2) { output.writeString(command.getFlushMode().name()); }
+        if ((command.getVersion() == ComposeParagraphs.VERSION_2 || command.getVersion() == ComposeParagraphs.VERSION_4)) { output.writeString(command.getFlushMode().name()); }
         CompositionLimits limits = command.getLimits();
         output.writeInt(limits.getVersion());
         output.writeInt(limits.getMaximumPages());
@@ -157,8 +157,9 @@ final class WorkerCompositionCodec {
             output.writeInt(limits.getMaximumLayoutAttempts());
             output.writeInt(limits.getMaximumRelayouts());
         }
-        if (limits.getVersion() == CompositionLimits.VERSION_3) {
+        if (limits.getVersion() >= CompositionLimits.VERSION_3) {
             output.writeInt(limits.getMaximumLayoutAttempts());
+            if (limits.getVersion() == CompositionLimits.VERSION_4) { output.writeInt(limits.getMaximumRelayouts()); }
             TableLimits table = limits.getTableLimits();
             output.writeInt(table.getVersion());
             output.writeInt(table.getMaximumTables());
@@ -222,18 +223,19 @@ final class WorkerCompositionCodec {
     static ComposeParagraphs readParagraphs(WorkerCodecIO.Input input,
             WorkerReferenceRegistry references, RemoteFontSource fonts) throws DocumentFailure {
         int version = flowVersion(input);
-        ComposeParagraphs.FlushMode flush = version == 2 ? WorkerCommandCodec.enumValue(
+        ComposeParagraphs.FlushMode flush = version == 2 || version == 4 ? WorkerCommandCodec.enumValue(
                 ComposeParagraphs.FlushMode.class, input.readString(), "Paragraph flush mode")
                 : ComposeParagraphs.FlushMode.IMMEDIATE;
         int limitVersion = flowVersion(input);
-        CompositionLimits.Builder bounds = limitVersion == 3 ? CompositionLimits.version3() : limitVersion == 2 ? CompositionLimits.version2() : CompositionLimits.builder();
+        CompositionLimits.Builder bounds = limitVersion == 4 ? CompositionLimits.version4() : limitVersion == 3 ? CompositionLimits.version3() : limitVersion == 2 ? CompositionLimits.version2() : CompositionLimits.builder();
         bounds.maximumPages(input.readInt()).maximumAreas(input.readInt())
                 .maximumFlowItems(input.readInt()).maximumInlines(input.readInt())
                 .maximumLines(input.readInt()).maximumGeneratedContentBytes(input.readLong())
                 .fontLimits(readFontLimits(input)).graphicLimits(readResourceLimits(input));
         if (limitVersion == 2) { bounds.maximumLayoutAttempts(input.readInt()).maximumRelayouts(input.readInt()); }
-        if (limitVersion == 3) {
+        if (limitVersion >= 3) {
             bounds.maximumLayoutAttempts(input.readInt());
+            if (limitVersion == 4) { bounds.maximumRelayouts(input.readInt()); }
             WorkerCommandCodec.requireVersion(input.readInt(), TableLimits.VERSION_1);
             bounds.tableLimits(TableLimits.builder().maximumTables(input.readInt()).maximumRows(input.readInt())
                     .maximumColumns(input.readInt()).maximumCells(input.readInt())
@@ -242,7 +244,7 @@ final class WorkerCompositionCodec {
         CompositionLimits limits = bounds.build();
         int flowVersion = flowVersion(input);
         FontSelection selection = readFontSelection(input, fonts);
-        ParagraphFlow.Builder flow = flowVersion == 3 ? ParagraphFlow.version3(selection) : flowVersion == 2 ? ParagraphFlow.version2(selection) : ParagraphFlow.version1(selection);
+        ParagraphFlow.Builder flow = flowVersion == 4 ? ParagraphFlow.version4(selection) : flowVersion == 3 ? ParagraphFlow.version3(selection) : flowVersion == 2 ? ParagraphFlow.version2(selection) : ParagraphFlow.version1(selection);
         for (LayoutPage page : readLayoutPages(input)) { flow.page(page); }
         int itemCount = WorkerCommandCodec.readCount(input, "Paragraph Flow Item");
         for (int index = 0; index < itemCount; index++) {
@@ -255,7 +257,7 @@ final class WorkerCompositionCodec {
             if (kind == ParagraphFlow.Item.Kind.TABLE) { flow.table(readTable(input, references)); }
             else { flow.paragraph(readParagraph(input, references)); }
         }
-        return version == 3 ? ComposeParagraphs.version3(flow.build(), limits) : version == 2 ? ComposeParagraphs.version2(flow.build(), limits, flush)
+        return version == 4 ? ComposeParagraphs.version4(flow.build(), limits, flush) : version == 3 ? ComposeParagraphs.version3(flow.build(), limits) : version == 2 ? ComposeParagraphs.version2(flow.build(), limits, flush)
                 : ComposeParagraphs.version1(flow.build(), limits);
     }
 
@@ -299,7 +301,7 @@ final class WorkerCompositionCodec {
 
     private static int flowVersion(WorkerCodecIO.Input input) throws DocumentFailure {
         int version = input.readInt();
-        WorkerCommandCodec.requireVersion(version, version == 3 ? 3 : version == 2 ? 2 : 1);
+        WorkerCommandCodec.requireVersion(version, version == 4 ? 4 : version == 3 ? 3 : version == 2 ? 2 : 1);
         return version;
     }
 
@@ -310,8 +312,21 @@ final class WorkerCompositionCodec {
         writeTableWidth(output, table.getWidth());
         output.writeInt(table.getColumns().size());
         for (TableWidth column : table.getColumns()) { writeTableWidth(output, column); }
-        output.writeInt(table.getRows().size());
-        for (TableRow row : table.getRows()) {
+        if (table.getVersion() == Table.VERSION_2) {
+            output.writeBoolean(table.isKeepTogether()); output.writeBoolean(table.isKeepWithNext());
+            output.writeBoolean(table.isSkipFirstHeader()); output.writeBoolean(table.isSkipLastFooter());
+            output.writeString(table.getOverflow().name());
+            output.writeBoolean(table.isSplitRows());
+            writeTableRows(output, table.getHeaderRows(), references);
+            writeTableRows(output, table.getFooterRows(), references);
+        }
+        writeTableRows(output, table.getRows(), references);
+    }
+
+    static void writeTableRows(WorkerCodecIO.Output output, List<TableRow> rows, WorkerReferenceRegistry references)
+            throws IOException, DocumentFailure {
+        output.writeInt(rows.size());
+        for (TableRow row : rows) {
             output.writeInt(row.getVersion()); output.writeDouble(row.getMinimumHeight());
             output.writeInt(row.getCells().size());
             for (TableCell cell : row.getCells()) {
@@ -329,13 +344,28 @@ final class WorkerCompositionCodec {
     }
 
     private static Table readTable(WorkerCodecIO.Input input, WorkerReferenceRegistry references) throws DocumentFailure {
-        WorkerCommandCodec.requireVersion(input.readInt(), Table.VERSION_1);
+        int version = input.readInt();
+        WorkerCommandCodec.requireVersion(version, version == Table.VERSION_2 ? Table.VERSION_2 : Table.VERSION_1);
         Table.Layout layout = WorkerCommandCodec.enumValue(Table.Layout.class, input.readString(), "Table layout");
         TableWidth width = readTableWidth(input);
         int columns = WorkerCommandCodec.readCount(input, "Table Column");
         TableWidth[] widths = new TableWidth[columns];
         for (int c = 0; c < columns; c++) { widths[c] = readTableWidth(input); }
-        Table.Builder table = Table.version1(layout, width, widths);
+        Table.Builder table = version == Table.VERSION_2 ? Table.version2(layout, width, widths) : Table.version1(layout, width, widths);
+        if (version == Table.VERSION_2) {
+            table.keepTogether(input.readBoolean()).keepWithNext(input.readBoolean())
+                    .skipFirstHeader(input.readBoolean()).skipLastFooter(input.readBoolean());
+            table.overflow(WorkerCommandCodec.enumValue(Paragraph.Overflow.class,input.readString(),"Table overflow"));
+            table.splitRows(input.readBoolean());
+            for (TableRow row : readTableRows(input, references)) { table.header(row); }
+            for (TableRow row : readTableRows(input, references)) { table.footer(row); }
+        }
+        for (TableRow row : readTableRows(input, references)) { table.row(row); }
+        return table.build();
+    }
+
+    static List<TableRow> readTableRows(WorkerCodecIO.Input input, WorkerReferenceRegistry references) throws DocumentFailure {
+        List<TableRow> result = new ArrayList<TableRow>();
         int rows = WorkerCommandCodec.readCount(input, "Table Row");
         for (int r = 0; r < rows; r++) {
             WorkerCommandCodec.requireVersion(input.readInt(), TableRow.VERSION_1);
@@ -352,9 +382,9 @@ final class WorkerCompositionCodec {
                 for (int i = 0; i < paragraphs; i++) { cell.paragraph(readParagraph(input, references)); }
                 cells[c] = cell.build();
             }
-            table.row(TableRow.version1(height, cells));
+            result.add(TableRow.version1(height, cells));
         }
-        return table.build();
+        return result;
     }
 
     private static void writeTableWidth(WorkerCodecIO.Output output, TableWidth width) throws IOException, DocumentFailure {

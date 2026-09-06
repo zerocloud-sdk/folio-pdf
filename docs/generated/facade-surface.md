@@ -177,8 +177,8 @@ No stable surfaces are declared.
 ### `composition.layout.tables`
 
 - Behavioral capability: [`composition.layout.tables`](capability-matrix.md#capability-composition_dot_layout_dot_tables)
-- Deferred ticket: `T26`
-- Reason: T26 adds bounded tables to the Composition-owned Native Interface. The existing Preview layout.Document close-ownership surface does not map table layout, and no evidenced Reference Suite Table or Cell mapping exists; no stable or preview stub is introduced.
+- Deferred ticket: `T27`
+- Reason: T26 and T27 provide bounded table layout, pagination, repeated sections, keeps, relayout and incremental row release through the Native Interface. The existing Preview layout.Document close-ownership surface does not map these semantics, and no evidenced Reference Suite Table or Cell mapping exists; no stable or preview stub is introduced.
 
 <a id="excluded-capability-conversion_dot_capability_dash_provider_dot_select_dash_execute"></a>
 ### `conversion.capability-provider.select-execute`

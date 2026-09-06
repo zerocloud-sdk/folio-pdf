@@ -319,6 +319,32 @@ final class PdfBoxPageOperations {
         }
     }
 
+    /** Commits painted content to the existing last page and appends only newly reached pages. */
+    void appendLargeTablePages(PDPage previous, PDPage painted, List<PDPage> appended) throws DocumentFailure {
+        int count = document.getNumberOfPages();
+        if (previous != null && (count == 0 || document.getPage(count - 1).getCOSObject() != previous.getCOSObject())) {
+            throw unsafeRelayout();
+        }
+        COSBase oldContents = previous == null ? null : previous.getCOSObject().getItem(COSName.CONTENTS);
+        COSBase oldResources = previous == null ? null : previous.getCOSObject().getItem(COSName.RESOURCES);
+        resources.checkpoint();
+        try {
+            appendComposedPages(appended);
+            resources.checkpoint();
+            if (previous != null && painted != previous) {
+                previous.getCOSObject().setItem(COSName.CONTENTS, painted.getCOSObject().getItem(COSName.CONTENTS));
+                previous.getCOSObject().setItem(COSName.RESOURCES, painted.getCOSObject().getItem(COSName.RESOURCES));
+            }
+        } catch (DocumentFailure | RuntimeException failure) {
+            while (document.getNumberOfPages() > count) { document.removePage(count); }
+            if (previous != null) {
+                previous.getCOSObject().setItem(COSName.CONTENTS, oldContents);
+                previous.getCOSObject().setItem(COSName.RESOURCES, oldResources);
+            }
+            throw failure;
+        }
+    }
+
     private static DocumentFailure unsafeRelayout() {
         return new DocumentFailure(DocumentFailureCode.COMPOSITION_RELAYOUT_UNSAFE,
                 PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID,

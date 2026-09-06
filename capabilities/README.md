@@ -433,3 +433,24 @@ regenerated expected image. The `--reference OUTPUT.pdf` mode of
 `T26TableEvidenceCommand` authors only the independent reference. Negative
 controls move geometry, remove text or alter border color on each page; missing
 pinned tools remain indeterminate. Retain only T26 outputs for this capability.
+
+## T27 table pagination acceptance
+
+The same recorder also produces nineteen T27 pages covering FIXED/AUTO
+pagination, split rows, continued spans, repeated and omitted headers/footers,
+keeps, buffered relayout, VISIBLE overflow, unsplittable rows, and incremental
+flush before all rows arrive. The [T27 contract](../docs/table-pagination.md)
+declares every breakpoint, scalar position and inside-border rectangle.
+`T27TableExpectations` supplies those independent values; the reference producer
+uses only AddBlankPage, positioned text and Canvas. Its nineteen expected PNG
+hashes are pinned in `profiles/T27-table-pagination-page-*-visual.properties`.
+
+Use a new temporary directory with `./scripts/acceptance OUTPUT_DIRECTORY`
+and retain only T27 outputs for this ticket. The separate
+`T27TableEvidenceCommand --reference OUTPUT.pdf` form authors only the reference;
+render pages 1 through 19 with the pinned PDFium wrapper. Expected images are
+never copied from actual paginator output. All nineteen pages require the
+predeclared 144-DPI opaque-white sRGB profile, zero-fuzz AE 0, zero changed RGB
+pixels and the separate secondary-renderer bound of 2500. Missing tools remain
+indeterminate. The [T27 delivery record](evidence/T27-table-pagination.md)
+tracks actual chain results and the outstanding compatibility gates.

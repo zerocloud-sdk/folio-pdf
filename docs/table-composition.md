@@ -108,6 +108,10 @@ A preceding paragraph's keep-with-next still prevents an intervening area
 break. Tables have no keep, headers, footers, relayout or large-table streaming
 options; those belong to #28.
 
+The opt-in T27 version-4 flow and version-2 Table extension is described in
+[Table pagination and incremental composition](table-pagination.md). Its
+evidence retains the open compatibility gates. It preserves the version-3 contract above.
+
 ## Independent numeric examples fixed before implementation
 
 All coordinates below use the existing project-authored T19 fonts. At size 10,

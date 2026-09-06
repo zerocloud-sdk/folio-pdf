@@ -7,6 +7,7 @@ public final class CompositionLimits {
     /** Supported representation version. */ public static final int VERSION_1 = 1;
     /** Includes bounded pagination search and relayout. */ public static final int VERSION_2 = 2;
     /** Includes bounded tables. */ public static final int VERSION_3 = 3;
+    /** Includes table pagination and buffered relayout. */ public static final int VERSION_4 = 4;
     private final TableLimits tableLimits;
     private final int version;
     private final int maximumLayoutAttempts;
@@ -41,6 +42,8 @@ public final class CompositionLimits {
     public static Builder version2() { return new Builder(VERSION_2); }
     /** Begins complete version-3 limits; tables and layout attempts are mandatory, relayout is zero. */
     public static Builder version3() { return new Builder(VERSION_3); }
+    /** Begins complete pagination limits including table, search and relayout bounds. */
+    public static Builder version4() { return new Builder(VERSION_4); }
     /** @return table limits, or null for earlier representations */ public TableLimits getTableLimits() { return tableLimits; }
     /** @return candidate line and search transition bound per layout, zero for version 1 */
     public int getMaximumLayoutAttempts() { return maximumLayoutAttempts; }
@@ -75,7 +78,7 @@ public final class CompositionLimits {
         private Builder(int version) {
             this.version = version;
             maximumLayoutAttempts = version >= VERSION_2 ? -1 : 0;
-            maximumRelayouts = version == VERSION_2 ? -1 : 0;
+            maximumRelayouts = version == VERSION_2 || version == VERSION_4 ? -1 : 0;
         }
         /** Sets mandatory version-3 table bounds. @return this builder */
         public Builder tableLimits(TableLimits value) { tableLimits = Objects.requireNonNull(value, "tableLimits"); return this; }
@@ -107,7 +110,7 @@ public final class CompositionLimits {
         }
         /** @return complete immutable limits */
         public CompositionLimits build() {
-            if ((version == VERSION_3 && tableLimits == null) || maximumLayoutAttempts < 0 || maximumRelayouts < 0 || maximumPages < 0 || maximumAreas < 0 || maximumFlowItems < 0
+            if ((version >= VERSION_3 && tableLimits == null) || maximumLayoutAttempts < 0 || maximumRelayouts < 0 || maximumPages < 0 || maximumAreas < 0 || maximumFlowItems < 0
                     || maximumInlines < 0 || maximumLines < 0
                     || maximumGeneratedContentBytes < 0 || fontLimits == null || graphicLimits == null) {
                 throw new IllegalStateException("Every Composition limit for the selected version must be declared.");

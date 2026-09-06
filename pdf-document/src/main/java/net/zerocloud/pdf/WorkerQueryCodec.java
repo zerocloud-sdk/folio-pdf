@@ -9,6 +9,8 @@ import java.util.Optional;
 import net.zerocloud.pdf.composition.CanvasImage;
 import net.zerocloud.pdf.composition.CanvasImageCapabilities;
 import net.zerocloud.pdf.composition.query.InspectCanvasImageCapabilities;
+import net.zerocloud.pdf.composition.query.InspectLargeTable;
+import net.zerocloud.pdf.composition.LargeTableState;
 import net.zerocloud.pdf.query.Actions;
 import net.zerocloud.pdf.query.Annotations;
 import net.zerocloud.pdf.query.DocumentInfo;
@@ -52,6 +54,7 @@ final class WorkerQueryCodec {
     private static final int EXTRACT_IMAGES_RESOURCES = 17;
     private static final int RENDER_PAGE = 18;
     private static final int RENDER_SNAPSHOT = 19;
+    private static final int LARGE_TABLE_STATE = 20;
 
     private WorkerQueryCodec() {
     }
@@ -192,7 +195,10 @@ final class WorkerQueryCodec {
             DocumentQuery<?> query,
             WorkerReferenceRegistry references)
             throws IOException, DocumentFailure {
-        if (query == PageCount.INSTANCE) {
+        if (query instanceof InspectLargeTable) {
+            output.writeInt(LARGE_TABLE_STATE);
+            output.writeInt(((InspectLargeTable) query).getVersion());
+        } else if (query == PageCount.INSTANCE) {
             output.writeInt(PAGE_COUNT);
             output.writeInt(1);
         } else if (query == DocumentVersion.INSTANCE) {
@@ -285,6 +291,9 @@ final class WorkerQueryCodec {
             WorkerReferenceRegistry references) throws DocumentFailure {
         int opcode = input.readInt();
         switch (opcode) {
+            case LARGE_TABLE_STATE:
+                WorkerCommandCodec.requireVersion(input.readInt(), InspectLargeTable.VERSION_1);
+                return InspectLargeTable.version1();
             case RENDER_PAGE:
                 return WorkerRenderingCodec.readQuery(input);
             case RENDER_SNAPSHOT:
@@ -384,7 +393,11 @@ final class WorkerQueryCodec {
             Object result,
             WorkerReferenceRegistry references)
             throws IOException, DocumentFailure {
-        if (query == PageCount.INSTANCE) {
+        if (query instanceof InspectLargeTable) {
+            LargeTableState state = (LargeTableState) result;
+            output.writeString(state.getStage().name());
+            output.writeInt(state.getAcceptedRows()); output.writeInt(state.getRetainedRows());
+        } else if (query == PageCount.INSTANCE) {
             output.writeInt(((Integer) result).intValue());
         } else if (query == DocumentVersion.INSTANCE) {
             writeVersionInfo(output, (PdfVersionInfo) result);
@@ -460,6 +473,11 @@ final class WorkerQueryCodec {
             WorkerCodecIO.Input input,
             DocumentQuery<?> query,
             WorkerReferenceRegistry references) throws DocumentFailure {
+        if (query instanceof InspectLargeTable) {
+            LargeTableState.Stage stage = WorkerCommandCodec.enumValue(LargeTableState.Stage.class,
+                    input.readString(), "Large table stage");
+            return LargeTableState.version1(stage, input.readInt(), input.readInt());
+        }
         if (query == PageCount.INSTANCE) {
             return Integer.valueOf(input.readInt());
         }

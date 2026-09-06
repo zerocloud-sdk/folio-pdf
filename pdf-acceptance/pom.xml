@@ -159,6 +159,23 @@
                   </arguments>
                 </configuration>
               </execution>
+              <execution>
+                <id>record-table-pagination-evidence</id>
+                <phase>verify</phase>
+                <goals><goal>java</goal></goals>
+                <configuration>
+                  <mainClass>net.zerocloud.pdf.acceptance.T27TableEvidenceCommand</mainClass>
+                  <classpathScope>runtime</classpathScope>
+                  <arguments>
+                    <argument>${acceptance.output}</argument>
+                    <argument>${maven.multiModuleProjectDirectory}/scripts/qpdf-pin.properties</argument>
+                    <argument>${maven.multiModuleProjectDirectory}/scripts/pdfium-pin.properties</argument>
+                    <argument>${maven.multiModuleProjectDirectory}/scripts/imagemagick-pin.properties</argument>
+                    <argument>${maven.multiModuleProjectDirectory}/capabilities/profiles</argument>
+                    <argument>${project.version}</argument>
+                  </arguments>
+                </configuration>
+              </execution>
             </executions>
           </plugin>
         </plugins>

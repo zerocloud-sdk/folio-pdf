@@ -1,0 +1,157 @@
+# T27 visual-chain raw findings
+
+Input ID-neutral SHA-256: `95e2fe473a70bc8d4204e30647ec32cbeccc9d9c49a939ee5d9a4a4d9dcfab70`
+
+Input hash policy: `SHA-256 of the exact PDF bytes after replacing only the two hexadecimal trailer /ID values with ASCII zeroes`
+
+Expected raster SHA-256: `9f40ab19f29d1f4053ad29c4aab0a81d2e24a48ef94200d5dc1f2d6cdcf79201`
+
+PDFium raster SHA-256: `9f40ab19f29d1f4053ad29c4aab0a81d2e24a48ef94200d5dc1f2d6cdcf79201`
+
+Implementation raster SHA-256: `afc07d01ddfdb6f26a47ae8dc4f576e4f517ee8aeb3f239ff3cd581c6ad2c46c`
+
+Difference raster SHA-256: `bbd7c41e15e07373f287f3bd9d043269a84f179e52133daeba63874d0780a100`
+
+Renderer difference raster SHA-256: `fefae1248ea2521daf2620ef693acb13eb86d47137daaee0a787d80522beddc6`
+
+Profile: `T27-table-pagination`
+
+Page box: `effective CropBox; CropBox is absent, so MediaBox [0 0 612 792] points is used`
+
+DPI: `144`
+
+Color policy: `sRGB, opaque 8-bit RGB PNG after compositing over opaque white`
+
+Font policy: `only the two embedded project-authored subsets; no system fonts`
+
+Antialiasing policy: `pinned PDFium default text smoothing`
+
+Raster dimensions: `1224x1584`
+
+Comparison metric: `AE`
+
+Comparison fuzz percent: `0`
+
+Comparison threshold: `0`
+
+Renderer agreement threshold: `2500`
+
+Expected comparison AE: `0`
+
+Renderer agreement AE: `16.0078`
+
+PDFium CLI version: `v0.11.2`
+
+PDFium engine version: `chromium-7881`
+
+ImageMagick version: `7.1.2-30`
+
+Implementation renderer version: `3.0.8`
+
+Review required: `false`
+
+## Process findings
+
+## PDFium identity
+
+Invocation: `pdfium --version`
+
+Exit code: `0`
+
+### Standard output
+
+```text
+pdfium version v0.11.2
+```
+
+### Standard error
+
+```text
+
+```
+
+## PDFium render
+
+Invocation: `pdfium render T27-table-pagination.pdf T27-table-pagination-page-12-pdfium.png --dpi 144 --file-type png --pages 12`
+
+Exit code: `0`
+
+### Standard output
+
+```text
+Rendered page 12 into T27-table-pagination-page-12-pdfium.png
+```
+
+### Standard error
+
+```text
+
+```
+
+Secondary implementation renderer: `Apache PDFBox 3.0.8` at `144 DPI RGB`
+
+## ImageMagick identity
+
+Invocation: `magick --version`
+
+Exit code: `0`
+
+### Standard output
+
+```text
+Version: ImageMagick 7.1.2-30 Q16-HDRI x86_64 7d45ed032:20260823 https://imagemagick.org
+Copyright: (C) 1999 ImageMagick Studio LLC
+License: https://imagemagick.org/license/
+Features: Cipher DPC HDRI OpenMP(4.5)
+Delegates (built-in): bzlib djvu fontconfig freetype heic jbig jng jp2 jpeg lcms lqr lzma openexr png raqm tiff webp x xml zlib
+Compiler: gcc (11.4)
+```
+
+### Standard error
+
+```text
+
+```
+
+## Expected-to-PDFium raster comparison
+
+Invocation: `magick compare -metric AE -fuzz 0% -highlight-color #ff0000 -lowlight-color #ffffff -define png:exclude-chunk=time,date T27-table-pagination-page-12-expected.png T27-table-pagination-page-12-pdfium.png T27-table-pagination-page-12-difference.png`
+
+Exit code: `0`
+
+### Standard output
+
+```text
+
+```
+
+### Standard error
+
+```text
+0 (0)
+```
+
+## PDFium-to-implementation renderer comparison
+
+Invocation: `magick compare -metric AE -fuzz 0% -highlight-color #ff0000 -lowlight-color #ffffff -define png:exclude-chunk=time,date T27-table-pagination-page-12-pdfium.png T27-table-pagination-page-12-implementation.png T27-table-pagination-page-12-renderer-difference.png`
+
+Exit code: `1`
+
+### Standard output
+
+```text
+
+```
+
+### Standard error
+
+```text
+16.0078 (8.2565e-06)
+```
+
+Exact changed RGB pixels, expected to PDFium: 0
+Exact changed RGB pixels, PDFium to secondary: 140
+
+Final visual finding: The PDFium raster matched the project-owned expectation at AE `0`, and the secondary renderer agreement AE was `16.0078`.
+
+Final determination: `pass`

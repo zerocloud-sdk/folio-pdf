@@ -122,10 +122,12 @@ final class VisualProfile {
         int pageNumber = 1;
         int pageCount = 1;
         if (profileId.equals("T24-paragraph-composition") || profileId.startsWith("T25-paragraph-")
-                || profileId.equals("T26-table-composition")) {
+                || profileId.equals("T26-table-composition") || profileId.equals("T27-table-pagination")) {
             pageNumber = positiveInt(properties, "PAGE_SELECTION");
             pageCount = positiveInt(properties, "PAGE_COUNT");
-            if (pageCount != (profileId.equals("T26-table-composition") ? 3 : 2) || pageNumber > pageCount) {
+            int expectedPages = profileId.equals("T27-table-pagination") ? T27TableExpectations.PAGE_COUNT
+                    : profileId.equals("T26-table-composition") ? 3 : 2;
+            if (pageCount != expectedPages || pageNumber > pageCount) {
                 throw new IOException("Composition profiles require a selected page of their declared finite artifact");
             }
         }
@@ -226,6 +228,7 @@ final class VisualProfile {
         policies.put("T23-page-rendering-fonts", policies.get(T19_PROFILE));
         policies.put("T24-paragraph-composition", policies.get(T19_PROFILE));
         policies.put("T26-table-composition", policies.get(T19_PROFILE));
+        policies.put("T27-table-pagination", policies.get(T19_PROFILE));
         for (T25ParagraphExpectations.Profile profile : T25ParagraphExpectations.PROFILES) {
             policies.put(profile.id, policies.get(T19_PROFILE));
         }
@@ -280,7 +283,8 @@ final class VisualProfile {
     }
 
     String comparisonDescription() {
-        if (profileId.startsWith("T25-paragraph-") || profileId.equals("T26-table-composition")) {
+        if (profileId.startsWith("T25-paragraph-") || profileId.equals("T26-table-composition")
+                || profileId.equals("T27-table-pagination")) {
             return "ImageMagick " + comparisonMetric + " magnitude with fuzz " + comparisonFuzzPercent
                     + " percent; exact changed RGB pixels additionally enforce the same bounds";
         }

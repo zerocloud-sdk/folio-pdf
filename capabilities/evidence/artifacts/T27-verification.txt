@@ -1,0 +1,1290 @@
+T27 verification receipt; fixed base 1d1bf4a92eecf42dc370872fe1bcf5b142e42452
+Final source/test snapshot: cce6f26c4e96f386a172bebc83b9ebc0636688c226cabe8d306d2fd4982447c9
+Final focused: 256/0/0/0. Final host and every JDK 8/11/17/21 stage: 922/0/0/3. Final T27 syntax/semantic/visual: PASS. Independent Standards and Spec: no unresolved required findings.
+Earlier development snapshots and their results are retained as historical evidence below.
+
+Initial pre-review source/test tree SHA-256 before full verification: 4d4605e8072b5eac7ad07471c2fdaac4f5744e62e20b4b3050b9a246ab799208
+Source/test tree hash recipe (Python 3, working directory is repository root):
+from pathlib import Path
+import hashlib
+paths = []
+for base in ['pdf-document/src/main', 'pdf-document/src/test', 'pdf-acceptance/src/main', 'pdf-acceptance/src/test']:
+    paths.extend(p for p in Path(base).rglob('*') if p.is_file())
+digest = hashlib.sha256()
+for p in sorted(paths):
+    digest.update(str(p).encode('utf-8') + b'\0' + p.read_bytes() + b'\0')
+print(digest.hexdigest())
+At this initial snapshot, independent code review had not run. Final corrected-source results appear in the explicitly labeled later sections.
+
+Command: ./mvnw -B -ntp -pl pdf-acceptance -am -Dtest=LargeTableWorkflowTest,TablePaginationWorkflowTest,TableCompositionWorkflowTest,ParagraphPaginationWorkflowTest,ParagraphCompositionWorkflowTest,T27TableEvidenceCommandTest,T26TableEvidenceCommandTest -Dsurefire.failIfNoSpecifiedTests=false test
+Terminal exit: 0
+Original log: /tmp/t27-final-focused.log
+Original log SHA-256: ea892199a700203a8f54c7aeb41831b17a9d355349b25395850c90a9daccd9d2
+[INFO] Tests run: 26, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 38.74 s -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Tests run: 42, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 52.52 s -- in net.zerocloud.pdf.consumer.ParagraphCompositionWorkflowTest
+[INFO] Tests run: 64, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 59.85 s -- in net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 66.26 s -- in net.zerocloud.pdf.consumer.TableCompositionWorkflowTest
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 32.76 s -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Tests run: 224, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.736 s -- in net.zerocloud.pdf.acceptance.T26TableEvidenceCommandTest
+T27: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE; standards and compatibility remain indeterminate.
+T27: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE; standards and compatibility remain indeterminate.
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.717 s -- in net.zerocloud.pdf.acceptance.T27TableEvidenceCommandTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-05T23:36:14+08:00
+
+Command: ./scripts/inventory validate
+Terminal exit: 0
+Original log: /tmp/t27-inventory-validate.log
+Original log SHA-256: b8aae2b58d6ce3c4e56673f670ab4e9feffd8c1446b5a2cfe557991180f5d96a
+Inventory validation passed: 20 capabilities, 12 facade surfaces, 19 exclusions.
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-05T23:27:59+08:00
+
+Command: ./scripts/inventory generate
+Terminal exit: 0
+Original log: /tmp/t27-inventory-generate.log
+Original log SHA-256: 3b1eb1472b0f5e0f0dde16410152b3c40ba72799a1f3f2b744d7593e17c73144
+Inventory validation passed: 20 capabilities, 12 facade surfaces, 19 exclusions.
+Generated docs/generated/capability-matrix.md
+Generated docs/generated/facade-surface.md
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-05T23:29:40+08:00
+
+Command: ./scripts/inventory check
+Terminal exit: 0
+Original log: /tmp/t27-inventory-check.log
+Original log SHA-256: c95438274710e633c003ae286e444e35c0f933910601737836617ef4180c897a
+Inventory validation passed: 20 capabilities, 12 facade surfaces, 19 exclusions.
+Generated inventory documentation is current.
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-05T23:31:58+08:00
+
+Command: ./scripts/acceptance /tmp/folio-t27-acceptance-GFPwo5tw
+Terminal exit: 0
+Original log: /tmp/t27-acceptance-full.log
+Original log SHA-256: 30066da00e07ddb9567ce4effac7ea741bb8b6bbb11228bf02da43972f569096
+T27: syntax=PASS, semantic=PASS, visual=PASS; standards and compatibility remain indeterminate.
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-05T23:21:39+08:00
+
+Command: ./mvnw -B -ntp verify
+Terminal exit: 0
+Original log: /tmp/t27-full-verify.log
+Original log SHA-256: 120e6b9dededd695488d16535ad239d5923982bf8b0473d31a3edd13641660fc
+Test totals [tests, failures, errors, skips]: [916, 0, 0, 3]
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.060 s -- in net.zerocloud.pdf.provider.ProviderCatalogTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 33, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.105 s -- in net.zerocloud.pdf.consumer.AnnotationWorkflowTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s -- in net.zerocloud.pdf.consumer.BlankDocumentWorkflowTest
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.621 s -- in net.zerocloud.pdf.consumer.CanvasImageColorTransparencyWorkflowTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.317 s -- in net.zerocloud.pdf.consumer.CanvasWorkflowTest
+[INFO] Tests run: 55, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 9.757 s -- in net.zerocloud.pdf.consumer.DocumentMetadataWorkflowTest
+[INFO] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.529 s -- in net.zerocloud.pdf.consumer.FontLoadingWorkflowTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.806 s -- in net.zerocloud.pdf.consumer.HardenedWorkerRecoveryTest
+[WARNING] Tests run: 3, Failures: 0, Errors: 0, Skipped: 3, Time elapsed: 0 s -- in net.zerocloud.pdf.consumer.HardenedWorkerScaleProfileTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.693 s -- in net.zerocloud.pdf.consumer.HardenedWorkerWorkflowTest
+[INFO] Tests run: 19, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.117 s -- in net.zerocloud.pdf.consumer.HostileInputWorkflowTest
+[INFO] Tests run: 27, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.183 s -- in net.zerocloud.pdf.consumer.ImageResourceExtractionWorkflowTest
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.331 s -- in net.zerocloud.pdf.consumer.IncrementalSignatureWorkflowTest
+[INFO] Tests run: 26, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 36.94 s -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Tests run: 52, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.329 s -- in net.zerocloud.pdf.consumer.PageManipulationWorkflowTest
+[INFO] Tests run: 42, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 52.21 s -- in net.zerocloud.pdf.consumer.ParagraphCompositionWorkflowTest
+[INFO] Tests run: 64, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 59.55 s -- in net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest
+[INFO] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.090 s -- in net.zerocloud.pdf.consumer.PdfValueWorkflowTest
+[INFO] Tests run: 26, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.219 s -- in net.zerocloud.pdf.consumer.PdfVersionPasswordSecurityWorkflowTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.020 s -- in net.zerocloud.pdf.consumer.RenderingColdStartTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.014 s -- in net.zerocloud.pdf.consumer.WorkflowLifecycleTest
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 32.42 s -- in net.zerocloud.pdf.consumer.RenderingWorkflowContractTest
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 66.02 s -- in net.zerocloud.pdf.consumer.TableCompositionWorkflowTest
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 32.13 s -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Tests run: 44, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.819 s -- in net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s -- in net.zerocloud.pdf.consumer.WorkflowCapabilityProviderTest
+[INFO] Tests run: 82, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 19.51 s -- in net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.035 s -- in net.zerocloud.pdf.consumer.WorkflowResourceOwnershipTest
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.031 s -- in net.zerocloud.pdf.consumer.WorkflowTransactionContractTest
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.828 s -- in net.zerocloud.pdf.HardenedWorkerIsolationTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.659 s -- in net.zerocloud.pdf.HardenedWorkerRecoveryFaultTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s -- in net.zerocloud.pdf.PdfBoxCMapPreflightTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s -- in net.zerocloud.pdf.PdfBoxFontMetricPreflightTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.341 s -- in net.zerocloud.pdf.WorkerCodecContractTest
+[INFO] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.601 s -- in net.zerocloud.pdf.WorkerProtocolBoundaryTest
+[INFO] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.014 s -- in net.zerocloud.pdf.WorkflowResourceCacheAccountingTest
+[WARNING] Tests run: 843, Failures: 0, Errors: 0, Skipped: 3
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.077 s -- in net.zerocloud.pdf.contract.JarContractIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.196 s -- in net.zerocloud.pdf.contract.PublicApiLeakageIT
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 50.28 s -- in net.zerocloud.pdf.acceptance.AcceptanceEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.368 s -- in net.zerocloud.pdf.acceptance.T24ParagraphEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.401 s -- in net.zerocloud.pdf.acceptance.T25ParagraphEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.672 s -- in net.zerocloud.pdf.acceptance.T26TableEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.351 s -- in net.zerocloud.pdf.acceptance.T27TableEvidenceCommandTest
+[INFO] Tests run: 32, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.228 s -- in net.zerocloud.pdf.conversion.SubprocessCapabilityProviderTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.052 s -- in net.zerocloud.pdf.conversion.contract.JarContractIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.022 s -- in net.zerocloud.pdf.conversion.contract.PublicApiLeakageIT
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.292 s -- in net.zerocloud.pdf.itext7.consumer.PreviewBlankDocumentFacadeTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.183 s -- in net.zerocloud.pdf.migration.itext7.contract.ClasspathExclusivityIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.010 s -- in net.zerocloud.pdf.migration.itext7.contract.JarContractIT
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.560 s -- in net.zerocloud.pdf.tools.inventory.InventoryCommandTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0
+Inventory validation passed: 20 capabilities, 12 facade surfaces, 19 exclusions.
+Generated inventory documentation is current.
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.051 s -- in net.zerocloud.pdf.tools.release.ReleasePolicyContractTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.550 s -- in net.zerocloud.pdf.tools.release.ReleaseRehearsalCommandTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-05T23:44:18+08:00
+
+Existing local JDK matrix images (no image/dependency upgrade performed):
+[
+  {
+    "jdk": 8,
+    "image": "docker.io/library/eclipse-temurin:8-jdk",
+    "imageId": "abe8c22c734bcff3c2e9ec5f8549f9aeb9a27aabc7b53974ddadcc903d30644a",
+    "javaVersion": "jdk8u502-b07"
+  },
+  {
+    "jdk": 11,
+    "image": "docker.io/library/eclipse-temurin:11-jdk",
+    "imageId": "e8dca93a5541cca084f88dceae31bdfdde0c15d1857c8f641f753c839538956f",
+    "javaVersion": "jdk-11.0.32+9"
+  },
+  {
+    "jdk": 17,
+    "image": "docker.io/library/eclipse-temurin:17-jdk",
+    "imageId": "20e832593c27816000db6315e1f554fcd0073c9ba95846ac117e5f3f5e0fea33",
+    "javaVersion": "jdk-17.0.20+8"
+  },
+  {
+    "jdk": 21,
+    "image": "docker.io/library/eclipse-temurin:21-jdk",
+    "imageId": "bd15556c8747f309a3d9ac0ca190d7a67dbb131275a41df51041af8460ca03b2",
+    "javaVersion": "jdk-21.0.12+8"
+  }
+]
+
+Matrix stage: JDK 8, invoked by ./scripts/verify-jdk-matrix.sh
+Stage successful; script advanced to JDK 11.
+Test totals [tests, failures, errors, skips]: [916, 0, 0, 3]
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.050 s -- in net.zerocloud.pdf.provider.ProviderCatalogTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 33, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.401 s -- in net.zerocloud.pdf.consumer.AnnotationWorkflowTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s -- in net.zerocloud.pdf.consumer.BlankDocumentWorkflowTest
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.556 s -- in net.zerocloud.pdf.consumer.CanvasImageColorTransparencyWorkflowTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.360 s -- in net.zerocloud.pdf.consumer.CanvasWorkflowTest
+[INFO] Tests run: 55, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 9.716 s -- in net.zerocloud.pdf.consumer.DocumentMetadataWorkflowTest
+[INFO] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.580 s -- in net.zerocloud.pdf.consumer.FontLoadingWorkflowTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.907 s -- in net.zerocloud.pdf.consumer.HardenedWorkerRecoveryTest
+[WARNING] Tests run: 3, Failures: 0, Errors: 0, Skipped: 3, Time elapsed: 0.003 s -- in net.zerocloud.pdf.consumer.HardenedWorkerScaleProfileTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.829 s -- in net.zerocloud.pdf.consumer.HardenedWorkerWorkflowTest
+[INFO] Tests run: 19, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.137 s -- in net.zerocloud.pdf.consumer.HostileInputWorkflowTest
+[INFO] Tests run: 27, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.187 s -- in net.zerocloud.pdf.consumer.ImageResourceExtractionWorkflowTest
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.325 s -- in net.zerocloud.pdf.consumer.IncrementalSignatureWorkflowTest
+[INFO] Tests run: 26, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 40.87 s -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Tests run: 52, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.417 s -- in net.zerocloud.pdf.consumer.PageManipulationWorkflowTest
+[INFO] Tests run: 42, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 59.76 s -- in net.zerocloud.pdf.consumer.ParagraphCompositionWorkflowTest
+[INFO] Tests run: 64, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 68.74 s -- in net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest
+[INFO] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.107 s -- in net.zerocloud.pdf.consumer.PdfValueWorkflowTest
+[INFO] Tests run: 26, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.601 s -- in net.zerocloud.pdf.consumer.PdfVersionPasswordSecurityWorkflowTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.544 s -- in net.zerocloud.pdf.consumer.RenderingColdStartTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.020 s -- in net.zerocloud.pdf.consumer.WorkflowLifecycleTest
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 37.13 s -- in net.zerocloud.pdf.consumer.RenderingWorkflowContractTest
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 74.46 s -- in net.zerocloud.pdf.consumer.TableCompositionWorkflowTest
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 37.51 s -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Tests run: 44, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.785 s -- in net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s -- in net.zerocloud.pdf.consumer.WorkflowCapabilityProviderTest
+[INFO] Tests run: 82, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 22.25 s -- in net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.043 s -- in net.zerocloud.pdf.consumer.WorkflowResourceOwnershipTest
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.037 s -- in net.zerocloud.pdf.consumer.WorkflowTransactionContractTest
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.528 s -- in net.zerocloud.pdf.HardenedWorkerIsolationTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.884 s -- in net.zerocloud.pdf.HardenedWorkerRecoveryFaultTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s -- in net.zerocloud.pdf.PdfBoxCMapPreflightTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s -- in net.zerocloud.pdf.PdfBoxFontMetricPreflightTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.241 s -- in net.zerocloud.pdf.WorkerCodecContractTest
+[INFO] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.611 s -- in net.zerocloud.pdf.WorkerProtocolBoundaryTest
+[INFO] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.015 s -- in net.zerocloud.pdf.WorkflowResourceCacheAccountingTest
+[WARNING] Tests run: 843, Failures: 0, Errors: 0, Skipped: 3
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.077 s -- in net.zerocloud.pdf.contract.JarContractIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.241 s -- in net.zerocloud.pdf.contract.PublicApiLeakageIT
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 57.58 s -- in net.zerocloud.pdf.acceptance.AcceptanceEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.386 s -- in net.zerocloud.pdf.acceptance.T24ParagraphEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.649 s -- in net.zerocloud.pdf.acceptance.T25ParagraphEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.694 s -- in net.zerocloud.pdf.acceptance.T26TableEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.961 s -- in net.zerocloud.pdf.acceptance.T27TableEvidenceCommandTest
+[INFO] Tests run: 32, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.168 s -- in net.zerocloud.pdf.conversion.SubprocessCapabilityProviderTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.047 s -- in net.zerocloud.pdf.conversion.contract.JarContractIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.013 s -- in net.zerocloud.pdf.conversion.contract.PublicApiLeakageIT
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.307 s -- in net.zerocloud.pdf.itext7.consumer.PreviewBlankDocumentFacadeTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.870 s -- in net.zerocloud.pdf.migration.itext7.contract.ClasspathExclusivityIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s -- in net.zerocloud.pdf.migration.itext7.contract.JarContractIT
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.371 s -- in net.zerocloud.pdf.tools.inventory.InventoryCommandTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0
+Generated inventory documentation is current.
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.052 s -- in net.zerocloud.pdf.tools.release.ReleasePolicyContractTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.198 s -- in net.zerocloud.pdf.tools.release.ReleaseRehearsalCommandTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-05T15:54:27Z
+
+Command: ./scripts/verify-jdk-matrix.sh
+Terminal exit: 0
+Original log: /tmp/t27-jdk-matrix.log
+Original log SHA-256: d64cc386649403fe72087331fa11425c58ba54b5824e4d032814eddfbaa8688a
+[
+  {
+    "jdk": 8,
+    "counts": [
+      916,
+      0,
+      0,
+      3
+    ],
+    "finished": "2026-09-05T15:54:27Z"
+  },
+  {
+    "jdk": 11,
+    "counts": [
+      916,
+      0,
+      0,
+      3
+    ],
+    "finished": "2026-09-05T16:02:34Z"
+  },
+  {
+    "jdk": 17,
+    "counts": [
+      916,
+      0,
+      0,
+      3
+    ],
+    "finished": "2026-09-05T16:09:50Z"
+  },
+  {
+    "jdk": 21,
+    "counts": [
+      916,
+      0,
+      0,
+      3
+    ],
+    "finished": "2026-09-05T16:17:24Z"
+  }
+]
+
+JDK 8 terminal summaries:
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.050 s -- in net.zerocloud.pdf.provider.ProviderCatalogTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 33, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.401 s -- in net.zerocloud.pdf.consumer.AnnotationWorkflowTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s -- in net.zerocloud.pdf.consumer.BlankDocumentWorkflowTest
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.556 s -- in net.zerocloud.pdf.consumer.CanvasImageColorTransparencyWorkflowTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.360 s -- in net.zerocloud.pdf.consumer.CanvasWorkflowTest
+[INFO] Tests run: 55, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 9.716 s -- in net.zerocloud.pdf.consumer.DocumentMetadataWorkflowTest
+[INFO] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.580 s -- in net.zerocloud.pdf.consumer.FontLoadingWorkflowTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.907 s -- in net.zerocloud.pdf.consumer.HardenedWorkerRecoveryTest
+[WARNING] Tests run: 3, Failures: 0, Errors: 0, Skipped: 3, Time elapsed: 0.003 s -- in net.zerocloud.pdf.consumer.HardenedWorkerScaleProfileTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.829 s -- in net.zerocloud.pdf.consumer.HardenedWorkerWorkflowTest
+[INFO] Tests run: 19, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.137 s -- in net.zerocloud.pdf.consumer.HostileInputWorkflowTest
+[INFO] Tests run: 27, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.187 s -- in net.zerocloud.pdf.consumer.ImageResourceExtractionWorkflowTest
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.325 s -- in net.zerocloud.pdf.consumer.IncrementalSignatureWorkflowTest
+[INFO] Tests run: 26, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 40.87 s -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Tests run: 52, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.417 s -- in net.zerocloud.pdf.consumer.PageManipulationWorkflowTest
+[INFO] Tests run: 42, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 59.76 s -- in net.zerocloud.pdf.consumer.ParagraphCompositionWorkflowTest
+[INFO] Tests run: 64, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 68.74 s -- in net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest
+[INFO] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.107 s -- in net.zerocloud.pdf.consumer.PdfValueWorkflowTest
+[INFO] Tests run: 26, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.601 s -- in net.zerocloud.pdf.consumer.PdfVersionPasswordSecurityWorkflowTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.544 s -- in net.zerocloud.pdf.consumer.RenderingColdStartTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.020 s -- in net.zerocloud.pdf.consumer.WorkflowLifecycleTest
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 37.13 s -- in net.zerocloud.pdf.consumer.RenderingWorkflowContractTest
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 74.46 s -- in net.zerocloud.pdf.consumer.TableCompositionWorkflowTest
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 37.51 s -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Tests run: 44, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.785 s -- in net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s -- in net.zerocloud.pdf.consumer.WorkflowCapabilityProviderTest
+[INFO] Tests run: 82, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 22.25 s -- in net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.043 s -- in net.zerocloud.pdf.consumer.WorkflowResourceOwnershipTest
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.037 s -- in net.zerocloud.pdf.consumer.WorkflowTransactionContractTest
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.528 s -- in net.zerocloud.pdf.HardenedWorkerIsolationTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.884 s -- in net.zerocloud.pdf.HardenedWorkerRecoveryFaultTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s -- in net.zerocloud.pdf.PdfBoxCMapPreflightTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s -- in net.zerocloud.pdf.PdfBoxFontMetricPreflightTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.241 s -- in net.zerocloud.pdf.WorkerCodecContractTest
+[INFO] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.611 s -- in net.zerocloud.pdf.WorkerProtocolBoundaryTest
+[INFO] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.015 s -- in net.zerocloud.pdf.WorkflowResourceCacheAccountingTest
+[WARNING] Tests run: 843, Failures: 0, Errors: 0, Skipped: 3
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.077 s -- in net.zerocloud.pdf.contract.JarContractIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.241 s -- in net.zerocloud.pdf.contract.PublicApiLeakageIT
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 57.58 s -- in net.zerocloud.pdf.acceptance.AcceptanceEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.386 s -- in net.zerocloud.pdf.acceptance.T24ParagraphEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.649 s -- in net.zerocloud.pdf.acceptance.T25ParagraphEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.694 s -- in net.zerocloud.pdf.acceptance.T26TableEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.961 s -- in net.zerocloud.pdf.acceptance.T27TableEvidenceCommandTest
+[INFO] Tests run: 32, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.168 s -- in net.zerocloud.pdf.conversion.SubprocessCapabilityProviderTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.047 s -- in net.zerocloud.pdf.conversion.contract.JarContractIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.013 s -- in net.zerocloud.pdf.conversion.contract.PublicApiLeakageIT
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.307 s -- in net.zerocloud.pdf.itext7.consumer.PreviewBlankDocumentFacadeTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.870 s -- in net.zerocloud.pdf.migration.itext7.contract.ClasspathExclusivityIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s -- in net.zerocloud.pdf.migration.itext7.contract.JarContractIT
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.371 s -- in net.zerocloud.pdf.tools.inventory.InventoryCommandTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0
+Inventory validation passed: 20 capabilities, 12 facade surfaces, 19 exclusions.
+Generated inventory documentation is current.
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.052 s -- in net.zerocloud.pdf.tools.release.ReleasePolicyContractTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.198 s -- in net.zerocloud.pdf.tools.release.ReleaseRehearsalCommandTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-05T15:54:27Z
+
+JDK 11 terminal summaries:
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.065 s -- in net.zerocloud.pdf.provider.ProviderCatalogTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 33, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.517 s -- in net.zerocloud.pdf.consumer.AnnotationWorkflowTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s -- in net.zerocloud.pdf.consumer.BlankDocumentWorkflowTest
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.626 s -- in net.zerocloud.pdf.consumer.CanvasImageColorTransparencyWorkflowTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.335 s -- in net.zerocloud.pdf.consumer.CanvasWorkflowTest
+[INFO] Tests run: 55, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 10.09 s -- in net.zerocloud.pdf.consumer.DocumentMetadataWorkflowTest
+[INFO] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.566 s -- in net.zerocloud.pdf.consumer.FontLoadingWorkflowTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.004 s -- in net.zerocloud.pdf.consumer.HardenedWorkerRecoveryTest
+[WARNING] Tests run: 3, Failures: 0, Errors: 0, Skipped: 3, Time elapsed: 0.001 s -- in net.zerocloud.pdf.consumer.HardenedWorkerScaleProfileTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.971 s -- in net.zerocloud.pdf.consumer.HardenedWorkerWorkflowTest
+[INFO] Tests run: 19, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.132 s -- in net.zerocloud.pdf.consumer.HostileInputWorkflowTest
+[INFO] Tests run: 27, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.217 s -- in net.zerocloud.pdf.consumer.ImageResourceExtractionWorkflowTest
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.315 s -- in net.zerocloud.pdf.consumer.IncrementalSignatureWorkflowTest
+[INFO] Tests run: 26, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 42.27 s -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Tests run: 52, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.409 s -- in net.zerocloud.pdf.consumer.PageManipulationWorkflowTest
+[INFO] Tests run: 42, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 60.46 s -- in net.zerocloud.pdf.consumer.ParagraphCompositionWorkflowTest
+[INFO] Tests run: 64, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 68.68 s -- in net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest
+[INFO] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.111 s -- in net.zerocloud.pdf.consumer.PdfValueWorkflowTest
+[INFO] Tests run: 26, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.222 s -- in net.zerocloud.pdf.consumer.PdfVersionPasswordSecurityWorkflowTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.539 s -- in net.zerocloud.pdf.consumer.RenderingColdStartTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.015 s -- in net.zerocloud.pdf.consumer.WorkflowLifecycleTest
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 37.78 s -- in net.zerocloud.pdf.consumer.RenderingWorkflowContractTest
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 76.54 s -- in net.zerocloud.pdf.consumer.TableCompositionWorkflowTest
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 38.13 s -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Tests run: 44, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.760 s -- in net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.010 s -- in net.zerocloud.pdf.consumer.WorkflowCapabilityProviderTest
+[INFO] Tests run: 82, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 22.45 s -- in net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.041 s -- in net.zerocloud.pdf.consumer.WorkflowResourceOwnershipTest
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.036 s -- in net.zerocloud.pdf.consumer.WorkflowTransactionContractTest
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.514 s -- in net.zerocloud.pdf.HardenedWorkerIsolationTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.917 s -- in net.zerocloud.pdf.HardenedWorkerRecoveryFaultTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s -- in net.zerocloud.pdf.PdfBoxCMapPreflightTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s -- in net.zerocloud.pdf.PdfBoxFontMetricPreflightTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.258 s -- in net.zerocloud.pdf.WorkerCodecContractTest
+[INFO] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.796 s -- in net.zerocloud.pdf.WorkerProtocolBoundaryTest
+[INFO] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.014 s -- in net.zerocloud.pdf.WorkflowResourceCacheAccountingTest
+[WARNING] Tests run: 843, Failures: 0, Errors: 0, Skipped: 3
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.089 s -- in net.zerocloud.pdf.contract.JarContractIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.218 s -- in net.zerocloud.pdf.contract.PublicApiLeakageIT
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 54.36 s -- in net.zerocloud.pdf.acceptance.AcceptanceEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.406 s -- in net.zerocloud.pdf.acceptance.T24ParagraphEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.690 s -- in net.zerocloud.pdf.acceptance.T25ParagraphEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.782 s -- in net.zerocloud.pdf.acceptance.T26TableEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.814 s -- in net.zerocloud.pdf.acceptance.T27TableEvidenceCommandTest
+[INFO] Tests run: 32, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.076 s -- in net.zerocloud.pdf.conversion.SubprocessCapabilityProviderTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.050 s -- in net.zerocloud.pdf.conversion.contract.JarContractIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.013 s -- in net.zerocloud.pdf.conversion.contract.PublicApiLeakageIT
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.316 s -- in net.zerocloud.pdf.itext7.consumer.PreviewBlankDocumentFacadeTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.822 s -- in net.zerocloud.pdf.migration.itext7.contract.ClasspathExclusivityIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.010 s -- in net.zerocloud.pdf.migration.itext7.contract.JarContractIT
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.485 s -- in net.zerocloud.pdf.tools.inventory.InventoryCommandTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0
+Inventory validation passed: 20 capabilities, 12 facade surfaces, 19 exclusions.
+Generated inventory documentation is current.
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.054 s -- in net.zerocloud.pdf.tools.release.ReleasePolicyContractTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.786 s -- in net.zerocloud.pdf.tools.release.ReleaseRehearsalCommandTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-05T16:02:34Z
+
+JDK 17 terminal summaries:
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.056 s -- in net.zerocloud.pdf.provider.ProviderCatalogTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 33, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.222 s -- in net.zerocloud.pdf.consumer.AnnotationWorkflowTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s -- in net.zerocloud.pdf.consumer.BlankDocumentWorkflowTest
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.623 s -- in net.zerocloud.pdf.consumer.CanvasImageColorTransparencyWorkflowTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.344 s -- in net.zerocloud.pdf.consumer.CanvasWorkflowTest
+[INFO] Tests run: 55, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 10.10 s -- in net.zerocloud.pdf.consumer.DocumentMetadataWorkflowTest
+[INFO] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.605 s -- in net.zerocloud.pdf.consumer.FontLoadingWorkflowTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.173 s -- in net.zerocloud.pdf.consumer.HardenedWorkerRecoveryTest
+[WARNING] Tests run: 3, Failures: 0, Errors: 0, Skipped: 3, Time elapsed: 0.002 s -- in net.zerocloud.pdf.consumer.HardenedWorkerScaleProfileTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.761 s -- in net.zerocloud.pdf.consumer.HardenedWorkerWorkflowTest
+[INFO] Tests run: 19, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.126 s -- in net.zerocloud.pdf.consumer.HostileInputWorkflowTest
+[INFO] Tests run: 27, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.197 s -- in net.zerocloud.pdf.consumer.ImageResourceExtractionWorkflowTest
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.360 s -- in net.zerocloud.pdf.consumer.IncrementalSignatureWorkflowTest
+[INFO] Tests run: 26, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 37.97 s -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Tests run: 52, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.395 s -- in net.zerocloud.pdf.consumer.PageManipulationWorkflowTest
+[INFO] Tests run: 42, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 53.87 s -- in net.zerocloud.pdf.consumer.ParagraphCompositionWorkflowTest
+[INFO] Tests run: 64, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 62.22 s -- in net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest
+[INFO] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.152 s -- in net.zerocloud.pdf.consumer.PdfValueWorkflowTest
+[INFO] Tests run: 26, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.355 s -- in net.zerocloud.pdf.consumer.PdfVersionPasswordSecurityWorkflowTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.498 s -- in net.zerocloud.pdf.consumer.RenderingColdStartTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.017 s -- in net.zerocloud.pdf.consumer.WorkflowLifecycleTest
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 32.37 s -- in net.zerocloud.pdf.consumer.RenderingWorkflowContractTest
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 67.79 s -- in net.zerocloud.pdf.consumer.TableCompositionWorkflowTest
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 33.45 s -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Tests run: 44, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.758 s -- in net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s -- in net.zerocloud.pdf.consumer.WorkflowCapabilityProviderTest
+[INFO] Tests run: 82, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 19.87 s -- in net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.042 s -- in net.zerocloud.pdf.consumer.WorkflowResourceOwnershipTest
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.040 s -- in net.zerocloud.pdf.consumer.WorkflowTransactionContractTest
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.917 s -- in net.zerocloud.pdf.HardenedWorkerIsolationTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.716 s -- in net.zerocloud.pdf.HardenedWorkerRecoveryFaultTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s -- in net.zerocloud.pdf.PdfBoxCMapPreflightTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s -- in net.zerocloud.pdf.PdfBoxFontMetricPreflightTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.311 s -- in net.zerocloud.pdf.WorkerCodecContractTest
+[INFO] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.697 s -- in net.zerocloud.pdf.WorkerProtocolBoundaryTest
+[INFO] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.013 s -- in net.zerocloud.pdf.WorkflowResourceCacheAccountingTest
+[WARNING] Tests run: 843, Failures: 0, Errors: 0, Skipped: 3
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.068 s -- in net.zerocloud.pdf.contract.JarContractIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.194 s -- in net.zerocloud.pdf.contract.PublicApiLeakageIT
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 48.78 s -- in net.zerocloud.pdf.acceptance.AcceptanceEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.375 s -- in net.zerocloud.pdf.acceptance.T24ParagraphEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.444 s -- in net.zerocloud.pdf.acceptance.T25ParagraphEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.747 s -- in net.zerocloud.pdf.acceptance.T26TableEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.753 s -- in net.zerocloud.pdf.acceptance.T27TableEvidenceCommandTest
+[INFO] Tests run: 32, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.071 s -- in net.zerocloud.pdf.conversion.SubprocessCapabilityProviderTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.047 s -- in net.zerocloud.pdf.conversion.contract.JarContractIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.021 s -- in net.zerocloud.pdf.conversion.contract.PublicApiLeakageIT
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.280 s -- in net.zerocloud.pdf.itext7.consumer.PreviewBlankDocumentFacadeTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.755 s -- in net.zerocloud.pdf.migration.itext7.contract.ClasspathExclusivityIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.009 s -- in net.zerocloud.pdf.migration.itext7.contract.JarContractIT
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.400 s -- in net.zerocloud.pdf.tools.inventory.InventoryCommandTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0
+Inventory validation passed: 20 capabilities, 12 facade surfaces, 19 exclusions.
+Generated inventory documentation is current.
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.054 s -- in net.zerocloud.pdf.tools.release.ReleasePolicyContractTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.494 s -- in net.zerocloud.pdf.tools.release.ReleaseRehearsalCommandTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-05T16:09:50Z
+
+JDK 21 terminal summaries:
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.057 s -- in net.zerocloud.pdf.provider.ProviderCatalogTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 33, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.380 s -- in net.zerocloud.pdf.consumer.AnnotationWorkflowTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s -- in net.zerocloud.pdf.consumer.BlankDocumentWorkflowTest
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.614 s -- in net.zerocloud.pdf.consumer.CanvasImageColorTransparencyWorkflowTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.305 s -- in net.zerocloud.pdf.consumer.CanvasWorkflowTest
+[INFO] Tests run: 55, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 10.87 s -- in net.zerocloud.pdf.consumer.DocumentMetadataWorkflowTest
+[INFO] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.610 s -- in net.zerocloud.pdf.consumer.FontLoadingWorkflowTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.629 s -- in net.zerocloud.pdf.consumer.HardenedWorkerRecoveryTest
+[WARNING] Tests run: 3, Failures: 0, Errors: 0, Skipped: 3, Time elapsed: 0.003 s -- in net.zerocloud.pdf.consumer.HardenedWorkerScaleProfileTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.280 s -- in net.zerocloud.pdf.consumer.HardenedWorkerWorkflowTest
+[INFO] Tests run: 19, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.132 s -- in net.zerocloud.pdf.consumer.HostileInputWorkflowTest
+[INFO] Tests run: 27, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.196 s -- in net.zerocloud.pdf.consumer.ImageResourceExtractionWorkflowTest
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.306 s -- in net.zerocloud.pdf.consumer.IncrementalSignatureWorkflowTest
+[INFO] Tests run: 26, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 39.24 s -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Tests run: 52, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.388 s -- in net.zerocloud.pdf.consumer.PageManipulationWorkflowTest
+[INFO] Tests run: 42, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 55.98 s -- in net.zerocloud.pdf.consumer.ParagraphCompositionWorkflowTest
+[INFO] Tests run: 64, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 64.98 s -- in net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest
+[INFO] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.103 s -- in net.zerocloud.pdf.consumer.PdfValueWorkflowTest
+[INFO] Tests run: 26, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.110 s -- in net.zerocloud.pdf.consumer.PdfVersionPasswordSecurityWorkflowTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.498 s -- in net.zerocloud.pdf.consumer.RenderingColdStartTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.016 s -- in net.zerocloud.pdf.consumer.WorkflowLifecycleTest
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 34.41 s -- in net.zerocloud.pdf.consumer.RenderingWorkflowContractTest
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 70.71 s -- in net.zerocloud.pdf.consumer.TableCompositionWorkflowTest
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 35.58 s -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Tests run: 44, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.786 s -- in net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.010 s -- in net.zerocloud.pdf.consumer.WorkflowCapabilityProviderTest
+[INFO] Tests run: 82, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 21.08 s -- in net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.041 s -- in net.zerocloud.pdf.consumer.WorkflowResourceOwnershipTest
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.037 s -- in net.zerocloud.pdf.consumer.WorkflowTransactionContractTest
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.395 s -- in net.zerocloud.pdf.HardenedWorkerIsolationTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.793 s -- in net.zerocloud.pdf.HardenedWorkerRecoveryFaultTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s -- in net.zerocloud.pdf.PdfBoxCMapPreflightTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s -- in net.zerocloud.pdf.PdfBoxFontMetricPreflightTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.286 s -- in net.zerocloud.pdf.WorkerCodecContractTest
+[INFO] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.437 s -- in net.zerocloud.pdf.WorkerProtocolBoundaryTest
+[INFO] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.016 s -- in net.zerocloud.pdf.WorkflowResourceCacheAccountingTest
+[WARNING] Tests run: 843, Failures: 0, Errors: 0, Skipped: 3
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.070 s -- in net.zerocloud.pdf.contract.JarContractIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.209 s -- in net.zerocloud.pdf.contract.PublicApiLeakageIT
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 49.21 s -- in net.zerocloud.pdf.acceptance.AcceptanceEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.402 s -- in net.zerocloud.pdf.acceptance.T24ParagraphEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.402 s -- in net.zerocloud.pdf.acceptance.T25ParagraphEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.724 s -- in net.zerocloud.pdf.acceptance.T26TableEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.405 s -- in net.zerocloud.pdf.acceptance.T27TableEvidenceCommandTest
+[INFO] Tests run: 32, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.128 s -- in net.zerocloud.pdf.conversion.SubprocessCapabilityProviderTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.047 s -- in net.zerocloud.pdf.conversion.contract.JarContractIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.019 s -- in net.zerocloud.pdf.conversion.contract.PublicApiLeakageIT
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.275 s -- in net.zerocloud.pdf.itext7.consumer.PreviewBlankDocumentFacadeTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.780 s -- in net.zerocloud.pdf.migration.itext7.contract.ClasspathExclusivityIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.012 s -- in net.zerocloud.pdf.migration.itext7.contract.JarContractIT
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.355 s -- in net.zerocloud.pdf.tools.inventory.InventoryCommandTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0
+Inventory validation passed: 20 capabilities, 12 facade surfaces, 19 exclusions.
+Generated inventory documentation is current.
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.054 s -- in net.zerocloud.pdf.tools.release.ReleasePolicyContractTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.498 s -- in net.zerocloud.pdf.tools.release.ReleaseRehearsalCommandTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-05T16:17:24Z
+
+Final matrix-built T27 recorder revalidation
+Invocation argument vector: ["java", "-cp", "/home/ubuntu/IdeaProjects/open-pdf/pdf-acceptance/target/test-classes:/home/ubuntu/IdeaProjects/open-pdf/pdf-acceptance/target/classes:/home/ubuntu/IdeaProjects/open-pdf/pdf-document/target/classes:/home/ubuntu/IdeaProjects/open-pdf/pdf-provider-contract/target/classes:/home/ubuntu/.m2/repository/org/apache/pdfbox/pdfbox/3.0.8/pdfbox-3.0.8.jar:/home/ubuntu/.m2/repository/org/apache/pdfbox/pdfbox-io/3.0.8/pdfbox-io-3.0.8.jar:/home/ubuntu/.m2/repository/org/apache/pdfbox/fontbox/3.0.8/fontbox-3.0.8.jar:/home/ubuntu/.m2/repository/commons-logging/commons-logging/1.4.0/commons-logging-1.4.0.jar:/home/ubuntu/.m2/repository/com/twelvemonkeys/imageio/imageio-tiff/3.14.0/imageio-tiff-3.14.0.jar:/home/ubuntu/.m2/repository/com/twelvemonkeys/imageio/imageio-core/3.14.0/imageio-core-3.14.0.jar:/home/ubuntu/.m2/repository/com/twelvemonkeys/imageio/imageio-metadata/3.14.0/imageio-metadata-3.14.0.jar:/home/ubuntu/.m2/repository/com/twelvemonkeys/common/common-lang/3.14.0/common-lang-3.14.0.jar:/home/ubuntu/.m2/repository/com/twelvemonkeys/common/common-io/3.14.0/common-io-3.14.0.jar:/home/ubuntu/.m2/repository/com/twelvemonkeys/common/common-image/3.14.0/common-image-3.14.0.jar:/home/ubuntu/.m2/repository/junit/junit/4.13.2/junit-4.13.2.jar:/home/ubuntu/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:", "net.zerocloud.pdf.acceptance.T27TableEvidenceCommand", "/tmp/folio-t27-final-acceptance-0zsho770", "/home/ubuntu/IdeaProjects/open-pdf/scripts/qpdf-pin.properties", "/home/ubuntu/IdeaProjects/open-pdf/scripts/pdfium-pin.properties", "/home/ubuntu/IdeaProjects/open-pdf/scripts/imagemagick-pin.properties", "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles", "0.1.0-SNAPSHOT"]
+Terminal exit: 0
+Output directory: /tmp/folio-t27-final-acceptance-0zsho770
+Original log: /tmp/t27-final-acceptance.log
+Original log SHA-256: 68c9a0b3e5e143e6ae6540f7519edf603c81aa3c96633fe840c5361f18c2847c
+T27: syntax=PASS, semantic=PASS, visual=PASS; standards and compatibility remain indeterminate.
+All 19 per-page visual Markdown records are byte-identical to the retained records.
+All three chains retain ID-neutral PDF SHA-256 95e2fe473a70bc8d4204e30647ec32cbeccc9d9c49a939ee5d9a4a4d9dcfab70.
+[
+  {
+    "page": 1,
+    "primaryChangedRgb": 0,
+    "secondaryChangedRgb": 1384,
+    "pdfiumSha256": "089b5862f456ca619631f3ecd48602d4a7740f0ad94986958fd4b8181ab619b7"
+  },
+  {
+    "page": 2,
+    "primaryChangedRgb": 0,
+    "secondaryChangedRgb": 346,
+    "pdfiumSha256": "63628220b3d9c0e9ba8bf9173549a140d489d38bf1eccb0d976f1f254c6ae804"
+  },
+  {
+    "page": 3,
+    "primaryChangedRgb": 0,
+    "secondaryChangedRgb": 1384,
+    "pdfiumSha256": "4bbfe064061ce1a4994284ce872c2838d2bb46111a245b6319a7dfa25f33165e"
+  },
+  {
+    "page": 4,
+    "primaryChangedRgb": 0,
+    "secondaryChangedRgb": 346,
+    "pdfiumSha256": "a394d8b00d705e73ddb64986f965f0ecd2e1f47163e3d0162207b6de27ccee61"
+  },
+  {
+    "page": 5,
+    "primaryChangedRgb": 0,
+    "secondaryChangedRgb": 173,
+    "pdfiumSha256": "4bdc4a5001f4f8525f8ecdace67744bfcbc0f95ddcdcec18b9e9d169d27d3b2b"
+  },
+  {
+    "page": 6,
+    "primaryChangedRgb": 0,
+    "secondaryChangedRgb": 257,
+    "pdfiumSha256": "4a192e03fa9ef4c94286eef16a61436a737e50f23904ce92674342803aa847db"
+  },
+  {
+    "page": 7,
+    "primaryChangedRgb": 0,
+    "secondaryChangedRgb": 313,
+    "pdfiumSha256": "557de8dc7d8f3768949f9ba1a0ed00dc84f9e0849bc1f0bf6145ac79f2c3c1b9"
+  },
+  {
+    "page": 8,
+    "primaryChangedRgb": 0,
+    "secondaryChangedRgb": 257,
+    "pdfiumSha256": "2246a838b0685744c7955f2a77270c27d13a165605d4fb0cd5cbf5ad8e5b45c8"
+  },
+  {
+    "page": 9,
+    "primaryChangedRgb": 0,
+    "secondaryChangedRgb": 313,
+    "pdfiumSha256": "557de8dc7d8f3768949f9ba1a0ed00dc84f9e0849bc1f0bf6145ac79f2c3c1b9"
+  },
+  {
+    "page": 10,
+    "primaryChangedRgb": 0,
+    "secondaryChangedRgb": 229,
+    "pdfiumSha256": "e254e5e82e3043513e45f8f6f8639ac88b3348f49577c084a3558066313034e0"
+  },
+  {
+    "page": 11,
+    "primaryChangedRgb": 0,
+    "secondaryChangedRgb": 117,
+    "pdfiumSha256": "3a2f960f17e2245130bef3b613caa2bcedeb9ade059e474487249731f46d06b6"
+  },
+  {
+    "page": 12,
+    "primaryChangedRgb": 0,
+    "secondaryChangedRgb": 140,
+    "pdfiumSha256": "9f40ab19f29d1f4053ad29c4aab0a81d2e24a48ef94200d5dc1f2d6cdcf79201"
+  },
+  {
+    "page": 13,
+    "primaryChangedRgb": 0,
+    "secondaryChangedRgb": 61,
+    "pdfiumSha256": "efab3f5d90d7461566370131dd7da192110e4851be20e7c1b25d193d71de73ec"
+  },
+  {
+    "page": 14,
+    "primaryChangedRgb": 0,
+    "secondaryChangedRgb": 249,
+    "pdfiumSha256": "7b31c9aff034f1a81133654df942863148a8b6e8898f2ff43715df5c522d8b74"
+  },
+  {
+    "page": 15,
+    "primaryChangedRgb": 0,
+    "secondaryChangedRgb": 168,
+    "pdfiumSha256": "7d4905c21a7fd8a0f1808ca04e8df53ca558833655df134fd65396bc21fbbb45"
+  },
+  {
+    "page": 16,
+    "primaryChangedRgb": 0,
+    "secondaryChangedRgb": 235,
+    "pdfiumSha256": "31cf974d8334468c6bf2a4e3853929406ee0bcd175ff6626e4df0b6161da4d8e"
+  },
+  {
+    "page": 17,
+    "primaryChangedRgb": 0,
+    "secondaryChangedRgb": 61,
+    "pdfiumSha256": "efab3f5d90d7461566370131dd7da192110e4851be20e7c1b25d193d71de73ec"
+  },
+  {
+    "page": 18,
+    "primaryChangedRgb": 0,
+    "secondaryChangedRgb": 117,
+    "pdfiumSha256": "3a2f960f17e2245130bef3b613caa2bcedeb9ade059e474487249731f46d06b6"
+  },
+  {
+    "page": 19,
+    "primaryChangedRgb": 0,
+    "secondaryChangedRgb": 168,
+    "pdfiumSha256": "7d4905c21a7fd8a0f1808ca04e8df53ca558833655df134fd65396bc21fbbb45"
+  }
+]
+
+CORRECTED-SOURCE VERIFICATION (independent-review P1)
+Source/test tree SHA-256: 4658971d89d895080fa31b1f4fd8a0f1a2980e63a476524a8d59bec88aaa5c88
+The recipe at the top of this receipt is unchanged. Earlier 916-test verification applies only to the pre-correction snapshot.
+
+Command: ./mvnw -B -ntp -pl pdf-acceptance -am -Dtest=LargeTableWorkflowTest,TablePaginationWorkflowTest,TableCompositionWorkflowTest,ParagraphPaginationWorkflowTest,ParagraphCompositionWorkflowTest,T27TableEvidenceCommandTest,T26TableEvidenceCommandTest -Dsurefire.failIfNoSpecifiedTests=false test
+Terminal exit: 0
+Original log: /tmp/t27-review-correction-focused-compiled.log
+Original log SHA-256: 4fc487a14faccb55d48bf61a92d082ef2dcb21449d2064ff2af5c023d12a18d1
+Test totals [tests, failures, errors, skips]: [232, 0, 0, 0]
+[INFO] Tests run: 30, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 42.83 s -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Tests run: 42, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 52.22 s -- in net.zerocloud.pdf.consumer.ParagraphCompositionWorkflowTest
+[INFO] Tests run: 64, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 60.15 s -- in net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 69.16 s -- in net.zerocloud.pdf.consumer.TableCompositionWorkflowTest
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 33.98 s -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Tests run: 228, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.757 s -- in net.zerocloud.pdf.acceptance.T26TableEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.863 s -- in net.zerocloud.pdf.acceptance.T27TableEvidenceCommandTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-06T10:43:46+08:00
+
+Command: ./scripts/inventory validate
+Terminal exit: 0
+Original log: /tmp/t27-review-correction-inventory-validate.log
+Original log SHA-256: 720ae12c5ef7f71a9103d730dad3d8f963850b5c4a3821fb82ac28417409c7e2
+Inventory validation passed: 20 capabilities, 12 facade surfaces, 19 exclusions.
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-06T10:43:03+08:00
+
+Command: ./scripts/inventory generate
+Terminal exit: 0
+Original log: /tmp/t27-review-correction-inventory-generate.log
+Original log SHA-256: f3492b23fa870e41ecb4c0c60530eb675154b394885e90ff4d3ca61da63383a1
+Inventory validation passed: 20 capabilities, 12 facade surfaces, 19 exclusions.
+Generated docs/generated/capability-matrix.md
+Generated docs/generated/facade-surface.md
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-06T10:42:01+08:00
+
+Command: ./scripts/inventory check
+Terminal exit: 0
+Original log: /tmp/t27-review-correction-inventory-check.log
+Original log SHA-256: e481fb8dd8a7b485e0197ff23ff091a320dc2e125f9bf836d21f45a72b9cad33
+Inventory validation passed: 20 capabilities, 12 facade surfaces, 19 exclusions.
+Generated inventory documentation is current.
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-06T10:43:33+08:00
+
+Intermediate admission-only full verification; superseded by the remaining Canvas cache-lifetime P1.
+Compiled source/test snapshot: 4658971d89d895080fa31b1f4fd8a0f1a2980e63a476524a8d59bec88aaa5c88
+Command: ./mvnw -B -ntp verify
+Terminal exit: 0
+Original log: /tmp/t27-review-correction-full-verify.log
+SHA-256: 0b94942350222a9cfeade9a2d619ed9a058eac55f57ba5ef851d5585b1601bd2
+Test totals: [920, 0, 0, 3]
+This result does not close the later cache-lifetime finding; the new bounded-heap test and correction require final verification.
+
+FINAL CACHE-CORRECTED T27 ACCEPTANCE REVALIDATION
+Source/test SHA-256: cce6f26c4e96f386a172bebc83b9ebc0636688c226cabe8d306d2fd4982447c9
+Invocation argument vector: ["java", "-cp", "/home/ubuntu/IdeaProjects/open-pdf/pdf-acceptance/target/test-classes:/home/ubuntu/IdeaProjects/open-pdf/pdf-acceptance/target/classes:/home/ubuntu/IdeaProjects/open-pdf/pdf-document/target/classes:/home/ubuntu/IdeaProjects/open-pdf/pdf-provider-contract/target/classes:/home/ubuntu/.m2/repository/org/apache/pdfbox/pdfbox/3.0.8/pdfbox-3.0.8.jar:/home/ubuntu/.m2/repository/org/apache/pdfbox/pdfbox-io/3.0.8/pdfbox-io-3.0.8.jar:/home/ubuntu/.m2/repository/org/apache/pdfbox/fontbox/3.0.8/fontbox-3.0.8.jar:/home/ubuntu/.m2/repository/commons-logging/commons-logging/1.4.0/commons-logging-1.4.0.jar:/home/ubuntu/.m2/repository/com/twelvemonkeys/imageio/imageio-tiff/3.14.0/imageio-tiff-3.14.0.jar:/home/ubuntu/.m2/repository/com/twelvemonkeys/imageio/imageio-core/3.14.0/imageio-core-3.14.0.jar:/home/ubuntu/.m2/repository/com/twelvemonkeys/imageio/imageio-metadata/3.14.0/imageio-metadata-3.14.0.jar:/home/ubuntu/.m2/repository/com/twelvemonkeys/common/common-lang/3.14.0/common-lang-3.14.0.jar:/home/ubuntu/.m2/repository/com/twelvemonkeys/common/common-io/3.14.0/common-io-3.14.0.jar:/home/ubuntu/.m2/repository/com/twelvemonkeys/common/common-image/3.14.0/common-image-3.14.0.jar:/home/ubuntu/.m2/repository/junit/junit/4.13.2/junit-4.13.2.jar:/home/ubuntu/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:", "net.zerocloud.pdf.acceptance.T27TableEvidenceCommand", "/tmp/folio-t27-final-cache-acceptance-40joaihx", "/home/ubuntu/IdeaProjects/open-pdf/scripts/qpdf-pin.properties", "/home/ubuntu/IdeaProjects/open-pdf/scripts/pdfium-pin.properties", "/home/ubuntu/IdeaProjects/open-pdf/scripts/imagemagick-pin.properties", "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles", "0.1.0-SNAPSHOT"]
+Output directory: /tmp/folio-t27-final-cache-acceptance-40joaihx
+Terminal exit: 0
+Original log: /tmp/t27-final-cache-acceptance.log
+Original log SHA-256: 6f46ace9d0024c768de167a757fb03322cde302b5beeba6f7838d7498409b625
+Syntax=PASS, semantic=PASS, visual=PASS. All 19 per-page visual Markdown records and 95 PNG artifacts are byte-identical to the retained evidence; all three chains retain ID-neutral PDF SHA-256 95e2fe473a70bc8d4204e30647ec32cbeccc9d9c49a939ee5d9a4a4d9dcfab70.
+
+FINAL CACHE-CORRECTED FOCUSED AND INVENTORY VERIFICATION
+Source/test SHA-256: cce6f26c4e96f386a172bebc83b9ebc0636688c226cabe8d306d2fd4982447c9
+
+Command: ./mvnw -B -ntp -pl pdf-acceptance -am -Dtest=LargeTableWorkflowTest,TablePaginationWorkflowTest,TableCompositionWorkflowTest,ParagraphPaginationWorkflowTest,ParagraphCompositionWorkflowTest,CanvasImageColorTransparencyWorkflowTest,CanvasWorkflowTest,T27TableEvidenceCommandTest,T26TableEvidenceCommandTest -Dsurefire.failIfNoSpecifiedTests=false test
+Terminal exit: 0
+Original log: /tmp/t27-final-cache-focused.log
+Original log SHA-256: 3ccedd74fdd8af80185c69f8811d0f4327c22a2c26e22bb8c6cafd98d9637f4b
+Test totals [tests, failures, errors, skips]: [256, 0, 0, 0]
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.395 s -- in net.zerocloud.pdf.consumer.CanvasImageColorTransparencyWorkflowTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.559 s -- in net.zerocloud.pdf.consumer.CanvasWorkflowTest
+[INFO] Tests run: 32, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 55.17 s -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Tests run: 42, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 67.07 s -- in net.zerocloud.pdf.consumer.ParagraphCompositionWorkflowTest
+[INFO] Tests run: 64, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 70.20 s -- in net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 67.84 s -- in net.zerocloud.pdf.consumer.TableCompositionWorkflowTest
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 32.18 s -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Tests run: 252, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.954 s -- in net.zerocloud.pdf.acceptance.T26TableEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.816 s -- in net.zerocloud.pdf.acceptance.T27TableEvidenceCommandTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-06T11:01:46+08:00
+
+Command: ./scripts/inventory validate
+Terminal exit: 0
+Original log: /tmp/t27-final-cache-inventory-validate.log
+Original log SHA-256: 76df826670bcc159de95ad982840e187713d5c8d639498732569f93ae6ddf3f9
+Inventory validation passed: 20 capabilities, 12 facade surfaces, 19 exclusions.
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-06T10:58:33+08:00
+
+Command: ./scripts/inventory generate
+Terminal exit: 0
+Original log: /tmp/t27-final-cache-inventory-generate.log
+Original log SHA-256: 33e7999cec68dcc0096632655a27d33765d18a95f003a1261b894c2b03a1a49c
+Inventory validation passed: 20 capabilities, 12 facade surfaces, 19 exclusions.
+Generated docs/generated/capability-matrix.md
+Generated docs/generated/facade-surface.md
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-06T10:56:48+08:00
+
+Command: ./scripts/inventory check
+Terminal exit: 0
+Original log: /tmp/t27-final-cache-inventory-check.log
+Original log SHA-256: db1792df0817138a91c8ce6e4c68fc0fd91ca984e9041bb218ef6200cfca0bd8
+Inventory validation passed: 20 capabilities, 12 facade surfaces, 19 exclusions.
+Generated inventory documentation is current.
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-06T10:59:24+08:00
+
+INDEPENDENT FINAL REVIEW PROBE OUTPUTS
+Source/test snapshot: cce6f26c4e96f386a172bebc83b9ebc0636688c226cabe8d306d2fd4982447c9
+
+Standards independent bounded-heap stream
+Original log: /tmp/t27-standards-graphic-retention/final-flush128-output.txt
+SHA-256: d8809ee17fcc044b52f9ff2316e89ccdf2ce66e3a8e9f6cf66e154294c429897
+IN_PROCESS: accepted=17, retained=1, flushed=16, decoded image payload for flushed rows=4194304
+IN_PROCESS: accepted=33, retained=1, flushed=32, decoded image payload for flushed rows=8388608
+IN_PROCESS: accepted=49, retained=1, flushed=48, decoded image payload for flushed rows=12582912
+IN_PROCESS: accepted=65, retained=1, flushed=64, decoded image payload for flushed rows=16777216
+IN_PROCESS: accepted=81, retained=1, flushed=80, decoded image payload for flushed rows=20971520
+IN_PROCESS: accepted=97, retained=1, flushed=96, decoded image payload for flushed rows=25165824
+IN_PROCESS: accepted=113, retained=1, flushed=112, decoded image payload for flushed rows=29360128
+IN_PROCESS: accepted=128, retained=2, flushed=126, decoded image payload for flushed rows=33030144
+IN_PROCESS: completed accepted=128, retained=0, flushed=128
+IN_PROCESS: PASS, peak modeled bytes=2194400, owned-memory bound=8388608, total raw graphic payload=33554432, publication=COMMITTED
+HARDENED_WORKER: accepted=17, retained=1, flushed=16, decoded image payload for flushed rows=4194304
+HARDENED_WORKER: accepted=33, retained=1, flushed=32, decoded image payload for flushed rows=8388608
+HARDENED_WORKER: accepted=49, retained=1, flushed=48, decoded image payload for flushed rows=12582912
+HARDENED_WORKER: accepted=65, retained=1, flushed=64, decoded image payload for flushed rows=16777216
+HARDENED_WORKER: accepted=81, retained=1, flushed=80, decoded image payload for flushed rows=20971520
+HARDENED_WORKER: accepted=97, retained=1, flushed=96, decoded image payload for flushed rows=25165824
+HARDENED_WORKER: accepted=113, retained=1, flushed=112, decoded image payload for flushed rows=29360128
+HARDENED_WORKER: accepted=128, retained=2, flushed=126, decoded image payload for flushed rows=33030144
+HARDENED_WORKER: completed accepted=128, retained=0, flushed=128
+HARDENED_WORKER: PASS, peak modeled bytes=4804278, owned-memory bound=8388608, total raw graphic payload=33554432, publication=COMMITTED
+
+
+Standards independent public reopen
+Original log: /tmp/t27-standards-graphic-retention/final-flush128-reopen-output.txt
+SHA-256: 13eae383f4de93a8fab0694cbb1bfd178807e7fd1becabc2698e1690cdfcc4d6
+IN_PROCESS: public reopened page count=64
+HARDENED_WORKER: public reopened page count=64
+
+
+Standards independent variable-field admission probes
+Original log: /tmp/t27-standards-graphic-retention/final-fields-output.txt
+SHA-256: ce50666929ff8dda531e5590eb5433286391e4a543aea48bed4dfd876e22324d
+raw-image: MEMORY_LIMIT_EXCEEDED, publication=NOT_ATTEMPTED
+encoded-image: MEMORY_LIMIT_EXCEEDED, publication=NOT_ATTEMPTED
+explicit-mask: MEMORY_LIMIT_EXCEEDED, publication=NOT_ATTEMPTED
+soft-mask: MEMORY_LIMIT_EXCEEDED, publication=NOT_ATTEMPTED
+group-icc: MEMORY_LIMIT_EXCEEDED, publication=NOT_ATTEMPTED
+image-icc: MEMORY_LIMIT_EXCEEDED, publication=NOT_ATTEMPTED
+color-icc: MEMORY_LIMIT_EXCEEDED, publication=NOT_ATTEMPTED
+color-components: MEMORY_LIMIT_EXCEEDED, publication=NOT_ATTEMPTED
+white-point: MEMORY_LIMIT_EXCEEDED, publication=NOT_ATTEMPTED
+black-point: MEMORY_LIMIT_EXCEEDED, publication=NOT_ATTEMPTED
+gamma: MEMORY_LIMIT_EXCEEDED, publication=NOT_ATTEMPTED
+calibration-matrix: MEMORY_LIMIT_EXCEEDED, publication=NOT_ATTEMPTED
+glyph: MEMORY_LIMIT_EXCEEDED, publication=NOT_ATTEMPTED
+
+
+Spec independent bounded-heap stream
+Original log: /tmp/t27-spec-graphic/cache-lifetime-corrected-output.txt
+SHA-256: a257fdc6ce2a2421ee51a749630c62bb15e1e8675087a3d1ad91a9afbab5030e
+after accepted=15, retained=1, flushed=14
+after accepted=31, retained=1, flushed=30
+after accepted=47, retained=1, flushed=46
+after accepted=63, retained=1, flushed=62
+after accepted=79, retained=1, flushed=78
+after accepted=95, retained=1, flushed=94
+after accepted=111, retained=1, flushed=110
+after accepted=127, retained=1, flushed=126
+PASS HARDENED_WORKER: cumulative declared graphic bytes=33554432, bound=8388608, completed rows=128, flushes=63, reopened pages=64, peakOwnedMemoryBytes=2710878
+
+
+FINAL CACHE-CORRECTED FULL MAVEN VERIFICATION
+Source/test SHA-256 before and after: cce6f26c4e96f386a172bebc83b9ebc0636688c226cabe8d306d2fd4982447c9
+Command: ./mvnw -B -ntp verify
+Terminal exit: 0
+Original log: /tmp/t27-final-cache-full-verify.log
+Original log SHA-256: 8729df463f92ac040feddae6670452a14274dcd2d278ed36ec45e59f275f4def
+Test totals [tests, failures, errors, skips]: [922, 0, 0, 3]
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.054 s -- in net.zerocloud.pdf.provider.ProviderCatalogTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 33, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.182 s -- in net.zerocloud.pdf.consumer.AnnotationWorkflowTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s -- in net.zerocloud.pdf.consumer.BlankDocumentWorkflowTest
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.610 s -- in net.zerocloud.pdf.consumer.CanvasImageColorTransparencyWorkflowTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.290 s -- in net.zerocloud.pdf.consumer.CanvasWorkflowTest
+[INFO] Tests run: 55, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 9.659 s -- in net.zerocloud.pdf.consumer.DocumentMetadataWorkflowTest
+[INFO] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.502 s -- in net.zerocloud.pdf.consumer.FontLoadingWorkflowTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.959 s -- in net.zerocloud.pdf.consumer.HardenedWorkerRecoveryTest
+[WARNING] Tests run: 3, Failures: 0, Errors: 0, Skipped: 3, Time elapsed: 0.003 s -- in net.zerocloud.pdf.consumer.HardenedWorkerScaleProfileTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.555 s -- in net.zerocloud.pdf.consumer.HardenedWorkerWorkflowTest
+[INFO] Tests run: 19, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.112 s -- in net.zerocloud.pdf.consumer.HostileInputWorkflowTest
+[INFO] Tests run: 27, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.181 s -- in net.zerocloud.pdf.consumer.ImageResourceExtractionWorkflowTest
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.326 s -- in net.zerocloud.pdf.consumer.IncrementalSignatureWorkflowTest
+[INFO] Tests run: 32, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 50.29 s -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Tests run: 52, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.327 s -- in net.zerocloud.pdf.consumer.PageManipulationWorkflowTest
+[INFO] Tests run: 42, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 52.25 s -- in net.zerocloud.pdf.consumer.ParagraphCompositionWorkflowTest
+[INFO] Tests run: 64, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 59.24 s -- in net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest
+[INFO] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.077 s -- in net.zerocloud.pdf.consumer.PdfValueWorkflowTest
+[INFO] Tests run: 26, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.153 s -- in net.zerocloud.pdf.consumer.PdfVersionPasswordSecurityWorkflowTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.015 s -- in net.zerocloud.pdf.consumer.RenderingColdStartTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.014 s -- in net.zerocloud.pdf.consumer.WorkflowLifecycleTest
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 32.16 s -- in net.zerocloud.pdf.consumer.RenderingWorkflowContractTest
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 65.46 s -- in net.zerocloud.pdf.consumer.TableCompositionWorkflowTest
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 31.71 s -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Tests run: 44, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.760 s -- in net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s -- in net.zerocloud.pdf.consumer.WorkflowCapabilityProviderTest
+[INFO] Tests run: 82, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 19.50 s -- in net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.035 s -- in net.zerocloud.pdf.consumer.WorkflowResourceOwnershipTest
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.033 s -- in net.zerocloud.pdf.consumer.WorkflowTransactionContractTest
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.757 s -- in net.zerocloud.pdf.HardenedWorkerIsolationTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.631 s -- in net.zerocloud.pdf.HardenedWorkerRecoveryFaultTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s -- in net.zerocloud.pdf.PdfBoxCMapPreflightTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s -- in net.zerocloud.pdf.PdfBoxFontMetricPreflightTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.344 s -- in net.zerocloud.pdf.WorkerCodecContractTest
+[INFO] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.473 s -- in net.zerocloud.pdf.WorkerProtocolBoundaryTest
+[INFO] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.013 s -- in net.zerocloud.pdf.WorkflowResourceCacheAccountingTest
+[WARNING] Tests run: 849, Failures: 0, Errors: 0, Skipped: 3
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.069 s -- in net.zerocloud.pdf.contract.JarContractIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.183 s -- in net.zerocloud.pdf.contract.PublicApiLeakageIT
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 49.29 s -- in net.zerocloud.pdf.acceptance.AcceptanceEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.363 s -- in net.zerocloud.pdf.acceptance.T24ParagraphEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.369 s -- in net.zerocloud.pdf.acceptance.T25ParagraphEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.686 s -- in net.zerocloud.pdf.acceptance.T26TableEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.392 s -- in net.zerocloud.pdf.acceptance.T27TableEvidenceCommandTest
+[INFO] Tests run: 32, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.257 s -- in net.zerocloud.pdf.conversion.SubprocessCapabilityProviderTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.049 s -- in net.zerocloud.pdf.conversion.contract.JarContractIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.017 s -- in net.zerocloud.pdf.conversion.contract.PublicApiLeakageIT
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.276 s -- in net.zerocloud.pdf.itext7.consumer.PreviewBlankDocumentFacadeTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.080 s -- in net.zerocloud.pdf.migration.itext7.contract.ClasspathExclusivityIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 s -- in net.zerocloud.pdf.migration.itext7.contract.JarContractIT
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.535 s -- in net.zerocloud.pdf.tools.inventory.InventoryCommandTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0
+Inventory validation passed: 20 capabilities, 12 facade surfaces, 19 exclusions.
+Generated inventory documentation is current.
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.051 s -- in net.zerocloud.pdf.tools.release.ReleasePolicyContractTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.462 s -- in net.zerocloud.pdf.tools.release.ReleaseRehearsalCommandTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-06T11:09:56+08:00
+
+FINAL CACHE-CORRECTED FULL JDK MATRIX
+Command: ./scripts/verify-jdk-matrix.sh
+Terminal exit: 0
+Original log: /tmp/t27-final-cache-jdk-matrix.log
+Original log SHA-256: 3e02cfcec827755ab7e94bb703beb3278ab8ec8921a965f3433bf1e6d9cad45a
+Source/test SHA-256 before/after host and matrix: cce6f26c4e96f386a172bebc83b9ebc0636688c226cabe8d306d2fd4982447c9
+Whole matrix started: 2026-09-06T03:09:56.115537+00:00
+Whole matrix finished: 2026-09-06T03:42:04.214800+00:00
+Local image identities and versions (podman image inspect before matrix):
+abe8c22c734bcff3c2e9ec5f8549f9aeb9a27aabc7b53974ddadcc903d30644a [docker.io/library/eclipse-temurin:8-jdk] [PATH=/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin JAVA_HOME=/opt/java/openjdk LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_ALL=en_US.UTF-8 JAVA_VERSION=jdk8u502-b07]
+e8dca93a5541cca084f88dceae31bdfdde0c15d1857c8f641f753c839538956f [docker.io/library/eclipse-temurin:11-jdk] [PATH=/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin JAVA_HOME=/opt/java/openjdk LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_ALL=en_US.UTF-8 JAVA_VERSION=jdk-11.0.32+9]
+20e832593c27816000db6315e1f554fcd0073c9ba95846ac117e5f3f5e0fea33 [docker.io/library/eclipse-temurin:17-jdk] [PATH=/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin JAVA_HOME=/opt/java/openjdk LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_ALL=en_US.UTF-8 JAVA_VERSION=jdk-17.0.20+8]
+bd15556c8747f309a3d9ac0ca190d7a67dbb131275a41df51041af8460ca03b2 [docker.io/library/eclipse-temurin:21-jdk] [PATH=/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin JAVA_HOME=/opt/java/openjdk LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_ALL=en_US.UTF-8 JAVA_VERSION=jdk-21.0.12+8]
+Per-JDK totals [tests, failures, errors, skips] and completion times:
+[
+  {
+    "jdk": 8,
+    "totals": [
+      922,
+      0,
+      0,
+      3
+    ],
+    "finished": "2026-09-06T03:18:15Z"
+  },
+  {
+    "jdk": 11,
+    "totals": [
+      922,
+      0,
+      0,
+      3
+    ],
+    "finished": "2026-09-06T03:26:33Z"
+  },
+  {
+    "jdk": 17,
+    "totals": [
+      922,
+      0,
+      0,
+      3
+    ],
+    "finished": "2026-09-06T03:34:09Z"
+  },
+  {
+    "jdk": 21,
+    "totals": [
+      922,
+      0,
+      0,
+      3
+    ],
+    "finished": "2026-09-06T03:42:04Z"
+  }
+]
+
+==> Verifying Folio PDF on JDK 8 (docker.io/library/eclipse-temurin:8-jdk)
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.047 s -- in net.zerocloud.pdf.provider.ProviderCatalogTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 33, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.360 s -- in net.zerocloud.pdf.consumer.AnnotationWorkflowTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s -- in net.zerocloud.pdf.consumer.BlankDocumentWorkflowTest
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.535 s -- in net.zerocloud.pdf.consumer.CanvasImageColorTransparencyWorkflowTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.327 s -- in net.zerocloud.pdf.consumer.CanvasWorkflowTest
+[INFO] Tests run: 55, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 9.661 s -- in net.zerocloud.pdf.consumer.DocumentMetadataWorkflowTest
+[INFO] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.587 s -- in net.zerocloud.pdf.consumer.FontLoadingWorkflowTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.608 s -- in net.zerocloud.pdf.consumer.HardenedWorkerRecoveryTest
+[WARNING] Tests run: 3, Failures: 0, Errors: 0, Skipped: 3, Time elapsed: 0.003 s -- in net.zerocloud.pdf.consumer.HardenedWorkerScaleProfileTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.567 s -- in net.zerocloud.pdf.consumer.HardenedWorkerWorkflowTest
+[INFO] Tests run: 19, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.133 s -- in net.zerocloud.pdf.consumer.HostileInputWorkflowTest
+[INFO] Tests run: 27, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.188 s -- in net.zerocloud.pdf.consumer.ImageResourceExtractionWorkflowTest
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.310 s -- in net.zerocloud.pdf.consumer.IncrementalSignatureWorkflowTest
+[INFO] Tests run: 32, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 56.57 s -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Tests run: 52, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.396 s -- in net.zerocloud.pdf.consumer.PageManipulationWorkflowTest
+[INFO] Tests run: 42, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 59.39 s -- in net.zerocloud.pdf.consumer.ParagraphCompositionWorkflowTest
+[INFO] Tests run: 64, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 67.88 s -- in net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest
+[INFO] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.107 s -- in net.zerocloud.pdf.consumer.PdfValueWorkflowTest
+[INFO] Tests run: 26, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.636 s -- in net.zerocloud.pdf.consumer.PdfVersionPasswordSecurityWorkflowTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.523 s -- in net.zerocloud.pdf.consumer.RenderingColdStartTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.016 s -- in net.zerocloud.pdf.consumer.WorkflowLifecycleTest
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 36.56 s -- in net.zerocloud.pdf.consumer.RenderingWorkflowContractTest
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 73.95 s -- in net.zerocloud.pdf.consumer.TableCompositionWorkflowTest
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 36.85 s -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Tests run: 44, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.781 s -- in net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s -- in net.zerocloud.pdf.consumer.WorkflowCapabilityProviderTest
+[INFO] Tests run: 82, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 22.25 s -- in net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.059 s -- in net.zerocloud.pdf.consumer.WorkflowResourceOwnershipTest
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.037 s -- in net.zerocloud.pdf.consumer.WorkflowTransactionContractTest
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.441 s -- in net.zerocloud.pdf.HardenedWorkerIsolationTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.955 s -- in net.zerocloud.pdf.HardenedWorkerRecoveryFaultTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s -- in net.zerocloud.pdf.PdfBoxCMapPreflightTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s -- in net.zerocloud.pdf.PdfBoxFontMetricPreflightTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.245 s -- in net.zerocloud.pdf.WorkerCodecContractTest
+[INFO] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.451 s -- in net.zerocloud.pdf.WorkerProtocolBoundaryTest
+[INFO] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.015 s -- in net.zerocloud.pdf.WorkflowResourceCacheAccountingTest
+[WARNING] Tests run: 849, Failures: 0, Errors: 0, Skipped: 3
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.074 s -- in net.zerocloud.pdf.contract.JarContractIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.213 s -- in net.zerocloud.pdf.contract.PublicApiLeakageIT
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 58.88 s -- in net.zerocloud.pdf.acceptance.AcceptanceEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.378 s -- in net.zerocloud.pdf.acceptance.T24ParagraphEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.558 s -- in net.zerocloud.pdf.acceptance.T25ParagraphEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.690 s -- in net.zerocloud.pdf.acceptance.T26TableEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.367 s -- in net.zerocloud.pdf.acceptance.T27TableEvidenceCommandTest
+[INFO] Tests run: 32, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.126 s -- in net.zerocloud.pdf.conversion.SubprocessCapabilityProviderTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.047 s -- in net.zerocloud.pdf.conversion.contract.JarContractIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.010 s -- in net.zerocloud.pdf.conversion.contract.PublicApiLeakageIT
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.317 s -- in net.zerocloud.pdf.itext7.consumer.PreviewBlankDocumentFacadeTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.906 s -- in net.zerocloud.pdf.migration.itext7.contract.ClasspathExclusivityIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.015 s -- in net.zerocloud.pdf.migration.itext7.contract.JarContractIT
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.382 s -- in net.zerocloud.pdf.tools.inventory.InventoryCommandTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0
+Inventory validation passed: 20 capabilities, 12 facade surfaces, 19 exclusions.
+Generated inventory documentation is current.
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.049 s -- in net.zerocloud.pdf.tools.release.ReleasePolicyContractTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.290 s -- in net.zerocloud.pdf.tools.release.ReleaseRehearsalCommandTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-06T03:18:15Z
+
+==> Verifying Folio PDF on JDK 11 (docker.io/library/eclipse-temurin:11-jdk)
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.060 s -- in net.zerocloud.pdf.provider.ProviderCatalogTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 33, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.452 s -- in net.zerocloud.pdf.consumer.AnnotationWorkflowTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s -- in net.zerocloud.pdf.consumer.BlankDocumentWorkflowTest
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.637 s -- in net.zerocloud.pdf.consumer.CanvasImageColorTransparencyWorkflowTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.311 s -- in net.zerocloud.pdf.consumer.CanvasWorkflowTest
+[INFO] Tests run: 55, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 10.47 s -- in net.zerocloud.pdf.consumer.DocumentMetadataWorkflowTest
+[INFO] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.553 s -- in net.zerocloud.pdf.consumer.FontLoadingWorkflowTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.078 s -- in net.zerocloud.pdf.consumer.HardenedWorkerRecoveryTest
+[WARNING] Tests run: 3, Failures: 0, Errors: 0, Skipped: 3, Time elapsed: 0.005 s -- in net.zerocloud.pdf.consumer.HardenedWorkerScaleProfileTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.785 s -- in net.zerocloud.pdf.consumer.HardenedWorkerWorkflowTest
+[INFO] Tests run: 19, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.140 s -- in net.zerocloud.pdf.consumer.HostileInputWorkflowTest
+[INFO] Tests run: 27, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.208 s -- in net.zerocloud.pdf.consumer.ImageResourceExtractionWorkflowTest
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.329 s -- in net.zerocloud.pdf.consumer.IncrementalSignatureWorkflowTest
+[INFO] Tests run: 32, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 57.00 s -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Tests run: 52, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.390 s -- in net.zerocloud.pdf.consumer.PageManipulationWorkflowTest
+[INFO] Tests run: 42, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 59.79 s -- in net.zerocloud.pdf.consumer.ParagraphCompositionWorkflowTest
+[INFO] Tests run: 64, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 68.81 s -- in net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest
+[INFO] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.107 s -- in net.zerocloud.pdf.consumer.PdfValueWorkflowTest
+[INFO] Tests run: 26, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.229 s -- in net.zerocloud.pdf.consumer.PdfVersionPasswordSecurityWorkflowTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.528 s -- in net.zerocloud.pdf.consumer.RenderingColdStartTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.012 s -- in net.zerocloud.pdf.consumer.WorkflowLifecycleTest
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 37.19 s -- in net.zerocloud.pdf.consumer.RenderingWorkflowContractTest
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 74.32 s -- in net.zerocloud.pdf.consumer.TableCompositionWorkflowTest
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 37.30 s -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Tests run: 44, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.772 s -- in net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s -- in net.zerocloud.pdf.consumer.WorkflowCapabilityProviderTest
+[INFO] Tests run: 82, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 22.21 s -- in net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.042 s -- in net.zerocloud.pdf.consumer.WorkflowResourceOwnershipTest
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.036 s -- in net.zerocloud.pdf.consumer.WorkflowTransactionContractTest
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.490 s -- in net.zerocloud.pdf.HardenedWorkerIsolationTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.888 s -- in net.zerocloud.pdf.HardenedWorkerRecoveryFaultTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s -- in net.zerocloud.pdf.PdfBoxCMapPreflightTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s -- in net.zerocloud.pdf.PdfBoxFontMetricPreflightTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.276 s -- in net.zerocloud.pdf.WorkerCodecContractTest
+[INFO] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.680 s -- in net.zerocloud.pdf.WorkerProtocolBoundaryTest
+[INFO] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.015 s -- in net.zerocloud.pdf.WorkflowResourceCacheAccountingTest
+[WARNING] Tests run: 849, Failures: 0, Errors: 0, Skipped: 3
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.067 s -- in net.zerocloud.pdf.contract.JarContractIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.210 s -- in net.zerocloud.pdf.contract.PublicApiLeakageIT
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 54.07 s -- in net.zerocloud.pdf.acceptance.AcceptanceEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.403 s -- in net.zerocloud.pdf.acceptance.T24ParagraphEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.545 s -- in net.zerocloud.pdf.acceptance.T25ParagraphEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.733 s -- in net.zerocloud.pdf.acceptance.T26TableEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.179 s -- in net.zerocloud.pdf.acceptance.T27TableEvidenceCommandTest
+[INFO] Tests run: 32, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.074 s -- in net.zerocloud.pdf.conversion.SubprocessCapabilityProviderTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.050 s -- in net.zerocloud.pdf.conversion.contract.JarContractIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.012 s -- in net.zerocloud.pdf.conversion.contract.PublicApiLeakageIT
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.320 s -- in net.zerocloud.pdf.itext7.consumer.PreviewBlankDocumentFacadeTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.832 s -- in net.zerocloud.pdf.migration.itext7.contract.ClasspathExclusivityIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 s -- in net.zerocloud.pdf.migration.itext7.contract.JarContractIT
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.522 s -- in net.zerocloud.pdf.tools.inventory.InventoryCommandTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0
+Inventory validation passed: 20 capabilities, 12 facade surfaces, 19 exclusions.
+Generated inventory documentation is current.
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.053 s -- in net.zerocloud.pdf.tools.release.ReleasePolicyContractTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.850 s -- in net.zerocloud.pdf.tools.release.ReleaseRehearsalCommandTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-06T03:26:33Z
+
+==> Verifying Folio PDF on JDK 17 (docker.io/library/eclipse-temurin:17-jdk)
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.063 s -- in net.zerocloud.pdf.provider.ProviderCatalogTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 33, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.161 s -- in net.zerocloud.pdf.consumer.AnnotationWorkflowTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.009 s -- in net.zerocloud.pdf.consumer.BlankDocumentWorkflowTest
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.654 s -- in net.zerocloud.pdf.consumer.CanvasImageColorTransparencyWorkflowTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.359 s -- in net.zerocloud.pdf.consumer.CanvasWorkflowTest
+[INFO] Tests run: 55, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 10.42 s -- in net.zerocloud.pdf.consumer.DocumentMetadataWorkflowTest
+[INFO] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.587 s -- in net.zerocloud.pdf.consumer.FontLoadingWorkflowTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.185 s -- in net.zerocloud.pdf.consumer.HardenedWorkerRecoveryTest
+[WARNING] Tests run: 3, Failures: 0, Errors: 0, Skipped: 3, Time elapsed: 0 s -- in net.zerocloud.pdf.consumer.HardenedWorkerScaleProfileTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.904 s -- in net.zerocloud.pdf.consumer.HardenedWorkerWorkflowTest
+[INFO] Tests run: 19, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.155 s -- in net.zerocloud.pdf.consumer.HostileInputWorkflowTest
+[INFO] Tests run: 27, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.217 s -- in net.zerocloud.pdf.consumer.ImageResourceExtractionWorkflowTest
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.327 s -- in net.zerocloud.pdf.consumer.IncrementalSignatureWorkflowTest
+[INFO] Tests run: 32, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 53.96 s -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Tests run: 52, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.389 s -- in net.zerocloud.pdf.consumer.PageManipulationWorkflowTest
+[INFO] Tests run: 42, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 54.15 s -- in net.zerocloud.pdf.consumer.ParagraphCompositionWorkflowTest
+[INFO] Tests run: 64, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 62.78 s -- in net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest
+[INFO] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.109 s -- in net.zerocloud.pdf.consumer.PdfValueWorkflowTest
+[INFO] Tests run: 26, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.174 s -- in net.zerocloud.pdf.consumer.PdfVersionPasswordSecurityWorkflowTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.462 s -- in net.zerocloud.pdf.consumer.RenderingColdStartTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.016 s -- in net.zerocloud.pdf.consumer.WorkflowLifecycleTest
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 33.21 s -- in net.zerocloud.pdf.consumer.RenderingWorkflowContractTest
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 68.04 s -- in net.zerocloud.pdf.consumer.TableCompositionWorkflowTest
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 34.15 s -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Tests run: 44, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.745 s -- in net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s -- in net.zerocloud.pdf.consumer.WorkflowCapabilityProviderTest
+[INFO] Tests run: 82, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 20.37 s -- in net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.040 s -- in net.zerocloud.pdf.consumer.WorkflowResourceOwnershipTest
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.038 s -- in net.zerocloud.pdf.consumer.WorkflowTransactionContractTest
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.112 s -- in net.zerocloud.pdf.HardenedWorkerIsolationTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.826 s -- in net.zerocloud.pdf.HardenedWorkerRecoveryFaultTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s -- in net.zerocloud.pdf.PdfBoxCMapPreflightTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s -- in net.zerocloud.pdf.PdfBoxFontMetricPreflightTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.313 s -- in net.zerocloud.pdf.WorkerCodecContractTest
+[INFO] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.009 s -- in net.zerocloud.pdf.WorkerProtocolBoundaryTest
+[INFO] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.020 s -- in net.zerocloud.pdf.WorkflowResourceCacheAccountingTest
+[WARNING] Tests run: 849, Failures: 0, Errors: 0, Skipped: 3
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.066 s -- in net.zerocloud.pdf.contract.JarContractIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.200 s -- in net.zerocloud.pdf.contract.PublicApiLeakageIT
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 48.40 s -- in net.zerocloud.pdf.acceptance.AcceptanceEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.393 s -- in net.zerocloud.pdf.acceptance.T24ParagraphEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.661 s -- in net.zerocloud.pdf.acceptance.T25ParagraphEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.731 s -- in net.zerocloud.pdf.acceptance.T26TableEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.753 s -- in net.zerocloud.pdf.acceptance.T27TableEvidenceCommandTest
+[INFO] Tests run: 32, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.073 s -- in net.zerocloud.pdf.conversion.SubprocessCapabilityProviderTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.046 s -- in net.zerocloud.pdf.conversion.contract.JarContractIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.017 s -- in net.zerocloud.pdf.conversion.contract.PublicApiLeakageIT
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.272 s -- in net.zerocloud.pdf.itext7.consumer.PreviewBlankDocumentFacadeTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.773 s -- in net.zerocloud.pdf.migration.itext7.contract.ClasspathExclusivityIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s -- in net.zerocloud.pdf.migration.itext7.contract.JarContractIT
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.488 s -- in net.zerocloud.pdf.tools.inventory.InventoryCommandTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0
+Inventory validation passed: 20 capabilities, 12 facade surfaces, 19 exclusions.
+Generated inventory documentation is current.
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.053 s -- in net.zerocloud.pdf.tools.release.ReleasePolicyContractTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.821 s -- in net.zerocloud.pdf.tools.release.ReleaseRehearsalCommandTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-06T03:34:09Z
+
+==> Verifying Folio PDF on JDK 21 (docker.io/library/eclipse-temurin:21-jdk)
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.063 s -- in net.zerocloud.pdf.provider.ProviderCatalogTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 33, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.374 s -- in net.zerocloud.pdf.consumer.AnnotationWorkflowTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s -- in net.zerocloud.pdf.consumer.BlankDocumentWorkflowTest
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.613 s -- in net.zerocloud.pdf.consumer.CanvasImageColorTransparencyWorkflowTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.319 s -- in net.zerocloud.pdf.consumer.CanvasWorkflowTest
+[INFO] Tests run: 55, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 10.82 s -- in net.zerocloud.pdf.consumer.DocumentMetadataWorkflowTest
+[INFO] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.640 s -- in net.zerocloud.pdf.consumer.FontLoadingWorkflowTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.537 s -- in net.zerocloud.pdf.consumer.HardenedWorkerRecoveryTest
+[WARNING] Tests run: 3, Failures: 0, Errors: 0, Skipped: 3, Time elapsed: 0.004 s -- in net.zerocloud.pdf.consumer.HardenedWorkerScaleProfileTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.292 s -- in net.zerocloud.pdf.consumer.HardenedWorkerWorkflowTest
+[INFO] Tests run: 19, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.130 s -- in net.zerocloud.pdf.consumer.HostileInputWorkflowTest
+[INFO] Tests run: 27, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.205 s -- in net.zerocloud.pdf.consumer.ImageResourceExtractionWorkflowTest
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.284 s -- in net.zerocloud.pdf.consumer.IncrementalSignatureWorkflowTest
+[INFO] Tests run: 32, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 56.19 s -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Tests run: 52, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.430 s -- in net.zerocloud.pdf.consumer.PageManipulationWorkflowTest
+[INFO] Tests run: 42, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 57.02 s -- in net.zerocloud.pdf.consumer.ParagraphCompositionWorkflowTest
+[INFO] Tests run: 64, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 65.40 s -- in net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest
+[INFO] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.104 s -- in net.zerocloud.pdf.consumer.PdfValueWorkflowTest
+[INFO] Tests run: 26, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.131 s -- in net.zerocloud.pdf.consumer.PdfVersionPasswordSecurityWorkflowTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.497 s -- in net.zerocloud.pdf.consumer.RenderingColdStartTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.017 s -- in net.zerocloud.pdf.consumer.WorkflowLifecycleTest
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 35.48 s -- in net.zerocloud.pdf.consumer.RenderingWorkflowContractTest
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 72.18 s -- in net.zerocloud.pdf.consumer.TableCompositionWorkflowTest
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 35.13 s -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Tests run: 44, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.762 s -- in net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s -- in net.zerocloud.pdf.consumer.WorkflowCapabilityProviderTest
+[INFO] Tests run: 82, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 21.18 s -- in net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.041 s -- in net.zerocloud.pdf.consumer.WorkflowResourceOwnershipTest
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.036 s -- in net.zerocloud.pdf.consumer.WorkflowTransactionContractTest
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.194 s -- in net.zerocloud.pdf.HardenedWorkerIsolationTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.768 s -- in net.zerocloud.pdf.HardenedWorkerRecoveryFaultTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s -- in net.zerocloud.pdf.PdfBoxCMapPreflightTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s -- in net.zerocloud.pdf.PdfBoxFontMetricPreflightTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.288 s -- in net.zerocloud.pdf.WorkerCodecContractTest
+[INFO] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.166 s -- in net.zerocloud.pdf.WorkerProtocolBoundaryTest
+[INFO] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.012 s -- in net.zerocloud.pdf.WorkflowResourceCacheAccountingTest
+[WARNING] Tests run: 849, Failures: 0, Errors: 0, Skipped: 3
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.074 s -- in net.zerocloud.pdf.contract.JarContractIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.215 s -- in net.zerocloud.pdf.contract.PublicApiLeakageIT
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 49.07 s -- in net.zerocloud.pdf.acceptance.AcceptanceEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.395 s -- in net.zerocloud.pdf.acceptance.T24ParagraphEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.467 s -- in net.zerocloud.pdf.acceptance.T25ParagraphEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.708 s -- in net.zerocloud.pdf.acceptance.T26TableEvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.492 s -- in net.zerocloud.pdf.acceptance.T27TableEvidenceCommandTest
+[INFO] Tests run: 32, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.121 s -- in net.zerocloud.pdf.conversion.SubprocessCapabilityProviderTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.049 s -- in net.zerocloud.pdf.conversion.contract.JarContractIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.016 s -- in net.zerocloud.pdf.conversion.contract.PublicApiLeakageIT
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.283 s -- in net.zerocloud.pdf.itext7.consumer.PreviewBlankDocumentFacadeTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.757 s -- in net.zerocloud.pdf.migration.itext7.contract.ClasspathExclusivityIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.012 s -- in net.zerocloud.pdf.migration.itext7.contract.JarContractIT
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.393 s -- in net.zerocloud.pdf.tools.inventory.InventoryCommandTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0
+Inventory validation passed: 20 capabilities, 12 facade surfaces, 19 exclusions.
+Generated inventory documentation is current.
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.054 s -- in net.zerocloud.pdf.tools.release.ReleasePolicyContractTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.677 s -- in net.zerocloud.pdf.tools.release.ReleaseRehearsalCommandTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Finished at: 2026-09-06T03:42:04Z
+
+FINAL PRE-PUBLICATION DELIVERY AUDIT
+Fixed base and unchanged HEAD: 1d1bf4a92eecf42dc370872fe1bcf5b142e42452
+Branch: main
+Tracked changed paths: 30; untracked delivery paths: 198; total: 228
+Scoped groups: {"Acceptance implementation/tests/entry point": 9, "Contracts/inventories/provenance": 10, "Document implementation/public tests": 26, "T27 evidence": 145, "T27 profiles/reference PNGs": 38}
+Source/test SHA-256 after all verification and document updates: cce6f26c4e96f386a172bebc83b9ebc0636688c226cabe8d306d2fd4982447c9
+git diff --check 1d1bf4a92eecf42dc370872fe1bcf5b142e42452: PASS
+All changed/new Java, Markdown, properties, YAML and XML files: no trailing whitespace.
+All changed/new Markdown local links: resolve.
+Original completion criteria: 34 rows, ordered 1 through 34, each mapped to PASS evidence after independent review and required verification.
+No commit, push, issue mutation or unrelated investigation file is part of the delivery.
+
+PUBLICATION AUTHORIZATION FOLLOW-UP (2026-09-06)
+After the verified uncommitted delivery, the user authorized a commit, GitHub push and closure of issue #28.
+The audit above records the initial delivery state, before publication was authorized.
+Before staging, HEAD and origin/main both remained at the fixed base, all 228 delivery paths were present, and the source/test SHA-256 still matched cce6f26c4e96f386a172bebc83b9ebc0636688c226cabe8d306d2fd4982447c9.
+Publication-status wording in provenance and delivery/review receipts was updated for this follow-up; implementation, tests, PDFs and PNGs are unchanged.
+The first staged git diff --cached --check exposed PDF files treated as text and trailing whitespace in historical development-log excerpts. The earlier unstaged audit did not include those untracked artifacts in Git's whitespace check.
+Publication preparation adds *.pdf binary to .gitattributes to preserve PDF bytes and removes trailing whitespace from the development receipt; original raw logs and their recorded hashes remain unchanged.
+Publication scope is the 228 reviewed delivery paths plus .gitattributes, 229 paths total. Staged PDF bytes are compared with the verified working-tree artifacts before commit.
