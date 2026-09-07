@@ -525,6 +525,7 @@ final class PdfBoxWorkflowEngine {
 
     private static boolean isCompositionCapability(String capabilityId) {
         return PdfBoxBarcodeOperations.CAPABILITY_ID.equals(capabilityId)
+                || PdfBoxBarcode2DOperations.CAPABILITY_ID.equals(capabilityId)
                 || PdfBoxCanvasOperations.CAPABILITY_ID.equals(capabilityId)
                 || PdfBoxCanvasResourceOperations.CAPABILITY_ID.equals(
                         capabilityId)

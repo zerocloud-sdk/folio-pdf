@@ -1835,3 +1835,50 @@ provenance statement required by [CONTRIBUTING.md](CONTRIBUTING.md).
   actual PDF paths and rasters. Earlier observations remain retained as
   historical evidence; current-source evidence and verification are linked
   from the delivery record.
+## T31 two-dimensional barcodes
+
+- Scope: #32 and the predeclared [T31 Acceptance Profile](capabilities/profiles/T31-two-dimensional-barcodes.md).
+  Product code and fixtures are authored by the Codex implementation agent,
+  with the explicit upstream/data adaptations identified here. During this
+  contribution the agent did not inspect iText source, binaries, resources,
+  private implementation material or output; none was used.
+- The fixed 7.2.6 QR, DataMatrix and PDF417 public API documents linked by the
+  profile are used only to inventory modes and options. They are not an
+  implementation or correctness oracle.
+- [OkapiBarcode 0.5.6](docs/third-party/okapibarcode-0.5.6.md) supplies runtime
+  encoding, protected extension points, and the narrowly adapted ECC200
+  grid/table implementation, PDF417 symbol table and Macro data compaction documented there. The
+  dependency pin is unchanged. Raw PDF417 framing and GF(929) polynomial
+  arithmetic are project-authored and independently tested with ZXing.
+- Independent review probes exposed RAW PDF417 byte state loss at charset ECI
+  and ECC200 EDIFACT termination changing with selected capacity. Original
+  project validator repairs preserve the explicit byte state and reserve
+  sufficient EDIFACT capacity. Public Workflow regressions and unchanged
+  reviewer probes independently decode the repaired outputs with ZXing; its
+  permissively licensed decoder control rules informed the validation fixes.
+  No upstream encoder implementation or iText material was used for these repairs.
+- [Unicode character-set data](docs/third-party/barcode-character-sets.md)
+  supplies portable ISO-8859-10/-14/-16 mappings, with original source hashes
+  and the complete Unicode License V3 notice in NOTICE. Original mapping
+  files also support the repository-only, decoding-only Charset provider.
+- ZXing core 3.5.3 remains independent test/acceptance code; it is not a
+  runtime dependency or fallback encoder. Public workflow tests read actual
+  published PDF Values, reconstruct modules and decode them with ZXing.
+  The repository-only ECC200 decoder adaptation and original source hashes
+  are recorded in [ZXing provenance](docs/third-party/zxing-3.5.3.md); it repairs
+  Structured Append header consumption without using the product encoder.
+  QR coordinate reading/traversal, original exact function/BCH/padding/cluster
+  assertions and the independently recomputed negative ECC fixture are also
+  identified there. The decoding-only Charset provider and its original
+  resources exist solely in the non-distributed acceptance module or tests.
+- The T31 recorder generates both Workflow profiles, qualifies every actual
+  matrix through public PDF Values and independent decoding, then paints a
+  separate geometry reference with existing Canvas commands. Literal profile
+  dimensions/color/placement drive that painter. Unqualified product output
+  cannot define its own reference. Actual PDFium pixels are decoded afresh;
+  pinned qpdf, ImageMagick comparisons and deliberately corrupted public PDFs
+  provide separate syntax, geometry and negative-control observations.
+- The [delivery record](capabilities/evidence/T31-two-dimensional-barcodes.md)
+  owns current verification and independent-review status, artifact/source/tool
+  identities and residual limits. This provenance statement grants no
+  standards certification, compatible status or Foundation release approval.

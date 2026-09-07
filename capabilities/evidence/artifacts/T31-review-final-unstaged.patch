@@ -1,0 +1,1183 @@
+diff --git a/NOTICE b/NOTICE
+index e195069..f79f985 100644
+--- a/NOTICE
++++ b/NOTICE
+@@ -19,6 +19,60 @@ with upstream contributions by Robin Stuart, Daniel Gredler, Robert Elliott
+ and others. It is an unbundled implementation dependency; see
+ docs/third-party/okapibarcode-0.5.6.md.
+ 
++The Document Engine also contains adapted ECC200 padding, error-correction
++interleaving, placement and size tables from OkapiBarcode 0.5.6,
++Copyright 2014 Robin Stuart, under Apache License 2.0. The adapted files
++retain the upstream copyright and license headers and identify modifications.
++The private PDF417 symbol table and Macro data compaction are adapted from the same upstream version,
++Copyright 2014–2017 Robin Stuart, Daniel Gredler, under Apache License 2.0,
++with its original header and modification notice retained.
++
+ Repository-only barcode tests and acceptance use ZXing core 3.5.3,
+ Copyright ZXing authors, under Apache License 2.0. See
+ docs/third-party/zxing-3.5.3.md. ZXing is not a product runtime dependency.
++The repository-only T31 ECC200 decoder and QR matrix observer adapt the same version's decoding
++source to consume Structured Append metadata; original source notices are retained.
++
++Barcode character mappings include Unicode data, Copyright 2015 Unicode, Inc.
++See docs/third-party/barcode-character-sets.md. These data are included in the
++Document Engine and their permission notice follows.
++
++UNICODE LICENSE V3
++
++COPYRIGHT AND PERMISSION NOTICE
++
++Copyright © 1991-2026 Unicode, Inc.
++
++NOTICE TO USER: Carefully read the following legal agreement. BY
++DOWNLOADING, INSTALLING, COPYING OR OTHERWISE USING DATA FILES, AND/OR
++SOFTWARE, YOU UNEQUIVOCALLY ACCEPT, AND AGREE TO BE BOUND BY, ALL OF THE
++TERMS AND CONDITIONS OF THIS AGREEMENT. IF YOU DO NOT AGREE, DO NOT
++DOWNLOAD, INSTALL, COPY, DISTRIBUTE OR USE THE DATA FILES OR SOFTWARE.
++
++Permission is hereby granted, free of charge, to any person obtaining a
++copy of data files and any associated documentation (the "Data Files") or
++software and any associated documentation (the "Software") to deal in the
++Data Files or Software without restriction, including without limitation
++the rights to use, copy, modify, merge, publish, distribute, and/or sell
++copies of the Data Files or Software, and to permit persons to whom the
++Data Files or Software are furnished to do so, provided that either (a)
++this copyright and permission notice appear with all copies of the Data
++Files or Software, or (b) this copyright and permission notice appear in
++associated Documentation.
++
++THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY
++KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
++MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF
++THIRD PARTY RIGHTS.
++
++IN NO EVENT SHALL THE COPYRIGHT HOLDER OR HOLDERS INCLUDED IN THIS NOTICE
++BE LIABLE FOR ANY CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES,
++OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
++WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,
++ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THE DATA
++FILES OR SOFTWARE.
++
++Except as contained in this notice, the name of a copyright holder shall
++not be used in advertising or otherwise to promote the sale, use or other
++dealings in these Data Files or Software without prior written
++authorization of the copyright holder.
+diff --git a/PROVENANCE.md b/PROVENANCE.md
+index 032102a..7e308e2 100644
+--- a/PROVENANCE.md
++++ b/PROVENANCE.md
+@@ -1835,3 +1835,50 @@ provenance statement required by [CONTRIBUTING.md](CONTRIBUTING.md).
+   actual PDF paths and rasters. Earlier observations remain retained as
+   historical evidence; current-source evidence and verification are linked
+   from the delivery record.
++## T31 two-dimensional barcodes
++
++- Scope: #32 and the predeclared [T31 Acceptance Profile](capabilities/profiles/T31-two-dimensional-barcodes.md).
++  Product code and fixtures are authored by the Codex implementation agent,
++  with the explicit upstream/data adaptations identified here. During this
++  contribution the agent did not inspect iText source, binaries, resources,
++  private implementation material or output; none was used.
++- The fixed 7.2.6 QR, DataMatrix and PDF417 public API documents linked by the
++  profile are used only to inventory modes and options. They are not an
++  implementation or correctness oracle.
++- [OkapiBarcode 0.5.6](docs/third-party/okapibarcode-0.5.6.md) supplies runtime
++  encoding, protected extension points, and the narrowly adapted ECC200
++  grid/table implementation, PDF417 symbol table and Macro data compaction documented there. The
++  dependency pin is unchanged. Raw PDF417 framing and GF(929) polynomial
++  arithmetic are project-authored and independently tested with ZXing.
++- Independent review probes exposed RAW PDF417 byte state loss at charset ECI
++  and ECC200 EDIFACT termination changing with selected capacity. Original
++  project validator repairs preserve the explicit byte state and reserve
++  sufficient EDIFACT capacity. Public Workflow regressions and unchanged
++  reviewer probes independently decode the repaired outputs with ZXing; its
++  permissively licensed decoder control rules informed the validation fixes.
++  No upstream encoder implementation or iText material was used for these repairs.
++- [Unicode character-set data](docs/third-party/barcode-character-sets.md)
++  supplies portable ISO-8859-10/-14/-16 mappings, with original source hashes
++  and the complete Unicode License V3 notice in NOTICE. Original mapping
++  files also support the repository-only, decoding-only Charset provider.
++- ZXing core 3.5.3 remains independent test/acceptance code; it is not a
++  runtime dependency or fallback encoder. Public workflow tests read actual
++  published PDF Values, reconstruct modules and decode them with ZXing.
++  The repository-only ECC200 decoder adaptation and original source hashes
++  are recorded in [ZXing provenance](docs/third-party/zxing-3.5.3.md); it repairs
++  Structured Append header consumption without using the product encoder.
++  QR coordinate reading/traversal, original exact function/BCH/padding/cluster
++  assertions and the independently recomputed negative ECC fixture are also
++  identified there. The decoding-only Charset provider and its original
++  resources exist solely in the non-distributed acceptance module or tests.
++- The T31 recorder generates both Workflow profiles, qualifies every actual
++  matrix through public PDF Values and independent decoding, then paints a
++  separate geometry reference with existing Canvas commands. Literal profile
++  dimensions/color/placement drive that painter. Unqualified product output
++  cannot define its own reference. Actual PDFium pixels are decoded afresh;
++  pinned qpdf, ImageMagick comparisons and deliberately corrupted public PDFs
++  provide separate syntax, geometry and negative-control observations.
++- The [delivery record](capabilities/evidence/T31-two-dimensional-barcodes.md)
++  owns current verification and independent-review status, artifact/source/tool
++  identities and residual limits. This provenance statement grants no
++  standards certification, compatible status or Foundation release approval.
+diff --git a/README.md b/README.md
+index a48bad4..aaf352f 100644
+--- a/README.md
++++ b/README.md
+@@ -442,6 +442,16 @@ profiles are supported. See the [barcode contract](docs/one-dimensional-barcodes
+ and [fixed T30 profile](capabilities/profiles/T30-one-dimensional-barcodes.md).
+ The capability remains experimental while standards and dependency gates are open.
+ 
++T31 adds immutable `Barcode2D`, `DrawBarcode2D.version1` and
++`MeasureBarcode2D.version1` for QR, DataMatrix ECC200 and PDF417. Symbols use
++shared vector Form XObjects, with strict character encoding/ECI, explicit ECC,
++compaction, size, typed control headers, color and affine placement. Both
++Workflow profiles are supported. See the
++[two-dimensional barcode contract](docs/two-dimensional-barcodes.md) and
++[fixed T31 profile](capabilities/profiles/T31-two-dimensional-barcodes.md).
++Independent standards certification and compatible-status dependency gates
++remain open; the capability is experimental.
++
+ Successful `WorkflowOutcome` values identify the capability, the actual
+ selected execution profile, the selected Save Mode, safe diagnostics, and every Target
+ receipt, plus any declaration-ordered Capability Provider selections. They
+diff --git a/build-tools/inventory/src/test/java/net/zerocloud/pdf/tools/inventory/InventoryCommandTest.java b/build-tools/inventory/src/test/java/net/zerocloud/pdf/tools/inventory/InventoryCommandTest.java
+index 2dac1e1..c13d71c 100644
+--- a/build-tools/inventory/src/test/java/net/zerocloud/pdf/tools/inventory/InventoryCommandTest.java
++++ b/build-tools/inventory/src/test/java/net/zerocloud/pdf/tools/inventory/InventoryCommandTest.java
+@@ -68,9 +68,11 @@ public final class InventoryCommandTest {
+                 "`document.hardened-worker.recovery-scale`"));
+         assertTrue(facades.contains("- Stable entries: `0`"));
+         assertTrue(facades.contains("- Preview entries: `12`"));
+-        assertTrue(facades.contains("- Explicit capability exclusions: `21`"));
++        assertTrue(facades.contains("- Explicit capability exclusions: `22`"));
+         assertTrue(capabilities.contains("`composition.barcodes.one-dimensional`"));
+         assertTrue(facades.contains("`composition.barcodes.one-dimensional`"));
++        assertTrue(capabilities.contains("`composition.barcodes.two-dimensional`"));
++        assertTrue(facades.contains("`composition.barcodes.two-dimensional`"));
+         assertTrue(capabilities.contains("`composition.shaping.harf-buzz`"));
+         assertTrue(facades.contains("`composition.shaping.harf-buzz`"));
+         assertTrue(facades.contains("`conversion.rendering`"));
+diff --git a/capabilities/capability-matrix.yaml b/capabilities/capability-matrix.yaml
+index 1c5c8d2..e2797f6 100644
+--- a/capabilities/capability-matrix.yaml
++++ b/capabilities/capability-matrix.yaml
+@@ -2155,3 +2155,121 @@ capabilities:
+       record: T30 one-dimensional barcodes
+     certified-platforms: []
+     status: experimental
++
++  - id: composition.barcodes.two-dimensional
++    context: composition
++    summary: Generate QR, DataMatrix ECC200 and PDF417 as reusable vector Forms with strict encoding, ECC, compaction, dimensions, controls and affine placement.
++    reference-suite:
++      source: Issue 32, parent issue 1 and the public iText Core 7.2.6 QR, DataMatrix and PDF417 API inventory
++      role: Mode and option inventory only; independent module, ECC, control, payload and geometry observations determine correctness, never Reference Suite output.
++    native-interface:
++      entry-point: net.zerocloud.pdf.DocumentWorkflow#execute
++      declaration: net.zerocloud.pdf.composition.Barcode2D
++      command: net.zerocloud.pdf.composition.command.DrawBarcode2D
++      query: net.zerocloud.pdf.composition.query.MeasureBarcode2D
++      measurement: net.zerocloud.pdf.composition.Barcode2DSize
++      placement: net.zerocloud.pdf.composition.CanvasMatrix
++      outcome: net.zerocloud.pdf.WorkflowOutcome
++      failure: net.zerocloud.pdf.DocumentFailure
++    migration-facade:
++      stable: []
++      preview: []
++    limitations:
++      - Version 1 supports QR Model 2, all 30 ECC200 sizes and standard PDF417. The immutable Native Interface exposes no encoder, decoder, backend, bitmap or font object. Private encoding uses pinned OkapiBarcode 0.5.6 plus documented original and permissively adapted compaction, raw validation, sizing, ECC and placement extensions. No iText implementation material or output is used.
++      - QR automatically segments numeric, alphanumeric, byte and Shift_JIS Kanji data, fixes ECC at exactly L/M/Q/H and supports automatic or explicit versions 1–40. The caller does not select a mask. DataMatrix supports AUTO, ASCII, C40, TEXT, X12, EDIFACT, BASE256 and validated RAW data; ECC200 correction follows the selected square or rectangular size. Each dimension can be fixed or automatic. Measurement performs bounded encoding and returns detached matrix and full point dimensions without painting or requiring a page.
++      - Strict character sets are Cp437/IBM437, Shift_JIS, UTF-8 and defined ISO-8859 parts 1–11 and 13–16. Explicit ECI selections are closed to assignments 2, 3–13, 15–18, 20 and 26. Default ISO-8859-1 omits its redundant ECI marker. UTF-8 is ECI 26 with exact Unicode scalar recovery; malformed, unrepresentable and lossy input fails. No trimming, normalization, escape-string interpretation or implicit charset fallback occurs. ECI-ignoring scanners are outside the claim.
++      - DataMatrix typed Macro 05/06, leading FNC1, reader programming and Structured Append preserve their control semantics. Native sequence positions and file IDs are one-based; migrating a reference zero-based file ID requires adding one. Reader programming cannot combine with FNC1; Macro cannot combine with sequence or reader programming; RAW cannot also carry typed headers or text encoding. AUTO Macro with FNC1 or nondefault ECI uses ASCII compaction. Raw controls must be supported, complete and end in ASCII state; caller padding and ECC are rejected.
++      - PDF417 supports automatic text/numeric/byte compaction, forced BINARY, validated RAW and typed Macro including one segment. ECC is automatic or exactly 0–8; columns are 1–30, rows 3–90 and total codewords at most 928. Zero dimensions select automatically; a fixed rectangle never silently changes. Positive aspect ratio is physical matrix height/width excluding quiet margins and is exclusive of fixed rows/columns. Macro file IDs are numeric triplets 000–899, segment indices are zero-based and counts are 1–99999. Raw embedded Macro controls are rejected; typed Macro remains available with RAW. No automatic file splitting/assembly, MicroPDF417, truncated PDF417 or bitmap inversion API is provided.
++      - Module, row and quiet dimensions are explicit points. QR modules are square; PDF417 row height is at least three module widths. Minimum quiet margins are four QR widths, the larger DataMatrix module dimension, or two PDF417 widths. The local origin includes all margins. Color is DeviceRGB; no background is painted. Equivalent local vectors and boxes reuse indirect Forms across pages. Arbitrary finite nondegenerate affine placement is admitted within Canvas bounds; page fit, existing ink, contrast and physical scanning remain caller concerns.
++      - Declaration bounds are 8192 UTF-16 units or raw words, a 32-character encoding name and a 2700-character Macro file ID, in addition to family capacities. Encoding reserves 8 MiB of modeled owned memory, vectors are bounded at 4 MiB and placements at 512 bytes; cache and existing Workflow resource accounting remain effective. Stable checked mode/input/geometry/limit failures preserve publication targets and safe diagnostics. No image-pixel allowance is needed.
++      - Both IN_PROCESS and the existing Linux HARDENED_WORKER envelope support the closed declaration, command, query, detached result and failure/outcome identity. Existing permissions, signature protection, unsigned incremental behavior and publication contracts apply. Encoder state is Session-owned; decoder algorithms, charset SPI and external tools stay in tests or the non-distributed acceptance module.
++      - The 224-page profile in each execution mode covers every declared mode, all supported charsets in all three families, all QR versions and ECC200 sizes, PDF417 ECC levels, capacity boundaries and placement/color/unit variants. Independent assertions consume reopened public PDF Values and actual rasters. Every function/control/data/ECC module and declared geometry must qualify before a separate Canvas painter may use that matrix as a geometry reference. Nineteen damaged public PDFs must fail semantic and raster checks and differ visually, including wrong padding with independently recomputed ECC.
++      - Independent PDF standards certification, compatible-status dependencies and Foundation platform certification remain open. Passing decoding, qpdf and visual checks does not grant compatible status, a Migration Facade mapping or T33 release certification.
++    dependency-gates:
++      - capability: composition.canvas.draw-positioned-text
++        required-status: compatible
++      - capability: composition.canvas.images-colors-transparency
++        required-status: compatible
++      - capability: document.hostile-input-limits
++        required-status: compatible
++      - capability: document.hardened-worker
++        required-status: compatible
++    promotion-gates:
++      - ticket: T06
++        requirement: Complete independent standards evidence and every compatible-status Dependency Gate before promotion; implementation, syntax, payload recovery and visual agreement are insufficient.
++    acceptance-profile:
++      id: T31-two-dimensional-barcodes
++      state: experimental
++      mandatory-evidence:
++        - syntax
++        - standards
++        - semantic
++        - visual
++      evidence-record: capabilities/evidence/T31-two-dimensional-barcodes.md
++    evidence:
++      - kind: public-barcode-workflow-contract
++        path: pdf-document/src/test/java/net/zerocloud/pdf/consumer/Barcode2DWorkflowTest.java
++        assertion: Public workflows in both profiles publish and reopen vectors, independently decode all families, modes, encodings and controls, observe reusable Forms, dimensions and transforms, and exercise stable invalid input, resource, signature, permission, incremental and target-preservation behavior.
++      - kind: fixed-independent-profile
++        path: capabilities/profiles/T31-two-dimensional-barcodes.md
++        assertion: Literal inputs, payloads, modes, ECC, size tables, encodings, quiet margins, transforms and raster tolerances precede product comparison.
++      - kind: independent-matrix-contract
++        path: pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T31BarcodeEvidenceTest.java
++        assertion: Both Workflow profiles meet all 224 cases through public PDF Values, exact function and data/ECC checks, payload/control decoding, local geometry, color, placement and cross-page reuse.
++      - kind: independent-raster-contract
++        path: pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T31RasterEvidenceTest.java
++        assertion: Disposable test rasters decode using only declared geometry and pixels, agree with separately painted qualified matrices, reject damaged function patterns and prevent an unqualified matrix from defining its own reference.
++      - kind: negative-pdf-contract
++        path: pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T31NegativeEvidenceTest.java
++        assertion: Nineteen actual public DocumentPatch corruptions are rejected semantically and from rendered pixels for the intended defect, including valid payload/ECC with invalid randomized padding.
++      - kind: structured-append-contract
++        path: pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T31DataMatrixEvidenceTest.java
++        assertion: An independent ECC200 decoder consumes Structured Append words as metadata rather than text, including sequence/file-ID limits in both Workflow profiles.
++      - kind: randomized-padding-contract
++        path: pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T31PaddingEvidenceTest.java
++        assertion: A real public PDF with a wrong ECC200 pad and independently recomputed ECC still decodes AB with zero corrections but fails structural qualification in both profiles.
++      - kind: acceptance-command-contract
++        path: pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T31BarcodeEvidenceCommandTest.java
++        assertion: The recorder retains both profiles, qualified geometry references, source hashes, actual findings, negative PDFs and honest missing-tool states while refusing replacement of T31 or changes to earlier evidence.
++      - kind: repository-evidence-entry-contract
++        path: scripts/tests/test_t31_acceptance_entry.py
++        assertion: The dedicated Maven profile starts the complete independent decoder classpath in its own JVM, records both profiles and unavailable tools without generating earlier capability profiles.
++      - kind: authoritative-contract
++        path: docs/two-dimensional-barcodes.md
++        assertion: Modes, raw grammar, encodings, controls, dimensions, geometry, stable failures, resources, publication, execution profiles and evidence limits match the Chinese guide and public Javadoc.
++      - kind: unavailable-standards-and-dependency-record
++        path: capabilities/evidence/T31-r1/T31-two-dimensional-barcodes-standards.md
++        assertion: Independent standards certification and compatible-status Dependency Gates remain explicitly indeterminate; successful implementation evidence does not permit compatibility or Foundation promotion.
++      - kind: retained-artifact-identity-audit
++        path: capabilities/evidence/artifacts/T31-r1-artifact-audit.json
++        assertion: All 448 published pages pass independent path/module and actual PDFium pixel decoding, every full-page comparison passes AE zero, 19 negative PDFs and rasters are rejected, all 450 source declarations match and all 2336 earlier evidence files are preserved.
++      - kind: executable-coverage-index
++        path: capabilities/evidence/T31-coverage.md
++        assertion: Every one of the 224 literal fixtures links its actual rendered page in both execution profiles, including the RAW EDIFACT capacity and PDF417 ECI byte-state regressions.
++    acceptance-evidence:
++      - chain: syntax
++        result: pass
++        record: capabilities/evidence/T31-r1/T31-two-dimensional-barcodes-syntax.md
++        producer:
++          kind: external-tool
++          name: qpdf
++          version: "12.4.0"
++      - chain: semantic
++        result: pass
++        record: capabilities/evidence/T31-r1/T31-two-dimensional-barcodes-semantic.md
++        producer:
++          kind: project-test
++          name: folio-pdf-t31-semantic-assertions
++          version: "0.1.0-SNAPSHOT"
++      - chain: visual
++        result: pass
++        record: capabilities/evidence/T31-r1/T31-two-dimensional-barcodes-visual.md
++        producer:
++          kind: external-tool
++          name: pdfium-cli
++          version: "v0.11.2-pdfium-chromium-7881"
++    provenance:
++      path: PROVENANCE.md
++      record: T31 two-dimensional barcodes
++    certified-platforms: []
++    status: experimental
+diff --git a/capabilities/facade-surface.yaml b/capabilities/facade-surface.yaml
+index a7faca1..2de9a12 100644
+--- a/capabilities/facade-surface.yaml
++++ b/capabilities/facade-surface.yaml
+@@ -202,3 +202,6 @@ excluded-capabilities:
+   - id: composition.barcodes.one-dimensional
+     ticket: T30
+     reason: T30 provides semantic Barcode1D and explicit-font BarcodeText declarations through the Native Interface DrawBarcode1D command. No approved Reference Suite barcode Migration Facade mapping exists; stable and preview surfaces remain empty and no unsupported stub is introduced.
++  - id: composition.barcodes.two-dimensional
++    ticket: T31
++    reason: T31 exposes QR, DataMatrix ECC200 and PDF417 through the Native Interface Barcode2D declaration, DrawBarcode2D command and MeasureBarcode2D query. No approved Reference Suite barcode Migration Facade mapping exists; stable and preview surfaces remain empty and no unsupported stub is introduced. Reference extension strings map to typed controls, zero-based DataMatrix file IDs require adding one, and reference PDF417 bitmap inversion has no mapping because this capability emits vector Forms.
+diff --git a/docs/generated/capability-matrix.md b/docs/generated/capability-matrix.md
+index 6fac27d..cd9ad6a 100644
+--- a/docs/generated/capability-matrix.md
++++ b/docs/generated/capability-matrix.md
+@@ -6,13 +6,14 @@ Behavioral authority: [`../../capabilities/capability-matrix.yaml`](../../capabi
+ 
+ - Schema version: `1`
+ - Release train: `0.1.0-SNAPSHOT`
+-- Capabilities: `22`
++- Capabilities: `23`
+ 
+ ## Capability summary
+ 
+ | Capability | Context | Status | Migration facade |
+ | --- | --- | --- | --- |
+ | [`composition.barcodes.one-dimensional`](#capability-composition_dot_barcodes_dot_one_dash_dimensional) | `composition` | `experimental` | [excluded by `T30`](facade-surface.md#excluded-capability-composition_dot_barcodes_dot_one_dash_dimensional) |
++| [`composition.barcodes.two-dimensional`](#capability-composition_dot_barcodes_dot_two_dash_dimensional) | `composition` | `experimental` | [excluded by `T31`](facade-surface.md#excluded-capability-composition_dot_barcodes_dot_two_dash_dimensional) |
+ | [`composition.canvas.draw-positioned-text`](#capability-composition_dot_canvas_dot_draw_dash_positioned_dash_text) | `composition` | `experimental` | [excluded by `T17`](facade-surface.md#excluded-capability-composition_dot_canvas_dot_draw_dash_positioned_dash_text) |
+ | [`composition.canvas.images-colors-transparency`](#capability-composition_dot_canvas_dot_images_dash_colors_dash_transparency) | `composition` | `experimental` | [excluded by `T18`](facade-surface.md#excluded-capability-composition_dot_canvas_dot_images_dash_colors_dash_transparency) |
+ | [`composition.fonts.load-embed-subset-fallback`](#capability-composition_dot_fonts_dot_load_dash_embed_dash_subset_dash_fallback) | `composition` | `experimental` | [excluded by `T19`](facade-surface.md#excluded-capability-composition_dot_fonts_dot_load_dash_embed_dash_subset_dash_fallback) |
+@@ -104,6 +105,81 @@ Acceptance Evidence:
+ 
+ Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T30 one-dimensional barcodes`.
+ 
++<a id="capability-composition_dot_barcodes_dot_two_dash_dimensional"></a>
++## `composition.barcodes.two-dimensional`
++
++Generate QR, DataMatrix ECC200 and PDF417 as reusable vector Forms with strict encoding, ECC, compaction, dimensions, controls and affine placement.
++
++- Context: `composition`
++- Status: `experimental`
++- Reference Suite source: `Issue 32, parent issue 1 and the public iText Core 7.2.6 QR, DataMatrix and PDF417 API inventory`
++- Reference role: Mode and option inventory only; independent module, ECC, control, payload and geometry observations determine correctness, never Reference Suite output.
++- Acceptance Profile: `T31-two-dimensional-barcodes`
++- Mandatory evidence chains: `syntax`, `standards`, `semantic`, `visual`
++- Evidence record: [`capabilities/evidence/T31-two-dimensional-barcodes.md`](../../capabilities/evidence/T31-two-dimensional-barcodes.md)
++- Certified platforms: none
++
++### Native Interface mapping
++
++- `command`: `net.zerocloud.pdf.composition.command.DrawBarcode2D`
++- `declaration`: `net.zerocloud.pdf.composition.Barcode2D`
++- `entry-point`: `net.zerocloud.pdf.DocumentWorkflow#execute`
++- `failure`: `net.zerocloud.pdf.DocumentFailure`
++- `measurement`: `net.zerocloud.pdf.composition.Barcode2DSize`
++- `outcome`: `net.zerocloud.pdf.WorkflowOutcome`
++- `placement`: `net.zerocloud.pdf.composition.CanvasMatrix`
++- `query`: `net.zerocloud.pdf.composition.query.MeasureBarcode2D`
++
++### Migration Facade coverage
++
++- Stable: none
++- Preview: none
++- Explicit exclusion: [`T31`](facade-surface.md#excluded-capability-composition_dot_barcodes_dot_two_dash_dimensional) — T31 exposes QR, DataMatrix ECC200 and PDF417 through the Native Interface Barcode2D declaration, DrawBarcode2D command and MeasureBarcode2D query. No approved Reference Suite barcode Migration Facade mapping exists; stable and preview surfaces remain empty and no unsupported stub is introduced. Reference extension strings map to typed controls, zero-based DataMatrix file IDs require adding one, and reference PDF417 bitmap inversion has no mapping because this capability emits vector Forms.
++
++### Gates and limitations
++
++- Dependency Gate: [`composition.canvas.draw-positioned-text`](#capability-composition_dot_canvas_dot_draw_dash_positioned_dash_text) must be `compatible`
++- Dependency Gate: [`composition.canvas.images-colors-transparency`](#capability-composition_dot_canvas_dot_images_dash_colors_dash_transparency) must be `compatible`
++- Dependency Gate: [`document.hostile-input-limits`](#capability-document_dot_hostile_dash_input_dash_limits) must be `compatible`
++- Dependency Gate: [`document.hardened-worker`](#capability-document_dot_hardened_dash_worker) must be `compatible`
++- Promotion gate `T06`: Complete independent standards evidence and every compatible-status Dependency Gate before promotion; implementation, syntax, payload recovery and visual agreement are insufficient.
++- Limitation: Version 1 supports QR Model 2, all 30 ECC200 sizes and standard PDF417. The immutable Native Interface exposes no encoder, decoder, backend, bitmap or font object. Private encoding uses pinned OkapiBarcode 0.5.6 plus documented original and permissively adapted compaction, raw validation, sizing, ECC and placement extensions. No iText implementation material or output is used.
++- Limitation: QR automatically segments numeric, alphanumeric, byte and Shift_JIS Kanji data, fixes ECC at exactly L/M/Q/H and supports automatic or explicit versions 1–40. The caller does not select a mask. DataMatrix supports AUTO, ASCII, C40, TEXT, X12, EDIFACT, BASE256 and validated RAW data; ECC200 correction follows the selected square or rectangular size. Each dimension can be fixed or automatic. Measurement performs bounded encoding and returns detached matrix and full point dimensions without painting or requiring a page.
++- Limitation: Strict character sets are Cp437/IBM437, Shift_JIS, UTF-8 and defined ISO-8859 parts 1–11 and 13–16. Explicit ECI selections are closed to assignments 2, 3–13, 15–18, 20 and 26. Default ISO-8859-1 omits its redundant ECI marker. UTF-8 is ECI 26 with exact Unicode scalar recovery; malformed, unrepresentable and lossy input fails. No trimming, normalization, escape-string interpretation or implicit charset fallback occurs. ECI-ignoring scanners are outside the claim.
++- Limitation: DataMatrix typed Macro 05/06, leading FNC1, reader programming and Structured Append preserve their control semantics. Native sequence positions and file IDs are one-based; migrating a reference zero-based file ID requires adding one. Reader programming cannot combine with FNC1; Macro cannot combine with sequence or reader programming; RAW cannot also carry typed headers or text encoding. AUTO Macro with FNC1 or nondefault ECI uses ASCII compaction. Raw controls must be supported, complete and end in ASCII state; caller padding and ECC are rejected.
++- Limitation: PDF417 supports automatic text/numeric/byte compaction, forced BINARY, validated RAW and typed Macro including one segment. ECC is automatic or exactly 0–8; columns are 1–30, rows 3–90 and total codewords at most 928. Zero dimensions select automatically; a fixed rectangle never silently changes. Positive aspect ratio is physical matrix height/width excluding quiet margins and is exclusive of fixed rows/columns. Macro file IDs are numeric triplets 000–899, segment indices are zero-based and counts are 1–99999. Raw embedded Macro controls are rejected; typed Macro remains available with RAW. No automatic file splitting/assembly, MicroPDF417, truncated PDF417 or bitmap inversion API is provided.
++- Limitation: Module, row and quiet dimensions are explicit points. QR modules are square; PDF417 row height is at least three module widths. Minimum quiet margins are four QR widths, the larger DataMatrix module dimension, or two PDF417 widths. The local origin includes all margins. Color is DeviceRGB; no background is painted. Equivalent local vectors and boxes reuse indirect Forms across pages. Arbitrary finite nondegenerate affine placement is admitted within Canvas bounds; page fit, existing ink, contrast and physical scanning remain caller concerns.
++- Limitation: Declaration bounds are 8192 UTF-16 units or raw words, a 32-character encoding name and a 2700-character Macro file ID, in addition to family capacities. Encoding reserves 8 MiB of modeled owned memory, vectors are bounded at 4 MiB and placements at 512 bytes; cache and existing Workflow resource accounting remain effective. Stable checked mode/input/geometry/limit failures preserve publication targets and safe diagnostics. No image-pixel allowance is needed.
++- Limitation: Both IN_PROCESS and the existing Linux HARDENED_WORKER envelope support the closed declaration, command, query, detached result and failure/outcome identity. Existing permissions, signature protection, unsigned incremental behavior and publication contracts apply. Encoder state is Session-owned; decoder algorithms, charset SPI and external tools stay in tests or the non-distributed acceptance module.
++- Limitation: The 224-page profile in each execution mode covers every declared mode, all supported charsets in all three families, all QR versions and ECC200 sizes, PDF417 ECC levels, capacity boundaries and placement/color/unit variants. Independent assertions consume reopened public PDF Values and actual rasters. Every function/control/data/ECC module and declared geometry must qualify before a separate Canvas painter may use that matrix as a geometry reference. Nineteen damaged public PDFs must fail semantic and raster checks and differ visually, including wrong padding with independently recomputed ECC.
++- Limitation: Independent PDF standards certification, compatible-status dependencies and Foundation platform certification remain open. Passing decoding, qpdf and visual checks does not grant compatible status, a Migration Facade mapping or T33 release certification.
++
++### Evidence
++
++Implementation evidence:
++
++- `public-barcode-workflow-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/consumer/Barcode2DWorkflowTest.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/consumer/Barcode2DWorkflowTest.java) — Public workflows in both profiles publish and reopen vectors, independently decode all families, modes, encodings and controls, observe reusable Forms, dimensions and transforms, and exercise stable invalid input, resource, signature, permission, incremental and target-preservation behavior.
++- `fixed-independent-profile`: [`capabilities/profiles/T31-two-dimensional-barcodes.md`](../../capabilities/profiles/T31-two-dimensional-barcodes.md) — Literal inputs, payloads, modes, ECC, size tables, encodings, quiet margins, transforms and raster tolerances precede product comparison.
++- `independent-matrix-contract`: [`pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T31BarcodeEvidenceTest.java`](../../pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T31BarcodeEvidenceTest.java) — Both Workflow profiles meet all 224 cases through public PDF Values, exact function and data/ECC checks, payload/control decoding, local geometry, color, placement and cross-page reuse.
++- `independent-raster-contract`: [`pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T31RasterEvidenceTest.java`](../../pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T31RasterEvidenceTest.java) — Disposable test rasters decode using only declared geometry and pixels, agree with separately painted qualified matrices, reject damaged function patterns and prevent an unqualified matrix from defining its own reference.
++- `negative-pdf-contract`: [`pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T31NegativeEvidenceTest.java`](../../pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T31NegativeEvidenceTest.java) — Nineteen actual public DocumentPatch corruptions are rejected semantically and from rendered pixels for the intended defect, including valid payload/ECC with invalid randomized padding.
++- `structured-append-contract`: [`pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T31DataMatrixEvidenceTest.java`](../../pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T31DataMatrixEvidenceTest.java) — An independent ECC200 decoder consumes Structured Append words as metadata rather than text, including sequence/file-ID limits in both Workflow profiles.
++- `randomized-padding-contract`: [`pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T31PaddingEvidenceTest.java`](../../pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T31PaddingEvidenceTest.java) — A real public PDF with a wrong ECC200 pad and independently recomputed ECC still decodes AB with zero corrections but fails structural qualification in both profiles.
++- `acceptance-command-contract`: [`pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T31BarcodeEvidenceCommandTest.java`](../../pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T31BarcodeEvidenceCommandTest.java) — The recorder retains both profiles, qualified geometry references, source hashes, actual findings, negative PDFs and honest missing-tool states while refusing replacement of T31 or changes to earlier evidence.
++- `repository-evidence-entry-contract`: [`scripts/tests/test_t31_acceptance_entry.py`](../../scripts/tests/test_t31_acceptance_entry.py) — The dedicated Maven profile starts the complete independent decoder classpath in its own JVM, records both profiles and unavailable tools without generating earlier capability profiles.
++- `authoritative-contract`: [`docs/two-dimensional-barcodes.md`](../two-dimensional-barcodes.md) — Modes, raw grammar, encodings, controls, dimensions, geometry, stable failures, resources, publication, execution profiles and evidence limits match the Chinese guide and public Javadoc.
++- `unavailable-standards-and-dependency-record`: [`capabilities/evidence/T31-r1/T31-two-dimensional-barcodes-standards.md`](../../capabilities/evidence/T31-r1/T31-two-dimensional-barcodes-standards.md) — Independent standards certification and compatible-status Dependency Gates remain explicitly indeterminate; successful implementation evidence does not permit compatibility or Foundation promotion.
++- `retained-artifact-identity-audit`: [`capabilities/evidence/artifacts/T31-r1-artifact-audit.json`](../../capabilities/evidence/artifacts/T31-r1-artifact-audit.json) — All 448 published pages pass independent path/module and actual PDFium pixel decoding, every full-page comparison passes AE zero, 19 negative PDFs and rasters are rejected, all 450 source declarations match and all 2336 earlier evidence files are preserved.
++- `executable-coverage-index`: [`capabilities/evidence/T31-coverage.md`](../../capabilities/evidence/T31-coverage.md) — Every one of the 224 literal fixtures links its actual rendered page in both execution profiles, including the RAW EDIFACT capacity and PDF417 ECI byte-state regressions.
++
++Acceptance Evidence:
++
++- `syntax`: `pass` — [`capabilities/evidence/T31-r1/T31-two-dimensional-barcodes-syntax.md`](../../capabilities/evidence/T31-r1/T31-two-dimensional-barcodes-syntax.md); producer `qpdf@12.4.0` (`external-tool`)
++- `semantic`: `pass` — [`capabilities/evidence/T31-r1/T31-two-dimensional-barcodes-semantic.md`](../../capabilities/evidence/T31-r1/T31-two-dimensional-barcodes-semantic.md); producer `folio-pdf-t31-semantic-assertions@0.1.0-SNAPSHOT` (`project-test`)
++- `visual`: `pass` — [`capabilities/evidence/T31-r1/T31-two-dimensional-barcodes-visual.md`](../../capabilities/evidence/T31-r1/T31-two-dimensional-barcodes-visual.md); producer `pdfium-cli@v0.11.2-pdfium-chromium-7881` (`external-tool`)
++
++Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T31 two-dimensional barcodes`.
++
+ <a id="capability-composition_dot_canvas_dot_draw_dash_positioned_dash_text"></a>
+ ## `composition.canvas.draw-positioned-text`
+ 
+diff --git a/docs/generated/facade-surface.md b/docs/generated/facade-surface.md
+index e28aec4..0407fc7 100644
+--- a/docs/generated/facade-surface.md
++++ b/docs/generated/facade-surface.md
+@@ -8,7 +8,7 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
+ - Release train: `0.1.0-SNAPSHOT`
+ - Stable entries: `0`
+ - Preview entries: `12`
+-- Explicit capability exclusions: `21`
++- Explicit capability exclusions: `22`
+ 
+ ## Stable surfaces
+ 
+@@ -145,6 +145,13 @@ No stable surfaces are declared.
+ - Deferred ticket: `T30`
+ - Reason: T30 provides semantic Barcode1D and explicit-font BarcodeText declarations through the Native Interface DrawBarcode1D command. No approved Reference Suite barcode Migration Facade mapping exists; stable and preview surfaces remain empty and no unsupported stub is introduced.
+ 
++<a id="excluded-capability-composition_dot_barcodes_dot_two_dash_dimensional"></a>
++### `composition.barcodes.two-dimensional`
++
++- Behavioral capability: [`composition.barcodes.two-dimensional`](capability-matrix.md#capability-composition_dot_barcodes_dot_two_dash_dimensional)
++- Deferred ticket: `T31`
++- Reason: T31 exposes QR, DataMatrix ECC200 and PDF417 through the Native Interface Barcode2D declaration, DrawBarcode2D command and MeasureBarcode2D query. No approved Reference Suite barcode Migration Facade mapping exists; stable and preview surfaces remain empty and no unsupported stub is introduced. Reference extension strings map to typed controls, zero-based DataMatrix file IDs require adding one, and reference PDF417 bitmap inversion has no mapping because this capability emits vector Forms.
++
+ <a id="excluded-capability-composition_dot_canvas_dot_draw_dash_positioned_dash_text"></a>
+ ### `composition.canvas.draw-positioned-text`
+ 
+diff --git a/docs/hardened-worker.md b/docs/hardened-worker.md
+index 5c001fb..6a38967 100644
+--- a/docs/hardened-worker.md
++++ b/docs/hardened-worker.md
+@@ -297,7 +297,7 @@ JDK compilers while rejecting any missing or additional class entry.
+ 
+ | Artifact | Inventory resource | Entries | Inventory SHA-256 |
+ | --- | --- | ---: | --- |
+-| `pdf-document` | `META-INF/folio-pdf/document-worker-classes` | 667 | `dc63db72cf1d338b5c3aebafdba32b941ba57fcb1fef3bb8d2aff8964d24c649` |
++| `pdf-document` | `META-INF/folio-pdf/document-worker-classes` | 722 | `741f1b0900f0b94dbba0caa603309f64a69d94caa4951f24643118f5799d026f` |
+ | `pdf-provider-contract` | `META-INF/folio-pdf/provider-contract-worker-classes` | 20 | `c7a7bb193dcfa656ba13af311ce2d7654a5aaac962b8804481a77d14013a25b6` |
+ 
+ Every third-party entry must be a regular JAR whose complete bytes have the
+diff --git a/docs/third-party/okapibarcode-0.5.6.md b/docs/third-party/okapibarcode-0.5.6.md
+index 9ef9a25..d6cb2f5 100644
+--- a/docs/third-party/okapibarcode-0.5.6.md
++++ b/docs/third-party/okapibarcode-0.5.6.md
+@@ -1,6 +1,6 @@
+ # OkapiBarcode 0.5.6
+ 
+-T30 uses `uk.org.okapibarcode:okapibarcode:0.5.6`, selected in ADR-0010,
++T30 and T31 use `uk.org.okapibarcode:okapibarcode:0.5.6`, selected in ADR-0010,
+ solely as a private symbol encoder. Folio PDF owns validation, point geometry,
+ font selection, PDF paths and workflow publication. No Okapi type is exposed
+ by the Native Interface and the dependency is not shaded into Folio artifacts.
+@@ -10,7 +10,8 @@ by the Native Interface and the dependency is not shaded into Folio artifacts.
+ - License: Apache-2.0, as declared by the versioned upstream POM and source
+   headers. Copyright holders include Robin Stuart, Daniel Gredler and Robert
+   Elliott. The existing repository Apache-2.0 LICENSE supplies the license
+-  text. No upstream source is copied into this repository.
++  text. T30 copied no upstream source; T31's narrow source adaptations are
++  identified below and retain the original notices.
+ - Binary JAR SHA-256: `fc07c5e28f200a53b980e36719901e095e06d1432d7ae959a22456f838765f2a`.
+ - Source JAR SHA-256: `e3c1dc7a5ca12c158ea4f5e48a339d67141002a815c45076a7655b91e6a6ec4b`.
+ - Runtime: Java 8 class-file version 52. The required JDK matrix must also
+@@ -22,3 +23,46 @@ by the Native Interface and the dependency is not shaded into Folio artifacts.
+ 
+ Independent decoders are test/acceptance dependencies, never runtime
+ correctness callbacks or fallback encoders.
++
++## T31 ECC200 extension
++
++The dependency does not expose forced DataMatrix compaction or raw data
++codewords. `BarcodeDataMatrixGrid` adapts its ECC200 padding, Reed–Solomon
++interleaving, module placement and finder construction. `BarcodeDataMatrixSize`
++adapts its size/capacity/region table into immutable project-owned records.
++Both are package-private, retain Robin Stuart's 2014 copyright and Apache-2.0
++header, and identify the modification. The source is `DataMatrix.java` in the
++pinned source JAR, SHA-256
++`0e3a17f2ef86b226b5b2dea623dfe90c8e9ba9335b6483288a33741f5d2d947e`.
++The original compaction, debugging output and public upstream surface are not
++copied. Automatic compaction and the public `ReedSolomon` primitive continue
++to use the unmodified dependency. Folio's explicit compaction, validation,
++geometry, PDF Forms and Worker transport are authored for this ticket.
++
++The adapted grid and table ship inside `pdf-document`; the complete upstream
++library remains an ordinary unbundled dependency. Independent tests use ZXing
++3.5.3, expected literal words and zero corrected-codeword assertions.
++
++## T31 PDF417 raw data extension
++
++The public encoder does not accept raw PDF417 codewords. The private
++`BarcodePdf417Patterns` adapts only `Pdf417.java`'s three-cluster symbol table,
++retaining its Copyright 2014–2017 Robin Stuart, Daniel Gredler and Apache-2.0
++header. The original source SHA-256 is
++`91609f7f54b38cac762c2774677830bbb3d5f891c7f33cb8ce9b15fb2516e7dd`.
++Folio's `BarcodePdf417Grid` supplies original descriptor/padding, GF(929)
++polynomial arithmetic, sizing and row framing over that table. It generates
++the ECC polynomial from roots 3^1 through 3^k instead of copying the upstream
++coefficient table. Ordinary automatic and forced-byte compaction use the
++unmodified dependency. Its Macro API suppresses control blocks when the
++segment count is one. To preserve this required case, `BarcodePdf417Compaction`
++adapts only the same source's text/numeric/byte block compaction and associated
++ASCII tables for Macro input, retaining the original header. It exports
++bounded data words to Folio's explicit Macro framer instead of copying the
++upstream sizing, ECC, MicroPDF417 or splitting implementation. The adapted
++classes and original grid ship inside `pdf-document`; no ZXing code is used
++by the product encoder.
++
++Independent workflow tests recover the words with ZXing's separate symbol
++table, validate row indicators, require zero Reed–Solomon corrections at
++every ECC level, and recover the expected literal payload with its reader.
+diff --git a/docs/third-party/zxing-3.5.3.md b/docs/third-party/zxing-3.5.3.md
+index 900bd09..62c8c7d 100644
+--- a/docs/third-party/zxing-3.5.3.md
++++ b/docs/third-party/zxing-3.5.3.md
+@@ -1,14 +1,14 @@
+ # ZXing core 3.5.3 — repository acceptance only
+ 
+ `com.google.zxing:core:3.5.3` supplies independent barcode readers and public
+-module writers to T30 consumer tests and the repository-only acceptance
++module writers to T30/T31 consumer tests and the repository-only acceptance
+ module. It is never a product runtime dependency, fallback encoder, Worker
+ dependency or correctness callback.
+ 
+ - Origin: [versioned upstream tree](https://github.com/zxing/zxing/tree/zxing-3.5.3)
+   and [immutable Maven version](https://repo.maven.apache.org/maven2/com/google/zxing/core/3.5.3/).
+-- License: Apache-2.0, copyright ZXing authors. No upstream source is copied
+-  or shaded into Folio artifacts. The repository Apache-2.0 LICENSE supplies
++- License: Apache-2.0, copyright ZXing authors. No upstream source is shaded
++  into product artifacts; T31's repository-only decoder adaptation is described below. The repository Apache-2.0 LICENSE supplies
+   the license text; the core JAR contains no additional NOTICE file.
+ - Binary SHA-256: `8d8064c1636fdaef7189dd9055c7d59950a8940a12f2293956446ec3c109fd82`.
+ - Source SHA-256: `f983454400d73652ad5236413ba7eba48072e042982a84b10e1468506f4b28ae`.
+@@ -17,4 +17,63 @@ dependency or correctness callback.
+ Code128, Code39, Codabar, EAN/UPC and ITF readers consume actual PDF-derived
+ scanlines. Their public writers define independent expected modules. Original
+ project readers cover standalone supplements, MSI and legacy postal modes;
+-neither the reference writer nor any decoder uses Okapi or iText output.
++no decoding algorithms or expected modules are derived from Okapi or iText
++output. The decoders consume the actual product vectors and rasters.
++
++## T31 ECC200 control metadata adaptation
++
++ZXing 3.5.3's ECC200 text parser skips the Structured Append latch but then
++interprets its three header words as payload. The repository-only
++`T31DataMatrixDecoder`, `T31DataMatrixBitMatrixParser`,
++`T31DataMatrixDataBlock`, `T31DataMatrixVersion` and
++`T31DataMatrixDecodedBitStreamParser` adapt its decoder under the project
++namespace, retaining every source copyright/license header. The change consumes
++and validates all three Structured Append words and exposes their metadata;
++Macro and reader-programming controls are also recorded. Placement extraction,
++deinterleaving, ECC validation and payload decoding remain the independent
++ZXing algorithms. This is not a barcode encoder and is never a Worker or
++product runtime component.
++
++Original files in the pinned source JAR have SHA-256 values:
++
++| File | SHA-256 |
++| --- | --- |
++| Decoder.java | `c40ec827b70903ec26478ba72cfef70e0ef643230e26087c52c0f11449250cc9` |
++| BitMatrixParser.java | `fe61553035166ba6d3c41ab3d46d195e5cbc0f2e584d74a043e1931c1a356ce6` |
++| DataBlock.java | `d1cebf1cc53a77c31f064ada4d8bddc85f63a1bb79c6f7689f0860f22a0e8b30` |
++| Version.java | `3a28942ad2073834a64d4e98791c5b288e70958d94b6685b5309484c4ad911d4` |
++| DecodedBitStreamParser.java | `833c342065096822def05531442de30544d6a9fdc1a8840eeff7242b063bc5aa` |
++
++
++## T31 complete matrix assertions
++
++`T31MatrixOracle` adapts QR format/version coordinate reading and the paired
++column traversal from ZXing's QR `BitMatrixParser.java` (source SHA-256
++`f1a9bed7fdaf186df49a5048589142270a9102340cb15f2d97c39402d0969d5d`).
++Its source retains the upstream copyright and Apache-2.0 notice. The surrounding
++exact finder, separator, alignment, timing, BCH, mask remainder, compaction and
++padding checks are original project assertions. ZXing's public version tables,
++QR decoder, PDF417 symbol table, row decoder and independent GF(929) decoder
++supply independent metadata and zero-correction evidence. The PDF417 cluster
++formula is the published symbol interpretation also used by ZXing's
++`PDF417ScanningDecoder.java` (source SHA-256
++`bfba8b5211c1c572c5e60c72cd90f59cb8be13a8d39779d88d36a4e574dcf2cc`).
++The ECC200 parser additionally records the padding boundary. Original assertions
++check fixed unused placement modules and randomized padding without changing
++payload extraction or error correction. A deliberately wrong-padding fixture
++uses ZXing's independent ReedSolomonEncoder to recompute ECC, proving that
++otherwise valid payload/ECC cannot hide invalid padding. This is negative
++test data, never a fallback product encoder or a positive expected matrix.
++
++The T31 decoding-only Charset provider reads the same original Unicode mapping
++files described in [character-set provenance](barcode-character-sets.md).
++Its SPI registration exists only in the repository-only acceptance artifact;
++product artifacts and Workers do not install it.
++
++Independent RAW review probes also use the unmodified public QR, DataMatrix
++and PDF417 decoders to observe published product modules. The PDF417 decoder's
++ECI/byte-compaction control rules and ECC200 decoder's remaining-capacity rule
++informed original project validator repairs after those probes found payload
++changes. The product validators do not copy these decoder implementations or
++depend on ZXing at runtime. Exact probe sources, outputs, repair observations
++and hashes are retained in the T31 delivery evidence.
+diff --git a/docs/zh-CN/getting-started.md b/docs/zh-CN/getting-started.md
+index c72afb9..70af3ed 100644
+--- a/docs/zh-CN/getting-started.md
++++ b/docs/zh-CN/getting-started.md
+@@ -460,3 +460,67 @@ Code39/Codabar/ITF/MSI 可选 `generateChecksum(true)`；ITF 无校验时输入
+ 传播出回调的失败保留既有目标，发布收据为 `NOT_ATTEMPTED`。In-Process 与 Linux Hardened Worker
+ 共享此契约；无签名的 INCREMENTAL 保留原始修订，签名和修改权限检查先于字体读取。
+ 完整模式、长度、校验、尺寸和文字规则以[英文契约](../one-dimensional-barcodes.md)为准。
++
++## 二维矢量条码（T31，experimental）
++
++`Barcode2D` 支持 QR Model 2、DataMatrix ECC200 和标准 PDF417。
++`DrawBarcode2D.version1` 在已有页面上放置可复用的矢量 Form；相同内容、局部尺寸和
++颜色可跨页共享资源。`MeasureBarcode2D.version1` 返回含静区的尺寸和模块矩阵尺寸，
++不要求页面存在，也不绘制内容。
++
++```java
++Barcode2D barcode = Barcode2D.builder(Barcode2D.Mode.QR, "Folio 二维 😀")
++        .encoding("UTF-8").qrVersion(3)
++        .qrErrorCorrection(Barcode2D.QrErrorCorrection.Q)
++        .moduleWidth(2).moduleHeight(2).quietZone(8).build();
++new DocumentWorkflow().execute(WorkflowRequest.create(output, SaveMode.REWRITE), session -> {
++    Barcode2DSize size = session.query(MeasureBarcode2D.version1(barcode));
++    session.execute(AddBlankPage.INSTANCE);
++    session.execute(DrawBarcode2D.version1(1, barcode,
++            CanvasMatrix.of(1, 0, 0, 1, 36, 144)));
++    return size;
++});
++```
++
++QR 可固定版本 1–40 和 L/M/Q/H 纠错级别，0 表示自动版本；不会自动提高指定的纠错
++级别。DataMatrix 可选 AUTO、ASCII、C40、TEXT、X12、EDIFACT、BASE256、RAW，
++通过 `dataMatrixSize(width,height)` 约束模块数，任一维为 0 时自动选择该维。
++`rawDataMatrix(66,67)` 表示 `AB` 的数据码字，由库补齐填充、ECC 和模块排列。
++RAW EDIFACT 的显式结束序列需要足够的数据容量；自动尺寸会保留其解释，固定尺寸
++不足则明确失败。例如 `[240,5,240]` 的载荷是 `A`，自动选择 12×12，固定 10×10 会失败。
++
++DataMatrix 的 Macro 05/06、FNC1、读者编程和 Structured Append 使用显式 builder
++方法，不解析扩展字符串。序列位置是 1–total，total 为 2–16，文件 ID 为 1–64516；
++从参考 API 的零基文件 ID 迁移时应加一。读者编程不能与 FNC1 组合，Macro 不能与
++读者编程或序列头组合，RAW 不能再附加这些类型化头。AUTO Macro 与 FNC1 或非默认
++ECI 组合时采用 ASCII 压缩，保留头部语义，但不保证最小尺寸。
++
++PDF417 可选 AUTO、BINARY、RAW，ECC 为 -1（自动）或 0–8。列数为 1–30，行数为
++3–90，总码字最多 928；0 表示自动选择该维。正的 `pdf417AspectRatio` 表示不含静区的
++物理高度/宽度，与固定行列互斥。`pdf417Macro("001075",0,2)` 使用数字三元组文件 ID
++（每组三位 000–899）、零基段号和总段数 1–99999，也支持单段 Macro。
++`rawPdf417(1)` 的载荷是 `AB`；库生成长度、填充、行指示和 ECC。RAW 中不接受内嵌
++Macro 控制，应另外使用类型化 Macro 方法。没有位图反色、Micro 或截短 PDF417 API。
++RAW 的字符集 ECI 不会结束 901/924 字节压缩模式；901 的字节尾部和 924 的完整分组
++仍须有效，回到文本压缩需要显式 900 切换码。
++
++字符编码支持 Cp437、Shift_JIS、ISO-8859-1 至 -11、-13 至 -16、UTF-8。UTF-8 使用
++ECI 26，支持完整 Unicode 标量往返；不会替换字符、规范化文本或降级到别的编码。
++ISO-8859-12 未定义，会明确失败。`.eci(number)` 与 `.encoding(name)` 相互替换，
++最后一次选择生效。RAW 的显式 ECI 仅描述已有码字，不会进行文本转码。
++
++尺寸均为变换前的 PDF 点，原点在含静区完整框的左下角。默认模块宽 1，QR 和
++DataMatrix 高 1，PDF417 行高 3。静区默认分别为 4、1、2 点；最小值分别是模块宽
++的 4 倍、DataMatrix 模块宽/高的较大值、PDF417 模块宽的 2 倍。QR 模块须为正方形，
++PDF417 行高至少为模块宽的 3 倍。改变一个尺寸不会自动改变其他尺寸。颜色默认黑色，
++可用 `foregroundRgb` 指定 [0,1] 的 RGB 值。绘制不会填白背景，调用方须让页面已有和
++后续内容保持静区与对比度。
++
++不支持的编码或模式选项返回 `BARCODE_MODE_INVALID`，非法载荷/容量溢出返回
++`BARCODE_INPUT_INVALID`，非法尺寸或奇异矩阵返回 `BARCODE_GEOMETRY_INVALID`，
++声明长度或生成内容超限返回 `BARCODE_LIMIT_EXCEEDED`。资源失败保持既有终止语义。
++传播出回调的失败保留已有发布目标，收据为 `NOT_ATTEMPTED`；非终止性的无效声明在
++被回调捕获后也不会留下局部绘制。两种执行模式、权限检查、签名保护和无签名增量
++保存均遵守既有 Workflow 契约。详见[英文契约](../two-dimensional-barcodes.md)和
++[T31 固定验收 profile](../../capabilities/profiles/T31-two-dimensional-barcodes.md)。
++独立标准认证及 compatible 依赖门槛仍未完成，本能力保持 experimental。
+diff --git a/pdf-acceptance/pom.xml b/pdf-acceptance/pom.xml
+index 5755fbd..e648423 100644
+--- a/pdf-acceptance/pom.xml
++++ b/pdf-acceptance/pom.xml
+@@ -23,6 +23,9 @@
+     <t30.qpdf.pin>${maven.multiModuleProjectDirectory}/scripts/qpdf-pin.properties</t30.qpdf.pin>
+     <t30.pdfium.pin>${maven.multiModuleProjectDirectory}/scripts/pdfium-pin.properties</t30.pdfium.pin>
+     <t30.imagemagick.pin>${maven.multiModuleProjectDirectory}/scripts/imagemagick-pin.properties</t30.imagemagick.pin>
++    <t31.qpdf.pin>${maven.multiModuleProjectDirectory}/scripts/qpdf-pin.properties</t31.qpdf.pin>
++    <t31.pdfium.pin>${maven.multiModuleProjectDirectory}/scripts/pdfium-pin.properties</t31.pdfium.pin>
++    <t31.imagemagick.pin>${maven.multiModuleProjectDirectory}/scripts/imagemagick-pin.properties</t31.imagemagick.pin>
+   </properties>
+ 
+   <dependencies>
+@@ -75,6 +78,40 @@
+   </build>
+ 
+   <profiles>
++    <profile>
++      <id>acceptance-t31-record</id>
++      <build>
++        <plugins>
++          <plugin>
++            <groupId>org.codehaus.mojo</groupId>
++            <artifactId>exec-maven-plugin</artifactId>
++            <executions>
++              <execution>
++                <id>record-two-dimensional-barcode-evidence</id>
++                <phase>verify</phase>
++                <goals><goal>exec</goal></goals>
++                <configuration>
++                  <executable>${java.home}/bin/java</executable>
++                  <classpathScope>runtime</classpathScope>
++                  <arguments>
++                    <argument>-Xmx1024m</argument>
++                    <argument>-classpath</argument>
++                    <classpath/>
++                    <argument>net.zerocloud.pdf.acceptance.T31BarcodeEvidenceCommand</argument>
++                    <argument>${acceptance.output}</argument>
++                    <argument>${t31.qpdf.pin}</argument>
++                    <argument>${t31.pdfium.pin}</argument>
++                    <argument>${t31.imagemagick.pin}</argument>
++                    <argument>${maven.multiModuleProjectDirectory}/capabilities/profiles</argument>
++                    <argument>${project.version}</argument>
++                  </arguments>
++                </configuration>
++              </execution>
++            </executions>
++          </plugin>
++        </plugins>
++      </build>
++    </profile>
+     <profile>
+       <id>acceptance-t30-record</id>
+       <build>
+@@ -183,6 +220,27 @@
+                   </arguments>
+                 </configuration>
+               </execution>
++              <execution>
++                <id>record-two-dimensional-barcode-evidence</id>
++                <phase>verify</phase>
++                <goals><goal>exec</goal></goals>
++                <configuration>
++                  <executable>${java.home}/bin/java</executable>
++                  <classpathScope>runtime</classpathScope>
++                  <arguments>
++                    <argument>-Xmx1024m</argument>
++                    <argument>-classpath</argument>
++                    <classpath/>
++                    <argument>net.zerocloud.pdf.acceptance.T31BarcodeEvidenceCommand</argument>
++                    <argument>${acceptance.output}</argument>
++                    <argument>${t31.qpdf.pin}</argument>
++                    <argument>${t31.pdfium.pin}</argument>
++                    <argument>${t31.imagemagick.pin}</argument>
++                    <argument>${maven.multiModuleProjectDirectory}/capabilities/profiles</argument>
++                    <argument>${project.version}</argument>
++                  </arguments>
++                </configuration>
++              </execution>
+               <execution>
+                 <id>record-rendering-evidence</id>
+                 <phase>verify</phase>
+diff --git a/pdf-document/src/main/java/net/zerocloud/pdf/HardenedWorkerEngine.java b/pdf-document/src/main/java/net/zerocloud/pdf/HardenedWorkerEngine.java
+index 4c00265..306927b 100644
+--- a/pdf-document/src/main/java/net/zerocloud/pdf/HardenedWorkerEngine.java
++++ b/pdf-document/src/main/java/net/zerocloud/pdf/HardenedWorkerEngine.java
+@@ -55,7 +55,7 @@ final class HardenedWorkerEngine {
+     private static final String DOCUMENT_CLASS_INVENTORY =
+             "META-INF/folio-pdf/document-worker-classes";
+     private static final String DOCUMENT_CLASS_INVENTORY_SHA256 =
+-            "72173f3668912940828a25b745a914f0e514ed7c713b0a8bf141d58c849727b3";
++            "741f1b0900f0b94dbba0caa603309f64a69d94caa4951f24643118f5799d026f";
+     private static final String PROVIDER_CLASS_INVENTORY =
+             "META-INF/folio-pdf/provider-contract-worker-classes";
+     private static final String PROVIDER_CLASS_INVENTORY_SHA256 =
+diff --git a/pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxDocumentSession.java b/pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxDocumentSession.java
+index fe4ccfc..d3a529b 100644
+--- a/pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxDocumentSession.java
++++ b/pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxDocumentSession.java
+@@ -13,6 +13,7 @@ import net.zerocloud.pdf.command.UpdateAnnotations;
+ import net.zerocloud.pdf.composition.FontSource;
+ import net.zerocloud.pdf.composition.command.DrawCanvas;
+ import net.zerocloud.pdf.composition.command.DrawBarcode1D;
++import net.zerocloud.pdf.composition.command.DrawBarcode2D;
+ import net.zerocloud.pdf.composition.command.DrawPositionedUnicodeText;
+ import net.zerocloud.pdf.composition.command.ComposeParagraphs;
+ import net.zerocloud.pdf.composition.command.RelayoutParagraphs;
+@@ -40,6 +41,7 @@ final class PdfBoxDocumentSession implements DocumentSession {
+     private final PdfBoxImageResourceExtractionOperations
+             imageResourceExtractionOperations;
+     private final PdfBoxCanvasOperations canvasOperations;
++    private final PdfBoxBarcode2DOperations barcode2DOperations;
+     private final PdfBoxPositionedTextOperations positionedUnicodeTextOperations;
+     private final PdfBoxPageOperations pageOperations;
+     private final PdfBoxParagraphOperations paragraphOperations;
+@@ -97,6 +99,7 @@ final class PdfBoxDocumentSession implements DocumentSession {
+                         document,
+                         valueAdapter,
+                         resources);
++        this.barcode2DOperations = new PdfBoxBarcode2DOperations(document, resources);
+         this.canvasOperations = new PdfBoxCanvasOperations(
+                 document,
+                 valueAdapter,
+@@ -258,6 +261,13 @@ final class PdfBoxDocumentSession implements DocumentSession {
+             return;
+         }
+ 
++        if (command instanceof DrawBarcode2D) {
++            PdfBoxBarcode2DOperations.requirePermission(securityInfo);
++            outcomeCapabilityId = PdfBoxBarcode2DOperations.CAPABILITY_ID;
++            barcode2DOperations.execute((DrawBarcode2D) command);
++            mutationOccurred = true;
++            return;
++        }
+         if (command instanceof DrawBarcode1D) {
+             PdfBoxBarcodeOperations.requirePermission(securityInfo);
+             outcomeCapabilityId = PdfBoxBarcodeOperations.CAPABILITY_ID;
+@@ -556,6 +566,9 @@ final class PdfBoxDocumentSession implements DocumentSession {
+             case WorkerCommandCodec.PREFLIGHT_BARCODE:
+                 PdfBoxBarcodeOperations.requirePermission(securityInfo);
+                 return;
++            case WorkerCommandCodec.PREFLIGHT_BARCODE_2D:
++                PdfBoxBarcode2DOperations.requirePermission(securityInfo);
++                return;
+             case WorkerCommandCodec.PREFLIGHT_ANNOTATIONS:
+                 PdfBoxPermissionPolicy.requireAnnotationModification(
+                         securityInfo);
+@@ -598,6 +611,7 @@ final class PdfBoxDocumentSession implements DocumentSession {
+     }
+ 
+     private static DocumentFailure workerSignatureFailure(int category) {
++        if (category == WorkerCommandCodec.PREFLIGHT_BARCODE_2D) { return PdfBoxBarcode2DOperations.signatureFailure(); }
+         if (category == WorkerCommandCodec.PREFLIGHT_BARCODE) { return PdfBoxBarcodeOperations.signatureFailure(); }
+         if (category == WorkerCommandCodec.PREFLIGHT_TABLES) {
+             return PdfBoxParagraphOperations.signatureFailure(PdfBoxTableLayout.CAPABILITY_ID);
+@@ -623,6 +637,7 @@ final class PdfBoxDocumentSession implements DocumentSession {
+     }
+ 
+     private static DocumentFailure signatureFailure(DocumentCommand command) {
++        if (command instanceof DrawBarcode2D) { return PdfBoxBarcode2DOperations.signatureFailure(); }
+         if (command instanceof DrawBarcode1D) { return PdfBoxBarcodeOperations.signatureFailure(); }
+         if (command instanceof ComposeParagraphs || command instanceof RelayoutParagraphs
+                 || command instanceof FlushParagraphs) {
+@@ -680,6 +695,11 @@ final class PdfBoxDocumentSession implements DocumentSession {
+     private <R> R evaluate(DocumentQuery<R> query) throws DocumentFailure {
+         positionedUnicodeTextOperations.finalizeFonts();
+ 
++        if (query instanceof net.zerocloud.pdf.composition.query.MeasureBarcode2D) {
++            outcomeCapabilityId = PdfBoxBarcode2DOperations.CAPABILITY_ID;
++            return queryResult(barcode2DOperations.measure(((net.zerocloud.pdf.composition.query.MeasureBarcode2D)query).getBarcode()));
++        }
++
+         if (query instanceof net.zerocloud.pdf.composition.query.InspectLargeTable) {
+             return queryResult(largeTableOperations.state());
+         }
+diff --git a/pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxIncrementalCommandPolicy.java b/pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxIncrementalCommandPolicy.java
+index 9921fa9..c44e845 100644
+--- a/pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxIncrementalCommandPolicy.java
++++ b/pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxIncrementalCommandPolicy.java
+@@ -16,6 +16,7 @@ import net.zerocloud.pdf.command.UpdateAnnotations;
+ import net.zerocloud.pdf.command.UpdateDocumentInfo;
+ import net.zerocloud.pdf.composition.command.DrawCanvas;
+ import net.zerocloud.pdf.composition.command.DrawBarcode1D;
++import net.zerocloud.pdf.composition.command.DrawBarcode2D;
+ import net.zerocloud.pdf.composition.command.DrawPositionedUnicodeText;
+ import net.zerocloud.pdf.composition.command.ComposeParagraphs;
+ import net.zerocloud.pdf.composition.command.RelayoutParagraphs;
+@@ -44,6 +45,7 @@ final class PdfBoxIncrementalCommandPolicy {
+                 || command instanceof FlattenAnnotations
+                 || command instanceof DrawCanvas
+                 || command instanceof DrawBarcode1D
++                || command instanceof DrawBarcode2D
+                 || command instanceof DrawPositionedUnicodeText
+                 || command instanceof RelayoutParagraphs
+                 || command instanceof FlushParagraphs
+diff --git a/pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxWorkflowEngine.java b/pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxWorkflowEngine.java
+index c781205..4a655fc 100644
+--- a/pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxWorkflowEngine.java
++++ b/pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxWorkflowEngine.java
+@@ -525,6 +525,7 @@ final class PdfBoxWorkflowEngine {
+ 
+     private static boolean isCompositionCapability(String capabilityId) {
+         return PdfBoxBarcodeOperations.CAPABILITY_ID.equals(capabilityId)
++                || PdfBoxBarcode2DOperations.CAPABILITY_ID.equals(capabilityId)
+                 || PdfBoxCanvasOperations.CAPABILITY_ID.equals(capabilityId)
+                 || PdfBoxCanvasResourceOperations.CAPABILITY_ID.equals(
+                         capabilityId)
+diff --git a/pdf-document/src/main/java/net/zerocloud/pdf/WorkerCommandCodec.java b/pdf-document/src/main/java/net/zerocloud/pdf/WorkerCommandCodec.java
+index ee4fc48..bccfd17 100644
+--- a/pdf-document/src/main/java/net/zerocloud/pdf/WorkerCommandCodec.java
++++ b/pdf-document/src/main/java/net/zerocloud/pdf/WorkerCommandCodec.java
+@@ -25,6 +25,7 @@ import net.zerocloud.pdf.command.UpdateAnnotations;
+ import net.zerocloud.pdf.command.UpdateDocumentInfo;
+ import net.zerocloud.pdf.composition.command.DrawCanvas;
+ import net.zerocloud.pdf.composition.command.DrawBarcode1D;
++import net.zerocloud.pdf.composition.command.DrawBarcode2D;
+ import net.zerocloud.pdf.composition.command.DrawPositionedUnicodeText;
+ import net.zerocloud.pdf.composition.command.ComposeParagraphs;
+ import net.zerocloud.pdf.composition.command.RelayoutParagraphs;
+@@ -66,6 +67,7 @@ final class WorkerCommandCodec {
+     private static final int FLUSH_TABLE = 24;
+     private static final int COMPLETE_TABLE = 25;
+     private static final int DRAW_BARCODE = 26;
++    private static final int DRAW_BARCODE_2D = 27;
+ 
+     static final int PREFLIGHT_UNKNOWN = 0;
+     static final int PREFLIGHT_ASSEMBLY = 1;
+@@ -83,6 +85,7 @@ final class WorkerCommandCodec {
+     static final int PREFLIGHT_PAGINATION = 13;
+     static final int PREFLIGHT_TABLES = 14;
+     static final int PREFLIGHT_BARCODE = 15;
++    static final int PREFLIGHT_BARCODE_2D = 16;
+     static final int PREFLIGHT_DETAILS_NONE = 0;
+     static final int PREFLIGHT_DETAILS_ANNOTATIONS = 1;
+     static final int PREFLIGHT_DETAILS_POSITIONED_TEXT = 2;
+@@ -160,6 +163,8 @@ final class WorkerCommandCodec {
+                         ((DrawPositionedUnicodeText) command).getPageNumber());
+             } else if (command instanceof DrawBarcode1D) {
+                 output.writeInt(((DrawBarcode1D) command).getPageNumber());
++            } else if (command instanceof DrawBarcode2D) {
++                output.writeInt(((DrawBarcode2D) command).getPageNumber());
+             } else {
+                 output.writeInt(0);
+             }
+@@ -179,9 +184,9 @@ final class WorkerCommandCodec {
+             int pageNumber = input.readInt();
+             boolean pageCategory = category == PREFLIGHT_CANVAS_V1
+                     || category == PREFLIGHT_CANVAS_V2
+-                    || category == PREFLIGHT_POSITIONED_TEXT || category == PREFLIGHT_BARCODE;
++                    || category == PREFLIGHT_POSITIONED_TEXT || category == PREFLIGHT_BARCODE || category == PREFLIGHT_BARCODE_2D;
+             if (category < PREFLIGHT_UNKNOWN
+-                    || category > PREFLIGHT_BARCODE
++                    || category > PREFLIGHT_BARCODE_2D
+                     || (!pageCategory && pageNumber != 0)) {
+                 throw rejected("The Worker Command preflight is invalid.");
+             }
+@@ -375,6 +380,7 @@ final class WorkerCommandCodec {
+ 
+     private static int preflightCategory(DocumentCommand command) {
+         if (command instanceof DrawBarcode1D) { return PREFLIGHT_BARCODE; }
++        if (command instanceof DrawBarcode2D) { return PREFLIGHT_BARCODE_2D; }
+         if (PdfBoxLargeTableOperations.supports(command)
+                 || (command instanceof ComposeParagraphs && ((ComposeParagraphs) command).getVersion() >= 3)) { return PREFLIGHT_TABLES; }
+         if (command instanceof RelayoutParagraphs || command instanceof FlushParagraphs
+@@ -740,6 +746,11 @@ final class WorkerCommandCodec {
+                     references);
+             return;
+         }
++        if (command instanceof DrawBarcode2D) {
++            output.writeInt(DRAW_BARCODE_2D);
++            WorkerBarcode2DCodec.write(output, (DrawBarcode2D) command);
++            return;
++        }
+         if (command instanceof DrawBarcode1D) {
+             output.writeInt(DRAW_BARCODE);
+             WorkerBarcodeCodec.write(output, (DrawBarcode1D) command, fontSources);
+@@ -851,6 +862,8 @@ final class WorkerCommandCodec {
+                 return readDocumentPatch(input, references);
+             case DRAW_CANVAS:
+                 return WorkerCompositionCodec.readDrawCanvas(input, references);
++            case DRAW_BARCODE_2D:
++                return WorkerBarcode2DCodec.read(input);
+             case DRAW_BARCODE:
+                 return WorkerBarcodeCodec.read(input, remoteFonts);
+             case COMPOSE_PARAGRAPHS:
+diff --git a/pdf-document/src/main/java/net/zerocloud/pdf/WorkerFailureCatalog.java b/pdf-document/src/main/java/net/zerocloud/pdf/WorkerFailureCatalog.java
+index f3ea44d..73d289e 100644
+--- a/pdf-document/src/main/java/net/zerocloud/pdf/WorkerFailureCatalog.java
++++ b/pdf-document/src/main/java/net/zerocloud/pdf/WorkerFailureCatalog.java
+@@ -31,7 +31,8 @@ final class WorkerFailureCatalog {
+         PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID,
+         PdfBoxTableLayout.CAPABILITY_ID,
+         net.zerocloud.pdf.provider.ShapingRequest.CAPABILITY_ID,
+-        PdfBoxBarcodeOperations.CAPABILITY_ID
++        PdfBoxBarcodeOperations.CAPABILITY_ID,
++        PdfBoxBarcode2DOperations.CAPABILITY_ID
+     };
+ 
+     private static final Descriptor[] SPECIFIC = {
+@@ -883,7 +884,7 @@ final class WorkerFailureCatalog {
+             case BARCODE_GEOMETRY_INVALID:
+             case BARCODE_MODE_INVALID:
+             case BARCODE_LIMIT_EXCEEDED:
+-                return mask(PdfBoxBarcodeOperations.CAPABILITY_ID);
++                return mask(PdfBoxBarcodeOperations.CAPABILITY_ID, PdfBoxBarcode2DOperations.CAPABILITY_ID);
+             case TABLE_INVALID_SPAN:
+             case TABLE_CONSTRAINT_UNSATISFIED:
+                 return mask(PdfBoxTableLayout.CAPABILITY_ID);
+@@ -1061,7 +1062,7 @@ final class WorkerFailureCatalog {
+     }
+ 
+     private static int permissionCapabilities(String diagnostic) {
+-        if (diagnostic.contains("barcode")) { return mask(PdfBoxBarcodeOperations.CAPABILITY_ID); }
++        if (diagnostic.contains("barcode")) { return mask(PdfBoxBarcodeOperations.CAPABILITY_ID, PdfBoxBarcode2DOperations.CAPABILITY_ID); }
+         if (diagnostic.contains("paragraph composition")) { return mask(PdfBoxParagraphOperations.CAPABILITY_ID, PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID, PdfBoxTableLayout.CAPABILITY_ID); }
+         if (diagnostic.contains("Canvas")) {
+             return mask(
+@@ -1075,7 +1076,7 @@ final class WorkerFailureCatalog {
+     }
+ 
+     private static int writeFailureCapabilities(String diagnostic) {
+-        if (diagnostic.startsWith("The barcode")) { return mask(PdfBoxBarcodeOperations.CAPABILITY_ID); }
++        if (diagnostic.startsWith("The barcode")) { return mask(PdfBoxBarcodeOperations.CAPABILITY_ID, PdfBoxBarcode2DOperations.CAPABILITY_ID); }
+         if (diagnostic.contains("paragraph flow")) { return mask(PdfBoxParagraphOperations.CAPABILITY_ID, PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID, PdfBoxTableLayout.CAPABILITY_ID); }
+         if (diagnostic.contains("Canvas Program")) {
+             return mask(
+@@ -1108,7 +1109,7 @@ final class WorkerFailureCatalog {
+     }
+ 
+     private static int pageRangeCapabilities(String diagnostic) {
+-        if (diagnostic.contains("barcode")) { return mask(PdfBoxBarcodeOperations.CAPABILITY_ID); }
++        if (diagnostic.contains("barcode")) { return mask(PdfBoxBarcodeOperations.CAPABILITY_ID, PdfBoxBarcode2DOperations.CAPABILITY_ID); }
+         if (diagnostic.contains("Canvas")) {
+             return mask(
+                     PdfBoxCanvasOperations.CAPABILITY_ID,
+@@ -1154,7 +1155,7 @@ final class WorkerFailureCatalog {
+     }
+ 
+     private static int signatureCapabilities(String diagnostic) {
+-        if (diagnostic.contains("barcode")) { return mask(PdfBoxBarcodeOperations.CAPABILITY_ID); }
++        if (diagnostic.contains("barcode")) { return mask(PdfBoxBarcodeOperations.CAPABILITY_ID, PdfBoxBarcode2DOperations.CAPABILITY_ID); }
+         if (diagnostic.contains("paragraph composition")) { return mask(PdfBoxParagraphOperations.CAPABILITY_ID, PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID, PdfBoxTableLayout.CAPABILITY_ID); }
+         if (diagnostic.contains("Canvas")) {
+             return mask(
+diff --git a/pdf-document/src/main/java/net/zerocloud/pdf/WorkerMessages.java b/pdf-document/src/main/java/net/zerocloud/pdf/WorkerMessages.java
+index ccbe102..0cd12e8 100644
+--- a/pdf-document/src/main/java/net/zerocloud/pdf/WorkerMessages.java
++++ b/pdf-document/src/main/java/net/zerocloud/pdf/WorkerMessages.java
+@@ -44,6 +44,7 @@ final class WorkerMessages {
+     private static final int OUTCOME_PAGINATION = 15;
+     private static final int OUTCOME_TABLES = 16;
+     private static final int OUTCOME_BARCODE = 17;
++    private static final int OUTCOME_BARCODE_2D = 18;
+ 
+     static final int SOURCE_CREDENTIAL = 1;
+     static final int OUTPUT_OWNER_CREDENTIAL = 2;
+@@ -621,6 +622,7 @@ final class WorkerMessages {
+ 
+     private static int outcomeCapabilityToken(String capabilityId)
+             throws DocumentFailure {
++        if (PdfBoxBarcode2DOperations.CAPABILITY_ID.equals(capabilityId)) { return OUTCOME_BARCODE_2D; }
+         if (PdfBoxBarcodeOperations.CAPABILITY_ID.equals(capabilityId)) { return OUTCOME_BARCODE; }
+         if (PdfBoxTableLayout.CAPABILITY_ID.equals(capabilityId)) { return OUTCOME_TABLES; }
+         if (PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID.equals(capabilityId)) { return OUTCOME_PAGINATION; }
+@@ -670,6 +672,8 @@ final class WorkerMessages {
+ 
+     private static String outcomeCapability(int token) throws DocumentFailure {
+         switch (token) {
++            case OUTCOME_BARCODE_2D:
++                return PdfBoxBarcode2DOperations.CAPABILITY_ID;
+             case OUTCOME_BARCODE:
+                 return PdfBoxBarcodeOperations.CAPABILITY_ID;
+             case OUTCOME_TABLES:
+diff --git a/pdf-document/src/main/java/net/zerocloud/pdf/WorkerQueryCodec.java b/pdf-document/src/main/java/net/zerocloud/pdf/WorkerQueryCodec.java
+index b534a99..cea387a 100644
+--- a/pdf-document/src/main/java/net/zerocloud/pdf/WorkerQueryCodec.java
++++ b/pdf-document/src/main/java/net/zerocloud/pdf/WorkerQueryCodec.java
+@@ -7,6 +7,8 @@ import java.util.List;
+ import java.util.Map;
+ import java.util.Optional;
+ import net.zerocloud.pdf.composition.CanvasImage;
++import net.zerocloud.pdf.composition.Barcode2DSize;
++import net.zerocloud.pdf.composition.query.MeasureBarcode2D;
+ import net.zerocloud.pdf.composition.CanvasImageCapabilities;
+ import net.zerocloud.pdf.composition.query.InspectCanvasImageCapabilities;
+ import net.zerocloud.pdf.composition.query.InspectLargeTable;
+@@ -55,6 +57,7 @@ final class WorkerQueryCodec {
+     private static final int RENDER_PAGE = 18;
+     private static final int RENDER_SNAPSHOT = 19;
+     private static final int LARGE_TABLE_STATE = 20;
++    private static final int BARCODE_2D_SIZE = 21;
+ 
+     private WorkerQueryCodec() {
+     }
+@@ -195,7 +198,10 @@ final class WorkerQueryCodec {
+             DocumentQuery<?> query,
+             WorkerReferenceRegistry references)
+             throws IOException, DocumentFailure {
+-        if (query instanceof InspectLargeTable) {
++        if (query instanceof MeasureBarcode2D) {
++            output.writeInt(BARCODE_2D_SIZE); output.writeInt(((MeasureBarcode2D)query).getVersion());
++            WorkerBarcode2DCodec.writeDeclaration(output,((MeasureBarcode2D)query).getBarcode());
++        } else if (query instanceof InspectLargeTable) {
+             output.writeInt(LARGE_TABLE_STATE);
+             output.writeInt(((InspectLargeTable) query).getVersion());
+         } else if (query == PageCount.INSTANCE) {
+@@ -291,6 +297,9 @@ final class WorkerQueryCodec {
+             WorkerReferenceRegistry references) throws DocumentFailure {
+         int opcode = input.readInt();
+         switch (opcode) {
++            case BARCODE_2D_SIZE:
++                WorkerCommandCodec.requireVersion(input.readInt(),MeasureBarcode2D.VERSION_1);
++                return MeasureBarcode2D.version1(WorkerBarcode2DCodec.readDeclaration(input));
+             case LARGE_TABLE_STATE:
+                 WorkerCommandCodec.requireVersion(input.readInt(), InspectLargeTable.VERSION_1);
+                 return InspectLargeTable.version1();
+@@ -393,7 +402,11 @@ final class WorkerQueryCodec {
+             Object result,
+             WorkerReferenceRegistry references)
+             throws IOException, DocumentFailure {
+-        if (query instanceof InspectLargeTable) {
++        if (query instanceof MeasureBarcode2D) {
++            Barcode2DSize size = (Barcode2DSize)result;
++            output.writeInt(size.getVersion()); output.writeInt(size.getMatrixWidth()); output.writeInt(size.getMatrixHeight());
++            output.writeDouble(size.getWidthPoints()); output.writeDouble(size.getHeightPoints());
++        } else if (query instanceof InspectLargeTable) {
+             LargeTableState state = (LargeTableState) result;
+             output.writeString(state.getStage().name());
+             output.writeInt(state.getAcceptedRows()); output.writeInt(state.getRetainedRows());
+@@ -473,6 +486,10 @@ final class WorkerQueryCodec {
+             WorkerCodecIO.Input input,
+             DocumentQuery<?> query,
+             WorkerReferenceRegistry references) throws DocumentFailure {
++        if (query instanceof MeasureBarcode2D) {
++            WorkerCommandCodec.requireVersion(input.readInt(),Barcode2DSize.VERSION_1);
++            return Barcode2DSize.version1(input.readInt(),input.readInt(),input.readDouble(),input.readDouble());
++        }
+         if (query instanceof InspectLargeTable) {
+             LargeTableState.Stage stage = WorkerCommandCodec.enumValue(LargeTableState.Stage.class,
+                     input.readString(), "Large table stage");
+diff --git a/pdf-document/src/main/resources/META-INF/folio-pdf/document-worker-classes b/pdf-document/src/main/resources/META-INF/folio-pdf/document-worker-classes
+index ffbb4a5..5cbaccf 100644
+--- a/pdf-document/src/main/resources/META-INF/folio-pdf/document-worker-classes
++++ b/pdf-document/src/main/resources/META-INF/folio-pdf/document-worker-classes
+@@ -11,9 +11,24 @@ net/zerocloud/pdf/AnnotationProperties$Builder.class
+ net/zerocloud/pdf/AnnotationProperties.class
+ net/zerocloud/pdf/AnnotationQuad.class
+ net/zerocloud/pdf/AnnotationRectangle.class
++net/zerocloud/pdf/Barcode2DEncoding.class
++net/zerocloud/pdf/BarcodeDataMatrixCompaction.class
++net/zerocloud/pdf/BarcodeDataMatrixEncoder.class
++net/zerocloud/pdf/BarcodeDataMatrixGrid.class
++net/zerocloud/pdf/BarcodeDataMatrixRaw.class
++net/zerocloud/pdf/BarcodeDataMatrixSize.class
+ net/zerocloud/pdf/BarcodeFullAsciiCode39.class
++net/zerocloud/pdf/BarcodeIso8859.class
+ net/zerocloud/pdf/BarcodeLabels$1.class
+ net/zerocloud/pdf/BarcodeLabels.class
++net/zerocloud/pdf/BarcodePdf417Compaction$Block.class
++net/zerocloud/pdf/BarcodePdf417Compaction$EncodingMode.class
++net/zerocloud/pdf/BarcodePdf417Compaction.class
++net/zerocloud/pdf/BarcodePdf417Encoder.class
++net/zerocloud/pdf/BarcodePdf417Grid.class
++net/zerocloud/pdf/BarcodePdf417Patterns.class
++net/zerocloud/pdf/BarcodePdf417Raw.class
++net/zerocloud/pdf/BarcodeQrEncoder.class
+ net/zerocloud/pdf/BarcodeRawCode128.class
+ net/zerocloud/pdf/CancellationToken.class
+ net/zerocloud/pdf/CharacterMapping$Confidence.class
+@@ -140,6 +155,7 @@ net/zerocloud/pdf/PdfBoxAnnotationPageOperations$InlineValueNode.class
+ net/zerocloud/pdf/PdfBoxAnnotationPageOperations$MergeStructures.class
+ net/zerocloud/pdf/PdfBoxAnnotationPageOperations$MergedPageStructures.class
+ net/zerocloud/pdf/PdfBoxAnnotationPageOperations.class
++net/zerocloud/pdf/PdfBoxBarcode2DOperations.class
+ net/zerocloud/pdf/PdfBoxBarcodeOperations$1.class
+ net/zerocloud/pdf/PdfBoxBarcodeOperations.class
+ net/zerocloud/pdf/PdfBoxCMapPreflight$LimitExceededException.class
+@@ -429,6 +445,7 @@ net/zerocloud/pdf/TextRenderingMode.class
+ net/zerocloud/pdf/TextStructureExtraction.class
+ net/zerocloud/pdf/WorkerAnnotationCodec$1.class
+ net/zerocloud/pdf/WorkerAnnotationCodec.class
++net/zerocloud/pdf/WorkerBarcode2DCodec.class
+ net/zerocloud/pdf/WorkerBarcodeCodec.class
+ net/zerocloud/pdf/WorkerCodecIO$1.class
+ net/zerocloud/pdf/WorkerCodecIO$BoundedForwardingOutputStream.class
+@@ -581,6 +598,15 @@ net/zerocloud/pdf/composition/Barcode1D$Builder.class
+ net/zerocloud/pdf/composition/Barcode1D$CodeSet.class
+ net/zerocloud/pdf/composition/Barcode1D$Mode.class
+ net/zerocloud/pdf/composition/Barcode1D.class
++net/zerocloud/pdf/composition/Barcode2D$1.class
++net/zerocloud/pdf/composition/Barcode2D$Builder.class
++net/zerocloud/pdf/composition/Barcode2D$DataMatrixEncoding.class
++net/zerocloud/pdf/composition/Barcode2D$DataMatrixMacro.class
++net/zerocloud/pdf/composition/Barcode2D$Mode.class
++net/zerocloud/pdf/composition/Barcode2D$Pdf417Encoding.class
++net/zerocloud/pdf/composition/Barcode2D$QrErrorCorrection.class
++net/zerocloud/pdf/composition/Barcode2D.class
++net/zerocloud/pdf/composition/Barcode2DSize.class
+ net/zerocloud/pdf/composition/BarcodeText$1.class
+ net/zerocloud/pdf/composition/BarcodeText$Alignment.class
+ net/zerocloud/pdf/composition/BarcodeText$Builder.class
+@@ -664,6 +690,7 @@ net/zerocloud/pdf/composition/command/CompleteTable.class
+ net/zerocloud/pdf/composition/command/ComposeParagraphs$FlushMode.class
+ net/zerocloud/pdf/composition/command/ComposeParagraphs.class
+ net/zerocloud/pdf/composition/command/DrawBarcode1D.class
++net/zerocloud/pdf/composition/command/DrawBarcode2D.class
+ net/zerocloud/pdf/composition/command/DrawCanvas.class
+ net/zerocloud/pdf/composition/command/DrawPositionedUnicodeText.class
+ net/zerocloud/pdf/composition/command/FlushParagraphs.class
+@@ -673,6 +700,7 @@ net/zerocloud/pdf/composition/command/package-info.class
+ net/zerocloud/pdf/composition/package-info.class
+ net/zerocloud/pdf/composition/query/InspectCanvasImageCapabilities.class
+ net/zerocloud/pdf/composition/query/InspectLargeTable.class
++net/zerocloud/pdf/composition/query/MeasureBarcode2D.class
+ net/zerocloud/pdf/package-info.class
+ net/zerocloud/pdf/query/Actions.class
+ net/zerocloud/pdf/query/Annotations.class

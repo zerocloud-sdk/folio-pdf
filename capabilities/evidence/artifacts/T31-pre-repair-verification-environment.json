@@ -1,0 +1,117 @@
+{
+  "hostMaven": "Apache Maven 3.9.16 (2bdd9fddda4b155ebf8000e807eb73fd829a51d5)\nMaven home: /home/ubuntu/.m2/wrapper/dists/apache-maven-3.9.16/56ba1f9f\nJava version: 17.0.9, vendor: GraalVM Community, runtime: /opt/graalvm-community-openjdk-17.0.9+9.1\nDefault locale: en, platform encoding: UTF-8\nOS name: \"linux\", version: \"6.8.0-136-generic\", arch: \"amd64\", family: \"unix\"\n",
+  "podman": "podman version 4.9.3\n",
+  "images": [
+    {
+      "id": "abe8c22c734bcff3c2e9ec5f8549f9aeb9a27aabc7b53974ddadcc903d30644a",
+      "repoTags": [
+        "docker.io/library/eclipse-temurin:8-jdk"
+      ],
+      "repoDigests": [
+        "docker.io/library/eclipse-temurin@sha256:3525194d19338fd143e2038bd5e848e335f50d04e89ba8734c0458df8d494254",
+        "docker.io/library/eclipse-temurin@sha256:9fc0c6ace5167f5bb103a1beb1e8bec9be43a092d31a26fdeafb73014cfb57aa"
+      ]
+    },
+    {
+      "id": "e8dca93a5541cca084f88dceae31bdfdde0c15d1857c8f641f753c839538956f",
+      "repoTags": [
+        "docker.io/library/eclipse-temurin:11-jdk"
+      ],
+      "repoDigests": [
+        "docker.io/library/eclipse-temurin@sha256:3b930c2092310a926036ea1bb4feb019e2a83c7c9e55fb739d9a8a78ffebcf55",
+        "docker.io/library/eclipse-temurin@sha256:9bfbcda220eab200cced1db82eef38dcd5fa0873a23e4edc23e5cd67a1fe2596"
+      ]
+    },
+    {
+      "id": "20e832593c27816000db6315e1f554fcd0073c9ba95846ac117e5f3f5e0fea33",
+      "repoTags": [
+        "docker.io/library/eclipse-temurin:17-jdk"
+      ],
+      "repoDigests": [
+        "docker.io/library/eclipse-temurin@sha256:5024c83bdfb071bf1e853b9c060e0c3a0c9795f5360532eb3651b01219665e7f",
+        "docker.io/library/eclipse-temurin@sha256:a27c79d44326d5f689668df5fedfee487652066d2a91e172747056cc7fbee6fc"
+      ]
+    },
+    {
+      "id": "bd15556c8747f309a3d9ac0ca190d7a67dbb131275a41df51041af8460ca03b2",
+      "repoTags": [
+        "docker.io/library/eclipse-temurin:21-jdk"
+      ],
+      "repoDigests": [
+        "docker.io/library/eclipse-temurin@sha256:85f00967bcc624fc19fa9c2cf124ea426a5363898e267141726f31f358c2e14b",
+        "docker.io/library/eclipse-temurin@sha256:a16bfc04b28f66c1d27218ffeefc8ae6a2621de423e01597156ba813ca5fa668"
+      ]
+    }
+  ],
+  "actualBinaryChecks": [
+    {
+      "pin": "scripts/qpdf-pin.properties",
+      "pinSha256": "62c63de3d888ba08b60df9e3c33c9ebefe4cc0c8ee747cc5269390017b57169c",
+      "binary": ".build-cache/qpdf/12.4.0/bin/qpdf",
+      "expected": "9ac787a28597e8428289a12ba3fedafd74bdfb4b4da1be814722faf76f14f21b",
+      "observed": "9ac787a28597e8428289a12ba3fedafd74bdfb4b4da1be814722faf76f14f21b",
+      "matches": true,
+      "pinValues": {
+        "QPDF_EXECUTABLE": "container-bin/qpdf",
+        "QPDF_VERSION": "12.4.0",
+        "QPDF_ARCHIVE_NAME": "qpdf-12.4.0-bin-linux-x86_64.zip",
+        "QPDF_ARCHIVE_SHA256": "a3bca240f3bb61efdc3a90be89d1da4ed5e125326c3458c4e62df53ff4f153e3",
+        "QPDF_BINARY_SHA256": "9ac787a28597e8428289a12ba3fedafd74bdfb4b4da1be814722faf76f14f21b",
+        "QPDF_ASSET_URL": "https://github.com/qpdf/qpdf/releases/download/v12.4.0/qpdf-12.4.0-bin-linux-x86_64.zip"
+      }
+    },
+    {
+      "pin": "scripts/pdfium-pin.properties",
+      "pinSha256": "0037480e2d77ae1a6d72566c43cf4c5fb9ccf9bb446b31b2c124e0e51c52ac0e",
+      "binary": ".build-cache/pdfium/v0.11.2-chromium-7881/bin/pdfium",
+      "expected": "3ef3375c429ce665e834f933a028225bf28ac837695aaa69c6fc21facf6780ab",
+      "observed": "3ef3375c429ce665e834f933a028225bf28ac837695aaa69c6fc21facf6780ab",
+      "matches": true,
+      "pinValues": {
+        "PDFIUM_EXECUTABLE": "container-bin/pdfium",
+        "PDFIUM_CLI_VERSION": "v0.11.2",
+        "PDFIUM_ENGINE_VERSION": "chromium-7881",
+        "PDFIUM_ENGINE_DISTRIBUTION_NAME": "pdfium-wasm.tgz",
+        "PDFIUM_ENGINE_ARCHIVE_SHA256": "added6e8ac024f71cb61cf2b77a205d178e2bdde2e4048fbcd916f68b7264d56",
+        "PDFIUM_ENGINE_ASSET_URL": "https://github.com/bblanchon/pdfium-binaries/releases/download/chromium/7881/pdfium-wasm.tgz",
+        "PDFIUM_DISTRIBUTION_NAME": "pdfium-webassembly-linux-amd64",
+        "PDFIUM_ARCHIVE_SHA256": "3ef3375c429ce665e834f933a028225bf28ac837695aaa69c6fc21facf6780ab",
+        "PDFIUM_EXECUTABLE_SHA256": "3ef3375c429ce665e834f933a028225bf28ac837695aaa69c6fc21facf6780ab",
+        "PDFIUM_DISTRIBUTION_LICENSE": "MIT",
+        "PDFIUM_ENGINE_LICENSE": "BSD-3-Clause",
+        "PDFIUM_NOTICE_MANIFEST": "docs/third-party/pdfium-cli-v0.11.2.md",
+        "PDFIUM_ASSET_URL": "https://github.com/klippa-app/pdfium-cli/releases/download/v0.11.2/pdfium-webassembly-linux-amd64"
+      }
+    },
+    {
+      "pin": "scripts/imagemagick-pin.properties",
+      "pinSha256": "0cbd171a2ac7bf35623c4a2cf83f0a3850b15efe3873cb7b40b4e765c5458374",
+      "binary": ".build-cache/imagemagick/7.1.2-30/bin/imagemagick.AppImage",
+      "expected": "372af8a3fd61ef5f15c6331cde3e21f840eb165d8b533f34ed05d68736dd682e",
+      "observed": "372af8a3fd61ef5f15c6331cde3e21f840eb165d8b533f34ed05d68736dd682e",
+      "matches": true,
+      "pinValues": {
+        "IMAGEMAGICK_EXECUTABLE": "container-bin/imagemagick",
+        "IMAGEMAGICK_VERSION": "7.1.2-30",
+        "IMAGEMAGICK_DISTRIBUTION_NAME": "ImageMagick-7.1.2-30-gcc-x86_64.AppImage",
+        "IMAGEMAGICK_ARCHIVE_SHA256": "372af8a3fd61ef5f15c6331cde3e21f840eb165d8b533f34ed05d68736dd682e",
+        "IMAGEMAGICK_EXECUTABLE_SHA256": "372af8a3fd61ef5f15c6331cde3e21f840eb165d8b533f34ed05d68736dd682e",
+        "IMAGEMAGICK_DISTRIBUTION_LICENSE": "ImageMagick",
+        "IMAGEMAGICK_NOTICE_MANIFEST": "docs/third-party/imagemagick-7.1.2-30-appimage.md",
+        "IMAGEMAGICK_ASSET_URL": "https://github.com/ImageMagick/ImageMagick/releases/download/7.1.2-30/ImageMagick-7.1.2-30-gcc-x86_64.AppImage"
+      }
+    }
+  ],
+  "harfbuzzHelper": "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/harfbuzz/10.2.0-final/bin/folio-harfbuzz",
+  "harfbuzzAudit": "T31-harfbuzz-audit.json",
+  "rootCommand": "FOLIO_HARFBUZZ_HELPER=/home/ubuntu/IdeaProjects/open-pdf/.build-cache/harfbuzz/10.2.0-final/bin/folio-harfbuzz ./mvnw -B -ntp verify",
+  "matrixCommand": "FOLIO_HARFBUZZ_HELPER=/home/ubuntu/IdeaProjects/open-pdf/.build-cache/harfbuzz/10.2.0-final/bin/folio-harfbuzz ./scripts/verify-jdk-matrix.sh",
+  "matrixCwd": "/home/ubuntu/IdeaProjects/open-pdf-t31-validation",
+  "matrixCopy": "T31-validation-copy.json",
+  "notes": [
+    "Commands are in progress; this environment record does not assert completion.",
+    "The full JDK matrix uses the complete audited native installation at /folio-harfbuzz, not an ad hoc single helper binary.",
+    "The HarfBuzz source archive identity is checked in installation metadata; an archive file was not independently rehashed in this session.",
+    "Pinned executable bytes were rehashed directly here, in addition to wrapper checks."
+  ]
+}

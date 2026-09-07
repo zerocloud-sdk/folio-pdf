@@ -1,0 +1,101 @@
+{
+  "command": "./mvnw -B -ntp verify",
+  "environment": "FOLIO_HARFBUZZ_HELPER=/home/ubuntu/IdeaProjects/open-pdf/.build-cache/harfbuzz/10.2.0-final/bin/folio-harfbuzz",
+  "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+  "result": "PASS",
+  "observations": [
+    {
+      "jdk": "host",
+      "testClasses": 67,
+      "tests": 1161,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 4,
+      "skippedClasses": [
+        {
+          "class": "net.zerocloud.pdf.consumer.HardenedWorkerScaleProfileTest",
+          "count": 3
+        },
+        {
+          "class": "net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest",
+          "count": 1
+        }
+      ],
+      "t31Tests": [
+        {
+          "class": "net.zerocloud.pdf.consumer.Barcode2DWorkflowTest",
+          "tests": 70,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "elapsed": "265.6 s"
+        },
+        {
+          "class": "net.zerocloud.pdf.acceptance.T31BarcodeEvidenceCommandTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "elapsed": "168.7 s"
+        },
+        {
+          "class": "net.zerocloud.pdf.acceptance.T31BarcodeEvidenceTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "elapsed": "91.18 s"
+        },
+        {
+          "class": "net.zerocloud.pdf.acceptance.T31DataMatrixEvidenceTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "elapsed": "1.657 s"
+        },
+        {
+          "class": "net.zerocloud.pdf.acceptance.T31NegativeEvidenceTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "elapsed": "39.31 s"
+        },
+        {
+          "class": "net.zerocloud.pdf.acceptance.T31PaddingEvidenceTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "elapsed": "1.364 s"
+        },
+        {
+          "class": "net.zerocloud.pdf.acceptance.T31RasterEvidenceTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "elapsed": "23.63 s"
+        }
+      ],
+      "mavenTotalTime": [
+        " 32:38 min"
+      ],
+      "finishedAt": [
+        "2026-09-08T02:23:59+08:00"
+      ]
+    }
+  ],
+  "rawLog": "T31-root-verification.txt",
+  "rawLogSha256": "6bad2435ab6999a2b2f5360896ea3d3e5da2bf1cf8867be0d384f81bd4e903a0",
+  "unchangedBuildInputFiles": 841,
+  "originalSourceMismatches": [],
+  "matrixCopyMismatches": [],
+  "capturedUtc": "2026-09-07T18:24:19.192698+00:00",
+  "skipReasons": [
+    "Three pre-existing HardenedWorkerScaleProfileTest cases require explicit folio.pdf.t22.scale=pages/input/concurrency/all; Foundation scale certification is outside T31.",
+    "One pre-existing T30 pinned-raster test requires t30.raster=true; preserved T30 evidence already records its independent tool run. T31 executes its own complete actual pinned-tool recorder separately.",
+    "No T31 public Workflow or acceptance test is skipped; the full verification command has no skip flags."
+  ]
+}

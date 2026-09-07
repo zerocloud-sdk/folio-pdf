@@ -460,3 +460,67 @@ Code39/Codabar/ITF/MSI 可选 `generateChecksum(true)`；ITF 无校验时输入�
 传播出回调的失败保留既有目标，发布收据为 `NOT_ATTEMPTED`。In-Process 与 Linux Hardened Worker
 共享此契约；无签名的 INCREMENTAL 保留原始修订，签名和修改权限检查先于字体读取。
 完整模式、长度、校验、尺寸和文字规则以[英文契约](../one-dimensional-barcodes.md)为准。
+
+## 二维矢量条码（T31，experimental）
+
+`Barcode2D` 支持 QR Model 2、DataMatrix ECC200 和标准 PDF417。
+`DrawBarcode2D.version1` 在已有页面上放置可复用的矢量 Form；相同内容、局部尺寸和
+颜色可跨页共享资源。`MeasureBarcode2D.version1` 返回含静区的尺寸和模块矩阵尺寸，
+不要求页面存在，也不绘制内容。
+
+```java
+Barcode2D barcode = Barcode2D.builder(Barcode2D.Mode.QR, "Folio 二维 😀")
+        .encoding("UTF-8").qrVersion(3)
+        .qrErrorCorrection(Barcode2D.QrErrorCorrection.Q)
+        .moduleWidth(2).moduleHeight(2).quietZone(8).build();
+new DocumentWorkflow().execute(WorkflowRequest.create(output, SaveMode.REWRITE), session -> {
+    Barcode2DSize size = session.query(MeasureBarcode2D.version1(barcode));
+    session.execute(AddBlankPage.INSTANCE);
+    session.execute(DrawBarcode2D.version1(1, barcode,
+            CanvasMatrix.of(1, 0, 0, 1, 36, 144)));
+    return size;
+});
+```
+
+QR 可固定版本 1–40 和 L/M/Q/H 纠错级别，0 表示自动版本；不会自动提高指定的纠错
+级别。DataMatrix 可选 AUTO、ASCII、C40、TEXT、X12、EDIFACT、BASE256、RAW，
+通过 `dataMatrixSize(width,height)` 约束模块数，任一维为 0 时自动选择该维。
+`rawDataMatrix(66,67)` 表示 `AB` 的数据码字，由库补齐填充、ECC 和模块排列。
+RAW EDIFACT 的显式结束序列需要足够的数据容量；自动尺寸会保留其解释，固定尺寸
+不足则明确失败。例如 `[240,5,240]` 的载荷是 `A`，自动选择 12×12，固定 10×10 会失败。
+
+DataMatrix 的 Macro 05/06、FNC1、读者编程和 Structured Append 使用显式 builder
+方法，不解析扩展字符串。序列位置是 1–total，total 为 2–16，文件 ID 为 1–64516；
+从参考 API 的零基文件 ID 迁移时应加一。读者编程不能与 FNC1 组合，Macro 不能与
+读者编程或序列头组合，RAW 不能再附加这些类型化头。AUTO Macro 与 FNC1 或非默认
+ECI 组合时采用 ASCII 压缩，保留头部语义，但不保证最小尺寸。
+
+PDF417 可选 AUTO、BINARY、RAW，ECC 为 -1（自动）或 0–8。列数为 1–30，行数为
+3–90，总码字最多 928；0 表示自动选择该维。正的 `pdf417AspectRatio` 表示不含静区的
+物理高度/宽度，与固定行列互斥。`pdf417Macro("001075",0,2)` 使用数字三元组文件 ID
+（每组三位 000–899）、零基段号和总段数 1–99999，也支持单段 Macro。
+`rawPdf417(1)` 的载荷是 `AB`；库生成长度、填充、行指示和 ECC。RAW 中不接受内嵌
+Macro 控制，应另外使用类型化 Macro 方法。没有位图反色、Micro 或截短 PDF417 API。
+RAW 的字符集 ECI 不会结束 901/924 字节压缩模式；901 的字节尾部和 924 的完整分组
+仍须有效，回到文本压缩需要显式 900 切换码。
+
+字符编码支持 Cp437、Shift_JIS、ISO-8859-1 至 -11、-13 至 -16、UTF-8。UTF-8 使用
+ECI 26，支持完整 Unicode 标量往返；不会替换字符、规范化文本或降级到别的编码。
+ISO-8859-12 未定义，会明确失败。`.eci(number)` 与 `.encoding(name)` 相互替换，
+最后一次选择生效。RAW 的显式 ECI 仅描述已有码字，不会进行文本转码。
+
+尺寸均为变换前的 PDF 点，原点在含静区完整框的左下角。默认模块宽 1，QR 和
+DataMatrix 高 1，PDF417 行高 3。静区默认分别为 4、1、2 点；最小值分别是模块宽
+的 4 倍、DataMatrix 模块宽/高的较大值、PDF417 模块宽的 2 倍。QR 模块须为正方形，
+PDF417 行高至少为模块宽的 3 倍。改变一个尺寸不会自动改变其他尺寸。颜色默认黑色，
+可用 `foregroundRgb` 指定 [0,1] 的 RGB 值。绘制不会填白背景，调用方须让页面已有和
+后续内容保持静区与对比度。
+
+不支持的编码或模式选项返回 `BARCODE_MODE_INVALID`，非法载荷/容量溢出返回
+`BARCODE_INPUT_INVALID`，非法尺寸或奇异矩阵返回 `BARCODE_GEOMETRY_INVALID`，
+声明长度或生成内容超限返回 `BARCODE_LIMIT_EXCEEDED`。资源失败保持既有终止语义。
+传播出回调的失败保留已有发布目标，收据为 `NOT_ATTEMPTED`；非终止性的无效声明在
+被回调捕获后也不会留下局部绘制。两种执行模式、权限检查、签名保护和无签名增量
+保存均遵守既有 Workflow 契约。详见[英文契约](../two-dimensional-barcodes.md)和
+[T31 固定验收 profile](../../capabilities/profiles/T31-two-dimensional-barcodes.md)。
+独立标准认证及 compatible 依赖门槛仍未完成，本能力保持 experimental。

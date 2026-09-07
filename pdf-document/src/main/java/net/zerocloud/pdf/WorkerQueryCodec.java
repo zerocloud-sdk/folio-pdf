@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import net.zerocloud.pdf.composition.CanvasImage;
+import net.zerocloud.pdf.composition.Barcode2DSize;
+import net.zerocloud.pdf.composition.query.MeasureBarcode2D;
 import net.zerocloud.pdf.composition.CanvasImageCapabilities;
 import net.zerocloud.pdf.composition.query.InspectCanvasImageCapabilities;
 import net.zerocloud.pdf.composition.query.InspectLargeTable;
@@ -55,6 +57,7 @@ final class WorkerQueryCodec {
     private static final int RENDER_PAGE = 18;
     private static final int RENDER_SNAPSHOT = 19;
     private static final int LARGE_TABLE_STATE = 20;
+    private static final int BARCODE_2D_SIZE = 21;
 
     private WorkerQueryCodec() {
     }
@@ -195,7 +198,10 @@ final class WorkerQueryCodec {
             DocumentQuery<?> query,
             WorkerReferenceRegistry references)
             throws IOException, DocumentFailure {
-        if (query instanceof InspectLargeTable) {
+        if (query instanceof MeasureBarcode2D) {
+            output.writeInt(BARCODE_2D_SIZE); output.writeInt(((MeasureBarcode2D)query).getVersion());
+            WorkerBarcode2DCodec.writeDeclaration(output,((MeasureBarcode2D)query).getBarcode());
+        } else if (query instanceof InspectLargeTable) {
             output.writeInt(LARGE_TABLE_STATE);
             output.writeInt(((InspectLargeTable) query).getVersion());
         } else if (query == PageCount.INSTANCE) {
@@ -291,6 +297,9 @@ final class WorkerQueryCodec {
             WorkerReferenceRegistry references) throws DocumentFailure {
         int opcode = input.readInt();
         switch (opcode) {
+            case BARCODE_2D_SIZE:
+                WorkerCommandCodec.requireVersion(input.readInt(),MeasureBarcode2D.VERSION_1);
+                return MeasureBarcode2D.version1(WorkerBarcode2DCodec.readDeclaration(input));
             case LARGE_TABLE_STATE:
                 WorkerCommandCodec.requireVersion(input.readInt(), InspectLargeTable.VERSION_1);
                 return InspectLargeTable.version1();
@@ -393,7 +402,11 @@ final class WorkerQueryCodec {
             Object result,
             WorkerReferenceRegistry references)
             throws IOException, DocumentFailure {
-        if (query instanceof InspectLargeTable) {
+        if (query instanceof MeasureBarcode2D) {
+            Barcode2DSize size = (Barcode2DSize)result;
+            output.writeInt(size.getVersion()); output.writeInt(size.getMatrixWidth()); output.writeInt(size.getMatrixHeight());
+            output.writeDouble(size.getWidthPoints()); output.writeDouble(size.getHeightPoints());
+        } else if (query instanceof InspectLargeTable) {
             LargeTableState state = (LargeTableState) result;
             output.writeString(state.getStage().name());
             output.writeInt(state.getAcceptedRows()); output.writeInt(state.getRetainedRows());
@@ -473,6 +486,10 @@ final class WorkerQueryCodec {
             WorkerCodecIO.Input input,
             DocumentQuery<?> query,
             WorkerReferenceRegistry references) throws DocumentFailure {
+        if (query instanceof MeasureBarcode2D) {
+            WorkerCommandCodec.requireVersion(input.readInt(),Barcode2DSize.VERSION_1);
+            return Barcode2DSize.version1(input.readInt(),input.readInt(),input.readDouble(),input.readDouble());
+        }
         if (query instanceof InspectLargeTable) {
             LargeTableState.Stage stage = WorkerCommandCodec.enumValue(LargeTableState.Stage.class,
                     input.readString(), "Large table stage");

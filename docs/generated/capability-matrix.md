@@ -6,13 +6,14 @@ Behavioral authority: [`../../capabilities/capability-matrix.yaml`](../../capabi
 
 - Schema version: `1`
 - Release train: `0.1.0-SNAPSHOT`
-- Capabilities: `22`
+- Capabilities: `23`
 
 ## Capability summary
 
 | Capability | Context | Status | Migration facade |
 | --- | --- | --- | --- |
 | [`composition.barcodes.one-dimensional`](#capability-composition_dot_barcodes_dot_one_dash_dimensional) | `composition` | `experimental` | [excluded by `T30`](facade-surface.md#excluded-capability-composition_dot_barcodes_dot_one_dash_dimensional) |
+| [`composition.barcodes.two-dimensional`](#capability-composition_dot_barcodes_dot_two_dash_dimensional) | `composition` | `experimental` | [excluded by `T31`](facade-surface.md#excluded-capability-composition_dot_barcodes_dot_two_dash_dimensional) |
 | [`composition.canvas.draw-positioned-text`](#capability-composition_dot_canvas_dot_draw_dash_positioned_dash_text) | `composition` | `experimental` | [excluded by `T17`](facade-surface.md#excluded-capability-composition_dot_canvas_dot_draw_dash_positioned_dash_text) |
 | [`composition.canvas.images-colors-transparency`](#capability-composition_dot_canvas_dot_images_dash_colors_dash_transparency) | `composition` | `experimental` | [excluded by `T18`](facade-surface.md#excluded-capability-composition_dot_canvas_dot_images_dash_colors_dash_transparency) |
 | [`composition.fonts.load-embed-subset-fallback`](#capability-composition_dot_fonts_dot_load_dash_embed_dash_subset_dash_fallback) | `composition` | `experimental` | [excluded by `T19`](facade-surface.md#excluded-capability-composition_dot_fonts_dot_load_dash_embed_dash_subset_dash_fallback) |
@@ -103,6 +104,81 @@ Acceptance Evidence:
 - `visual`: `pass` — [`capabilities/evidence/T30-r2/T30-one-dimensional-barcodes-visual.md`](../../capabilities/evidence/T30-r2/T30-one-dimensional-barcodes-visual.md); producer `pdfium-cli@v0.11.2-pdfium-chromium-7881` (`external-tool`)
 
 Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T30 one-dimensional barcodes`.
+
+<a id="capability-composition_dot_barcodes_dot_two_dash_dimensional"></a>
+## `composition.barcodes.two-dimensional`
+
+Generate QR, DataMatrix ECC200 and PDF417 as reusable vector Forms with strict encoding, ECC, compaction, dimensions, controls and affine placement.
+
+- Context: `composition`
+- Status: `experimental`
+- Reference Suite source: `Issue 32, parent issue 1 and the public iText Core 7.2.6 QR, DataMatrix and PDF417 API inventory`
+- Reference role: Mode and option inventory only; independent module, ECC, control, payload and geometry observations determine correctness, never Reference Suite output.
+- Acceptance Profile: `T31-two-dimensional-barcodes`
+- Mandatory evidence chains: `syntax`, `standards`, `semantic`, `visual`
+- Evidence record: [`capabilities/evidence/T31-two-dimensional-barcodes.md`](../../capabilities/evidence/T31-two-dimensional-barcodes.md)
+- Certified platforms: none
+
+### Native Interface mapping
+
+- `command`: `net.zerocloud.pdf.composition.command.DrawBarcode2D`
+- `declaration`: `net.zerocloud.pdf.composition.Barcode2D`
+- `entry-point`: `net.zerocloud.pdf.DocumentWorkflow#execute`
+- `failure`: `net.zerocloud.pdf.DocumentFailure`
+- `measurement`: `net.zerocloud.pdf.composition.Barcode2DSize`
+- `outcome`: `net.zerocloud.pdf.WorkflowOutcome`
+- `placement`: `net.zerocloud.pdf.composition.CanvasMatrix`
+- `query`: `net.zerocloud.pdf.composition.query.MeasureBarcode2D`
+
+### Migration Facade coverage
+
+- Stable: none
+- Preview: none
+- Explicit exclusion: [`T31`](facade-surface.md#excluded-capability-composition_dot_barcodes_dot_two_dash_dimensional) — T31 exposes QR, DataMatrix ECC200 and PDF417 through the Native Interface Barcode2D declaration, DrawBarcode2D command and MeasureBarcode2D query. No approved Reference Suite barcode Migration Facade mapping exists; stable and preview surfaces remain empty and no unsupported stub is introduced. Reference extension strings map to typed controls, zero-based DataMatrix file IDs require adding one, and reference PDF417 bitmap inversion has no mapping because this capability emits vector Forms.
+
+### Gates and limitations
+
+- Dependency Gate: [`composition.canvas.draw-positioned-text`](#capability-composition_dot_canvas_dot_draw_dash_positioned_dash_text) must be `compatible`
+- Dependency Gate: [`composition.canvas.images-colors-transparency`](#capability-composition_dot_canvas_dot_images_dash_colors_dash_transparency) must be `compatible`
+- Dependency Gate: [`document.hostile-input-limits`](#capability-document_dot_hostile_dash_input_dash_limits) must be `compatible`
+- Dependency Gate: [`document.hardened-worker`](#capability-document_dot_hardened_dash_worker) must be `compatible`
+- Promotion gate `T06`: Complete independent standards evidence and every compatible-status Dependency Gate before promotion; implementation, syntax, payload recovery and visual agreement are insufficient.
+- Limitation: Version 1 supports QR Model 2, all 30 ECC200 sizes and standard PDF417. The immutable Native Interface exposes no encoder, decoder, backend, bitmap or font object. Private encoding uses pinned OkapiBarcode 0.5.6 plus documented original and permissively adapted compaction, raw validation, sizing, ECC and placement extensions. No iText implementation material or output is used.
+- Limitation: QR automatically segments numeric, alphanumeric, byte and Shift_JIS Kanji data, fixes ECC at exactly L/M/Q/H and supports automatic or explicit versions 1–40. The caller does not select a mask. DataMatrix supports AUTO, ASCII, C40, TEXT, X12, EDIFACT, BASE256 and validated RAW data; ECC200 correction follows the selected square or rectangular size. Each dimension can be fixed or automatic. Measurement performs bounded encoding and returns detached matrix and full point dimensions without painting or requiring a page.
+- Limitation: Strict character sets are Cp437/IBM437, Shift_JIS, UTF-8 and defined ISO-8859 parts 1–11 and 13–16. Explicit ECI selections are closed to assignments 2, 3–13, 15–18, 20 and 26. Default ISO-8859-1 omits its redundant ECI marker. UTF-8 is ECI 26 with exact Unicode scalar recovery; malformed, unrepresentable and lossy input fails. No trimming, normalization, escape-string interpretation or implicit charset fallback occurs. ECI-ignoring scanners are outside the claim.
+- Limitation: DataMatrix typed Macro 05/06, leading FNC1, reader programming and Structured Append preserve their control semantics. Native sequence positions and file IDs are one-based; migrating a reference zero-based file ID requires adding one. Reader programming cannot combine with FNC1; Macro cannot combine with sequence or reader programming; RAW cannot also carry typed headers or text encoding. AUTO Macro with FNC1 or nondefault ECI uses ASCII compaction. Raw controls must be supported, complete and end in ASCII state; caller padding and ECC are rejected.
+- Limitation: PDF417 supports automatic text/numeric/byte compaction, forced BINARY, validated RAW and typed Macro including one segment. ECC is automatic or exactly 0–8; columns are 1–30, rows 3–90 and total codewords at most 928. Zero dimensions select automatically; a fixed rectangle never silently changes. Positive aspect ratio is physical matrix height/width excluding quiet margins and is exclusive of fixed rows/columns. Macro file IDs are numeric triplets 000–899, segment indices are zero-based and counts are 1–99999. Raw embedded Macro controls are rejected; typed Macro remains available with RAW. No automatic file splitting/assembly, MicroPDF417, truncated PDF417 or bitmap inversion API is provided.
+- Limitation: Module, row and quiet dimensions are explicit points. QR modules are square; PDF417 row height is at least three module widths. Minimum quiet margins are four QR widths, the larger DataMatrix module dimension, or two PDF417 widths. The local origin includes all margins. Color is DeviceRGB; no background is painted. Equivalent local vectors and boxes reuse indirect Forms across pages. Arbitrary finite nondegenerate affine placement is admitted within Canvas bounds; page fit, existing ink, contrast and physical scanning remain caller concerns.
+- Limitation: Declaration bounds are 8192 UTF-16 units or raw words, a 32-character encoding name and a 2700-character Macro file ID, in addition to family capacities. Encoding reserves 8 MiB of modeled owned memory, vectors are bounded at 4 MiB and placements at 512 bytes; cache and existing Workflow resource accounting remain effective. Stable checked mode/input/geometry/limit failures preserve publication targets and safe diagnostics. No image-pixel allowance is needed.
+- Limitation: Both IN_PROCESS and the existing Linux HARDENED_WORKER envelope support the closed declaration, command, query, detached result and failure/outcome identity. Existing permissions, signature protection, unsigned incremental behavior and publication contracts apply. Encoder state is Session-owned; decoder algorithms, charset SPI and external tools stay in tests or the non-distributed acceptance module.
+- Limitation: The 224-page profile in each execution mode covers every declared mode, all supported charsets in all three families, all QR versions and ECC200 sizes, PDF417 ECC levels, capacity boundaries and placement/color/unit variants. Independent assertions consume reopened public PDF Values and actual rasters. Every function/control/data/ECC module and declared geometry must qualify before a separate Canvas painter may use that matrix as a geometry reference. Nineteen damaged public PDFs must fail semantic and raster checks and differ visually, including wrong padding with independently recomputed ECC.
+- Limitation: Independent PDF standards certification, compatible-status dependencies and Foundation platform certification remain open. Passing decoding, qpdf and visual checks does not grant compatible status, a Migration Facade mapping or T33 release certification.
+
+### Evidence
+
+Implementation evidence:
+
+- `public-barcode-workflow-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/consumer/Barcode2DWorkflowTest.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/consumer/Barcode2DWorkflowTest.java) — Public workflows in both profiles publish and reopen vectors, independently decode all families, modes, encodings and controls, observe reusable Forms, dimensions and transforms, and exercise stable invalid input, resource, signature, permission, incremental and target-preservation behavior.
+- `fixed-independent-profile`: [`capabilities/profiles/T31-two-dimensional-barcodes.md`](../../capabilities/profiles/T31-two-dimensional-barcodes.md) — Literal inputs, payloads, modes, ECC, size tables, encodings, quiet margins, transforms and raster tolerances precede product comparison.
+- `independent-matrix-contract`: [`pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T31BarcodeEvidenceTest.java`](../../pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T31BarcodeEvidenceTest.java) — Both Workflow profiles meet all 224 cases through public PDF Values, exact function and data/ECC checks, payload/control decoding, local geometry, color, placement and cross-page reuse.
+- `independent-raster-contract`: [`pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T31RasterEvidenceTest.java`](../../pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T31RasterEvidenceTest.java) — Disposable test rasters decode using only declared geometry and pixels, agree with separately painted qualified matrices, reject damaged function patterns and prevent an unqualified matrix from defining its own reference.
+- `negative-pdf-contract`: [`pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T31NegativeEvidenceTest.java`](../../pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T31NegativeEvidenceTest.java) — Nineteen actual public DocumentPatch corruptions are rejected semantically and from rendered pixels for the intended defect, including valid payload/ECC with invalid randomized padding.
+- `structured-append-contract`: [`pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T31DataMatrixEvidenceTest.java`](../../pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T31DataMatrixEvidenceTest.java) — An independent ECC200 decoder consumes Structured Append words as metadata rather than text, including sequence/file-ID limits in both Workflow profiles.
+- `randomized-padding-contract`: [`pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T31PaddingEvidenceTest.java`](../../pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T31PaddingEvidenceTest.java) — A real public PDF with a wrong ECC200 pad and independently recomputed ECC still decodes AB with zero corrections but fails structural qualification in both profiles.
+- `acceptance-command-contract`: [`pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T31BarcodeEvidenceCommandTest.java`](../../pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T31BarcodeEvidenceCommandTest.java) — The recorder retains both profiles, qualified geometry references, source hashes, actual findings, negative PDFs and honest missing-tool states while refusing replacement of T31 or changes to earlier evidence.
+- `repository-evidence-entry-contract`: [`scripts/tests/test_t31_acceptance_entry.py`](../../scripts/tests/test_t31_acceptance_entry.py) — The dedicated Maven profile starts the complete independent decoder classpath in its own JVM, records both profiles and unavailable tools without generating earlier capability profiles.
+- `authoritative-contract`: [`docs/two-dimensional-barcodes.md`](../two-dimensional-barcodes.md) — Modes, raw grammar, encodings, controls, dimensions, geometry, stable failures, resources, publication, execution profiles and evidence limits match the Chinese guide and public Javadoc.
+- `unavailable-standards-and-dependency-record`: [`capabilities/evidence/T31-r1/T31-two-dimensional-barcodes-standards.md`](../../capabilities/evidence/T31-r1/T31-two-dimensional-barcodes-standards.md) — Independent standards certification and compatible-status Dependency Gates remain explicitly indeterminate; successful implementation evidence does not permit compatibility or Foundation promotion.
+- `retained-artifact-identity-audit`: [`capabilities/evidence/artifacts/T31-r1-artifact-audit.json`](../../capabilities/evidence/artifacts/T31-r1-artifact-audit.json) — All 448 published pages pass independent path/module and actual PDFium pixel decoding, every full-page comparison passes AE zero, 19 negative PDFs and rasters are rejected, all 450 source declarations match and all 2336 earlier evidence files are preserved.
+- `executable-coverage-index`: [`capabilities/evidence/T31-coverage.md`](../../capabilities/evidence/T31-coverage.md) — Every one of the 224 literal fixtures links its actual rendered page in both execution profiles, including the RAW EDIFACT capacity and PDF417 ECI byte-state regressions.
+
+Acceptance Evidence:
+
+- `syntax`: `pass` — [`capabilities/evidence/T31-r1/T31-two-dimensional-barcodes-syntax.md`](../../capabilities/evidence/T31-r1/T31-two-dimensional-barcodes-syntax.md); producer `qpdf@12.4.0` (`external-tool`)
+- `semantic`: `pass` — [`capabilities/evidence/T31-r1/T31-two-dimensional-barcodes-semantic.md`](../../capabilities/evidence/T31-r1/T31-two-dimensional-barcodes-semantic.md); producer `folio-pdf-t31-semantic-assertions@0.1.0-SNAPSHOT` (`project-test`)
+- `visual`: `pass` — [`capabilities/evidence/T31-r1/T31-two-dimensional-barcodes-visual.md`](../../capabilities/evidence/T31-r1/T31-two-dimensional-barcodes-visual.md); producer `pdfium-cli@v0.11.2-pdfium-chromium-7881` (`external-tool`)
+
+Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T31 two-dimensional barcodes`.
 
 <a id="capability-composition_dot_canvas_dot_draw_dash_positioned_dash_text"></a>
 ## `composition.canvas.draw-positioned-text`

@@ -1,0 +1,43 @@
+{
+  "result": "PASS",
+  "observations": [
+    {
+      "command": "./scripts/inventory validate",
+      "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+      "exitCode": 0,
+      "startedUtc": "2026-09-07T20:00:33.457131+00:00",
+      "finishedUtc": "2026-09-07T20:00:36.556855+00:00",
+      "elapsedSeconds": 3.1,
+      "rawLog": "T31-final-inventory-validate.txt",
+      "rawLogSha256": "0a71cea34df954d0c6ef7c933d7d4fd4066fc7c97eaac505bd43d8feed4115b6"
+    },
+    {
+      "command": "./scripts/inventory generate",
+      "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+      "exitCode": 0,
+      "startedUtc": "2026-09-07T20:00:36.557075+00:00",
+      "finishedUtc": "2026-09-07T20:00:39.716182+00:00",
+      "elapsedSeconds": 3.159,
+      "rawLog": "T31-final-inventory-generate.txt",
+      "rawLogSha256": "d0f4d3533f9e261360a6c07d9aaa94644ba5c9f4635d108d5851c120d0b89795"
+    },
+    {
+      "command": "./scripts/inventory check",
+      "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+      "exitCode": 0,
+      "startedUtc": "2026-09-07T20:00:39.716453+00:00",
+      "finishedUtc": "2026-09-07T20:00:42.811780+00:00",
+      "elapsedSeconds": 3.095,
+      "rawLog": "T31-final-inventory-check.txt",
+      "rawLogSha256": "da140ce3275deb4b25b22d371722f4b1e78d42da759534b10187b91c0547cb7f"
+    }
+  ],
+  "finalInventoryFiles": {
+    "capabilities/capability-matrix.yaml": "1742200fbf3adf1b6437997c8c338b536a9a12f5de7fe51fbe7a4459a6d03112",
+    "docs/generated/capability-matrix.md": "89d6a1505585d3c12207671ccac0d44dc33c385c7b164050a82783346774cf88",
+    "capabilities/facade-surface.yaml": "8ddeb7cb46dad43bb168a4ec0cd93a931fb0c2ec28367fd563edf456c435a4b2",
+    "docs/generated/facade-surface.md": "576d0a4a8db316c2fc498aed9b369a59f04280f6f720db6e5a45ce8244f0141a"
+  },
+  "scope": "Final T31 evidence-chain registration and generated inventory view after complete root and JDK-matrix verification. The capability remains experimental and independent standards certification / compatible Dependency Gates remain indeterminate.",
+  "sourceValidation": "Full builds cover the frozen r2 source inputs. Only capability-matrix.yaml acceptance evidence registration and the generated capability matrix may differ afterward; the final workspace audit enforces this boundary."
+}

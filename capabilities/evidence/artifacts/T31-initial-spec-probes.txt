@@ -1,0 +1,755 @@
+Independent initial Spec review probe source and observations; pre-repair defects are historical evidence, not current acceptance results. No upstream source/API text is reproduced in this aggregate.
+
+
+===== Probe.java (SHA-256 fefb4e030103c096650f88c72c3770179566bf3f32866dd1f450e6e4ce5aee54) =====
+
+import java.nio.file.*;
+import java.nio.charset.*;
+import java.util.*;
+import com.google.zxing.common.*;
+import net.zerocloud.pdf.*;
+import net.zerocloud.pdf.command.*;
+import net.zerocloud.pdf.composition.*;
+import net.zerocloud.pdf.composition.command.*;
+import net.zerocloud.pdf.composition.query.*;
+import net.zerocloud.pdf.query.*;
+
+public class Probe {
+ static final List<C> cases=new ArrayList<C>();
+ static class C { final Barcode2D b; final String expected,id; Barcode2DSize size; int page; C(String id,Barcode2D b,String expected){this.id=id;this.b=b;this.expected=expected;} }
+ static void add(String id, Barcode2D b,String expected){cases.add(new C(id,b,expected));}
+ static String esc(String s){StringBuilder r=new StringBuilder();for(char c:s.toCharArray())r.append(String.format(Locale.ROOT,"\\u%04x",(int)c));return r.toString();}
+ public static void main(String[] args)throws Exception {
+  Random r=new Random(31);
+  for(Barcode2D.DataMatrixEncoding mode:Barcode2D.DataMatrixEncoding.values()){
+   if(mode==Barcode2D.DataMatrixEncoding.RAW)continue;
+   for(int i=0;i<120;i++){
+    int len=1+r.nextInt(64); StringBuilder t=new StringBuilder();
+    for(int j=0;j<len;j++)t.append((char)(mode==Barcode2D.DataMatrixEncoding.EDIFACT?32+r.nextInt(63):mode==Barcode2D.DataMatrixEncoding.X12?"\r*> 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".charAt(r.nextInt(40)):r.nextInt(256)));
+    String s=t.toString();add("dm-"+mode+"-"+i,Barcode2D.builder(Barcode2D.Mode.DATA_MATRIX,s).dataMatrixEncoding(mode).build(),s);
+   }
+  }
+  for(boolean macro:new boolean[]{false,true})for(Barcode2D.Pdf417Encoding mode:new Barcode2D.Pdf417Encoding[]{Barcode2D.Pdf417Encoding.AUTO,Barcode2D.Pdf417Encoding.BINARY})for(int i=0;i<120;i++){
+   int len=1+r.nextInt(60);StringBuilder t=new StringBuilder();for(int j=0;j<len;j++)t.append((char)r.nextInt(256));String s=t.toString();
+   Barcode2D.Builder b=Barcode2D.builder(Barcode2D.Mode.PDF417,s).pdf417Encoding(mode).pdf417ErrorCorrection(2);if(macro)b.pdf417Macro("001",0,1);
+   add("pdf-"+macro+"-"+mode+"-"+i,b.build(),s);
+  }
+  Path file=Paths.get(args[0]);int[] page={0};
+  new DocumentWorkflow().execute(WorkflowRequest.create(file,SaveMode.REWRITE),session->{
+   for(C c:cases){try{c.size=session.query(MeasureBarcode2D.version1(c.b));session.execute(AddBlankPage.INSTANCE);c.page=++page[0];session.execute(DrawBarcode2D.version1(c.page,c.b,CanvasMatrix.IDENTITY));}catch(DocumentFailure f){System.out.println("GENERATE_FAIL "+c.id+" "+f.getCode()+" expected="+esc(c.expected));}}
+   return null;
+  });
+  int[] ok={0},bad={0};
+  new DocumentWorkflow().execute(WorkflowRequest.open(file,SaveMode.REWRITE),session->{
+   for(C c:cases){if(c.page==0)continue;try{BitMatrix m=matrix(session,c);String actual=c.b.getMode()==Barcode2D.Mode.DATA_MATRIX?new com.google.zxing.datamatrix.decoder.Decoder().decode(m).getText():pdf(m);if(!actual.equals(c.expected)){bad[0]++;System.out.println("MISMATCH "+c.id+" expected="+esc(c.expected)+" actual="+esc(actual));}else ok[0]++;}catch(Exception e){bad[0]++;System.out.println("DECODE_FAIL "+c.id+" "+e.getClass().getName()+" expected="+esc(c.expected));}}
+   return null;
+  });
+  System.out.println("cases="+cases.size()+" published="+page[0]+" ok="+ok[0]+" bad="+bad[0]);
+ }
+ static PdfValue resolve(DocumentSession s,PdfValue v)throws DocumentFailure{return v instanceof PdfIndirectReference?s.query(InspectObject.version1(((PdfIndirectReference)v).getReference(),PdfInspectionLimits.of(100000,16<<20))):v;}
+ static BitMatrix matrix(DocumentSession s,C c)throws DocumentFailure{
+  PdfDictionary page=(PdfDictionary)s.query(InspectObject.version1(s.query(PageObjectReference.version1(c.page)),PdfInspectionLimits.of(100000,16<<20)));
+  PdfDictionary res=(PdfDictionary)resolve(s,page.get(PdfName.of("Resources")));PdfDictionary xs=(PdfDictionary)resolve(s,res.get(PdfName.of("XObject")));PdfStream f=(PdfStream)resolve(s,xs.getEntry(0).getValue());
+  BitMatrix m=new BitMatrix(c.size.getMatrixWidth(),c.size.getMatrixHeight());String content=new String(f.readBytes(),StandardCharsets.US_ASCII);double q=c.b.getQuietZone(),ux=c.b.getModuleWidth(),uy=c.b.getModuleHeight();
+  for(String line:content.split("\n")){String[] t=line.trim().split("\\s+");if(t.length==6&&t[4].equals("re")&&t[5].equals("f")){int x=(int)Math.round((Double.parseDouble(t[0])-q)/ux),y=(int)Math.round((Double.parseDouble(t[1])-q)/uy),w=(int)Math.round(Double.parseDouble(t[2])/ux),h=(int)Math.round(Double.parseDouble(t[3])/uy);for(int dy=0;dy<h;dy++)for(int dx=0;dx<w;dx++)m.set(x+dx,m.getHeight()-1-y-dy);}}
+  return m;
+ }
+ static String pdf(BitMatrix m)throws Exception{
+  int w=m.getWidth()*3+24,h=m.getHeight()*9+24;int[] px=new int[w*h];Arrays.fill(px,0xffffff);for(int y=0;y<m.getHeight();y++)for(int x=0;x<m.getWidth();x++)if(m.get(x,y))for(int dy=0;dy<9;dy++)Arrays.fill(px,(12+y*9+dy)*w+12+x*3,(12+y*9+dy)*w+15+x*3,0);
+  return new com.google.zxing.pdf417.PDF417Reader().decode(new com.google.zxing.BinaryBitmap(new HybridBinarizer(new com.google.zxing.RGBLuminanceSource(w,h,px)))).getText();
+ }
+}
+
+
+===== RawProbe.java (SHA-256 cbaf08343dfe20a796677e2618925c1ed8f0ead53c4b099d9b189bc78d40f69d) =====
+
+import java.nio.file.*;
+import java.util.*;
+import net.zerocloud.pdf.*;
+import net.zerocloud.pdf.command.*;
+import net.zerocloud.pdf.composition.*;
+import net.zerocloud.pdf.composition.command.*;
+import net.zerocloud.pdf.composition.query.*;
+public class RawProbe {
+ public static void main(String[] args)throws Exception {
+  Barcode2D[] items={
+   Barcode2D.rawPdf417(901,65,927,26,300).build(),
+   Barcode2D.rawPdf417(901,927,26,65).build(),
+   Barcode2D.rawPdf417(924,0,0,0,0,0,927,26,300).build(),
+   Barcode2D.rawDataMatrix(234,232,66).build(),
+   Barcode2D.rawDataMatrix(241,27,66).build()
+  };
+  for(WorkflowExecutionProfile profile:WorkflowExecutionProfile.values())for(int i=0;i<items.length;i++){
+   final Barcode2D b=items[i]; final String id=profile+"-"+i;final Probe.C c=new Probe.C(id,b,"");c.page=1;
+   Path file=Paths.get(args[0],id+".pdf"); Files.write(file,new byte[]{1,2,3});
+   try {
+    new DocumentWorkflow().execute(WorkflowRequest.builder().target("out",PublicationTarget.path(file)).saveMode(SaveMode.REWRITE).executionProfile(profile).build(),s->{c.size=s.query(MeasureBarcode2D.version1(b));s.execute(AddBlankPage.INSTANCE);s.execute(DrawBarcode2D.version1(1,b,CanvasMatrix.IDENTITY));return null;});
+    String actual=new DocumentWorkflow().execute(WorkflowRequest.open(file,SaveMode.REWRITE),s->{try{com.google.zxing.common.BitMatrix m=Probe.matrix(s,c);return b.getMode()==Barcode2D.Mode.PDF417?Probe.pdf(m):new com.google.zxing.datamatrix.decoder.Decoder().decode(m).getText();}catch(Exception e){return "decoder-error:"+e.getClass().getName();}}).getResult();
+    System.out.println(id+" COMMITTED raw="+Arrays.toString(b.getRawCodewords())+" decoded="+Probe.esc(actual));
+   } catch(DocumentFailure failure){System.out.println(id+" REJECTED "+failure.getCode()+" retained="+Arrays.equals(new byte[]{1,2,3},Files.readAllBytes(file))+" raw="+Arrays.toString(b.getRawCodewords()));}
+  }
+ }
+}
+
+
+===== DmRawProbe.java (SHA-256 91994acdc77efe3276b106d7e15a37f5dabc40e0b35693005a710234439c8066) =====
+
+import java.nio.file.*;
+import java.util.*;
+import net.zerocloud.pdf.*;
+import net.zerocloud.pdf.command.*;
+import net.zerocloud.pdf.composition.*;
+import net.zerocloud.pdf.composition.command.*;
+import net.zerocloud.pdf.composition.query.*;
+public class DmRawProbe {
+ public static void main(String[] args)throws Exception {
+  Barcode2D[] items={Barcode2D.rawDataMatrix(240,5,240).build(),Barcode2D.rawDataMatrix(240,5,240).dataMatrixSize(10,10).build(),Barcode2D.rawDataMatrix(240,5,240).dataMatrixSize(12,12).build(),Barcode2D.rawDataMatrix(240,124).build(),Barcode2D.rawDataMatrix(240,124).dataMatrixSize(12,12).build()};
+  for(WorkflowExecutionProfile profile:WorkflowExecutionProfile.values())for(int i=0;i<items.length;i++){
+   final Barcode2D b=items[i];String id=profile+"-dmraw-"+i;final Probe.C c=new Probe.C(id,b,"");c.page=1;Path file=Paths.get(args[0],id+".pdf");Files.write(file,new byte[]{1,2,3});
+   try{
+    new DocumentWorkflow().execute(WorkflowRequest.builder().target("out",PublicationTarget.path(file)).saveMode(SaveMode.REWRITE).executionProfile(profile).build(),s->{c.size=s.query(MeasureBarcode2D.version1(b));s.execute(AddBlankPage.INSTANCE);s.execute(DrawBarcode2D.version1(1,b,CanvasMatrix.IDENTITY));return null;});
+    String actual=new DocumentWorkflow().execute(WorkflowRequest.open(file,SaveMode.REWRITE),s->{try{return new com.google.zxing.datamatrix.decoder.Decoder().decode(Probe.matrix(s,c)).getText();}catch(Exception e){return "decoder-error:"+e.getClass().getName();}}).getResult();
+    System.out.println(id+" COMMITTED size="+c.size.getMatrixWidth()+"x"+c.size.getMatrixHeight()+" raw="+Arrays.toString(b.getRawCodewords())+" decoded="+Probe.esc(actual));
+   }catch(DocumentFailure f){System.out.println(id+" REJECTED "+f.getCode()+" retained="+Arrays.equals(new byte[]{1,2,3},Files.readAllBytes(file)));}
+  }
+ }
+}
+
+
+===== probe-output.txt (SHA-256 5ed8a95e93725bb92c742d77ef52e3118810a687c2db13746e43998f2efb5b69) =====
+
+cases=1320 published=1320 ok=1320 bad=0
+
+
+===== raw-probe-output.txt (SHA-256 2de6dd1d2af31e0a669a23dfeec58697647bd15d73d1a2205a1c659a780de90b) =====
+
+IN_PROCESS-0 COMMITTED raw=[901, 65, 927, 26, 300] decoded=\u0041\u002c
+IN_PROCESS-1 REJECTED BARCODE_INPUT_INVALID retained=true raw=[901, 927, 26, 65]
+IN_PROCESS-2 COMMITTED raw=[924, 0, 0, 0, 0, 0, 927, 26, 300] decoded=\u0000\u0000\u0000\u0000\u0000\u0000\u002c
+IN_PROCESS-3 COMMITTED raw=[234, 232, 66] decoded=\u001d\u0041
+IN_PROCESS-4 COMMITTED raw=[241, 27, 66] decoded=\u0041
+HARDENED_WORKER-0 COMMITTED raw=[901, 65, 927, 26, 300] decoded=\u0041\u002c
+HARDENED_WORKER-1 REJECTED BARCODE_INPUT_INVALID retained=true raw=[901, 927, 26, 65]
+HARDENED_WORKER-2 COMMITTED raw=[924, 0, 0, 0, 0, 0, 927, 26, 300] decoded=\u0000\u0000\u0000\u0000\u0000\u0000\u002c
+HARDENED_WORKER-3 COMMITTED raw=[234, 232, 66] decoded=\u001d\u0041
+HARDENED_WORKER-4 COMMITTED raw=[241, 27, 66] decoded=\u0041
+
+
+===== dmraw-probe-output.txt (SHA-256 7928ed857c1ecd0dca4ecabb9312f4fe653b87cd9609529063791767ae99c319) =====
+
+IN_PROCESS-dmraw-0 COMMITTED size=10x10 raw=[240, 5, 240] decoded=\u0004
+IN_PROCESS-dmraw-1 COMMITTED size=10x10 raw=[240, 5, 240] decoded=\u0004
+IN_PROCESS-dmraw-2 COMMITTED size=12x12 raw=[240, 5, 240] decoded=\u0041
+IN_PROCESS-dmraw-3 COMMITTED size=10x10 raw=[240, 124] decoded=\u007b
+IN_PROCESS-dmraw-4 COMMITTED size=12x12 raw=[240, 124] decoded=
+HARDENED_WORKER-dmraw-0 COMMITTED size=10x10 raw=[240, 5, 240] decoded=\u0004
+HARDENED_WORKER-dmraw-1 COMMITTED size=10x10 raw=[240, 5, 240] decoded=\u0004
+HARDENED_WORKER-dmraw-2 COMMITTED size=12x12 raw=[240, 5, 240] decoded=\u0041
+HARDENED_WORKER-dmraw-3 COMMITTED size=10x10 raw=[240, 124] decoded=\u007b
+HARDENED_WORKER-dmraw-4 COMMITTED size=12x12 raw=[240, 124] decoded=
+
+
+===== probe-compile.txt (SHA-256 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855) =====
+
+
+
+===== raw-probe-compile.txt (SHA-256 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855) =====
+
+
+
+===== dmraw-probe-compile.txt (SHA-256 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855) =====
+
+
+
+===== BarcodePdf417Raw-initial.java (SHA-256 acbe0900ee97937b1a3b54943215ea6d6b32c98a253db4402a756da644a93f4e) =====
+
+package net.zerocloud.pdf;
+
+import java.math.BigInteger;
+
+/** Bounded grammar for raw PDF417 data; Macro control belongs to its typed declaration. */
+final class BarcodePdf417Raw {
+    private int textMode;
+    private int priorMode;
+    private boolean payload;
+    private BarcodePdf417Raw() { }
+    static void validate(int[] words) throws DocumentFailure { new BarcodePdf417Raw().read(words); }
+    private void read(int[] words) throws DocumentFailure {
+        for (int word : words) { require(word >= 0 && word <= 928); }
+        for (int index = 0; index < words.length;) {
+            int word = words[index++];
+            if (word < 900) { text(word/30); text(word%30); }
+            else if (word == 900) { textMode = 0; }
+            else if (word == 913) {
+                require(index < words.length && words[index] <= 255); index++; payload = true;
+                if (textMode >= 4) { textMode = priorMode; }
+            } else if (word == 927) {
+                require(index < words.length);
+                int eci = words[index++];
+                require(eci == 2 || eci >= 3 && eci <= 13 || eci >= 15 && eci <= 18 || eci == 20 || eci == 26);
+            } else if (word == 901 || word == 924 || word == 902) {
+                int end = index;
+                while (end < words.length && words[end] < 900) { end++; }
+                require(end > index);
+                if (word == 902) { numeric(words,index,end); }
+                else { binary(words,index,end,word == 924); }
+                index = end; payload = true; textMode = 0;
+            } else { throw PdfBoxBarcode2DOperations.inputFailure(); }
+        }
+        require(payload);
+    }
+    private void text(int value) {
+        if (textMode == 4 || textMode == 5) {
+            int shift = textMode; textMode = priorMode;
+            if (value <= (shift == 4 ? 26 : 28)) { payload = true; }
+            else if (shift == 5) { textMode = 0; }
+        } else if (textMode == 3) {
+            if (value < 29) { payload = true; } else { textMode = 0; }
+        } else if (textMode == 2 && value == 25) { textMode = 3; }
+        else if (value <= 26) { payload = true; }
+        else if (value == 29 || textMode == 1 && value == 27) {
+            priorMode = textMode; textMode = value == 29 ? 5 : 4;
+        } else if (value == 27) { textMode = 1; }
+        else { textMode = textMode == 2 ? 0 : 2; }
+    }
+    private static void numeric(int[] words, int first, int end) throws DocumentFailure {
+        while (first < end) {
+            int stop = Math.min(end,first+15);
+            BigInteger value = BigInteger.ZERO;
+            while (first < stop) { value = value.multiply(BigInteger.valueOf(900)).add(BigInteger.valueOf(words[first++])); }
+            String decimal = value.toString();
+            require(decimal.length() > 1 && decimal.charAt(0) == '1');
+        }
+    }
+    private static void binary(int[] words, int first, int end, boolean completeGroups) throws DocumentFailure {
+        int count = end-first;
+        require(!completeGroups || count%5 == 0);
+        int groups = completeGroups ? count/5 : (count-1)/5;
+        for (int group = 0; group < groups; group++) {
+            long value = 0;
+            for (int item = 0; item < 5; item++) { value = value*900+words[first++]; }
+            require(value < (1L << 48));
+        }
+        while (first < end) { require(words[first++] <= 255); }
+    }
+    private static void require(boolean valid) throws DocumentFailure {
+        if (!valid) { throw PdfBoxBarcode2DOperations.inputFailure(); }
+    }
+}
+
+
+===== BarcodeDataMatrixRaw-initial.java (SHA-256 435bdfe38649204923589184f2824ed3e40d129e164643cde8c61a2d6674efd5) =====
+
+package net.zerocloud.pdf;
+
+/** Validates caller data words without accepting implicit end-of-symbol state. */
+final class BarcodeDataMatrixRaw {
+    private BarcodeDataMatrixRaw() { }
+    static void validate(int[] words) throws DocumentFailure {
+        require(words.length != 0);
+        for (int word : words) { require(word >= 0 && word <= 255); }
+        for (int index = 0; index < words.length;) {
+            int word = words[index++];
+            if (word >= 1 && word <= 229 && word != 129 || word == 232) { continue; }
+            if (word == 235) {
+                require(index < words.length && words[index] >= 1 && words[index] <= 128); index++;
+            } else if (word == 230 || word == 238 || word == 239) {
+                index = triplets(words, index, word == 238);
+            } else if (word == 231) {
+                require(index < words.length);
+                int count = unrandomize(words, index++);
+                require(count != 0);
+                if (count >= 250) {
+                    require(index < words.length);
+                    count = (count - 249) * 250 + unrandomize(words, index++);
+                }
+                require(count <= words.length - index); index += count;
+            } else if (word == 240) {
+                index = edifact(words, index);
+            } else if (word == 241) {
+                require(index < words.length);
+                int eci = words[index++] - 1;
+                require(eci == 2 || eci >= 3 && eci <= 13 || eci >= 15 && eci <= 18 || eci == 20 || eci == 26);
+            } else if (word == 233) {
+                require(index == 1 && words.length >= 4);
+                int sequence = words[index++], total = 17 - (sequence & 15), position = (sequence >>> 4) + 1;
+                require(total >= 2 && total <= 16 && position <= total);
+                require(words[index] >= 1 && words[index] <= 254 && words[index + 1] >= 1 && words[index + 1] <= 254);
+                index += 2;
+            } else { require(index == 1 && (word == 234 || word == 236 || word == 237)); }
+        }
+    }
+    private static int triplets(int[] words, int index, boolean x12) throws DocumentFailure {
+        int shift = 0;
+        boolean upper = false;
+        while (index < words.length && words[index] != 254) {
+            require(index + 1 < words.length);
+            int packed = 256 * words[index] + words[index + 1] - 1;
+            require(packed >= 0 && packed < 64000); index += 2;
+            for (int value : new int[] {packed / 1600, packed / 40 % 40, packed % 40}) {
+                if (x12) { continue; }
+                if (shift == 0) {
+                    if (value < 3) { shift = value + 1; }
+                    else { upper = false; }
+                } else {
+                    require(shift == 2 ? value <= 27 || value == 30 : value <= 31);
+                    if (shift == 2 && value == 30) { require(!upper); upper = true; }
+                    else { upper = false; }
+                    shift = 0;
+                }
+            }
+        }
+        require(index < words.length && shift == 0 && !upper);
+        return index + 1;
+    }
+    private static int edifact(int[] words, int index) throws DocumentFailure {
+        int bit = index * 8;
+        while (bit + 6 <= words.length * 8) {
+            int value = 0;
+            for (int offset = 0; offset < 6; offset++, bit++) {
+                value = (value << 1) | ((words[bit / 8] >>> (7 - bit % 8)) & 1);
+            }
+            if (value == 31) {
+                while (bit % 8 != 0) { require((words[bit / 8] & (1 << (7 - bit % 8))) == 0); bit++; }
+                return bit / 8;
+            }
+        }
+        throw PdfBoxBarcode2DOperations.inputFailure();
+    }
+    private static int unrandomize(int[] words, int index) {
+        return (words[index] - (149 * (index + 1)) % 255 - 1 + 256) % 256;
+    }
+    private static void require(boolean valid) throws DocumentFailure {
+        if (!valid) { throw PdfBoxBarcode2DOperations.inputFailure(); }
+    }
+}
+
+
+===== BarcodeDataMatrixCompaction-initial.java (SHA-256 7e99f39b9fb91c5a24fe7549775ddcdcabc40432fff1eb451b4dc8f101b22a4c) =====
+
+package net.zerocloud.pdf;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import net.zerocloud.pdf.composition.Barcode2D;
+
+/** Original explicit ECC200 compaction before Okapi-derived ECC and placement. */
+final class BarcodeDataMatrixCompaction {
+    private BarcodeDataMatrixCompaction() { }
+    static int[] forCapacity(int[] words, Barcode2D declaration, int capacity) throws DocumentFailure {
+        Barcode2D.DataMatrixEncoding mode = declaration.getDataMatrixEncoding();
+        if (mode == Barcode2D.DataMatrixEncoding.RAW || mode == Barcode2D.DataMatrixEncoding.ASCII
+                || mode == Barcode2D.DataMatrixEncoding.BASE256 || mode == Barcode2D.DataMatrixEncoding.AUTO) { return words; }
+        if (mode != Barcode2D.DataMatrixEncoding.EDIFACT && words.length == capacity + 1 && words[words.length - 1] == 254) {
+            return Arrays.copyOf(words, capacity);
+        }
+        int[] bytes = Barcode2DEncoding.of(declaration.getEncoding()).encode(declaration.getContent());
+        if (mode == Barcode2D.DataMatrixEncoding.EDIFACT) {
+            int tail = bytes.length % 4, tailWords = ((tail + 1) * 6 + 7) / 8;
+            int prefix = words.length - tailWords;
+            // With at most two words remaining ECC200 implicitly resumes ASCII.
+            if (capacity - prefix >= tail && capacity - prefix <= 2) {
+                List<Integer> result = new ArrayList<Integer>();
+                for (int index = 0; index < prefix; index++) { result.add(words[index]); }
+                ascii(result, bytes, bytes.length - tail);
+                return array(result);
+            }
+        } else if (mode != Barcode2D.DataMatrixEncoding.X12 && words.length > capacity) {
+            List<Integer> values = new ArrayList<Integer>();
+            for (int value : bytes) { c40(values, value, mode == Barcode2D.DataMatrixEncoding.TEXT); }
+            int header = headers(declaration, Barcode2DEncoding.of(declaration.getEncoding()).eci).size();
+            if (values.size() % 3 == 2 && header + 1 + 2 * (values.size() + 1) / 3 == capacity) {
+                values.add(0); // A final shift value is ignored at the exact symbol boundary.
+                List<Integer> result = new ArrayList<Integer>();
+                for (int index = 0; index < header; index++) { result.add(words[index]); }
+                result.add(mode == Barcode2D.DataMatrixEncoding.TEXT ? 239 : 230);
+                packTriplets(result, values, values.size());
+                return array(result);
+            }
+        }
+        return words;
+    }
+    static int[] encode(Barcode2D declaration) throws DocumentFailure {
+        Barcode2D.DataMatrixEncoding mode = declaration.getDataMatrixEncoding();
+        if (mode == Barcode2D.DataMatrixEncoding.RAW) {
+            int[] raw = declaration.getRawCodewords();
+            BarcodeDataMatrixRaw.validate(raw);
+            return raw;
+        }
+        Barcode2DEncoding encoding = Barcode2DEncoding.of(declaration.getEncoding());
+        int[] bytes = encoding.encode(declaration.getContent());
+        List<Integer> words = headers(declaration, encoding.eci);
+        if (mode == Barcode2D.DataMatrixEncoding.ASCII || mode == Barcode2D.DataMatrixEncoding.AUTO) { ascii(words, bytes, 0); }
+        else if (mode == Barcode2D.DataMatrixEncoding.BASE256) { binary(words, bytes); }
+        else if (mode == Barcode2D.DataMatrixEncoding.EDIFACT) { edifact(words, bytes); }
+        else { triplets(words, bytes, mode); }
+        return array(words);
+    }
+    private static List<Integer> headers(Barcode2D declaration, int eci) {
+        List<Integer> words = new ArrayList<Integer>();
+        if (declaration.getDataMatrixSequenceTotal() != 0) {
+            words.add(233);
+            words.add(16 * (declaration.getDataMatrixSequencePosition() - 1) + 17 - declaration.getDataMatrixSequenceTotal());
+            words.add(1 + (declaration.getDataMatrixFileId() - 1) / 254);
+            words.add(1 + (declaration.getDataMatrixFileId() - 1) % 254);
+        }
+        if (declaration.getDataMatrixMacro() != Barcode2D.DataMatrixMacro.NONE) {
+            words.add(declaration.getDataMatrixMacro() == Barcode2D.DataMatrixMacro.MACRO_05 ? 236 : 237);
+        }
+        if (declaration.isDataMatrixFnc1()) { words.add(232); }
+        if (declaration.isDataMatrixReaderProgramming()) { words.add(234); }
+        if (eci != 3) { words.add(241); words.add(eci + 1); }
+        return words;
+    }
+    private static void binary(List<Integer> words, int[] bytes) {
+        words.add(231);
+        if (bytes.length <= 249) { randomByte(words, bytes.length); }
+        else { randomByte(words, bytes.length / 250 + 249); randomByte(words, bytes.length % 250); }
+        for (int value : bytes) { randomByte(words, value); }
+    }
+    private static void randomByte(List<Integer> words, int value) {
+        words.add((value + (149 * (words.size() + 1)) % 255 + 1) % 256);
+    }
+    private static void edifact(List<Integer> words, int[] bytes) throws DocumentFailure {
+        words.add(240);
+        int buffer = 0, bits = 0;
+        for (int index = 0; index <= bytes.length; index++) {
+            int value = index == bytes.length ? 31 : bytes[index];
+            if (index < bytes.length && (value < 32 || value > 94)) { throw PdfBoxBarcode2DOperations.inputFailure(); }
+            buffer = (buffer << 6) | (value & 63); bits += 6;
+            while (bits >= 8) { bits -= 8; words.add((buffer >>> bits) & 255); }
+        }
+        if (bits > 0) { words.add((buffer << (8 - bits)) & 255); }
+    }
+    private static void triplets(List<Integer> words, int[] bytes, Barcode2D.DataMatrixEncoding mode) throws DocumentFailure {
+        List<Integer> values = new ArrayList<Integer>();
+        int prefix = 0, count = 0;
+        boolean x12 = mode == Barcode2D.DataMatrixEncoding.X12;
+        for (int index = 0; index < bytes.length; index++) {
+            if (x12) {
+                int value = "\r*> 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf((char) bytes[index]);
+                if (value < 0) { throw PdfBoxBarcode2DOperations.inputFailure(); }
+                values.add(value);
+            } else { c40(values, bytes[index], mode == Barcode2D.DataMatrixEncoding.TEXT); }
+            if (values.size() % 3 == 0) { prefix = index + 1; count = values.size(); }
+        }
+        if (count > 0) {
+            words.add(x12 ? 238 : mode == Barcode2D.DataMatrixEncoding.TEXT ? 239 : 230);
+            packTriplets(words, values, count);
+            words.add(254);
+        }
+        ascii(words, bytes, prefix);
+    }
+    private static void packTriplets(List<Integer> words, List<Integer> values, int count) {
+        for (int index = 0; index < count; index += 3) {
+            int value = 1600 * values.get(index) + 40 * values.get(index + 1) + values.get(index + 2) + 1;
+            words.add(value / 256); words.add(value % 256);
+        }
+    }
+    private static int[] array(List<Integer> words) {
+        int[] result = new int[words.size()];
+        for (int index = 0; index < result.length; index++) { result[index] = words.get(index); }
+        return result;
+    }
+    private static void c40(List<Integer> values, int value, boolean text) {
+        if (value >= 128) { values.add(1); values.add(30); c40(values, value - 128, text); }
+        else if (value < 32) { values.add(0); values.add(value); }
+        else if (value == 32) { values.add(3); }
+        else if (digit(value)) { values.add(value - '0' + 4); }
+        else if (value >= (text ? 'a' : 'A') && value <= (text ? 'z' : 'Z')) { values.add(value - (text ? 'a' : 'A') + 14); }
+        else if (value >= 33 && value <= 47) { values.add(1); values.add(value - 33); }
+        else if (value >= 58 && value <= 64) { values.add(1); values.add(value - 58 + 15); }
+        else if (value >= 91 && value <= 95) { values.add(1); values.add(value - 91 + 22); }
+        else {
+            values.add(2);
+            values.add(text && value >= 'A' && value <= 'Z' ? value - 'A' + 1 : value - 96);
+        }
+    }
+    private static void ascii(List<Integer> words, int[] bytes, int first) {
+        for (int index = first; index < bytes.length; index++) {
+            int value = bytes[index];
+            if (digit(value) && index + 1 < bytes.length && digit(bytes[index + 1])) {
+                words.add(130 + (value - '0') * 10 + bytes[++index] - '0');
+            } else if (value >= 128) {
+                words.add(235); words.add(value - 127);
+            } else { words.add(value + 1); }
+        }
+    }
+    private static boolean digit(int value) { return value >= '0' && value <= '9'; }
+}
+
+
+===== BarcodeDataMatrixGrid-initial.java (SHA-256 a8db4ae525ae306a0b26a86345eea67504b890067a0c38bdd925e828b24c639e) =====
+
+/*
+ * Copyright 2014 Robin Stuart
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+// Adapted from OkapiBarcode 0.5.6 DataMatrix: retain ECC200 padding, ECC and placement.
+// Folio supplies explicit data codewords and dimension selection; automatic compaction
+// remains in the unmodified dependency. See docs/third-party/okapibarcode-0.5.6.md.
+package net.zerocloud.pdf;
+
+import net.zerocloud.pdf.composition.Barcode2D;
+import uk.org.okapibarcode.backend.ReedSolomon;
+import uk.org.okapibarcode.backend.Symbol;
+
+/** Private ECC200 grid for explicitly compacted data. */
+final class BarcodeDataMatrixGrid extends Symbol {
+    private final BarcodeDataMatrixSize size;
+    private final int[] target;
+    private int[] places;
+
+    BarcodeDataMatrixGrid(int[] data, Barcode2D declaration) throws DocumentFailure {
+        BarcodeDataMatrixSize selected = null;
+        for (BarcodeDataMatrixSize candidate : BarcodeDataMatrixSize.matching(declaration.getDataMatrixWidth(), declaration.getDataMatrixHeight())) {
+            int[] fitted = BarcodeDataMatrixCompaction.forCapacity(data, declaration, candidate.dataCapacity);
+            if (fitted.length <= candidate.dataCapacity) { selected = candidate; data = fitted; break; }
+        }
+        if (selected == null) { throw PdfBoxBarcode2DOperations.inputFailure(); }
+        size = selected;
+        int blocks = (size.dataCapacity + 2) / size.dataBlock;
+        target = new int[size.dataCapacity + blocks * size.eccBlock];
+        System.arraycopy(data, 0, target, 0, data.length);
+        addPadBits(data.length, size.dataCapacity - data.length);
+        calculateErrorCorrection(size.dataCapacity, size.dataBlock, size.eccBlock, size.width == 144);
+        encode();
+        plotSymbol();
+    }
+
+    @Override protected void encode() {
+        int H = size.height, W = size.width, FH = size.regionHeight, FW = size.regionWidth;
+        int NC, NR, i, x, y, v;
+        int[] grid;
+        NC = W - 2 * (W / FW);
+        NR = H - 2 * (H / FH);
+        places = new int[NC * NR];
+        placeData(NR, NC);
+        grid = new int[W * H];
+        for (i = 0; i < (W * H); i++) {
+            grid[i] = 0;
+        }
+        for (y = 0; y < H; y += FH) {
+            for (x = 0; x < W; x++) {
+                grid[y * W + x] = 1;
+            }
+            for (x = 0; x < W; x += 2) {
+                grid[(y + FH - 1) * W + x] = 1;
+            }
+        }
+        for (x = 0; x < W; x += FW) {
+            for (y = 0; y < H; y++) {
+                grid[y * W + x] = 1;
+            }
+            for (y = 0; y < H; y += 2) {
+                grid[y * W + x + FW - 1] = 1;
+            }
+        }
+        for (y = 0; y < NR; y++) {
+            for (x = 0; x < NC; x++) {
+                v = places[(NR - y - 1) * NC + x];
+                if (v == 1 || (v > 7 && (target[(v >> 3) - 1] & (1 << (v & 7))) != 0)) {
+                    grid[(1 + y + 2 * (y / (FH - 2))) * W + 1 + x + 2 * (x / (FW - 2))] = 1;
+                }
+            }
+        }
+
+        readable = "";
+        pattern = new String[H];
+        rowCount = H;
+        rowHeight = new int[H];
+
+        StringBuilder pat = new StringBuilder(W);
+        for (y = H - 1; y >= 0; y--) {
+            pattern[(H - y) - 1] = bin2pat(grid, W * y, W, pat);
+            rowHeight[(H - y) - 1] = moduleWidth;
+        }
+
+    }
+
+    private void calculateErrorCorrection(int bytes, int datablock, int rsblock, boolean skew) {
+        // calculate and append ecc code, and if necessary interleave
+        ReedSolomon rs = ReedSolomon.get(0x12d, rsblock, 1, true);
+        int blocks = (bytes + 2) / datablock, b;
+        int n, p;
+        for (b = 0; b < blocks; b++) {
+            int[] buf = new int[256];
+            int[] ecc = new int[256];
+            p = 0;
+            for (n = b; n < bytes; n += blocks) {
+                buf[p++] = target[n];
+            }
+            int[] result = rs.encode(p, buf);
+            System.arraycopy(result, 0, ecc, 0, rsblock);
+            p = rsblock - 1; // comes back reversed
+            for (n = b; n < rsblock * blocks; n += blocks) {
+                if (skew) {
+                    /* Rotate ecc data to make 144x144 size symbols acceptable */
+                    /* See http://groups.google.com/group/postscriptbarcode/msg/5ae8fda7757477da */
+                    if (b < 8) {
+                        target[bytes + n + 2] = ecc[p--];
+                    } else {
+                        target[bytes + n - 8] = ecc[p--];
+                    }
+                } else {
+                    target[bytes + n] = ecc[p--];
+                }
+            }
+        }
+    }
+
+    private void addPadBits(int tp, int tail_length) {
+        int i, prn, temp;
+
+        for (i = tail_length; i > 0; i--) {
+            if (i == tail_length) {
+                target[tp] = 129;
+                tp++; /* Pad */
+            } else {
+                prn = ((149 * (tp + 1)) % 253) + 1;
+                temp = 129 + prn;
+                if (temp <= 254) {
+                    target[tp] = temp;
+                    tp++;
+                } else {
+                    target[tp] = temp - 254;
+                    tp++;
+                }
+            }
+        }
+    }
+
+    private void placeData(int NR, int NC) {
+        int r, c, p;
+        // invalidate
+        for (r = 0; r < NR; r++) {
+            for (c = 0; c < NC; c++) {
+                places[r * NC + c] = 0;
+            }
+        }
+        // start
+        p = 1;
+        r = 4;
+        c = 0;
+        do {
+            // check corner
+            if (r == NR && (c == 0)) {
+                placeCornerA(NR, NC, p++);
+            }
+            if (r == NR - 2 && (c == 0) && ((NC % 4) != 0)) {
+                placeCornerB(NR, NC, p++);
+            }
+            if (r == NR - 2 && (c == 0) && (NC % 8) == 4) {
+                placeCornerC(NR, NC, p++);
+            }
+            if (r == NR + 4 && c == 2 && ((NC % 8) == 0)) {
+                placeCornerD(NR, NC, p++);
+            }
+            // up/right
+            do {
+                if (r < NR && c >= 0 && (places[r * NC + c] == 0)) {
+                    placeBlock(NR, NC, r, c, p++);
+                }
+                r -= 2;
+                c += 2;
+            } while (r >= 0 && c < NC);
+            r++;
+            c += 3;
+            // down/left
+            do {
+                if (r >= 0 && c < NC && (places[r * NC + c] == 0)) {
+                    placeBlock(NR, NC, r, c, p++);
+                }
+                r += 2;
+                c -= 2;
+            } while (r < NR && c >= 0);
+            r += 3;
+            c++;
+        } while (r < NR || c < NC);
+        // unfilled corner
+        if (places[NR * NC - 1] == 0) {
+            places[NR * NC - 1] = places[NR * NC - NC - 2] = 1;
+        }
+    }
+
+    private void placeCornerA(int NR, int NC, int p) {
+        placeBit(NR, NC, NR - 1, 0, p, 7);
+        placeBit(NR, NC, NR - 1, 1, p, 6);
+        placeBit(NR, NC, NR - 1, 2, p, 5);
+        placeBit(NR, NC, 0, NC - 2, p, 4);
+        placeBit(NR, NC, 0, NC - 1, p, 3);
+        placeBit(NR, NC, 1, NC - 1, p, 2);
+        placeBit(NR, NC, 2, NC - 1, p, 1);
+        placeBit(NR, NC, 3, NC - 1, p, 0);
+    }
+
+    private void placeCornerB(int NR, int NC, int p) {
+        placeBit(NR, NC, NR - 3, 0, p, 7);
+        placeBit(NR, NC, NR - 2, 0, p, 6);
+        placeBit(NR, NC, NR - 1, 0, p, 5);
+        placeBit(NR, NC, 0, NC - 4, p, 4);
+        placeBit(NR, NC, 0, NC - 3, p, 3);
+        placeBit(NR, NC, 0, NC - 2, p, 2);
+        placeBit(NR, NC, 0, NC - 1, p, 1);
+        placeBit(NR, NC, 1, NC - 1, p, 0);
+    }
+
+    private void placeCornerC(int NR, int NC, int p) {
+        placeBit(NR, NC, NR - 3, 0, p, 7);
+        placeBit(NR, NC, NR - 2, 0, p, 6);
+        placeBit(NR, NC, NR - 1, 0, p, 5);
+        placeBit(NR, NC, 0, NC - 2, p, 4);
+        placeBit(NR, NC, 0, NC - 1, p, 3);
+        placeBit(NR, NC, 1, NC - 1, p, 2);
+        placeBit(NR, NC, 2, NC - 1, p, 1);
+        placeBit(NR, NC, 3, NC - 1, p, 0);
+    }
+
+    private void placeCornerD(int NR, int NC, int p) {
+        placeBit(NR, NC, NR - 1, 0, p, 7);
+        placeBit(NR, NC, NR - 1, NC - 1, p, 6);
+        placeBit(NR, NC, 0, NC - 3, p, 5);
+        placeBit(NR, NC, 0, NC - 2, p, 4);
+        placeBit(NR, NC, 0, NC - 1, p, 3);
+        placeBit(NR, NC, 1, NC - 3, p, 2);
+        placeBit(NR, NC, 1, NC - 2, p, 1);
+        placeBit(NR, NC, 1, NC - 1, p, 0);
+    }
+
+    private void placeBlock(int NR, int NC, int r, int c, int p) {
+        placeBit(NR, NC, r - 2, c - 2, p, 7);
+        placeBit(NR, NC, r - 2, c - 1, p, 6);
+        placeBit(NR, NC, r - 1, c - 2, p, 5);
+        placeBit(NR, NC, r - 1, c - 1, p, 4);
+        placeBit(NR, NC, r - 1, c - 0, p, 3);
+        placeBit(NR, NC, r - 0, c - 2, p, 2);
+        placeBit(NR, NC, r - 0, c - 1, p, 1);
+        placeBit(NR, NC, r - 0, c - 0, p, 0);
+    }
+
+    private void placeBit(int NR, int NC, int r, int c, int p, int b) {
+        if (r < 0) {
+            r += NR;
+            c += 4 - ((NR + 4) % 8);
+        }
+        if (c < 0) {
+            c += NC;
+            r += 4 - ((NC + 4) % 8);
+        }
+        places[r * NC + c] = (p << 3) + b;
+    }
+
+}

@@ -68,9 +68,11 @@ public final class InventoryCommandTest {
                 "`document.hardened-worker.recovery-scale`"));
         assertTrue(facades.contains("- Stable entries: `0`"));
         assertTrue(facades.contains("- Preview entries: `12`"));
-        assertTrue(facades.contains("- Explicit capability exclusions: `21`"));
+        assertTrue(facades.contains("- Explicit capability exclusions: `22`"));
         assertTrue(capabilities.contains("`composition.barcodes.one-dimensional`"));
         assertTrue(facades.contains("`composition.barcodes.one-dimensional`"));
+        assertTrue(capabilities.contains("`composition.barcodes.two-dimensional`"));
+        assertTrue(facades.contains("`composition.barcodes.two-dimensional`"));
         assertTrue(capabilities.contains("`composition.shaping.harf-buzz`"));
         assertTrue(facades.contains("`composition.shaping.harf-buzz`"));
         assertTrue(facades.contains("`conversion.rendering`"));

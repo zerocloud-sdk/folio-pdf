@@ -1,0 +1,323 @@
+Command: pdfium --version
+Exit: 0
+stdout:
+pdfium version v0.11.2
+
+stderr:
+
+Command: magick --version
+Exit: 0
+stdout:
+Version: ImageMagick 7.1.2-30 Q16-HDRI x86_64 7d45ed032:20260823 https://imagemagick.org
+Copyright: (C) 1999 ImageMagick Studio LLC
+License: https://imagemagick.org/license/
+Features: Cipher DPC HDRI OpenMP(4.5) 
+Delegates (built-in): bzlib djvu fontconfig freetype heic jbig jng jp2 jpeg lcms lqr lzma openexr png raqm tiff webp x xml zlib
+Compiler: gcc (11.4)
+
+stderr:
+
+Command: pdfium render T31-negative-qr-payload.pdf T31-negative-qr-payload-actual.png --dpi 288 --file-type png --pages 1
+Exit: 0
+stdout:
+Rendered page 1 into T31-negative-qr-payload-actual.png
+
+stderr:
+
+Control: qr-payload; PDF SHA-256: 3f08aa74e69837ba4961382d341e607216aef969e13a6dd87877f260144a42e2; PNG SHA-256: 7c91202728e3aaf1f492cd449871518c4700daef9601ba8c0c118c85abb4bd3b
+Raster rejection: IllegalArgumentException: QR payload mismatch
+Command: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-in-process-actual-1.png T31-negative-qr-payload-actual.png T31-negative-qr-payload-difference.png
+Exit: 1
+stdout:
+
+stderr:
+2144 (0.000276457)
+Difference PNG SHA-256: 659dee3dcc7b03bea9740bfc7e543e87afac6e46c7b3dfb90a7a6374f9452f9b; negative control pass
+Command: pdfium render T31-negative-qr-data.pdf T31-negative-qr-data-actual.png --dpi 288 --file-type png --pages 1
+Exit: 0
+stdout:
+Rendered page 1 into T31-negative-qr-data-actual.png
+
+stderr:
+
+Control: qr-data; PDF SHA-256: d2e720c70cfba0668914d7eec8c8d55205544c7887d943b7f2a0ab71f01b5c6e; PNG SHA-256: 8aa06b4fc74d601761e2163e1ee2849998a560383327d897b717419f2e4ac9c3
+Raster rejection: IllegalArgumentException: QR damaged data/ECC required correction
+Command: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-in-process-actual-1.png T31-negative-qr-data-actual.png T31-negative-qr-data-difference.png
+Exit: 1
+stdout:
+
+stderr:
+16 (2.06311e-06)
+Difference PNG SHA-256: 8b2a269471e79358788d691eadd1f4f1aaa228b2df5351d18df5cfe30880884e; negative control pass
+Command: pdfium render T31-negative-qr-ecc.pdf T31-negative-qr-ecc-actual.png --dpi 288 --file-type png --pages 1
+Exit: 0
+stdout:
+Rendered page 1 into T31-negative-qr-ecc-actual.png
+
+stderr:
+
+Control: qr-ecc; PDF SHA-256: 94d95d640b27e1442f9717320c47304a7c643e5a11abe5473b33a6bbff32bca3; PNG SHA-256: 350690631e02c3d292849100f86ad2cd81c571eb865f9d93b61094fca80d2651
+Raster rejection: IllegalArgumentException: QR damaged data/ECC required correction
+Command: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-in-process-actual-1.png T31-negative-qr-ecc-actual.png T31-negative-qr-ecc-difference.png
+Exit: 1
+stdout:
+
+stderr:
+16 (2.06311e-06)
+Difference PNG SHA-256: 41edb9084d8c7fc1b95e4f4c40748433f0d7b238b14a9aa2543ddcacc9820134; negative control pass
+Command: pdfium render T31-negative-qr-finder.pdf T31-negative-qr-finder-actual.png --dpi 288 --file-type png --pages 1
+Exit: 0
+stdout:
+Rendered page 1 into T31-negative-qr-finder-actual.png
+
+stderr:
+
+Control: qr-finder; PDF SHA-256: 4dcd5772786665432d4db1bb0236b65c769e6bb6626ec1e5b8ade0b19477a0d5; PNG SHA-256: d3820066db4b77a6f34931ee6c6d1d5db55ef9e2b6b107a791f3f392ad1e16ed
+Raster rejection: IllegalArgumentException: QR finder/separator at 0,0
+Command: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-in-process-actual-1.png T31-negative-qr-finder-actual.png T31-negative-qr-finder-difference.png
+Exit: 1
+stdout:
+
+stderr:
+16 (2.06311e-06)
+Difference PNG SHA-256: 5728f4909e8ec2600e42c20d45de348b8de2308ae28d3b01febaaef7b121a2fe; negative control pass
+Command: pdfium render T31-negative-qr-timing.pdf T31-negative-qr-timing-actual.png --dpi 288 --file-type png --pages 1
+Exit: 0
+stdout:
+Rendered page 1 into T31-negative-qr-timing-actual.png
+
+stderr:
+
+Control: qr-timing; PDF SHA-256: 4d60aaa16799b67a70bb819f36650e97603dd4124bfcc90dcf31925aa8a8b2f0; PNG SHA-256: 3ff98d3a9d39ba2269f7eebfe319f5337013f220c0c06786d53cb2a22ff0ce4a
+Raster rejection: IllegalArgumentException: QR timing at 6,10
+Command: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-in-process-actual-1.png T31-negative-qr-timing-actual.png T31-negative-qr-timing-difference.png
+Exit: 1
+stdout:
+
+stderr:
+16 (2.06311e-06)
+Difference PNG SHA-256: 8d5c64cc22b81e1d293bd7c12f4a7594772c2affea033319977f19db49395e13; negative control pass
+Command: pdfium render T31-negative-qr-format.pdf T31-negative-qr-format-actual.png --dpi 288 --file-type png --pages 1
+Exit: 0
+stdout:
+Rendered page 1 into T31-negative-qr-format-actual.png
+
+stderr:
+
+Control: qr-format; PDF SHA-256: bfa91a8dbb5e52bf5ea0a4ccf949da6991fcc0262630b9841a824df7262734e0; PNG SHA-256: ee95330989d0947ebeb223f9180cd44905a2b6d596c41d52642c2eb675148d85
+Raster rejection: IllegalArgumentException: QR exact duplicated format BCH
+Command: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-in-process-actual-1.png T31-negative-qr-format-actual.png T31-negative-qr-format-difference.png
+Exit: 1
+stdout:
+
+stderr:
+16 (2.06311e-06)
+Difference PNG SHA-256: 689156613ea36ae7ea27ccfc786d2389c55fb2206bd3ac2ddf8cb9582b9628a7; negative control pass
+Command: pdfium render T31-negative-qr-quiet.pdf T31-negative-qr-quiet-actual.png --dpi 288 --file-type png --pages 1
+Exit: 0
+stdout:
+Rendered page 1 into T31-negative-qr-quiet-actual.png
+
+stderr:
+
+Control: qr-quiet; PDF SHA-256: 5bf4e98fe695d847a650f9585a9e89878e451eaa294828caffe252b1fb0bf5ff; PNG SHA-256: 08f6417aee76c9f81b44aa2d90a8639998c36119507b14136e3833a94cfb12b9
+Raster rejection: IllegalArgumentException: Paint in raster quiet zone at 144,576
+Command: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-in-process-actual-1.png T31-negative-qr-quiet-actual.png T31-negative-qr-quiet-difference.png
+Exit: 1
+stdout:
+
+stderr:
+16 (2.06311e-06)
+Difference PNG SHA-256: 1d4266a59a9684ecf9a00551e7ec0a9c3aecc3a707261d2bd7034071f91ef981; negative control pass
+Command: pdfium render T31-negative-qr-move.pdf T31-negative-qr-move-actual.png --dpi 288 --file-type png --pages 1
+Exit: 0
+stdout:
+Rendered page 1 into T31-negative-qr-move-actual.png
+
+stderr:
+
+Control: qr-move; PDF SHA-256: c5263eea00d7be3202e57e891c458637e35cd64fed7143655e6668ba8576bb50; PNG SHA-256: bf76b7cee6fec46515fe980858679e398d65f77d35086b4556d75a35bd486e59
+Raster rejection: IllegalArgumentException: QR finder/separator at 0,0
+Command: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-in-process-actual-1.png T31-negative-qr-move-actual.png T31-negative-qr-move-difference.png
+Exit: 1
+stdout:
+
+stderr:
+3840 (0.000495148)
+Difference PNG SHA-256: f31355a6ca8693cdc37367c26674cff017d903a47084b81b479bd2b15a34ae4e; negative control pass
+Command: pdfium render T31-negative-qr-scale.pdf T31-negative-qr-scale-actual.png --dpi 288 --file-type png --pages 1
+Exit: 0
+stdout:
+Rendered page 1 into T31-negative-qr-scale-actual.png
+
+stderr:
+
+Control: qr-scale; PDF SHA-256: a861b4d33edb5020e375ec4c2ff95fd6f52ea31ec8e95c0de320e2063f10b2b0; PNG SHA-256: 39c6a14e41273403d4e683b88ca94f627fdb5538ff6af7306e8b01e2a75c664a
+Raster rejection: IllegalArgumentException: QR finder/separator at 0,0
+Command: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-in-process-actual-1.png T31-negative-qr-scale-actual.png T31-negative-qr-scale-difference.png
+Exit: 1
+stdout:
+
+stderr:
+4912 (0.000633376)
+Difference PNG SHA-256: a8f994f3dab10c5dcdc26511ed61241f17e60cd68c0c3bce2d61fd9a67479667; negative control pass
+Command: pdfium render T31-negative-qr-rotation.pdf T31-negative-qr-rotation-actual.png --dpi 288 --file-type png --pages 1
+Exit: 0
+stdout:
+Rendered page 1 into T31-negative-qr-rotation-actual.png
+
+stderr:
+
+Control: qr-rotation; PDF SHA-256: 348e630108dc67435ad0b12c83b7587d8ce316898ce8c3598c27eb7673db3391; PNG SHA-256: 28c7334811f4f8cf437e3f080c98fa9b80544619b929f516d557e1a2db80db2e
+Raster rejection: IllegalArgumentException: QR finder/separator at 0,0
+Command: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-in-process-actual-1.png T31-negative-qr-rotation-actual.png T31-negative-qr-rotation-difference.png
+Exit: 1
+stdout:
+
+stderr:
+6912 (0.000891266)
+Difference PNG SHA-256: 00f9e828c46e36424245d424d9bfe0567c7ef53529534f3be9c319c014ffc503; negative control pass
+Command: pdfium render T31-negative-qr-box.pdf T31-negative-qr-box-actual.png --dpi 288 --file-type png --pages 1
+Exit: 0
+stdout:
+Rendered page 1 into T31-negative-qr-box-actual.png
+
+stderr:
+
+Control: qr-box; PDF SHA-256: 6da6ae83c53dbc969ec8e1105d6dbe8398eaff638919124dc723492638d8877a; PNG SHA-256: 09e1c8baa715f42d635d65ffa8b3574da6adfc532b5ab10826dd9c9ae9c5da6d
+Raster rejection: IllegalArgumentException: QR finder/separator at 14,0
+Command: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-in-process-actual-1.png T31-negative-qr-box-actual.png T31-negative-qr-box-difference.png
+Exit: 1
+stdout:
+
+stderr:
+1264 (0.000162986)
+Difference PNG SHA-256: 5c7bb84567e42c14315f35536804952fa488c252da7ff71b66ef8111f67a0589; negative control pass
+Command: pdfium render T31-negative-dm-finder.pdf T31-negative-dm-finder-actual.png --dpi 288 --file-type png --pages 51
+Exit: 0
+stdout:
+Rendered page 51 into T31-negative-dm-finder-actual.png
+
+stderr:
+
+Control: dm-finder; PDF SHA-256: 08ccd3499cd0072b6f1c8fee5884021e90859667612d6d6a7026b062c6308043; PNG SHA-256: 627d7cf9ffe3baca96f2619ad3680cbde946eaec8ec206907b5a750acc08f070
+Raster rejection: IllegalArgumentException: DataMatrix top timing
+Command: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-in-process-actual-51.png T31-negative-dm-finder-actual.png T31-negative-dm-finder-difference.png
+Exit: 1
+stdout:
+
+stderr:
+16 (2.06311e-06)
+Difference PNG SHA-256: 9ad6c1be264c84889454b81896a8ea0122d2a695ccefbe1b64b0328b615f9e6c; negative control pass
+Command: pdfium render T31-negative-dm-timing.pdf T31-negative-dm-timing-actual.png --dpi 288 --file-type png --pages 51
+Exit: 0
+stdout:
+Rendered page 51 into T31-negative-dm-timing-actual.png
+
+stderr:
+
+Control: dm-timing; PDF SHA-256: 111144157cd1b23c1709555fdc77e4dcc952fd4fd40117017ba6f5647395cbf3; PNG SHA-256: 19d52723018ac9bbe4f031ba4a0ee0751dab7f36a27e530c507029f9123dc8ed
+Raster rejection: IllegalArgumentException: DataMatrix top timing
+Command: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-in-process-actual-51.png T31-negative-dm-timing-actual.png T31-negative-dm-timing-difference.png
+Exit: 1
+stdout:
+
+stderr:
+16 (2.06311e-06)
+Difference PNG SHA-256: da4c6389f43c5a92c0ca0e8e655763d9bf843ef6587c9138418697ce2b1a2042; negative control pass
+Command: pdfium render T31-negative-dm-ecc.pdf T31-negative-dm-ecc-actual.png --dpi 288 --file-type png --pages 51
+Exit: 0
+stdout:
+Rendered page 51 into T31-negative-dm-ecc-actual.png
+
+stderr:
+
+Control: dm-ecc; PDF SHA-256: 0262f0160510bec16e28ac3ca35fa768495054f89d244485dd6327cf32122ad9; PNG SHA-256: 32a5a945b9d9f2506fa0590831e1fc09476a690d3b2d31a43adc5d76d205e482
+Raster rejection: IllegalArgumentException: DataMatrix damaged data/ECC required correction
+Command: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-in-process-actual-51.png T31-negative-dm-ecc-actual.png T31-negative-dm-ecc-difference.png
+Exit: 1
+stdout:
+
+stderr:
+16 (2.06311e-06)
+Difference PNG SHA-256: 275064ac3bbc012dce8de5489e233e48605176237bc67b64f197192b88b70862; negative control pass
+Command: pdfium render T31-negative-dm-padding.pdf T31-negative-dm-padding-actual.png --dpi 288 --file-type png --pages 52
+Exit: 0
+stdout:
+Rendered page 52 into T31-negative-dm-padding-actual.png
+
+stderr:
+
+Control: dm-padding; PDF SHA-256: d8e355f5b1e70002f5013fc5b444eff1d89467bacdc0c4e5e08dc061d9933ed2; PNG SHA-256: 69ddebde09e4f606136a6145ae4cf1205fdecfc99104955f03174539477b68c5
+Raster rejection: IllegalArgumentException: DataMatrix randomized padding
+Command: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-in-process-actual-52.png T31-negative-dm-padding-actual.png T31-negative-dm-padding-difference.png
+Exit: 1
+stdout:
+
+stderr:
+512 (6.60197e-05)
+Difference PNG SHA-256: 550907e8cdeb9dae78982645f919354200bed8875a5abf3425aecf1363afb864; negative control pass
+Command: pdfium render T31-negative-pdf-start.pdf T31-negative-pdf-start-actual.png --dpi 288 --file-type png --pages 113
+Exit: 0
+stdout:
+Rendered page 113 into T31-negative-pdf-start-actual.png
+
+stderr:
+
+Control: pdf-start; PDF SHA-256: 7bf598408379d7284478e083ebbc067b3df11c73619964401a27889fdafd3d71; PNG SHA-256: 17eecf4aa3215146ec261eec7470451a675f8143f5c4f5b49191ac3e95691847
+Raster rejection: IllegalArgumentException: PDF417 start/stop
+Command: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-in-process-actual-113.png T31-negative-pdf-start-actual.png T31-negative-pdf-start-difference.png
+Exit: 1
+stdout:
+
+stderr:
+48 (6.18934e-06)
+Difference PNG SHA-256: 6dfa958ac175674e2d212733dffb8ae3adc9f5a91752c7ec3f5717f00e96ae9d; negative control pass
+Command: pdfium render T31-negative-pdf-cluster.pdf T31-negative-pdf-cluster-actual.png --dpi 288 --file-type png --pages 113
+Exit: 0
+stdout:
+Rendered page 113 into T31-negative-pdf-cluster-actual.png
+
+stderr:
+
+Control: pdf-cluster; PDF SHA-256: 99638cac649fb5e50d6ae6b25053297a7637942293184093dfdf013c8778e2ed; PNG SHA-256: 2f86c5f0281ef44a54241bee0d29a46bba16b179a3112719952e8184042281a4
+Raster rejection: IllegalArgumentException: PDF417 row cluster
+Command: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-in-process-actual-113.png T31-negative-pdf-cluster-actual.png T31-negative-pdf-cluster-difference.png
+Exit: 1
+stdout:
+
+stderr:
+432 (5.57041e-05)
+Difference PNG SHA-256: 203829c04921d9f5f80c68de2c5bca016136d4d61b6d0fc847f0f6fbb450e8f0; negative control pass
+Command: pdfium render T31-negative-pdf-ecc.pdf T31-negative-pdf-ecc-actual.png --dpi 288 --file-type png --pages 113
+Exit: 0
+stdout:
+Rendered page 113 into T31-negative-pdf-ecc-actual.png
+
+stderr:
+
+Control: pdf-ecc; PDF SHA-256: 11b761f87fd5b9f3ddb6725f3d41c69dca97fe062afa0537ac1bdf865c4a23a1; PNG SHA-256: cacc5747dd12d646b2f69cf5d2e34808377b045a570238c09bb348706cf43be3
+Raster rejection: IllegalArgumentException: PDF417 damaged data/ECC required correction
+Command: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-in-process-actual-113.png T31-negative-pdf-ecc-actual.png T31-negative-pdf-ecc-difference.png
+Exit: 1
+stdout:
+
+stderr:
+288 (3.71361e-05)
+Difference PNG SHA-256: 493bcb1b5267d6180a20c8f6dc508f5683c3a6b832daf793dfcaec82868f7614; negative control pass
+Command: pdfium render T31-negative-pdf-indicator.pdf T31-negative-pdf-indicator-actual.png --dpi 288 --file-type png --pages 113
+Exit: 0
+stdout:
+Rendered page 113 into T31-negative-pdf-indicator-actual.png
+
+stderr:
+
+Control: pdf-indicator; PDF SHA-256: eb33ae84b9385151f52d0c42c38f6c0e208bceb9f466f1bdec1ef1dd89750f89; PNG SHA-256: f4b543e664f20823cebaccc6395a8350782663818ce9a710e9b966e9900a7e26
+Raster rejection: IllegalArgumentException: PDF417 left row indicator
+Command: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-in-process-actual-113.png T31-negative-pdf-indicator-actual.png T31-negative-pdf-indicator-difference.png
+Exit: 1
+stdout:
+
+stderr:
+192 (2.47574e-05)
+Difference PNG SHA-256: 51f26227945ed65910f4e42dd0545b8a6a67f122967bccf60fba8714c12947b9; negative control pass

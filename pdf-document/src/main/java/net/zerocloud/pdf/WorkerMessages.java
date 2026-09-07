@@ -44,6 +44,7 @@ final class WorkerMessages {
     private static final int OUTCOME_PAGINATION = 15;
     private static final int OUTCOME_TABLES = 16;
     private static final int OUTCOME_BARCODE = 17;
+    private static final int OUTCOME_BARCODE_2D = 18;
 
     static final int SOURCE_CREDENTIAL = 1;
     static final int OUTPUT_OWNER_CREDENTIAL = 2;
@@ -621,6 +622,7 @@ final class WorkerMessages {
 
     private static int outcomeCapabilityToken(String capabilityId)
             throws DocumentFailure {
+        if (PdfBoxBarcode2DOperations.CAPABILITY_ID.equals(capabilityId)) { return OUTCOME_BARCODE_2D; }
         if (PdfBoxBarcodeOperations.CAPABILITY_ID.equals(capabilityId)) { return OUTCOME_BARCODE; }
         if (PdfBoxTableLayout.CAPABILITY_ID.equals(capabilityId)) { return OUTCOME_TABLES; }
         if (PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID.equals(capabilityId)) { return OUTCOME_PAGINATION; }
@@ -670,6 +672,8 @@ final class WorkerMessages {
 
     private static String outcomeCapability(int token) throws DocumentFailure {
         switch (token) {
+            case OUTCOME_BARCODE_2D:
+                return PdfBoxBarcode2DOperations.CAPABILITY_ID;
             case OUTCOME_BARCODE:
                 return PdfBoxBarcodeOperations.CAPABILITY_ID;
             case OUTCOME_TABLES:

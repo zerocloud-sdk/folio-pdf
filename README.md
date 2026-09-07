@@ -442,6 +442,16 @@ profiles are supported. See the [barcode contract](docs/one-dimensional-barcodes
 and [fixed T30 profile](capabilities/profiles/T30-one-dimensional-barcodes.md).
 The capability remains experimental while standards and dependency gates are open.
 
+T31 adds immutable `Barcode2D`, `DrawBarcode2D.version1` and
+`MeasureBarcode2D.version1` for QR, DataMatrix ECC200 and PDF417. Symbols use
+shared vector Form XObjects, with strict character encoding/ECI, explicit ECC,
+compaction, size, typed control headers, color and affine placement. Both
+Workflow profiles are supported. See the
+[two-dimensional barcode contract](docs/two-dimensional-barcodes.md) and
+[fixed T31 profile](capabilities/profiles/T31-two-dimensional-barcodes.md).
+Independent standards certification and compatible-status dependency gates
+remain open; the capability is experimental.
+
 Successful `WorkflowOutcome` values identify the capability, the actual
 selected execution profile, the selected Save Mode, safe diagnostics, and every Target
 receipt, plus any declaration-ordered Capability Provider selections. They

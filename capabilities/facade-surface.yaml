@@ -202,3 +202,6 @@ excluded-capabilities:
   - id: composition.barcodes.one-dimensional
     ticket: T30
     reason: T30 provides semantic Barcode1D and explicit-font BarcodeText declarations through the Native Interface DrawBarcode1D command. No approved Reference Suite barcode Migration Facade mapping exists; stable and preview surfaces remain empty and no unsupported stub is introduced.
+  - id: composition.barcodes.two-dimensional
+    ticket: T31
+    reason: T31 exposes QR, DataMatrix ECC200 and PDF417 through the Native Interface Barcode2D declaration, DrawBarcode2D command and MeasureBarcode2D query. No approved Reference Suite barcode Migration Facade mapping exists; stable and preview surfaces remain empty and no unsupported stub is introduced. Reference extension strings map to typed controls, zero-based DataMatrix file IDs require adding one, and reference PDF417 bitmap inversion has no mapping because this capability emits vector Forms.

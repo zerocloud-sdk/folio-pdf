@@ -13,6 +13,7 @@ import net.zerocloud.pdf.command.UpdateAnnotations;
 import net.zerocloud.pdf.composition.FontSource;
 import net.zerocloud.pdf.composition.command.DrawCanvas;
 import net.zerocloud.pdf.composition.command.DrawBarcode1D;
+import net.zerocloud.pdf.composition.command.DrawBarcode2D;
 import net.zerocloud.pdf.composition.command.DrawPositionedUnicodeText;
 import net.zerocloud.pdf.composition.command.ComposeParagraphs;
 import net.zerocloud.pdf.composition.command.RelayoutParagraphs;
@@ -40,6 +41,7 @@ final class PdfBoxDocumentSession implements DocumentSession {
     private final PdfBoxImageResourceExtractionOperations
             imageResourceExtractionOperations;
     private final PdfBoxCanvasOperations canvasOperations;
+    private final PdfBoxBarcode2DOperations barcode2DOperations;
     private final PdfBoxPositionedTextOperations positionedUnicodeTextOperations;
     private final PdfBoxPageOperations pageOperations;
     private final PdfBoxParagraphOperations paragraphOperations;
@@ -97,6 +99,7 @@ final class PdfBoxDocumentSession implements DocumentSession {
                         document,
                         valueAdapter,
                         resources);
+        this.barcode2DOperations = new PdfBoxBarcode2DOperations(document, resources);
         this.canvasOperations = new PdfBoxCanvasOperations(
                 document,
                 valueAdapter,
@@ -258,6 +261,13 @@ final class PdfBoxDocumentSession implements DocumentSession {
             return;
         }
 
+        if (command instanceof DrawBarcode2D) {
+            PdfBoxBarcode2DOperations.requirePermission(securityInfo);
+            outcomeCapabilityId = PdfBoxBarcode2DOperations.CAPABILITY_ID;
+            barcode2DOperations.execute((DrawBarcode2D) command);
+            mutationOccurred = true;
+            return;
+        }
         if (command instanceof DrawBarcode1D) {
             PdfBoxBarcodeOperations.requirePermission(securityInfo);
             outcomeCapabilityId = PdfBoxBarcodeOperations.CAPABILITY_ID;
@@ -556,6 +566,9 @@ final class PdfBoxDocumentSession implements DocumentSession {
             case WorkerCommandCodec.PREFLIGHT_BARCODE:
                 PdfBoxBarcodeOperations.requirePermission(securityInfo);
                 return;
+            case WorkerCommandCodec.PREFLIGHT_BARCODE_2D:
+                PdfBoxBarcode2DOperations.requirePermission(securityInfo);
+                return;
             case WorkerCommandCodec.PREFLIGHT_ANNOTATIONS:
                 PdfBoxPermissionPolicy.requireAnnotationModification(
                         securityInfo);
@@ -598,6 +611,7 @@ final class PdfBoxDocumentSession implements DocumentSession {
     }
 
     private static DocumentFailure workerSignatureFailure(int category) {
+        if (category == WorkerCommandCodec.PREFLIGHT_BARCODE_2D) { return PdfBoxBarcode2DOperations.signatureFailure(); }
         if (category == WorkerCommandCodec.PREFLIGHT_BARCODE) { return PdfBoxBarcodeOperations.signatureFailure(); }
         if (category == WorkerCommandCodec.PREFLIGHT_TABLES) {
             return PdfBoxParagraphOperations.signatureFailure(PdfBoxTableLayout.CAPABILITY_ID);
@@ -623,6 +637,7 @@ final class PdfBoxDocumentSession implements DocumentSession {
     }
 
     private static DocumentFailure signatureFailure(DocumentCommand command) {
+        if (command instanceof DrawBarcode2D) { return PdfBoxBarcode2DOperations.signatureFailure(); }
         if (command instanceof DrawBarcode1D) { return PdfBoxBarcodeOperations.signatureFailure(); }
         if (command instanceof ComposeParagraphs || command instanceof RelayoutParagraphs
                 || command instanceof FlushParagraphs) {
@@ -679,6 +694,11 @@ final class PdfBoxDocumentSession implements DocumentSession {
 
     private <R> R evaluate(DocumentQuery<R> query) throws DocumentFailure {
         positionedUnicodeTextOperations.finalizeFonts();
+
+        if (query instanceof net.zerocloud.pdf.composition.query.MeasureBarcode2D) {
+            outcomeCapabilityId = PdfBoxBarcode2DOperations.CAPABILITY_ID;
+            return queryResult(barcode2DOperations.measure(((net.zerocloud.pdf.composition.query.MeasureBarcode2D)query).getBarcode()));
+        }
 
         if (query instanceof net.zerocloud.pdf.composition.query.InspectLargeTable) {
             return queryResult(largeTableOperations.state());

@@ -1,0 +1,46 @@
+{
+  "capturedUtc": "2026-09-07T20:10:08.062224+00:00",
+  "result": "PASS",
+  "files": [
+    {
+      "original": ".build-cache/t31/standards-review-final.md",
+      "retained": "capabilities/evidence/artifacts/T31-standards-review-final.md",
+      "sha256": "25f87ad49d96d209a34b6b8c2b53ce5b5004b763ca84ab09c46ec2efd16141af"
+    },
+    {
+      "original": ".build-cache/t31/spec-review-final.md",
+      "retained": "capabilities/evidence/artifacts/T31-spec-review-final.md",
+      "sha256": "be8b1a95bb012ee411f8ccafdc27eb95f5dd52657e7e0761de9c74d0330e0e91"
+    },
+    {
+      "original": ".build-cache/t31/review-standards/final-audit.json",
+      "retained": "capabilities/evidence/artifacts/T31-standards-final-audit.json",
+      "sha256": "caf9daa78f4984a0708a70de00710b1017734f746b4cd02970e5a14fe67b774c"
+    },
+    {
+      "original": ".build-cache/t31/review-spec/final-audit.json",
+      "retained": "capabilities/evidence/artifacts/T31-spec-final-audit.json",
+      "sha256": "3acfc508768aa44ebb71aa49d38c0a21672e84233f895eeb1048ae0f65ff4e49"
+    },
+    {
+      "original": ".build-cache/t31/review-spec/final-audit.py",
+      "retained": "capabilities/evidence/artifacts/T31-spec-final-audit.py",
+      "sha256": "010609c3ae318d1fa557cf39aa261f769743ab1b3f68be079c7fbb1a8c787d83"
+    },
+    {
+      "original": ".build-cache/t31/workspace-before-final-review.json",
+      "retained": "capabilities/evidence/artifacts/T31-workspace-before-final-review.json",
+      "sha256": "09721086cb922d907c646115c416bc64eaad890817da6fb05c531855686414b6"
+    },
+    {
+      "original": ".build-cache/t31/ledger-before-final-review.md",
+      "retained": "capabilities/evidence/artifacts/T31-ledger-before-final-review.md",
+      "sha256": "ac9b6e4f921f1e21c2a2cd821edd7e85a0447b7c90244577482986f290fa890d"
+    }
+  ],
+  "independentAxes": {
+    "standards": "PASS, no hard blocker; one optional duplication heuristic",
+    "spec": "CLOSED, no remaining finding"
+  },
+  "note": "Reports and read-only audit outputs are retained byte-identically from the independent agents. The two pre-review snapshots preserve exact files named by the final review scope before controlled status/receipt changes. Historical paths in reports map through this receipt. The Spec audit source uses the original absolute workspace and frozen pre-closure state; it writes its audit under ignored scratch and is not a portable product tool. No product, test, profile, inventory or actual-tool artifact changed after the review scope."
+}

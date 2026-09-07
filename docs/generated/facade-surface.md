@@ -8,7 +8,7 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Release train: `0.1.0-SNAPSHOT`
 - Stable entries: `0`
 - Preview entries: `12`
-- Explicit capability exclusions: `21`
+- Explicit capability exclusions: `22`
 
 ## Stable surfaces
 
@@ -144,6 +144,13 @@ No stable surfaces are declared.
 - Behavioral capability: [`composition.barcodes.one-dimensional`](capability-matrix.md#capability-composition_dot_barcodes_dot_one_dash_dimensional)
 - Deferred ticket: `T30`
 - Reason: T30 provides semantic Barcode1D and explicit-font BarcodeText declarations through the Native Interface DrawBarcode1D command. No approved Reference Suite barcode Migration Facade mapping exists; stable and preview surfaces remain empty and no unsupported stub is introduced.
+
+<a id="excluded-capability-composition_dot_barcodes_dot_two_dash_dimensional"></a>
+### `composition.barcodes.two-dimensional`
+
+- Behavioral capability: [`composition.barcodes.two-dimensional`](capability-matrix.md#capability-composition_dot_barcodes_dot_two_dash_dimensional)
+- Deferred ticket: `T31`
+- Reason: T31 exposes QR, DataMatrix ECC200 and PDF417 through the Native Interface Barcode2D declaration, DrawBarcode2D command and MeasureBarcode2D query. No approved Reference Suite barcode Migration Facade mapping exists; stable and preview surfaces remain empty and no unsupported stub is introduced. Reference extension strings map to typed controls, zero-based DataMatrix file IDs require adding one, and reference PDF417 bitmap inversion has no mapping because this capability emits vector Forms.
 
 <a id="excluded-capability-composition_dot_canvas_dot_draw_dash_positioned_dash_text"></a>
 ### `composition.canvas.draw-positioned-text`

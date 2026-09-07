@@ -31,7 +31,8 @@ final class WorkerFailureCatalog {
         PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID,
         PdfBoxTableLayout.CAPABILITY_ID,
         net.zerocloud.pdf.provider.ShapingRequest.CAPABILITY_ID,
-        PdfBoxBarcodeOperations.CAPABILITY_ID
+        PdfBoxBarcodeOperations.CAPABILITY_ID,
+        PdfBoxBarcode2DOperations.CAPABILITY_ID
     };
 
     private static final Descriptor[] SPECIFIC = {
@@ -883,7 +884,7 @@ final class WorkerFailureCatalog {
             case BARCODE_GEOMETRY_INVALID:
             case BARCODE_MODE_INVALID:
             case BARCODE_LIMIT_EXCEEDED:
-                return mask(PdfBoxBarcodeOperations.CAPABILITY_ID);
+                return mask(PdfBoxBarcodeOperations.CAPABILITY_ID, PdfBoxBarcode2DOperations.CAPABILITY_ID);
             case TABLE_INVALID_SPAN:
             case TABLE_CONSTRAINT_UNSATISFIED:
                 return mask(PdfBoxTableLayout.CAPABILITY_ID);
@@ -1061,7 +1062,7 @@ final class WorkerFailureCatalog {
     }
 
     private static int permissionCapabilities(String diagnostic) {
-        if (diagnostic.contains("barcode")) { return mask(PdfBoxBarcodeOperations.CAPABILITY_ID); }
+        if (diagnostic.contains("barcode")) { return mask(PdfBoxBarcodeOperations.CAPABILITY_ID, PdfBoxBarcode2DOperations.CAPABILITY_ID); }
         if (diagnostic.contains("paragraph composition")) { return mask(PdfBoxParagraphOperations.CAPABILITY_ID, PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID, PdfBoxTableLayout.CAPABILITY_ID); }
         if (diagnostic.contains("Canvas")) {
             return mask(
@@ -1075,7 +1076,7 @@ final class WorkerFailureCatalog {
     }
 
     private static int writeFailureCapabilities(String diagnostic) {
-        if (diagnostic.startsWith("The barcode")) { return mask(PdfBoxBarcodeOperations.CAPABILITY_ID); }
+        if (diagnostic.startsWith("The barcode")) { return mask(PdfBoxBarcodeOperations.CAPABILITY_ID, PdfBoxBarcode2DOperations.CAPABILITY_ID); }
         if (diagnostic.contains("paragraph flow")) { return mask(PdfBoxParagraphOperations.CAPABILITY_ID, PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID, PdfBoxTableLayout.CAPABILITY_ID); }
         if (diagnostic.contains("Canvas Program")) {
             return mask(
@@ -1108,7 +1109,7 @@ final class WorkerFailureCatalog {
     }
 
     private static int pageRangeCapabilities(String diagnostic) {
-        if (diagnostic.contains("barcode")) { return mask(PdfBoxBarcodeOperations.CAPABILITY_ID); }
+        if (diagnostic.contains("barcode")) { return mask(PdfBoxBarcodeOperations.CAPABILITY_ID, PdfBoxBarcode2DOperations.CAPABILITY_ID); }
         if (diagnostic.contains("Canvas")) {
             return mask(
                     PdfBoxCanvasOperations.CAPABILITY_ID,
@@ -1154,7 +1155,7 @@ final class WorkerFailureCatalog {
     }
 
     private static int signatureCapabilities(String diagnostic) {
-        if (diagnostic.contains("barcode")) { return mask(PdfBoxBarcodeOperations.CAPABILITY_ID); }
+        if (diagnostic.contains("barcode")) { return mask(PdfBoxBarcodeOperations.CAPABILITY_ID, PdfBoxBarcode2DOperations.CAPABILITY_ID); }
         if (diagnostic.contains("paragraph composition")) { return mask(PdfBoxParagraphOperations.CAPABILITY_ID, PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID, PdfBoxTableLayout.CAPABILITY_ID); }
         if (diagnostic.contains("Canvas")) {
             return mask(

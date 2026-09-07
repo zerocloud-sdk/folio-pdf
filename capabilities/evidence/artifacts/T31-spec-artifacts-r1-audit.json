@@ -1,0 +1,1056 @@
+{
+  "auditedUtc": "2026-09-07T19:19:52.696976+00:00",
+  "sourceDeclarations": 450,
+  "artifactFiles": 1439,
+  "buildInputFiles": 841,
+  "priorEvidenceFiles": 2336,
+  "profiles": {
+    "in-process": {
+      "semanticPages": 224,
+      "rasterPages": 224,
+      "matchingPagePairs": 224
+    },
+    "hardened-worker": {
+      "semanticPages": 224,
+      "rasterPages": 224,
+      "matchingPagePairs": 224
+    }
+  },
+  "rawRegressionObservations": [
+    {
+      "profile": "in-process",
+      "page": 90,
+      "fixture": "dm-raw-edifact-auto",
+      "payload": "A",
+      "rawPrefix": [
+        240,
+        5,
+        240
+      ],
+      "pixelBounds": [
+        148,
+        2540,
+        196,
+        2588
+      ],
+      "pixelColors": [
+        [
+          7753984,
+          [
+            255,
+            255,
+            255
+          ]
+        ],
+        [
+          1280,
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      ],
+      "semantic": "Page 90 dm-raw-edifact-auto: payload=A; ECC200 data=5; ECC=7; corrected=0; region borders/unused modules/padding=pass; ECI=3; controls=[240, 5, 240, 129, 115]; SA=0/0/0; macro=0; reader=false; Form=PdfIndirectReference[ObjectReference[532]]; box=0,0,14.0,14.0; module=1.0x1.0; quiet=1.0; placement=AffineTransform[[1.0, 0.0, 36.0], [0.0, 1.0, 144.0]]; vector geometry/color/reuse=pass",
+      "visual": "Page 90 dm-raw-edifact-auto\nActual PNG SHA-256: 7c4f5218a6ad5c56cf6d0fa8c040034ad1ad138afac241f67299825c4a0f40dc\nReference PNG SHA-256: 7c4f5218a6ad5c56cf6d0fa8c040034ad1ad138afac241f67299825c4a0f40dc\nRaster decode: dm-raw-edifact-auto: payload=A; ECC200 data=5; ECC=7; corrected=0; region borders/unused modules/padding=pass; ECI=3; controls=[240, 5, 240, 129, 115]; SA=0/0/0; macro=0; reader=false; raster module/quiet/color pixels=3136; declared inverse placement=pass; pass\nCommand: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-in-process-reference-90.png T31-two-dimensional-barcodes-in-process-actual-90.png T31-two-dimensional-barcodes-in-process-difference-90.png\nExit: 0\nstdout:\n\nstderr:\n0 (0)\nDifference PNG SHA-256: f1876e7244880c8ad3ce60411f49aa22af864ef4bd7c08eb462b89d1342e4ea8\nVisual comparison: pass\n\n"
+    },
+    {
+      "profile": "in-process",
+      "page": 91,
+      "fixture": "dm-raw-edifact-fixed",
+      "payload": "A",
+      "rawPrefix": [
+        240,
+        5,
+        240
+      ],
+      "pixelBounds": [
+        148,
+        2540,
+        196,
+        2588
+      ],
+      "pixelColors": [
+        [
+          7753984,
+          [
+            255,
+            255,
+            255
+          ]
+        ],
+        [
+          1280,
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      ],
+      "semantic": "Page 91 dm-raw-edifact-fixed: payload=A; ECC200 data=5; ECC=7; corrected=0; region borders/unused modules/padding=pass; ECI=3; controls=[240, 5, 240, 129, 115]; SA=0/0/0; macro=0; reader=false; Form=PdfIndirectReference[ObjectReference[532]]; box=0,0,14.0,14.0; module=1.0x1.0; quiet=1.0; placement=AffineTransform[[1.0, 0.0, 36.0], [0.0, 1.0, 144.0]]; vector geometry/color/reuse=pass",
+      "visual": "Page 91 dm-raw-edifact-fixed\nActual PNG SHA-256: 7c4f5218a6ad5c56cf6d0fa8c040034ad1ad138afac241f67299825c4a0f40dc\nReference PNG SHA-256: 7c4f5218a6ad5c56cf6d0fa8c040034ad1ad138afac241f67299825c4a0f40dc\nRaster decode: dm-raw-edifact-fixed: payload=A; ECC200 data=5; ECC=7; corrected=0; region borders/unused modules/padding=pass; ECI=3; controls=[240, 5, 240, 129, 115]; SA=0/0/0; macro=0; reader=false; raster module/quiet/color pixels=3136; declared inverse placement=pass; pass\nCommand: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-in-process-reference-91.png T31-two-dimensional-barcodes-in-process-actual-91.png T31-two-dimensional-barcodes-in-process-difference-91.png\nExit: 0\nstdout:\n\nstderr:\n0 (0)\nDifference PNG SHA-256: f1876e7244880c8ad3ce60411f49aa22af864ef4bd7c08eb462b89d1342e4ea8\nVisual comparison: pass\n\n"
+    },
+    {
+      "profile": "in-process",
+      "page": 92,
+      "fixture": "dm-raw-edifact-ascii",
+      "payload": "A",
+      "rawPrefix": [
+        240,
+        124,
+        66
+      ],
+      "pixelBounds": [
+        148,
+        2540,
+        196,
+        2588
+      ],
+      "pixelColors": [
+        [
+          7753984,
+          [
+            255,
+            255,
+            255
+          ]
+        ],
+        [
+          1280,
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      ],
+      "semantic": "Page 92 dm-raw-edifact-ascii: payload=A; ECC200 data=5; ECC=7; corrected=0; region borders/unused modules/padding=pass; ECI=3; controls=[240, 124, 66, 129, 115]; SA=0/0/0; macro=0; reader=false; Form=PdfIndirectReference[ObjectReference[542]]; box=0,0,14.0,14.0; module=1.0x1.0; quiet=1.0; placement=AffineTransform[[1.0, 0.0, 36.0], [0.0, 1.0, 144.0]]; vector geometry/color/reuse=pass",
+      "visual": "Page 92 dm-raw-edifact-ascii\nActual PNG SHA-256: 1c20c04a4931f39ed19a04b26c5ee94f41e333c72621c6ca547e8546c3007133\nReference PNG SHA-256: 1c20c04a4931f39ed19a04b26c5ee94f41e333c72621c6ca547e8546c3007133\nRaster decode: dm-raw-edifact-ascii: payload=A; ECC200 data=5; ECC=7; corrected=0; region borders/unused modules/padding=pass; ECI=3; controls=[240, 124, 66, 129, 115]; SA=0/0/0; macro=0; reader=false; raster module/quiet/color pixels=3136; declared inverse placement=pass; pass\nCommand: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-in-process-reference-92.png T31-two-dimensional-barcodes-in-process-actual-92.png T31-two-dimensional-barcodes-in-process-difference-92.png\nExit: 0\nstdout:\n\nstderr:\n0 (0)\nDifference PNG SHA-256: f1876e7244880c8ad3ce60411f49aa22af864ef4bd7c08eb462b89d1342e4ea8\nVisual comparison: pass\n\n"
+    },
+    {
+      "profile": "in-process",
+      "page": 93,
+      "fixture": "dm-raw-edifact-tail",
+      "payload": "ABABCDA",
+      "rawPrefix": [
+        66,
+        67,
+        240,
+        4,
+        32,
+        196,
+        5,
+        240
+      ],
+      "pixelBounds": [
+        148,
+        2556,
+        276,
+        2588
+      ],
+      "pixelColors": [
+        [
+          7753056,
+          [
+            255,
+            255,
+            255
+          ]
+        ],
+        [
+          2208,
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      ],
+      "semantic": "Page 93 dm-raw-edifact-tail: payload=ABABCDA; ECC200 data=10; ECC=11; corrected=0; region borders/unused modules/padding=pass; ECI=3; controls=[66, 67, 240, 4, 32, 196, 5, 240, 129, 101]; SA=0/0/0; macro=0; reader=false; Form=PdfIndirectReference[ObjectReference[548]]; box=0,0,34.0,10.0; module=1.0x1.0; quiet=1.0; placement=AffineTransform[[1.0, 0.0, 36.0], [0.0, 1.0, 144.0]]; vector geometry/color/reuse=pass",
+      "visual": "Page 93 dm-raw-edifact-tail\nActual PNG SHA-256: d429e6ccd9b778dfa77fcacff1daaa2e802b30e1eab11d041562b6d1f1e9760f\nReference PNG SHA-256: d429e6ccd9b778dfa77fcacff1daaa2e802b30e1eab11d041562b6d1f1e9760f\nRaster decode: dm-raw-edifact-tail: payload=ABABCDA; ECC200 data=10; ECC=11; corrected=0; region borders/unused modules/padding=pass; ECI=3; controls=[66, 67, 240, 4, 32, 196, 5, 240, 129, 101]; SA=0/0/0; macro=0; reader=false; raster module/quiet/color pixels=5440; declared inverse placement=pass; pass\nCommand: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-in-process-reference-93.png T31-two-dimensional-barcodes-in-process-actual-93.png T31-two-dimensional-barcodes-in-process-difference-93.png\nExit: 0\nstdout:\n\nstderr:\n0 (0)\nDifference PNG SHA-256: f1876e7244880c8ad3ce60411f49aa22af864ef4bd7c08eb462b89d1342e4ea8\nVisual comparison: pass\n\n"
+    },
+    {
+      "profile": "in-process",
+      "page": 119,
+      "fixture": "pdf-raw-eci-leading",
+      "payload": "A",
+      "rawPrefix": [
+        901,
+        927,
+        26,
+        65
+      ],
+      "pixelBounds": [
+        152,
+        2488,
+        632,
+        2584
+      ],
+      "pixelColors": [
+        [
+          7729056,
+          [
+            255,
+            255,
+            255
+          ]
+        ],
+        [
+          26208,
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      ],
+      "semantic": "Page 119 pdf-raw-eci-leading: payload=A; columns=3; rows=8; ECC level=2; ECC words=8; corrected=0; start/stop/row indicators/clusters=pass; ECI=3; descriptor=16; controls=[901, 927, 26, 65, 900, 900, 900, 900, 900, 900, 900, 900]; Macro=/0/0; Form=PdfIndirectReference[ObjectReference[700]]; box=0,0,124.0,28.0; module=1.0x3.0; quiet=2.0; placement=AffineTransform[[1.0, 0.0, 36.0], [0.0, 1.0, 144.0]]; vector geometry/color/reuse=pass",
+      "visual": "Page 119 pdf-raw-eci-leading\nActual PNG SHA-256: f07b231a2c0c124b1450d45815715e4a25cbd55d0be2677d1ebbfb002255ba27\nReference PNG SHA-256: f07b231a2c0c124b1450d45815715e4a25cbd55d0be2677d1ebbfb002255ba27\nRaster decode: pdf-raw-eci-leading: payload=A; columns=3; rows=8; ECC level=2; ECC words=8; corrected=0; start/stop/row indicators/clusters=pass; ECI=3; descriptor=16; controls=[901, 927, 26, 65, 900, 900, 900, 900, 900, 900, 900, 900]; Macro=/0/0; raster module/quiet/color pixels=55552; declared inverse placement=pass; pass\nCommand: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-in-process-reference-119.png T31-two-dimensional-barcodes-in-process-actual-119.png T31-two-dimensional-barcodes-in-process-difference-119.png\nExit: 0\nstdout:\n\nstderr:\n0 (0)\nDifference PNG SHA-256: f1876e7244880c8ad3ce60411f49aa22af864ef4bd7c08eb462b89d1342e4ea8\nVisual comparison: pass\n\n"
+    },
+    {
+      "profile": "in-process",
+      "page": 120,
+      "fixture": "pdf-raw-eci-literal",
+      "payload": "AB",
+      "rawPrefix": [
+        901,
+        65,
+        927,
+        26,
+        66
+      ],
+      "pixelBounds": [
+        152,
+        2488,
+        632,
+        2584
+      ],
+      "pixelColors": [
+        [
+          7729488,
+          [
+            255,
+            255,
+            255
+          ]
+        ],
+        [
+          25776,
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      ],
+      "semantic": "Page 120 pdf-raw-eci-literal: payload=AB; columns=3; rows=8; ECC level=2; ECC words=8; corrected=0; start/stop/row indicators/clusters=pass; ECI=3; descriptor=16; controls=[901, 65, 927, 26, 66, 900, 900, 900, 900, 900, 900, 900]; Macro=/0/0; Form=PdfIndirectReference[ObjectReference[706]]; box=0,0,124.0,28.0; module=1.0x3.0; quiet=2.0; placement=AffineTransform[[1.0, 0.0, 36.0], [0.0, 1.0, 144.0]]; vector geometry/color/reuse=pass",
+      "visual": "Page 120 pdf-raw-eci-literal\nActual PNG SHA-256: 91d156595c653a5c03a8f96c443e0ac963c3821031a30553faf517bad2ea2e7e\nReference PNG SHA-256: 91d156595c653a5c03a8f96c443e0ac963c3821031a30553faf517bad2ea2e7e\nRaster decode: pdf-raw-eci-literal: payload=AB; columns=3; rows=8; ECC level=2; ECC words=8; corrected=0; start/stop/row indicators/clusters=pass; ECI=3; descriptor=16; controls=[901, 65, 927, 26, 66, 900, 900, 900, 900, 900, 900, 900]; Macro=/0/0; raster module/quiet/color pixels=55552; declared inverse placement=pass; pass\nCommand: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-in-process-reference-120.png T31-two-dimensional-barcodes-in-process-actual-120.png T31-two-dimensional-barcodes-in-process-difference-120.png\nExit: 0\nstdout:\n\nstderr:\n0 (0)\nDifference PNG SHA-256: f1876e7244880c8ad3ce60411f49aa22af864ef4bd7c08eb462b89d1342e4ea8\nVisual comparison: pass\n\n"
+    },
+    {
+      "profile": "in-process",
+      "page": 121,
+      "fixture": "pdf-raw-eci-charset",
+      "payload": "\\u00e9\\u00e9",
+      "rawPrefix": [
+        901,
+        927,
+        26,
+        195,
+        169,
+        927,
+        3,
+        233
+      ],
+      "pixelBounds": [
+        152,
+        2488,
+        632,
+        2584
+      ],
+      "pixelColors": [
+        [
+          7729200,
+          [
+            255,
+            255,
+            255
+          ]
+        ],
+        [
+          26064,
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      ],
+      "semantic": "Page 121 pdf-raw-eci-charset: payload=\\u00e9\\u00e9; columns=3; rows=8; ECC level=2; ECC words=8; corrected=0; start/stop/row indicators/clusters=pass; ECI=3; descriptor=16; controls=[901, 927, 26, 195, 169, 927, 3, 233, 900, 900, 900, 900]; Macro=/0/0; Form=PdfIndirectReference[ObjectReference[712]]; box=0,0,124.0,28.0; module=1.0x3.0; quiet=2.0; placement=AffineTransform[[1.0, 0.0, 36.0], [0.0, 1.0, 144.0]]; vector geometry/color/reuse=pass",
+      "visual": "Page 121 pdf-raw-eci-charset\nActual PNG SHA-256: 4ebb7e847a36083727d57636b5b7fe616d4016fed44376d20c5b1fb3372f7fcd\nReference PNG SHA-256: 4ebb7e847a36083727d57636b5b7fe616d4016fed44376d20c5b1fb3372f7fcd\nRaster decode: pdf-raw-eci-charset: payload=\\u00e9\\u00e9; columns=3; rows=8; ECC level=2; ECC words=8; corrected=0; start/stop/row indicators/clusters=pass; ECI=3; descriptor=16; controls=[901, 927, 26, 195, 169, 927, 3, 233, 900, 900, 900, 900]; Macro=/0/0; raster module/quiet/color pixels=55552; declared inverse placement=pass; pass\nCommand: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-in-process-reference-121.png T31-two-dimensional-barcodes-in-process-actual-121.png T31-two-dimensional-barcodes-in-process-difference-121.png\nExit: 0\nstdout:\n\nstderr:\n0 (0)\nDifference PNG SHA-256: f1876e7244880c8ad3ce60411f49aa22af864ef4bd7c08eb462b89d1342e4ea8\nVisual comparison: pass\n\n"
+    },
+    {
+      "profile": "in-process",
+      "page": 122,
+      "fixture": "pdf-raw-eci-924-leading",
+      "payload": "\\u0000\\u0000\\u0000\\u0000\\u0000A",
+      "rawPrefix": [
+        924,
+        927,
+        26,
+        0,
+        0,
+        0,
+        0,
+        65
+      ],
+      "pixelBounds": [
+        152,
+        2488,
+        632,
+        2584
+      ],
+      "pixelColors": [
+        [
+          7729104,
+          [
+            255,
+            255,
+            255
+          ]
+        ],
+        [
+          26160,
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      ],
+      "semantic": "Page 122 pdf-raw-eci-924-leading: payload=\\u0000\\u0000\\u0000\\u0000\\u0000A; columns=3; rows=8; ECC level=2; ECC words=8; corrected=0; start/stop/row indicators/clusters=pass; ECI=3; descriptor=16; controls=[924, 927, 26, 0, 0, 0, 0, 65, 900, 900, 900, 900]; Macro=/0/0; Form=PdfIndirectReference[ObjectReference[718]]; box=0,0,124.0,28.0; module=1.0x3.0; quiet=2.0; placement=AffineTransform[[1.0, 0.0, 36.0], [0.0, 1.0, 144.0]]; vector geometry/color/reuse=pass",
+      "visual": "Page 122 pdf-raw-eci-924-leading\nActual PNG SHA-256: 5a22c97a8037b8150103e1db8bce85879e4d12c00b17c87f16a3c497d5570127\nReference PNG SHA-256: 5a22c97a8037b8150103e1db8bce85879e4d12c00b17c87f16a3c497d5570127\nRaster decode: pdf-raw-eci-924-leading: payload=\\u0000\\u0000\\u0000\\u0000\\u0000A; columns=3; rows=8; ECC level=2; ECC words=8; corrected=0; start/stop/row indicators/clusters=pass; ECI=3; descriptor=16; controls=[924, 927, 26, 0, 0, 0, 0, 65, 900, 900, 900, 900]; Macro=/0/0; raster module/quiet/color pixels=55552; declared inverse placement=pass; pass\nCommand: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-in-process-reference-122.png T31-two-dimensional-barcodes-in-process-actual-122.png T31-two-dimensional-barcodes-in-process-difference-122.png\nExit: 0\nstdout:\n\nstderr:\n0 (0)\nDifference PNG SHA-256: f1876e7244880c8ad3ce60411f49aa22af864ef4bd7c08eb462b89d1342e4ea8\nVisual comparison: pass\n\n"
+    },
+    {
+      "profile": "in-process",
+      "page": 123,
+      "fixture": "pdf-raw-eci-924-between",
+      "payload": "\\u0000\\u0000\\u0000\\u0000\\u0000A\\u0000\\u0000\\u0000\\u0000\\u0000B",
+      "rawPrefix": [
+        924,
+        0,
+        0,
+        0,
+        0,
+        65,
+        927,
+        26,
+        0,
+        0,
+        0,
+        0,
+        66
+      ],
+      "pixelBounds": [
+        152,
+        2488,
+        632,
+        2584
+      ],
+      "pixelColors": [
+        [
+          7728768,
+          [
+            255,
+            255,
+            255
+          ]
+        ],
+        [
+          26496,
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      ],
+      "semantic": "Page 123 pdf-raw-eci-924-between: payload=\\u0000\\u0000\\u0000\\u0000\\u0000A\\u0000\\u0000\\u0000\\u0000\\u0000B; columns=3; rows=8; ECC level=2; ECC words=8; corrected=0; start/stop/row indicators/clusters=pass; ECI=3; descriptor=16; controls=[924, 0, 0, 0, 0, 65, 927, 26, 0, 0, 0, 0]; Macro=/0/0; Form=PdfIndirectReference[ObjectReference[724]]; box=0,0,124.0,28.0; module=1.0x3.0; quiet=2.0; placement=AffineTransform[[1.0, 0.0, 36.0], [0.0, 1.0, 144.0]]; vector geometry/color/reuse=pass",
+      "visual": "Page 123 pdf-raw-eci-924-between\nActual PNG SHA-256: 091fbc3b686d840bc44aa3345316c6352c00b24ce3b9aba8bbaa2afefed40496\nReference PNG SHA-256: 091fbc3b686d840bc44aa3345316c6352c00b24ce3b9aba8bbaa2afefed40496\nRaster decode: pdf-raw-eci-924-between: payload=\\u0000\\u0000\\u0000\\u0000\\u0000A\\u0000\\u0000\\u0000\\u0000\\u0000B; columns=3; rows=8; ECC level=2; ECC words=8; corrected=0; start/stop/row indicators/clusters=pass; ECI=3; descriptor=16; controls=[924, 0, 0, 0, 0, 65, 927, 26, 0, 0, 0, 0]; Macro=/0/0; raster module/quiet/color pixels=55552; declared inverse placement=pass; pass\nCommand: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-in-process-reference-123.png T31-two-dimensional-barcodes-in-process-actual-123.png T31-two-dimensional-barcodes-in-process-difference-123.png\nExit: 0\nstdout:\n\nstderr:\n0 (0)\nDifference PNG SHA-256: f1876e7244880c8ad3ce60411f49aa22af864ef4bd7c08eb462b89d1342e4ea8\nVisual comparison: pass\n\n"
+    },
+    {
+      "profile": "in-process",
+      "page": 124,
+      "fixture": "pdf-raw-eci-text-latch",
+      "payload": "ABAB",
+      "rawPrefix": [
+        901,
+        65,
+        927,
+        26,
+        66,
+        900,
+        1
+      ],
+      "pixelBounds": [
+        152,
+        2488,
+        632,
+        2584
+      ],
+      "pixelColors": [
+        [
+          7729008,
+          [
+            255,
+            255,
+            255
+          ]
+        ],
+        [
+          26256,
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      ],
+      "semantic": "Page 124 pdf-raw-eci-text-latch: payload=ABAB; columns=3; rows=8; ECC level=2; ECC words=8; corrected=0; start/stop/row indicators/clusters=pass; ECI=3; descriptor=16; controls=[901, 65, 927, 26, 66, 900, 1, 900, 900, 900, 900, 900]; Macro=/0/0; Form=PdfIndirectReference[ObjectReference[730]]; box=0,0,124.0,28.0; module=1.0x3.0; quiet=2.0; placement=AffineTransform[[1.0, 0.0, 36.0], [0.0, 1.0, 144.0]]; vector geometry/color/reuse=pass",
+      "visual": "Page 124 pdf-raw-eci-text-latch\nActual PNG SHA-256: 3ca4d95779fab22bf06f5076437f123c281eda91afdf20a636abc7d77ebc683c\nReference PNG SHA-256: 3ca4d95779fab22bf06f5076437f123c281eda91afdf20a636abc7d77ebc683c\nRaster decode: pdf-raw-eci-text-latch: payload=ABAB; columns=3; rows=8; ECC level=2; ECC words=8; corrected=0; start/stop/row indicators/clusters=pass; ECI=3; descriptor=16; controls=[901, 65, 927, 26, 66, 900, 1, 900, 900, 900, 900, 900]; Macro=/0/0; raster module/quiet/color pixels=55552; declared inverse placement=pass; pass\nCommand: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-in-process-reference-124.png T31-two-dimensional-barcodes-in-process-actual-124.png T31-two-dimensional-barcodes-in-process-difference-124.png\nExit: 0\nstdout:\n\nstderr:\n0 (0)\nDifference PNG SHA-256: f1876e7244880c8ad3ce60411f49aa22af864ef4bd7c08eb462b89d1342e4ea8\nVisual comparison: pass\n\n"
+    },
+    {
+      "profile": "in-process",
+      "page": 125,
+      "fixture": "pdf-raw-eci-consecutive",
+      "payload": "A",
+      "rawPrefix": [
+        901,
+        927,
+        26,
+        927,
+        3,
+        65
+      ],
+      "pixelBounds": [
+        152,
+        2488,
+        632,
+        2584
+      ],
+      "pixelColors": [
+        [
+          7729200,
+          [
+            255,
+            255,
+            255
+          ]
+        ],
+        [
+          26064,
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      ],
+      "semantic": "Page 125 pdf-raw-eci-consecutive: payload=A; columns=3; rows=8; ECC level=2; ECC words=8; corrected=0; start/stop/row indicators/clusters=pass; ECI=3; descriptor=16; controls=[901, 927, 26, 927, 3, 65, 900, 900, 900, 900, 900, 900]; Macro=/0/0; Form=PdfIndirectReference[ObjectReference[736]]; box=0,0,124.0,28.0; module=1.0x3.0; quiet=2.0; placement=AffineTransform[[1.0, 0.0, 36.0], [0.0, 1.0, 144.0]]; vector geometry/color/reuse=pass",
+      "visual": "Page 125 pdf-raw-eci-consecutive\nActual PNG SHA-256: 51fb199f89154078d08ac94cf4ca7c4d378cea7c6ca9672368070a05fc766546\nReference PNG SHA-256: 51fb199f89154078d08ac94cf4ca7c4d378cea7c6ca9672368070a05fc766546\nRaster decode: pdf-raw-eci-consecutive: payload=A; columns=3; rows=8; ECC level=2; ECC words=8; corrected=0; start/stop/row indicators/clusters=pass; ECI=3; descriptor=16; controls=[901, 927, 26, 927, 3, 65, 900, 900, 900, 900, 900, 900]; Macro=/0/0; raster module/quiet/color pixels=55552; declared inverse placement=pass; pass\nCommand: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-in-process-reference-125.png T31-two-dimensional-barcodes-in-process-actual-125.png T31-two-dimensional-barcodes-in-process-difference-125.png\nExit: 0\nstdout:\n\nstderr:\n0 (0)\nDifference PNG SHA-256: f1876e7244880c8ad3ce60411f49aa22af864ef4bd7c08eb462b89d1342e4ea8\nVisual comparison: pass\n\n"
+    },
+    {
+      "profile": "in-process",
+      "page": 126,
+      "fixture": "pdf-raw-eci-group",
+      "payload": "\\u0000\\u0000\\u0000\\u0000\\u0001,A",
+      "rawPrefix": [
+        901,
+        927,
+        26,
+        0,
+        0,
+        0,
+        0,
+        300,
+        65
+      ],
+      "pixelBounds": [
+        152,
+        2488,
+        632,
+        2584
+      ],
+      "pixelColors": [
+        [
+          7729104,
+          [
+            255,
+            255,
+            255
+          ]
+        ],
+        [
+          26160,
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      ],
+      "semantic": "Page 126 pdf-raw-eci-group: payload=\\u0000\\u0000\\u0000\\u0000\\u0001,A; columns=3; rows=8; ECC level=2; ECC words=8; corrected=0; start/stop/row indicators/clusters=pass; ECI=3; descriptor=16; controls=[901, 927, 26, 0, 0, 0, 0, 300, 65, 900, 900, 900]; Macro=/0/0; Form=PdfIndirectReference[ObjectReference[742]]; box=0,0,124.0,28.0; module=1.0x3.0; quiet=2.0; placement=AffineTransform[[1.0, 0.0, 36.0], [0.0, 1.0, 144.0]]; vector geometry/color/reuse=pass",
+      "visual": "Page 126 pdf-raw-eci-group\nActual PNG SHA-256: ba44fcbb216dfa25f8dbcb330fe69b5ad09ab61b82f73851985fd679f9924222\nReference PNG SHA-256: ba44fcbb216dfa25f8dbcb330fe69b5ad09ab61b82f73851985fd679f9924222\nRaster decode: pdf-raw-eci-group: payload=\\u0000\\u0000\\u0000\\u0000\\u0001,A; columns=3; rows=8; ECC level=2; ECC words=8; corrected=0; start/stop/row indicators/clusters=pass; ECI=3; descriptor=16; controls=[901, 927, 26, 0, 0, 0, 0, 300, 65, 900, 900, 900]; Macro=/0/0; raster module/quiet/color pixels=55552; declared inverse placement=pass; pass\nCommand: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-in-process-reference-126.png T31-two-dimensional-barcodes-in-process-actual-126.png T31-two-dimensional-barcodes-in-process-difference-126.png\nExit: 0\nstdout:\n\nstderr:\n0 (0)\nDifference PNG SHA-256: f1876e7244880c8ad3ce60411f49aa22af864ef4bd7c08eb462b89d1342e4ea8\nVisual comparison: pass\n\n"
+    },
+    {
+      "profile": "hardened-worker",
+      "page": 90,
+      "fixture": "dm-raw-edifact-auto",
+      "payload": "A",
+      "rawPrefix": [
+        240,
+        5,
+        240
+      ],
+      "pixelBounds": [
+        148,
+        2540,
+        196,
+        2588
+      ],
+      "pixelColors": [
+        [
+          7753984,
+          [
+            255,
+            255,
+            255
+          ]
+        ],
+        [
+          1280,
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      ],
+      "semantic": "Page 90 dm-raw-edifact-auto: payload=A; ECC200 data=5; ECC=7; corrected=0; region borders/unused modules/padding=pass; ECI=3; controls=[240, 5, 240, 129, 115]; SA=0/0/0; macro=0; reader=false; Form=PdfIndirectReference[ObjectReference[532]]; box=0,0,14.0,14.0; module=1.0x1.0; quiet=1.0; placement=AffineTransform[[1.0, 0.0, 36.0], [0.0, 1.0, 144.0]]; vector geometry/color/reuse=pass",
+      "visual": "Page 90 dm-raw-edifact-auto\nActual PNG SHA-256: 7c4f5218a6ad5c56cf6d0fa8c040034ad1ad138afac241f67299825c4a0f40dc\nReference PNG SHA-256: 7c4f5218a6ad5c56cf6d0fa8c040034ad1ad138afac241f67299825c4a0f40dc\nRaster decode: dm-raw-edifact-auto: payload=A; ECC200 data=5; ECC=7; corrected=0; region borders/unused modules/padding=pass; ECI=3; controls=[240, 5, 240, 129, 115]; SA=0/0/0; macro=0; reader=false; raster module/quiet/color pixels=3136; declared inverse placement=pass; pass\nCommand: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-hardened-worker-reference-90.png T31-two-dimensional-barcodes-hardened-worker-actual-90.png T31-two-dimensional-barcodes-hardened-worker-difference-90.png\nExit: 0\nstdout:\n\nstderr:\n0 (0)\nDifference PNG SHA-256: f1876e7244880c8ad3ce60411f49aa22af864ef4bd7c08eb462b89d1342e4ea8\nVisual comparison: pass\n\n"
+    },
+    {
+      "profile": "hardened-worker",
+      "page": 91,
+      "fixture": "dm-raw-edifact-fixed",
+      "payload": "A",
+      "rawPrefix": [
+        240,
+        5,
+        240
+      ],
+      "pixelBounds": [
+        148,
+        2540,
+        196,
+        2588
+      ],
+      "pixelColors": [
+        [
+          7753984,
+          [
+            255,
+            255,
+            255
+          ]
+        ],
+        [
+          1280,
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      ],
+      "semantic": "Page 91 dm-raw-edifact-fixed: payload=A; ECC200 data=5; ECC=7; corrected=0; region borders/unused modules/padding=pass; ECI=3; controls=[240, 5, 240, 129, 115]; SA=0/0/0; macro=0; reader=false; Form=PdfIndirectReference[ObjectReference[532]]; box=0,0,14.0,14.0; module=1.0x1.0; quiet=1.0; placement=AffineTransform[[1.0, 0.0, 36.0], [0.0, 1.0, 144.0]]; vector geometry/color/reuse=pass",
+      "visual": "Page 91 dm-raw-edifact-fixed\nActual PNG SHA-256: 7c4f5218a6ad5c56cf6d0fa8c040034ad1ad138afac241f67299825c4a0f40dc\nReference PNG SHA-256: 7c4f5218a6ad5c56cf6d0fa8c040034ad1ad138afac241f67299825c4a0f40dc\nRaster decode: dm-raw-edifact-fixed: payload=A; ECC200 data=5; ECC=7; corrected=0; region borders/unused modules/padding=pass; ECI=3; controls=[240, 5, 240, 129, 115]; SA=0/0/0; macro=0; reader=false; raster module/quiet/color pixels=3136; declared inverse placement=pass; pass\nCommand: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-hardened-worker-reference-91.png T31-two-dimensional-barcodes-hardened-worker-actual-91.png T31-two-dimensional-barcodes-hardened-worker-difference-91.png\nExit: 0\nstdout:\n\nstderr:\n0 (0)\nDifference PNG SHA-256: f1876e7244880c8ad3ce60411f49aa22af864ef4bd7c08eb462b89d1342e4ea8\nVisual comparison: pass\n\n"
+    },
+    {
+      "profile": "hardened-worker",
+      "page": 92,
+      "fixture": "dm-raw-edifact-ascii",
+      "payload": "A",
+      "rawPrefix": [
+        240,
+        124,
+        66
+      ],
+      "pixelBounds": [
+        148,
+        2540,
+        196,
+        2588
+      ],
+      "pixelColors": [
+        [
+          7753984,
+          [
+            255,
+            255,
+            255
+          ]
+        ],
+        [
+          1280,
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      ],
+      "semantic": "Page 92 dm-raw-edifact-ascii: payload=A; ECC200 data=5; ECC=7; corrected=0; region borders/unused modules/padding=pass; ECI=3; controls=[240, 124, 66, 129, 115]; SA=0/0/0; macro=0; reader=false; Form=PdfIndirectReference[ObjectReference[542]]; box=0,0,14.0,14.0; module=1.0x1.0; quiet=1.0; placement=AffineTransform[[1.0, 0.0, 36.0], [0.0, 1.0, 144.0]]; vector geometry/color/reuse=pass",
+      "visual": "Page 92 dm-raw-edifact-ascii\nActual PNG SHA-256: 1c20c04a4931f39ed19a04b26c5ee94f41e333c72621c6ca547e8546c3007133\nReference PNG SHA-256: 1c20c04a4931f39ed19a04b26c5ee94f41e333c72621c6ca547e8546c3007133\nRaster decode: dm-raw-edifact-ascii: payload=A; ECC200 data=5; ECC=7; corrected=0; region borders/unused modules/padding=pass; ECI=3; controls=[240, 124, 66, 129, 115]; SA=0/0/0; macro=0; reader=false; raster module/quiet/color pixels=3136; declared inverse placement=pass; pass\nCommand: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-hardened-worker-reference-92.png T31-two-dimensional-barcodes-hardened-worker-actual-92.png T31-two-dimensional-barcodes-hardened-worker-difference-92.png\nExit: 0\nstdout:\n\nstderr:\n0 (0)\nDifference PNG SHA-256: f1876e7244880c8ad3ce60411f49aa22af864ef4bd7c08eb462b89d1342e4ea8\nVisual comparison: pass\n\n"
+    },
+    {
+      "profile": "hardened-worker",
+      "page": 93,
+      "fixture": "dm-raw-edifact-tail",
+      "payload": "ABABCDA",
+      "rawPrefix": [
+        66,
+        67,
+        240,
+        4,
+        32,
+        196,
+        5,
+        240
+      ],
+      "pixelBounds": [
+        148,
+        2556,
+        276,
+        2588
+      ],
+      "pixelColors": [
+        [
+          7753056,
+          [
+            255,
+            255,
+            255
+          ]
+        ],
+        [
+          2208,
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      ],
+      "semantic": "Page 93 dm-raw-edifact-tail: payload=ABABCDA; ECC200 data=10; ECC=11; corrected=0; region borders/unused modules/padding=pass; ECI=3; controls=[66, 67, 240, 4, 32, 196, 5, 240, 129, 101]; SA=0/0/0; macro=0; reader=false; Form=PdfIndirectReference[ObjectReference[548]]; box=0,0,34.0,10.0; module=1.0x1.0; quiet=1.0; placement=AffineTransform[[1.0, 0.0, 36.0], [0.0, 1.0, 144.0]]; vector geometry/color/reuse=pass",
+      "visual": "Page 93 dm-raw-edifact-tail\nActual PNG SHA-256: d429e6ccd9b778dfa77fcacff1daaa2e802b30e1eab11d041562b6d1f1e9760f\nReference PNG SHA-256: d429e6ccd9b778dfa77fcacff1daaa2e802b30e1eab11d041562b6d1f1e9760f\nRaster decode: dm-raw-edifact-tail: payload=ABABCDA; ECC200 data=10; ECC=11; corrected=0; region borders/unused modules/padding=pass; ECI=3; controls=[66, 67, 240, 4, 32, 196, 5, 240, 129, 101]; SA=0/0/0; macro=0; reader=false; raster module/quiet/color pixels=5440; declared inverse placement=pass; pass\nCommand: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-hardened-worker-reference-93.png T31-two-dimensional-barcodes-hardened-worker-actual-93.png T31-two-dimensional-barcodes-hardened-worker-difference-93.png\nExit: 0\nstdout:\n\nstderr:\n0 (0)\nDifference PNG SHA-256: f1876e7244880c8ad3ce60411f49aa22af864ef4bd7c08eb462b89d1342e4ea8\nVisual comparison: pass\n\n"
+    },
+    {
+      "profile": "hardened-worker",
+      "page": 119,
+      "fixture": "pdf-raw-eci-leading",
+      "payload": "A",
+      "rawPrefix": [
+        901,
+        927,
+        26,
+        65
+      ],
+      "pixelBounds": [
+        152,
+        2488,
+        632,
+        2584
+      ],
+      "pixelColors": [
+        [
+          7729056,
+          [
+            255,
+            255,
+            255
+          ]
+        ],
+        [
+          26208,
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      ],
+      "semantic": "Page 119 pdf-raw-eci-leading: payload=A; columns=3; rows=8; ECC level=2; ECC words=8; corrected=0; start/stop/row indicators/clusters=pass; ECI=3; descriptor=16; controls=[901, 927, 26, 65, 900, 900, 900, 900, 900, 900, 900, 900]; Macro=/0/0; Form=PdfIndirectReference[ObjectReference[700]]; box=0,0,124.0,28.0; module=1.0x3.0; quiet=2.0; placement=AffineTransform[[1.0, 0.0, 36.0], [0.0, 1.0, 144.0]]; vector geometry/color/reuse=pass",
+      "visual": "Page 119 pdf-raw-eci-leading\nActual PNG SHA-256: f07b231a2c0c124b1450d45815715e4a25cbd55d0be2677d1ebbfb002255ba27\nReference PNG SHA-256: f07b231a2c0c124b1450d45815715e4a25cbd55d0be2677d1ebbfb002255ba27\nRaster decode: pdf-raw-eci-leading: payload=A; columns=3; rows=8; ECC level=2; ECC words=8; corrected=0; start/stop/row indicators/clusters=pass; ECI=3; descriptor=16; controls=[901, 927, 26, 65, 900, 900, 900, 900, 900, 900, 900, 900]; Macro=/0/0; raster module/quiet/color pixels=55552; declared inverse placement=pass; pass\nCommand: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-hardened-worker-reference-119.png T31-two-dimensional-barcodes-hardened-worker-actual-119.png T31-two-dimensional-barcodes-hardened-worker-difference-119.png\nExit: 0\nstdout:\n\nstderr:\n0 (0)\nDifference PNG SHA-256: f1876e7244880c8ad3ce60411f49aa22af864ef4bd7c08eb462b89d1342e4ea8\nVisual comparison: pass\n\n"
+    },
+    {
+      "profile": "hardened-worker",
+      "page": 120,
+      "fixture": "pdf-raw-eci-literal",
+      "payload": "AB",
+      "rawPrefix": [
+        901,
+        65,
+        927,
+        26,
+        66
+      ],
+      "pixelBounds": [
+        152,
+        2488,
+        632,
+        2584
+      ],
+      "pixelColors": [
+        [
+          7729488,
+          [
+            255,
+            255,
+            255
+          ]
+        ],
+        [
+          25776,
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      ],
+      "semantic": "Page 120 pdf-raw-eci-literal: payload=AB; columns=3; rows=8; ECC level=2; ECC words=8; corrected=0; start/stop/row indicators/clusters=pass; ECI=3; descriptor=16; controls=[901, 65, 927, 26, 66, 900, 900, 900, 900, 900, 900, 900]; Macro=/0/0; Form=PdfIndirectReference[ObjectReference[706]]; box=0,0,124.0,28.0; module=1.0x3.0; quiet=2.0; placement=AffineTransform[[1.0, 0.0, 36.0], [0.0, 1.0, 144.0]]; vector geometry/color/reuse=pass",
+      "visual": "Page 120 pdf-raw-eci-literal\nActual PNG SHA-256: 91d156595c653a5c03a8f96c443e0ac963c3821031a30553faf517bad2ea2e7e\nReference PNG SHA-256: 91d156595c653a5c03a8f96c443e0ac963c3821031a30553faf517bad2ea2e7e\nRaster decode: pdf-raw-eci-literal: payload=AB; columns=3; rows=8; ECC level=2; ECC words=8; corrected=0; start/stop/row indicators/clusters=pass; ECI=3; descriptor=16; controls=[901, 65, 927, 26, 66, 900, 900, 900, 900, 900, 900, 900]; Macro=/0/0; raster module/quiet/color pixels=55552; declared inverse placement=pass; pass\nCommand: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-hardened-worker-reference-120.png T31-two-dimensional-barcodes-hardened-worker-actual-120.png T31-two-dimensional-barcodes-hardened-worker-difference-120.png\nExit: 0\nstdout:\n\nstderr:\n0 (0)\nDifference PNG SHA-256: f1876e7244880c8ad3ce60411f49aa22af864ef4bd7c08eb462b89d1342e4ea8\nVisual comparison: pass\n\n"
+    },
+    {
+      "profile": "hardened-worker",
+      "page": 121,
+      "fixture": "pdf-raw-eci-charset",
+      "payload": "\\u00e9\\u00e9",
+      "rawPrefix": [
+        901,
+        927,
+        26,
+        195,
+        169,
+        927,
+        3,
+        233
+      ],
+      "pixelBounds": [
+        152,
+        2488,
+        632,
+        2584
+      ],
+      "pixelColors": [
+        [
+          7729200,
+          [
+            255,
+            255,
+            255
+          ]
+        ],
+        [
+          26064,
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      ],
+      "semantic": "Page 121 pdf-raw-eci-charset: payload=\\u00e9\\u00e9; columns=3; rows=8; ECC level=2; ECC words=8; corrected=0; start/stop/row indicators/clusters=pass; ECI=3; descriptor=16; controls=[901, 927, 26, 195, 169, 927, 3, 233, 900, 900, 900, 900]; Macro=/0/0; Form=PdfIndirectReference[ObjectReference[712]]; box=0,0,124.0,28.0; module=1.0x3.0; quiet=2.0; placement=AffineTransform[[1.0, 0.0, 36.0], [0.0, 1.0, 144.0]]; vector geometry/color/reuse=pass",
+      "visual": "Page 121 pdf-raw-eci-charset\nActual PNG SHA-256: 4ebb7e847a36083727d57636b5b7fe616d4016fed44376d20c5b1fb3372f7fcd\nReference PNG SHA-256: 4ebb7e847a36083727d57636b5b7fe616d4016fed44376d20c5b1fb3372f7fcd\nRaster decode: pdf-raw-eci-charset: payload=\\u00e9\\u00e9; columns=3; rows=8; ECC level=2; ECC words=8; corrected=0; start/stop/row indicators/clusters=pass; ECI=3; descriptor=16; controls=[901, 927, 26, 195, 169, 927, 3, 233, 900, 900, 900, 900]; Macro=/0/0; raster module/quiet/color pixels=55552; declared inverse placement=pass; pass\nCommand: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-hardened-worker-reference-121.png T31-two-dimensional-barcodes-hardened-worker-actual-121.png T31-two-dimensional-barcodes-hardened-worker-difference-121.png\nExit: 0\nstdout:\n\nstderr:\n0 (0)\nDifference PNG SHA-256: f1876e7244880c8ad3ce60411f49aa22af864ef4bd7c08eb462b89d1342e4ea8\nVisual comparison: pass\n\n"
+    },
+    {
+      "profile": "hardened-worker",
+      "page": 122,
+      "fixture": "pdf-raw-eci-924-leading",
+      "payload": "\\u0000\\u0000\\u0000\\u0000\\u0000A",
+      "rawPrefix": [
+        924,
+        927,
+        26,
+        0,
+        0,
+        0,
+        0,
+        65
+      ],
+      "pixelBounds": [
+        152,
+        2488,
+        632,
+        2584
+      ],
+      "pixelColors": [
+        [
+          7729104,
+          [
+            255,
+            255,
+            255
+          ]
+        ],
+        [
+          26160,
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      ],
+      "semantic": "Page 122 pdf-raw-eci-924-leading: payload=\\u0000\\u0000\\u0000\\u0000\\u0000A; columns=3; rows=8; ECC level=2; ECC words=8; corrected=0; start/stop/row indicators/clusters=pass; ECI=3; descriptor=16; controls=[924, 927, 26, 0, 0, 0, 0, 65, 900, 900, 900, 900]; Macro=/0/0; Form=PdfIndirectReference[ObjectReference[718]]; box=0,0,124.0,28.0; module=1.0x3.0; quiet=2.0; placement=AffineTransform[[1.0, 0.0, 36.0], [0.0, 1.0, 144.0]]; vector geometry/color/reuse=pass",
+      "visual": "Page 122 pdf-raw-eci-924-leading\nActual PNG SHA-256: 5a22c97a8037b8150103e1db8bce85879e4d12c00b17c87f16a3c497d5570127\nReference PNG SHA-256: 5a22c97a8037b8150103e1db8bce85879e4d12c00b17c87f16a3c497d5570127\nRaster decode: pdf-raw-eci-924-leading: payload=\\u0000\\u0000\\u0000\\u0000\\u0000A; columns=3; rows=8; ECC level=2; ECC words=8; corrected=0; start/stop/row indicators/clusters=pass; ECI=3; descriptor=16; controls=[924, 927, 26, 0, 0, 0, 0, 65, 900, 900, 900, 900]; Macro=/0/0; raster module/quiet/color pixels=55552; declared inverse placement=pass; pass\nCommand: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-hardened-worker-reference-122.png T31-two-dimensional-barcodes-hardened-worker-actual-122.png T31-two-dimensional-barcodes-hardened-worker-difference-122.png\nExit: 0\nstdout:\n\nstderr:\n0 (0)\nDifference PNG SHA-256: f1876e7244880c8ad3ce60411f49aa22af864ef4bd7c08eb462b89d1342e4ea8\nVisual comparison: pass\n\n"
+    },
+    {
+      "profile": "hardened-worker",
+      "page": 123,
+      "fixture": "pdf-raw-eci-924-between",
+      "payload": "\\u0000\\u0000\\u0000\\u0000\\u0000A\\u0000\\u0000\\u0000\\u0000\\u0000B",
+      "rawPrefix": [
+        924,
+        0,
+        0,
+        0,
+        0,
+        65,
+        927,
+        26,
+        0,
+        0,
+        0,
+        0,
+        66
+      ],
+      "pixelBounds": [
+        152,
+        2488,
+        632,
+        2584
+      ],
+      "pixelColors": [
+        [
+          7728768,
+          [
+            255,
+            255,
+            255
+          ]
+        ],
+        [
+          26496,
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      ],
+      "semantic": "Page 123 pdf-raw-eci-924-between: payload=\\u0000\\u0000\\u0000\\u0000\\u0000A\\u0000\\u0000\\u0000\\u0000\\u0000B; columns=3; rows=8; ECC level=2; ECC words=8; corrected=0; start/stop/row indicators/clusters=pass; ECI=3; descriptor=16; controls=[924, 0, 0, 0, 0, 65, 927, 26, 0, 0, 0, 0]; Macro=/0/0; Form=PdfIndirectReference[ObjectReference[724]]; box=0,0,124.0,28.0; module=1.0x3.0; quiet=2.0; placement=AffineTransform[[1.0, 0.0, 36.0], [0.0, 1.0, 144.0]]; vector geometry/color/reuse=pass",
+      "visual": "Page 123 pdf-raw-eci-924-between\nActual PNG SHA-256: 091fbc3b686d840bc44aa3345316c6352c00b24ce3b9aba8bbaa2afefed40496\nReference PNG SHA-256: 091fbc3b686d840bc44aa3345316c6352c00b24ce3b9aba8bbaa2afefed40496\nRaster decode: pdf-raw-eci-924-between: payload=\\u0000\\u0000\\u0000\\u0000\\u0000A\\u0000\\u0000\\u0000\\u0000\\u0000B; columns=3; rows=8; ECC level=2; ECC words=8; corrected=0; start/stop/row indicators/clusters=pass; ECI=3; descriptor=16; controls=[924, 0, 0, 0, 0, 65, 927, 26, 0, 0, 0, 0]; Macro=/0/0; raster module/quiet/color pixels=55552; declared inverse placement=pass; pass\nCommand: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-hardened-worker-reference-123.png T31-two-dimensional-barcodes-hardened-worker-actual-123.png T31-two-dimensional-barcodes-hardened-worker-difference-123.png\nExit: 0\nstdout:\n\nstderr:\n0 (0)\nDifference PNG SHA-256: f1876e7244880c8ad3ce60411f49aa22af864ef4bd7c08eb462b89d1342e4ea8\nVisual comparison: pass\n\n"
+    },
+    {
+      "profile": "hardened-worker",
+      "page": 124,
+      "fixture": "pdf-raw-eci-text-latch",
+      "payload": "ABAB",
+      "rawPrefix": [
+        901,
+        65,
+        927,
+        26,
+        66,
+        900,
+        1
+      ],
+      "pixelBounds": [
+        152,
+        2488,
+        632,
+        2584
+      ],
+      "pixelColors": [
+        [
+          7729008,
+          [
+            255,
+            255,
+            255
+          ]
+        ],
+        [
+          26256,
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      ],
+      "semantic": "Page 124 pdf-raw-eci-text-latch: payload=ABAB; columns=3; rows=8; ECC level=2; ECC words=8; corrected=0; start/stop/row indicators/clusters=pass; ECI=3; descriptor=16; controls=[901, 65, 927, 26, 66, 900, 1, 900, 900, 900, 900, 900]; Macro=/0/0; Form=PdfIndirectReference[ObjectReference[730]]; box=0,0,124.0,28.0; module=1.0x3.0; quiet=2.0; placement=AffineTransform[[1.0, 0.0, 36.0], [0.0, 1.0, 144.0]]; vector geometry/color/reuse=pass",
+      "visual": "Page 124 pdf-raw-eci-text-latch\nActual PNG SHA-256: 3ca4d95779fab22bf06f5076437f123c281eda91afdf20a636abc7d77ebc683c\nReference PNG SHA-256: 3ca4d95779fab22bf06f5076437f123c281eda91afdf20a636abc7d77ebc683c\nRaster decode: pdf-raw-eci-text-latch: payload=ABAB; columns=3; rows=8; ECC level=2; ECC words=8; corrected=0; start/stop/row indicators/clusters=pass; ECI=3; descriptor=16; controls=[901, 65, 927, 26, 66, 900, 1, 900, 900, 900, 900, 900]; Macro=/0/0; raster module/quiet/color pixels=55552; declared inverse placement=pass; pass\nCommand: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-hardened-worker-reference-124.png T31-two-dimensional-barcodes-hardened-worker-actual-124.png T31-two-dimensional-barcodes-hardened-worker-difference-124.png\nExit: 0\nstdout:\n\nstderr:\n0 (0)\nDifference PNG SHA-256: f1876e7244880c8ad3ce60411f49aa22af864ef4bd7c08eb462b89d1342e4ea8\nVisual comparison: pass\n\n"
+    },
+    {
+      "profile": "hardened-worker",
+      "page": 125,
+      "fixture": "pdf-raw-eci-consecutive",
+      "payload": "A",
+      "rawPrefix": [
+        901,
+        927,
+        26,
+        927,
+        3,
+        65
+      ],
+      "pixelBounds": [
+        152,
+        2488,
+        632,
+        2584
+      ],
+      "pixelColors": [
+        [
+          7729200,
+          [
+            255,
+            255,
+            255
+          ]
+        ],
+        [
+          26064,
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      ],
+      "semantic": "Page 125 pdf-raw-eci-consecutive: payload=A; columns=3; rows=8; ECC level=2; ECC words=8; corrected=0; start/stop/row indicators/clusters=pass; ECI=3; descriptor=16; controls=[901, 927, 26, 927, 3, 65, 900, 900, 900, 900, 900, 900]; Macro=/0/0; Form=PdfIndirectReference[ObjectReference[736]]; box=0,0,124.0,28.0; module=1.0x3.0; quiet=2.0; placement=AffineTransform[[1.0, 0.0, 36.0], [0.0, 1.0, 144.0]]; vector geometry/color/reuse=pass",
+      "visual": "Page 125 pdf-raw-eci-consecutive\nActual PNG SHA-256: 51fb199f89154078d08ac94cf4ca7c4d378cea7c6ca9672368070a05fc766546\nReference PNG SHA-256: 51fb199f89154078d08ac94cf4ca7c4d378cea7c6ca9672368070a05fc766546\nRaster decode: pdf-raw-eci-consecutive: payload=A; columns=3; rows=8; ECC level=2; ECC words=8; corrected=0; start/stop/row indicators/clusters=pass; ECI=3; descriptor=16; controls=[901, 927, 26, 927, 3, 65, 900, 900, 900, 900, 900, 900]; Macro=/0/0; raster module/quiet/color pixels=55552; declared inverse placement=pass; pass\nCommand: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-hardened-worker-reference-125.png T31-two-dimensional-barcodes-hardened-worker-actual-125.png T31-two-dimensional-barcodes-hardened-worker-difference-125.png\nExit: 0\nstdout:\n\nstderr:\n0 (0)\nDifference PNG SHA-256: f1876e7244880c8ad3ce60411f49aa22af864ef4bd7c08eb462b89d1342e4ea8\nVisual comparison: pass\n\n"
+    },
+    {
+      "profile": "hardened-worker",
+      "page": 126,
+      "fixture": "pdf-raw-eci-group",
+      "payload": "\\u0000\\u0000\\u0000\\u0000\\u0001,A",
+      "rawPrefix": [
+        901,
+        927,
+        26,
+        0,
+        0,
+        0,
+        0,
+        300,
+        65
+      ],
+      "pixelBounds": [
+        152,
+        2488,
+        632,
+        2584
+      ],
+      "pixelColors": [
+        [
+          7729104,
+          [
+            255,
+            255,
+            255
+          ]
+        ],
+        [
+          26160,
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      ],
+      "semantic": "Page 126 pdf-raw-eci-group: payload=\\u0000\\u0000\\u0000\\u0000\\u0001,A; columns=3; rows=8; ECC level=2; ECC words=8; corrected=0; start/stop/row indicators/clusters=pass; ECI=3; descriptor=16; controls=[901, 927, 26, 0, 0, 0, 0, 300, 65, 900, 900, 900]; Macro=/0/0; Form=PdfIndirectReference[ObjectReference[742]]; box=0,0,124.0,28.0; module=1.0x3.0; quiet=2.0; placement=AffineTransform[[1.0, 0.0, 36.0], [0.0, 1.0, 144.0]]; vector geometry/color/reuse=pass",
+      "visual": "Page 126 pdf-raw-eci-group\nActual PNG SHA-256: ba44fcbb216dfa25f8dbcb330fe69b5ad09ab61b82f73851985fd679f9924222\nReference PNG SHA-256: ba44fcbb216dfa25f8dbcb330fe69b5ad09ab61b82f73851985fd679f9924222\nRaster decode: pdf-raw-eci-group: payload=\\u0000\\u0000\\u0000\\u0000\\u0001,A; columns=3; rows=8; ECC level=2; ECC words=8; corrected=0; start/stop/row indicators/clusters=pass; ECI=3; descriptor=16; controls=[901, 927, 26, 0, 0, 0, 0, 300, 65, 900, 900, 900]; Macro=/0/0; raster module/quiet/color pixels=55552; declared inverse placement=pass; pass\nCommand: magick compare -metric AE -fuzz 0% T31-two-dimensional-barcodes-hardened-worker-reference-126.png T31-two-dimensional-barcodes-hardened-worker-actual-126.png T31-two-dimensional-barcodes-hardened-worker-difference-126.png\nExit: 0\nstdout:\n\nstderr:\n0 (0)\nDifference PNG SHA-256: f1876e7244880c8ad3ce60411f49aa22af864ef4bd7c08eb462b89d1342e4ea8\nVisual comparison: pass\n\n"
+    }
+  ],
+  "rootTestClasses": 67,
+  "rootTestTotals": {
+    "tests": 1161,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 4
+  },
+  "rootT31TestRows": [
+    {
+      "tests": 70,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "name": "net.zerocloud.pdf.consumer.Barcode2DWorkflowTest"
+    },
+    {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "name": "net.zerocloud.pdf.acceptance.T31BarcodeEvidenceCommandTest"
+    },
+    {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "name": "net.zerocloud.pdf.acceptance.T31BarcodeEvidenceTest"
+    },
+    {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "name": "net.zerocloud.pdf.acceptance.T31DataMatrixEvidenceTest"
+    },
+    {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "name": "net.zerocloud.pdf.acceptance.T31NegativeEvidenceTest"
+    },
+    {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "name": "net.zerocloud.pdf.acceptance.T31PaddingEvidenceTest"
+    },
+    {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "name": "net.zerocloud.pdf.acceptance.T31RasterEvidenceTest"
+    }
+  ],
+  "skipClasses": {
+    "net.zerocloud.pdf.consumer.HardenedWorkerScaleProfileTest": 3,
+    "net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest": 1
+  },
+  "issues": [],
+  "scope": "Retained artifacts and root receipt review only. Final matrix, inventory and scope gates remain open.",
+  "mavenOrProductProbesRun": false
+}

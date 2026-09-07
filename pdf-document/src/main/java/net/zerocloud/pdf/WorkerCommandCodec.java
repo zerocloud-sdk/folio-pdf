@@ -25,6 +25,7 @@ import net.zerocloud.pdf.command.UpdateAnnotations;
 import net.zerocloud.pdf.command.UpdateDocumentInfo;
 import net.zerocloud.pdf.composition.command.DrawCanvas;
 import net.zerocloud.pdf.composition.command.DrawBarcode1D;
+import net.zerocloud.pdf.composition.command.DrawBarcode2D;
 import net.zerocloud.pdf.composition.command.DrawPositionedUnicodeText;
 import net.zerocloud.pdf.composition.command.ComposeParagraphs;
 import net.zerocloud.pdf.composition.command.RelayoutParagraphs;
@@ -66,6 +67,7 @@ final class WorkerCommandCodec {
     private static final int FLUSH_TABLE = 24;
     private static final int COMPLETE_TABLE = 25;
     private static final int DRAW_BARCODE = 26;
+    private static final int DRAW_BARCODE_2D = 27;
 
     static final int PREFLIGHT_UNKNOWN = 0;
     static final int PREFLIGHT_ASSEMBLY = 1;
@@ -83,6 +85,7 @@ final class WorkerCommandCodec {
     static final int PREFLIGHT_PAGINATION = 13;
     static final int PREFLIGHT_TABLES = 14;
     static final int PREFLIGHT_BARCODE = 15;
+    static final int PREFLIGHT_BARCODE_2D = 16;
     static final int PREFLIGHT_DETAILS_NONE = 0;
     static final int PREFLIGHT_DETAILS_ANNOTATIONS = 1;
     static final int PREFLIGHT_DETAILS_POSITIONED_TEXT = 2;
@@ -160,6 +163,8 @@ final class WorkerCommandCodec {
                         ((DrawPositionedUnicodeText) command).getPageNumber());
             } else if (command instanceof DrawBarcode1D) {
                 output.writeInt(((DrawBarcode1D) command).getPageNumber());
+            } else if (command instanceof DrawBarcode2D) {
+                output.writeInt(((DrawBarcode2D) command).getPageNumber());
             } else {
                 output.writeInt(0);
             }
@@ -179,9 +184,9 @@ final class WorkerCommandCodec {
             int pageNumber = input.readInt();
             boolean pageCategory = category == PREFLIGHT_CANVAS_V1
                     || category == PREFLIGHT_CANVAS_V2
-                    || category == PREFLIGHT_POSITIONED_TEXT || category == PREFLIGHT_BARCODE;
+                    || category == PREFLIGHT_POSITIONED_TEXT || category == PREFLIGHT_BARCODE || category == PREFLIGHT_BARCODE_2D;
             if (category < PREFLIGHT_UNKNOWN
-                    || category > PREFLIGHT_BARCODE
+                    || category > PREFLIGHT_BARCODE_2D
                     || (!pageCategory && pageNumber != 0)) {
                 throw rejected("The Worker Command preflight is invalid.");
             }
@@ -375,6 +380,7 @@ final class WorkerCommandCodec {
 
     private static int preflightCategory(DocumentCommand command) {
         if (command instanceof DrawBarcode1D) { return PREFLIGHT_BARCODE; }
+        if (command instanceof DrawBarcode2D) { return PREFLIGHT_BARCODE_2D; }
         if (PdfBoxLargeTableOperations.supports(command)
                 || (command instanceof ComposeParagraphs && ((ComposeParagraphs) command).getVersion() >= 3)) { return PREFLIGHT_TABLES; }
         if (command instanceof RelayoutParagraphs || command instanceof FlushParagraphs
@@ -740,6 +746,11 @@ final class WorkerCommandCodec {
                     references);
             return;
         }
+        if (command instanceof DrawBarcode2D) {
+            output.writeInt(DRAW_BARCODE_2D);
+            WorkerBarcode2DCodec.write(output, (DrawBarcode2D) command);
+            return;
+        }
         if (command instanceof DrawBarcode1D) {
             output.writeInt(DRAW_BARCODE);
             WorkerBarcodeCodec.write(output, (DrawBarcode1D) command, fontSources);
@@ -851,6 +862,8 @@ final class WorkerCommandCodec {
                 return readDocumentPatch(input, references);
             case DRAW_CANVAS:
                 return WorkerCompositionCodec.readDrawCanvas(input, references);
+            case DRAW_BARCODE_2D:
+                return WorkerBarcode2DCodec.read(input);
             case DRAW_BARCODE:
                 return WorkerBarcodeCodec.read(input, remoteFonts);
             case COMPOSE_PARAGRAPHS:

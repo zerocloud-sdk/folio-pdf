@@ -1,0 +1,2739 @@
+T31 independent-review remediation logs
+Filename order within numbered slices; embedded timestamps establish actual Red/Green chronology.
+
+===== 51-pdf417-raw-eci-green.log | SHA-256 ae99c163fa7e7135391b9b4da0a6ecf03932ead7534aabcee902ed0f43d25acb =====
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent                                    [pom]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract              [jar]
+[INFO] Folio PDF by ZeroCloud - Conversion                                [jar]
+[INFO] Folio PDF by ZeroCloud - Document Engine                           [jar]
+[INFO] 
+[INFO] ----------------------< net.zerocloud:pdf-parent >----------------------
+[INFO] Building Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT            [1/4]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-parent ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.version.RequireMavenVersion passed
+[INFO] Rule 1: org.apache.maven.enforcer.rules.version.RequireJavaVersion passed
+[INFO] 
+[INFO] ----------------< net.zerocloud:pdf-provider-contract >-----------------
+[INFO] Building Folio PDF by ZeroCloud - Capability Provider Contract 0.1.0-SNAPSHOT [2/4]
+[INFO]   from pdf-provider-contract/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-provider-contract ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-provider-contract ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-provider-contract/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --------------------< net.zerocloud:pdf-conversion >--------------------
+[INFO] Building Folio PDF by ZeroCloud - Conversion 0.1.0-SNAPSHOT        [3/4]
+[INFO]   from pdf-conversion/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-conversion ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-conversion/src/main/resources
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-conversion/src/test/resources
+[INFO] Copying 1 resource from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-conversion ---
+[INFO] 
+[INFO] ---------------------< net.zerocloud:pdf-document >---------------------
+[INFO] Building Folio PDF by ZeroCloud - Document Engine 0.1.0-SNAPSHOT   [4/4]
+[INFO]   from pdf-document/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-document ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-document ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-document ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 270 source files with javac [debug parameters release 8] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-document ---
+[INFO] Copying 7 resources from src/test/resources to target/test-classes
+[INFO] Copying 15 resources from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-document ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 43 source files with javac [debug parameters release 8] to target/test-classes
+[INFO] /home/ubuntu/IdeaProjects/open-pdf/pdf-document/src/test/java/net/zerocloud/pdf/consumer/BlankDocumentWorkflowTest.java: Some input files use or override a deprecated API.
+[INFO] /home/ubuntu/IdeaProjects/open-pdf/pdf-document/src/test/java/net/zerocloud/pdf/consumer/BlankDocumentWorkflowTest.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-document ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.consumer.Barcode2DWorkflowTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 29.42 s -- in net.zerocloud.pdf.consumer.Barcode2DWorkflowTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent .................... SUCCESS [  0.293 s]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract SUCCESS [  0.452 s]
+[INFO] Folio PDF by ZeroCloud - Conversion ................ SUCCESS [  0.052 s]
+[INFO] Folio PDF by ZeroCloud - Document Engine ........... SUCCESS [ 39.309 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  40.257 s
+[INFO] Finished at: 2026-09-08T01:13:05+08:00
+[INFO] ------------------------------------------------------------------------
+
+===== 51-pdf417-raw-eci-red.log | SHA-256 17590836bc9cfd0cc0e0085688a2513cfe476cb9497549e553330196684a4a57 =====
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent                                    [pom]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract              [jar]
+[INFO] Folio PDF by ZeroCloud - Conversion                                [jar]
+[INFO] Folio PDF by ZeroCloud - Document Engine                           [jar]
+[INFO] 
+[INFO] ----------------------< net.zerocloud:pdf-parent >----------------------
+[INFO] Building Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT            [1/4]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-parent ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.version.RequireMavenVersion passed
+[INFO] Rule 1: org.apache.maven.enforcer.rules.version.RequireJavaVersion passed
+[INFO] 
+[INFO] ----------------< net.zerocloud:pdf-provider-contract >-----------------
+[INFO] Building Folio PDF by ZeroCloud - Capability Provider Contract 0.1.0-SNAPSHOT [2/4]
+[INFO]   from pdf-provider-contract/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-provider-contract ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-provider-contract ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-provider-contract/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --------------------< net.zerocloud:pdf-conversion >--------------------
+[INFO] Building Folio PDF by ZeroCloud - Conversion 0.1.0-SNAPSHOT        [3/4]
+[INFO]   from pdf-conversion/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-conversion ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-conversion/src/main/resources
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-conversion/src/test/resources
+[INFO] Copying 1 resource from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-conversion ---
+[INFO] 
+[INFO] ---------------------< net.zerocloud:pdf-document >---------------------
+[INFO] Building Folio PDF by ZeroCloud - Document Engine 0.1.0-SNAPSHOT   [4/4]
+[INFO]   from pdf-document/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-document ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-document ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-document ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-document ---
+[INFO] Copying 7 resources from src/test/resources to target/test-classes
+[INFO] Copying 15 resources from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-document ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 43 source files with javac [debug parameters release 8] to target/test-classes
+[INFO] /home/ubuntu/IdeaProjects/open-pdf/pdf-document/src/test/java/net/zerocloud/pdf/consumer/BlankDocumentWorkflowTest.java: Some input files use or override a deprecated API.
+[INFO] /home/ubuntu/IdeaProjects/open-pdf/pdf-document/src/test/java/net/zerocloud/pdf/consumer/BlankDocumentWorkflowTest.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-document ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.consumer.Barcode2DWorkflowTest
+[ERROR] Tests run: 4, Failures: 2, Errors: 2, Skipped: 0, Time elapsed: 1.780 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.Barcode2DWorkflowTest
+[ERROR] net.zerocloud.pdf.consumer.Barcode2DWorkflowTest.pdf417RawEciPreservesByteCompactionUntilAnExplicitLatch[IN_PROCESS] -- Time elapsed: 0.166 s <<< ERROR!
+net.zerocloud.pdf.DocumentFailure: The barcode input is invalid for the selected symbology.
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.failure(PdfBoxWorkflowEngine.java:292)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.executeWithDocument(PdfBoxWorkflowEngine.java:350)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.executeChecked(PdfBoxWorkflowEngine.java:238)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.execute(PdfBoxWorkflowEngine.java:41)
+	at net.zerocloud.pdf.DocumentWorkflow.executeOnce(DocumentWorkflow.java:184)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:103)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:64)
+	at net.zerocloud.pdf.consumer.Barcode2DWorkflowTest.pdf417RawEciPreservesByteCompactionUntilAnExplicitLatch(Barcode2DWorkflowTest.java:788)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.junit.runners.Suite.runChild(Suite.java:128)
+	at org.junit.runners.Suite.runChild(Suite.java:27)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:316)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:214)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:155)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[ERROR] net.zerocloud.pdf.consumer.Barcode2DWorkflowTest.pdf417RawEciRejectsMalformedByteGroupsBeforePublication[IN_PROCESS] -- Time elapsed: 0.090 s <<< FAILURE!
+java.lang.AssertionError: Expected BARCODE_INPUT_INVALID
+	at org.junit.Assert.fail(Assert.java:89)
+	at net.zerocloud.pdf.consumer.Barcode2DWorkflowTest.rejected(Barcode2DWorkflowTest.java:1147)
+	at net.zerocloud.pdf.consumer.Barcode2DWorkflowTest.pdf417RawEciRejectsMalformedByteGroupsBeforePublication(Barcode2DWorkflowTest.java:810)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.junit.runners.Suite.runChild(Suite.java:128)
+	at org.junit.runners.Suite.runChild(Suite.java:27)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:316)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:214)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:155)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[ERROR] net.zerocloud.pdf.consumer.Barcode2DWorkflowTest.pdf417RawEciPreservesByteCompactionUntilAnExplicitLatch[HARDENED_WORKER] -- Time elapsed: 0.619 s <<< ERROR!
+net.zerocloud.pdf.DocumentFailure: The barcode input is invalid for the selected symbology.
+	at net.zerocloud.pdf.DocumentWorkflow.withReceipts(DocumentWorkflow.java:276)
+	at net.zerocloud.pdf.DocumentWorkflow.withReceipts(DocumentWorkflow.java:258)
+	at net.zerocloud.pdf.DocumentWorkflow.executeOnce(DocumentWorkflow.java:199)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:103)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:64)
+	at net.zerocloud.pdf.consumer.Barcode2DWorkflowTest.pdf417RawEciPreservesByteCompactionUntilAnExplicitLatch(Barcode2DWorkflowTest.java:788)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.junit.runners.Suite.runChild(Suite.java:128)
+	at org.junit.runners.Suite.runChild(Suite.java:27)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:316)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:214)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:155)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[ERROR] net.zerocloud.pdf.consumer.Barcode2DWorkflowTest.pdf417RawEciRejectsMalformedByteGroupsBeforePublication[HARDENED_WORKER] -- Time elapsed: 0.824 s <<< FAILURE!
+java.lang.AssertionError: Expected BARCODE_INPUT_INVALID
+	at org.junit.Assert.fail(Assert.java:89)
+	at net.zerocloud.pdf.consumer.Barcode2DWorkflowTest.rejected(Barcode2DWorkflowTest.java:1147)
+	at net.zerocloud.pdf.consumer.Barcode2DWorkflowTest.pdf417RawEciRejectsMalformedByteGroupsBeforePublication(Barcode2DWorkflowTest.java:810)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.junit.runners.Suite.runChild(Suite.java:128)
+	at org.junit.runners.Suite.runChild(Suite.java:27)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:316)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:214)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:155)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   Barcode2DWorkflowTest.pdf417RawEciRejectsMalformedByteGroupsBeforePublication:810->rejected:1147 Expected BARCODE_INPUT_INVALID
+[ERROR]   Barcode2DWorkflowTest.pdf417RawEciRejectsMalformedByteGroupsBeforePublication:810->rejected:1147 Expected BARCODE_INPUT_INVALID
+[ERROR] Errors: 
+[ERROR]   Barcode2DWorkflowTest.pdf417RawEciPreservesByteCompactionUntilAnExplicitLatch:788 » DocumentFailure The barcode input is invalid for the selected symbology.
+[ERROR]   Barcode2DWorkflowTest.pdf417RawEciPreservesByteCompactionUntilAnExplicitLatch:788 » DocumentFailure The barcode input is invalid for the selected symbology.
+[INFO] 
+[ERROR] Tests run: 4, Failures: 2, Errors: 2, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent .................... SUCCESS [  0.351 s]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract SUCCESS [  0.473 s]
+[INFO] Folio PDF by ZeroCloud - Conversion ................ SUCCESS [  0.059 s]
+[INFO] Folio PDF by ZeroCloud - Document Engine ........... FAILURE [  8.548 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  9.589 s
+[INFO] Finished at: 2026-09-08T01:11:02+08:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.5.4:test (default-test) on project pdf-document: There are test failures.
+[ERROR] 
+[ERROR] See /home/ubuntu/IdeaProjects/open-pdf/pdf-document/target/surefire-reports for the individual test results.
+[ERROR] See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+[ERROR] 
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :pdf-document
+
+===== 51-pdf417-raw-eci-refactor.log | SHA-256 db4275b8b794e5615b8b7d02cb95953d37e28f11579d9a129afe73a403986ba8 =====
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent                                    [pom]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract              [jar]
+[INFO] Folio PDF by ZeroCloud - Conversion                                [jar]
+[INFO] Folio PDF by ZeroCloud - Document Engine                           [jar]
+[INFO] 
+[INFO] ----------------------< net.zerocloud:pdf-parent >----------------------
+[INFO] Building Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT            [1/4]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-parent ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.version.RequireMavenVersion passed
+[INFO] Rule 1: org.apache.maven.enforcer.rules.version.RequireJavaVersion passed
+[INFO] 
+[INFO] ----------------< net.zerocloud:pdf-provider-contract >-----------------
+[INFO] Building Folio PDF by ZeroCloud - Capability Provider Contract 0.1.0-SNAPSHOT [2/4]
+[INFO]   from pdf-provider-contract/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-provider-contract ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-provider-contract ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-provider-contract/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --------------------< net.zerocloud:pdf-conversion >--------------------
+[INFO] Building Folio PDF by ZeroCloud - Conversion 0.1.0-SNAPSHOT        [3/4]
+[INFO]   from pdf-conversion/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-conversion ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-conversion/src/main/resources
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-conversion/src/test/resources
+[INFO] Copying 1 resource from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-conversion ---
+[INFO] 
+[INFO] ---------------------< net.zerocloud:pdf-document >---------------------
+[INFO] Building Folio PDF by ZeroCloud - Document Engine 0.1.0-SNAPSHOT   [4/4]
+[INFO]   from pdf-document/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-document ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-document ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-document ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 270 source files with javac [debug parameters release 8] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-document ---
+[INFO] Copying 7 resources from src/test/resources to target/test-classes
+[INFO] Copying 15 resources from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-document ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 43 source files with javac [debug parameters release 8] to target/test-classes
+[INFO] /home/ubuntu/IdeaProjects/open-pdf/pdf-document/src/test/java/net/zerocloud/pdf/consumer/BlankDocumentWorkflowTest.java: Some input files use or override a deprecated API.
+[INFO] /home/ubuntu/IdeaProjects/open-pdf/pdf-document/src/test/java/net/zerocloud/pdf/consumer/BlankDocumentWorkflowTest.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-document ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.consumer.Barcode2DWorkflowTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.903 s -- in net.zerocloud.pdf.consumer.Barcode2DWorkflowTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent .................... SUCCESS [  0.320 s]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract SUCCESS [  0.401 s]
+[INFO] Folio PDF by ZeroCloud - Conversion ................ SUCCESS [  0.095 s]
+[INFO] Folio PDF by ZeroCloud - Document Engine ........... SUCCESS [ 17.549 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  18.524 s
+[INFO] Finished at: 2026-09-08T01:15:08+08:00
+[INFO] ------------------------------------------------------------------------
+
+===== 52-dm-raw-edifact-green.log | SHA-256 83c67d8a4cbdd154416b74f14b9669e415b65c348185466ed0041bdf281463af =====
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent                                    [pom]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract              [jar]
+[INFO] Folio PDF by ZeroCloud - Conversion                                [jar]
+[INFO] Folio PDF by ZeroCloud - Document Engine                           [jar]
+[INFO] 
+[INFO] ----------------------< net.zerocloud:pdf-parent >----------------------
+[INFO] Building Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT            [1/4]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-parent ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.version.RequireMavenVersion passed
+[INFO] Rule 1: org.apache.maven.enforcer.rules.version.RequireJavaVersion passed
+[INFO] 
+[INFO] ----------------< net.zerocloud:pdf-provider-contract >-----------------
+[INFO] Building Folio PDF by ZeroCloud - Capability Provider Contract 0.1.0-SNAPSHOT [2/4]
+[INFO]   from pdf-provider-contract/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-provider-contract ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-provider-contract ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-provider-contract/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --------------------< net.zerocloud:pdf-conversion >--------------------
+[INFO] Building Folio PDF by ZeroCloud - Conversion 0.1.0-SNAPSHOT        [3/4]
+[INFO]   from pdf-conversion/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-conversion ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-conversion/src/main/resources
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-conversion/src/test/resources
+[INFO] Copying 1 resource from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-conversion ---
+[INFO] 
+[INFO] ---------------------< net.zerocloud:pdf-document >---------------------
+[INFO] Building Folio PDF by ZeroCloud - Document Engine 0.1.0-SNAPSHOT   [4/4]
+[INFO]   from pdf-document/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-document ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-document ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-document ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 270 source files with javac [debug parameters release 8] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-document ---
+[INFO] Copying 7 resources from src/test/resources to target/test-classes
+[INFO] Copying 15 resources from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-document ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 43 source files with javac [debug parameters release 8] to target/test-classes
+[INFO] /home/ubuntu/IdeaProjects/open-pdf/pdf-document/src/test/java/net/zerocloud/pdf/consumer/BlankDocumentWorkflowTest.java: Some input files use or override a deprecated API.
+[INFO] /home/ubuntu/IdeaProjects/open-pdf/pdf-document/src/test/java/net/zerocloud/pdf/consumer/BlankDocumentWorkflowTest.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-document ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.consumer.Barcode2DWorkflowTest
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 26.99 s -- in net.zerocloud.pdf.consumer.Barcode2DWorkflowTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent .................... SUCCESS [  0.286 s]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract SUCCESS [  0.374 s]
+[INFO] Folio PDF by ZeroCloud - Conversion ................ SUCCESS [  0.045 s]
+[INFO] Folio PDF by ZeroCloud - Document Engine ........... SUCCESS [ 36.392 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  37.248 s
+[INFO] Finished at: 2026-09-08T01:19:47+08:00
+[INFO] ------------------------------------------------------------------------
+
+===== 52-dm-raw-edifact-red.log | SHA-256 d4a3e30d7b3ca2f5564e3647d68b44cb78aa7c3d186d026311911190401fdb43 =====
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent                                    [pom]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract              [jar]
+[INFO] Folio PDF by ZeroCloud - Conversion                                [jar]
+[INFO] Folio PDF by ZeroCloud - Document Engine                           [jar]
+[INFO] 
+[INFO] ----------------------< net.zerocloud:pdf-parent >----------------------
+[INFO] Building Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT            [1/4]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-parent ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.version.RequireMavenVersion passed
+[INFO] Rule 1: org.apache.maven.enforcer.rules.version.RequireJavaVersion passed
+[INFO] 
+[INFO] ----------------< net.zerocloud:pdf-provider-contract >-----------------
+[INFO] Building Folio PDF by ZeroCloud - Capability Provider Contract 0.1.0-SNAPSHOT [2/4]
+[INFO]   from pdf-provider-contract/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-provider-contract ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-provider-contract ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-provider-contract/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --------------------< net.zerocloud:pdf-conversion >--------------------
+[INFO] Building Folio PDF by ZeroCloud - Conversion 0.1.0-SNAPSHOT        [3/4]
+[INFO]   from pdf-conversion/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-conversion ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-conversion/src/main/resources
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-conversion/src/test/resources
+[INFO] Copying 1 resource from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-conversion ---
+[INFO] 
+[INFO] ---------------------< net.zerocloud:pdf-document >---------------------
+[INFO] Building Folio PDF by ZeroCloud - Document Engine 0.1.0-SNAPSHOT   [4/4]
+[INFO]   from pdf-document/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-document ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-document ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-document ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-document ---
+[INFO] Copying 7 resources from src/test/resources to target/test-classes
+[INFO] Copying 15 resources from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-document ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 43 source files with javac [debug parameters release 8] to target/test-classes
+[INFO] /home/ubuntu/IdeaProjects/open-pdf/pdf-document/src/test/java/net/zerocloud/pdf/consumer/BlankDocumentWorkflowTest.java: Some input files use or override a deprecated API.
+[INFO] /home/ubuntu/IdeaProjects/open-pdf/pdf-document/src/test/java/net/zerocloud/pdf/consumer/BlankDocumentWorkflowTest.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-document ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.consumer.Barcode2DWorkflowTest
+[ERROR] Tests run: 4, Failures: 4, Errors: 0, Skipped: 0, Time elapsed: 1.586 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.Barcode2DWorkflowTest
+[ERROR] net.zerocloud.pdf.consumer.Barcode2DWorkflowTest.dataMatrixRawEdifactSelectsCapacityThatPreservesExplicitTermination[IN_PROCESS] -- Time elapsed: 0.155 s <<< FAILURE!
+java.lang.AssertionError: expected:<12> but was:<10>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:647)
+	at org.junit.Assert.assertEquals(Assert.java:633)
+	at net.zerocloud.pdf.consumer.Barcode2DWorkflowTest.lambda$dataMatrixRawEdifactSelectsCapacityThatPreservesExplicitTermination$21(Barcode2DWorkflowTest.java:431)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.executeWithDocument(PdfBoxWorkflowEngine.java:346)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.executeChecked(PdfBoxWorkflowEngine.java:238)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.execute(PdfBoxWorkflowEngine.java:41)
+	at net.zerocloud.pdf.DocumentWorkflow.executeOnce(DocumentWorkflow.java:184)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:103)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:64)
+	at net.zerocloud.pdf.consumer.Barcode2DWorkflowTest.dataMatrixRawEdifactSelectsCapacityThatPreservesExplicitTermination(Barcode2DWorkflowTest.java:424)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.junit.runners.Suite.runChild(Suite.java:128)
+	at org.junit.runners.Suite.runChild(Suite.java:27)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:316)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:214)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:155)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[ERROR] net.zerocloud.pdf.consumer.Barcode2DWorkflowTest.dataMatrixRawEdifactRejectsFixedCapacityThatWouldChangePayload[IN_PROCESS] -- Time elapsed: 0.077 s <<< FAILURE!
+java.lang.AssertionError: Expected BARCODE_INPUT_INVALID
+	at org.junit.Assert.fail(Assert.java:89)
+	at net.zerocloud.pdf.consumer.Barcode2DWorkflowTest.rejected(Barcode2DWorkflowTest.java:1187)
+	at net.zerocloud.pdf.consumer.Barcode2DWorkflowTest.dataMatrixRawEdifactRejectsFixedCapacityThatWouldChangePayload(Barcode2DWorkflowTest.java:452)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.junit.runners.Suite.runChild(Suite.java:128)
+	at org.junit.runners.Suite.runChild(Suite.java:27)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:316)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:214)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:155)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[ERROR] net.zerocloud.pdf.consumer.Barcode2DWorkflowTest.dataMatrixRawEdifactSelectsCapacityThatPreservesExplicitTermination[HARDENED_WORKER] -- Time elapsed: 0.586 s <<< FAILURE!
+java.lang.AssertionError: expected:<12> but was:<10>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:647)
+	at org.junit.Assert.assertEquals(Assert.java:633)
+	at net.zerocloud.pdf.consumer.Barcode2DWorkflowTest.lambda$dataMatrixRawEdifactSelectsCapacityThatPreservesExplicitTermination$21(Barcode2DWorkflowTest.java:431)
+	at net.zerocloud.pdf.HardenedWorkerEngine.execute(HardenedWorkerEngine.java:237)
+	at net.zerocloud.pdf.DocumentWorkflow.executeOnce(DocumentWorkflow.java:177)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:103)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:64)
+	at net.zerocloud.pdf.consumer.Barcode2DWorkflowTest.dataMatrixRawEdifactSelectsCapacityThatPreservesExplicitTermination(Barcode2DWorkflowTest.java:424)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.junit.runners.Suite.runChild(Suite.java:128)
+	at org.junit.runners.Suite.runChild(Suite.java:27)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:316)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:214)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:155)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[ERROR] net.zerocloud.pdf.consumer.Barcode2DWorkflowTest.dataMatrixRawEdifactRejectsFixedCapacityThatWouldChangePayload[HARDENED_WORKER] -- Time elapsed: 0.700 s <<< FAILURE!
+java.lang.AssertionError: Expected BARCODE_INPUT_INVALID
+	at org.junit.Assert.fail(Assert.java:89)
+	at net.zerocloud.pdf.consumer.Barcode2DWorkflowTest.rejected(Barcode2DWorkflowTest.java:1187)
+	at net.zerocloud.pdf.consumer.Barcode2DWorkflowTest.dataMatrixRawEdifactRejectsFixedCapacityThatWouldChangePayload(Barcode2DWorkflowTest.java:452)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.junit.runners.Suite.runChild(Suite.java:128)
+	at org.junit.runners.Suite.runChild(Suite.java:27)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:316)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:214)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:155)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   Barcode2DWorkflowTest.dataMatrixRawEdifactRejectsFixedCapacityThatWouldChangePayload:452->rejected:1187 Expected BARCODE_INPUT_INVALID
+[ERROR]   Barcode2DWorkflowTest.dataMatrixRawEdifactRejectsFixedCapacityThatWouldChangePayload:452->rejected:1187 Expected BARCODE_INPUT_INVALID
+[ERROR]   Barcode2DWorkflowTest.dataMatrixRawEdifactSelectsCapacityThatPreservesExplicitTermination:424->lambda$dataMatrixRawEdifactSelectsCapacityThatPreservesExplicitTermination$21:431 expected:<12> but was:<10>
+[ERROR]   Barcode2DWorkflowTest.dataMatrixRawEdifactSelectsCapacityThatPreservesExplicitTermination:424->lambda$dataMatrixRawEdifactSelectsCapacityThatPreservesExplicitTermination$21:431 expected:<12> but was:<10>
+[INFO] 
+[ERROR] Tests run: 4, Failures: 4, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent .................... SUCCESS [  0.273 s]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract SUCCESS [  0.365 s]
+[INFO] Folio PDF by ZeroCloud - Conversion ................ SUCCESS [  0.045 s]
+[INFO] Folio PDF by ZeroCloud - Document Engine ........... FAILURE [  7.567 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  8.397 s
+[INFO] Finished at: 2026-09-08T01:17:24+08:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.5.4:test (default-test) on project pdf-document: There are test failures.
+[ERROR] 
+[ERROR] See /home/ubuntu/IdeaProjects/open-pdf/pdf-document/target/surefire-reports for the individual test results.
+[ERROR] See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+[ERROR] 
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :pdf-document
+
+===== 52-dm-raw-edifact-refactor.log | SHA-256 8493fddda6072bf2cd57c738ac95e5c1df76b14d867a71544fb2b7c11abe6257 =====
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent                                    [pom]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract              [jar]
+[INFO] Folio PDF by ZeroCloud - Conversion                                [jar]
+[INFO] Folio PDF by ZeroCloud - Document Engine                           [jar]
+[INFO] 
+[INFO] ----------------------< net.zerocloud:pdf-parent >----------------------
+[INFO] Building Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT            [1/4]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-parent ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.version.RequireMavenVersion passed
+[INFO] Rule 1: org.apache.maven.enforcer.rules.version.RequireJavaVersion passed
+[INFO] 
+[INFO] ----------------< net.zerocloud:pdf-provider-contract >-----------------
+[INFO] Building Folio PDF by ZeroCloud - Capability Provider Contract 0.1.0-SNAPSHOT [2/4]
+[INFO]   from pdf-provider-contract/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-provider-contract ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-provider-contract ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-provider-contract/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --------------------< net.zerocloud:pdf-conversion >--------------------
+[INFO] Building Folio PDF by ZeroCloud - Conversion 0.1.0-SNAPSHOT        [3/4]
+[INFO]   from pdf-conversion/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-conversion ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-conversion/src/main/resources
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-conversion/src/test/resources
+[INFO] Copying 1 resource from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-conversion ---
+[INFO] 
+[INFO] ---------------------< net.zerocloud:pdf-document >---------------------
+[INFO] Building Folio PDF by ZeroCloud - Document Engine 0.1.0-SNAPSHOT   [4/4]
+[INFO]   from pdf-document/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-document ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-document ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-document ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 270 source files with javac [debug parameters release 8] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-document ---
+[INFO] Copying 7 resources from src/test/resources to target/test-classes
+[INFO] Copying 15 resources from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-document ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 43 source files with javac [debug parameters release 8] to target/test-classes
+[INFO] /home/ubuntu/IdeaProjects/open-pdf/pdf-document/src/test/java/net/zerocloud/pdf/consumer/BlankDocumentWorkflowTest.java: Some input files use or override a deprecated API.
+[INFO] /home/ubuntu/IdeaProjects/open-pdf/pdf-document/src/test/java/net/zerocloud/pdf/consumer/BlankDocumentWorkflowTest.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-document ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.consumer.Barcode2DWorkflowTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 14.16 s -- in net.zerocloud.pdf.consumer.Barcode2DWorkflowTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent .................... SUCCESS [  0.292 s]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract SUCCESS [  0.380 s]
+[INFO] Folio PDF by ZeroCloud - Conversion ................ SUCCESS [  0.043 s]
+[INFO] Folio PDF by ZeroCloud - Document Engine ........... SUCCESS [ 23.682 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  24.549 s
+[INFO] Finished at: 2026-09-08T01:21:19+08:00
+[INFO] ------------------------------------------------------------------------
+
+===== 53-semantic-color-green.log | SHA-256 8a3d8b0a560ed46a7f9cf51b30fd98487bd7a62c521a628e99b57ecf5cec297d =====
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent                                    [pom]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract              [jar]
+[INFO] Folio PDF by ZeroCloud - Conversion                                [jar]
+[INFO] Folio PDF by ZeroCloud - Document Engine                           [jar]
+[INFO] 
+[INFO] ----------------------< net.zerocloud:pdf-parent >----------------------
+[INFO] Building Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT            [1/4]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-parent ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.version.RequireMavenVersion passed
+[INFO] Rule 1: org.apache.maven.enforcer.rules.version.RequireJavaVersion passed
+[INFO] 
+[INFO] ----------------< net.zerocloud:pdf-provider-contract >-----------------
+[INFO] Building Folio PDF by ZeroCloud - Capability Provider Contract 0.1.0-SNAPSHOT [2/4]
+[INFO]   from pdf-provider-contract/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-provider-contract ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-provider-contract ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-provider-contract/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --------------------< net.zerocloud:pdf-conversion >--------------------
+[INFO] Building Folio PDF by ZeroCloud - Conversion 0.1.0-SNAPSHOT        [3/4]
+[INFO]   from pdf-conversion/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-conversion ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-conversion/src/main/resources
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-conversion/src/test/resources
+[INFO] Copying 1 resource from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-conversion ---
+[INFO] 
+[INFO] ---------------------< net.zerocloud:pdf-document >---------------------
+[INFO] Building Folio PDF by ZeroCloud - Document Engine 0.1.0-SNAPSHOT   [4/4]
+[INFO]   from pdf-document/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-document ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-document ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-document ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-document ---
+[INFO] Copying 7 resources from src/test/resources to target/test-classes
+[INFO] Copying 15 resources from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-document ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 43 source files with javac [debug parameters release 8] to target/test-classes
+[INFO] /home/ubuntu/IdeaProjects/open-pdf/pdf-document/src/test/java/net/zerocloud/pdf/consumer/BlankDocumentWorkflowTest.java: Some input files use or override a deprecated API.
+[INFO] /home/ubuntu/IdeaProjects/open-pdf/pdf-document/src/test/java/net/zerocloud/pdf/consumer/BlankDocumentWorkflowTest.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-document ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.consumer.Barcode2DWorkflowTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.714 s -- in net.zerocloud.pdf.consumer.Barcode2DWorkflowTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent .................... SUCCESS [  0.293 s]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract SUCCESS [  0.370 s]
+[INFO] Folio PDF by ZeroCloud - Conversion ................ SUCCESS [  0.045 s]
+[INFO] Folio PDF by ZeroCloud - Document Engine ........... SUCCESS [ 10.254 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  11.113 s
+[INFO] Finished at: 2026-09-08T01:24:17+08:00
+[INFO] ------------------------------------------------------------------------
+
+===== 53-semantic-color-red.log | SHA-256 6e41358307e4fa5aa6dd2f9532503bb779b59bdeda0c3b80ca6409651e953868 =====
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent                                    [pom]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract              [jar]
+[INFO] Folio PDF by ZeroCloud - Conversion                                [jar]
+[INFO] Folio PDF by ZeroCloud - Document Engine                           [jar]
+[INFO] 
+[INFO] ----------------------< net.zerocloud:pdf-parent >----------------------
+[INFO] Building Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT            [1/4]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-parent ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.version.RequireMavenVersion passed
+[INFO] Rule 1: org.apache.maven.enforcer.rules.version.RequireJavaVersion passed
+[INFO] 
+[INFO] ----------------< net.zerocloud:pdf-provider-contract >-----------------
+[INFO] Building Folio PDF by ZeroCloud - Capability Provider Contract 0.1.0-SNAPSHOT [2/4]
+[INFO]   from pdf-provider-contract/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-provider-contract ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-provider-contract ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-provider-contract/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --------------------< net.zerocloud:pdf-conversion >--------------------
+[INFO] Building Folio PDF by ZeroCloud - Conversion 0.1.0-SNAPSHOT        [3/4]
+[INFO]   from pdf-conversion/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-conversion ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-conversion/src/main/resources
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-conversion/src/test/resources
+[INFO] Copying 1 resource from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-conversion ---
+[INFO] 
+[INFO] ---------------------< net.zerocloud:pdf-document >---------------------
+[INFO] Building Folio PDF by ZeroCloud - Document Engine 0.1.0-SNAPSHOT   [4/4]
+[INFO]   from pdf-document/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-document ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-document ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-document ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-document ---
+[INFO] Copying 7 resources from src/test/resources to target/test-classes
+[INFO] Copying 15 resources from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-document ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 43 source files with javac [debug parameters release 8] to target/test-classes
+[INFO] /home/ubuntu/IdeaProjects/open-pdf/pdf-document/src/test/java/net/zerocloud/pdf/consumer/BlankDocumentWorkflowTest.java: Some input files use or override a deprecated API.
+[INFO] /home/ubuntu/IdeaProjects/open-pdf/pdf-document/src/test/java/net/zerocloud/pdf/consumer/BlankDocumentWorkflowTest.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-document ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.consumer.Barcode2DWorkflowTest
+[ERROR] Tests run: 2, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 1.811 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.Barcode2DWorkflowTest
+[ERROR] net.zerocloud.pdf.consumer.Barcode2DWorkflowTest.explicitForegroundColorSurvivesPublicationWithTheSameModules[IN_PROCESS] -- Time elapsed: 0.254 s <<< FAILURE!
+java.lang.AssertionError
+	at org.junit.Assert.fail(Assert.java:87)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at org.junit.Assert.assertTrue(Assert.java:53)
+	at net.zerocloud.pdf.consumer.Barcode2DWorkflowTest.lambda$explicitForegroundColorSurvivesPublicationWithTheSameModules$31(Barcode2DWorkflowTest.java:647)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.executeWithDocument(PdfBoxWorkflowEngine.java:346)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.executeChecked(PdfBoxWorkflowEngine.java:238)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.execute(PdfBoxWorkflowEngine.java:41)
+	at net.zerocloud.pdf.DocumentWorkflow.executeOnce(DocumentWorkflow.java:184)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:103)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:64)
+	at net.zerocloud.pdf.consumer.Barcode2DWorkflowTest.explicitForegroundColorSurvivesPublicationWithTheSameModules(Barcode2DWorkflowTest.java:645)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.junit.runners.Suite.runChild(Suite.java:128)
+	at org.junit.runners.Suite.runChild(Suite.java:27)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:316)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:214)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:155)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[ERROR] net.zerocloud.pdf.consumer.Barcode2DWorkflowTest.explicitForegroundColorSurvivesPublicationWithTheSameModules[HARDENED_WORKER] -- Time elapsed: 1.487 s <<< FAILURE!
+java.lang.AssertionError
+	at org.junit.Assert.fail(Assert.java:87)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at org.junit.Assert.assertTrue(Assert.java:53)
+	at net.zerocloud.pdf.consumer.Barcode2DWorkflowTest.lambda$explicitForegroundColorSurvivesPublicationWithTheSameModules$31(Barcode2DWorkflowTest.java:647)
+	at net.zerocloud.pdf.HardenedWorkerEngine.execute(HardenedWorkerEngine.java:237)
+	at net.zerocloud.pdf.DocumentWorkflow.executeOnce(DocumentWorkflow.java:177)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:103)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:64)
+	at net.zerocloud.pdf.consumer.Barcode2DWorkflowTest.explicitForegroundColorSurvivesPublicationWithTheSameModules(Barcode2DWorkflowTest.java:645)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.junit.runners.Suite.runChild(Suite.java:128)
+	at org.junit.runners.Suite.runChild(Suite.java:27)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:316)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:214)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:155)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   Barcode2DWorkflowTest.explicitForegroundColorSurvivesPublicationWithTheSameModules:645->lambda$explicitForegroundColorSurvivesPublicationWithTheSameModules$31:647
+[ERROR]   Barcode2DWorkflowTest.explicitForegroundColorSurvivesPublicationWithTheSameModules:645->lambda$explicitForegroundColorSurvivesPublicationWithTheSameModules$31:647
+[INFO] 
+[ERROR] Tests run: 2, Failures: 2, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent .................... SUCCESS [  0.276 s]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract SUCCESS [  0.357 s]
+[INFO] Folio PDF by ZeroCloud - Conversion ................ SUCCESS [  0.045 s]
+[INFO] Folio PDF by ZeroCloud - Document Engine ........... FAILURE [  8.058 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  8.887 s
+[INFO] Finished at: 2026-09-08T01:22:37+08:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.5.4:test (default-test) on project pdf-document: There are test failures.
+[ERROR] 
+[ERROR] See /home/ubuntu/IdeaProjects/open-pdf/pdf-document/target/surefire-reports for the individual test results.
+[ERROR] See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+[ERROR] 
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :pdf-document
+
+===== 53-semantic-color-refactor.log | SHA-256 a5fecbf10e2e625291beb4ab7e456756e6dabacda5490530ca1e9e7dfaae588c =====
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent                                    [pom]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract              [jar]
+[INFO] Folio PDF by ZeroCloud - Conversion                                [jar]
+[INFO] Folio PDF by ZeroCloud - Document Engine                           [jar]
+[INFO] 
+[INFO] ----------------------< net.zerocloud:pdf-parent >----------------------
+[INFO] Building Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT            [1/4]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-parent ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.version.RequireMavenVersion passed
+[INFO] Rule 1: org.apache.maven.enforcer.rules.version.RequireJavaVersion passed
+[INFO] 
+[INFO] ----------------< net.zerocloud:pdf-provider-contract >-----------------
+[INFO] Building Folio PDF by ZeroCloud - Capability Provider Contract 0.1.0-SNAPSHOT [2/4]
+[INFO]   from pdf-provider-contract/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-provider-contract ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-provider-contract ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-provider-contract/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --------------------< net.zerocloud:pdf-conversion >--------------------
+[INFO] Building Folio PDF by ZeroCloud - Conversion 0.1.0-SNAPSHOT        [3/4]
+[INFO]   from pdf-conversion/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-conversion ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-conversion/src/main/resources
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-conversion/src/test/resources
+[INFO] Copying 1 resource from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-conversion ---
+[INFO] 
+[INFO] ---------------------< net.zerocloud:pdf-document >---------------------
+[INFO] Building Folio PDF by ZeroCloud - Document Engine 0.1.0-SNAPSHOT   [4/4]
+[INFO]   from pdf-document/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-document ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-document ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-document ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-document ---
+[INFO] Copying 7 resources from src/test/resources to target/test-classes
+[INFO] Copying 15 resources from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-document ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 43 source files with javac [debug parameters release 8] to target/test-classes
+[INFO] /home/ubuntu/IdeaProjects/open-pdf/pdf-document/src/test/java/net/zerocloud/pdf/consumer/BlankDocumentWorkflowTest.java: Some input files use or override a deprecated API.
+[INFO] /home/ubuntu/IdeaProjects/open-pdf/pdf-document/src/test/java/net/zerocloud/pdf/consumer/BlankDocumentWorkflowTest.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-document ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.consumer.Barcode2DWorkflowTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.775 s -- in net.zerocloud.pdf.consumer.Barcode2DWorkflowTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent .................... SUCCESS [  0.282 s]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract SUCCESS [  0.379 s]
+[INFO] Folio PDF by ZeroCloud - Conversion ................ SUCCESS [  0.040 s]
+[INFO] Folio PDF by ZeroCloud - Document Engine ........... SUCCESS [  9.597 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  10.449 s
+[INFO] Finished at: 2026-09-08T01:25:37+08:00
+[INFO] ------------------------------------------------------------------------
+
+===== 54-semantic-recorder-green.log | SHA-256 c915b7bca6c0be18abda70a26217e43c2573b329b0344bd8fd5b250c0bd2fdf4 =====
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent                                    [pom]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract              [jar]
+[INFO] Folio PDF by ZeroCloud - Conversion                                [jar]
+[INFO] Folio PDF by ZeroCloud - Document Engine                           [jar]
+[INFO] Folio PDF by ZeroCloud - Acceptance Evidence                       [jar]
+[INFO] 
+[INFO] ----------------------< net.zerocloud:pdf-parent >----------------------
+[INFO] Building Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT            [1/5]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-parent ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.version.RequireMavenVersion passed
+[INFO] Rule 1: org.apache.maven.enforcer.rules.version.RequireJavaVersion passed
+[INFO] 
+[INFO] ----------------< net.zerocloud:pdf-provider-contract >-----------------
+[INFO] Building Folio PDF by ZeroCloud - Capability Provider Contract 0.1.0-SNAPSHOT [2/5]
+[INFO]   from pdf-provider-contract/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-provider-contract ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-provider-contract ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-provider-contract/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --------------------< net.zerocloud:pdf-conversion >--------------------
+[INFO] Building Folio PDF by ZeroCloud - Conversion 0.1.0-SNAPSHOT        [3/5]
+[INFO]   from pdf-conversion/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-conversion ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-conversion/src/main/resources
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-conversion/src/test/resources
+[INFO] Copying 1 resource from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-conversion ---
+[INFO] 
+[INFO] ---------------------< net.zerocloud:pdf-document >---------------------
+[INFO] Building Folio PDF by ZeroCloud - Document Engine 0.1.0-SNAPSHOT   [4/5]
+[INFO]   from pdf-document/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-document ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-document ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-document ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-document ---
+[INFO] Copying 7 resources from src/test/resources to target/test-classes
+[INFO] Copying 15 resources from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-document ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-document ---
+[INFO] 
+[INFO] --------------------< net.zerocloud:pdf-acceptance >--------------------
+[INFO] Building Folio PDF by ZeroCloud - Acceptance Evidence 0.1.0-SNAPSHOT [5/5]
+[INFO]   from pdf-acceptance/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-acceptance ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-acceptance ---
+[INFO] Copying 32 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-acceptance ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-acceptance ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-acceptance/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-acceptance ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 15 source files with javac [debug parameters release 8] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-acceptance ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.acceptance.T31BarcodeEvidenceCommandTest
+T31: generate and qualify IN_PROCESS 212 pages
+T31: generate and qualify HARDENED_WORKER 212 pages
+T31: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE, path-decoded=424, raster-decoded=0, negative PDFs=19, negative rasters=0; standards and compatibility remain indeterminate.
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 144.6 s -- in net.zerocloud.pdf.acceptance.T31BarcodeEvidenceCommandTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent .................... SUCCESS [  0.296 s]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract SUCCESS [  0.362 s]
+[INFO] Folio PDF by ZeroCloud - Conversion ................ SUCCESS [  0.048 s]
+[INFO] Folio PDF by ZeroCloud - Document Engine ........... SUCCESS [  0.103 s]
+[INFO] Folio PDF by ZeroCloud - Acceptance Evidence ....... SUCCESS [02:26 min]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  02:27 min
+[INFO] Finished at: 2026-09-08T01:35:39+08:00
+[INFO] ------------------------------------------------------------------------
+
+===== 54-semantic-recorder-red.log | SHA-256 287e341dbfe5162722c276cf13368826b8b364630fe6d45e73f4a75aed68bc88 =====
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent                                    [pom]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract              [jar]
+[INFO] Folio PDF by ZeroCloud - Conversion                                [jar]
+[INFO] Folio PDF by ZeroCloud - Document Engine                           [jar]
+[INFO] Folio PDF by ZeroCloud - Acceptance Evidence                       [jar]
+[INFO] 
+[INFO] ----------------------< net.zerocloud:pdf-parent >----------------------
+[INFO] Building Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT            [1/5]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-parent ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.version.RequireMavenVersion passed
+[INFO] Rule 1: org.apache.maven.enforcer.rules.version.RequireJavaVersion passed
+[INFO] 
+[INFO] ----------------< net.zerocloud:pdf-provider-contract >-----------------
+[INFO] Building Folio PDF by ZeroCloud - Capability Provider Contract 0.1.0-SNAPSHOT [2/5]
+[INFO]   from pdf-provider-contract/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-provider-contract ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-provider-contract ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-provider-contract/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --------------------< net.zerocloud:pdf-conversion >--------------------
+[INFO] Building Folio PDF by ZeroCloud - Conversion 0.1.0-SNAPSHOT        [3/5]
+[INFO]   from pdf-conversion/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-conversion ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-conversion/src/main/resources
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-conversion/src/test/resources
+[INFO] Copying 1 resource from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-conversion ---
+[INFO] 
+[INFO] ---------------------< net.zerocloud:pdf-document >---------------------
+[INFO] Building Folio PDF by ZeroCloud - Document Engine 0.1.0-SNAPSHOT   [4/5]
+[INFO]   from pdf-document/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-document ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-document ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-document ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-document ---
+[INFO] Copying 7 resources from src/test/resources to target/test-classes
+[INFO] Copying 15 resources from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-document ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-document ---
+[INFO] 
+[INFO] --------------------< net.zerocloud:pdf-acceptance >--------------------
+[INFO] Building Folio PDF by ZeroCloud - Acceptance Evidence 0.1.0-SNAPSHOT [5/5]
+[INFO]   from pdf-acceptance/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-acceptance ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-acceptance ---
+[INFO] Copying 32 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-acceptance ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-acceptance ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-acceptance/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-acceptance ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 15 source files with javac [debug parameters release 8] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-acceptance ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.acceptance.T31BarcodeEvidenceCommandTest
+T31: generate and qualify IN_PROCESS 212 pages
+T31: generate and qualify HARDENED_WORKER 212 pages
+T31: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE, path-decoded=424, raster-decoded=0, negative PDFs=19, negative rasters=0; standards and compatibility remain indeterminate.
+[ERROR] Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 127.6 s <<< FAILURE! -- in net.zerocloud.pdf.acceptance.T31BarcodeEvidenceCommandTest
+[ERROR] net.zerocloud.pdf.acceptance.T31BarcodeEvidenceCommandTest.dedicatedRecorderRetainsEveryProfileAndMissingToolsWithoutReplacingEvidence -- Time elapsed: 127.5 s <<< FAILURE!
+org.junit.ComparisonFailure: expected:<[eea6d70cf5fabb52bb6df80e41a9560742e4c1e1985e8a8da59316fdb072c7c1]> but was:<[8061ebc0dc2271913ab0e3cdb5735d3e91d72fd0eb19124753c31e06b65c161f]>
+	at org.junit.Assert.assertEquals(Assert.java:117)
+	at org.junit.Assert.assertEquals(Assert.java:146)
+	at net.zerocloud.pdf.acceptance.T31BarcodeEvidenceCommandTest.dedicatedRecorderRetainsEveryProfileAndMissingToolsWithoutReplacingEvidence(T31BarcodeEvidenceCommandTest.java:49)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:316)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:214)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:155)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   T31BarcodeEvidenceCommandTest.dedicatedRecorderRetainsEveryProfileAndMissingToolsWithoutReplacingEvidence:49 expected:<[eea6d70cf5fabb52bb6df80e41a9560742e4c1e1985e8a8da59316fdb072c7c1]> but was:<[8061ebc0dc2271913ab0e3cdb5735d3e91d72fd0eb19124753c31e06b65c161f]>
+[INFO] 
+[ERROR] Tests run: 1, Failures: 1, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent .................... SUCCESS [  0.283 s]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract SUCCESS [  0.355 s]
+[INFO] Folio PDF by ZeroCloud - Conversion ................ SUCCESS [  0.046 s]
+[INFO] Folio PDF by ZeroCloud - Document Engine ........... SUCCESS [  0.098 s]
+[INFO] Folio PDF by ZeroCloud - Acceptance Evidence ....... FAILURE [02:09 min]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  02:10 min
+[INFO] Finished at: 2026-09-08T01:28:42+08:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.5.4:test (default-test) on project pdf-acceptance: There are test failures.
+[ERROR] 
+[ERROR] See /home/ubuntu/IdeaProjects/open-pdf/pdf-acceptance/target/surefire-reports for the individual test results.
+[ERROR] See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+[ERROR] 
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :pdf-acceptance
+
+===== 54-semantic-recorder-refactor.log | SHA-256 15b1c1d52fe0a74f89dca54e7c94b67d9793754d4e4e40f8c98b36a2b7556c3f =====
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent                                    [pom]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract              [jar]
+[INFO] Folio PDF by ZeroCloud - Conversion                                [jar]
+[INFO] Folio PDF by ZeroCloud - Document Engine                           [jar]
+[INFO] Folio PDF by ZeroCloud - Acceptance Evidence                       [jar]
+[INFO] 
+[INFO] ----------------------< net.zerocloud:pdf-parent >----------------------
+[INFO] Building Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT            [1/5]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-parent ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.version.RequireMavenVersion passed
+[INFO] Rule 1: org.apache.maven.enforcer.rules.version.RequireJavaVersion passed
+[INFO] 
+[INFO] ----------------< net.zerocloud:pdf-provider-contract >-----------------
+[INFO] Building Folio PDF by ZeroCloud - Capability Provider Contract 0.1.0-SNAPSHOT [2/5]
+[INFO]   from pdf-provider-contract/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-provider-contract ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-provider-contract ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-provider-contract/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --------------------< net.zerocloud:pdf-conversion >--------------------
+[INFO] Building Folio PDF by ZeroCloud - Conversion 0.1.0-SNAPSHOT        [3/5]
+[INFO]   from pdf-conversion/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-conversion ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-conversion/src/main/resources
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-conversion/src/test/resources
+[INFO] Copying 1 resource from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-conversion ---
+[INFO] 
+[INFO] ---------------------< net.zerocloud:pdf-document >---------------------
+[INFO] Building Folio PDF by ZeroCloud - Document Engine 0.1.0-SNAPSHOT   [4/5]
+[INFO]   from pdf-document/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-document ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-document ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-document ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-document ---
+[INFO] Copying 7 resources from src/test/resources to target/test-classes
+[INFO] Copying 15 resources from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-document ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-document ---
+[INFO] 
+[INFO] --------------------< net.zerocloud:pdf-acceptance >--------------------
+[INFO] Building Folio PDF by ZeroCloud - Acceptance Evidence 0.1.0-SNAPSHOT [5/5]
+[INFO]   from pdf-acceptance/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-acceptance ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-acceptance ---
+[INFO] Copying 32 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-acceptance ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-acceptance ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-acceptance/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-acceptance ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 15 source files with javac [debug parameters release 8] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-acceptance ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.acceptance.T31BarcodeEvidenceCommandTest
+T31: generate and qualify IN_PROCESS 212 pages
+T31: generate and qualify HARDENED_WORKER 212 pages
+T31: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE, path-decoded=424, raster-decoded=0, negative PDFs=19, negative rasters=0; standards and compatibility remain indeterminate.
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 144.4 s -- in net.zerocloud.pdf.acceptance.T31BarcodeEvidenceCommandTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent .................... SUCCESS [  0.281 s]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract SUCCESS [  0.360 s]
+[INFO] Folio PDF by ZeroCloud - Conversion ................ SUCCESS [  0.045 s]
+[INFO] Folio PDF by ZeroCloud - Document Engine ........... SUCCESS [  0.098 s]
+[INFO] Folio PDF by ZeroCloud - Acceptance Evidence ....... SUCCESS [02:26 min]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  02:27 min
+[INFO] Finished at: 2026-09-08T01:38:55+08:00
+[INFO] ------------------------------------------------------------------------
+
+===== 55-raw-corpus-green.log | SHA-256 515b324459b5d365c8edde68f521d6c5d5c48051a62dd095a3ebc5f156c6d570 =====
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent                                    [pom]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract              [jar]
+[INFO] Folio PDF by ZeroCloud - Conversion                                [jar]
+[INFO] Folio PDF by ZeroCloud - Document Engine                           [jar]
+[INFO] Folio PDF by ZeroCloud - Acceptance Evidence                       [jar]
+[INFO] 
+[INFO] ----------------------< net.zerocloud:pdf-parent >----------------------
+[INFO] Building Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT            [1/5]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-parent ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.version.RequireMavenVersion passed
+[INFO] Rule 1: org.apache.maven.enforcer.rules.version.RequireJavaVersion passed
+[INFO] 
+[INFO] ----------------< net.zerocloud:pdf-provider-contract >-----------------
+[INFO] Building Folio PDF by ZeroCloud - Capability Provider Contract 0.1.0-SNAPSHOT [2/5]
+[INFO]   from pdf-provider-contract/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-provider-contract ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-provider-contract ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-provider-contract/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --------------------< net.zerocloud:pdf-conversion >--------------------
+[INFO] Building Folio PDF by ZeroCloud - Conversion 0.1.0-SNAPSHOT        [3/5]
+[INFO]   from pdf-conversion/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-conversion ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-conversion/src/main/resources
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-conversion/src/test/resources
+[INFO] Copying 1 resource from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-conversion ---
+[INFO] 
+[INFO] ---------------------< net.zerocloud:pdf-document >---------------------
+[INFO] Building Folio PDF by ZeroCloud - Document Engine 0.1.0-SNAPSHOT   [4/5]
+[INFO]   from pdf-document/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-document ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-document ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-document ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-document ---
+[INFO] Copying 7 resources from src/test/resources to target/test-classes
+[INFO] Copying 15 resources from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-document ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-document ---
+[INFO] 
+[INFO] --------------------< net.zerocloud:pdf-acceptance >--------------------
+[INFO] Building Folio PDF by ZeroCloud - Acceptance Evidence 0.1.0-SNAPSHOT [5/5]
+[INFO]   from pdf-acceptance/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-acceptance ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-acceptance ---
+[INFO] Copying 32 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-acceptance ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 78 source files with javac [debug parameters release 8] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-acceptance ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-acceptance/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-acceptance ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 15 source files with javac [debug parameters release 8] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-acceptance ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.acceptance.T31BarcodeEvidenceTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 73.78 s -- in net.zerocloud.pdf.acceptance.T31BarcodeEvidenceTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent .................... SUCCESS [  0.272 s]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract SUCCESS [  0.349 s]
+[INFO] Folio PDF by ZeroCloud - Conversion ................ SUCCESS [  0.038 s]
+[INFO] Folio PDF by ZeroCloud - Document Engine ........... SUCCESS [  0.098 s]
+[INFO] Folio PDF by ZeroCloud - Acceptance Evidence ....... SUCCESS [01:17 min]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  01:18 min
+[INFO] Finished at: 2026-09-08T01:41:39+08:00
+[INFO] ------------------------------------------------------------------------
+
+===== 55-raw-corpus-red.log | SHA-256 d4dac84f2b5e73426300419ca8c44fc785691eb4a4e24ed3ef18b3faa3976521 =====
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent                                    [pom]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract              [jar]
+[INFO] Folio PDF by ZeroCloud - Conversion                                [jar]
+[INFO] Folio PDF by ZeroCloud - Document Engine                           [jar]
+[INFO] Folio PDF by ZeroCloud - Acceptance Evidence                       [jar]
+[INFO] 
+[INFO] ----------------------< net.zerocloud:pdf-parent >----------------------
+[INFO] Building Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT            [1/5]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-parent ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.version.RequireMavenVersion passed
+[INFO] Rule 1: org.apache.maven.enforcer.rules.version.RequireJavaVersion passed
+[INFO] 
+[INFO] ----------------< net.zerocloud:pdf-provider-contract >-----------------
+[INFO] Building Folio PDF by ZeroCloud - Capability Provider Contract 0.1.0-SNAPSHOT [2/5]
+[INFO]   from pdf-provider-contract/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-provider-contract ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-provider-contract ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-provider-contract/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --------------------< net.zerocloud:pdf-conversion >--------------------
+[INFO] Building Folio PDF by ZeroCloud - Conversion 0.1.0-SNAPSHOT        [3/5]
+[INFO]   from pdf-conversion/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-conversion ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-conversion/src/main/resources
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-conversion/src/test/resources
+[INFO] Copying 1 resource from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-conversion ---
+[INFO] 
+[INFO] ---------------------< net.zerocloud:pdf-document >---------------------
+[INFO] Building Folio PDF by ZeroCloud - Document Engine 0.1.0-SNAPSHOT   [4/5]
+[INFO]   from pdf-document/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-document ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-document ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-document ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-document ---
+[INFO] Copying 7 resources from src/test/resources to target/test-classes
+[INFO] Copying 15 resources from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-document ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-document ---
+[INFO] 
+[INFO] --------------------< net.zerocloud:pdf-acceptance >--------------------
+[INFO] Building Folio PDF by ZeroCloud - Acceptance Evidence 0.1.0-SNAPSHOT [5/5]
+[INFO]   from pdf-acceptance/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-acceptance ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-acceptance ---
+[INFO] Copying 32 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-acceptance ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-acceptance ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-acceptance/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-acceptance ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 15 source files with javac [debug parameters release 8] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-acceptance ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.acceptance.T31BarcodeEvidenceTest
+[ERROR] Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 10.87 s <<< FAILURE! -- in net.zerocloud.pdf.acceptance.T31BarcodeEvidenceTest
+[ERROR] net.zerocloud.pdf.acceptance.T31BarcodeEvidenceTest.declaredModesHaveIndependentPayloadStructureAndGeometryEvidence -- Time elapsed: 10.82 s <<< FAILURE!
+java.lang.AssertionError: expected:<224> but was:<212>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:647)
+	at org.junit.Assert.assertEquals(Assert.java:633)
+	at net.zerocloud.pdf.acceptance.T31BarcodeEvidenceTest.declaredModesHaveIndependentPayloadStructureAndGeometryEvidence(T31BarcodeEvidenceTest.java:22)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:316)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:214)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:155)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   T31BarcodeEvidenceTest.declaredModesHaveIndependentPayloadStructureAndGeometryEvidence:22 expected:<224> but was:<212>
+[INFO] 
+[ERROR] Tests run: 1, Failures: 1, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent .................... SUCCESS [  0.292 s]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract SUCCESS [  0.384 s]
+[INFO] Folio PDF by ZeroCloud - Conversion ................ SUCCESS [  0.045 s]
+[INFO] Folio PDF by ZeroCloud - Document Engine ........... SUCCESS [  0.105 s]
+[INFO] Folio PDF by ZeroCloud - Acceptance Evidence ....... FAILURE [ 12.546 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  13.526 s
+[INFO] Finished at: 2026-09-08T01:39:34+08:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.5.4:test (default-test) on project pdf-acceptance: There are test failures.
+[ERROR] 
+[ERROR] See /home/ubuntu/IdeaProjects/open-pdf/pdf-acceptance/target/surefire-reports for the individual test results.
+[ERROR] See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+[ERROR] 
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :pdf-acceptance
+
+===== 55-raw-corpus-refactor.log | SHA-256 a2c449e79f72df61e12d911db60dddd21ddece9fa4f8bed511717a8dd0a821c7 =====
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent                                    [pom]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract              [jar]
+[INFO] Folio PDF by ZeroCloud - Conversion                                [jar]
+[INFO] Folio PDF by ZeroCloud - Document Engine                           [jar]
+[INFO] Folio PDF by ZeroCloud - Acceptance Evidence                       [jar]
+[INFO] 
+[INFO] ----------------------< net.zerocloud:pdf-parent >----------------------
+[INFO] Building Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT            [1/5]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-parent ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.version.RequireMavenVersion passed
+[INFO] Rule 1: org.apache.maven.enforcer.rules.version.RequireJavaVersion passed
+[INFO] 
+[INFO] ----------------< net.zerocloud:pdf-provider-contract >-----------------
+[INFO] Building Folio PDF by ZeroCloud - Capability Provider Contract 0.1.0-SNAPSHOT [2/5]
+[INFO]   from pdf-provider-contract/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-provider-contract ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-provider-contract ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-provider-contract/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --------------------< net.zerocloud:pdf-conversion >--------------------
+[INFO] Building Folio PDF by ZeroCloud - Conversion 0.1.0-SNAPSHOT        [3/5]
+[INFO]   from pdf-conversion/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-conversion ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-conversion/src/main/resources
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-conversion/src/test/resources
+[INFO] Copying 1 resource from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-conversion ---
+[INFO] 
+[INFO] ---------------------< net.zerocloud:pdf-document >---------------------
+[INFO] Building Folio PDF by ZeroCloud - Document Engine 0.1.0-SNAPSHOT   [4/5]
+[INFO]   from pdf-document/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-document ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-document ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-document ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-document ---
+[INFO] Copying 7 resources from src/test/resources to target/test-classes
+[INFO] Copying 15 resources from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-document ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-document ---
+[INFO] 
+[INFO] --------------------< net.zerocloud:pdf-acceptance >--------------------
+[INFO] Building Folio PDF by ZeroCloud - Acceptance Evidence 0.1.0-SNAPSHOT [5/5]
+[INFO]   from pdf-acceptance/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-acceptance ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-acceptance ---
+[INFO] Copying 32 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-acceptance ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 78 source files with javac [debug parameters release 8] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-acceptance ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-acceptance/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-acceptance ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 15 source files with javac [debug parameters release 8] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-acceptance ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.acceptance.T31BarcodeEvidenceTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 74.25 s -- in net.zerocloud.pdf.acceptance.T31BarcodeEvidenceTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent .................... SUCCESS [  0.296 s]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract SUCCESS [  0.353 s]
+[INFO] Folio PDF by ZeroCloud - Conversion ................ SUCCESS [  0.038 s]
+[INFO] Folio PDF by ZeroCloud - Document Engine ........... SUCCESS [  0.099 s]
+[INFO] Folio PDF by ZeroCloud - Acceptance Evidence ....... SUCCESS [01:18 min]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  01:19 min
+[INFO] Finished at: 2026-09-08T01:43:19+08:00
+[INFO] ------------------------------------------------------------------------
+
+===== 56-entry-224.log | SHA-256 61f05ece82ae2ccaa663a3a301b68ef68d8690315803cfea09fc314e7703846f =====
+.
+----------------------------------------------------------------------
+Ran 1 test in 135.078s
+
+OK
+
+===== 56-recorder-224.log | SHA-256 7e5600a0e896d16ea8683c076b7a74f2d4f11b2bda076bdad04632598d0408e8 =====
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent                                    [pom]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract              [jar]
+[INFO] Folio PDF by ZeroCloud - Conversion                                [jar]
+[INFO] Folio PDF by ZeroCloud - Document Engine                           [jar]
+[INFO] Folio PDF by ZeroCloud - Acceptance Evidence                       [jar]
+[INFO] 
+[INFO] ----------------------< net.zerocloud:pdf-parent >----------------------
+[INFO] Building Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT            [1/5]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-parent ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.version.RequireMavenVersion passed
+[INFO] Rule 1: org.apache.maven.enforcer.rules.version.RequireJavaVersion passed
+[INFO] 
+[INFO] ----------------< net.zerocloud:pdf-provider-contract >-----------------
+[INFO] Building Folio PDF by ZeroCloud - Capability Provider Contract 0.1.0-SNAPSHOT [2/5]
+[INFO]   from pdf-provider-contract/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-provider-contract ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-provider-contract ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-provider-contract/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --------------------< net.zerocloud:pdf-conversion >--------------------
+[INFO] Building Folio PDF by ZeroCloud - Conversion 0.1.0-SNAPSHOT        [3/5]
+[INFO]   from pdf-conversion/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-conversion ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-conversion/src/main/resources
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-conversion/src/test/resources
+[INFO] Copying 1 resource from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-conversion ---
+[INFO] 
+[INFO] ---------------------< net.zerocloud:pdf-document >---------------------
+[INFO] Building Folio PDF by ZeroCloud - Document Engine 0.1.0-SNAPSHOT   [4/5]
+[INFO]   from pdf-document/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-document ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-document ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-document ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 270 source files with javac [debug parameters release 8] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-document ---
+[INFO] Copying 7 resources from src/test/resources to target/test-classes
+[INFO] Copying 15 resources from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-document ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 43 source files with javac [debug parameters release 8] to target/test-classes
+[INFO] /home/ubuntu/IdeaProjects/open-pdf/pdf-document/src/test/java/net/zerocloud/pdf/consumer/BlankDocumentWorkflowTest.java: Some input files use or override a deprecated API.
+[INFO] /home/ubuntu/IdeaProjects/open-pdf/pdf-document/src/test/java/net/zerocloud/pdf/consumer/BlankDocumentWorkflowTest.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-document ---
+[INFO] 
+[INFO] --------------------< net.zerocloud:pdf-acceptance >--------------------
+[INFO] Building Folio PDF by ZeroCloud - Acceptance Evidence 0.1.0-SNAPSHOT [5/5]
+[INFO]   from pdf-acceptance/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-acceptance ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-acceptance ---
+[INFO] Copying 32 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-acceptance ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 78 source files with javac [debug parameters release 8] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-acceptance ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-acceptance/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-acceptance ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 15 source files with javac [debug parameters release 8] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-acceptance ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.acceptance.T31BarcodeEvidenceCommandTest
+T31: generate and qualify IN_PROCESS 224 pages
+T31: generate and qualify HARDENED_WORKER 224 pages
+T31: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE, path-decoded=448, raster-decoded=0, negative PDFs=19, negative rasters=0; standards and compatibility remain indeterminate.
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 149.3 s -- in net.zerocloud.pdf.acceptance.T31BarcodeEvidenceCommandTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent .................... SUCCESS [  0.282 s]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract SUCCESS [  0.359 s]
+[INFO] Folio PDF by ZeroCloud - Conversion ................ SUCCESS [  0.047 s]
+[INFO] Folio PDF by ZeroCloud - Document Engine ........... SUCCESS [  8.432 s]
+[INFO] Folio PDF by ZeroCloud - Acceptance Evidence ....... SUCCESS [02:31 min]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  02:40 min
+[INFO] Finished at: 2026-09-08T01:47:30+08:00
+[INFO] ------------------------------------------------------------------------
+
+===== 57-inventory-check.log | SHA-256 dfe8abe02b3f2801146fc03672b7855419a45720cb7412766a25c90de21babe3 =====
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------< net.zerocloud:pdf-inventory-tool >------------------
+[INFO] Building Folio PDF by ZeroCloud - Inventory Build Tool 0.1.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-inventory-tool ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.version.RequireMavenVersion passed
+[INFO] Rule 1: org.apache.maven.enforcer.rules.version.RequireJavaVersion passed
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-inventory-tool ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/build-tools/inventory/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-inventory-tool ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 10 source files with javac [debug parameters release 8] to target/classes
+[INFO] 
+[INFO] --- exec:3.6.3:java (default-cli) @ pdf-inventory-tool ---
+Inventory validation passed: 23 capabilities, 12 facade surfaces, 22 exclusions.
+Generated inventory documentation is current.
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.784 s
+[INFO] Finished at: 2026-09-08T01:50:54+08:00
+[INFO] ------------------------------------------------------------------------
+
+===== 57-inventory-generate.log | SHA-256 3bd640520dbd1b7d692964cc3ce6b2f5f57916cc61f89795fb4e58f79cfbd09a =====
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------< net.zerocloud:pdf-inventory-tool >------------------
+[INFO] Building Folio PDF by ZeroCloud - Inventory Build Tool 0.1.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-inventory-tool ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.version.RequireMavenVersion passed
+[INFO] Rule 1: org.apache.maven.enforcer.rules.version.RequireJavaVersion passed
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-inventory-tool ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/build-tools/inventory/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-inventory-tool ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 10 source files with javac [debug parameters release 8] to target/classes
+[INFO] 
+[INFO] --- exec:3.6.3:java (default-cli) @ pdf-inventory-tool ---
+Inventory validation passed: 23 capabilities, 12 facade surfaces, 22 exclusions.
+Generated docs/generated/capability-matrix.md
+Generated docs/generated/facade-surface.md
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.875 s
+[INFO] Finished at: 2026-09-08T01:50:51+08:00
+[INFO] ------------------------------------------------------------------------
+
+===== 57-inventory-validate.log | SHA-256 9e257a6a6b7567f3a0dc5d5378ed7e18cf8741df8390ff492abba8dee8591919 =====
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------< net.zerocloud:pdf-inventory-tool >------------------
+[INFO] Building Folio PDF by ZeroCloud - Inventory Build Tool 0.1.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-inventory-tool ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.version.RequireMavenVersion passed
+[INFO] Rule 1: org.apache.maven.enforcer.rules.version.RequireJavaVersion passed
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-inventory-tool ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/build-tools/inventory/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-inventory-tool ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 10 source files with javac [debug parameters release 8] to target/classes
+[INFO] 
+[INFO] --- exec:3.6.3:java (default-cli) @ pdf-inventory-tool ---
+Inventory validation passed: 23 capabilities, 12 facade surfaces, 22 exclusions.
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.810 s
+[INFO] Finished at: 2026-09-08T01:50:48+08:00
+[INFO] ------------------------------------------------------------------------
