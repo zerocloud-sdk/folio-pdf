@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "artifact": "pdf-document/target/pdf-document-0.1.0-SNAPSHOT.jar",
+  "sha256": "e0b1bdfae113d24d784c8a5cfc994df7f7ae4a0c49cdf4e7063c70912531929e",
+  "class_count": 694,
+  "classfile_major_versions": [
+    52
+  ],
+  "zxing_classes_bundled": [],
+  "okapi_classes_bundled": [],
+  "worker_inventory_sha256": "72173f3668912940828a25b745a914f0e514ed7c713b0a8bf141d58c849727b3",
+  "note": "The ordinary document JAR uses the private pinned Okapi dependency without shading. ZXing is not bundled; pdf-document declares it only in test scope. Full build checks separately enforce the public backend boundary.",
+  "build_stage": "Actual T30 evidence recording on the root Java 17 runtime, before full verification and the JDK matrix"
+}

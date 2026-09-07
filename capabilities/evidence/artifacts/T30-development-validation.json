@@ -1,0 +1,1060 @@
+{
+  "schema_version": 1,
+  "fixed_base": "5508429ec032e8879d6d359a018f25d25efe878c",
+  "scope": "Saved development execution observations, not a complete shell transcript or an independent review",
+  "numbered_red_green_pairs": 47,
+  "supplementary_first_green_cycles": [
+    43,
+    46
+  ],
+  "notes": [
+    "Cycles 01-28 establish Native Interface generation and validation; 29-42 and 44-45 establish independent acceptance generation, decoding, observation and CLI recording; 47 rejects text shear/invisible controls; 48 repairs literal FNC4 code-set transitions; 49 extends the declared independent fixture inventory.",
+    "Missing public declarations or acceptance recorder types produce compile-time Reds. Other Reds assert observable failures, absent variants, or rejected/incorrect results.",
+    "Cycle 45 is a Python CLI test: nested Maven initially reports success with an absent profile, but the outer test fails because T30 evidence does not exist.",
+    "Cycles 43 and 46 exercise already implemented behavior and passed immediately; they are supplementary regressions, not new Red-Green seams.",
+    "An initial cycle-46 parameterized method selector matched zero tests; it is excluded from successful validation evidence. The retained wildcard-selector run executes two passing tests.",
+    "The optional pinned-raster test actually ran at cycle 42: 216 then-declared product pages decoded and matched. The final recorder separately covers the expanded 224-page inventory.",
+    "Cycle 50 follows a full-verification failure: the existing unknown-outcome negative used token 17, now legitimately assigned to barcodes. A focused run reproduces that stale fixture, and changing only its unknown value to Integer.MAX_VALUE restores all 11 Worker codec tests. No product or acceptance source changes in this cycle; actual recorded outputs remain applicable.",
+    "Cycle 51 follows the second full-verification attempt: the inventory test still expected 20 explicit facade exclusions. T30 legitimately adds the 21st. A focused run reproduces the stale assertion; updating that count and requiring the barcode capability in both generated views passes all 17 inventory/release-tool tests. No product or acceptance source changes."
+  ],
+  "logs": [
+    {
+      "saved_log": "folio-t30-alphabet-capacity-46.log",
+      "sha256": "4e6b5f09def59c21ea8f488ddd79c8794f6a7490b099e08c1ebd1f0375103bd9",
+      "bytes": 6176,
+      "test_summaries": [
+        "Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 9.887 s -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 2, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-01.log",
+      "sha256": "8791af0e09b8b781bbcbca7fb1363c722aeaf2c32986477d2210451d694cedc7",
+      "bytes": 6728,
+      "test_summaries": [
+        "Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.313 s -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 1, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-02.log",
+      "sha256": "5a836f4047ea2dddb1e342faa8ef14d5e59d0ff6aaa70b6ffb18d5bd8cfd9a8d",
+      "bytes": 6728,
+      "test_summaries": [
+        "Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.311 s -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 2, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-03.log",
+      "sha256": "a579be5c876027ea0350eebf4fddea1466521c0aa90d8420d59fe4d6ba48b69f",
+      "bytes": 6728,
+      "test_summaries": [
+        "Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.383 s -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 3, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-04.log",
+      "sha256": "7d6059da3b98191356ff1c54345f2b5700c9885ae7a65c1a47f605b33f53aebc",
+      "bytes": 6631,
+      "test_summaries": [
+        "Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.394 s -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 4, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-05.log",
+      "sha256": "67a6ede221991a958b7f78ffafdaa764fbaff8b6aef10b119143a3fc89eb4b07",
+      "bytes": 6729,
+      "test_summaries": [
+        "Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.419 s -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 5, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-06.log",
+      "sha256": "57919900551579bc77b1a0175da829851b858adf15b2e9cb0c6894175701fe32",
+      "bytes": 6728,
+      "test_summaries": [
+        "Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.424 s -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 6, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-07.log",
+      "sha256": "7b0cf1ec2e2bca7d5600f6e462137b7e7aa3c196657d84a559107a13faba1198",
+      "bytes": 6729,
+      "test_summaries": [
+        "Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.448 s -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 7, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-08.log",
+      "sha256": "02e99578687023b65d0934146d88be66ebeb0f2036079fa410436169f76b5948",
+      "bytes": 6729,
+      "test_summaries": [
+        "Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.515 s -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 8, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-09.log",
+      "sha256": "3ed3ed66b1d7bd2efaf2c827d98bf6541604c667ae4553029cd018961ebaff9a",
+      "bytes": 6728,
+      "test_summaries": [
+        "Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.637 s -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 9, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-10.log",
+      "sha256": "f0268abf136b6c85070c4cfc694141d1bcd5a587ae13b43c51a2cc66c93a42aa",
+      "bytes": 6731,
+      "test_summaries": [
+        "Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.607 s -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 10, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-11.log",
+      "sha256": "aa48abfcf4a8138a58d30fff0b869676e71c7a37fa941f44e07c75984c461ca3",
+      "bytes": 6731,
+      "test_summaries": [
+        "Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.602 s -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 10, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-12.log",
+      "sha256": "8ff822f493aa4b17a04b11ae2395db2d52cc6bc680891a5b151e345000b3feb3",
+      "bytes": 6731,
+      "test_summaries": [
+        "Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.658 s -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 11, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-13.log",
+      "sha256": "1a19a1e5e30ac0f4362ec642a34e7b72ab27f8671ce786f937138673e774c4ac",
+      "bytes": 6730,
+      "test_summaries": [
+        "Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.714 s -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 12, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-14.log",
+      "sha256": "a2b3692b1dcab3d8309dccb749159692683a270db6afd437dcc868058d19c1b8",
+      "bytes": 6731,
+      "test_summaries": [
+        "Tests run: 13, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.809 s -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 13, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-15.log",
+      "sha256": "a3cce45bdc704ae681b603289c7cc3175dfeb86f1514afb6d4fa6d40aa631286",
+      "bytes": 6731,
+      "test_summaries": [
+        "Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.866 s -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 14, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-16.log",
+      "sha256": "678e17ffe617b2ddfd3d59f52f991d3e2e06f64fb10f16fa4cc6164d73856312",
+      "bytes": 6731,
+      "test_summaries": [
+        "Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.980 s -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 15, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-17.log",
+      "sha256": "64032c92a3b32b66e6b6d0514772c8da6e167290c29abf70ef05c468579536ac",
+      "bytes": 6731,
+      "test_summaries": [
+        "Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.979 s -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 16, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-18.log",
+      "sha256": "c2cf85926e93340d8e23bf7b7a3f3fa224b38b286f4f70d6b8ac72d40453f1ff",
+      "bytes": 6731,
+      "test_summaries": [
+        "Tests run: 17, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.038 s -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 17, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-19.log",
+      "sha256": "89b4a18f55efab769d1467165bcc6373a3d1f67ffec1eecc38177c492f04b8c0",
+      "bytes": 6729,
+      "test_summaries": [
+        "Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.561 s -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 2, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-20.log",
+      "sha256": "ae61d7bc1908a5f53a8d13b53d9185680ad0314b7258a5ea707fb0ea704cdba1",
+      "bytes": 6632,
+      "test_summaries": [
+        "Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.548 s -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 2, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-21.log",
+      "sha256": "2e29ac79a7a9bfcb28e246693243f63456a7878fd9ab3fa18f81746fec670c44",
+      "bytes": 6729,
+      "test_summaries": [
+        "Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.713 s -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 2, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-22.log",
+      "sha256": "b84fcb4a208b97352112746e2314ce7bb375e32853a37aeb72ec6478c5bf7e71",
+      "bytes": 6729,
+      "test_summaries": [
+        "Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 9.305 s -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 2, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-23.log",
+      "sha256": "9bb3aa415312b4f15fc7bb825f10ca1e9ba8d6a7dfca41ec3358c1e6d246bf37",
+      "bytes": 6729,
+      "test_summaries": [
+        "Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.974 s -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 2, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-24.log",
+      "sha256": "5a978045526b1a6de8459512d21961d30d89f654e1ad2cb979b6d0cd8a4579b3",
+      "bytes": 6729,
+      "test_summaries": [
+        "Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.621 s -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 2, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-25.log",
+      "sha256": "53f87f7adc53a7cbd0c57d288950ead56ae0bbfd01b0f62d0b64905ada0cb895",
+      "bytes": 6729,
+      "test_summaries": [
+        "Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.728 s -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 2, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-26.log",
+      "sha256": "034ab0f88f97b0bf6ff5deefe6a9b0ff64141f232f0751b8b7aca3a5172c07e6",
+      "bytes": 6729,
+      "test_summaries": [
+        "Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.393 s -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 2, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-27.log",
+      "sha256": "6f4ebd5d8c4698c3b4d9d8b127a6c1c79fa6ef3b12fc550a85e396662de2c0c4",
+      "bytes": 6729,
+      "test_summaries": [
+        "Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 9.223 s -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 2, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-28.log",
+      "sha256": "d5795b44e96398093241b8ee0eed2020ab5bcc7a9c3ca2a5f81fdce0b7c993bf",
+      "bytes": 6729,
+      "test_summaries": [
+        "Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 18.35 s -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 2, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-29.log",
+      "sha256": "ef1bc129c2af3fa01f90f1b4580766f7d482ed91e9b83ef24b9ccbbb84f9c9e4",
+      "bytes": 7651,
+      "test_summaries": [
+        "Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.302 s -- in net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest",
+        "Tests run: 1, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-30.log",
+      "sha256": "b8767d1d7c3d0b1d09ab338150666d7ef68d39a2469e3c41ae478b2a719ca35e",
+      "bytes": 7651,
+      "test_summaries": [
+        "Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.199 s -- in net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest",
+        "Tests run: 1, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-31.log",
+      "sha256": "591de17b3e21c802bab7c5ae0ad1a62801aeeae3493fc9af06b007079016e26c",
+      "bytes": 7651,
+      "test_summaries": [
+        "Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.492 s -- in net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest",
+        "Tests run: 1, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-32.log",
+      "sha256": "7fd86ea19ce26cbedc21e79aeea825f6f09683bfef5e6e68a3112a876e53f68a",
+      "bytes": 7651,
+      "test_summaries": [
+        "Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.462 s -- in net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest",
+        "Tests run: 1, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-33.log",
+      "sha256": "69437633d3f9771c9fa32dcec9184ffad6efe09f681b694aa56dc1809f7252b7",
+      "bytes": 7651,
+      "test_summaries": [
+        "Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.032 s -- in net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest",
+        "Tests run: 1, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-34.log",
+      "sha256": "24cc41397511ae03aaaa5da5e462002ccde3c5a9582b4c2bc57a28f0c9b99e96",
+      "bytes": 7651,
+      "test_summaries": [
+        "Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.417 s -- in net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest",
+        "Tests run: 1, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-35.log",
+      "sha256": "19e97d2a11d391ddde50a32e88fb6a00b595fa85f83af568436c85351ec39f22",
+      "bytes": 7651,
+      "test_summaries": [
+        "Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.873 s -- in net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest",
+        "Tests run: 1, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-36.log",
+      "sha256": "43d9faa778ca31e0c187d2af226c5d363a4c39c29fff1362914d93292fceef27",
+      "bytes": 7651,
+      "test_summaries": [
+        "Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.992 s -- in net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest",
+        "Tests run: 1, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-37.log",
+      "sha256": "f538fc85383b8b97aa8baa8c952ff27fa0f87df667011749734d5a3676786a6e",
+      "bytes": 7651,
+      "test_summaries": [
+        "Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.120 s -- in net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest",
+        "Tests run: 1, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-38.log",
+      "sha256": "82a87f55cca3e034f4e7e40cb59c07c6e87a01e6cd33c1c6402cc12ca7a60b54",
+      "bytes": 7651,
+      "test_summaries": [
+        "Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.404 s -- in net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest",
+        "Tests run: 1, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-39.log",
+      "sha256": "3968892374125b020af17a3767ea67a6fa46abc12d0dc17e43af42be6fc230e9",
+      "bytes": 7652,
+      "test_summaries": [
+        "Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 28.76 s -- in net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest",
+        "Tests run: 1, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-40.log",
+      "sha256": "611aabef38b9f88f59a302624851fa61f1c36158a021d7d5b6825b200def3aaa",
+      "bytes": 7652,
+      "test_summaries": [
+        "Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 33.97 s -- in net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest",
+        "Tests run: 1, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-41.log",
+      "sha256": "8ec9ee616a16b1f14d9d5f77433ca7eed489efed490ba7565ef460e935ef103f",
+      "bytes": 7652,
+      "test_summaries": [
+        "Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.944 s -- in net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest",
+        "Tests run: 1, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-42.log",
+      "sha256": "d65182f158f7db7f6cca85fe5809f71d5d88628bd9c938b50011d1388d4a4d33",
+      "bytes": 8296,
+      "test_summaries": [
+        "Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1216 s -- in net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest",
+        "Tests run: 4, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-44.log",
+      "sha256": "f5f474e42c09276a7e1324ee80abeab2668232521b35d966ddab6d5ca2db6fbc",
+      "bytes": 7953,
+      "test_summaries": [
+        "Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 75.90 s -- in net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest",
+        "Tests run: 1, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-45.log",
+      "sha256": "10ddd0afad336c79e5735c46f01353c3b76d92f1328df4de0d41174fd3eb19fb",
+      "bytes": 99,
+      "test_summaries": [],
+      "maven_marker": null,
+      "python_marker": "pass"
+    },
+    {
+      "saved_log": "folio-t30-green-47.log",
+      "sha256": "f6529b005e9a4998c3fd9f2309c1ec590a82943d81f58dcffabbb2223971f9fc",
+      "bytes": 7959,
+      "test_summaries": [
+        "Tests run: 6, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 116.7 s -- in net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest",
+        "Tests run: 6, Failures: 0, Errors: 0, Skipped: 1"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-48.log",
+      "sha256": "d31c43c4df9ec7790848ce5e804e29056e55510c690e9c2d8f4c141f1eeea95d",
+      "bytes": 6729,
+      "test_summaries": [
+        "Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.548 s -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 2, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-49.log",
+      "sha256": "10661a8ab0aee169e2a5a91c41d48512023a6a0d27bee1c483cfca6dc92f05e9",
+      "bytes": 7959,
+      "test_summaries": [
+        "Tests run: 6, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 131.4 s -- in net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest",
+        "Tests run: 6, Failures: 0, Errors: 0, Skipped: 1"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-negative-controls-43.log",
+      "sha256": "61764575f5fb3af4b14465cba5ddec2c9eca8237ebe7f341a9d63a26a87f6569",
+      "bytes": 8204,
+      "test_summaries": [
+        "Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.007 s -- in net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest",
+        "Tests run: 1, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-01.log",
+      "sha256": "472a12109f963dab9014bbebe4436950ff3224193da499a03516926bae380d97",
+      "bytes": 9623,
+      "test_summaries": [],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-02.log",
+      "sha256": "465998fda6b4a4cd58c7f338b1e31cf973cc351f7578c02c8cb300141e0b4061",
+      "bytes": 10645,
+      "test_summaries": [
+        "Tests run: 2, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.335 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 2, Failures: 1, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-03.log",
+      "sha256": "5d15524daf02c98d6459ca2d55da8e666576006c5a48512be37a5618ceabd45b",
+      "bytes": 10521,
+      "test_summaries": [
+        "Tests run: 3, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.323 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 3, Failures: 1, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-04.log",
+      "sha256": "a13cb8acae3ef821a82447ad892887622faa96eb5de0aa5bbdb2b6194cc3584a",
+      "bytes": 17408,
+      "test_summaries": [],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-05.log",
+      "sha256": "76803bcbc4f33043faf4c390624ac51c74f50b8c6b8b6682dc6d4da3af04eb37",
+      "bytes": 8027,
+      "test_summaries": [],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-06.log",
+      "sha256": "624abbd410304bb56d0da85ad7315b451bb7dfcba0f52eabb9f8c65c6feb254a",
+      "bytes": 10629,
+      "test_summaries": [
+        "Tests run: 6, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.430 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 6, Failures: 1, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-07.log",
+      "sha256": "447ad3db4c968a96f5be0c057aa85bcd27db218aa692a641f5c3edb284b8c23e",
+      "bytes": 10616,
+      "test_summaries": [
+        "Tests run: 7, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.428 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 7, Failures: 1, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-08.log",
+      "sha256": "29c2c96e45cf53336de239f05838f75987a261de94de1c063a68cc7aa80a43d1",
+      "bytes": 8923,
+      "test_summaries": [],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-09.log",
+      "sha256": "8d27f360212d84549fae154b57ccb972ec7639f766a60f4b9e38e59b240a0e7c",
+      "bytes": 9057,
+      "test_summaries": [],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-10.log",
+      "sha256": "bd84fc8e7104e57590946c373763383a71452df3f964347e7f95b204996ac660",
+      "bytes": 10520,
+      "test_summaries": [
+        "Tests run: 10, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.628 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 10, Failures: 1, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-11.log",
+      "sha256": "e1ab9caa6f8f40599da4bcfeefe5ed0f278579440eab3b418e7a23b290fafcd0",
+      "bytes": 11089,
+      "test_summaries": [
+        "Tests run: 10, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.593 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 10, Failures: 0, Errors: 1, Skipped: 0"
+      ],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-12.log",
+      "sha256": "4a0286e805eeeb71f53517e010d0e87b45caad57a43662e2bb2e8fed848faa98",
+      "bytes": 7987,
+      "test_summaries": [],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-13.log",
+      "sha256": "88f05b5a912719c09e43d9e0db8c1332f970b7bc8034b87b91f1ef42051ce6fc",
+      "bytes": 8965,
+      "test_summaries": [],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-14.log",
+      "sha256": "a96b9cbe5a230947b9199c68c5c97d065d8173acd3068f20c955b5a5fc1116d1",
+      "bytes": 8003,
+      "test_summaries": [],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-15.log",
+      "sha256": "48ccd75329163708af0527815a0d19fa0aad28c7d53fac9d9ca30c7ec6b1e44a",
+      "bytes": 7506,
+      "test_summaries": [],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-16.log",
+      "sha256": "543c6ccb9a4f87524368af085040696159ab471ce790d385b4a2dd9ec2a61859",
+      "bytes": 8553,
+      "test_summaries": [],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-17.log",
+      "sha256": "d279054f2da9e52be0322baa0d63844c3a12f5d0f75a3e727b8b277e080b0ea0",
+      "bytes": 7971,
+      "test_summaries": [],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-18.log",
+      "sha256": "dc47af19d9bdd589e2baeaab3e082d1778d5b1603bd3cba6cddf8360e697ea7b",
+      "bytes": 8985,
+      "test_summaries": [],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-19.log",
+      "sha256": "9dcedd245f62fb9ef6380f42a1c47deec92bcf785305705a93f357390b9deb89",
+      "bytes": 10843,
+      "test_summaries": [
+        "Tests run: 2, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.334 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 2, Failures: 0, Errors: 1, Skipped: 0"
+      ],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-20.log",
+      "sha256": "d1adafb921c050bc2f44b26abb13725f8fbb6f13ce80498253c012b55634e954",
+      "bytes": 9605,
+      "test_summaries": [],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-21.log",
+      "sha256": "3970a130feca2f7d9fa8130fb0057a767b479a23ebf2ae3235899e59be5967f8",
+      "bytes": 7973,
+      "test_summaries": [],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-22.log",
+      "sha256": "f27da8ab863df2953d8338394675990992a1cf3e5c9245eebf51e6060c86c6af",
+      "bytes": 8609,
+      "test_summaries": [],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-23.log",
+      "sha256": "84b63358f88bb9c4041e1c68b181b6f84af2ac85c21e9ca5485356a21fd8e082",
+      "bytes": 9985,
+      "test_summaries": [],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-24.log",
+      "sha256": "f7fee3ab36a73ceb587714b05ec073326ef9b471eec58fec79654ce7e6321ec7",
+      "bytes": 15277,
+      "test_summaries": [
+        "Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 1.480 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 2, Failures: 0, Errors: 2, Skipped: 0"
+      ],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-25.log",
+      "sha256": "5264d38f39375ea1d1df359be2cbe3756f496a254edb748520e528dab6714cd4",
+      "bytes": 15043,
+      "test_summaries": [
+        "Tests run: 2, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 0.799 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 2, Failures: 2, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-26.log",
+      "sha256": "1dfcbf0dd4b98af0dc142e764135915eff6560c6f734407f03214d58442b1a48",
+      "bytes": 14845,
+      "test_summaries": [
+        "Tests run: 2, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 0.830 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 2, Failures: 2, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-27.log",
+      "sha256": "226a41224a764831848bd30901ca18af3d46af7311c065528df6cfe4d63920f8",
+      "bytes": 14495,
+      "test_summaries": [
+        "Tests run: 2, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 1.094 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 2, Failures: 2, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-28.log",
+      "sha256": "00bc86b6288046df3919075845f2bdfbcc995821babaef02eee7672c2fad6a47",
+      "bytes": 14507,
+      "test_summaries": [
+        "Tests run: 2, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 1.110 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 2, Failures: 2, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-29.log",
+      "sha256": "a85729f0ea6fba69943c97c0286138c86327d82962295aafcb2e03f83eaa2176",
+      "bytes": 9419,
+      "test_summaries": [],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-30.log",
+      "sha256": "95ae657a1e9d385010d9c27e5a4c462395fbef914fa8e45f9571f5cea985ac1d",
+      "bytes": 11535,
+      "test_summaries": [
+        "Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.471 s <<< FAILURE! -- in net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest",
+        "Tests run: 1, Failures: 1, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-31.log",
+      "sha256": "fb360541cad896c017dc8f83243aced09ceecbf8094bf4498f5c9796de8d24b5",
+      "bytes": 11504,
+      "test_summaries": [
+        "Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.540 s <<< FAILURE! -- in net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest",
+        "Tests run: 1, Failures: 1, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-32.log",
+      "sha256": "825ca5474b9575856b4db1a0a9e02ef016cf77cada461186ca36fd4e6b8dd889",
+      "bytes": 11504,
+      "test_summaries": [
+        "Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.604 s <<< FAILURE! -- in net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest",
+        "Tests run: 1, Failures: 1, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-33.log",
+      "sha256": "de9f12205adbb300a160037b45a0648214b6e9b5f92833b0fbc17d2d1281e3c6",
+      "bytes": 11504,
+      "test_summaries": [
+        "Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.636 s <<< FAILURE! -- in net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest",
+        "Tests run: 1, Failures: 1, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-34.log",
+      "sha256": "7a63c6ba27aacfdc2352a224dc8c66542e799bcd8af9bb8c8a7962b8ad723d3d",
+      "bytes": 11504,
+      "test_summaries": [
+        "Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.765 s <<< FAILURE! -- in net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest",
+        "Tests run: 1, Failures: 1, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-35.log",
+      "sha256": "34e084cfa0bbf49951a42bf7deb4bd5ef6c57fb5b659300aee97a77870bb1391",
+      "bytes": 11504,
+      "test_summaries": [
+        "Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.915 s <<< FAILURE! -- in net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest",
+        "Tests run: 1, Failures: 1, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-36.log",
+      "sha256": "311081d1d4061dd669406bf013529c574bf23f8abf046dd18b7e17349e12e597",
+      "bytes": 11504,
+      "test_summaries": [
+        "Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 1.000 s <<< FAILURE! -- in net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest",
+        "Tests run: 1, Failures: 1, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-37.log",
+      "sha256": "f03b462535f4e68c7d0c292b780ed97c89a757ce2f391bdb49390313f5623187",
+      "bytes": 11504,
+      "test_summaries": [
+        "Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 1.084 s <<< FAILURE! -- in net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest",
+        "Tests run: 1, Failures: 1, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-38.log",
+      "sha256": "ac86735be293f2c35bf164be73ecd2b1925f24d19985b1471cb781fa47d8c508",
+      "bytes": 11504,
+      "test_summaries": [
+        "Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 1.093 s <<< FAILURE! -- in net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest",
+        "Tests run: 1, Failures: 1, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-39.log",
+      "sha256": "bba26590187697ce56b7c242e7d48723428d2a8559850630b37e1bb07872a84c",
+      "bytes": 8476,
+      "test_summaries": [],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-40.log",
+      "sha256": "d9590df17a7a40aa5afae888f90f4395b656cc77e1f907efa7b2a1ce5e336b8c",
+      "bytes": 11506,
+      "test_summaries": [
+        "Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 5.341 s <<< FAILURE! -- in net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest",
+        "Tests run: 1, Failures: 1, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-41.log",
+      "sha256": "fd4967acfcd4def9d3c49c27709e57c1a4c8730e785a8a7278b09c3c1c11e8c1",
+      "bytes": 8440,
+      "test_summaries": [],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-42.log",
+      "sha256": "7f042b61b2846a2be6502ae74f2bd2ec8e2992a1ce106587be6df2a9da79d7ae",
+      "bytes": 9777,
+      "test_summaries": [],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-44.log",
+      "sha256": "d1cb2a968dd016fc85c7c8b4cbf03e05b417a6f5dc570ca05dc40fe177bf3550",
+      "bytes": 9069,
+      "test_summaries": [],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-45.log",
+      "sha256": "8a9b5287aa96f1101fe19858d872b9f877267518de78fec82775afcef90c8c1f",
+      "bytes": 10059,
+      "test_summaries": [],
+      "maven_marker": "success",
+      "python_marker": "failure"
+    },
+    {
+      "saved_log": "folio-t30-red-47.log",
+      "sha256": "cefe834b5b78dbb2f4d4923fac581f50bbb1ff550fc4f523ceb12431713769c2",
+      "bytes": 11671,
+      "test_summaries": [
+        "Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 7.525 s <<< FAILURE! -- in net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest",
+        "Tests run: 1, Failures: 1, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-48.log",
+      "sha256": "37e5ec371c5b22f2b06b9424043b9096ae2d691b886eaf899dc00098360040e0",
+      "bytes": 15507,
+      "test_summaries": [
+        "Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 0.856 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 2, Failures: 0, Errors: 2, Skipped: 0"
+      ],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-49.log",
+      "sha256": "8c0a9ae4e2138bb02f316185b65ff93ee0d52e9abebd8aee20100f10ac3d99e6",
+      "bytes": 11510,
+      "test_summaries": [
+        "Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 6.401 s <<< FAILURE! -- in net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest",
+        "Tests run: 1, Failures: 1, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-50.log",
+      "sha256": "45e1e0e2178bdef8bae1fe13df23efde88ea5aff5ff6d8e64dc86ef82d7b4220",
+      "bytes": 9911,
+      "test_summaries": [
+        "Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.088 s <<< FAILURE! -- in net.zerocloud.pdf.WorkerCodecContractTest",
+        "Tests run: 1, Failures: 1, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-50.log",
+      "sha256": "5fb76ee93931587d155ff6190fd33766d7b349c6ee24da2326d53e6e3946c2ce",
+      "bytes": 6623,
+      "test_summaries": [
+        "Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.542 s -- in net.zerocloud.pdf.WorkerCodecContractTest",
+        "Tests run: 11, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-red-51.log",
+      "sha256": "71ec5853f5a527fcfb0da18b7ee1e2da7522cb2db2600ca66f139310e4d0a44c",
+      "bytes": 6042,
+      "test_summaries": [
+        "Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.712 s <<< FAILURE! -- in net.zerocloud.pdf.tools.inventory.InventoryCommandTest",
+        "Tests run: 1, Failures: 1, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "failure",
+      "python_marker": null
+    },
+    {
+      "saved_log": "folio-t30-green-51.log",
+      "sha256": "7fe58757075bef2343c71e5331752357b3d0a9d0d919a2b18cf5231c485f57b1",
+      "bytes": 5942,
+      "test_summaries": [
+        "Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.152 s -- in net.zerocloud.pdf.tools.inventory.InventoryCommandTest",
+        "Tests run: 6, Failures: 0, Errors: 0, Skipped: 0",
+        "Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.062 s -- in net.zerocloud.pdf.tools.release.ReleasePolicyContractTest",
+        "Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.643 s -- in net.zerocloud.pdf.tools.release.ReleaseRehearsalCommandTest",
+        "Tests run: 11, Failures: 0, Errors: 0, Skipped: 0"
+      ],
+      "maven_marker": "success",
+      "python_marker": null
+    }
+  ],
+  "supplementary_test_maintenance_cycles": [
+    50,
+    51
+  ]
+}

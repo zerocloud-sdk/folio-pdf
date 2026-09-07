@@ -176,7 +176,7 @@ public final class WorkerCodecContractTest {
         try {
             WorkerMessages.decodeFinished(values(output -> {
                 output.writeInt(1);
-                output.writeInt(17);
+                output.writeInt(Integer.MAX_VALUE);
             }));
             fail("Expected unknown outcome token rejection");
         } catch (DocumentFailure failure) {

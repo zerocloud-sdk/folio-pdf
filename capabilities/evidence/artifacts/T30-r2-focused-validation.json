@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "public_workflow": {
+    "command": [
+      "./mvnw",
+      "-B",
+      "-ntp",
+      "-pl",
+      "pdf-document",
+      "-am",
+      "-Dtest=BarcodeWorkflowTest,CanvasWorkflowTest,FontLoadingWorkflowTest",
+      "-Dsurefire.failIfNoSpecifiedTests=false",
+      "test"
+    ],
+    "tests": 90,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "barcode_tests": 60
+  },
+  "acceptance_contract": {
+    "command": [
+      "./mvnw",
+      "-B",
+      "-ntp",
+      "-pl",
+      "pdf-acceptance",
+      "-am",
+      "-Dtest=T30BarcodeEvidenceCommandTest",
+      "-Dsurefire.failIfNoSpecifiedTests=false",
+      "test"
+    ],
+    "tests": 6,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 1,
+    "skip_reason": "Full pinned raster test requires -Dt30.raster=true; the separate post-review recording executes the full 232-page inventory."
+  },
+  "cli_entry": {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "scripts.tests.test_t30_acceptance_entry"
+    ],
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "logs": [
+    {
+      "source_saved_log": "folio-t30-r2-focused.log",
+      "file": "T30-r2-focused-workflow-tests.txt",
+      "sha256": "ad4073e5a8d046b4f6258882cfec1cdd40561ce7e11db1e173cb50fad6249329"
+    },
+    {
+      "source_saved_log": "folio-t30-green-53.log",
+      "file": "T30-r2-focused-acceptance-tests.txt",
+      "sha256": "76f029d3d202cf999465fe22f106a07934b47e002cf5f82d6b4bbdd1aea92a0f"
+    },
+    {
+      "source_saved_log": "folio-t30-green-54.log",
+      "file": "T30-r2-acceptance-entry-test.txt",
+      "sha256": "a8dc01e21aadaa5a11870bba6d5daa64581f905ea95cf84c5b1c39fff11f6cfc"
+    }
+  ],
+  "scope": "Current post-review source; initial focused observations remain retained separately."
+}

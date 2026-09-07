@@ -1782,3 +1782,56 @@ provenance statement required by [CONTRIBUTING.md](CONTRIBUTING.md).
   pass 1019 tests, with zero failures/errors and three unchanged optional
   scale skips. Actual Windows x86-64/macOS x86-64/arm64 evidence remains
   incomplete.
+
+## T30 one-dimensional barcodes (#31)
+
+- Author: OpenAI Codex, implementing for the Folio PDF by ZeroCloud contributors.
+- The [frozen T30 profile](capabilities/profiles/T30-one-dimensional-barcodes.md)
+  records the public Reference Suite API inventory, GS1 21.0.1 and archived
+  USPS references consulted on 2026-09-07. iText documentation is used only
+  to identify public modes and options. No iText source, resources, fixtures,
+  binaries, non-public implementation details or closed add-on material was
+  accessed, copied or adapted, and iText output is not an oracle.
+- [OkapiBarcode 0.5.6](docs/third-party/okapibarcode-0.5.6.md) is the encoder
+  selected by ADR-0010. Its permissively licensed Maven source archive was
+  inspected for supported options and protected extension points. Product
+  integration and PDF drawing are project-authored. The JCommander CLI
+  dependency is excluded.
+- ZXing core 3.5.3, Copyright ZXing authors, Apache-2.0, provides independent
+  module expectations and decoding only in tests/acceptance. Its source JAR was inspected for reader
+  contracts; no reader source is copied into product code. Binary SHA-256:
+  `8d8064c1636fdaef7189dd9055c7d59950a8940a12f2293956446ec3c109fd82`;
+  source SHA-256:
+  `f983454400d73652ad5236413ba7eba48072e042982a84b10e1468506f4b28ae`.
+  Its reader class-file version is 52 (Java 8). Literal inputs and expected
+  checksums are project-owned worked examples, fixed before product output.
+- The original add-on, MSI and POSTNET/PLANET readers consume observed module
+  widths or heights, verify framing and parity/checksums, and never call the
+  encoder. The profile cites the GS1/USPS tables used. MSI options and
+  modulo-ten behavior were checked against the public
+  [Seagull Scientific MSI Plessey guide](https://help.seagullscientific.com/2022/en/content/symb_MSIPlessey.htm)
+  and [TEC-IT barcode reference, version 11](https://www.tec-it.com/download/PDF/Barcode_Reference_EN.pdf).
+  Pulse/BCD decoding and fixed check examples are project-authored; no source
+  implementation or reference output was copied.
+- T30 reuses the existing OFL Noto Sans Regular reference asset, SHA-256
+  `b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5`.
+  A project-authored OpenType reader follows Microsoft's `head`, `cmap`
+  format 4 and `hmtx` documentation to obtain independent source metrics.
+  Reference pages use independent modules and calculated label coordinates
+  through existing Canvas/T19 commands; they never invoke barcode generation.
+  Shared Canvas/font dependencies remain explicit experimental gates.
+- The T30-only Maven recording profile and canonical acceptance command retain
+  fresh public Workflow products, independent reference PDFs, all actual,
+  reference and difference PNGs, observed path/text coordinates, independent
+  decode findings, qpdf/PDFium/ImageMagick identities and SHA-256 hashes. The
+  [delivery record](capabilities/evidence/T30-one-dimensional-barcodes.md)
+  distinguishes actual evidence, development runs, final verification and
+  independent review. No existing non-T30 evidence is regenerated or replaced.
+- Independent Spec review reproduced an AUTO/FNC4 numeric-run payload error
+  through published PDFs in both execution profiles. The project-authored
+  repair restricts AUTO selection to Okapi's existing A/B option when explicit
+  FNC4 is present. GS1 21.0.1 section 5.4.3.4.2 supplies the shift/latch
+  expectations; new literal numeric examples are independently decoded from
+  actual PDF paths and rasters. Earlier observations remain retained as
+  historical evidence; current-source evidence and verification are linked
+  from the delivery record.

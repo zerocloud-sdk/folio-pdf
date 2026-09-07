@@ -30,7 +30,8 @@ final class WorkerFailureCatalog {
         PdfBoxParagraphOperations.CAPABILITY_ID,
         PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID,
         PdfBoxTableLayout.CAPABILITY_ID,
-        net.zerocloud.pdf.provider.ShapingRequest.CAPABILITY_ID
+        net.zerocloud.pdf.provider.ShapingRequest.CAPABILITY_ID,
+        PdfBoxBarcodeOperations.CAPABILITY_ID
     };
 
     private static final Descriptor[] SPECIFIC = {
@@ -797,7 +798,16 @@ final class WorkerFailureCatalog {
         descriptor(DocumentFailureCode.TABLE_INVALID_SPAN, "The table span grid is invalid."),
         descriptor(DocumentFailureCode.TABLE_CONSTRAINT_UNSATISFIED,
                 "The finite layout areas cannot satisfy the table geometry."),
-        descriptor(DocumentFailureCode.WORKER_PROTOCOL_REJECTED, "The Worker table width is invalid.")
+        descriptor(DocumentFailureCode.WORKER_PROTOCOL_REJECTED, "The Worker table width is invalid."),
+        descriptor(DocumentFailureCode.BARCODE_INPUT_INVALID, "The barcode input is invalid for the selected symbology."),
+        descriptor(DocumentFailureCode.BARCODE_GEOMETRY_INVALID, "The barcode dimensions or placement are invalid."),
+        descriptor(DocumentFailureCode.BARCODE_MODE_INVALID, "The barcode options are invalid for the selected mode."),
+        descriptor(DocumentFailureCode.BARCODE_LIMIT_EXCEEDED, "The barcode operation limit was exceeded."),
+        descriptor(DocumentFailureCode.DOCUMENT_WRITE_FAILED, "The barcode could not be applied safely."),
+        descriptor(DocumentFailureCode.WORKER_PROTOCOL_REJECTED, "The Worker barcode symbol count is invalid."),
+        descriptor(DocumentFailureCode.PAGE_RANGE_INVALID, "The barcode page selection is invalid."),
+        descriptor(DocumentFailureCode.SIGNATURE_POLICY_REJECTED, "The Existing Signature policy does not permit barcode drawing."),
+        descriptor(DocumentFailureCode.DOCUMENT_PERMISSION_DENIED, "The Source credential does not authorize barcode drawing.")
     };
 
     private WorkerFailureCatalog() {
@@ -869,6 +879,11 @@ final class WorkerFailureCatalog {
             return mask(Rendering.CAPABILITY_ID);
         }
         switch (code) {
+            case BARCODE_INPUT_INVALID:
+            case BARCODE_GEOMETRY_INVALID:
+            case BARCODE_MODE_INVALID:
+            case BARCODE_LIMIT_EXCEEDED:
+                return mask(PdfBoxBarcodeOperations.CAPABILITY_ID);
             case TABLE_INVALID_SPAN:
             case TABLE_CONSTRAINT_UNSATISFIED:
                 return mask(PdfBoxTableLayout.CAPABILITY_ID);
@@ -1046,6 +1061,7 @@ final class WorkerFailureCatalog {
     }
 
     private static int permissionCapabilities(String diagnostic) {
+        if (diagnostic.contains("barcode")) { return mask(PdfBoxBarcodeOperations.CAPABILITY_ID); }
         if (diagnostic.contains("paragraph composition")) { return mask(PdfBoxParagraphOperations.CAPABILITY_ID, PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID, PdfBoxTableLayout.CAPABILITY_ID); }
         if (diagnostic.contains("Canvas")) {
             return mask(
@@ -1059,6 +1075,7 @@ final class WorkerFailureCatalog {
     }
 
     private static int writeFailureCapabilities(String diagnostic) {
+        if (diagnostic.startsWith("The barcode")) { return mask(PdfBoxBarcodeOperations.CAPABILITY_ID); }
         if (diagnostic.contains("paragraph flow")) { return mask(PdfBoxParagraphOperations.CAPABILITY_ID, PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID, PdfBoxTableLayout.CAPABILITY_ID); }
         if (diagnostic.contains("Canvas Program")) {
             return mask(
@@ -1091,6 +1108,7 @@ final class WorkerFailureCatalog {
     }
 
     private static int pageRangeCapabilities(String diagnostic) {
+        if (diagnostic.contains("barcode")) { return mask(PdfBoxBarcodeOperations.CAPABILITY_ID); }
         if (diagnostic.contains("Canvas")) {
             return mask(
                     PdfBoxCanvasOperations.CAPABILITY_ID,
@@ -1136,6 +1154,7 @@ final class WorkerFailureCatalog {
     }
 
     private static int signatureCapabilities(String diagnostic) {
+        if (diagnostic.contains("barcode")) { return mask(PdfBoxBarcodeOperations.CAPABILITY_ID); }
         if (diagnostic.contains("paragraph composition")) { return mask(PdfBoxParagraphOperations.CAPABILITY_ID, PdfBoxParagraphOperations.PAGINATION_CAPABILITY_ID, PdfBoxTableLayout.CAPABILITY_ID); }
         if (diagnostic.contains("Canvas")) {
             return mask(

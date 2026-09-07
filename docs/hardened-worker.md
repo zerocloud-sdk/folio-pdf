@@ -471,6 +471,21 @@ and executes the selected Provider under capability-scoped disclosure consent.
 The PDF Worker does not sandbox caller-side adapters. See [Rendering](rendering.md)
 for the byte profile, raster accounting, diagnostics, and lifetime contract.
 
+## T30 one-dimensional barcode exchange
+
+`DrawBarcode1D.version1` is supported by the same Linux Worker envelope.
+The closed command codec transports semantic mode, input or raw codewords,
+point dimensions, checksum and label options, and placement. It admits at
+most 256 input units/raw words before transport and reuses the existing
+bounded explicit-font exchange. OkapiBarcode 0.5.6 is an exact-hash Worker
+runtime dependency; decoder libraries remain outside the Worker.
+
+Barcode-specific failures and outcome capability identities are part of the
+closed failure/outcome catalogs. Page, signature and modification permission
+admission precede borrowed-font reads. Atomic drawing, unsigned incremental
+publication, target receipts and caller ownership follow the
+[barcode contract](one-dimensional-barcodes.md).
+
 ## T29 native shaping exchange
 
 An explicit `composition.shaping.harf-buzz` preference enables the closed

@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "trigger": "Initial independent Spec review P1: AUTO/FNC4 numeric-run payload corruption",
+  "scope": "Remediation observations supplement the retained initial 100 development logs; no historical record was replaced.",
+  "cycles": {
+    "52": "Public Workflow regression: 4 literal shift/latch/shift-back/unlatch numeric examples with AUTO/A/B controls, in both profiles. RED: 2 payload mismatches. Minimal existing-encoder A/B selection repair. GREEN: 2 parameterized tests pass.",
+    "53": "Independent acceptance inventory: RED expects116 but observes112 pages. Add4 predeclared numeric FNC4 examples, literal words, independent checks27/35/5/34 and captions. GREEN:6 tests,0fail/error,1 explicit pinned-raster skip.",
+    "54": "Existing CLI test maintenance after fixture expansion. RED expects224 pages but actual command records232. Correct the literal inventory count; GREEN:1 unittest pass. This is assertion maintenance, not a new generation seam."
+  },
+  "independent_followup": "T30-spec-review-fnc4-followup.md",
+  "permanent_probe_observations": "T30-independent-review-probe-observations.txt",
+  "archive": "T30-remediation-development-logs.txt",
+  "archive_sha256": "2ef8414775746fcb4ead8e0c060bc430258b4f4c5f2e98651be231ccb9ca1227",
+  "logs": [
+    {
+      "cycle": 52,
+      "observation": "red",
+      "saved_log": "folio-t30-red-52.log",
+      "sha256": "3701e03e8dfa6c996d6b411c97ad3226d158ec09f794e86773df58f4ee81f3e7",
+      "bytes": 14963,
+      "test_summaries": [
+        "Tests run: 2, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 1.684 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 2, Failures: 2, Errors: 0, Skipped: 0"
+      ]
+    },
+    {
+      "cycle": 52,
+      "observation": "green",
+      "saved_log": "folio-t30-green-52.log",
+      "sha256": "a65cf799b4e3aac86ae51a13739ce585e5ce1d97a2ac0937d9f40c348a1119e2",
+      "bytes": 6729,
+      "test_summaries": [
+        "Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 14.66 s -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+        "Tests run: 2, Failures: 0, Errors: 0, Skipped: 0"
+      ]
+    },
+    {
+      "cycle": 53,
+      "observation": "red",
+      "saved_log": "folio-t30-red-53.log",
+      "sha256": "f49bc20ba02d446a7115b28b8831381388cbecc96bd93aa553bd0b9d715673a8",
+      "bytes": 11617,
+      "test_summaries": [
+        "Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 7.983 s <<< FAILURE! -- in net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest",
+        "Tests run: 1, Failures: 1, Errors: 0, Skipped: 0"
+      ]
+    },
+    {
+      "cycle": 53,
+      "observation": "green",
+      "saved_log": "folio-t30-green-53.log",
+      "sha256": "76f029d3d202cf999465fe22f106a07934b47e002cf5f82d6b4bbdd1aea92a0f",
+      "bytes": 8511,
+      "test_summaries": [
+        "Tests run: 6, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 145.8 s -- in net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest",
+        "Tests run: 6, Failures: 0, Errors: 0, Skipped: 1"
+      ]
+    },
+    {
+      "cycle": 54,
+      "observation": "red",
+      "saved_log": "folio-t30-red-54.log",
+      "sha256": "d823fb6e781e17047d47110d7821e43569b5126eab77e9b7834333dfb989561d",
+      "bytes": 3170,
+      "test_summaries": [
+        "Ran 1 test in 56.157s",
+        "FAILED (failures=1)"
+      ]
+    },
+    {
+      "cycle": 54,
+      "observation": "green",
+      "saved_log": "folio-t30-green-54.log",
+      "sha256": "a8dc01e21aadaa5a11870bba6d5daa64581f905ea95cf84c5b1c39fff11f6cfc",
+      "bytes": 99,
+      "test_summaries": [
+        "Ran 1 test in 50.171s",
+        "OK"
+      ]
+    }
+  ]
+}

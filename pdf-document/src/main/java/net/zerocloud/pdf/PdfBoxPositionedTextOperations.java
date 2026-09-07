@@ -110,6 +110,14 @@ final class PdfBoxPositionedTextOperations {
         return prepareText(codePoints, selection, limits, fallbackChecks, resources.shapesComposition());
     }
 
+    /** Measures barcode labels with the unshaped T19 contract, independent of paragraph shaping. */
+    PreparedText prepareBarcodeText(String text, FontSelection selection, FontLimits limits)
+            throws DocumentFailure {
+        PositionedUnicodeText declaration = PositionedUnicodeText.version1(
+                text, selection, 1, TextRenderingMode.FILL, CanvasMatrix.IDENTITY);
+        return prepareText(validateText(declaration, limits), selection, limits);
+    }
+
     /** Freezes request-scoped Worker sources while the begin command still owns their transport. */
     FontSelection freezeLayoutSelection(FontSelection selection, FontLimits limits,
             WorkflowResourceContext.OwnedMemoryScope memory) throws DocumentFailure {

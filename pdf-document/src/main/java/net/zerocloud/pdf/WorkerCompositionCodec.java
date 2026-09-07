@@ -934,7 +934,7 @@ final class WorkerCompositionCodec {
                 .build();
     }
 
-    private static void writeFontSelection(
+    static void writeFontSelection(
             WorkerCodecIO.Output output,
             FontSelection selection,
             FontLimits limits,
@@ -961,7 +961,7 @@ final class WorkerCompositionCodec {
         }
     }
 
-    private static FontSelection readFontSelection(
+    static FontSelection readFontSelection(
             WorkerCodecIO.Input input,
             RemoteFontSource remoteFonts)
             throws DocumentFailure {
@@ -998,7 +998,7 @@ final class WorkerCompositionCodec {
         return FontSelection.explicit(sources);
     }
 
-    private static void writeFontLimits(
+    static void writeFontLimits(
             WorkerCodecIO.Output output,
             FontLimits limits) throws IOException {
         output.writeInt(limits.getVersion());
@@ -1009,7 +1009,7 @@ final class WorkerCompositionCodec {
         output.writeLong(limits.getMaximumGeneratedContentBytes());
     }
 
-    private static FontLimits readFontLimits(WorkerCodecIO.Input input)
+    static FontLimits readFontLimits(WorkerCodecIO.Input input)
             throws DocumentFailure {
         WorkerCommandCodec.requireVersion(input.readInt(), FontLimits.VERSION_1);
         return FontLimits.builder()
@@ -1021,7 +1021,7 @@ final class WorkerCompositionCodec {
                 .build();
     }
 
-    private static void writeMatrix(
+    static void writeMatrix(
             WorkerCodecIO.Output output,
             CanvasMatrix matrix) throws IOException {
         output.writeDouble(matrix.getA());
@@ -1032,7 +1032,7 @@ final class WorkerCompositionCodec {
         output.writeDouble(matrix.getF());
     }
 
-    private static CanvasMatrix readMatrix(WorkerCodecIO.Input input)
+    static CanvasMatrix readMatrix(WorkerCodecIO.Input input)
             throws DocumentFailure {
         return CanvasMatrix.of(
                 input.readDouble(),

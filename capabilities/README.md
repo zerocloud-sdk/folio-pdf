@@ -25,7 +25,8 @@ The outputs are:
 
 Record the built-in T03 blank-document, T18 Canvas-image, T19 explicit-font,
 T23 rendering, T24 paragraph-composition, T25 advanced-pagination,
-T26/T27 table composition/pagination, seven T28 Unicode and four T29 shaping
+T26/T27 table composition/pagination, seven T28 Unicode, four T29 shaping,
+and T30 one-dimensional barcode
 Acceptance Profiles with the pinned external syntax validator, independent
 renderer, raster comparator, and project semantic assertions:
 
@@ -37,6 +38,28 @@ export FOLIO_HARFBUZZ_HELPER=/explicit/folio-harfbuzz-10.2.0/bin/folio-harfbuzz
 export FOLIO_SHAPING_PYTHON=/absolute/python-with-fonttools-4.59.2
 ./scripts/acceptance /new/evidence-directory
 ```
+
+To record only T30 into a fresh directory, use the same three provisioned
+external tools and the repository-only Maven profile:
+
+```text
+./mvnw -B -ntp -pl pdf-acceptance -am -Pacceptance-t30-record -DskipTests \
+  -Dacceptance.output=/new/t30-evidence-directory verify
+```
+
+T30 generates 116 public Workflow pages per execution profile and an
+independent reference PDF from ZXing/GS1/USPS module expectations. All 232
+product pages undergo independent PDF-path and actual PDFium-raster decoding;
+230 captions are checked against literal content and independently read Noto
+font metrics. Every pair of 288-DPI product/reference rasters is compared with
+ImageMagick AE at zero fuzz and a zero-pixel threshold. The recorder retains
+PDFs, actual/reference/difference PNGs, observed geometry, raw tool findings,
+tool identities, source and artifact hashes. It refuses to replace existing
+T30 evidence and does not require HarfBuzz or fontTools. Missing required tools
+remain indeterminate. Independent standards evidence and compatible-status
+dependency gates remain open, so this capability is experimental. See the
+[T30 profile](profiles/T30-one-dimensional-barcodes.md) and
+[delivery record](evidence/T30-one-dimensional-barcodes.md).
 
 Provisioning is deliberately offline. The operator supplies each release
 asset locally; none of these commands downloads it. For qpdf,

@@ -1,0 +1,36 @@
+# T30 qpdf syntax findings
+
+Input ID-neutral SHA-256: `fc616cdcbce5cdb9c65d6b3e7563d51910c94831f25fa18a1e57f2ba0290b061`
+
+Input hash policy: `SHA-256 of the exact PDF bytes after replacing only the two hexadecimal trailer /ID values with ASCII zeroes`
+
+Tool: `qpdf`
+
+Tool version: `12.4.0`
+
+Distribution SHA-256: `a3bca240f3bb61efdc3a90be89d1da4ed5e125326c3458c4e62df53ff4f153e3`
+
+Final determination: `pass`
+
+## T30-one-dimensional-barcodes-hardened-worker.pdf
+
+Invocation: `qpdf --check T30-one-dimensional-barcodes-hardened-worker.pdf`
+
+`T30-one-dimensional-barcodes-hardened-worker.pdf` exit code: `0`
+
+### Standard output
+
+```text
+checking T30-one-dimensional-barcodes-hardened-worker.pdf
+PDF Version: 1.7
+File is not encrypted
+File is not linearized
+No syntax or stream encoding errors found; the file may still contain
+errors that qpdf cannot detect
+```
+
+### Standard error
+
+```text
+
+```

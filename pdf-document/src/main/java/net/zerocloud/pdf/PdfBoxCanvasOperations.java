@@ -888,7 +888,7 @@ final class PdfBoxCanvasOperations {
                 "The Canvas Font resource is invalid.");
     }
 
-    private static DocumentFailure preservationUnsupported() {
+    static DocumentFailure preservationUnsupported() {
         return failure(
                 DocumentFailureCode.CANVAS_PRESERVATION_UNSUPPORTED,
                 "The page content or resources cannot be preserved safely for Canvas drawing.");

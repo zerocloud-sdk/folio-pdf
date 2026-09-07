@@ -199,3 +199,6 @@ excluded-capabilities:
   - id: composition.shaping.harf-buzz
     ticket: T29
     reason: T29 adds explicit Provider selection and native glyph shaping to existing Native Interface Composition commands. The current Preview layout.Document close-ownership surface does not map this contract, no approved shaping Migration Facade mapping exists, and no stable or preview stub is introduced.
+  - id: composition.barcodes.one-dimensional
+    ticket: T30
+    reason: T30 provides semantic Barcode1D and explicit-font BarcodeText declarations through the Native Interface DrawBarcode1D command. No approved Reference Suite barcode Migration Facade mapping exists; stable and preview surfaces remain empty and no unsupported stub is introduced.

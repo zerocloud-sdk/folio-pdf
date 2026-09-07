@@ -1,0 +1,497 @@
+{
+  "schema_version": 1,
+  "stage": "root",
+  "command": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "verify"
+  ],
+  "working_directory": "/home/ubuntu/IdeaProjects/open-pdf",
+  "started_utc": "2026-09-07T07:19:22.159145+00:00",
+  "finished_utc": "2026-09-07T07:39:11.919673+00:00",
+  "elapsed_seconds": 1189.762,
+  "exit_code": 1,
+  "head": "5508429ec032e8879d6d359a018f25d25efe878c",
+  "explicit_harfbuzz_helper": "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/harfbuzz/10.2.0-final/bin/folio-harfbuzz",
+  "environment_record": "T30-verification-environment.json",
+  "build_input_policy": "Every tracked or untracked non-ignored repository file except capabilities/evidence/**; sorted relative path plus SHA-256. Generated views and tests are included.",
+  "build_inputs": "T30-root-r2-build-inputs.sha256",
+  "build_inputs_sha256": "d059794fc3de1202309733ea553dddc724c3f42740e01878d53b75392b184e2c",
+  "build_inputs_unchanged_after": true,
+  "raw_log": "T30-root-r2-verify.txt",
+  "raw_log_sha256": "70a2f6a10faf819d303dde1e036bd7f7369bfaacc7318bd5331fa13ace85cae2",
+  "result": "fail",
+  "totals": {
+    "tests": 1072,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 4
+  },
+  "suites": [
+    {
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.provider.ProviderCatalogTest",
+      "elapsed": "0.063 s"
+    },
+    {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.conversion.HarfBuzzCapabilityProviderTest",
+      "elapsed": "0.189 s"
+    },
+    {
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.conversion.SubprocessCapabilityProviderTest",
+      "elapsed": "1.182 s"
+    },
+    {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.conversion.contract.JarContractIT",
+      "elapsed": "0.064 s"
+    },
+    {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.conversion.contract.PublicApiLeakageIT",
+      "elapsed": "0.032 s"
+    },
+    {
+      "tests": 33,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.consumer.AnnotationWorkflowTest",
+      "elapsed": "3.356 s"
+    },
+    {
+      "tests": 58,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.consumer.BarcodeWorkflowTest",
+      "elapsed": "169.4 s"
+    },
+    {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.consumer.BlankDocumentWorkflowTest",
+      "elapsed": "0 s"
+    },
+    {
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.consumer.CanvasImageColorTransparencyWorkflowTest",
+      "elapsed": "0.448 s"
+    },
+    {
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.consumer.CanvasWorkflowTest",
+      "elapsed": "0.181 s"
+    },
+    {
+      "tests": 55,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.consumer.DocumentMetadataWorkflowTest",
+      "elapsed": "9.982 s"
+    },
+    {
+      "tests": 22,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.consumer.FontLoadingWorkflowTest",
+      "elapsed": "0.995 s"
+    },
+    {
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.consumer.HardenedWorkerRecoveryTest",
+      "elapsed": "7.802 s"
+    },
+    {
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 3,
+      "suite": "net.zerocloud.pdf.consumer.HardenedWorkerScaleProfileTest",
+      "elapsed": "0.006 s"
+    },
+    {
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.consumer.HardenedWorkerWorkflowTest",
+      "elapsed": "8.707 s"
+    },
+    {
+      "tests": 19,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.consumer.HostileInputWorkflowTest",
+      "elapsed": "0.110 s"
+    },
+    {
+      "tests": 27,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.consumer.ImageResourceExtractionWorkflowTest",
+      "elapsed": "0.147 s"
+    },
+    {
+      "tests": 16,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.consumer.IncrementalSignatureWorkflowTest",
+      "elapsed": "0.288 s"
+    },
+    {
+      "tests": 32,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.consumer.LargeTableWorkflowTest",
+      "elapsed": "58.14 s"
+    },
+    {
+      "tests": 52,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.consumer.PageManipulationWorkflowTest",
+      "elapsed": "0.317 s"
+    },
+    {
+      "tests": 42,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.consumer.ParagraphCompositionWorkflowTest",
+      "elapsed": "59.76 s"
+    },
+    {
+      "tests": 64,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest",
+      "elapsed": "68.09 s"
+    },
+    {
+      "tests": 21,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.consumer.PdfValueWorkflowTest",
+      "elapsed": "0.093 s"
+    },
+    {
+      "tests": 26,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.consumer.PdfVersionPasswordSecurityWorkflowTest",
+      "elapsed": "1.195 s"
+    },
+    {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.consumer.RenderingColdStartTest",
+      "elapsed": "1.539 s"
+    },
+    {
+      "tests": 68,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.consumer.RenderingWorkflowContractTest",
+      "elapsed": "35.68 s"
+    },
+    {
+      "tests": 34,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest",
+      "elapsed": "103.5 s"
+    },
+    {
+      "tests": 68,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.consumer.TableCompositionWorkflowTest",
+      "elapsed": "75.00 s"
+    },
+    {
+      "tests": 24,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.consumer.TablePaginationWorkflowTest",
+      "elapsed": "36.83 s"
+    },
+    {
+      "tests": 44,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest",
+      "elapsed": "0.759 s"
+    },
+    {
+      "tests": 48,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest",
+      "elapsed": "168.4 s"
+    },
+    {
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.consumer.WorkflowCapabilityProviderTest",
+      "elapsed": "0.013 s"
+    },
+    {
+      "tests": 82,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest",
+      "elapsed": "31.19 s"
+    },
+    {
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.consumer.WorkflowLifecycleTest",
+      "elapsed": "0.016 s"
+    },
+    {
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.consumer.WorkflowResourceOwnershipTest",
+      "elapsed": "0.048 s"
+    },
+    {
+      "tests": 16,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.consumer.WorkflowTransactionContractTest",
+      "elapsed": "0.041 s"
+    },
+    {
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.HardenedWorkerIsolationTest",
+      "elapsed": "9.768 s"
+    },
+    {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.HardenedWorkerRecoveryFaultTest",
+      "elapsed": "2.599 s"
+    },
+    {
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.PdfBoxCMapPreflightTest",
+      "elapsed": "0.001 s"
+    },
+    {
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.PdfBoxFontMetricPreflightTest",
+      "elapsed": "0.002 s"
+    },
+    {
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.WorkerCodecContractTest",
+      "elapsed": "0.511 s"
+    },
+    {
+      "tests": 15,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.WorkerProtocolBoundaryTest",
+      "elapsed": "11.43 s"
+    },
+    {
+      "tests": 15,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.WorkflowResourceCacheAccountingTest",
+      "elapsed": "0.023 s"
+    },
+    {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.contract.JarContractIT",
+      "elapsed": "0.117 s"
+    },
+    {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.contract.PublicApiLeakageIT",
+      "elapsed": "0.285 s"
+    },
+    {
+      "tests": 24,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.acceptance.AcceptanceEvidenceCommandTest",
+      "elapsed": "63.70 s"
+    },
+    {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.acceptance.T24ParagraphEvidenceCommandTest",
+      "elapsed": "0.449 s"
+    },
+    {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.acceptance.T25ParagraphEvidenceCommandTest",
+      "elapsed": "2.350 s"
+    },
+    {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.acceptance.T26TableEvidenceCommandTest",
+      "elapsed": "0.669 s"
+    },
+    {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.acceptance.T27TableEvidenceCommandTest",
+      "elapsed": "4.367 s"
+    },
+    {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.acceptance.T28UnicodeEvidenceCommandTest",
+      "elapsed": "94.12 s"
+    },
+    {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.acceptance.T29NativeShapingAssertionsTest",
+      "elapsed": "0.224 s"
+    },
+    {
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.acceptance.T29ShapingEvidenceCommandTest",
+      "elapsed": "11.47 s"
+    },
+    {
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "suite": "net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest",
+      "elapsed": "128.0 s"
+    },
+    {
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.itext7.consumer.PreviewBlankDocumentFacadeTest",
+      "elapsed": "0.324 s"
+    },
+    {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.migration.itext7.contract.ClasspathExclusivityIT",
+      "elapsed": "1.236 s"
+    },
+    {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.migration.itext7.contract.JarContractIT",
+      "elapsed": "0.018 s"
+    },
+    {
+      "tests": 6,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "suite": "net.zerocloud.pdf.tools.inventory.InventoryCommandTest",
+      "elapsed": "6.199 s <<< FAILURE!"
+    }
+  ]
+}

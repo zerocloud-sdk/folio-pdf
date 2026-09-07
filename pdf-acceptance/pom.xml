@@ -20,9 +20,17 @@
   <properties>
     <maven.install.skip>true</maven.install.skip>
     <maven.deploy.skip>true</maven.deploy.skip>
+    <t30.qpdf.pin>${maven.multiModuleProjectDirectory}/scripts/qpdf-pin.properties</t30.qpdf.pin>
+    <t30.pdfium.pin>${maven.multiModuleProjectDirectory}/scripts/pdfium-pin.properties</t30.pdfium.pin>
+    <t30.imagemagick.pin>${maven.multiModuleProjectDirectory}/scripts/imagemagick-pin.properties</t30.imagemagick.pin>
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>com.google.zxing</groupId>
+      <artifactId>core</artifactId>
+      <version>${zxing.version}</version>
+    </dependency>
     <dependency>
       <groupId>net.zerocloud</groupId>
       <artifactId>pdf-document</artifactId>
@@ -67,6 +75,36 @@
   </build>
 
   <profiles>
+    <profile>
+      <id>acceptance-t30-record</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>record-one-dimensional-barcode-evidence</id>
+                <phase>verify</phase>
+                <goals><goal>java</goal></goals>
+                <configuration>
+                  <mainClass>net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommand</mainClass>
+                  <classpathScope>runtime</classpathScope>
+                  <arguments>
+                    <argument>${acceptance.output}</argument>
+                    <argument>${t30.qpdf.pin}</argument>
+                    <argument>${t30.pdfium.pin}</argument>
+                    <argument>${t30.imagemagick.pin}</argument>
+                    <argument>${maven.multiModuleProjectDirectory}/capabilities/profiles</argument>
+                    <argument>${project.version}</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
     <profile>
       <id>acceptance-t29-record</id>
       <build>
@@ -124,6 +162,23 @@
                     <argument>${maven.multiModuleProjectDirectory}/capabilities/profiles/T03-document-blank-visual.properties</argument>
                     <argument>${maven.multiModuleProjectDirectory}/capabilities/profiles/T18-canvas-images-colors-transparency-visual.properties</argument>
                     <argument>${maven.multiModuleProjectDirectory}/capabilities/profiles/T19-font-loading-embedding-subsetting-visual.properties</argument>
+                    <argument>${project.version}</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+              <execution>
+                <id>record-one-dimensional-barcode-evidence</id>
+                <phase>verify</phase>
+                <goals><goal>java</goal></goals>
+                <configuration>
+                  <mainClass>net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommand</mainClass>
+                  <classpathScope>runtime</classpathScope>
+                  <arguments>
+                    <argument>${acceptance.output}</argument>
+                    <argument>${t30.qpdf.pin}</argument>
+                    <argument>${t30.pdfium.pin}</argument>
+                    <argument>${t30.imagemagick.pin}</argument>
+                    <argument>${maven.multiModuleProjectDirectory}/capabilities/profiles</argument>
                     <argument>${project.version}</argument>
                   </arguments>
                 </configuration>

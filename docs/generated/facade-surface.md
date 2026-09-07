@@ -8,7 +8,7 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Release train: `0.1.0-SNAPSHOT`
 - Stable entries: `0`
 - Preview entries: `12`
-- Explicit capability exclusions: `20`
+- Explicit capability exclusions: `21`
 
 ## Stable surfaces
 
@@ -137,6 +137,13 @@ No stable surfaces are declared.
 - Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen)
 
 ## Explicit capability exclusions
+
+<a id="excluded-capability-composition_dot_barcodes_dot_one_dash_dimensional"></a>
+### `composition.barcodes.one-dimensional`
+
+- Behavioral capability: [`composition.barcodes.one-dimensional`](capability-matrix.md#capability-composition_dot_barcodes_dot_one_dash_dimensional)
+- Deferred ticket: `T30`
+- Reason: T30 provides semantic Barcode1D and explicit-font BarcodeText declarations through the Native Interface DrawBarcode1D command. No approved Reference Suite barcode Migration Facade mapping exists; stable and preview surfaces remain empty and no unsupported stub is introduced.
 
 <a id="excluded-capability-composition_dot_canvas_dot_draw_dash_positioned_dash_text"></a>
 ### `composition.canvas.draw-positioned-text`

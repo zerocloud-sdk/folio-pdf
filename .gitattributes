@@ -7,6 +7,11 @@
 capabilities/evidence/artifacts/T29-*.txt -text whitespace=-blank-at-eol,-blank-at-eof
 capabilities/evidence/artifacts/T29-final-getter-javadoc.patch -text whitespace=-blank-at-eol,-blank-at-eof
 
+# Preserve exact T30 evidence, including raw tool whitespace and recorded hashes.
+capabilities/evidence/T30-*.md -text whitespace=-blank-at-eol,-blank-at-eof
+capabilities/evidence/artifacts/T30-* -text whitespace=-blank-at-eol,-blank-at-eof
+capabilities/evidence/T30-r2/** -text whitespace=-blank-at-eol,-blank-at-eof
+
 *.sh text eol=lf
 mvnw text eol=lf
 *.cmd text eol=crlf

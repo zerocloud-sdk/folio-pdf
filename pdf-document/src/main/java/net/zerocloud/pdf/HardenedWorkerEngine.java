@@ -55,7 +55,7 @@ final class HardenedWorkerEngine {
     private static final String DOCUMENT_CLASS_INVENTORY =
             "META-INF/folio-pdf/document-worker-classes";
     private static final String DOCUMENT_CLASS_INVENTORY_SHA256 =
-            "c07502e776f31812de5570344e8f98f9cc86f8083b3f20f95f9959d170f39c58";
+            "72173f3668912940828a25b745a914f0e514ed7c713b0a8bf141d58c849727b3";
     private static final String PROVIDER_CLASS_INVENTORY =
             "META-INF/folio-pdf/provider-contract-worker-classes";
     private static final String PROVIDER_CLASS_INVENTORY_SHA256 =
@@ -68,6 +68,8 @@ final class HardenedWorkerEngine {
             "a1915c24e3edbe0ecec93896dfbf6d41427810b663ade97bd4e8bae86ec3fdab";
     private static final String ICU4J_SHA256 =
             "b3640b9f416a4411fd33c59abbeea8fd57d024c23e1819bf9673220a97499fe3";
+    private static final String OKAPIBARCODE_SHA256 =
+            "fc07c5e28f200a53b980e36719901e095e06d1432d7ae959a22456f838765f2a";
     private static final String COMMONS_LOGGING_SHA256 =
             "d175dbd751dd782a63bde28c7a039520e971f25e84b79c19b8435edc3603e0dc";
     private static final String TIFF_SHA256 =
@@ -2228,6 +2230,7 @@ final class HardenedWorkerEngine {
                 PDFBOX_IO_SHA256);
         addDependencyCodeSource(entries, TrueTypeFont.class, FONTBOX_SHA256);
         addDependencyCodeSource(entries, BreakIterator.class, ICU4J_SHA256);
+        addDependencyCodeSource(entries, uk.org.okapibarcode.backend.Code128.class, OKAPIBARCODE_SHA256);
         addDependencyCodeSource(entries, Log.class, COMMONS_LOGGING_SHA256);
         addOptionalTiffCodeSources(entries);
         StringBuilder result = new StringBuilder();

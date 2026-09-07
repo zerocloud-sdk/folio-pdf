@@ -12,6 +12,7 @@ import net.zerocloud.pdf.command.UpdateActions;
 import net.zerocloud.pdf.command.UpdateAnnotations;
 import net.zerocloud.pdf.composition.FontSource;
 import net.zerocloud.pdf.composition.command.DrawCanvas;
+import net.zerocloud.pdf.composition.command.DrawBarcode1D;
 import net.zerocloud.pdf.composition.command.DrawPositionedUnicodeText;
 import net.zerocloud.pdf.composition.command.ComposeParagraphs;
 import net.zerocloud.pdf.composition.command.RelayoutParagraphs;
@@ -253,6 +254,14 @@ final class PdfBoxDocumentSession implements DocumentSession {
             }
             outcomeCapabilityId = PdfBoxAnnotationOperations.CAPABILITY_ID;
             annotationOperations.execute(command);
+            mutationOccurred = true;
+            return;
+        }
+
+        if (command instanceof DrawBarcode1D) {
+            PdfBoxBarcodeOperations.requirePermission(securityInfo);
+            outcomeCapabilityId = PdfBoxBarcodeOperations.CAPABILITY_ID;
+            new PdfBoxBarcodeOperations(document, canvasOperations, positionedUnicodeTextOperations, resources).execute((DrawBarcode1D) command);
             mutationOccurred = true;
             return;
         }
@@ -544,6 +553,9 @@ final class PdfBoxDocumentSession implements DocumentSession {
             case WorkerCommandCodec.PREFLIGHT_ACTIONS:
                 PdfBoxPermissionPolicy.requireModification(securityInfo);
                 return;
+            case WorkerCommandCodec.PREFLIGHT_BARCODE:
+                PdfBoxBarcodeOperations.requirePermission(securityInfo);
+                return;
             case WorkerCommandCodec.PREFLIGHT_ANNOTATIONS:
                 PdfBoxPermissionPolicy.requireAnnotationModification(
                         securityInfo);
@@ -586,6 +598,7 @@ final class PdfBoxDocumentSession implements DocumentSession {
     }
 
     private static DocumentFailure workerSignatureFailure(int category) {
+        if (category == WorkerCommandCodec.PREFLIGHT_BARCODE) { return PdfBoxBarcodeOperations.signatureFailure(); }
         if (category == WorkerCommandCodec.PREFLIGHT_TABLES) {
             return PdfBoxParagraphOperations.signatureFailure(PdfBoxTableLayout.CAPABILITY_ID);
         }
@@ -610,6 +623,7 @@ final class PdfBoxDocumentSession implements DocumentSession {
     }
 
     private static DocumentFailure signatureFailure(DocumentCommand command) {
+        if (command instanceof DrawBarcode1D) { return PdfBoxBarcodeOperations.signatureFailure(); }
         if (command instanceof ComposeParagraphs || command instanceof RelayoutParagraphs
                 || command instanceof FlushParagraphs) {
             return PdfBoxParagraphOperations.signatureFailure(command instanceof ComposeParagraphs

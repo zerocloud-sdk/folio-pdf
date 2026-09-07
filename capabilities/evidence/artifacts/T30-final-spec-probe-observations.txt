@@ -1,0 +1,56 @@
+Exact retained copies of final independent Spec reviewer probe source and output.
+No implementation judgement or new probe execution was performed by the implementing agent.
+The original temporary directory is /tmp/folio-t30-final-spec-probe-8u1rkkjr
+
+===== T30SpecActualEvidence.java | 1849 bytes | SHA-256 ea2ebcd13887597883afa99205243da1315b9aa5288dc30a82a613c28713990d =====
+
+import java.nio.file.*;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import net.zerocloud.pdf.*;
+import com.google.zxing.*;
+import com.google.zxing.common.BitArray;
+import com.google.zxing.oned.Code128Reader;
+public class T30SpecActualEvidence {
+ public static void main(String[] args)throws Exception {
+  String[] expected={"\u00b123456","\u00b1\u00b2\u00b3\u00b4\u00b5\u00b6","123456\u00b123456","\u00b1\u00b23\u00b456"};
+  int total=0;
+  for(String profile:new String[]{"in-process","hardened-worker"}){
+   String stem="T30-one-dimensional-barcodes-"+profile;Path dir=Paths.get(args[0]);Path pdf=dir.resolve(stem+".pdf");
+   new DocumentWorkflow().execute(WorkflowRequest.open(pdf,SaveMode.REWRITE),s->{for(int index=0;index<4;index++)try {
+    String actual=T30SpecProbe.decode(T30SpecProbe.content(s,index+31)).getText();
+    if(!actual.equals(expected[index]))throw new IllegalStateException("PDF payload mismatch");
+    System.out.println(profile+" PDF page "+(index+31)+" "+T30SpecProbe.visible(actual));
+   }catch(Exception ex){throw new RuntimeException(ex);}return null;});
+   for(int index=0;index<4;index++){
+    BufferedImage image=ImageIO.read(dir.resolve(stem+"-actual-"+(index+31)+".png").toFile());
+    BitArray row=new BitArray(image.getWidth());int y=image.getHeight()-1-168*4;
+    for(int x=0;x<image.getWidth();x++){int rgb=image.getRGB(x,y);if(((rgb>>16&255)+(rgb>>8&255)+(rgb&255))<384)row.set(x);}
+    Result decoded=new Code128Reader().decodeRow(y,row,null);
+    if(!decoded.getText().equals(expected[index]))throw new IllegalStateException("Raster payload mismatch");
+    System.out.println(profile+" actual PNG page "+(index+31)+" "+T30SpecProbe.visible(decoded.getText()));
+   }
+   total+=8;
+  }
+  System.out.println("Final recorded FNC4 evidence: "+total+" successful independent decodes");
+ }
+}
+
+===== actual-evidence-result.txt | 884 bytes | SHA-256 2cf5534e24e2639cfea3f5af41c43f2159504b3faa0aecba987069374f4e1725 =====
+in-process PDF page 31 \u00b123456
+in-process PDF page 32 \u00b1\u00b2\u00b3\u00b4\u00b5\u00b6
+in-process PDF page 33 123456\u00b123456
+in-process PDF page 34 \u00b1\u00b23\u00b456
+in-process actual PNG page 31 \u00b123456
+in-process actual PNG page 32 \u00b1\u00b2\u00b3\u00b4\u00b5\u00b6
+in-process actual PNG page 33 123456\u00b123456
+in-process actual PNG page 34 \u00b1\u00b23\u00b456
+hardened-worker PDF page 31 \u00b123456
+hardened-worker PDF page 32 \u00b1\u00b2\u00b3\u00b4\u00b5\u00b6
+hardened-worker PDF page 33 123456\u00b123456
+hardened-worker PDF page 34 \u00b1\u00b23\u00b456
+hardened-worker actual PNG page 31 \u00b123456
+hardened-worker actual PNG page 32 \u00b1\u00b2\u00b3\u00b4\u00b5\u00b6
+hardened-worker actual PNG page 33 123456\u00b123456
+hardened-worker actual PNG page 34 \u00b1\u00b23\u00b456
+Final recorded FNC4 evidence: 16 successful independent decodes

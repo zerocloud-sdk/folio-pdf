@@ -11,6 +11,10 @@ net/zerocloud/pdf/AnnotationProperties$Builder.class
 net/zerocloud/pdf/AnnotationProperties.class
 net/zerocloud/pdf/AnnotationQuad.class
 net/zerocloud/pdf/AnnotationRectangle.class
+net/zerocloud/pdf/BarcodeFullAsciiCode39.class
+net/zerocloud/pdf/BarcodeLabels$1.class
+net/zerocloud/pdf/BarcodeLabels.class
+net/zerocloud/pdf/BarcodeRawCode128.class
 net/zerocloud/pdf/CancellationToken.class
 net/zerocloud/pdf/CharacterMapping$Confidence.class
 net/zerocloud/pdf/CharacterMapping.class
@@ -136,6 +140,8 @@ net/zerocloud/pdf/PdfBoxAnnotationPageOperations$InlineValueNode.class
 net/zerocloud/pdf/PdfBoxAnnotationPageOperations$MergeStructures.class
 net/zerocloud/pdf/PdfBoxAnnotationPageOperations$MergedPageStructures.class
 net/zerocloud/pdf/PdfBoxAnnotationPageOperations.class
+net/zerocloud/pdf/PdfBoxBarcodeOperations$1.class
+net/zerocloud/pdf/PdfBoxBarcodeOperations.class
 net/zerocloud/pdf/PdfBoxCMapPreflight$LimitExceededException.class
 net/zerocloud/pdf/PdfBoxCMapPreflight$Token.class
 net/zerocloud/pdf/PdfBoxCMapPreflight$TokenReader.class
@@ -423,6 +429,7 @@ net/zerocloud/pdf/TextRenderingMode.class
 net/zerocloud/pdf/TextStructureExtraction.class
 net/zerocloud/pdf/WorkerAnnotationCodec$1.class
 net/zerocloud/pdf/WorkerAnnotationCodec.class
+net/zerocloud/pdf/WorkerBarcodeCodec.class
 net/zerocloud/pdf/WorkerCodecIO$1.class
 net/zerocloud/pdf/WorkerCodecIO$BoundedForwardingOutputStream.class
 net/zerocloud/pdf/WorkerCodecIO$BoundedOutputStream.class
@@ -569,6 +576,16 @@ net/zerocloud/pdf/command/UpdateDocumentInfo$1.class
 net/zerocloud/pdf/command/UpdateDocumentInfo$Builder.class
 net/zerocloud/pdf/command/UpdateDocumentInfo.class
 net/zerocloud/pdf/command/package-info.class
+net/zerocloud/pdf/composition/Barcode1D$1.class
+net/zerocloud/pdf/composition/Barcode1D$Builder.class
+net/zerocloud/pdf/composition/Barcode1D$CodeSet.class
+net/zerocloud/pdf/composition/Barcode1D$Mode.class
+net/zerocloud/pdf/composition/Barcode1D.class
+net/zerocloud/pdf/composition/BarcodeText$1.class
+net/zerocloud/pdf/composition/BarcodeText$Alignment.class
+net/zerocloud/pdf/composition/BarcodeText$Builder.class
+net/zerocloud/pdf/composition/BarcodeText$Position.class
+net/zerocloud/pdf/composition/BarcodeText.class
 net/zerocloud/pdf/composition/CanvasBlendMode.class
 net/zerocloud/pdf/composition/CanvasColor.class
 net/zerocloud/pdf/composition/CanvasColorSpace$Family.class
@@ -646,6 +663,7 @@ net/zerocloud/pdf/composition/command/BeginLargeTable.class
 net/zerocloud/pdf/composition/command/CompleteTable.class
 net/zerocloud/pdf/composition/command/ComposeParagraphs$FlushMode.class
 net/zerocloud/pdf/composition/command/ComposeParagraphs.class
+net/zerocloud/pdf/composition/command/DrawBarcode1D.class
 net/zerocloud/pdf/composition/command/DrawCanvas.class
 net/zerocloud/pdf/composition/command/DrawPositionedUnicodeText.class
 net/zerocloud/pdf/composition/command/FlushParagraphs.class

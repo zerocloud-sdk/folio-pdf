@@ -1,11 +1,12 @@
 # Dependency and license information
 
-The required implementation dependencies are Apache PDFBox 3.0.8 and
-ICU4J 77.1. Maven resolves the following runtime artifacts. They remain
+The required implementation dependencies are Apache PDFBox 3.0.8,
+ICU4J 77.1 and OkapiBarcode 0.5.6. Maven resolves the following runtime artifacts. They remain
 implementation details of `pdf-document`.
 
 | Maven coordinate | Relationship | License | Resolved JAR SHA-256 |
 | --- | --- | --- | --- |
+| `uk.org.okapibarcode:okapibarcode:0.5.6` | direct; encoder only, CLI dependency excluded | Apache License 2.0 | `fc07c5e28f200a53b980e36719901e095e06d1432d7ae959a22456f838765f2a` |
 | `org.apache.pdfbox:pdfbox:3.0.8` | direct | Apache License 2.0 | `97647cfbde61ebcfc06b4cf8c9b0ffcaaee073396eceb4a7f6836a9b9128903c` |
 | `org.apache.pdfbox:pdfbox-io:3.0.8` | transitive | Apache License 2.0 | `36a0e04001010b4c764857817412b96339930b19755e728959805cc0352061b2` |
 | `org.apache.pdfbox:fontbox:3.0.8` | transitive | Apache License 2.0 | `a1915c24e3edbe0ecec93896dfbf6d41427810b663ade97bd4e8bae86ec3fdab` |
@@ -28,6 +29,15 @@ of Noto Sans CJK 2.004 SC/TC/JP/KR. The offline preparation tool
 under MIT and its retained external notices. It is not a Maven/runtime
 dependency. Font data is restricted to pdf-acceptance and pdf-document's test
 resources. This adds no runtime font bundle or implicit font discovery.
+
+T30 uses [ZXing core 3.5.3](docs/third-party/zxing-3.5.3.md) (Apache-2.0, Java 8) exclusively in
+consumer tests and the repository-only acceptance module. Its public writers
+provide independent module expectations and its readers decode actual PDF
+paths and PDFium raster scanlines. Binary SHA-256 is
+`8d8064c1636fdaef7189dd9055c7d59950a8940a12f2293956446ec3c109fd82`.
+Original supplement, MSI and postal readers fill ZXing's symbology gaps on
+the acceptance side. T30 reuses the OFL Noto Sans Regular asset above and the
+existing pinned qpdf, PDFium and ImageMagick tools; none enters the runtime.
 
 T29's independent reference data adds unmodified OFL-1.1 Noto Sans Arabic
 2.009, Devanagari 2.002 and Thai 2.000 and reuses Hebrew 3.000. The same Noto

@@ -213,6 +213,18 @@ public enum DocumentFailureCode {
     /** A Canvas Program has an invalid number, operation, or state transition. */
     CANVAS_PROGRAM_INVALID,
 
+    /** The barcode input violates its symbology contract. */
+    BARCODE_INPUT_INVALID,
+
+    /** Barcode dimensions, quiet zones or placement are invalid. */
+    BARCODE_GEOMETRY_INVALID,
+
+    /** Barcode options are not supported by the selected mode. */
+    BARCODE_MODE_INVALID,
+
+    /** The finite barcode input or output bound was exceeded. */
+    BARCODE_LIMIT_EXCEEDED,
+
     /** A declared Canvas Font is unavailable or not a supported Font resource. */
     CANVAS_RESOURCE_INVALID,
 

@@ -6,12 +6,13 @@ Behavioral authority: [`../../capabilities/capability-matrix.yaml`](../../capabi
 
 - Schema version: `1`
 - Release train: `0.1.0-SNAPSHOT`
-- Capabilities: `21`
+- Capabilities: `22`
 
 ## Capability summary
 
 | Capability | Context | Status | Migration facade |
 | --- | --- | --- | --- |
+| [`composition.barcodes.one-dimensional`](#capability-composition_dot_barcodes_dot_one_dash_dimensional) | `composition` | `experimental` | [excluded by `T30`](facade-surface.md#excluded-capability-composition_dot_barcodes_dot_one_dash_dimensional) |
 | [`composition.canvas.draw-positioned-text`](#capability-composition_dot_canvas_dot_draw_dash_positioned_dash_text) | `composition` | `experimental` | [excluded by `T17`](facade-surface.md#excluded-capability-composition_dot_canvas_dot_draw_dash_positioned_dash_text) |
 | [`composition.canvas.images-colors-transparency`](#capability-composition_dot_canvas_dot_images_dash_colors_dash_transparency) | `composition` | `experimental` | [excluded by `T18`](facade-surface.md#excluded-capability-composition_dot_canvas_dot_images_dash_colors_dash_transparency) |
 | [`composition.fonts.load-embed-subset-fallback`](#capability-composition_dot_fonts_dot_load_dash_embed_dash_subset_dash_fallback) | `composition` | `experimental` | [excluded by `T19`](facade-surface.md#excluded-capability-composition_dot_fonts_dot_load_dash_embed_dash_subset_dash_fallback) |
@@ -33,6 +34,75 @@ Behavioral authority: [`../../capabilities/capability-matrix.yaml`](../../capabi
 | [`document.text-structure.extract`](#capability-document_dot_text_dash_structure_dot_extract) | `document-engine` | `experimental` | [excluded by `T13`](facade-surface.md#excluded-capability-document_dot_text_dash_structure_dot_extract) |
 | [`document.value.inspect-patch`](#capability-document_dot_value_dot_inspect_dash_patch) | `document-engine` | `experimental` | [excluded by `T09`](facade-surface.md#excluded-capability-document_dot_value_dot_inspect_dash_patch) |
 | [`document.version-password-security`](#capability-document_dot_version_dash_password_dash_security) | `document-engine` | `experimental` | [excluded by `T16`](facade-surface.md#excluded-capability-document_dot_version_dash_password_dash_security) |
+
+<a id="capability-composition_dot_barcodes_dot_one_dash_dimensional"></a>
+## `composition.barcodes.one-dimensional`
+
+Draw all Reference Suite one-dimensional barcode families as PDF vectors with explicit dimensions, checksums, labels and affine placement.
+
+- Context: `composition`
+- Status: `experimental`
+- Reference Suite source: `Issue 31, parent issue 1 and public iText Core 7.2.6 barcode API inventory`
+- Reference role: mode and option inventory only; GS1/USPS standards and independent decoding determine correctness, never Reference Suite output
+- Acceptance Profile: `T30-one-dimensional-barcodes`
+- Mandatory evidence chains: `syntax`, `standards`, `semantic`, `visual`
+- Evidence record: [`capabilities/evidence/T30-one-dimensional-barcodes.md`](../../capabilities/evidence/T30-one-dimensional-barcodes.md)
+- Certified platforms: none
+
+### Native Interface mapping
+
+- `barcode`: `net.zerocloud.pdf.composition.Barcode1D`
+- `command`: `net.zerocloud.pdf.composition.command.DrawBarcode1D`
+- `entry-point`: `net.zerocloud.pdf.DocumentWorkflow#execute`
+- `failure`: `net.zerocloud.pdf.DocumentFailure`
+- `font-limits`: `net.zerocloud.pdf.composition.FontLimits`
+- `font-selection`: `net.zerocloud.pdf.composition.FontSelection`
+- `label`: `net.zerocloud.pdf.composition.BarcodeText`
+- `outcome`: `net.zerocloud.pdf.WorkflowOutcome`
+- `placement`: `net.zerocloud.pdf.composition.CanvasMatrix`
+
+### Migration Facade coverage
+
+- Stable: none
+- Preview: none
+- Explicit exclusion: [`T30`](facade-surface.md#excluded-capability-composition_dot_barcodes_dot_one_dash_dimensional) — T30 provides semantic Barcode1D and explicit-font BarcodeText declarations through the Native Interface DrawBarcode1D command. No approved Reference Suite barcode Migration Facade mapping exists; stable and preview surfaces remain empty and no unsupported stub is introduced.
+
+### Gates and limitations
+
+- Dependency Gate: [`composition.canvas.draw-positioned-text`](#capability-composition_dot_canvas_dot_draw_dash_positioned_dash_text) must be `compatible`
+- Dependency Gate: [`composition.canvas.images-colors-transparency`](#capability-composition_dot_canvas_dot_images_dash_colors_dash_transparency) must be `compatible`
+- Dependency Gate: [`composition.fonts.load-embed-subset-fallback`](#capability-composition_dot_fonts_dot_load_dash_embed_dash_subset_dash_fallback) must be `compatible`
+- Dependency Gate: [`document.hostile-input-limits`](#capability-document_dot_hostile_dash_input_dash_limits) must be `compatible`
+- Dependency Gate: [`document.hardened-worker`](#capability-document_dot_hardened_dash_worker) must be `compatible`
+- Promotion gate `T06`: Complete independent standards evidence and every compatible-status Dependency Gate before promotion; passing syntax, decoding or implementation issues alone is insufficient.
+- Limitation: Version 1 supports Code128 AUTO/A/B/C, GS1-128 and raw symbols with FNC1–4; Code39 and Full ASCII Code39; Codabar; EAN-13/8, UPC-A/E; standalone and combined two/five-digit supplements; ITF; MSI; POSTNET and PLANET. OkapiBarcode 0.5.6 is a private fixed encoder, with Folio-owned validation and path painting. No barcode fonts, images, backend types or runtime decoder are exposed.
+- Limitation: Input is exact ASCII except explicit Code128 function markers. AUTO uses A/B when explicit FNC4 occurs, preserving numeric upper shifts and latches. Raw Code128 includes a start and contextual data/function/shift/latch symbols, excluding generated checksum and stop. GS1 uses the fixed encoder AI dictionary, not current business-identifier certification. Retail complete inputs verify the mandatory digit; optional modulo-43, modulo-16, GS1 modulo-ten and Luhn checks apply only to their declared families. ITF never silently pads. Postal formats do not imply current postal eligibility.
+- Limitation: All dimensions are points before the finite nondegenerate placement matrix. Quiet zones must be at least ten modules, eleven for EAN13, or nine points for postal modes. Two-width ratios range from two through three. Supplements have a nine-module gap; retail guards may extend downward. Postal pitch exceeds width and short height is below full height. Arbitrary affine geometry does not certify physical scanning or page fit.
+- Limitation: Optional labels require explicit font selection and complete T19 limits. Below/above, left/center/right, gap, optional check display, Code39/Codabar guards and alternate captions are declared. Raw labels require alternate text. Controls/functions have printable captions. Labels retain unshaped scalar order, source ownership, embedding, subsetting and ordered fallback; no system-font discovery occurs.
+- Limitation: Barcode declarations have finite input, raw-symbol, generated-bar and caption bounds plus encoder capacity limits described in the English contract. Reused Canvas preservation, font and Workflow Resource Policy bounds remain effective. Bars and labels are prepared before the target page changes; propagated failures preserve targets with NOT_ATTEMPTED receipts.
+- Limitation: Both IN_PROCESS and the existing Linux HARDENED_WORKER envelope carry the closed semantic command, explicit fonts and safe failure/outcome identity. Unsigned incremental output retains the original revision. Existing signatures, invalid pages and modification permission admission precede font reads. Decoder and external acceptance tools remain repository-only.
+- Limitation: The 116-case profile covers all declared discrete encoding variants and representative sizing, check, label, guard and placement options. Independent path and raster decoding use ZXing 3.5.3 plus original supplement/MSI/postal readers. The reference uses independent modules and source-font metrics through existing Canvas/T19 commands, whose dependency gates remain open.
+- Limitation: Independent standards evidence, compatible-status dependencies and Foundation platform/font certification remain incomplete. No two-dimensional barcode, downstream release work, Migration Facade mapping or compatible status is claimed.
+
+### Evidence
+
+Implementation evidence:
+
+- `public-barcode-workflow-contract`: [`pdf-document/src/test/java/net/zerocloud/pdf/consumer/BarcodeWorkflowTest.java`](../../pdf-document/src/test/java/net/zerocloud/pdf/consumer/BarcodeWorkflowTest.java) — Both execution profiles publish and reopen every family, check and function variant; independent decoding, vectors, dimensions, labels, placement, negative input, limits, font ownership, signatures, permissions, incremental behavior and target receipts are observed through public workflows.
+- `fixed-independent-profile`: [`capabilities/profiles/T30-one-dimensional-barcodes.md`](../../capabilities/profiles/T30-one-dimensional-barcodes.md) — Literal inputs, payloads, checks, module geometry, source-font metrics, placement matrices and raster tolerances are fixed before producer comparison.
+- `acceptance-command-contract`: [`pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T30BarcodeEvidenceCommandTest.java`](../../pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T30BarcodeEvidenceCommandTest.java) — Published product and independently positioned reference PDFs meet the fixed 116-case profile; pinned raster runs decode and compare both execution profiles, and unavailable tools remain indeterminate.
+- `authoritative-contract`: [`docs/one-dimensional-barcodes.md`](../one-dimensional-barcodes.md) — Encoding, invalid input, dimensions, labels, failure, publication, execution profiles and exclusions agree with the Chinese usage guide and public Javadoc.
+- `unavailable-standards-and-dependency-record`: [`capabilities/evidence/T30-r2/T30-one-dimensional-barcodes-standards.md`](../../capabilities/evidence/T30-r2/T30-one-dimensional-barcodes-standards.md) — Missing independent standards evidence and compatible-status dependency gates are explicitly indeterminate and prevent compatibility promotion.
+- `retained-artifact-identity-audit`: [`capabilities/evidence/artifacts/T30-r2-artifact-audit.json`](../../capabilities/evidence/artifacts/T30-r2-artifact-audit.json) — All 232 actual pages decode from PDF paths and PDFium rasters, 230 labels match, every visual comparison passes AE zero, all 318 source declarations match and only T30 artifacts are retained without replacing existing evidence.
+- `repository-evidence-entry-contract`: [`scripts/tests/test_t30_acceptance_entry.py`](../../scripts/tests/test_t30_acceptance_entry.py) — The T30-only Maven entry records both execution profiles and preserves indeterminate missing-tool evidence without generating unrelated profiles.
+
+Acceptance Evidence:
+
+- `syntax`: `pass` — [`capabilities/evidence/T30-r2/T30-one-dimensional-barcodes-syntax.md`](../../capabilities/evidence/T30-r2/T30-one-dimensional-barcodes-syntax.md); producer `qpdf@12.4.0` (`external-tool`)
+- `semantic`: `pass` — [`capabilities/evidence/T30-r2/T30-one-dimensional-barcodes-semantic.md`](../../capabilities/evidence/T30-r2/T30-one-dimensional-barcodes-semantic.md); producer `folio-pdf-t30-semantic-assertions@0.1.0-SNAPSHOT` (`project-test`)
+- `visual`: `pass` — [`capabilities/evidence/T30-r2/T30-one-dimensional-barcodes-visual.md`](../../capabilities/evidence/T30-r2/T30-one-dimensional-barcodes-visual.md); producer `pdfium-cli@v0.11.2-pdfium-chromium-7881` (`external-tool`)
+
+Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T30 one-dimensional barcodes`.
 
 <a id="capability-composition_dot_canvas_dot_draw_dash_positioned_dash_text"></a>
 ## `composition.canvas.draw-positioned-text`

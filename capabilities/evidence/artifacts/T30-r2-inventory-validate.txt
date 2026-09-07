@@ -1,0 +1,26 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------< net.zerocloud:pdf-inventory-tool >------------------
+[INFO] Building Folio PDF by ZeroCloud - Inventory Build Tool 0.1.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-inventory-tool ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.version.RequireMavenVersion passed
+[INFO] Rule 1: org.apache.maven.enforcer.rules.version.RequireJavaVersion passed
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-inventory-tool ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/build-tools/inventory/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-inventory-tool ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 10 source files with javac [debug parameters release 8] to target/classes
+[INFO] 
+[INFO] --- exec:3.6.3:java (default-cli) @ pdf-inventory-tool ---
+Inventory validation passed: 22 capabilities, 12 facade surfaces, 21 exclusions.
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.837 s
+[INFO] Finished at: 2026-09-07T18:08:03+08:00
+[INFO] ------------------------------------------------------------------------

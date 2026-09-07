@@ -15,6 +15,7 @@ import net.zerocloud.pdf.command.UpdateActions;
 import net.zerocloud.pdf.command.UpdateAnnotations;
 import net.zerocloud.pdf.command.UpdateDocumentInfo;
 import net.zerocloud.pdf.composition.command.DrawCanvas;
+import net.zerocloud.pdf.composition.command.DrawBarcode1D;
 import net.zerocloud.pdf.composition.command.DrawPositionedUnicodeText;
 import net.zerocloud.pdf.composition.command.ComposeParagraphs;
 import net.zerocloud.pdf.composition.command.RelayoutParagraphs;
@@ -42,6 +43,7 @@ final class PdfBoxIncrementalCommandPolicy {
                 || command instanceof UpdateActions
                 || command instanceof FlattenAnnotations
                 || command instanceof DrawCanvas
+                || command instanceof DrawBarcode1D
                 || command instanceof DrawPositionedUnicodeText
                 || command instanceof RelayoutParagraphs
                 || command instanceof FlushParagraphs

@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "public_workflow": {
+    "command": [
+      "./mvnw",
+      "-B",
+      "-ntp",
+      "-pl",
+      "pdf-document",
+      "-am",
+      "-Dtest=BarcodeWorkflowTest,CanvasWorkflowTest,FontLoadingWorkflowTest",
+      "-Dsurefire.failIfNoSpecifiedTests=false",
+      "test"
+    ],
+    "tests": 88,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "barcode_tests": 58
+  },
+  "acceptance_contract": {
+    "command": [
+      "./mvnw",
+      "-B",
+      "-ntp",
+      "-pl",
+      "pdf-acceptance",
+      "-am",
+      "-Dtest=T30BarcodeEvidenceCommandTest",
+      "-Dsurefire.failIfNoSpecifiedTests=false",
+      "test"
+    ],
+    "tests": 6,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 1,
+    "skip_reason": "Full pinned raster test requires -Dt30.raster=true; actual final evidence recording separately executes this path for all 224 product pages."
+  },
+  "cli_entry": {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "scripts.tests.test_t30_acceptance_entry"
+    ],
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "logs": [
+    {
+      "source_saved_log": "folio-t30-focused-final.log",
+      "file": "T30-focused-workflow-tests.txt",
+      "sha256": "2872e751e2a659b27179c8d5f31ecf9adec0c5e730c3fc41c78fb5e653316f3d"
+    },
+    {
+      "source_saved_log": "folio-t30-green-49.log",
+      "file": "T30-focused-acceptance-tests.txt",
+      "sha256": "10661a8ab0aee169e2a5a91c41d48512023a6a0d27bee1c483cfca6dc92f05e9"
+    },
+    {
+      "source_saved_log": "folio-t30-entry-final.log",
+      "file": "T30-acceptance-entry-test.txt",
+      "sha256": "634db7b4307b561bd886abe37e696a61bf8b9579833661f50a09f067628c4758"
+    }
+  ]
+}

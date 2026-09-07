@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "scope": "Current post-review T30 authority and regenerated views; current evidence is retained under T30-r2.",
+  "result": "pass",
+  "steps": [
+    {
+      "command": [
+        "./scripts/inventory",
+        "validate"
+      ],
+      "exit_code": 0,
+      "log": "T30-r2-inventory-validate.txt",
+      "sha256": "64931a73f0338cf1c609d10153352442be6b79efe4ddc5be314cc32941768919"
+    },
+    {
+      "command": [
+        "./scripts/inventory",
+        "generate"
+      ],
+      "exit_code": 0,
+      "log": "T30-r2-inventory-generate.txt",
+      "sha256": "73ed66b5ec4fff70b0f65d08d374b2815b7ef2ed6a9d16d6d97bb7d3a40819f4"
+    },
+    {
+      "command": [
+        "./scripts/inventory",
+        "check"
+      ],
+      "exit_code": 0,
+      "log": "T30-r2-inventory-check.txt",
+      "sha256": "a0ee441f646cd2bb744ad4e319b7161591259af8d4e89db4315986678775288b"
+    }
+  ],
+  "artifacts": {
+    "capabilities/capability-matrix.yaml": "0a4dfb12228674d41b85b47cb6eef857d424ce3d828fe52ddf5caac3a8992922",
+    "capabilities/facade-surface.yaml": "fefced8545e9d9280ef951cb94ad91becfbf177d7ab27829433bda7b64b02034",
+    "docs/generated/capability-matrix.md": "9855723681fb3f195c2cd306cd1b20559110b66a6785c49734c2e360cdccde75",
+    "docs/generated/facade-surface.md": "fb487117e93ae2d7c04c2b959354057cb70c45516249882519c925fdd6743341"
+  }
+}

@@ -418,3 +418,45 @@ T27 的固定字体 qpdf、独立语义与 19 页 PDFium/ImageMagick 验收链�
 认证尚未完成。完整规则与固定数值样例见
 [英文 T27 契约](../table-pagination.md)，完整验证与独立代码评审结果见
 [T27 记录](../../capabilities/evidence/T27-table-pagination.md)。
+
+## 一维矢量条码（T30，experimental）
+
+`DrawBarcode1D.version1` 在已有的一基页码上绘制黑色 PDF 矢量条形，支持
+Code128 的 AUTO/A/B/C、GS1、RAW、FNC1–4，普通/扩展 Code39、Codabar、
+EAN-13/8、UPC-A/E、独立或组合的两位/五位附加码、ITF、MSI、POSTNET 和 PLANET。
+
+```java
+Barcode1D barcode = Barcode1D.builder(Barcode1D.Mode.EAN13, "590123412345")
+        .moduleWidth(1).barHeight(48).quietZone(11)
+        .guardExtension(5).supplement("05").build();
+new DocumentWorkflow().execute(WorkflowRequest.create(output, SaveMode.REWRITE), session -> {
+    session.execute(AddBlankPage.INSTANCE);
+    session.execute(DrawBarcode1D.version1(1, barcode,
+            CanvasMatrix.of(1, 0, 0, 1, 36, 144)));
+    return null;
+});
+```
+
+上例生成完整 EAN-13 `5901234123457` 并附加 `05`。尺寸单位是放置变换前的 PDF 点；
+默认窄模块 1 点、高度 48 点、左右空白各 10 点，EAN-13 各 11 点。增大模块宽度时
+须显式增大空白边距。邮政模式默认条宽 1.44 点、间距 3.24 点、长条 9 点、短条
+3.6 点、左右空白各 9 点。邮政格式的支持不代表当前邮政业务准入认证。
+
+需要文字时，向 builder 传入 `.humanReadable(BarcodeText.builder(selection, limits, 8).build())`，
+其中 `selection` 是显式 `FontSelection`，`limits` 是完整的 `FontLimits`。默认在条形下方
+居中，字体包围盒与最近条形边缘间隔 3 点；可选择 ABOVE、LEFT/RIGHT、校验字符显示、
+Code39/Codabar 起止符显示及 `alternateText`。RAW 模式的文字必须显式提供替代内容。
+文字复用 T19 字体契约，按标量顺序绘制，不做段落塑形；未声明文字时不读取字体。
+
+普通 Code128 用 `Barcode1D.FNC1` 至 `FNC4` 表示功能符，反斜线字符串保持字面含义。
+含显式 FNC4 时，AUTO 只选择 A/B 字符集，使数字串保留扩展字符的移位和锁定语义。
+GS1 输入采用 `[01]09501101530003[10]LOT` 这样的 AI 记法。
+RAW 用 `Barcode1D.rawCode128(104, 33, 34)` 指定起始符和数据符，库生成校验符及结束符。
+Code39/Codabar/ITF/MSI 可选 `generateChecksum(true)`；ITF 无校验时输入位数须为偶数，
+生成校验时须为奇数。零补位、去空格、非法字符替换均不会隐式发生。
+
+非法数据、模式选项、几何或大小分别返回 `BARCODE_INPUT_INVALID`、`BARCODE_MODE_INVALID`、
+`BARCODE_GEOMETRY_INVALID`、`BARCODE_LIMIT_EXCEEDED`。字体及工作流资源失败保留原有错误身份。
+传播出回调的失败保留既有目标，发布收据为 `NOT_ATTEMPTED`。In-Process 与 Linux Hardened Worker
+共享此契约；无签名的 INCREMENTAL 保留原始修订，签名和修改权限检查先于字体读取。
+完整模式、长度、校验、尺寸和文字规则以[英文契约](../one-dimensional-barcodes.md)为准。

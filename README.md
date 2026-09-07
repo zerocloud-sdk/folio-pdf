@@ -101,6 +101,13 @@ local chains do not certify Windows x86-64 or macOS x86-64/arm64; each required
 platform needs its own actual observations. See [HarfBuzz shaping](docs/harfbuzz-shaping.md)
 for selection, installation, execution-mode and migration contracts.
 
+T30 records every one-dimensional barcode family in both execution profiles:
+232 actual PDF and raster decodes, 230 label observations, independent
+reference rasters, and pinned syntax/visual checks. The
+[T30-only recording command](capabilities/README.md) protects existing evidence.
+The capability remains experimental while standards and dependency gates
+are incomplete.
+
 Validate or regenerate the machine-readable compatibility inventories and
 their cross-linked human-readable views with:
 
@@ -425,6 +432,15 @@ network source. See the authoritative
 [explicit font loading and positioned Unicode text guide](docs/font-loading.md)
 for API use, ownership, the closed format matrix, exact limits, stable
 failures, publication policy, evidence status, and exclusions.
+
+T30 adds `Barcode1D`, optional explicit-font `BarcodeText`, and
+`DrawBarcode1D.version1` for all Reference Suite one-dimensional families:
+Code128/GS1/raw and function variants, Code39/Full ASCII, Codabar, retail
+EAN/UPC and supplements, ITF, MSI, POSTNET and PLANET. Bars are PDF vectors;
+dimensions, checksums, labels and affine placement are explicit. Both Workflow
+profiles are supported. See the [barcode contract](docs/one-dimensional-barcodes.md)
+and [fixed T30 profile](capabilities/profiles/T30-one-dimensional-barcodes.md).
+The capability remains experimental while standards and dependency gates are open.
 
 Successful `WorkflowOutcome` values identify the capability, the actual
 selected execution profile, the selected Save Mode, safe diagnostics, and every Target
