@@ -1,0 +1,91 @@
+{
+  "schema-version": 1,
+  "profile": "ubuntu-24.04-linux-x86-64-jdk8",
+  "identity": {
+    "os": "ubuntu",
+    "os-version": "24.04",
+    "architecture": "x86-64",
+    "image": "docker.io/library/eclipse-temurin@sha256:a4da319337cb6504ba4fb663cbd72a75df5515efb31bbdc6fc4ad7ba8d710dee",
+    "os-release-sha256": "01af466feb100306498c86aa6bad1815e33036019aa34d4362c20f374ea5c829",
+    "jdk-major": 8,
+    "jdk-vendor": "Eclipse Adoptium",
+    "jdk-build": "1.8.0_502-b07",
+    "java-sha256": "fa55c40b8accf16501ed11ac41a2b6cf5f411d36ea083f935d4a87cd3a7131a8"
+  },
+  "host": {
+    "kernel": "6.8.0-136-generic",
+    "architecture": "x86-64"
+  },
+  "native-engine": {
+    "name": "harfbuzz",
+    "version": "10.2.0",
+    "helper-sha256": "169389e19e28bc96e3e878a9468671c31ccc6d5e7abbc3d38c4b8470526cdc65",
+    "library-sha256": "8a4c67dc9ead9b0752bcf256fa46c39eb3592e403a282bb341637ed989196e10",
+    "installation-sha256": "b17c12c25135d2aea3708dabcbd436e8ca1f1b88ce5e14d6bc8ebd3f2ad1b178"
+  },
+  "tools": [
+    {
+      "id": "qpdf",
+      "kind": "external-tool",
+      "version": "12.4.0",
+      "sha256": "9ac787a28597e8428289a12ba3fedafd74bdfb4b4da1be814722faf76f14f21b",
+      "chains": [
+        "syntax"
+      ]
+    },
+    {
+      "id": "pdfcpu",
+      "kind": "external-tool",
+      "version": "0.15.0",
+      "sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d",
+      "chains": [
+        "standards"
+      ]
+    },
+    {
+      "id": "arlington",
+      "kind": "external-tool",
+      "version": "0.81",
+      "sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458",
+      "chains": [
+        "standards"
+      ]
+    },
+    {
+      "id": "pdfium-cli",
+      "kind": "external-tool",
+      "version": "v0.11.2-pdfium-chromium-7881",
+      "sha256": "3ef3375c429ce665e834f933a028225bf28ac837695aaa69c6fc21facf6780ab",
+      "chains": [
+        "visual"
+      ]
+    },
+    {
+      "id": "imagemagick",
+      "kind": "external-tool",
+      "version": "7.1.2-30",
+      "sha256": "372af8a3fd61ef5f15c6331cde3e21f840eb165d8b533f34ed05d68736dd682e",
+      "chains": [
+        "visual"
+      ]
+    },
+    {
+      "id": "folio-pdf-t03",
+      "kind": "project-test",
+      "version": "0.1.0",
+      "sha256": "9f5e04f397e63dac95487a32ee2bb6f287a8424fa2d164e5fb06b19b2c806835",
+      "chains": [
+        "semantic"
+      ]
+    },
+    {
+      "id": "folio-pdf-t09",
+      "kind": "project-test",
+      "version": "0.1.0",
+      "sha256": "9f5e04f397e63dac95487a32ee2bb6f287a8424fa2d164e5fb06b19b2c806835",
+      "chains": [
+        "semantic"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+Patch rejected: PATCH_CYCLE_REJECTED: The Document Patch would introduce a reference cycle.
+Exception in thread "main" net.zerocloud.pdf.DocumentFailure: The Document Patch would introduce a reference cycle.
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.failure(PdfBoxWorkflowEngine.java:292)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.executeWithDocument(PdfBoxWorkflowEngine.java:350)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.executeChecked(PdfBoxWorkflowEngine.java:238)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.execute(PdfBoxWorkflowEngine.java:41)
+	at net.zerocloud.pdf.DocumentWorkflow.executeOnce(DocumentWorkflow.java:184)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:103)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:64)
+	at CoreStructureProbe.main(CoreStructureProbe.java:13)

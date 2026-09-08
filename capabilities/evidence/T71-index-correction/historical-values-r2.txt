@@ -1,0 +1,23 @@
+T09 environment JDK 8
+T09 certification JDK 8 / IN_PROCESS
+T09 certification JDK 8 / HARDENED_WORKER
+T09 environment JDK 11
+T09 certification JDK 11 / IN_PROCESS
+T09 certification JDK 11 / HARDENED_WORKER
+T09 environment JDK 17
+T09 certification JDK 17 / IN_PROCESS
+T09 certification JDK 17 / HARDENED_WORKER
+T09 environment JDK 21
+T09 certification JDK 21 / IN_PROCESS
+T09 certification JDK 21 / HARDENED_WORKER
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf-t71-candidate/scripts/t03-foundation.py", line 756, in <module>
+    main()
+  File "/home/ubuntu/IdeaProjects/open-pdf-t71-candidate/scripts/t03-foundation.py", line 752, in main
+    certify(root, root / args.output, contract, helper, args.obligation)
+  File "/home/ubuntu/IdeaProjects/open-pdf-t71-candidate/scripts/t03-foundation.py", line 682, in certify
+    merged = publish_index(root, output)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/IdeaProjects/open-pdf-t71-candidate/scripts/t03-foundation.py", line 393, in publish_index
+    raise ValueError('New evidence is incomplete, stale or does not match the observed identities')
+ValueError: New evidence is incomplete, stale or does not match the observed identities

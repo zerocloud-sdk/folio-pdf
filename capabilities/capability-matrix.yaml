@@ -161,6 +161,8 @@ capabilities:
     native-interface:
       entry-point: net.zerocloud.pdf.DocumentWorkflow#execute
       patch: net.zerocloud.pdf.DocumentPatch
+      value-path: net.zerocloud.pdf.PdfValuePath
+      stream-encoding: net.zerocloud.pdf.PdfStreamEncoding
       object-reference: net.zerocloud.pdf.ObjectReference
       value: net.zerocloud.pdf.PdfValue
       value-kind: net.zerocloud.pdf.PdfValueKind
@@ -170,23 +172,98 @@ capabilities:
       failure: net.zerocloud.pdf.DocumentFailure
       failure-code: net.zerocloud.pdf.DocumentFailureCode
     migration-facade:
-      stable: []
+      stable:
+        - itext7.kernel.pdf-writer.constructor-output-stream
+        - itext7.kernel.pdf-reader.constructor-input-stream
+        - itext7.kernel.pdf-document.constructor-reader-writer
+        - itext7.kernel.pdf-document.get-catalog
+        - itext7.kernel.pdf-catalog.get-pdf-object
+        - itext7.kernel.pdf-object.constant-array
+        - itext7.kernel.pdf-object.constant-boolean
+        - itext7.kernel.pdf-object.constant-dictionary
+        - itext7.kernel.pdf-object.constant-indirect-reference
+        - itext7.kernel.pdf-object.constant-name
+        - itext7.kernel.pdf-object.constant-null
+        - itext7.kernel.pdf-object.constant-number
+        - itext7.kernel.pdf-object.constant-stream
+        - itext7.kernel.pdf-object.constant-string
+        - itext7.kernel.pdf-object.get-type
+        - itext7.kernel.pdf-object.get-indirect-reference
+        - itext7.kernel.pdf-object.is-array
+        - itext7.kernel.pdf-object.is-boolean
+        - itext7.kernel.pdf-object.is-dictionary
+        - itext7.kernel.pdf-object.is-indirect-reference
+        - itext7.kernel.pdf-object.is-name
+        - itext7.kernel.pdf-object.is-null
+        - itext7.kernel.pdf-object.is-number
+        - itext7.kernel.pdf-object.is-stream
+        - itext7.kernel.pdf-object.is-string
+        - itext7.kernel.pdf-null.get-type
+        - itext7.kernel.pdf-boolean.get-type
+        - itext7.kernel.pdf-number.get-type
+        - itext7.kernel.pdf-string.get-type
+        - itext7.kernel.pdf-name.get-type
+        - itext7.kernel.pdf-array.get-type
+        - itext7.kernel.pdf-dictionary.get-type
+        - itext7.kernel.pdf-stream.get-type
+        - itext7.kernel.pdf-indirect-reference.get-type
+        - itext7.kernel.pdf-null.constructor
+        - itext7.kernel.pdf-null.constant-pdf-null
+        - itext7.kernel.pdf-boolean.constructor-boolean
+        - itext7.kernel.pdf-boolean.get-value
+        - itext7.kernel.pdf-boolean.constant-true
+        - itext7.kernel.pdf-boolean.constant-false
+        - itext7.kernel.pdf-number.constructor-int
+        - itext7.kernel.pdf-number.set-value-int
+        - itext7.kernel.pdf-number.constructor-double
+        - itext7.kernel.pdf-number.set-value-double
+        - itext7.kernel.pdf-number.int-value
+        - itext7.kernel.pdf-number.double-value
+        - itext7.kernel.pdf-string.constructor-string
+        - itext7.kernel.pdf-string.constructor-bytes
+        - itext7.kernel.pdf-string.get-value
+        - itext7.kernel.pdf-string.get-value-bytes
+        - itext7.kernel.pdf-name.constructor-string
+        - itext7.kernel.pdf-name.get-value
+        - itext7.kernel.pdf-name.equals
+        - itext7.kernel.pdf-name.hash-code
+        - itext7.kernel.pdf-indirect-reference.equals
+        - itext7.kernel.pdf-indirect-reference.hash-code
+        - itext7.kernel.pdf-array.constructor
+        - itext7.kernel.pdf-array.constructor-list
+        - itext7.kernel.pdf-array.size
+        - itext7.kernel.pdf-array.get
+        - itext7.kernel.pdf-array.get-as-direct
+        - itext7.kernel.pdf-array.set
+        - itext7.kernel.pdf-array.add
+        - itext7.kernel.pdf-array.add-at-index
+        - itext7.kernel.pdf-array.remove
+        - itext7.kernel.pdf-dictionary.constructor
+        - itext7.kernel.pdf-dictionary.size
+        - itext7.kernel.pdf-dictionary.get
+        - itext7.kernel.pdf-dictionary.get-as-direct
+        - itext7.kernel.pdf-dictionary.contains-key
+        - itext7.kernel.pdf-dictionary.key-set
+        - itext7.kernel.pdf-dictionary.put
+        - itext7.kernel.pdf-dictionary.remove
+        - itext7.kernel.pdf-stream.constructor-bytes
+        - itext7.kernel.pdf-stream.get-bytes
+        - itext7.kernel.pdf-stream.set-data
+        - itext7.kernel.pdf-indirect-reference.get-refers-to
       preview: []
     limitations:
-      - T09 applies version-1 dictionary-entry replacements in REWRITE workflows; array-element replacement, entry removal, and broader structural editing operations remain future capability slices.
-      - T15 classifies a validated DocumentPatch as representable for unsigned INCREMENTAL publication; Existing Signatures authorize no DocumentPatch in version 1.
-      - Inspection limits are explicit per-query traversal and decoded-stream bounds and compose with T20's shared object, nesting, decompression, memory, time, storage, input, page, pixel, and concurrency policy.
-      - T09 runs through the trusted in-process adapter by default; T21's opt-in Hardened Worker transports the same bounded PDF Value and Document Patch contract through closed version-1 codecs.
-      - Stream patches accept decoded bytes and reject engine-owned encoding metadata; preservation-sensitive filter and incremental stream changes are not claimed.
+      - Patch version 2 supports ordered dictionary set/remove, array set/insert/remove, value replacement and stream data replacement through nested paths; existing dictionary-only version-1 requests retain their representation. Low-level Patches must preserve valid core structure and do not grant downstream feature semantics.
+      - Unsigned REWRITE and INCREMENTAL preserve Source bytes and existing indirect identity. Existing Signatures authorize no DocumentPatch; version and password-security state remain owned by their explicit output policies.
+      - Inspection uses bounded Session views. Native query limits are explicit; the Facade uses 100000 traversed values and 64 MiB cumulative decoded bytes per inspection. Workflow resource exhaustion is terminal; ordinary Patch and inspection-limit failures remain recoverable. Backend materialization has a finite 256-level depth bound before recursive conversion.
+      - Native IN_PROCESS and HARDENED_WORKER share the closed value and versioned Patch codecs. The mapped Facade owns one IN_PROCESS Native Session per Document, uses REWRITE publication, and preserves caller-owned streams; Native execution and policy controls are not Facade mappings.
+      - Stream replacements accept decoded bytes with explicit unfiltered or Flate encoding; Length, Filter, DecodeParms and external-file metadata remain engine-owned. Untouched encoded bytes, unknown resources and attributes are preserved; unknown decoding fails safely and external-file streams are never resolved.
     dependency-gates:
       - capability: document.blank.create-publish-reopen
         required-status: compatible
-    promotion-gates:
-      - ticket: T06
-        requirement: Complete the independent acceptance evidence required before compatibility.
+    promotion-gates: []
     acceptance-profile:
       id: T09-document-value-inspection-patch
-      state: experimental
+      state: compatible
       mandatory-evidence:
         - syntax
         - standards
@@ -206,12 +283,38 @@ capabilities:
       - kind: cross-jdk-contract
         path: scripts/verify-jdk-matrix.sh
         assertion: Maven verification runs the T09 public workflow contract on JDK 8, 11, 17, and 21.
-    acceptance-evidence: []
+      - kind: facade-values-consumer-contract
+        path: pdf-migration-itext7/src/test/java/net/zerocloud/pdf/itext7/consumer/PdfValuesFacadeTest.java
+        assertion: Both interfaces reopen equivalent values and mutations; Facade failures retain real Native causes, ownership, bounds, expiry, protected state and unchanged resources.
+      - kind: facade-artifact-contract
+        path: pdf-migration-itext7/src/test/java/net/zerocloud/pdf/migration/itext7/contract/JarContractIT.java
+        assertion: Actual Stable and Preview jars expose the frozen types, fields, signatures, generic and exception contracts with Java 8 classes.
+    acceptance-evidence:
+      - chain: syntax
+        result: pass
+        record: capabilities/evidence/T71-values-syntax.md
+        producer: {kind: external-tool, name: qpdf, version: '12.4.0'}
+      - chain: standards
+        result: pass
+        record: capabilities/evidence/T71-values-standards.md
+        producer: {kind: external-tool, name: arlington, version: '0.81'}
+      - chain: semantic
+        result: pass
+        record: capabilities/evidence/T71-values-semantic.md
+        producer: {kind: project-test, name: folio-pdf-t09, version: '0.1.0'}
+      - chain: visual
+        result: pass
+        record: capabilities/evidence/T71-values-visual.md
+        producer: {kind: external-tool, name: pdfium-cli, version: 'v0.11.2-pdfium-chromium-7881'}
     provenance:
       path: PROVENANCE.md
-      record: T09 document-value-inspection-patch record
-    certified-platforms: []
-    status: experimental
+      record: T09 Foundation values expansion (#71)
+    certified-platforms:
+      - ubuntu-24.04-linux-x86-64-jdk8
+      - ubuntu-24.04-linux-x86-64-jdk11
+      - ubuntu-24.04-linux-x86-64-jdk17
+      - ubuntu-24.04-linux-x86-64-jdk21
+    status: compatible
 
   - id: document.page.manipulate-merge-split
     context: document-engine

@@ -730,11 +730,42 @@ final class WorkerCommandCodec {
             output.writeInt(DOCUMENT_PATCH);
             output.writeInt(value.getVersion());
             output.writeInt(value.getChanges().size());
-            for (DocumentPatch.DictionaryEntryChange change
-                    : value.getChanges()) {
+            for (DocumentPatch.Change change : value.getChanges()) {
+                if (value.getVersion() == DocumentPatch.VERSION_2) {
+                    output.writeInt(change.getOperation().getWireId());
+                }
                 references.write(output, change.getTarget());
-                output.writeString(change.getName().getValue());
-                writePdfValue(output, change.getValue(), references, 0);
+                if (value.getVersion() == DocumentPatch.VERSION_2) {
+                    output.writeInt(change.getPath().getSteps().size());
+                    for (PdfValuePath.Step step : change.getPath().getSteps()) {
+                        output.writeBoolean(step.getName() != null);
+                        if (step.getName() != null) {
+                            output.writeString(step.getName().getValue());
+                        } else {
+                            output.writeInt(step.getIndex());
+                        }
+                    }
+                }
+                if (change.getOperation() == DocumentPatch.Operation.REPLACE_STREAM_DATA) {
+                    output.writeString(change.getStreamEncoding().name());
+                    output.writeBytes(change.getStreamData());
+                } else if (change.getOperation().targetsArray()) {
+                    output.writeInt(change.getIndex());
+                } else if (change.getOperation() != DocumentPatch.Operation.REPLACE_VALUE) {
+                    output.writeString(change.getName().getValue());
+                }
+                if (change.getOperation().hasValue()) {
+                    try {
+                        writePdfValue(output, change.getValue(), references, 0);
+                    } catch (DocumentFailure failure) {
+                        if (failure.getCode() == DocumentFailureCode.PATCH_VALUE_REJECTED) {
+                            throw PdfBoxValueAdapter.failure(
+                                    DocumentFailureCode.PATCH_VALUE_REJECTED,
+                                    "The Document Patch contains a value not owned by Folio PDF.");
+                        }
+                        throw failure;
+                    }
+                }
             }
             return;
         }
@@ -978,14 +1009,59 @@ final class WorkerCommandCodec {
     private static DocumentPatch readDocumentPatch(
             WorkerCodecIO.Input input,
             WorkerReferenceRegistry references) throws DocumentFailure {
-        requireVersion(input.readInt(), DocumentPatch.VERSION_1);
+        int version = input.readInt();
+        if (version != DocumentPatch.VERSION_1 && version != DocumentPatch.VERSION_2) {
+            throw rejected("A Worker Document Patch version is unsupported.");
+        }
         int count = readCount(input, "Document Patch change");
         DocumentPatch.Builder builder = DocumentPatch.builder();
         for (int index = 0; index < count; index++) {
-            builder.setDictionaryEntry(
-                    references.read(input),
-                    PdfName.of(input.readString()),
-                    readPdfValue(input, references, 0));
+            DocumentPatch.Operation operation = version == DocumentPatch.VERSION_1
+                    ? DocumentPatch.Operation.SET_DICTIONARY_ENTRY
+                    : DocumentPatch.Operation.fromWireId(input.readInt());
+            ObjectReference target = references.read(input);
+            PdfValuePath path = PdfValuePath.root(target);
+            if (version == DocumentPatch.VERSION_2) {
+                int steps = readCount(input, "Document Patch path step");
+                input.requireNestingDepth(steps);
+                for (int step = 0; step < steps; step++) {
+                    path = input.readBoolean()
+                            ? path.dictionaryEntry(PdfName.of(input.readString()))
+                            : path.arrayElement(input.readInt());
+                }
+            }
+            switch (operation) {
+                case REPLACE_STREAM_DATA:
+                    PdfStreamEncoding encoding = enumValue(PdfStreamEncoding.class, input.readString(), "PDF stream encoding");
+                    builder.replaceStreamData(path, input.readBytes(2), encoding);
+                    break;
+                case REPLACE_VALUE:
+                    builder.replaceValue(path, readPdfValue(input, references, 0));
+                    break;
+                case SET_ARRAY_ELEMENT:
+                    builder.setArrayElement(path, input.readInt(), readPdfValue(input, references, 0));
+                    break;
+                case INSERT_ARRAY_ELEMENT:
+                    builder.insertArrayElement(path, input.readInt(), readPdfValue(input, references, 0));
+                    break;
+                case REMOVE_ARRAY_ELEMENT:
+                    builder.removeArrayElement(path, input.readInt());
+                    break;
+                case REMOVE_DICTIONARY_ENTRY:
+                    builder.removeDictionaryEntry(path, PdfName.of(input.readString()));
+                    break;
+                case SET_DICTIONARY_ENTRY:
+                    PdfName name = PdfName.of(input.readString());
+                    PdfValue value = readPdfValue(input, references, 0);
+                    if (version == DocumentPatch.VERSION_2) {
+                        builder.setDictionaryEntry(path, name, value);
+                    } else {
+                        builder.setDictionaryEntry(target, name, value);
+                    }
+                    break;
+                default:
+                    throw rejected("A Worker Document Patch operation is unsupported.");
+            }
         }
         if (count == 0) {
             throw rejected("A Worker Document Patch is empty.");

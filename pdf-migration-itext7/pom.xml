@@ -38,6 +38,14 @@
   </dependencies>
 
   <build>
+    <testResources>
+      <testResource>
+        <directory>${project.basedir}/../pdf-document/src/test/resources</directory>
+        <includes>
+          <include>net/zerocloud/pdf/consumer/t09/*.pdf</include>
+        </includes>
+      </testResource>
+    </testResources>
     <resources>
       <resource>
         <directory>src/main/resources</directory>

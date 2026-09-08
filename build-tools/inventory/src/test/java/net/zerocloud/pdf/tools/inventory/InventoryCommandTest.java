@@ -36,7 +36,7 @@ public final class InventoryCommandTest {
         assertEquals(result.output, 0, result.exitCode);
         assertTrue(result.output, result.output.matches(
                 "(?s).*Inventory validation passed: [0-9]+ capabilities, "
-                        + "12 facade surfaces, [0-9]+ exclusions\\..*"));
+                        + "89 facade surfaces, [0-9]+ exclusions\\..*"));
 
         ValidationResult validation = new InventoryValidator().validate(
                 repositoryRoot,
@@ -66,10 +66,10 @@ public final class InventoryCommandTest {
                 "`document.blank.create-publish-reopen`"));
         assertTrue(capabilities.contains(
                 "`document.hardened-worker.recovery-scale`"));
-        assertTrue(facades.contains("- Stable entries: `12`"));
+        assertTrue(facades.contains("- Stable entries: `89`"));
         assertTrue(facades.contains("- Preview additions: `0`"));
-        assertTrue(facades.contains("- Preview artifact entries: `12`"));
-        assertTrue(facades.contains("- Explicit capability exclusions: `22`"));
+        assertTrue(facades.contains("- Preview artifact entries: `89`"));
+        assertTrue(facades.contains("- Explicit capability exclusions: `21`"));
         assertTrue(capabilities.contains("`composition.barcodes.one-dimensional`"));
         assertTrue(facades.contains("`composition.barcodes.one-dimensional`"));
         assertTrue(capabilities.contains("`composition.barcodes.two-dimensional`"));

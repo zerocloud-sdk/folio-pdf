@@ -16,6 +16,13 @@ capabilities/evidence/T30-r2/** -text whitespace=-blank-at-eol,-blank-at-eof
 capabilities/evidence/T70-*/**/*.txt -text whitespace=-blank-at-eol,-blank-at-eof
 capabilities/evidence/foundation/T70-*/**/*.txt -text whitespace=-blank-at-eol,-blank-at-eof
 
+# Preserve exact T71 raw tool output and recorded evidence hashes.
+capabilities/evidence/T71-*/**/*.txt -text whitespace=-blank-at-eol,-blank-at-eof
+capabilities/evidence/foundation/T71-*/**/*.txt -text whitespace=-blank-at-eol,-blank-at-eof
+
+# Preserve the reviewed checklist bytes bound by the final delivery receipt.
+capabilities/evidence/T71-delivery/completion-checklist.md -text whitespace=-blank-at-eof
+
 *.sh text eol=lf
 mvnw text eol=lf
 *.cmd text eol=crlf

@@ -1,8 +1,9 @@
 # T03 transaction certification
 
 T70 certifies `document.blank.create-publish-reopen` and the `transactions`
-Foundation obligation. The Stable Facade exposes the existing 12 lifecycle
-entries. This does not certify another capability or the whole Foundation Release.
+Foundation obligation. Its Facade scope covers the existing 12 lifecycle
+entries. The values family is specified separately by [T09](t09-certification.md).
+This does not certify another capability or the whole Foundation Release.
 The [Foundation Evidence inventory](../capabilities/foundation-evidence.yaml)
 is the authority for the current candidate and eight environment/execution tuples.
 A changed source, declaration, candidate artifact, profile or runtime configuration
@@ -26,7 +27,8 @@ profile parameter among its 12 mappings and keeps its IN_PROCESS behavior.
 The selected Native execution profile is never attributed to a Facade operation.
 The Facade Surface lists disjoint Stable and Preview-addition tiers. Actual jar
 reflection checks Stable against the Stable tier and Preview against their union.
-All six public classes must reject coexistence in both jar orders.
+All public classes must reject coexistence in both jar orders; the T09 extension
+also verifies the final 17-type/89-member jar surface.
 
 For each Native and Stable one-page output, four independent records retain exact
 PDF SHA-256, raw findings and controls:
@@ -67,8 +69,9 @@ observations cannot produce PASS. An invalid standards result is FAIL.
 
 The host runner uses Python 3.12 and PyYAML 6.0.1, Podman and the immutable images
 in `foundation-environments.yaml`. It mounts the host's Python executable,
-standard library and Expat read-only solely to run the existing live native-engine
-observer inside the unchanged pinned image. Observer identities and raw loaded
+standard library and Expat read-only to run the existing live native-engine
+observer inside the unchanged pinned image. T09 also uses it for supplemental
+raw-stream observations within its own scope. Observer identities and raw loaded
 file mappings are retained; this startup observation does not certify shaping.
 
 ```sh
@@ -92,10 +95,14 @@ harness; leftover jars cannot join it.
 `certify` requires a fresh output directory and the unchanged build receipt, and
 runs with `--network=none` and read-only repository inputs. The initial candidate
 identity is obtained from the existing inventory checker using a provisional
-inventory that is restored immediately, including on failure. The current
-Foundation inventory is replaced only after all eight observations pass;
+inventory read separately through `scripts/inventory readiness <index>`. The
+current authority is never temporarily replaced for identity calculation.
+The Foundation inventory is atomically replaced under a repository lock only
+after all eight observations pass and the prior index remains unchanged;
 raw command arguments, JVM options, policies, locale/timezone and configuration
-input hashes are retained separately for every tuple.
+input hashes are retained separately for every tuple. Still-valid certifications
+for other obligations keep their original identities and recursively verified
+files. Historical records are never rewritten or relabeled.
 
 The minimal JDK images do not provide all shared libraries needed by the existing
 ImageMagick AppImage. T03 uses five pinned Ubuntu 24.04 libraries in its private

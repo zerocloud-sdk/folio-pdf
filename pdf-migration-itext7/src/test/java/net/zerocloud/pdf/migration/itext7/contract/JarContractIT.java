@@ -9,6 +9,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.URL;
@@ -45,7 +46,7 @@ public final class JarContractIT {
             "META-INF/folio-pdf/migration-itext7.edition";
 
     @Test
-    public void bothJava8ArtifactsContainTheExactLifecycleSurface() throws Exception {
+    public void bothJava8ArtifactsContainTheExactLifecycleAndValueSurface() throws Exception {
         Path previewArtifact = Paths.get(ContractTestProperties.required("artifactPath"));
         Path stableArtifact = Paths.get(
                 ContractTestProperties.required("stableArtifactPath"));
@@ -58,6 +59,17 @@ public final class JarContractIT {
                 "net/zerocloud/pdf/itext7/kernel/pdf/PdfPage.class",
                 "net/zerocloud/pdf/itext7/kernel/pdf/PdfReader.class",
                 "net/zerocloud/pdf/itext7/kernel/pdf/PdfWriter.class",
+                "net/zerocloud/pdf/itext7/kernel/pdf/PdfObject.class",
+                "net/zerocloud/pdf/itext7/kernel/pdf/PdfNull.class",
+                "net/zerocloud/pdf/itext7/kernel/pdf/PdfBoolean.class",
+                "net/zerocloud/pdf/itext7/kernel/pdf/PdfNumber.class",
+                "net/zerocloud/pdf/itext7/kernel/pdf/PdfString.class",
+                "net/zerocloud/pdf/itext7/kernel/pdf/PdfName.class",
+                "net/zerocloud/pdf/itext7/kernel/pdf/PdfArray.class",
+                "net/zerocloud/pdf/itext7/kernel/pdf/PdfDictionary.class",
+                "net/zerocloud/pdf/itext7/kernel/pdf/PdfStream.class",
+                "net/zerocloud/pdf/itext7/kernel/pdf/PdfIndirectReference.class",
+                "net/zerocloud/pdf/itext7/kernel/pdf/PdfCatalog.class",
                 "net/zerocloud/pdf/itext7/layout/Document.class"));
 
         try (JarFile preview = new JarFile(previewArtifact.toFile());
@@ -153,6 +165,11 @@ public final class JarContractIT {
                     observed.add(type.getName() + "#" + method.getName() + parameters(method.getParameterTypes()));
                 }
             }
+            for (Field field : type.getDeclaredFields()) {
+                if (Modifier.isPublic(field.getModifiers()) || Modifier.isProtected(field.getModifiers())) {
+                    observed.add(type.getName() + "#" + field.getName());
+                }
+            }
             if (before == observed.size()) {
                 observed.add(type.getName() + "#<type>");
             }
@@ -168,18 +185,22 @@ public final class JarContractIT {
         Class<?> layout = loader.loadClass("net.zerocloud.pdf.itext7.layout.Document");
         Class<?> exception = loader.loadClass(PdfException.class.getName());
         assertConstructors(writer,
-                "PdfWriter(java.lang.String) throws java.io.FileNotFoundException");
+                "PdfWriter(java.lang.String) throws java.io.FileNotFoundException",
+                "PdfWriter(java.io.OutputStream)");
         assertMethods(writer);
 
         assertConstructors(reader,
-                "PdfReader(java.lang.String) throws java.io.IOException");
+                "PdfReader(java.lang.String) throws java.io.IOException",
+                "PdfReader(java.io.InputStream) throws java.io.IOException");
         assertMethods(reader, "void close() throws java.io.IOException");
 
         assertConstructors(document,
                 "PdfDocument(net.zerocloud.pdf.itext7.kernel.pdf.PdfReader)",
+                "PdfDocument(net.zerocloud.pdf.itext7.kernel.pdf.PdfReader,net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter)",
                 "PdfDocument(net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter)");
         assertMethods(document,
                 "net.zerocloud.pdf.itext7.kernel.pdf.PdfPage addNewPage()",
+                "net.zerocloud.pdf.itext7.kernel.pdf.PdfCatalog getCatalog()",
                 "int getNumberOfPages()",
                 "void close()");
 
@@ -193,6 +214,70 @@ public final class JarContractIT {
         assertConstructors(exception,
                 "PdfException(java.lang.String,java.lang.Throwable)");
         assertMethods(exception);
+        assertValueSurface(loader);
+    }
+
+    private static void assertValueSurface(ClassLoader loader) throws Exception {
+        String prefix = "net.zerocloud.pdf.itext7.kernel.pdf.";
+        Class<?> object = loader.loadClass(prefix + "PdfObject");
+        assertConstructors(object);
+        assertMethods(object, "byte getType()", prefix + "PdfIndirectReference getIndirectReference()",
+                "boolean isArray()", "boolean isBoolean()", "boolean isDictionary()",
+                "boolean isIndirectReference()", "boolean isName()", "boolean isNull()",
+                "boolean isNumber()", "boolean isStream()", "boolean isString()");
+        String[] kinds = {"ARRAY", "BOOLEAN", "DICTIONARY", "INDIRECT_REFERENCE", "NAME", "NULL", "NUMBER", "STREAM", "STRING"};
+        byte[] codes = {1, 2, 3, 5, 6, 7, 8, 9, 10};
+        for (int index = 0; index < kinds.length; index++) {
+            Field constant = object.getField(kinds[index]);
+            assertEquals(byte.class, constant.getType());
+            assertEquals(codes[index], constant.getByte(null));
+        }
+        Class<?> nil = loader.loadClass(prefix + "PdfNull");
+        assertConstructors(nil, "PdfNull()");
+        assertMethods(nil, "byte getType()");
+        assertEquals(nil, nil.getField("PDF_NULL").getType());
+        assertNotNull(nil.getField("PDF_NULL").get(null));
+        Class<?> bool = loader.loadClass(prefix + "PdfBoolean");
+        assertConstructors(bool, "PdfBoolean(boolean)");
+        assertMethods(bool, "byte getType()", "boolean getValue()");
+        assertEquals(Boolean.TRUE, bool.getMethod("getValue").invoke(bool.getField("TRUE").get(null)));
+        assertEquals(Boolean.FALSE, bool.getMethod("getValue").invoke(bool.getField("FALSE").get(null)));
+        Class<?> number = loader.loadClass(prefix + "PdfNumber");
+        assertConstructors(number, "PdfNumber(int)", "PdfNumber(double)");
+        assertMethods(number, "byte getType()", "int intValue()", "double doubleValue()",
+                "void setValue(int)", "void setValue(double)");
+        Class<?> string = loader.loadClass(prefix + "PdfString");
+        assertConstructors(string, "PdfString(java.lang.String)", "PdfString(byte[])");
+        assertMethods(string, "byte getType()", "java.lang.String getValue()", "byte[] getValueBytes()");
+        Class<?> name = loader.loadClass(prefix + "PdfName");
+        assertConstructors(name, "PdfName(java.lang.String)");
+        assertMethods(name, "byte getType()", "java.lang.String getValue()", "boolean equals(java.lang.Object)", "int hashCode()");
+        Class<?> array = loader.loadClass(prefix + "PdfArray");
+        assertConstructors(array, "PdfArray()", "PdfArray(java.util.List)");
+        assertEquals("java.util.List<? extends " + prefix + "PdfObject>",
+                array.getConstructor(List.class).getGenericParameterTypes()[0].getTypeName());
+        assertMethods(array, "byte getType()", "int size()", prefix + "PdfObject get(int)",
+                prefix + "PdfObject get(int,boolean)", prefix + "PdfObject set(int," + prefix + "PdfObject)",
+                "void add(" + prefix + "PdfObject)", "void add(int," + prefix + "PdfObject)", "void remove(int)");
+        Class<?> dictionary = loader.loadClass(prefix + "PdfDictionary");
+        assertConstructors(dictionary, "PdfDictionary()");
+        assertMethods(dictionary, "byte getType()", "int size()", prefix + "PdfObject get(" + prefix + "PdfName)",
+                prefix + "PdfObject get(" + prefix + "PdfName,boolean)", "java.util.Set keySet()",
+                "boolean containsKey(" + prefix + "PdfName)",
+                prefix + "PdfObject put(" + prefix + "PdfName," + prefix + "PdfObject)",
+                prefix + "PdfObject remove(" + prefix + "PdfName)");
+        assertEquals("java.util.Set<" + prefix + "PdfName>", dictionary.getMethod("keySet").getGenericReturnType().getTypeName());
+        Class<?> stream = loader.loadClass(prefix + "PdfStream");
+        assertEquals(dictionary, stream.getSuperclass());
+        assertConstructors(stream, "PdfStream(byte[])");
+        assertMethods(stream, "byte getType()", "byte[] getBytes()", "void setData(byte[])");
+        Class<?> reference = loader.loadClass(prefix + "PdfIndirectReference");
+        assertConstructors(reference);
+        assertMethods(reference, "byte getType()", prefix + "PdfObject getRefersTo()",
+                "boolean equals(java.lang.Object)", "int hashCode()");
+        Class<?> catalog = loader.loadClass(prefix + "PdfCatalog");
+        assertConstructors(catalog);
+        assertMethods(catalog, prefix + "PdfDictionary getPdfObject()");
     }
 
     private static void assertConstructors(Class<?> type, String... expected) {
@@ -216,7 +301,7 @@ public final class JarContractIT {
             if (Modifier.isPublic(method.getModifiers())
                     || Modifier.isProtected(method.getModifiers())) {
                 assertEquals("No generic method is declared", 0, method.getTypeParameters().length);
-                actual.add(method.getReturnType().getName()
+                actual.add(method.getReturnType().getTypeName()
                         + " " + method.getName()
                         + parameters(method.getParameterTypes())
                         + exceptions(method.getExceptionTypes()));
@@ -231,7 +316,7 @@ public final class JarContractIT {
             if (index > 0) {
                 signature.append(',');
             }
-            signature.append(parameterTypes[index].getName());
+            signature.append(parameterTypes[index].getTypeName());
         }
         return signature.append(')').toString();
     }
@@ -272,10 +357,11 @@ public final class JarContractIT {
                 if (Modifier.isPublic(candidate.getModifiers())) {
                     assertEquals("No generic type is declared by this surface", 0,
                             candidate.getTypeParameters().length);
-                    for (java.lang.reflect.Field field : candidate.getDeclaredFields()) {
-                        assertFalse("Undeclared public or protected field: " + field,
-                                Modifier.isPublic(field.getModifiers())
-                                    || Modifier.isProtected(field.getModifiers()));
+                    for (Field field : candidate.getDeclaredFields()) {
+                        if (Modifier.isPublic(field.getModifiers()) || Modifier.isProtected(field.getModifiers())) {
+                            assertEquals("Mapped fields must be immutable public constants", Modifier.PUBLIC | Modifier.STATIC | Modifier.FINAL,
+                                    field.getModifiers());
+                        }
                     }
                     result.add(entry.getName());
                 }

@@ -71,7 +71,7 @@ A missing capability, required behavior, compatible dependency, independent evid
 | Obligation | Capability or subcapability | Slice | Status |
 | --- | --- | --- | --- |
 | [`transactions`](#transactions) | `document.blank.create-publish-reopen` | [#70](https://github.com/zerocloud-sdk/folio-pdf/issues/70) | satisfied |
-| [`values`](#values) | `document.value.inspect-patch` | [#71](https://github.com/zerocloud-sdk/folio-pdf/issues/71) | blocked |
+| [`values`](#values) | `document.value.inspect-patch` | [#71](https://github.com/zerocloud-sdk/folio-pdf/issues/71) | satisfied |
 | [`pages`](#pages) | `document.page.manipulate-merge-split` | [#72](https://github.com/zerocloud-sdk/folio-pdf/issues/72) | blocked |
 | [`metadata`](#metadata) | `document.metadata.outlines-destinations-attachments` | [#73](https://github.com/zerocloud-sdk/folio-pdf/issues/73) | blocked |
 | [`annotations`](#annotations) | `document.annotations-actions.manage` | [#74](https://github.com/zerocloud-sdk/folio-pdf/issues/74) | blocked |
@@ -138,25 +138,9 @@ Inspect all nine backend-neutral PDF Value kinds through bounded Session views a
 - Mandatory chains: `syntax, standards, semantic, visual`
 - Dependencies: `transactions`
 - Aggregate members: none
-- Required Facade family: kernel PDF Values and patches (`com.itextpdf.kernel.pdf.`); mappings: **missing**
+- Required Facade family: kernel PDF Values and patches (`com.itextpdf.kernel.pdf.`); mappings: `itext7.kernel.pdf-writer.constructor-output-stream, itext7.kernel.pdf-reader.constructor-input-stream, itext7.kernel.pdf-document.constructor-reader-writer, itext7.kernel.pdf-document.get-catalog, itext7.kernel.pdf-catalog.get-pdf-object, itext7.kernel.pdf-object.constant-array, itext7.kernel.pdf-object.constant-boolean, itext7.kernel.pdf-object.constant-dictionary, itext7.kernel.pdf-object.constant-indirect-reference, itext7.kernel.pdf-object.constant-name, itext7.kernel.pdf-object.constant-null, itext7.kernel.pdf-object.constant-number, itext7.kernel.pdf-object.constant-stream, itext7.kernel.pdf-object.constant-string, itext7.kernel.pdf-object.get-type, itext7.kernel.pdf-object.get-indirect-reference, itext7.kernel.pdf-object.is-array, itext7.kernel.pdf-object.is-boolean, itext7.kernel.pdf-object.is-dictionary, itext7.kernel.pdf-object.is-indirect-reference, itext7.kernel.pdf-object.is-name, itext7.kernel.pdf-object.is-null, itext7.kernel.pdf-object.is-number, itext7.kernel.pdf-object.is-stream, itext7.kernel.pdf-object.is-string, itext7.kernel.pdf-null.get-type, itext7.kernel.pdf-boolean.get-type, itext7.kernel.pdf-number.get-type, itext7.kernel.pdf-string.get-type, itext7.kernel.pdf-name.get-type, itext7.kernel.pdf-array.get-type, itext7.kernel.pdf-dictionary.get-type, itext7.kernel.pdf-stream.get-type, itext7.kernel.pdf-indirect-reference.get-type, itext7.kernel.pdf-null.constructor, itext7.kernel.pdf-null.constant-pdf-null, itext7.kernel.pdf-boolean.constructor-boolean, itext7.kernel.pdf-boolean.get-value, itext7.kernel.pdf-boolean.constant-true, itext7.kernel.pdf-boolean.constant-false, itext7.kernel.pdf-number.constructor-int, itext7.kernel.pdf-number.set-value-int, itext7.kernel.pdf-number.constructor-double, itext7.kernel.pdf-number.set-value-double, itext7.kernel.pdf-number.int-value, itext7.kernel.pdf-number.double-value, itext7.kernel.pdf-string.constructor-string, itext7.kernel.pdf-string.constructor-bytes, itext7.kernel.pdf-string.get-value, itext7.kernel.pdf-string.get-value-bytes, itext7.kernel.pdf-name.constructor-string, itext7.kernel.pdf-name.get-value, itext7.kernel.pdf-name.equals, itext7.kernel.pdf-name.hash-code, itext7.kernel.pdf-indirect-reference.equals, itext7.kernel.pdf-indirect-reference.hash-code, itext7.kernel.pdf-array.constructor, itext7.kernel.pdf-array.constructor-list, itext7.kernel.pdf-array.size, itext7.kernel.pdf-array.get, itext7.kernel.pdf-array.get-as-direct, itext7.kernel.pdf-array.set, itext7.kernel.pdf-array.add, itext7.kernel.pdf-array.add-at-index, itext7.kernel.pdf-array.remove, itext7.kernel.pdf-dictionary.constructor, itext7.kernel.pdf-dictionary.size, itext7.kernel.pdf-dictionary.get, itext7.kernel.pdf-dictionary.get-as-direct, itext7.kernel.pdf-dictionary.contains-key, itext7.kernel.pdf-dictionary.key-set, itext7.kernel.pdf-dictionary.put, itext7.kernel.pdf-dictionary.remove, itext7.kernel.pdf-stream.constructor-bytes, itext7.kernel.pdf-stream.get-bytes, itext7.kernel.pdf-stream.set-data, itext7.kernel.pdf-indirect-reference.get-refers-to`
 - Source requirements: [`spec-us-14`](#spec-us-14), [`spec-us-15`](#spec-us-15), [`spec-us-16`](#spec-us-16), [`spec-us-17`](#spec-us-17), [`spec-id-17`](#spec-id-17), [`spec-id-21`](#spec-id-21), [`spec-id-22`](#spec-id-22), [`spec-id-23`](#spec-id-23), [`spec-id-26`](#spec-id-26), [`slice-71-1`](#slice-71-1), [`slice-71-2`](#slice-71-2), [`slice-71-3`](#slice-71-3), [`slice-71-4`](#slice-71-4)
 
-- Blocker: capability document.value.inspect-patch is experimental, requires compatible
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on document.value.inspect-patch
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on document.value.inspect-patch
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on document.value.inspect-patch
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk21 on document.value.inspect-patch
-- Blocker: missing required Facade mapping set for kernel PDF Values and patches
-- Blocker: unresolved retained limitation: The declared PDF Value/Patch restriction needs #71 evidence against all required Foundation low-level edits; unsupported required cases may not be excluded.
-- Blocker: unresolved retained limitation: Stream/filter restrictions require #71 reconciliation with the Foundation patch and preservation contract.
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk8/IN_PROCESS (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk8/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk11/IN_PROCESS (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk11/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/IN_PROCESS (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
 
 <a id="pages"></a>
 ### `pages`
@@ -205,7 +189,6 @@ Read, create, update, and preserve document information, XMP metadata, outlines,
 - Source requirements: [`spec-us-13`](#spec-us-13), [`spec-us-16`](#spec-us-16), [`spec-us-17`](#spec-us-17), [`spec-id-26`](#spec-id-26), [`slice-73-1`](#slice-73-1), [`slice-73-2`](#slice-73-2), [`slice-73-3`](#slice-73-3), [`slice-73-4`](#slice-73-4)
 
 - Blocker: capability document.metadata.outlines-destinations-attachments is experimental, requires compatible
-- Blocker: incompatible Dependency Gate document.value.inspect-patch
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on document.metadata.outlines-destinations-attachments
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on document.metadata.outlines-destinations-attachments
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on document.metadata.outlines-destinations-attachments
@@ -219,7 +202,6 @@ Read, create, update, and preserve document information, XMP metadata, outlines,
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: incomplete prerequisite obligation values
 
 <a id="annotations"></a>
 ### `annotations`
@@ -237,7 +219,6 @@ Read, create, update, remove, flatten, and preserve managed annotations and iner
 - Source requirements: [`spec-us-16`](#spec-us-16), [`spec-us-17`](#spec-us-17), [`spec-id-26`](#spec-id-26), [`slice-74-1`](#slice-74-1), [`slice-74-2`](#slice-74-2), [`slice-74-3`](#slice-74-3), [`slice-74-4`](#slice-74-4)
 
 - Blocker: capability document.annotations-actions.manage is experimental, requires compatible
-- Blocker: incompatible Dependency Gate document.value.inspect-patch
 - Blocker: incompatible Dependency Gate document.page.manipulate-merge-split
 - Blocker: incompatible Dependency Gate document.metadata.outlines-destinations-attachments
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on document.annotations-actions.manage
@@ -256,7 +237,6 @@ Read, create, update, remove, flatten, and preserve managed annotations and iner
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: incomplete prerequisite obligation values
 - Blocker: incomplete prerequisite obligation pages
 - Blocker: incomplete prerequisite obligation metadata
 
@@ -276,7 +256,6 @@ Extract bounded deterministic page text, mapping evidence, marked content, and T
 - Source requirements: [`spec-us-13`](#spec-us-13), [`spec-td-08`](#spec-td-08), [`slice-75-1`](#slice-75-1), [`slice-75-2`](#slice-75-2), [`slice-75-3`](#slice-75-3), [`slice-75-4`](#slice-75-4)
 
 - Blocker: capability document.text-structure.extract is experimental, requires compatible
-- Blocker: incompatible Dependency Gate document.value.inspect-patch
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on document.text-structure.extract
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on document.text-structure.extract
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on document.text-structure.extract
@@ -292,7 +271,6 @@ Extract bounded deterministic page text, mapping evidence, marked content, and T
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: incomplete prerequisite obligation values
 
 <a id="images"></a>
 ### `images`
@@ -310,7 +288,6 @@ Extract a bounded deterministic inventory of page and nested-Form resources, inc
 - Source requirements: [`spec-us-13`](#spec-us-13), [`spec-td-08`](#spec-td-08), [`slice-76-1`](#slice-76-1), [`slice-76-2`](#slice-76-2), [`slice-76-3`](#slice-76-3), [`slice-76-4`](#slice-76-4)
 
 - Blocker: capability document.images-resources.extract is experimental, requires compatible
-- Blocker: incompatible Dependency Gate document.value.inspect-patch
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on document.images-resources.extract
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on document.images-resources.extract
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on document.images-resources.extract
@@ -325,7 +302,6 @@ Extract a bounded deterministic inventory of page and nested-Form resources, inc
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: incomplete prerequisite obligation values
 
 <a id="incremental"></a>
 ### `incremental`
@@ -343,7 +319,6 @@ Append validated PDF revisions while preserving the complete primary Source and 
 - Source requirements: [`spec-us-18`](#spec-us-18), [`spec-us-19`](#spec-us-19), [`spec-us-20`](#spec-us-20), [`spec-id-24`](#spec-id-24), [`spec-id-25`](#spec-id-25), [`spec-id-42`](#spec-id-42), [`spec-td-18`](#spec-td-18), [`spec-td-19`](#spec-td-19), [`slice-77-1`](#slice-77-1), [`slice-77-2`](#slice-77-2), [`slice-77-3`](#slice-77-3), [`slice-77-4`](#slice-77-4)
 
 - Blocker: capability document.incremental-signature.protect is experimental, requires compatible
-- Blocker: incompatible Dependency Gate document.value.inspect-patch
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on document.incremental-signature.protect
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on document.incremental-signature.protect
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on document.incremental-signature.protect
@@ -357,7 +332,6 @@ Append validated PDF revisions while preserving the complete primary Source and 
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: incomplete prerequisite obligation values
 
 <a id="security"></a>
 ### `security`
@@ -374,8 +348,6 @@ Inspect exact effective PDF versions, publish PDF 1.7 or 2.0, and authenticate a
 - Source requirements: [`slice-78-1`](#slice-78-1), [`slice-78-2`](#slice-78-2), [`slice-78-3`](#slice-78-3), [`slice-78-4`](#slice-78-4), [`slice-78-5`](#slice-78-5)
 
 - Blocker: capability document.version-password-security is experimental, requires compatible
-- Blocker: incompatible Dependency Gate document.value.inspect-patch
-- Blocker: incomplete prerequisite obligation values
 - Blocker: incomplete prerequisite obligation password-baseline
 - Blocker: incomplete prerequisite obligation password-clear-metadata
 - Blocker: incomplete prerequisite obligation password-attachments
@@ -396,7 +368,6 @@ Apply one finite-default, transaction-wide hostile-input resource policy to trus
 - Source requirements: [`spec-us-40`](#spec-us-40), [`spec-td-20`](#spec-td-20), [`slice-81-1`](#slice-81-1), [`slice-81-2`](#slice-81-2), [`slice-81-3`](#slice-81-3), [`slice-81-4`](#slice-81-4)
 
 - Blocker: capability document.hostile-input-limits is experimental, requires compatible
-- Blocker: incompatible Dependency Gate document.value.inspect-patch
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on document.hostile-input-limits
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on document.hostile-input-limits
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on document.hostile-input-limits
@@ -405,7 +376,6 @@ Apply one finite-default, transaction-wide hostile-input resource policy to trus
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk11/IN_PROCESS (required chains: syntax, standards, semantic, visual, contract)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/IN_PROCESS (required chains: syntax, standards, semantic, visual, contract)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual, contract)
-- Blocker: incomplete prerequisite obligation values
 
 <a id="worker"></a>
 ### `worker`
@@ -478,7 +448,6 @@ Append validated backend-neutral vector graphics and explicitly positioned glyph
 - Source requirements: [`spec-id-37`](#spec-id-37), [`slice-85-1`](#slice-85-1), [`slice-85-2`](#slice-85-2), [`slice-85-3`](#slice-85-3), [`slice-85-4`](#slice-85-4)
 
 - Blocker: capability composition.canvas.draw-positioned-text is experimental, requires compatible
-- Blocker: incompatible Dependency Gate document.value.inspect-patch
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on composition.canvas.draw-positioned-text
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on composition.canvas.draw-positioned-text
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on composition.canvas.draw-positioned-text
@@ -494,7 +463,6 @@ Append validated backend-neutral vector graphics and explicitly positioned glyph
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: incomplete prerequisite obligation values
 
 <a id="graphics"></a>
 ### `graphics`
@@ -590,7 +558,6 @@ Render selected current pages to bounded, session-scoped PNGs through a replacea
 
 - Blocker: capability conversion.rendering is experimental, requires compatible
 - Blocker: incompatible Dependency Gate conversion.capability-provider.select-execute
-- Blocker: incompatible Dependency Gate document.value.inspect-patch
 - Blocker: incompatible Dependency Gate composition.canvas.images-colors-transparency
 - Blocker: incompatible Dependency Gate composition.fonts.load-embed-subset-fallback
 - Blocker: incompatible Dependency Gate document.hostile-input-limits
@@ -613,7 +580,6 @@ Render selected current pages to bounded, session-scoped PNGs through a replacea
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
 - Blocker: incomplete prerequisite obligation providers
-- Blocker: incomplete prerequisite obligation values
 - Blocker: incomplete prerequisite obligation graphics
 - Blocker: incomplete prerequisite obligation fonts
 - Blocker: incomplete prerequisite obligation limits
@@ -927,7 +893,6 @@ Certify the complete Foundation PDF version, credential, algorithm/revision, per
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: incomplete prerequisite obligation values
 
 <a id="password-clear-metadata"></a>
 ### `password-clear-metadata`
@@ -1251,7 +1216,6 @@ Close every Foundation behavior, aggregate, dependency and Facade obligation; ru
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk11/REPOSITORY (required chains: contract, review)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/REPOSITORY (required chains: contract, review)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/REPOSITORY (required chains: contract, review)
-- Blocker: incomplete prerequisite obligation values
 - Blocker: incomplete prerequisite obligation pages
 - Blocker: incomplete prerequisite obligation metadata
 - Blocker: incomplete prerequisite obligation annotations
@@ -1298,16 +1262,16 @@ Classifications bind the exact Capability Matrix limitation text by SHA-256; cha
   Original limitation: T03 opens only the explicitly selected primary source unless an ordered Document Command, such as T10 merge, explicitly selects additional named Sources.
 - `document.blank.create-publish-reopen` / `retained-contract` → [`transactions`](#transactions): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #70 must prove it without omitting required successful Foundation cases.
   Original limitation: T20 layers finite-default transaction-wide resource accounting and cooperative checkpoints onto T03. T21 separately supplies an opt-in isolated Worker with hard Worker termination; the caller callback intentionally remains in the caller process.
-- `document.value.inspect-patch` / `release-blocker` → [`values`](#values): The declared PDF Value/Patch restriction needs #71 evidence against all required Foundation low-level edits; unsupported required cases may not be excluded.
-  Original limitation: T09 applies version-1 dictionary-entry replacements in REWRITE workflows; array-element replacement, entry removal, and broader structural editing operations remain future capability slices.
+- `document.value.inspect-patch` / `retained-contract` → [`values`](#values): Required ordered dictionary, array, value and stream edits are implemented through both public interfaces; preserving valid core structure and separate downstream feature policies remains the low-level contract.
+  Original limitation: Patch version 2 supports ordered dictionary set/remove, array set/insert/remove, value replacement and stream data replacement through nested paths; existing dictionary-only version-1 requests retain their representation. Low-level Patches must preserve valid core structure and do not grant downstream feature semantics.
 - `document.value.inspect-patch` / `retained-contract` → [`values`](#values): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #71 must prove it without omitting required successful Foundation cases.
-  Original limitation: T15 classifies a validated DocumentPatch as representable for unsigned INCREMENTAL publication; Existing Signatures authorize no DocumentPatch in version 1.
+  Original limitation: Unsigned REWRITE and INCREMENTAL preserve Source bytes and existing indirect identity. Existing Signatures authorize no DocumentPatch; version and password-security state remain owned by their explicit output policies.
 - `document.value.inspect-patch` / `retained-contract` → [`values`](#values): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #71 must prove it without omitting required successful Foundation cases.
-  Original limitation: Inspection limits are explicit per-query traversal and decoded-stream bounds and compose with T20's shared object, nesting, decompression, memory, time, storage, input, page, pixel, and concurrency policy.
+  Original limitation: Inspection uses bounded Session views. Native query limits are explicit; the Facade uses 100000 traversed values and 64 MiB cumulative decoded bytes per inspection. Workflow resource exhaustion is terminal; ordinary Patch and inspection-limit failures remain recoverable. Backend materialization has a finite 256-level depth bound before recursive conversion.
 - `document.value.inspect-patch` / `retained-contract` → [`values`](#values): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #71 must prove it without omitting required successful Foundation cases.
-  Original limitation: T09 runs through the trusted in-process adapter by default; T21's opt-in Hardened Worker transports the same bounded PDF Value and Document Patch contract through closed version-1 codecs.
-- `document.value.inspect-patch` / `release-blocker` → [`values`](#values): Stream/filter restrictions require #71 reconciliation with the Foundation patch and preservation contract.
-  Original limitation: Stream patches accept decoded bytes and reject engine-owned encoding metadata; preservation-sensitive filter and incremental stream changes are not claimed.
+  Original limitation: Native IN_PROCESS and HARDENED_WORKER share the closed value and versioned Patch codecs. The mapped Facade owns one IN_PROCESS Native Session per Document, uses REWRITE publication, and preserves caller-owned streams; Native execution and policy controls are not Facade mappings.
+- `document.value.inspect-patch` / `retained-contract` → [`values`](#values): Decoded stream replacement supports explicit unfiltered and Flate output with atomic engine-owned metadata; untouched encoded streams and unknown resources retain their bytes, attributes and references.
+  Original limitation: Stream replacements accept decoded bytes with explicit unfiltered or Flate encoding; Length, Filter, DecodeParms and external-file metadata remain engine-owned. Untouched encoded bytes, unknown resources and attributes are preserved; unknown decoding fails safely and external-file streams are never resolved.
 - `document.page.manipulate-merge-split` / `retained-contract` → [`pages`](#pages): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #72 must prove it without omitting required successful Foundation cases.
   Original limitation: T15 admits T10 primary-document commands for unsigned INCREMENTAL publication but rejects SplitDocument; Existing Signatures authorize no T10 command in version 1.
 - `document.page.manipulate-merge-split` / `release-blocker` → [`pages`](#pages): Conservative page-graph restrictions require #72 corpus evidence that all Foundation page operations remain available; safe rejection is not proof of required successful behavior.

@@ -34,7 +34,7 @@ surfaces:
         type: net.zerocloud.pdf.itext7.kernel.pdf.PdfReader
         member: close()
       generic-contract: No generic parameters or return value.
-      exception-contract: Retains the declared java.io.IOException contract; the mapped Path source is already closed by the Native Interface.
+      exception-contract: Retains java.io.IOException; releases an unclaimed private snapshot. A Document owns a claimed snapshot until its close; caller streams remain open.
       capabilities:
         - document.blank.create-publish-reopen
     - id: itext7.kernel.pdf-document.constructor-writer
@@ -136,13 +136,886 @@ surfaces:
       exception-contract: Propagates a mapped PdfException if Native Interface publication fails.
       capabilities:
         - document.blank.create-publish-reopen
+    - id: itext7.kernel.pdf-writer.constructor-output-stream
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfWriter
+        member: <init>(java.io.OutputStream)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter
+        member: <init>(java.io.OutputStream)
+      generic-contract: Borrows caller output; publication flushes but never closes it. No generic parameters.
+      exception-contract: No checked exception; publication errors are reported at PdfDocument.close with actual Native receipts.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-reader.constructor-input-stream
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfReader
+        member: <init>(java.io.InputStream)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfReader
+        member: <init>(java.io.InputStream)
+      generic-contract: Reads caller input to a bounded privately owned snapshot without closing the caller stream.
+      exception-contract: Declares java.io.IOException with a safe diagnostic; actual Native failures retain their DocumentFailure
+        cause.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-document.constructor-reader-writer
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDocument
+        member: <init>(com.itextpdf.kernel.pdf.PdfReader,com.itextpdf.kernel.pdf.PdfWriter)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: <init>(net.zerocloud.pdf.itext7.kernel.pdf.PdfReader,net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter)
+      generic-contract: Owns one validated Source snapshot and Native REWRITE workflow through close.
+      exception-contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed
+        or detached mutation targets reject with IllegalStateException.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-document.get-catalog
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDocument
+        member: getCatalog()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: getCatalog()
+      generic-contract: Returns the mapped PdfCatalog within the owning Document lifecycle.
+      exception-contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed
+        or detached mutation targets reject with IllegalStateException.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-catalog.get-pdf-object
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfCatalog
+        member: getPdfObject()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfCatalog
+        member: getPdfObject()
+      generic-contract: Returns the bounded mapped Catalog PdfDictionary; its reads and changes retain Session ownership.
+      exception-contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed
+        or detached mutation targets reject with IllegalStateException.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-object.constant-array
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfObject
+        member: ARRAY
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfObject
+        member: ARRAY
+      generic-contract: public static final byte; value 1.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-object.constant-boolean
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfObject
+        member: BOOLEAN
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfObject
+        member: BOOLEAN
+      generic-contract: public static final byte; value 2.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-object.constant-dictionary
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfObject
+        member: DICTIONARY
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfObject
+        member: DICTIONARY
+      generic-contract: public static final byte; value 3.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-object.constant-indirect-reference
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfObject
+        member: INDIRECT_REFERENCE
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfObject
+        member: INDIRECT_REFERENCE
+      generic-contract: public static final byte; value 5.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-object.constant-name
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfObject
+        member: NAME
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfObject
+        member: NAME
+      generic-contract: public static final byte; value 6.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-object.constant-null
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfObject
+        member: 'NULL'
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfObject
+        member: 'NULL'
+      generic-contract: public static final byte; value 7.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-object.constant-number
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfObject
+        member: NUMBER
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfObject
+        member: NUMBER
+      generic-contract: public static final byte; value 8.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-object.constant-stream
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfObject
+        member: STREAM
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfObject
+        member: STREAM
+      generic-contract: public static final byte; value 9.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-object.constant-string
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfObject
+        member: STRING
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfObject
+        member: STRING
+      generic-contract: public static final byte; value 10.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-object.get-type
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfObject
+        member: getType()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfObject
+        member: getType()
+      generic-contract: Returns the primitive byte kind.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-object.get-indirect-reference
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfObject
+        member: getIndirectReference()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfObject
+        member: getIndirectReference()
+      generic-contract: Returns the owning Session reference for an inspected indirect body, or null for a direct or detached
+        value.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-object.is-array
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfObject
+        member: isArray()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfObject
+        member: isArray()
+      generic-contract: Returns the primitive kind predicate.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-object.is-boolean
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfObject
+        member: isBoolean()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfObject
+        member: isBoolean()
+      generic-contract: Returns the primitive kind predicate.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-object.is-dictionary
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfObject
+        member: isDictionary()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfObject
+        member: isDictionary()
+      generic-contract: Returns the primitive kind predicate.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-object.is-indirect-reference
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfObject
+        member: isIndirectReference()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfObject
+        member: isIndirectReference()
+      generic-contract: Returns the primitive kind predicate.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-object.is-name
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfObject
+        member: isName()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfObject
+        member: isName()
+      generic-contract: Returns the primitive kind predicate.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-object.is-null
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfObject
+        member: isNull()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfObject
+        member: isNull()
+      generic-contract: Returns the primitive kind predicate.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-object.is-number
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfObject
+        member: isNumber()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfObject
+        member: isNumber()
+      generic-contract: Returns the primitive kind predicate.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-object.is-stream
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfObject
+        member: isStream()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfObject
+        member: isStream()
+      generic-contract: Returns the primitive kind predicate.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-object.is-string
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfObject
+        member: isString()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfObject
+        member: isString()
+      generic-contract: Returns the primitive kind predicate.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-null.get-type
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfNull
+        member: getType()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfNull
+        member: getType()
+      generic-contract: Returns the primitive byte kind; overrides the mapped PdfObject member.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-boolean.get-type
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfBoolean
+        member: getType()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfBoolean
+        member: getType()
+      generic-contract: Returns the primitive byte kind; overrides the mapped PdfObject member.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-number.get-type
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfNumber
+        member: getType()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfNumber
+        member: getType()
+      generic-contract: Returns the primitive byte kind; overrides the mapped PdfObject member.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-string.get-type
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfString
+        member: getType()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfString
+        member: getType()
+      generic-contract: Returns the primitive byte kind; overrides the mapped PdfObject member.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-name.get-type
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfName
+        member: getType()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfName
+        member: getType()
+      generic-contract: Returns the primitive byte kind; overrides the mapped PdfObject member.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-array.get-type
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfArray
+        member: getType()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfArray
+        member: getType()
+      generic-contract: Returns the primitive byte kind; overrides the mapped PdfObject member.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-dictionary.get-type
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDictionary
+        member: getType()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDictionary
+        member: getType()
+      generic-contract: Returns the primitive byte kind; overrides the mapped PdfObject member.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-stream.get-type
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfStream
+        member: getType()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfStream
+        member: getType()
+      generic-contract: Returns the primitive byte kind; overrides the mapped PdfObject member.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-indirect-reference.get-type
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfIndirectReference
+        member: getType()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfIndirectReference
+        member: getType()
+      generic-contract: Returns the primitive byte kind; overrides the mapped PdfObject member.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-null.constructor
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfNull
+        member: <init>()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfNull
+        member: <init>()
+      generic-contract: Creates an immutable null value.
+      exception-contract: No checked exception.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-null.constant-pdf-null
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfNull
+        member: PDF_NULL
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfNull
+        member: PDF_NULL
+      generic-contract: public static final PdfNull; shared immutable null value.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-boolean.constructor-boolean
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfBoolean
+        member: <init>(boolean)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfBoolean
+        member: <init>(boolean)
+      generic-contract: Creates an immutable boolean value.
+      exception-contract: No checked exception.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-boolean.get-value
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfBoolean
+        member: getValue()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfBoolean
+        member: getValue()
+      generic-contract: Returns the primitive boolean.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-boolean.constant-true
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfBoolean
+        member: 'TRUE'
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfBoolean
+        member: 'TRUE'
+      generic-contract: public static final PdfBoolean; shared immutable true value.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-boolean.constant-false
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfBoolean
+        member: 'FALSE'
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfBoolean
+        member: 'FALSE'
+      generic-contract: public static final PdfBoolean; shared immutable false value.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-number.constructor-int
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfNumber
+        member: <init>(int)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfNumber
+        member: <init>(int)
+      generic-contract: Creates a detached number; double input must be finite.
+      exception-contract: No checked exception; non-finite double arguments reject with IllegalArgumentException.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-number.set-value-int
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfNumber
+        member: setValue(int)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfNumber
+        member: setValue(int)
+      generic-contract: Returns void. A live number submits a validated value-replacement Patch; a detached number changes locally.
+      exception-contract: No checked exception; non-finite double arguments reject with IllegalArgumentException; Native failures
+        retain their DocumentFailure cause.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-number.constructor-double
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfNumber
+        member: <init>(double)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfNumber
+        member: <init>(double)
+      generic-contract: Creates a detached number; double input must be finite.
+      exception-contract: No checked exception; non-finite double arguments reject with IllegalArgumentException.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-number.set-value-double
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfNumber
+        member: setValue(double)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfNumber
+        member: setValue(double)
+      generic-contract: Returns void. A live number submits a validated value-replacement Patch; a detached number changes locally.
+      exception-contract: No checked exception; non-finite double arguments reject with IllegalArgumentException; Native failures
+        retain their DocumentFailure cause.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-number.int-value
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfNumber
+        member: intValue()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfNumber
+        member: intValue()
+      generic-contract: Returns the number converted to int using Java double-to-int conversion.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-number.double-value
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfNumber
+        member: doubleValue()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfNumber
+        member: doubleValue()
+      generic-contract: Returns the number converted to double; Native inspection retains its original exact decimal.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-string.constructor-string
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfString
+        member: <init>(java.lang.String)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfString
+        member: <init>(java.lang.String)
+      generic-contract: Encodes the PDFDocEncoding ASCII subset or BOM-prefixed UTF-16BE; project text-conversion rules are defined
+        in docs/document-values.md.
+      exception-contract: No checked exception; an unpaired Java surrogate rejects with a safe IllegalArgumentException before
+        mutation.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-string.constructor-bytes
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfString
+        member: <init>(byte[])
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfString
+        member: <init>(byte[])
+      generic-contract: Copies exact PDF string bytes without text normalization.
+      exception-contract: No checked exception; rejects null input.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-string.get-value
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfString
+        member: getValue()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfString
+        member: getValue()
+      generic-contract: Returns String decoded using PDFDocEncoding or BOM-prefixed UTF-16BE/UTF-8; undefined codes and malformed
+        Unicode become U+FFFD.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-string.get-value-bytes
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfString
+        member: getValueBytes()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfString
+        member: getValueBytes()
+      generic-contract: Returns a defensive byte[] copy of the exact PDF string bytes.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-name.constructor-string
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfName
+        member: <init>(java.lang.String)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfName
+        member: <init>(java.lang.String)
+      generic-contract: Creates a decoded PDF name without its leading slash.
+      exception-contract: No checked exception; null names reject using the Native value contract.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-name.get-value
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfName
+        member: getValue()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfName
+        member: getValue()
+      generic-contract: Returns the decoded name String.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-name.equals
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfName
+        member: equals(java.lang.Object)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfName
+        member: equals(java.lang.Object)
+      generic-contract: Returns boolean. Name equality uses decoded text.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-name.hash-code
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfName
+        member: hashCode()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfName
+        member: hashCode()
+      generic-contract: Returns int, consistent with mapped equality.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-indirect-reference.equals
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfIndirectReference
+        member: equals(java.lang.Object)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfIndirectReference
+        member: equals(java.lang.Object)
+      generic-contract: Returns boolean. Equality uses the opaque owning Session and Object Reference, never cross-document object
+        numbers.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-indirect-reference.hash-code
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfIndirectReference
+        member: hashCode()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfIndirectReference
+        member: hashCode()
+      generic-contract: Returns int, consistent with mapped equality.
+      exception-contract: No checked exception; immutable kind or identity observation remains available after Session close.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-array.constructor
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfArray
+        member: <init>()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfArray
+        member: <init>()
+      generic-contract: Creates an empty detached mutable array.
+      exception-contract: No checked exception.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-array.constructor-list
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfArray
+        member: <init>(java.util.List)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfArray
+        member: <init>(java.util.List)
+      generic-contract: Parameter is List<? extends mapped PdfObject>; copies the caller list in order.
+      exception-contract: No checked exception; rejects null list or elements.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-array.size
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfArray
+        member: size()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfArray
+        member: size()
+      generic-contract: Returns int size. Live reads use the bounded Native view.
+      exception-contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed
+        or detached mutation targets reject with IllegalStateException.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-array.get
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfArray
+        member: get(int)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfArray
+        member: get(int)
+      generic-contract: Returns mapped PdfObject; default or true dereferences through the owning Session, false returns the stored
+        reference.
+      exception-contract: No checked exception; invalid read indices reject with IndexOutOfBoundsException; Native view failure
+        retains its actual cause.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-array.get-as-direct
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfArray
+        member: get(int,boolean)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfArray
+        member: get(int,boolean)
+      generic-contract: Returns mapped PdfObject; default or true dereferences through the owning Session, false returns the stored
+        reference.
+      exception-contract: No checked exception; invalid read indices reject with IndexOutOfBoundsException; Native view failure
+        retains its actual cause.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-array.set
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfArray
+        member: set(int,com.itextpdf.kernel.pdf.PdfObject)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfArray
+        member: set(int,net.zerocloud.pdf.itext7.kernel.pdf.PdfObject)
+      generic-contract: Returns the previous stored PdfObject. Live mutations validate index and value before changing state.
+      exception-contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed
+        or detached mutation targets reject with IllegalStateException.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-array.add
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfArray
+        member: add(com.itextpdf.kernel.pdf.PdfObject)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfArray
+        member: add(net.zerocloud.pdf.itext7.kernel.pdf.PdfObject)
+      generic-contract: Returns void; appends one value.
+      exception-contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed
+        or detached mutation targets reject with IllegalStateException.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-array.add-at-index
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfArray
+        member: add(int,com.itextpdf.kernel.pdf.PdfObject)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfArray
+        member: add(int,net.zerocloud.pdf.itext7.kernel.pdf.PdfObject)
+      generic-contract: Returns void; inserts at an index from zero through current size.
+      exception-contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed
+        or detached mutation targets reject with IllegalStateException.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-array.remove
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfArray
+        member: remove(int)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfArray
+        member: remove(int)
+      generic-contract: Returns void; removes an index from zero through size minus one.
+      exception-contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed
+        or detached mutation targets reject with IllegalStateException.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-dictionary.constructor
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDictionary
+        member: <init>()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDictionary
+        member: <init>()
+      generic-contract: Creates an empty detached mutable dictionary.
+      exception-contract: No checked exception.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-dictionary.size
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDictionary
+        member: size()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDictionary
+        member: size()
+      generic-contract: Returns int size. Live reads use the bounded Native view.
+      exception-contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed
+        or detached mutation targets reject with IllegalStateException.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-dictionary.get
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDictionary
+        member: get(com.itextpdf.kernel.pdf.PdfName)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDictionary
+        member: get(net.zerocloud.pdf.itext7.kernel.pdf.PdfName)
+      generic-contract: Returns mapped PdfObject or null for absence; default or true dereferences, false preserves stored references.
+      exception-contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed
+        or detached mutation targets reject with IllegalStateException.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-dictionary.get-as-direct
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDictionary
+        member: get(com.itextpdf.kernel.pdf.PdfName,boolean)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDictionary
+        member: get(net.zerocloud.pdf.itext7.kernel.pdf.PdfName,boolean)
+      generic-contract: Returns mapped PdfObject or null for absence; default or true dereferences, false preserves stored references.
+      exception-contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed
+        or detached mutation targets reject with IllegalStateException.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-dictionary.contains-key
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDictionary
+        member: containsKey(com.itextpdf.kernel.pdf.PdfName)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDictionary
+        member: containsKey(net.zerocloud.pdf.itext7.kernel.pdf.PdfName)
+      generic-contract: Returns boolean; distinguishes a present PDF null from an absent entry.
+      exception-contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed
+        or detached mutation targets reject with IllegalStateException.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-dictionary.key-set
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDictionary
+        member: keySet()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDictionary
+        member: keySet()
+      generic-contract: Returns an immutable snapshot Set<mapped PdfName>.
+      exception-contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed
+        or detached mutation targets reject with IllegalStateException.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-dictionary.put
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDictionary
+        member: put(com.itextpdf.kernel.pdf.PdfName,com.itextpdf.kernel.pdf.PdfObject)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDictionary
+        member: put(net.zerocloud.pdf.itext7.kernel.pdf.PdfName,net.zerocloud.pdf.itext7.kernel.pdf.PdfObject)
+      generic-contract: Returns the previous stored PdfObject or null; live changes submit a validated Patch immediately.
+      exception-contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed
+        or detached mutation targets reject with IllegalStateException.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-dictionary.remove
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDictionary
+        member: remove(com.itextpdf.kernel.pdf.PdfName)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDictionary
+        member: remove(net.zerocloud.pdf.itext7.kernel.pdf.PdfName)
+      generic-contract: Returns the removed stored PdfObject or null; removing an absent entry is a no-op.
+      exception-contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed
+        or detached mutation targets reject with IllegalStateException.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-stream.constructor-bytes
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfStream
+        member: <init>(byte[])
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfStream
+        member: <init>(byte[])
+      generic-contract: Copies decoded bytes and starts with an empty mapped dictionary; inherits mapped PdfDictionary members.
+      exception-contract: No checked exception; rejects null input.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-stream.get-bytes
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfStream
+        member: getBytes()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfStream
+        member: getBytes()
+      generic-contract: Returns a defensive byte[] of decoded bytes under the Native inspection budget.
+      exception-contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed
+        or detached mutation targets reject with IllegalStateException.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-stream.set-data
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfStream
+        member: setData(byte[])
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfStream
+        member: setData(byte[])
+      generic-contract: Returns void; live replacement uses engine-owned Flate encoding and atomic metadata changes.
+      exception-contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed
+        or detached mutation targets reject with IllegalStateException.
+      capabilities:
+      - document.value.inspect-patch
+    - id: itext7.kernel.pdf-indirect-reference.get-refers-to
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfIndirectReference
+        member: getRefersTo()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfIndirectReference
+        member: getRefersTo()
+      generic-contract: Returns the referred mapped PdfObject through bounded Native inspection in its owning Session.
+      exception-contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed
+        or detached mutation targets reject with IllegalStateException.
+      capabilities:
+      - document.value.inspect-patch
   preview: []
 
 excluded-capabilities:
-- id: document.value.inspect-patch
-  ticket: T32
-  reason: 'Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under
-    #71 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.'
 - id: document.page.manipulate-merge-split
   ticket: T32
   reason: 'Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under

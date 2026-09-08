@@ -25,6 +25,10 @@ public final class InventoryCommand {
         }
 
         String action = arguments[0];
+        String evidencePath = System.getProperty("folio.inventory.evidence");
+        if (evidencePath != null && !"readiness".equals(action)) {
+            fail("A separate evidence index is supported only for read-only readiness evaluation.");
+        }
         if (!"validate".equals(action)
                 && !"generate".equals(action)
                 && !"check".equals(action)
@@ -67,7 +71,12 @@ public final class InventoryCommand {
         FoundationReadiness readiness = null;
         if (model.foundation != null) {
             readiness = new FoundationReadiness(model.foundation);
-            readiness.evaluate();
+            if (evidencePath == null) {
+                readiness.evaluate();
+            } else {
+                System.out.println("Evidence source: " + evidencePath);
+                readiness.evaluate(evidencePath);
+            }
         }
         if ("readiness".equals(action)) {
             requireFoundation(model);

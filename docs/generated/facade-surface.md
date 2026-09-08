@@ -8,12 +8,262 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 
 - Schema version: `1`
 - Release train: `0.1.0-SNAPSHOT`
-- Stable entries: `12`
+- Stable entries: `89`
 - Preview additions: `0`
-- Preview artifact entries: `12`
-- Explicit capability exclusions: `22`
+- Preview artifact entries: `89`
+- Explicit capability exclusions: `21`
 
 ## Stable surfaces
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_array_dot_add"></a>
+### `itext7.kernel.pdf-array.add`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfArray#add(com.itextpdf.kernel.pdf.PdfObject)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfArray#add(net.zerocloud.pdf.itext7.kernel.pdf.PdfObject)`
+- Generic contract: Returns void; appends one value.
+- Exception contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed or detached mutation targets reject with IllegalStateException.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_array_dot_add_dash_at_dash_index"></a>
+### `itext7.kernel.pdf-array.add-at-index`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfArray#add(int,com.itextpdf.kernel.pdf.PdfObject)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfArray#add(int,net.zerocloud.pdf.itext7.kernel.pdf.PdfObject)`
+- Generic contract: Returns void; inserts at an index from zero through current size.
+- Exception contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed or detached mutation targets reject with IllegalStateException.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_array_dot_constructor"></a>
+### `itext7.kernel.pdf-array.constructor`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfArray#<init>()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfArray#<init>()`
+- Generic contract: Creates an empty detached mutable array.
+- Exception contract: No checked exception.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_array_dot_constructor_dash_list"></a>
+### `itext7.kernel.pdf-array.constructor-list`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfArray#<init>(java.util.List)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfArray#<init>(java.util.List)`
+- Generic contract: Parameter is List<? extends mapped PdfObject>; copies the caller list in order.
+- Exception contract: No checked exception; rejects null list or elements.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_array_dot_get"></a>
+### `itext7.kernel.pdf-array.get`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfArray#get(int)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfArray#get(int)`
+- Generic contract: Returns mapped PdfObject; default or true dereferences through the owning Session, false returns the stored reference.
+- Exception contract: No checked exception; invalid read indices reject with IndexOutOfBoundsException; Native view failure retains its actual cause.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_array_dot_get_dash_as_dash_direct"></a>
+### `itext7.kernel.pdf-array.get-as-direct`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfArray#get(int,boolean)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfArray#get(int,boolean)`
+- Generic contract: Returns mapped PdfObject; default or true dereferences through the owning Session, false returns the stored reference.
+- Exception contract: No checked exception; invalid read indices reject with IndexOutOfBoundsException; Native view failure retains its actual cause.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_array_dot_get_dash_type"></a>
+### `itext7.kernel.pdf-array.get-type`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfArray#getType()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfArray#getType()`
+- Generic contract: Returns the primitive byte kind; overrides the mapped PdfObject member.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_array_dot_remove"></a>
+### `itext7.kernel.pdf-array.remove`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfArray#remove(int)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfArray#remove(int)`
+- Generic contract: Returns void; removes an index from zero through size minus one.
+- Exception contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed or detached mutation targets reject with IllegalStateException.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_array_dot_set"></a>
+### `itext7.kernel.pdf-array.set`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfArray#set(int,com.itextpdf.kernel.pdf.PdfObject)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfArray#set(int,net.zerocloud.pdf.itext7.kernel.pdf.PdfObject)`
+- Generic contract: Returns the previous stored PdfObject. Live mutations validate index and value before changing state.
+- Exception contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed or detached mutation targets reject with IllegalStateException.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_array_dot_size"></a>
+### `itext7.kernel.pdf-array.size`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfArray#size()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfArray#size()`
+- Generic contract: Returns int size. Live reads use the bounded Native view.
+- Exception contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed or detached mutation targets reject with IllegalStateException.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_boolean_dot_constant_dash_false"></a>
+### `itext7.kernel.pdf-boolean.constant-false`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfBoolean#FALSE`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfBoolean#FALSE`
+- Generic contract: public static final PdfBoolean; shared immutable false value.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_boolean_dot_constant_dash_true"></a>
+### `itext7.kernel.pdf-boolean.constant-true`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfBoolean#TRUE`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfBoolean#TRUE`
+- Generic contract: public static final PdfBoolean; shared immutable true value.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_boolean_dot_constructor_dash_boolean"></a>
+### `itext7.kernel.pdf-boolean.constructor-boolean`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfBoolean#<init>(boolean)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfBoolean#<init>(boolean)`
+- Generic contract: Creates an immutable boolean value.
+- Exception contract: No checked exception.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_boolean_dot_get_dash_type"></a>
+### `itext7.kernel.pdf-boolean.get-type`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfBoolean#getType()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfBoolean#getType()`
+- Generic contract: Returns the primitive byte kind; overrides the mapped PdfObject member.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_boolean_dot_get_dash_value"></a>
+### `itext7.kernel.pdf-boolean.get-value`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfBoolean#getValue()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfBoolean#getValue()`
+- Generic contract: Returns the primitive boolean.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_catalog_dot_get_dash_pdf_dash_object"></a>
+### `itext7.kernel.pdf-catalog.get-pdf-object`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfCatalog#getPdfObject()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfCatalog#getPdfObject()`
+- Generic contract: Returns the bounded mapped Catalog PdfDictionary; its reads and changes retain Session ownership.
+- Exception contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed or detached mutation targets reject with IllegalStateException.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_dictionary_dot_constructor"></a>
+### `itext7.kernel.pdf-dictionary.constructor`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDictionary#<init>()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDictionary#<init>()`
+- Generic contract: Creates an empty detached mutable dictionary.
+- Exception contract: No checked exception.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_dictionary_dot_contains_dash_key"></a>
+### `itext7.kernel.pdf-dictionary.contains-key`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDictionary#containsKey(com.itextpdf.kernel.pdf.PdfName)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDictionary#containsKey(net.zerocloud.pdf.itext7.kernel.pdf.PdfName)`
+- Generic contract: Returns boolean; distinguishes a present PDF null from an absent entry.
+- Exception contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed or detached mutation targets reject with IllegalStateException.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_dictionary_dot_get"></a>
+### `itext7.kernel.pdf-dictionary.get`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDictionary#get(com.itextpdf.kernel.pdf.PdfName)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDictionary#get(net.zerocloud.pdf.itext7.kernel.pdf.PdfName)`
+- Generic contract: Returns mapped PdfObject or null for absence; default or true dereferences, false preserves stored references.
+- Exception contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed or detached mutation targets reject with IllegalStateException.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_dictionary_dot_get_dash_as_dash_direct"></a>
+### `itext7.kernel.pdf-dictionary.get-as-direct`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDictionary#get(com.itextpdf.kernel.pdf.PdfName,boolean)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDictionary#get(net.zerocloud.pdf.itext7.kernel.pdf.PdfName,boolean)`
+- Generic contract: Returns mapped PdfObject or null for absence; default or true dereferences, false preserves stored references.
+- Exception contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed or detached mutation targets reject with IllegalStateException.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_dictionary_dot_get_dash_type"></a>
+### `itext7.kernel.pdf-dictionary.get-type`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDictionary#getType()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDictionary#getType()`
+- Generic contract: Returns the primitive byte kind; overrides the mapped PdfObject member.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_dictionary_dot_key_dash_set"></a>
+### `itext7.kernel.pdf-dictionary.key-set`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDictionary#keySet()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDictionary#keySet()`
+- Generic contract: Returns an immutable snapshot Set<mapped PdfName>.
+- Exception contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed or detached mutation targets reject with IllegalStateException.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_dictionary_dot_put"></a>
+### `itext7.kernel.pdf-dictionary.put`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDictionary#put(com.itextpdf.kernel.pdf.PdfName,com.itextpdf.kernel.pdf.PdfObject)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDictionary#put(net.zerocloud.pdf.itext7.kernel.pdf.PdfName,net.zerocloud.pdf.itext7.kernel.pdf.PdfObject)`
+- Generic contract: Returns the previous stored PdfObject or null; live changes submit a validated Patch immediately.
+- Exception contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed or detached mutation targets reject with IllegalStateException.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_dictionary_dot_remove"></a>
+### `itext7.kernel.pdf-dictionary.remove`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDictionary#remove(com.itextpdf.kernel.pdf.PdfName)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDictionary#remove(net.zerocloud.pdf.itext7.kernel.pdf.PdfName)`
+- Generic contract: Returns the removed stored PdfObject or null; removing an absent entry is a no-op.
+- Exception contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed or detached mutation targets reject with IllegalStateException.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_dictionary_dot_size"></a>
+### `itext7.kernel.pdf-dictionary.size`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDictionary#size()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDictionary#size()`
+- Generic contract: Returns int size. Live reads use the bounded Native view.
+- Exception contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed or detached mutation targets reject with IllegalStateException.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
 
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_add_dash_new_dash_page"></a>
 ### `itext7.kernel.pdf-document.add-new-page`
@@ -45,6 +295,16 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Exception contract: No checked exception; source failures are reported by the PdfReader constructor.
 - Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen)
 
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_constructor_dash_reader_dash_writer"></a>
+### `itext7.kernel.pdf-document.constructor-reader-writer`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocument#<init>(com.itextpdf.kernel.pdf.PdfReader,com.itextpdf.kernel.pdf.PdfWriter)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#<init>(net.zerocloud.pdf.itext7.kernel.pdf.PdfReader,net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter)`
+- Generic contract: Owns one validated Source snapshot and Native REWRITE workflow through close.
+- Exception contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed or detached mutation targets reject with IllegalStateException.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_constructor_dash_writer"></a>
 ### `itext7.kernel.pdf-document.constructor-writer`
 
@@ -54,6 +314,16 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Generic contract: No generic parameters.
 - Exception contract: No checked exception; publication failures are reported by close().
 - Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_catalog"></a>
+### `itext7.kernel.pdf-document.get-catalog`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocument#getCatalog()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#getCatalog()`
+- Generic contract: Returns the mapped PdfCatalog within the owning Document lifecycle.
+- Exception contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed or detached mutation targets reject with IllegalStateException.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
 
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_number_dash_of_dash_pages"></a>
 ### `itext7.kernel.pdf-document.get-number-of-pages`
@@ -75,6 +345,396 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Exception contract: Constructor for mapped unchecked publication failures.
 - Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen)
 
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_indirect_dash_reference_dot_equals"></a>
+### `itext7.kernel.pdf-indirect-reference.equals`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfIndirectReference#equals(java.lang.Object)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfIndirectReference#equals(java.lang.Object)`
+- Generic contract: Returns boolean. Equality uses the opaque owning Session and Object Reference, never cross-document object numbers.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_indirect_dash_reference_dot_get_dash_refers_dash_to"></a>
+### `itext7.kernel.pdf-indirect-reference.get-refers-to`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfIndirectReference#getRefersTo()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfIndirectReference#getRefersTo()`
+- Generic contract: Returns the referred mapped PdfObject through bounded Native inspection in its owning Session.
+- Exception contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed or detached mutation targets reject with IllegalStateException.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_indirect_dash_reference_dot_get_dash_type"></a>
+### `itext7.kernel.pdf-indirect-reference.get-type`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfIndirectReference#getType()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfIndirectReference#getType()`
+- Generic contract: Returns the primitive byte kind; overrides the mapped PdfObject member.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_indirect_dash_reference_dot_hash_dash_code"></a>
+### `itext7.kernel.pdf-indirect-reference.hash-code`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfIndirectReference#hashCode()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfIndirectReference#hashCode()`
+- Generic contract: Returns int, consistent with mapped equality.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_name_dot_constructor_dash_string"></a>
+### `itext7.kernel.pdf-name.constructor-string`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfName#<init>(java.lang.String)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfName#<init>(java.lang.String)`
+- Generic contract: Creates a decoded PDF name without its leading slash.
+- Exception contract: No checked exception; null names reject using the Native value contract.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_name_dot_equals"></a>
+### `itext7.kernel.pdf-name.equals`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfName#equals(java.lang.Object)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfName#equals(java.lang.Object)`
+- Generic contract: Returns boolean. Name equality uses decoded text.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_name_dot_get_dash_type"></a>
+### `itext7.kernel.pdf-name.get-type`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfName#getType()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfName#getType()`
+- Generic contract: Returns the primitive byte kind; overrides the mapped PdfObject member.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_name_dot_get_dash_value"></a>
+### `itext7.kernel.pdf-name.get-value`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfName#getValue()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfName#getValue()`
+- Generic contract: Returns the decoded name String.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_name_dot_hash_dash_code"></a>
+### `itext7.kernel.pdf-name.hash-code`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfName#hashCode()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfName#hashCode()`
+- Generic contract: Returns int, consistent with mapped equality.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_null_dot_constant_dash_pdf_dash_null"></a>
+### `itext7.kernel.pdf-null.constant-pdf-null`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfNull#PDF_NULL`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfNull#PDF_NULL`
+- Generic contract: public static final PdfNull; shared immutable null value.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_null_dot_constructor"></a>
+### `itext7.kernel.pdf-null.constructor`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfNull#<init>()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfNull#<init>()`
+- Generic contract: Creates an immutable null value.
+- Exception contract: No checked exception.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_null_dot_get_dash_type"></a>
+### `itext7.kernel.pdf-null.get-type`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfNull#getType()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfNull#getType()`
+- Generic contract: Returns the primitive byte kind; overrides the mapped PdfObject member.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_number_dot_constructor_dash_double"></a>
+### `itext7.kernel.pdf-number.constructor-double`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfNumber#<init>(double)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfNumber#<init>(double)`
+- Generic contract: Creates a detached number; double input must be finite.
+- Exception contract: No checked exception; non-finite double arguments reject with IllegalArgumentException.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_number_dot_constructor_dash_int"></a>
+### `itext7.kernel.pdf-number.constructor-int`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfNumber#<init>(int)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfNumber#<init>(int)`
+- Generic contract: Creates a detached number; double input must be finite.
+- Exception contract: No checked exception; non-finite double arguments reject with IllegalArgumentException.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_number_dot_double_dash_value"></a>
+### `itext7.kernel.pdf-number.double-value`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfNumber#doubleValue()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfNumber#doubleValue()`
+- Generic contract: Returns the number converted to double; Native inspection retains its original exact decimal.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_number_dot_get_dash_type"></a>
+### `itext7.kernel.pdf-number.get-type`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfNumber#getType()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfNumber#getType()`
+- Generic contract: Returns the primitive byte kind; overrides the mapped PdfObject member.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_number_dot_int_dash_value"></a>
+### `itext7.kernel.pdf-number.int-value`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfNumber#intValue()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfNumber#intValue()`
+- Generic contract: Returns the number converted to int using Java double-to-int conversion.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_number_dot_set_dash_value_dash_double"></a>
+### `itext7.kernel.pdf-number.set-value-double`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfNumber#setValue(double)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfNumber#setValue(double)`
+- Generic contract: Returns void. A live number submits a validated value-replacement Patch; a detached number changes locally.
+- Exception contract: No checked exception; non-finite double arguments reject with IllegalArgumentException; Native failures retain their DocumentFailure cause.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_number_dot_set_dash_value_dash_int"></a>
+### `itext7.kernel.pdf-number.set-value-int`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfNumber#setValue(int)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfNumber#setValue(int)`
+- Generic contract: Returns void. A live number submits a validated value-replacement Patch; a detached number changes locally.
+- Exception contract: No checked exception; non-finite double arguments reject with IllegalArgumentException; Native failures retain their DocumentFailure cause.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_object_dot_constant_dash_array"></a>
+### `itext7.kernel.pdf-object.constant-array`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfObject#ARRAY`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfObject#ARRAY`
+- Generic contract: public static final byte; value 1.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_object_dot_constant_dash_boolean"></a>
+### `itext7.kernel.pdf-object.constant-boolean`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfObject#BOOLEAN`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfObject#BOOLEAN`
+- Generic contract: public static final byte; value 2.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_object_dot_constant_dash_dictionary"></a>
+### `itext7.kernel.pdf-object.constant-dictionary`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfObject#DICTIONARY`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfObject#DICTIONARY`
+- Generic contract: public static final byte; value 3.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_object_dot_constant_dash_indirect_dash_reference"></a>
+### `itext7.kernel.pdf-object.constant-indirect-reference`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfObject#INDIRECT_REFERENCE`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfObject#INDIRECT_REFERENCE`
+- Generic contract: public static final byte; value 5.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_object_dot_constant_dash_name"></a>
+### `itext7.kernel.pdf-object.constant-name`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfObject#NAME`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfObject#NAME`
+- Generic contract: public static final byte; value 6.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_object_dot_constant_dash_null"></a>
+### `itext7.kernel.pdf-object.constant-null`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfObject#NULL`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfObject#NULL`
+- Generic contract: public static final byte; value 7.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_object_dot_constant_dash_number"></a>
+### `itext7.kernel.pdf-object.constant-number`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfObject#NUMBER`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfObject#NUMBER`
+- Generic contract: public static final byte; value 8.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_object_dot_constant_dash_stream"></a>
+### `itext7.kernel.pdf-object.constant-stream`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfObject#STREAM`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfObject#STREAM`
+- Generic contract: public static final byte; value 9.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_object_dot_constant_dash_string"></a>
+### `itext7.kernel.pdf-object.constant-string`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfObject#STRING`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfObject#STRING`
+- Generic contract: public static final byte; value 10.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_object_dot_get_dash_indirect_dash_reference"></a>
+### `itext7.kernel.pdf-object.get-indirect-reference`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfObject#getIndirectReference()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfObject#getIndirectReference()`
+- Generic contract: Returns the owning Session reference for an inspected indirect body, or null for a direct or detached value.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_object_dot_get_dash_type"></a>
+### `itext7.kernel.pdf-object.get-type`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfObject#getType()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfObject#getType()`
+- Generic contract: Returns the primitive byte kind.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_object_dot_is_dash_array"></a>
+### `itext7.kernel.pdf-object.is-array`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfObject#isArray()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfObject#isArray()`
+- Generic contract: Returns the primitive kind predicate.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_object_dot_is_dash_boolean"></a>
+### `itext7.kernel.pdf-object.is-boolean`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfObject#isBoolean()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfObject#isBoolean()`
+- Generic contract: Returns the primitive kind predicate.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_object_dot_is_dash_dictionary"></a>
+### `itext7.kernel.pdf-object.is-dictionary`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfObject#isDictionary()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfObject#isDictionary()`
+- Generic contract: Returns the primitive kind predicate.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_object_dot_is_dash_indirect_dash_reference"></a>
+### `itext7.kernel.pdf-object.is-indirect-reference`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfObject#isIndirectReference()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfObject#isIndirectReference()`
+- Generic contract: Returns the primitive kind predicate.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_object_dot_is_dash_name"></a>
+### `itext7.kernel.pdf-object.is-name`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfObject#isName()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfObject#isName()`
+- Generic contract: Returns the primitive kind predicate.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_object_dot_is_dash_null"></a>
+### `itext7.kernel.pdf-object.is-null`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfObject#isNull()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfObject#isNull()`
+- Generic contract: Returns the primitive kind predicate.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_object_dot_is_dash_number"></a>
+### `itext7.kernel.pdf-object.is-number`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfObject#isNumber()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfObject#isNumber()`
+- Generic contract: Returns the primitive kind predicate.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_object_dot_is_dash_stream"></a>
+### `itext7.kernel.pdf-object.is-stream`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfObject#isStream()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfObject#isStream()`
+- Generic contract: Returns the primitive kind predicate.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_object_dot_is_dash_string"></a>
+### `itext7.kernel.pdf-object.is-string`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfObject#isString()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfObject#isString()`
+- Generic contract: Returns the primitive kind predicate.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_page_dot_type"></a>
 ### `itext7.kernel.pdf-page.type`
 
@@ -92,8 +752,18 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Reference member: `com.itextpdf.kernel.pdf.PdfReader#close()`
 - Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfReader#close()`
 - Generic contract: No generic parameters or return value.
-- Exception contract: Retains the declared java.io.IOException contract; the mapped Path source is already closed by the Native Interface.
+- Exception contract: Retains java.io.IOException; releases an unclaimed private snapshot. A Document owns a claimed snapshot until its close; caller streams remain open.
 - Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_reader_dot_constructor_dash_input_dash_stream"></a>
+### `itext7.kernel.pdf-reader.constructor-input-stream`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfReader#<init>(java.io.InputStream)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfReader#<init>(java.io.InputStream)`
+- Generic contract: Reads caller input to a bounded privately owned snapshot without closing the caller stream.
+- Exception contract: Declares java.io.IOException with a safe diagnostic; actual Native failures retain their DocumentFailure cause.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
 
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_reader_dot_constructor_dash_string"></a>
 ### `itext7.kernel.pdf-reader.constructor-string`
@@ -104,6 +774,106 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Generic contract: No generic parameters.
 - Exception contract: Maps a Native Document Failure to java.io.IOException with its stable code and safe diagnostic.
 - Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_stream_dot_constructor_dash_bytes"></a>
+### `itext7.kernel.pdf-stream.constructor-bytes`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfStream#<init>(byte[])`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfStream#<init>(byte[])`
+- Generic contract: Copies decoded bytes and starts with an empty mapped dictionary; inherits mapped PdfDictionary members.
+- Exception contract: No checked exception; rejects null input.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_stream_dot_get_dash_bytes"></a>
+### `itext7.kernel.pdf-stream.get-bytes`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfStream#getBytes()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfStream#getBytes()`
+- Generic contract: Returns a defensive byte[] of decoded bytes under the Native inspection budget.
+- Exception contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed or detached mutation targets reject with IllegalStateException.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_stream_dot_get_dash_type"></a>
+### `itext7.kernel.pdf-stream.get-type`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfStream#getType()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfStream#getType()`
+- Generic contract: Returns the primitive byte kind; overrides the mapped PdfObject member.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_stream_dot_set_dash_data"></a>
+### `itext7.kernel.pdf-stream.set-data`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfStream#setData(byte[])`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfStream#setData(byte[])`
+- Generic contract: Returns void; live replacement uses engine-owned Flate encoding and atomic metadata changes.
+- Exception contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed or detached mutation targets reject with IllegalStateException.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_string_dot_constructor_dash_bytes"></a>
+### `itext7.kernel.pdf-string.constructor-bytes`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfString#<init>(byte[])`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfString#<init>(byte[])`
+- Generic contract: Copies exact PDF string bytes without text normalization.
+- Exception contract: No checked exception; rejects null input.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_string_dot_constructor_dash_string"></a>
+### `itext7.kernel.pdf-string.constructor-string`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfString#<init>(java.lang.String)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfString#<init>(java.lang.String)`
+- Generic contract: Encodes the PDFDocEncoding ASCII subset or BOM-prefixed UTF-16BE; project text-conversion rules are defined in docs/document-values.md.
+- Exception contract: No checked exception; an unpaired Java surrogate rejects with a safe IllegalArgumentException before mutation.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_string_dot_get_dash_type"></a>
+### `itext7.kernel.pdf-string.get-type`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfString#getType()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfString#getType()`
+- Generic contract: Returns the primitive byte kind; overrides the mapped PdfObject member.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_string_dot_get_dash_value"></a>
+### `itext7.kernel.pdf-string.get-value`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfString#getValue()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfString#getValue()`
+- Generic contract: Returns String decoded using PDFDocEncoding or BOM-prefixed UTF-16BE/UTF-8; undefined codes and malformed Unicode become U+FFFD.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_string_dot_get_dash_value_dash_bytes"></a>
+### `itext7.kernel.pdf-string.get-value-bytes`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfString#getValueBytes()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfString#getValueBytes()`
+- Generic contract: Returns a defensive byte[] copy of the exact PDF string bytes.
+- Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_writer_dot_constructor_dash_output_dash_stream"></a>
+### `itext7.kernel.pdf-writer.constructor-output-stream`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfWriter#<init>(java.io.OutputStream)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter#<init>(java.io.OutputStream)`
+- Generic contract: Borrows caller output; publication flushes but never closes it. No generic parameters.
+- Exception contract: No checked exception; publication errors are reported at PdfDocument.close with actual Native receipts.
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
 
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_writer_dot_constructor_dash_string"></a>
 ### `itext7.kernel.pdf-writer.constructor-string`
@@ -280,13 +1050,6 @@ No preview additions (included with all stable surfaces) are declared.
 - Behavioral capability: [`document.text-structure.extract`](capability-matrix.md#capability-document_dot_text_dash_structure_dot_extract)
 - Deferred ticket: `T32`
 - Reason: Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #75 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
-
-<a id="excluded-capability-document_dot_value_dot_inspect_dash_patch"></a>
-### `document.value.inspect-patch`
-
-- Behavioral capability: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
-- Deferred ticket: `T32`
-- Reason: Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #71 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 <a id="excluded-capability-document_dot_version_dash_password_dash_security"></a>
 ### `document.version-password-security`

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prepare and bind repository-only T03 observations; never publish a release."""
+"""Prepare and bind repository-only T03/T09 observations; never publish a release."""
 import hashlib
 from pathlib import Path
 
@@ -85,22 +85,19 @@ def certification_classpath(root, contract, receipt):
 
 
 def candidate_identities(root, authority, inventory, log):
-    """Use the existing identity authority, then restore its exact prior contents."""
+    """Evaluate a separate provisional index without ever replacing the authority."""
     import re
-    previous = authority.read_bytes()
-    try:
-        write_json(authority, inventory)
-        run_logged([str(root / 'scripts/inventory'), 'readiness'], log, cwd=root, check=False)
-        text = log.read_text()
-        identities = {}
-        for name in ('Candidate', 'Contract'):
-            match = re.search(r'^' + name + r' identity: ([a-f0-9]{64})$', text, re.MULTILINE)
-            if not match:
-                raise ValueError('Inventory did not establish ' + name + ' identity')
-            identities[name] = match.group(1)
-        return identities
-    finally:
-        authority.write_bytes(previous)
+    provisional = log.parent / 'candidate-probe.json'
+    write_json(provisional, inventory)
+    run_logged([str(root / 'scripts/inventory'), 'readiness', provisional.relative_to(root).as_posix()], log, cwd=root, check=False)
+    text = log.read_text()
+    identities = {}
+    for name in ('Candidate', 'Contract'):
+        match = re.search(r'^' + name + r' identity: ([a-f0-9]{64})$', text, re.MULTILINE)
+        if not match:
+            raise ValueError('Inventory did not establish ' + name + ' identity')
+        identities[name] = match.group(1)
+    return identities
 
 
 def stage_products(root, contract):
@@ -132,17 +129,100 @@ def stage_products(root, contract):
 CHAINS = ('syntax', 'standards', 'semantic', 'visual')
 
 
+def certification_case(obligation):
+    """The frozen consumer and artifact obligations for one recorder invocation."""
+    artifacts = ['net.zerocloud.pdf.migration.itext7.contract.' + name
+                 for name in ('JarContractIT', 'ClasspathExclusivityIT')]
+    if obligation == 'values':
+        return {'profile': 'T09-document-value-inspection-patch', 'label': 'T09', 'test-count': 83,
+                'test-classes': ['net.zerocloud.pdf.consumer.PdfValueWorkflowTest',
+                                 'net.zerocloud.pdf.itext7.consumer.PdfValuesFacadeTest'] + artifacts,
+                'facade-execution-profile': 'IN_PROCESS',
+                'workflow-policy': 'Native REWRITE and unsigned INCREMENTAL; Facade REWRITE; finite system-default policies; no network; Native tests select the recorded execution profile',
+                'fonts': 'none; fixed blue rectangle; private value streams are not painted',
+                'configuration-paths': ['capabilities/profiles/T09-values', 'capabilities/profiles/T09-standards',
+                    'capabilities/profiles/T03-standards', 'capabilities/profiles/T09-values-visual.properties',
+                    'capabilities/expected/T09-values-144dpi-srgb.png']}
+    if obligation != 'transactions':
+        raise ValueError('Unknown certification obligation: ' + obligation)
+    return {'profile': 'T03-document-workflow-transaction', 'label': 'T03', 'test-count': 34,
+            'test-classes': ['net.zerocloud.pdf.consumer.' + name for name in
+                ('BlankDocumentWorkflowTest', 'WorkflowLifecycleTest', 'WorkflowTransactionContractTest', 'WorkflowResourceOwnershipTest')]
+                + ['net.zerocloud.pdf.itext7.consumer.BlankDocumentFacadeTest'] + artifacts,
+            'facade-execution-profile': 'IN_PROCESS',
+            'workflow-policy': 'REWRITE; PDF 1.7; finite system-default resource/transaction/worker policies; no network; tests select the recorded execution profile',
+            'fonts': 'none; no text or resources in the T03 products',
+            'configuration-paths': ['capabilities/profiles/T03-standards',
+                'capabilities/profiles/T03-document-blank-visual.properties',
+                'capabilities/expected/T03-document-blank-144dpi-srgb.png']}
+
+
 def properties(path):
     """Read recorder-owned flat properties (values used here contain no escapes)."""
     return dict(line.split('=', 1) for line in Path(path).read_text().splitlines()
                 if line and not line.startswith('#') and '=' in line)
 
 
-def collect_reports(root, run):
+def record_preservation(root, run):
+    """Observe final effective streams through pinned qpdf, without decoding them."""
+    import base64
+    import json
+    import subprocess
+    directory = run / 'raw-preservation'
+    directory.mkdir()
+    pin = properties(root / 'scripts/qpdf-pin.properties')
+    executable = (root / 'scripts' / pin['QPDF_EXECUTABLE']).resolve(strict=True)
+    inputs = {name: run / name / 'values.pdf' for name in ('source', 'native-rewrite', 'native-incremental', 'facade')}
+    inputs['negative'] = root / 'capabilities/profiles/T09-values/fixtures/reencoded-incremental.pdf'
+    observations = {}
+    files = []
+    for name, path in inputs.items():
+        before = reference(root, path)
+        command = [str(executable), '--json=2', '--json-key=qpdf', '--json-stream-data=inline', '--decode-level=none', str(path)]
+        completed = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=30)
+        output = directory / (name + '.json')
+        output.write_bytes(completed.stdout)
+        (directory / (name + '-stderr.txt')).write_bytes(completed.stderr)
+        invocation = directory / (name + '-command.json')
+        write_json(invocation, {'command': command, 'exit': completed.returncode, 'input': before})
+        files.extend([reference(root, output), reference(root, invocation), reference(root, directory / (name + '-stderr.txt'))])
+        try:
+            if completed.returncode != 0 or completed.stderr or before != reference(root, path):
+                raise ValueError('qpdf execution did not complete cleanly')
+            parsed = json.loads(completed.stdout)
+            if parsed['version'] != 2 or parsed['parameters']['decodelevel'] != 'none':
+                raise ValueError('Raw stream observation policy changed')
+            objects = parsed['qpdf'][1]
+
+            def value(item):
+                return objects['obj:' + item]['value'] if isinstance(item, str) and item.endswith(' R') else item
+
+            catalog = value(objects['trailer']['value']['/Root'])
+            values = value(value(value(catalog['/PieceInfo'])['/FolioPDF'])['/Private'])
+            page = value(value(catalog['/Pages'])['/Kids'][0])
+            streams = {}
+            for label, ref in (('retained-stream', values['/RetainedStream']), ('page-content', page['/Contents'])):
+                stream = objects['obj:' + ref]['stream']
+                raw = base64.b64decode(stream['data'], validate=True)
+                streams[label] = {'raw-sha256': hashlib.sha256(raw).hexdigest(), 'length': len(raw), 'attributes': stream['dict']}
+            observations[name] = streams
+        except (ValueError, KeyError, TypeError, IndexError):
+            observations[name] = None
+    original = observations['source']
+    negative = 'fail' if original is not None and observations['negative'] is not None and observations['negative'] != original else 'indeterminate'
+    result = 'indeterminate' if original is None or any(value is None for value in observations.values()) or negative != 'fail' else (
+        'pass' if all(observations[name] == original for name in ('native-rewrite', 'native-incremental', 'facade')) else 'fail')
+    report = {'result': result, 'negative-control': negative, 'policy': 'Compare final effective raw stream bytes and filter attributes; the old incremental prefix does not qualify.',
+              'observations': observations, 'findings': files, 'negative-controls': [reference(root, inputs['negative'])]}
+    write_json(directory / 'result.json', report)
+    return report
+
+
+def collect_reports(root, run, obligation='transactions'):
     result = properties(run / 'result.properties')
     for chain in CHAINS:
         if result.get(chain) != 'pass':
-            raise ValueError('Unobserved or non-passing T03 chain: ' + chain)
+            raise ValueError('Unobserved or non-passing ' + obligation + ' chain: ' + chain)
     negative = properties(run / 'negative/result.properties')
     reports = {}
     for chain in CHAINS:
@@ -150,17 +230,20 @@ def collect_reports(root, run):
             raise ValueError('Missing detected negative control for ' + chain)
         report = {'chain': chain, 'result': 'pass', 'products': [], 'findings': [],
                   'negative-controls': [reference(root, run / 'negative' / (chain + '.txt'))]}
-        for edition in ('native', 'facade'):
+        editions = ('native-rewrite', 'native-incremental', 'facade') if obligation == 'values' else ('native', 'facade')
+        for edition in editions:
             directory = run / edition
             observed = properties(directory / 'result.properties')
             if observed.get(chain) != 'pass':
                 raise ValueError(edition + ' chain did not pass: ' + chain)
-            product = reference(root, directory / 'blank.pdf')
+            product = reference(root, directory / ('values.pdf' if obligation == 'values' else 'blank.pdf'))
             if product['sha256'] != observed.get('input-sha256'):
                 raise ValueError('Observed product changed after checking')
             report['products'].append(product)
             report['findings'].append(reference(root, directory / (chain + '.txt')))
             report['findings'].append(reference(root, directory / 'result.properties'))
+            if (directory / (chain + '.md')).is_file():
+                report['findings'].append(reference(root, directory / (chain + '.md')))
             if chain == 'visual':
                 report['findings'] += [reference(root, path) for path in sorted(directory.glob('*.png'))]
             if chain == 'standards':
@@ -177,6 +260,20 @@ def collect_reports(root, run):
         if chain == 'visual':
             report['negative-controls'] += [reference(root, path) for path in sorted((run / 'negative').glob('*.png'))]
             report['negative-controls'] += [reference(root, path) for path in sorted((run / 'negative').glob('one-pixel-control.properties'))]
+        if obligation == 'values':
+            if chain in ('syntax', 'semantic'):
+                name = 'invalid.pdf' if chain == 'syntax' else 'unchanged-values.pdf'
+                report['negative-controls'].append(reference(root, run / 'negative' / name))
+            if chain == 'visual':
+                original = run / 'source'
+                observed = properties(original / 'result.properties')
+                source = reference(root, original / 'values.pdf')
+                if observed.get('visual') != 'pass' or observed.get('input-sha256') != source['sha256']:
+                    raise ValueError('Source visual observation is missing or changed')
+                report['products'].append(source)
+                report['findings'] += [reference(root, path) for path in sorted(original.iterdir())
+                                       if path.is_file() and path.suffix != '.pdf']
+                report['negative-controls'].append(reference(root, run / 'negative/values.pdf'))
         reports[chain] = report
     return reports
 
@@ -187,9 +284,146 @@ def require_environment(expected, actual):
     return actual
 
 
+def merge_evidence(root, previous, fresh, identities):
+    """Keep other obligations only with current identities and intact transitive evidence.
+
+    Historical files are never rewritten. A stale record stays historical rather than
+    being copied into the current-candidate authority with a new label.
+    """
+    import copy
+    import yaml
+    merged = copy.deepcopy(fresh)
+    if previous.get('candidate') != fresh['candidate']:
+        return merged
+    environments = {item['profile']: item['record'] for item in fresh['environments']}
+    old_environments = {item['profile']: item['record'] for item in previous.get('environments', [])}
+    replaced = {(item['obligation'], item['environment'], item['execution-profile']) for item in fresh['certifications']}
+
+    def verified(item, visiting=None, kind=None):
+        visiting = set() if visiting is None else visiting
+        path = root / item['path']
+        path.resolve(strict=True).relative_to(root.resolve())
+        if reference(root, path) != item:
+            raise ValueError('Changed retained evidence: ' + str(path))
+        if kind == 'observation' or path.suffix not in ('.json', '.yaml'):
+            return None
+        if path in visiting:
+            raise ValueError('Cyclic evidence references')
+        value = yaml.safe_load(path.read_text())
+        ancestors = visiting | {path}
+
+        def walk(node):
+            if isinstance(node, dict):
+                if set(node) == {'path', 'sha256'}:
+                    verified(node, ancestors)
+                else:
+                    for name, child in node.items():
+                        if node is value and kind == 'certification' and name == 'report':
+                            verified(child, ancestors, 'report')
+                        elif node is value and kind == 'report' and name == 'environment-observations':
+                            # Raw observer payloads describe container/install paths, not repository references.
+                            for observation in child:
+                                verified(observation, ancestors, 'observation')
+                        else:
+                            walk(child)
+            elif isinstance(node, list):
+                for child in node:
+                    walk(child)
+
+        walk(value)
+        return value
+
+    retained = []
+    for certification in previous.get('certifications', []):
+        key = tuple(certification[name] for name in ('obligation', 'environment', 'execution-profile'))
+        if key in replaced:
+            continue
+        try:
+            old_environment = old_environments[certification['environment']]
+            environment = environments.get(certification['environment'], old_environment)
+            if old_environment['sha256'] != environment['sha256']:
+                raise ValueError('Observed environment changed')
+            verified(old_environment)
+            configuration = verified(certification['configuration'])
+            if configuration['candidate-sha256'] != identities['Candidate'] or configuration['environment-sha256'] != environment['sha256']:
+                raise ValueError('Execution identity changed')
+            chains = set()
+            for item in certification['records']:
+                record = verified(item, kind='certification')
+                expected = {'candidate-sha256': identities['Candidate'], 'contract-sha256': identities['Contract'],
+                            'environment-sha256': environment['sha256'],
+                            'execution-configuration-sha256': certification['configuration']['sha256'],
+                            'obligation': certification['obligation'], 'execution-profile': certification['execution-profile'],
+                            'result': 'pass'}
+                if any(record.get(name) != value for name, value in expected.items()) or record['chain'] in chains:
+                    raise ValueError('Retained certification identity changed')
+                chains.add(record['chain'])
+            if chains != set(CHAINS):
+                raise ValueError('Incomplete retained certification')
+            retained.append(copy.deepcopy(certification))
+            if certification['environment'] not in environments:
+                environments[certification['environment']] = old_environment
+                merged['environments'].append({'profile': certification['environment'], 'record': copy.deepcopy(old_environment)})
+        except (OSError, ValueError, KeyError, TypeError, yaml.YAMLError):
+            # Fail closed for this old scope; its original files remain untouched.
+            continue
+    merged['certifications'] = retained + merged['certifications']
+    return merged
+
+
 def write_json(path, value):
     import json
     Path(path).write_text(json.dumps(value, indent=2, ensure_ascii=False) + '\n')
+
+
+def publish_index(root, directory):
+    """Publish already observed records with a lock, stale-index guard and atomic replace."""
+    import fcntl
+    import json
+    import os
+    import tempfile
+    import yaml
+    authority = root / 'capabilities/foundation-evidence.yaml'
+    lock = root / '.build-cache/foundation-evidence.lock'
+    lock.parent.mkdir(exist_ok=True)
+    with lock.open('a+b') as held:
+        fcntl.flock(held, fcntl.LOCK_EX)
+        previous_bytes = authority.read_bytes()
+        if hashlib.sha256(previous_bytes).hexdigest() != (directory / 'prior-index.sha256').read_text().strip():
+            raise ValueError('Evidence authority changed during certification; refusing to overwrite it')
+        previous = yaml.safe_load(previous_bytes)
+        fresh = json.loads((directory / 'observed-index.json').read_text())
+        identities = json.loads((directory / 'identities.json').read_text())
+        empty = {'schema-version': 1, 'candidate': fresh['candidate'], 'environments': fresh['environments'], 'certifications': []}
+        verified = merge_evidence(root, fresh, empty, identities)
+        scopes = {(item['obligation'], item['environment'], item['execution-profile']) for item in fresh['certifications']}
+        if not scopes or len(scopes) != len(fresh['certifications']) or verified['certifications'] != fresh['certifications']:
+            raise ValueError('New evidence is incomplete, stale or does not match the observed identities')
+        merged = merge_evidence(root, previous, fresh, identities)
+        prepared = None
+        try:
+            with tempfile.NamedTemporaryFile(mode='w', encoding='utf-8', dir=authority.parent,
+                                             prefix='.foundation-evidence-', suffix='.tmp', delete=False) as stream:
+                prepared = Path(stream.name)
+                json.dump(merged, stream, indent=2, ensure_ascii=False)
+                stream.write('\n')
+                stream.flush()
+                os.fsync(stream.fileno())
+            if json.loads(prepared.read_text()) != merged:
+                raise ValueError('Prepared evidence index failed its round-trip check')
+            os.chmod(prepared, authority.stat().st_mode & 0o777)
+            if authority.read_bytes() != previous_bytes:
+                raise ValueError('Evidence authority changed during index preparation')
+            os.replace(prepared, authority)
+            descriptor = os.open(str(authority.parent), os.O_RDONLY | os.O_DIRECTORY)
+            try:
+                os.fsync(descriptor)
+            finally:
+                os.close(descriptor)
+        finally:
+            if prepared is not None:
+                prepared.unlink(missing_ok=True)
+        return merged
 
 
 def run_logged(command, path, *, cwd, timeout=1800, check=True):
@@ -304,16 +538,60 @@ uname -m > "$out/architecture.txt"
         if observed_hash != pin[key]:
             raise ValueError('Observed checker executable differs from its pin: ' + name)
         tools.append({'id': name, 'kind': 'external-tool', 'version': version, 'sha256': observed_hash, 'chains': chains})
-    tools.append({'id': 'folio-pdf-t03', 'kind': 'project-test', 'version': '0.1.0',
-                  'sha256': sha256(harness / 'acceptance.jar'), 'chains': ['semantic']})
+    for label in ('t03', 't09'):
+        tools.append({'id': 'folio-pdf-' + label, 'kind': 'project-test', 'version': '0.1.0',
+                      'sha256': sha256(harness / 'acceptance.jar'), 'chains': ['semantic']})
     return {'schema-version': 1, 'profile': profile['id'], 'identity': identity,
             'host': {'kernel': (directory / 'kernel.txt').read_text().strip(), 'architecture': identity['architecture']},
             'native-engine': engine, 'tools': tools}
 
 
-def certify(root, output, contract, helper):
+def execution_plan(root, scope, image, helper, cp, case, execution):
+    """Generate exactly the commands used by certify; planning does not run them."""
+    inside = '/workspace/' + scope.relative_to(root).as_posix()
+    command = container_command(root, image, helper)
+    command[-1:-1] = ['--volume', str(scope) + ':' + inside + ':rw']
+    options = ['-Xmx1024m', '-Duser.language=en', '-Duser.country=US', '-Duser.timezone=UTC',
+               '-Dfolio.harfBuzzHelper=/folio-harfbuzz/bin/folio-harfbuzz',
+               '-Dfolio.' + case['label'].lower() + '.executionProfile=' + execution]
+    evidence_command = command + ['java'] + options + ['-cp', cp, 'net.zerocloud.pdf.acceptance.' + case['label'] + 'EvidenceCommand',
+        '/workspace', inside + '/observations', execution, '0.1.0']
+    test_options = [
+        '-DrepositoryRoot=/workspace',
+        '-DartifactPath=/workspace/target/foundation-0.1.0/artifacts/pdf-migration-itext7-preview-0.1.0.jar',
+        '-DstableArtifactPath=/workspace/target/foundation-0.1.0/artifacts/pdf-migration-itext7-0.1.0.jar',
+        '-DdocumentArtifactPath=/workspace/target/foundation-0.1.0/artifacts/pdf-document-0.1.0.jar',
+        '-DtestClassesPath=/workspace/target/foundation-0.1.0/harness/facade-tests.jar']
+    test_command = command + ['java'] + options + test_options + ['-cp', cp, 'org.junit.runner.JUnitCore'] + case['test-classes']
+    return {'recorder-command': evidence_command, 'contract-tests-command': test_command,
+            'preservation-command': command + ['/usr/bin/python3.12', '/workspace/scripts/t03-foundation.py',
+                'preservation', inside + '/observations', '--root', '/workspace'] if case['label'] == 'T09' else [],
+            'required-test-count': case['test-count'], 'java-options': options,
+            'settings': {'workflow-policy': case['workflow-policy'], 'fonts': case['fonts'],
+                         'providers': 'none; Stable Facade execution is ' + case['facade-execution-profile']}}
+
+
+def record_plan(root, output, contract, helper, obligation):
+    import json
+    import yaml
+    output.mkdir()
+    receipt = json.loads((root / 'target/foundation-0.1.0/build-inputs.json').read_text())
+    cp = ':'.join('/workspace/' + path.relative_to(root).as_posix()
+                  for path in certification_classpath(root, contract, receipt))
+    case = certification_case(obligation)
+    executions = []
+    for profile in yaml.safe_load((root / contract['environments']).read_text())['profiles']:
+        for execution in ('IN_PROCESS', 'HARDENED_WORKER'):
+            scope = output / ('jdk' + str(profile['identity']['jdk-major']) + '-' + execution.lower())
+            executions.append(execution_plan(root, scope, profile['identity']['image'], helper, cp, case, execution))
+    write_json(output / 'plan.json', {'status': 'unverified-plan', 'configuration-paths': case['configuration-paths'], 'executions': executions})
+
+
+def certify(root, output, contract, helper, obligation='transactions'):
+    import json
     import yaml
     root = root.resolve()
+    case = certification_case(obligation)
     output = output.resolve()
     output.relative_to(root)
     base = root / 'target/foundation-0.1.0'
@@ -324,19 +602,23 @@ def certify(root, output, contract, helper):
     candidate = receipt['candidate']
     inventory = {'schema-version': 1, 'candidate': candidate, 'environments': [], 'certifications': []}
     authority = root / 'capabilities/foundation-evidence.yaml'
+    previous_bytes = authority.read_bytes()
     identities = candidate_identities(root, authority, inventory, output / 'candidate-identity.txt')
     environment_profiles = yaml.safe_load((root / contract['environments']).read_text())['profiles']
     classpath_files = certification_classpath(root, contract, receipt)
     cp = ':'.join('/workspace/' + path.relative_to(root).as_posix() for path in classpath_files)
+    profile_inputs = []
+    for name in case['configuration-paths']:
+        path = root / name
+        profile_inputs += list(path.rglob('*')) if path.is_dir() else [path]
     configuration_inputs = sorted(set(classpath_files + [root / item['path'] for item in receipt['harness']]
         + [build_record, base / 'build-command.json', root / 'scripts/imagemagick-runtime.sha256']
-        + list((root / 'capabilities/profiles/T03-standards').rglob('*'))
-        + [root / 'capabilities/profiles/T03-document-blank-visual.properties', root / 'capabilities/expected/T03-document-blank-144dpi-srgb.png']
+        + profile_inputs
         + [root / ('scripts/' + name + '-pin.properties') for name in ('qpdf', 'pdfium', 'imagemagick', 'pdfcpu', 'arlington')]))
     configuration_inputs = [reference(root, path) for path in configuration_inputs if path.is_file()]
     for profile in environment_profiles:
         major = profile['identity']['jdk-major']
-        print('T03 environment JDK ' + str(major), flush=True)
+        print(case['label'] + ' environment JDK ' + str(major), flush=True)
         directory = output / ('jdk' + str(major) + '-environment')
         environment = observe_environment(root, profile['identity']['image'], helper, directory, profile, harness)
         record_path = directory / 'environment.yaml'
@@ -344,45 +626,36 @@ def certify(root, output, contract, helper):
         environment_ref = reference(root, record_path)
         inventory['environments'].append({'profile': profile['id'], 'record': environment_ref})
         for execution in ('IN_PROCESS', 'HARDENED_WORKER'):
-            print('T03 certification JDK ' + str(major) + ' / ' + execution, flush=True)
+            print(case['label'] + ' certification JDK ' + str(major) + ' / ' + execution, flush=True)
             scope = output / ('jdk' + str(major) + '-' + execution.lower())
             scope.mkdir()
-            inside = '/workspace/' + scope.relative_to(root).as_posix()
-            command = container_command(root, profile['identity']['image'], helper)
-            command[-1:-1] = ['--volume', str(scope) + ':' + inside + ':rw']
-            options = ['-Xmx1024m', '-Duser.language=en', '-Duser.country=US', '-Duser.timezone=UTC',
-                       '-Dfolio.harfBuzzHelper=/folio-harfbuzz/bin/folio-harfbuzz',
-                       '-Dfolio.t03.executionProfile=' + execution]
-            evidence_command = command + ['java'] + options + ['-cp', cp, 'net.zerocloud.pdf.acceptance.T03EvidenceCommand',
-                '/workspace', inside + '/observations', execution, '0.1.0']
-            test_options = [
-                '-DrepositoryRoot=/workspace',
-                '-DartifactPath=/workspace/target/foundation-0.1.0/artifacts/pdf-migration-itext7-preview-0.1.0.jar',
-                '-DstableArtifactPath=/workspace/target/foundation-0.1.0/artifacts/pdf-migration-itext7-0.1.0.jar',
-                '-DdocumentArtifactPath=/workspace/target/foundation-0.1.0/artifacts/pdf-document-0.1.0.jar',
-                '-DtestClassesPath=/workspace/target/foundation-0.1.0/harness/facade-tests.jar']
-            test_command = command + ['java'] + options + test_options + ['-cp', cp, 'org.junit.runner.JUnitCore'] + [
-                'net.zerocloud.pdf.consumer.' + name for name in ('BlankDocumentWorkflowTest', 'WorkflowLifecycleTest',
-                    'WorkflowTransactionContractTest', 'WorkflowResourceOwnershipTest')]
-            test_command += ['net.zerocloud.pdf.itext7.consumer.BlankDocumentFacadeTest',
-                             'net.zerocloud.pdf.migration.itext7.contract.JarContractIT',
-                             'net.zerocloud.pdf.migration.itext7.contract.ClasspathExclusivityIT']
+            plan = execution_plan(root, scope, profile['identity']['image'], helper, cp, case, execution)
+            evidence_command = plan['recorder-command']
+            test_command = plan['contract-tests-command']
+            options = plan['java-options']
             config = {'schema-version': 1, 'candidate-sha256': identities['Candidate'],
-                      'environment-sha256': environment_ref['sha256'], 'acceptance-profile': 'T03-document-workflow-transaction',
+                      'environment-sha256': environment_ref['sha256'], 'acceptance-profile': case['profile'],
                       'execution-profile': execution, 'command': evidence_command, 'java-options': options,
                       'locale': 'en_US / C.UTF-8', 'timezone': 'UTC',
-                      'settings': {'workflow-policy': 'REWRITE; PDF 1.7; finite system-default resource/transaction/worker policies; no network; tests select the recorded execution profile',
-                                   'fonts': 'none; no text or resources in the T03 products',
-                                   'providers': 'none; Stable Facade retains its IN_PROCESS default'},
+                      'settings': plan['settings'],
                       'inputs': configuration_inputs}
             configuration = scope / 'execution.yaml'
             write_json(configuration, config)
             write_json(scope / 'contract-tests-command.json', test_command)
             run_logged(test_command, scope / 'contract-tests.txt', cwd=root, timeout=300)
-            if 'OK (34 tests)' not in (scope / 'contract-tests.txt').read_text():
-                raise ValueError('The complete T03 consumer/artifact contract suite did not execute')
+            if 'OK (' + str(case['test-count']) + ' tests)' not in (scope / 'contract-tests.txt').read_text():
+                raise ValueError('The complete ' + case['label'] + ' consumer/artifact contract suite did not execute')
             run_logged(evidence_command, scope / 'recorder.txt', cwd=root, timeout=300)
-            reports = collect_reports(root, scope / 'observations')
+            reports = collect_reports(root, scope / 'observations', obligation)
+            if obligation == 'values':
+                write_json(scope / 'raw-preservation-command.json', plan['preservation-command'])
+                run_logged(plan['preservation-command'], scope / 'raw-preservation.txt', cwd=root, timeout=60)
+                preserved = json.loads((scope / 'observations/raw-preservation/result.json').read_text())
+                if preserved['result'] != 'pass':
+                    raise ValueError('T09 final encoded-stream preservation did not pass')
+                reports['semantic']['findings'] += preserved['findings'] + [reference(root, scope / 'observations/raw-preservation/result.json')]
+                reports['semantic']['findings'] += [reference(root, scope / 'raw-preservation-command.json'), reference(root, scope / 'raw-preservation.txt')]
+                reports['semantic']['negative-controls'] += preserved['negative-controls']
             records = []
             for chain, report in reports.items():
                 if chain == 'semantic':
@@ -390,27 +663,33 @@ def certify(root, output, contract, helper):
                 report['environment-observations'] = [reference(root, path) for path in sorted(directory.iterdir()) if path.is_file()]
                 report_file = scope / (chain + '-report.json')
                 write_json(report_file, report)
-                record = {'schema-version': 1, 'obligation': 'transactions', 'acceptance-profile': 'T03-document-workflow-transaction',
+                record = {'schema-version': 1, 'obligation': obligation, 'acceptance-profile': case['profile'],
                           'release': '0.1.0', 'candidate-sha256': identities['Candidate'], 'contract-sha256': identities['Contract'],
                           'environment-sha256': environment_ref['sha256'], 'execution-configuration-sha256': sha256(configuration),
                           'execution-profile': execution, 'chain': chain, 'result': 'pass',
-                          'producer': {'syntax': 'qpdf', 'standards': 'arlington', 'semantic': 'folio-pdf-t03', 'visual': 'pdfium-cli'}[chain],
-                          'configuration': reference(root, root / 'capabilities/evidence/T03-document-workflow-transaction.md'),
+                          'producer': {'syntax': 'qpdf', 'standards': 'arlington', 'semantic': 'folio-pdf-' + case['label'].lower(), 'visual': 'pdfium-cli'}[chain],
+                          'configuration': reference(root, root / ('capabilities/evidence/' + case['profile'] + '.md')),
                           'report': reference(root, report_file), 'negative-controls': report['negative-controls']}
                 path = scope / (chain + '.yaml')
                 write_json(path, record)
                 records.append(reference(root, path))
             require_unchanged(root, contract, candidate)
             require_staged_build(root, contract, build_record)
-            inventory['certifications'].append({'obligation': 'transactions', 'environment': profile['id'],
+            inventory['certifications'].append({'obligation': obligation, 'environment': profile['id'],
                 'execution-profile': execution, 'configuration': reference(root, configuration), 'records': records})
         observed_after = output / ('jdk' + str(major) + '-environment-after')
         if observe_environment(root, profile['identity']['image'], helper, observed_after, profile, harness) != environment:
             raise ValueError('Environment/tool identities changed during observations')
     require_unchanged(root, contract, candidate)
     require_staged_build(root, contract, build_record)
-    write_json(authority, inventory)
-    print('Recorded exactly eight T03 certifications. Other Foundation obligations remain uncertified.', flush=True)
+    if authority.read_bytes() != previous_bytes:
+        raise ValueError('Evidence authority changed during certification; refusing to overwrite it')
+    write_json(output / 'observed-index.json', inventory)
+    write_json(output / 'identities.json', identities)
+    (output / 'prior-index.sha256').write_text(hashlib.sha256(previous_bytes).hexdigest() + '\n')
+    merged = publish_index(root, output)
+    print('Recorded exactly eight ' + case['label'] + ' certifications; retained '
+          + str(len(merged['certifications']) - 8) + ' current certifications for other obligations.', flush=True)
 
 
 def main():
@@ -418,16 +697,41 @@ def main():
     import os
     import shutil
     import tempfile
-    import yaml
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action', choices=('stage', 'certify'))
+    parser.add_argument('action', choices=('stage', 'certify', 'collect', 'preservation', 'plan', 'merge-index'))
     parser.add_argument('output', nargs='?', type=Path)
+    parser.add_argument('--obligation', choices=('transactions', 'values'), default='transactions')
+    parser.add_argument('--root', type=Path, default=Path(__file__).resolve().parents[1])
     args = parser.parse_args()
-    root = Path(__file__).resolve().parents[1]
+    root = args.root.resolve()
+    if args.action == 'merge-index':
+        if args.output is None:
+            parser.error('merge-index requires a completed observation directory')
+        publish_index(root, (root / args.output).resolve())
+        return
+    if args.action == 'preservation':
+        if args.output is None:
+            parser.error('preservation requires an observation directory')
+        result = record_preservation(root, (root / args.output).resolve())
+        if result['result'] != 'pass':
+            raise ValueError('T09 final encoded-stream preservation did not pass')
+        return
+    if args.action == 'collect':
+        import json
+        if args.output is None:
+            parser.error('collect requires an observation directory')
+        print(json.dumps(collect_reports(root, (root / args.output).resolve(), args.obligation), indent=2))
+        return
+    import yaml
     contract = yaml.safe_load((root / 'capabilities/foundation-release.yaml').read_text())
     helper = Path(os.environ['FOLIO_HARFBUZZ_HELPER']).resolve(strict=True)
     if not helper.is_file() or not os.access(helper, os.X_OK):
         raise ValueError('An explicit executable native helper is required')
+    if args.action == 'plan':
+        if args.output is None:
+            parser.error('plan requires a fresh output directory')
+        record_plan(root, (root / args.output).resolve(), contract, helper, args.obligation)
+        return
     if args.action == 'stage':
         base = root / 'target/foundation-0.1.0'
         base.mkdir(parents=True, exist_ok=True)
@@ -453,7 +757,7 @@ def main():
     else:
         if args.output is None:
             parser.error('certify requires a fresh repository-relative output directory')
-        certify(root, root / args.output, contract, helper)
+        certify(root, root / args.output, contract, helper, args.obligation)
 
 
 if __name__ == '__main__':

@@ -4,8 +4,8 @@ set -euo pipefail
 script_directory=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 repository_root=$(cd -- "${script_directory}/.." && pwd)
 
-if (( $# != 1 )); then
-    echo "Usage: ./scripts/inventory <validate|generate|check|readiness|environments>" >&2
+if (( $# < 1 || $# > 2 )); then
+    echo "Usage: ./scripts/inventory <validate|generate|check|readiness|environments> [readiness-evidence-file]" >&2
     exit 2
 fi
 
@@ -18,9 +18,19 @@ case "${inventory_action}" in
         ;;
 esac
 
+inventory_options=()
+if (( $# == 2 )); then
+    if [[ ${inventory_action} != readiness ]]; then
+        echo "A separate evidence index is supported only for readiness." >&2
+        exit 2
+    fi
+    inventory_options+=("-Dfolio.inventory.evidence=$2")
+fi
+
 exec "${repository_root}/mvnw" \
     -B -ntp \
     -f "${repository_root}/build-tools/inventory/pom.xml" \
     -Dinventory.action="${inventory_action}" \
     -Dinventory.repository.root="${repository_root}" \
+    "${inventory_options[@]}" \
     compile exec:java

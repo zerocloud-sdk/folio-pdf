@@ -146,7 +146,9 @@ final class PdfBoxDocumentSession implements DocumentSession {
             executeChecked(command);
             if (!(command instanceof ComposeParagraphs) && !(command instanceof RelayoutParagraphs)
                     && !(command instanceof FlushParagraphs)) { paragraphOperations.flush(); }
-            resources.audit(document);
+            if (!(command instanceof DocumentPatch)) {
+                resources.audit(document);
+            }
             resources.checkpoint();
         } catch (DocumentFailure failure) {
             resources.rethrowTerminalFailure();
@@ -667,6 +669,10 @@ final class PdfBoxDocumentSession implements DocumentSession {
         }
     }
 
+    PdfBoxIncrementalTrailer prepareIncrementalSave() throws DocumentFailure {
+        return valueAdapter.prepareIncrementalSave();
+    }
+
     boolean hasMutationOccurred() {
         return mutationOccurred;
     }
@@ -877,6 +883,7 @@ final class PdfBoxDocumentSession implements DocumentSession {
         if (Thread.currentThread() != owner) {
             throw new IllegalStateException("Document Session is thread-confined.");
         }
+        resources.checkpoint();
     }
 
     @SuppressWarnings("unchecked")

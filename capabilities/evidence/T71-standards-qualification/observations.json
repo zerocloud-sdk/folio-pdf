@@ -1,0 +1,1432 @@
+{
+  "purpose": "Observed checker qualification and gaps; not candidate certification",
+  "observed-at": "2026-09-08T16:35:52.173602+00:00",
+  "observations": [
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/catalog-lang-string.pdf",
+        "sha256": "2de7cfe80673b19bc0844455c65b2ab159956f9b453ade5cf5c7991cf7288d7c"
+      },
+      "tool": "pdfcpu",
+      "executable-sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/pdfcpu/0.15.0/pdfcpu",
+        "validate",
+        "--mode",
+        "strict",
+        "--conf",
+        "disable",
+        "--offline",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/catalog-lang-string.pdf"
+      ],
+      "exit": 1,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/catalog-lang-string-pdfcpu.txt",
+        "sha256": "449ea7ce352729b7967bd681781a58be24dbc06b61e567b60939392c6f13d40d"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/catalog-lang-string.pdf",
+        "sha256": "2de7cfe80673b19bc0844455c65b2ab159956f9b453ade5cf5c7991cf7288d7c"
+      },
+      "tool": "arlington",
+      "executable-sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/TestGrammar/bin/linux/TestGrammar",
+        "--tsvdir",
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/tsv/latest",
+        "--pdf",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/catalog-lang-string.pdf",
+        "--force",
+        "1.7",
+        "--no-color"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/catalog-lang-string-arlington.txt",
+        "sha256": "0f1a4481b891a7752cba3645e50368a5a058d0a594d548d038fb05e1a110a84b"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/catalog-page-mode-name.pdf",
+        "sha256": "8448711d31c93743915881ca9b4fac7d20e1fd5544cd6eab87b932105d027a05"
+      },
+      "tool": "pdfcpu",
+      "executable-sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/pdfcpu/0.15.0/pdfcpu",
+        "validate",
+        "--mode",
+        "strict",
+        "--conf",
+        "disable",
+        "--offline",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/catalog-page-mode-name.pdf"
+      ],
+      "exit": 1,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/catalog-page-mode-name-pdfcpu.txt",
+        "sha256": "a4f763cc33d553b2151f5e273f125bb8a62525e9258ec8212013547b2c7298fc"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/catalog-page-mode-name.pdf",
+        "sha256": "8448711d31c93743915881ca9b4fac7d20e1fd5544cd6eab87b932105d027a05"
+      },
+      "tool": "arlington",
+      "executable-sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/TestGrammar/bin/linux/TestGrammar",
+        "--tsvdir",
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/tsv/latest",
+        "--pdf",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/catalog-page-mode-name.pdf",
+        "--force",
+        "1.7",
+        "--no-color"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/catalog-page-mode-name-arlington.txt",
+        "sha256": "9a0b4edf5a01aa21d8ac8d26533f50d974f55e111ef2b814132dc55184eaacf8"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/catalog-page-mode-value.pdf",
+        "sha256": "4105f57be42ef29c2bc854e6df9b897cf97bd7de0e359c241ef80daafa37569f"
+      },
+      "tool": "pdfcpu",
+      "executable-sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/pdfcpu/0.15.0/pdfcpu",
+        "validate",
+        "--mode",
+        "strict",
+        "--conf",
+        "disable",
+        "--offline",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/catalog-page-mode-value.pdf"
+      ],
+      "exit": 1,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/catalog-page-mode-value-pdfcpu.txt",
+        "sha256": "131cb3be4ab5ac9afe7622107f1fda0350d4a4a38e1c46288f347c552137aae4"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/catalog-page-mode-value.pdf",
+        "sha256": "4105f57be42ef29c2bc854e6df9b897cf97bd7de0e359c241ef80daafa37569f"
+      },
+      "tool": "arlington",
+      "executable-sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/TestGrammar/bin/linux/TestGrammar",
+        "--tsvdir",
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/tsv/latest",
+        "--pdf",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/catalog-page-mode-value.pdf",
+        "--force",
+        "1.7",
+        "--no-color"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/catalog-page-mode-value-arlington.txt",
+        "sha256": "1748a09354d02185bb8276b9d30a88db352b8d63c8a827fdb2a79f1a6c13cbea"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/data-lastmodified-date.pdf",
+        "sha256": "4314c9e958387445df6b93c1a0a2f749ce9c07baf8dd039b0f2cc91e04cc1b95"
+      },
+      "tool": "pdfcpu",
+      "executable-sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/pdfcpu/0.15.0/pdfcpu",
+        "validate",
+        "--mode",
+        "strict",
+        "--conf",
+        "disable",
+        "--offline",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/data-lastmodified-date.pdf"
+      ],
+      "exit": 1,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/data-lastmodified-date-pdfcpu.txt",
+        "sha256": "1666dcbe7d8378a8577eeb0d2df1b4442d36040cfe0b84c84935478d98b3d175"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/data-lastmodified-date.pdf",
+        "sha256": "4314c9e958387445df6b93c1a0a2f749ce9c07baf8dd039b0f2cc91e04cc1b95"
+      },
+      "tool": "arlington",
+      "executable-sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/TestGrammar/bin/linux/TestGrammar",
+        "--tsvdir",
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/tsv/latest",
+        "--pdf",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/data-lastmodified-date.pdf",
+        "--force",
+        "1.7",
+        "--no-color"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/data-lastmodified-date-arlington.txt",
+        "sha256": "8eb4f4ceb06736de910b267821f70f4e9cc56241e42f634403d83bba24f3de55"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/data-lastmodified-null.pdf",
+        "sha256": "41ea72ef30941df1e05152af0ef77e1c833e963b767a7d48d78cc0bde5bf254d"
+      },
+      "tool": "pdfcpu",
+      "executable-sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/pdfcpu/0.15.0/pdfcpu",
+        "validate",
+        "--mode",
+        "strict",
+        "--conf",
+        "disable",
+        "--offline",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/data-lastmodified-null.pdf"
+      ],
+      "exit": 1,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/data-lastmodified-null-pdfcpu.txt",
+        "sha256": "f405b9f993dd0e1d5bc9dd1212aedfcfadb520f8bb9713a9670762c08152d1b4"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/data-lastmodified-null.pdf",
+        "sha256": "41ea72ef30941df1e05152af0ef77e1c833e963b767a7d48d78cc0bde5bf254d"
+      },
+      "tool": "arlington",
+      "executable-sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/TestGrammar/bin/linux/TestGrammar",
+        "--tsvdir",
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/tsv/latest",
+        "--pdf",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/data-lastmodified-null.pdf",
+        "--force",
+        "1.7",
+        "--no-color"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/data-lastmodified-null-arlington.txt",
+        "sha256": "4bcbd08c32ea299a0179cee7e6317611f9f89ff5ed272335feed6d89a8f8d171"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/data-lastmodified-required.pdf",
+        "sha256": "057044e69998ea8cfccf7c92c51ecd83ef57d9e3f07d9280c93f26e349468bd7"
+      },
+      "tool": "pdfcpu",
+      "executable-sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/pdfcpu/0.15.0/pdfcpu",
+        "validate",
+        "--mode",
+        "strict",
+        "--conf",
+        "disable",
+        "--offline",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/data-lastmodified-required.pdf"
+      ],
+      "exit": 1,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/data-lastmodified-required-pdfcpu.txt",
+        "sha256": "8d6f2a6610a3fb9c27ff4a42711e447360b74ab2c3206992752fa4ed55231903"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/data-lastmodified-required.pdf",
+        "sha256": "057044e69998ea8cfccf7c92c51ecd83ef57d9e3f07d9280c93f26e349468bd7"
+      },
+      "tool": "arlington",
+      "executable-sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/TestGrammar/bin/linux/TestGrammar",
+        "--tsvdir",
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/tsv/latest",
+        "--pdf",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/data-lastmodified-required.pdf",
+        "--force",
+        "1.7",
+        "--no-color"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/data-lastmodified-required-arlington.txt",
+        "sha256": "d9f7b3e4a94d4698ea340c10be23d9b2c0903cf3e5f24bd3959de8ce6565eefd"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/info-moddate-date.pdf",
+        "sha256": "cabfc3da00218f043214e43f99bb574887080a1d7a7c6084aee13b06fff04b9c"
+      },
+      "tool": "pdfcpu",
+      "executable-sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/pdfcpu/0.15.0/pdfcpu",
+        "validate",
+        "--mode",
+        "strict",
+        "--conf",
+        "disable",
+        "--offline",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/info-moddate-date.pdf"
+      ],
+      "exit": 1,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/info-moddate-date-pdfcpu.txt",
+        "sha256": "72dfbf4b846d79987c9c714e48a0bc5d4ef8abacc4cbea0da07f26db2e31c0d9"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/info-moddate-date.pdf",
+        "sha256": "cabfc3da00218f043214e43f99bb574887080a1d7a7c6084aee13b06fff04b9c"
+      },
+      "tool": "arlington",
+      "executable-sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/TestGrammar/bin/linux/TestGrammar",
+        "--tsvdir",
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/tsv/latest",
+        "--pdf",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/info-moddate-date.pdf",
+        "--force",
+        "1.7",
+        "--no-color"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/info-moddate-date-arlington.txt",
+        "sha256": "59e79b02c7de1847061e829d03ba6129fc987e88c967c306a8cdccec058f930d"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/info-moddate-required.pdf",
+        "sha256": "2264cc130c171e0b0dd5ae5ccb821a9264735f1b9f3bf47da0e78979e6b84c88"
+      },
+      "tool": "pdfcpu",
+      "executable-sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/pdfcpu/0.15.0/pdfcpu",
+        "validate",
+        "--mode",
+        "strict",
+        "--conf",
+        "disable",
+        "--offline",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/info-moddate-required.pdf"
+      ],
+      "exit": 1,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/info-moddate-required-pdfcpu.txt",
+        "sha256": "ac505f2434002412d4678a16b29adec617a0a8bca9ce5e012e14fdf3533e19cf"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/info-moddate-required.pdf",
+        "sha256": "2264cc130c171e0b0dd5ae5ccb821a9264735f1b9f3bf47da0e78979e6b84c88"
+      },
+      "tool": "arlington",
+      "executable-sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/TestGrammar/bin/linux/TestGrammar",
+        "--tsvdir",
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/tsv/latest",
+        "--pdf",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/info-moddate-required.pdf",
+        "--force",
+        "1.7",
+        "--no-color"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/info-moddate-required-arlington.txt",
+        "sha256": "4c7f05fc9b44561ec5cad7c6befce61194bf21b002c4865ecfca8c50f553f6ec"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/page-contents-array-member.pdf",
+        "sha256": "ef72af9bee510e1cf20047c0bc87b32676965a904d019c5a6f16a709f87fa07d"
+      },
+      "tool": "pdfcpu",
+      "executable-sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/pdfcpu/0.15.0/pdfcpu",
+        "validate",
+        "--mode",
+        "strict",
+        "--conf",
+        "disable",
+        "--offline",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/page-contents-array-member.pdf"
+      ],
+      "exit": 1,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/page-contents-array-member-pdfcpu.txt",
+        "sha256": "1a91926daea6e3a7876947c313ff18f0c9d2a29647e8fac813287267b8077c27"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/page-contents-array-member.pdf",
+        "sha256": "ef72af9bee510e1cf20047c0bc87b32676965a904d019c5a6f16a709f87fa07d"
+      },
+      "tool": "arlington",
+      "executable-sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/TestGrammar/bin/linux/TestGrammar",
+        "--tsvdir",
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/tsv/latest",
+        "--pdf",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/page-contents-array-member.pdf",
+        "--force",
+        "1.7",
+        "--no-color"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/page-contents-array-member-arlington.txt",
+        "sha256": "b0b2c9a9a87b0976493055b69e34cf0b761928ac09be5335a9bbd41098c47558"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/page-contents-type.pdf",
+        "sha256": "bb4e80a1c8b9b25d2448fb019d27176efc9cd544f2905e7a2a23df8d484ec6c9"
+      },
+      "tool": "pdfcpu",
+      "executable-sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/pdfcpu/0.15.0/pdfcpu",
+        "validate",
+        "--mode",
+        "strict",
+        "--conf",
+        "disable",
+        "--offline",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/page-contents-type.pdf"
+      ],
+      "exit": 1,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/page-contents-type-pdfcpu.txt",
+        "sha256": "ba18a3feb34d56716e418c2c96e757f77bcd82a9d4046b72909871eddd103a31"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/page-contents-type.pdf",
+        "sha256": "bb4e80a1c8b9b25d2448fb019d27176efc9cd544f2905e7a2a23df8d484ec6c9"
+      },
+      "tool": "arlington",
+      "executable-sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/TestGrammar/bin/linux/TestGrammar",
+        "--tsvdir",
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/tsv/latest",
+        "--pdf",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/page-contents-type.pdf",
+        "--force",
+        "1.7",
+        "--no-color"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/page-contents-type-arlington.txt",
+        "sha256": "e99374865d0752205f9ed2009d3e7c59644545f4381aed4d7169eefdb4fb5c3f"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/piece-entry-dictionary.pdf",
+        "sha256": "842ece5cbdbaf1eb338d9eb47bb619b40f56140487a4ce2227c303730420cdc9"
+      },
+      "tool": "pdfcpu",
+      "executable-sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/pdfcpu/0.15.0/pdfcpu",
+        "validate",
+        "--mode",
+        "strict",
+        "--conf",
+        "disable",
+        "--offline",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/piece-entry-dictionary.pdf"
+      ],
+      "exit": 1,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/piece-entry-dictionary-pdfcpu.txt",
+        "sha256": "6a23f1f3a1aa04ccb14cfdda58ade85dd4ca870e708ffefcfa68152126552728"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/piece-entry-dictionary.pdf",
+        "sha256": "842ece5cbdbaf1eb338d9eb47bb619b40f56140487a4ce2227c303730420cdc9"
+      },
+      "tool": "arlington",
+      "executable-sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/TestGrammar/bin/linux/TestGrammar",
+        "--tsvdir",
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/tsv/latest",
+        "--pdf",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/piece-entry-dictionary.pdf",
+        "--force",
+        "1.7",
+        "--no-color"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/piece-entry-dictionary-arlington.txt",
+        "sha256": "5994d8d17406d03b0ccbfdeb3363d3e5d2be0ffa8a9ecef7f66a8593705ba269"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/pieceinfo-dictionary.pdf",
+        "sha256": "6e54c9834eb1e24e844c067736da7589a960edb0db92925dee1a15bb89d65948"
+      },
+      "tool": "pdfcpu",
+      "executable-sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/pdfcpu/0.15.0/pdfcpu",
+        "validate",
+        "--mode",
+        "strict",
+        "--conf",
+        "disable",
+        "--offline",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/pieceinfo-dictionary.pdf"
+      ],
+      "exit": 1,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/pieceinfo-dictionary-pdfcpu.txt",
+        "sha256": "cf4e47842ee143f4a69ea3642e484a54a33a5cb3d10398cd4fb28e8654436b0c"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/pieceinfo-dictionary.pdf",
+        "sha256": "6e54c9834eb1e24e844c067736da7589a960edb0db92925dee1a15bb89d65948"
+      },
+      "tool": "arlington",
+      "executable-sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/TestGrammar/bin/linux/TestGrammar",
+        "--tsvdir",
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/tsv/latest",
+        "--pdf",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/pieceinfo-dictionary.pdf",
+        "--force",
+        "1.7",
+        "--no-color"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/pieceinfo-dictionary-arlington.txt",
+        "sha256": "5cda31f726ba5d5782901f6c775ecb43f532c12c47ace0ecbc05d310880c6f41"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/positive-null-decodeparams.pdf",
+        "sha256": "3f6c8a192ad22ea6f96f7963fe06b4fc37791593dcd8ea33a9dd5ee8b2b40e0a"
+      },
+      "tool": "pdfcpu",
+      "executable-sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/pdfcpu/0.15.0/pdfcpu",
+        "validate",
+        "--mode",
+        "strict",
+        "--conf",
+        "disable",
+        "--offline",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/positive-null-decodeparams.pdf"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/positive-null-decodeparams-pdfcpu.txt",
+        "sha256": "4fedb844a5b7ca28ca5efee580750b84f9ae4139a7e80624fb559cd11e6e245d"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/positive-null-decodeparams.pdf",
+        "sha256": "3f6c8a192ad22ea6f96f7963fe06b4fc37791593dcd8ea33a9dd5ee8b2b40e0a"
+      },
+      "tool": "arlington",
+      "executable-sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/TestGrammar/bin/linux/TestGrammar",
+        "--tsvdir",
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/tsv/latest",
+        "--pdf",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/positive-null-decodeparams.pdf",
+        "--force",
+        "1.7",
+        "--no-color"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/positive-null-decodeparams-arlington.txt",
+        "sha256": "96ffba0582e59bc10aada8f12dfe60b2c1c9c518653f34dbda2c6d819af15c24"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/stream-decodeparams-array-member.pdf",
+        "sha256": "7bf9e014418ec771fcbb76f46b7927dbbfc843efc3fa09b40d275bf40e43f1d3"
+      },
+      "tool": "pdfcpu",
+      "executable-sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/pdfcpu/0.15.0/pdfcpu",
+        "validate",
+        "--mode",
+        "strict",
+        "--conf",
+        "disable",
+        "--offline",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/stream-decodeparams-array-member.pdf"
+      ],
+      "exit": 1,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/stream-decodeparams-array-member-pdfcpu.txt",
+        "sha256": "a4c6d4f56a0f703d259aa0319b9b130a7e523600a4b8e149d94c9ee4c2bd2cc1"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/stream-decodeparams-array-member.pdf",
+        "sha256": "7bf9e014418ec771fcbb76f46b7927dbbfc843efc3fa09b40d275bf40e43f1d3"
+      },
+      "tool": "arlington",
+      "executable-sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/TestGrammar/bin/linux/TestGrammar",
+        "--tsvdir",
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/tsv/latest",
+        "--pdf",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/stream-decodeparams-array-member.pdf",
+        "--force",
+        "1.7",
+        "--no-color"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/stream-decodeparams-array-member-arlington.txt",
+        "sha256": "f0e2772e210b938cc07b936ccfa342385f54aff5c3dcf6a1cc3bd60c36db0c22"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/stream-decodeparams-count.pdf",
+        "sha256": "973af11f633cebf99d633125e876ddc7248624f782ce19a2e2e6d963b133201f"
+      },
+      "tool": "pdfcpu",
+      "executable-sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/pdfcpu/0.15.0/pdfcpu",
+        "validate",
+        "--mode",
+        "strict",
+        "--conf",
+        "disable",
+        "--offline",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/stream-decodeparams-count.pdf"
+      ],
+      "exit": 1,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/stream-decodeparams-count-pdfcpu.txt",
+        "sha256": "a9508ba037ff95ac7d6e7909a8cfe853e1e3a4518f701bfe6c59872017e61c2e"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/stream-decodeparams-count.pdf",
+        "sha256": "973af11f633cebf99d633125e876ddc7248624f782ce19a2e2e6d963b133201f"
+      },
+      "tool": "arlington",
+      "executable-sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/TestGrammar/bin/linux/TestGrammar",
+        "--tsvdir",
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/tsv/latest",
+        "--pdf",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/stream-decodeparams-count.pdf",
+        "--force",
+        "1.7",
+        "--no-color"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/stream-decodeparams-count-arlington.txt",
+        "sha256": "d0949f9c012ef28588baeab3444ce4798ef88c1d57ba5e239266acc2159af9dd"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/stream-decodeparams-position.pdf",
+        "sha256": "b736ea2ea2de2bd2dd1747606638787dcb8237b0b9ada9223554ea076c5ab057"
+      },
+      "tool": "pdfcpu",
+      "executable-sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/pdfcpu/0.15.0/pdfcpu",
+        "validate",
+        "--mode",
+        "strict",
+        "--conf",
+        "disable",
+        "--offline",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/stream-decodeparams-position.pdf"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/stream-decodeparams-position-pdfcpu.txt",
+        "sha256": "8a0c91dc9269d10a2f04fedbb570af81c8061a06a5b7e93bc0b7c73c9f9f5888"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/stream-decodeparams-position.pdf",
+        "sha256": "b736ea2ea2de2bd2dd1747606638787dcb8237b0b9ada9223554ea076c5ab057"
+      },
+      "tool": "arlington",
+      "executable-sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/TestGrammar/bin/linux/TestGrammar",
+        "--tsvdir",
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/tsv/latest",
+        "--pdf",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/stream-decodeparams-position.pdf",
+        "--force",
+        "1.7",
+        "--no-color"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/stream-decodeparams-position-arlington.txt",
+        "sha256": "e04e3f91c50c7520d77bba81f350812ecf5f5cb1f2b99a627a5638d02429a8e3"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/stream-decodeparams-type.pdf",
+        "sha256": "f5b29bddaa3a77933b86c985caa8ab3a2bbc433bb15c12e3670cfa79a19bd427"
+      },
+      "tool": "pdfcpu",
+      "executable-sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/pdfcpu/0.15.0/pdfcpu",
+        "validate",
+        "--mode",
+        "strict",
+        "--conf",
+        "disable",
+        "--offline",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/stream-decodeparams-type.pdf"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/stream-decodeparams-type-pdfcpu.txt",
+        "sha256": "72ee4193aa38f3dee64d81766bda7db918aa657421f2ddd5a46d2be0aae687b2"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/stream-decodeparams-type.pdf",
+        "sha256": "f5b29bddaa3a77933b86c985caa8ab3a2bbc433bb15c12e3670cfa79a19bd427"
+      },
+      "tool": "arlington",
+      "executable-sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/TestGrammar/bin/linux/TestGrammar",
+        "--tsvdir",
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/tsv/latest",
+        "--pdf",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/stream-decodeparams-type.pdf",
+        "--force",
+        "1.7",
+        "--no-color"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/stream-decodeparams-type-arlington.txt",
+        "sha256": "b2ac9d0d4103bec26b82d83e9471e2ad0f4a27b6040ef22b69a6eef3a71ee143"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/stream-filter-array-name-type.pdf",
+        "sha256": "fac2d18c3f760a9d6eaa2182f452b68c3d2512951a5cb96a5cb3dba02fffe29c"
+      },
+      "tool": "pdfcpu",
+      "executable-sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/pdfcpu/0.15.0/pdfcpu",
+        "validate",
+        "--mode",
+        "strict",
+        "--conf",
+        "disable",
+        "--offline",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/stream-filter-array-name-type.pdf"
+      ],
+      "exit": 1,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/stream-filter-array-name-type-pdfcpu.txt",
+        "sha256": "78f5b63ea7a3fa79820180fdd59fcebfef8821cfdde13d999ce33dccb82451be"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/stream-filter-array-name-type.pdf",
+        "sha256": "fac2d18c3f760a9d6eaa2182f452b68c3d2512951a5cb96a5cb3dba02fffe29c"
+      },
+      "tool": "arlington",
+      "executable-sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/TestGrammar/bin/linux/TestGrammar",
+        "--tsvdir",
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/tsv/latest",
+        "--pdf",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/stream-filter-array-name-type.pdf",
+        "--force",
+        "1.7",
+        "--no-color"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/stream-filter-array-name-type-arlington.txt",
+        "sha256": "36138e9dac8d354040e05ff2841876bf25cf84a4d9aca3445bcac55b2fdd27c5"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/stream-filter-array-name-value.pdf",
+        "sha256": "ef18d21245a44471a7346b15ee658251a9a005ebf190396ac1d7d4f1a732a188"
+      },
+      "tool": "pdfcpu",
+      "executable-sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/pdfcpu/0.15.0/pdfcpu",
+        "validate",
+        "--mode",
+        "strict",
+        "--conf",
+        "disable",
+        "--offline",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/stream-filter-array-name-value.pdf"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/stream-filter-array-name-value-pdfcpu.txt",
+        "sha256": "8f4868a58ecbb9901886ab3018f5aa8f2ced11aec4e2d72eaf660e721505f68b"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/stream-filter-array-name-value.pdf",
+        "sha256": "ef18d21245a44471a7346b15ee658251a9a005ebf190396ac1d7d4f1a732a188"
+      },
+      "tool": "arlington",
+      "executable-sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/TestGrammar/bin/linux/TestGrammar",
+        "--tsvdir",
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/tsv/latest",
+        "--pdf",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/stream-filter-array-name-value.pdf",
+        "--force",
+        "1.7",
+        "--no-color"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/stream-filter-array-name-value-arlington.txt",
+        "sha256": "4bb48c1997e06355a3534942dcc40e1cf59e32389cecbc461378f1597d062f49"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/stream-filter-name-value.pdf",
+        "sha256": "4224e00fdd257d3842799b59c0a1522f84f93d5dd0e66ba417b621be4df56fa4"
+      },
+      "tool": "pdfcpu",
+      "executable-sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/pdfcpu/0.15.0/pdfcpu",
+        "validate",
+        "--mode",
+        "strict",
+        "--conf",
+        "disable",
+        "--offline",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/stream-filter-name-value.pdf"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/stream-filter-name-value-pdfcpu.txt",
+        "sha256": "b8edba6145835160d18d9eb35555e2a76c69cc5e37821dc3ef6f633329a1d86c"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/stream-filter-name-value.pdf",
+        "sha256": "4224e00fdd257d3842799b59c0a1522f84f93d5dd0e66ba417b621be4df56fa4"
+      },
+      "tool": "arlington",
+      "executable-sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/TestGrammar/bin/linux/TestGrammar",
+        "--tsvdir",
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/tsv/latest",
+        "--pdf",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/stream-filter-name-value.pdf",
+        "--force",
+        "1.7",
+        "--no-color"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/stream-filter-name-value-arlington.txt",
+        "sha256": "13162743c095f806ee979b95837fab6638417e4c8482dba7daba0d7ab5a390ad"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/stream-filter-type.pdf",
+        "sha256": "dc284a9e3ef213f5b10133af6b65fd8ba11a5af043dbb00359b23373b68a8eda"
+      },
+      "tool": "pdfcpu",
+      "executable-sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/pdfcpu/0.15.0/pdfcpu",
+        "validate",
+        "--mode",
+        "strict",
+        "--conf",
+        "disable",
+        "--offline",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/stream-filter-type.pdf"
+      ],
+      "exit": 1,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/stream-filter-type-pdfcpu.txt",
+        "sha256": "0ec4044a59b969081420ac9b53b02be2b06a92c0fc248c70141ae0eeb5624fc3"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/stream-filter-type.pdf",
+        "sha256": "dc284a9e3ef213f5b10133af6b65fd8ba11a5af043dbb00359b23373b68a8eda"
+      },
+      "tool": "arlington",
+      "executable-sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/TestGrammar/bin/linux/TestGrammar",
+        "--tsvdir",
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/tsv/latest",
+        "--pdf",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/stream-filter-type.pdf",
+        "--force",
+        "1.7",
+        "--no-color"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/stream-filter-type-arlington.txt",
+        "sha256": "b123a2f82898a797fb4f284a5b917fd013c56fac118e870d24989fc31fb843ec"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/stream-flate-predictor-type.pdf",
+        "sha256": "e372ccb9ba52dc549bf100f795f138eb3a1dea9c61886358f6d46546ed5e5d55"
+      },
+      "tool": "pdfcpu",
+      "executable-sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/pdfcpu/0.15.0/pdfcpu",
+        "validate",
+        "--mode",
+        "strict",
+        "--conf",
+        "disable",
+        "--offline",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/stream-flate-predictor-type.pdf"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/stream-flate-predictor-type-pdfcpu.txt",
+        "sha256": "31a7c7feb89a8a6a2be735efde876dbfc3eb38d08430f5c5e9ef19890f09f07d"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/stream-flate-predictor-type.pdf",
+        "sha256": "e372ccb9ba52dc549bf100f795f138eb3a1dea9c61886358f6d46546ed5e5d55"
+      },
+      "tool": "arlington",
+      "executable-sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/TestGrammar/bin/linux/TestGrammar",
+        "--tsvdir",
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/tsv/latest",
+        "--pdf",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/stream-flate-predictor-type.pdf",
+        "--force",
+        "1.7",
+        "--no-color"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/stream-flate-predictor-type-arlington.txt",
+        "sha256": "1078d21040ad01bb04aeac6077579d5c3fa49564e14bcb30768bcb951d300f1d"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/stream-flate-predictor-value.pdf",
+        "sha256": "4b37462527d107755a11350d286c98c3650fb18254f0610f08808e28cc83f27d"
+      },
+      "tool": "pdfcpu",
+      "executable-sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/pdfcpu/0.15.0/pdfcpu",
+        "validate",
+        "--mode",
+        "strict",
+        "--conf",
+        "disable",
+        "--offline",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/stream-flate-predictor-value.pdf"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/stream-flate-predictor-value-pdfcpu.txt",
+        "sha256": "8019e740d5f06141ed80291e49bc69a35282b8acac43361ad0480973b18cf183"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/stream-flate-predictor-value.pdf",
+        "sha256": "4b37462527d107755a11350d286c98c3650fb18254f0610f08808e28cc83f27d"
+      },
+      "tool": "arlington",
+      "executable-sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/TestGrammar/bin/linux/TestGrammar",
+        "--tsvdir",
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/tsv/latest",
+        "--pdf",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/stream-flate-predictor-value.pdf",
+        "--force",
+        "1.7",
+        "--no-color"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/stream-flate-predictor-value-arlington.txt",
+        "sha256": "2f6aca0d9b5b2cdb44598d69331e8545f04d37b95971463b5aae0e344c816f31"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/trailer-info-indirect.pdf",
+        "sha256": "9e99abaa6ca013f826cc325130c0496765e92716fb320fa9bd13592214d84fb2"
+      },
+      "tool": "pdfcpu",
+      "executable-sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/pdfcpu/0.15.0/pdfcpu",
+        "validate",
+        "--mode",
+        "strict",
+        "--conf",
+        "disable",
+        "--offline",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/trailer-info-indirect.pdf"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/trailer-info-indirect-pdfcpu.txt",
+        "sha256": "7512ea02b33142635691596f50ad570ff7a8e1351c343a9ecf80d7619ad0ec1c"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/trailer-info-indirect.pdf",
+        "sha256": "9e99abaa6ca013f826cc325130c0496765e92716fb320fa9bd13592214d84fb2"
+      },
+      "tool": "arlington",
+      "executable-sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/TestGrammar/bin/linux/TestGrammar",
+        "--tsvdir",
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/tsv/latest",
+        "--pdf",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/trailer-info-indirect.pdf",
+        "--force",
+        "1.7",
+        "--no-color"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/trailer-info-indirect-arlington.txt",
+        "sha256": "60f6847a4884a88ac9b003be3ed5329f77a3933f6bf322e5ed1c65eaccc61380"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/trailer-info-null.pdf",
+        "sha256": "7252e5c276cf658a50e1c30368da5d52f5530dbfe2caeac8e45f0774bf102963"
+      },
+      "tool": "pdfcpu",
+      "executable-sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/pdfcpu/0.15.0/pdfcpu",
+        "validate",
+        "--mode",
+        "strict",
+        "--conf",
+        "disable",
+        "--offline",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/trailer-info-null.pdf"
+      ],
+      "exit": 1,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/trailer-info-null-pdfcpu.txt",
+        "sha256": "cc4a75d8dd1ad16d3d2fc7eed53b6460bf3b50635168b8272e29b67b78dee4fc"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/trailer-info-null.pdf",
+        "sha256": "7252e5c276cf658a50e1c30368da5d52f5530dbfe2caeac8e45f0774bf102963"
+      },
+      "tool": "arlington",
+      "executable-sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/TestGrammar/bin/linux/TestGrammar",
+        "--tsvdir",
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/tsv/latest",
+        "--pdf",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/trailer-info-null.pdf",
+        "--force",
+        "1.7",
+        "--no-color"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/trailer-info-null-arlington.txt",
+        "sha256": "1e37168cf4eb9f7a40cf844ada5e84505c404f493b9b21a06c4ee07a3c5829dd"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/trailer-info-required.pdf",
+        "sha256": "b872d21e15c25ba2d038bfb54ccdec6158715fa492905fc26161bf22ea01bc89"
+      },
+      "tool": "pdfcpu",
+      "executable-sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/pdfcpu/0.15.0/pdfcpu",
+        "validate",
+        "--mode",
+        "strict",
+        "--conf",
+        "disable",
+        "--offline",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/trailer-info-required.pdf"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/trailer-info-required-pdfcpu.txt",
+        "sha256": "b6fd35b26e154d9e961382c60a34b2ac2000c099d14ea090c5b8e2fe08aa1917"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/trailer-info-required.pdf",
+        "sha256": "b872d21e15c25ba2d038bfb54ccdec6158715fa492905fc26161bf22ea01bc89"
+      },
+      "tool": "arlington",
+      "executable-sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/TestGrammar/bin/linux/TestGrammar",
+        "--tsvdir",
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/tsv/latest",
+        "--pdf",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/trailer-info-required.pdf",
+        "--force",
+        "1.7",
+        "--no-color"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/trailer-info-required-arlington.txt",
+        "sha256": "53abe9e4a10115faee9e1281f99b5563c77980aba470609cc99f7a4e85142f8a"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/viewer-hide-toolbar-boolean.pdf",
+        "sha256": "cb9a1dbeff0e2a9522adde260ab043a1ae4486a65024fbe6a1687d92d58ea3b0"
+      },
+      "tool": "pdfcpu",
+      "executable-sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/pdfcpu/0.15.0/pdfcpu",
+        "validate",
+        "--mode",
+        "strict",
+        "--conf",
+        "disable",
+        "--offline",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/viewer-hide-toolbar-boolean.pdf"
+      ],
+      "exit": 1,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/viewer-hide-toolbar-boolean-pdfcpu.txt",
+        "sha256": "e4003962fe9ae03a8362d285c18af5455fc31b0ca156cc521f9ab02908569e89"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/viewer-hide-toolbar-boolean.pdf",
+        "sha256": "cb9a1dbeff0e2a9522adde260ab043a1ae4486a65024fbe6a1687d92d58ea3b0"
+      },
+      "tool": "arlington",
+      "executable-sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/TestGrammar/bin/linux/TestGrammar",
+        "--tsvdir",
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/tsv/latest",
+        "--pdf",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/viewer-hide-toolbar-boolean.pdf",
+        "--force",
+        "1.7",
+        "--no-color"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/viewer-hide-toolbar-boolean-arlington.txt",
+        "sha256": "aa55fd3ce3f07666be9231d6d86fc83e7eab5cb9536d09516124771e87666167"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/viewer-numcopies-integer.pdf",
+        "sha256": "84c89986c0b945b77b7e25dc742ad6e985139e69ea71763ad9f088e53e1153a1"
+      },
+      "tool": "pdfcpu",
+      "executable-sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/pdfcpu/0.15.0/pdfcpu",
+        "validate",
+        "--mode",
+        "strict",
+        "--conf",
+        "disable",
+        "--offline",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/viewer-numcopies-integer.pdf"
+      ],
+      "exit": 1,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/viewer-numcopies-integer-pdfcpu.txt",
+        "sha256": "67aeea564380e02ca27582e2fd5ae193b90bb075bf4bdda8b403dff76210daa3"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/viewer-numcopies-integer.pdf",
+        "sha256": "84c89986c0b945b77b7e25dc742ad6e985139e69ea71763ad9f088e53e1153a1"
+      },
+      "tool": "arlington",
+      "executable-sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/TestGrammar/bin/linux/TestGrammar",
+        "--tsvdir",
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/tsv/latest",
+        "--pdf",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/viewer-numcopies-integer.pdf",
+        "--force",
+        "1.7",
+        "--no-color"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/viewer-numcopies-integer-arlington.txt",
+        "sha256": "0fdc88d85bf7aaf211f50b2e909fc9e8ad4b3471e733f616de6ed008ef9346b8"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/viewer-numcopies-positive.pdf",
+        "sha256": "cb8ff0bc669e165e52fcb6a546a31c63af9ba9b186c878e73763e8a0d9a0ecec"
+      },
+      "tool": "pdfcpu",
+      "executable-sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/pdfcpu/0.15.0/pdfcpu",
+        "validate",
+        "--mode",
+        "strict",
+        "--conf",
+        "disable",
+        "--offline",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/viewer-numcopies-positive.pdf"
+      ],
+      "exit": 1,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/viewer-numcopies-positive-pdfcpu.txt",
+        "sha256": "d9cf4b97c06eab0e6b6d4f908d0efda0b84e8a8dd7c46ff5890bd38f7057afbc"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/viewer-numcopies-positive.pdf",
+        "sha256": "cb8ff0bc669e165e52fcb6a546a31c63af9ba9b186c878e73763e8a0d9a0ecec"
+      },
+      "tool": "arlington",
+      "executable-sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/TestGrammar/bin/linux/TestGrammar",
+        "--tsvdir",
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/tsv/latest",
+        "--pdf",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/viewer-numcopies-positive.pdf",
+        "--force",
+        "1.7",
+        "--no-color"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/viewer-numcopies-positive-arlington.txt",
+        "sha256": "83c9b764c30bc70f24316a73021d3316795471146437e2011af3821aa6f598bc"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/viewer-preferences-dictionary.pdf",
+        "sha256": "87279803212106a8b657e23fafa78728c178e450799b42c02526ec6c455a2155"
+      },
+      "tool": "pdfcpu",
+      "executable-sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/pdfcpu/0.15.0/pdfcpu",
+        "validate",
+        "--mode",
+        "strict",
+        "--conf",
+        "disable",
+        "--offline",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/viewer-preferences-dictionary.pdf"
+      ],
+      "exit": 1,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/viewer-preferences-dictionary-pdfcpu.txt",
+        "sha256": "2e996049bf232058ad8179b6dbfc5531a058450c87567ec934df7b29de843b06"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-standards/fixtures/viewer-preferences-dictionary.pdf",
+        "sha256": "87279803212106a8b657e23fafa78728c178e450799b42c02526ec6c455a2155"
+      },
+      "tool": "arlington",
+      "executable-sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/TestGrammar/bin/linux/TestGrammar",
+        "--tsvdir",
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/tsv/latest",
+        "--pdf",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-standards/fixtures/viewer-preferences-dictionary.pdf",
+        "--force",
+        "1.7",
+        "--no-color"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/viewer-preferences-dictionary-arlington.txt",
+        "sha256": "2173dcc231d72ba9dd2f8994b1b7dd9acce3512da2f173e7a50f4e1c397672f8"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-values/fixtures/values.pdf",
+        "sha256": "c94455cd71eaebf2e2f9f6c32f320bc04087f1e1477c58b596a48a2f106dbca6"
+      },
+      "tool": "pdfcpu",
+      "executable-sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/pdfcpu/0.15.0/pdfcpu",
+        "validate",
+        "--mode",
+        "strict",
+        "--conf",
+        "disable",
+        "--offline",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-values/fixtures/values.pdf"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/values-pdfcpu.txt",
+        "sha256": "1c1a54ba20db86990d1c6b38b19b4bceff12b77e06e2f70421fd768961e90007"
+      }
+    },
+    {
+      "input": {
+        "path": "capabilities/profiles/T09-values/fixtures/values.pdf",
+        "sha256": "c94455cd71eaebf2e2f9f6c32f320bc04087f1e1477c58b596a48a2f106dbca6"
+      },
+      "tool": "arlington",
+      "executable-sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458",
+      "command": [
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/TestGrammar/bin/linux/TestGrammar",
+        "--tsvdir",
+        "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/tsv/latest",
+        "--pdf",
+        "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T09-values/fixtures/values.pdf",
+        "--force",
+        "1.7",
+        "--no-color"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "capabilities/evidence/T71-standards-qualification/values-arlington.txt",
+        "sha256": "2fb6302349367774b153eaa67a3cc6e0643c5b310ff913b72867b0ca958e96ae"
+      }
+    }
+  ]
+}

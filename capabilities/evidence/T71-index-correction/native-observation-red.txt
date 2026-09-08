@@ -1,0 +1,31 @@
+test_final_revision_must_preserve_encoded_bytes_even_when_old_prefix_and_decoded_bytes_match (test_t09_foundation.EncodedStreamPreservationTest.test_final_revision_must_preserve_encoded_bytes_even_when_old_prefix_and_decoded_bytes_match) ... ok
+test_changed_candidate_contract_or_nested_evidence_is_never_relabelled (test_t09_foundation.EvidenceIndexMergeTest.test_changed_candidate_contract_or_nested_evidence_is_never_relabelled) ... ok
+test_environment_observations_bind_raw_tool_paths_without_resolving_them_in_the_repository (test_t09_foundation.EvidenceIndexMergeTest.test_environment_observations_bind_raw_tool_paths_without_resolving_them_in_the_repository) ... 
+  test_environment_observations_bind_raw_tool_paths_without_resolving_them_in_the_repository (test_t09_foundation.EvidenceIndexMergeTest.test_environment_observations_bind_raw_tool_paths_without_resolving_them_in_the_repository) (changed=False) ... FAIL
+test_refresh_preserves_valid_other_obligations_with_their_original_records (test_t09_foundation.EvidenceIndexMergeTest.test_refresh_preserves_valid_other_obligations_with_their_original_records) ... ok
+test_refresh_replaces_its_own_old_scope_without_duplicates (test_t09_foundation.EvidenceIndexMergeTest.test_refresh_replaces_its_own_old_scope_without_duplicates) ... ok
+test_stale_authority_or_incomplete_new_evidence_never_truncates_the_index (test_t09_foundation.EvidenceIndexMergeTest.test_stale_authority_or_incomplete_new_evidence_never_truncates_the_index) ... ok
+test_values_plan_runs_complete_public_suites_and_records_real_facade_mode (test_t09_foundation.EvidenceIndexMergeTest.test_values_plan_runs_complete_public_suites_and_records_real_facade_mode) ... ok
+test_collects_three_products_source_and_all_negative_inputs (test_t09_foundation.ValuesEvidenceCollectionTest.test_collects_three_products_source_and_all_negative_inputs) ... ok
+test_missing_chain_or_undetected_control_is_not_collected (test_t09_foundation.ValuesEvidenceCollectionTest.test_missing_chain_or_undetected_control_is_not_collected) ... ok
+
+======================================================================
+FAIL: test_environment_observations_bind_raw_tool_paths_without_resolving_them_in_the_repository (test_t09_foundation.EvidenceIndexMergeTest.test_environment_observations_bind_raw_tool_paths_without_resolving_them_in_the_repository) (changed=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf-t71-candidate/scripts/tests/test_t09_foundation.py", line 129, in test_environment_observations_bind_raw_tool_paths_without_resolving_them_in_the_repository
+    self.assertEqual(0, result.returncode, result.stdout)
+AssertionError: 0 != 1 : Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf-t71-candidate/scripts/t03-foundation.py", line 756, in <module>
+    main()
+  File "/home/ubuntu/IdeaProjects/open-pdf-t71-candidate/scripts/t03-foundation.py", line 702, in main
+    publish_index(root, (root / args.output).resolve())
+  File "/home/ubuntu/IdeaProjects/open-pdf-t71-candidate/scripts/t03-foundation.py", line 393, in publish_index
+    raise ValueError('New evidence is incomplete, stale or does not match the observed identities')
+ValueError: New evidence is incomplete, stale or does not match the observed identities
+
+
+----------------------------------------------------------------------
+Ran 9 tests in 2.267s
+
+FAILED (failures=1)

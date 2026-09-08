@@ -26,8 +26,12 @@ final class FoundationReadiness {
     }
 
     void evaluate() throws IOException {
+        evaluate(foundation.evidencePath);
+    }
+
+    void evaluate(String evidencePath) throws IOException {
         contractIdentity = contractIdentity();
-        InventoryYaml evidence = foundation.read(foundation.evidencePath, global);
+        InventoryYaml evidence = foundation.read(evidencePath, global);
         evidence.keys("schema-version", "candidate", "environments", "certifications");
         if (evidence.integer("schema-version") != 1) {
             evidence.error("unsupported evidence schema-version");

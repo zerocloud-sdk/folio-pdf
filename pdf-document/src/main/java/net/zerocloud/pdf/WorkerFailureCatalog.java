@@ -808,7 +808,12 @@ final class WorkerFailureCatalog {
         descriptor(DocumentFailureCode.WORKER_PROTOCOL_REJECTED, "The Worker barcode symbol count is invalid."),
         descriptor(DocumentFailureCode.PAGE_RANGE_INVALID, "The barcode page selection is invalid."),
         descriptor(DocumentFailureCode.SIGNATURE_POLICY_REJECTED, "The Existing Signature policy does not permit barcode drawing."),
-        descriptor(DocumentFailureCode.DOCUMENT_PERMISSION_DENIED, "The Source credential does not authorize barcode drawing.")
+        descriptor(DocumentFailureCode.DOCUMENT_PERMISSION_DENIED, "The Source credential does not authorize barcode drawing."),
+        descriptor(DocumentFailureCode.COMMAND_REJECTED, "The Document Patch target path is invalid."),
+        descriptor(DocumentFailureCode.COMMAND_REJECTED,
+                "The Document Patch would invalidate the document structure."),
+        descriptor(DocumentFailureCode.PATCH_VALUE_REJECTED,
+                "An indirect object replacement must contain a direct PDF value.")
     };
 
     private WorkerFailureCatalog() {
@@ -876,6 +881,10 @@ final class WorkerFailureCatalog {
     private static int permittedCapabilities(
             DocumentFailureCode code,
             String diagnostic) {
+        if (code == DocumentFailureCode.COMMAND_REJECTED && diagnostic.equals(
+                "A Document Patch cannot change engine-owned version or password-security state.")) {
+            return mask(PdfBoxWorkflowEngine.VERSION_SECURITY_CAPABILITY_ID);
+        }
         if (diagnostic.equals("The rendering page is outside the current document.")) {
             return mask(Rendering.CAPABILITY_ID);
         }

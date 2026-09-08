@@ -396,11 +396,15 @@ final class PdfBoxWorkflowEngine {
                             ".staged-document-",
                             ".pdf");
                     stagedDocuments.add(staged);
-                    save(
-                            document,
-                            staged,
-                            request.getSaveMode(),
-                            context.resources);
+                    try (PdfBoxIncrementalTrailer incrementalTrailer =
+                            request.getSaveMode() == SaveMode.INCREMENTAL
+                                    ? session.prepareIncrementalSave() : null) {
+                        save(
+                                document,
+                                staged,
+                                request.getSaveMode(),
+                                context.resources);
+                    }
                     if (request.getSaveMode() == SaveMode.INCREMENTAL) {
                         validateIncrementalRevision(
                                 staged,

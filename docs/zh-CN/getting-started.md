@@ -91,7 +91,7 @@ Source 的全部字节作为不变前缀，并按版本 1 命令策略追加非�
 ## Stable Migration Facade：创建、发布、重开
 
 选择 `net.zerocloud:pdf-migration-itext7`，不要同时引入 Preview。当前两种 artifact
-都包含相同的 12 项生命周期映射。以下代码只使用 Stable 公开接口，兼容 Java 8：
+保留相同的 12 项生命周期映射；T09 增加的值映射见下文。以下代码兼容 Java 8：
 
 ```java
 import net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument;
@@ -108,15 +108,66 @@ try (PdfReader reader = new PdfReader("blank.pdf");
 }
 ```
 
-`PdfReader` 返回前已释放其 Path 资源，重开的 Facade 提供脱离文件的只读页数视图。
+`PdfReader` 返回前已释放原始 Path，并保留有界私有快照供后续检查。
+`PdfDocument` 接管快照后负责在关闭时删除；提前关闭 Reader 不会删除 Document 正在使用的快照。
 `Document.close()` 负责关闭关联的 `PdfDocument`；已关闭对象不能继续查询或添加页。
 发布失败会映射为带 Native 安全失败信息的 `PdfException`。
 Facade 沿用 IN_PROCESS 默认值；HARDENED_WORKER 通过 Native `WorkflowRequest`
-显式选择，当前 12 项映射没有增加配置入口。
+显式选择，Facade 没有增加执行模式配置入口。
 
-本票只认证空白文档事务与生命周期映射，范围为固定 Ubuntu 24.04/Linux x86-64
+#70 的历史认证只覆盖空白文档事务与生命周期映射，范围为固定 Ubuntu 24.04/Linux x86-64
 的 JDK 8/11/17/21。Windows、macOS 和其他 Foundation obligation 仍未认证。
 实际候选产物、32 条证据记录和复跑方法见[英文认证合同](../t03-certification.md)。
+
+## T09 PDF 值检查与修改
+
+Native `DocumentPatch` 支持按声明顺序插入、替换、删除字典条目和数组元素，
+替换间接对象的直接值，以及替换 stream 解码数据。`PdfValuePath` 从当前 Session
+的 `ObjectReference` 开始，逐级选择字典名或从零开始的数组下标。普通非法 Patch
+会整体回滚；捕获失败后仍可检查、继续合法修改、发布并重开。资源策略耗尽属于
+终止失败，不能继续发布。完整英文契约见 [PDF Values and Document Patches](../document-values.md)。
+
+Facade 的 Reader/Writer 构造方式可修改现有文档：
+
+```java
+import net.zerocloud.pdf.itext7.kernel.pdf.PdfDictionary;
+import net.zerocloud.pdf.itext7.kernel.pdf.PdfName;
+import net.zerocloud.pdf.itext7.kernel.pdf.PdfNumber;
+import net.zerocloud.pdf.itext7.kernel.pdf.PdfStream;
+
+try (PdfReader reader = new PdfReader("input.pdf");
+     PdfDocument document = new PdfDocument(reader, new PdfWriter("output.pdf"))) {
+    PdfDictionary root = document.getCatalog().getPdfObject();
+    root.put(new PdfName("Counter"), new PdfNumber(2));
+    ((PdfNumber) root.get(new PdfName("Counter"))).setValue(7);
+    root.put(new PdfName("Data"), new PdfStream(new byte[] {1, 2, 3}));
+    ((PdfStream) root.get(new PdfName("Data"))).setData(new byte[] {4, 5});
+} // 等待真实 Native REWRITE 发布完成，再释放快照。
+```
+
+九类值都有映射。字典和数组的 `get` 默认解引用，传 `false` 可取得原始引用；
+引用只属于创建它的 Session，跨文档使用会收到带真实 Native cause 的
+`PdfException`。容器和 stream 视图在关闭后以 `PDF_VALUE_VIEW_EXPIRED` 失败，
+标量仍可读取。每次引用检查共享 100,000 个遍历值和累计 64 MiB 解码数据的预算。
+被插入的 detached 容器会复制；修改原 Java 容器不会修改已经插入的副本。
+
+`PdfReader(InputStream)` 与 `PdfWriter(OutputStream)` 始终保留调用方流的所有权，
+不会关闭这些流。输出在 Document 关闭时才写入并 flush；输出失败的实际 Native
+`DocumentFailure` cause 中保留 Publication Receipt，调用方流可能已有部分数据。
+重复关闭不会重试发布。
+
+`PdfString(byte[])` 保留原始二进制数据，`getValueBytes()` 返回副本；文本转换规则
+明确使用 PDFDocEncoding 或带 BOM 的 UTF-16BE/UTF-8。Java 文本含孤立代理字符时
+会在修改前拒绝。stream 的 Length、Filter、DecodeParms 等元数据由引擎维护，
+`setData` 使用 Flate；未知编码的数据在未触碰时原样保留，请求解码则安全失败。
+版本、安全状态和页面树也受 Native 保护。
+
+T09 的实现、公开测试和 jar 检查不等于八组独立认证。实际资格以当前候选绑定的
+[Foundation Evidence 索引](../../capabilities/foundation-evidence.yaml)为准；
+[T09 认证合同](../t09-certification.md)规定三种产物、四条证据链和 51 项标准规则。
+Facade 实际运行 IN_PROCESS，不能把 Native Worker 的认证归于 Facade。
+视觉验收固定为 144 DPI、零容差 AE=0；缺规则、工具、输入身份或不确定结果不能
+通过。原始流保留检查读取增量文件的最终有效对象，不能只看旧前缀是否仍有原字节。
 
 ## T23 页面渲染
 
@@ -268,8 +319,8 @@ Linux/JDK 验证不代表 Windows、macOS 或完整 Foundation 认证；能力�
 执行配置、原生引擎、工具和候选产物哈希；同架构或同 JDK 主版本不能代替证据。
 
 运行 `./scripts/inventory readiness` 查看具体未完成义务；存在任何必需缺口时
-命令返回非零。当前尚无最终候选产物或精确环境认证，密码作用域、表格阶段、
-独立证据、Stable Facade 和发布控制等义务仍需后续切片完成。
+命令返回非零。已完成切片的候选、环境和证据身份保存在当前索引；密码作用域、
+表格阶段、其他独立证据、对应 Facade 和发布控制等义务仍需后续切片完成。
 `inventory validate` 成功与常规 `verify` 成功只表示相应检查通过，不能宣称发布就绪。
 完整状态见[生成的就绪报告](../generated/foundation-readiness.md)，
 证据格式见[Foundation readiness](../foundation-readiness.md)。

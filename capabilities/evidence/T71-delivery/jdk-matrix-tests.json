@@ -1,0 +1,169 @@
+{
+  "command": [
+    "./scripts/verify-jdk-matrix.sh"
+  ],
+  "exit-code": 0,
+  "log-sha256": "e30bec63033b32a6159b469857e863674f5ea2f58216163f58a0d7ef006d4b8e",
+  "jdk-runs": [
+    {
+      "jdk": 8,
+      "immutable-image": "docker.io/library/eclipse-temurin@sha256:a4da319337cb6504ba4fb663cbd72a75df5515efb31bbdc6fc4ad7ba8d710dee",
+      "result": "pass",
+      "reactor-duration": "41:56 min",
+      "totals": {
+        "tests": 1332,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 4
+      },
+      "executed-tests": 1328,
+      "classes-with-skips": [
+        {
+          "class": "net.zerocloud.pdf.consumer.HardenedWorkerScaleProfileTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 3
+        },
+        {
+          "class": "net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest",
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 1
+        }
+      ]
+    },
+    {
+      "jdk": 11,
+      "immutable-image": "docker.io/library/eclipse-temurin@sha256:09f6797de424a6a085da4db6ba64381b2a4d51c2100a5e91998b69d7c23e0ecb",
+      "result": "pass",
+      "reactor-duration": "35:36 min",
+      "totals": {
+        "tests": 1332,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 4
+      },
+      "executed-tests": 1328,
+      "classes-with-skips": [
+        {
+          "class": "net.zerocloud.pdf.consumer.HardenedWorkerScaleProfileTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 3
+        },
+        {
+          "class": "net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest",
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 1
+        }
+      ]
+    },
+    {
+      "jdk": 17,
+      "immutable-image": "docker.io/library/eclipse-temurin@sha256:61a94244559f2e89e4edb02bae37eeb8762ecf5deaf237251fa630e5120a8798",
+      "result": "pass",
+      "reactor-duration": "33:40 min",
+      "totals": {
+        "tests": 1332,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 4
+      },
+      "executed-tests": 1328,
+      "classes-with-skips": [
+        {
+          "class": "net.zerocloud.pdf.consumer.HardenedWorkerScaleProfileTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 3
+        },
+        {
+          "class": "net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest",
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 1
+        }
+      ]
+    },
+    {
+      "jdk": 21,
+      "immutable-image": "docker.io/library/eclipse-temurin@sha256:1ca5e470ad60db0d5b4137c1357068fa210051d815ad98ea9964f4bbe7367f8c",
+      "result": "pass",
+      "reactor-duration": "34:16 min",
+      "totals": {
+        "tests": 1332,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 4
+      },
+      "executed-tests": 1328,
+      "classes-with-skips": [
+        {
+          "class": "net.zerocloud.pdf.consumer.HardenedWorkerScaleProfileTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 3
+        },
+        {
+          "class": "net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest",
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 1
+        }
+      ]
+    }
+  ],
+  "aggregate-totals": {
+    "tests": 5328,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 16
+  },
+  "aggregate-executed-tests": 5312,
+  "last-jdk-xml": {
+    "jdk": 21,
+    "report-count": 75,
+    "totals": {
+      "tests": 1332,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 4
+    },
+    "skipped": [
+      {
+        "class": "net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest",
+        "test": "pinnedRastersDecodeAndMatchEveryDeclaredVariant",
+        "message": "Explicit offline tools are required for this acceptance run"
+      },
+      {
+        "class": "net.zerocloud.pdf.consumer.HardenedWorkerScaleProfileTest",
+        "test": "configuredConcurrencyLimitAdmitsLimitAndRejectsFirstExcess",
+        "message": "got: <false>, expected: is <true>"
+      },
+      {
+        "class": "net.zerocloud.pdf.consumer.HardenedWorkerScaleProfileTest",
+        "test": "generatedFiveThousandPageWorkloadCompletesAndReopens",
+        "message": "got: <false>, expected: is <true>"
+      },
+      {
+        "class": "net.zerocloud.pdf.consumer.HardenedWorkerScaleProfileTest",
+        "test": "generatedExactOneGiBInputCompletesWithinStagingProfile",
+        "message": "got: <false>, expected: is <true>"
+      }
+    ],
+    "archive": {
+      "path": "jdk21-matrix-reports.zip",
+      "sha256": "5d0ac7f3e3902667bf633d2cce3c3ce2e68475729873de4996b985e3ea2d8afd"
+    },
+    "note": "Only the final JDK 21 XML files are retained here. Each prior JDK result is retained in the complete matrix log; later matrix runs overwrite module XML reports."
+  }
+}

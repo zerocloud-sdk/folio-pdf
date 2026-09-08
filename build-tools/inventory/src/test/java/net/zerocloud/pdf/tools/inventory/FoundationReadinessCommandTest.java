@@ -31,6 +31,24 @@ public final class FoundationReadinessCommandTest {
     public final TemporaryFolder temporary = new TemporaryFolder();
 
     @Test
+    public void candidateIdentityProbeReadsASeparateIndexWithoutChangingTheAuthority() throws Exception {
+        Fixture fixture = fixture(false);
+        Path authority = fixture.root.resolve("capabilities/evidence.yaml");
+        byte[] original = Files.readAllBytes(authority);
+        Result baseline = command("readiness", fixture.root);
+        assertEquals(baseline.output, 0, baseline.exit);
+        fixture.evidence.put("certifications", objects());
+        fixture.write("provisional-evidence.yaml", fixture.evidence);
+        Result probe = command("readiness", fixture.root, "provisional-evidence.yaml");
+        assertFailure(probe, "missing certification");
+        assertEquals(outputValue(baseline.output, "Candidate identity:"), outputValue(probe.output, "Candidate identity:"));
+        assertEquals(outputValue(baseline.output, "Contract identity:"), outputValue(probe.output, "Contract identity:"));
+        assertTrue(Arrays.equals(original, Files.readAllBytes(authority)));
+        assertFailure(command("readiness", fixture.root, "../outside-evidence.yaml"), "repository path escapes the repository root");
+        assertTrue(Arrays.equals(original, Files.readAllBytes(authority)));
+    }
+
+    @Test
     public void realInventoryIsValidButFoundationRemainsNotReady() throws Exception {
         Path root = Paths.get(System.getProperty("repositoryRoot"));
         Result valid = command("validate", root);
@@ -441,9 +459,18 @@ public final class FoundationReadinessCommandTest {
     }
 
     private static Result command(String action, Path root) throws Exception {
+        return command(action, root, null);
+    }
+
+    private static Result command(String action, Path root, String evidence) throws Exception {
         Path java = Paths.get(System.getProperty("java.home"), "bin", "java");
-        Process process = new ProcessBuilder(java.toString(), "-cp", System.getProperty("java.class.path"),
-                InventoryCommand.class.getName(), action, root.toString()).redirectErrorStream(true).start();
+        List<String> arguments = new ArrayList<String>();
+        arguments.add(java.toString());
+        if (evidence != null) {
+            arguments.add("-Dfolio.inventory.evidence=" + evidence);
+        }
+        arguments.addAll(Arrays.asList("-cp", System.getProperty("java.class.path"), InventoryCommand.class.getName(), action, root.toString()));
+        Process process = new ProcessBuilder(arguments).redirectErrorStream(true).start();
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         try (InputStream input = process.getInputStream()) {
             byte[] buffer = new byte[8192];

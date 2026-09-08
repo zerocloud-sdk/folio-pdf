@@ -224,6 +224,10 @@ final class VisualProfile {
                 OPAQUE_SRGB_COLOR_POLICY,
                 T18_FONT_POLICY,
                 T18_ANTIALIASING_POLICY));
+        policies.put("T09-document-value-inspection-patch", new RenderingPolicy(
+                OPAQUE_SRGB_COLOR_POLICY,
+                T18_FONT_POLICY,
+                "pinned PDFium default smoothing; vector edges are axis-aligned"));
         policies.put(T19_PROFILE, new RenderingPolicy(
                 OPAQUE_SRGB_COLOR_POLICY,
                 T19_FONT_POLICY,

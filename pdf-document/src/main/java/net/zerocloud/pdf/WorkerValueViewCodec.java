@@ -155,9 +155,7 @@ final class WorkerValueViewCodec {
                                     requireStream(value).getDictionary());
                             break;
                         case STREAM_BYTES:
-                            WorkerCommandCodec.writeStreamBytes(
-                                    output,
-                                    requireStream(value));
+                            writeInspectedStreamBytes(output, requireStream(value));
                             break;
                         default:
                             throw rejected(
@@ -166,6 +164,23 @@ final class WorkerValueViewCodec {
                 });
             } finally {
                 input.releaseDecodedMemory();
+            }
+        }
+
+        private static void writeInspectedStreamBytes(WorkerCodecIO.Output output, PdfStream stream)
+                throws IOException, DocumentFailure {
+            try {
+                WorkerCommandCodec.writeStreamBytes(output, stream);
+            } catch (DocumentFailure failure) {
+                // Working-byte reads also serve Patch serialization. Keep query
+                // semantics here without retaining a detached buffer in the Worker.
+                if (failure.getCode() == DocumentFailureCode.COMMAND_REJECTED
+                        && PdfBoxValueAdapter.CAPABILITY_ID.equals(failure.getCapabilityId())
+                        && "The Document Patch stream could not be decoded.".equals(failure.getDiagnostic())) {
+                    throw PdfBoxValueAdapter.failure(DocumentFailureCode.QUERY_FAILED,
+                            "The PDF stream could not be decoded.");
+                }
+                throw failure;
             }
         }
 

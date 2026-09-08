@@ -106,6 +106,10 @@ _Avoid_: object pointer, COS reference
 An ordered request to inspect or change low-level PDF Values through validation owned by the Document Engine.
 _Avoid_: direct object mutation, COS edit
 
+**PDF Value Path**:
+A location reached from an Object Reference by selecting dictionary entries and array elements. A Path follows the document's current values and does not establish a separate object identity.
+_Avoid_: object pointer, object identity, backend path
+
 **Document Command**:
 A versioned, project-defined request that changes the current Document Session. Commands are ordered and batchable and never contain caller code or backend objects.
 _Avoid_: callback, remote method, custom command class

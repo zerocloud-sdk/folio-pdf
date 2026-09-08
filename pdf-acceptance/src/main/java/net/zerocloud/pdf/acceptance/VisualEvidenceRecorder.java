@@ -546,9 +546,9 @@ final class VisualEvidenceRecorder {
                         "Implementation renderer version",
                         state.implementationVersion))
                 .append(EvidenceFiles.metadata(
-                        "Input ID-neutral SHA-256", state.inputHash))
+                        state.chain.inputHashLabel(), state.inputHash))
                 .append(EvidenceFiles.metadata(
-                        "Input hash policy", EvidenceFiles.inputHashPolicy()))
+                        "Input hash policy", state.chain.inputHashPolicy()))
                 .append(EvidenceFiles.metadata(
                         "Expected raster SHA-256", state.expectedHash))
                 .append(EvidenceFiles.metadata(
@@ -586,25 +586,25 @@ final class VisualEvidenceRecorder {
                 .append(profile.rendererAgreementThreshold())
                 .append("` changed pixels.\n\n")
                 .append("## Findings and artifacts\n\n")
-                .append("- Input PDF: [`artifacts/")
-                .append(chain.inputArtifact()).append("`](artifacts/")
+                .append("- Input PDF: [`").append(chain.artifactPrefix())
+                .append(chain.inputArtifact()).append("`](").append(chain.artifactPrefix())
                 .append(chain.inputArtifact()).append(")\n")
                 .append("- Expected-raster authority: [`")
                 .append(profile.expectedRasterReference()).append("`](")
-                .append(profile.expectedRasterReference()).append(")\n")
+                .append(chain.expectedRasterLink(artifacts, profile)).append(")\n")
                 .append("- PDFium notice manifest: [`")
-                .append(pdfium.noticeManifest()).append("`](../../")
-                .append(pdfium.noticeManifest()).append(")\n")
+                .append(pdfium.noticeManifest()).append("`](")
+                .append(chain.repositoryLink(artifacts, pdfium.noticeManifest())).append(")\n")
                 .append("- ImageMagick notice manifest: [`")
-                .append(imageMagick.noticeManifest()).append("`](../../")
-                .append(imageMagick.noticeManifest()).append(")\n");
-        appendArtifact(record, artifacts, chain.expectedRasterName());
-        appendArtifact(record, artifacts, chain.pdfiumRasterName());
-        appendArtifact(record, artifacts, chain.implementationRasterName());
-        appendArtifact(record, artifacts, chain.differenceRasterName());
-        appendArtifact(record, artifacts, chain.rendererDifferenceRasterName());
-        record.append("- Raw findings: [`artifacts/")
-                .append(chain.findingsName()).append("`](artifacts/")
+                .append(imageMagick.noticeManifest()).append("`](")
+                .append(chain.repositoryLink(artifacts, imageMagick.noticeManifest())).append(")\n");
+        appendArtifact(record, artifacts, chain, chain.expectedRasterName());
+        appendArtifact(record, artifacts, chain, chain.pdfiumRasterName());
+        appendArtifact(record, artifacts, chain, chain.implementationRasterName());
+        appendArtifact(record, artifacts, chain, chain.differenceRasterName());
+        appendArtifact(record, artifacts, chain, chain.rendererDifferenceRasterName());
+        record.append("- Raw findings: [`").append(chain.artifactPrefix())
+                .append(chain.findingsName()).append("`](").append(chain.artifactPrefix())
                 .append(chain.findingsName()).append(")\n")
                 .append("- ").append(finding).append("\n\n")
                 .append("ImageMagick receives only validated PNG raster paths in both ")
@@ -625,9 +625,9 @@ final class VisualEvidenceRecorder {
         VisualProfile profile = state.profile;
         return "# " + state.chain.label() + " visual-chain raw findings\n\n"
                 + EvidenceFiles.metadata(
-                        "Input ID-neutral SHA-256", state.inputHash)
+                        state.chain.inputHashLabel(), state.inputHash)
                 + EvidenceFiles.metadata(
-                        "Input hash policy", EvidenceFiles.inputHashPolicy())
+                        "Input hash policy", state.chain.inputHashPolicy())
                 + EvidenceFiles.metadata("Expected raster SHA-256", state.expectedHash)
                 + EvidenceFiles.metadata("PDFium raster SHA-256", state.actualHash)
                 + EvidenceFiles.metadata(
@@ -678,10 +678,11 @@ final class VisualEvidenceRecorder {
     private static void appendArtifact(
             StringBuilder record,
             Path artifacts,
+            VisualEvidenceChain chain,
             String name) {
         if (Files.isRegularFile(artifacts.resolve(name))) {
-            record.append("- Raster artifact: [`artifacts/")
-                    .append(name).append("`](artifacts/")
+            record.append("- Raster artifact: [`").append(chain.artifactPrefix())
+                    .append(name).append("`](").append(chain.artifactPrefix())
                     .append(name).append(")\n");
         }
     }

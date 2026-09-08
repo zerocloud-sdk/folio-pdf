@@ -1,5 +1,7 @@
 package net.zerocloud.pdf.acceptance;
 
+import java.nio.file.Path;
+
 /** Names and capability metadata for one independent visual evidence chain. */
 final class VisualEvidenceChain {
 
@@ -15,6 +17,7 @@ final class VisualEvidenceChain {
     private final String implementationRasterName;
     private final String differenceRasterName;
     private final String rendererDifferenceRasterName;
+    private final Path repositoryRoot;
 
     private VisualEvidenceChain(
             String label,
@@ -22,6 +25,12 @@ final class VisualEvidenceChain {
             String acceptanceProfile,
             String inputArtifact,
             String visualArtifactStem) {
+        this(label, capability, acceptanceProfile, inputArtifact, visualArtifactStem, null);
+    }
+
+    private VisualEvidenceChain(String label, String capability, String acceptanceProfile,
+            String inputArtifact, String visualArtifactStem, Path repositoryRoot) {
+        this.repositoryRoot = repositoryRoot;
         this.label = label;
         this.capability = capability;
         this.acceptanceProfile = acceptanceProfile;
@@ -29,8 +38,8 @@ final class VisualEvidenceChain {
                 + ("T23".equals(label) ? "T23-page-rendering"
                     : "T29".equals(label) ? "T29-shaping" : acceptanceProfile) + ".md";
         this.inputArtifact = inputArtifact;
-        this.recordName = visualArtifactStem + "-visual.md";
-        this.findingsName = visualArtifactStem + "-visual.txt";
+        this.recordName = "T09".equals(label) ? "visual.md" : visualArtifactStem + "-visual.md";
+        this.findingsName = "T09".equals(label) ? "visual.txt" : visualArtifactStem + "-visual.txt";
         this.expectedRasterName = visualArtifactStem + "-expected.png";
         this.pdfiumRasterName = visualArtifactStem + "-pdfium.png";
         this.implementationRasterName = visualArtifactStem
@@ -47,6 +56,31 @@ final class VisualEvidenceChain {
                 "T03-document-workflow-transaction",
                 "T06-document-blank-output.pdf",
                 "T07-document-blank");
+    }
+
+    static VisualEvidenceChain t09(Path repositoryRoot) {
+        return new VisualEvidenceChain("T09", "document.value.inspect-patch",
+                "T09-document-value-inspection-patch", "values.pdf", "T09-values", repositoryRoot);
+    }
+
+    String artifactPrefix() {
+        return repositoryRoot == null ? "artifacts/" : "";
+    }
+
+    String repositoryLink(Path artifacts, String path) {
+        return repositoryRoot == null ? "../../" + path : artifacts.relativize(repositoryRoot.resolve(path)).toString();
+    }
+
+    String expectedRasterLink(Path artifacts, VisualProfile profile) {
+        return repositoryRoot == null ? profile.expectedRasterReference() : artifacts.relativize(profile.expectedRaster()).toString();
+    }
+
+    String inputHashLabel() {
+        return "T09".equals(label) ? "Input exact SHA-256" : "Input ID-neutral SHA-256";
+    }
+
+    String inputHashPolicy() {
+        return "T09".equals(label) ? "SHA-256 of the exact unmodified PDF bytes" : EvidenceFiles.inputHashPolicy();
     }
 
     static VisualEvidenceChain t18() {

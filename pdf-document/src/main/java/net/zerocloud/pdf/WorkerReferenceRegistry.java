@@ -38,7 +38,7 @@ final class WorkerReferenceRegistry {
                 throw new DocumentFailure(
                         DocumentFailureCode.OBJECT_REFERENCE_OWNERSHIP_INVALID,
                         PdfBoxValueAdapter.CAPABILITY_ID,
-                        "The Object Reference belongs to a different Document Session.");
+                        "The Object Reference does not belong to this Session.");
             }
         } else {
             ObjectReference existing = references.get(Long.valueOf(identity));

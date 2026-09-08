@@ -1952,3 +1952,83 @@ licenses in `docs/third-party/t03-standards-tools.md`, and original package noti
 in `capabilities/evidence/T70-comparator-runtime/`. The existing AppImage, golden
 raster and visual tolerances are unchanged. This acceptance runtime is separate
 from both the Java products and the explicit Folio HarfBuzz 10.2.0 installation.
+
+## T09 Foundation values expansion (#71)
+
+This entry records the current development inputs; certification and final
+artifact checks remain separate required work in `docs/t09-implementation-plan.md`.
+The Native Patch and Facade implementation was authored from the project issues,
+its public Native contract and the standards/API inputs below. No iText source,
+resource, fixture or nonpublic implementation was used.
+
+- The [authorized ISO 32000-1:2008 copy](https://opensource.adobe.com/dc-acrobat-sdk-docs/standards/pdfstandards/pdf/PDF32000_2008.pdf)
+  supplies object, array, dictionary, reference, stream and filter structure,
+  text-string encoding (§7.9.2.2), and PDFDocEncoding (Annex D.3, Table D.2).
+  The [PDF Association explanation of PDF 2.0 UTF-8](https://pdfa.org/understanding-utf-8-in-pdf-2-0/)
+  supplies the UTF-8 BOM boundary for text interpretation. Original byte strings
+  remain independent of that interpretation.
+- The official iText 7.2.6 public API pages for
+  [PdfObject](https://api.itextpdf.com/iText/java/7.2.6/com/itextpdf/kernel/pdf/PdfObject.html),
+  [constant values](https://api.itextpdf.com/iText/java/7.2.6/constant-values.html),
+  [PdfNumber](https://api.itextpdf.com/iText/java/7.2.6/com/itextpdf/kernel/pdf/PdfNumber.html),
+  [PdfNull](https://api.itextpdf.com/iText/java/7.2.6/com/itextpdf/kernel/pdf/PdfNull.html),
+  [PdfBoolean](https://api.itextpdf.com/iText/java/7.2.6/com/itextpdf/kernel/pdf/PdfBoolean.html),
+  [PdfString](https://api.itextpdf.com/iText/java/7.2.6/com/itextpdf/kernel/pdf/PdfString.html),
+  [PdfArray](https://api.itextpdf.com/iText/java/7.2.6/com/itextpdf/kernel/pdf/PdfArray.html),
+  [PdfDictionary](https://api.itextpdf.com/iText/java/7.2.6/com/itextpdf/kernel/pdf/PdfDictionary.html),
+  [PdfName](https://api.itextpdf.com/iText/java/7.2.6/com/itextpdf/kernel/pdf/PdfName.html),
+  [PdfIndirectReference](https://api.itextpdf.com/iText/java/7.2.6/com/itextpdf/kernel/pdf/PdfIndirectReference.html),
+  [PdfReader](https://api.itextpdf.com/iText/java/7.2.6/com/itextpdf/kernel/pdf/PdfReader.html),
+  [PdfWriter](https://api.itextpdf.com/iText/java/7.2.6/com/itextpdf/kernel/pdf/PdfWriter.html),
+  and [PdfStream](https://api.itextpdf.com/iText/java/7.2.6/com/itextpdf/kernel/pdf/PdfStream.html)
+  were consulted for the frozen call shapes, constants and documented behavior.
+  Project text-conversion rules are explicit; no undocumented default encoding
+  was inferred from reference-library implementation behavior.
+- Integration reuses the approved Apache PDFBox 3.0.8 dependency. Its local
+  public dependency sources were consulted for public COS object identity,
+  incremental update and raw stream I/O APIs. Patch validation, reversible
+  changes, bounded stream scratch ownership and Facade bridging are project
+  code. No reflection into backend storage or custom PDF serializer was added.
+- The five PDFs under `pdf-document/src/test/resources/net/zerocloud/pdf/consumer/t09/`
+  were authored from original object bodies and calculated xref offsets.
+  They cover protected metadata, hidden aliases, an existing Owner cycle,
+  an indirect Version alias, and a private unknown encoded resource with a
+  separately painted page. Pinned qpdf 12.4.0 checked their syntax; its public
+  raw-stream output independently checked the 27 authored opaque bytes.
+  No reference-library fixture was copied or adapted. Development outcomes
+  and RED/GREEN logs are recorded in `docs/t09-development.md`.
+  The independent core-structure review probes and regression products use
+  these project-owned public APIs and authored Sources. Their malformed outputs
+  are retained as historical review observations, not imported reference data
+  or certification of the corrected candidate.
+
+T09 acceptance adds the project-authored `values.pdf` corpus and an incremental
+re-encoding negative under `capabilities/profiles/T09-values/fixtures/`. The
+Source object bodies, original xref offsets, private values, painting operators
+and revised object were authored from ISO 32000-1:2008. The negative retains the
+complete Source prefix and identical decoded Flate data, but its current object
+has a different raw encoding. Pinned qpdf's public JSON v2 interface with
+`--decode-level=none` observes the final effective streams; raw bytes are never
+obtained through a backend test seam. The golden RGB/sRGB PNG is independently
+defined by a white 1224×1584 pixel grid and the exact blue rectangle geometry at
+144 DPI. It is not a raster copied from product or reference-suite output.
+
+The [T09 standards profile](capabilities/profiles/T09-standards/README.md) adds
+29 original illegal PDFs and one legal null-DecodeParms control to T03's existing
+22 structural rules. Normative inputs are the same authorized ISO standard's
+stream/trailer/Catalog/Page/viewer/Info/page-piece/data requirements (Tables
+5, 8, 15, 28–30, 150, 317–319) and the pinned public Arlington model. No reference
+implementation was inspected. Actual qualification output from both existing
+checkers is retained under `capabilities/evidence/T71-standards-qualification/`,
+including known missed controls; a missed or generic traversal observation does
+not become claimed rule coverage. Each final product repeats the selected
+illegal-control checks. Existing qpdf 12.4.0, pdfcpu 0.15.0, Arlington 0.81,
+PDFium v0.11.2/Chromium 7881 and ImageMagick 7.1.2-30 pins and licenses are reused.
+No product dependency or version was added for certification.
+
+The extended runner and read-only provisional inventory evaluation are
+project-owned acceptance tooling. Candidate-specific records, raw JSON/PDF/PNG
+artifacts and public contract suites bind actual staged bytes. Atomic index
+replacement preserves valid other-obligation references and leaves historical
+records unchanged. This mechanism does not sign, upload, publish or establish
+Foundation readiness for unfinished slices.

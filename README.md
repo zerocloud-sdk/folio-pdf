@@ -227,7 +227,7 @@ the disclosure and isolation boundaries.
 ## Migration Facade
 
 For a mapped surface, replace the package prefix `com.itextpdf.*` with
-`net.zerocloud.pdf.itext7.*`. T04 maps only the preview blank-document flow:
+`net.zerocloud.pdf.itext7.*`. The lifecycle mapping supports this blank-document flow:
 
 ```java
 import java.nio.file.Path;
@@ -259,6 +259,13 @@ failures are mapped to
 `net.zerocloud.pdf.itext7.kernel.exceptions.PdfException`. The exact mapped
 members and their limitations are generated from
 [capabilities/facade-surface.yaml](capabilities/facade-surface.yaml).
+
+The [PDF Values and Document Patches guide](docs/document-values.md) covers
+Native ordered dictionary, array, value and stream edits, and the mapped kernel
+value family. Reader/writer documents edit an existing Source through one Native
+Session. Caller input/output streams stay open. T09 independent certification
+remains separate from implementation and artifact verification; consult the
+[current profile](capabilities/evidence/T09-document-value-inspection-patch.md).
 
 ## Document Workflow
 

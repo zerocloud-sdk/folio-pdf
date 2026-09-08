@@ -42,6 +42,14 @@
     <!-- The two editions currently have the same evidence-qualified mappings. -->
     <sourceDirectory>${project.basedir}/../pdf-migration-itext7/src/main/java</sourceDirectory>
     <testSourceDirectory>${project.basedir}/../pdf-migration-itext7/src/test/java</testSourceDirectory>
+    <testResources>
+      <testResource>
+        <directory>${project.basedir}/../pdf-document/src/test/resources</directory>
+        <includes>
+          <include>net/zerocloud/pdf/consumer/t09/*.pdf</include>
+        </includes>
+      </testResource>
+    </testResources>
     <resources>
       <resource>
         <directory>src/main/resources</directory>

@@ -1,0 +1,79 @@
+{
+  "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+  "started-utc": "2026-09-08T21:20:51.321051+00:00",
+  "pre-check-protected-delivery-paths": 10850,
+  "unrecorded-workspace-changes": [],
+  "staged-build-inputs-before": "match including complete source membership",
+  "source-inputs": 955,
+  "artifact-inputs": 23,
+  "contract-inputs": 30,
+  "harness-inputs": 24,
+  "build-receipt-sha256": "9b3b86b3824a7f83e308c173eecfbb7995ee125aa3d4143230121b4ea12f4821",
+  "commands": [
+    {
+      "command": [
+        "./scripts/inventory",
+        "generate"
+      ],
+      "started-utc": "2026-09-08T21:20:51.322054+00:00",
+      "finished-utc": "2026-09-08T21:21:03.971841+00:00",
+      "exit-code": 0,
+      "expected-exit-code": 0,
+      "log": {
+        "path": "post-matrix-inventory-generate.txt",
+        "sha256": "f286243ee5def61948de5ea30e9bea370b6d71a328c9169ebe68f73dc90f1b29"
+      }
+    },
+    {
+      "command": [
+        "./scripts/inventory",
+        "validate"
+      ],
+      "started-utc": "2026-09-08T21:21:03.973014+00:00",
+      "finished-utc": "2026-09-08T21:21:07.503817+00:00",
+      "exit-code": 0,
+      "expected-exit-code": 0,
+      "log": {
+        "path": "post-matrix-inventory-validate.txt",
+        "sha256": "da308f20738ba786b98ee2944b0a8b351924e2439bd09af119459c301ad1d00d"
+      }
+    },
+    {
+      "command": [
+        "./scripts/inventory",
+        "check"
+      ],
+      "started-utc": "2026-09-08T21:21:07.504430+00:00",
+      "finished-utc": "2026-09-08T21:21:20.118477+00:00",
+      "exit-code": 0,
+      "expected-exit-code": 0,
+      "log": {
+        "path": "post-matrix-inventory-check.txt",
+        "sha256": "e9f2ad2cec2726af8daa437b073ceedca113ccb73a06fa8cd255f3e3a7e254b2"
+      }
+    },
+    {
+      "command": [
+        "./scripts/inventory",
+        "readiness"
+      ],
+      "started-utc": "2026-09-08T21:21:20.119143+00:00",
+      "finished-utc": "2026-09-08T21:21:32.600674+00:00",
+      "exit-code": 1,
+      "expected-exit-code": 1,
+      "log": {
+        "path": "post-matrix-inventory-readiness.txt",
+        "sha256": "e88c7f68364530f04d2d6f34ba89f083008092b0eccf39e3ddfebf21796a294a"
+      }
+    }
+  ],
+  "status": "finished",
+  "candidate-identity": "ea1d430215b3bcaf50c29021ae2a9c74a36c6002f90e065d5abf1d52c280e7f0",
+  "contract-identity": "717a4baa6f11807aa8044c8306813b627b7e120b06bcf88f3b5ab1e7acebd750",
+  "finished-utc": "2026-09-08T21:21:33.512195+00:00",
+  "staged-build-inputs-after": "match including complete source membership",
+  "result": "pass",
+  "values": "SATISFIED",
+  "transactions": "SATISFIED",
+  "global-foundation": "NOT READY"
+}

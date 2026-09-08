@@ -24,6 +24,17 @@ public final class ClasspathExclusivityIT {
             "net.zerocloud.pdf.itext7.kernel.pdf.PdfPage",
             "net.zerocloud.pdf.itext7.kernel.pdf.PdfReader",
             "net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter",
+            "net.zerocloud.pdf.itext7.kernel.pdf.PdfObject",
+            "net.zerocloud.pdf.itext7.kernel.pdf.PdfNull",
+            "net.zerocloud.pdf.itext7.kernel.pdf.PdfBoolean",
+            "net.zerocloud.pdf.itext7.kernel.pdf.PdfNumber",
+            "net.zerocloud.pdf.itext7.kernel.pdf.PdfString",
+            "net.zerocloud.pdf.itext7.kernel.pdf.PdfName",
+            "net.zerocloud.pdf.itext7.kernel.pdf.PdfArray",
+            "net.zerocloud.pdf.itext7.kernel.pdf.PdfDictionary",
+            "net.zerocloud.pdf.itext7.kernel.pdf.PdfStream",
+            "net.zerocloud.pdf.itext7.kernel.pdf.PdfIndirectReference",
+            "net.zerocloud.pdf.itext7.kernel.pdf.PdfCatalog",
             "net.zerocloud.pdf.itext7.layout.Document");
 
     @Test

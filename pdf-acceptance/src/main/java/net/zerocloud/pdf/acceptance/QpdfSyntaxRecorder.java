@@ -111,14 +111,14 @@ final class QpdfSyntaxRecorder {
                 + metadata("Producer version", producerVersion)
                 + metadata("Tool distribution SHA-256",
                         qpdfPin.archiveSha256())
-                + metadata("Input ID-neutral SHA-256", inputHash)
-                + metadata("Input hash policy", EvidenceFiles.inputHashPolicy())
+                + metadata(profile.inputHashLabel(), inputHash)
+                + metadata("Input hash policy", profile.inputHashPolicy())
                 + "Final determination: `" + result.recordValue() + "`\n\n"
                 + "## Findings and artifact\n\n"
-                + "- Product: [`artifacts/" + profile.artifact
-                + "`](artifacts/" + profile.artifact + ")\n"
-                + "- qpdf findings: [`artifacts/" + profile.findings
-                + "`](artifacts/" + profile.findings + ")\n"
+                + "- Product: [`" + profile.artifactPrefix() + profile.artifact
+                + "`](" + profile.artifactPrefix() + profile.artifact + ")\n"
+                + "- qpdf findings: [`" + profile.artifactPrefix() + profile.findings
+                + "`](" + profile.artifactPrefix() + profile.findings + ")\n"
                 + "- " + finding + "\n\n"
                 + profile.scopeQualification + "\n";
     }
@@ -143,14 +143,14 @@ final class QpdfSyntaxRecorder {
                 + metadata("Producer version", producerVersion)
                 + metadata("Tool distribution SHA-256",
                         qpdfPin.archiveSha256())
-                + metadata("Input ID-neutral SHA-256", inputHash)
-                + metadata("Input hash policy", EvidenceFiles.inputHashPolicy())
+                + metadata(profile.inputHashLabel(), inputHash)
+                + metadata("Input hash policy", profile.inputHashPolicy())
                 + "Final determination: `" + result.recordValue() + "`\n\n"
                 + "## Findings and artifacts\n\n"
-                + "- Input PDF: [`artifacts/" + profile.artifact
-                + "`](artifacts/" + profile.artifact + ")\n"
-                + "- qpdf findings: [`artifacts/" + profile.findings
-                + "`](artifacts/" + profile.findings + ")\n"
+                + "- Input PDF: [`" + profile.artifactPrefix() + profile.artifact
+                + "`](" + profile.artifactPrefix() + profile.artifact + ")\n"
+                + "- qpdf findings: [`" + profile.artifactPrefix() + profile.findings
+                + "`](" + profile.artifactPrefix() + profile.findings + ")\n"
                 + "- " + finding + "\n";
     }
 
@@ -165,8 +165,8 @@ final class QpdfSyntaxRecorder {
                     inputHash, check, qpdfPin, profile);
         }
         return "# " + profile.ticket + " qpdf syntax findings\n\n"
-                + metadata("Input ID-neutral SHA-256", inputHash)
-                + metadata("Input hash policy", EvidenceFiles.inputHashPolicy())
+                + metadata(profile.inputHashLabel(), inputHash)
+                + metadata("Input hash policy", profile.inputHashPolicy())
                 + metadata("Tool", "qpdf")
                 + metadata("Tool version", qpdfPin.version())
                 + metadata("Distribution SHA-256", qpdfPin.archiveSha256())
@@ -186,8 +186,8 @@ final class QpdfSyntaxRecorder {
             QpdfPin qpdfPin,
             Profile profile) {
         return "# qpdf syntax findings\n\n"
-                + metadata("Input ID-neutral SHA-256", inputHash)
-                + metadata("Input hash policy", EvidenceFiles.inputHashPolicy())
+                + metadata(profile.inputHashLabel(), inputHash)
+                + metadata("Input hash policy", profile.inputHashPolicy())
                 + metadata("Tool", "qpdf")
                 + metadata("Tool version", qpdfPin.version())
                 + metadata("Distribution SHA-256", qpdfPin.archiveSha256())
@@ -209,8 +209,8 @@ final class QpdfSyntaxRecorder {
                 ? "# qpdf syntax findings\n\n"
                 : "# " + profile.ticket + " qpdf syntax findings\n\n";
         return heading
-                + metadata("Input ID-neutral SHA-256", inputHash)
-                + metadata("Input hash policy", EvidenceFiles.inputHashPolicy())
+                + metadata(profile.inputHashLabel(), inputHash)
+                + metadata("Input hash policy", profile.inputHashPolicy())
                 + metadata("Tool", "qpdf")
                 + metadata("Tool version", observedVersion)
                 + metadata("Distribution SHA-256", qpdfPin.archiveSha256())
@@ -228,6 +228,7 @@ final class QpdfSyntaxRecorder {
         private final String findings;
         private final String scopeQualification;
         private final boolean blankDocumentStyle;
+        private final boolean exactInputHash;
 
         Profile(
                 String ticket,
@@ -280,6 +281,13 @@ final class QpdfSyntaxRecorder {
                 String findings,
                 String scopeQualification,
                 boolean blankDocumentStyle) {
+            this(ticket, capability, acceptanceProfile, profileRecord, artifact, record, findings,
+                    scopeQualification, blankDocumentStyle, false);
+        }
+
+        private Profile(String ticket, String capability, String acceptanceProfile, String profileRecord,
+                String artifact, String record, String findings, String scopeQualification,
+                boolean blankDocumentStyle, boolean exactInputHash) {
             this.ticket = ticket;
             this.capability = capability;
             this.acceptanceProfile = acceptanceProfile;
@@ -289,6 +297,25 @@ final class QpdfSyntaxRecorder {
             this.findings = findings;
             this.scopeQualification = scopeQualification;
             this.blankDocumentStyle = blankDocumentStyle;
+            this.exactInputHash = exactInputHash;
+        }
+
+        static Profile exactDocument(String ticket, String capability, String acceptanceProfile,
+                String profileRecord, String artifact, String record, String findings) {
+            return new Profile(ticket, capability, acceptanceProfile, profileRecord, artifact, record, findings,
+                    "This syntax chain does not establish PDF standards conformance.", false, true);
+        }
+
+        String inputHashLabel() {
+            return exactInputHash ? "Input exact SHA-256" : "Input ID-neutral SHA-256";
+        }
+
+        String artifactPrefix() {
+            return exactInputHash ? "" : "artifacts/";
+        }
+
+        String inputHashPolicy() {
+            return exactInputHash ? "SHA-256 of the exact unmodified PDF bytes" : EvidenceFiles.inputHashPolicy();
         }
 
         static Profile blankDocument(
