@@ -1,0 +1,2812 @@
+schema-version: 1
+sources:
+  governing-specification: https://github.com/zerocloud-sdk/folio-pdf/issues/1
+  foundation-parent: https://github.com/zerocloud-sdk/folio-pdf/issues/33
+  platform-amendment: https://github.com/zerocloud-sdk/folio-pdf/issues/69
+  retrieved: 2026-09-08; complete bodies and comments read via gh CLI
+requirements:
+- id: spec-us-01
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 1
+  requirement: As a Java 8 application developer, I want artifacts that genuinely run on Java 8, so that I can migrate
+    without upgrading my production JVM.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - java-artifacts
+- id: spec-us-02
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 2
+  requirement: As a developer on a later JDK, I want the same artifacts tested on JDK 11, 17, and 21, so that runtime
+    upgrades do not require a different library line.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - java-artifacts
+- id: spec-us-03
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 3
+  requirement: As a Maven user, I want all first-party modules available under net.zerocloud and selectable through
+    a BOM, so that dependency management is predictable.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - java-artifacts
+- id: spec-us-04
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 4
+  requirement: As a PDF author, I want to create documents with explicit page sizes, margins, and area breaks, so
+    that I can control document structure.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - paragraphs
+- id: spec-us-05
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 5
+  requirement: As a PDF author, I want mixed-content paragraphs with leading, alignment, indents, tabs, keep behavior,
+    and widow/orphan behavior, so that business documents paginate correctly.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - paragraphs
+  - pagination
+- id: spec-us-06
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 6
+  requirement: As a PDF author, I want fixed and automatic tables with row and column spans, so that complex tabular
+    documents can be represented.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - tables-base
+- id: spec-us-07
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 7
+  requirement: As a PDF author, I want repeated table headers and footers, overflow handling, page splitting, relayout,
+    and incremental large-table flushing, so that long reports remain usable.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - tables-pagination
+- id: spec-us-08
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 8
+  requirement: As a multilingual author, I want Latin, Greek, Cyrillic, CJK, Arabic, Hebrew, Devanagari, and Thai
+    shaping and layout, so that text is logically and visually correct.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - paragraphs
+  - shaping
+  - fonts
+- id: spec-us-09
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 9
+  requirement: As a document generator, I want every barcode generation mode in the iText 7.2.6 Core barcodes module,
+    so that existing labels and forms can migrate.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - barcodes-1d
+  - barcodes-2d
+- id: spec-us-10
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 10
+  requirement: As a PDF consumer, I want to open files from paths, streams, channels, and bounded byte sources,
+    so that the library fits different application architectures.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - transactions
+- id: spec-us-11
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 11
+  requirement: As a PDF editor, I want to add, remove, move, and copy pages, so that I can modify existing documents.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - pages
+- id: spec-us-12
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 12
+  requirement: As a batch processor, I want to merge and split PDFs, so that I can assemble and distribute document
+    sets.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - pages
+- id: spec-us-13
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 13
+  requirement: As an extraction user, I want text, image, page, metadata, and structural extraction, so that downstream
+    systems can inspect documents.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - text
+  - images
+  - metadata
+  - pages
+- id: spec-us-14
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 14
+  requirement: As an advanced PDF developer, I want backend-neutral low-level PDF Values and Object References,
+    so that I can perform advanced edits without depending on PDFBox classes.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - values
+- id: spec-us-15
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 15
+  requirement: As an advanced PDF developer, I want validated Document Patches, so that low-level changes cannot
+    bypass lifecycle and preservation rules.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - values
+- id: spec-us-16
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 16
+  requirement: As an editor, I want unknown objects and resources preserved when safe, so that unrelated content
+    is not silently lost.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - pages
+  - metadata
+  - annotations
+  - values
+- id: spec-us-17
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 17
+  requirement: As an editor, I want an operation rejected when unknown content cannot be preserved safely, so that
+    the library never pretends a destructive edit is safe.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - pages
+  - metadata
+  - annotations
+  - values
+- id: spec-us-18
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 18
+  requirement: As a caller, I want to choose REWRITE or INCREMENTAL explicitly, so that publication semantics are
+    not inferred unpredictably.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - transactions
+  - incremental
+- id: spec-us-19
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 19
+  requirement: As a signature-sensitive user, I want signed documents read-only by default, so that edits cannot
+    silently invalidate signatures.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - incremental
+- id: spec-us-20
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 20
+  requirement: As a signature-sensitive user, I want permitted incremental changes only when signature and DocMDP
+    rules allow them, so that earlier revisions remain intact.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - incremental
+- id: spec-us-21
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 21
+  requirement: As a renderer user, I want pages rendered to bounded images with explicit scale, DPI, crop, color,
+    and alpha options, so that rendering is deterministic.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - rendering
+- id: spec-us-22
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 22
+  requirement: As a security-conscious author, I want PDF 1.7 with AES-256 as the default output policy, so that
+    obsolete algorithms are not selected accidentally.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - password-baseline
+- id: spec-us-23
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 23
+  requirement: As a migration user, I want to read supported legacy encryption and explicitly opt into Legacy Security
+    Mode for legacy output, so that compatibility does not weaken defaults.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - password-baseline
+- id: spec-us-24
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 24
+  requirement: As a PDF 2.0 user, I want explicit PDF 2.0 output and PDF 1.0 through 2.0 input support, so that
+    version selection is controlled.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - password-baseline
+- id: spec-us-25
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 25
+  requirement: As a forms developer, I want AcroForm creation, filling, appearance handling, flattening, and XFDF
+    support, so that interactive workflows can migrate.
+  disposition: later-release
+  reason: Explicit later dependency-gated Forms, Trust, Conformance, Conversion or Sanitization work; not part of
+    Foundation 0.1.0.
+  obligations: []
+- id: spec-us-26
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 26
+  requirement: As an XFA user, I want XFA processing behind the Forms context, so that dynamic form workflows can
+    be supported in a later dependency-gated phase.
+  disposition: later-release
+  reason: Explicit later dependency-gated Forms, Trust, Conformance, Conversion or Sanitization work; not part of
+    Foundation 0.1.0.
+  obligations: []
+- id: spec-us-27
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 27
+  requirement: As a Trust user, I want public-key encryption, signing, verification, external signing, HSM, TSA,
+    OCSP, CRL, DSS, LTV, and PAdES capabilities, so that document authenticity workflows can migrate.
+  disposition: later-release
+  reason: Explicit later dependency-gated Forms, Trust, Conformance, Conversion or Sanitization work; not part of
+    Foundation 0.1.0.
+  obligations: []
+- id: spec-us-28
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 28
+  requirement: As an archival specialist, I want PDF/A-1, PDF/A-2, and PDF/A-3 creation checks and independently
+    validated outputs, so that archival documents meet the fixed baseline.
+  disposition: later-release
+  reason: Explicit later dependency-gated Forms, Trust, Conformance, Conversion or Sanitization work; not part of
+    Foundation 0.1.0.
+  obligations: []
+- id: spec-us-29
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 29
+  requirement: As an accessibility specialist, I want tagged and metadata-assisted PDF/UA-1 creation, so that accessible
+    output can be produced within the fixed Reference Conformance Set.
+  disposition: later-release
+  reason: Explicit later dependency-gated Forms, Trust, Conformance, Conversion or Sanitization work; not part of
+    Foundation 0.1.0.
+  obligations: []
+- id: spec-us-30
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 30
+  requirement: As an accessibility reviewer, I want machine and human accessibility evidence kept separate, so that
+    automation is not misrepresented as complete accessibility proof.
+  disposition: later-release
+  reason: Explicit later dependency-gated Forms, Trust, Conformance, Conversion or Sanitization work; not part of
+    Foundation 0.1.0.
+  obligations: []
+- id: spec-us-31
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 31
+  requirement: As an HTML conversion user, I want HTML and CSS transformed through layout, Forms, SVG, and styled
+    XML capabilities, so that web content can become PDF.
+  disposition: later-release
+  reason: Explicit later dependency-gated Forms, Trust, Conformance, Conversion or Sanitization work; not part of
+    Foundation 0.1.0.
+  obligations: []
+- id: spec-us-32
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 32
+  requirement: As an SVG user, I want SVG converted into reusable PDF graphics, so that vector assets remain sharp.
+  disposition: later-release
+  reason: Explicit later dependency-gated Forms, Trust, Conformance, Conversion or Sanitization work; not part of
+    Foundation 0.1.0.
+  obligations: []
+- id: spec-us-33
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 33
+  requirement: As an OCR user, I want PDF pages rendered, recognized by a selected provider, and rebuilt with a
+    searchable text layer, so that scanned PDFs become searchable.
+  disposition: later-release
+  reason: Explicit later dependency-gated Forms, Trust, Conformance, Conversion or Sanitization work; not part of
+    Foundation 0.1.0.
+  obligations: []
+- id: spec-us-34
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 34
+  requirement: As an Office conversion user, I want Word, Excel, and PowerPoint documents converted through a replaceable
+    provider, so that the initial LibreOffice implementation can later be replaced without API changes.
+  disposition: later-release
+  reason: Explicit later dependency-gated Forms, Trust, Conformance, Conversion or Sanitization work; not part of
+    Foundation 0.1.0.
+  obligations: []
+- id: spec-us-35
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 35
+  requirement: As a sanitization user, I want true removal of sensitive content rather than black rectangles or
+    annotations, so that redaction is irreversible.
+  disposition: later-release
+  reason: Explicit later dependency-gated Forms, Trust, Conformance, Conversion or Sanitization work; not part of
+    Foundation 0.1.0.
+  obligations: []
+- id: spec-us-36
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 36
+  requirement: As an optimization user, I want images, fonts, streams, color spaces, and structures optimized, so
+    that file size can be reduced without invalid claims.
+  disposition: later-release
+  reason: Explicit later dependency-gated Forms, Trust, Conformance, Conversion or Sanitization work; not part of
+    Foundation 0.1.0.
+  obligations: []
+- id: spec-us-37
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 37
+  requirement: As an offline operator, I want the default distribution to work without a remote service, so that
+    document content remains local.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - providers
+- id: spec-us-38
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 38
+  requirement: As an integrator, I want OCR, rendering, Office, native shaping, commercial, and remote engines represented
+    as Capability Providers, so that deployment and licensing choices are explicit.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - providers
+  - shaping
+  - rendering
+- id: spec-us-39
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 39
+  requirement: As a privacy-sensitive operator, I want explicit authorization before content is sent to a remote
+    provider, so that document disclosure is never implicit.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - providers
+- id: spec-us-40
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 40
+  requirement: As a server operator, I want explicit limits for bytes, pages, objects, nesting, decompression, pixels,
+    memory, temporary storage, time, and concurrency, so that hostile documents cannot consume unbounded resources.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - limits
+  - worker
+- id: spec-us-41
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 41
+  requirement: As a multi-tenant operator, I want hostile input processed in a Hardened Worker Profile, so that
+    a parser failure is isolated from the application process.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - worker
+- id: spec-us-42
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 42
+  requirement: As a desktop user, I want the same Document Workflow available in-process, so that trusted workloads
+    do not pay IPC complexity.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - transactions
+  - worker
+- id: spec-us-43
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 43
+  requirement: As an API user, I want Commands to preserve order and Queries to observe all preceding changes, so
+    that workflow behavior is understandable.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - transactions
+  - worker
+- id: spec-us-44
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 44
+  requirement: As an IPC user, I want mutation batching and query barriers, so that the Worker does not require
+    one round trip per operation.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - worker
+- id: spec-us-45
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 45
+  requirement: As an operator, I want uncertain commits resolved through transaction status rather than blind retry,
+    so that output is not duplicated.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - recovery
+- id: spec-us-46
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 46
+  requirement: As an API user, I want stable checked Document Failure codes with safe diagnostics, so that applications
+    can handle operational failures without depending on backend exceptions.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - transactions
+- id: spec-us-47
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 47
+  requirement: As a caller, I want resources opened by the library closed by the library and caller-supplied streams
+    left open, so that ownership is predictable.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - transactions
+- id: spec-us-48
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 48
+  requirement: As a publisher, I want path outputs staged and atomically moved where supported, so that failed workflows
+    do not replace good files.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - transactions
+- id: spec-us-49
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 49
+  requirement: As a multi-output user, I want a Publication Receipt for every target, so that committed, failed,
+    and unattempted destinations are explicit.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - transactions
+- id: spec-us-50
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 50
+  requirement: As a concurrent application, I want a reusable thread-safe Document Workflow and thread-confined
+    Sessions, so that separate documents can run in parallel safely.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - transactions
+  - recovery
+- id: spec-us-51
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 51
+  requirement: As an iText migration engineer, I want familiar type and method shapes under net.zerocloud.pdf.itext7,
+    so that import prefixes and call sites can be migrated mechanically where coverage exists.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - facade-artifacts
+- id: spec-us-52
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 52
+  requirement: As an iText migration engineer, I want stable and preview Facades to be mutually exclusive, so that
+    experimental mappings cannot be selected accidentally.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - facade-artifacts
+- id: spec-us-53
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 53
+  requirement: As an iText migration engineer, I want compile-time surface coverage linked to behavioral evidence,
+    so that a compiling method does not imply unsupported behavior.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - facade-artifacts
+  - acceptance
+- id: spec-us-54
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 54
+  requirement: As a migration planner, I want a generated Capability Matrix, so that I can see supported, limited,
+    experimental, and planned capabilities.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - docs
+- id: spec-us-55
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 55
+  requirement: As a migration planner, I want a generated Facade Surface Manifest, so that I can measure source
+    migration effort independently of behavioral coverage.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - docs
+- id: spec-us-56
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 56
+  requirement: As a user, I want capability-specific tolerances rather than one global pixel threshold, so that
+    compatibility criteria fit the behavior being tested.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - acceptance
+- id: spec-us-57
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 57
+  requirement: As a user, I want syntax, standards, semantic, visual, and required human evidence kept as separate
+    chains, so that one tool cannot certify the whole product.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - acceptance
+- id: spec-us-58
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 58
+  requirement: As a typography maintainer, I want hash-pinned reference fonts and versioned HarfBuzz profiles on
+    four platforms, so that shaping evidence is reproducible.
+  disposition: required
+  reason: Only the four-platform portion is superseded by ADR-0040/#69; all typography, reference-font, native and
+    independent-evidence requirements remain mandatory on the required Ubuntu/JDK profiles.
+  obligations:
+  - environments
+  - fonts
+  - shaping
+- id: spec-us-59
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 59
+  requirement: As a contributor, I want clear clean-room and provenance rules, so that my work can be accepted without
+    contaminating the Apache-2.0 project.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - provenance
+- id: spec-us-60
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 60
+  requirement: As an implementer, I want closed-product comparisons isolated behind a Compatibility Curator, so
+    that I do not receive proprietary implementation details.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - provenance
+- id: spec-us-61
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 61
+  requirement: As a maintainer, I want dependency gates recorded in the Capability Matrix, so that downstream work
+    cannot claim compatibility before prerequisites.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - integration
+- id: spec-us-62
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 62
+  requirement: As a maintainer, I want one Release Train during 0.x, so that module versions remain coherent.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - java-artifacts
+- id: spec-us-63
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 63
+  requirement: As a user of 0.x, I want source-breaking changes documented with migration notes, so that early API
+    evolution remains manageable.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - docs
+  - java-artifacts
+- id: spec-us-64
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 64
+  requirement: As a user of 1.0 and later, I want semantic versioning enforced, so that public compatibility is
+    predictable.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - docs
+- id: spec-us-65
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 65
+  requirement: As a Maven Central consumer, I want binaries, sources, Javadocs, signatures, and checksums, so that
+    artifacts are inspectable and verifiable.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - candidate
+- id: spec-us-66
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 66
+  requirement: As a supply-chain reviewer, I want a CycloneDX SBOM, license report, vulnerability report, and reproducible-build
+    evidence, so that releases can be audited.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - supply-chain
+  - reproducibility
+- id: spec-us-67
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 67
+  requirement: As a security reporter, I want a private vulnerability channel, so that parser and cryptographic
+    defects can be disclosed safely.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - supply-chain
+- id: spec-us-68
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 68
+  requirement: As a release engineer, I want Central credentials and signing material available only after protected-environment
+    approval, so that ordinary CI cannot access publishing secrets.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - publication-controls
+- id: spec-us-69
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 69
+  requirement: As a release engineer, I want the complete GPG fingerprint pinned, so that the wrong local key cannot
+    sign a release.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - publication-controls
+  - candidate
+- id: spec-us-70
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 70
+  requirement: As a release engineer, I want upload and Central validation separated from irreversible publication,
+    so that the first 0.x releases receive a final human review.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - publication-controls
+- id: spec-us-71
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 71
+  requirement: As a user, I want authoritative English specifications and a Chinese usage guide, so that contracts
+    remain consistent while Chinese-speaking users have practical documentation.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - docs
+- id: spec-us-72
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 72
+  requirement: As a project maintainer, I want public non-affiliation notices, so that Folio PDF by ZeroCloud is
+    not confused with LibrePDF OpenPDF or Apryse iText.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - docs
+- id: spec-us-73
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 73
+  requirement: As a server operator, I want acceptance at approximately 5,000 pages and 1 GiB with controlled spill,
+    so that large bounded workloads are supported without promising unlimited streaming.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - recovery
+- id: spec-us-74
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 74
+  requirement: As a privacy reviewer, I want logs to omit filenames, content, metadata, credentials, private keys,
+    and raw backend exceptions, so that operational visibility does not leak sensitive data.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - transactions
+  - worker
+  - providers
+- id: spec-us-75
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — User Stories 75
+  requirement: As a community member, I want contributors to retain copyright under DCO and Apache-2.0 inbound terms,
+    so that participation does not require copyright assignment.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - provenance
+- id: spec-id-01
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 1
+  requirement: The fixed Reference Suite is iText Core 7.2.6, pdfSweep 3.0.2, pdfCalligraph 3.0.2, pdfXFA 3.0.4,
+    pdfHTML 4.0.5, pdfOCR 2.0.2, pdfOptimizer 2.0.2, pdfRender 2.0.4, and pdfOffice 2.0.5.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - docs
+- id: spec-id-02
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 2
+  requirement: Capability Parity means supported counterparts for the fixed suite. It excludes unchanged imports,
+    binary linkage, byte-identical output, identical backend exceptions, and an automatically moving target.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - docs
+  - acceptance
+- id: spec-id-03
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 3
+  requirement: Implementation is clean-room and Apache-2.0. iText source and resources may not be copied or adapted,
+    and closed add-ons may not be reverse-engineered.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - provenance
+- id: spec-id-04
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 4
+  requirement: Public standards, public API documentation, project-owned fixtures, and legally approved black-box
+    evidence are allowed. Standards remain the correctness authority.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - provenance
+  - acceptance
+- id: spec-id-05
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 5
+  requirement: The public identity is Folio PDF by ZeroCloud. Java packages use net.zerocloud.pdf and artifacts
+    use net.zerocloud:pdf-*.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - docs
+  - java-artifacts
+- id: spec-id-06
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 6
+  requirement: The canonical public repository and issue tracker are zerocloud-sdk/folio-pdf. GitHub Issues use
+    the default needs-triage, needs-info, ready-for-agent, ready-for-human, and wontfix vocabulary.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - docs
+- id: spec-id-07
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 7
+  requirement: Java 8 is a runtime contract. Maven builds use a Java-8-compatible Maven 3.9 release and compile
+    with release 8; tests run on JDK 8, 11, 17, and 21.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - java-artifacts
+- id: spec-id-08
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 8
+  requirement: All first-party 0.x artifacts share one Release Train managed by pdf-bom. Unimplemented placeholder
+    artifacts are not published.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - java-artifacts
+- id: spec-id-09
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 9
+  requirement: Deep modules are organized around Document Engine, Composition, Forms, Trust, Conformance, Conversion,
+    Sanitization, and Migration rather than copying Reference Suite packaging.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - java-artifacts
+- id: spec-id-10
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 10
+  requirement: The first-party artifact families are pdf-bom, pdf-document, pdf-composition, pdf-forms, pdf-trust,
+    pdf-conformance, pdf-conversion, pdf-sanitization, pdf-migration-itext7, pdf-provider-*, pdf-acceptance, and
+    pdf-testkit.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - java-artifacts
+- id: spec-id-11
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 11
+  requirement: Capability dependency cycles are forbidden. Acceptance and test artifacts never enter production
+    runtime.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - java-artifacts
+  - integration
+- id: spec-id-12
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 12
+  requirement: The Native Interface is centered on DocumentWorkflow.execute with a caller-side Document Work callback
+    and a thread-confined Document Session.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - transactions
+- id: spec-id-13
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 13
+  requirement: A Workflow Request contains named sources, a primary source, named publication targets, Save Mode,
+    execution policy, resource limits, credentials, and provider preferences.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - transactions
+- id: spec-id-14
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 14
+  requirement: A Workflow Outcome contains the caller result, capability and execution information, safe diagnostics,
+    and per-target Publication Receipts.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - transactions
+- id: spec-id-15
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 15
+  requirement: The callback always runs in the caller process, including under the Hardened Worker Profile. Workers
+    never receive lambdas or user bytecode.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - worker
+- id: spec-id-16
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 16
+  requirement: Document Commands are project-defined, versioned, ordered, batchable mutation values. Document Queries
+    are project-defined ordering barriers that observe all prior Commands.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - worker
+  - transactions
+- id: spec-id-17
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 17
+  requirement: Arbitrary user implementations, Java Serialization, reflection class names, scripts, arbitrary URIs,
+    and backend objects are rejected at the execution boundary.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - worker
+  - values
+- id: spec-id-18
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 18
+  requirement: The core API is synchronous. Deadlines, cancellation tokens, and sanitized progress events are explicit;
+    callers may use their own Executor for asynchronous composition.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - transactions
+- id: spec-id-19
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 19
+  requirement: The Workflow Environment is immutable and thread-safe and owns provider registrations, command/query
+    codecs, reference fonts, temporary storage, worker launch, Clock, Locale, time zone, SecureRandom, and default
+    policy.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - transactions
+  - providers
+  - fonts
+  - worker
+- id: spec-id-20
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 20
+  requirement: There are no implicit system fonts, default Locale, default time zone, or network calls in compatibility
+    evidence.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - acceptance
+  - fonts
+  - paragraphs
+- id: spec-id-21
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 21
+  requirement: The Document Engine owns a backend-neutral PDF Value model covering null, boolean, number, string,
+    name, array, dictionary, stream, and indirect reference.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - values
+- id: spec-id-22
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 22
+  requirement: Small values may be immutable and detached. Large streams and traversals are bounded lazy Session
+    views addressed by Object References and invalid after Session close.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - values
+- id: spec-id-23
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 23
+  requirement: Low-level changes use validated Document Patches. PDFBox COS and PD types are never public contracts.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - values
+  - java-artifacts
+- id: spec-id-24
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 24
+  requirement: REWRITE and INCREMENTAL are explicit Save Modes. Unsigned ordinary edits default to REWRITE.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - transactions
+  - incremental
+- id: spec-id-25
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 25
+  requirement: Signed files are read-only by default. Only proven permitted changes may use explicit incremental
+    publication.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - incremental
+- id: spec-id-26
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 26
+  requirement: Unknown content and resources are preserved when safe; the operation fails when safe preservation
+    cannot be guaranteed.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - values
+  - pages
+  - metadata
+  - annotations
+- id: spec-id-27
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 27
+  requirement: Path inputs opened by the module are closed by the module. Caller-provided streams and channels remain
+    caller-owned. Byte and Worker inputs are copied or staged under limits.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - transactions
+- id: spec-id-28
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 28
+  requirement: All products are staged and validated before publication. Path targets use atomic replacement where
+    supported. Stream failures report possible partial output. There is no global transaction across multiple targets.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - transactions
+- id: spec-id-29
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 29
+  requirement: Document Failure is a checked operational contract with stable codes, capability identifiers, and
+    safe diagnostics. Programming errors remain unchecked, while caller runtime exceptions abort and propagate unchanged.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - transactions
+- id: spec-id-30
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 30
+  requirement: The same Native Interface supports In-Process and Hardened Worker execution. Hostile multi-tenant
+    input requires the Worker.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - worker
+- id: spec-id-31
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 31
+  requirement: The first Worker is a local-only child process with a versioned, authenticated, length-bounded protocol,
+    transaction IDs, deadlines, checksums, bounded chunking or staging, and crash recovery.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - worker
+  - recovery
+- id: spec-id-32
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 32
+  requirement: Each Worker transaction uses a private restricted temporary root. Worker networking is disabled;
+    remote providers are brokered by the parent and require explicit disclosure consent.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - worker
+  - providers
+- id: spec-id-33
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 33
+  requirement: The default Foundation backend is PDFBox 3.0.8, hidden inside pdf-document. No public backend SPI
+    or API/implementation artifact split is introduced until a second real backend exists.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - java-artifacts
+- id: spec-id-34
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 34
+  requirement: ICU4J 77.1 handles Unicode segmentation, bidi, script and line-break behavior; it is not treated
+    as a shaping engine.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - paragraphs
+- id: spec-id-35
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 35
+  requirement: OkapiBarcode 0.5.6 is the default encoder, with project-owned PDF vector rendering for all Reference
+    Suite barcode modes.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - barcodes-1d
+  - barcodes-2d
+- id: spec-id-36
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 36
+  requirement: TwelveMonkeys is optional and used only where additional image decoding is required after license
+    review.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - graphics
+  - supply-chain
+- id: spec-id-37
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 37
+  requirement: High-level layout, pagination, tables, font fallback, shaping orchestration, hyphenation, resource
+    reuse, image policy, and color policy are owned by Folio PDF.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - canvas
+  - graphics
+  - fonts
+  - paragraphs
+  - pagination
+  - tables
+  - shaping
+- id: spec-id-38
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 38
+  requirement: Complex shaping uses a project-owned HarfBuzz native adapter. HarfBuzz is not bundled and is certified
+    on Linux x86-64, Windows x86-64, macOS x86-64, and macOS arm64.
+  disposition: required
+  reason: Only the four-platform portion is superseded by ADR-0040/#69; all typography, reference-font, native and
+    independent-evidence requirements remain mandatory on the required Ubuntu/JDK profiles.
+  obligations:
+  - environments
+  - shaping
+- id: spec-id-39
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 39
+  requirement: Typography evidence uses hash-pinned static Noto Sans, CJK SC/TC/JP/KR, Arabic, Hebrew, Devanagari,
+    and Thai fonts with OFL notices. System and online fonts are not evidence inputs.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - fonts
+  - paragraphs
+  - shaping
+  - provenance
+- id: spec-id-40
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 40
+  requirement: Foundation reads PDF 1.0 through 2.0 and supported legacy password encryption, writes PDF 1.7 with
+    AES-256 by default, and supports explicit PDF 2.0 output.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - password-baseline
+- id: spec-id-41
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 41
+  requirement: Obsolete output algorithms require Legacy Security Mode.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - password-baseline
+- id: spec-id-42
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 42
+  requirement: Foundation recognizes and protects existing signatures but does not create or validate them.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - incremental
+- id: spec-id-43
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 43
+  requirement: Public-key encryption, signatures, certificate chains, external signing, HSM, TSA, OCSP, CRL, DSS,
+    LTV, and PAdES belong to the later Trust module.
+  disposition: later-release
+  reason: Explicit later dependency-gated Forms, Trust, Conformance, Conversion or Sanitization work; not part of
+    Foundation 0.1.0.
+  obligations: []
+- id: spec-id-44
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 44
+  requirement: Foundation makes no FIPS claim. A future FIPS Distribution must pin a certified provider, JVM, platform,
+    startup mode, and evidence, with no normal-provider coexistence or fallback.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - docs
+- id: spec-id-45
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 45
+  requirement: The Reference Conformance Set is PDF/A-1A/1B, PDF/A-2A/2B/2U, PDF/A-3A/3B/3U, and tagged plus metadata-assisted
+    PDF/UA-1 creation.
+  disposition: later-release
+  reason: Explicit later dependency-gated Forms, Trust, Conformance, Conversion or Sanitization work; not part of
+    Foundation 0.1.0.
+  obligations: []
+- id: spec-id-46
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 46
+  requirement: Creation Checks and Independent Validation are separate concepts. PDF/A-4, PDF/UA-2, and a public
+    PDF/UA validator are not part of the fixed baseline.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - acceptance
+  - docs
+- id: spec-id-47
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 47
+  requirement: Conversion uses replaceable Capability Providers with project-owned requests and results. Providers
+    declare execution mode, engine version, license and distribution facts, availability, and limits.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - providers
+- id: spec-id-48
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 48
+  requirement: The initial OCR provider is Tesseract CLI. Core rendering and searchable text-layer construction
+    remain owned by Folio PDF.
+  disposition: later-release
+  reason: Explicit later dependency-gated Forms, Trust, Conformance, Conversion or Sanitization work; not part of
+    Foundation 0.1.0.
+  obligations: []
+- id: spec-id-49
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 49
+  requirement: The default runtime renderer is PDFBox Renderer. Independent PDFium rendering is used for visual
+    acceptance.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - rendering
+  - acceptance
+- id: spec-id-50
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 50
+  requirement: The initial Office provider is a user-installed LibreOffice headless CLI. LibreOffice is not bundled,
+    and fidelity is judged through pinned acceptance corpora.
+  disposition: later-release
+  reason: Explicit later dependency-gated Forms, Trust, Conformance, Conversion or Sanitization work; not part of
+    Foundation 0.1.0.
+  obligations: []
+- id: spec-id-51
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 51
+  requirement: Sanitization must remove underlying content; overlays and annotations do not count as secure redaction.
+  disposition: later-release
+  reason: Explicit later dependency-gated Forms, Trust, Conformance, Conversion or Sanitization work; not part of
+    Foundation 0.1.0.
+  obligations: []
+- id: spec-id-52
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 52
+  requirement: The Migration Facade keeps reference package suffixes beneath net.zerocloud.pdf.itext7 and lowers
+    migration cost without preserving imports or linkage.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - facade-artifacts
+- id: spec-id-53
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 53
+  requirement: pdf-migration-itext7 contains only compatible mappings. pdf-migration-itext7-preview is a mutually
+    exclusive superset containing compatible and experimental mappings.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - facade-artifacts
+- id: spec-id-54
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 54
+  requirement: The project does not publish a complete surface made of unsupported runtime-throwing stubs.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - facade-artifacts
+  - java-artifacts
+- id: spec-id-55
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 55
+  requirement: capability-matrix.yaml is the behavioral authority. facade-surface.yaml is the source-surface authority.
+    Generated documentation links them in both directions.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - docs
+- id: spec-id-56
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 56
+  requirement: Capability states are planned, experimental, compatible, and limited. Compatible requires complete
+    Acceptance Evidence.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - integration
+  - acceptance
+- id: spec-id-57
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 57
+  requirement: During 0.x, public source-breaking changes require migration notes. From 1.0, semantic versioning
+    governs public compatibility.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - java-artifacts
+  - docs
+- id: spec-id-58
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 58
+  requirement: Foundation Release 0.1.0 includes Document Engine, the complete Foundation Composition Profile, page
+    rendering, password encryption, existing-signature protection, matching Stable Migration Facade coverage, hostile-input
+    handling, and acceptance infrastructure.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - integration
+- id: spec-id-59
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 59
+  requirement: Remaining Core work opens Forms, Trust, Conformance, SVG, and styled XML after verified prerequisites.
+  disposition: later-release
+  reason: Explicit later dependency-gated Forms, Trust, Conformance, Conversion or Sanitization work; not part of
+    Foundation 0.1.0.
+  obligations: []
+- id: spec-id-60
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 60
+  requirement: Sanitization, optimization, OCR, and XFA may proceed in parallel after their own Dependency Gates.
+  disposition: later-release
+  reason: Explicit later dependency-gated Forms, Trust, Conformance, Conversion or Sanitization work; not part of
+    Foundation 0.1.0.
+  obligations: []
+- id: spec-id-61
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 61
+  requirement: HTML conversion requires compatible Forms, Layout, SVG, and styled XML; advanced scripts additionally
+    require shaping.
+  disposition: later-release
+  reason: Explicit later dependency-gated Forms, Trust, Conformance, Conversion or Sanitization work; not part of
+    Foundation 0.1.0.
+  obligations: []
+- id: spec-id-62
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 62
+  requirement: Office conversion is last in the current advisory order because it benefits from mature layout, typography,
+    image, and rendering evidence.
+  disposition: later-release
+  reason: Explicit later dependency-gated Forms, Trust, Conformance, Conversion or Sanitization work; not part of
+    Foundation 0.1.0.
+  obligations: []
+- id: spec-id-63
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 63
+  requirement: The project uses Apache-2.0, DCO, contributor provenance, no copyright assignment, and the notice
+    identity Folio PDF by ZeroCloud contributors.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - provenance
+- id: spec-id-64
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 64
+  requirement: The Lead Maintainer is initially the project founder under ZeroCloud SDK. The temporary public and
+    security contact is mabaiqiu@gmail.com.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - supply-chain
+- id: spec-id-65
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 65
+  requirement: A Compatibility Curator separate from implementers is required for counsel-approved closed-product
+    black-box evidence. The role is currently vacant, so dependent closed-product evidence remains planned.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - provenance
+- id: spec-id-66
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 66
+  requirement: Formal artifacts publish to Maven Central with required POM metadata, sources, Javadocs, signatures,
+    checksums, SBOM, license report, vulnerability report, and reproducibility evidence.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - candidate
+  - supply-chain
+  - reproducibility
+- id: spec-id-67
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 67
+  requirement: The Central Publisher plugin uses server id central, does not auto-publish during 0.x, and waits
+    for successful validation before a human performs the immutable publication step.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - publication-controls
+- id: spec-id-68
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 68
+  requirement: Maven GPG signing pins primary fingerprint C5149FD6B5EF7C2126F1FD0FCC1A12E348E171D8 and enforces
+    Maven GPG best practices.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - candidate
+  - publication-controls
+- id: spec-id-69
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 69
+  requirement: Local Central and GPG material remains outside the repository with owner-only directory and file
+    permissions. The private key is imported without generating a replacement and verified through a detached-signature
+    round trip.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - publication-controls
+- id: spec-id-70
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 70
+  requirement: Current GPG inspection proves the key material is parseable and the system entropy pool is initialized;
+    no entropy daemon or kernel random configuration change is planned.
+  disposition: historical
+  reason: Planning-time observation, not current acceptance evidence or a new release requirement.
+  obligations: []
+- id: spec-id-71
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 71
+  requirement: GitHub Actions stores Central username, Central password, armored private key, and GPG passphrase
+    as protected Environment Secrets. Ordinary CI never receives them.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - publication-controls
+- id: spec-id-72
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 72
+  requirement: Release actions are pinned to immutable commit SHAs, use minimum permissions and a single release
+    concurrency group, and require protected-environment approval.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - publication-controls
+  - supply-chain
+- id: spec-id-73
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 73
+  requirement: English README, Javadoc, ADRs, Capability specifications, and API contracts are authoritative. A
+    Chinese usage guide is maintained for users.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - docs
+- id: spec-id-74
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Implementation Decisions 74
+  requirement: Public documentation prominently disclaims affiliation with LibrePDF OpenPDF and Apryse iText.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - docs
+- id: spec-td-01
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Testing Decisions 1
+  requirement: The highest and primary test seam is observable behavior through DocumentWorkflow.execute. Tests
+    supply public requests, Commands and Queries and assert outcomes, Publication Receipts, files, stable failures,
+    resource ownership, and lifecycle behavior.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - integration
+- id: spec-td-02
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Testing Decisions 2
+  requirement: In-Process and Hardened Worker adapters run the same Document Workflow contract suite. Worker tests
+    add batching, query barriers, protocol compatibility, timeouts, cancellation, crash recovery, uncertain commit
+    lookup, malformed messages, and resource-limit enforcement.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - worker
+  - recovery
+  - integration
+- id: spec-td-03
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Testing Decisions 3
+  requirement: The Migration Facade is tested at its public surface by invoking mapped behavior and asserting the
+    same Native Interface outcomes. Tests do not assert internal delegation classes.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - facade-artifacts
+- id: spec-td-04
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Testing Decisions 4
+  requirement: Provider-specific contract tests exist only at real external Capability Provider seams. PDFBox, ICU4J,
+    OkapiBarcode, and ordinary internal helpers do not receive artificial public seams solely for mocking.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - providers
+  - integration
+- id: spec-td-05
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Testing Decisions 5
+  requirement: Good tests assert semantic structure, page order, extracted values, layout breaks, geometry, rendered
+    appearance, conformance findings, publication state, or stable errors. They do not assert PDFBox object identity,
+    private method calls, internal batching details, temporary filenames, or byte ordering.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - integration
+  - acceptance
+- id: spec-td-06
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Testing Decisions 6
+  requirement: Syntax evidence uses an external qpdf process and cannot alone prove standards compliance.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - acceptance
+- id: spec-td-07
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Testing Decisions 7
+  requirement: PDF/A and machine-testable PDF/UA evidence uses an independently versioned veraPDF process with explicit
+    flavour and recorded rule or clause findings.
+  disposition: later-release
+  reason: Explicit later dependency-gated Forms, Trust, Conformance, Conversion or Sanitization work; not part of
+    Foundation 0.1.0.
+  obligations: []
+- id: spec-td-08
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Testing Decisions 8
+  requirement: Project-owned semantic and structural assertions verify the PDF object graph, page sequence, streams,
+    text order, resource behavior, accessibility structure, barcode payloads, and feature-specific semantics.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - acceptance
+  - text
+  - images
+  - barcodes-1d
+  - barcodes-2d
+- id: spec-td-09
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Testing Decisions 9
+  requirement: Visual evidence renders with a pinned independent PDFium tool, then compares fixed-size images with
+    a pinned ImageMagick configuration and capability-specific thresholds.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - acceptance
+- id: spec-td-10
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Testing Decisions 10
+  requirement: PDFBox Renderer may provide secondary evidence but cannot be the sole visual oracle for a PDFBox-backed
+    implementation.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - acceptance
+  - rendering
+- id: spec-td-11
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Testing Decisions 11
+  requirement: PDF/UA Acceptance Profiles combine machine findings with the applicable Matterhorn human checklist.
+    Missing required human review yields INDETERMINATE.
+  disposition: later-release
+  reason: Explicit later dependency-gated Forms, Trust, Conformance, Conversion or Sanitization work; not part of
+    Foundation 0.1.0.
+  obligations: []
+- id: spec-td-12
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Testing Decisions 12
+  requirement: Acceptance Profiles pin corpus commits, external tool versions or image digests, fonts, hashes, DPI,
+    page boxes, color settings, expected rule IDs, thresholds, and human evidence.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - acceptance
+  - fonts
+  - environments
+- id: spec-td-13
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Testing Decisions 13
+  requirement: A PASS requires all mandatory evidence chains. Missing tools, renderer conflicts, absent platform
+    evidence, or incomplete human review yield INDETERMINATE rather than PASS.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - acceptance
+  - environments
+- id: spec-td-14
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Testing Decisions 14
+  requirement: iText output is never the correctness golden. Counsel-approved black-box evidence may discover migration
+    gaps but only the Compatibility Curator may produce it.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - provenance
+  - acceptance
+- id: spec-td-15
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Testing Decisions 15
+  requirement: Foundation typography tests compare glyph IDs, clusters, advances, offsets, direction, ligatures,
+    reordering, combining-mark placement, fallback, embedded subsets, pagination, and rendered tolerance on all
+    four certified platforms.
+  disposition: required
+  reason: Only the four-platform portion is superseded by ADR-0040/#69; all typography, reference-font, native and
+    independent-evidence requirements remain mandatory on the required Ubuntu/JDK profiles.
+  obligations:
+  - fonts
+  - paragraphs
+  - shaping
+  - environments
+- id: spec-td-16
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Testing Decisions 16
+  requirement: Barcode tests decode the generated payload with an independent decoder, verify checksums and module
+    geometry, inspect vector placement, and reject invalid input per symbology.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - barcodes-1d
+  - barcodes-2d
+- id: spec-td-17
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Testing Decisions 17
+  requirement: Password security tests cover missing, incorrect, user and owner credentials, algorithm dictionaries,
+    permissions, metadata handling, attachment-only modes, explicit legacy policy, and secure defaults.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - password-baseline
+  - password-clear-metadata
+  - password-attachments
+- id: spec-td-18
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Testing Decisions 18
+  requirement: Save tests reopen every output and assert object graph and page semantics. Incremental tests assert
+    preservation of prior revisions without requiring byte equality.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - transactions
+  - incremental
+  - pages
+- id: spec-td-19
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Testing Decisions 19
+  requirement: Signed-document tests verify default read-only behavior and reject unproven incremental mutations.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - incremental
+- id: spec-td-20
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Testing Decisions 20
+  requirement: Hostile-input tests cover maximum bytes, pages, objects, depth, decompression, pixels, memory, temporary
+    storage, time, concurrency, malformed xref data, and Worker termination.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - limits
+  - worker
+- id: spec-td-21
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Testing Decisions 21
+  requirement: Scale profiles cover controlled workloads around 5,000 pages and 1 GiB with bounded temporary spill;
+    they do not promise unbounded streaming.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - recovery
+- id: spec-td-22
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Testing Decisions 22
+  requirement: Resource tests prove module-opened resources close, caller streams remain open, Session views expire,
+    and temporary Worker data is removed.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - transactions
+  - worker
+- id: spec-td-23
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Testing Decisions 23
+  requirement: Publication tests cover atomic Path replacement, stream partial-write diagnostics, multi-target COMMITTED/FAILED/NOT_ATTEMPTED
+    receipts, callback failure, and validation failure before publication.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - transactions
+- id: spec-td-24
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Testing Decisions 24
+  requirement: Java compatibility tests compile and run the same artifacts on JDK 8, 11, 17, and 21 and reject accidental
+    newer Java APIs.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - java-artifacts
+- id: spec-td-25
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Testing Decisions 25
+  requirement: Public API checks compare released Native Interface and Facade signatures, enforce Automatic-Module-Name
+    stability, and require migration notes for permitted 0.x breaks.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - java-artifacts
+  - facade-artifacts
+  - docs
+- id: spec-td-26
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Testing Decisions 26
+  requirement: Release tests build sources and Javadocs, produce signatures and checksums, generate the CycloneDX
+    SBOM, scan licenses and vulnerabilities, and reproduce artifacts before Central upload.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - candidate
+  - supply-chain
+  - reproducibility
+- id: spec-td-27
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Testing Decisions 27
+  requirement: A release rehearsal creates and validates a Central bundle without auto-publishing. The first irreversible
+    publication remains a human-approved action.
+  disposition: required
+  reason: Unchanged Foundation requirement; all assigned obligations remain mandatory.
+  obligations:
+  - reproducibility
+  - publication-controls
+- id: spec-td-28
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Testing Decisions 28
+  requirement: Existing prior art is the repository's accepted ADR set, Capability terminology, Reference Suite
+    inventory, and four-chain Acceptance Evidence design. There is no implementation test suite yet, so the first
+    tracer bullet establishes the shared Document Workflow contract harness.
+  disposition: historical
+  reason: Planning-time observation, not current acceptance evidence or a new release requirement.
+  obligations: []
+- id: spec-ng-01
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Out of Scope 1
+  requirement: Unchanged com.itextpdf imports.
+  disposition: non-goal
+  reason: Retained program non-goal; the platform amendment does not alter it.
+  obligations:
+  - docs
+- id: spec-ng-02
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Out of Scope 2
+  requirement: Binary compatibility with existing iText class files or jars.
+  disposition: non-goal
+  reason: Retained program non-goal; the platform amendment does not alter it.
+  obligations:
+  - docs
+- id: spec-ng-03
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Out of Scope 3
+  requirement: Byte-for-byte PDF output equality.
+  disposition: non-goal
+  reason: Retained program non-goal; the platform amendment does not alter it.
+  obligations:
+  - docs
+- id: spec-ng-04
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Out of Scope 4
+  requirement: Identical internal exception classes, implementation object identity, performance, or allocation
+    behavior.
+  disposition: non-goal
+  reason: Retained program non-goal; the platform amendment does not alter it.
+  obligations:
+  - docs
+- id: spec-ng-05
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Out of Scope 5
+  requirement: Tracking iText 8, iText 9, or later product versions.
+  disposition: non-goal
+  reason: Retained program non-goal; the platform amendment does not alter it.
+  obligations:
+  - docs
+- id: spec-ng-06
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Out of Scope 6
+  requirement: Adjacent or retired products and tools including pdf2Data, pdfInvoice, pdfDebug/RUPS, DITO, and licensing
+    infrastructure.
+  disposition: non-goal
+  reason: Retained program non-goal; the platform amendment does not alter it.
+  obligations:
+  - docs
+- id: spec-ng-07
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Out of Scope 7
+  requirement: Copying or adapting iText source code, resources, fixtures, or proprietary implementation details.
+  disposition: non-goal
+  reason: Retained program non-goal; the platform amendment does not alter it.
+  obligations:
+  - provenance
+- id: spec-ng-08
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Out of Scope 8
+  requirement: Reverse engineering closed Reference Suite add-ons.
+  disposition: non-goal
+  reason: Retained program non-goal; the platform amendment does not alter it.
+  obligations:
+  - provenance
+- id: spec-ng-09
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Out of Scope 9
+  requirement: Publishing unsupported API stubs merely to make code compile.
+  disposition: non-goal
+  reason: Retained program non-goal; the platform amendment does not alter it.
+  obligations:
+  - docs
+- id: spec-ng-10
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Out of Scope 10
+  requirement: PDF/A-4, PDF/UA-2, and the later standalone pdfua module.
+  disposition: non-goal
+  reason: Retained program non-goal; the platform amendment does not alter it.
+  obligations:
+  - docs
+- id: spec-ng-11
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Out of Scope 11
+  requirement: A public PDF/UA validator compatible with later iText versions.
+  disposition: non-goal
+  reason: Retained program non-goal; the platform amendment does not alter it.
+  obligations:
+  - docs
+- id: spec-ng-12
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Out of Scope 12
+  requirement: A FIPS claim in Foundation.
+  disposition: non-goal
+  reason: Retained program non-goal; the platform amendment does not alter it.
+  obligations:
+  - docs
+- id: spec-ng-13
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Out of Scope 13
+  requirement: Android, OSGi, and GraalVM native-image support in Foundation.
+  disposition: non-goal
+  reason: Retained program non-goal; the platform amendment does not alter it.
+  obligations:
+  - docs
+- id: spec-ng-14
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Out of Scope 14
+  requirement: A remote network Worker in Foundation.
+  disposition: non-goal
+  reason: Retained program non-goal; the platform amendment does not alter it.
+  obligations:
+  - docs
+- id: spec-ng-15
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Out of Scope 15
+  requirement: Bundling HarfBuzz, Tesseract, LibreOffice, PDFium, or other native and external engines in the default
+    runtime.
+  disposition: non-goal
+  reason: Retained program non-goal; the platform amendment does not alter it.
+  obligations:
+  - docs
+- id: spec-ng-16
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Out of Scope 16
+  requirement: Guaranteeing Microsoft Office native pagination or pixel identity from the LibreOffice provider.
+  disposition: non-goal
+  reason: Retained program non-goal; the platform amendment does not alter it.
+  obligations:
+  - docs
+- id: spec-ng-17
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Out of Scope 17
+  requirement: OCR guarantees for handwriting or languages without an installed trained-data profile.
+  disposition: non-goal
+  reason: Retained program non-goal; the platform amendment does not alter it.
+  obligations:
+  - docs
+- id: spec-ng-18
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Out of Scope 18
+  requirement: Global atomicity across multiple publication destinations.
+  disposition: non-goal
+  reason: Retained program non-goal; the platform amendment does not alter it.
+  obligations:
+  - docs
+- id: spec-ng-19
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Out of Scope 19
+  requirement: Physical secure erasure guarantees for temporary storage.
+  disposition: non-goal
+  reason: Retained program non-goal; the platform amendment does not alter it.
+  obligations:
+  - docs
+- id: spec-ng-20
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Out of Scope 20
+  requirement: An unbounded-memory or unlimited-document-size promise.
+  disposition: non-goal
+  reason: Retained program non-goal; the platform amendment does not alter it.
+  obligations:
+  - docs
+- id: spec-ng-21
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Out of Scope 21
+  requirement: Automatic Central publication during the 0.x release process.
+  disposition: non-goal
+  reason: Retained program non-goal; the platform amendment does not alter it.
+  obligations:
+  - publication-controls
+- id: spec-ng-22
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/1 — Out of Scope 22
+  requirement: Committing Central tokens, GPG passphrases, private keys, generated Maven settings, or other release
+    credentials to the repository.
+  disposition: non-goal
+  reason: Retained program non-goal; the platform amendment does not alter it.
+  obligations:
+  - publication-controls
+- id: parent-1
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/33 — Acceptance criteria 1
+  requirement: Every capability promised by Foundation 0.1.0 is compatible with complete evidence and every required
+    platform profile passes.
+  disposition: required
+  reason: Unchanged parent Foundation acceptance requirement.
+  obligations:
+  - integration
+  - environments
+- id: parent-2
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/33 — Acceptance criteria 2
+  requirement: Stable Facade and generated documentation contain exactly the Foundation-compatible mappings and
+    no preview-only surface.
+  disposition: required
+  reason: Unchanged parent Foundation acceptance requirement.
+  obligations:
+  - facade-artifacts
+  - docs
+- id: parent-3
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/33 — Acceptance criteria 3
+  requirement: A reproducible signed 0.1.0 release candidate and Central validation bundle are produced, but immutable
+    publication requires separate human approval.
+  disposition: required
+  reason: Unchanged parent Foundation acceptance requirement.
+  obligations:
+  - reproducibility
+  - candidate
+  - publication-controls
+- id: parent-4
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/33 — Acceptance criteria 4
+  requirement: Tests assert externally observable behavior at the highest available seam and do not couple to backend
+    internals.
+  disposition: required
+  reason: Unchanged parent Foundation acceptance requirement.
+  obligations:
+  - integration
+- id: parent-5
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/33 — Acceptance criteria 5
+  requirement: Applicable Capability Matrix, Facade Surface, documentation, provenance, and Acceptance Evidence
+    are updated; no unsupported stable stub is introduced.
+  disposition: required
+  reason: Unchanged parent Foundation acceptance requirement.
+  obligations:
+  - docs
+  - provenance
+  - facade-artifacts
+  - acceptance
+- id: slice-69-1
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/69 — Acceptance criteria 1
+  requirement: 'Record the maintainer''s 2026-09-08 platform amendment in a superseding architectural decision and
+    the public release contract: certify only environments actually exercised; Windows x86-64 and macOS x86-64/arm64
+    are not required Foundation 0.1.0 release gates and remain explicitly uncertified.'
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - environments
+- id: slice-69-2
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/69 — Acceptance criteria 2
+  requirement: Define required, reproducible Ubuntu 24.04 / Linux x86-64 profiles for JDK 8, 11, 17 and 21, recording
+    actual JDK vendor/build, OS or container image identity, execution profile, native engine and tool hashes; a
+    matching architecture name alone does not certify another environment.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - environments
+- id: slice-69-3
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/69 — Acceptance criteria 3
+  requirement: 'Create a machine-readable Foundation obligation inventory covering every unchanged #1/#33 Foundation
+    requirement, its owning capability or subcapability, Acceptance Profile, expected Migration Facade family, evidence
+    chains and assigned slice. Classify retained limitations against those requirements; missing behavior stays
+    an explicit release blocker and cannot be silently excluded.'
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - environments
+- id: slice-69-4
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/69 — Acceptance criteria 4
+  requirement: Permit independently certifiable subcapabilities where password scopes or table phases require separate
+    slices, while retaining the original aggregate obligations and dependency traceability. Record explicit, reasoned
+    Native-Interface-only treatment for project-specific controls with no Reference Suite counterpart; do not preserve
+    the current blanket facade exclusions as a substitute for matching Foundation coverage.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - environments
+- id: slice-69-5
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/69 — Acceptance criteria 5
+  requirement: Expose a repository release-readiness command that reports incomplete obligations, missing or mismatched
+    environment evidence, incompatible dependencies and missing facade mappings, and returns a failing result while
+    any required obligation is unsatisfied.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - environments
+- id: slice-69-6
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/69 — Acceptance criteria 6
+  requirement: Demonstrate the command against the current incomplete Foundation inventory and controlled complete/incomplete
+    fixtures, including an unknown platform, missing chain, stale artifact identity and missing mapping; generated
+    public documentation states the same certification boundary.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - environments
+- id: slice-70-1
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/70 — Acceptance criteria 1
+  requirement: Retain and certify named Path/stream/channel/byte Sources, ordered Path/stream Targets, query ordering,
+    callback abort, ownership, Session expiry, cancellation and Publication Receipts through the public Document
+    Workflow; repair only observed contract gaps.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - transactions
+  - acceptance
+- id: slice-70-2
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/70 — Acceptance criteria 2
+  requirement: Complete the blank-document profile's independent syntax, standards, semantic and visual chains against
+    the final artifact. Qualify a separately versioned external PDF standards checker with explicit rule/profile
+    coverage and known-invalid controls; preserve unsupported rules as unresolved coverage, and never relabel qpdf
+    syntax or project semantic tests as standards evidence.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - transactions
+  - acceptance
+- id: slice-70-3
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/70 — Acceptance criteria 3
+  requirement: Make standards recording reusable for subsequent profiles, with bounded offline invocation, exact
+    executable/configuration identity, artifact hashes, separate chain records and deterministic FAIL/INDETERMINATE
+    handling for invalid output, unavailable tools and incomplete coverage. No new runtime dependency is introduced.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - transactions
+  - acceptance
+- id: slice-70-4
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/70 — Acceptance criteria 4
+  requirement: Promote the twelve existing document-lifecycle surface entries from Preview eligibility to the Stable
+    Migration Facade once their capability is compatible. Public consumers create, publish, reopen and count pages
+    with mapped safe failures and the existing close-ownership contract.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - transactions
+  - acceptance
+- id: slice-70-5
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/70 — Acceptance criteria 5
+  requirement: Verify the built Stable and Preview artifacts against the declared public surface and enforce their
+    classpath mutual exclusion in both jar orders; the Preview artifact retains all Stable mappings without an unsupported
+    public stub.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - transactions
+  - acceptance
+- id: slice-71-1
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/71 — Acceptance criteria 1
+  requirement: Complete profile evidence for all nine PDF Value kinds, Object References, bounded stream views and
+    the approved Document Patch operations, including inspect-change-reopen outcomes and stable failures for malformed,
+    cyclic and out-of-bounds requests.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - values
+- id: slice-71-2
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/71 — Acceptance criteria 2
+  requirement: Freeze and implement the corresponding low-level Migration Facade type/member subset required by
+    the Foundation obligation inventory, using project-owned values and validated patches without leaking backend
+    objects.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - values
+- id: slice-71-3
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/71 — Acceptance criteria 3
+  requirement: Public Native and Facade tests prove equivalent observable values, lifecycle expiry, mutation atomicity,
+    resource ownership and preservation behavior; Source bytes and unrelated content remain protected.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - values
+- id: slice-71-4
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/71 — Acceptance criteria 4
+  requirement: Certify only the evidenced low-level profile; any broader Foundation-required mutation discovered
+    by the obligation inventory must be implemented and covered before that obligation is marked complete.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - values
+- id: slice-72-1
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/72 — Acceptance criteria 1
+  requirement: Certify insert/remove/move/copy/merge/split for the Foundation page profile, including inherited
+    boxes, rotation, resources, content order and independently reopenable products.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - pages
+- id: slice-72-2
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/72 — Acceptance criteria 2
+  requirement: Implement the Foundation page, merger and splitter Migration Facade subset with explicit selection
+    and ownership contracts and behavior equivalent to the Native Interface.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - pages
+- id: slice-72-3
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/72 — Acceptance criteria 3
+  requirement: Independent evidence verifies page geometry and rendered content, Source/product isolation, named-source
+    ordering, collision handling and exact split Target coverage.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - pages
+- id: slice-72-4
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/72 — Acceptance criteria 4
+  requirement: Invalid ranges, unsupported preservation cases and failed publication retain the existing stable
+    failures and observable COMMITTED/FAILED/NOT_ATTEMPTED receipt semantics.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - pages
+- id: slice-73-1
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/73 — Acceptance criteria 1
+  requirement: Certify document information, XMP, outlines, explicit/named Navigation Targets and embedded-file
+    round trips, including payload hashes and exact destination resolution.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - metadata
+- id: slice-73-2
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/73 — Acceptance criteria 2
+  requirement: Implement the corresponding Foundation Migration Facade members with project-owned values and the
+    same ownership, safe diagnostics and bounded-input behavior.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - metadata
+- id: slice-73-3
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/73 — Acceptance criteria 3
+  requirement: Existing page operations are exercised to prove deterministic collision renaming, destination retargeting
+    and rejection of orphaned references; this ticket does not certify the page capability on their behalf.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - metadata
+- id: slice-73-4
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/73 — Acceptance criteria 4
+  requirement: Independent profiles cover XML safety, name-tree ordering, malformed graphs, attachment limits and
+    retained or rejected unknown content.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - metadata
+- id: slice-74-1
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/74 — Acceptance criteria 1
+  requirement: Certify the approved Annotation families, normal appearances, inert local GoTo Actions, supported
+    event bindings and non-form Annotation Flattening through create-change-publish-reopen workflows.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - annotations
+- id: slice-74-2
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/74 — Acceptance criteria 2
+  requirement: Implement the matching Annotation, appearance and local-action Migration Facade subset; no executable
+    scripting or arbitrary external-action behavior is introduced.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - annotations
+- id: slice-74-3
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/74 — Acceptance criteria 3
+  requirement: Independent semantics and raster evidence cover annotation order, identity collisions, copied destinations,
+    appearance placement, retained page paint and flattening removal.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - annotations
+- id: slice-74-4
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/74 — Acceptance criteria 4
+  requirement: Malformed appearances, unknown/chained Actions, unsafe graphs and unsupported Widget/form operations
+    fail before mutation; AcroForm field work remains outside this Foundation slice.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - annotations
+- id: slice-75-1
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/75 — Acceptance criteria 1
+  requirement: Certify Page Text content-stream order, glyph geometry, explicit/inferred/uncertain character mappings,
+    Marked Content and the approved read-only Logical Structure profile.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - text
+- id: slice-75-2
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/75 — Acceptance criteria 2
+  requirement: Implement the matching extraction Migration Facade subset without inventing reading order, OCR text
+    or confidently mapped Unicode where source evidence is missing.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - text
+- id: slice-75-3
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/75 — Acceptance criteria 3
+  requirement: Independent project-owned fixtures cover nested Forms, split content arrays, ActualText/Alt, role/language
+    inheritance and malformed or unsupported structure relationships.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - text
+- id: slice-75-4
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/75 — Acceptance criteria 4
+  requirement: Public observers verify detached results, bounded traversal/decompression/font mapping, Session ordering
+    and safe all-or-nothing failure under both execution profiles.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - text
+- id: slice-76-1
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/76 — Acceptance criteria 1
+  requirement: Certify Resource Inventory order and identity, declaration-reachable Page Usage, image/color/filter/mask
+    metadata, font identity and explicitly requested bounded encoded or decoded bytes.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - images
+- id: slice-76-2
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/76 — Acceptance criteria 2
+  requirement: Implement the corresponding image/resource extraction Migration Facade subset while preserving the
+    distinction between resource reachability, painted content and rendered page images.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - images
+- id: slice-76-3
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/76 — Acceptance criteria 3
+  requirement: Independent fixtures verify indirect deduplication, direct resource identity, nested Forms, masks,
+    supported filters, unsupported-data availability and hashes of returned bytes.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - images
+- id: slice-76-4
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/76 — Acceptance criteria 4
+  requirement: Cycles, conflicting reuse, malformed resources and every declared byte/pixel/depth bound fail atomically
+    without exposing partial detached data or backend objects.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - images
+- id: slice-77-1
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/77 — Acceptance criteria 1
+  requirement: Certify unsigned incremental publication, prior-revision preservation and independently reopened
+    page/object semantics under explicit Save Mode selection.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - incremental
+- id: slice-77-2
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/77 — Acceptance criteria 2
+  requirement: Implement Foundation Migration Facade access to approved append-mode and Existing Signature protection
+    behavior without adding signature creation or trust validation.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - incremental
+- id: slice-77-3
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/77 — Acceptance criteria 3
+  requirement: Independent signed-document fixtures exercise every recognized restriction, intersected DocMDP permission,
+    allowed non-Widget annotation update and default read-only rejection.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - incremental
+- id: slice-77-4
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/77 — Acceptance criteria 4
+  requirement: Malformed, ambiguous or unsupported permission evidence grants no mutation authority; rejected publication
+    preserves the original destination and stable failure receipts.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - incremental
+- id: slice-78-1
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/78 — Acceptance criteria 1
+  requirement: Certify the Foundation input-version range, explicit PDF 1.7/2.0 output, AES-256 secure defaults
+    and request-scoped Legacy Security Mode against independently authored encrypted fixtures.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - security
+  - password-baseline
+- id: slice-78-2
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/78 — Acceptance criteria 2
+  requirement: Audit and freeze the exact baseline credential, algorithm and revision profile against the unchanged
+    Foundation obligations, and implement any required gap instead of converting a required successful case into
+    an accepted unsupported failure.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - security
+  - password-baseline
+- id: slice-78-3
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/78 — Acceptance criteria 3
+  requirement: Implement matching Foundation reader/writer password-security and permission facade members with
+    safe credential handling and no backend types or accidental plaintext downgrade.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - security
+  - password-baseline
+- id: slice-78-4
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/78 — Acceptance criteria 4
+  requirement: Independent evidence verifies authentication authority, user/owner permissions, encryption dictionary/version
+    consistency, tampering rejection and protected multi-Source/publication behavior.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - security
+  - password-baseline
+- id: slice-78-5
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/78 — Acceptance criteria 5
+  requirement: Separate metadata-clear and embedded-files-only obligations into the following independently evidenced
+    subcapabilities; the aggregate Foundation security obligation stays incomplete until both are complete.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - security
+  - password-baseline
+- id: slice-79-1
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/79 — Acceptance criteria 1
+  requirement: Implement the declared all-content-except-document-metadata password scope for the Foundation algorithms
+    and input/output profiles, including the currently unproven AES-256 case, through Native and mapped Facade requests.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - password-clear-metadata
+- id: slice-79-2
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/79 — Acceptance criteria 2
+  requirement: Independent encrypted fixtures prove metadata bytes remain accessible as declared while other protected
+    content requires valid credentials; actual encryption dictionaries, key derivation and permission agreement
+    match the profile.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - password-clear-metadata
+- id: slice-79-3
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/79 — Acceptance criteria 3
+  requirement: The secure default remains all-content AES-256; malformed scope declarations, invalid credentials
+    and unauthorized weakening fail before work or publication.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - password-clear-metadata
+- id: slice-79-4
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/79 — Acceptance criteria 4
+  requirement: Both execution profiles preserve resource ownership, detached outcomes, safe failures and publication
+    guarantees; add the scope-specific compatible subcapability and evidence without prematurely completing the
+    aggregate security obligation.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - password-clear-metadata
+- id: slice-80-1
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/80 — Acceptance criteria 1
+  requirement: Implement the declared embedded-files-only password scope for Foundation input/output profiles, including
+    a proven embedded-file crypt-filter path rather than treating all streams uniformly.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - password-attachments
+- id: slice-80-2
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/80 — Acceptance criteria 2
+  requirement: Native and corresponding Migration Facade consumers create, reopen and extract attachments with expected
+    correct, missing and incorrect credentials while ordinary page content remains readable as declared.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - password-attachments
+- id: slice-80-3
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/80 — Acceptance criteria 3
+  requirement: Independent fixtures verify embedded-file encryption coverage, unencrypted page/document data, dictionary
+    and authentication-event consistency, permission handling and tampering rejection.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - password-attachments
+- id: slice-80-4
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/80 — Acceptance criteria 4
+  requirement: Mixed Sources, copy/extraction/publication, malformed crypt-filter selections and resource limits
+    retain safe behavior in both execution profiles; certify the new scope-specific subcapability.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - password-attachments
+- id: slice-81-1
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/81 — Acceptance criteria 1
+  requirement: Certify every declared Workflow Resource Policy bound across staging, operations, validation and
+    publication using independently controlled hostile-input and first-excess fixtures.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - limits
+- id: slice-81-2
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/81 — Acceptance criteria 2
+  requirement: Public behavior demonstrates aggregate accounting across all Sources, products and Targets, request/environment
+    precedence, cancellation and deadline handling, cleanup and safe diagnostics.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - limits
+- id: slice-81-3
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/81 — Acceptance criteria 3
+  requirement: Keep the trusted in-process profile's cooperative guarantee explicit; no JVM heap, process RSS, arbitrary
+    callback termination or sandbox claim is inferred from modeled usage.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - limits
+- id: slice-81-4
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/81 — Acceptance criteria 4
+  requirement: Record any project-specific Native-Interface-only policy surface with a justified Foundation mapping
+    decision, and retain standards evidence for affected PDF outcomes separately from resource-enforcement evidence.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - limits
+- id: slice-82-1
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/82 — Acceptance criteria 1
+  requirement: Run the shared public Document Workflow contract in IN_PROCESS and HARDENED_WORKER on the declared
+    Linux/JDK profiles with pinned production artifact and launcher identities.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - worker
+- id: slice-82-2
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/82 — Acceptance criteria 2
+  requirement: Certify authenticated bounded protocol, command order/query barriers, malformed-frame rejection,
+    enforced termination, restricted temporary roots and denied unauthorized filesystem/network access.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - worker
+- id: slice-82-3
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/82 — Acceptance criteria 3
+  requirement: Failure, cancellation and crash cases retain safe diagnostics and Publication Receipts and leave
+    no live child or owned temporary data after confirmed termination.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - worker
+- id: slice-82-4
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/82 — Acceptance criteria 4
+  requirement: State the actual launcher, Security Manager and resource-enforcement prerequisites; unsupported environments
+    report WORKER_UNAVAILABLE and receive no inferred certification or artificial Reference Suite facade.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - worker
+- id: slice-83-1
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/83 — Acceptance criteria 1
+  requirement: Certify environment-local transaction identity/status, request-envelope conflicts, bounded retained
+    recovery state, uncertain-publication lookup and at-most-authorized retry behavior through public requests.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - recovery
+- id: slice-83-2
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/83 — Acceptance criteria 2
+  requirement: Exercise actual multi-frame values, interruption/crash/malformed input and publication failures without
+    duplicate output, fabricated durability or cross-Target atomicity.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - recovery
+- id: slice-83-3
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/83 — Acceptance criteria 3
+  requirement: Run the opt-in 5,000-page, exact 1-GiB and configured-concurrency profiles with retained input/output
+    identities, measured modeled high-water marks, temporary spill and cleanup evidence; ordinary CI skips are not
+    scale certification.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - recovery
+- id: slice-83-4
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/83 — Acceptance criteria 4
+  requirement: Record exact tested resources, execution limits and Linux/JDK environment, keeping the scope bounded
+    and the project-specific recovery surface explicit.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - recovery
+- id: slice-84-1
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/84 — Acceptance criteria 1
+  requirement: Certify deterministic Provider selection, explicit preference, availability, version/license/limit
+    metadata and offline default behavior through the public Workflow Environment.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - providers
+- id: slice-84-2
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/84 — Acceptance criteria 2
+  requirement: At actual external subprocess/provider seams, verify request/result bounds, timeouts, child cleanup,
+    immutable detached values and safe failure propagation.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - providers
+- id: slice-84-3
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/84 — Acceptance criteria 3
+  requirement: Use controlled local test endpoints for remote-disclosure authorization cases; registration or preference
+    alone cannot authorize document disclosure and no real document is sent to an external service.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - providers
+- id: slice-84-4
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/84 — Acceptance criteria 4
+  requirement: Preserve project-owned contracts and record the justified Native-Interface-only mapping decision;
+    do not introduce OCR, Office or downstream provider implementations.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - providers
+- id: slice-85-1
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/85 — Acceptance criteria 1
+  requirement: Certify Canvas path, paint, clipping, affine-transform, graphics-state and all declared positioned-glyph
+    rendering-mode behavior using independently authored geometry and raster expectations.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - canvas
+- id: slice-85-2
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/85 — Acceptance criteria 2
+  requirement: Implement the corresponding Foundation PdfCanvas-style facade subset while retaining explicit borrowed
+    Font identity and encoded-glyph semantics.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - canvas
+- id: slice-85-3
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/85 — Acceptance criteria 3
+  requirement: Public tests verify balanced state, same-Session resource validation, limits and immutable declarations;
+    text layout and font acquisition remain owned by their designated slices.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - canvas
+- id: slice-85-4
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/85 — Acceptance criteria 4
+  requirement: Existing page paint/resources and unsigned save semantics are preserved; signed or malformed-preservation
+    cases fail with the approved safe contract.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - canvas
+- id: slice-86-1
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/86 — Acceptance criteria 1
+  requirement: Certify declared encoded/raw/borrowed Canvas Images, color spaces, ICC profiles, masks, alpha/blend
+    states and reusable Transparency Groups through actual published PDFs.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - graphics
+- id: slice-86-2
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/86 — Acceptance criteria 2
+  requirement: Implement corresponding Foundation image/color/transparency facade members with explicit resource,
+    precision and unsupported-profile behavior.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - graphics
+- id: slice-86-3
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/86 — Acceptance criteria 3
+  requirement: Independent semantic, standards and raster evidence checks sample bytes or declared normalization,
+    placement, blending, resource reuse and retained existing content.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - graphics
+- id: slice-86-4
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/86 — Acceptance criteria 4
+  requirement: Boundary and corruption cases cover pixels, decoded bytes, ICC/mask sizes, group depth and generated
+    content; optional image codecs retain explicit version/license and unbundled runtime treatment.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - graphics
+- id: slice-87-1
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/87 — Acceptance criteria 1
+  requirement: Certify the declared Font Source ownership forms, explicit Reference Font Set, supported static font
+    profiles, glyph metrics, ordered fallback, reuse and subset embedding.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - fonts
+- id: slice-87-2
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/87 — Acceptance criteria 2
+  requirement: Implement the Foundation font factory/font/text facade subset without implicit system-font lookup,
+    online discovery or backend leakage.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - fonts
+- id: slice-87-3
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/87 — Acceptance criteria 3
+  requirement: Independent font-program and reopened-PDF observers verify source/subset glyph identity, outlines,
+    widths, ToUnicode mappings, embedding and exact fallback choices using hash-pinned licensed fonts.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - fonts
+- id: slice-87-4
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/87 — Acceptance criteria 4
+  requirement: Malformed fonts, missing glyphs, one-shot Sources and each declared font/text/memory limit retain
+    deterministic safe behavior; shaping remains separate from positioned Unicode text.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - fonts
+- id: slice-88-1
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/88 — Acceptance criteria 1
+  requirement: Certify bounded Rendering for page selection/order, DPI/scale, page boxes, rotation, RGB/GRAY, transparency,
+    annotation policy and PNG consumption.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - rendering
+- id: slice-88-2
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/88 — Acceptance criteria 2
+  requirement: Implement the approved Foundation rendering migration subset with the same lifecycle, Provider, permission
+    and output semantics as the Native Interface.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - rendering
+- id: slice-88-3
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/88 — Acceptance criteria 3
+  requirement: Complete formal semantic and standards evidence and reuse qualified independent raster profiles for
+    graphics, images and embedded fonts; the implementation renderer is never the sole visual oracle.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - rendering
+- id: slice-88-4
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/88 — Acceptance criteria 4
+  requirement: Pixel/memory/temp limits, missing or substituted fonts, Provider failures, cancellation, signed inputs
+    and concurrent sessions produce the declared outcomes with no resource leaks.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - rendering
+- id: slice-89-1
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/89 — Acceptance criteria 1
+  requirement: Certify page sizes, margins, ordered Layout Areas, Area Breaks, mixed text/graphics paragraphs, leading,
+    alignment and declared widths through full publish/reopen workflows.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - paragraphs
+- id: slice-89-2
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/89 — Acceptance criteria 2
+  requirement: Certify Latin, Greek, Cyrillic and SC/TC/JP/KR Unicode segmentation, bidi ordering, cluster preservation,
+    regional font selection and fallback using the pinned reference profiles on the declared Linux environment.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - paragraphs
+- id: slice-89-3
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/89 — Acceptance criteria 3
+  requirement: Implement corresponding Foundation Document, Paragraph, Text, area-break and property facade members
+    while keeping shaping separate and resources explicit.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - paragraphs
+- id: slice-89-4
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/89 — Acceptance criteria 4
+  requirement: Independent semantic, geometry and raster evidence proves logical input, visual order, line breaks,
+    page order and inline placement; invalid geometry and exhausted layout limits fail before partial mutation.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - paragraphs
+- id: slice-90-1
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/90 — Acceptance criteria 1
+  requirement: Certify indentation, the declared tab variants, keep-with-next, keep-together, widow/orphan constraints
+    and WRAP/REJECT/VISIBLE overflow using the existing twelve two-page profiles.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - pagination
+- id: slice-90-2
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/90 — Acceptance criteria 2
+  requirement: Expose the matching Foundation paragraph-property and lifecycle facade members with the same hard
+    constraints and stable no-fit/resource failures.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - pagination
+- id: slice-90-3
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/90 — Acceptance criteria 3
+  requirement: Certify buffered relayout, immediate flush, attempt/relayout limits, atomic replacement and rejection
+    after publication, preserving earlier valid page content.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - pagination
+- id: slice-90-4
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/90 — Acceptance criteria 4
+  requirement: Independent literal geometry/text/font expectations and pinned raster thresholds pass through Native
+    and Facade consumers on the declared execution profiles.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - pagination
+- id: slice-91-1
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/91 — Acceptance criteria 1
+  requirement: Certify complete single-area FIXED/AUTO Table composition with point/percentage/AUTO widths, row/column
+    spans, padding, borders, minima and declared cell-content order.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - tables-base
+- id: slice-91-2
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/91 — Acceptance criteria 2
+  requirement: Implement the corresponding Foundation Table and Cell facade subset, including explicit font and
+    content policies, without relying on a backend layout object.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - tables-base
+- id: slice-91-3
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/91 — Acceptance criteria 3
+  requirement: Independent literal scalar/border/geometry expectations and the existing three-page raster corpus
+    verify every base-table profile and malformed-grid/resource-limit failure.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - tables-base
+- id: slice-91-4
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/91 — Acceptance criteria 4
+  requirement: Represent base-table compatibility as an independently evidenced subcapability; retain the aggregate
+    Foundation table obligation as incomplete until pagination and incremental flushing are certified.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - tables-base
+- id: slice-92-1
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/92 — Acceptance criteria 1
+  requirement: Certify FIXED/AUTO multi-area pagination, split rows and continued spans, repeated or omitted headers/footers,
+    hard keeps, overflow and buffered relayout against the nineteen-page profile.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - tables
+  - tables-pagination
+- id: slice-92-2
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/92 — Acceptance criteria 2
+  requirement: Implement matching Table/Cell/Document facade behavior for incremental row admission, flush and completion
+    without collecting the entire table in memory.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - tables
+  - tables-pagination
+- id: slice-92-3
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/92 — Acceptance criteria 3
+  requirement: Public consumers observe accepted/retained/flushed rows, released source resources, retained emitted-page
+    identity and bounded cumulative work/memory across partial failures.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - tables
+  - tables-pagination
+- id: slice-92-4
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/92 — Acceptance criteria 4
+  requirement: Both execution profiles pass independent page/text/border/raster expectations and fail safely for
+    unsplittable rows or exhausted limits; complete the aggregate table obligation only when its base and pagination
+    subcapabilities are compatible.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - tables
+  - tables-pagination
+- id: slice-93-1
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/93 — Acceptance criteria 1
+  requirement: Reuse the implemented explicit HarfBuzz 10.2.0 Provider and complete actual Linux observations for
+    Arabic, Hebrew, Devanagari and Thai native metrics, installation/live-engine identity, reopened semantics, subsets,
+    syntax and all eight raster pages.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - shaping
+- id: slice-93-2
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/93 — Acceptance criteria 2
+  requirement: Verify exact glyph IDs, clusters, signed advances/offsets, direction, ligatures, reordered marks,
+    fallback and shaping at paragraph/table line boundaries using independent reference fonts and tools.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - shaping
+- id: slice-93-3
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/93 — Acceptance criteria 3
+  requirement: Expose the approved Foundation shaping migration path using explicit environment/provider configuration;
+    preserve unshaped positioned text and do not bundle HarfBuzz or install implicit fonts.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - shaping
+- id: slice-93-4
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/93 — Acceptance criteria 4
+  requirement: 'Apply the approved Linux-only certification boundary: Windows and both macOS architectures stay
+    explicitly uncertified but do not keep the Linux profile or Foundation RC indeterminate. Missing required Linux
+    observations still block promotion.'
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - shaping
+- id: slice-94-1
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/94 — Acceptance criteria 1
+  requirement: Certify every Reference Suite Foundation 1D mode already declared by the Native Interface, including
+    Code128/GS1/raw controls, Code39 variants, Codabar, EAN/UPC/supplements, ITF, MSI and postal modes.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - barcodes-1d
+- id: slice-94-2
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/94 — Acceptance criteria 2
+  requirement: Implement the matching barcode facade family and public configuration/constants for content, checksums,
+    captions, quiet zones, sizing and placement, mapping unsupported combinations to the approved safe contract.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - barcodes-1d
+- id: slice-94-3
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/94 — Acceptance criteria 3
+  requirement: Retain independent decoding, module/checksum/control assertions and literal placement/font/raster
+    checks for the full declared corpus through Native and Facade consumers.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - barcodes-1d
+- id: slice-94-4
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/94 — Acceptance criteria 4
+  requirement: Complete the PDF standards chain and compatible dependency evidence; no real-scanner performance
+    claim or additional symbology is inferred from the test corpus.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - barcodes-1d
+- id: slice-95-1
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/95 — Acceptance criteria 1
+  requirement: Certify QR versions/ECC/segmentation, every ECC200 size and control mode, and PDF417 encoding/ECC/Macro/RAW
+    behavior already declared by the Foundation profile.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - barcodes-2d
+- id: slice-95-2
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/95 — Acceptance criteria 2
+  requirement: Implement corresponding barcode facade classes/constants/options, documenting semantic differences
+    for typed controls, DataMatrix file IDs and unmapped raster-only inversion.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - barcodes-2d
+- id: slice-95-3
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/95 — Acceptance criteria 3
+  requirement: Retain the 224-page-per-execution-profile corpus, independent vector and actual raster decoding,
+    zero-correction module/ECC/padding checks, full-page differences and corrupted-product negative controls.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - barcodes-2d
+- id: slice-95-4
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/95 — Acceptance criteria 4
+  requirement: Complete independent PDF standards evidence and dependency promotion without relaxing existing payload,
+    charset, geometry, capacity, resource or rendered thresholds.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - barcodes-2d
+- id: slice-96-1
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/96 — Acceptance criteria 1
+  requirement: The Foundation obligation inventory has no missing behavior, compatible dependency, mandatory evidence,
+    required Linux/JDK profile or corresponding facade mapping; all aggregate obligations and subcapability links
+    reconcile.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - java-artifacts
+  - facade-artifacts
+  - docs
+  - provenance
+  - supply-chain
+  - reproducibility
+  - integration
+- id: slice-96-2
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/96 — Acceptance criteria 2
+  requirement: The built Stable Migration Facade contains exactly the compatible Foundation surface, the Preview
+    artifact remains its mutually exclusive declared superset, and generated documentation, migration examples,
+    provenance and runtime dependency inventories agree with the actual artifacts.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - java-artifacts
+  - facade-artifacts
+  - docs
+  - provenance
+  - supply-chain
+  - reproducibility
+  - integration
+- id: slice-96-3
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/96 — Acceptance criteria 3
+  requirement: Run complete public Workflow/Facade, hostile-input, Worker, opt-in scale and independent acceptance
+    checks against the final candidate artifact identities on all required verifiable profiles; partial or historical
+    runs cannot stand in for changed artifacts.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - java-artifacts
+  - facade-artifacts
+  - docs
+  - provenance
+  - supply-chain
+  - reproducibility
+  - integration
+- id: slice-96-4
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/96 — Acceptance criteria 4
+  requirement: Run the repository's full verification, JDK matrix, inventory and applicable review gates. Preserve
+    reviewed fixes and complete failed-run diagnostics without weakening negative controls or certification requirements.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - java-artifacts
+  - facade-artifacts
+  - docs
+  - provenance
+  - supply-chain
+  - reproducibility
+  - integration
+- id: slice-96-5
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/96 — Acceptance criteria 5
+  requirement: Repair only demonstrated release-integration gaps and produce two clean complete Release Train builds
+    for 0.1.0 with current SBOM, license and vulnerability reports, sources, Javadocs, checksums and separately
+    verified test signatures.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - java-artifacts
+  - facade-artifacts
+  - docs
+  - provenance
+  - supply-chain
+  - reproducibility
+  - integration
+- id: slice-96-6
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/96 — Acceptance criteria 6
+  requirement: Produce and locally validate the complete non-publishing rehearsal bundle with reproducible deterministic
+    entries and exact source/artifact identities. A test signing identity is labelled as a rehearsal identity and
+    cannot satisfy the production-signed RC requirement.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - java-artifacts
+  - facade-artifacts
+  - docs
+  - provenance
+  - supply-chain
+  - reproducibility
+  - integration
+- id: slice-96-7
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/96 — Acceptance criteria 7
+  requirement: No unresolved release-blocking security finding remains; only an already accepted, public, scoped
+    and unexpired maintainer exception may satisfy the existing exception policy.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - java-artifacts
+  - facade-artifacts
+  - docs
+  - provenance
+  - supply-chain
+  - reproducibility
+  - integration
+- id: slice-97-1
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/97 — Acceptance criteria 1
+  requirement: Using the existing protected signing path, produce the 0.1.0 Release Train candidate for the certified
+    artifact/source identity with the approved primary signing fingerprint C5149FD6B5EF7C2126F1FD0FCC1A12E348E171D8.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - candidate
+  - publication-controls
+- id: slice-97-2
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/97 — Acceptance criteria 2
+  requirement: Require the approved production identity to be available through authorized protected execution before
+    signing. If unavailable, report that external prerequisite and leave this criterion incomplete; never create
+    a replacement production key or substitute the rehearsal identity.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - candidate
+  - publication-controls
+- id: slice-97-3
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/97 — Acceptance criteria 3
+  requirement: Locally validate every candidate module, inherited POM, source/Javadoc artifact, detached signature,
+    checksum and Central-layout bundle entry against the publishable-module authority and retained Foundation/reproducibility/supply-chain
+    evidence.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - candidate
+  - publication-controls
+- id: slice-97-4
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/97 — Acceptance criteria 4
+  requirement: Provide a reviewable candidate receipt containing version, source and artifact hashes, exact certified
+    environment scope, signature identity, gate results and Central-layout validation findings.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - candidate
+  - publication-controls
+- id: slice-97-5
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/97 — Acceptance criteria 5
+  requirement: Central upload or staging is performed only if separately authorized; any actual Central validation
+    result is retained distinctly from local bundle validation. Keep automatic publication disabled and retain separate
+    human approval for immutable publication.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - candidate
+  - publication-controls
+- id: slice-97-6
+  source: https://github.com/zerocloud-sdk/folio-pdf/issues/97 — Acceptance criteria 6
+  requirement: No tag, GitHub Release, immutable artifact publication, parent issue change or issue closure is part
+    of this ticket's automatic completion actions.
+  disposition: required
+  reason: Approved certification slice; scope declarations do not assert implementation or certification.
+  obligations:
+  - candidate
+  - publication-controls

@@ -30,6 +30,10 @@ fi
 
 mkdir -p "${repository_root}/.build-cache/maven/repository"
 
+# The Foundation authority pins both the Ubuntu release and the actual JDK build.
+# A floating *-jdk tag can move to another OS release without changing its name.
+environment_listing=$("${repository_root}/scripts/inventory" environments)
+
 for jdk_version in "${jdk_versions[@]}"; do
     case "${jdk_version}" in
         8|11|17|21) ;;
@@ -39,7 +43,16 @@ for jdk_version in "${jdk_versions[@]}"; do
             ;;
     esac
 
-    image="docker.io/library/eclipse-temurin:${jdk_version}-jdk"
+    image=
+    while read -r marker profile_jdk profile_image remainder; do
+        if [[ "${marker}" == FOUNDATION_ENVIRONMENT && "${profile_jdk}" == "${jdk_version}" ]]; then
+            image=${profile_image}
+        fi
+    done <<< "${environment_listing}"
+    if [[ "${image}" != *@sha256:* ]]; then
+        echo "No immutable Foundation environment is declared for JDK ${jdk_version}." >&2
+        exit 2
+    fi
     echo "==> Verifying Folio PDF on JDK ${jdk_version} (${image})"
     "${podman_command}" run --rm \
         --userns=keep-id \

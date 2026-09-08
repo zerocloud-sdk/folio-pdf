@@ -98,12 +98,16 @@ glyph controls must each fail the relevant oracle or published-PDF check.
 
 ## Platform and workflow evidence
 
-Linux x86-64, Windows x86-64, macOS x86-64 and macOS arm64 each need independent
-execution receipts recording the OS/architecture, JDK, source snapshot,
+For Foundation 0.1.0, ADR-0040 supersedes the original four-platform requirement.
+Every declared Ubuntu 24.04/Linux x86-64 JDK 8/11/17/21 profile needs independent
+execution receipts recording the exact OS/image, JDK vendor/build, source snapshot,
 compiler/build tools, native engine version and hashes, font hashes, commands,
 numeric oracle comparison, reopened subset/geometry assertions, syntax and
 independent raster results. Cross-compilation is not execution evidence.
-Absent platforms or tools remain **INDETERMINATE** and prevent #30 completion.
+Missing required Ubuntu/JDK observations or tools remain **INDETERMINATE**.
+Windows x86-64 and macOS x86-64/arm64 remain uncertified but are not required
+Foundation 0.1.0 gates. Historical T29 evidence keeps its recorded scope; the
+Foundation obligation inventory governs subsequent #93 certification.
 
 Both workflow execution profiles must satisfy the same public shaping
 contract within the existing supported Worker envelope (Linux, JDK 8/11/17/21).

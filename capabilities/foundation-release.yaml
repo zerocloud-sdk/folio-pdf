@@ -1,0 +1,2228 @@
+schema-version: 1
+release: 0.1.0
+platform-decision: docs/adr/0040-certify-only-observed-foundation-environments.md
+environments: capabilities/foundation-environments.yaml
+requirements: capabilities/foundation-requirements.yaml
+evidence: capabilities/foundation-evidence.yaml
+source-roots:
+- pom.xml
+- mvnw
+- .mvn
+- release
+- scripts
+- pdf-bom/pom.xml
+- pdf-provider-contract/pom.xml
+- pdf-provider-contract/src
+- pdf-document/pom.xml
+- pdf-document/src
+- pdf-conversion/pom.xml
+- pdf-conversion/src
+- pdf-migration-itext7/pom.xml
+- pdf-migration-itext7/src
+- pdf-migration-itext7-preview/pom.xml
+- pdf-migration-itext7-preview/src
+- pdf-acceptance/pom.xml
+- pdf-acceptance/src
+- build-tools/inventory/pom.xml
+- build-tools/inventory/src
+- build-tools/release/pom.xml
+- build-tools/release/src
+- .github
+- LICENSE
+- NOTICE
+- DCO.txt
+- DEPENDENCIES.md
+- PROVENANCE.md
+- CONTRIBUTING.md
+- RELEASING.md
+- README.md
+- CONTEXT.md
+- ROADMAP.md
+- GOVERNANCE.md
+- SECURITY.md
+- docs
+- capabilities/README.md
+- capabilities/profiles
+- capabilities/expected
+required-artifacts:
+- target/foundation-0.1.0/central-bundle.zip
+- target/foundation-0.1.0/artifacts/pdf-parent-0.1.0.pom
+- target/foundation-0.1.0/artifacts/pdf-bom-0.1.0.pom
+- target/foundation-0.1.0/artifacts/pdf-provider-contract-0.1.0.pom
+- target/foundation-0.1.0/artifacts/pdf-provider-contract-0.1.0.jar
+- target/foundation-0.1.0/artifacts/pdf-provider-contract-0.1.0-sources.jar
+- target/foundation-0.1.0/artifacts/pdf-provider-contract-0.1.0-javadoc.jar
+- target/foundation-0.1.0/artifacts/pdf-document-0.1.0.pom
+- target/foundation-0.1.0/artifacts/pdf-document-0.1.0.jar
+- target/foundation-0.1.0/artifacts/pdf-document-0.1.0-sources.jar
+- target/foundation-0.1.0/artifacts/pdf-document-0.1.0-javadoc.jar
+- target/foundation-0.1.0/artifacts/pdf-conversion-0.1.0.pom
+- target/foundation-0.1.0/artifacts/pdf-conversion-0.1.0.jar
+- target/foundation-0.1.0/artifacts/pdf-conversion-0.1.0-sources.jar
+- target/foundation-0.1.0/artifacts/pdf-conversion-0.1.0-javadoc.jar
+- target/foundation-0.1.0/artifacts/pdf-migration-itext7-0.1.0.pom
+- target/foundation-0.1.0/artifacts/pdf-migration-itext7-0.1.0.jar
+- target/foundation-0.1.0/artifacts/pdf-migration-itext7-0.1.0-sources.jar
+- target/foundation-0.1.0/artifacts/pdf-migration-itext7-0.1.0-javadoc.jar
+- target/foundation-0.1.0/artifacts/pdf-migration-itext7-preview-0.1.0.pom
+- target/foundation-0.1.0/artifacts/pdf-migration-itext7-preview-0.1.0.jar
+- target/foundation-0.1.0/artifacts/pdf-migration-itext7-preview-0.1.0-sources.jar
+- target/foundation-0.1.0/artifacts/pdf-migration-itext7-preview-0.1.0-javadoc.jar
+obligations:
+- id: transactions
+  summary: Execute a named-source document transaction and publish validated rewrites to named targets.
+  capability: document.blank.create-publish-reopen
+  acceptance-profile: T03-document-workflow-transaction
+  profile-contract: capabilities/evidence/T03-document-workflow-transaction.md
+  kind: behavior
+  slice: 70
+  environments:
+  - ubuntu-24.04-linux-x86-64-jdk8
+  - ubuntu-24.04-linux-x86-64-jdk11
+  - ubuntu-24.04-linux-x86-64-jdk17
+  - ubuntu-24.04-linux-x86-64-jdk21
+  execution-profiles:
+  - IN_PROCESS
+  - HARDENED_WORKER
+  chains:
+  - syntax
+  - standards
+  - semantic
+  - visual
+  dependencies: []
+  members: []
+  facade-families:
+  - family: kernel/layout document lifecycle
+    reference-prefix: com.itextpdf.
+    mappings:
+    - itext7.kernel.pdf-writer.constructor-string
+    - itext7.kernel.pdf-reader.constructor-string
+    - itext7.kernel.pdf-reader.close
+    - itext7.kernel.pdf-document.constructor-writer
+    - itext7.kernel.pdf-document.constructor-reader
+    - itext7.kernel.pdf-document.add-new-page
+    - itext7.kernel.pdf-document.get-number-of-pages
+    - itext7.kernel.pdf-document.close
+    - itext7.kernel.pdf-page.type
+    - itext7.kernel.pdf-exception.constructor-message-cause
+    - itext7.layout.document.constructor-pdf-document
+    - itext7.layout.document.close
+- id: values
+  summary: Inspect all nine backend-neutral PDF Value kinds through bounded Session views and apply validated versioned
+    Document Patches.
+  capability: document.value.inspect-patch
+  acceptance-profile: T09-document-value-inspection-patch
+  profile-contract: capabilities/evidence/T09-document-value-inspection-patch.md
+  kind: behavior
+  slice: 71
+  environments:
+  - ubuntu-24.04-linux-x86-64-jdk8
+  - ubuntu-24.04-linux-x86-64-jdk11
+  - ubuntu-24.04-linux-x86-64-jdk17
+  - ubuntu-24.04-linux-x86-64-jdk21
+  execution-profiles:
+  - IN_PROCESS
+  - HARDENED_WORKER
+  chains:
+  - syntax
+  - standards
+  - semantic
+  - visual
+  dependencies:
+  - transactions
+  members: []
+  facade-families:
+  - family: kernel PDF Values and patches
+    reference-prefix: com.itextpdf.kernel.pdf.
+    mappings: []
+- id: pages
+  summary: Insert, remove, move, and copy pages; append ordered named Sources; and publish independently reopenable
+    page-range products.
+  capability: document.page.manipulate-merge-split
+  acceptance-profile: T10-page-manipulation-merge-split
+  profile-contract: capabilities/evidence/T10-page-manipulation-merge-split.md
+  kind: behavior
+  slice: 72
+  environments:
+  - ubuntu-24.04-linux-x86-64-jdk8
+  - ubuntu-24.04-linux-x86-64-jdk11
+  - ubuntu-24.04-linux-x86-64-jdk17
+  - ubuntu-24.04-linux-x86-64-jdk21
+  execution-profiles:
+  - IN_PROCESS
+  - HARDENED_WORKER
+  chains:
+  - syntax
+  - standards
+  - semantic
+  - visual
+  dependencies:
+  - transactions
+  members: []
+  facade-families:
+  - family: kernel pages, merger and splitter
+    reference-prefix: com.itextpdf.kernel.
+    mappings: []
+- id: metadata
+  summary: Read, create, update, and preserve document information, XMP metadata, outlines, named destinations,
+    page destinations, and embedded files, with destination retargeting across page reorder, copy, merge, and split.
+  capability: document.metadata.outlines-destinations-attachments
+  acceptance-profile: T11-metadata-outlines-destinations-attachments
+  profile-contract: capabilities/evidence/T11-metadata-outlines-destinations-attachments.md
+  kind: behavior
+  slice: 73
+  environments:
+  - ubuntu-24.04-linux-x86-64-jdk8
+  - ubuntu-24.04-linux-x86-64-jdk11
+  - ubuntu-24.04-linux-x86-64-jdk17
+  - ubuntu-24.04-linux-x86-64-jdk21
+  execution-profiles:
+  - IN_PROCESS
+  - HARDENED_WORKER
+  chains:
+  - syntax
+  - standards
+  - semantic
+  - visual
+  dependencies:
+  - values
+  members: []
+  facade-families:
+  - family: kernel metadata, outlines, destinations and file specifications
+    reference-prefix: com.itextpdf.kernel.
+    mappings: []
+- id: annotations
+  summary: Read, create, update, remove, flatten, and preserve managed annotations and inert local GoTo Action bindings
+    across page workflows.
+  capability: document.annotations-actions.manage
+  acceptance-profile: T12-annotations-document-actions
+  profile-contract: capabilities/evidence/T12-annotations-document-actions.md
+  kind: behavior
+  slice: 74
+  environments:
+  - ubuntu-24.04-linux-x86-64-jdk8
+  - ubuntu-24.04-linux-x86-64-jdk11
+  - ubuntu-24.04-linux-x86-64-jdk17
+  - ubuntu-24.04-linux-x86-64-jdk21
+  execution-profiles:
+  - IN_PROCESS
+  - HARDENED_WORKER
+  chains:
+  - syntax
+  - standards
+  - semantic
+  - visual
+  dependencies:
+  - values
+  - pages
+  - metadata
+  members: []
+  facade-families:
+  - family: kernel annotations and GoTo Actions
+    reference-prefix: com.itextpdf.kernel.pdf.
+    mappings: []
+- id: text
+  summary: Extract bounded deterministic page text, mapping evidence, marked content, and Tagged PDF logical structure
+    as detached backend-neutral values.
+  capability: document.text-structure.extract
+  acceptance-profile: T13-text-logical-structure
+  profile-contract: capabilities/evidence/T13-text-logical-structure.md
+  kind: behavior
+  slice: 75
+  environments:
+  - ubuntu-24.04-linux-x86-64-jdk8
+  - ubuntu-24.04-linux-x86-64-jdk11
+  - ubuntu-24.04-linux-x86-64-jdk17
+  - ubuntu-24.04-linux-x86-64-jdk21
+  execution-profiles:
+  - IN_PROCESS
+  - HARDENED_WORKER
+  chains:
+  - syntax
+  - standards
+  - semantic
+  - visual
+  dependencies:
+  - values
+  members: []
+  facade-families:
+  - family: kernel text and logical structure extraction
+    reference-prefix: com.itextpdf.kernel.pdf.
+    mappings: []
+- id: images
+  summary: Extract a bounded deterministic inventory of page and nested-Form resources, including detached image
+    metadata and explicitly selected bytes plus font identity and usage.
+  capability: document.images-resources.extract
+  acceptance-profile: T14-image-resource-extraction
+  profile-contract: capabilities/evidence/T14-image-resource-extraction.md
+  kind: behavior
+  slice: 76
+  environments:
+  - ubuntu-24.04-linux-x86-64-jdk8
+  - ubuntu-24.04-linux-x86-64-jdk11
+  - ubuntu-24.04-linux-x86-64-jdk17
+  - ubuntu-24.04-linux-x86-64-jdk21
+  execution-profiles:
+  - IN_PROCESS
+  - HARDENED_WORKER
+  chains:
+  - syntax
+  - standards
+  - semantic
+  - visual
+  dependencies:
+  - values
+  members: []
+  facade-families:
+  - family: kernel image and resource extraction
+    reference-prefix: com.itextpdf.kernel.pdf.
+    mappings: []
+- id: incremental
+  summary: Append validated PDF revisions while preserving the complete primary Source and conservatively enforcing
+    Existing Signature permissions.
+  capability: document.incremental-signature.protect
+  acceptance-profile: T15-incremental-signature-protection
+  profile-contract: capabilities/evidence/T15-incremental-signature-protection.md
+  kind: behavior
+  slice: 77
+  environments:
+  - ubuntu-24.04-linux-x86-64-jdk8
+  - ubuntu-24.04-linux-x86-64-jdk11
+  - ubuntu-24.04-linux-x86-64-jdk17
+  - ubuntu-24.04-linux-x86-64-jdk21
+  execution-profiles:
+  - IN_PROCESS
+  - HARDENED_WORKER
+  chains:
+  - syntax
+  - standards
+  - semantic
+  - visual
+  dependencies:
+  - values
+  members: []
+  facade-families:
+  - family: kernel append mode and Existing Signature protection
+    reference-prefix: com.itextpdf.kernel.pdf.
+    mappings: []
+- id: security
+  summary: Inspect exact effective PDF versions, publish PDF 1.7 or 2.0, and authenticate and enforce bounded Standard-handler
+    password security with AES-256 defaults.
+  capability: document.version-password-security
+  acceptance-profile: T16-pdf-version-password-security
+  profile-contract: capabilities/evidence/T16-pdf-version-password-security.md
+  kind: aggregate
+  slice: 78
+  environments: []
+  execution-profiles: []
+  chains: []
+  dependencies:
+  - values
+  members:
+  - password-baseline
+  - password-clear-metadata
+  - password-attachments
+  facade-families: []
+- id: limits
+  summary: Apply one finite-default, transaction-wide hostile-input resource policy to trusted in-process Document
+    Workflows.
+  capability: document.hostile-input-limits
+  acceptance-profile: T20-hostile-input-limits
+  profile-contract: capabilities/evidence/T20-hostile-input-limits.md
+  kind: control
+  slice: 81
+  environments:
+  - ubuntu-24.04-linux-x86-64-jdk8
+  - ubuntu-24.04-linux-x86-64-jdk11
+  - ubuntu-24.04-linux-x86-64-jdk17
+  - ubuntu-24.04-linux-x86-64-jdk21
+  execution-profiles:
+  - IN_PROCESS
+  chains:
+  - syntax
+  - standards
+  - semantic
+  - visual
+  - contract
+  dependencies:
+  - transactions
+  - values
+  members: []
+  facade-families: []
+  native-only-reason: Workflow Resource Policy and cooperative resource accounting are project-specific controls
+    with no Reference Suite counterpart. PDF outcomes still require four independent chains; underlying document
+    operations retain their own Facade obligations.
+- id: worker
+  summary: Execute the fixed-point Document Workflow contract through an authenticated, bounded, process-isolated
+    local Worker while retaining caller callbacks and publication in the parent process.
+  capability: document.hardened-worker
+  acceptance-profile: T21-hardened-worker
+  profile-contract: capabilities/evidence/T21-hardened-worker.md
+  kind: control
+  slice: 82
+  environments:
+  - ubuntu-24.04-linux-x86-64-jdk8
+  - ubuntu-24.04-linux-x86-64-jdk11
+  - ubuntu-24.04-linux-x86-64-jdk17
+  - ubuntu-24.04-linux-x86-64-jdk21
+  execution-profiles:
+  - HARDENED_WORKER
+  chains:
+  - syntax
+  - standards
+  - semantic
+  - visual
+  - contract
+  dependencies:
+  - transactions
+  - limits
+  members: []
+  facade-families: []
+  native-only-reason: Authenticated local Worker transport, launcher policy and command/query barriers are project-specific
+    execution controls with no Reference Suite counterpart. The same document behavior remains required through
+    its matching Facade.
+- id: recovery
+  summary: Recover safely retryable Hardened Worker failures, resolve uncertain publication without replay, transport
+    bounded values larger than one frame, and record controlled Foundation-scale observations.
+  capability: document.hardened-worker.recovery-scale
+  acceptance-profile: T22-worker-recovery-scale
+  profile-contract: capabilities/evidence/T22-worker-recovery-scale.md
+  kind: control
+  slice: 83
+  environments:
+  - ubuntu-24.04-linux-x86-64-jdk8
+  - ubuntu-24.04-linux-x86-64-jdk11
+  - ubuntu-24.04-linux-x86-64-jdk17
+  - ubuntu-24.04-linux-x86-64-jdk21
+  execution-profiles:
+  - HARDENED_WORKER
+  chains:
+  - syntax
+  - standards
+  - semantic
+  - visual
+  - contract
+  dependencies:
+  - worker
+  members: []
+  facade-families: []
+  native-only-reason: Environment-local transaction identity/status, bounded recovery and resource usage are project-specific
+    controls with no Reference Suite counterpart. This does not exclude migration mappings for the document operations
+    they execute.
+- id: canvas
+  summary: Append validated backend-neutral vector graphics and explicitly positioned glyphs to an existing page.
+  capability: composition.canvas.draw-positioned-text
+  acceptance-profile: T17-canvas-vector-positioned-text
+  profile-contract: capabilities/evidence/T17-canvas-vector-positioned-text.md
+  kind: behavior
+  slice: 85
+  environments:
+  - ubuntu-24.04-linux-x86-64-jdk8
+  - ubuntu-24.04-linux-x86-64-jdk11
+  - ubuntu-24.04-linux-x86-64-jdk17
+  - ubuntu-24.04-linux-x86-64-jdk21
+  execution-profiles:
+  - IN_PROCESS
+  - HARDENED_WORKER
+  chains:
+  - syntax
+  - standards
+  - semantic
+  - visual
+  dependencies:
+  - values
+  members: []
+  facade-families:
+  - family: kernel PdfCanvas paths and encoded glyphs
+    reference-prefix: com.itextpdf.kernel.pdf.canvas.
+    mappings: []
+- id: graphics
+  summary: Embed, place, and reuse bounded image resources with explicit Device, calibrated, and ICC color plus
+    masks, alpha, blend modes, and Transparency Groups.
+  capability: composition.canvas.images-colors-transparency
+  acceptance-profile: T18-canvas-images-colors-transparency
+  profile-contract: capabilities/evidence/T18-canvas-images-colors-transparency.md
+  kind: behavior
+  slice: 86
+  environments:
+  - ubuntu-24.04-linux-x86-64-jdk8
+  - ubuntu-24.04-linux-x86-64-jdk11
+  - ubuntu-24.04-linux-x86-64-jdk17
+  - ubuntu-24.04-linux-x86-64-jdk21
+  execution-profiles:
+  - IN_PROCESS
+  - HARDENED_WORKER
+  chains:
+  - syntax
+  - standards
+  - semantic
+  - visual
+  dependencies:
+  - images
+  - canvas
+  members: []
+  facade-families:
+  - family: image, color and transparency graphics
+    reference-prefix: com.itextpdf.
+    mappings: []
+- id: fonts
+  summary: Load only explicit TrueType sources, select ordered fallbacks, embed or subset them, and write positioned
+    Unicode text with source metrics and ToUnicode mappings.
+  capability: composition.fonts.load-embed-subset-fallback
+  acceptance-profile: T19-font-loading-embedding-subsetting
+  profile-contract: capabilities/evidence/T19-font-loading-embedding-subsetting.md
+  kind: behavior
+  slice: 87
+  environments:
+  - ubuntu-24.04-linux-x86-64-jdk8
+  - ubuntu-24.04-linux-x86-64-jdk11
+  - ubuntu-24.04-linux-x86-64-jdk17
+  - ubuntu-24.04-linux-x86-64-jdk21
+  execution-profiles:
+  - IN_PROCESS
+  - HARDENED_WORKER
+  chains:
+  - syntax
+  - standards
+  - semantic
+  - visual
+  dependencies:
+  - text
+  - images
+  - canvas
+  members: []
+  facade-families:
+  - family: font factory, font and positioned text
+    reference-prefix: com.itextpdf.
+    mappings: []
+- id: rendering
+  summary: Render selected current pages to bounded, session-scoped PNGs through a replaceable offline default Provider.
+  capability: conversion.rendering
+  acceptance-profile: T23-page-rendering
+  profile-contract: capabilities/evidence/T23-page-rendering.md
+  kind: behavior
+  slice: 88
+  environments:
+  - ubuntu-24.04-linux-x86-64-jdk8
+  - ubuntu-24.04-linux-x86-64-jdk11
+  - ubuntu-24.04-linux-x86-64-jdk17
+  - ubuntu-24.04-linux-x86-64-jdk21
+  execution-profiles:
+  - IN_PROCESS
+  - HARDENED_WORKER
+  chains:
+  - syntax
+  - standards
+  - semantic
+  - visual
+  dependencies:
+  - providers
+  - transactions
+  - values
+  - graphics
+  - fonts
+  - limits
+  - worker
+  - recovery
+  members: []
+  facade-families:
+  - family: pdfRender page rendering
+    reference-prefix: com.itextpdf.pdfrender.
+    mappings: []
+- id: providers
+  summary: Register, inspect, deterministically select, and safely execute project-owned Capability Providers.
+  capability: conversion.capability-provider.select-execute
+  acceptance-profile: T05-capability-provider-contract
+  profile-contract: capabilities/evidence/T05-capability-provider-contract.md
+  kind: control
+  slice: 84
+  environments:
+  - ubuntu-24.04-linux-x86-64-jdk8
+  - ubuntu-24.04-linux-x86-64-jdk11
+  - ubuntu-24.04-linux-x86-64-jdk17
+  - ubuntu-24.04-linux-x86-64-jdk21
+  execution-profiles:
+  - IN_PROCESS
+  - HARDENED_WORKER
+  chains:
+  - syntax
+  - standards
+  - semantic
+  - visual
+  - contract
+  dependencies:
+  - transactions
+  members: []
+  facade-families: []
+  native-only-reason: Provider registration, deterministic selection, availability and Remote Disclosure Authorization
+    form the project-owned deployment contract and have no Reference Suite counterpart. Rendering and shaping keep
+    their separate required migration families.
+- id: paragraphs
+  summary: Compose mixed semantic paragraphs across finite explicit new-page areas with margins, width wrapping,
+    alignment, leading and area breaks.
+  capability: composition.layout.paragraph-areas
+  acceptance-profile: T24-paragraph-composition
+  profile-contract: capabilities/evidence/T24-paragraph-composition.md
+  kind: behavior
+  slice: 89
+  environments:
+  - ubuntu-24.04-linux-x86-64-jdk8
+  - ubuntu-24.04-linux-x86-64-jdk11
+  - ubuntu-24.04-linux-x86-64-jdk17
+  - ubuntu-24.04-linux-x86-64-jdk21
+  execution-profiles:
+  - IN_PROCESS
+  - HARDENED_WORKER
+  chains:
+  - syntax
+  - standards
+  - semantic
+  - visual
+  dependencies:
+  - transactions
+  - canvas
+  - graphics
+  - fonts
+  - limits
+  - worker
+  members: []
+  facade-families:
+  - family: layout Document, Paragraph, Text and AreaBreak
+    reference-prefix: com.itextpdf.layout.
+    mappings: []
+- id: pagination
+  summary: Apply indentation, aligned tabs, hard keep and widow/orphan rules, horizontal overflow policies and bounded
+    buffered relayout to finite Paragraph Flows.
+  capability: composition.layout.paragraph-pagination
+  acceptance-profile: T25-paragraph-pagination
+  profile-contract: capabilities/evidence/T25-paragraph-pagination.md
+  kind: behavior
+  slice: 90
+  environments:
+  - ubuntu-24.04-linux-x86-64-jdk8
+  - ubuntu-24.04-linux-x86-64-jdk11
+  - ubuntu-24.04-linux-x86-64-jdk17
+  - ubuntu-24.04-linux-x86-64-jdk21
+  execution-profiles:
+  - IN_PROCESS
+  - HARDENED_WORKER
+  chains:
+  - syntax
+  - standards
+  - semantic
+  - visual
+  dependencies:
+  - paragraphs
+  - fonts
+  - graphics
+  - limits
+  - worker
+  members: []
+  facade-families:
+  - family: layout paragraph properties, relayout and flushing
+    reference-prefix: com.itextpdf.layout.
+    mappings: []
+- id: tables
+  summary: Compose bounded FIXED/AUTO tables across finite areas and pages with split rows and spans, repeated sections,
+    keeps, overflow, atomic relayout and incremental fixed-table release.
+  capability: composition.layout.tables
+  acceptance-profile: T27-table-pagination
+  profile-contract: capabilities/evidence/T27-table-pagination.md
+  kind: aggregate
+  slice: 92
+  environments: []
+  execution-profiles: []
+  chains: []
+  dependencies:
+  - paragraphs
+  - pagination
+  - fonts
+  - graphics
+  - limits
+  - worker
+  members:
+  - tables-base
+  - tables-pagination
+  facade-families: []
+- id: shaping
+  summary: Shape explicitly selected fonts through the project-owned HarfBuzz Provider and retain native glyphs,
+    clusters and positions through Composition publication.
+  capability: composition.shaping.harf-buzz
+  acceptance-profile: T29-shaping
+  profile-contract: capabilities/evidence/T29-shaping.md
+  kind: behavior
+  slice: 93
+  environments:
+  - ubuntu-24.04-linux-x86-64-jdk8
+  - ubuntu-24.04-linux-x86-64-jdk11
+  - ubuntu-24.04-linux-x86-64-jdk17
+  - ubuntu-24.04-linux-x86-64-jdk21
+  execution-profiles:
+  - IN_PROCESS
+  - HARDENED_WORKER
+  chains:
+  - syntax
+  - standards
+  - semantic
+  - visual
+  dependencies:
+  - providers
+  - fonts
+  - paragraphs
+  - pagination
+  - tables
+  - limits
+  - worker
+  members: []
+  facade-families:
+  - family: layout typography and explicit shaping configuration
+    reference-prefix: com.itextpdf.layout.
+    mappings: []
+- id: barcodes-1d
+  summary: Draw all Reference Suite one-dimensional barcode families as PDF vectors with explicit dimensions, checksums,
+    labels and affine placement.
+  capability: composition.barcodes.one-dimensional
+  acceptance-profile: T30-one-dimensional-barcodes
+  profile-contract: capabilities/evidence/T30-one-dimensional-barcodes.md
+  kind: behavior
+  slice: 94
+  environments:
+  - ubuntu-24.04-linux-x86-64-jdk8
+  - ubuntu-24.04-linux-x86-64-jdk11
+  - ubuntu-24.04-linux-x86-64-jdk17
+  - ubuntu-24.04-linux-x86-64-jdk21
+  execution-profiles:
+  - IN_PROCESS
+  - HARDENED_WORKER
+  chains:
+  - syntax
+  - standards
+  - semantic
+  - visual
+  dependencies:
+  - canvas
+  - graphics
+  - fonts
+  - limits
+  - worker
+  members: []
+  facade-families:
+  - family: barcodes one-dimensional generation modes
+    reference-prefix: com.itextpdf.barcodes.
+    mappings: []
+- id: barcodes-2d
+  summary: Generate QR, DataMatrix ECC200 and PDF417 as reusable vector Forms with strict encoding, ECC, compaction,
+    dimensions, controls and affine placement.
+  capability: composition.barcodes.two-dimensional
+  acceptance-profile: T31-two-dimensional-barcodes
+  profile-contract: capabilities/evidence/T31-two-dimensional-barcodes.md
+  kind: behavior
+  slice: 95
+  environments:
+  - ubuntu-24.04-linux-x86-64-jdk8
+  - ubuntu-24.04-linux-x86-64-jdk11
+  - ubuntu-24.04-linux-x86-64-jdk17
+  - ubuntu-24.04-linux-x86-64-jdk21
+  execution-profiles:
+  - IN_PROCESS
+  - HARDENED_WORKER
+  chains:
+  - syntax
+  - standards
+  - semantic
+  - visual
+  dependencies:
+  - canvas
+  - graphics
+  - limits
+  - worker
+  members: []
+  facade-families:
+  - family: barcodes QR, DataMatrix and PDF417 modes
+    reference-prefix: com.itextpdf.barcodes.
+    mappings: []
+- id: password-baseline
+  summary: Certify the complete Foundation PDF version, credential, algorithm/revision, permission and all-content
+    password profile, with secure defaults and Legacy Security Mode.
+  capability: document.version-password-security.baseline
+  parent-capability: document.version-password-security
+  acceptance-profile: T32-password-baseline
+  profile-contract: capabilities/profiles/foundation-release.md
+  kind: behavior
+  slice: 78
+  environments:
+  - ubuntu-24.04-linux-x86-64-jdk8
+  - ubuntu-24.04-linux-x86-64-jdk11
+  - ubuntu-24.04-linux-x86-64-jdk17
+  - ubuntu-24.04-linux-x86-64-jdk21
+  execution-profiles:
+  - IN_PROCESS
+  - HARDENED_WORKER
+  chains:
+  - syntax
+  - standards
+  - semantic
+  - visual
+  dependencies:
+  - values
+  members: []
+  facade-families:
+  - family: kernel reader/writer password security, permissions and scopes
+    reference-prefix: com.itextpdf.kernel.pdf.
+    mappings: []
+- id: password-clear-metadata
+  summary: Support and certify metadata-clear input/output including AES-256, while other protected content requires
+    valid credentials and secure defaults stay intact.
+  capability: document.version-password-security.clear-metadata
+  parent-capability: document.version-password-security
+  acceptance-profile: T32-password-clear-metadata
+  profile-contract: capabilities/profiles/foundation-release.md
+  kind: behavior
+  slice: 79
+  environments:
+  - ubuntu-24.04-linux-x86-64-jdk8
+  - ubuntu-24.04-linux-x86-64-jdk11
+  - ubuntu-24.04-linux-x86-64-jdk17
+  - ubuntu-24.04-linux-x86-64-jdk21
+  execution-profiles:
+  - IN_PROCESS
+  - HARDENED_WORKER
+  chains:
+  - syntax
+  - standards
+  - semantic
+  - visual
+  dependencies:
+  - password-baseline
+  members: []
+  facade-families:
+  - family: kernel reader/writer password security, permissions and scopes
+    reference-prefix: com.itextpdf.kernel.pdf.
+    mappings: []
+- id: password-attachments
+  summary: Support and certify embedded-files-only input/output, crypt filters, authentication events and protected
+    attachment creation/reopen/extraction with ordinary content accessible.
+  capability: document.version-password-security.attachments
+  parent-capability: document.version-password-security
+  acceptance-profile: T32-password-embedded-files-only
+  profile-contract: capabilities/profiles/foundation-release.md
+  kind: behavior
+  slice: 80
+  environments:
+  - ubuntu-24.04-linux-x86-64-jdk8
+  - ubuntu-24.04-linux-x86-64-jdk11
+  - ubuntu-24.04-linux-x86-64-jdk17
+  - ubuntu-24.04-linux-x86-64-jdk21
+  execution-profiles:
+  - IN_PROCESS
+  - HARDENED_WORKER
+  chains:
+  - syntax
+  - standards
+  - semantic
+  - visual
+  dependencies:
+  - password-baseline
+  - metadata
+  members: []
+  facade-families:
+  - family: kernel reader/writer password security, permissions and scopes
+    reference-prefix: com.itextpdf.kernel.pdf.
+    mappings: []
+- id: tables-base
+  summary: Certify complete FIXED/AUTO single-area table layout, point/percentage/AUTO widths, row/column spans,
+    minima, padding, borders and cell-content order.
+  capability: composition.layout.tables.base
+  parent-capability: composition.layout.tables
+  acceptance-profile: T32-tables-base
+  profile-contract: capabilities/profiles/foundation-release.md
+  kind: behavior
+  slice: 91
+  environments:
+  - ubuntu-24.04-linux-x86-64-jdk8
+  - ubuntu-24.04-linux-x86-64-jdk11
+  - ubuntu-24.04-linux-x86-64-jdk17
+  - ubuntu-24.04-linux-x86-64-jdk21
+  execution-profiles:
+  - IN_PROCESS
+  - HARDENED_WORKER
+  chains:
+  - syntax
+  - standards
+  - semantic
+  - visual
+  dependencies:
+  - pagination
+  - fonts
+  - graphics
+  members: []
+  facade-families:
+  - family: layout Table and Cell properties and lifecycle
+    reference-prefix: com.itextpdf.layout.
+    mappings: []
+- id: tables-pagination
+  summary: Certify multi-area pagination, split rows/continued spans, repeated or omitted headers/footers, keeps,
+    overflow, relayout and bounded incremental row admission/flush/completion.
+  capability: composition.layout.tables.pagination
+  parent-capability: composition.layout.tables
+  acceptance-profile: T32-tables-pagination
+  profile-contract: capabilities/profiles/foundation-release.md
+  kind: behavior
+  slice: 92
+  environments:
+  - ubuntu-24.04-linux-x86-64-jdk8
+  - ubuntu-24.04-linux-x86-64-jdk11
+  - ubuntu-24.04-linux-x86-64-jdk17
+  - ubuntu-24.04-linux-x86-64-jdk21
+  execution-profiles:
+  - IN_PROCESS
+  - HARDENED_WORKER
+  chains:
+  - syntax
+  - standards
+  - semantic
+  - visual
+  dependencies:
+  - tables-base
+  - pagination
+  - fonts
+  - graphics
+  members: []
+  facade-families:
+  - family: layout Table and Cell properties and lifecycle
+    reference-prefix: com.itextpdf.layout.
+    mappings: []
+- id: environments
+  summary: Declare the amended certification boundary, observe exact environments and prove readiness failures for
+    missing or mismatched identity.
+  capability: document.blank.create-publish-reopen
+  acceptance-profile: F69-environments
+  profile-contract: capabilities/profiles/foundation-release.md
+  kind: release
+  slice: 69
+  environments:
+  - ubuntu-24.04-linux-x86-64-jdk8
+  - ubuntu-24.04-linux-x86-64-jdk11
+  - ubuntu-24.04-linux-x86-64-jdk17
+  - ubuntu-24.04-linux-x86-64-jdk21
+  execution-profiles:
+  - REPOSITORY
+  chains:
+  - contract
+  dependencies: []
+  members: []
+  facade-families: []
+  native-only-reason: Repository environments control has no Reference Suite API counterpart; this control grants
+    no exemption from any behavioral Facade obligation.
+- id: java-artifacts
+  summary: Verify Java 8 baseline, the same artifacts on JDK 8/11/17/21, public API/module names, BOM/Release Train,
+    and no test/tool or placeholder artifacts in runtime/publication.
+  capability: document.blank.create-publish-reopen
+  acceptance-profile: F69-java-artifacts
+  profile-contract: capabilities/profiles/foundation-release.md
+  kind: release
+  slice: 96
+  environments:
+  - ubuntu-24.04-linux-x86-64-jdk8
+  - ubuntu-24.04-linux-x86-64-jdk11
+  - ubuntu-24.04-linux-x86-64-jdk17
+  - ubuntu-24.04-linux-x86-64-jdk21
+  execution-profiles:
+  - REPOSITORY
+  chains:
+  - contract
+  - artifact
+  dependencies: []
+  members: []
+  facade-families: []
+  native-only-reason: Repository java-artifacts control has no Reference Suite API counterpart; this control grants
+    no exemption from any behavioral Facade obligation.
+- id: facade-artifacts
+  summary: Verify complete Foundation Stable surface and behavior, the declared Preview superset, exact built signatures
+    and classpath mutual exclusion.
+  capability: document.blank.create-publish-reopen
+  acceptance-profile: F69-facade-artifacts
+  profile-contract: capabilities/profiles/foundation-release.md
+  kind: release
+  slice: 96
+  environments:
+  - ubuntu-24.04-linux-x86-64-jdk17
+  execution-profiles:
+  - REPOSITORY
+  chains:
+  - contract
+  - artifact
+  dependencies: []
+  members: []
+  facade-families: []
+  native-only-reason: Repository facade-artifacts control has no Reference Suite API counterpart; this control grants
+    no exemption from any behavioral Facade obligation.
+- id: acceptance
+  summary: Qualify independent syntax/standards/semantic/visual chains and negative controls, rule coverage, pinned
+    corpora/fonts/tools/configurations and fail-closed PASS policy.
+  capability: document.blank.create-publish-reopen
+  acceptance-profile: F69-acceptance
+  profile-contract: capabilities/profiles/foundation-release.md
+  kind: release
+  slice: 70
+  environments:
+  - ubuntu-24.04-linux-x86-64-jdk17
+  execution-profiles:
+  - REPOSITORY
+  chains:
+  - contract
+  - review
+  dependencies: []
+  members: []
+  facade-families: []
+  native-only-reason: Repository acceptance control has no Reference Suite API counterpart; this control grants
+    no exemption from any behavioral Facade obligation.
+- id: docs
+  summary: Reconcile generated inventories, authoritative English contracts/Javadoc, Chinese usage and migration
+    material, non-affiliation notices and 0.x change notes with final artifacts.
+  capability: document.blank.create-publish-reopen
+  acceptance-profile: F69-docs
+  profile-contract: capabilities/profiles/foundation-release.md
+  kind: release
+  slice: 96
+  environments:
+  - ubuntu-24.04-linux-x86-64-jdk17
+  execution-profiles:
+  - REPOSITORY
+  chains:
+  - contract
+  - review
+  dependencies: []
+  members: []
+  facade-families: []
+  native-only-reason: Repository docs control has no Reference Suite API counterpart; this control grants no exemption
+    from any behavioral Facade obligation.
+- id: provenance
+  summary: Audit clean-room Apache-2.0/DCO provenance, retained contributor copyright, dependencies/fixtures/notices
+    and the independent Compatibility Curator boundary.
+  capability: document.blank.create-publish-reopen
+  acceptance-profile: F69-provenance
+  profile-contract: capabilities/profiles/foundation-release.md
+  kind: release
+  slice: 96
+  environments:
+  - ubuntu-24.04-linux-x86-64-jdk17
+  execution-profiles:
+  - REPOSITORY
+  chains:
+  - review
+  - supply-chain
+  dependencies: []
+  members: []
+  facade-families: []
+  native-only-reason: Repository provenance control has no Reference Suite API counterpart; this control grants
+    no exemption from any behavioral Facade obligation.
+- id: supply-chain
+  summary: Verify pinned dependencies/plugins/Actions, CycloneDX SBOM, license/vulnerability reports, private security
+    channel and public scoped unexpired security exceptions.
+  capability: document.blank.create-publish-reopen
+  acceptance-profile: F69-supply-chain
+  profile-contract: capabilities/profiles/foundation-release.md
+  kind: release
+  slice: 96
+  environments:
+  - ubuntu-24.04-linux-x86-64-jdk17
+  execution-profiles:
+  - REPOSITORY
+  chains:
+  - supply-chain
+  - review
+  dependencies: []
+  members: []
+  facade-families: []
+  native-only-reason: Repository supply-chain control has no Reference Suite API counterpart; this control grants
+    no exemption from any behavioral Facade obligation.
+- id: reproducibility
+  summary: Produce and locally validate two clean complete 0.1.0 builds, deterministic Central entries, checksums
+    and separate non-production test signatures without publishing.
+  capability: document.blank.create-publish-reopen
+  acceptance-profile: F69-reproducibility
+  profile-contract: capabilities/profiles/foundation-release.md
+  kind: release
+  slice: 96
+  environments:
+  - ubuntu-24.04-linux-x86-64-jdk17
+  execution-profiles:
+  - REPOSITORY
+  chains:
+  - reproducibility
+  - artifact
+  - signature
+  dependencies:
+  - integration
+  members: []
+  facade-families: []
+  native-only-reason: Repository reproducibility control has no Reference Suite API counterpart; this control grants
+    no exemption from any behavioral Facade obligation.
+- id: candidate
+  summary: Produce the approved-identity signed 0.1.0 candidate and locally validated Central bundle with source/artifact
+    hashes and a complete certification receipt.
+  capability: document.blank.create-publish-reopen
+  acceptance-profile: F69-candidate
+  profile-contract: capabilities/profiles/foundation-release.md
+  kind: release
+  slice: 97
+  environments:
+  - ubuntu-24.04-linux-x86-64-jdk17
+  execution-profiles:
+  - REPOSITORY
+  chains:
+  - artifact
+  - signature
+  - review
+  dependencies:
+  - reproducibility
+  - publication-controls
+  members: []
+  facade-families: []
+  native-only-reason: Repository candidate control has no Reference Suite API counterpart; this control grants no
+    exemption from any behavioral Facade obligation.
+- id: publication-controls
+  summary: Verify protected signing credentials/environment, exact approved fingerprint, minimum permission/concurrency
+    controls and separated authorization for upload, validation and immutable publication.
+  capability: document.blank.create-publish-reopen
+  acceptance-profile: F69-publication-controls
+  profile-contract: capabilities/profiles/foundation-release.md
+  kind: release
+  slice: 97
+  environments:
+  - ubuntu-24.04-linux-x86-64-jdk17
+  execution-profiles:
+  - REPOSITORY
+  chains:
+  - contract
+  - review
+  dependencies: []
+  members: []
+  facade-families: []
+  native-only-reason: Repository publication-controls control has no Reference Suite API counterpart; this control
+    grants no exemption from any behavioral Facade obligation.
+- id: integration
+  summary: Close every Foundation behavior, aggregate, dependency and Facade obligation; run final public Workflow/Facade,
+    hostile-input/Worker/scale, full verify/JDK/inventory and Standards/Spec review gates.
+  capability: document.blank.create-publish-reopen
+  acceptance-profile: F69-integration
+  profile-contract: capabilities/profiles/foundation-release.md
+  kind: release
+  slice: 96
+  environments:
+  - ubuntu-24.04-linux-x86-64-jdk8
+  - ubuntu-24.04-linux-x86-64-jdk11
+  - ubuntu-24.04-linux-x86-64-jdk17
+  - ubuntu-24.04-linux-x86-64-jdk21
+  execution-profiles:
+  - REPOSITORY
+  chains:
+  - contract
+  - review
+  dependencies:
+  - transactions
+  - values
+  - pages
+  - metadata
+  - annotations
+  - text
+  - images
+  - incremental
+  - security
+  - limits
+  - worker
+  - recovery
+  - canvas
+  - graphics
+  - fonts
+  - rendering
+  - providers
+  - paragraphs
+  - pagination
+  - tables
+  - shaping
+  - barcodes-1d
+  - barcodes-2d
+  - password-baseline
+  - password-clear-metadata
+  - password-attachments
+  - tables-base
+  - tables-pagination
+  - environments
+  - java-artifacts
+  - facade-artifacts
+  - acceptance
+  - docs
+  - provenance
+  - supply-chain
+  members: []
+  facade-families: []
+  native-only-reason: Repository integration control has no Reference Suite API counterpart; this control grants
+    no exemption from any behavioral Facade obligation.
+limitations:
+- capability: document.blank.create-publish-reopen
+  sha256: c74d5f619e07148a13af802a53d913d91aa478d5b3112e8ca703ab2691407344
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #70 must prove it without omitting required successful Foundation cases.'
+  obligation: transactions
+- capability: document.blank.create-publish-reopen
+  sha256: 0711e1aac45bc707ee5a5155456037f64c874cdb82227710c552113e5bf6ffa3
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #70 must prove it without omitting required successful Foundation cases.'
+  obligation: transactions
+- capability: document.blank.create-publish-reopen
+  sha256: 04c5af20a13f49d67f4a5ff7a3b3b25d831b722831741a754da0d1db99dfcd73
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #70 must prove it without omitting required successful Foundation cases.'
+  obligation: transactions
+- capability: document.blank.create-publish-reopen
+  sha256: 0df76a859de75b433f7752f24bd0b7842d0813bff58db68edfc990ccb19035e5
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #70 must prove it without omitting required successful Foundation cases.'
+  obligation: transactions
+- capability: document.value.inspect-patch
+  sha256: dabe548744ccd5ad5473c7a140a54bc25d64325af3c19a2271906d8f5ee53880
+  disposition: release-blocker
+  reason: 'The declared PDF Value/Patch restriction needs #71 evidence against all required Foundation low-level
+    edits; unsupported required cases may not be excluded.'
+  obligation: values
+- capability: document.value.inspect-patch
+  sha256: 765944bd11521687a85661dbae16cd2b7fce0a10af59ce9591835a9458fd780a
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #71 must prove it without omitting required successful Foundation cases.'
+  obligation: values
+- capability: document.value.inspect-patch
+  sha256: 6b56cac02ccaa6d815405e53ebf291e6573fa5edadd8099db7ebcb3b585c9a55
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #71 must prove it without omitting required successful Foundation cases.'
+  obligation: values
+- capability: document.value.inspect-patch
+  sha256: bb92892565d2222c82badb13b9c6ae998cc45ec4d7f105703218a6198ce4ff1b
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #71 must prove it without omitting required successful Foundation cases.'
+  obligation: values
+- capability: document.value.inspect-patch
+  sha256: 3fc8d6134137aebf58046cef3346c6ff05096870c3b212d7921e567ff7a7c167
+  disposition: release-blocker
+  reason: 'Stream/filter restrictions require #71 reconciliation with the Foundation patch and preservation contract.'
+  obligation: values
+- capability: document.page.manipulate-merge-split
+  sha256: 622d856b7cbd02450a629710bb89739685c70c7d4e4d7128b4c1de5dd43ae789
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #72 must prove it without omitting required successful Foundation cases.'
+  obligation: pages
+- capability: document.page.manipulate-merge-split
+  sha256: 3e10edbdacb0d74e02c3692d3cf39e0b06d4f0d95d033c9697e7cd59ff204297
+  disposition: release-blocker
+  reason: 'Conservative page-graph restrictions require #72 corpus evidence that all Foundation page operations
+    remain available; safe rejection is not proof of required successful behavior.'
+  obligation: pages
+- capability: document.page.manipulate-merge-split
+  sha256: 9094fd462234a7e70e75e60c83a56b3c1d51137c2da4be0f7828596a753804c7
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #72 must prove it without omitting required successful Foundation cases.'
+  obligation: pages
+- capability: document.page.manipulate-merge-split
+  sha256: 14f4e52c76b63778a0e803143d5231b6053c1aecf14f673c5806ddb8f27460b2
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #72 must prove it without omitting required successful Foundation cases.'
+  obligation: pages
+- capability: document.page.manipulate-merge-split
+  sha256: fabf90582b67179e3a1315bf7111d1dfef2dabbac4fd1b9c73fb27931c27a2fe
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #72 must prove it without omitting required successful Foundation cases.'
+  obligation: pages
+- capability: document.page.manipulate-merge-split
+  sha256: 3ee88e471c8c133ab2b36819e6da7d3b7fe60c2d9b64e506f49f46fe959da608
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #72 must prove it without omitting required successful Foundation cases.'
+  obligation: pages
+- capability: document.metadata.outlines-destinations-attachments
+  sha256: 6be4412eb39f84a69b8916aa914167c0c71587e8fd1642dfe6eed5d7cda1d4de
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #73 must prove it without omitting required successful Foundation cases.'
+  obligation: metadata
+- capability: document.metadata.outlines-destinations-attachments
+  sha256: 5d9fb0b25f6f4c23f412161ef949bb3e3d46e825f01b58cdc3cbc2487e33a42e
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #73 must prove it without omitting required successful Foundation cases.'
+  obligation: metadata
+- capability: document.metadata.outlines-destinations-attachments
+  sha256: fc519f5fb46ea6a0d59369764f17e9c4c2e24330d3eb65a41dee6dd0e2f4d08c
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #73 must prove it without omitting required successful Foundation cases.'
+  obligation: metadata
+- capability: document.metadata.outlines-destinations-attachments
+  sha256: 4ebbda78898bea736066a9ee1622a86e394d3d633b646c1ef4372c4e9f82a8c6
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #73 must prove it without omitting required successful Foundation cases.'
+  obligation: metadata
+- capability: document.metadata.outlines-destinations-attachments
+  sha256: 367f1f84bca96ec36cc0c9644b2085c743c4e8136c488a566fa502d207b56237
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #73 must prove it without omitting required successful Foundation cases.'
+  obligation: metadata
+- capability: document.annotations-actions.manage
+  sha256: b9390a16b2b2ad4bb1710544a7add0764dc5278faa715defdf3c4e6e9c8bd699
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #74 must prove it without omitting required successful Foundation cases.'
+  obligation: annotations
+- capability: document.annotations-actions.manage
+  sha256: c78639011fa22623955d40c578aa7959c7975b78fdea5de15c2446c1e70b0a37
+  disposition: release-blocker
+  reason: 'The Foundation annotation subset and deferred AcroForm boundary require #74 reconciliation.'
+  obligation: annotations
+- capability: document.annotations-actions.manage
+  sha256: fac38f7a488916862dc5609531b449759bd326f5371aa12bc187e76c3068b9cd
+  disposition: release-blocker
+  reason: 'The GoTo allowlist must cover the required Foundation Action subset under #74.'
+  obligation: annotations
+- capability: document.annotations-actions.manage
+  sha256: f8872f83f044e2e6cfc6ab898a3901c7b1de9c6b016c88390a469874a82f20bc
+  disposition: release-blocker
+  reason: 'Restricted appearance/flattening support must cover the required Foundation annotation behavior under
+    #74.'
+  obligation: annotations
+- capability: document.annotations-actions.manage
+  sha256: 771ed6c56199b49544d4a58f824248d9f9a529fb0257ba914c095762d3492be9
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #74 must prove it without omitting required successful Foundation cases.'
+  obligation: annotations
+- capability: document.annotations-actions.manage
+  sha256: f9d4955e51a49a116db848a7537e991e924aa015c8b7c51476d16055574a8aff
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #74 must prove it without omitting required successful Foundation cases.'
+  obligation: annotations
+- capability: document.text-structure.extract
+  sha256: 7e3020fc3b9e12060b39caad63665b86705b65b62b2689e789cf50a18b498b81
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #75 must prove it without omitting required successful Foundation cases.'
+  obligation: text
+- capability: document.text-structure.extract
+  sha256: 8ddcf2509c1862e187652742a3f714fb8cade6eb9ccad26de52645f7be37ee1a
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #75 must prove it without omitting required successful Foundation cases.'
+  obligation: text
+- capability: document.text-structure.extract
+  sha256: 58b084ed8313ab90be1fc79a35fc1ed376ddb6a8b8525ebb749830d6e51d1b45
+  disposition: release-blocker
+  reason: 'Required Logical Structure extraction must be reconciled with the restricted MCR/OBJR/PDF 2.0 profiles
+    by #75.'
+  obligation: text
+- capability: document.text-structure.extract
+  sha256: e5e279230edefdce90bab98d071eea58144970e138f70236330d5d9dca46924e
+  disposition: release-blocker
+  reason: 'Restricted font/CMap/content profiles require #75 coverage of required Foundation extraction cases.'
+  obligation: text
+- capability: document.text-structure.extract
+  sha256: d56c4a6ac8015d6d31642cf40aebbc977f71d7972bb6fd1cf73439947beec23c
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #75 must prove it without omitting required successful Foundation cases.'
+  obligation: text
+- capability: document.images-resources.extract
+  sha256: 9a4e0c02e296972577cdc0995cfe71a0d1cfa655db00f5189e8b7c952f36f44b
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #76 must prove it without omitting required successful Foundation cases.'
+  obligation: images
+- capability: document.images-resources.extract
+  sha256: c93ba64e79feb73dfbfeb7d5750931156f040b967eec367830281ac3e9dd9e3b
+  disposition: release-blocker
+  reason: 'Inventory visibility and unavailable decoded image formats require #76 proof against the required Foundation
+    extraction scope.'
+  obligation: images
+- capability: document.images-resources.extract
+  sha256: 07360ec22faece8c01b244678a1ea2fe47cda51c5955d1bf386e4f541f308527
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #76 must prove it without omitting required successful Foundation cases.'
+  obligation: images
+- capability: document.images-resources.extract
+  sha256: d61035b64e227c24a7aa9781f1552ec74fa30050293b298ba4dab65b0b9eb37b
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #76 must prove it without omitting required successful Foundation cases.'
+  obligation: images
+- capability: document.images-resources.extract
+  sha256: 4c673a6875932301effd998b655cd2bc024ebcf525f29ef74cd49fe43a9576dc
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #76 must prove it without omitting required successful Foundation cases.'
+  obligation: images
+- capability: document.incremental-signature.protect
+  sha256: 05b5a888cc414750afe4c6ba8e9815a7232fcb5108c3a0e6b87ef5758e7d2c56
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #77 must prove it without omitting required successful Foundation cases.'
+  obligation: incremental
+- capability: document.incremental-signature.protect
+  sha256: a76f7c1c385f37c7877ac0445965fe8b17b33c3e1f1075e8b624775764e4bfea
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #77 must prove it without omitting required successful Foundation cases.'
+  obligation: incremental
+- capability: document.incremental-signature.protect
+  sha256: c04360185ba66d086d953bd71219e48176c9fc4c0d92ac04989441db54f0c623
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #77 must prove it without omitting required successful Foundation cases.'
+  obligation: incremental
+- capability: document.incremental-signature.protect
+  sha256: 6481f576775bb914dfc69411214b2c5b84b02f7ae984fad575d150a29ceb4ee6
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #77 must prove it without omitting required successful Foundation cases.'
+  obligation: incremental
+- capability: document.incremental-signature.protect
+  sha256: d8a064c17d546ee904a84b81395495bdd50ded213e37dce367e40ae99a304a1b
+  disposition: later-release
+  reason: Foundation recognizes/protects Existing Signatures; cryptographic validation and signing are explicitly
+    deferred to Trust.
+  obligation: incremental
+- capability: document.incremental-signature.protect
+  sha256: fc23d2250c3f74878af24d049257159adf1574ef53a364cf1120762d91cee08e
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #77 must prove it without omitting required successful Foundation cases.'
+  obligation: incremental
+- capability: document.incremental-signature.protect
+  sha256: a2942c9ff24aa6d0d88902dfe080f51c0cfe6780e9219ba032a210398caaf09d
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #77 must prove it without omitting required successful Foundation cases.'
+  obligation: incremental
+- capability: document.version-password-security
+  sha256: fc32c89fcf8a7ca2147b15664475a2d25b6df928bdf238682c8b330a5cb4f745
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #78 must prove it without omitting required successful Foundation cases.'
+  obligation: password-baseline
+- capability: document.version-password-security
+  sha256: 47f8942c4145f17e18eef6a94f1ed652b9bfcdd021b7193adb507a5e6b65a25d
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #78 must prove it without omitting required successful Foundation cases.'
+  obligation: password-baseline
+- capability: document.version-password-security
+  sha256: 0c30122d23e1ae62af09c677496af26d97dde5bac62df52dfee0c14ad82fa536
+  disposition: release-blocker
+  reason: 'The qualified PDF 1.7 AES-256 extension and normative PDF 2.0 profiles require independent standards
+    coverage under #78.'
+  obligation: password-baseline
+- capability: document.version-password-security
+  sha256: 80164b7c9d3bfb905e33c29778d641af51bb8a16b9dc5858b688d2f2fbf35c64
+  disposition: release-blocker
+  reason: 'The excluded legacy output algorithms must be audited against the unchanged Foundation baseline under
+    #78.'
+  obligation: password-baseline
+- capability: document.version-password-security
+  sha256: bacf6e2c2a8fb6391560be89ac46c54b8dcc043ab68c5f9b963df5173ec5b377
+  disposition: release-blocker
+  reason: 'The excluded password revisions and crypt-filter inputs require #78 baseline audit; metadata and attachment
+    scopes remain #79/#80 blockers.'
+  obligation: password-baseline
+- capability: document.version-password-security
+  sha256: 9101b578477815a4ae35417bd9a7cff0ab4b68643ca9a5d825be1bd0cd9bcd9c
+  disposition: release-blocker
+  reason: 'Required metadata-clear AES-256 and embedded-files-only input/output are not implemented/certified; #79
+    and #80 must complete them.'
+  obligation: password-clear-metadata
+- capability: document.version-password-security
+  sha256: 3f58a47994626bd820baa1e4d30837bd19441b7f8edbcfb9afd9f12d434d4140
+  disposition: release-blocker
+  reason: 'Nonempty distinct printable-ASCII credential restrictions require #78 audit against all required credential
+    cases; safe rejection cannot replace required success.'
+  obligation: password-baseline
+- capability: document.version-password-security
+  sha256: 6cce8df704863ba3ee98368166677f92a1cf04251abdde00e0a02020f1e36702
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #78 must prove it without omitting required successful Foundation cases.'
+  obligation: password-baseline
+- capability: document.version-password-security
+  sha256: 1e688f8c48f55fc93f3d0c66827a4a2e9911824584c642a3262a2e3d03cfb100
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #78 must prove it without omitting required successful Foundation cases.'
+  obligation: password-baseline
+- capability: document.version-password-security
+  sha256: 924bd76635e133f0338b598207e7a06e36c0058ce19e0a7c5eaa996333845a0e
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #78 must prove it without omitting required successful Foundation cases.'
+  obligation: password-baseline
+- capability: document.version-password-security
+  sha256: a08d807422d2c3b17bcb7dd89c34696f7237fe312d805906e2fa6d0a23e61336
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #78 must prove it without omitting required successful Foundation cases.'
+  obligation: password-baseline
+- capability: document.version-password-security
+  sha256: 575c33ed6495827667e55faf2d958938897c09b990f970482c18014103c475cb
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #78 must prove it without omitting required successful Foundation cases.'
+  obligation: password-baseline
+- capability: document.version-password-security
+  sha256: 06cd6b2e6103ef02d04d8d71918ac8005668129db920e8c02b0205feda2142c5
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #78 must prove it without omitting required successful Foundation cases.'
+  obligation: password-baseline
+- capability: document.version-password-security
+  sha256: 2c66fcf223449aa87c0685e37d4c717ba301384f1122ac4b257f7f301f49fe95
+  disposition: later-release
+  reason: Public-key encryption, FIPS and signature creation/validation are explicitly outside Foundation; password
+    security and both execution profiles remain required.
+  obligation: password-baseline
+- capability: document.hostile-input-limits
+  sha256: ef12e8aa72339db4f0a095a3c7ef98947b8d9674f2e139ddc1b9fdb1e0c5e09c
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #81 must prove it without omitting required successful Foundation cases.'
+  obligation: limits
+- capability: document.hostile-input-limits
+  sha256: 581a14910d0049efc26d05b4ee0a5087934e1e575ab302f1a2a1a3821aebf39b
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #81 must prove it without omitting required successful Foundation cases.'
+  obligation: limits
+- capability: document.hostile-input-limits
+  sha256: b5b71e0cef57a2fde70e0ec88deb848a9ed400b3153aaa0f1af85d2e6c3a6b5e
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #81 must prove it without omitting required successful Foundation cases.'
+  obligation: limits
+- capability: document.hostile-input-limits
+  sha256: 29db9f5c37c2adbaedad027533356c934ce21e17b50cb3e52d51083bbc3c017f
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #81 must prove it without omitting required successful Foundation cases.'
+  obligation: limits
+- capability: document.hostile-input-limits
+  sha256: 8cd4e7bee2d67d2b1e2ce5cfebf4a5164059542de69543d3b15f536572257372
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #81 must prove it without omitting required successful Foundation cases.'
+  obligation: limits
+- capability: document.hostile-input-limits
+  sha256: 4a25239a4d012fd489c039984919e5d9f3f59d6692dd514fb03647892696bb02
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #81 must prove it without omitting required successful Foundation cases.'
+  obligation: limits
+- capability: document.hostile-input-limits
+  sha256: e3d35fcfd3ed98cf0e19f8687a4bc0c5037312a78dd1ecd1c680a64f1daf6fe3
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #81 must prove it without omitting required successful Foundation cases.'
+  obligation: limits
+- capability: document.hardened-worker
+  sha256: c70f207243b6b5dd04590c25a51444bc6bf30cf973caeaf1518ea16a73c2491e
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #82 must prove it without omitting required successful Foundation cases.'
+  obligation: worker
+- capability: document.hardened-worker
+  sha256: 3ac4f60a049c2fc9745eb1af9b410dc72be425e5f5357cea2360342504f824c6
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #82 must prove it without omitting required successful Foundation cases.'
+  obligation: worker
+- capability: document.hardened-worker
+  sha256: af7f7ef4ed069582a61ea9ff7a4aa3adfa6385e5ec90d769beb5436c7f2d805a
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #82 must prove it without omitting required successful Foundation cases.'
+  obligation: worker
+- capability: document.hardened-worker
+  sha256: f9cac5e4282283752e2dcb7d3a3ba0de11a3cc721070e81cd9014141e5659508
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #82 must prove it without omitting required successful Foundation cases.'
+  obligation: worker
+- capability: document.hardened-worker
+  sha256: 58edb9d739aa465c34170f73a9d85fd66915df8074e5416acb1fee222f2dc02a
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #82 must prove it without omitting required successful Foundation cases.'
+  obligation: worker
+- capability: document.hardened-worker
+  sha256: b2863aa95bbf5915ce607ab1cda7911f2bd19692f468d461e3e2ebe7894fa4e1
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #82 must prove it without omitting required successful Foundation cases.'
+  obligation: worker
+- capability: document.hardened-worker
+  sha256: bff8d7164c3e3fc9fe44ff9d11ad580f409e8dead18b788c903d4bc03aa18fa7
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #82 must prove it without omitting required successful Foundation cases.'
+  obligation: worker
+- capability: document.hardened-worker
+  sha256: dbee20d4f96f2f6c83f135f7a8324a21b3be6ca6c0690db7e6e84790df61ca3d
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #82 must prove it without omitting required successful Foundation cases.'
+  obligation: worker
+- capability: document.hardened-worker.recovery-scale
+  sha256: 966a8c0d7483fd0b3a458230c34b9a88e53c042f7bfd9c52206aec79d5537ff2
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #83 must prove it without omitting required successful Foundation cases.'
+  obligation: recovery
+- capability: document.hardened-worker.recovery-scale
+  sha256: 89f839061212e1ab7afba96ad83cab0bc1cd6dbc17b5dfeb5f6b50eaac99d6ee
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #83 must prove it without omitting required successful Foundation cases.'
+  obligation: recovery
+- capability: document.hardened-worker.recovery-scale
+  sha256: acd214cfff1f57b32d5fba913e046da12d384762dec5957a4def08dce5ee1452
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #83 must prove it without omitting required successful Foundation cases.'
+  obligation: recovery
+- capability: document.hardened-worker.recovery-scale
+  sha256: b8a5b6ac7e43881847cd9a35741d12dff58826afb80804d579161b4a8bc8a36f
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #83 must prove it without omitting required successful Foundation cases.'
+  obligation: recovery
+- capability: document.hardened-worker.recovery-scale
+  sha256: 719cc69e2fb71ae909dddd92e797f429ecddf700cdc3388d6c31b24067ac58a8
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #83 must prove it without omitting required successful Foundation cases.'
+  obligation: recovery
+- capability: document.hardened-worker.recovery-scale
+  sha256: 25edb2fa0baa3377a10f834c0274ab8de024be3716c230f3483fbbb5b3069e24
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #83 must prove it without omitting required successful Foundation cases.'
+  obligation: recovery
+- capability: document.hardened-worker.recovery-scale
+  sha256: 44373792dc55569ed39a0f24566006879abdb256343c65a9c1fc95adcbf6effa
+  disposition: release-blocker
+  reason: 'Historical one-environment scale observations do not certify all required final Ubuntu/JDK candidate
+    profiles; #83 must retain actual opt-in runs.'
+  obligation: recovery
+- capability: document.hardened-worker.recovery-scale
+  sha256: 578e13d086dbdc139b853b7d700598b23fa903bad06e9f321056aea94fe41aa8
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #83 must prove it without omitting required successful Foundation cases.'
+  obligation: recovery
+- capability: composition.canvas.draw-positioned-text
+  sha256: 361c350ce964a20a04fd69e4ac2bc343becf0f25aaa0a2b0305b57820cf7846e
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #85 must prove it without omitting required successful Foundation cases.'
+  obligation: canvas
+- capability: composition.canvas.draw-positioned-text
+  sha256: b4b251482eab0b335ac71de68aebf7680a5f2596ff4c5e7b6609e35d2b8b41b4
+  disposition: release-blocker
+  reason: 'The split Canvas graphics surface requires #85/#86 reconciliation; missing required drawing behavior
+    remains blocking.'
+  obligation: canvas
+- capability: composition.canvas.draw-positioned-text
+  sha256: 6335533dc16d368b3554fd7341cff4361c3be25bcbe61f1ab2f91eda7d83c1a0
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #85 must prove it without omitting required successful Foundation cases.'
+  obligation: canvas
+- capability: composition.canvas.draw-positioned-text
+  sha256: 60ede6edba6936882378690bbcd2e96cdef1dc571c1776a9710385d3f40ad3df
+  disposition: release-blocker
+  reason: 'The borrowed-font restrictions must cover the approved Foundation Canvas profile under #85.'
+  obligation: canvas
+- capability: composition.canvas.draw-positioned-text
+  sha256: 5331998cf5f9c991903abcf42a6d30f71fc400ced1ec922ab66105547aa09d25
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #85 must prove it without omitting required successful Foundation cases.'
+  obligation: canvas
+- capability: composition.canvas.draw-positioned-text
+  sha256: a3c888339356a8aec067a23577a157b334da35997be45823b44a3a1f754e298d
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #85 must prove it without omitting required successful Foundation cases.'
+  obligation: canvas
+- capability: composition.canvas.draw-positioned-text
+  sha256: 92834d5fd60549c2144d540e05e62bf8f3f9dc8ada3b7ddcdb00e91197c1d64f
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #85 must prove it without omitting required successful Foundation cases.'
+  obligation: canvas
+- capability: composition.canvas.draw-positioned-text
+  sha256: 3d70c840b2727d1eabfc48c30969633e5a72d688898c7e46ff48700c22f31bae
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #85 must prove it without omitting required successful Foundation cases.'
+  obligation: canvas
+- capability: composition.canvas.draw-positioned-text
+  sha256: 7be83c17803e09e861b9c4accb41603f92b8668efaaf850d91b9a4cfa536632b
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #85 must prove it without omitting required successful Foundation cases.'
+  obligation: canvas
+- capability: composition.canvas.images-colors-transparency
+  sha256: 31db8997d36042b95a5a2ca5714cbe7518e8935f83539c9cb544a74ccc9fbef9
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #86 must prove it without omitting required successful Foundation cases.'
+  obligation: graphics
+- capability: composition.canvas.images-colors-transparency
+  sha256: 1af12dde990d40e0f76f6982583704c453e023386b12a153753b5ad886ddbe31
+  disposition: release-blocker
+  reason: 'Image normalization and precision/color restrictions require #86 evidence for every promised image profile.'
+  obligation: graphics
+- capability: composition.canvas.images-colors-transparency
+  sha256: b2d3f35c60838081d690d2b31f4869138a40fcecb487dc8069ec714297cf6b25
+  disposition: release-blocker
+  reason: 'Borrowed-image filter restrictions require #86 reconciliation with required Foundation graphics.'
+  obligation: graphics
+- capability: composition.canvas.images-colors-transparency
+  sha256: 69648b7ff3e522bb48bdeb7898b467b3d5e67680de2286fbcbd35ef630a7f66d
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #86 must prove it without omitting required successful Foundation cases.'
+  obligation: graphics
+- capability: composition.canvas.images-colors-transparency
+  sha256: c77c2db6f67b5b521e8f209e75284c824e78216bdd670f57374e8c0ddc1987d1
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #86 must prove it without omitting required successful Foundation cases.'
+  obligation: graphics
+- capability: composition.canvas.images-colors-transparency
+  sha256: e5287fc488aa2856a742ef87c6c2b739d25ab35ec82e51a0717b32f44132ff6c
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #86 must prove it without omitting required successful Foundation cases.'
+  obligation: graphics
+- capability: composition.canvas.images-colors-transparency
+  sha256: 798c18869727afc971c4677bed826b6f4ea73985d39c41ff633a513206dfc89f
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #86 must prove it without omitting required successful Foundation cases.'
+  obligation: graphics
+- capability: composition.canvas.images-colors-transparency
+  sha256: 4dc4224636406dab9c6d341c0b1550ac46e1515c4db4aabf0a963782aacafd6b
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #86 must prove it without omitting required successful Foundation cases.'
+  obligation: graphics
+- capability: composition.canvas.images-colors-transparency
+  sha256: b3277b2508c2ec1763ccab15ef8d4237d4cc7fbe9baf5c4b6fd165ff8dd0369d
+  disposition: release-blocker
+  reason: Required graphics Facade and certification are still absent; downstream non-goals do not waive them.
+  obligation: graphics
+- capability: composition.fonts.load-embed-subset-fallback
+  sha256: 256e6f80b45c34a839d16694097e8df92029c11bda996d64bca8990ee193a8b1
+  disposition: release-blocker
+  reason: 'Positioned-text clipping restrictions require #87 reconciliation with the required text/Canvas families.'
+  obligation: fonts
+- capability: composition.fonts.load-embed-subset-fallback
+  sha256: 13db41c7c0c9cd0a4f1e4ad3207915e672ce541d3650b2dcd96895180ac32a23
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #87 must prove it without omitting required successful Foundation cases.'
+  obligation: fonts
+- capability: composition.fonts.load-embed-subset-fallback
+  sha256: 52e9bf3beaf57cc5f1c716c54f57e356d77d60a2bed89defc8a0fb3053c013f6
+  disposition: release-blocker
+  reason: 'Admitted static font formats and metadata restrictions require #87 certification for all Foundation reference
+    fonts.'
+  obligation: fonts
+- capability: composition.fonts.load-embed-subset-fallback
+  sha256: 8ed2b6157c74288d32d0e68a8f58bf932d6d3a23326fc345448ed3187e4755cc
+  disposition: release-blocker
+  reason: 'Scalar/glyph ambiguity restrictions and the shaping split require #87/#93 evidence for required multilingual
+    behavior.'
+  obligation: fonts
+- capability: composition.fonts.load-embed-subset-fallback
+  sha256: 61617352cdbb0ce0beacbd7f47a65c95c827f6567a2a081a1184d1f786e9797d
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #87 must prove it without omitting required successful Foundation cases.'
+  obligation: fonts
+- capability: composition.fonts.load-embed-subset-fallback
+  sha256: 4a7a928b7a64fd664b75a664d55188485719ad14e0cdff73616f2d96b6fd7895
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #87 must prove it without omitting required successful Foundation cases.'
+  obligation: fonts
+- capability: composition.fonts.load-embed-subset-fallback
+  sha256: 242198f2df03b83fb67f3d181a64d81d274e79c050274fc71b193ef33258554a
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #87 must prove it without omitting required successful Foundation cases.'
+  obligation: fonts
+- capability: composition.fonts.load-embed-subset-fallback
+  sha256: 6cce20fbb5a40baccbaec67b788ad2e172c9eb6da09d3a66f8b09653f795cf39
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #87 must prove it without omitting required successful Foundation cases.'
+  obligation: fonts
+- capability: composition.fonts.load-embed-subset-fallback
+  sha256: 0db101101babaa8569388230553b02a3525d5a690767072aab596ee586b8b388
+  disposition: release-blocker
+  reason: Required font Facade and certification are absent; later-release exclusions cannot waive them.
+  obligation: fonts
+- capability: conversion.rendering
+  sha256: fe8fc4e390ecd19cc3eb481c034a68497bd0312a873d53341785c87135db73f7
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #88 must prove it without omitting required successful Foundation cases.'
+  obligation: rendering
+- capability: conversion.rendering
+  sha256: 45c85fbf391b086501753ed4258eeaa7ea23f73c7a068ba5808a7b8582b47e37
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #88 must prove it without omitting required successful Foundation cases.'
+  obligation: rendering
+- capability: conversion.rendering
+  sha256: 656a7d10fd7fb914f3550f9e368688378718c69531dcdfaeaecfd6baf3c04609
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #88 must prove it without omitting required successful Foundation cases.'
+  obligation: rendering
+- capability: conversion.rendering
+  sha256: bf09d592c59e7742873658eda3679dbfab4164432ce82887e6b1bd3e77ba58e7
+  disposition: release-blocker
+  reason: 'Annotation rendering restrictions require #88 evidence against the Foundation Rendering profile.'
+  obligation: rendering
+- capability: conversion.rendering
+  sha256: 377c354bfdee0dbbfbe2a66ef228c7f78b5a1a47e827c66739628854c15ed74a
+  disposition: release-blocker
+  reason: 'Font substitution and platform-codec diagnostics are not compatibility evidence; #88 must certify required
+    font/image outcomes.'
+  obligation: rendering
+- capability: conversion.rendering
+  sha256: 59d8937bebdfa56ce5704f21edb0ecea4dab1aa006774d9824294983ab46c994
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #88 must prove it without omitting required successful Foundation cases.'
+  obligation: rendering
+- capability: conversion.rendering
+  sha256: 89ee780119dc368a376d61e78eeeae769a76da048b42cb0da81be714cb55d429
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #88 must prove it without omitting required successful Foundation cases.'
+  obligation: rendering
+- capability: conversion.rendering
+  sha256: 150d2e08f6a7bfdd179c06f5ae61821343d817de1b187885f220e9d7fbf18e09
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #88 must prove it without omitting required successful Foundation cases.'
+  obligation: rendering
+- capability: conversion.rendering
+  sha256: 6ad9f41212efa282673e93c4c543b866017643b5abc16b84ddd2453f1232ffc2
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #88 must prove it without omitting required successful Foundation cases.'
+  obligation: rendering
+- capability: conversion.rendering
+  sha256: e1e5251490ba4194c4acdcdf093cbabe3d1692397847b3e8795f136331e4e1c6
+  disposition: release-blocker
+  reason: 'Independent rendering option coverage, standards/semantic chains and Facade mappings remain incomplete
+    under #88.'
+  obligation: rendering
+- capability: conversion.capability-provider.select-execute
+  sha256: 598cad5dc78409980927707310302b0d9a396d5cdb7927bcf924d3d542f36c40
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #84 must prove it without omitting required successful Foundation cases.'
+  obligation: providers
+- capability: conversion.capability-provider.select-execute
+  sha256: b9b7adcf00bb2d24f6ac145208d54ed3da3f5647c96286345bdc03a0881f2c14
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #84 must prove it without omitting required successful Foundation cases.'
+  obligation: providers
+- capability: conversion.capability-provider.select-execute
+  sha256: 1a3f53b0c2d9f9e461c1ea0d0c208a4a461b08f41606678c50d8662d61d7568e
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #84 must prove it without omitting required successful Foundation cases.'
+  obligation: providers
+- capability: conversion.capability-provider.select-execute
+  sha256: d1b42ac32b2ffb9f4ef88108ff2ff2233a753adba550df9188903781d3da0a51
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #84 must prove it without omitting required successful Foundation cases.'
+  obligation: providers
+- capability: conversion.capability-provider.select-execute
+  sha256: 40fa0b98ca802f23f220b40eee8665bed2b6effda77657b1953db59794fb6755
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #84 must prove it without omitting required successful Foundation cases.'
+  obligation: providers
+- capability: composition.layout.paragraph-areas
+  sha256: b95a4f14d26ba0ca04adcaa7df251a7033bf43a2e2c5e71830c93e63eaf5aefe
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #89 must prove it without omitting required successful Foundation cases.'
+  obligation: paragraphs
+- capability: composition.layout.paragraph-areas
+  sha256: b52beba5a104017b2dd3d9774241a11b9d3d6fa9f726d79a6823f8cd0a13a271
+  disposition: release-blocker
+  reason: 'The full pinned Foundation font/typography profile remains uncertified under #87/#89/#93; four-platform
+    wording is superseded only by ADR-0040.'
+  obligation: paragraphs
+- capability: composition.layout.paragraph-areas
+  sha256: 712592ff2a14c877434936dfb9776a424ff628e69b991a53ba77fb423a348232
+  disposition: release-blocker
+  reason: 'Unicode/shaping/hyphenation/vertical-text restrictions must be reconciled with full required Foundation
+    paragraph behavior under #89/#93.'
+  obligation: paragraphs
+- capability: composition.layout.paragraph-areas
+  sha256: 46e30ea9326b9f28d6e9c2ea264d10aeef863a442085751bc6c80df73e5d510e
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #89 must prove it without omitting required successful Foundation cases.'
+  obligation: paragraphs
+- capability: composition.layout.paragraph-areas
+  sha256: 30a3fce842428405feab59cc4b009702f296ff3aa46df9e424354d9adb1ecb9e
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #89 must prove it without omitting required successful Foundation cases.'
+  obligation: paragraphs
+- capability: composition.layout.paragraph-areas
+  sha256: cabf22e3f4c88deb7d870be44fa7454c89750e9ab097497066a99304c1053ae6
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #89 must prove it without omitting required successful Foundation cases.'
+  obligation: paragraphs
+- capability: composition.layout.paragraph-areas
+  sha256: c903cd7eda8b76df37b45d2085949968138bc5128d931bb21199697387b6343e
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #89 must prove it without omitting required successful Foundation cases.'
+  obligation: paragraphs
+- capability: composition.layout.paragraph-areas
+  sha256: cb102f0c191890323f6eb76dcc56a626baab62797180686a68490c891438aa7b
+  disposition: release-blocker
+  reason: Required advanced paragraphs/tables and migration mappings remain separate blocking obligations.
+  obligation: paragraphs
+- capability: composition.layout.paragraph-pagination
+  sha256: 4fe0328216935a53c0bf36a1c462104b981398c61543008fa6b03172af75deb2
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #90 must prove it without omitting required successful Foundation cases.'
+  obligation: pagination
+- capability: composition.layout.paragraph-pagination
+  sha256: 58e283d40079dca4f052d27e65eaddcc44f707e4a4788f0821d691d086da5273
+  disposition: release-blocker
+  reason: 'Tab variants and excluded leaders require #90 audit against the complete Foundation paragraph contract.'
+  obligation: pagination
+- capability: composition.layout.paragraph-pagination
+  sha256: 97f3340452fc07e3e03189ae8edc888af9790805b9c099a08443e5beac3009d6
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #90 must prove it without omitting required successful Foundation cases.'
+  obligation: pagination
+- capability: composition.layout.paragraph-pagination
+  sha256: 9af5e278cdfff4f65acb1b56af6f32105532bf732b3297f9836c24ab01f7ffdb
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #90 must prove it without omitting required successful Foundation cases.'
+  obligation: pagination
+- capability: composition.layout.paragraph-pagination
+  sha256: 9794cb81c03b9bbc65262bb587b0c4ca6d6fe2dbd6621918c98656b5d34da26d
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #90 must prove it without omitting required successful Foundation cases.'
+  obligation: pagination
+- capability: composition.layout.paragraph-pagination
+  sha256: 013acbe2184baca8833ea5338e5758dd0e681b089c3069a48c00a7536d012b65
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #90 must prove it without omitting required successful Foundation cases.'
+  obligation: pagination
+- capability: composition.layout.paragraph-pagination
+  sha256: 8c13ce37eb35d71d839ddf690fbe8821540d19e6f254eccd9189f52b490278c6
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #90 must prove it without omitting required successful Foundation cases.'
+  obligation: pagination
+- capability: composition.layout.paragraph-pagination
+  sha256: ad2fafd410aef59330c81237e52dc9169cc8446fdba70b515a8a7ee0b27ecc48
+  disposition: release-blocker
+  reason: 'Small-font independent pages do not certify all required Foundation reference fonts/environments under
+    #90.'
+  obligation: pagination
+- capability: composition.layout.paragraph-pagination
+  sha256: bc4975d9013439bbc1c2a640f673b73a143a7c15ca24ec6cf29cc16e5889cb9b
+  disposition: release-blocker
+  reason: 'Required standards, compatible dependencies and paragraph Facade remain incomplete under #90.'
+  obligation: pagination
+- capability: composition.layout.tables
+  sha256: 3aa4403e857943e497d4c6bf682be726a5dbfdd26c090304813b438c1e39300a
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #92 must prove it without omitting required successful Foundation cases.'
+  obligation: tables-base
+- capability: composition.layout.tables
+  sha256: d8c4c60bcf63fec152f2ad2b81db36dede373c72f9a5a147b53899d372b995d0
+  disposition: release-blocker
+  reason: 'AUTO allocation restrictions require #91 proof against full required fixed/automatic table behavior.'
+  obligation: tables-base
+- capability: composition.layout.tables
+  sha256: e217d99eb43b776fab9e7cf86355dd73b354f5b68f88e36451e57e6a83105093
+  disposition: release-blocker
+  reason: 'Cell-content and nesting restrictions require #91 reconciliation with the Foundation table profile.'
+  obligation: tables-base
+- capability: composition.layout.tables
+  sha256: cfcbd34c70d98a28046fed38199180c85b194de1134f6107cc0f04cfd386b1ed
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #92 must prove it without omitting required successful Foundation cases.'
+  obligation: tables-base
+- capability: composition.layout.tables
+  sha256: 1021ea7695e2234b5b13bed386f8adadbde50bcf55b4f7e1084b76e42db5be9a
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #92 must prove it without omitting required successful Foundation cases.'
+  obligation: tables-base
+- capability: composition.layout.tables
+  sha256: 3c04920eb45ae20c381591e33348f93f9416552c48d0e94d5ee16b35a7975ac5
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #92 must prove it without omitting required successful Foundation cases.'
+  obligation: tables-pagination
+- capability: composition.layout.tables
+  sha256: 85cd092632fa771a04979b8b6160c18ef924c33aa880807bfa34d8a0b55252a3
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #92 must prove it without omitting required successful Foundation cases.'
+  obligation: tables-pagination
+- capability: composition.layout.tables
+  sha256: 91770c4127b646dd7bb15a835c345d0b9eb2f1b6f0c7218340f0196a3c0feb6d
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #92 must prove it without omitting required successful Foundation cases.'
+  obligation: tables-pagination
+- capability: composition.layout.tables
+  sha256: 825930e10c5a09b5c31ba9476b6a500a2d8aa2a1dd3467e3d74f8e8aee594d9c
+  disposition: release-blocker
+  reason: 'Restricted incremental large-table mode must cover every required Foundation flushing case under #92.'
+  obligation: tables-pagination
+- capability: composition.layout.tables
+  sha256: 0e4077656af56149ee8e9e2de1c18311127d9a1612aa4c5e15e038c25fea9fe2
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #92 must prove it without omitting required successful Foundation cases.'
+  obligation: tables-pagination
+- capability: composition.layout.tables
+  sha256: e800d9c79c20a285488d1be52e225b771cee3c118b41f7d54e99f65d7ebc9112
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #92 must prove it without omitting required successful Foundation cases.'
+  obligation: tables-pagination
+- capability: composition.layout.tables
+  sha256: a030a3bb92c076c5472755c9c4d940fe9db55b1f0873baa72e11446f2daff5a8
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #92 must prove it without omitting required successful Foundation cases.'
+  obligation: tables-pagination
+- capability: composition.layout.tables
+  sha256: fca7de4cf22750daf281f24f6f908131e174717e0a022f0c3aabc06fbceb0a9d
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #92 must prove it without omitting required successful Foundation cases.'
+  obligation: tables-pagination
+- capability: composition.layout.tables
+  sha256: c69248b804fde005b77660d86d60c9e42c3deacf46bcf828aeec82fd47aed61f
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #92 must prove it without omitting required successful Foundation cases.'
+  obligation: tables-pagination
+- capability: composition.layout.tables
+  sha256: 49ed8ed2223be9a892e7c6172c69153d04696a72cedaf8214e3e5cfc994e3410
+  disposition: release-blocker
+  reason: T26/T27 evidence must be retained for the two independent subcapabilities on final required profiles.
+  obligation: tables-pagination
+- capability: composition.layout.tables
+  sha256: 4a48e3424f1b1b3320ce2a18a0b02625ebe96c93a032d5cea6dfa138bad77f9b
+  disposition: release-blocker
+  reason: Required standards, dependency, Foundation typography/environment and Table/Cell Facade certification
+    remain incomplete.
+  obligation: tables-pagination
+- capability: composition.shaping.harf-buzz
+  sha256: 4114601625a058fa8af8cce4b58612e062c2830d7ddf45a3b6fd47a333d8527e
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #93 must prove it without omitting required successful Foundation cases.'
+  obligation: shaping
+- capability: composition.shaping.harf-buzz
+  sha256: 4aaeb39f865223181cb10d39c239f41838a9be08eac7f93c55b9f96d919e3ba4
+  disposition: release-blocker
+  reason: 'Admitted shaping/font/feature profiles require #93 evidence for every required representative writing
+    system.'
+  obligation: shaping
+- capability: composition.shaping.harf-buzz
+  sha256: 2096daa73704dfc6eac0c0243089a3868e692ef64f1f579782233b78ba7ced0b
+  disposition: release-blocker
+  reason: 'Cross-style grapheme/run restrictions must be reconciled with required Foundation shaping under #93.'
+  obligation: shaping
+- capability: composition.shaping.harf-buzz
+  sha256: 642752f9d408d3658de9139b21862d38e7c6e83979a2ba7bb648a92f2aaea9ff
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #93 must prove it without omitting required successful Foundation cases.'
+  obligation: shaping
+- capability: composition.shaping.harf-buzz
+  sha256: 92504a45cbf122ddf72993c3a6ce43819d7f1b85000d29cd7401a8059da942f4
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #93 must prove it without omitting required successful Foundation cases.'
+  obligation: shaping
+- capability: composition.shaping.harf-buzz
+  sha256: 3abebbbb5102c6c1da6168d8e721d3e657c08b49286efcecc46be4d2316e7f1d
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #93 must prove it without omitting required successful Foundation cases.'
+  obligation: shaping
+- capability: composition.shaping.harf-buzz
+  sha256: 62b52c6fe88a646f099d8f152a6c92f3650d0c3a09c3fb68adad0bcf95ad5b86
+  disposition: release-blocker
+  reason: 'Parent-side native resource limits and required Linux observations remain #93 responsibilities; Windows/macOS
+    gates are removed by ADR-0040.'
+  obligation: shaping
+- capability: composition.shaping.harf-buzz
+  sha256: eab13504aceecf852271900d85b89e7cd34c4ac8d1135d2eacee3863851da6ef
+  disposition: release-blocker
+  reason: 'Missing actual required Ubuntu/JDK native observations still block #93; Windows/macOS absence is explicitly
+    not a Foundation 0.1.0 blocker.'
+  obligation: shaping
+- capability: composition.barcodes.one-dimensional
+  sha256: 5d247a1da8f2059b9c32b06228cfaafe9e3994fc20e0508920160b1a841b1cbc
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #94 must prove it without omitting required successful Foundation cases.'
+  obligation: barcodes-1d
+- capability: composition.barcodes.one-dimensional
+  sha256: b4c50d01f14497c2500d27a36f91719f65d839c47642e3adee1f6c0bc952d0b4
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #94 must prove it without omitting required successful Foundation cases.'
+  obligation: barcodes-1d
+- capability: composition.barcodes.one-dimensional
+  sha256: 03811071a5b479deeedc7fb59c5065583e54f0c919282fa2fae4b44be4884508
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #94 must prove it without omitting required successful Foundation cases.'
+  obligation: barcodes-1d
+- capability: composition.barcodes.one-dimensional
+  sha256: 3778a43ea2f0d4130c87b41f6cda3247d74429d58080042caaaf769c6d6c1546
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #94 must prove it without omitting required successful Foundation cases.'
+  obligation: barcodes-1d
+- capability: composition.barcodes.one-dimensional
+  sha256: 3f5ce5f38d64f5d323e691b8678ddf1ffecbf0e80886bb11429bd8b185106df1
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #94 must prove it without omitting required successful Foundation cases.'
+  obligation: barcodes-1d
+- capability: composition.barcodes.one-dimensional
+  sha256: fb13f92c5771c70c77d0d90b5aa9e716be5ccddeb680031f45215d4f8f7e6f59
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #94 must prove it without omitting required successful Foundation cases.'
+  obligation: barcodes-1d
+- capability: composition.barcodes.one-dimensional
+  sha256: 5bfb05b27dbad85250b5c3e485db6d29e1087b5407e6c647bdbcccee23fea6a6
+  disposition: release-blocker
+  reason: 'All 116 cases require final candidate/environment evidence and compatible dependencies under #94.'
+  obligation: barcodes-1d
+- capability: composition.barcodes.one-dimensional
+  sha256: 167920ff333f28fad4470731994216a05640e0deaa1f41b6b5f7b8040dbc485d
+  disposition: release-blocker
+  reason: Independent standards, required environment/font evidence and matching 1D Facade remain incomplete.
+  obligation: barcodes-1d
+- capability: composition.barcodes.two-dimensional
+  sha256: c88c213ae675fbf5ba1b6b3356c58094576e4c692d4237f90fe6cd956974099a
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #95 must prove it without omitting required successful Foundation cases.'
+  obligation: barcodes-2d
+- capability: composition.barcodes.two-dimensional
+  sha256: 479c45e7d7de743a6c66852ca81338aa7fb3a0d8e13eafaead0f2262f8b182a6
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #95 must prove it without omitting required successful Foundation cases.'
+  obligation: barcodes-2d
+- capability: composition.barcodes.two-dimensional
+  sha256: 756de7f5b7f69d9a08236020f34df4b4b66d9fe815d07a6d1851c0118bead540
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #95 must prove it without omitting required successful Foundation cases.'
+  obligation: barcodes-2d
+- capability: composition.barcodes.two-dimensional
+  sha256: b9b48341cb0bc3ea8ae11b9b69de1393fa8014856db799760108f396e71706f5
+  disposition: release-blocker
+  reason: 'Typed control/file-ID migration differences need exact #95 Facade and semantic evidence.'
+  obligation: barcodes-2d
+- capability: composition.barcodes.two-dimensional
+  sha256: a4af40409c225ef5c2be9b931ef45c9c8715a91bdd27de14a88b2ae03ce352bf
+  disposition: release-blocker
+  reason: 'Every Reference Suite PDF417 generation mode must be reconciled under #95; raster-only inversion and
+    other exclusions cannot hide required vector modes.'
+  obligation: barcodes-2d
+- capability: composition.barcodes.two-dimensional
+  sha256: 301604c877b3e03e5db7cd486e0caeaf72f184a6a97a29370625ec9e8f046a67
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #95 must prove it without omitting required successful Foundation cases.'
+  obligation: barcodes-2d
+- capability: composition.barcodes.two-dimensional
+  sha256: 2af9ee00e202aa09686b09b249e64c917ceb66367b49a660fda03e292e5cd473
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #95 must prove it without omitting required successful Foundation cases.'
+  obligation: barcodes-2d
+- capability: composition.barcodes.two-dimensional
+  sha256: 09973f2dd32b4d56144d5362f98f24e24724a905ee4d19baee27d53a15715f0a
+  disposition: retained-contract
+  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
+    #95 must prove it without omitting required successful Foundation cases.'
+  obligation: barcodes-2d
+- capability: composition.barcodes.two-dimensional
+  sha256: 1ba1fcef1b92378bfffe057362c8262cd7160fb1f105abd32573e1d7f757d058
+  disposition: release-blocker
+  reason: 'The complete 224-page-per-mode corpus and damaged controls need final candidate/environment evidence
+    under #95.'
+  obligation: barcodes-2d
+- capability: composition.barcodes.two-dimensional
+  sha256: 9855e0d15fe5acb8b7eacfda6806b8c6fe18090bde4cad0f8ad269c28ed9e3a3
+  disposition: release-blocker
+  reason: Independent standards, compatible dependencies, required environments and 2D Facade remain incomplete.
+  obligation: barcodes-2d
+source-exclusions:
+- docs/generated/foundation-readiness.md

@@ -21,13 +21,15 @@ public final class InventoryCommand {
 
     public static void main(String[] arguments) throws IOException {
         if (arguments.length != 2) {
-            fail("Usage: InventoryCommand <validate|generate|check> <repository-root>");
+            fail("Usage: InventoryCommand <validate|generate|check|readiness|environments> <repository-root>");
         }
 
         String action = arguments[0];
         if (!"validate".equals(action)
                 && !"generate".equals(action)
-                && !"check".equals(action)) {
+                && !"check".equals(action)
+                && !"readiness".equals(action)
+                && !"environments".equals(action)) {
             fail("Unsupported inventory action: " + action);
         }
 
@@ -53,8 +55,51 @@ public final class InventoryCommand {
             return;
         }
 
+        if ("environments".equals(action)) {
+            requireFoundation(model);
+            for (FoundationInventory.Environment environment : model.foundation.environments.values()) {
+                System.out.println("FOUNDATION_ENVIRONMENT " + environment.jdk + " "
+                        + environment.identity.get("image"));
+            }
+            return;
+        }
+
+        FoundationReadiness readiness = null;
+        if (model.foundation != null) {
+            readiness = new FoundationReadiness(model.foundation);
+            readiness.evaluate();
+        }
+        if ("readiness".equals(action)) {
+            requireFoundation(model);
+            System.out.println("Foundation " + model.foundation.release + ": "
+                    + (readiness.ready() ? "READY" : "NOT READY"));
+            System.out.println("Contract identity: " + readiness.contractIdentity);
+            System.out.println("Candidate identity: "
+                    + (readiness.candidateIdentity.isEmpty() ? "missing" : readiness.candidateIdentity));
+            for (String error : readiness.global) {
+                System.err.println("BLOCKED release: " + error);
+            }
+            for (Map.Entry<String, List<String>> obligation : readiness.blockers.entrySet()) {
+                FoundationInventory.Obligation item = model.foundation.obligations.get(obligation.getKey());
+                if (obligation.getValue().isEmpty()) {
+                    System.out.println("SATISFIED " + item.id + " (#" + item.slice + ")");
+                } else {
+                    for (String error : obligation.getValue()) {
+                        System.err.println("BLOCKED " + item.id + " (#" + item.slice + "): " + error);
+                    }
+                }
+            }
+            if (!readiness.ready()) {
+                fail("Foundation release is not ready; all required obligations must be satisfied.");
+            }
+            return;
+        }
+
         MarkdownGenerator generator = new MarkdownGenerator();
         Map<Path, String> documents = generator.generate(model);
+        if (readiness != null) {
+            documents.put(repositoryRoot.resolve(FoundationMarkdown.OUTPUT), FoundationMarkdown.generate(readiness));
+        }
         if ("generate".equals(action)) {
             writeDocuments(documents);
             for (Path path : sortedPaths(documents)) {
@@ -72,6 +117,12 @@ public final class InventoryCommand {
             fail("Generated inventory documentation is stale; run ./scripts/inventory generate.");
         }
         System.out.println("Generated inventory documentation is current.");
+    }
+
+    private static void requireFoundation(InventoryModel model) {
+        if (model.foundation == null) {
+            fail("Missing Foundation obligation inventory; add the foundation-release authority reference.");
+        }
     }
 
     private static void writeDocuments(Map<Path, String> documents) throws IOException {

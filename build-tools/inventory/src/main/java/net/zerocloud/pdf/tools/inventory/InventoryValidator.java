@@ -54,6 +54,10 @@ final class InventoryValidator {
         ReleaseTrainValidator.validate(model, errors);
         EvidenceRecordValidator.validate(model, errors);
         InventoryCrossValidator.validate(model, errors);
+        String foundationPath = optionalString(matrix, "foundation-release", "capability-matrix", errors);
+        if (foundationPath != null) {
+            model.foundation = FoundationInventory.load(model, foundationPath, errors);
+        }
 
         return new ValidationResult(model, errors);
     }
@@ -82,7 +86,7 @@ final class InventoryValidator {
     private static void parseMatrix(
             Map<String, Object> root, InventoryModel model, List<String> errors) {
         checkKeys(root, setOf(
-                "schema-version", "release-train", "authority", "capabilities"),
+                "schema-version", "release-train", "authority", "capabilities", "foundation-release"),
                 "capability-matrix", errors);
 
         model.matrixSchemaVersion = requiredInteger(
@@ -126,10 +130,15 @@ final class InventoryValidator {
                 "id", "context", "summary", "reference-suite", "native-interface",
                 "migration-facade", "limitations", "dependency-gates", "promotion-gates",
                 "acceptance-profile", "evidence", "acceptance-evidence", "provenance",
-                "certified-platforms", "status"), path, errors);
+                "certified-platforms", "status", "parent-capability"), path, errors);
 
         InventoryModel.Capability capability = new InventoryModel.Capability();
         capability.id = requiredString(value, "id", path, errors);
+        String parentCapability = optionalString(value, "parent-capability", path, errors);
+        if (parentCapability != null) {
+            capability.parentCapability = parentCapability;
+            validateStableId(parentCapability, path + ".parent-capability", errors);
+        }
         validateStableId(capability.id, path + ".id", errors);
         capability.context = requiredString(value, "context", path, errors);
         validateStableId(capability.context, path + ".context", errors);

@@ -4,6 +4,33 @@ This repository is an independent Apache-2.0 implementation. The accepted
 program specification, context glossaries, ADRs, public standards, public API
 documentation, and project-owned tests are the permitted design inputs.
 
+## T32.01 Foundation readiness contract (#69)
+
+- Authorship: OpenAI Codex generated the repository-only checker, obligation and
+  environment inventories, command-boundary fixtures and documentation at the
+  repository operator's direction.
+- Project inputs: full GitHub #1, #33 and #69 bodies/comments read using `gh`,
+  the approved #69–#97 slice bodies, AGENTS.md and its repository guides,
+  CONTEXT.md, CONTRIBUTING.md, RELEASING.md, the accepted ADR set, existing
+  Capability Matrix/Facade/evidence schemas and repository inventory/release
+  tools. The source requirement catalogue quotes project requirements only.
+- Environment inputs: actual local observations of official Eclipse Temurin
+  JDK 8/11/17/21 Noble containers, including immutable image digests,
+  `/etc/os-release`, JDK release metadata and SHA-256 of the java executable.
+  These declarations are not capability certification. The images/OpenJDK
+  retain the validation-only origin/license treatment recorded in T01 and are
+  not redistributed in runtime artifacts.
+- New fixtures are original synthetic YAML, text and byte sequences; they do
+  not contain PDF samples, fonts, iText output, backend internals or third-party
+  implementation material. A successful synthetic readiness fixture is not
+  Foundation product evidence.
+- No dependency, runtime library, native binary or font was added. Existing
+  repository-only SnakeYAML/JUnit and Java 8 APIs are reused. Inventory tools
+  retain their install/deploy skips and exclusion from BOM/product artifacts.
+- No iText source/resources, restricted implementation details or closed add-on
+  material were used. No proprietary comparison or reverse engineering was
+  performed; the Compatibility Curator boundary remains unchanged.
+
 ## T01 bootstrap record
 
 - Authorship and certification: OpenAI Codex generated and integrated the T01

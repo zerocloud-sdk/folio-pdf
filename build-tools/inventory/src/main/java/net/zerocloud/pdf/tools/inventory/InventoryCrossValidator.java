@@ -28,6 +28,7 @@ final class InventoryCrossValidator {
 
         validateDependencyReferences(capabilities, errors);
         validateDependencyCycles(capabilities, errors);
+        validateSubcapabilities(capabilities, errors);
 
         Map<String, Set<String>> stableLinks = new HashMap<String, Set<String>>();
         Map<String, Set<String>> previewLinks = new HashMap<String, Set<String>>();
@@ -78,6 +79,32 @@ final class InventoryCrossValidator {
             } else if (!hasSurface && !excluded) {
                 errors.add("capability " + capability.id
                         + ": must have a facade surface or an explicit exclusion");
+            }
+        }
+    }
+
+    private static void validateSubcapabilities(
+            Map<String, InventoryModel.Capability> capabilities, List<String> errors) {
+        for (InventoryModel.Capability child : capabilities.values()) {
+            if (child.parentCapability.isEmpty()) {
+                continue;
+            }
+            InventoryModel.Capability parent = capabilities.get(child.parentCapability);
+            if (parent == null || parent == child || !parent.parentCapability.isEmpty()) {
+                errors.add("subcapability " + child.id + ": expected an existing top-level parent capability");
+                continue;
+            }
+            Set<String> inherited = new HashSet<String>();
+            for (InventoryModel.DependencyGate gate : child.dependencyGates) {
+                inherited.add(gate.capability);
+                if (parent.id.equals(gate.capability)) {
+                    errors.add("subcapability " + child.id + ": aggregate parent is not a compatibility prerequisite");
+                }
+            }
+            for (InventoryModel.DependencyGate gate : parent.dependencyGates) {
+                if (!inherited.contains(gate.capability)) {
+                    errors.add("subcapability " + child.id + ": missing inherited Dependency Gate " + gate.capability);
+                }
             }
         }
     }

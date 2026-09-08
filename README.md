@@ -97,8 +97,13 @@ determination rules.
 
 T29 records native glyph/cluster metrics, reopened semantic geometry, embedded
 subsets, syntax and all eight fixed visual pages. The installed engine and
-local chains do not certify Windows x86-64 or macOS x86-64/arm64; each required
-platform needs its own actual observations. See [HarfBuzz shaping](docs/harfbuzz-shaping.md)
+local chains do not certify Windows x86-64 or macOS x86-64/arm64. Those targets
+are not required gates for Foundation 0.1.0 under
+[ADR-0040](docs/adr/0040-certify-only-observed-foundation-environments.md).
+Only actual Ubuntu 24.04/Linux x86-64 environments with JDK 8, 11, 17 and 21
+are required, with exact image/JDK/native/tool identities and complete evidence.
+See [Foundation readiness](docs/generated/foundation-readiness.md) and
+[HarfBuzz shaping](docs/harfbuzz-shaping.md)
 for selection, installation, execution-mode and migration contracts.
 
 T30 records every one-dimensional barcode family in both execution profiles:

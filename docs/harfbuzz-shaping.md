@@ -9,8 +9,12 @@ default runtime, and there is no unofficial Java HarfBuzz wrapper.
 The four [acceptance profiles](../capabilities/profiles/T29-shaping-reference.md)
 cover Arabic, Hebrew, Devanagari and Thai with explicit, hash-pinned fonts.
 Local tests or an installed executable alone do not establish compatibility.
-Windows x86-64 and both macOS architectures still require actual observations;
-missing platform or tool evidence is `INDETERMINATE`.
+For Foundation 0.1.0, [ADR-0040](adr/0040-certify-only-observed-foundation-environments.md)
+requires the actual Ubuntu 24.04/Linux x86-64 JDK 8/11/17/21 environments.
+Windows x86-64 and macOS x86-64/arm64 remain uncertified and are not required
+release gates. Missing required Ubuntu/JDK observations or tools remains
+`INDETERMINATE`; the [readiness report](generated/foundation-readiness.md)
+tracks the exact boundary and remaining obligations.
 
 ## Explicit installation
 
@@ -102,8 +106,8 @@ It verifies installer artifacts and, on Linux, records an actual separate
 helper startup's loaded files through `/proc/PID/maps`. This is a snapshot in
 the inherited loader environment, not an observation of every Workflow call.
 Ambiguous `LD_PRELOAD`/`LD_AUDIT` interposition remains INDETERMINATE. Live
-observation on other platforms is currently unimplemented; their required
-evidence remains incomplete.
+observation on other platforms is currently unimplemented; those targets
+remain uncertified and are outside Foundation 0.1.0's required release gates.
 
 ## Selection and input
 
@@ -258,8 +262,9 @@ subprocess boundary in both Workflow modes. It is **not** fully contained by
 the PDF Worker's filesystem, network, memory or CPU restrictions. The existing
 subprocess deadline, byte limits, stream cleanup, direct-child termination and
 private staging cleanup apply. Worker support remains limited to its existing
-Linux/JDK envelope; other required T29 platforms need native and IN_PROCESS
-evidence and an explicit Worker applicability record.
+Linux/JDK envelope. Foundation 0.1.0 requires actual native and both Workflow
+observations on every declared Ubuntu/JDK profile. Other platforms retain an
+explicit Worker applicability record if separately investigated.
 The T29 recorder writes that applicability into every chain. On Linux, an
 unavailable Worker keeps the native and IN_PROCESS observations but leaves
 the combined product chains `INDETERMINATE`, with `WORKER_UNAVAILABLE` and the

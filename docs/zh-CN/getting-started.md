@@ -232,6 +232,17 @@ ICU 不负责 shaping：此处没有 GSUB/GPOS、连字、kerning、组合附加
 计量内存并保留默认 Worker 设置，32/160 MiB 负例验证资源拒绝与目标文件保留。产品
 默认值没有修改。完整英文边界和迁移说明见 [Unicode Composition](../unicode-composition.md)。
 Linux/JDK 验证不代表 Windows、macOS 或完整 Foundation 认证；能力仍为 experimental。
+按 ADR-0040，Foundation 0.1.0 仅要求实际执行过的 Ubuntu 24.04/Linux x86-64
+与 JDK 8、11、17、21 配置。Windows x86-64、macOS x86-64/arm64 明确未认证，
+不属于本版本必需发布门禁。每次认证必须绑定实际 JDK vendor/build、系统镜像、
+执行配置、原生引擎、工具和候选产物哈希；同架构或同 JDK 主版本不能代替证据。
+
+运行 `./scripts/inventory readiness` 查看具体未完成义务；存在任何必需缺口时
+命令返回非零。当前尚无最终候选产物或精确环境认证，密码作用域、表格阶段、
+独立证据、Stable Facade 和发布控制等义务仍需后续切片完成。
+`inventory validate` 成功与常规 `verify` 成功只表示相应检查通过，不能宣称发布就绪。
+完整状态见[生成的就绪报告](../generated/foundation-readiness.md)，
+证据格式见[Foundation readiness](../foundation-readiness.md)。
 
 借入的流和通道按声明各读取一次，保持打开。一个 Session 内，字节完全相同的私有
 字体快照可以共享存储；每个声明仍计入内存用量，每次使用仍消耗字体来源数量与

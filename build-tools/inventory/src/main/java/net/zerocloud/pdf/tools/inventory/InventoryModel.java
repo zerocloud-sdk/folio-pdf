@@ -14,6 +14,7 @@ final class InventoryModel {
     int matrixSchemaVersion;
     int facadeSchemaVersion;
     String releaseTrain;
+    FoundationInventory foundation;
     final List<Capability> capabilities = new ArrayList<Capability>();
     final List<Surface> stableSurfaces = new ArrayList<Surface>();
     final List<Surface> previewSurfaces = new ArrayList<Surface>();
@@ -27,6 +28,7 @@ final class InventoryModel {
 
     static final class Capability {
         String id;
+        String parentCapability = "";
         String context;
         String summary;
         CapabilityState status;

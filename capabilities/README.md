@@ -1,6 +1,8 @@
 # Compatibility inventories
 
-Folio PDF keeps two versioned YAML authorities. The checked-in YAML is
+Folio PDF keeps separate behavioral and Facade YAML authorities, with a
+source-traceable Foundation obligation, environment and evidence inventory.
+The checked-in YAML is
 normative; files below `docs/generated/` are deterministic views and must
 never be edited by hand.
 
@@ -22,6 +24,13 @@ The outputs are:
 
 - `docs/generated/capability-matrix.md`
 - `docs/generated/facade-surface.md`
+- `docs/generated/foundation-readiness.md`
+
+Run `./scripts/inventory readiness` for the Foundation 0.1.0 release result.
+Any missing required behavior, compatible dependency, independent evidence,
+exact Ubuntu/JDK environment or Stable Facade mapping returns nonzero.
+`validate` and normal `verify` may pass while Foundation remains not ready.
+See [the evidence and identity contract](../docs/foundation-readiness.md).
 
 Record the built-in T03 blank-document, T18 Canvas-image, T19 explicit-font,
 T23 rendering, T24 paragraph-composition, T25 advanced-pagination,
@@ -529,10 +538,13 @@ or incomplete receipts, and unavailable observations cannot produce PASS.
 The recorder states Worker applicability and completed mode coverage. A
 missing required Linux Worker keeps the IN_PROCESS artifact but leaves
 combined product evidence INDETERMINATE. The existing other-platform Worker
-exclusion does not remove the Windows x86-64 and macOS x86-64/arm64 native and
-IN_PROCESS requirements. The current observer and pinned raster-tool assets
-are Linux-specific; installation alone supplies no other-platform execution
-evidence. The [T29 delivery record](evidence/T29-shaping.md) tracks the gaps.
+exclusion records its original T29 scope. For Foundation 0.1.0, ADR-0040
+requires actual Ubuntu 24.04/Linux x86-64 JDK 8/11/17/21 evidence; Windows
+x86-64 and macOS x86-64/arm64 remain uncertified and are not required release
+gates. The current observer and pinned raster-tool assets are Linux-specific;
+installation alone supplies no execution certification. The historical
+[T29 delivery record](evidence/T29-shaping.md) retains its original findings,
+and the Foundation obligation inventory governs subsequent #93 certification.
 
 The `acceptance-t29-record` Maven profile is the dedicated platform entry:
 

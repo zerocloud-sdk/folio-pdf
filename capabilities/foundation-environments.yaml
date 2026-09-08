@@ -1,0 +1,50 @@
+schema-version: 1
+uncertified-not-required:
+- windows-x86-64
+- macos-x86-64
+- macos-arm64
+profiles:
+- id: ubuntu-24.04-linux-x86-64-jdk8
+  identity:
+    os: ubuntu
+    os-version: '24.04'
+    architecture: x86-64
+    image: docker.io/library/eclipse-temurin@sha256:a4da319337cb6504ba4fb663cbd72a75df5515efb31bbdc6fc4ad7ba8d710dee
+    os-release-sha256: 01af466feb100306498c86aa6bad1815e33036019aa34d4362c20f374ea5c829
+    jdk-major: 8
+    jdk-vendor: Eclipse Adoptium
+    jdk-build: 1.8.0_502-b07
+    java-sha256: fa55c40b8accf16501ed11ac41a2b6cf5f411d36ea083f935d4a87cd3a7131a8
+- id: ubuntu-24.04-linux-x86-64-jdk11
+  identity:
+    os: ubuntu
+    os-version: '24.04'
+    architecture: x86-64
+    image: docker.io/library/eclipse-temurin@sha256:09f6797de424a6a085da4db6ba64381b2a4d51c2100a5e91998b69d7c23e0ecb
+    os-release-sha256: 01af466feb100306498c86aa6bad1815e33036019aa34d4362c20f374ea5c829
+    jdk-major: 11
+    jdk-vendor: Eclipse Adoptium
+    jdk-build: 11.0.32+9
+    java-sha256: 4e58bcde757bca39c30453e5fb3ae1495e76ef484f35908c6a5d3d10e1392e53
+- id: ubuntu-24.04-linux-x86-64-jdk17
+  identity:
+    os: ubuntu
+    os-version: '24.04'
+    architecture: x86-64
+    image: docker.io/library/eclipse-temurin@sha256:61a94244559f2e89e4edb02bae37eeb8762ecf5deaf237251fa630e5120a8798
+    os-release-sha256: 01af466feb100306498c86aa6bad1815e33036019aa34d4362c20f374ea5c829
+    jdk-major: 17
+    jdk-vendor: Eclipse Adoptium
+    jdk-build: 17.0.20+8
+    java-sha256: 6dce8306ebf735a85decdc801d84431f6e84525b60adc885624df05edeffb481
+- id: ubuntu-24.04-linux-x86-64-jdk21
+  identity:
+    os: ubuntu
+    os-version: '24.04'
+    architecture: x86-64
+    image: docker.io/library/eclipse-temurin@sha256:1ca5e470ad60db0d5b4137c1357068fa210051d815ad98ea9964f4bbe7367f8c
+    os-release-sha256: 01af466feb100306498c86aa6bad1815e33036019aa34d4362c20f374ea5c829
+    jdk-major: 21
+    jdk-vendor: Eclipse Adoptium
+    jdk-build: 21.0.12+8-LTS
+    java-sha256: 11af352aa2c506c4123a4e4c19c187d59e06cd0dff317d54f5e6806e07c6715d

@@ -26,6 +26,33 @@ The release rehearsal implements the artifact and supply-chain subset of these
 gates. It does not certify the Foundation Release or promote a Capability
 Matrix entry.
 
+## Foundation 0.1.0 readiness
+
+Run `./scripts/inventory readiness` before treating a candidate as ready. It
+returns nonzero for any incomplete obligation, missing independent chain,
+incompatible dependency, missing Stable Facade mapping, unknown/mismatched
+environment, or stale source, artifact, configuration or report identity.
+`validate` checks inventory structure, while `generate` and `check` maintain
+the [public readiness report](docs/generated/foundation-readiness.md). A valid
+inventory and a passing ordinary `verify` do not certify the release.
+
+Under [ADR-0040](docs/adr/0040-certify-only-observed-foundation-environments.md),
+the required environments are the actual Ubuntu 24.04 / Linux x86-64 profiles
+for JDK 8, 11, 17 and 21 in
+[foundation-environments.yaml](capabilities/foundation-environments.yaml).
+Windows x86-64 and macOS x86-64/arm64 remain **uncertified** and are **not required
+release gates for Foundation 0.1.0**. Architecture names, floating image tags,
+CI job labels and cross-compilation cannot extend certification. Every other
+Foundation requirement and non-goal remains in force.
+
+The [evidence format](docs/foundation-readiness.md) binds observations to actual
+JDK vendor/build, OS image, execution configuration, native engine and tool
+hashes, plus the final source/artifact identities. The current inventory is
+intentionally not ready: it has no final candidate or exact-environment
+certifications, and required behavior/evidence/mapping work remains assigned
+to #70–#97. Running the command neither produces that evidence nor authorizes
+signing, Central upload or publication.
+
 ## Local non-publishing rehearsal
 
 Run the one repository-owned command from the repository root with JDK 11 or

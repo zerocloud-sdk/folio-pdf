@@ -1,6 +1,7 @@
 schema-version: 1
 release-train: 0.1.0-SNAPSHOT
 authority: behavioral-capability
+foundation-release: capabilities/foundation-release.yaml
 
 capabilities:
   - id: document.blank.create-publish-reopen
@@ -1597,7 +1598,7 @@ capabilities:
       preview: []
     limitations:
       - Version 1 appends the reached prefix of a finite list of new unrotated pages. Dimensions are positive and at most 14400 points; nonnegative margins leave a positive box. Areas are explicit rectangles relative to that box or the whole box when omitted. There is no implicit page-template repetition or existing-page-area insertion.
-      - Paragraphs contain logical Unicode text at explicit sizes and atomic Canvas Transparency Groups. Without a T29 shaping preference, fonts reuse T19 staging, explicit ordered scalar fallback, integral CID widths, embedding/subsetting and ToUnicode, including the T28 static TrueType extension. T29 separately supplies opt-in native shaping. No system or online fonts are discovered. Seven pinned unshaped Noto reference profiles are tested; complete Foundation font and four-platform certification remains open.
+      - Paragraphs contain logical Unicode text at explicit sizes and atomic Canvas Transparency Groups. Without a T29 shaping preference, fonts reuse T19 staging, explicit ordered scalar fallback, integral CID widths, embedding/subsetting and ToUnicode, including the T28 static TrueType extension. T29 separately supplies opt-in native shaping. No system or online fonts are discovered. Seven pinned unshaped Noto reference profiles are tested; complete Foundation font and required Ubuntu/JDK environment certification remains open.
       - ICU4J 77.1 uses explicit root-locale grapheme, word and line segmentation, script classification and paragraph bidi analysis. Wrapping prefers Unicode line opportunities and emergency complete-grapheme boundaries; clusters survive adjacent inlines, justification and visual reordering. LF, U+2028 and U+2029 force breaks; bidi controls affect order without glyph selection. All input scalars count toward limits. Other ISO controls and unpaired surrogates remain invalid except version-2 tabs. First-strong direction falls back to LTR; line whitespace reset and odd-level mirror mapping determine visual output. Public text queries observe displayed scalar order, not reconstructed logical input. No shaping, normalization, kerning, mark attachment, GSUB/GPOS, hyphenation or vertical text is supplied.
       - LEFT, CENTER and RIGHT align natural advances within the area's width or a paragraph width cap. JUSTIFIED expands nonterminal spaces on automatic nonfinal lines. Lines reserve max(leading, maximum source-font ascent plus descent and graphic height); graphics sit on the baseline. No implicit paragraph spacing is added.
       - All declaration, inline, line and generated page-operator counts are finite. Font limits apply once to the whole flow; Canvas resource limits apply separately to each bounded inline graphic. Transaction-wide page, object, modeled memory, decompression, time and temporary-storage limits still apply. Exhaustion is COMPOSITION_AREA_EXHAUSTED, invalid declarations are COMPOSITION_INVALID, and composition bounds use COMPOSITION_LIMIT_EXCEEDED; dependency failures retain their codes and safe diagnostics.
@@ -1965,8 +1966,8 @@ capabilities:
       - Native source GIDs, input cluster ranges and independent x/y advances/offsets survive embedding. Subsets contain transitive composite glyphs, separate CIDToGID mappings and complete cluster ToUnicode values. ActualText records each native run's logical input and requires effective PDF 1.5 or newer; older incremental Sources fail before publication even for BMP-only mappings. It does not reconstruct whole-paragraph logical order across bidi runs or create tagged structure.
       - Direct DrawPositionedUnicodeText retains its unshaped scalar-order contract. Composition without a shaping preference retains the existing T28 contract. Opting in can change glyph counts, advances, line/page breaks, text mappings and PDF bytes without changing paragraph/table command versions.
       - Existing Provider, font, Composition, table and Workflow resource limits apply. Table shaping minima consider legal grapheme partitions under the existing finite work budget. Candidate plans release reservations when rejected; chosen plans live through painting. Native intermediate allocation is not a certified heap or RSS bound.
-      - In both modes the native helper runs through the parent-side Provider subprocess. It is not fully contained by the PDF Worker's filesystem, network, CPU or memory restrictions. HARDENED_WORKER retains its existing Linux/JDK envelope; other required T29 platforms still need native and IN_PROCESS evidence.
-      - All four platform receipts are required. Windows x86-64 and macOS x86-64/arm64 have no actual execution evidence. The live engine observer currently implements Linux startup mappings only; ambiguous preload interposition and unavailable observations remain indeterminate. No platform is certified by installation or local unit tests alone.
+      - In both modes the native helper runs through the parent-side Provider subprocess. It is not fully contained by the PDF Worker's filesystem, network, CPU or memory restrictions. HARDENED_WORKER retains its existing Linux/JDK envelope; Foundation 0.1.0 requires actual native and both Workflow observations on the declared Ubuntu 24.04/JDK environments under ADR-0040.
+      - Foundation 0.1.0 requires actual Ubuntu 24.04/Linux x86-64 receipts for JDK 8, 11, 17 and 21 under ADR-0040. Windows x86-64 and macOS x86-64/arm64 remain uncertified and are not required release gates for this version. The live engine observer currently implements Linux startup mappings only; ambiguous preload interposition and unavailable observations remain indeterminate. No platform is certified by installation or local unit tests alone.
     dependency-gates:
       - capability: conversion.capability-provider.select-execute
         required-status: compatible
@@ -1984,7 +1985,7 @@ capabilities:
         required-status: compatible
     promotion-gates:
       - ticket: T29
-        requirement: Retain actual pinned native, installation, subset, geometry and eight-page raster observations for Linux x86-64, Windows x86-64, macOS x86-64 and macOS arm64; missing tools or platform evidence remain indeterminate.
+        requirement: Retain actual pinned native, installation, subset, geometry and eight-page raster observations for every required Ubuntu 24.04/Linux x86-64 JDK 8, 11, 17 and 21 environment under ADR-0040; missing required tools or observations remain indeterminate. Windows and macOS remain uncertified and are not Foundation 0.1.0 release gates.
       - ticket: T06
         requirement: Complete independent standards evidence and compatible-status Dependency Gates before compatibility promotion.
     acceptance-profile:

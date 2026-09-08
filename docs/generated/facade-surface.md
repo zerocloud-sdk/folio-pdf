@@ -2,6 +2,8 @@
 
 # Facade Surface Manifest
 
+Foundation 0.1.0 release obligations, exact required Ubuntu/JDK environments and current blockers: [Foundation readiness](foundation-readiness.md). Facade exclusions below record current missing coverage and cannot waive required Foundation mappings.
+
 Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capabilities/facade-surface.yaml)
 
 - Schema version: `1`
@@ -142,152 +144,152 @@ No stable surfaces are declared.
 ### `composition.barcodes.one-dimensional`
 
 - Behavioral capability: [`composition.barcodes.one-dimensional`](capability-matrix.md#capability-composition_dot_barcodes_dot_one_dash_dimensional)
-- Deferred ticket: `T30`
-- Reason: T30 provides semantic Barcode1D and explicit-font BarcodeText declarations through the Native Interface DrawBarcode1D command. No approved Reference Suite barcode Migration Facade mapping exists; stable and preview surfaces remain empty and no unsupported stub is introduced.
+- Deferred ticket: `T32`
+- Reason: Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #94 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 <a id="excluded-capability-composition_dot_barcodes_dot_two_dash_dimensional"></a>
 ### `composition.barcodes.two-dimensional`
 
 - Behavioral capability: [`composition.barcodes.two-dimensional`](capability-matrix.md#capability-composition_dot_barcodes_dot_two_dash_dimensional)
-- Deferred ticket: `T31`
-- Reason: T31 exposes QR, DataMatrix ECC200 and PDF417 through the Native Interface Barcode2D declaration, DrawBarcode2D command and MeasureBarcode2D query. No approved Reference Suite barcode Migration Facade mapping exists; stable and preview surfaces remain empty and no unsupported stub is introduced. Reference extension strings map to typed controls, zero-based DataMatrix file IDs require adding one, and reference PDF417 bitmap inversion has no mapping because this capability emits vector Forms.
+- Deferred ticket: `T32`
+- Reason: Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #95 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 <a id="excluded-capability-composition_dot_canvas_dot_draw_dash_positioned_dash_text"></a>
 ### `composition.canvas.draw-positioned-text`
 
 - Behavioral capability: [`composition.canvas.draw-positioned-text`](capability-matrix.md#capability-composition_dot_canvas_dot_draw_dash_positioned_dash_text)
-- Deferred ticket: `T17`
-- Reason: T17 is a Composition-owned Native Interface Canvas Program and DrawCanvas command with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+- Deferred ticket: `T32`
+- Reason: Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #85 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 <a id="excluded-capability-composition_dot_canvas_dot_images_dash_colors_dash_transparency"></a>
 ### `composition.canvas.images-colors-transparency`
 
 - Behavioral capability: [`composition.canvas.images-colors-transparency`](capability-matrix.md#capability-composition_dot_canvas_dot_images_dash_colors_dash_transparency)
-- Deferred ticket: `T18`
-- Reason: T18 is a Composition-owned Native Interface Canvas image, color, mask, and transparency extension with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+- Deferred ticket: `T32`
+- Reason: Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #86 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 <a id="excluded-capability-composition_dot_fonts_dot_load_dash_embed_dash_subset_dash_fallback"></a>
 ### `composition.fonts.load-embed-subset-fallback`
 
 - Behavioral capability: [`composition.fonts.load-embed-subset-fallback`](capability-matrix.md#capability-composition_dot_fonts_dot_load_dash_embed_dash_subset_dash_fallback)
-- Deferred ticket: `T19`
-- Reason: T19 is a Composition-owned Native Interface explicit font-source, embedding, subsetting, Unicode-mapping, metrics, and ordered-fallback seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+- Deferred ticket: `T32`
+- Reason: Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #87 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 <a id="excluded-capability-composition_dot_layout_dot_paragraph_dash_areas"></a>
 ### `composition.layout.paragraph-areas`
 
 - Behavioral capability: [`composition.layout.paragraph-areas`](capability-matrix.md#capability-composition_dot_layout_dot_paragraph_dash_areas)
-- Deferred ticket: `T28`
-- Reason: T24 Paragraph Flow and T28 Unicode segmentation, script/bidi processing and explicit regional fallback remain Native Interface behavior. The current Preview layout.Document only owns document closing and does not map these semantics. No evidenced paragraph or Unicode Migration Facade mapping exists, and no stable or preview stub is introduced.
+- Deferred ticket: `T32`
+- Reason: Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #89 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 <a id="excluded-capability-composition_dot_layout_dot_paragraph_dash_pagination"></a>
 ### `composition.layout.paragraph-pagination`
 
 - Behavioral capability: [`composition.layout.paragraph-pagination`](capability-matrix.md#capability-composition_dot_layout_dot_paragraph_dash_pagination)
-- Deferred ticket: `T25`
-- Reason: T25 extends the Native Interface with advanced Paragraph Flow rules and bounded buffered relayout/flush. The existing Preview layout.Document does not map these semantics; no evidenced paragraph Migration Facade mapping exists and no stable or preview stub is introduced.
+- Deferred ticket: `T32`
+- Reason: Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #90 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 <a id="excluded-capability-composition_dot_layout_dot_tables"></a>
 ### `composition.layout.tables`
 
 - Behavioral capability: [`composition.layout.tables`](capability-matrix.md#capability-composition_dot_layout_dot_tables)
-- Deferred ticket: `T27`
-- Reason: T26 and T27 provide bounded table layout, pagination, repeated sections, keeps, relayout and incremental row release through the Native Interface. The existing Preview layout.Document close-ownership surface does not map these semantics, and no evidenced Reference Suite Table or Cell mapping exists; no stable or preview stub is introduced.
+- Deferred ticket: `T32`
+- Reason: Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #91, #92 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 <a id="excluded-capability-composition_dot_shaping_dot_harf_dash_buzz"></a>
 ### `composition.shaping.harf-buzz`
 
 - Behavioral capability: [`composition.shaping.harf-buzz`](capability-matrix.md#capability-composition_dot_shaping_dot_harf_dash_buzz)
-- Deferred ticket: `T29`
-- Reason: T29 adds explicit Provider selection and native glyph shaping to existing Native Interface Composition commands. The current Preview layout.Document close-ownership surface does not map this contract, no approved shaping Migration Facade mapping exists, and no stable or preview stub is introduced.
+- Deferred ticket: `T32`
+- Reason: Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #93 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 <a id="excluded-capability-conversion_dot_capability_dash_provider_dot_select_dash_execute"></a>
 ### `conversion.capability-provider.select-execute`
 
 - Behavioral capability: [`conversion.capability-provider.select-execute`](capability-matrix.md#capability-conversion_dot_capability_dash_provider_dot_select_dash_execute)
 - Deferred ticket: `T05`
-- Reason: T05 is a Native Interface provider seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+- Reason: Provider registration, deterministic selection, availability and Remote Disclosure Authorization form the project-owned deployment contract and have no Reference Suite counterpart. Rendering and shaping keep their separate required migration families. Certification remains required under #84.
 
 <a id="excluded-capability-conversion_dot_rendering"></a>
 ### `conversion.rendering`
 
 - Behavioral capability: [`conversion.rendering`](capability-matrix.md#capability-conversion_dot_rendering)
-- Deferred ticket: `T23`
-- Reason: T23 is a Native Interface bounded Rendering Query, PNG-consumption, and Provider integration seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+- Deferred ticket: `T32`
+- Reason: Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #88 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 <a id="excluded-capability-document_dot_annotations_dash_actions_dot_manage"></a>
 ### `document.annotations-actions.manage`
 
 - Behavioral capability: [`document.annotations-actions.manage`](capability-matrix.md#capability-document_dot_annotations_dash_actions_dot_manage)
-- Deferred ticket: `T12`
-- Reason: T12 is a Native Interface annotation, appearance, flattening, and inert local Action seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+- Deferred ticket: `T32`
+- Reason: Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #74 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 <a id="excluded-capability-document_dot_hardened_dash_worker"></a>
 ### `document.hardened-worker`
 
 - Behavioral capability: [`document.hardened-worker`](capability-matrix.md#capability-document_dot_hardened_dash_worker)
 - Deferred ticket: `T21`
-- Reason: T21 is a Native Interface execution profile and authenticated local Worker boundary with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+- Reason: Authenticated local Worker transport, launcher policy and command/query barriers are project-specific execution controls with no Reference Suite counterpart. The same document behavior remains required through its matching Facade. Certification remains required under #82.
 
 <a id="excluded-capability-document_dot_hardened_dash_worker_dot_recovery_dash_scale"></a>
 ### `document.hardened-worker.recovery-scale`
 
 - Behavioral capability: [`document.hardened-worker.recovery-scale`](capability-matrix.md#capability-document_dot_hardened_dash_worker_dot_recovery_dash_scale)
 - Deferred ticket: `T22`
-- Reason: T22 is a Native Interface transaction-recovery, bounded Worker-transport, resource-observation, and controlled-scale extension with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+- Reason: Environment-local transaction identity/status, bounded recovery and resource usage are project-specific controls with no Reference Suite counterpart. This does not exclude migration mappings for the document operations they execute. Certification remains required under #83.
 
 <a id="excluded-capability-document_dot_hostile_dash_input_dash_limits"></a>
 ### `document.hostile-input-limits`
 
 - Behavioral capability: [`document.hostile-input-limits`](capability-matrix.md#capability-document_dot_hostile_dash_input_dash_limits)
 - Deferred ticket: `T20`
-- Reason: T20 is a Native Interface trusted in-process Workflow Resource Policy with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+- Reason: Workflow Resource Policy and cooperative resource accounting are project-specific controls with no Reference Suite counterpart. PDF outcomes still require four independent chains; underlying document operations retain their own Facade obligations. Certification remains required under #81.
 
 <a id="excluded-capability-document_dot_images_dash_resources_dot_extract"></a>
 ### `document.images-resources.extract`
 
 - Behavioral capability: [`document.images-resources.extract`](capability-matrix.md#capability-document_dot_images_dash_resources_dot_extract)
-- Deferred ticket: `T14`
-- Reason: T14 is a Native Interface image and page/nested-Form resource-inventory Query seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+- Deferred ticket: `T32`
+- Reason: Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #76 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 <a id="excluded-capability-document_dot_incremental_dash_signature_dot_protect"></a>
 ### `document.incremental-signature.protect`
 
 - Behavioral capability: [`document.incremental-signature.protect`](capability-matrix.md#capability-document_dot_incremental_dash_signature_dot_protect)
-- Deferred ticket: `T15`
-- Reason: T15 is a Native Interface incremental-publication and Existing Signature policy within DocumentWorkflow with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+- Deferred ticket: `T32`
+- Reason: Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #77 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 <a id="excluded-capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments"></a>
 ### `document.metadata.outlines-destinations-attachments`
 
 - Behavioral capability: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
-- Deferred ticket: `T11`
-- Reason: T11 is a Native Interface metadata, outline, destination, and attachment seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+- Deferred ticket: `T32`
+- Reason: Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #73 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 <a id="excluded-capability-document_dot_page_dot_manipulate_dash_merge_dash_split"></a>
 ### `document.page.manipulate-merge-split`
 
 - Behavioral capability: [`document.page.manipulate-merge-split`](capability-matrix.md#capability-document_dot_page_dot_manipulate_dash_merge_dash_split)
-- Deferred ticket: `T10`
-- Reason: T10 is a Native Interface page manipulation, merge, and split seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+- Deferred ticket: `T32`
+- Reason: Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #72 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 <a id="excluded-capability-document_dot_text_dash_structure_dot_extract"></a>
 ### `document.text-structure.extract`
 
 - Behavioral capability: [`document.text-structure.extract`](capability-matrix.md#capability-document_dot_text_dash_structure_dot_extract)
-- Deferred ticket: `T13`
-- Reason: T13 is a Native Interface page-text, marked-content, and logical-structure Query seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+- Deferred ticket: `T32`
+- Reason: Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #75 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 <a id="excluded-capability-document_dot_value_dot_inspect_dash_patch"></a>
 ### `document.value.inspect-patch`
 
 - Behavioral capability: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
-- Deferred ticket: `T09`
-- Reason: T09 is a Native Interface low-level PDF Value and Document Patch seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+- Deferred ticket: `T32`
+- Reason: Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #71 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 <a id="excluded-capability-document_dot_version_dash_password_dash_security"></a>
 ### `document.version-password-security`
 
 - Behavioral capability: [`document.version-password-security`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security)
-- Deferred ticket: `T16`
-- Reason: T16 is a Native Interface PDF-version and Standard-handler password-security policy within DocumentWorkflow with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+- Deferred ticket: `T32`
+- Reason: Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #78, #79, #80 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.

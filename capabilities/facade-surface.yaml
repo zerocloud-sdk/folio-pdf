@@ -139,69 +139,95 @@ surfaces:
         - document.blank.create-publish-reopen
 
 excluded-capabilities:
-  - id: document.value.inspect-patch
-    ticket: T09
-    reason: T09 is a Native Interface low-level PDF Value and Document Patch seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
-  - id: document.page.manipulate-merge-split
-    ticket: T10
-    reason: T10 is a Native Interface page manipulation, merge, and split seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
-  - id: document.metadata.outlines-destinations-attachments
-    ticket: T11
-    reason: T11 is a Native Interface metadata, outline, destination, and attachment seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
-  - id: document.annotations-actions.manage
-    ticket: T12
-    reason: T12 is a Native Interface annotation, appearance, flattening, and inert local Action seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
-  - id: document.text-structure.extract
-    ticket: T13
-    reason: T13 is a Native Interface page-text, marked-content, and logical-structure Query seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
-  - id: document.images-resources.extract
-    ticket: T14
-    reason: T14 is a Native Interface image and page/nested-Form resource-inventory Query seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
-  - id: document.incremental-signature.protect
-    ticket: T15
-    reason: T15 is a Native Interface incremental-publication and Existing Signature policy within DocumentWorkflow with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
-  - id: document.version-password-security
-    ticket: T16
-    reason: T16 is a Native Interface PDF-version and Standard-handler password-security policy within DocumentWorkflow with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
-  - id: composition.canvas.draw-positioned-text
-    ticket: T17
-    reason: T17 is a Composition-owned Native Interface Canvas Program and DrawCanvas command with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
-  - id: composition.canvas.images-colors-transparency
-    ticket: T18
-    reason: T18 is a Composition-owned Native Interface Canvas image, color, mask, and transparency extension with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
-  - id: composition.fonts.load-embed-subset-fallback
-    ticket: T19
-    reason: T19 is a Composition-owned Native Interface explicit font-source, embedding, subsetting, Unicode-mapping, metrics, and ordered-fallback seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
-  - id: document.hostile-input-limits
-    ticket: T20
-    reason: T20 is a Native Interface trusted in-process Workflow Resource Policy with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
-  - id: document.hardened-worker
-    ticket: T21
-    reason: T21 is a Native Interface execution profile and authenticated local Worker boundary with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
-  - id: document.hardened-worker.recovery-scale
-    ticket: T22
-    reason: T22 is a Native Interface transaction-recovery, bounded Worker-transport, resource-observation, and controlled-scale extension with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
-  - id: conversion.rendering
-    ticket: T23
-    reason: T23 is a Native Interface bounded Rendering Query, PNG-consumption, and Provider integration seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
-  - id: composition.layout.paragraph-areas
-    ticket: T28
-    reason: T24 Paragraph Flow and T28 Unicode segmentation, script/bidi processing and explicit regional fallback remain Native Interface behavior. The current Preview layout.Document only owns document closing and does not map these semantics. No evidenced paragraph or Unicode Migration Facade mapping exists, and no stable or preview stub is introduced.
-  - id: composition.layout.paragraph-pagination
-    ticket: T25
-    reason: T25 extends the Native Interface with advanced Paragraph Flow rules and bounded buffered relayout/flush. The existing Preview layout.Document does not map these semantics; no evidenced paragraph Migration Facade mapping exists and no stable or preview stub is introduced.
-  - id: conversion.capability-provider.select-execute
-    ticket: T05
-    reason: T05 is a Native Interface provider seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
-  - id: composition.layout.tables
-    ticket: T27
-    reason: T26 and T27 provide bounded table layout, pagination, repeated sections, keeps, relayout and incremental row release through the Native Interface. The existing Preview layout.Document close-ownership surface does not map these semantics, and no evidenced Reference Suite Table or Cell mapping exists; no stable or preview stub is introduced.
-  - id: composition.shaping.harf-buzz
-    ticket: T29
-    reason: T29 adds explicit Provider selection and native glyph shaping to existing Native Interface Composition commands. The current Preview layout.Document close-ownership surface does not map this contract, no approved shaping Migration Facade mapping exists, and no stable or preview stub is introduced.
-  - id: composition.barcodes.one-dimensional
-    ticket: T30
-    reason: T30 provides semantic Barcode1D and explicit-font BarcodeText declarations through the Native Interface DrawBarcode1D command. No approved Reference Suite barcode Migration Facade mapping exists; stable and preview surfaces remain empty and no unsupported stub is introduced.
-  - id: composition.barcodes.two-dimensional
-    ticket: T31
-    reason: T31 exposes QR, DataMatrix ECC200 and PDF417 through the Native Interface Barcode2D declaration, DrawBarcode2D command and MeasureBarcode2D query. No approved Reference Suite barcode Migration Facade mapping exists; stable and preview surfaces remain empty and no unsupported stub is introduced. Reference extension strings map to typed controls, zero-based DataMatrix file IDs require adding one, and reference PDF417 bitmap inversion has no mapping because this capability emits vector Forms.
+- id: document.value.inspect-patch
+  ticket: T32
+  reason: 'Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under
+    #71 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.'
+- id: document.page.manipulate-merge-split
+  ticket: T32
+  reason: 'Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under
+    #72 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.'
+- id: document.metadata.outlines-destinations-attachments
+  ticket: T32
+  reason: 'Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under
+    #73 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.'
+- id: document.annotations-actions.manage
+  ticket: T32
+  reason: 'Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under
+    #74 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.'
+- id: document.text-structure.extract
+  ticket: T32
+  reason: 'Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under
+    #75 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.'
+- id: document.images-resources.extract
+  ticket: T32
+  reason: 'Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under
+    #76 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.'
+- id: document.incremental-signature.protect
+  ticket: T32
+  reason: 'Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under
+    #77 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.'
+- id: document.version-password-security
+  ticket: T32
+  reason: 'Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under
+    #78, #79, #80 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.'
+- id: composition.canvas.draw-positioned-text
+  ticket: T32
+  reason: 'Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under
+    #85 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.'
+- id: composition.canvas.images-colors-transparency
+  ticket: T32
+  reason: 'Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under
+    #86 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.'
+- id: composition.fonts.load-embed-subset-fallback
+  ticket: T32
+  reason: 'Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under
+    #87 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.'
+- id: document.hostile-input-limits
+  ticket: T20
+  reason: 'Workflow Resource Policy and cooperative resource accounting are project-specific controls with no Reference
+    Suite counterpart. PDF outcomes still require four independent chains; underlying document operations retain
+    their own Facade obligations. Certification remains required under #81.'
+- id: document.hardened-worker
+  ticket: T21
+  reason: 'Authenticated local Worker transport, launcher policy and command/query barriers are project-specific
+    execution controls with no Reference Suite counterpart. The same document behavior remains required through
+    its matching Facade. Certification remains required under #82.'
+- id: document.hardened-worker.recovery-scale
+  ticket: T22
+  reason: 'Environment-local transaction identity/status, bounded recovery and resource usage are project-specific
+    controls with no Reference Suite counterpart. This does not exclude migration mappings for the document operations
+    they execute. Certification remains required under #83.'
+- id: conversion.rendering
+  ticket: T32
+  reason: 'Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under
+    #88 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.'
+- id: composition.layout.paragraph-areas
+  ticket: T32
+  reason: 'Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under
+    #89 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.'
+- id: composition.layout.paragraph-pagination
+  ticket: T32
+  reason: 'Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under
+    #90 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.'
+- id: conversion.capability-provider.select-execute
+  ticket: T05
+  reason: 'Provider registration, deterministic selection, availability and Remote Disclosure Authorization form
+    the project-owned deployment contract and have no Reference Suite counterpart. Rendering and shaping keep their
+    separate required migration families. Certification remains required under #84.'
+- id: composition.layout.tables
+  ticket: T32
+  reason: 'Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under
+    #91, #92 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.'
+- id: composition.shaping.harf-buzz
+  ticket: T32
+  reason: 'Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under
+    #93 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.'
+- id: composition.barcodes.one-dimensional
+  ticket: T32
+  reason: 'Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under
+    #94 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.'
+- id: composition.barcodes.two-dimensional
+  ticket: T32
+  reason: 'Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under
+    #95 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.'

@@ -2,6 +2,8 @@
 
 # Capability Matrix
 
+Foundation 0.1.0 release obligations, exact required Ubuntu/JDK environments and current blockers: [Foundation readiness](foundation-readiness.md). Facade exclusions below record current missing coverage and cannot waive required Foundation mappings.
+
 Behavioral authority: [`../../capabilities/capability-matrix.yaml`](../../capabilities/capability-matrix.yaml)
 
 - Schema version: `1`
@@ -12,29 +14,29 @@ Behavioral authority: [`../../capabilities/capability-matrix.yaml`](../../capabi
 
 | Capability | Context | Status | Migration facade |
 | --- | --- | --- | --- |
-| [`composition.barcodes.one-dimensional`](#capability-composition_dot_barcodes_dot_one_dash_dimensional) | `composition` | `experimental` | [excluded by `T30`](facade-surface.md#excluded-capability-composition_dot_barcodes_dot_one_dash_dimensional) |
-| [`composition.barcodes.two-dimensional`](#capability-composition_dot_barcodes_dot_two_dash_dimensional) | `composition` | `experimental` | [excluded by `T31`](facade-surface.md#excluded-capability-composition_dot_barcodes_dot_two_dash_dimensional) |
-| [`composition.canvas.draw-positioned-text`](#capability-composition_dot_canvas_dot_draw_dash_positioned_dash_text) | `composition` | `experimental` | [excluded by `T17`](facade-surface.md#excluded-capability-composition_dot_canvas_dot_draw_dash_positioned_dash_text) |
-| [`composition.canvas.images-colors-transparency`](#capability-composition_dot_canvas_dot_images_dash_colors_dash_transparency) | `composition` | `experimental` | [excluded by `T18`](facade-surface.md#excluded-capability-composition_dot_canvas_dot_images_dash_colors_dash_transparency) |
-| [`composition.fonts.load-embed-subset-fallback`](#capability-composition_dot_fonts_dot_load_dash_embed_dash_subset_dash_fallback) | `composition` | `experimental` | [excluded by `T19`](facade-surface.md#excluded-capability-composition_dot_fonts_dot_load_dash_embed_dash_subset_dash_fallback) |
-| [`composition.layout.paragraph-areas`](#capability-composition_dot_layout_dot_paragraph_dash_areas) | `composition` | `experimental` | [excluded by `T28`](facade-surface.md#excluded-capability-composition_dot_layout_dot_paragraph_dash_areas) |
-| [`composition.layout.paragraph-pagination`](#capability-composition_dot_layout_dot_paragraph_dash_pagination) | `composition` | `experimental` | [excluded by `T25`](facade-surface.md#excluded-capability-composition_dot_layout_dot_paragraph_dash_pagination) |
-| [`composition.layout.tables`](#capability-composition_dot_layout_dot_tables) | `composition` | `experimental` | [excluded by `T27`](facade-surface.md#excluded-capability-composition_dot_layout_dot_tables) |
-| [`composition.shaping.harf-buzz`](#capability-composition_dot_shaping_dot_harf_dash_buzz) | `composition` | `experimental` | [excluded by `T29`](facade-surface.md#excluded-capability-composition_dot_shaping_dot_harf_dash_buzz) |
+| [`composition.barcodes.one-dimensional`](#capability-composition_dot_barcodes_dot_one_dash_dimensional) | `composition` | `experimental` | [excluded by `T32`](facade-surface.md#excluded-capability-composition_dot_barcodes_dot_one_dash_dimensional) |
+| [`composition.barcodes.two-dimensional`](#capability-composition_dot_barcodes_dot_two_dash_dimensional) | `composition` | `experimental` | [excluded by `T32`](facade-surface.md#excluded-capability-composition_dot_barcodes_dot_two_dash_dimensional) |
+| [`composition.canvas.draw-positioned-text`](#capability-composition_dot_canvas_dot_draw_dash_positioned_dash_text) | `composition` | `experimental` | [excluded by `T32`](facade-surface.md#excluded-capability-composition_dot_canvas_dot_draw_dash_positioned_dash_text) |
+| [`composition.canvas.images-colors-transparency`](#capability-composition_dot_canvas_dot_images_dash_colors_dash_transparency) | `composition` | `experimental` | [excluded by `T32`](facade-surface.md#excluded-capability-composition_dot_canvas_dot_images_dash_colors_dash_transparency) |
+| [`composition.fonts.load-embed-subset-fallback`](#capability-composition_dot_fonts_dot_load_dash_embed_dash_subset_dash_fallback) | `composition` | `experimental` | [excluded by `T32`](facade-surface.md#excluded-capability-composition_dot_fonts_dot_load_dash_embed_dash_subset_dash_fallback) |
+| [`composition.layout.paragraph-areas`](#capability-composition_dot_layout_dot_paragraph_dash_areas) | `composition` | `experimental` | [excluded by `T32`](facade-surface.md#excluded-capability-composition_dot_layout_dot_paragraph_dash_areas) |
+| [`composition.layout.paragraph-pagination`](#capability-composition_dot_layout_dot_paragraph_dash_pagination) | `composition` | `experimental` | [excluded by `T32`](facade-surface.md#excluded-capability-composition_dot_layout_dot_paragraph_dash_pagination) |
+| [`composition.layout.tables`](#capability-composition_dot_layout_dot_tables) | `composition` | `experimental` | [excluded by `T32`](facade-surface.md#excluded-capability-composition_dot_layout_dot_tables) |
+| [`composition.shaping.harf-buzz`](#capability-composition_dot_shaping_dot_harf_dash_buzz) | `composition` | `experimental` | [excluded by `T32`](facade-surface.md#excluded-capability-composition_dot_shaping_dot_harf_dash_buzz) |
 | [`conversion.capability-provider.select-execute`](#capability-conversion_dot_capability_dash_provider_dot_select_dash_execute) | `conversion` | `experimental` | [excluded by `T05`](facade-surface.md#excluded-capability-conversion_dot_capability_dash_provider_dot_select_dash_execute) |
-| [`conversion.rendering`](#capability-conversion_dot_rendering) | `conversion` | `experimental` | [excluded by `T23`](facade-surface.md#excluded-capability-conversion_dot_rendering) |
-| [`document.annotations-actions.manage`](#capability-document_dot_annotations_dash_actions_dot_manage) | `document-engine` | `experimental` | [excluded by `T12`](facade-surface.md#excluded-capability-document_dot_annotations_dash_actions_dot_manage) |
+| [`conversion.rendering`](#capability-conversion_dot_rendering) | `conversion` | `experimental` | [excluded by `T32`](facade-surface.md#excluded-capability-conversion_dot_rendering) |
+| [`document.annotations-actions.manage`](#capability-document_dot_annotations_dash_actions_dot_manage) | `document-engine` | `experimental` | [excluded by `T32`](facade-surface.md#excluded-capability-document_dot_annotations_dash_actions_dot_manage) |
 | [`document.blank.create-publish-reopen`](#capability-document_dot_blank_dot_create_dash_publish_dash_reopen) | `document-engine` | `experimental` | [`itext7.kernel.pdf-document.add-new-page`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_add_dash_new_dash_page), [`itext7.kernel.pdf-document.close`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_close), [`itext7.kernel.pdf-document.constructor-reader`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_constructor_dash_reader), [`itext7.kernel.pdf-document.constructor-writer`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_constructor_dash_writer), [`itext7.kernel.pdf-document.get-number-of-pages`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_number_dash_of_dash_pages), [`itext7.kernel.pdf-exception.constructor-message-cause`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_exception_dot_constructor_dash_message_dash_cause), [`itext7.kernel.pdf-page.type`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_page_dot_type), [`itext7.kernel.pdf-reader.close`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_reader_dot_close), [`itext7.kernel.pdf-reader.constructor-string`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_reader_dot_constructor_dash_string), [`itext7.kernel.pdf-writer.constructor-string`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_writer_dot_constructor_dash_string), [`itext7.layout.document.close`](facade-surface.md#facade-surface-itext7_dot_layout_dot_document_dot_close), [`itext7.layout.document.constructor-pdf-document`](facade-surface.md#facade-surface-itext7_dot_layout_dot_document_dot_constructor_dash_pdf_dash_document) |
 | [`document.hardened-worker`](#capability-document_dot_hardened_dash_worker) | `document-engine` | `experimental` | [excluded by `T21`](facade-surface.md#excluded-capability-document_dot_hardened_dash_worker) |
 | [`document.hardened-worker.recovery-scale`](#capability-document_dot_hardened_dash_worker_dot_recovery_dash_scale) | `document-engine` | `experimental` | [excluded by `T22`](facade-surface.md#excluded-capability-document_dot_hardened_dash_worker_dot_recovery_dash_scale) |
 | [`document.hostile-input-limits`](#capability-document_dot_hostile_dash_input_dash_limits) | `document-engine` | `experimental` | [excluded by `T20`](facade-surface.md#excluded-capability-document_dot_hostile_dash_input_dash_limits) |
-| [`document.images-resources.extract`](#capability-document_dot_images_dash_resources_dot_extract) | `document-engine` | `experimental` | [excluded by `T14`](facade-surface.md#excluded-capability-document_dot_images_dash_resources_dot_extract) |
-| [`document.incremental-signature.protect`](#capability-document_dot_incremental_dash_signature_dot_protect) | `document-engine` | `experimental` | [excluded by `T15`](facade-surface.md#excluded-capability-document_dot_incremental_dash_signature_dot_protect) |
-| [`document.metadata.outlines-destinations-attachments`](#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments) | `document-engine` | `experimental` | [excluded by `T11`](facade-surface.md#excluded-capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments) |
-| [`document.page.manipulate-merge-split`](#capability-document_dot_page_dot_manipulate_dash_merge_dash_split) | `document-engine` | `experimental` | [excluded by `T10`](facade-surface.md#excluded-capability-document_dot_page_dot_manipulate_dash_merge_dash_split) |
-| [`document.text-structure.extract`](#capability-document_dot_text_dash_structure_dot_extract) | `document-engine` | `experimental` | [excluded by `T13`](facade-surface.md#excluded-capability-document_dot_text_dash_structure_dot_extract) |
-| [`document.value.inspect-patch`](#capability-document_dot_value_dot_inspect_dash_patch) | `document-engine` | `experimental` | [excluded by `T09`](facade-surface.md#excluded-capability-document_dot_value_dot_inspect_dash_patch) |
-| [`document.version-password-security`](#capability-document_dot_version_dash_password_dash_security) | `document-engine` | `experimental` | [excluded by `T16`](facade-surface.md#excluded-capability-document_dot_version_dash_password_dash_security) |
+| [`document.images-resources.extract`](#capability-document_dot_images_dash_resources_dot_extract) | `document-engine` | `experimental` | [excluded by `T32`](facade-surface.md#excluded-capability-document_dot_images_dash_resources_dot_extract) |
+| [`document.incremental-signature.protect`](#capability-document_dot_incremental_dash_signature_dot_protect) | `document-engine` | `experimental` | [excluded by `T32`](facade-surface.md#excluded-capability-document_dot_incremental_dash_signature_dot_protect) |
+| [`document.metadata.outlines-destinations-attachments`](#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments) | `document-engine` | `experimental` | [excluded by `T32`](facade-surface.md#excluded-capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments) |
+| [`document.page.manipulate-merge-split`](#capability-document_dot_page_dot_manipulate_dash_merge_dash_split) | `document-engine` | `experimental` | [excluded by `T32`](facade-surface.md#excluded-capability-document_dot_page_dot_manipulate_dash_merge_dash_split) |
+| [`document.text-structure.extract`](#capability-document_dot_text_dash_structure_dot_extract) | `document-engine` | `experimental` | [excluded by `T32`](facade-surface.md#excluded-capability-document_dot_text_dash_structure_dot_extract) |
+| [`document.value.inspect-patch`](#capability-document_dot_value_dot_inspect_dash_patch) | `document-engine` | `experimental` | [excluded by `T32`](facade-surface.md#excluded-capability-document_dot_value_dot_inspect_dash_patch) |
+| [`document.version-password-security`](#capability-document_dot_version_dash_password_dash_security) | `document-engine` | `experimental` | [excluded by `T32`](facade-surface.md#excluded-capability-document_dot_version_dash_password_dash_security) |
 
 <a id="capability-composition_dot_barcodes_dot_one_dash_dimensional"></a>
 ## `composition.barcodes.one-dimensional`
@@ -66,7 +68,7 @@ Draw all Reference Suite one-dimensional barcode families as PDF vectors with ex
 
 - Stable: none
 - Preview: none
-- Explicit exclusion: [`T30`](facade-surface.md#excluded-capability-composition_dot_barcodes_dot_one_dash_dimensional) — T30 provides semantic Barcode1D and explicit-font BarcodeText declarations through the Native Interface DrawBarcode1D command. No approved Reference Suite barcode Migration Facade mapping exists; stable and preview surfaces remain empty and no unsupported stub is introduced.
+- Explicit exclusion: [`T32`](facade-surface.md#excluded-capability-composition_dot_barcodes_dot_one_dash_dimensional) — Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #94 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 ### Gates and limitations
 
@@ -134,7 +136,7 @@ Generate QR, DataMatrix ECC200 and PDF417 as reusable vector Forms with strict e
 
 - Stable: none
 - Preview: none
-- Explicit exclusion: [`T31`](facade-surface.md#excluded-capability-composition_dot_barcodes_dot_two_dash_dimensional) — T31 exposes QR, DataMatrix ECC200 and PDF417 through the Native Interface Barcode2D declaration, DrawBarcode2D command and MeasureBarcode2D query. No approved Reference Suite barcode Migration Facade mapping exists; stable and preview surfaces remain empty and no unsupported stub is introduced. Reference extension strings map to typed controls, zero-based DataMatrix file IDs require adding one, and reference PDF417 bitmap inversion has no mapping because this capability emits vector Forms.
+- Explicit exclusion: [`T32`](facade-surface.md#excluded-capability-composition_dot_barcodes_dot_two_dash_dimensional) — Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #95 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 ### Gates and limitations
 
@@ -219,7 +221,7 @@ Append validated backend-neutral vector graphics and explicitly positioned glyph
 
 - Stable: none
 - Preview: none
-- Explicit exclusion: [`T17`](facade-surface.md#excluded-capability-composition_dot_canvas_dot_draw_dash_positioned_dash_text) — T17 is a Composition-owned Native Interface Canvas Program and DrawCanvas command with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+- Explicit exclusion: [`T32`](facade-surface.md#excluded-capability-composition_dot_canvas_dot_draw_dash_positioned_dash_text) — Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #85 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 ### Gates and limitations
 
@@ -300,7 +302,7 @@ Embed, place, and reuse bounded image resources with explicit Device, calibrated
 
 - Stable: none
 - Preview: none
-- Explicit exclusion: [`T18`](facade-surface.md#excluded-capability-composition_dot_canvas_dot_images_dash_colors_dash_transparency) — T18 is a Composition-owned Native Interface Canvas image, color, mask, and transparency extension with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+- Explicit exclusion: [`T32`](facade-surface.md#excluded-capability-composition_dot_canvas_dot_images_dash_colors_dash_transparency) — Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #86 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 ### Gates and limitations
 
@@ -379,7 +381,7 @@ Load only explicit TrueType sources, select ordered fallbacks, embed or subset t
 
 - Stable: none
 - Preview: none
-- Explicit exclusion: [`T19`](facade-surface.md#excluded-capability-composition_dot_fonts_dot_load_dash_embed_dash_subset_dash_fallback) — T19 is a Composition-owned Native Interface explicit font-source, embedding, subsetting, Unicode-mapping, metrics, and ordered-fallback seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+- Explicit exclusion: [`T32`](facade-surface.md#excluded-capability-composition_dot_fonts_dot_load_dash_embed_dash_subset_dash_fallback) — Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #87 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 ### Gates and limitations
 
@@ -456,7 +458,7 @@ Compose mixed semantic paragraphs across finite explicit new-page areas with mar
 
 - Stable: none
 - Preview: none
-- Explicit exclusion: [`T28`](facade-surface.md#excluded-capability-composition_dot_layout_dot_paragraph_dash_areas) — T24 Paragraph Flow and T28 Unicode segmentation, script/bidi processing and explicit regional fallback remain Native Interface behavior. The current Preview layout.Document only owns document closing and does not map these semantics. No evidenced paragraph or Unicode Migration Facade mapping exists, and no stable or preview stub is introduced.
+- Explicit exclusion: [`T32`](facade-surface.md#excluded-capability-composition_dot_layout_dot_paragraph_dash_areas) — Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #89 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 ### Gates and limitations
 
@@ -468,7 +470,7 @@ Compose mixed semantic paragraphs across finite explicit new-page areas with mar
 - Dependency Gate: [`document.hardened-worker`](#capability-document_dot_hardened_dash_worker) must be `compatible`
 - Promotion gate `T06`: Complete independent standards evidence and close all compatible-status Dependency Gates. Project font evidence does not certify the Foundation Noto set or its four required platform profiles.
 - Limitation: Version 1 appends the reached prefix of a finite list of new unrotated pages. Dimensions are positive and at most 14400 points; nonnegative margins leave a positive box. Areas are explicit rectangles relative to that box or the whole box when omitted. There is no implicit page-template repetition or existing-page-area insertion.
-- Limitation: Paragraphs contain logical Unicode text at explicit sizes and atomic Canvas Transparency Groups. Without a T29 shaping preference, fonts reuse T19 staging, explicit ordered scalar fallback, integral CID widths, embedding/subsetting and ToUnicode, including the T28 static TrueType extension. T29 separately supplies opt-in native shaping. No system or online fonts are discovered. Seven pinned unshaped Noto reference profiles are tested; complete Foundation font and four-platform certification remains open.
+- Limitation: Paragraphs contain logical Unicode text at explicit sizes and atomic Canvas Transparency Groups. Without a T29 shaping preference, fonts reuse T19 staging, explicit ordered scalar fallback, integral CID widths, embedding/subsetting and ToUnicode, including the T28 static TrueType extension. T29 separately supplies opt-in native shaping. No system or online fonts are discovered. Seven pinned unshaped Noto reference profiles are tested; complete Foundation font and required Ubuntu/JDK environment certification remains open.
 - Limitation: ICU4J 77.1 uses explicit root-locale grapheme, word and line segmentation, script classification and paragraph bidi analysis. Wrapping prefers Unicode line opportunities and emergency complete-grapheme boundaries; clusters survive adjacent inlines, justification and visual reordering. LF, U+2028 and U+2029 force breaks; bidi controls affect order without glyph selection. All input scalars count toward limits. Other ISO controls and unpaired surrogates remain invalid except version-2 tabs. First-strong direction falls back to LTR; line whitespace reset and odd-level mirror mapping determine visual output. Public text queries observe displayed scalar order, not reconstructed logical input. No shaping, normalization, kerning, mark attachment, GSUB/GPOS, hyphenation or vertical text is supplied.
 - Limitation: LEFT, CENTER and RIGHT align natural advances within the area's width or a paragraph width cap. JUSTIFIED expands nonterminal spaces on automatic nonfinal lines. Lines reserve max(leading, maximum source-font ascent plus descent and graphic height); graphics sit on the baseline. No implicit paragraph spacing is added.
 - Limitation: All declaration, inline, line and generated page-operator counts are finite. Font limits apply once to the whole flow; Canvas resource limits apply separately to each bounded inline graphic. Transaction-wide page, object, modeled memory, decompression, time and temporary-storage limits still apply. Exhaustion is COMPOSITION_AREA_EXHAUSTED, invalid declarations are COMPOSITION_INVALID, and composition bounds use COMPOSITION_LIMIT_EXCEEDED; dependency failures retain their codes and safe diagnostics.
@@ -535,7 +537,7 @@ Apply indentation, aligned tabs, hard keep and widow/orphan rules, horizontal ov
 
 - Stable: none
 - Preview: none
-- Explicit exclusion: [`T25`](facade-surface.md#excluded-capability-composition_dot_layout_dot_paragraph_dash_pagination) — T25 extends the Native Interface with advanced Paragraph Flow rules and bounded buffered relayout/flush. The existing Preview layout.Document does not map these semantics; no evidenced paragraph Migration Facade mapping exists and no stable or preview stub is introduced.
+- Explicit exclusion: [`T32`](facade-surface.md#excluded-capability-composition_dot_layout_dot_paragraph_dash_pagination) — Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #90 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 ### Gates and limitations
 
@@ -617,7 +619,7 @@ Compose bounded FIXED/AUTO tables across finite areas and pages with split rows 
 
 - Stable: none
 - Preview: none
-- Explicit exclusion: [`T27`](facade-surface.md#excluded-capability-composition_dot_layout_dot_tables) — T26 and T27 provide bounded table layout, pagination, repeated sections, keeps, relayout and incremental row release through the Native Interface. The existing Preview layout.Document close-ownership surface does not map these semantics, and no evidenced Reference Suite Table or Cell mapping exists; no stable or preview stub is introduced.
+- Explicit exclusion: [`T32`](facade-surface.md#excluded-capability-composition_dot_layout_dot_tables) — Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #91, #92 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 ### Gates and limitations
 
@@ -703,7 +705,7 @@ Shape explicitly selected fonts through the project-owned HarfBuzz Provider and 
 
 - Stable: none
 - Preview: none
-- Explicit exclusion: [`T29`](facade-surface.md#excluded-capability-composition_dot_shaping_dot_harf_dash_buzz) — T29 adds explicit Provider selection and native glyph shaping to existing Native Interface Composition commands. The current Preview layout.Document close-ownership surface does not map this contract, no approved shaping Migration Facade mapping exists, and no stable or preview stub is introduced.
+- Explicit exclusion: [`T32`](facade-surface.md#excluded-capability-composition_dot_shaping_dot_harf_dash_buzz) — Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #93 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 ### Gates and limitations
 
@@ -714,7 +716,7 @@ Shape explicitly selected fonts through the project-owned HarfBuzz Provider and 
 - Dependency Gate: [`composition.layout.tables`](#capability-composition_dot_layout_dot_tables) must be `compatible`
 - Dependency Gate: [`document.hostile-input-limits`](#capability-document_dot_hostile_dash_input_dash_limits) must be `compatible`
 - Dependency Gate: [`document.hardened-worker`](#capability-document_dot_hardened_dash_worker) must be `compatible`
-- Promotion gate `T29`: Retain actual pinned native, installation, subset, geometry and eight-page raster observations for Linux x86-64, Windows x86-64, macOS x86-64 and macOS arm64; missing tools or platform evidence remain indeterminate.
+- Promotion gate `T29`: Retain actual pinned native, installation, subset, geometry and eight-page raster observations for every required Ubuntu 24.04/Linux x86-64 JDK 8, 11, 17 and 21 environment under ADR-0040; missing required tools or observations remain indeterminate. Windows and macOS remain uncertified and are not Foundation 0.1.0 release gates.
 - Promotion gate `T06`: Complete independent standards evidence and compatible-status Dependency Gates before compatibility promotion.
 - Limitation: The caller separately installs HarfBuzz 10.2.0 and the project-owned C helper, registers the Java Provider and explicitly selects the shaping capability in the Workflow Request. Registration alone does not change Composition. No unofficial Java wrapper, native runtime bundle, system-font search or runtime download is introduced.
 - Limitation: Static admitted TrueType fonts and horizontal OpenType shaping use default features, monotone grapheme clusters and explicit run direction/script/language. The fixed Arabic, Hebrew, Devanagari and Thai corpus includes marks, ligatures or reordering, mixed Latin, narrow lines and ordered explicit fallback. Vertical text, variable-font instances, feature overrides and a public per-run language selector are outside this profile.
@@ -722,8 +724,8 @@ Shape explicitly selected fonts through the project-owned HarfBuzz Provider and 
 - Limitation: Native source GIDs, input cluster ranges and independent x/y advances/offsets survive embedding. Subsets contain transitive composite glyphs, separate CIDToGID mappings and complete cluster ToUnicode values. ActualText records each native run's logical input and requires effective PDF 1.5 or newer; older incremental Sources fail before publication even for BMP-only mappings. It does not reconstruct whole-paragraph logical order across bidi runs or create tagged structure.
 - Limitation: Direct DrawPositionedUnicodeText retains its unshaped scalar-order contract. Composition without a shaping preference retains the existing T28 contract. Opting in can change glyph counts, advances, line/page breaks, text mappings and PDF bytes without changing paragraph/table command versions.
 - Limitation: Existing Provider, font, Composition, table and Workflow resource limits apply. Table shaping minima consider legal grapheme partitions under the existing finite work budget. Candidate plans release reservations when rejected; chosen plans live through painting. Native intermediate allocation is not a certified heap or RSS bound.
-- Limitation: In both modes the native helper runs through the parent-side Provider subprocess. It is not fully contained by the PDF Worker's filesystem, network, CPU or memory restrictions. HARDENED_WORKER retains its existing Linux/JDK envelope; other required T29 platforms still need native and IN_PROCESS evidence.
-- Limitation: All four platform receipts are required. Windows x86-64 and macOS x86-64/arm64 have no actual execution evidence. The live engine observer currently implements Linux startup mappings only; ambiguous preload interposition and unavailable observations remain indeterminate. No platform is certified by installation or local unit tests alone.
+- Limitation: In both modes the native helper runs through the parent-side Provider subprocess. It is not fully contained by the PDF Worker's filesystem, network, CPU or memory restrictions. HARDENED_WORKER retains its existing Linux/JDK envelope; Foundation 0.1.0 requires actual native and both Workflow observations on the declared Ubuntu 24.04/JDK environments under ADR-0040.
+- Limitation: Foundation 0.1.0 requires actual Ubuntu 24.04/Linux x86-64 receipts for JDK 8, 11, 17 and 21 under ADR-0040. Windows x86-64 and macOS x86-64/arm64 remain uncertified and are not required release gates for this version. The live engine observer currently implements Linux startup mappings only; ambiguous preload interposition and unavailable observations remain indeterminate. No platform is certified by installation or local unit tests alone.
 
 ### Evidence
 
@@ -782,7 +784,7 @@ Register, inspect, deterministically select, and safely execute project-owned Ca
 
 - Stable: none
 - Preview: none
-- Explicit exclusion: [`T05`](facade-surface.md#excluded-capability-conversion_dot_capability_dash_provider_dot_select_dash_execute) — T05 is a Native Interface provider seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+- Explicit exclusion: [`T05`](facade-surface.md#excluded-capability-conversion_dot_capability_dash_provider_dot_select_dash_execute) — Provider registration, deterministic selection, availability and Remote Disclosure Authorization form the project-owned deployment contract and have no Reference Suite counterpart. Rendering and shaping keep their separate required migration families. Certification remains required under #84.
 
 ### Gates and limitations
 
@@ -840,7 +842,7 @@ Render selected current pages to bounded, session-scoped PNGs through a replacea
 
 - Stable: none
 - Preview: none
-- Explicit exclusion: [`T23`](facade-surface.md#excluded-capability-conversion_dot_rendering) — T23 is a Native Interface bounded Rendering Query, PNG-consumption, and Provider integration seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+- Explicit exclusion: [`T32`](facade-surface.md#excluded-capability-conversion_dot_rendering) — Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #88 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 ### Gates and limitations
 
@@ -927,7 +929,7 @@ Read, create, update, remove, flatten, and preserve managed annotations and iner
 
 - Stable: none
 - Preview: none
-- Explicit exclusion: [`T12`](facade-surface.md#excluded-capability-document_dot_annotations_dash_actions_dot_manage) — T12 is a Native Interface annotation, appearance, flattening, and inert local Action seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+- Explicit exclusion: [`T32`](facade-surface.md#excluded-capability-document_dot_annotations_dash_actions_dot_manage) — Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #74 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 ### Gates and limitations
 
@@ -1070,7 +1072,7 @@ Execute the fixed-point Document Workflow contract through an authenticated, bou
 
 - Stable: none
 - Preview: none
-- Explicit exclusion: [`T21`](facade-surface.md#excluded-capability-document_dot_hardened_dash_worker) — T21 is a Native Interface execution profile and authenticated local Worker boundary with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+- Explicit exclusion: [`T21`](facade-surface.md#excluded-capability-document_dot_hardened_dash_worker) — Authenticated local Worker transport, launcher policy and command/query barriers are project-specific execution controls with no Reference Suite counterpart. The same document behavior remains required through its matching Facade. Certification remains required under #82.
 
 ### Gates and limitations
 
@@ -1141,7 +1143,7 @@ Recover safely retryable Hardened Worker failures, resolve uncertain publication
 
 - Stable: none
 - Preview: none
-- Explicit exclusion: [`T22`](facade-surface.md#excluded-capability-document_dot_hardened_dash_worker_dot_recovery_dash_scale) — T22 is a Native Interface transaction-recovery, bounded Worker-transport, resource-observation, and controlled-scale extension with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+- Explicit exclusion: [`T22`](facade-surface.md#excluded-capability-document_dot_hardened_dash_worker_dot_recovery_dash_scale) — Environment-local transaction identity/status, bounded recovery and resource usage are project-specific controls with no Reference Suite counterpart. This does not exclude migration mappings for the document operations they execute. Certification remains required under #83.
 
 ### Gates and limitations
 
@@ -1207,7 +1209,7 @@ Apply one finite-default, transaction-wide hostile-input resource policy to trus
 
 - Stable: none
 - Preview: none
-- Explicit exclusion: [`T20`](facade-surface.md#excluded-capability-document_dot_hostile_dash_input_dash_limits) — T20 is a Native Interface trusted in-process Workflow Resource Policy with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+- Explicit exclusion: [`T20`](facade-surface.md#excluded-capability-document_dot_hostile_dash_input_dash_limits) — Workflow Resource Policy and cooperative resource accounting are project-specific controls with no Reference Suite counterpart. PDF outcomes still require four independent chains; underlying document operations retain their own Facade obligations. Certification remains required under #81.
 
 ### Gates and limitations
 
@@ -1272,7 +1274,7 @@ Extract a bounded deterministic inventory of page and nested-Form resources, inc
 
 - Stable: none
 - Preview: none
-- Explicit exclusion: [`T14`](facade-surface.md#excluded-capability-document_dot_images_dash_resources_dot_extract) — T14 is a Native Interface image and page/nested-Form resource-inventory Query seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+- Explicit exclusion: [`T32`](facade-surface.md#excluded-capability-document_dot_images_dash_resources_dot_extract) — Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #76 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 ### Gates and limitations
 
@@ -1333,7 +1335,7 @@ Append validated PDF revisions while preserving the complete primary Source and 
 
 - Stable: none
 - Preview: none
-- Explicit exclusion: [`T15`](facade-surface.md#excluded-capability-document_dot_incremental_dash_signature_dot_protect) — T15 is a Native Interface incremental-publication and Existing Signature policy within DocumentWorkflow with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+- Explicit exclusion: [`T32`](facade-surface.md#excluded-capability-document_dot_incremental_dash_signature_dot_protect) — Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #77 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 ### Gates and limitations
 
@@ -1408,7 +1410,7 @@ Read, create, update, and preserve document information, XMP metadata, outlines,
 
 - Stable: none
 - Preview: none
-- Explicit exclusion: [`T11`](facade-surface.md#excluded-capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments) — T11 is a Native Interface metadata, outline, destination, and attachment seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+- Explicit exclusion: [`T32`](facade-surface.md#excluded-capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments) — Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #73 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 ### Gates and limitations
 
@@ -1468,7 +1470,7 @@ Insert, remove, move, and copy pages; append ordered named Sources; and publish 
 
 - Stable: none
 - Preview: none
-- Explicit exclusion: [`T10`](facade-surface.md#excluded-capability-document_dot_page_dot_manipulate_dash_merge_dash_split) — T10 is a Native Interface page manipulation, merge, and split seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+- Explicit exclusion: [`T32`](facade-surface.md#excluded-capability-document_dot_page_dot_manipulate_dash_merge_dash_split) — Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #72 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 ### Gates and limitations
 
@@ -1532,7 +1534,7 @@ Extract bounded deterministic page text, mapping evidence, marked content, and T
 
 - Stable: none
 - Preview: none
-- Explicit exclusion: [`T13`](facade-surface.md#excluded-capability-document_dot_text_dash_structure_dot_extract) — T13 is a Native Interface page-text, marked-content, and logical-structure Query seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+- Explicit exclusion: [`T32`](facade-surface.md#excluded-capability-document_dot_text_dash_structure_dot_extract) — Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #75 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 ### Gates and limitations
 
@@ -1595,7 +1597,7 @@ Inspect all nine backend-neutral PDF Value kinds through bounded Session views a
 
 - Stable: none
 - Preview: none
-- Explicit exclusion: [`T09`](facade-surface.md#excluded-capability-document_dot_value_dot_inspect_dash_patch) — T09 is a Native Interface low-level PDF Value and Document Patch seam with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+- Explicit exclusion: [`T32`](facade-surface.md#excluded-capability-document_dot_value_dot_inspect_dash_patch) — Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #71 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 ### Gates and limitations
 
@@ -1661,7 +1663,7 @@ Inspect exact effective PDF versions, publish PDF 1.7 or 2.0, and authenticate a
 
 - Stable: none
 - Preview: none
-- Explicit exclusion: [`T16`](facade-surface.md#excluded-capability-document_dot_version_dash_password_dash_security) — T16 is a Native Interface PDF-version and Standard-handler password-security policy within DocumentWorkflow with no approved Reference Suite Migration Facade mapping; no stable or preview stub is introduced.
+- Explicit exclusion: [`T32`](facade-surface.md#excluded-capability-document_dot_version_dash_password_dash_security) — Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #78, #79, #80 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 ### Gates and limitations
 

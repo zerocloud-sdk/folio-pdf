@@ -1,5 +1,33 @@
 package net.zerocloud.pdf.tools.inventory;
 
+enum ObligationKind {
+    BEHAVIOR("behavior"), CONTROL("control"), AGGREGATE("aggregate"), RELEASE("release");
+
+    private final String value;
+
+    ObligationKind(String value) {
+        this.value = value;
+    }
+
+    static ObligationKind from(String value) {
+        for (ObligationKind kind : values()) {
+            if (kind.value.equals(value)) {
+                return kind;
+            }
+        }
+        return null;
+    }
+
+    boolean requiresPdfEvidence() {
+        return this == BEHAVIOR || this == CONTROL;
+    }
+
+    @Override
+    public String toString() {
+        return value;
+    }
+}
+
 enum CapabilityState {
     PLANNED("planned"),
     EXPERIMENTAL("experimental"),

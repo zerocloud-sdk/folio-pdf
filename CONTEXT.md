@@ -26,6 +26,14 @@ _Avoid_: skeleton release, Core parity, production-complete release
 A Capability Matrix prerequisite that must be `compatible` before dependent work can claim compatibility. Only verified technical dependencies are hard gates; sequencing preferences remain advisory.
 _Avoid_: phase date, team preference, issue order
 
+**Foundation Obligation**:
+A required, source-traceable part of the Foundation Release contract, owned by a capability, independently certifiable subcapability, or release control. An aggregate Foundation Obligation remains incomplete until all its required members and dependencies are satisfied.
+_Avoid_: ticket status, optional release checklist
+
+**Certified Environment**:
+An actually exercised OS image, JDK vendor/build, execution configuration, native engine and tool combination with complete Acceptance Evidence for a particular candidate and Acceptance Profile. A matching architecture or JDK major version alone does not establish the same Certified Environment.
+_Avoid_: supported platform label, generic Linux certification
+
 **Release Train**:
 One version shared by every first-party module and coordinated through the BOM. During `0.x`, all modules move together even when contexts progress independently.
 _Avoid_: add-on version, independent module release
