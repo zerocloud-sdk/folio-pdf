@@ -50,8 +50,8 @@ public final class InventoryCommandTest {
             }
         }
         assertNotNull(mappedCapability);
-        assertEquals(0, mappedCapability.stableFacadeIds.size());
-        assertEquals(12, mappedCapability.previewFacadeIds.size());
+        assertEquals(12, mappedCapability.stableFacadeIds.size());
+        assertEquals(0, mappedCapability.previewFacadeIds.size());
         for (InventoryModel.Exclusion exclusion : validation.model().exclusions) {
             assertFalse("T04 capability remains explicitly excluded",
                     mappedCapability.id.equals(exclusion.capability));
@@ -61,13 +61,14 @@ public final class InventoryCommandTest {
         String facades = read(repositoryRoot.resolve(MarkdownGenerator.FACADE_OUTPUT));
         assertTrue(capabilities.contains("- Status: `experimental`"));
         assertTrue(capabilities.contains("- Certified platforms: none"));
-        assertTrue(capabilities.contains("- Promotion gate `T06`:"));
+        assertTrue(capabilities.contains("- Status: `compatible`"));
         assertTrue(capabilities.contains(
                 "`document.blank.create-publish-reopen`"));
         assertTrue(capabilities.contains(
                 "`document.hardened-worker.recovery-scale`"));
-        assertTrue(facades.contains("- Stable entries: `0`"));
-        assertTrue(facades.contains("- Preview entries: `12`"));
+        assertTrue(facades.contains("- Stable entries: `12`"));
+        assertTrue(facades.contains("- Preview additions: `0`"));
+        assertTrue(facades.contains("- Preview artifact entries: `12`"));
         assertTrue(facades.contains("- Explicit capability exclusions: `22`"));
         assertTrue(capabilities.contains("`composition.barcodes.one-dimensional`"));
         assertTrue(facades.contains("`composition.barcodes.one-dimensional`"));
@@ -172,6 +173,7 @@ public final class InventoryCommandTest {
         Path facadeDocument = fixture.resolve(MarkdownGenerator.FACADE_OUTPUT);
         String firstCapability = read(capabilityDocument);
         String firstFacade = read(facadeDocument);
+        assertTrue(firstFacade.contains("- Preview artifact entries: `2`"));
 
         CommandResult second = runCommand("generate", fixture);
         assertEquals(second.output, 0, second.exitCode);

@@ -1,0 +1,33 @@
+FF
+======================================================================
+FAIL: test_rejects_extra_libraries_that_could_shadow_the_recorded_runtime (test_imagemagick_runtime.ImageMagickRuntimeTest.test_rejects_extra_libraries_that_could_shadow_the_recorded_runtime)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_imagemagick_runtime.py", line 36, in test_rejects_extra_libraries_that_could_shadow_the_recorded_runtime
+    self.assertNotEqual(0, observed.returncode, observed.stdout)
+AssertionError: 0 == 0 : Version: ImageMagick 7.1.2-30 Q16-HDRI x86_64 7d45ed032:20260823 https://imagemagick.org
+Copyright: (C) 1999 ImageMagick Studio LLC
+License: https://imagemagick.org/license/
+Features: Cipher DPC HDRI OpenMP(4.5) 
+Delegates (built-in): bzlib djvu fontconfig freetype heic jbig jng jp2 jpeg lcms lqr lzma openexr png raqm tiff webp x xml zlib
+Compiler: gcc (11.4)
+
+
+======================================================================
+FAIL: test_rejects_missing_or_unqualified_private_runtime (test_imagemagick_runtime.ImageMagickRuntimeTest.test_rejects_missing_or_unqualified_private_runtime)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_imagemagick_runtime.py", line 23, in test_rejects_missing_or_unqualified_private_runtime
+    self.assertNotEqual(0, observed.returncode, observed.stdout)
+AssertionError: 0 == 0 : Version: ImageMagick 7.1.2-30 Q16-HDRI x86_64 7d45ed032:20260823 https://imagemagick.org
+Copyright: (C) 1999 ImageMagick Studio LLC
+License: https://imagemagick.org/license/
+Features: Cipher DPC HDRI OpenMP(4.5) 
+Delegates (built-in): bzlib djvu fontconfig freetype heic jbig jng jp2 jpeg lcms lqr lzma openexr png raqm tiff webp x xml zlib
+Compiler: gcc (11.4)
+
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.419s
+
+FAILED (failures=2)

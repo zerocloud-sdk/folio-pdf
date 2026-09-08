@@ -17,9 +17,25 @@
   <name>Folio PDF by ZeroCloud - Stable iText 7 Migration Facade</name>
   <description>The stable Migration Facade containing only compatible mappings.</description>
 
-  <properties>
-    <maven.javadoc.skip>true</maven.javadoc.skip>
-  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>net.zerocloud</groupId>
+      <artifactId>pdf-document</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.yaml</groupId>
+      <artifactId>snakeyaml</artifactId>
+      <version>${snakeyaml.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 
   <build>
     <resources>
@@ -46,19 +62,6 @@
             </manifestEntries>
           </archive>
         </configuration>
-        <executions>
-          <execution>
-            <id>attach-resource-contract-javadocs</id>
-            <phase>package</phase>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-            <configuration>
-              <classifier>javadoc</classifier>
-              <classesDirectory>${project.basedir}/src/main/javadoc-resource-contract</classesDirectory>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
   </build>

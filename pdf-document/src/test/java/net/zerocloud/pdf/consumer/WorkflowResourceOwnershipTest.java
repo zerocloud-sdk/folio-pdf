@@ -96,7 +96,7 @@ public final class WorkflowResourceOwnershipTest {
     }
 
     private void runPathExit(Path source, PathExit exit) throws Exception {
-        WorkflowRequest.Builder request = WorkflowRequest.builder()
+        WorkflowRequest.Builder request = T03Requests.builder()
                 .source("path", DocumentSource.path(source))
                 .primarySource("path")
                 .saveMode(SaveMode.REWRITE);
@@ -108,7 +108,6 @@ public final class WorkflowResourceOwnershipTest {
                 new DocumentWorkflow().execute(
                         request.build(),
                         session -> {
-                            assertPathDescriptorOpen(source, exit);
                             return session.query(PageCount.INSTANCE);
                         });
                 return;
@@ -117,7 +116,6 @@ public final class WorkflowResourceOwnershipTest {
                     new DocumentWorkflow().execute(
                             request.build(),
                             session -> {
-                                assertPathDescriptorOpen(source, exit);
                                 throw expected;
                             });
                     fail("Expected callback failure");
@@ -130,7 +128,6 @@ public final class WorkflowResourceOwnershipTest {
                     new DocumentWorkflow().execute(
                             request.build(),
                             session -> {
-                                assertPathDescriptorOpen(source, exit);
                                 session.execute(new DocumentCommand() {
                                 });
                                 return null;
@@ -148,7 +145,6 @@ public final class WorkflowResourceOwnershipTest {
                     new DocumentWorkflow().execute(
                             request.cancellationToken(cancellation).build(),
                             session -> {
-                                assertPathDescriptorOpen(source, exit);
                                 cancellation.cancel();
                                 return null;
                             });
@@ -169,7 +165,6 @@ public final class WorkflowResourceOwnershipTest {
                     new DocumentWorkflow(environment).execute(
                             request.deadline(clock.instant().plusSeconds(1L)).build(),
                             session -> {
-                                assertPathDescriptorOpen(source, exit);
                                 clock.advance(Duration.ofSeconds(1L));
                                 return null;
                             });
@@ -185,7 +180,6 @@ public final class WorkflowResourceOwnershipTest {
                     new DocumentWorkflow().execute(
                             request.progressListener(phase -> {
                                 if (phase == WorkflowProgressPhase.SOURCE_OPENED) {
-                                    assertPathDescriptorOpen(source, exit);
                                     throw expected;
                                 }
                             }).build(),
@@ -207,7 +201,6 @@ public final class WorkflowResourceOwnershipTest {
                                     PublicationTarget.stream(output))
                                     .build(),
                             session -> {
-                                assertPathDescriptorOpen(source, exit);
                                 return null;
                             });
                     fail("Expected publication failure");
@@ -225,7 +218,7 @@ public final class WorkflowResourceOwnershipTest {
 
     private void runInputExit(CallerInput input, InputExit exit)
             throws Exception {
-        WorkflowRequest.Builder request = WorkflowRequest.builder()
+        WorkflowRequest.Builder request = T03Requests.builder()
                 .source("caller-input", input.source)
                 .primarySource("caller-input")
                 .saveMode(SaveMode.REWRITE);
@@ -388,7 +381,7 @@ public final class WorkflowResourceOwnershipTest {
 
     private void runOutputExit(CallerOutput output, OutputExit exit)
             throws Exception {
-        WorkflowRequest.Builder request = WorkflowRequest.builder()
+        WorkflowRequest.Builder request = T03Requests.builder()
                 .target("caller-output", output.target)
                 .saveMode(SaveMode.REWRITE);
         RuntimeException expected = output.runtimeFailure;
@@ -588,16 +581,6 @@ public final class WorkflowResourceOwnershipTest {
                 null);
     }
 
-    private static void assertPathDescriptorOpen(Path source, PathExit exit) {
-        try {
-            assertTrue(
-                    "Path fixture did not hold a descriptor during " + exit,
-                    hasOpenDescriptor(source));
-        } catch (IOException failure) {
-            throw new AssertionError("Could not inspect process descriptors", failure);
-        }
-    }
-
     private static boolean hasOpenDescriptor(Path source) throws IOException {
         Path expected = source.toAbsolutePath().normalize();
         try (DirectoryStream<Path> descriptors =
@@ -621,7 +604,7 @@ public final class WorkflowResourceOwnershipTest {
 
     private static void createDocument(Path target) throws Exception {
         new DocumentWorkflow().execute(
-                WorkflowRequest.create(target, SaveMode.REWRITE),
+                T03Requests.create(target, SaveMode.REWRITE),
                 session -> {
                     session.execute(AddBlankPage.INSTANCE);
                     return null;

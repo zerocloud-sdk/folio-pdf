@@ -32,7 +32,11 @@ exact Ubuntu/JDK environment or Stable Facade mapping returns nonzero.
 `validate` and normal `verify` may pass while Foundation remains not ready.
 See [the evidence and identity contract](../docs/foundation-readiness.md).
 
-Record the built-in T03 blank-document, T18 Canvas-image, T19 explicit-font,
+For candidate-bound T03 four-chain certification, use the isolated
+[transaction runner](../docs/t03-certification.md). The older aggregate recorder
+retains its historical T03 missing-standards determination and cannot certify T70.
+
+Record the historical built-in T03 blank-document, T18 Canvas-image, T19 explicit-font,
 T23 rendering, T24 paragraph-composition, T25 advanced-pagination,
 T26/T27 table composition/pagination, seven T28 Unicode, four T29 shaping,
 and T30 one-dimensional barcode
@@ -315,7 +319,10 @@ version and Release Train and uses the literal authority
 
 Stable surfaces may reference only `compatible` capabilities. Preview surfaces
 may reference only `compatible` or `experimental` capabilities. A surface
-cannot appear in both lists.
+cannot appear in both lists. These are disjoint availability tiers: the Stable
+artifact exposes the `stable` list, and the Preview artifact exposes the union
+of `stable` and `preview`. Preview may have no additions; it still contains every
+Stable mapping. The current T70 effective surfaces are equal at 12 entries.
 
 Reference types must be below `com.itextpdf.*`. Their Folio PDF types must
 preserve the exact suffix below `net.zerocloud.pdf.itext7.*`, so the declared

@@ -1,0 +1,32 @@
+....EE..E
+======================================================================
+ERROR: test_identity_probe_restores_the_prior_evidence_index_on_success_and_failure (test_t03_foundation.FoundationCandidateTest.test_identity_probe_restores_the_prior_evidence_index_on_success_and_failure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t03_foundation.py", line 180, in test_identity_probe_restores_the_prior_evidence_index_on_success_and_failure
+    observed = module.candidate_identities(root, authority, {"candidate": {}}, root / "probe.txt")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 't03_foundation' has no attribute 'candidate_identities'
+
+======================================================================
+ERROR: test_runtime_classpath_uses_only_declared_products_and_recorded_harness (test_t03_foundation.FoundationCandidateTest.test_runtime_classpath_uses_only_declared_products_and_recorded_harness)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t03_foundation.py", line 164, in test_runtime_classpath_uses_only_declared_products_and_recorded_harness
+    observed = module.certification_classpath(root, {"required-artifacts": required}, receipt)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 't03_foundation' has no attribute 'certification_classpath'
+
+======================================================================
+ERROR: test_staging_rejects_inputs_changed_during_the_build (test_t03_foundation.FoundationCandidateTest.test_staging_rejects_inputs_changed_during_the_build)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t03_foundation.py", line 142, in test_staging_rejects_inputs_changed_during_the_build
+    before = module.capture_build_inputs(root, contract)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 't03_foundation' has no attribute 'capture_build_inputs'
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.036s
+
+FAILED (errors=3)

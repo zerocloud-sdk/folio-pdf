@@ -1,0 +1,26 @@
+.....F...
+======================================================================
+FAIL: test_runtime_classpath_uses_only_declared_products_and_recorded_harness (test_t03_foundation.FoundationCandidateTest.test_runtime_classpath_uses_only_declared_products_and_recorded_harness)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t03_foundation.py", line 166, in test_runtime_classpath_uses_only_declared_products_and_recorded_harness
+    self.assertEqual([root / "artifacts/pdf-document-0.1.0.jar", root / "harness/tests.jar"], observed)
+AssertionError: Lists differ: [Posi[98 chars]sts.jar')] != [Posi[98 chars]sts.jar'), PosixPath('/tmp/tmpirimv5gx/harness/comparator.so')]
+
+Second list contains 1 additional elements.
+First extra element 2:
+PosixPath('/tmp/tmpirimv5gx/harness/comparator.so')
+
+  [PosixPath('/tmp/tmpirimv5gx/artifacts/pdf-document-0.1.0.jar'),
+-  PosixPath('/tmp/tmpirimv5gx/harness/tests.jar')]
+?                                                 ^
+
++  PosixPath('/tmp/tmpirimv5gx/harness/tests.jar'),
+?                                                 ^
+
++  PosixPath('/tmp/tmpirimv5gx/harness/comparator.so')]
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.047s
+
+FAILED (failures=1)

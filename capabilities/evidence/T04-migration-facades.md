@@ -1,73 +1,27 @@
-# T04 Migration Facade implementation evidence
+# T04 lifecycle mappings, promoted by T70
 
-- Capability: `document.blank.create-publish-reopen`
-- Release train: `0.1.0-SNAPSHOT`
-- Status: `experimental`
-- Ticket: T04 / GitHub issue #5
+The 12 lifecycle entries originally introduced in Preview now belong to Stable.
+`pdf-migration-itext7` and `pdf-migration-itext7-preview` compile the same first-party
+sources and public consumer tests, with separate edition markers and unchanged
+Automatic-Module-Name values. Preview includes every Stable mapping; equality
+is allowed. No additional mapping or stub was added.
 
-## Scope
+`BlankDocumentFacadeTest` covers publication, reopen/page count, safe Native failure
+mapping, reader Path release, layout close ownership, closed-state rejection and
+idempotent close after both success and failure. `JarContractIT` loads each actual
+jar separately, compares constructors and methods to its own Facade Surface
+Manifest entries, and checks exact types, returns, generics, exceptions, Java 8
+bytecode, module names and license resources. `ClasspathExclusivityIT` starts
+separate JVMs for all six public types in both jar orders and requires the explicit
+conflict diagnostic.
 
-T04 packages the mutually exclusive Stable and Experimental Migration Facades.
-Because the capability remains `experimental`, `pdf-migration-itext7` contains
-no public mapping. `pdf-migration-itext7-preview` maps only the first blank
-document workflow under the `net.zerocloud.pdf.itext7.*` suffix convention.
+Stable now depends on the existing first-party `pdf-document` module. Both source
+and Javadoc jars contain the lifecycle API. All public signatures remain within
+the existing 12 entries, and no acceptance tool enters the product dependency graph.
 
-The mapped call shape declares a Path writer, opens a PDF document for writing,
-adds one blank page, associates the layout document, closes to publish, reopens
-through a Path reader, and observes one page. Publication and inspection run
-through the public Native Interface `DocumentWorkflow.execute` seam.
+The current independent evidence is indexed by [Foundation Evidence](../foundation-evidence.yaml)
+and [the T03 contract](T03-document-workflow-transaction.md). The prior T04/T06/T07
+implementation and partial-chain observations do not pre-certify a changed candidate.
 
-## Public-seam evidence
-
-- `PreviewBlankDocumentFacadeTest` compiles and invokes only public facade
-  types. It observes a non-empty published file, a reopened page count of one,
-  the stable `SOURCE_READ_FAILED` code for a missing source, and a retained
-  `NOT_ATTEMPTED` Native Publication Receipt for a failed publication.
-- No facade test imports PDFBox, asserts an internal delegation class, or uses
-  a backend object as an oracle.
-
-## Artifact evidence
-
-- The consolidated jar contract checks the resource-only stable artifact's
-  Automatic Module Name, license and notice, edition marker, BOM/reactor
-  membership, lack of classes, and lack of experimental mappings or stubs.
-  It also checks the preview artifact's Automatic Module Name, Java 8
-  class-file version, exact public mapped surface, license and notice, edition
-  marker, BOM membership, and strict-superset relationship to stable mappings.
-- The classpath contract starts a separate JVM for every mapped public class
-  in both jar orders. Each class sees both edition resources and fails with the
-  same explicit mutual-exclusion diagnostic.
-
-## Evidence boundary
-
-This record is project-owned implementation evidence, not independent
-Acceptance Evidence. It does not promote the capability to `compatible`.
-T06 records passing syntax and semantic chains, but its conservative final
-determination remains `indeterminate` because the mandatory evidence set is
-incomplete.
-
-## Execution record — 2026-08-11
-
-- The focused T04 reactor passed with 3 public-facade consumer tests and 2
-  preview integration tests covering both artifacts, the exact public surface,
-  Java 8 bytecode, and all-public-class mutual exclusion in both jar orders.
-- `./scripts/inventory validate`, generated-view regeneration through
-  `./scripts/inventory generate`, and `./scripts/inventory check` passed. The
-  combined authorities report 12 facade surfaces, all belonging to T04; the
-  former T04 exclusion for `document.blank.create-publish-reopen` is absent.
-- `./mvnw -B -ntp verify` passed from the repository root, including the
-  consumer, artifact, exclusivity, and generated-inventory drift contracts.
-- `./scripts/verify-jdk-matrix.sh` passed the full repository verification on
-  Eclipse Temurin JDK 8, 11, 17, and 21.
-- Independent clean-context Standards and Spec reviews first examined the
-  scoped T04 diff against the original fixed point
-  `73145c71e85c6b17f95e4b187cd3750c932f53ac`. After T06 and T05 were committed
-  independently, fresh reviewers examined the final uncommitted T04 delta
-  relative to `c63ad0348a0c8aa93a750a268c8523fde7c944c6`. The review cycles
-  identified incomplete public-class exclusivity enforcement, an unnecessary
-  stable-artifact shell/dependency, duplicated contract-test support, stale
-  execution wording, and T05 assertions left in the inventory test delta. The
-  T04 implementation and evidence now address those findings.
-- `git diff --check` passed. No T04 commit was created; HEAD is
-  `c63ad0348a0c8aa93a750a268c8523fde7c944c6`, and every remaining worktree
-  change is T04-scoped.
+Historical T04 implementation/review observations are retained in the repository's
+[pre-T70 record](https://github.com/zerocloud-sdk/folio-pdf/blob/9418b472c99aa87692a0f1ba7f31808e64c5af77/capabilities/evidence/T04-migration-facades.md).

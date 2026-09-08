@@ -27,7 +27,7 @@ The sources are:
   authority. A future image/build needs reviewed profile changes and new evidence.
 - [foundation-evidence.yaml](../capabilities/foundation-evidence.yaml): final
   candidate inputs/artifacts, actual environment records and certifications.
-  Its empty checked-in candidate and certification lists are intentional.
+  T70 fills the exact candidate, four observed environment records and eight transactions certifications. Other obligation certifications remain absent until their owning slices supply evidence.
 
 Windows x86-64 and macOS x86-64/arm64 are explicitly uncertified and are not
 required Foundation 0.1.0 gates under [ADR-0040](adr/0040-certify-only-observed-foundation-environments.md).

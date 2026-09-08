@@ -35,7 +35,7 @@ public final class WorkflowLifecycleTest {
         Path target = temporaryFolder.getRoot().toPath().resolve("ordered.pdf");
 
         WorkflowOutcome<Integer> outcome = new DocumentWorkflow().execute(
-                WorkflowRequest.create(target, SaveMode.REWRITE),
+                T03Requests.create(target, SaveMode.REWRITE),
                 session -> {
                     session.execute(AddBlankPage.INSTANCE);
                     return session.query(PageCount.INSTANCE);
@@ -53,7 +53,7 @@ public final class WorkflowLifecycleTest {
 
         try {
             new DocumentWorkflow().execute(
-                    WorkflowRequest.create(target, SaveMode.REWRITE),
+                    T03Requests.create(target, SaveMode.REWRITE),
                     session -> {
                         session.execute(AddBlankPage.INSTANCE);
                         throw expected;
@@ -72,7 +72,7 @@ public final class WorkflowLifecycleTest {
         final DocumentSession[] retained = new DocumentSession[1];
 
         new DocumentWorkflow().execute(
-                WorkflowRequest.create(target, SaveMode.REWRITE),
+                T03Requests.create(target, SaveMode.REWRITE),
                 session -> {
                     retained[0] = session;
                     session.execute(AddBlankPage.INSTANCE);
@@ -95,7 +95,7 @@ public final class WorkflowLifecycleTest {
 
         try {
             new DocumentWorkflow().execute(
-                    WorkflowRequest.create(target, SaveMode.REWRITE),
+                    T03Requests.create(target, SaveMode.REWRITE),
                     session -> {
                         session.execute(callerDefinedCommand);
                         return null;
@@ -115,7 +115,7 @@ public final class WorkflowLifecycleTest {
         AtomicReference<Throwable> crossThreadFailure = new AtomicReference<Throwable>();
 
         new DocumentWorkflow().execute(
-                WorkflowRequest.create(target, SaveMode.REWRITE),
+                T03Requests.create(target, SaveMode.REWRITE),
                 session -> {
                     Thread otherThread = new Thread(() -> {
                         try {
@@ -148,7 +148,7 @@ public final class WorkflowLifecycleTest {
 
         try {
             new DocumentWorkflow().execute(
-                    WorkflowRequest.create(
+                    T03Requests.create(
                             temporaryFolder.getRoot().toPath().resolve("caller-exit.pdf"),
                             SaveMode.REWRITE),
                     session -> {
@@ -164,7 +164,7 @@ public final class WorkflowLifecycleTest {
         DocumentSession[] afterDocumentFailure = new DocumentSession[1];
         try {
             new DocumentWorkflow().execute(
-                    WorkflowRequest.create(
+                    T03Requests.create(
                             temporaryFolder.getRoot().toPath().resolve("document-exit.pdf"),
                             SaveMode.REWRITE),
                     session -> {
@@ -185,21 +185,21 @@ public final class WorkflowLifecycleTest {
             throws Exception {
         Path source = temporaryFolder.getRoot().toPath().resolve("resource-source.pdf");
         new DocumentWorkflow().execute(
-                WorkflowRequest.create(source, SaveMode.REWRITE),
+                T03Requests.create(source, SaveMode.REWRITE),
                 session -> {
                     session.execute(AddBlankPage.INSTANCE);
                     return null;
                 });
 
         new DocumentWorkflow().execute(
-                WorkflowRequest.open(source, SaveMode.REWRITE),
+                T03Requests.open(source, SaveMode.REWRITE),
                 session -> session.query(PageCount.INSTANCE));
         moveAwayAndBack(source);
 
         RuntimeException callerFailure = new RuntimeException("caller failure");
         try {
             new DocumentWorkflow().execute(
-                    WorkflowRequest.open(source, SaveMode.REWRITE),
+                    T03Requests.open(source, SaveMode.REWRITE),
                     session -> {
                         throw callerFailure;
                     });
@@ -211,7 +211,7 @@ public final class WorkflowLifecycleTest {
 
         try {
             new DocumentWorkflow().execute(
-                    WorkflowRequest.open(source, SaveMode.REWRITE),
+                    T03Requests.open(source, SaveMode.REWRITE),
                     session -> {
                         session.execute(new DocumentCommand() {
                         });

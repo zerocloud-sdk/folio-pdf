@@ -1909,3 +1909,46 @@ provenance statement required by [CONTRIBUTING.md](CONTRIBUTING.md).
   owns current verification and independent-review status, artifact/source/tool
   identities and residual limits. This provenance statement grants no
   standards certification, compatible status or Foundation release approval.
+
+## T70 document transactions and Stable lifecycle mappings
+
+- Scope: #70, its parent #33 and governing #1, with ADR-0040's actual
+  Ubuntu/JDK certification boundary. New acceptance code, control PDFs and
+  documentation are authored by the Codex implementation agent. Existing
+  project lifecycle mappings are reused. No iText source, binaries, resources,
+  private implementation details or proprietary materials were consulted.
+- ISO 32000-1:2008 clauses 7.7.2–7.7.3 define the T03 structural expectations.
+  The independent Apache-2.0 pdfcpu 0.15.0 process and Arlington TestGrammar
+  0.81 at the fixed public source commit are qualified on project-authored
+  invalid controls. [Tool provenance](docs/third-party/t03-standards-tools.md)
+  records exact distribution, executable and model hashes, source, licenses,
+  build settings and the unbundled acceptance boundary. Their implementation
+  code and model resources are not copied into product or acceptance sources.
+- The [T03 standards corpus](capabilities/profiles/T03-standards/README.md)
+  consists of elementary project-authored PDF dictionaries and xref offsets,
+  serialized by task-local Python. Each negative changes one specified rule;
+  the bytes are retained as Apache-2.0 fixtures. No product-generated PDF or
+  Reference Suite result defines the expected output. Existing T03 visual
+  expectations and tolerances are retained.
+- This section records authorship and sources; final candidate certification
+  and independent Standards/Spec review must be recorded separately.
+
+T70 also reuses the existing first-party T04 lifecycle sources in both mutually
+exclusive artifacts, fixes outer-transaction receipt ownership at the Worker
+callback boundary, and stages sources/Javadocs from the same shared Java source.
+No iText implementation, resource or proprietary material was consulted or copied.
+The added SnakeYAML dependency is test-scoped and uses the existing repository
+pin; Python/PyYAML and all PDF checkers are acceptance tooling only. Native and
+Facade products are generated through public APIs. The two-page semantic negative
+uses Native page creation; the visual negative changes one pixel in a separate
+copy of the independently defined blank expectation, leaving the canonical
+expected raster unchanged. T06/T07 historical outputs and determinations remain
+historical and are not relabeled as current candidate certification.
+
+The T70 container run exposed missing ImageMagick host libraries. Five unmodified
+Ubuntu 24.04 libraries are retained only in the ignored private comparator cache,
+with exact hashes in `scripts/imagemagick-runtime.sha256`, package versions and
+licenses in `docs/third-party/t03-standards-tools.md`, and original package notices
+in `capabilities/evidence/T70-comparator-runtime/`. The existing AppImage, golden
+raster and visual tolerances are unchanged. This acceptance runtime is separate
+from both the Java products and the explicit Folio HarfBuzz 10.2.0 installation.

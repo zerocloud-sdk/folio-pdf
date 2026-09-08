@@ -188,13 +188,14 @@ final class MarkdownGenerator {
         text.append("- Schema version: \u0060").append(model.facadeSchemaVersion).append("\u0060\n");
         text.append("- Release train: \u0060").append(codeText(model.releaseTrain)).append("\u0060\n");
         text.append("- Stable entries: \u0060").append(model.stableSurfaces.size()).append("\u0060\n");
-        text.append("- Preview entries: \u0060").append(model.previewSurfaces.size()).append("\u0060\n");
+        text.append("- Preview additions: \u0060").append(model.previewSurfaces.size()).append("\u0060\n");
+        text.append("- Preview artifact entries: \u0060").append(model.stableSurfaces.size() + model.previewSurfaces.size()).append("\u0060\n");
         text.append("- Explicit capability exclusions: \u0060").append(model.exclusions.size())
                 .append("\u0060\n\n");
 
         appendSurfaceSection(text, "Stable surfaces", model.stableSurfaces,
                 capabilityOutput.getFileName().toString());
-        appendSurfaceSection(text, "Preview surfaces", model.previewSurfaces,
+        appendSurfaceSection(text, "Preview additions (included with all Stable surfaces)", model.previewSurfaces,
                 capabilityOutput.getFileName().toString());
 
         text.append("## Explicit capability exclusions\n\n");

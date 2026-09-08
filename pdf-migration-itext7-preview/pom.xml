@@ -30,9 +30,18 @@
       <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.yaml</groupId>
+      <artifactId>snakeyaml</artifactId>
+      <version>${snakeyaml.version}</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
+    <!-- The two editions currently have the same evidence-qualified mappings. -->
+    <sourceDirectory>${project.basedir}/../pdf-migration-itext7/src/main/java</sourceDirectory>
+    <testSourceDirectory>${project.basedir}/../pdf-migration-itext7/src/test/java</testSourceDirectory>
     <resources>
       <resource>
         <directory>src/main/resources</directory>

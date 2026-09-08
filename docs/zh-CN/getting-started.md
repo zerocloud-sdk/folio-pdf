@@ -88,6 +88,36 @@ Source 的全部字节作为不变前缀，并按版本 1 命令策略追加非�
 提供中文使用说明。如有安全问题，请按 [SECURITY.md](../../SECURITY.md) 中的
 临时私密报告方式联系维护者。
 
+## Stable Migration Facade：创建、发布、重开
+
+选择 `net.zerocloud:pdf-migration-itext7`，不要同时引入 Preview。当前两种 artifact
+都包含相同的 12 项生命周期映射。以下代码只使用 Stable 公开接口，兼容 Java 8：
+
+```java
+import net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument;
+import net.zerocloud.pdf.itext7.kernel.pdf.PdfReader;
+import net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter;
+import net.zerocloud.pdf.itext7.layout.Document;
+
+PdfDocument pdf = new PdfDocument(new PdfWriter("blank.pdf"));
+pdf.addNewPage();
+new Document(pdf).close(); // 关闭时由 Native Workflow 发布；重复 close 不会重试发布。
+try (PdfReader reader = new PdfReader("blank.pdf");
+     PdfDocument reopened = new PdfDocument(reader)) {
+    System.out.println(reopened.getNumberOfPages()); // 1
+}
+```
+
+`PdfReader` 返回前已释放其 Path 资源，重开的 Facade 提供脱离文件的只读页数视图。
+`Document.close()` 负责关闭关联的 `PdfDocument`；已关闭对象不能继续查询或添加页。
+发布失败会映射为带 Native 安全失败信息的 `PdfException`。
+Facade 沿用 IN_PROCESS 默认值；HARDENED_WORKER 通过 Native `WorkflowRequest`
+显式选择，当前 12 项映射没有增加配置入口。
+
+本票只认证空白文档事务与生命周期映射，范围为固定 Ubuntu 24.04/Linux x86-64
+的 JDK 8/11/17/21。Windows、macOS 和其他 Foundation obligation 仍未认证。
+实际候选产物、32 条证据记录和复跑方法见[英文认证合同](../t03-certification.md)。
+
 ## T23 页面渲染
 
 `Rendering` 通过项目自有 `RenderPage` Query 渲染当前页面，默认使用离线的

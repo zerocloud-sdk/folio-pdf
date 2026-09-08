@@ -34,6 +34,33 @@ if ! visual_verify_marker \
     exit 127
 fi
 
+imagemagick_runtime=${IMAGEMAGICK_RUNTIME_DIRECTORY:-"${imagemagick_home}/runtime"}
+if [ -n "${IMAGEMAGICK_RUNTIME_DIRECTORY:-}" ] || [ -d "${imagemagick_runtime}" ]; then
+    runtime_expected_count=0
+    while read -r runtime_sha256 runtime_name; do
+        if ! visual_verify_digest \
+                "Pinned ImageMagick private runtime" \
+                "${imagemagick_runtime}/${runtime_name}" \
+                "${runtime_sha256}" \
+                "${sha256_command}"; then
+            exit 127
+        fi
+        runtime_expected_count=$((runtime_expected_count + 1))
+    done < "${script_directory}/../imagemagick-runtime.sha256"
+    runtime_actual_count=0
+    for runtime_entry in "${imagemagick_runtime}"/* "${imagemagick_runtime}"/.[!.]* "${imagemagick_runtime}"/..?*; do
+        if [ -e "${runtime_entry}" ] || [ -L "${runtime_entry}" ]; then
+            runtime_actual_count=$((runtime_actual_count + 1))
+        fi
+    done
+    if [ "${runtime_actual_count}" -ne "${runtime_expected_count}" ]; then
+        echo "Pinned ImageMagick private runtime contains undeclared entries." >&2
+        exit 127
+    fi
+    LD_LIBRARY_PATH="${imagemagick_runtime}${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
+    export LD_LIBRARY_PATH
+fi
+
 APPIMAGE_EXTRACT_AND_RUN=1
 export APPIMAGE_EXTRACT_AND_RUN
 exec "${imagemagick_executable}" "$@"

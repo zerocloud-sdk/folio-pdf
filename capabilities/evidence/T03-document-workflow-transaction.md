@@ -1,6 +1,6 @@
 # T03 Document Workflow transaction evidence
 
-Status: `experimental`
+Status: `compatible`
 
 Capability: `document.blank.create-publish-reopen`
 
@@ -9,10 +9,10 @@ Acceptance Profile: `T03-document-workflow-transaction`
 Release train: `0.1.0-SNAPSHOT`
 
 T03 extends the T01 public `DocumentWorkflow.execute` seam into a complete
-in-process transaction contract. Requests declare uniquely named Sources,
+transaction contract in both IN_PROCESS and HARDENED_WORKER. Requests declare uniquely named Sources,
 select one primary Source, declare ordered named publication Targets, and
 select a Save Mode. An immutable Workflow Environment owns deadline time.
-Successful outcomes report the capability, in-process execution profile,
+Successful outcomes report the capability, selected execution profile,
 Save Mode, safe diagnostics, and receipts. Path, caller-owned stream,
 caller-owned channel, and bounded-byte Sources are covered. Path and
 caller-owned stream Targets are covered.
@@ -60,25 +60,31 @@ The PDF fixtures are generated entirely through the project-owned Native
 Interface. Apache PDFBox 3.0.8 remains behind project-owned public types. This
 record is implementation evidence, not independent Acceptance Evidence.
 
-T06 records passing independent
-[`syntax`](T06-document-blank-syntax.md) and
-[`semantic`](T06-document-blank-semantic.md) chains against the same pinned
-artifact. T07 records the passing independent
-[`visual`](T07-document-blank-visual.md) chain after PDFium renders that exact
-artifact and ImageMagick compares only fixed-size PNG rasters. The
-[overall determination](T06-document-blank-determination.md) remains
-`indeterminate` because independent standards evidence is still absent. qpdf
-syntax success is not a standards-compliance claim, and visual success cannot
-replace that missing chain. The capability therefore remains `experimental`.
+T70 supplies the final four-chain certification described in
+[the executable certification contract](../../docs/t03-certification.md).
+The current authority is [Foundation Evidence](../foundation-evidence.yaml),
+which binds the exact source, compiled candidate, profile contract, runtime
+configuration, observed environment, reports and negative controls. Every JDK
+8/11/17/21 × IN_PROCESS/HARDENED_WORKER tuple runs the same 27 Native contracts,
+5 Stable consumer contracts and 2 actual-jar contracts. Separate observations
+check each Native and Stable one-page output through all four chains.
+The Facade retains its existing IN_PROCESS default and adds no configuration mapping.
 
-The T06/T07 records identify the shared input with an ID-neutral SHA-256:
-before hashing, only the two hexadecimal values in the PDF trailer `/ID` array
-are replaced with ASCII zeroes. Issue #1 excludes byte-identical PDF output,
-and a fresh PDF identifier is not a semantic or visual difference. All other
-bytes remain hash-significant, while qpdf, the public reopen check, PDFium, and
-the secondary renderer receive the exact unmodified workflow output. The
-acceptance command's repeat-run test requires the records and raw findings to
-reproduce byte-for-byte under this policy.
+The standards scope is the decoded Catalog, Pages and Page requirements in
+ISO 32000-1 clauses 7.7.2–7.7.3 for the minimal blank product. The
+[22 required rules and qualified negative fixtures](../profiles/T03-standards/README.md)
+are checked by pdfcpu strict and Arlington together. Neither tool alone covers
+this profile. Their union is enforced independently of each checker's subset.
+Physical serialization is the separate qpdf syntax chain. This is not a claim
+of general ISO, PDF/A or PDF/UA conformance for unrelated PDF features.
+The public semantic inspector rejects additional Catalog/Page-tree/Page keys,
+nonempty resources, content, extra pages and other structures outside that scope.
+
+T06/T07 remain historical observations against their original output. Their
+ID-neutral hash policy and missing-standards determination are not relabeled as
+T70 candidate certification. T70 retains exact SHA-256 identities for every
+new PDF and all input/output bytes; its record may also show the legacy
+ID-neutral diagnostic hash. No expected raster is adopted from product output.
 
 ## T07 blank-document visual profile
 
@@ -129,4 +135,4 @@ and
   fixed point.
 
 The review above is implementation review, not T06 independent Acceptance
-Evidence and does not change the capability's `experimental` status.
+Evidence and does not itself supply independent Acceptance Evidence; T70 is the later certification authority.

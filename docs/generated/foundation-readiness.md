@@ -62,11 +62,7 @@ Each certification additionally retains the observed host kernel, execution prof
 
 ## Release-wide findings
 
-- missing final candidate source and artifact identity
-- missing actual environment evidence for ubuntu-24.04-linux-x86-64-jdk8
-- missing actual environment evidence for ubuntu-24.04-linux-x86-64-jdk11
-- missing actual environment evidence for ubuntu-24.04-linux-x86-64-jdk17
-- missing actual environment evidence for ubuntu-24.04-linux-x86-64-jdk21
+Candidate and environment evidence identities satisfy the declared integrity checks.
 
 ## Required obligations
 
@@ -74,7 +70,7 @@ A missing capability, required behavior, compatible dependency, independent evid
 
 | Obligation | Capability or subcapability | Slice | Status |
 | --- | --- | --- | --- |
-| [`transactions`](#transactions) | `document.blank.create-publish-reopen` | [#70](https://github.com/zerocloud-sdk/folio-pdf/issues/70) | blocked |
+| [`transactions`](#transactions) | `document.blank.create-publish-reopen` | [#70](https://github.com/zerocloud-sdk/folio-pdf/issues/70) | satisfied |
 | [`values`](#values) | `document.value.inspect-patch` | [#71](https://github.com/zerocloud-sdk/folio-pdf/issues/71) | blocked |
 | [`pages`](#pages) | `document.page.manipulate-merge-split` | [#72](https://github.com/zerocloud-sdk/folio-pdf/issues/72) | blocked |
 | [`metadata`](#metadata) | `document.metadata.outlines-destinations-attachments` | [#73](https://github.com/zerocloud-sdk/folio-pdf/issues/73) | blocked |
@@ -129,31 +125,6 @@ Execute a named-source document transaction and publish validated rewrites to na
 - Required Facade family: kernel/layout document lifecycle (`com.itextpdf.`); mappings: `itext7.kernel.pdf-writer.constructor-string, itext7.kernel.pdf-reader.constructor-string, itext7.kernel.pdf-reader.close, itext7.kernel.pdf-document.constructor-writer, itext7.kernel.pdf-document.constructor-reader, itext7.kernel.pdf-document.add-new-page, itext7.kernel.pdf-document.get-number-of-pages, itext7.kernel.pdf-document.close, itext7.kernel.pdf-page.type, itext7.kernel.pdf-exception.constructor-message-cause, itext7.layout.document.constructor-pdf-document, itext7.layout.document.close`
 - Source requirements: [`spec-us-10`](#spec-us-10), [`spec-us-18`](#spec-us-18), [`spec-us-42`](#spec-us-42), [`spec-us-43`](#spec-us-43), [`spec-us-46`](#spec-us-46), [`spec-us-47`](#spec-us-47), [`spec-us-48`](#spec-us-48), [`spec-us-49`](#spec-us-49), [`spec-us-50`](#spec-us-50), [`spec-us-74`](#spec-us-74), [`spec-id-12`](#spec-id-12), [`spec-id-13`](#spec-id-13), [`spec-id-14`](#spec-id-14), [`spec-id-16`](#spec-id-16), [`spec-id-18`](#spec-id-18), [`spec-id-19`](#spec-id-19), [`spec-id-24`](#spec-id-24), [`spec-id-27`](#spec-id-27), [`spec-id-28`](#spec-id-28), [`spec-id-29`](#spec-id-29), [`spec-td-18`](#spec-td-18), [`spec-td-22`](#spec-td-22), [`spec-td-23`](#spec-td-23), [`slice-70-1`](#slice-70-1), [`slice-70-2`](#slice-70-2), [`slice-70-3`](#slice-70-3), [`slice-70-4`](#slice-70-4), [`slice-70-5`](#slice-70-5)
 
-- Blocker: capability document.blank.create-publish-reopen is experimental, requires compatible
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on document.blank.create-publish-reopen
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on document.blank.create-publish-reopen
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on document.blank.create-publish-reopen
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk21 on document.blank.create-publish-reopen
-- Blocker: missing required Stable Facade mapping itext7.kernel.pdf-writer.constructor-string for kernel/layout document lifecycle
-- Blocker: missing required Stable Facade mapping itext7.kernel.pdf-reader.constructor-string for kernel/layout document lifecycle
-- Blocker: missing required Stable Facade mapping itext7.kernel.pdf-reader.close for kernel/layout document lifecycle
-- Blocker: missing required Stable Facade mapping itext7.kernel.pdf-document.constructor-writer for kernel/layout document lifecycle
-- Blocker: missing required Stable Facade mapping itext7.kernel.pdf-document.constructor-reader for kernel/layout document lifecycle
-- Blocker: missing required Stable Facade mapping itext7.kernel.pdf-document.add-new-page for kernel/layout document lifecycle
-- Blocker: missing required Stable Facade mapping itext7.kernel.pdf-document.get-number-of-pages for kernel/layout document lifecycle
-- Blocker: missing required Stable Facade mapping itext7.kernel.pdf-document.close for kernel/layout document lifecycle
-- Blocker: missing required Stable Facade mapping itext7.kernel.pdf-page.type for kernel/layout document lifecycle
-- Blocker: missing required Stable Facade mapping itext7.kernel.pdf-exception.constructor-message-cause for kernel/layout document lifecycle
-- Blocker: missing required Stable Facade mapping itext7.layout.document.constructor-pdf-document for kernel/layout document lifecycle
-- Blocker: missing required Stable Facade mapping itext7.layout.document.close for kernel/layout document lifecycle
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk8/IN_PROCESS (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk8/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk11/IN_PROCESS (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk11/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/IN_PROCESS (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
 
 <a id="values"></a>
 ### `values`
@@ -171,7 +142,6 @@ Inspect all nine backend-neutral PDF Value kinds through bounded Session views a
 - Source requirements: [`spec-us-14`](#spec-us-14), [`spec-us-15`](#spec-us-15), [`spec-us-16`](#spec-us-16), [`spec-us-17`](#spec-us-17), [`spec-id-17`](#spec-id-17), [`spec-id-21`](#spec-id-21), [`spec-id-22`](#spec-id-22), [`spec-id-23`](#spec-id-23), [`spec-id-26`](#spec-id-26), [`slice-71-1`](#slice-71-1), [`slice-71-2`](#slice-71-2), [`slice-71-3`](#slice-71-3), [`slice-71-4`](#slice-71-4)
 
 - Blocker: capability document.value.inspect-patch is experimental, requires compatible
-- Blocker: incompatible Dependency Gate document.blank.create-publish-reopen
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on document.value.inspect-patch
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on document.value.inspect-patch
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on document.value.inspect-patch
@@ -187,7 +157,6 @@ Inspect all nine backend-neutral PDF Value kinds through bounded Session views a
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: incomplete prerequisite obligation transactions
 
 <a id="pages"></a>
 ### `pages`
@@ -205,7 +174,6 @@ Insert, remove, move, and copy pages; append ordered named Sources; and publish 
 - Source requirements: [`spec-us-11`](#spec-us-11), [`spec-us-12`](#spec-us-12), [`spec-us-13`](#spec-us-13), [`spec-us-16`](#spec-us-16), [`spec-us-17`](#spec-us-17), [`spec-id-26`](#spec-id-26), [`spec-td-18`](#spec-td-18), [`slice-72-1`](#slice-72-1), [`slice-72-2`](#slice-72-2), [`slice-72-3`](#slice-72-3), [`slice-72-4`](#slice-72-4)
 
 - Blocker: capability document.page.manipulate-merge-split is experimental, requires compatible
-- Blocker: incompatible Dependency Gate document.blank.create-publish-reopen
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on document.page.manipulate-merge-split
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on document.page.manipulate-merge-split
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on document.page.manipulate-merge-split
@@ -220,7 +188,6 @@ Insert, remove, move, and copy pages; append ordered named Sources; and publish 
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: incomplete prerequisite obligation transactions
 
 <a id="metadata"></a>
 ### `metadata`
@@ -429,7 +396,6 @@ Apply one finite-default, transaction-wide hostile-input resource policy to trus
 - Source requirements: [`spec-us-40`](#spec-us-40), [`spec-td-20`](#spec-td-20), [`slice-81-1`](#slice-81-1), [`slice-81-2`](#slice-81-2), [`slice-81-3`](#slice-81-3), [`slice-81-4`](#slice-81-4)
 
 - Blocker: capability document.hostile-input-limits is experimental, requires compatible
-- Blocker: incompatible Dependency Gate document.blank.create-publish-reopen
 - Blocker: incompatible Dependency Gate document.value.inspect-patch
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on document.hostile-input-limits
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on document.hostile-input-limits
@@ -439,7 +405,6 @@ Apply one finite-default, transaction-wide hostile-input resource policy to trus
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk11/IN_PROCESS (required chains: syntax, standards, semantic, visual, contract)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/IN_PROCESS (required chains: syntax, standards, semantic, visual, contract)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual, contract)
-- Blocker: incomplete prerequisite obligation transactions
 - Blocker: incomplete prerequisite obligation values
 
 <a id="worker"></a>
@@ -458,7 +423,6 @@ Execute the fixed-point Document Workflow contract through an authenticated, bou
 - Source requirements: [`spec-us-40`](#spec-us-40), [`spec-us-41`](#spec-us-41), [`spec-us-42`](#spec-us-42), [`spec-us-43`](#spec-us-43), [`spec-us-44`](#spec-us-44), [`spec-us-74`](#spec-us-74), [`spec-id-15`](#spec-id-15), [`spec-id-16`](#spec-id-16), [`spec-id-17`](#spec-id-17), [`spec-id-19`](#spec-id-19), [`spec-id-30`](#spec-id-30), [`spec-id-31`](#spec-id-31), [`spec-id-32`](#spec-id-32), [`spec-td-02`](#spec-td-02), [`spec-td-20`](#spec-td-20), [`spec-td-22`](#spec-td-22), [`slice-82-1`](#slice-82-1), [`slice-82-2`](#slice-82-2), [`slice-82-3`](#slice-82-3), [`slice-82-4`](#slice-82-4)
 
 - Blocker: capability document.hardened-worker is experimental, requires compatible
-- Blocker: incompatible Dependency Gate document.blank.create-publish-reopen
 - Blocker: incompatible Dependency Gate document.hostile-input-limits
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on document.hardened-worker
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on document.hardened-worker
@@ -468,7 +432,6 @@ Execute the fixed-point Document Workflow contract through an authenticated, bou
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk11/HARDENED_WORKER (required chains: syntax, standards, semantic, visual, contract)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual, contract)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual, contract)
-- Blocker: incomplete prerequisite obligation transactions
 - Blocker: incomplete prerequisite obligation limits
 
 <a id="recovery"></a>
@@ -627,7 +590,6 @@ Render selected current pages to bounded, session-scoped PNGs through a replacea
 
 - Blocker: capability conversion.rendering is experimental, requires compatible
 - Blocker: incompatible Dependency Gate conversion.capability-provider.select-execute
-- Blocker: incompatible Dependency Gate document.blank.create-publish-reopen
 - Blocker: incompatible Dependency Gate document.value.inspect-patch
 - Blocker: incompatible Dependency Gate composition.canvas.images-colors-transparency
 - Blocker: incompatible Dependency Gate composition.fonts.load-embed-subset-fallback
@@ -651,7 +613,6 @@ Render selected current pages to bounded, session-scoped PNGs through a replacea
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
 - Blocker: incomplete prerequisite obligation providers
-- Blocker: incomplete prerequisite obligation transactions
 - Blocker: incomplete prerequisite obligation values
 - Blocker: incomplete prerequisite obligation graphics
 - Blocker: incomplete prerequisite obligation fonts
@@ -675,7 +636,6 @@ Register, inspect, deterministically select, and safely execute project-owned Ca
 - Source requirements: [`spec-us-37`](#spec-us-37), [`spec-us-38`](#spec-us-38), [`spec-us-39`](#spec-us-39), [`spec-us-74`](#spec-us-74), [`spec-id-19`](#spec-id-19), [`spec-id-32`](#spec-id-32), [`spec-id-47`](#spec-id-47), [`spec-td-04`](#spec-td-04), [`slice-84-1`](#slice-84-1), [`slice-84-2`](#slice-84-2), [`slice-84-3`](#slice-84-3), [`slice-84-4`](#slice-84-4)
 
 - Blocker: capability conversion.capability-provider.select-execute is experimental, requires compatible
-- Blocker: incompatible Dependency Gate document.blank.create-publish-reopen
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on conversion.capability-provider.select-execute
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on conversion.capability-provider.select-execute
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on conversion.capability-provider.select-execute
@@ -688,7 +648,6 @@ Register, inspect, deterministically select, and safely execute project-owned Ca
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual, contract)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual, contract)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual, contract)
-- Blocker: incomplete prerequisite obligation transactions
 
 <a id="paragraphs"></a>
 ### `paragraphs`
@@ -706,7 +665,6 @@ Compose mixed semantic paragraphs across finite explicit new-page areas with mar
 - Source requirements: [`spec-us-04`](#spec-us-04), [`spec-us-05`](#spec-us-05), [`spec-us-08`](#spec-us-08), [`spec-id-20`](#spec-id-20), [`spec-id-34`](#spec-id-34), [`spec-id-37`](#spec-id-37), [`spec-id-39`](#spec-id-39), [`spec-td-15`](#spec-td-15), [`slice-89-1`](#slice-89-1), [`slice-89-2`](#slice-89-2), [`slice-89-3`](#slice-89-3), [`slice-89-4`](#slice-89-4)
 
 - Blocker: capability composition.layout.paragraph-areas is experimental, requires compatible
-- Blocker: incompatible Dependency Gate document.blank.create-publish-reopen
 - Blocker: incompatible Dependency Gate composition.canvas.draw-positioned-text
 - Blocker: incompatible Dependency Gate composition.canvas.images-colors-transparency
 - Blocker: incompatible Dependency Gate composition.fonts.load-embed-subset-fallback
@@ -728,7 +686,6 @@ Compose mixed semantic paragraphs across finite explicit new-page areas with mar
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: incomplete prerequisite obligation transactions
 - Blocker: incomplete prerequisite obligation canvas
 - Blocker: incomplete prerequisite obligation graphics
 - Blocker: incomplete prerequisite obligation fonts
@@ -1294,7 +1251,6 @@ Close every Foundation behavior, aggregate, dependency and Facade obligation; ru
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk11/REPOSITORY (required chains: contract, review)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/REPOSITORY (required chains: contract, review)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/REPOSITORY (required chains: contract, review)
-- Blocker: incomplete prerequisite obligation transactions
 - Blocker: incomplete prerequisite obligation values
 - Blocker: incomplete prerequisite obligation pages
 - Blocker: incomplete prerequisite obligation metadata

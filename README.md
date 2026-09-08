@@ -25,11 +25,11 @@ modeled resource high-water marks, and generated 5,000-page, exact 1-GiB, and
 configured-concurrency scale profiles. Recovery is finite and in-memory, not
 durable or automatic.
 
-T04 packages the Stable and Experimental Migration Facades. The first mapped
-document-creation workflow remains experimental, so it is available only from
-`pdf-migration-itext7-preview`; `pdf-migration-itext7` intentionally contains
-no public mapping or unsupported stub. The two artifacts are mutually
-exclusive.
+T70 certifies `document.blank.create-publish-reopen` and promotes the 12 T04
+lifecycle mappings into `pdf-migration-itext7`. Preview currently contains the
+same mappings. The two artifacts are mutually exclusive. Certification is bound
+to the candidate and Ubuntu/JDK identities in the [T03 certification contract](docs/t03-certification.md);
+other Foundation obligations remain unfinished.
 
 T05 establishes the Capability Provider contract for in-process Java, native
 linkage, local subprocess, and explicitly authorized remote engines. The
@@ -155,11 +155,11 @@ select versions through `net.zerocloud:pdf-bom`. The BOM manages
 
 Migration callers must select exactly one facade artifact. Use
 `pdf-migration-itext7` for compatible mappings only, or use
-`pdf-migration-itext7-preview` for the strict superset that also includes
-experimental mappings:
+`pdf-migration-itext7-preview` for all Stable mappings plus any experimental
+mappings. The two surfaces are currently equal:
 
 ```xml
-<!-- Stable: currently contains no T04 mapping because the capability is experimental. -->
+<!-- Stable: contains the 12 compatible document lifecycle mappings. -->
 <dependency>
   <groupId>net.zerocloud</groupId>
   <artifactId>pdf-migration-itext7</artifactId>
@@ -167,14 +167,14 @@ experimental mappings:
 ```
 
 ```xml
-<!-- Preview: contains the first experimental document-creation mapping. -->
+<!-- Preview: currently exposes the same lifecycle surface as Stable. -->
 <dependency>
   <groupId>net.zerocloud</groupId>
   <artifactId>pdf-migration-itext7-preview</artifactId>
 </dependency>
 ```
 
-Do not place both facade artifacts on one classpath. Every mapped preview
+Do not place both facade artifacts on one classpath. Every mapped
 public class checks the packaged edition markers when initialized and fails
 with an explicit conflict if both are present, independent of jar order.
 
@@ -487,3 +487,6 @@ factory call now receives an explicit `SaveMode`.
 
 The authoritative specifications, Javadoc, ADRs, and capability records are in
 English. Translations are usage guidance and defer to those English contracts.
+
+T03 certification uses independently provisioned pdfcpu and Arlington checkers in the acceptance boundary.
+See [the pinned tool setup and certification commands](docs/t03-certification.md).

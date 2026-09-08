@@ -238,7 +238,13 @@ final class HardenedWorkerEngine {
             } catch (DocumentFailure failure) {
                 resources.rethrowTerminalFailure();
                 connection.abortQuietly();
-                throw failure;
+                // A callback may execute another Workflow. Its receipts describe
+                // that transaction; this Workflow has not begun publication.
+                throw new DocumentFailure(
+                        failure.getCode(),
+                        failure.getCapabilityId(),
+                        failure.getDiagnostic(),
+                        PublicationReceipt.notAttempted(request.getPublicationTargets()));
             } catch (RuntimeException failure) {
                 resources.rethrowResourceOrTerminalFailure(failure);
                 connection.abortQuietly();

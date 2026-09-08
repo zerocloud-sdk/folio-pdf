@@ -37,10 +37,10 @@ public final class FoundationReadinessCommandTest {
         assertEquals(valid.output, 0, valid.exit);
         Result result = command("readiness", root);
         assertTrue(result.output, result.exit != 0);
-        for (String finding : Arrays.asList("Foundation 0.1.0: NOT READY", "missing final candidate",
+        for (String finding : Arrays.asList("Foundation 0.1.0: NOT READY",
                 "BLOCKED password-clear-metadata (#79)", "BLOCKED password-attachments (#80)",
                 "BLOCKED tables-base (#91)", "BLOCKED tables-pagination (#92)",
-                "incompatible Dependency Gate", "missing required Stable Facade mapping",
+                "incompatible Dependency Gate",
                 "ubuntu-24.04-linux-x86-64-jdk8", "ubuntu-24.04-linux-x86-64-jdk11",
                 "ubuntu-24.04-linux-x86-64-jdk17", "ubuntu-24.04-linux-x86-64-jdk21")) {
             assertTrue("Missing " + finding + "\n" + result.output, result.output.contains(finding));

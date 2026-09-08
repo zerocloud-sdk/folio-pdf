@@ -3,8 +3,7 @@ release-train: 0.1.0-SNAPSHOT
 authority: migration-source-surface
 
 surfaces:
-  stable: []
-  preview:
+  stable:
     - id: itext7.kernel.pdf-writer.constructor-string
       reference:
         type: com.itextpdf.kernel.pdf.PdfWriter
@@ -137,6 +136,7 @@ surfaces:
       exception-contract: Propagates a mapped PdfException if Native Interface publication fails.
       capabilities:
         - document.blank.create-publish-reopen
+  preview: []
 
 excluded-capabilities:
 - id: document.value.inspect-patch

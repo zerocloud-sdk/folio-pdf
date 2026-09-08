@@ -12,6 +12,10 @@ capabilities/evidence/T30-*.md -text whitespace=-blank-at-eol,-blank-at-eof
 capabilities/evidence/artifacts/T30-* -text whitespace=-blank-at-eol,-blank-at-eof
 capabilities/evidence/T30-r2/** -text whitespace=-blank-at-eol,-blank-at-eof
 
+# Preserve exact T70 raw tool output and recorded evidence hashes.
+capabilities/evidence/T70-*/**/*.txt -text whitespace=-blank-at-eol,-blank-at-eof
+capabilities/evidence/foundation/T70-*/**/*.txt -text whitespace=-blank-at-eol,-blank-at-eof
+
 *.sh text eol=lf
 mvnw text eol=lf
 *.cmd text eol=crlf

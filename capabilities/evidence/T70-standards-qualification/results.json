@@ -1,0 +1,368 @@
+[
+  {
+    "case": "catalog-pages-indirect",
+    "tool": "pdfcpu",
+    "exit": 1,
+    "findings": [
+      "validate /tmp/t70-qualification/catalog-pages-indirect.pdf: validation error (obj#:1) (try --mode=relaxed): document catalog: catalog Pages: page tree root: entry \"Pages\" must be an indirect reference"
+    ]
+  },
+  {
+    "case": "catalog-pages-indirect",
+    "tool": "arlington",
+    "exit": 0,
+    "findings": [
+      "Error: not an indirect reference as required: Pages (Catalog) in PDF 1.7"
+    ]
+  },
+  {
+    "case": "catalog-pages",
+    "tool": "pdfcpu",
+    "exit": 1,
+    "findings": [
+      "validate /tmp/t70-qualification/catalog-pages.pdf: validation error (obj#:1) (try --mode=relaxed): document catalog: catalog Pages: page tree root: missing \"Pages\""
+    ]
+  },
+  {
+    "case": "catalog-pages",
+    "tool": "arlington",
+    "exit": 0,
+    "findings": [
+      "Error: non-inheritable required key does not exist: Pages (Catalog) in PDF 1.7"
+    ]
+  },
+  {
+    "case": "catalog-type-required",
+    "tool": "pdfcpu",
+    "exit": 1,
+    "findings": [
+      "validate /tmp/t70-qualification/catalog-type-required.pdf: validation error (obj#:1) (try --mode=relaxed): document catalog: dict=rootDict required entry=Type missing"
+    ]
+  },
+  {
+    "case": "catalog-type-required",
+    "tool": "arlington",
+    "exit": 0,
+    "findings": [
+      "Error: non-inheritable required key does not exist: Type (Catalog) in PDF 1.7"
+    ]
+  },
+  {
+    "case": "catalog-type",
+    "tool": "pdfcpu",
+    "exit": 1,
+    "findings": [
+      "validate /tmp/t70-qualification/catalog-type.pdf: validation error (obj#:1) (try --mode=relaxed): document catalog: dict=rootDict entry=Type invalid dict entry: Bogus"
+    ]
+  },
+  {
+    "case": "catalog-type",
+    "tool": "arlington",
+    "exit": 0,
+    "findings": [
+      "Error: wrong value for possible values: Type (Catalog) should be: name [Catalog] in PDF 1.7 and is name==Bogus"
+    ]
+  },
+  {
+    "case": "page-mediabox-numbers",
+    "tool": "pdfcpu",
+    "exit": 1,
+    "findings": [
+      "validate /tmp/t70-qualification/page-mediabox-numbers.pdf: validation error (obj#:3) (try --mode=relaxed): document catalog: catalog Pages: page tree: page obj#3: number array: invalid type at index 2"
+    ]
+  },
+  {
+    "case": "page-mediabox-numbers",
+    "tool": "arlington",
+    "exit": 0,
+    "findings": [
+      "Error: rectangle does not have 4 numeric elements for key MediaBox (PageObject)"
+    ]
+  },
+  {
+    "case": "page-mediabox-rectangle",
+    "tool": "pdfcpu",
+    "exit": 1,
+    "findings": [
+      "validate /tmp/t70-qualification/page-mediabox-rectangle.pdf: validation error (obj#:3) (try --mode=relaxed): document catalog: catalog Pages: page tree: page obj#3: dict=pageDict entry=MediaBox invalid dict entry"
+    ]
+  },
+  {
+    "case": "page-mediabox-rectangle",
+    "tool": "arlington",
+    "exit": 0,
+    "findings": [
+      "Warning: rectangle does not have exactly 4 elements for key MediaBox (PageObject) - had 3"
+    ]
+  },
+  {
+    "case": "page-mediabox-required",
+    "tool": "pdfcpu",
+    "exit": 1,
+    "findings": [
+      "validate /tmp/t70-qualification/page-mediabox-required.pdf: validation error (obj#:3) (try --mode=relaxed): document catalog: catalog Pages: page tree: page obj#3: dict=pageDict required entry=MediaBox missing"
+    ]
+  },
+  {
+    "case": "page-mediabox-required",
+    "tool": "arlington",
+    "exit": 0,
+    "findings": [
+      "Error: inheritable required key does not exist: MediaBox (PageObject) in PDF 1.7"
+    ]
+  },
+  {
+    "case": "page-parent-indirect",
+    "tool": "pdfcpu",
+    "exit": 1,
+    "findings": [
+      "validate /tmp/t70-qualification/page-parent-indirect.pdf: validation error (obj#:3) (try --mode=relaxed): document catalog: catalog Pages: page tree: node obj#3: missing parent node, expected obj#2"
+    ]
+  },
+  {
+    "case": "page-parent-indirect",
+    "tool": "arlington",
+    "exit": 0,
+    "findings": [
+      "Error: not an indirect reference as required: Parent (PageObject) in PDF 1.7",
+      "Error: non-inheritable required key does not exist: Parent (PageTreeNode) in PDF 1.7",
+      "Error: non-inheritable required key does not exist: Kids (PageTreeNode) in PDF 1.7",
+      "Error: non-inheritable required key does not exist: Count (PageTreeNode) in PDF 1.7"
+    ]
+  },
+  {
+    "case": "page-parent-link",
+    "tool": "pdfcpu",
+    "exit": 1,
+    "findings": [
+      "validate /tmp/t70-qualification/page-parent-link.pdf: validation error (obj#:3) (try --mode=relaxed): document catalog: catalog Pages: page tree: node obj#3: corrupt parent node, expected obj#2, got obj#1"
+    ]
+  },
+  {
+    "case": "page-parent-link",
+    "tool": "arlington",
+    "exit": 0,
+    "findings": [
+      "Warning: object identified in two different contexts. Originally: Catalog; second: PageTreeNode"
+    ]
+  },
+  {
+    "case": "page-parent-required",
+    "tool": "pdfcpu",
+    "exit": 1,
+    "findings": [
+      "validate /tmp/t70-qualification/page-parent-required.pdf: validation error (obj#:3) (try --mode=relaxed): document catalog: catalog Pages: page tree: node obj#3: missing parent node, expected obj#2"
+    ]
+  },
+  {
+    "case": "page-parent-required",
+    "tool": "arlington",
+    "exit": 0,
+    "findings": [
+      "Error: non-inheritable required key does not exist: Parent (PageObject) in PDF 1.7 because fn:IsRequired(@Type!=Template)"
+    ]
+  },
+  {
+    "case": "page-resources-required",
+    "tool": "pdfcpu",
+    "exit": 0,
+    "findings": [
+      "validation ok"
+    ]
+  },
+  {
+    "case": "page-resources-required",
+    "tool": "arlington",
+    "exit": 0,
+    "findings": [
+      "Error: inheritable required key does not exist: Resources (PageObject) in PDF 1.7"
+    ]
+  },
+  {
+    "case": "page-resources-type",
+    "tool": "pdfcpu",
+    "exit": 1,
+    "findings": [
+      "validate /tmp/t70-qualification/page-resources-type.pdf: validation error (obj#:3) (try --mode=relaxed): document catalog: catalog Pages: page tree: page obj#3: expected types.Dict, got types.Integer"
+    ]
+  },
+  {
+    "case": "page-resources-type",
+    "tool": "arlington",
+    "exit": 0,
+    "findings": [
+      "Error: wrong type: Resources (PageObject) should be dictionary in PDF 1.7 and is integer"
+    ]
+  },
+  {
+    "case": "page-type-value",
+    "tool": "pdfcpu",
+    "exit": 1,
+    "findings": [
+      "validate /tmp/t70-qualification/page-type-value.pdf: validation error (obj#:3) (try --mode=relaxed): document catalog: catalog Pages: page tree: node obj#3: unexpected dict type: Bogus"
+    ]
+  },
+  {
+    "case": "page-type-value",
+    "tool": "arlington",
+    "exit": 0,
+    "findings": [
+      "Error: wrong value for possible values: Type (PageObject) should be: name [Page,Template] in PDF 1.7 and is name==Bogus"
+    ]
+  },
+  {
+    "case": "page-type",
+    "tool": "pdfcpu",
+    "exit": 1,
+    "findings": [
+      "validate /tmp/t70-qualification/page-type.pdf: validation error (obj#:3) (try --mode=relaxed): document catalog: catalog Pages: page tree: node obj#3: missing Type"
+    ]
+  },
+  {
+    "case": "page-type",
+    "tool": "arlington",
+    "exit": 0,
+    "findings": [
+      "Error: non-inheritable required key does not exist: Type (PageObject) in PDF 1.7"
+    ]
+  },
+  {
+    "case": "pages-count-integer",
+    "tool": "pdfcpu",
+    "exit": 1,
+    "findings": [
+      "validate /tmp/t70-qualification/pages-count-integer.pdf: validation error (obj#:2) (try --mode=relaxed): document catalog: catalog Pages: page tree root: obj#2: corrupt \"Count\": wrong type <One>"
+    ]
+  },
+  {
+    "case": "pages-count-integer",
+    "tool": "arlington",
+    "exit": 0,
+    "findings": [
+      "Error: Duplicate dictionary key: Count"
+    ]
+  },
+  {
+    "case": "pages-count-nonnegative",
+    "tool": "pdfcpu",
+    "exit": 1,
+    "findings": [
+      "validate /tmp/t70-qualification/pages-count-nonnegative.pdf: validation error (obj#:3) (try --mode=relaxed): document catalog: catalog Pages: page tree: counted 1 pages, expected -1"
+    ]
+  },
+  {
+    "case": "pages-count-nonnegative",
+    "tool": "arlington",
+    "exit": 0,
+    "findings": [
+      "Error: Duplicate dictionary key: Count"
+    ]
+  },
+  {
+    "case": "pages-count-required",
+    "tool": "pdfcpu",
+    "exit": 1,
+    "findings": [
+      "validate /tmp/t70-qualification/pages-count-required.pdf: validation error (obj#:2) (try --mode=relaxed): document catalog: catalog Pages: page tree root: obj#2: missing \"Count\""
+    ]
+  },
+  {
+    "case": "pages-count-required",
+    "tool": "arlington",
+    "exit": 0,
+    "findings": []
+  },
+  {
+    "case": "pages-count-value",
+    "tool": "pdfcpu",
+    "exit": 1,
+    "findings": [
+      "validate /tmp/t70-qualification/pages-count-value.pdf: validation error (obj#:3) (try --mode=relaxed): document catalog: catalog Pages: page tree: counted 1 pages, expected 2"
+    ]
+  },
+  {
+    "case": "pages-count-value",
+    "tool": "arlington",
+    "exit": 0,
+    "findings": []
+  },
+  {
+    "case": "pages-kid-reference",
+    "tool": "pdfcpu",
+    "exit": 1,
+    "findings": [
+      "validate /tmp/t70-qualification/pages-kid-reference.pdf: validation error (obj#:2) (try --mode=relaxed): document catalog: catalog Pages: page tree: parent obj#2 kid[0]: expected indirect reference, got types.Integer"
+    ]
+  },
+  {
+    "case": "pages-kid-reference",
+    "tool": "arlington",
+    "exit": 0,
+    "findings": [
+      "Error: wrong type: * (ArrayOfPageTreeNodeKids) should be dictionary in PDF 1.7 and is integer"
+    ]
+  },
+  {
+    "case": "pages-kids",
+    "tool": "pdfcpu",
+    "exit": 1,
+    "findings": [
+      "validate /tmp/t70-qualification/pages-kids.pdf: validation error (obj#:2) (try --mode=relaxed): document catalog: catalog Pages: page tree: corrupt \"Kids\" entry"
+    ]
+  },
+  {
+    "case": "pages-kids",
+    "tool": "arlington",
+    "exit": 0,
+    "findings": [
+      "Error: non-inheritable required key does not exist: Kids (PageTreeNodeRoot) in PDF 1.7"
+    ]
+  },
+  {
+    "case": "pages-type-value",
+    "tool": "pdfcpu",
+    "exit": 0,
+    "findings": [
+      "validation ok"
+    ]
+  },
+  {
+    "case": "pages-type-value",
+    "tool": "arlington",
+    "exit": 0,
+    "findings": [
+      "Error: wrong value for possible values: Type (PageTreeNodeRoot) should be: name [Pages] in PDF 1.7 and is name==Wrong"
+    ]
+  },
+  {
+    "case": "pages-type",
+    "tool": "pdfcpu",
+    "exit": 0,
+    "findings": [
+      "validation ok"
+    ]
+  },
+  {
+    "case": "pages-type",
+    "tool": "arlington",
+    "exit": 0,
+    "findings": [
+      "Error: non-inheritable required key does not exist: Type (PageTreeNodeRoot) in PDF 1.7",
+      "Warning: object identified in two different contexts. Originally: PageTreeNodeRoot; second: PageTreeNode"
+    ]
+  },
+  {
+    "case": "valid",
+    "tool": "pdfcpu",
+    "exit": 0,
+    "findings": [
+      "validation ok"
+    ]
+  },
+  {
+    "case": "valid",
+    "tool": "arlington",
+    "exit": 0,
+    "findings": []
+  }
+]

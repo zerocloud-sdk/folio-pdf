@@ -57,7 +57,7 @@ public final class WorkflowTransactionContractTest {
         createDocument(first, 1);
         createDocument(primary, 2);
 
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = T03Requests.builder()
                 .source("first", DocumentSource.path(first))
                 .source("selected", DocumentSource.path(primary))
                 .primarySource("selected")
@@ -78,7 +78,7 @@ public final class WorkflowTransactionContractTest {
                 "document.blank.create-publish-reopen",
                 outcome.getCapabilityId());
         assertEquals(
-                WorkflowExecutionProfile.IN_PROCESS,
+                T03Requests.profile(),
                 outcome.getExecutionProfile());
         assertEquals(SaveMode.REWRITE, outcome.getSaveMode());
         assertTrue(outcome.getDiagnostics().isEmpty());
@@ -96,7 +96,7 @@ public final class WorkflowTransactionContractTest {
                 outcome.getPublicationReceipts().get(0).getStatus());
 
         WorkflowOutcome<Integer> reopened = new DocumentWorkflow().execute(
-                WorkflowRequest.open(target, SaveMode.REWRITE),
+                T03Requests.open(target, SaveMode.REWRITE),
                 session -> session.query(PageCount.INSTANCE));
         assertEquals(Integer.valueOf(3), reopened.getResult());
     }
@@ -181,7 +181,7 @@ public final class WorkflowTransactionContractTest {
                 "caller input programming failure");
         RuntimeFailingInputStream source =
                 new RuntimeFailingInputStream(expected);
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = T03Requests.builder()
                 .source("runtime-input", DocumentSource.stream(source, 1024L))
                 .primarySource("runtime-input")
                 .saveMode(SaveMode.REWRITE)
@@ -211,7 +211,7 @@ public final class WorkflowTransactionContractTest {
                 "caller output programming failure");
         RuntimeFailingOutputStream target =
                 new RuntimeFailingOutputStream(expected);
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = T03Requests.builder()
                 .target("runtime-output", PublicationTarget.stream(target))
                 .saveMode(SaveMode.REWRITE)
                 .build();
@@ -246,7 +246,7 @@ public final class WorkflowTransactionContractTest {
         Path targetPath = temporaryFolder.getRoot().toPath().resolve("target.pdf");
 
         try {
-            WorkflowRequest.builder()
+            T03Requests.builder()
                     .source("input", DocumentSource.path(sourcePath))
                     .source("input", DocumentSource.path(sourcePath));
             fail("Expected duplicate source names to be rejected");
@@ -255,7 +255,7 @@ public final class WorkflowTransactionContractTest {
         }
 
         try {
-            WorkflowRequest.builder()
+            T03Requests.builder()
                     .target("output", PublicationTarget.path(targetPath))
                     .target("output", PublicationTarget.path(targetPath));
             fail("Expected duplicate target names to be rejected");
@@ -264,7 +264,7 @@ public final class WorkflowTransactionContractTest {
         }
 
         try {
-            WorkflowRequest.builder()
+            T03Requests.builder()
                     .source("input", DocumentSource.path(sourcePath))
                     .saveMode(SaveMode.REWRITE)
                     .build();
@@ -276,7 +276,7 @@ public final class WorkflowTransactionContractTest {
         }
 
         try {
-            WorkflowRequest.builder()
+            T03Requests.builder()
                     .source("input", DocumentSource.path(sourcePath))
                     .primarySource("missing")
                     .saveMode(SaveMode.REWRITE)
@@ -289,7 +289,7 @@ public final class WorkflowTransactionContractTest {
         }
 
         try {
-            WorkflowRequest.builder()
+            T03Requests.builder()
                     .target("output", PublicationTarget.path(targetPath))
                     .build();
             fail("Expected an explicit Save Mode to be required");
@@ -307,7 +307,7 @@ public final class WorkflowTransactionContractTest {
         Path mirror = temporaryFolder.getRoot().toPath().resolve("mirror.pdf");
         TrackingOutputStream response = new TrackingOutputStream();
 
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = T03Requests.builder()
                 .target("archive", PublicationTarget.path(archive))
                 .target("response", PublicationTarget.stream(response))
                 .target("mirror", PublicationTarget.path(mirror))
@@ -346,7 +346,7 @@ public final class WorkflowTransactionContractTest {
         Files.write(untouched, existing);
         FailingOutputStream failing = new FailingOutputStream();
 
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = T03Requests.builder()
                 .target("committed", PublicationTarget.path(committed))
                 .target("failing-stream", PublicationTarget.stream(failing))
                 .target("untouched", PublicationTarget.path(untouched))
@@ -405,11 +405,11 @@ public final class WorkflowTransactionContractTest {
         Path innerSecond = temporaryFolder.getRoot().toPath()
                 .resolve("inner-second.pdf");
 
-        WorkflowRequest outer = WorkflowRequest.builder()
+        WorkflowRequest outer = T03Requests.builder()
                 .target("outer", PublicationTarget.path(outerTarget))
                 .saveMode(SaveMode.REWRITE)
                 .build();
-        WorkflowRequest inner = WorkflowRequest.builder()
+        WorkflowRequest inner = T03Requests.builder()
                 .target("inner-first", PublicationTarget.path(innerFirst))
                 .target("inner-second", PublicationTarget.path(innerSecond))
                 .saveMode(SaveMode.REWRITE)
@@ -449,7 +449,7 @@ public final class WorkflowTransactionContractTest {
         TrackingOutputStream untouchedStream = new TrackingOutputStream();
         DocumentSession[] retained = new DocumentSession[1];
 
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = T03Requests.builder()
                 .target("preserved", PublicationTarget.path(preserved))
                 .target("untouched-stream", PublicationTarget.stream(untouchedStream))
                 .saveMode(SaveMode.REWRITE)
@@ -505,7 +505,7 @@ public final class WorkflowTransactionContractTest {
         byte[] existing = new byte[] {71, 72, 73};
         Files.write(target, existing);
 
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = T03Requests.builder()
                 .target("incremental", PublicationTarget.path(target))
                 .saveMode(SaveMode.INCREMENTAL)
                 .build();
@@ -550,7 +550,7 @@ public final class WorkflowTransactionContractTest {
         CancellationToken preCancelled = CancellationToken.create();
         preCancelled.cancel();
 
-        WorkflowRequest preCancelledRequest = WorkflowRequest.builder()
+        WorkflowRequest preCancelledRequest = T03Requests.builder()
                 .target("pre-cancelled", PublicationTarget.path(preCancelledTarget))
                 .saveMode(SaveMode.REWRITE)
                 .cancellationToken(preCancelled)
@@ -574,7 +574,7 @@ public final class WorkflowTransactionContractTest {
         Files.write(cancelledAfterWorkTarget, existing);
         CancellationToken cancelledAfterWork = CancellationToken.create();
         DocumentSession[] retained = new DocumentSession[1];
-        WorkflowRequest cancelledAfterWorkRequest = WorkflowRequest.builder()
+        WorkflowRequest cancelledAfterWorkRequest = T03Requests.builder()
                 .target(
                         "cancelled-after-work",
                         PublicationTarget.path(cancelledAfterWorkTarget))
@@ -617,7 +617,7 @@ public final class WorkflowTransactionContractTest {
                 ZoneId.of("UTC"));
         DocumentSession[] retained = new DocumentSession[1];
 
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = T03Requests.builder()
                 .target("deadline", PublicationTarget.path(target))
                 .saveMode(SaveMode.REWRITE)
                 .deadline(clock.instant().plusSeconds(5L))
@@ -678,7 +678,7 @@ public final class WorkflowTransactionContractTest {
         List<WorkflowProgressPhase> phases =
                 new ArrayList<WorkflowProgressPhase>();
 
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = T03Requests.builder()
                 .target("sensitive-target-name", PublicationTarget.path(sensitivePath))
                 .target("private-response", PublicationTarget.stream(stream))
                 .saveMode(SaveMode.REWRITE)
@@ -771,7 +771,7 @@ public final class WorkflowTransactionContractTest {
 
     private static void assertPrimaryPageCount(DocumentSource source, int expected)
             throws Exception {
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = T03Requests.builder()
                 .source("selected", source)
                 .primarySource("selected")
                 .saveMode(SaveMode.REWRITE)
@@ -785,7 +785,7 @@ public final class WorkflowTransactionContractTest {
     }
 
     private static void assertSourceLimitExceeded(DocumentSource source) throws Exception {
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = T03Requests.builder()
                 .source("bounded", source)
                 .primarySource("bounded")
                 .saveMode(SaveMode.REWRITE)
@@ -812,7 +812,7 @@ public final class WorkflowTransactionContractTest {
 
     private static void createDocument(Path target, int pageCount) throws Exception {
         new DocumentWorkflow().execute(
-                WorkflowRequest.create(target, SaveMode.REWRITE),
+                T03Requests.create(target, SaveMode.REWRITE),
                 session -> {
                     for (int page = 0; page < pageCount; page++) {
                         session.execute(AddBlankPage.INSTANCE);

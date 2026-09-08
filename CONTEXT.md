@@ -395,7 +395,7 @@ The migration artifact containing only mappings whose Capability Matrix status i
 _Avoid_: complete facade, compatibility stubs
 
 **Experimental Migration Facade**:
-A mutually exclusive preview artifact containing the Stable Migration Facade plus mappings that are still `experimental`, never silently included in the stable artifact.
+A mutually exclusive preview artifact containing all Stable Migration Facade mappings and any mappings that are still `experimental`. The surfaces may be equal when no experimental mapping is present; experimental mappings are never silently included in the stable artifact.
 _Avoid_: stable facade, preview hidden in stable
 
 **Acceptance Evidence**:
