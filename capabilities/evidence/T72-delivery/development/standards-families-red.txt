@@ -1,0 +1,13 @@
+F
+======================================================================
+FAIL: test_all_page_preservation_structure_families_have_explicit_negative_controls (scripts.tests.test_t10_standards.T10StandardsCorpusTest.test_all_page_preservation_structure_families_have_explicit_negative_controls)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t10_standards.py", line 32, in test_all_page_preservation_structure_families_have_explicit_negative_controls
+    self.assertIn(rule, catalog)
+AssertionError: 'page-cropbox-rectangle' not found in {'annotation-rect-numbers': {'authority': 'ISO 32000-1:2008 Table 164: Rect has four numbers', 'path': 'fixtures/annotation-rect-numbers.pdf', 'sha256': '3401da20a4e0134e7129ef24eb459c70c8523f70a301f5f3acf343098a39023b'}, 'destination-fit-count': {'authority': 'ISO 32000-1:2008 Table 151: a Fit destination contains only a page and the Fit name', 'path': 'fixtures/destination-fit-count.pdf', 'sha256': '2c09b29f347c89b32a8d20d9f76dc1880358db38674420dbffffd76db493326b'}, 'form-bbox-required': {'authority': 'ISO 32000-1:2008 Table 95: BBox is required', 'path': 'fixtures/form-bbox-required.pdf', 'sha256': 'b2173c31116033e5f38d7f8debed3c2f3eed57eb8aeaffe719ffeb71604d7245'}, 'page-rotate-value': {'authority': 'ISO 32000-1:2008 Table 30: Rotate is a multiple of 90', 'path': 'fixtures/page-rotate-value.pdf', 'sha256': '27c96a0f9012f89cbcff448bbc32f5b56176e014236c18b65332d6aa10b8e79b'}}
+
+----------------------------------------------------------------------
+Ran 1 test in 0.042s
+
+FAILED (failures=1)

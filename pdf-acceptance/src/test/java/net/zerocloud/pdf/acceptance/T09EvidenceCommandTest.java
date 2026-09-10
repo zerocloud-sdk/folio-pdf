@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.rules.TemporaryFolder;
 
 /** Exercises the repository-only T09 command through its emitted products and records. */
@@ -49,6 +50,7 @@ public final class T09EvidenceCommandTest {
     }
 
     @Test
+    @Category(IndependentTools.class)
     public void recordsQualifiedIndependentChainsAndRealNegativeControls() throws Exception {
         Path root = Paths.get(System.getProperty("repositoryRoot"));
         Path output = temporary.getRoot().toPath().resolve("four-chains");
@@ -79,6 +81,7 @@ public final class T09EvidenceCommandTest {
     }
 
     @Test
+    @Category(IndependentTools.class)
     public void missingT09RuleOrActualCheckerCannotQualify() throws Exception {
         for (String changed : new String[] {"rule", "tool"}) {
             Path root = copyObservationRoot(changed);

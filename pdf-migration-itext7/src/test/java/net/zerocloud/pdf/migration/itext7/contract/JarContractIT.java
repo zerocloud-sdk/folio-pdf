@@ -37,6 +37,8 @@ import net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument;
 import net.zerocloud.pdf.itext7.kernel.pdf.PdfPage;
 import net.zerocloud.pdf.itext7.kernel.pdf.PdfReader;
 import net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter;
+import net.zerocloud.pdf.itext7.kernel.utils.PdfMerger;
+import net.zerocloud.pdf.itext7.kernel.utils.PdfSplitter;
 import org.junit.Test;
 
 public final class JarContractIT {
@@ -70,6 +72,8 @@ public final class JarContractIT {
                 "net/zerocloud/pdf/itext7/kernel/pdf/PdfStream.class",
                 "net/zerocloud/pdf/itext7/kernel/pdf/PdfIndirectReference.class",
                 "net/zerocloud/pdf/itext7/kernel/pdf/PdfCatalog.class",
+                "net/zerocloud/pdf/itext7/kernel/utils/PdfMerger.class",
+                "net/zerocloud/pdf/itext7/kernel/utils/PdfSplitter.class",
                 "net/zerocloud/pdf/itext7/layout/Document.class"));
 
         try (JarFile preview = new JarFile(previewArtifact.toFile());
@@ -182,6 +186,8 @@ public final class JarContractIT {
         Class<?> reader = loader.loadClass(PdfReader.class.getName());
         Class<?> document = loader.loadClass(PdfDocument.class.getName());
         Class<?> page = loader.loadClass(PdfPage.class.getName());
+        Class<?> merger = loader.loadClass(PdfMerger.class.getName());
+        Class<?> splitter = loader.loadClass(PdfSplitter.class.getName());
         Class<?> layout = loader.loadClass("net.zerocloud.pdf.itext7.layout.Document");
         Class<?> exception = loader.loadClass(PdfException.class.getName());
         assertConstructors(writer,
@@ -197,15 +203,38 @@ public final class JarContractIT {
         assertConstructors(document,
                 "PdfDocument(net.zerocloud.pdf.itext7.kernel.pdf.PdfReader)",
                 "PdfDocument(net.zerocloud.pdf.itext7.kernel.pdf.PdfReader,net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter)",
-                "PdfDocument(net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter)");
+                "PdfDocument(net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter)",
+                "PdfDocument(java.util.Map,java.lang.String,java.util.Map)");
         assertMethods(document,
                 "net.zerocloud.pdf.itext7.kernel.pdf.PdfPage addNewPage()",
+                "net.zerocloud.pdf.itext7.kernel.pdf.PdfPage addNewPage(int)",
+                "java.util.List copyPages(int,int,int)",
                 "net.zerocloud.pdf.itext7.kernel.pdf.PdfCatalog getCatalog()",
+                "net.zerocloud.pdf.itext7.kernel.utils.PdfMerger getMerger()",
                 "int getNumberOfPages()",
+                "net.zerocloud.pdf.itext7.kernel.pdf.PdfPage getPage(int)",
+                "java.util.List getPublicationReceipts()",
+                "net.zerocloud.pdf.itext7.kernel.utils.PdfSplitter getSplitter()",
+                "void movePage(int,int)",
+                "void movePages(int,int,int)",
+                "void removePage(int)",
+                "void removePages(int,int)",
                 "void close()");
 
         assertConstructors(page);
-        assertMethods(page);
+        assertMethods(page,
+                "net.zerocloud.pdf.itext7.kernel.pdf.PdfDictionary getPdfObject()");
+
+        assertConstructors(merger,
+                "PdfMerger(net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument)");
+        assertMethods(merger,
+                "void close()",
+                "net.zerocloud.pdf.itext7.kernel.utils.PdfMerger merge(java.lang.String[])");
+
+        assertConstructors(splitter,
+                "PdfSplitter(net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument)");
+        assertMethods(splitter,
+                "void extractPageRanges(java.lang.String[],net.zerocloud.pdf.PageRange[])");
 
         assertConstructors(layout,
                 "Document(net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument)");

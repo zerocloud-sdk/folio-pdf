@@ -490,10 +490,26 @@ final class InventoryValidator {
             validateStableId(surface.id, path + ".id", errors);
 
             Map<String, Object> reference = requiredMap(value, "reference", path, errors);
-            checkKeys(reference, setOf("type", "member"), path + ".reference", errors);
+            checkKeys(reference, setOf("status", "type", "member"), path + ".reference", errors);
+            String referenceStatus = optionalString(
+                    reference, "status", path + ".reference", errors);
+            if (referenceStatus != null) {
+                surface.referenceStatus = ReferenceSurfaceStatus.from(referenceStatus);
+                if (surface.referenceStatus == null) {
+                    errors.add(path + ".reference.status: unsupported value " + referenceStatus);
+                }
+            }
             surface.referenceType = requiredString(reference, "type", path + ".reference", errors);
-            surface.referenceMember = requiredString(
-                    reference, "member", path + ".reference", errors);
+            if (surface.referenceStatus == ReferenceSurfaceStatus.FOLIO_EXTENSION) {
+                surface.referenceMember = optionalString(
+                        reference, "member", path + ".reference", errors);
+                if (surface.referenceMember != null) {
+                    errors.add(path + ".reference.member: must be omitted for a folio-extension");
+                }
+            } else {
+                surface.referenceMember = requiredString(
+                        reference, "member", path + ".reference", errors);
+            }
 
             Map<String, Object> folioPdf = requiredMap(value, "folio-pdf", path, errors);
             checkKeys(folioPdf, setOf("type", "member"), path + ".folio-pdf", errors);

@@ -72,7 +72,7 @@ A missing capability, required behavior, compatible dependency, independent evid
 | --- | --- | --- | --- |
 | [`transactions`](#transactions) | `document.blank.create-publish-reopen` | [#70](https://github.com/zerocloud-sdk/folio-pdf/issues/70) | satisfied |
 | [`values`](#values) | `document.value.inspect-patch` | [#71](https://github.com/zerocloud-sdk/folio-pdf/issues/71) | satisfied |
-| [`pages`](#pages) | `document.page.manipulate-merge-split` | [#72](https://github.com/zerocloud-sdk/folio-pdf/issues/72) | blocked |
+| [`pages`](#pages) | `document.page.manipulate-merge-split` | [#72](https://github.com/zerocloud-sdk/folio-pdf/issues/72) | satisfied |
 | [`metadata`](#metadata) | `document.metadata.outlines-destinations-attachments` | [#73](https://github.com/zerocloud-sdk/folio-pdf/issues/73) | blocked |
 | [`annotations`](#annotations) | `document.annotations-actions.manage` | [#74](https://github.com/zerocloud-sdk/folio-pdf/issues/74) | blocked |
 | [`text`](#text) | `document.text-structure.extract` | [#75](https://github.com/zerocloud-sdk/folio-pdf/issues/75) | blocked |
@@ -122,7 +122,7 @@ Execute a named-source document transaction and publish validated rewrites to na
 - Mandatory chains: `syntax, standards, semantic, visual`
 - Dependencies: none
 - Aggregate members: none
-- Required Facade family: kernel/layout document lifecycle (`com.itextpdf.`); mappings: `itext7.kernel.pdf-writer.constructor-string, itext7.kernel.pdf-reader.constructor-string, itext7.kernel.pdf-reader.close, itext7.kernel.pdf-document.constructor-writer, itext7.kernel.pdf-document.constructor-reader, itext7.kernel.pdf-document.add-new-page, itext7.kernel.pdf-document.get-number-of-pages, itext7.kernel.pdf-document.close, itext7.kernel.pdf-page.type, itext7.kernel.pdf-exception.constructor-message-cause, itext7.layout.document.constructor-pdf-document, itext7.layout.document.close`
+- Required Facade family: kernel/layout document lifecycle (`com.itextpdf.`); mappings: `itext7.kernel.pdf-writer.constructor-string, itext7.kernel.pdf-reader.constructor-string, itext7.kernel.pdf-reader.close, itext7.kernel.pdf-document.constructor-writer, itext7.kernel.pdf-document.constructor-reader, itext7.kernel.pdf-document.add-new-page, itext7.kernel.pdf-document.get-number-of-pages, itext7.kernel.pdf-document.close, itext7.kernel.pdf-page.get-pdf-object, itext7.kernel.pdf-exception.constructor-message-cause, itext7.layout.document.constructor-pdf-document, itext7.layout.document.close`
 - Source requirements: [`spec-us-10`](#spec-us-10), [`spec-us-18`](#spec-us-18), [`spec-us-42`](#spec-us-42), [`spec-us-43`](#spec-us-43), [`spec-us-46`](#spec-us-46), [`spec-us-47`](#spec-us-47), [`spec-us-48`](#spec-us-48), [`spec-us-49`](#spec-us-49), [`spec-us-50`](#spec-us-50), [`spec-us-74`](#spec-us-74), [`spec-id-12`](#spec-id-12), [`spec-id-13`](#spec-id-13), [`spec-id-14`](#spec-id-14), [`spec-id-16`](#spec-id-16), [`spec-id-18`](#spec-id-18), [`spec-id-19`](#spec-id-19), [`spec-id-24`](#spec-id-24), [`spec-id-27`](#spec-id-27), [`spec-id-28`](#spec-id-28), [`spec-id-29`](#spec-id-29), [`spec-td-18`](#spec-td-18), [`spec-td-22`](#spec-td-22), [`spec-td-23`](#spec-td-23), [`slice-70-1`](#slice-70-1), [`slice-70-2`](#slice-70-2), [`slice-70-3`](#slice-70-3), [`slice-70-4`](#slice-70-4), [`slice-70-5`](#slice-70-5)
 
 
@@ -154,24 +154,9 @@ Insert, remove, move, and copy pages; append ordered named Sources; and publish 
 - Mandatory chains: `syntax, standards, semantic, visual`
 - Dependencies: `transactions`
 - Aggregate members: none
-- Required Facade family: kernel pages, merger and splitter (`com.itextpdf.kernel.`); mappings: **missing**
+- Required Facade family: kernel pages, merger and splitter (`com.itextpdf.kernel.`); mappings: `itext7.kernel.pdf-document.constructor-named-sources-targets, itext7.kernel.pdf-document.add-new-page-at-index, itext7.kernel.pdf-document.get-page, itext7.kernel.pdf-document.remove-page, itext7.kernel.pdf-document.remove-pages, itext7.kernel.pdf-document.move-page, itext7.kernel.pdf-document.move-pages, itext7.kernel.pdf-document.copy-pages, itext7.kernel.pdf-document.get-merger, itext7.kernel.pdf-document.get-splitter, itext7.kernel.pdf-document.get-publication-receipts, itext7.kernel.pdf-page.get-pdf-object, itext7.kernel.utils.pdf-merger.constructor-document, itext7.kernel.utils.pdf-merger.merge-named-sources, itext7.kernel.utils.pdf-merger.close, itext7.kernel.utils.pdf-splitter.constructor-document, itext7.kernel.utils.pdf-splitter.extract-page-ranges`
 - Source requirements: [`spec-us-11`](#spec-us-11), [`spec-us-12`](#spec-us-12), [`spec-us-13`](#spec-us-13), [`spec-us-16`](#spec-us-16), [`spec-us-17`](#spec-us-17), [`spec-id-26`](#spec-id-26), [`spec-td-18`](#spec-td-18), [`slice-72-1`](#slice-72-1), [`slice-72-2`](#slice-72-2), [`slice-72-3`](#slice-72-3), [`slice-72-4`](#slice-72-4)
 
-- Blocker: capability document.page.manipulate-merge-split is experimental, requires compatible
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on document.page.manipulate-merge-split
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on document.page.manipulate-merge-split
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on document.page.manipulate-merge-split
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk21 on document.page.manipulate-merge-split
-- Blocker: missing required Facade mapping set for kernel pages, merger and splitter
-- Blocker: unresolved retained limitation: Conservative page-graph restrictions require #72 corpus evidence that all Foundation page operations remain available; safe rejection is not proof of required successful behavior.
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk8/IN_PROCESS (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk8/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk11/IN_PROCESS (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk11/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/IN_PROCESS (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
 
 <a id="metadata"></a>
 ### `metadata`
@@ -219,7 +204,6 @@ Read, create, update, remove, flatten, and preserve managed annotations and iner
 - Source requirements: [`spec-us-16`](#spec-us-16), [`spec-us-17`](#spec-us-17), [`spec-id-26`](#spec-id-26), [`slice-74-1`](#slice-74-1), [`slice-74-2`](#slice-74-2), [`slice-74-3`](#slice-74-3), [`slice-74-4`](#slice-74-4)
 
 - Blocker: capability document.annotations-actions.manage is experimental, requires compatible
-- Blocker: incompatible Dependency Gate document.page.manipulate-merge-split
 - Blocker: incompatible Dependency Gate document.metadata.outlines-destinations-attachments
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on document.annotations-actions.manage
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on document.annotations-actions.manage
@@ -237,7 +221,6 @@ Read, create, update, remove, flatten, and preserve managed annotations and iner
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: incomplete prerequisite obligation pages
 - Blocker: incomplete prerequisite obligation metadata
 
 <a id="text"></a>
@@ -1216,7 +1199,6 @@ Close every Foundation behavior, aggregate, dependency and Facade obligation; ru
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk11/REPOSITORY (required chains: contract, review)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/REPOSITORY (required chains: contract, review)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/REPOSITORY (required chains: contract, review)
-- Blocker: incomplete prerequisite obligation pages
 - Blocker: incomplete prerequisite obligation metadata
 - Blocker: incomplete prerequisite obligation annotations
 - Blocker: incomplete prerequisite obligation text
@@ -1272,17 +1254,17 @@ Classifications bind the exact Capability Matrix limitation text by SHA-256; cha
   Original limitation: Native IN_PROCESS and HARDENED_WORKER share the closed value and versioned Patch codecs. The mapped Facade owns one IN_PROCESS Native Session per Document, uses REWRITE publication, and preserves caller-owned streams; Native execution and policy controls are not Facade mappings.
 - `document.value.inspect-patch` / `retained-contract` → [`values`](#values): Decoded stream replacement supports explicit unfiltered and Flate output with atomic engine-owned metadata; untouched encoded streams and unknown resources retain their bytes, attributes and references.
   Original limitation: Stream replacements accept decoded bytes with explicit unfiltered or Flate encoding; Length, Filter, DecodeParms and external-file metadata remain engine-owned. Untouched encoded bytes, unknown resources and attributes are preserved; unknown decoding fails safely and external-file streams are never resolved.
-- `document.page.manipulate-merge-split` / `retained-contract` → [`pages`](#pages): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #72 must prove it without omitting required successful Foundation cases.
+- `document.page.manipulate-merge-split` / `retained-contract` → [`pages`](#pages): T72 public Native and Facade contracts plus candidate-bound T10 evidence retain this requirement while covering all required successful Foundation page cases.
   Original limitation: T15 admits T10 primary-document commands for unsigned INCREMENTAL publication but rejects SplitDocument; Existing Signatures authorize no T10 command in version 1.
-- `document.page.manipulate-merge-split` / `release-blocker` → [`pages`](#pages): Conservative page-graph restrictions require #72 corpus evidence that all Foundation page operations remain available; safe rejection is not proof of required successful behavior.
-  Original limitation: Page operations preserve tested inherited boxes, rotation, resources, content, the legacy basic Text-annotation subset, and managed T12 annotations and local GoTo Action bindings when copied or reparented. Before mutation, T10 rejects nonstructural trailer data, nonempty document information, catalogs or page-tree nodes with unproven entries, inconsistent page-tree parents, counts, cycles, repeated nodes, or any direct input page-tree node, missing effective media boxes, malformed box, rotation, or resource entries, resource graphs that reach page or page-tree structures, nested content arrays, external-file content streams, filtered content streams unless they use one parameter-free FlateDecode or Fl filter with a strictly valid zlib payload, content streams with non-engine metadata, unproven indirect page extensions, separation information, unsupported annotation relationships or Action graphs, tagged-page references, and thread beads. Managed document information, XMP metadata, outlines, named destinations, and embedded files are validated, preserved, and retargeted by the document.metadata.outlines-destinations-attachments capability; managed annotations and Actions are validated, preserved, and retargeted by document.annotations-actions.manage; forms and tagged structure remain downstream capability slices.
-- `document.page.manipulate-merge-split` / `retained-contract` → [`pages`](#pages): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #72 must prove it without omitting required successful Foundation cases.
+- `document.page.manipulate-merge-split` / `retained-contract` → [`pages`](#pages): The fixed T10 corpus exercises every required successful Foundation page operation; conservative page-graph rejection remains the documented safe-failure boundary.
+  Original limitation: Page operations preserve tested inherited boxes, rotation, resources, content, the legacy basic Text-annotation dictionary key set, and managed T12 annotations and local GoTo Action bindings when copied or reparented; only required NM collision renaming and P page retargeting change a copied legacy annotation. Before mutation, T10 rejects nonstructural trailer data, nonempty document information, catalogs or page-tree nodes with unproven entries, inconsistent page-tree parents, counts, cycles, repeated nodes, or any direct input page-tree node, missing effective media boxes, malformed box, rotation, or resource entries, resource graphs that reach page or page-tree structures, nested content arrays, external-file content streams, filtered content streams unless they use one parameter-free FlateDecode or Fl filter with a strictly valid zlib payload, content streams with non-engine metadata, unproven indirect page extensions, separation information, unsupported annotation relationships or Action graphs, tagged-page references, and thread beads. Managed document information, XMP metadata, outlines, named destinations, and embedded files are validated, preserved, and retargeted by the document.metadata.outlines-destinations-attachments capability; managed annotations and Actions are validated, preserved, and retargeted by document.annotations-actions.manage; forms and tagged structure remain downstream capability slices.
+- `document.page.manipulate-merge-split` / `retained-contract` → [`pages`](#pages): T72 public Native and Facade contracts plus candidate-bound T10 evidence retain this requirement while covering all required successful Foundation page cases.
   Original limitation: Copy, merge, and split preserve semantic page graphs, not source byte layout or backend object identity. Object References are Session-local; public reopen-and-rewrite probes demonstrate that changing an imported content graph leaves its Source and sibling products unchanged.
-- `document.page.manipulate-merge-split` / `retained-contract` → [`pages`](#pages): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #72 must prove it without omitting required successful Foundation cases.
+- `document.page.manipulate-merge-split` / `retained-contract` → [`pages`](#pages): T72 public Native and Facade contracts plus candidate-bound T10 evidence retain this requirement while covering all required successful Foundation page cases.
   Original limitation: T10 validates command ranges, positions, named merge Sources, and exact split Target coverage. A successful SplitDocument is terminal for Document Commands in that workflow; its local limits compose with T20's transaction-wide page, object, nesting, decompression, memory, time, storage, input, pixel, and concurrency policy.
-- `document.page.manipulate-merge-split` / `retained-contract` → [`pages`](#pages): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #72 must prove it without omitting required successful Foundation cases.
+- `document.page.manipulate-merge-split` / `retained-contract` → [`pages`](#pages): T72 public Native and Facade contracts plus candidate-bound T10 evidence retain this requirement while covering all required successful Foundation page cases.
   Original limitation: T10 runs through the trusted in-process adapter by default; T21's opt-in Hardened Worker transports the same page, merge, and split commands and queries through closed version-1 codecs.
-- `document.page.manipulate-merge-split` / `retained-contract` → [`pages`](#pages): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #72 must prove it without omitting required successful Foundation cases.
+- `document.page.manipulate-merge-split` / `retained-contract` → [`pages`](#pages): T72 public Native and Facade contracts plus candidate-bound T10 evidence retain this requirement while covering all required successful Foundation page cases.
   Original limitation: A new split product that has no trailer identifier receives one derived from a fixed-placeholder serialization of that product; existing identifiers and non-split publication are unchanged. T10 makes no broader source-byte-layout guarantee.
 - `document.metadata.outlines-destinations-attachments` / `retained-contract` → [`metadata`](#metadata): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #73 must prove it without omitting required successful Foundation cases.
   Original limitation: T15 admits T11 commands for unsigned INCREMENTAL publication; Existing Signatures authorize no T11 command in version 1.

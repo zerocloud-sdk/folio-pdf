@@ -34,7 +34,7 @@ capabilities:
         - itext7.kernel.pdf-document.add-new-page
         - itext7.kernel.pdf-document.get-number-of-pages
         - itext7.kernel.pdf-document.close
-        - itext7.kernel.pdf-page.type
+        - itext7.kernel.pdf-page.get-pdf-object
         - itext7.kernel.pdf-exception.constructor-message-cause
         - itext7.layout.document.constructor-pdf-document
         - itext7.layout.document.close
@@ -336,11 +336,28 @@ capabilities:
       failure: net.zerocloud.pdf.DocumentFailure
       failure-code: net.zerocloud.pdf.DocumentFailureCode
     migration-facade:
-      stable: []
+      stable:
+        - itext7.kernel.pdf-document.constructor-named-sources-targets
+        - itext7.kernel.pdf-document.add-new-page-at-index
+        - itext7.kernel.pdf-document.get-page
+        - itext7.kernel.pdf-document.remove-page
+        - itext7.kernel.pdf-document.remove-pages
+        - itext7.kernel.pdf-document.move-page
+        - itext7.kernel.pdf-document.move-pages
+        - itext7.kernel.pdf-document.copy-pages
+        - itext7.kernel.pdf-document.get-merger
+        - itext7.kernel.pdf-document.get-splitter
+        - itext7.kernel.pdf-document.get-publication-receipts
+        - itext7.kernel.pdf-page.get-pdf-object
+        - itext7.kernel.utils.pdf-merger.constructor-document
+        - itext7.kernel.utils.pdf-merger.merge-named-sources
+        - itext7.kernel.utils.pdf-merger.close
+        - itext7.kernel.utils.pdf-splitter.constructor-document
+        - itext7.kernel.utils.pdf-splitter.extract-page-ranges
       preview: []
     limitations:
       - T15 admits T10 primary-document commands for unsigned INCREMENTAL publication but rejects SplitDocument; Existing Signatures authorize no T10 command in version 1.
-      - Page operations preserve tested inherited boxes, rotation, resources, content, the legacy basic Text-annotation subset, and managed T12 annotations and local GoTo Action bindings when copied or reparented. Before mutation, T10 rejects nonstructural trailer data, nonempty document information, catalogs or page-tree nodes with unproven entries, inconsistent page-tree parents, counts, cycles, repeated nodes, or any direct input page-tree node, missing effective media boxes, malformed box, rotation, or resource entries, resource graphs that reach page or page-tree structures, nested content arrays, external-file content streams, filtered content streams unless they use one parameter-free FlateDecode or Fl filter with a strictly valid zlib payload, content streams with non-engine metadata, unproven indirect page extensions, separation information, unsupported annotation relationships or Action graphs, tagged-page references, and thread beads. Managed document information, XMP metadata, outlines, named destinations, and embedded files are validated, preserved, and retargeted by the document.metadata.outlines-destinations-attachments capability; managed annotations and Actions are validated, preserved, and retargeted by document.annotations-actions.manage; forms and tagged structure remain downstream capability slices.
+      - Page operations preserve tested inherited boxes, rotation, resources, content, the legacy basic Text-annotation dictionary key set, and managed T12 annotations and local GoTo Action bindings when copied or reparented; only required NM collision renaming and P page retargeting change a copied legacy annotation. Before mutation, T10 rejects nonstructural trailer data, nonempty document information, catalogs or page-tree nodes with unproven entries, inconsistent page-tree parents, counts, cycles, repeated nodes, or any direct input page-tree node, missing effective media boxes, malformed box, rotation, or resource entries, resource graphs that reach page or page-tree structures, nested content arrays, external-file content streams, filtered content streams unless they use one parameter-free FlateDecode or Fl filter with a strictly valid zlib payload, content streams with non-engine metadata, unproven indirect page extensions, separation information, unsupported annotation relationships or Action graphs, tagged-page references, and thread beads. Managed document information, XMP metadata, outlines, named destinations, and embedded files are validated, preserved, and retargeted by the document.metadata.outlines-destinations-attachments capability; managed annotations and Actions are validated, preserved, and retargeted by document.annotations-actions.manage; forms and tagged structure remain downstream capability slices.
       - Copy, merge, and split preserve semantic page graphs, not source byte layout or backend object identity. Object References are Session-local; public reopen-and-rewrite probes demonstrate that changing an imported content graph leaves its Source and sibling products unchanged.
       - T10 validates command ranges, positions, named merge Sources, and exact split Target coverage. A successful SplitDocument is terminal for Document Commands in that workflow; its local limits compose with T20's transaction-wide page, object, nesting, decompression, memory, time, storage, input, pixel, and concurrency policy.
       - T10 runs through the trusted in-process adapter by default; T21's opt-in Hardened Worker transports the same page, merge, and split commands and queries through closed version-1 codecs.
@@ -348,12 +365,10 @@ capabilities:
     dependency-gates:
       - capability: document.blank.create-publish-reopen
         required-status: compatible
-    promotion-gates:
-      - ticket: T06
-        requirement: Complete the independent acceptance evidence required before compatibility.
+    promotion-gates: []
     acceptance-profile:
       id: T10-page-manipulation-merge-split
-      state: experimental
+      state: compatible
       mandatory-evidence:
         - syntax
         - standards
@@ -373,19 +388,47 @@ capabilities:
       - kind: cross-jdk-contract
         path: scripts/verify-jdk-matrix.sh
         assertion: Maven verification runs the T10 public workflow contract on JDK 8, 11, 17, and 21.
+      - kind: migration-facade-consumer-contract
+        path: pdf-migration-itext7/src/test/java/net/zerocloud/pdf/itext7/consumer/PageManipulationFacadeTest.java
+        assertion: Public consumers prove equivalent order, named Source selection, complete split Target coverage, page-handle ownership, Source and sibling isolation, terminal Commands, safe failures and ordered publication receipts through the fixed IN_PROCESS Facade.
+      - kind: migration-facade-artifact-contract
+        path: pdf-migration-itext7/src/test/java/net/zerocloud/pdf/migration/itext7/contract/JarContractIT.java
+        assertion: Actual Stable and Preview jars exactly match all declared page, merger and splitter types and members; Preview retains Stable and both artifacts use Java 8 bytecode.
+      - kind: facade-classpath-exclusivity-contract
+        path: pdf-migration-itext7/src/test/java/net/zerocloud/pdf/migration/itext7/contract/ClasspathExclusivityIT.java
+        assertion: Stable-plus-Preview classpaths reject observably in either jar order.
+      - kind: acceptance-command
+        path: pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T10EvidenceCommand.java
+        assertion: The repository-only command produces eight exact Native/Facade PDFs and separate syntax, standards, semantic and per-page visual records with real negative controls.
+      - kind: foundation-certification-command
+        path: scripts/t03-foundation.py
+        assertion: Candidate-bound T10 recording runs JDK 8, 11, 17 and 21 with Native IN_PROCESS and HARDENED_WORKER while recording Facade execution separately as IN_PROCESS.
     acceptance-evidence:
       - chain: syntax
         result: pass
-        record: capabilities/evidence/T10-page-manipulation-merge-split-syntax.md
-        producer:
-          kind: external-tool
-          name: qpdf
-          version: "12.4.0"
+        record: capabilities/evidence/T72-pages-syntax.md
+        producer: {kind: external-tool, name: qpdf, version: '12.4.0'}
+      - chain: standards
+        result: pass
+        record: capabilities/evidence/T72-pages-standards.md
+        producer: {kind: external-tool, name: arlington-t10-r1, version: '0.81-folio-t10-r1'}
+      - chain: semantic
+        result: pass
+        record: capabilities/evidence/T72-pages-semantic.md
+        producer: {kind: project-test, name: folio-pdf-t10, version: '0.1.0'}
+      - chain: visual
+        result: pass
+        record: capabilities/evidence/T72-pages-visual.md
+        producer: {kind: external-tool, name: pdfium-cli, version: 'v0.11.2-pdfium-chromium-7881'}
     provenance:
       path: PROVENANCE.md
       record: T10 page-manipulation-merge-split record
-    certified-platforms: []
-    status: experimental
+    certified-platforms:
+      - ubuntu-24.04-linux-x86-64-jdk8
+      - ubuntu-24.04-linux-x86-64-jdk11
+      - ubuntu-24.04-linux-x86-64-jdk17
+      - ubuntu-24.04-linux-x86-64-jdk21
+    status: compatible
 
   - id: document.metadata.outlines-destinations-attachments
     context: document-engine

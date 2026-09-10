@@ -1,0 +1,77 @@
+--- a/TestGrammar/src/ParseObjects.cpp
++++ b/TestGrammar/src/ParseObjects.cpp
+@@ -38,6 +38,7 @@
+ #include <math.h>
+ #include <cassert>
+ #include <regex>
++#include <set>
+ 
+ using namespace ArlingtonPDFShim;
+ namespace fs = std::filesystem;
+@@ -658,6 +659,10 @@
+ 
+     if ((names_obj != nullptr) && (names_obj->get_object_type() == PDFObjectType::ArlPDFObjTypeArray)) {
+         ArlPDFArray *array_obj = (ArlPDFArray*)names_obj;
++        // ISO 32000-1:2008 7.9.6: keys are distinct and ordered by PDF bytes.
++        // The PDFium shim widens char bytes, so signed wchar ordering is unsuitable.
++        std::set<std::wstring> seen_keys;
++        std::wstring previous_key;
+         for (int i = 0; i < array_obj->get_num_elements(); i += 2) {
+             // Pairs of entries: name (string), value. value has to be further validated
+             ArlPDFObject* obj1 = array_obj->get_value(i);
+@@ -667,6 +672,18 @@
+ 
+                 if (obj2 != nullptr) {
+                     std::wstring str = ((ArlPDFString*)obj1)->get_value();
++                    if (!seen_keys.insert(str).second) {
++                        show_context(fake_e);
++                        output << COLOR_ERROR << "name tree key is duplicated for " << strip_leading_whitespace(context) << COLOR_RESET;
++                    }
++                    if ((i > 0) && std::lexicographical_compare(str.begin(), str.end(),
++                            previous_key.begin(), previous_key.end(), [](wchar_t left, wchar_t right) {
++                                return static_cast<unsigned char>(left) < static_cast<unsigned char>(right);
++                            })) {
++                        show_context(fake_e);
++                        output << COLOR_ERROR << "name tree keys are not in ascending byte order for " << strip_leading_whitespace(context) << COLOR_RESET;
++                    }
++                    previous_key = str;
+                     std::string  as = ToUtf8(str);
+                     std::string  best_link = recommended_link_for_object(obj2, links, as);
+                     if (best_link.size() > 0)
+@@ -936,6 +953,13 @@
+             auto hash = elem.object->get_hash_id();
+             auto found = mapped.find(hash);
+             if (found != mapped.end()) {
++                // Tables 30/151: a Page reference cannot identify a Pages node.
++                // Preserve the existing visited-object guard and all other contexts.
++                if ((elem.link == "PageObject") &&
++                    ((found->second == "PageTreeNodeRoot") || (found->second == "PageTreeNode"))) {
++                    show_context(elem);
++                    output << COLOR_ERROR << "Page object was already identified as a page-tree node" << COLOR_RESET;
++                }
+                 // "_Universal..." objects match anything so ignore them.
+                 if ((found->second != elem.link) &&
+                     (((elem.link != "_UniversalDictionary") && (elem.link != "_UniversalArray")) &&
+@@ -1323,6 +1347,12 @@
+                 pure_wildcard_idx = (int)tsv.size() - 1;
+ 
+             int array_size = arrayObj->get_num_elements();
++            // Table 151: both Fit and FitB contain exactly page and view name.
++            // The rule applies equally to local references and remote page indices.
++            if ((elem.link == "Dest0Array") && (array_size != 2)) {
++                show_context(elem);
++                output << COLOR_ERROR << "destination array length is not 2 for Dest0Array" << COLOR_RESET;
++            }
+ 
+             // Are all required rows present?
+             if ((first_optional_idx >= 0) && (array_size < first_optional_idx)) {
+--- a/TestGrammar/src/TestGrammarVers.h
++++ b/TestGrammar/src/TestGrammarVers.h
+@@ -54,6 +54,6 @@
+ #endif
+ 
+ /// @brief String showing version, build date/time, compiler, platform and configuration
+-#define TestGrammar_VERSION "v0.81 built " __DATE__ " " __TIME__ " (" TG_COMPILER " " TG_PLATFORM " " TG_CONFIG ")"
++#define TestGrammar_VERSION "v0.81-folio-t10-r1 built " __DATE__ " " __TIME__ " (" TG_COMPILER " " TG_PLATFORM " " TG_CONFIG ")"
+ 
+ #endif // TestGrammarVers_h

@@ -8,10 +8,10 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 
 - Schema version: `1`
 - Release train: `0.1.0-SNAPSHOT`
-- Stable entries: `89`
+- Stable entries: `105`
 - Preview additions: `0`
-- Preview artifact entries: `89`
-- Explicit capability exclusions: `21`
+- Preview artifact entries: `105`
+- Explicit capability exclusions: `20`
 
 ## Stable surfaces
 
@@ -275,6 +275,16 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Exception contract: Rejects a closed or read-only facade document with java.lang.IllegalStateException.
 - Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen)
 
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_add_dash_new_dash_page_dash_at_dash_index"></a>
+### `itext7.kernel.pdf-document.add-new-page-at-index`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocument#addNewPage(int)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#addNewPage(int)`
+- Generic contract: Returns the mapped PdfPage at the one-based insertion position and retains that page identity through later reordering.
+- Exception contract: Rejects a closed or read-only document with IllegalStateException and maps invalid positions through PdfException with the Native DocumentFailure cause.
+- Behavioral capabilities: [`document.page.manipulate-merge-split`](capability-matrix.md#capability-document_dot_page_dot_manipulate_dash_merge_dash_split)
+
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_close"></a>
 ### `itext7.kernel.pdf-document.close`
 
@@ -284,6 +294,17 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Generic contract: No generic parameters or return value.
 - Exception contract: Maps a publication Document Failure to net.zerocloud.pdf.itext7.kernel.exceptions.PdfException with its stable code and safe diagnostic.
 - Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_constructor_dash_named_dash_sources_dash_targets"></a>
+### `itext7.kernel.pdf-document.constructor-named-sources-targets`
+
+- Availability: `stable`
+- Reference status: `folio-extension`
+- Reference namespace: `com.itextpdf.kernel.pdf.PdfDocument`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#<init>(java.util.Map,java.lang.String,java.util.Map)`
+- Generic contract: Parameters are Map<String, mapped PdfReader>, String, and Map<String, mapped PdfWriter>; declaration iteration order fixes Source consumption and publication-receipt order.
+- Exception contract: Rejects null, blank, duplicate-instance, unavailable, or inconsistent Source and Target declarations before transferring any Reader ownership.
+- Behavioral capabilities: [`document.page.manipulate-merge-split`](capability-matrix.md#capability-document_dot_page_dot_manipulate_dash_merge_dash_split)
 
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_constructor_dash_reader"></a>
 ### `itext7.kernel.pdf-document.constructor-reader`
@@ -315,6 +336,17 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Exception contract: No checked exception; publication failures are reported by close().
 - Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen)
 
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_copy_dash_pages"></a>
+### `itext7.kernel.pdf-document.copy-pages`
+
+- Availability: `stable`
+- Reference status: `adapted`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocument#copyPagesTo(int,int,com.itextpdf.kernel.pdf.PdfDocument,int)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#copyPages(int,int,int)`
+- Generic contract: Returns immutable List<mapped PdfPage>; copies one inclusive range within the same document at a one-based position measured in the original sequence.
+- Exception contract: Rejects a closed or read-only document with IllegalStateException and maps invalid ranges, positions, collisions, or unsafe preservation through PdfException with the Native DocumentFailure cause before mutation.
+- Behavioral capabilities: [`document.page.manipulate-merge-split`](capability-matrix.md#capability-document_dot_page_dot_manipulate_dash_merge_dash_split)
+
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_catalog"></a>
 ### `itext7.kernel.pdf-document.get-catalog`
 
@@ -325,6 +357,17 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Exception contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed or detached mutation targets reject with IllegalStateException.
 - Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
 
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_merger"></a>
+### `itext7.kernel.pdf-document.get-merger`
+
+- Availability: `stable`
+- Reference status: `folio-extension`
+- Reference namespace: `com.itextpdf.kernel.pdf.PdfDocument`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#getMerger()`
+- Generic contract: Returns a mapped PdfMerger view owned by this document; named Source declarations replace independently opened source documents.
+- Exception contract: Rejects a closed document with IllegalStateException; the returned view shares the document lifecycle.
+- Behavioral capabilities: [`document.page.manipulate-merge-split`](capability-matrix.md#capability-document_dot_page_dot_manipulate_dash_merge_dash_split)
+
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_number_dash_of_dash_pages"></a>
 ### `itext7.kernel.pdf-document.get-number-of-pages`
 
@@ -334,6 +377,81 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Generic contract: Returns the primitive page count.
 - Exception contract: Rejects a closed facade document with java.lang.IllegalStateException.
 - Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_page"></a>
+### `itext7.kernel.pdf-document.get-page`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocument#getPage(int)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#getPage(int)`
+- Generic contract: Returns a mapped PdfPage handle scoped to the owning Native Session.
+- Exception contract: Rejects a closed document with IllegalStateException and maps invalid page numbers through PdfException with the Native DocumentFailure cause.
+- Behavioral capabilities: [`document.page.manipulate-merge-split`](capability-matrix.md#capability-document_dot_page_dot_manipulate_dash_merge_dash_split)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_publication_dash_receipts"></a>
+### `itext7.kernel.pdf-document.get-publication-receipts`
+
+- Availability: `stable`
+- Reference status: `folio-extension`
+- Reference namespace: `com.itextpdf.kernel.pdf.PdfDocument`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#getPublicationReceipts()`
+- Generic contract: Returns immutable List<PublicationReceipt> in declared Target order after close, including COMMITTED, FAILED, NOT_ATTEMPTED, Path identity, and partial-stream diagnostics.
+- Exception contract: Rejects access before close or from a non-owner thread with IllegalStateException.
+- Behavioral capabilities: [`document.page.manipulate-merge-split`](capability-matrix.md#capability-document_dot_page_dot_manipulate_dash_merge_dash_split)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_splitter"></a>
+### `itext7.kernel.pdf-document.get-splitter`
+
+- Availability: `stable`
+- Reference status: `folio-extension`
+- Reference namespace: `com.itextpdf.kernel.pdf.PdfDocument`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#getSplitter()`
+- Generic contract: Returns a mapped PdfSplitter view owned by this document; all publication Targets are declared before the Native Workflow begins.
+- Exception contract: Rejects a closed document with IllegalStateException; the returned view shares the document lifecycle.
+- Behavioral capabilities: [`document.page.manipulate-merge-split`](capability-matrix.md#capability-document_dot_page_dot_manipulate_dash_merge_dash_split)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_move_dash_page"></a>
+### `itext7.kernel.pdf-document.move-page`
+
+- Availability: `stable`
+- Reference status: `adapted`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocument#movePage(int,int)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#movePage(int,int)`
+- Generic contract: Moves one one-based page to a one-based insertion position measured after removal of the selection.
+- Exception contract: Rejects a closed or read-only document with IllegalStateException and maps invalid positions or unsafe preservation through PdfException with the Native DocumentFailure cause before mutation.
+- Behavioral capabilities: [`document.page.manipulate-merge-split`](capability-matrix.md#capability-document_dot_page_dot_manipulate_dash_merge_dash_split)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_move_dash_pages"></a>
+### `itext7.kernel.pdf-document.move-pages`
+
+- Availability: `stable`
+- Reference status: `adapted`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocument#movePage(int,int)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#movePages(int,int,int)`
+- Generic contract: Extends the one-page reference operation to one inclusive range; the destination is measured after removing the selected range.
+- Exception contract: Rejects a closed or read-only document with IllegalStateException and maps invalid ranges, positions, or unsafe preservation through PdfException with the Native DocumentFailure cause before mutation.
+- Behavioral capabilities: [`document.page.manipulate-merge-split`](capability-matrix.md#capability-document_dot_page_dot_manipulate_dash_merge_dash_split)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_remove_dash_page"></a>
+### `itext7.kernel.pdf-document.remove-page`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocument#removePage(int)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#removePage(int)`
+- Generic contract: Removes one page selected by a one-based page number.
+- Exception contract: Rejects a closed or read-only document with IllegalStateException and maps invalid or unsafe removal through PdfException with the Native DocumentFailure cause before mutation.
+- Behavioral capabilities: [`document.page.manipulate-merge-split`](capability-matrix.md#capability-document_dot_page_dot_manipulate_dash_merge_dash_split)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_remove_dash_pages"></a>
+### `itext7.kernel.pdf-document.remove-pages`
+
+- Availability: `stable`
+- Reference status: `adapted`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocument#removePage(int)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#removePages(int,int)`
+- Generic contract: Extends the one-page reference operation to one explicit inclusive one-based range and returns void.
+- Exception contract: Rejects a closed or read-only document with IllegalStateException and maps an invalid range or unsafe preservation through PdfException with the Native DocumentFailure cause before mutation.
+- Behavioral capabilities: [`document.page.manipulate-merge-split`](capability-matrix.md#capability-document_dot_page_dot_manipulate_dash_merge_dash_split)
 
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_exception_dot_constructor_dash_message_dash_cause"></a>
 ### `itext7.kernel.pdf-exception.constructor-message-cause`
@@ -735,15 +853,15 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
 - Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
 
-<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_page_dot_type"></a>
-### `itext7.kernel.pdf-page.type`
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_page_dot_get_dash_pdf_dash_object"></a>
+### `itext7.kernel.pdf-page.get-pdf-object`
 
 - Availability: `stable`
-- Reference member: `com.itextpdf.kernel.pdf.PdfPage#<type>`
-- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfPage#<type>`
-- Generic contract: Non-generic return type for the mapped blank-page operation; no other PdfPage member is mapped in T04.
-- Exception contract: No exception contract.
-- Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen)
+- Reference member: `com.itextpdf.kernel.pdf.PdfPage#getPdfObject()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfPage#getPdfObject()`
+- Generic contract: Returns the mapped PdfDictionary for the retained page identity through the bounded Values interface.
+- Exception contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; expired Session values reject with IllegalStateException.
+- Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen), [`document.page.manipulate-merge-split`](capability-matrix.md#capability-document_dot_page_dot_manipulate_dash_merge_dash_split)
 
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_reader_dot_close"></a>
 ### `itext7.kernel.pdf-reader.close`
@@ -884,6 +1002,58 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Generic contract: No generic parameters.
 - Exception contract: Declares java.io.FileNotFoundException for a target that cannot name a file in an existing directory.
 - Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen)
+
+<a id="facade-surface-itext7_dot_kernel_dot_utils_dot_pdf_dash_merger_dot_close"></a>
+### `itext7.kernel.utils.pdf-merger.close`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.utils.PdfMerger#close()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.utils.PdfMerger#close()`
+- Generic contract: Returns void and publishes and closes the owning mapped PdfDocument.
+- Exception contract: Has the same mapped publication-failure and ownership contract as PdfDocument.close().
+- Behavioral capabilities: [`document.page.manipulate-merge-split`](capability-matrix.md#capability-document_dot_page_dot_manipulate_dash_merge_dash_split)
+
+<a id="facade-surface-itext7_dot_kernel_dot_utils_dot_pdf_dash_merger_dot_constructor_dash_document"></a>
+### `itext7.kernel.utils.pdf-merger.constructor-document`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.utils.PdfMerger#<init>(com.itextpdf.kernel.pdf.PdfDocument)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.utils.PdfMerger#<init>(net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument)`
+- Generic contract: Protected subclass hook that binds the utility view to one owning mapped PdfDocument; consumers obtain the concrete view from PdfDocument.getMerger().
+- Exception contract: Rejects a null owner with NullPointerException; loading the type activates the mutually exclusive Stable/Preview edition guard.
+- Behavioral capabilities: [`document.page.manipulate-merge-split`](capability-matrix.md#capability-document_dot_page_dot_manipulate_dash_merge_dash_split)
+
+<a id="facade-surface-itext7_dot_kernel_dot_utils_dot_pdf_dash_merger_dot_merge_dash_named_dash_sources"></a>
+### `itext7.kernel.utils.pdf-merger.merge-named-sources`
+
+- Availability: `stable`
+- Reference status: `adapted`
+- Reference member: `com.itextpdf.kernel.utils.PdfMerger#merge(com.itextpdf.kernel.pdf.PdfDocument,int,int)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.utils.PdfMerger#merge(java.lang.String[])`
+- Generic contract: Varargs names select complete predeclared non-primary Sources in argument order and return this mapped PdfMerger.
+- Exception contract: Maps unknown, primary, or duplicate Source selection within one call and unsafe preservation through PdfException with the Native DocumentFailure cause before mutation; a later call may select a Source again.
+- Behavioral capabilities: [`document.page.manipulate-merge-split`](capability-matrix.md#capability-document_dot_page_dot_manipulate_dash_merge_dash_split)
+
+<a id="facade-surface-itext7_dot_kernel_dot_utils_dot_pdf_dash_splitter_dot_constructor_dash_document"></a>
+### `itext7.kernel.utils.pdf-splitter.constructor-document`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.utils.PdfSplitter#<init>(com.itextpdf.kernel.pdf.PdfDocument)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.utils.PdfSplitter#<init>(net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument)`
+- Generic contract: Protected subclass hook that binds the utility view to one owning mapped PdfDocument; consumers obtain the concrete view from PdfDocument.getSplitter().
+- Exception contract: Rejects a null owner with NullPointerException; loading the type activates the mutually exclusive Stable/Preview edition guard.
+- Behavioral capabilities: [`document.page.manipulate-merge-split`](capability-matrix.md#capability-document_dot_page_dot_manipulate_dash_merge_dash_split)
+
+<a id="facade-surface-itext7_dot_kernel_dot_utils_dot_pdf_dash_splitter_dot_extract_dash_page_dash_ranges"></a>
+### `itext7.kernel.utils.pdf-splitter.extract-page-ranges`
+
+- Availability: `stable`
+- Reference status: `adapted`
+- Reference member: `com.itextpdf.kernel.utils.PdfSplitter#extractPageRanges(java.util.List)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.utils.PdfSplitter#extractPageRanges(java.lang.String[],net.zerocloud.pdf.PageRange[])`
+- Generic contract: Parallel arrays bind each named predeclared Target exactly once to one one-based inclusive Native PageRange; success is terminal for later Document Commands.
+- Exception contract: Rejects unequal array lengths with IllegalArgumentException and maps missing, extra, duplicate, invalid, or unsafe selections through PdfException with the Native DocumentFailure cause before publication.
+- Behavioral capabilities: [`document.page.manipulate-merge-split`](capability-matrix.md#capability-document_dot_page_dot_manipulate_dash_merge_dash_split)
 
 <a id="facade-surface-itext7_dot_layout_dot_document_dot_close"></a>
 ### `itext7.layout.document.close`
@@ -1036,13 +1206,6 @@ No preview additions (included with all stable surfaces) are declared.
 - Behavioral capability: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
 - Deferred ticket: `T32`
 - Reason: Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #73 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
-
-<a id="excluded-capability-document_dot_page_dot_manipulate_dash_merge_dash_split"></a>
-### `document.page.manipulate-merge-split`
-
-- Behavioral capability: [`document.page.manipulate-merge-split`](capability-matrix.md#capability-document_dot_page_dot_manipulate_dash_merge_dash_split)
-- Deferred ticket: `T32`
-- Reason: Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #72 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 <a id="excluded-capability-document_dot_text_dash_structure_dot_extract"></a>
 ### `document.text-structure.extract`

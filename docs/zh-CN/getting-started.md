@@ -19,6 +19,19 @@ export FOLIO_HARFBUZZ_HELPER=/explicit/folio-harfbuzz-10.2.0/bin/folio-harfbuzz
 ./mvnw -B -ntp verify
 ```
 
+普通构建保留认证记录器的行为测试，包括缺工具时必须保留 `INDETERMINATE`
+记录。T03/T09/T10 中依赖独立验收工具的测试须先按
+[固定工具安装说明](../third-party/t03-standards-tools.md) 完成配置，再显式运行：
+
+```sh
+./mvnw -B -ntp -Pindependent-certification -pl pdf-acceptance -am \
+  -Dtest=T03EvidenceCommandTest,T09EvidenceCommandTest,T10EvidenceCommandTest,T10StandardsQualificationTest \
+  -Dsurefire.failIfNoSpecifiedTests=false test
+```
+
+显式认证测试缺工具时会失败，不会跳过或改记为通过。普通构建成功不代表已完成
+独立认证；最终候选的八个环境／执行模式组合仍由 Foundation runner 单独认证。
+
 安装 Podman 后，可以运行完整的 JDK 矩阵：
 
 ```text
@@ -168,6 +181,36 @@ T09 的实现、公开测试和 jar 检查不等于八组独立认证。实际�
 Facade 实际运行 IN_PROCESS，不能把 Native Worker 的认证归于 Facade。
 视觉验收固定为 144 DPI、零容差 AE=0；缺规则、工具、输入身份或不确定结果不能
 通过。原始流保留检查读取增量文件的最终有效对象，不能只看旧前缀是否仍有原字节。
+
+## T10 页面操作、合并与拆分
+
+Native Interface 保留六个 version-1 命令：`InsertBlankPage`、`RemovePages`、
+`MovePages`、`CopyPages`、`MergeDocuments` 和 `SplitDocument`。页码与范围均从
+1 开始且包含两端；移动位置以移除所选范围后的序列为准，复制位置以原序列为准。
+安全保留范围以外的页面图、批注关系或内容编码会在修改前以稳定失败码拒绝。
+
+Stable Facade 提供按索引增加、取得、移除、移动和复制页面的成员，以及
+`PdfDocument.getMerger()` 与 `getSplitter()`。具名来源／目标构造器接收
+`Map<String, PdfReader>`、primary 来源名和 `Map<String, PdfWriter>`，并复制映射的
+迭代顺序。合并按调用参数顺序消费完整的非 primary 来源；拆分必须恰好覆盖所有已
+声明目标，并在一次 Native Workflow 中产生完整产品组。成功拆分后，后续 Document
+命令以 `COMMAND_REJECTED` 失败。关闭后可通过 `getPublicationReceipts()` 取得按目标
+声明顺序排列的真实不可变收据；失败 stream 可能含部分输出。
+
+页面句柄在移动和复制后继续指向原页面身份。`PdfPage.getPdfObject()` 返回已有的
+受验证 Values 视图。Document 在构造时验证所有 Reader 的唯一所有权，保留并最终
+删除私有快照；调用方 stream 不会被关闭，Path 目标在真正发布前不会被截断。所有
+Facade 页面操作固定使用 IN_PROCESS，未增加 Worker 配置入口。完整成员、生命周期、
+失败和保留边界见[英文页面合同](../page-manipulation.md)。
+
+T10 对 Native 的 IN_PROCESS／HARDENED_WORKER 分别在 Ubuntu 24.04/Linux x86-64
+JDK 8、11、17、21 上认证，Facade 则单独记录实际 IN_PROCESS。每个 Native／Facade
+产物都绑定 qpdf 语法、84 条经真实负例合格的 pdfcpu/Arlington 标准规则、公共 Native
+重开语义和 PDFium/ImageMagick 零像素差视觉链。缺工具、缺规则、配置哈希变化、页序
+错误或单像素变化均不能通过。当前候选的权威记录是
+[Foundation Evidence 索引](../../capabilities/foundation-evidence.yaml)；Windows、
+macOS 与其他未完成 Foundation obligation 不在本次认证范围内，全局状态仍为
+NOT READY。复跑步骤见 [T10 认证合同](../t10-certification.md)。
 
 ## T23 页面渲染
 

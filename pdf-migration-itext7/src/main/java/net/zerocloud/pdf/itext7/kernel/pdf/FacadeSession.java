@@ -34,7 +34,7 @@ final class FacadeSession {
     private final BlockingQueue<Call<?>> calls = new ArrayBlockingQueue<Call<?>>(1);
     private final CompletableFuture<Void> started = new CompletableFuture<Void>();
     private final CompletableFuture<WorkflowOutcome<Void>> outcome = new CompletableFuture<WorkflowOutcome<Void>>();
-    private final Call<Void> finish = new Call<Void>(null);
+    private final Call<Void> finish = new Call<Void>(null, false);
     private final CancellationToken cancellation;
     private final Thread worker;
     private volatile boolean stopRequested;
@@ -57,6 +57,14 @@ final class FacadeSession {
     }
 
     <T> T call(Action<T> action) {
+        return submit(action, false);
+    }
+
+    <T> T initialize(Action<T> action) {
+        return submit(action, true);
+    }
+
+    private <T> T submit(Action<T> action, boolean initialization) {
         requireOwner();
         if (stopRequested) {
             await(outcome);
@@ -67,7 +75,7 @@ final class FacadeSession {
             await(outcome);
             throw new IllegalStateException("The facade document is closed.");
         }
-        Call<T> call = new Call<T>(action);
+        Call<T> call = new Call<T>(action, initialization);
         calls.add(call);
         try {
             await(CompletableFuture.anyOf(call.result, outcome));
@@ -200,16 +208,24 @@ final class FacadeSession {
 
     private static final class Call<T> {
         private final Action<T> action;
+        private final boolean initialization;
         private final CompletableFuture<T> result = new CompletableFuture<T>();
 
-        Call(Action<T> action) {
+        Call(Action<T> action, boolean initialization) {
             this.action = action;
+            this.initialization = initialization;
         }
 
-        void run(DocumentSession session) {
+        void run(DocumentSession session) throws DocumentFailure {
             try {
                 result.complete(action.run(session));
             } catch (DocumentFailure | RuntimeException failure) {
+                if (initialization) {
+                    // Startup is not a recoverable caller operation. Let the
+                    // Native Workflow finish cleanup and attach its actual
+                    // receipts before submit() observes the failed outcome.
+                    throw failure;
+                }
                 result.completeExceptionally(failure);
             }
         }

@@ -21,6 +21,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.zip.Deflater;
@@ -49,6 +50,7 @@ import net.zerocloud.pdf.PublicationStatus;
 import net.zerocloud.pdf.SaveMode;
 import net.zerocloud.pdf.WorkflowRequest;
 import net.zerocloud.pdf.WorkflowOutcome;
+import net.zerocloud.pdf.WorkflowExecutionProfile;
 import net.zerocloud.pdf.command.AddBlankPage;
 import net.zerocloud.pdf.command.CopyPages;
 import net.zerocloud.pdf.command.InsertBlankPage;
@@ -77,12 +79,12 @@ public final class PageManipulationWorkflowTest {
     public void pageObjectQuerySupportsPatchAndReopenAtTheWorkflowSeam()
             throws Exception {
         Path target = temporaryFolder.getRoot().toPath().resolve("tagged.pdf");
-        WorkflowRequest creation = WorkflowRequest.builder()
+        WorkflowRequest creation = requestBuilder()
                 .target("output", PublicationTarget.path(target))
                 .saveMode(SaveMode.REWRITE)
                 .build();
 
-        new DocumentWorkflow().execute(creation, session -> {
+        WorkflowOutcome<Void> created = new DocumentWorkflow().execute(creation, session -> {
             session.execute(AddBlankPage.INSTANCE);
             ObjectReference page = session.query(
                     PageObjectReference.version1(1));
@@ -91,13 +93,14 @@ public final class PageManipulationWorkflowTest {
                     .build());
             return null;
         });
+        assertEquals(requestedExecutionProfile(), created.getExecutionProfile());
 
-        WorkflowRequest reopening = WorkflowRequest.builder()
+        WorkflowRequest reopening = requestBuilder()
                 .source("input", DocumentSource.path(target))
                 .primarySource("input")
                 .saveMode(SaveMode.REWRITE)
                 .build();
-        new DocumentWorkflow().execute(reopening, session -> {
+        WorkflowOutcome<Void> reopened = new DocumentWorkflow().execute(reopening, session -> {
             ObjectReference page = session.query(
                     PageObjectReference.version1(1));
             PdfDictionary dictionary = (PdfDictionary) session.query(
@@ -107,6 +110,16 @@ public final class PageManipulationWorkflowTest {
             assertEquals(PdfName.of("alpha"), dictionary.get(PAGE_MARKER));
             return null;
         });
+        assertEquals(requestedExecutionProfile(), reopened.getExecutionProfile());
+    }
+
+    private static WorkflowRequest.Builder requestBuilder() {
+        return WorkflowRequest.builder().executionProfile(requestedExecutionProfile());
+    }
+
+    private static WorkflowExecutionProfile requestedExecutionProfile() {
+        return WorkflowExecutionProfile.valueOf(
+                System.getProperty("folio.t10.executionProfile", "IN_PROCESS"));
     }
 
     @Test
@@ -115,7 +128,7 @@ public final class PageManipulationWorkflowTest {
         Path target = temporaryFolder.getRoot().toPath().resolve(
                 "indirect-page-reference.pdf");
         PdfName catalogPage = PdfName.of("T10PageReference");
-        WorkflowRequest creation = WorkflowRequest.builder()
+        WorkflowRequest creation = requestBuilder()
                 .target("output", PublicationTarget.path(target))
                 .saveMode(SaveMode.REWRITE)
                 .build();
@@ -142,7 +155,7 @@ public final class PageManipulationWorkflowTest {
             return null;
         });
 
-        WorkflowRequest reopening = WorkflowRequest.builder()
+        WorkflowRequest reopening = requestBuilder()
                 .source("input", DocumentSource.path(target))
                 .primarySource("input")
                 .saveMode(SaveMode.REWRITE)
@@ -167,7 +180,7 @@ public final class PageManipulationWorkflowTest {
             throws Exception {
         Path input = temporaryFolder.getRoot().toPath().resolve("input.pdf");
         createTaggedDocument(input, "alpha");
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = requestBuilder()
                 .source("input", DocumentSource.path(input))
                 .primarySource("input")
                 .saveMode(SaveMode.REWRITE)
@@ -197,7 +210,7 @@ public final class PageManipulationWorkflowTest {
     public void pageObjectQueryRejectsMalformedPageNodesWithoutRepairingThem()
             throws Exception {
         byte[] source = missingPageTypeFixture();
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = requestBuilder()
                 .source("input", DocumentSource.bytes(source, source.length))
                 .primarySource("input")
                 .saveMode(SaveMode.REWRITE)
@@ -220,7 +233,7 @@ public final class PageManipulationWorkflowTest {
     public void pageObjectQueryRejectsDirectPageNodesWithoutCreatingReferences()
             throws Exception {
         byte[] source = directPageNodeFixture();
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = requestBuilder()
                 .source("input", DocumentSource.bytes(source, source.length))
                 .primarySource("input")
                 .saveMode(SaveMode.REWRITE)
@@ -243,7 +256,7 @@ public final class PageManipulationWorkflowTest {
     public void directIntermediatePageTreeNodesAreRejectedWithoutRepair()
             throws Exception {
         byte[] source = directIntermediatePageTreeNodeFixture();
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = requestBuilder()
                 .source("input", DocumentSource.bytes(source, source.length))
                 .primarySource("input")
                 .saveMode(SaveMode.REWRITE)
@@ -287,7 +300,7 @@ public final class PageManipulationWorkflowTest {
             throws Exception {
         Path input = temporaryFolder.getRoot().toPath().resolve("identity.pdf");
         createTaggedDocument(input, "alpha");
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = requestBuilder()
                 .source("input", DocumentSource.path(input))
                 .primarySource("input")
                 .saveMode(SaveMode.REWRITE)
@@ -315,7 +328,7 @@ public final class PageManipulationWorkflowTest {
     public void distinctIndirectScalarsKeepDistinctSessionIdentities()
             throws Exception {
         byte[] source = duplicateIndirectScalarFixture();
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = requestBuilder()
                 .source("input", DocumentSource.bytes(source, source.length))
                 .primarySource("input")
                 .saveMode(SaveMode.REWRITE)
@@ -351,7 +364,7 @@ public final class PageManipulationWorkflowTest {
         Path input = temporaryFolder.getRoot().toPath().resolve(
                 "reparented-identity.pdf");
         createTaggedDocument(input, "alpha", "bravo");
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = requestBuilder()
                 .source("input", DocumentSource.path(input))
                 .primarySource("input")
                 .saveMode(SaveMode.REWRITE)
@@ -572,7 +585,7 @@ public final class PageManipulationWorkflowTest {
                 " /T10UnknownTrailer /must-not-be-lost");
         Path output = temporaryFolder.getRoot().toPath().resolve(
                 "unknown-trailer-unchanged.pdf");
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = requestBuilder()
                 .source("input", DocumentSource.bytes(source, source.length))
                 .primarySource("input")
                 .target("output", PublicationTarget.path(output))
@@ -667,7 +680,7 @@ public final class PageManipulationWorkflowTest {
         byte[] source = inheritedPageFixture();
         Path output = temporaryFolder.getRoot().toPath()
                 .resolve("preserved-move.pdf");
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = requestBuilder()
                 .source("input", DocumentSource.bytes(source, source.length))
                 .primarySource("input")
                 .target("output", PublicationTarget.path(output))
@@ -724,7 +737,7 @@ public final class PageManipulationWorkflowTest {
         byte[] source = inheritedPageFixture();
         Path output = temporaryFolder.getRoot().toPath()
                 .resolve("preserved-copy.pdf");
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = requestBuilder()
                 .source("input", DocumentSource.bytes(source, source.length))
                 .primarySource("input")
                 .target("output", PublicationTarget.path(output))
@@ -762,6 +775,51 @@ public final class PageManipulationWorkflowTest {
                         "q\nQ\n",
                         Boolean.TRUE),
                 readPageSemantics(output, 3));
+    }
+
+    @Test
+    public void pageCopyPreservesLegacyAnnotationDictionaryAndOnlyRenamesIdentifier()
+            throws Exception {
+        byte[] source = identifiedLegacyAnnotationFixture();
+        Path output = temporaryFolder.getRoot().toPath()
+                .resolve("copied-legacy-annotation.pdf");
+        WorkflowRequest request = requestBuilder()
+                .source("input", DocumentSource.bytes(source, source.length))
+                .primarySource("input")
+                .target("output", PublicationTarget.path(output))
+                .saveMode(SaveMode.REWRITE)
+                .build();
+
+        new DocumentWorkflow().execute(request, session -> {
+            session.execute(CopyPages.version1(PageRange.of(1, 1), 2));
+            return null;
+        });
+
+        new DocumentWorkflow().execute(rewriteRequest(output, output), session -> {
+            ObjectReference copiedPage = session.query(
+                    PageObjectReference.version1(2));
+            PdfDictionary page = inspectDictionary(session, copiedPage);
+            PdfArray annotations = (PdfArray) page.get(PdfName.of("Annots"));
+            PdfDictionary annotation = dictionaryValue(
+                    session, annotations.get(0));
+            List<String> keys = new ArrayList<String>();
+            for (int index = 0; index < annotation.size(); index++) {
+                keys.add(annotation.getEntry(index).getName().getValue());
+            }
+            Collections.sort(keys);
+            assertEquals(Arrays.asList(
+                    "Contents", "F", "NM", "P", "Rect", "Subtype", "Type"),
+                    keys);
+            assertEquals(
+                    PdfString.of("note-alpha-1".getBytes(
+                            StandardCharsets.ISO_8859_1)),
+                    annotation.get(PdfName.of("NM")));
+            assertEquals(
+                    copiedPage,
+                    ((PdfIndirectReference) annotation.get(
+                            PdfName.of("P"))).getReference());
+            return null;
+        });
     }
 
     @Test
@@ -856,7 +914,7 @@ public final class PageManipulationWorkflowTest {
         createTaggedDocument(exhibits, "omega");
         byte[] appendix = inheritedPageFixture();
 
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = requestBuilder()
                 .source("primary", DocumentSource.path(primary))
                 .source(
                         "appendix",
@@ -955,7 +1013,7 @@ public final class PageManipulationWorkflowTest {
         createTaggedDocument(primary, "primary");
         byte[] malformed = "not-a-pdf".getBytes(StandardCharsets.US_ASCII);
 
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = requestBuilder()
                 .source("primary", DocumentSource.path(primary))
                 .source(
                         "malformed",
@@ -1002,7 +1060,7 @@ public final class PageManipulationWorkflowTest {
         Path output = temporaryFolder.getRoot().toPath().resolve(
                 "unsafe-merge-unchanged.pdf");
         createTaggedDocument(primary, "primary");
-        WorkflowRequest unsafeSource = WorkflowRequest.builder()
+        WorkflowRequest unsafeSource = requestBuilder()
                 .target("appendix", PublicationTarget.path(appendix))
                 .saveMode(SaveMode.REWRITE)
                 .build();
@@ -1026,7 +1084,7 @@ public final class PageManipulationWorkflowTest {
             return null;
         });
 
-        WorkflowRequest mergeRequest = WorkflowRequest.builder()
+        WorkflowRequest mergeRequest = requestBuilder()
                 .source("primary", DocumentSource.path(primary))
                 .source("appendix", DocumentSource.path(appendix))
                 .primarySource("primary")
@@ -1054,7 +1112,7 @@ public final class PageManipulationWorkflowTest {
         Path splitOutput = temporaryFolder.getRoot().toPath().resolve(
                 "custom-content-split-unchanged.pdf");
         PdfName marker = PdfName.of("sentinel");
-        WorkflowRequest creation = WorkflowRequest.builder()
+        WorkflowRequest creation = requestBuilder()
                 .target("output", PublicationTarget.path(input))
                 .saveMode(SaveMode.REWRITE)
                 .build();
@@ -1217,7 +1275,7 @@ public final class PageManipulationWorkflowTest {
         Path splitOutput = temporaryFolder.getRoot().toPath().resolve(
                 "strict-flate-split.pdf");
 
-        WorkflowRequest copyRequest = WorkflowRequest.builder()
+        WorkflowRequest copyRequest = requestBuilder()
                 .source("input", DocumentSource.bytes(source, source.length))
                 .primarySource("input")
                 .target("output", PublicationTarget.path(copyOutput))
@@ -1231,7 +1289,7 @@ public final class PageManipulationWorkflowTest {
                 decodedContent.getBytes(StandardCharsets.ISO_8859_1),
                 readPageContent(DocumentSource.path(copyOutput), 2));
 
-        WorkflowRequest splitRequest = WorkflowRequest.builder()
+        WorkflowRequest splitRequest = requestBuilder()
                 .source("input", DocumentSource.bytes(source, source.length))
                 .primarySource("input")
                 .target("output", PublicationTarget.path(splitOutput))
@@ -1257,7 +1315,7 @@ public final class PageManipulationWorkflowTest {
         Files.write(primary, primaryDocumentInformationFixture());
         byte[] appendix = documentInformationFixture();
 
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = requestBuilder()
                 .source("primary", DocumentSource.path(primary))
                 .source(
                         "appendix",
@@ -1272,7 +1330,7 @@ public final class PageManipulationWorkflowTest {
         });
 
         new DocumentWorkflow().execute(
-                WorkflowRequest.builder()
+                requestBuilder()
                         .source("input", DocumentSource.path(output))
                         .primarySource("input")
                         .saveMode(SaveMode.REWRITE)
@@ -1309,7 +1367,7 @@ public final class PageManipulationWorkflowTest {
         TrackingInputStream callerStream = new TrackingInputStream(
                 Files.readAllBytes(appendix));
 
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = requestBuilder()
                 .source("primary", DocumentSource.path(primary))
                 .source(
                         "appendix",
@@ -1340,7 +1398,7 @@ public final class PageManipulationWorkflowTest {
                 "project-authored additional stream failure");
         RuntimeFailingInputStream source = new RuntimeFailingInputStream(
                 expected);
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = requestBuilder()
                 .source("primary", DocumentSource.path(primary))
                 .source("appendix", DocumentSource.stream(source, 1024L))
                 .primarySource("primary")
@@ -1369,7 +1427,7 @@ public final class PageManipulationWorkflowTest {
         RuntimeException expected = new IllegalStateException(
                 "project-authored additional channel failure");
         RuntimeFailingChannel source = new RuntimeFailingChannel(expected);
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = requestBuilder()
                 .source("primary", DocumentSource.path(primary))
                 .source("appendix", DocumentSource.channel(source, 1024L))
                 .primarySource("primary")
@@ -1399,7 +1457,7 @@ public final class PageManipulationWorkflowTest {
         Path last = temporaryFolder.getRoot().toPath().resolve("last.pdf");
         createTaggedDocument(input, "alpha", "bravo", "charlie", "delta");
 
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = requestBuilder()
                 .source("input", DocumentSource.path(input))
                 .primarySource("input")
                 .target("first", PublicationTarget.path(first))
@@ -1448,7 +1506,7 @@ public final class PageManipulationWorkflowTest {
         Path output = temporaryFolder.getRoot().toPath().resolve(
                 "terminal-split-output.pdf");
         createTaggedDocument(input, "alpha");
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = requestBuilder()
                 .source("input", DocumentSource.path(input))
                 .primarySource("input")
                 .target("output", PublicationTarget.path(output))
@@ -1496,7 +1554,7 @@ public final class PageManipulationWorkflowTest {
         FailingOutputStream failing = new FailingOutputStream();
         createTaggedDocument(input, "alpha", "bravo", "charlie");
 
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = requestBuilder()
                 .source("input", DocumentSource.path(input))
                 .primarySource("input")
                 .target("committed", PublicationTarget.path(committed))
@@ -1547,7 +1605,7 @@ public final class PageManipulationWorkflowTest {
         Path first = temporaryFolder.getRoot().toPath().resolve("rich-first.pdf");
         Path complete = temporaryFolder.getRoot().toPath()
                 .resolve("rich-complete.pdf");
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = requestBuilder()
                 .source("input", DocumentSource.bytes(source, source.length))
                 .primarySource("input")
                 .target("first", PublicationTarget.path(first))
@@ -1633,7 +1691,7 @@ public final class PageManipulationWorkflowTest {
 
     private static void createTaggedDocument(Path target, String... markers)
             throws Exception {
-        WorkflowRequest creation = WorkflowRequest.builder()
+        WorkflowRequest creation = requestBuilder()
                 .target("output", PublicationTarget.path(target))
                 .saveMode(SaveMode.REWRITE)
                 .build();
@@ -1689,7 +1747,7 @@ public final class PageManipulationWorkflowTest {
             byte[] source,
             String outputName) throws Exception {
         Path output = temporaryFolder.getRoot().toPath().resolve(outputName);
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = requestBuilder()
                 .source("input", DocumentSource.bytes(source, source.length))
                 .primarySource("input")
                 .target("output", PublicationTarget.path(output))
@@ -1713,7 +1771,7 @@ public final class PageManipulationWorkflowTest {
 
     private static void assertFixtureCopyPreservationRejected(byte[] source)
             throws Exception {
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = requestBuilder()
                 .source("input", DocumentSource.bytes(source, source.length))
                 .primarySource("input")
                 .saveMode(SaveMode.REWRITE)
@@ -1728,7 +1786,7 @@ public final class PageManipulationWorkflowTest {
 
     private static void assertMovePreservationRejected(byte[] source)
             throws Exception {
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = requestBuilder()
                 .source("input", DocumentSource.bytes(source, source.length))
                 .primarySource("input")
                 .saveMode(SaveMode.REWRITE)
@@ -1750,7 +1808,7 @@ public final class PageManipulationWorkflowTest {
 
     private static void assertFixturePageTreePreservationRejected(
             byte[] source) throws Exception {
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = requestBuilder()
                 .source("input", DocumentSource.bytes(source, source.length))
                 .primarySource("input")
                 .saveMode(SaveMode.REWRITE)
@@ -1765,7 +1823,7 @@ public final class PageManipulationWorkflowTest {
 
     private static void assertFixturePageQueryRejected(byte[] source)
             throws Exception {
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = requestBuilder()
                 .source("input", DocumentSource.bytes(source, source.length))
                 .primarySource("input")
                 .saveMode(SaveMode.REWRITE)
@@ -1837,7 +1895,7 @@ public final class PageManipulationWorkflowTest {
             Path appendix,
             Path output,
             MergeDocuments command) throws Exception {
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = requestBuilder()
                 .source("primary", DocumentSource.path(primary))
                 .source("appendix", DocumentSource.path(appendix))
                 .primarySource("primary")
@@ -1872,7 +1930,7 @@ public final class PageManipulationWorkflowTest {
             Path first,
             Path last,
             SplitDocument command) throws Exception {
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = requestBuilder()
                 .source("input", DocumentSource.path(input))
                 .primarySource("input")
                 .target("first", PublicationTarget.path(first))
@@ -1909,7 +1967,7 @@ public final class PageManipulationWorkflowTest {
     }
 
     private static WorkflowRequest rewriteRequest(Path input, Path output) {
-        return WorkflowRequest.builder()
+        return requestBuilder()
                 .source("input", DocumentSource.path(input))
                 .primarySource("input")
                 .target("output", PublicationTarget.path(output))
@@ -1919,7 +1977,7 @@ public final class PageManipulationWorkflowTest {
 
     private static List<PdfValue> readPageMarkers(Path source)
             throws Exception {
-        WorkflowRequest reopening = WorkflowRequest.builder()
+        WorkflowRequest reopening = requestBuilder()
                 .source("input", DocumentSource.path(source))
                 .primarySource("input")
                 .saveMode(SaveMode.REWRITE)
@@ -1942,7 +2000,7 @@ public final class PageManipulationWorkflowTest {
 
     private static List<Object> readPageSemantics(Path source, int pageNumber)
             throws Exception {
-        WorkflowRequest reopening = WorkflowRequest.builder()
+        WorkflowRequest reopening = requestBuilder()
                 .source("input", DocumentSource.path(source))
                 .primarySource("input")
                 .saveMode(SaveMode.REWRITE)
@@ -2006,7 +2064,7 @@ public final class PageManipulationWorkflowTest {
     private static PdfValue readContentMarker(
             DocumentSource source,
             int pageNumber) throws Exception {
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = requestBuilder()
                 .source("input", source)
                 .primarySource("input")
                 .saveMode(SaveMode.REWRITE)
@@ -2027,7 +2085,7 @@ public final class PageManipulationWorkflowTest {
     private static byte[] readPageContent(
             DocumentSource source,
             int pageNumber) throws Exception {
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = requestBuilder()
                 .source("input", source)
                 .primarySource("input")
                 .saveMode(SaveMode.REWRITE)
@@ -2115,6 +2173,18 @@ public final class PageManipulationWorkflowTest {
                         + "/Contents (note-alpha) /P 4 0 R >>",
                 "<< /Length 4 >>\nstream\nq\nQ\nendstream",
                 "<< /Length 4 >>\nstream\nq\nQ\nendstream");
+        return pdfFixture(objects, "");
+    }
+
+    private static byte[] identifiedLegacyAnnotationFixture() {
+        List<String> objects = Arrays.asList(
+                "<< /Type /Catalog /Pages 2 0 R >>",
+                "<< /Type /Pages /Kids [3 0 R] /Count 1 "
+                        + "/MediaBox [0 0 200 160] >>",
+                "<< /Type /Page /Parent 2 0 R /Annots [4 0 R] >>",
+                "<< /Type /Annot /Subtype /Text /Rect [30 50 45 65] "
+                        + "/Contents (note-alpha) /NM (note-alpha) "
+                        + "/F 2 /P 3 0 R >>");
         return pdfFixture(objects, "");
     }
 

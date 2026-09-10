@@ -1,0 +1,15 @@
+JUnit version 4.13.2
+.E
+Time: 3.071
+There was 1 failure:
+1) stableAndPreviewFailForBothClasspathOrders(net.zerocloud.pdf.migration.itext7.contract.ClasspathExclusivityIT)
+java.lang.AssertionError: net.zerocloud.pdf.itext7.kernel.utils.PdfMerger unexpectedly initialized with both artifacts:
+
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at net.zerocloud.pdf.migration.itext7.contract.ClasspathExclusivityIT.assertClasspathConflict(ClasspathExclusivityIT.java:81)
+	at net.zerocloud.pdf.migration.itext7.contract.ClasspathExclusivityIT.stableAndPreviewFailForBothClasspathOrders(ClasspathExclusivityIT.java:48)
+
+FAILURES!!!
+Tests run: 1,  Failures: 1
+

@@ -322,11 +322,11 @@ documentation, and project-owned tests are the permitted design inputs.
   Migration Facade mapping. Page commands conservatively reject these
   downstream or otherwise unproven catalog, page-tree, page, and annotation
   structures rather than silently altering them.
-- Compatibility Curator evidence: none; the role remains vacant. The T10
-  syntax chain passes, while standards, semantic, and visual Acceptance
-  Evidence remain absent. The blank-document Dependency Gate and T06 promotion
-  gate remain open, so the capability stays `experimental` with no certified-
-  platform claim.
+- Compatibility Curator evidence at the original T10 delivery: none; the role
+  was vacant. That delivery retained syntax evidence only and made no compatible
+  or certified-platform claim. The later T70 and T72 records supply the
+  prerequisite promotion and candidate-bound four-chain evidence without
+  relabeling this historical observation.
 
 ## T11 metadata-outlines-destinations-attachments record
 
@@ -2032,3 +2032,99 @@ artifacts and public contract suites bind actual staged bytes. Atomic index
 replacement preserves valid other-obligation references and leaves historical
 records unchanged. This mechanism does not sign, upload, publish or establish
 Foundation readiness for unfinished slices.
+
+## T72 page certification work
+
+The T03/T09 validation wiring and unavailable-executable regression were authored
+by OpenAI Codex for the maintainer from the repository's public recorder and
+Maven test interfaces. Inputs were issues #72/#33/#1 and the retained CI run
+34289416825, existing project-owned T03 fixtures and tool pins, and ADR-0023.
+The missing-tool control copies the existing authored corpus and points tool
+configuration at absent paths. It contains no third-party PDF fixture, substitute
+checker, new tool version, or product runtime dependency. Test category selection
+separates ordinary build verification from explicit independent-tool validation;
+it does not alter the certification runner or qualify an unobserved chain.
+
+The existing project-authored T10 Workflow tests now select the requested Native
+execution profile explicitly and assert the actual public Workflow Outcome mode.
+This test-only wiring introduces no new PDF fixture or Native implementation.
+The first Worker-selected outcome assertion failed against the previous
+IN_PROCESS-only test setup before the request builder was changed.
+
+Public iText 7.2.6 API documentation for
+[PdfDocument](https://api.itextpdf.com/iText/java/7.2.6/com/itextpdf/kernel/pdf/PdfDocument.html),
+[PdfPage](https://api.itextpdf.com/iText/java/7.2.6/com/itextpdf/kernel/pdf/PdfPage.html),
+[PdfMerger](https://api.itextpdf.com/iText/java/7.2.6/com/itextpdf/kernel/utils/PdfMerger.html), and
+[PdfSplitter](https://api.itextpdf.com/iText/java/7.2.6/com/itextpdf/kernel/utils/PdfSplitter.html)
+was consulted for the frozen Facade subset in `docs/page-manipulation.md`. No iText implementation
+source, binary-derived internals, fixtures or proprietary add-on material was
+consulted or copied. The page handles, named declarations, merger/splitter views
+and actual receipt accessor were authored by OpenAI Codex for the maintainer,
+using the existing project-owned Native Workflow, Commands and Values adapters.
+The public-consumer fixtures use authored ASCII page labels and a minimal
+three-object PDF with a deliberately missing Page Type for a lifecycle regression.
+They are Apache-2.0 project test material, with no imported library fixture.
+The independent Standards reviewer authored the corresponding public Facade
+probe; its failure and corrected observations are retained in the T72 development
+record. No product runtime dependency or Native page implementation was added.
+Actual Stable and Preview jars are checked against the exact declared page,
+merger, and splitter classes and members. The manifest distinguishes direct
+source mappings, adapted source shapes, and Folio coordination extensions; an
+extension records the public Reference namespace without inventing a Reference
+member. Both jar orders reject a mixed Stable/Preview classpath.
+
+The T10 corpus generator, 3 Sources, 7 original RGB rasters and standards
+negative generator were authored by OpenAI Codex for the maintainer as
+Apache-2.0 project material. Normative inputs are the public
+[ISO 32000-1:2008](https://opensource.adobe.com/dc-acrobat-sdk-docs/pdfstandards/PDF32000_2008.pdf),
+particularly Tables 28–36, 95, 151 and 164. PDF object bodies, byte offsets,
+content programs, geometric clipping/rotation and expected pixels are original;
+neither product rendering nor Reference Suite output supplies a fixture.
+
+Actual qualification exposed four gaps in existing standards-tool diagnostics.
+The [acceptance-only Arlington source patch](build-tools/acceptance/arlington/README.md)
+uses the same public Apache-2.0 TestGrammar source and bundled PDFium as the
+original T03 installation. The small normative checks and distinct version
+identifier are project-authored; upstream source/model attribution and component
+licenses are preserved. The source archive, model, patch and compiled binary
+are separately identified. No product runtime dependency or Conformance API is
+added. The original tools, controls and failed qualification observations remain
+available; missing or unqualified rules cannot pass.
+
+During checker capability investigation, the public
+[pdfcpu validation configuration](https://pdfcpu.io/config/config_list/),
+[veraPDF rule documentation](https://docs.verapdf.org/validation/rules/) and
+[veraPDF model declarations](https://github.com/veraPDF/veraPDF-model/tree/integration/src/main/java)
+were inspected. No veraPDF code, model, binary, fixture or dependency was
+incorporated into the implementation or acceptance suite.
+
+The T72 acceptance producer, Foundation runner integration, 56 new standards
+fixtures, product PDFs, negative PDFs, semantic expectations, and visual
+profiles were authored by OpenAI Codex for the maintainer. They combine with 28
+qualified T03/T09 rules to form the frozen 84-rule T10 union. Pinned qpdf is used
+only for syntax; pdfcpu strict/offline and the separately versioned Arlington
+T10 r1 executable provide the standards observations; public Folio Native reopen
+provides semantic observations; PDFium renders fixed 144-DPI pages and
+ImageMagick performs zero-fuzz, AE-zero comparison. The secondary PDFBox renderer
+is disagreement evidence and never the visual authority. All eight products and
+real syntax, standards, semantic, and one-pixel controls are retained
+with exact hashes. Missing tools, rules, profiles, or identities cannot produce
+PASS.
+
+Product semantic testing exposed one Native preservation gap: PDFBox's managed
+Text-annotation reconstruction introduced a `/Name` key absent from the legacy
+source dictionary. The project-authored public regression failed before the
+adapter captured the source key set. The correction removes reconstructed
+optional keys that were absent while retaining only the required `/P` page
+retargeting and deterministic `/NM` collision change. This is a bounded fix to
+the observed T10 preservation contract, not a new command or backend surface.
+
+The Foundation page runner executes the public 53-case Native suite under the
+actual selected IN_PROCESS or HARDENED_WORKER profile, the 10-case Facade suite
+in its fixed IN_PROCESS mode, and both actual-jar contracts. It binds the staged
+0.1.0 artifacts, harness, immutable Ubuntu/JDK environment, tool catalog,
+configuration, eight products, four chains and controls. The current Foundation
+Evidence inventory is the authority for candidate-specific claims; historical
+T70/T71 records keep their bytes and are refreshed only by new observations of
+the same staged candidate. No signing, upload, publication, Windows claim, or
+macOS claim is performed by this work.

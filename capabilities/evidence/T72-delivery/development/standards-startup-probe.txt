@@ -1,0 +1,26 @@
+probe source directory=/tmp/t72-standards-probe-x2nqvfh9
+pages before close=2
+close failure=net.zerocloud.pdf.itext7.kernel.exceptions.PdfException: QUERY_FAILED: The page Object Reference could not be resolved from the page tree.
+receipts after repeated close=0
+output exists=false
+live facade thread=true state=WAITING
+  java.base@17.0.9/jdk.internal.misc.Unsafe.park(Native Method)
+  java.base@17.0.9/java.util.concurrent.locks.LockSupport.park(LockSupport.java:341)
+  java.base@17.0.9/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionNode.block(AbstractQueuedSynchronizer.java:506)
+  java.base@17.0.9/java.util.concurrent.ForkJoinPool.unmanagedBlock(ForkJoinPool.java:3465)
+  java.base@17.0.9/java.util.concurrent.ForkJoinPool.managedBlock(ForkJoinPool.java:3436)
+  java.base@17.0.9/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:1623)
+  java.base@17.0.9/java.util.concurrent.ArrayBlockingQueue.take(ArrayBlockingQueue.java:420)
+  app//net.zerocloud.pdf.itext7.kernel.pdf.FacadeSession.lambda$run$3(FacadeSession.java:116)
+  app//net.zerocloud.pdf.itext7.kernel.pdf.FacadeSession$$Lambda$65/0x000075f72c0335e8.perform(Unknown Source)
+  app//net.zerocloud.pdf.PdfBoxWorkflowEngine.executeWithDocument(PdfBoxWorkflowEngine.java:346)
+  app//net.zerocloud.pdf.PdfBoxWorkflowEngine.executeChecked(PdfBoxWorkflowEngine.java:238)
+  app//net.zerocloud.pdf.PdfBoxWorkflowEngine.execute(PdfBoxWorkflowEngine.java:41)
+  app//net.zerocloud.pdf.DocumentWorkflow.executeOnce(DocumentWorkflow.java:184)
+  app//net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:103)
+  app//net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:64)
+  app//net.zerocloud.pdf.itext7.kernel.pdf.FacadeSession.run(FacadeSession.java:108)
+  app//net.zerocloud.pdf.itext7.kernel.pdf.FacadeSession.lambda$new$0(FacadeSession.java:54)
+  app//net.zerocloud.pdf.itext7.kernel.pdf.FacadeSession$$Lambda$64/0x000075f72c032f98.run(Unknown Source)
+  java.base@17.0.9/java.lang.Thread.run(Thread.java:840)
+unclosed facade workers=1

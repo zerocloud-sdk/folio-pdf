@@ -92,17 +92,200 @@ surfaces:
       exception-contract: Maps a publication Document Failure to net.zerocloud.pdf.itext7.kernel.exceptions.PdfException with its stable code and safe diagnostic.
       capabilities:
         - document.blank.create-publish-reopen
-    - id: itext7.kernel.pdf-page.type
+    - id: itext7.kernel.pdf-document.constructor-named-sources-targets
+      reference:
+        status: folio-extension
+        type: com.itextpdf.kernel.pdf.PdfDocument
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: <init>(java.util.Map,java.lang.String,java.util.Map)
+      generic-contract: Parameters are Map<String, mapped PdfReader>, String, and Map<String, mapped PdfWriter>; declaration iteration order fixes Source consumption and publication-receipt order.
+      exception-contract: Rejects null, blank, duplicate-instance, unavailable, or inconsistent Source and Target declarations before transferring any Reader ownership.
+      capabilities:
+        - document.page.manipulate-merge-split
+    - id: itext7.kernel.pdf-document.add-new-page-at-index
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDocument
+        member: addNewPage(int)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: addNewPage(int)
+      generic-contract: Returns the mapped PdfPage at the one-based insertion position and retains that page identity through later reordering.
+      exception-contract: Rejects a closed or read-only document with IllegalStateException and maps invalid positions through PdfException with the Native DocumentFailure cause.
+      capabilities:
+        - document.page.manipulate-merge-split
+    - id: itext7.kernel.pdf-document.get-page
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDocument
+        member: getPage(int)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: getPage(int)
+      generic-contract: Returns a mapped PdfPage handle scoped to the owning Native Session.
+      exception-contract: Rejects a closed document with IllegalStateException and maps invalid page numbers through PdfException with the Native DocumentFailure cause.
+      capabilities:
+        - document.page.manipulate-merge-split
+    - id: itext7.kernel.pdf-document.remove-page
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDocument
+        member: removePage(int)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: removePage(int)
+      generic-contract: Removes one page selected by a one-based page number.
+      exception-contract: Rejects a closed or read-only document with IllegalStateException and maps invalid or unsafe removal through PdfException with the Native DocumentFailure cause before mutation.
+      capabilities:
+        - document.page.manipulate-merge-split
+    - id: itext7.kernel.pdf-document.remove-pages
+      reference:
+        status: adapted
+        type: com.itextpdf.kernel.pdf.PdfDocument
+        member: removePage(int)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: removePages(int,int)
+      generic-contract: Extends the one-page reference operation to one explicit inclusive one-based range and returns void.
+      exception-contract: Rejects a closed or read-only document with IllegalStateException and maps an invalid range or unsafe preservation through PdfException with the Native DocumentFailure cause before mutation.
+      capabilities:
+        - document.page.manipulate-merge-split
+    - id: itext7.kernel.pdf-document.move-page
+      reference:
+        status: adapted
+        type: com.itextpdf.kernel.pdf.PdfDocument
+        member: movePage(int,int)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: movePage(int,int)
+      generic-contract: Moves one one-based page to a one-based insertion position measured after removal of the selection.
+      exception-contract: Rejects a closed or read-only document with IllegalStateException and maps invalid positions or unsafe preservation through PdfException with the Native DocumentFailure cause before mutation.
+      capabilities:
+        - document.page.manipulate-merge-split
+    - id: itext7.kernel.pdf-document.move-pages
+      reference:
+        status: adapted
+        type: com.itextpdf.kernel.pdf.PdfDocument
+        member: movePage(int,int)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: movePages(int,int,int)
+      generic-contract: Extends the one-page reference operation to one inclusive range; the destination is measured after removing the selected range.
+      exception-contract: Rejects a closed or read-only document with IllegalStateException and maps invalid ranges, positions, or unsafe preservation through PdfException with the Native DocumentFailure cause before mutation.
+      capabilities:
+        - document.page.manipulate-merge-split
+    - id: itext7.kernel.pdf-document.copy-pages
+      reference:
+        status: adapted
+        type: com.itextpdf.kernel.pdf.PdfDocument
+        member: copyPagesTo(int,int,com.itextpdf.kernel.pdf.PdfDocument,int)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: copyPages(int,int,int)
+      generic-contract: Returns immutable List<mapped PdfPage>; copies one inclusive range within the same document at a one-based position measured in the original sequence.
+      exception-contract: Rejects a closed or read-only document with IllegalStateException and maps invalid ranges, positions, collisions, or unsafe preservation through PdfException with the Native DocumentFailure cause before mutation.
+      capabilities:
+        - document.page.manipulate-merge-split
+    - id: itext7.kernel.pdf-document.get-merger
+      reference:
+        status: folio-extension
+        type: com.itextpdf.kernel.pdf.PdfDocument
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: getMerger()
+      generic-contract: Returns a mapped PdfMerger view owned by this document; named Source declarations replace independently opened source documents.
+      exception-contract: Rejects a closed document with IllegalStateException; the returned view shares the document lifecycle.
+      capabilities:
+        - document.page.manipulate-merge-split
+    - id: itext7.kernel.pdf-document.get-splitter
+      reference:
+        status: folio-extension
+        type: com.itextpdf.kernel.pdf.PdfDocument
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: getSplitter()
+      generic-contract: Returns a mapped PdfSplitter view owned by this document; all publication Targets are declared before the Native Workflow begins.
+      exception-contract: Rejects a closed document with IllegalStateException; the returned view shares the document lifecycle.
+      capabilities:
+        - document.page.manipulate-merge-split
+    - id: itext7.kernel.pdf-document.get-publication-receipts
+      reference:
+        status: folio-extension
+        type: com.itextpdf.kernel.pdf.PdfDocument
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: getPublicationReceipts()
+      generic-contract: Returns immutable List<PublicationReceipt> in declared Target order after close, including COMMITTED, FAILED, NOT_ATTEMPTED, Path identity, and partial-stream diagnostics.
+      exception-contract: Rejects access before close or from a non-owner thread with IllegalStateException.
+      capabilities:
+        - document.page.manipulate-merge-split
+    - id: itext7.kernel.pdf-page.get-pdf-object
       reference:
         type: com.itextpdf.kernel.pdf.PdfPage
-        member: <type>
+        member: getPdfObject()
       folio-pdf:
         type: net.zerocloud.pdf.itext7.kernel.pdf.PdfPage
-        member: <type>
-      generic-contract: Non-generic return type for the mapped blank-page operation; no other PdfPage member is mapped in T04.
-      exception-contract: No exception contract.
+        member: getPdfObject()
+      generic-contract: Returns the mapped PdfDictionary for the retained page identity through the bounded Values interface.
+      exception-contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; expired Session values reject with IllegalStateException.
       capabilities:
         - document.blank.create-publish-reopen
+        - document.page.manipulate-merge-split
+    - id: itext7.kernel.utils.pdf-merger.constructor-document
+      reference:
+        type: com.itextpdf.kernel.utils.PdfMerger
+        member: <init>(com.itextpdf.kernel.pdf.PdfDocument)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.utils.PdfMerger
+        member: <init>(net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument)
+      generic-contract: Protected subclass hook that binds the utility view to one owning mapped PdfDocument; consumers obtain the concrete view from PdfDocument.getMerger().
+      exception-contract: Rejects a null owner with NullPointerException; loading the type activates the mutually exclusive Stable/Preview edition guard.
+      capabilities:
+        - document.page.manipulate-merge-split
+    - id: itext7.kernel.utils.pdf-merger.merge-named-sources
+      reference:
+        status: adapted
+        type: com.itextpdf.kernel.utils.PdfMerger
+        member: merge(com.itextpdf.kernel.pdf.PdfDocument,int,int)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.utils.PdfMerger
+        member: merge(java.lang.String[])
+      generic-contract: Varargs names select complete predeclared non-primary Sources in argument order and return this mapped PdfMerger.
+      exception-contract: Maps unknown, primary, or duplicate Source selection within one call and unsafe preservation through PdfException with the Native DocumentFailure cause before mutation; a later call may select a Source again.
+      capabilities:
+        - document.page.manipulate-merge-split
+    - id: itext7.kernel.utils.pdf-merger.close
+      reference:
+        type: com.itextpdf.kernel.utils.PdfMerger
+        member: close()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.utils.PdfMerger
+        member: close()
+      generic-contract: Returns void and publishes and closes the owning mapped PdfDocument.
+      exception-contract: Has the same mapped publication-failure and ownership contract as PdfDocument.close().
+      capabilities:
+        - document.page.manipulate-merge-split
+    - id: itext7.kernel.utils.pdf-splitter.constructor-document
+      reference:
+        type: com.itextpdf.kernel.utils.PdfSplitter
+        member: <init>(com.itextpdf.kernel.pdf.PdfDocument)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.utils.PdfSplitter
+        member: <init>(net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument)
+      generic-contract: Protected subclass hook that binds the utility view to one owning mapped PdfDocument; consumers obtain the concrete view from PdfDocument.getSplitter().
+      exception-contract: Rejects a null owner with NullPointerException; loading the type activates the mutually exclusive Stable/Preview edition guard.
+      capabilities:
+        - document.page.manipulate-merge-split
+    - id: itext7.kernel.utils.pdf-splitter.extract-page-ranges
+      reference:
+        status: adapted
+        type: com.itextpdf.kernel.utils.PdfSplitter
+        member: extractPageRanges(java.util.List)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.utils.PdfSplitter
+        member: extractPageRanges(java.lang.String[],net.zerocloud.pdf.PageRange[])
+      generic-contract: Parallel arrays bind each named predeclared Target exactly once to one one-based inclusive Native PageRange; success is terminal for later Document Commands.
+      exception-contract: Rejects unequal array lengths with IllegalArgumentException and maps missing, extra, duplicate, invalid, or unsafe selections through PdfException with the Native DocumentFailure cause before publication.
+      capabilities:
+        - document.page.manipulate-merge-split
     - id: itext7.kernel.pdf-exception.constructor-message-cause
       reference:
         type: com.itextpdf.kernel.exceptions.PdfException
@@ -1016,10 +1199,6 @@ surfaces:
   preview: []
 
 excluded-capabilities:
-- id: document.page.manipulate-merge-split
-  ticket: T32
-  reason: 'Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under
-    #72 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.'
 - id: document.metadata.outlines-destinations-attachments
   ticket: T32
   reason: 'Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under

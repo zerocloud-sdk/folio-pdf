@@ -103,7 +103,7 @@ obligations:
     - itext7.kernel.pdf-document.add-new-page
     - itext7.kernel.pdf-document.get-number-of-pages
     - itext7.kernel.pdf-document.close
-    - itext7.kernel.pdf-page.type
+    - itext7.kernel.pdf-page.get-pdf-object
     - itext7.kernel.pdf-exception.constructor-message-cause
     - itext7.layout.document.constructor-pdf-document
     - itext7.layout.document.close
@@ -239,7 +239,24 @@ obligations:
   facade-families:
   - family: kernel pages, merger and splitter
     reference-prefix: com.itextpdf.kernel.
-    mappings: []
+    mappings:
+    - itext7.kernel.pdf-document.constructor-named-sources-targets
+    - itext7.kernel.pdf-document.add-new-page-at-index
+    - itext7.kernel.pdf-document.get-page
+    - itext7.kernel.pdf-document.remove-page
+    - itext7.kernel.pdf-document.remove-pages
+    - itext7.kernel.pdf-document.move-page
+    - itext7.kernel.pdf-document.move-pages
+    - itext7.kernel.pdf-document.copy-pages
+    - itext7.kernel.pdf-document.get-merger
+    - itext7.kernel.pdf-document.get-splitter
+    - itext7.kernel.pdf-document.get-publication-receipts
+    - itext7.kernel.pdf-page.get-pdf-object
+    - itext7.kernel.utils.pdf-merger.constructor-document
+    - itext7.kernel.utils.pdf-merger.merge-named-sources
+    - itext7.kernel.utils.pdf-merger.close
+    - itext7.kernel.utils.pdf-splitter.constructor-document
+    - itext7.kernel.utils.pdf-splitter.extract-page-ranges
 - id: metadata
   summary: Read, create, update, and preserve document information, XMP metadata, outlines, named destinations,
     page destinations, and embedded files, with destination retargeting across page reorder, copy, merge, and split.
@@ -1295,38 +1312,32 @@ limitations:
 - capability: document.page.manipulate-merge-split
   sha256: 622d856b7cbd02450a629710bb89739685c70c7d4e4d7128b4c1de5dd43ae789
   disposition: retained-contract
-  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
-    #72 must prove it without omitting required successful Foundation cases.'
+  reason: T72 public Native and Facade contracts plus candidate-bound T10 evidence retain this requirement while covering all required successful Foundation page cases.
   obligation: pages
 - capability: document.page.manipulate-merge-split
-  sha256: 3e10edbdacb0d74e02c3692d3cf39e0b06d4f0d95d033c9697e7cd59ff204297
-  disposition: release-blocker
-  reason: 'Conservative page-graph restrictions require #72 corpus evidence that all Foundation page operations
-    remain available; safe rejection is not proof of required successful behavior.'
+  sha256: 2170b3118c98d5a1a125896200be8006f7ec1b05ffde4fc3ed50759d00d76110
+  disposition: retained-contract
+  reason: The fixed T10 corpus exercises every required successful Foundation page operation; conservative page-graph rejection remains the documented safe-failure boundary.
   obligation: pages
 - capability: document.page.manipulate-merge-split
   sha256: 9094fd462234a7e70e75e60c83a56b3c1d51137c2da4be0f7828596a753804c7
   disposition: retained-contract
-  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
-    #72 must prove it without omitting required successful Foundation cases.'
+  reason: T72 public Native and Facade contracts plus candidate-bound T10 evidence retain this requirement while covering all required successful Foundation page cases.
   obligation: pages
 - capability: document.page.manipulate-merge-split
   sha256: 14f4e52c76b63778a0e803143d5231b6053c1aecf14f673c5806ddb8f27460b2
   disposition: retained-contract
-  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
-    #72 must prove it without omitting required successful Foundation cases.'
+  reason: T72 public Native and Facade contracts plus candidate-bound T10 evidence retain this requirement while covering all required successful Foundation page cases.
   obligation: pages
 - capability: document.page.manipulate-merge-split
   sha256: fabf90582b67179e3a1315bf7111d1dfef2dabbac4fd1b9c73fb27931c27a2fe
   disposition: retained-contract
-  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
-    #72 must prove it without omitting required successful Foundation cases.'
+  reason: T72 public Native and Facade contracts plus candidate-bound T10 evidence retain this requirement while covering all required successful Foundation page cases.
   obligation: pages
 - capability: document.page.manipulate-merge-split
   sha256: 3ee88e471c8c133ab2b36819e6da7d3b7fe60c2d9b64e506f49f46fe959da608
   disposition: retained-contract
-  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
-    #72 must prove it without omitting required successful Foundation cases.'
+  reason: T72 public Native and Facade contracts plus candidate-bound T10 evidence retain this requirement while covering all required successful Foundation page cases.
   obligation: pages
 - capability: document.metadata.outlines-destinations-attachments
   sha256: 6be4412eb39f84a69b8916aa914167c0c71587e8fd1642dfe6eed5d7cda1d4de

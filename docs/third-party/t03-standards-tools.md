@@ -29,6 +29,15 @@ disable container networking. Each invocation is limited to 10 seconds and
 recorder retains bounded partial output on limit failure and returns an
 INDETERMINATE observation.
 
+T10 reuses both installations and adds a separately built acceptance-only
+Arlington checker for six destination/name-tree controls. Its project-authored
+Apache-2.0 patch, distinct version, exact source/model/patch/executable hashes,
+and deterministic build instructions are recorded in the
+[T10 supplement](../../build-tools/acceptance/arlington/README.md) and
+[`t10-arlington-pin.properties`](../../scripts/t10-arlington-pin.properties).
+T03 and T09 continue to use the unchanged upstream pin. The T10 checker does not
+enter product artifacts or the ordinary Maven dependency graph.
+
 Tool qualification is separate from installation and from final candidate
 certification. The [22-rule profile](../../capabilities/profiles/T03-standards/README.md)
 and [original qualification findings](../../capabilities/evidence/T70-standards-qualification/README.md)

@@ -1,0 +1,26 @@
+E
+======================================================================
+ERROR: test_collects_eight_exact_products_per_page_visuals_and_real_controls (scripts.tests.test_t10_foundation.PagesEvidenceCollectionTest.test_collects_eight_exact_products_per_page_visuals_and_real_controls)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t10_foundation.py", line 91, in test_collects_eight_exact_products_per_page_visuals_and_real_controls
+    reports = module.collect_reports(root, run, 'pages')
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/t03-foundation.py", line 248, in collect_reports
+    observed = properties(directory / 'result.properties')
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/t03-foundation.py", line 174, in properties
+    return dict(line.split('=', 1) for line in Path(path).read_text().splitlines()
+                                               ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1029, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpu91rjhyg/run/native/result.properties'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.020s
+
+FAILED (errors=1)

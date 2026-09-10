@@ -48,10 +48,15 @@ public final class PdfReader implements Closeable {
     }
 
     FacadeSource takeSource() {
+        FacadeSource available = availableSource();
+        claimed = true;
+        return available;
+    }
+
+    FacadeSource availableSource() {
         if (closed || claimed) {
             throw new IllegalStateException("The facade reader is closed or already owned by a document.");
         }
-        claimed = true;
         return source;
     }
 

@@ -35,6 +35,8 @@ public final class ClasspathExclusivityIT {
             "net.zerocloud.pdf.itext7.kernel.pdf.PdfStream",
             "net.zerocloud.pdf.itext7.kernel.pdf.PdfIndirectReference",
             "net.zerocloud.pdf.itext7.kernel.pdf.PdfCatalog",
+            "net.zerocloud.pdf.itext7.kernel.utils.PdfMerger",
+            "net.zerocloud.pdf.itext7.kernel.utils.PdfSplitter",
             "net.zerocloud.pdf.itext7.layout.Document");
 
     @Test

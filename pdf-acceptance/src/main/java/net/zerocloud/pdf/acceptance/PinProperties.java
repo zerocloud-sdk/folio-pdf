@@ -41,6 +41,10 @@ final class PinProperties {
         return value.trim();
     }
 
+    String optional(String key) {
+        return properties.getProperty(key);
+    }
+
     String requiredSha256(String key) throws IOException {
         String value = required(key);
         if (!value.matches("[0-9a-f]{64}")) {

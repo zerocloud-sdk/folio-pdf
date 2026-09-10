@@ -43,9 +43,17 @@ public final class StandardsEvidenceCommand {
         String executableHash = "unavailable";
         String coveredRules = "";
         String modelHash = "none";
+        String patchHash = "none";
         try {
             Path executable = pin.requiredExecutable("executable");
             executableHash = EvidenceFiles.sha256(executable);
+            if (pin.optional("patch") != null || pin.optional("patch-sha256") != null) {
+                patchHash = EvidenceFiles.sha256(pin.requiredExecutable("patch"));
+                if (!patchHash.equals(pin.requiredSha256("patch-sha256"))) {
+                    findings.append("Checker source patch identity mismatch.\n");
+                    throw new IOException("Standards source patch identity mismatch");
+                }
+            }
             boolean arlington = "arlington".equals(pin.required("tool"));
             if (arlington) {
                 modelHash = modelHash(pin.requiredExecutable("model"));
@@ -124,6 +132,7 @@ public final class StandardsEvidenceCommand {
             if (!executableHash.equals(EvidenceFiles.sha256(executable))
                     || !pinHash.equals(EvidenceFiles.sha256(pinPath))
                     || !profileHash.equals(EvidenceFiles.sha256(profilePath))
+                    || (!"none".equals(patchHash) && !patchHash.equals(EvidenceFiles.sha256(pin.requiredExecutable("patch"))))
                     || (arlington && !modelHash.equals(modelHash(pin.requiredExecutable("model"))))) {
                 result = EvidenceResult.INDETERMINATE;
                 coveredRules = "";
@@ -151,6 +160,7 @@ public final class StandardsEvidenceCommand {
                         + "covered-rules=" + coveredRules + "\n"
                         + "executable-sha256=" + executableHash + "\n"
                         + "model-sha256=" + modelHash + "\n"
+                        + "patch-sha256=" + patchHash + "\n"
                         + "input-sha256=" + inputHash + "\n"
                         + "pin-sha256=" + pinHash + "\n"
                         + "profile-sha256=" + profileHash + "\n");

@@ -1,0 +1,1043 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent                                    [pom]
+[INFO] Folio PDF by ZeroCloud - BOM                                       [pom]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract              [jar]
+[INFO] Folio PDF by ZeroCloud - Conversion                                [jar]
+[INFO] Folio PDF by ZeroCloud - Document Engine                           [jar]
+[INFO] Folio PDF by ZeroCloud - Stable iText 7 Migration Facade           [jar]
+[INFO] Folio PDF by ZeroCloud - Acceptance Evidence                       [jar]
+[INFO] Folio PDF by ZeroCloud - Preview iText 7 Migration Facade          [jar]
+[INFO] Folio PDF by ZeroCloud - Inventory Build Tool                      [jar]
+[INFO] Folio PDF by ZeroCloud - Release Rehearsal Tool                    [jar]
+[INFO] 
+[INFO] ----------------------< net.zerocloud:pdf-parent >----------------------
+[INFO] Building Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT           [1/10]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-parent ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.version.RequireMavenVersion passed
+[INFO] Rule 1: org.apache.maven.enforcer.rules.version.RequireJavaVersion passed
+[INFO] 
+[INFO] -----------------------< net.zerocloud:pdf-bom >------------------------
+[INFO] Building Folio PDF by ZeroCloud - BOM 0.1.0-SNAPSHOT              [2/10]
+[INFO]   from pdf-bom/pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-bom ---
+[INFO] 
+[INFO] ----------------< net.zerocloud:pdf-provider-contract >-----------------
+[INFO] Building Folio PDF by ZeroCloud - Capability Provider Contract 0.1.0-SNAPSHOT [3/10]
+[INFO]   from pdf-provider-contract/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-provider-contract ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-provider-contract ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-provider-contract/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-provider-contract ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.provider.ProviderCatalogTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.060 s -- in net.zerocloud.pdf.provider.ProviderCatalogTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --------------------< net.zerocloud:pdf-conversion >--------------------
+[INFO] Building Folio PDF by ZeroCloud - Conversion 0.1.0-SNAPSHOT       [4/10]
+[INFO]   from pdf-conversion/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-conversion ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-conversion/src/main/resources
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-conversion/src/test/resources
+[INFO] Copying 1 resource from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-conversion ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.conversion.HarfBuzzCapabilityProviderTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.127 s -- in net.zerocloud.pdf.conversion.HarfBuzzCapabilityProviderTest
+[INFO] Running net.zerocloud.pdf.conversion.SubprocessCapabilityProviderTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.176 s -- in net.zerocloud.pdf.conversion.SubprocessCapabilityProviderTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ pdf-conversion ---
+[INFO] 
+[INFO] --- failsafe:3.5.4:integration-test (default) @ pdf-conversion ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.conversion.contract.JarContractIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.053 s -- in net.zerocloud.pdf.conversion.contract.JarContractIT
+[INFO] Running net.zerocloud.pdf.conversion.contract.PublicApiLeakageIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.016 s -- in net.zerocloud.pdf.conversion.contract.PublicApiLeakageIT
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- failsafe:3.5.4:verify (default) @ pdf-conversion ---
+[INFO] 
+[INFO] ---------------------< net.zerocloud:pdf-document >---------------------
+[INFO] Building Folio PDF by ZeroCloud - Document Engine 0.1.0-SNAPSHOT  [5/10]
+[INFO]   from pdf-document/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-document ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-document ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-document ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-document ---
+[INFO] Copying 12 resources from src/test/resources to target/test-classes
+[INFO] Copying 15 resources from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-document ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-document ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.consumer.AnnotationWorkflowTest
+[INFO] Tests run: 33, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.271 s -- in net.zerocloud.pdf.consumer.AnnotationWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.Barcode2DWorkflowTest
+[INFO] Tests run: 70, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 214.5 s -- in net.zerocloud.pdf.consumer.Barcode2DWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.BarcodeWorkflowTest
+[INFO] Tests run: 60, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 181.4 s -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.BlankDocumentWorkflowTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s -- in net.zerocloud.pdf.consumer.BlankDocumentWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.CanvasImageColorTransparencyWorkflowTest
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.366 s -- in net.zerocloud.pdf.consumer.CanvasImageColorTransparencyWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.CanvasWorkflowTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.179 s -- in net.zerocloud.pdf.consumer.CanvasWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.DocumentMetadataWorkflowTest
+Sep 10, 2026 8:34:56 AM org.apache.pdfbox.multipdf.Splitter createNewDocument
+WARNING: Nested entry for key 'T11Custom' skipped in document information dictionary
+Sep 10, 2026 8:34:56 AM org.apache.pdfbox.multipdf.Splitter createNewDocument
+WARNING: Nested entry for key 'T11Custom' skipped in document information dictionary
+[INFO] Tests run: 55, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 9.745 s -- in net.zerocloud.pdf.consumer.DocumentMetadataWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.FontLoadingWorkflowTest
+Sep 10, 2026 8:35:01 AM org.apache.fontbox.ttf.PostScriptTable read
+WARNING: No PostScript name data is provided for the font FolioPrimary-Regular
+Sep 10, 2026 8:35:01 AM org.apache.fontbox.ttf.PostScriptTable read
+WARNING: No PostScript name data is provided for the font FolioPrimary-Regular
+[INFO] Tests run: 22, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.912 s -- in net.zerocloud.pdf.consumer.FontLoadingWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.HardenedWorkerRecoveryTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.651 s -- in net.zerocloud.pdf.consumer.HardenedWorkerRecoveryTest
+[INFO] Running net.zerocloud.pdf.consumer.HardenedWorkerScaleProfileTest
+[WARNING] Tests run: 3, Failures: 0, Errors: 0, Skipped: 3, Time elapsed: 0.003 s -- in net.zerocloud.pdf.consumer.HardenedWorkerScaleProfileTest
+[INFO] Running net.zerocloud.pdf.consumer.HardenedWorkerWorkflowTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.907 s -- in net.zerocloud.pdf.consumer.HardenedWorkerWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.HostileInputWorkflowTest
+[INFO] Tests run: 19, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.113 s -- in net.zerocloud.pdf.consumer.HostileInputWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.ImageResourceExtractionWorkflowTest
+Sep 10, 2026 8:35:19 AM org.apache.pdfbox.filter.ASCIIHexFilter decode
+SEVERE: Invalid hex, int: 71 char: G
+Sep 10, 2026 8:35:19 AM org.apache.pdfbox.filter.ASCIIHexFilter decode
+SEVERE: Invalid hex, int: 120 char: x
+Sep 10, 2026 8:35:19 AM org.apache.pdfbox.filter.ASCIIHexFilter decode
+SEVERE: Invalid hex, int: 71 char: G
+Sep 10, 2026 8:35:19 AM org.apache.pdfbox.filter.ASCIIHexFilter decode
+SEVERE: Invalid hex, int: 71 char: G
+Sep 10, 2026 8:35:19 AM org.apache.pdfbox.filter.ASCIIHexFilter decode
+SEVERE: Invalid hex, int: 71 char: G
+Sep 10, 2026 8:35:19 AM org.apache.pdfbox.filter.LZWFilter doLZWDecode
+WARNING: Premature EOF in LZW stream, EOD code missing
+java.io.EOFException
+	at java.desktop/javax.imageio.stream.ImageInputStreamImpl.readBits(ImageInputStreamImpl.java:687)
+	at org.apache.pdfbox.filter.LZWFilter.doLZWDecode(LZWFilter.java:82)
+	at org.apache.pdfbox.filter.LZWFilter.decode(LZWFilter.java:67)
+	at org.apache.pdfbox.filter.Filter.decode(Filter.java:107)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.decodeFilterStages(PdfBoxHostileInputPreflight.java:368)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.preflightFilterStages(PdfBoxHostileInputPreflight.java:234)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.auditStream(PdfBoxHostileInputPreflight.java:192)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.traverse(PdfBoxHostileInputPreflight.java:156)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.audit(PdfBoxHostileInputPreflight.java:41)
+	at net.zerocloud.pdf.WorkflowResourceContext.audit(WorkflowResourceContext.java:604)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.executeChecked(PdfBoxWorkflowEngine.java:119)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.execute(PdfBoxWorkflowEngine.java:41)
+	at net.zerocloud.pdf.DocumentWorkflow.executeOnce(DocumentWorkflow.java:184)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:103)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:64)
+	at net.zerocloud.pdf.consumer.ImageResourceExtractionWorkflowTest.query(ImageResourceExtractionWorkflowTest.java:2213)
+	at net.zerocloud.pdf.consumer.ImageResourceExtractionWorkflowTest.nullOptionalDecodeParametersUseTheirEffectiveDefaults(ImageResourceExtractionWorkflowTest.java:447)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:316)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:214)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:155)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+Sep 10, 2026 8:35:19 AM org.apache.pdfbox.filter.LZWFilter doLZWDecode
+WARNING: Premature EOF in LZW stream, EOD code missing
+java.io.EOFException: Invalid LZW code: 489
+	at org.apache.pdfbox.filter.LZWFilter.doLZWDecode(LZWFilter.java:119)
+	at org.apache.pdfbox.filter.LZWFilter.decode(LZWFilter.java:67)
+	at org.apache.pdfbox.filter.Filter.decode(Filter.java:107)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.decodeFilterStages(PdfBoxHostileInputPreflight.java:368)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.preflightFilterStages(PdfBoxHostileInputPreflight.java:234)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.auditStream(PdfBoxHostileInputPreflight.java:192)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.traverse(PdfBoxHostileInputPreflight.java:156)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.audit(PdfBoxHostileInputPreflight.java:41)
+	at net.zerocloud.pdf.WorkflowResourceContext.audit(WorkflowResourceContext.java:604)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.executeChecked(PdfBoxWorkflowEngine.java:119)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.execute(PdfBoxWorkflowEngine.java:41)
+	at net.zerocloud.pdf.DocumentWorkflow.executeOnce(DocumentWorkflow.java:184)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:103)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:64)
+	at net.zerocloud.pdf.consumer.ImageResourceExtractionWorkflowTest.query(ImageResourceExtractionWorkflowTest.java:2213)
+	at net.zerocloud.pdf.consumer.ImageResourceExtractionWorkflowTest.unsupportedFilterKeepsEncodedBytesAndReportsDecodedAvailability(ImageResourceExtractionWorkflowTest.java:591)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:316)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:214)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:155)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[INFO] Tests run: 27, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.170 s -- in net.zerocloud.pdf.consumer.ImageResourceExtractionWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.IncrementalSignatureWorkflowTest
+Sep 10, 2026 8:35:19 AM org.apache.pdfbox.pdfparser.COSParser parseFileObject
+WARNING: Object (5:0) at offset 277 does not end with 'endobj' but with '0'
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.310 s -- in net.zerocloud.pdf.consumer.IncrementalSignatureWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Tests run: 32, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 56.74 s -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.PageManipulationWorkflowTest
+Sep 10, 2026 8:36:16 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Sep 10, 2026 8:36:16 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Sep 10, 2026 8:36:16 AM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Sep 10, 2026 8:36:16 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Sep 10, 2026 8:36:16 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Sep 10, 2026 8:36:16 AM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Sep 10, 2026 8:36:16 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Sep 10, 2026 8:36:16 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Sep 10, 2026 8:36:16 AM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Sep 10, 2026 8:36:16 AM org.apache.pdfbox.filter.FlateFilterDecoderStream fetch
+WARNING: FlateFilter: premature end of stream due to a DataFormatException = invalid distance too far back
+Sep 10, 2026 8:36:16 AM org.apache.pdfbox.filter.FlateFilterDecoderStream fetch
+WARNING: FlateFilter: premature end of stream due to a DataFormatException = invalid distance too far back
+Sep 10, 2026 8:36:16 AM org.apache.pdfbox.filter.FlateFilterDecoderStream fetch
+WARNING: FlateFilter: premature end of stream due to a DataFormatException = invalid distance too far back
+Sep 10, 2026 8:36:16 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Sep 10, 2026 8:36:16 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Sep 10, 2026 8:36:16 AM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Sep 10, 2026 8:36:16 AM org.apache.pdfbox.filter.Filter getDecodeParams
+SEVERE: Expected DecodeParams to be an Array or Dictionary but found org.apache.pdfbox.cos.COSName
+Sep 10, 2026 8:36:16 AM org.apache.pdfbox.filter.Filter getDecodeParams
+SEVERE: Expected DecodeParams to be an Array or Dictionary but found org.apache.pdfbox.cos.COSName
+Sep 10, 2026 8:36:16 AM org.apache.pdfbox.filter.Filter getDecodeParams
+SEVERE: Expected DecodeParams to be an Array or Dictionary but found org.apache.pdfbox.cos.COSName
+[INFO] Tests run: 53, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.335 s -- in net.zerocloud.pdf.consumer.PageManipulationWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.ParagraphCompositionWorkflowTest
+[INFO] Tests run: 42, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 61.81 s -- in net.zerocloud.pdf.consumer.ParagraphCompositionWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest
+[INFO] Tests run: 64, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 69.38 s -- in net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.PdfValueWorkflowTest
+[INFO] Tests run: 100, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 83.52 s -- in net.zerocloud.pdf.consumer.PdfValueWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.PdfVersionPasswordSecurityWorkflowTest
+Sep 10, 2026 8:39:52 AM org.apache.pdfbox.pdmodel.encryption.StandardSecurityHandler validatePerms
+WARNING: Verification of permissions failed (constant)
+Sep 10, 2026 8:39:52 AM org.apache.pdfbox.pdmodel.encryption.StandardSecurityHandler validatePerms
+WARNING: Verification of permissions failed (AE0A1E38 != FFFFF0C4)
+Sep 10, 2026 8:39:52 AM org.apache.pdfbox.pdmodel.encryption.StandardSecurityHandler validatePerms
+WARNING: Verification of permissions failed (EncryptMetadata)
+[INFO] Tests run: 26, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.166 s -- in net.zerocloud.pdf.consumer.PdfVersionPasswordSecurityWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.RenderingColdStartTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.989 s -- in net.zerocloud.pdf.consumer.RenderingColdStartTest
+[INFO] Running net.zerocloud.pdf.consumer.RenderingWorkflowContractTest
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 35.78 s -- in net.zerocloud.pdf.consumer.RenderingWorkflowContractTest
+[INFO] Running net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[INFO] Tests run: 34, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 107.1 s -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.TableCompositionWorkflowTest
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 77.53 s -- in net.zerocloud.pdf.consumer.TableCompositionWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 37.40 s -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest
+Sep 10, 2026 8:44:11 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT13
+Sep 10, 2026 8:44:11 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT13
+Sep 10, 2026 8:44:11 AM org.apache.pdfbox.pdfparser.BaseParser parseDirObject
+WARNING: Skipped unexpected dir object = '__folio_pdf_content_stream_terminal_probe__' at offset 68 (start offset: 25)
+Sep 10, 2026 8:44:11 AM org.apache.pdfbox.pdfparser.BaseParser parseCOSArray
+WARNING: Corrupt array element at offset 68, start offset: 23
+Sep 10, 2026 8:44:11 AM org.apache.pdfbox.pdfparser.BaseParser parseDirObject
+WARNING: Skipped unexpected dir object = '__folio_pdf_content_stream_terminal_probe__' at offset 68 (start offset: 25)
+Sep 10, 2026 8:44:11 AM org.apache.pdfbox.pdfparser.BaseParser parseCOSArray
+WARNING: Corrupt array element at offset 68, start offset: 23
+[INFO] Tests run: 44, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.765 s -- in net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+Sep 10, 2026 8:44:12 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:44:12 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:44:13 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:44:13 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:44:13 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:44:14 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:44:15 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:44:15 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:44:15 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:44:16 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:44:16 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:44:16 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:44:17 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:44:17 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:44:18 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:44:18 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:44:19 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:44:19 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:44:20 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:44:20 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+[INFO] Tests run: 48, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 138.8 s -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.WorkflowCapabilityProviderTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 s -- in net.zerocloud.pdf.consumer.WorkflowCapabilityProviderTest
+[INFO] Running net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest
+[INFO] Tests run: 82, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 23.19 s -- in net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest
+[INFO] Running net.zerocloud.pdf.consumer.WorkflowLifecycleTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.013 s -- in net.zerocloud.pdf.consumer.WorkflowLifecycleTest
+[INFO] Running net.zerocloud.pdf.consumer.WorkflowResourceOwnershipTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.037 s -- in net.zerocloud.pdf.consumer.WorkflowResourceOwnershipTest
+[INFO] Running net.zerocloud.pdf.consumer.WorkflowTransactionContractTest
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.036 s -- in net.zerocloud.pdf.consumer.WorkflowTransactionContractTest
+[INFO] Running net.zerocloud.pdf.HardenedWorkerIsolationTest
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.811 s -- in net.zerocloud.pdf.HardenedWorkerIsolationTest
+[INFO] Running net.zerocloud.pdf.HardenedWorkerRecoveryFaultTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.950 s -- in net.zerocloud.pdf.HardenedWorkerRecoveryFaultTest
+[INFO] Running net.zerocloud.pdf.PdfBoxCMapPreflightTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s -- in net.zerocloud.pdf.PdfBoxCMapPreflightTest
+[INFO] Running net.zerocloud.pdf.PdfBoxFontMetricPreflightTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s -- in net.zerocloud.pdf.PdfBoxFontMetricPreflightTest
+[INFO] Running net.zerocloud.pdf.WorkerCodecContractTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.398 s -- in net.zerocloud.pdf.WorkerCodecContractTest
+[INFO] Running net.zerocloud.pdf.WorkerProtocolBoundaryTest
+[INFO] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 9.196 s -- in net.zerocloud.pdf.WorkerProtocolBoundaryTest
+[INFO] Running net.zerocloud.pdf.WorkflowResourceCacheAccountingTest
+[INFO] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.018 s -- in net.zerocloud.pdf.WorkflowResourceCacheAccountingTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 1142, Failures: 0, Errors: 0, Skipped: 3
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ pdf-document ---
+[INFO] 
+[INFO] --- failsafe:3.5.4:integration-test (default) @ pdf-document ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.contract.JarContractIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.071 s -- in net.zerocloud.pdf.contract.JarContractIT
+[INFO] Running net.zerocloud.pdf.contract.PublicApiLeakageIT
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.231 s -- in net.zerocloud.pdf.contract.PublicApiLeakageIT
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- failsafe:3.5.4:verify (default) @ pdf-document ---
+[INFO] 
+[INFO] -----------------< net.zerocloud:pdf-migration-itext7 >-----------------
+[INFO] Building Folio PDF by ZeroCloud - Stable iText 7 Migration Facade 0.1.0-SNAPSHOT [6/10]
+[INFO]   from pdf-migration-itext7/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-migration-itext7 ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-migration-itext7 ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-migration-itext7 ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-migration-itext7 ---
+[INFO] Copying 5 resources from ../pdf-document/src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-migration-itext7 ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-migration-itext7 ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.itext7.consumer.BlankDocumentFacadeTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.314 s -- in net.zerocloud.pdf.itext7.consumer.BlankDocumentFacadeTest
+[INFO] Running net.zerocloud.pdf.itext7.consumer.PageManipulationFacadeTest
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.399 s -- in net.zerocloud.pdf.itext7.consumer.PageManipulationFacadeTest
+[INFO] Running net.zerocloud.pdf.itext7.consumer.PdfValuesFacadeTest
+[INFO] Tests run: 31, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.362 s -- in net.zerocloud.pdf.itext7.consumer.PdfValuesFacadeTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 46, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ pdf-migration-itext7 ---
+[INFO] 
+[INFO] --------------------< net.zerocloud:pdf-acceptance >--------------------
+[INFO] Building Folio PDF by ZeroCloud - Acceptance Evidence 0.1.0-SNAPSHOT [7/10]
+[INFO]   from pdf-acceptance/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-acceptance ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-acceptance ---
+[INFO] Copying 32 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-acceptance ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-acceptance ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-acceptance/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-acceptance ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-acceptance ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitcore.JUnitCoreProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.acceptance.AcceptanceEvidenceCommandTest
+T23-page-rendering: syntax=PASS, visual=PASS
+T23-page-rendering-images: syntax=PASS, visual=PASS
+T23-page-rendering-fonts: syntax=PASS, visual=PASS
+T23-page-rendering: syntax=PASS, visual=INDETERMINATE
+T23-page-rendering-images: syntax=PASS, visual=INDETERMINATE
+T23-page-rendering-fonts: syntax=PASS, visual=INDETERMINATE
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 50.40 s -- in net.zerocloud.pdf.acceptance.AcceptanceEvidenceCommandTest
+[INFO] Running net.zerocloud.pdf.acceptance.StandardsEvidenceCommandTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.112 s -- in net.zerocloud.pdf.acceptance.StandardsEvidenceCommandTest
+[INFO] Running net.zerocloud.pdf.acceptance.T03BlankSemanticsTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.308 s -- in net.zerocloud.pdf.acceptance.T03BlankSemanticsTest
+[INFO] Running net.zerocloud.pdf.acceptance.T03EvidenceCommandTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.252 s -- in net.zerocloud.pdf.acceptance.T03EvidenceCommandTest
+[INFO] Running net.zerocloud.pdf.acceptance.T09EvidenceCommandTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.034 s -- in net.zerocloud.pdf.acceptance.T09EvidenceCommandTest
+[INFO] Running net.zerocloud.pdf.acceptance.T10EvidenceCommandTest
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Sep 10, 2026 8:48:12 AM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.478 s -- in net.zerocloud.pdf.acceptance.T10EvidenceCommandTest
+[INFO] Running net.zerocloud.pdf.acceptance.T24ParagraphEvidenceCommandTest
+T24: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE; standards and compatibility remain indeterminate.
+T24: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE; standards and compatibility remain indeterminate.
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.453 s -- in net.zerocloud.pdf.acceptance.T24ParagraphEvidenceCommandTest
+[INFO] Running net.zerocloud.pdf.acceptance.T25ParagraphEvidenceCommandTest
+T25-paragraph-indentation: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-tabs: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-keep-next: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-keep-together: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-widow: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-orphan: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-overflow-wrap: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-overflow-reject: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-overflow-visible: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-relayout: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-immediate-flush: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-publication: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE; standards and compatibility remain indeterminate.
+T25-paragraph-indentation: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-tabs: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-keep-next: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-keep-together: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-widow: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-orphan: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-overflow-wrap: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-overflow-reject: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-overflow-visible: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-relayout: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-immediate-flush: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25-paragraph-publication: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE
+T25: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE; standards and compatibility remain indeterminate.
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.520 s -- in net.zerocloud.pdf.acceptance.T25ParagraphEvidenceCommandTest
+[INFO] Running net.zerocloud.pdf.acceptance.T26TableEvidenceCommandTest
+T26: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE; standards and compatibility remain indeterminate.
+T26: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE; standards and compatibility remain indeterminate.
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.713 s -- in net.zerocloud.pdf.acceptance.T26TableEvidenceCommandTest
+[INFO] Running net.zerocloud.pdf.acceptance.T27TableEvidenceCommandTest
+T27: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE; standards and compatibility remain indeterminate.
+T27: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE; standards and compatibility remain indeterminate.
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.288 s -- in net.zerocloud.pdf.acceptance.T27TableEvidenceCommandTest
+[INFO] Running net.zerocloud.pdf.acceptance.T28UnicodeEvidenceCommandTest
+Sep 10, 2026 8:48:21 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:48:21 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:48:21 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:48:22 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:48:23 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:48:23 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:48:23 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:48:24 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:48:24 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:48:24 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:48:25 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:48:25 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:48:26 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:48:28 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:48:28 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:48:28 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+T28: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE; standards, dependency gates and full Foundation certification remain open.
+Sep 10, 2026 8:48:29 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:48:29 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:48:30 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:48:30 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:48:31 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:48:31 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:48:31 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:48:32 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:48:32 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:48:32 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:48:33 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:48:33 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:48:34 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:48:36 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:48:36 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Sep 10, 2026 8:48:36 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+T28 IN_PROCESS peak owned memory bytes: 1207232298
+T28 HARDENED_WORKER peak owned memory bytes: 1294495682
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 79.38 s -- in net.zerocloud.pdf.acceptance.T28UnicodeEvidenceCommandTest
+[INFO] Running net.zerocloud.pdf.acceptance.T29NativeShapingAssertionsTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.260 s -- in net.zerocloud.pdf.acceptance.T29NativeShapingAssertionsTest
+[INFO] Running net.zerocloud.pdf.acceptance.T29ShapingEvidenceCommandTest
+T29 local chains: native=PASS, semantic=INDETERMINATE, syntax=INDETERMINATE, subsets=INDETERMINATE, visual=INDETERMINATE
+T29 local chains: native=PASS, semantic=PASS, syntax=INDETERMINATE, subsets=INDETERMINATE, visual=INDETERMINATE
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 11.60 s -- in net.zerocloud.pdf.acceptance.T29ShapingEvidenceCommandTest
+[INFO] Running net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest
+T30: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE, path-decoded=232, raster-decoded=0; standards and compatibility remain indeterminate.
+T30: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE, path-decoded=232, raster-decoded=0; standards and compatibility remain indeterminate.
+[WARNING] Tests run: 6, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 125.1 s -- in net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest
+[INFO] Running net.zerocloud.pdf.acceptance.T31BarcodeEvidenceCommandTest
+T31: generate and qualify IN_PROCESS 224 pages
+T31: generate and qualify HARDENED_WORKER 224 pages
+T31: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE, path-decoded=448, raster-decoded=0, negative PDFs=19, negative rasters=0; standards and compatibility remain indeterminate.
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 151.5 s -- in net.zerocloud.pdf.acceptance.T31BarcodeEvidenceCommandTest
+[INFO] Running net.zerocloud.pdf.acceptance.T31BarcodeEvidenceTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 73.12 s -- in net.zerocloud.pdf.acceptance.T31BarcodeEvidenceTest
+[INFO] Running net.zerocloud.pdf.acceptance.T31DataMatrixEvidenceTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.451 s -- in net.zerocloud.pdf.acceptance.T31DataMatrixEvidenceTest
+[INFO] Running net.zerocloud.pdf.acceptance.T31NegativeEvidenceTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 38.97 s -- in net.zerocloud.pdf.acceptance.T31NegativeEvidenceTest
+[INFO] Running net.zerocloud.pdf.acceptance.T31PaddingEvidenceTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.257 s -- in net.zerocloud.pdf.acceptance.T31PaddingEvidenceTest
+[INFO] Running net.zerocloud.pdf.acceptance.T31RasterEvidenceTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 23.25 s -- in net.zerocloud.pdf.acceptance.T31RasterEvidenceTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 72, Failures: 0, Errors: 0, Skipped: 1
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ pdf-acceptance ---
+[INFO] 
+[INFO] -------------< net.zerocloud:pdf-migration-itext7-preview >-------------
+[INFO] Building Folio PDF by ZeroCloud - Preview iText 7 Migration Facade 0.1.0-SNAPSHOT [8/10]
+[INFO]   from pdf-migration-itext7-preview/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-migration-itext7-preview ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-migration-itext7-preview ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-migration-itext7-preview ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-migration-itext7-preview ---
+[INFO] Copying 5 resources from ../pdf-document/src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-migration-itext7-preview ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-migration-itext7-preview ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.itext7.consumer.BlankDocumentFacadeTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.293 s -- in net.zerocloud.pdf.itext7.consumer.BlankDocumentFacadeTest
+[INFO] Running net.zerocloud.pdf.itext7.consumer.PageManipulationFacadeTest
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.383 s -- in net.zerocloud.pdf.itext7.consumer.PageManipulationFacadeTest
+[INFO] Running net.zerocloud.pdf.itext7.consumer.PdfValuesFacadeTest
+[INFO] Tests run: 31, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.334 s -- in net.zerocloud.pdf.itext7.consumer.PdfValuesFacadeTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 46, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ pdf-migration-itext7-preview ---
+[INFO] 
+[INFO] --- failsafe:3.5.4:integration-test (default) @ pdf-migration-itext7-preview ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.migration.itext7.contract.ClasspathExclusivityIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.480 s -- in net.zerocloud.pdf.migration.itext7.contract.ClasspathExclusivityIT
+[INFO] Running net.zerocloud.pdf.migration.itext7.contract.JarContractIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.158 s -- in net.zerocloud.pdf.migration.itext7.contract.JarContractIT
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- failsafe:3.5.4:verify (default) @ pdf-migration-itext7-preview ---
+[INFO] 
+[INFO] ------------------< net.zerocloud:pdf-inventory-tool >------------------
+[INFO] Building Folio PDF by ZeroCloud - Inventory Build Tool 0.1.0-SNAPSHOT [9/10]
+[INFO]   from build-tools/inventory/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-inventory-tool ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-inventory-tool ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/build-tools/inventory/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-inventory-tool ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 16 source files with javac [debug parameters release 8] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-inventory-tool ---
+[INFO] Copying 35 resources from src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-inventory-tool ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 2 source files with javac [debug parameters release 8] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-inventory-tool ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.tools.inventory.FoundationReadinessCommandTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 42.00 s -- in net.zerocloud.pdf.tools.inventory.FoundationReadinessCommandTest
+[INFO] Running net.zerocloud.pdf.tools.inventory.InventoryCommandTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 19.90 s -- in net.zerocloud.pdf.tools.inventory.InventoryCommandTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ pdf-inventory-tool ---
+[INFO] Building jar: /home/ubuntu/IdeaProjects/open-pdf/build-tools/inventory/target/pdf-inventory-tool-0.1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- exec:3.6.3:java (check-compatibility-inventories) @ pdf-inventory-tool ---
+Inventory validation passed: 23 capabilities, 105 facade surfaces, 20 exclusions.
+Generated inventory documentation is current.
+[INFO] 
+[INFO] -------------------< net.zerocloud:pdf-release-tool >-------------------
+[INFO] Building Folio PDF by ZeroCloud - Release Rehearsal Tool 0.1.0-SNAPSHOT [10/10]
+[INFO]   from build-tools/release/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-release-tool ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-release-tool ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/build-tools/release/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-release-tool ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-release-tool ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/build-tools/release/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-release-tool ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-release-tool ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.tools.release.ReleasePolicyContractTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.055 s -- in net.zerocloud.pdf.tools.release.ReleasePolicyContractTest
+[INFO] Running net.zerocloud.pdf.tools.release.ReleaseRehearsalCommandTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.149 s -- in net.zerocloud.pdf.tools.release.ReleaseRehearsalCommandTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ pdf-release-tool ---
+[INFO] Building jar: /home/ubuntu/IdeaProjects/open-pdf/build-tools/release/target/pdf-release-tool-0.1.0-SNAPSHOT.jar
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent .................... SUCCESS [  0.308 s]
+[INFO] Folio PDF by ZeroCloud - BOM ....................... SUCCESS [  0.005 s]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract SUCCESS [  1.024 s]
+[INFO] Folio PDF by ZeroCloud - Conversion ................ SUCCESS [  2.078 s]
+[INFO] Folio PDF by ZeroCloud - Document Engine ........... SUCCESS [19:02 min]
+[INFO] Folio PDF by ZeroCloud - Stable iText 7 Migration Facade SUCCESS [  3.347 s]
+[INFO] Folio PDF by ZeroCloud - Acceptance Evidence ....... SUCCESS [09:28 min]
+[INFO] Folio PDF by ZeroCloud - Preview iText 7 Migration Facade SUCCESS [  7.142 s]
+[INFO] Folio PDF by ZeroCloud - Inventory Build Tool ...... SUCCESS [01:17 min]
+[INFO] Folio PDF by ZeroCloud - Release Rehearsal Tool .... SUCCESS [  7.468 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  30:10 min
+[INFO] Finished at: 2026-09-10T08:58:19+08:00
+[INFO] ------------------------------------------------------------------------

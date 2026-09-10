@@ -1,0 +1,135 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------< net.zerocloud:pdf-inventory-tool >------------------
+[INFO] Building Folio PDF by ZeroCloud - Inventory Build Tool 0.1.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-inventory-tool ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.version.RequireMavenVersion passed
+[INFO] Rule 1: org.apache.maven.enforcer.rules.version.RequireJavaVersion passed
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-inventory-tool ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/build-tools/inventory/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-inventory-tool ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 16 source files with javac [debug parameters release 8] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-inventory-tool ---
+[INFO] Copying 35 resources from src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-inventory-tool ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 2 source files with javac [debug parameters release 8] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-inventory-tool ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.tools.inventory.InventoryCommandTest
+[ERROR] Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.556 s <<< FAILURE! -- in net.zerocloud.pdf.tools.inventory.InventoryCommandTest
+[ERROR] net.zerocloud.pdf.tools.inventory.InventoryCommandTest.checkedInAuthoritiesRecordFacadeContracts -- Time elapsed: 0.505 s <<< FAILURE!
+java.lang.AssertionError: 
+ERROR: stable facade surface itext7.kernel.pdf-document.constructor-named-sources-targets: capability document.page.manipulate-merge-split must be compatible, but it is experimental
+ERROR: stable facade surface itext7.kernel.pdf-document.add-new-page-at-index: capability document.page.manipulate-merge-split must be compatible, but it is experimental
+ERROR: stable facade surface itext7.kernel.pdf-document.get-page: capability document.page.manipulate-merge-split must be compatible, but it is experimental
+ERROR: stable facade surface itext7.kernel.pdf-document.remove-page: capability document.page.manipulate-merge-split must be compatible, but it is experimental
+ERROR: stable facade surface itext7.kernel.pdf-document.remove-pages: capability document.page.manipulate-merge-split must be compatible, but it is experimental
+ERROR: stable facade surface itext7.kernel.pdf-document.move-page: capability document.page.manipulate-merge-split must be compatible, but it is experimental
+ERROR: stable facade surface itext7.kernel.pdf-document.move-pages: capability document.page.manipulate-merge-split must be compatible, but it is experimental
+ERROR: stable facade surface itext7.kernel.pdf-document.copy-pages: capability document.page.manipulate-merge-split must be compatible, but it is experimental
+ERROR: stable facade surface itext7.kernel.pdf-document.get-merger: capability document.page.manipulate-merge-split must be compatible, but it is experimental
+ERROR: stable facade surface itext7.kernel.pdf-document.get-splitter: capability document.page.manipulate-merge-split must be compatible, but it is experimental
+ERROR: stable facade surface itext7.kernel.pdf-document.get-publication-receipts: capability document.page.manipulate-merge-split must be compatible, but it is experimental
+ERROR: stable facade surface itext7.kernel.pdf-page.get-pdf-object: capability document.page.manipulate-merge-split must be compatible, but it is experimental
+ERROR: stable facade surface itext7.kernel.utils.pdf-merger.merge-named-sources: capability document.page.manipulate-merge-split must be compatible, but it is experimental
+ERROR: stable facade surface itext7.kernel.utils.pdf-merger.close: capability document.page.manipulate-merge-split must be compatible, but it is experimental
+ERROR: stable facade surface itext7.kernel.utils.pdf-splitter.extract-page-ranges: capability document.page.manipulate-merge-split must be compatible, but it is experimental
+ERROR: capability document.blank.create-publish-reopen: migration-facade.stable does not match Facade Surface references; expected [itext7.kernel.pdf-document.add-new-page, itext7.kernel.pdf-document.close, itext7.kernel.pdf-document.constructor-reader, itext7.kernel.pdf-document.constructor-writer, itext7.kernel.pdf-document.get-number-of-pages, itext7.kernel.pdf-exception.constructor-message-cause, itext7.kernel.pdf-page.get-pdf-object, itext7.kernel.pdf-reader.close, itext7.kernel.pdf-reader.constructor-string, itext7.kernel.pdf-writer.constructor-string, itext7.layout.document.close, itext7.layout.document.constructor-pdf-document]
+ERROR: capability document.page.manipulate-merge-split: migration-facade.stable does not match Facade Surface references; expected [itext7.kernel.pdf-document.add-new-page-at-index, itext7.kernel.pdf-document.constructor-named-sources-targets, itext7.kernel.pdf-document.copy-pages, itext7.kernel.pdf-document.get-merger, itext7.kernel.pdf-document.get-page, itext7.kernel.pdf-document.get-publication-receipts, itext7.kernel.pdf-document.get-splitter, itext7.kernel.pdf-document.move-page, itext7.kernel.pdf-document.move-pages, itext7.kernel.pdf-document.remove-page, itext7.kernel.pdf-document.remove-pages, itext7.kernel.pdf-page.get-pdf-object, itext7.kernel.utils.pdf-merger.close, itext7.kernel.utils.pdf-merger.merge-named-sources, itext7.kernel.utils.pdf-splitter.extract-page-ranges]
+ERROR: capability document.page.manipulate-merge-split: cannot be both facade-covered and excluded
+Inventory validation failed with 18 error(s).
+Exception in thread "main" net.zerocloud.pdf.tools.inventory.InventoryCommand$InventoryCommandFailure: Inventory validation failed with 18 error(s).
+ expected:<0> but was:<1>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:647)
+	at net.zerocloud.pdf.tools.inventory.InventoryCommandTest.checkedInAuthoritiesRecordFacadeContracts(InventoryCommandTest.java:36)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:316)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:214)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:155)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   InventoryCommandTest.checkedInAuthoritiesRecordFacadeContracts:36 ERROR: stable facade surface itext7.kernel.pdf-document.constructor-named-sources-targets: capability document.page.manipulate-merge-split must be compatible, but it is experimental
+ERROR: stable facade surface itext7.kernel.pdf-document.add-new-page-at-index: capability document.page.manipulate-merge-split must be compatible, but it is experimental
+ERROR: stable facade surface itext7.kernel.pdf-document.get-page: capability document.page.manipulate-merge-split must be compatible, but it is experimental
+ERROR: stable facade surface itext7.kernel.pdf-document.remove-page: capability document.page.manipulate-merge-split must be compatible, but it is experimental
+ERROR: stable facade surface itext7.kernel.pdf-document.remove-pages: capability document.page.manipulate-merge-split must be compatible, but it is experimental
+ERROR: stable facade surface itext7.kernel.pdf-document.move-page: capability document.page.manipulate-merge-split must be compatible, but it is experimental
+ERROR: stable facade surface itext7.kernel.pdf-document.move-pages: capability document.page.manipulate-merge-split must be compatible, but it is experimental
+ERROR: stable facade surface itext7.kernel.pdf-document.copy-pages: capability document.page.manipulate-merge-split must be compatible, but it is experimental
+ERROR: stable facade surface itext7.kernel.pdf-document.get-merger: capability document.page.manipulate-merge-split must be compatible, but it is experimental
+ERROR: stable facade surface itext7.kernel.pdf-document.get-splitter: capability document.page.manipulate-merge-split must be compatible, but it is experimental
+ERROR: stable facade surface itext7.kernel.pdf-document.get-publication-receipts: capability document.page.manipulate-merge-split must be compatible, but it is experimental
+ERROR: stable facade surface itext7.kernel.pdf-page.get-pdf-object: capability document.page.manipulate-merge-split must be compatible, but it is experimental
+ERROR: stable facade surface itext7.kernel.utils.pdf-merger.merge-named-sources: capability document.page.manipulate-merge-split must be compatible, but it is experimental
+ERROR: stable facade surface itext7.kernel.utils.pdf-merger.close: capability document.page.manipulate-merge-split must be compatible, but it is experimental
+ERROR: stable facade surface itext7.kernel.utils.pdf-splitter.extract-page-ranges: capability document.page.manipulate-merge-split must be compatible, but it is experimental
+ERROR: capability document.blank.create-publish-reopen: migration-facade.stable does not match Facade Surface references; expected [itext7.kernel.pdf-document.add-new-page, itext7.kernel.pdf-document.close, itext7.kernel.pdf-document.constructor-reader, itext7.kernel.pdf-document.constructor-writer, itext7.kernel.pdf-document.get-number-of-pages, itext7.kernel.pdf-exception.constructor-message-cause, itext7.kernel.pdf-page.get-pdf-object, itext7.kernel.pdf-reader.close, itext7.kernel.pdf-reader.constructor-string, itext7.kernel.pdf-writer.constructor-string, itext7.layout.document.close, itext7.layout.document.constructor-pdf-document]
+ERROR: capability document.page.manipulate-merge-split: migration-facade.stable does not match Facade Surface references; expected [itext7.kernel.pdf-document.add-new-page-at-index, itext7.kernel.pdf-document.constructor-named-sources-targets, itext7.kernel.pdf-document.copy-pages, itext7.kernel.pdf-document.get-merger, itext7.kernel.pdf-document.get-page, itext7.kernel.pdf-document.get-publication-receipts, itext7.kernel.pdf-document.get-splitter, itext7.kernel.pdf-document.move-page, itext7.kernel.pdf-document.move-pages, itext7.kernel.pdf-document.remove-page, itext7.kernel.pdf-document.remove-pages, itext7.kernel.pdf-page.get-pdf-object, itext7.kernel.utils.pdf-merger.close, itext7.kernel.utils.pdf-merger.merge-named-sources, itext7.kernel.utils.pdf-splitter.extract-page-ranges]
+ERROR: capability document.page.manipulate-merge-split: cannot be both facade-covered and excluded
+Inventory validation failed with 18 error(s).
+Exception in thread "main" net.zerocloud.pdf.tools.inventory.InventoryCommand$InventoryCommandFailure: Inventory validation failed with 18 error(s).
+ expected:<0> but was:<1>
+[INFO] 
+[ERROR] Tests run: 1, Failures: 1, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  3.181 s
+[INFO] Finished at: 2026-09-09T16:18:27+08:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.5.4:test (default-test) on project pdf-inventory-tool: There are test failures.
+[ERROR] 
+[ERROR] See /home/ubuntu/IdeaProjects/open-pdf/build-tools/inventory/target/surefire-reports for the individual test results.
+[ERROR] See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

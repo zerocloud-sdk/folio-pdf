@@ -32,9 +32,11 @@ exact Ubuntu/JDK environment or Stable Facade mapping returns nonzero.
 `validate` and normal `verify` may pass while Foundation remains not ready.
 See [the evidence and identity contract](../docs/foundation-readiness.md).
 
-For candidate-bound T03 four-chain certification, use the isolated
-[transaction runner](../docs/t03-certification.md). The older aggregate recorder
-retains its historical T03 missing-standards determination and cannot certify T70.
+For candidate-bound T03, T09, and T10 four-chain certification, use the isolated
+runner described by the [transaction](../docs/t03-certification.md),
+[values](../docs/t09-certification.md), and [page](../docs/t10-certification.md)
+contracts. Older aggregate records retain their historical identities and cannot
+certify a later candidate.
 
 Record the historical built-in T03 blank-document, T18 Canvas-image, T19 explicit-font,
 T23 rendering, T24 paragraph-composition, T25 advanced-pagination,
@@ -103,10 +105,10 @@ executable hash before placing it under the ignored `.build-cache/` tree. The
 wrappers recheck digest markers and executable hashes and never search `PATH`
 for a fallback.
 
-The normal build, published artifacts, and inventory commands neither
-download nor require qpdf, PDFium, or ImageMagick. Missing, unreadable,
-incorrectly versioned, or digest-unmarked tools record the applicable chain as
-`indeterminate`, never `pass`.
+The normal build, published artifacts, and inventory commands neither download
+nor require qpdf, pdfcpu, Arlington, PDFium, or ImageMagick. Missing, unreadable,
+incorrectly versioned, digest-unmarked, or unqualified tools record the
+applicable chain as `indeterminate`, never `pass`.
 
 T20 and T21 currently record implementation evidence only. Neither adds an
 acceptance artifact to `scripts/acceptance` or claims an independent syntax,
@@ -311,7 +313,7 @@ changes it.
 version and Release Train and uses the literal authority
 `migration-source-surface`. Each unique stable surface ID records:
 
-- Reference Suite type and member descriptor;
+- Reference Suite type, member descriptor, and source relationship status;
 - Folio PDF type and member mapping;
 - generic and exception contracts;
 - one or more behavioral capability IDs;
@@ -322,11 +324,17 @@ may reference only `compatible` or `experimental` capabilities. A surface
 cannot appear in both lists. These are disjoint availability tiers: the Stable
 artifact exposes the `stable` list, and the Preview artifact exposes the union
 of `stable` and `preview`. Preview may have no additions; it still contains every
-Stable mapping. The current T70 effective surfaces are equal at 12 entries.
+Stable mapping. Stable currently contains 105 entries and Preview has no
+additions. The T70 lifecycle family contributes 12 entries; T72 contributes 17
+page, merger, and splitter entries.
 
 Reference types must be below `com.itextpdf.*`. Their Folio PDF types must
 preserve the exact suffix below `net.zerocloud.pdf.itext7.*`, so the declared
 mapping remains eligible for mechanical import-prefix replacement.
+`reference.status` is `direct` by default, `adapted` when the declared Folio
+shape intentionally differs, or `folio-extension` when Folio adds coordination
+surface within a public Reference namespace. A Folio extension records no
+invented Reference member.
 
 The Capability Matrix facade ID lists and manifest references must agree
 exactly. Every capability must either have at least one corresponding surface
@@ -355,11 +363,13 @@ semantic pass for their shared artifact, and visual passes against that same
 PDF. Standards evidence is absent, so the overall profile remains
 `indeterminate` and the capability remains `experimental`.
 
-The current T10 syntax record is
-`capabilities/evidence/T10-page-manipulation-merge-split-syntax.md`. Its two
-project-produced artifacts pass pinned qpdf 12.4.0 syntax checks. Standards,
-semantic, and visual Acceptance Evidence remain absent, so the T10 capability
-also remains `experimental`.
+T10 has separate aggregate syntax, standards, semantic, and visual records at
+`capabilities/evidence/T72-pages-{syntax,standards,semantic,visual}.md`. The
+Foundation inventory binds those claims to each exact candidate, configuration,
+Ubuntu/JDK identity, execution profile, eight Native/Facade products, raw report,
+and real negative control. The aggregate records alone cannot certify a later
+candidate. T10 is `compatible`; the unfinished Foundation obligations listed by
+`./scripts/inventory readiness` remain release blockers.
 
 The T11 through T16 profiles likewise have one passing qpdf syntax record for
 each pair of public-workflow products. Their mandatory standards, semantic,

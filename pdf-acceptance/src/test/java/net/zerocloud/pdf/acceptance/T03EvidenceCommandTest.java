@@ -15,12 +15,34 @@ import java.util.Properties;
 import java.util.stream.Stream;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.rules.TemporaryFolder;
 
 /** Runs the qualified external tools at the repository-only recorder boundary. */
 public final class T03EvidenceCommandTest {
     @Rule public final TemporaryFolder temporary = new TemporaryFolder();
 
+    @Test public void missingExecutablesRetainIndeterminateChainsAndControls() throws Exception {
+        Path root = copyConfiguration(true);
+        Path output = root.resolve("observations");
+        try {
+            T03EvidenceCommand.main(new String[] {root.toString(), output.toString(), "IN_PROCESS", "test"});
+            fail("Unavailable executables cannot certify a product or a negative control");
+        } catch (IOException expected) {
+            assertTrue(expected.getMessage(), expected.getMessage().contains("T03 did not PASS"));
+        }
+        for (String directory : new String[] {"", "native/", "facade/", "negative/"}) {
+            PinProperties result = PinProperties.load(output.resolve(directory + "result.properties"), "unavailable tools");
+            for (String chain : new String[] {"syntax", "standards", "visual"}) {
+                assertEquals(directory + chain, "indeterminate", result.required(chain));
+                if (!directory.isEmpty()) {
+                    assertTrue(Files.size(output.resolve(directory + chain + ".txt")) > 0);
+                }
+            }
+        }
+    }
+
+    @Category(IndependentTools.class)
     @Test public void recordsFourIndependentChainsForNativeAndStableProducts() throws Exception {
         Path root = Paths.get(System.getProperty("repositoryRoot"));
         Path output = temporary.getRoot().toPath().resolve("evidence");
@@ -35,7 +57,23 @@ public final class T03EvidenceCommandTest {
                 "negative controls").required("semantic"));
     }
 
+    @Category(IndependentTools.class)
     @Test public void perCheckerPassCannotHideAMissingRequiredRule() throws Exception {
+        Path root = copyConfiguration(false);
+        Path profile = root.resolve("capabilities/profiles/T03-standards/arlington.properties");
+        String original = new String(Files.readAllBytes(profile), StandardCharsets.UTF_8);
+        Files.write(profile, original.replace(",pages-type-value\n", "\n").getBytes(StandardCharsets.UTF_8));
+        Path output = temporary.getRoot().toPath().resolve("incomplete");
+        try {
+            T03EvidenceCommand.main(new String[] {root.toString(), output.toString(), "IN_PROCESS", "test"});
+            fail("A rule removed from both per-checker lists must still block the T03 profile");
+        } catch (IOException expected) {
+            assertEquals("indeterminate", PinProperties.load(output.resolve("result.properties"),
+                    "T03 result").required("standards"));
+        }
+    }
+
+    private Path copyConfiguration(boolean unavailable) throws Exception {
         Path repository = Paths.get(System.getProperty("repositoryRoot"));
         Path root = temporary.newFolder("configuration").toPath();
         for (String relative : new String[] {"capabilities/profiles/T03-standards",
@@ -54,23 +92,15 @@ public final class T03EvidenceCommandTest {
             try (InputStream input = Files.newInputStream(source)) { values.load(input); }
             for (String key : values.stringPropertyNames()) {
                 if (key.endsWith("EXECUTABLE") || key.equals("executable") || key.equals("model")) {
-                    values.setProperty(key, source.getParent().resolve(values.getProperty(key)).normalize().toString());
+                    Path selected = unavailable ? root.resolve("missing-" + tool + "-" + key)
+                            : source.getParent().resolve(values.getProperty(key)).normalize();
+                    values.setProperty(key, selected.toString());
                 }
             }
             Path target = root.resolve("scripts/" + tool + "-pin.properties");
             Files.createDirectories(target.getParent());
             try (OutputStream output = Files.newOutputStream(target)) { values.store(output, "Test configuration"); }
         }
-        Path profile = root.resolve("capabilities/profiles/T03-standards/arlington.properties");
-        String original = new String(Files.readAllBytes(profile), StandardCharsets.UTF_8);
-        Files.write(profile, original.replace(",pages-type-value\n", "\n").getBytes(StandardCharsets.UTF_8));
-        Path output = temporary.getRoot().toPath().resolve("incomplete");
-        try {
-            T03EvidenceCommand.main(new String[] {root.toString(), output.toString(), "IN_PROCESS", "test"});
-            fail("A rule removed from both per-checker lists must still block the T03 profile");
-        } catch (IOException expected) {
-            assertEquals("indeterminate", PinProperties.load(output.resolve("result.properties"),
-                    "T03 result").required("standards"));
-        }
+        return root;
     }
 }

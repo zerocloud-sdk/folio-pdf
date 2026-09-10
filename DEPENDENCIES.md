@@ -89,14 +89,22 @@ existing JUnit 4.13.2 dependency for public-workflow consumer tests. No
 Acceptance Evidence executable, external fixture, or Migration Facade
 dependency is added.
 
-T10 adds no third-party runtime, test, build-tool, native, or external-tool
-dependency. Page operations, ordered named-Source merge, and range split reuse
-Apache PDFBox 3.0.8 only behind private implementation types and use the
-existing JUnit 4.13.2 dependency for public-workflow consumer tests. The
-project-authored nested-page-tree fixture is generated in test code; no
-external PDF fixture or Migration Facade dependency is added. T10 reuses the
-existing repository-only pinned qpdf 12.4.0 acceptance path and adds no new
-external executable or runtime dependency.
+T10 product code adds no third-party runtime, test, build-tool, or native
+dependency. Page operations, ordered named-Source merge, range split, and the
+Stable Facade reuse Apache PDFBox 3.0.8 only behind private implementation types
+and use the existing JUnit 4.13.2 dependency for public-workflow consumer tests.
+All page, standards, and raster fixtures are project-authored.
+
+T72 candidate certification reuses the existing repository-only qpdf 12.4.0,
+pdfcpu 0.15.0, Arlington TestGrammar 0.81/PDFium model, pdfium-cli v0.11.2, and
+ImageMagick 7.1.2-30 acceptance installations. A small project-authored
+Apache-2.0 patch to the already recorded Arlington source produces the separately
+identified `0.81-folio-t10-r1` acceptance checker. The patch is retained at
+`build-tools/acceptance/arlington/t10-r1.patch`; source commit, archive, model,
+patch, executable, and license identities are fixed by
+`scripts/t10-arlington-pin.properties`. The compiled checker stays in the ignored
+validation cache and enters no Maven dependency graph, product jar, BOM, or
+published artifact. No external PDF fixture or Reference Suite asset is added.
 
 T11 adds no third-party runtime, test, build-tool, native, or external-tool
 dependency. Document information, XMP metadata, outline, named destination,

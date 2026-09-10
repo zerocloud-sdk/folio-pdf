@@ -14,6 +14,21 @@ public final class StandardsEvidenceCommandTest {
     @Rule public final TemporaryFolder temporary = new TemporaryFolder();
 
     @Test
+    public void aDeclaredSourcePatchMustMatchTheRecordedToolOrigin() throws Exception {
+        Path root = temporary.getRoot().toPath();
+        String[] arguments = qualifiedArguments(root, "");
+        Path pin = java.nio.file.Paths.get(arguments[1]);
+        Path patch = write(root.resolve("source.patch"), "changed source patch\n");
+        write(pin, read(pin) + "patch=" + patch + "\npatch-sha256=" + repeatZeroHash() + "\n");
+
+        StandardsEvidenceCommand.main(arguments);
+
+        Path output = java.nio.file.Paths.get(arguments[0]);
+        assertTrue(read(output.resolve("standards.properties")).contains("result=indeterminate"));
+        assertTrue(read(output.resolve("findings.txt")).contains("patch identity"));
+    }
+
+    @Test
     public void missingCheckerRetainsIndeterminateEvidence() throws Exception {
         Path root = temporary.getRoot().toPath();
         Path input = write(root.resolve("input.pdf"), "%PDF-1.7\n%%EOF\n");

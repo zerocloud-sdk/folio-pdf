@@ -23,6 +23,12 @@ capabilities/evidence/foundation/T71-*/**/*.txt -text whitespace=-blank-at-eol,-
 # Preserve the reviewed checklist bytes bound by the final delivery receipt.
 capabilities/evidence/T71-delivery/completion-checklist.md -text whitespace=-blank-at-eof
 
+# Preserve exact T72 qualification, certification, and development output.
+capabilities/evidence/T72-delivery/development/*.txt -text whitespace=-blank-at-eol,-blank-at-eof
+capabilities/evidence/T72-standards-qualification/**/*.txt -text whitespace=-blank-at-eol,-blank-at-eof
+capabilities/evidence/T72-source-visual-qualification/*.txt -text whitespace=-blank-at-eol,-blank-at-eof
+capabilities/evidence/foundation/T72-*/**/*.txt -text whitespace=-blank-at-eol,-blank-at-eof
+
 *.sh text eol=lf
 mvnw text eol=lf
 *.cmd text eol=crlf

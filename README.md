@@ -31,6 +31,16 @@ same mappings. The two artifacts are mutually exclusive. Certification is bound
 to the candidate and Ubuntu/JDK identities in the [T03 certification contract](docs/t03-certification.md);
 other Foundation obligations remain unfinished.
 
+T72 certifies `document.page.manipulate-merge-split` and adds the bounded Stable
+page, merger, and splitter Facade subset. Native certification covers actual
+IN_PROCESS and HARDENED_WORKER execution on Ubuntu 24.04/Linux x86-64 with JDK
+8, 11, 17, and 21; the Facade is recorded separately in its actual IN_PROCESS
+mode. See [page manipulation](docs/page-manipulation.md) and the
+[T10 certification contract](docs/t10-certification.md). The current
+[Foundation Evidence inventory](capabilities/foundation-evidence.yaml) is the
+candidate and environment authority. Other Foundation obligations still keep
+global readiness at NOT READY.
+
 T05 establishes the Capability Provider contract for in-process Java, native
 linkage, local subprocess, and explicitly authorized remote engines. The
 default Workflow Environment registers no Provider, remains offline, and
@@ -55,6 +65,21 @@ then select that installation for verification:
 export FOLIO_HARFBUZZ_HELPER=/explicit/folio-harfbuzz-10.2.0/bin/folio-harfbuzz
 ./mvnw -B -ntp verify
 ```
+
+Ordinary verification tests recorder behavior, including unavailable tools, but
+does not run the T03/T09/T10 tests that require independently provisioned acceptance
+tools. After installing the pinned tools documented in
+[T03 certification](docs/t03-certification.md), run those tests explicitly:
+
+```sh
+./mvnw -B -ntp -Pindependent-certification -pl pdf-acceptance -am \
+  -Dtest=T03EvidenceCommandTest,T09EvidenceCommandTest,T10EvidenceCommandTest,T10StandardsQualificationTest \
+  -Dsurefire.failIfNoSpecifiedTests=false test
+```
+
+This profile requires the real tools; it has no missing-tool skip or fallback.
+An ordinary build result is not independent certification. Candidate and
+environment certification still uses the separate Foundation runner.
 
 Run all opt-in generated T22 scale profiles with:
 
@@ -380,7 +405,8 @@ and unsupported Action graphs are preserved only when no semantic rewrite is
 required or rejected before mutation. See the authoritative
 [annotations and document Actions guide](docs/annotations-actions.md) for the
 exact allowlist, appearance operators, Forms boundary, failure policy, and
-page-operation rules.
+page-operation rules, and [page manipulation](docs/page-manipulation.md) for the
+six Native Commands and the bounded Stable Facade mapping.
 
 T13 adds the bounded `ExtractTextAndStructure` Document Query. Its detached
 results retain deterministic page/content execution order, unrotated page-

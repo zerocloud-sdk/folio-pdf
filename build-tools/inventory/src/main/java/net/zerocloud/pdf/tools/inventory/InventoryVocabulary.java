@@ -55,6 +55,32 @@ enum CapabilityState {
     }
 }
 
+enum ReferenceSurfaceStatus {
+    DIRECT("direct"),
+    ADAPTED("adapted"),
+    FOLIO_EXTENSION("folio-extension");
+
+    private final String value;
+
+    ReferenceSurfaceStatus(String value) {
+        this.value = value;
+    }
+
+    static ReferenceSurfaceStatus from(String value) {
+        for (ReferenceSurfaceStatus candidate : values()) {
+            if (candidate.value.equals(value)) {
+                return candidate;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public String toString() {
+        return value;
+    }
+}
+
 enum ProducerKind {
     EXTERNAL_TOOL("external-tool"),
     PROJECT_TEST("project-test"),

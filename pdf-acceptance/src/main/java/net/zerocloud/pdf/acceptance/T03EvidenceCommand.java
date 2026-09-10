@@ -164,11 +164,21 @@ public final class T03EvidenceCommand {
         Properties result = new Properties();
         Path invalid = directory.resolve("invalid.pdf");
         EvidenceFiles.write(invalid, "This is intentionally not a PDF.\n");
-        ProcessResult syntax = ExternalProcess.run(QpdfPin.load(root.resolve("scripts/qpdf-pin.properties")).executable(),
-                directory, "--check", invalid.toString());
+        String syntaxFinding;
+        try {
+            ProcessResult syntax = ExternalProcess.run(QpdfPin.load(root.resolve("scripts/qpdf-pin.properties")).executable(),
+                    directory, "--check", invalid.toString());
+            syntaxFinding = "exit=" + syntax.exitCode + "\n" + syntax.combinedOutput();
+            result.setProperty("syntax", syntax.exitCode == 2 ? "fail" : "indeterminate");
+        } catch (IOException unavailable) {
+            syntaxFinding = "INDETERMINATE: syntax control execution unavailable: " + unavailable.getMessage() + "\n";
+            if (unavailable instanceof ExternalProcess.LimitExceededException) {
+                syntaxFinding += ((ExternalProcess.LimitExceededException) unavailable).retainedOutput();
+            }
+            result.setProperty("syntax", "indeterminate");
+        }
         EvidenceFiles.write(directory.resolve("syntax.txt"), "input-sha256=" + EvidenceFiles.sha256(invalid)
-                + "\nexit=" + syntax.exitCode + "\n" + syntax.combinedOutput());
-        result.setProperty("syntax", syntax.exitCode == 2 ? "fail" : "indeterminate");
+                + "\n" + syntaxFinding);
         // Both standards adapters execute every hashed rule-specific negative while recording each product.
         result.setProperty("standards", standardsQualified ? "fail" : "indeterminate");
         EvidenceFiles.write(directory.resolve("standards.txt"),

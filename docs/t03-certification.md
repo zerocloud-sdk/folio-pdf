@@ -27,8 +27,8 @@ profile parameter among its 12 mappings and keeps its IN_PROCESS behavior.
 The selected Native execution profile is never attributed to a Facade operation.
 The Facade Surface lists disjoint Stable and Preview-addition tiers. Actual jar
 reflection checks Stable against the Stable tier and Preview against their union.
-All public classes must reject coexistence in both jar orders; the T09 extension
-also verifies the final 17-type/89-member jar surface.
+All public classes must reject coexistence in both jar orders; the T09 and T72
+extensions also verify the final 19-type/105-member jar surface.
 
 For each Native and Stable one-page output, four independent records retain exact
 PDF SHA-256, raw findings and controls:
@@ -62,6 +62,12 @@ Use the repository's pinned qpdf, PDFium, ImageMagick and explicit HarfBuzz
 installations. Provision the two unbundled standards checkers as described in
 [the tool qualification and build record](third-party/t03-standards-tools.md).
 Their executable/model hashes must match `scripts/{pdfcpu,arlington}-pin.properties`.
+The ordinary Maven build excludes the `IndependentTools` test category. Select
+`-Pindependent-certification` to run its actual tool and rule-coverage tests;
+missing tools fail that run. The default tests still verify unavailable-tool
+recording. This test selection does not affect `T03EvidenceCommand` or the
+Foundation runner: both always require all four qualified chains. Excluded
+tests and ordinary verification are never recorded as certification evidence.
 No checker downloads content while recording. Each standards process has a 10 s,
 1 MiB combined-output limit; the general acceptance subprocess defaults are 30 s
 and 4 MiB, with hard caps of 300 s/16 MiB. Missing, mismatched, uncertain or uncovered
@@ -79,7 +85,7 @@ export FOLIO_HARFBUZZ_HELPER=/absolute/installation/bin/folio-harfbuzz
 # First provision the pinned private comparator runtime described below.
 python3 scripts/t03-foundation.py stage
 mkdir -p capabilities/evidence/foundation
-python3 scripts/t03-foundation.py certify capabilities/evidence/foundation/T70-new-run
+python3 scripts/t03-foundation.py certify capabilities/evidence/foundation/T72-transactions --obligation transactions
 ```
 
 `stage` clean-builds version 0.1.0 locally, attaches sources/Javadocs, and stages the

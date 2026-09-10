@@ -85,6 +85,7 @@ final class InventoryModel {
     static final class Surface {
         FacadeAvailability availability;
         String id;
+        ReferenceSurfaceStatus referenceStatus = ReferenceSurfaceStatus.DIRECT;
         String referenceType;
         String referenceMember;
         String folioPdfType;

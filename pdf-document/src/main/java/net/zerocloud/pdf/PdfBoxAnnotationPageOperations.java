@@ -627,18 +627,24 @@ final class PdfBoxAnnotationPageOperations {
                 resources.checkpoint();
                 COSDictionary rawAnnotation = dictionary(
                         annotations.get(index));
+                Set<COSName> originalKeys =
+                        new HashSet<COSName>(rawAnnotation.keySet());
                 Annotation managed = managedAnnotationOrNull(
                         rawAnnotation,
                         pageNumber,
                         page,
                         budgets,
                         pageNumbers);
+                if (managed == null) {
+                    restoreLegacyKeyScope(rawAnnotation, originalKeys);
+                }
                 String identifier = managed == null
                         ? identifierOf(rawAnnotation, true)
                         : managed.getProperties().getIdentifier();
                 slots.add(new AnnotationSlot(
                         managed,
-                        managed == null ? identifier : null));
+                        managed == null ? identifier : null,
+                        originalKeys));
                 if (identifier != null && !identifiers.add(identifier)) {
                     throw preservationUnsupported();
                 }
@@ -762,6 +768,32 @@ final class PdfBoxAnnotationPageOperations {
         return (COSArray) rawAnnotations;
     }
 
+    private COSBase preserveLegacyKeyScope(
+            COSBase imported,
+            AnnotationSlot source) throws DocumentFailure {
+        COSDictionary annotation = dictionary(imported);
+        restoreLegacyKeyScope(annotation, source.sourceKeys);
+        return imported;
+    }
+
+    private COSDictionary preserveAnnotationKeyScope(
+            COSDictionary reconstructed,
+            AnnotationSlot source) throws DocumentFailure {
+        restoreLegacyKeyScope(reconstructed, source.sourceKeys);
+        return reconstructed;
+    }
+
+    private void restoreLegacyKeyScope(
+            COSDictionary annotation,
+            Set<COSName> sourceKeys) throws DocumentFailure {
+        for (COSName key : new ArrayList<COSName>(annotation.keySet())) {
+            resources.checkpoint();
+            if (!sourceKeys.contains(key)) {
+                annotation.removeItem(key);
+            }
+        }
+    }
+
     private int legacySlotCount(List<AnnotationSlot> slots)
             throws DocumentFailure {
         int count = 0;
@@ -816,7 +848,8 @@ final class PdfBoxAnnotationPageOperations {
                 resources.checkpoint();
                 AnnotationSlot slot = source.annotationSlots.get(slotIndex);
                 if (!slot.isManaged()) {
-                    COSBase copiedLegacy = imported.get(slotIndex);
+                    COSBase copiedLegacy = preserveLegacyKeyScope(
+                            imported.get(slotIndex), slot);
                     if (slot.legacyIdentifier != null) {
                         dictionary(copiedLegacy).setItem(
                                 NM,
@@ -842,11 +875,13 @@ final class PdfBoxAnnotationPageOperations {
                             insertionPageNumber,
                             copiedPageCount,
                             originalPageCount);
-                    annotations.add(new COSObject(backendAnnotation(
-                            copied,
-                            pageReference,
-                            pageReferences,
-                            ownership)));
+                    annotations.add(new COSObject(preserveAnnotationKeyScope(
+                            backendAnnotation(
+                                    copied,
+                                    pageReference,
+                                    pageReferences,
+                                    ownership),
+                            slot)));
                 }
             }
             if (annotations.size() == 0) {
@@ -1073,7 +1108,9 @@ final class PdfBoxAnnotationPageOperations {
                     slotIndex++) {
                 resources.checkpoint();
                 if (!captured.annotationSlots.get(slotIndex).isManaged()) {
-                    legacyAnnotations.add(sourceAnnotations.get(slotIndex));
+                    legacyAnnotations.add(preserveLegacyKeyScope(
+                            sourceAnnotations.get(slotIndex),
+                            captured.annotationSlots.get(slotIndex)));
                 }
             }
             if (legacyAnnotations.size() == 0) {
@@ -1169,7 +1206,8 @@ final class PdfBoxAnnotationPageOperations {
                 for (AnnotationSlot slot : captured.annotationSlots) {
                     resources.checkpoint();
                     if (!slot.isManaged()) {
-                        annotations.add(imported.get(legacyIndex));
+                        annotations.add(preserveLegacyKeyScope(
+                                imported.get(legacyIndex), slot));
                         legacyIndex++;
                     } else {
                         Annotation annotation = slot.managedAnnotation;
@@ -1183,11 +1221,13 @@ final class PdfBoxAnnotationPageOperations {
                                 pageBase,
                                 source.pageCount,
                                 renames);
-                        annotations.add(new COSObject(backendAnnotation(
-                                merged,
-                                pageReference,
-                                pageReferences,
-                                ownership)));
+                        annotations.add(new COSObject(preserveAnnotationKeyScope(
+                                backendAnnotation(
+                                        merged,
+                                        pageReference,
+                                        pageReferences,
+                                        ownership),
+                                slot)));
                     }
                 }
                 if (annotations.size() == 0) {
@@ -1414,7 +1454,8 @@ final class PdfBoxAnnotationPageOperations {
                 resources.checkpoint();
                 AnnotationSlot slot = source.annotationSlots.get(slotIndex);
                 if (!slot.isManaged()) {
-                    annotations.add(imported.get(slotIndex));
+                    annotations.add(preserveLegacyKeyScope(
+                            imported.get(slotIndex), slot));
                 } else {
                     Annotation annotation = slot.managedAnnotation;
                     NavigationTarget target = null;
@@ -1432,11 +1473,13 @@ final class PdfBoxAnnotationPageOperations {
                             annotation,
                             mappedPageNumber,
                             target);
-                    annotations.add(new COSObject(backendAnnotation(
-                            filtered,
-                            pageReference,
-                            pageReferences,
-                            ownership)));
+                    annotations.add(new COSObject(preserveAnnotationKeyScope(
+                            backendAnnotation(
+                                    filtered,
+                                    pageReference,
+                                    pageReferences,
+                                    ownership),
+                            slot)));
                 }
             }
             if (annotations.size() == 0) {
@@ -1683,12 +1726,15 @@ final class PdfBoxAnnotationPageOperations {
 
         private final Annotation managedAnnotation;
         private final String legacyIdentifier;
+        private final Set<COSName> sourceKeys;
 
         AnnotationSlot(
                 Annotation managedAnnotation,
-                String legacyIdentifier) {
+                String legacyIdentifier,
+                Set<COSName> sourceKeys) {
             this.managedAnnotation = managedAnnotation;
             this.legacyIdentifier = legacyIdentifier;
+            this.sourceKeys = new HashSet<COSName>(sourceKeys);
         }
 
         boolean isManaged() {

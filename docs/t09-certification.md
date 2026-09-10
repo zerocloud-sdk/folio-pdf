@@ -14,7 +14,7 @@ Native jars with IN_PROCESS and HARDENED_WORKER. Each of these eight scopes runs
 50 Native value contracts selected by `folio.t09.executionProfile`, 31 Stable
 Facade value contracts and two actual-jar contracts, with zero skips. The default
 Native suite still runs both profiles. Stable and Preview expose the same frozen
-17 public types and 89 declared members; actual jars are checked separately and
+19 public types and 105 declared members; actual jars are checked separately and
 all public classes reject coexistence in both classpath orders.
 
 The Facade runs IN_PROCESS and publishes with REWRITE. The chosen Native mode is
@@ -64,6 +64,13 @@ encoded streams. Engine-owned stream/version/security metadata stays protected.
 
 ## Reproduce and inspect
 
+The public recorder tests requiring real independent tools are selected with
+`-Pindependent-certification`, as shown in [the build instructions](../README.md).
+They fail if tools or required rules are unavailable. Ordinary verification
+retains tool-independent behavior tests; excluded independent-tool cases are
+not certification. The command and Foundation runner always require all four
+chains regardless of Maven test selection.
+
 Use the pinned tools and private comparator runtime in
 [the installation record](third-party/t03-standards-tools.md). The runner uses
 Python 3.12, PyYAML 6.0.1 and Podman. The immutable images, explicit HarfBuzz
@@ -78,8 +85,8 @@ observations are never overwritten.
 export FOLIO_HARFBUZZ_HELPER=/absolute/installation/bin/folio-harfbuzz
 python3 scripts/t03-foundation.py stage
 python3 scripts/t03-foundation.py plan .build-cache/t09-plan --obligation values
-python3 scripts/t03-foundation.py certify capabilities/evidence/foundation/T71-values --obligation values
-python3 scripts/t03-foundation.py certify capabilities/evidence/foundation/T71-transactions --obligation transactions
+python3 scripts/t03-foundation.py certify capabilities/evidence/foundation/T72-values --obligation values
+python3 scripts/t03-foundation.py certify capabilities/evidence/foundation/T72-transactions --obligation transactions
 ```
 
 `stage` builds the unsigned local 0.1.0 candidate and complete test harness. It

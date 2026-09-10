@@ -2,25 +2,31 @@ package net.zerocloud.pdf.itext7.kernel.pdf;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import net.zerocloud.pdf.DocumentFailure;
-import net.zerocloud.pdf.CancellationToken;
-import net.zerocloud.pdf.DocumentSource;
+import net.zerocloud.pdf.DocumentCommand;
 import net.zerocloud.pdf.DocumentWorkflow;
 import net.zerocloud.pdf.ObjectReference;
+import net.zerocloud.pdf.PageRange;
 import net.zerocloud.pdf.PublicationReceipt;
-import net.zerocloud.pdf.PublicationStatus;
-import net.zerocloud.pdf.PublicationTarget;
-import net.zerocloud.pdf.SaveMode;
 import net.zerocloud.pdf.WorkflowOutcome;
-import net.zerocloud.pdf.WorkflowRequest;
 import net.zerocloud.pdf.command.AddBlankPage;
+import net.zerocloud.pdf.command.InsertBlankPage;
+import net.zerocloud.pdf.command.CopyPages;
+import net.zerocloud.pdf.command.MovePages;
+import net.zerocloud.pdf.command.MergeDocuments;
+import net.zerocloud.pdf.command.RemovePages;
+import net.zerocloud.pdf.command.SplitDocument;
 import net.zerocloud.pdf.itext7.kernel.exceptions.PdfException;
+import net.zerocloud.pdf.itext7.kernel.utils.PdfMerger;
+import net.zerocloud.pdf.itext7.kernel.utils.PdfSplitter;
 import net.zerocloud.pdf.query.DocumentRootReference;
 import net.zerocloud.pdf.query.PageCount;
+import net.zerocloud.pdf.query.PageObjectReference;
 
 /**
  * Lifecycle mapping of the create, publish, reopen, and inspect workflow.
@@ -33,15 +39,15 @@ public final class PdfDocument implements Closeable {
         FacadeClasspathGuard.requireSingleEdition();
     }
 
-    private final PublicationTarget publicationTarget;
-    private final Path publicationPath;
+    private final FacadeDeclarations declarations;
     private final Thread owner = Thread.currentThread();
-    private final FacadeSource source;
     private FacadeSession valueSession;
     private boolean valueSessionRequested;
     private PdfCatalog catalog;
+    private final List<PdfPage> queuedPageHandles = new ArrayList<PdfPage>();
     private int pageCount;
     private boolean closed;
+    private List<PublicationReceipt> publicationReceipts = Collections.emptyList();
 
     /**
      * Opens a new document in writing mode.
@@ -49,9 +55,8 @@ public final class PdfDocument implements Closeable {
      * @param writer the destination declaration
      */
     public PdfDocument(PdfWriter writer) {
-        this.publicationTarget = Objects.requireNonNull(writer, "writer").getTarget();
-        this.publicationPath = writer.getPath();
-        this.source = null;
+        this(Collections.<String, PdfReader>emptyMap(), null,
+                Collections.singletonMap("target", Objects.requireNonNull(writer, "writer")));
     }
 
     /**
@@ -60,10 +65,8 @@ public final class PdfDocument implements Closeable {
      * @param reader the validated source reader
      */
     public PdfDocument(PdfReader reader) {
-        this.publicationTarget = null;
-        this.publicationPath = null;
-        this.pageCount = Objects.requireNonNull(reader, "reader").getPageCount();
-        this.source = reader.takeSource();
+        this(Collections.singletonMap("source", Objects.requireNonNull(reader, "reader")),
+                "source", Collections.<String, PdfWriter>emptyMap());
     }
 
     /**
@@ -72,10 +75,22 @@ public final class PdfDocument implements Closeable {
      * @param writer the destination declaration
      */
     public PdfDocument(PdfReader reader, PdfWriter writer) {
-        this.publicationTarget = Objects.requireNonNull(writer, "writer").getTarget();
-        this.publicationPath = writer.getPath();
-        this.pageCount = Objects.requireNonNull(reader, "reader").getPageCount();
-        this.source = reader.takeSource();
+        this(Collections.singletonMap("source", Objects.requireNonNull(reader, "reader")), "source",
+                Collections.singletonMap("target", Objects.requireNonNull(writer, "writer")));
+    }
+
+    /**
+     * Declares all Sources and Targets before starting one Native Workflow.
+     * The maps are copied in iteration order and each Reader snapshot is
+     * transferred exactly once after all declarations pass validation.
+     * @param sources named Reader snapshots, with no repeated Reader instance
+     * @param primarySource the declared primary name, or null for no Sources
+     * @param targets named publication destinations in receipt order
+     */
+    public PdfDocument(Map<String, PdfReader> sources, String primarySource,
+            Map<String, PdfWriter> targets) {
+        declarations = new FacadeDeclarations(sources, primarySource, targets);
+        pageCount = declarations.sourcePageCount;
     }
 
     /**
@@ -85,18 +100,128 @@ public final class PdfDocument implements Closeable {
      */
     public PdfPage addNewPage() {
         requireOpen();
-        if (publicationTarget == null) {
+        if (!declarations.hasTargets()) {
             throw new IllegalStateException(
                     "A read-only facade document cannot add a page.");
         }
         if (valueSession != null) {
-            valueSession.call(session -> {
+            return valueSession.call(session -> {
                 session.execute(AddBlankPage.INSTANCE);
-                return null;
+                return new PdfPage(valueSession.referenceFor(session.query(
+                        PageObjectReference.version1(session.query(PageCount.INSTANCE).intValue()))));
             });
         }
         pageCount++;
-        return new PdfPage();
+        PdfPage page = new PdfPage(this);
+        queuedPageHandles.add(page);
+        return page;
+    }
+
+    /**
+     * Inserts a library-default blank page before a one-based position.
+     * @param pageNumber insertion position, including one past the last page
+     * @return the added page, retaining its identity through later reordering
+     */
+    public PdfPage addNewPage(int pageNumber) {
+        requireOpen();
+        if (!declarations.hasTargets()) {
+            throw new IllegalStateException("A read-only facade document cannot add a page.");
+        }
+        openValueSession();
+        return valueSession.call(session -> {
+            session.execute(InsertBlankPage.version1(pageNumber));
+            return new PdfPage(valueSession.referenceFor(session.query(PageObjectReference.version1(pageNumber))));
+        });
+    }
+
+    /**
+     * Selects the page currently at a one-based position.
+     * @param pageNumber the current page number
+     * @return a Session-scoped page handle
+     */
+    public PdfPage getPage(int pageNumber) {
+        requireOpen();
+        openValueSession();
+        return valueSession.call(session -> new PdfPage(valueSession.referenceFor(
+                session.query(PageObjectReference.version1(pageNumber)))));
+    }
+
+    /**
+     * Removes one page from the current sequence.
+     * @param pageNumber the one-based page number
+     */
+    public void removePage(int pageNumber) {
+        removePages(pageNumber, pageNumber);
+    }
+
+    /**
+     * Removes an inclusive range from the current sequence.
+     * @param firstPage the first one-based page number
+     * @param lastPage the last one-based page number
+     */
+    public void removePages(int firstPage, int lastPage) {
+        executePageCommand(RemovePages.version1(PageRange.of(firstPage, lastPage)));
+    }
+
+    /**
+     * Moves one page to a position measured after its removal.
+     * @param pageNumber the one-based page to move
+     * @param destination the one-based insertion position after removal
+     */
+    public void movePage(int pageNumber, int destination) {
+        movePages(pageNumber, pageNumber, destination);
+    }
+
+    /**
+     * Moves an inclusive range to a position measured after its removal.
+     * @param firstPage the first one-based page number
+     * @param lastPage the last one-based page number
+     * @param destination the one-based insertion position after removal
+     */
+    public void movePages(int firstPage, int lastPage, int destination) {
+        executePageCommand(MovePages.version1(PageRange.of(firstPage, lastPage), destination));
+    }
+
+    private void executePageCommand(DocumentCommand command) {
+        requirePageMutation();
+        openValueSession();
+        valueSession.call(session -> {
+            session.execute(command);
+            return null;
+        });
+    }
+
+    /**
+     * Copies an inclusive range within this document.
+     * @param firstPage the first one-based page number
+     * @param lastPage the last one-based page number
+     * @param insertion the one-based position in the original sequence
+     * @return immutable list of copied page handles in insertion order
+     */
+    public List<PdfPage> copyPages(int firstPage, int lastPage, int insertion) {
+        requirePageMutation();
+        openValueSession();
+        return valueSession.call(session -> {
+            session.execute(CopyPages.version1(PageRange.of(firstPage, lastPage), insertion));
+            List<PdfPage> copies = new ArrayList<PdfPage>();
+            for (int offset = 0; offset <= lastPage - firstPage; offset++) {
+                copies.add(new PdfPage(valueSession.referenceFor(session.query(
+                        PageObjectReference.version1(insertion + offset)))));
+            }
+            return Collections.unmodifiableList(copies);
+        });
+    }
+
+    private void requirePageMutation() {
+        requireOpen();
+        if (!declarations.hasTargets()) {
+            throw new IllegalStateException("A read-only facade document cannot change pages.");
+        }
+    }
+
+    void materializePageHandles() {
+        requireOpen();
+        openValueSession();
     }
 
     /**
@@ -122,6 +247,50 @@ public final class PdfDocument implements Closeable {
         return catalog;
     }
 
+    /** @return the ordered named-Source merger owned by this document */
+    public PdfMerger getMerger() {
+        requireOpen();
+        return new PdfMerger(this) {
+            @Override
+            public PdfMerger merge(String... sourceNames) {
+                executePageCommand(MergeDocuments.version1(sourceNames));
+                return this;
+            }
+        };
+    }
+
+    /** @return the complete Target-group splitter owned by this document */
+    public PdfSplitter getSplitter() {
+        requireOpen();
+        return new PdfSplitter(this) {
+            @Override
+            public void extractPageRanges(String[] targetNames, PageRange[] ranges) {
+                String[] names = Objects.requireNonNull(targetNames, "targetNames").clone();
+                PageRange[] selections = Objects.requireNonNull(ranges, "ranges").clone();
+                if (names.length != selections.length) {
+                    throw new IllegalArgumentException("Each split Target must have one corresponding page range.");
+                }
+                SplitDocument.Builder split = SplitDocument.version1();
+                for (int index = 0; index < names.length; index++) {
+                    split.target(names[index], selections[index]);
+                }
+                executePageCommand(split.build());
+            }
+        };
+    }
+
+    /**
+     * Observes the actual Native publication result after this document closes.
+     * @return immutable receipts in Target declaration order
+     */
+    public List<PublicationReceipt> getPublicationReceipts() {
+        requireOwner();
+        if (!closed) {
+            throw new IllegalStateException("Publication receipts are available after the facade document closes.");
+        }
+        return publicationReceipts;
+    }
+
     private void openValueSession() {
         if (valueSession != null) {
             return;
@@ -130,17 +299,18 @@ public final class PdfDocument implements Closeable {
             throw new IllegalStateException("The facade workflow could not be initialized.");
         }
         valueSessionRequested = true;
-        CancellationToken cancellation = CancellationToken.create();
-        WorkflowRequest.Builder request = WorkflowRequest.builder().saveMode(SaveMode.REWRITE).cancellationToken(cancellation);
-        if (source != null) {
-            request.source("source", DocumentSource.path(source.path)).primarySource("source")
-                    .resourcePolicy(FacadeSource.policyWithSnapshot(source.bytes));
+        int queuedPages = pageCount - declarations.sourcePageCount;
+        valueSession = new FacadeSession(declarations.request, queuedPages, declarations.cancellation);
+        if (!queuedPageHandles.isEmpty()) {
+            valueSession.initialize(session -> {
+                int pageNumber = declarations.sourcePageCount;
+                for (PdfPage page : queuedPageHandles) {
+                    page.bind(valueSession.referenceFor(session.query(PageObjectReference.version1(++pageNumber))));
+                }
+                return null;
+            });
+            queuedPageHandles.clear();
         }
-        if (publicationTarget != null) {
-            request.target("target", publicationTarget);
-        }
-        int queuedPages = pageCount - (source == null ? 0 : source.pageCount);
-        valueSession = new FacadeSession(request.build(), queuedPages, cancellation);
     }
 
     /**
@@ -158,65 +328,56 @@ public final class PdfDocument implements Closeable {
             finishPublication();
         } catch (RuntimeException | Error failure) {
             primaryFailure = failure;
+            if (failure.getCause() instanceof DocumentFailure) {
+                publicationReceipts = ((DocumentFailure) failure.getCause()).getPublicationReceipts();
+            }
             throw failure;
         } finally {
-            if (source != null) {
-                try {
-                    source.close();
-                } catch (IOException failure) {
-                    PdfException mapped = new PdfException(failure.getMessage(), null);
-                    if (primaryFailure == null) {
-                        throw mapped;
-                    }
-                    primaryFailure.addSuppressed(mapped);
+            queuedPageHandles.clear();
+            try {
+                declarations.close();
+            } catch (IOException failure) {
+                PdfException mapped = new PdfException(failure.getMessage(), null);
+                if (primaryFailure == null) {
+                    throw mapped;
                 }
+                primaryFailure.addSuppressed(mapped);
             }
         }
     }
 
     private void finishPublication() {
-        if (valueSession == null && !valueSessionRequested && source != null && publicationTarget != null) {
+        if (valueSession == null && !valueSessionRequested && declarations.hasSources() && declarations.hasTargets()) {
             openValueSession();
         }
         if (valueSession != null) {
             WorkflowOutcome<Void> outcome = valueSession.close();
-            if (publicationTarget != null) {
-                requireCommittedReceipt(outcome.getPublicationReceipts());
-            }
+            publicationReceipts = outcome.getPublicationReceipts();
+            declarations.requireCommittedReceipts(publicationReceipts);
             return;
         }
         if (valueSessionRequested) {
             return;
         }
-        if (publicationTarget == null) {
+        if (!declarations.hasTargets()) {
             return;
         }
 
         try {
             WorkflowOutcome<Void> outcome = new DocumentWorkflow().execute(
-                    WorkflowRequest.builder().saveMode(SaveMode.REWRITE).target("target", publicationTarget).build(),
+                    declarations.request,
                     session -> {
                         for (int page = 0; page < pageCount; page++) {
                             session.execute(AddBlankPage.INSTANCE);
                         }
                         return null;
                     });
-            requireCommittedReceipt(outcome.getPublicationReceipts());
+            publicationReceipts = outcome.getPublicationReceipts();
+            declarations.requireCommittedReceipts(publicationReceipts);
         } catch (DocumentFailure failure) {
             throw new PdfException(
                     failure.getCode().name() + ": " + failure.getDiagnostic(),
                     failure);
-        }
-    }
-
-    private void requireCommittedReceipt(List<PublicationReceipt> receipts) {
-        if (receipts.size() != 1
-                || receipts.get(0).getStatus() != PublicationStatus.COMMITTED
-                || !"target".equals(receipts.get(0).getTargetName())
-                || !receipts.get(0).getPathTarget().equals(Optional.ofNullable(publicationPath))
-                || receipts.get(0).isPartialOutputPossible()) {
-            throw new IllegalStateException(
-                    "The Native Interface did not commit the declared publication target.");
         }
     }
 

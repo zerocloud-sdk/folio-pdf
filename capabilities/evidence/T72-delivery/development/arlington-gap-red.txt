@@ -1,0 +1,361 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent                                    [pom]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract              [jar]
+[INFO] Folio PDF by ZeroCloud - Conversion                                [jar]
+[INFO] Folio PDF by ZeroCloud - Document Engine                           [jar]
+[INFO] Folio PDF by ZeroCloud - Stable iText 7 Migration Facade           [jar]
+[INFO] Folio PDF by ZeroCloud - Acceptance Evidence                       [jar]
+[INFO] 
+[INFO] ----------------------< net.zerocloud:pdf-parent >----------------------
+[INFO] Building Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT            [1/6]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-parent ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.version.RequireMavenVersion passed
+[INFO] Rule 1: org.apache.maven.enforcer.rules.version.RequireJavaVersion passed
+[INFO] 
+[INFO] ----------------< net.zerocloud:pdf-provider-contract >-----------------
+[INFO] Building Folio PDF by ZeroCloud - Capability Provider Contract 0.1.0-SNAPSHOT [2/6]
+[INFO]   from pdf-provider-contract/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-provider-contract ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-provider-contract ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-provider-contract/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --------------------< net.zerocloud:pdf-conversion >--------------------
+[INFO] Building Folio PDF by ZeroCloud - Conversion 0.1.0-SNAPSHOT        [3/6]
+[INFO]   from pdf-conversion/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-conversion ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-conversion/src/main/resources
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-conversion/src/test/resources
+[INFO] Copying 1 resource from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-conversion ---
+[INFO] 
+[INFO] ---------------------< net.zerocloud:pdf-document >---------------------
+[INFO] Building Folio PDF by ZeroCloud - Document Engine 0.1.0-SNAPSHOT   [4/6]
+[INFO]   from pdf-document/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-document ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-document ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-document ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-document ---
+[INFO] Copying 12 resources from src/test/resources to target/test-classes
+[INFO] Copying 15 resources from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-document ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-document ---
+[INFO] 
+[INFO] -----------------< net.zerocloud:pdf-migration-itext7 >-----------------
+[INFO] Building Folio PDF by ZeroCloud - Stable iText 7 Migration Facade 0.1.0-SNAPSHOT [5/6]
+[INFO]   from pdf-migration-itext7/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-migration-itext7 ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-migration-itext7 ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-migration-itext7 ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-migration-itext7 ---
+[INFO] Copying 5 resources from ../pdf-document/src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-migration-itext7 ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-migration-itext7 ---
+[INFO] 
+[INFO] --------------------< net.zerocloud:pdf-acceptance >--------------------
+[INFO] Building Folio PDF by ZeroCloud - Acceptance Evidence 0.1.0-SNAPSHOT [6/6]
+[INFO]   from pdf-acceptance/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-acceptance ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-acceptance ---
+[INFO] Copying 32 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-acceptance ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-acceptance ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-acceptance/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-acceptance ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 21 source files with javac [debug parameters release 8] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-acceptance ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.acceptance.T10StandardsQualificationTest
+[ERROR] Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.455 s <<< FAILURE! -- in net.zerocloud.pdf.acceptance.T10StandardsQualificationTest
+[ERROR] net.zerocloud.pdf.acceptance.T10StandardsQualificationTest.destinationAndNameTreeRulesRequireMatchingRealNegativeFindings -- Time elapsed: 0.400 s <<< FAILURE!
+java.lang.AssertionError: 
+result=indeterminate
+profile=T10-page-manipulation-merge-split
+covered-rules=
+executable-sha256=45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458
+model-sha256=334aa8d6ccd88c96cf01c463971f3079206a47f5cf2101bf6d8cf81f374d5408
+input-sha256=005cb2f8b97cb7d8488ba2fd0bb9c4e25714197fec801bcb106100b3f3a34964
+pin-sha256=c7e3be5214ad09346530cb1a3d8fd7ab6589a8ddf992ee87bbdfcca633d4fffd
+profile-sha256=c77ec10b5d0d074a031c3e18c4b971f811d53e75f07bb3399187141f880e7738
+Version exit: 0
+
+
+Arlington PDF Model C++ P.o.C. version v0.81 built Sep  8 2026 00:00:00 (GNU-C linux release)
+Choose one of: --pdf, --checkdva or --validate.
+
+Usage:
+	TestGrammar --tsvdir <dir> [--force <ver>|exact] [--out <fname|dir>] [--no-color] [--clobber] [--debug] [--brief] [--extensions <extn1[,extn2]>] [--password <pwd>] [--exclude string | @textfile.txt] [--dryrun] [--allfiles] [--validate | --checkdva <formalrep> | --pdf <fname|dir|@file.txt> ]
+
+Options: 
+-h, --help                   This usage message.
+-b, --brief                  terse output when checking PDFs. The full PDF DOM tree is NOT output.
+-c, --checkdva               Adobe DVA formal-rep PDF file to compare against Arlington PDF model.
+-d, --debug                  output additional debugging information.
+    --clobber                always overwrite PDF output report files (--pdf) rather than append underscores.
+    --no-color               disable colorized text output (useful when redirecting or piping output)
+-m, --batchmode              stop popup error dialog windows and redirect everything to console (Windows only, includes memory leak reports).
+-o, --out                    output file or folder. Default is stdout. See --clobber for overwriting behavior.
+-p, --pdf                    input PDF file, folder, or text file of PDF files/folders.
+-f, --force                  force the PDF version to the specified value (1,0, 1.1, ..., 2.0 or 'exact'). Only applicable to --pdf.
+-t, --tsvdir                 [required] folder containing Arlington PDF model TSV file set.
+-v, --validate               validate the Arlington PDF model.
+-e, --extensions             a comma-separated list of extensions, or '*' for all extensions.
+    --password               password. Only applicable to --pdf.
+    --exclude                PDF exclusion string or filelist (# is a comment). Only applicable to --pdf.
+    --dryrun                 Dry run - don't do any actual processing.
+-a, --allfiles               Process all files regardless of file extension.
+    --explicit-values-only   Ignore wildcards in PossibleValues.
+
+Built using pdfium
+
+Validation exit: 0
+Processing "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T10-standards/fixtures/valid.pdf" to stdout BEGIN - TestGrammar v0.81 built Sep  8 2026 00:00:00 (GNU-C linux release) pdfium
+Arlington TSV data: "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/tsv/latest"
+PDF: "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T10-standards/fixtures/valid.pdf"
+Info: Traditional trailer dictionary detected.
+Info: Header is version PDF 1.7
+Info: Command line forced to PDF 1.7
+Info: Processing as PDF 1.7
+       1: Trailer
+       2:   Trailer->ID (as TrailerIDArray)
+       3:   Trailer->Root (as Catalog)
+       4:     Trailer->Root (as Catalog)->Names (as Name)
+       5:     Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)
+       6:       Trailer->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[shared]
+       7:       Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)
+       8:         Trailer->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[shared][0 (as PageObject)]
+       9:         Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]
+      10:           Trailer->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[shared][0 (as PageObject)]->Annots (as ArrayOfAnnots)
+      11:           Trailer->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[shared][0 (as PageObject)]->Contents (as ArrayOfStreamsGeneral)
+      12:           Trailer->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[shared][0 (as PageObject)]->Parent (as PageTreeNodeRoot)
+      13:           Trailer->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[shared][0 (as PageObject)]->Resources (as Resource)
+      14:             Trailer->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[shared][0 (as PageObject)]->Annots (as ArrayOfAnnots)[0 (as AnnotText)]
+      15:             Trailer->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[shared][0 (as PageObject)]->Contents (as ArrayOfStreamsGeneral)[0 (as Stream)]
+      16:             Trailer->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[shared][0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)
+      17:               Trailer->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[shared][0 (as PageObject)]->Annots (as ArrayOfAnnots)[0 (as AnnotText)]->P (as PageObject)
+      18:               Trailer->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[shared][0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)->Tile (as XObjectFormType1)
+      19:                 Trailer->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[shared][0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)->Tile (as XObjectFormType1)->Resources (as Resource)
+Info: Latest Arlington object was PDF 1.4 (AnnotText/NM) compared using forced PDF 1.7
+END
+
+DONE - 1 files processed
+
+Negative control destination-fit-count sha256=2c09b29f347c89b32a8d20d9f76dc1880358db38674420dbffffd76db493326b detected=false
+Negative control destination-page-type sha256=0a457454f7242645dbc1f8834278323704251091154645c9e3c28511f1582e48 detected=false
+Negative control nametree-key-order sha256=54643d748342e78ec3ba2096c798d5828d35bb880be401905ba18297ef168f56 detected=false
+Negative control nametree-key-unique sha256=10bd658620fbd12fc7fa0e3af08993bedca87bf719e3635fc288b00a73dcfb92 detected=false
+
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at net.zerocloud.pdf.acceptance.T10StandardsQualificationTest.destinationAndNameTreeRulesRequireMatchingRealNegativeFindings(T10StandardsQualificationTest.java:51)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:316)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:214)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:155)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   T10StandardsQualificationTest.destinationAndNameTreeRulesRequireMatchingRealNegativeFindings:51 result=indeterminate
+profile=T10-page-manipulation-merge-split
+covered-rules=
+executable-sha256=45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458
+model-sha256=334aa8d6ccd88c96cf01c463971f3079206a47f5cf2101bf6d8cf81f374d5408
+input-sha256=005cb2f8b97cb7d8488ba2fd0bb9c4e25714197fec801bcb106100b3f3a34964
+pin-sha256=c7e3be5214ad09346530cb1a3d8fd7ab6589a8ddf992ee87bbdfcca633d4fffd
+profile-sha256=c77ec10b5d0d074a031c3e18c4b971f811d53e75f07bb3399187141f880e7738
+Version exit: 0
+
+
+Arlington PDF Model C++ P.o.C. version v0.81 built Sep  8 2026 00:00:00 (GNU-C linux release)
+Choose one of: --pdf, --checkdva or --validate.
+
+Usage:
+	TestGrammar --tsvdir <dir> [--force <ver>|exact] [--out <fname|dir>] [--no-color] [--clobber] [--debug] [--brief] [--extensions <extn1[,extn2]>] [--password <pwd>] [--exclude string | @textfile.txt] [--dryrun] [--allfiles] [--validate | --checkdva <formalrep> | --pdf <fname|dir|@file.txt> ]
+
+Options: 
+-h, --help                   This usage message.
+-b, --brief                  terse output when checking PDFs. The full PDF DOM tree is NOT output.
+-c, --checkdva               Adobe DVA formal-rep PDF file to compare against Arlington PDF model.
+-d, --debug                  output additional debugging information.
+    --clobber                always overwrite PDF output report files (--pdf) rather than append underscores.
+    --no-color               disable colorized text output (useful when redirecting or piping output)
+-m, --batchmode              stop popup error dialog windows and redirect everything to console (Windows only, includes memory leak reports).
+-o, --out                    output file or folder. Default is stdout. See --clobber for overwriting behavior.
+-p, --pdf                    input PDF file, folder, or text file of PDF files/folders.
+-f, --force                  force the PDF version to the specified value (1,0, 1.1, ..., 2.0 or 'exact'). Only applicable to --pdf.
+-t, --tsvdir                 [required] folder containing Arlington PDF model TSV file set.
+-v, --validate               validate the Arlington PDF model.
+-e, --extensions             a comma-separated list of extensions, or '*' for all extensions.
+    --password               password. Only applicable to --pdf.
+    --exclude                PDF exclusion string or filelist (# is a comment). Only applicable to --pdf.
+    --dryrun                 Dry run - don't do any actual processing.
+-a, --allfiles               Process all files regardless of file extension.
+    --explicit-values-only   Ignore wildcards in PossibleValues.
+
+Built using pdfium
+
+Validation exit: 0
+Processing "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T10-standards/fixtures/valid.pdf" to stdout BEGIN - TestGrammar v0.81 built Sep  8 2026 00:00:00 (GNU-C linux release) pdfium
+Arlington TSV data: "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/fe4a1a8/tsv/latest"
+PDF: "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T10-standards/fixtures/valid.pdf"
+Info: Traditional trailer dictionary detected.
+Info: Header is version PDF 1.7
+Info: Command line forced to PDF 1.7
+Info: Processing as PDF 1.7
+       1: Trailer
+       2:   Trailer->ID (as TrailerIDArray)
+       3:   Trailer->Root (as Catalog)
+       4:     Trailer->Root (as Catalog)->Names (as Name)
+       5:     Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)
+       6:       Trailer->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[shared]
+       7:       Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)
+       8:         Trailer->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[shared][0 (as PageObject)]
+       9:         Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]
+      10:           Trailer->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[shared][0 (as PageObject)]->Annots (as ArrayOfAnnots)
+      11:           Trailer->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[shared][0 (as PageObject)]->Contents (as ArrayOfStreamsGeneral)
+      12:           Trailer->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[shared][0 (as PageObject)]->Parent (as PageTreeNodeRoot)
+      13:           Trailer->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[shared][0 (as PageObject)]->Resources (as Resource)
+      14:             Trailer->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[shared][0 (as PageObject)]->Annots (as ArrayOfAnnots)[0 (as AnnotText)]
+      15:             Trailer->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[shared][0 (as PageObject)]->Contents (as ArrayOfStreamsGeneral)[0 (as Stream)]
+      16:             Trailer->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[shared][0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)
+      17:               Trailer->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[shared][0 (as PageObject)]->Annots (as ArrayOfAnnots)[0 (as AnnotText)]->P (as PageObject)
+      18:               Trailer->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[shared][0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)->Tile (as XObjectFormType1)
+      19:                 Trailer->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[shared][0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)->Tile (as XObjectFormType1)->Resources (as Resource)
+Info: Latest Arlington object was PDF 1.4 (AnnotText/NM) compared using forced PDF 1.7
+END
+
+DONE - 1 files processed
+
+Negative control destination-fit-count sha256=2c09b29f347c89b32a8d20d9f76dc1880358db38674420dbffffd76db493326b detected=false
+Negative control destination-page-type sha256=0a457454f7242645dbc1f8834278323704251091154645c9e3c28511f1582e48 detected=false
+Negative control nametree-key-order sha256=54643d748342e78ec3ba2096c798d5828d35bb880be401905ba18297ef168f56 detected=false
+Negative control nametree-key-unique sha256=10bd658620fbd12fc7fa0e3af08993bedca87bf719e3635fc288b00a73dcfb92 detected=false
+
+[INFO] 
+[ERROR] Tests run: 1, Failures: 1, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent .................... SUCCESS [  0.297 s]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract SUCCESS [  0.371 s]
+[INFO] Folio PDF by ZeroCloud - Conversion ................ SUCCESS [  0.050 s]
+[INFO] Folio PDF by ZeroCloud - Document Engine ........... SUCCESS [  0.102 s]
+[INFO] Folio PDF by ZeroCloud - Stable iText 7 Migration Facade SUCCESS [  0.050 s]
+[INFO] Folio PDF by ZeroCloud - Acceptance Evidence ....... FAILURE [  2.350 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  3.380 s
+[INFO] Finished at: 2026-09-09T11:27:59+08:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.5.4:test (default-test) on project pdf-acceptance: There are test failures.
+[ERROR] 
+[ERROR] See /home/ubuntu/IdeaProjects/open-pdf/pdf-acceptance/target/surefire-reports for the individual test results.
+[ERROR] See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+[ERROR] 
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :pdf-acceptance

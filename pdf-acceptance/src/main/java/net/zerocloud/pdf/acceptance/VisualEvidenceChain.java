@@ -36,7 +36,8 @@ final class VisualEvidenceChain {
         this.acceptanceProfile = acceptanceProfile;
         this.profileRecord = "capabilities/evidence/"
                 + ("T23".equals(label) ? "T23-page-rendering"
-                    : "T29".equals(label) ? "T29-shaping" : acceptanceProfile) + ".md";
+                    : "T29".equals(label) ? "T29-shaping"
+                    : "T10".equals(label) ? T10Corpus.PROFILE : acceptanceProfile) + ".md";
         this.inputArtifact = inputArtifact;
         this.recordName = "T09".equals(label) ? "visual.md" : visualArtifactStem + "-visual.md";
         this.findingsName = "T09".equals(label) ? "visual.txt" : visualArtifactStem + "-visual.txt";
@@ -63,6 +64,11 @@ final class VisualEvidenceChain {
                 "T09-document-value-inspection-patch", "values.pdf", "T09-values", repositoryRoot);
     }
 
+    static VisualEvidenceChain t10(Path repositoryRoot, int page) {
+        return new VisualEvidenceChain("T10", "document.page.manipulate-merge-split",
+                T10Corpus.PROFILE, "pages.pdf", "page-" + page, repositoryRoot);
+    }
+
     String artifactPrefix() {
         return repositoryRoot == null ? "artifacts/" : "";
     }
@@ -76,11 +82,15 @@ final class VisualEvidenceChain {
     }
 
     String inputHashLabel() {
-        return "T09".equals(label) ? "Input exact SHA-256" : "Input ID-neutral SHA-256";
+        return usesExactInputHash() ? "Input exact SHA-256" : "Input ID-neutral SHA-256";
     }
 
     String inputHashPolicy() {
-        return "T09".equals(label) ? "SHA-256 of the exact unmodified PDF bytes" : EvidenceFiles.inputHashPolicy();
+        return usesExactInputHash() ? "SHA-256 of the exact unmodified PDF bytes" : EvidenceFiles.inputHashPolicy();
+    }
+
+    private boolean usesExactInputHash() {
+        return "T09".equals(label) || "T10".equals(label);
     }
 
     static VisualEvidenceChain t18() {

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prepare and bind repository-only T03/T09 observations; never publish a release."""
+"""Prepare and bind repository-only T03/T09/T10 observations; never publish a release."""
 import hashlib
 from pathlib import Path
 
@@ -133,6 +133,21 @@ def certification_case(obligation):
     """The frozen consumer and artifact obligations for one recorder invocation."""
     artifacts = ['net.zerocloud.pdf.migration.itext7.contract.' + name
                  for name in ('JarContractIT', 'ClasspathExclusivityIT')]
+    if obligation == 'pages':
+        return {'profile': 'T10-page-manipulation-merge-split', 'label': 'T10', 'test-count': 65,
+                'test-classes': ['net.zerocloud.pdf.consumer.PageManipulationWorkflowTest',
+                                 'net.zerocloud.pdf.itext7.consumer.PageManipulationFacadeTest'] + artifacts,
+                'facade-execution-profile': 'IN_PROCESS',
+                'standards-producer': 'arlington-t10-r1',
+                'contract-timeout': 600,
+                'recorder-timeout': 1800,
+                'workflow-policy': 'REWRITE; one-based inclusive page ranges; insert, remove, move and copy; ordered named Sources; exact split coverage of all declared Targets; finite system-default policies; no network; Native tests select the recorded execution profile; Facade execution remains IN_PROCESS',
+                'fonts': 'no fonts; the fixed T10 vector corpus has no text or font resources',
+                'configuration-paths': ['capabilities/profiles/T10-pages',
+                    'capabilities/profiles/T10-standards', 'capabilities/profiles/T03-standards',
+                    'capabilities/profiles/T09-standards',
+                    'build-tools/acceptance/arlington/t10-r1.patch',
+                    'scripts/t10-arlington-pin.properties']}
     if obligation == 'values':
         return {'profile': 'T09-document-value-inspection-patch', 'label': 'T09', 'test-count': 83,
                 'test-classes': ['net.zerocloud.pdf.consumer.PdfValueWorkflowTest',
@@ -230,13 +245,21 @@ def collect_reports(root, run, obligation='transactions'):
             raise ValueError('Missing detected negative control for ' + chain)
         report = {'chain': chain, 'result': 'pass', 'products': [], 'findings': [],
                   'negative-controls': [reference(root, run / 'negative' / (chain + '.txt'))]}
-        editions = ('native-rewrite', 'native-incremental', 'facade') if obligation == 'values' else ('native', 'facade')
+        if obligation == 'pages':
+            editions = tuple(api + '-' + product for api in ('native', 'facade')
+                             for product in ('edited', 'merged', 'left', 'right'))
+        elif obligation == 'values':
+            editions = ('native-rewrite', 'native-incremental', 'facade')
+        else:
+            editions = ('native', 'facade')
         for edition in editions:
             directory = run / edition
             observed = properties(directory / 'result.properties')
             if observed.get(chain) != 'pass':
                 raise ValueError(edition + ' chain did not pass: ' + chain)
-            product = reference(root, directory / ('values.pdf' if obligation == 'values' else 'blank.pdf'))
+            artifact = 'values.pdf' if obligation == 'values' else (
+                'pages.pdf' if obligation == 'pages' else 'blank.pdf')
+            product = reference(root, directory / artifact)
             if product['sha256'] != observed.get('input-sha256'):
                 raise ValueError('Observed product changed after checking')
             report['products'].append(product)
@@ -245,7 +268,22 @@ def collect_reports(root, run, obligation='transactions'):
             if (directory / (chain + '.md')).is_file():
                 report['findings'].append(reference(root, directory / (chain + '.md')))
             if chain == 'visual':
-                report['findings'] += [reference(root, path) for path in sorted(directory.glob('*.png'))]
+                if obligation == 'pages':
+                    page_count = int(observed.get('page-count', '0'))
+                    if page_count < 1:
+                        raise ValueError('Missing T10 visual page count: ' + edition)
+                    for page in range(1, page_count + 1):
+                        if observed.get('page.' + str(page) + '.visual') != 'pass':
+                            raise ValueError('Missing passing T10 page visual: '
+                                             + edition + ' page ' + str(page))
+                        for suffix in ('visual.md', 'visual.txt', 'expected.png', 'pdfium.png',
+                                       'implementation.png', 'difference.png',
+                                       'renderer-difference.png'):
+                            report['findings'].append(reference(
+                                root, directory / ('page-' + str(page) + '-' + suffix)))
+                else:
+                    report['findings'] += [reference(root, path)
+                                           for path in sorted(directory.glob('*.png'))]
             if chain == 'standards':
                 for checker in ('pdfcpu', 'arlington'):
                     tool = directory / checker
@@ -274,6 +312,14 @@ def collect_reports(root, run, obligation='transactions'):
                 report['findings'] += [reference(root, path) for path in sorted(original.iterdir())
                                        if path.is_file() and path.suffix != '.pdf']
                 report['negative-controls'].append(reference(root, run / 'negative/values.pdf'))
+        elif obligation == 'pages':
+            if chain == 'syntax':
+                report['negative-controls'].append(reference(root, run / 'negative/invalid.pdf'))
+            elif chain == 'semantic':
+                report['negative-controls'].append(reference(root, run / 'negative/wrong-order.pdf'))
+            elif chain == 'visual':
+                report['negative-controls'] += [reference(root, path)
+                    for path in sorted((run / 'negative/visual').rglob('*')) if path.is_file()]
         reports[chain] = report
     return reports
 
@@ -480,6 +526,41 @@ def container_command(root, image, helper):
             '--env', 'FOLIO_HARFBUZZ_HELPER=/folio-harfbuzz/bin/folio-harfbuzz', image]
 
 
+def certification_tools():
+    """Return the common, pinned tool catalog recorded for every certification."""
+    external = [
+        {'id': 'qpdf', 'kind': 'external-tool', 'version': '12.4.0',
+         'path': '.build-cache/qpdf/12.4.0/bin/qpdf',
+         'pin': 'scripts/qpdf-pin.properties', 'hash-key': 'QPDF_BINARY_SHA256',
+         'chains': ['syntax']},
+        {'id': 'pdfcpu', 'kind': 'external-tool', 'version': '0.15.0',
+         'path': '.build-cache/pdfcpu/0.15.0/pdfcpu',
+         'pin': 'scripts/pdfcpu-pin.properties', 'hash-key': 'sha256',
+         'chains': ['standards']},
+        {'id': 'arlington', 'kind': 'external-tool', 'version': '0.81',
+         'path': '.build-cache/arlington/fe4a1a8/TestGrammar/bin/linux/TestGrammar',
+         'pin': 'scripts/arlington-pin.properties', 'hash-key': 'sha256',
+         'chains': ['standards']},
+        {'id': 'arlington-t10-r1', 'kind': 'external-tool',
+         'version': '0.81-folio-t10-r1',
+         'path': '.build-cache/arlington/t10-r1/TestGrammar/bin/linux/TestGrammar',
+         'pin': 'scripts/t10-arlington-pin.properties', 'hash-key': 'sha256',
+         'chains': ['standards']},
+        {'id': 'pdfium-cli', 'kind': 'external-tool',
+         'version': 'v0.11.2-pdfium-chromium-7881',
+         'path': '.build-cache/pdfium/v0.11.2-chromium-7881/bin/pdfium',
+         'pin': 'scripts/pdfium-pin.properties', 'hash-key': 'PDFIUM_EXECUTABLE_SHA256',
+         'chains': ['visual']},
+        {'id': 'imagemagick', 'kind': 'external-tool', 'version': '7.1.2-30',
+         'path': '.build-cache/imagemagick/7.1.2-30/bin/imagemagick.AppImage',
+         'pin': 'scripts/imagemagick-pin.properties',
+         'hash-key': 'IMAGEMAGICK_EXECUTABLE_SHA256', 'chains': ['visual']}]
+    project = [{'id': 'folio-pdf-' + label, 'kind': 'project-test',
+                'version': '0.1.0', 'chains': ['semantic']}
+               for label in ('t03', 't09', 't10')]
+    return external + project
+
+
 def observe_environment(root, image, helper, directory, profile, harness):
     import json
     import subprocess
@@ -523,24 +604,19 @@ uname -m > "$out/architecture.txt"
     engine = {'name': 'harfbuzz', 'version': '10.2.0', 'helper-sha256': sha256(helper),
               'library-sha256': native['loaded_engine']['sha256'], 'installation-sha256': sha256(installation)}
     tools = []
-    tool_files = [
-        ('qpdf', '12.4.0', '.build-cache/qpdf/12.4.0/bin/qpdf', ['syntax']),
-        ('pdfcpu', '0.15.0', '.build-cache/pdfcpu/0.15.0/pdfcpu', ['standards']),
-        ('arlington', '0.81', '.build-cache/arlington/fe4a1a8/TestGrammar/bin/linux/TestGrammar', ['standards']),
-        ('pdfium-cli', 'v0.11.2-pdfium-chromium-7881', '.build-cache/pdfium/v0.11.2-chromium-7881/bin/pdfium', ['visual']),
-        ('imagemagick', '7.1.2-30', '.build-cache/imagemagick/7.1.2-30/bin/imagemagick.AppImage', ['visual'])]
-    for name, version, path, chains in tool_files:
-        pin_name = 'pdfium' if name == 'pdfium-cli' else name
-        pin = properties(root / ('scripts/' + pin_name + '-pin.properties'))
-        key = {'qpdf': 'QPDF_BINARY_SHA256', 'pdfium-cli': 'PDFIUM_EXECUTABLE_SHA256',
-               'imagemagick': 'IMAGEMAGICK_EXECUTABLE_SHA256'}.get(name, 'sha256')
-        observed_hash = sha256(root / path)
-        if observed_hash != pin[key]:
-            raise ValueError('Observed checker executable differs from its pin: ' + name)
-        tools.append({'id': name, 'kind': 'external-tool', 'version': version, 'sha256': observed_hash, 'chains': chains})
-    for label in ('t03', 't09'):
-        tools.append({'id': 'folio-pdf-' + label, 'kind': 'project-test', 'version': '0.1.0',
-                      'sha256': sha256(harness / 'acceptance.jar'), 'chains': ['semantic']})
+    for tool in certification_tools():
+        observed = dict(tool)
+        if tool['kind'] == 'project-test':
+            observed['sha256'] = sha256(harness / 'acceptance.jar')
+        else:
+            pin = properties(root / tool['pin'])
+            observed_hash = sha256(root / tool['path'])
+            if observed_hash != pin[tool['hash-key']]:
+                raise ValueError('Observed checker executable differs from its pin: ' + tool['id'])
+            observed['sha256'] = observed_hash
+        for internal in ('path', 'pin', 'hash-key'):
+            observed.pop(internal, None)
+        tools.append(observed)
     return {'schema-version': 1, 'profile': profile['id'], 'identity': identity,
             'host': {'kernel': (directory / 'kernel.txt').read_text().strip(), 'architecture': identity['architecture']},
             'native-engine': engine, 'tools': tools}
@@ -614,7 +690,8 @@ def certify(root, output, contract, helper, obligation='transactions'):
     configuration_inputs = sorted(set(classpath_files + [root / item['path'] for item in receipt['harness']]
         + [build_record, base / 'build-command.json', root / 'scripts/imagemagick-runtime.sha256']
         + profile_inputs
-        + [root / ('scripts/' + name + '-pin.properties') for name in ('qpdf', 'pdfium', 'imagemagick', 'pdfcpu', 'arlington')]))
+        + [root / item['pin'] for item in certification_tools()
+           if item['kind'] == 'external-tool']))
     configuration_inputs = [reference(root, path) for path in configuration_inputs if path.is_file()]
     for profile in environment_profiles:
         major = profile['identity']['jdk-major']
@@ -642,10 +719,12 @@ def certify(root, output, contract, helper, obligation='transactions'):
             configuration = scope / 'execution.yaml'
             write_json(configuration, config)
             write_json(scope / 'contract-tests-command.json', test_command)
-            run_logged(test_command, scope / 'contract-tests.txt', cwd=root, timeout=300)
+            run_logged(test_command, scope / 'contract-tests.txt', cwd=root,
+                       timeout=case.get('contract-timeout', 300))
             if 'OK (' + str(case['test-count']) + ' tests)' not in (scope / 'contract-tests.txt').read_text():
                 raise ValueError('The complete ' + case['label'] + ' consumer/artifact contract suite did not execute')
-            run_logged(evidence_command, scope / 'recorder.txt', cwd=root, timeout=300)
+            run_logged(evidence_command, scope / 'recorder.txt', cwd=root,
+                       timeout=case.get('recorder-timeout', 300))
             reports = collect_reports(root, scope / 'observations', obligation)
             if obligation == 'values':
                 write_json(scope / 'raw-preservation-command.json', plan['preservation-command'])
@@ -667,7 +746,10 @@ def certify(root, output, contract, helper, obligation='transactions'):
                           'release': '0.1.0', 'candidate-sha256': identities['Candidate'], 'contract-sha256': identities['Contract'],
                           'environment-sha256': environment_ref['sha256'], 'execution-configuration-sha256': sha256(configuration),
                           'execution-profile': execution, 'chain': chain, 'result': 'pass',
-                          'producer': {'syntax': 'qpdf', 'standards': 'arlington', 'semantic': 'folio-pdf-' + case['label'].lower(), 'visual': 'pdfium-cli'}[chain],
+                          'producer': {'syntax': 'qpdf',
+                                       'standards': case.get('standards-producer', 'arlington'),
+                                       'semantic': 'folio-pdf-' + case['label'].lower(),
+                                       'visual': 'pdfium-cli'}[chain],
                           'configuration': reference(root, root / ('capabilities/evidence/' + case['profile'] + '.md')),
                           'report': reference(root, report_file), 'negative-controls': report['negative-controls']}
                 path = scope / (chain + '.yaml')
@@ -700,7 +782,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('action', choices=('stage', 'certify', 'collect', 'preservation', 'plan', 'merge-index'))
     parser.add_argument('output', nargs='?', type=Path)
-    parser.add_argument('--obligation', choices=('transactions', 'values'), default='transactions')
+    parser.add_argument('--obligation', choices=('transactions', 'values', 'pages'), default='transactions')
     parser.add_argument('--root', type=Path, default=Path(__file__).resolve().parents[1])
     args = parser.parse_args()
     root = args.root.resolve()

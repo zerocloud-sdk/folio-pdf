@@ -245,8 +245,17 @@ final class MarkdownGenerator {
             text.append("### ").append(code(surface.id)).append("\n\n");
             text.append("- Availability: \u0060").append(codeText(surface.availability))
                     .append("\u0060\n");
-            text.append("- Reference member: \u0060").append(codeText(surface.referenceType))
-                    .append("#").append(codeText(surface.referenceMember)).append("\u0060\n");
+            if (surface.referenceStatus != ReferenceSurfaceStatus.DIRECT) {
+                text.append("- Reference status: \u0060")
+                        .append(codeText(surface.referenceStatus)).append("\u0060\n");
+            }
+            if (surface.referenceStatus == ReferenceSurfaceStatus.FOLIO_EXTENSION) {
+                text.append("- Reference namespace: \u0060")
+                        .append(codeText(surface.referenceType)).append("\u0060\n");
+            } else {
+                text.append("- Reference member: \u0060").append(codeText(surface.referenceType))
+                        .append("#").append(codeText(surface.referenceMember)).append("\u0060\n");
+            }
             text.append("- Folio PDF mapping: \u0060").append(codeText(surface.folioPdfType))
                     .append("#").append(codeText(surface.folioPdfMember)).append("\u0060\n");
             text.append("- Generic contract: ").append(surface.genericContract).append("\n");

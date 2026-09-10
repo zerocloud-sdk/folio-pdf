@@ -18,6 +18,7 @@
   <description>Repository-only independent Acceptance Evidence pipeline.</description>
 
   <properties>
+    <acceptance.excludedGroups>net.zerocloud.pdf.acceptance.IndependentTools</acceptance.excludedGroups>
     <maven.install.skip>true</maven.install.skip>
     <maven.deploy.skip>true</maven.deploy.skip>
     <t30.qpdf.pin>${maven.multiModuleProjectDirectory}/scripts/qpdf-pin.properties</t30.qpdf.pin>
@@ -74,6 +75,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
+          <excludedGroups>${acceptance.excludedGroups}</excludedGroups>
           <systemPropertyVariables>
             <repositoryRoot>${maven.multiModuleProjectDirectory}</repositoryRoot>
           </systemPropertyVariables>
@@ -83,6 +85,12 @@
   </build>
 
   <profiles>
+    <profile>
+      <id>independent-certification</id>
+      <properties>
+        <acceptance.excludedGroups/>
+      </properties>
+    </profile>
     <profile>
       <id>acceptance-t31-record</id>
       <build>

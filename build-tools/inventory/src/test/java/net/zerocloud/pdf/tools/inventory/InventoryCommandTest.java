@@ -36,7 +36,7 @@ public final class InventoryCommandTest {
         assertEquals(result.output, 0, result.exitCode);
         assertTrue(result.output, result.output.matches(
                 "(?s).*Inventory validation passed: [0-9]+ capabilities, "
-                        + "89 facade surfaces, [0-9]+ exclusions\\..*"));
+                        + "105 facade surfaces, [0-9]+ exclusions\\..*"));
 
         ValidationResult validation = new InventoryValidator().validate(
                 repositoryRoot,
@@ -44,17 +44,26 @@ public final class InventoryCommandTest {
                 repositoryRoot.resolve("capabilities/facade-surface.yaml"));
         assertTrue(validation.errors().toString(), validation.isValid());
         InventoryModel.Capability mappedCapability = null;
+        InventoryModel.Capability pagesCapability = null;
         for (InventoryModel.Capability capability : validation.model().capabilities) {
             if ("document.blank.create-publish-reopen".equals(capability.id)) {
                 mappedCapability = capability;
+            } else if ("document.page.manipulate-merge-split".equals(capability.id)) {
+                pagesCapability = capability;
             }
         }
         assertNotNull(mappedCapability);
+        assertNotNull(pagesCapability);
         assertEquals(12, mappedCapability.stableFacadeIds.size());
         assertEquals(0, mappedCapability.previewFacadeIds.size());
+        assertEquals(CapabilityState.COMPATIBLE, pagesCapability.status);
+        assertEquals(17, pagesCapability.stableFacadeIds.size());
+        assertEquals(0, pagesCapability.previewFacadeIds.size());
         for (InventoryModel.Exclusion exclusion : validation.model().exclusions) {
             assertFalse("T04 capability remains explicitly excluded",
                     mappedCapability.id.equals(exclusion.capability));
+            assertFalse("T10 capability remains explicitly excluded",
+                    pagesCapability.id.equals(exclusion.capability));
         }
 
         String capabilities = read(repositoryRoot.resolve(MarkdownGenerator.CAPABILITY_OUTPUT));
@@ -66,10 +75,10 @@ public final class InventoryCommandTest {
                 "`document.blank.create-publish-reopen`"));
         assertTrue(capabilities.contains(
                 "`document.hardened-worker.recovery-scale`"));
-        assertTrue(facades.contains("- Stable entries: `89`"));
+        assertTrue(facades.contains("- Stable entries: `105`"));
         assertTrue(facades.contains("- Preview additions: `0`"));
-        assertTrue(facades.contains("- Preview artifact entries: `89`"));
-        assertTrue(facades.contains("- Explicit capability exclusions: `21`"));
+        assertTrue(facades.contains("- Preview artifact entries: `105`"));
+        assertTrue(facades.contains("- Explicit capability exclusions: `20`"));
         assertTrue(capabilities.contains("`composition.barcodes.one-dimensional`"));
         assertTrue(facades.contains("`composition.barcodes.one-dimensional`"));
         assertTrue(capabilities.contains("`composition.barcodes.two-dimensional`"));
@@ -103,6 +112,8 @@ public final class InventoryCommandTest {
         assertTrue(facades.contains(
                 "`document.hardened-worker.recovery-scale`"));
         assertTrue(facades.contains("`itext7.kernel.pdf-document.add-new-page`"));
+        assertTrue(facades.contains("`itext7.kernel.utils.pdf-merger.merge-named-sources`"));
+        assertTrue(facades.contains("- Reference status: `folio-extension`"));
     }
 
     @Test
@@ -200,6 +211,33 @@ public final class InventoryCommandTest {
         CommandResult current = runCommand("check", fixture);
         assertEquals(current.output, 0, current.exitCode);
         assertTrue(current.output.contains("Generated inventory documentation is current."));
+    }
+
+    @Test
+    public void folioExtensionSurfaceRecordsAReferenceNamespaceWithoutInventingAMember()
+            throws Exception {
+        Path fixture = materialize("folio-extension", null);
+        Path facade = fixture.resolve("capabilities/facade-surface.yaml");
+        String original = read(facade);
+        String direct = "      reference:\n"
+                + "        type: com.itextpdf.fixture.Compatible\n"
+                + "        member: execute(java.lang.String)\n";
+        String extension = "      reference:\n"
+                + "        status: folio-extension\n"
+                + "        type: com.itextpdf.fixture.Compatible\n";
+        assertTrue("Missing direct fixture mapping", original.contains(direct));
+        Files.write(facade, original.replace(direct, extension).getBytes(StandardCharsets.UTF_8),
+                StandardOpenOption.TRUNCATE_EXISTING);
+
+        CommandResult validation = runCommand("validate", fixture);
+        assertEquals(validation.output, 0, validation.exitCode);
+        CommandResult generation = runCommand("generate", fixture);
+        assertEquals(generation.output, 0, generation.exitCode);
+        String generated = read(fixture.resolve(MarkdownGenerator.FACADE_OUTPUT));
+        assertTrue(generated.contains("- Reference status: `folio-extension`"));
+        assertTrue(generated.contains("- Reference namespace: `com.itextpdf.fixture.Compatible`"));
+        assertFalse(generated.contains(
+                "`com.itextpdf.fixture.Compatible#execute(java.lang.String)`"));
     }
 
     @Test

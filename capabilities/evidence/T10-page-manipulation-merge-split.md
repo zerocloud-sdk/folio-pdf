@@ -1,6 +1,6 @@
 # T10 page manipulation, merge, and split evidence
 
-Status: `experimental`
+Status: `compatible`
 
 Capability: `document.page.manipulate-merge-split`
 
@@ -77,11 +77,11 @@ command maps every declared publication Target exactly once.
 - `./scripts/inventory check`, `./mvnw -B -ntp verify`, and
   `./scripts/verify-jdk-matrix.sh` are the repository gates for inventory
   drift, full verification, and JDK 8/11/17/21 execution.
-- The repository-owned acceptance command creates representative T10 products
-  by exercising all six Commands through `DocumentWorkflow.execute`. Pinned
-  qpdf 12.4.0 reports no syntax or stream-encoding errors for either product;
-  the exact PDFs, hashes, invocations, exit codes, and raw findings accompany
-  the independent syntax record.
+- The T72 repository-owned acceptance command creates edited, merged,
+  left-split, and right-split products through both the Native Interface and
+  fixed IN_PROCESS Facade. It records the exact PDFs, hashes, execution modes,
+  invocations, exits, raw findings, and negative controls for four independent
+  evidence chains.
 
 ## Execution record — 2026-08-11
 
@@ -121,6 +121,35 @@ command maps every declared publication Target exactly once.
   reproduced where a public observation exists and remediated before the final
   independent review gate.
 
+## T72 promotion and candidate evidence
+
+The T72 profile freezes three original PDF 1.7 Sources, seven mathematically
+authored 144-DPI expected rasters, four exact products per interface, and 84
+qualified standards rules. The standards union assigns 68 rules to pinned
+pdfcpu strict/offline and 16 to the separately identified acceptance-only
+Arlington T10 r1 checker. Every assigned rule has a real illegal PDF and matching
+checker diagnostic. The original Arlington observations that exposed missing
+destination and name-tree checks remain retained beside the patched r1 results.
+
+The semantic chain reopens each exact product through the public Native
+Interface and verifies order, inherited and optional boxes, rotation, ordered
+content tokens, resource/Form programs, legacy Text annotation key scope and
+page retargeting, collision identifiers, destinations, and Source/product
+isolation. A same-length wrong-order product must fail. The visual chain renders
+every page through pinned PDFium and compares it with the fixed opaque-sRGB
+raster using ImageMagick AE with zero fuzz and threshold zero; a secondary
+renderer must also agree exactly, and a one-pixel control must fail. qpdf remains
+the syntax producer only.
+
+Every required Ubuntu 24.04/Linux x86-64 JDK 8/11/17/21 environment runs the 53
+Native public contracts in both IN_PROCESS and HARDENED_WORKER. Each scope also
+runs the 10 Facade contracts in their actual IN_PROCESS mode and both actual-jar
+contracts, for 65 tests with zero skips. Stable exposes the exact declared
+surface, Preview is its superset with no current additions, and a mixed classpath
+rejects in either jar order. The current Foundation Evidence inventory, rather
+than this aggregate profile record, binds these claims to the exact staged
+candidate, harness, environment, tools, products, reports, and controls.
+
 T10 operates in `REWRITE` and, for unsigned primary Sources, T15-classified
 `INCREMENTAL` workflows. It preserves the tested safe
 page-owned and inherited semantics. Before any page command, it conservatively
@@ -149,10 +178,12 @@ the primary-document page commands for unsigned incremental Sources but rejects
 supplies the comprehensive hostile-input policy, and T21 separately transports
 the T10 commands and queries through the opt-in Hardened Worker.
 
-This record is implementation evidence, not independent Acceptance Evidence.
-The separate T10 qpdf record supplies a passing syntax chain only; qpdf syntax
-success is not a PDF standards-conformance claim. Standards, semantic, and
-visual Acceptance Evidence remain absent. The blank-document Dependency Gate
-is also open because that prerequisite remains `experimental`. T10 therefore
-remains `experimental`, with T06 still required before a compatibility or
-certified-platform claim.
+The historical T10 qpdf record remains syntax evidence only and does not certify
+a later candidate or PDF standards conformance. T72 supplies separate aggregate
+[syntax](T72-pages-syntax.md), [standards](T72-pages-standards.md),
+[semantic](T72-pages-semantic.md), and [visual](T72-pages-visual.md) records,
+while the Foundation inventory supplies the candidate-specific tuple bindings.
+The blank-document Dependency Gate is compatible, all four mandatory T10 chains
+pass, and the Stable page mappings are declared, so this capability is
+`compatible`. This does not make the whole Foundation Release ready; unrelated
+obligations remain blocking, and Windows and macOS remain uncertified.
