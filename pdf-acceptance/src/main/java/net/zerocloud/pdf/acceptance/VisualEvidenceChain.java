@@ -74,6 +74,15 @@ final class VisualEvidenceChain {
                 T11Corpus.PROFILE, "metadata.pdf", "page-" + page, repositoryRoot);
     }
 
+    static VisualEvidenceChain t12(Path repositoryRoot, int page) {
+        return new VisualEvidenceChain("T12", "document.annotations-actions.manage",
+                T12Corpus.PROFILE, "annotations.pdf", "page-" + page, repositoryRoot);
+    }
+
+    boolean usesAppearanceProjection() { return "T12".equals(label); }
+
+    String projectionName() { return pdfiumRasterName.replace("-pdfium.png", "-appearance-projection.pdf"); }
+
     String artifactPrefix() {
         return repositoryRoot == null ? "artifacts/" : "";
     }
@@ -95,7 +104,7 @@ final class VisualEvidenceChain {
     }
 
     private boolean usesExactInputHash() {
-        return "T09".equals(label) || "T10".equals(label) || "T11".equals(label);
+        return "T09".equals(label) || "T10".equals(label) || "T11".equals(label) || "T12".equals(label);
     }
 
     static VisualEvidenceChain t18() {

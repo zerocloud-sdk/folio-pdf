@@ -1,0 +1,880 @@
+{
+  "schema-version": 1,
+  "obligation": "annotations",
+  "acceptance-profile": "T12-annotations-document-actions",
+  "release": "0.1.0",
+  "candidate-sha256": "c165109601f014a34dca1d5518727fb6f58d0813f139a81027ee7245f2c7ba22",
+  "contract-sha256": "f0d4bd9c929e444320acb1ed70ac36df304c1703bc9cb171b33f50feced4ce18",
+  "environment-sha256": "4d218b428e45b80e39dc9c57c578279be6f655d4d9350fe3c8d0723a10da79b4",
+  "execution-configuration-sha256": "0f3f5536a277191189e0872f27fcac4529246398b447af03fcb92a6beaf6da62",
+  "execution-profile": "IN_PROCESS",
+  "chain": "semantic",
+  "result": "pass",
+  "producer": "folio-pdf-t12",
+  "configuration": {
+    "path": "capabilities/evidence/T12-annotations-document-actions.md",
+    "sha256": "4abe70419ea5fefea7fac82cbd75de60ed6da9a72b73cff2222ba9fafe2743ee"
+  },
+  "report": {
+    "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/semantic-report.json",
+    "sha256": "ef7e08fb9c48c0e56b45e5ba0085e287f475b0ae560993da56a4ff40523626ee"
+  },
+  "negative-controls": [
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic.txt",
+      "sha256": "9835bb5aa34e9834bb065b9da10df67c75c89962a120a071b2b054d35b6b8c32"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/action-operand/qpdf/observed.json",
+      "sha256": "ff31a92e7c10037ec2806a6a948347d8ca3397c9cfba8a9e391e05903c7a98c1"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/action-operand/qpdf/qpdf-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/action-operand/qpdf/qpdf-version-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/action-operand/qpdf/qpdf-version.txt",
+      "sha256": "b0f1ebae415a86dec89ce30992da3059f72fd0d00bac16c8f4b1820e26c214c2"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/action-operand/qpdf/qpdf.json",
+      "sha256": "6fe48cf062daf095123301bcc0bd4d3088489639d4dd23ad0f181a302b44b695"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/action-operand/qpdf/result.properties",
+      "sha256": "2c701e8c94309a9ea7629534987b3a313ab5efe9e991d04666d15ce5eeaec682"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/action-operand/qpdf/semantic.txt",
+      "sha256": "ff9a66680348c598dfc79538fa057b570361ab0b8985186f8824f6c4f45ed62f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/action-operand/result.properties",
+      "sha256": "d0c4c470e819f654892fa4cfd9f7d5310277d8a092f67b23b896655cbee5518c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/action-operand/semantic-command.txt",
+      "sha256": "018c97c84e102a8ca33febeafd2ed464ae921048c16412adf5db49ab20172a3c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/action-operand/semantic.txt",
+      "sha256": "ff9a66680348c598dfc79538fa057b570361ab0b8985186f8824f6c4f45ed62f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/action-operand.pdf",
+      "sha256": "53e85f75b59083b04b722378d471a112240306e1f50d369e0a2f3096b94310c8"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/appearance/qpdf/observed.json",
+      "sha256": "5ef449e2b0170d7c9b4a2254abde25cbf6f9275ceafc95528b8a3d0c5f64bb45"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/appearance/qpdf/qpdf-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/appearance/qpdf/qpdf-version-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/appearance/qpdf/qpdf-version.txt",
+      "sha256": "b0f1ebae415a86dec89ce30992da3059f72fd0d00bac16c8f4b1820e26c214c2"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/appearance/qpdf/qpdf.json",
+      "sha256": "80028d32d134976af4a29eb6068cbdad743ec0c221b68dd2945aeb272061bd82"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/appearance/qpdf/result.properties",
+      "sha256": "687656f8d340ad0e7f611dd19345ba47afb1bf5d7d9d9d533a46155526ef899d"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/appearance/qpdf/semantic.txt",
+      "sha256": "1c741c05bba0652c077705079c9be9b38f80c0339af618cc84da663c8d591b1d"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/appearance/result.properties",
+      "sha256": "3648d485660da3c762e303c3afe5ec6798a31fbee354df8b7ac18db5c9dbc269"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/appearance/semantic-command.txt",
+      "sha256": "493bd1a886b3c1c7367924eee452220b254af1b3effd973687bd854757ddf3c6"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/appearance/semantic.txt",
+      "sha256": "1c741c05bba0652c077705079c9be9b38f80c0339af618cc84da663c8d591b1d"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/appearance-box/qpdf/observed.json",
+      "sha256": "89b4e8a7fb55fcfc47d967107b663ace8648c0ec28353795c0bd30ea32aa62fd"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/appearance-box/qpdf/qpdf-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/appearance-box/qpdf/qpdf-version-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/appearance-box/qpdf/qpdf-version.txt",
+      "sha256": "b0f1ebae415a86dec89ce30992da3059f72fd0d00bac16c8f4b1820e26c214c2"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/appearance-box/qpdf/qpdf.json",
+      "sha256": "bb0d2d67823b2f40d2d56ec08dc92486d218ea478490721ce267a0ccd3a18ed7"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/appearance-box/qpdf/result.properties",
+      "sha256": "e0d3c955dc547d6a7d5b9956c7fac7ddd708d3123304227ddc0ad7c3478d1bec"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/appearance-box/qpdf/semantic.txt",
+      "sha256": "f0264fb2171727de2401c64dfd6973d8c6dcfba967ab93cb42fae404e55a9329"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/appearance-box/result.properties",
+      "sha256": "50352149ff55b1ce32ab8e3f22b7d4989b74bc9f622a390f7835a0be915187d7"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/appearance-box/semantic-command.txt",
+      "sha256": "7ff59d40d1c6f839a8b5e98fe7737a96b2380d4eb50fb0fe8efa9afe6a275fd2"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/appearance-box/semantic.txt",
+      "sha256": "f0264fb2171727de2401c64dfd6973d8c6dcfba967ab93cb42fae404e55a9329"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/appearance-box.pdf",
+      "sha256": "7385d8edf64dd1a6a5d6135c8f83fd29982163e49de5411a905eae5de22387b5"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/appearance.pdf",
+      "sha256": "83987631e0364e17deaaa8e2d81d45a386b041f4ab0fdc6f33d41c7c9e78d8b2"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/copy-external/qpdf/observed.json",
+      "sha256": "ac6a66e40a134b3b3ec8e01a43f818d30f44c8e56b1702501a5a3b2f54786c97"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/copy-external/qpdf/qpdf-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/copy-external/qpdf/qpdf-version-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/copy-external/qpdf/qpdf-version.txt",
+      "sha256": "b0f1ebae415a86dec89ce30992da3059f72fd0d00bac16c8f4b1820e26c214c2"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/copy-external/qpdf/qpdf.json",
+      "sha256": "6c58f5555c7fac5f78e245da504be79e45381decbaf935a7a3c6db0284c62822"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/copy-external/qpdf/result.properties",
+      "sha256": "98247f2fa1493b83f6ea5ad31b6e69ae7c26fe8ab93b1c999d0afd5cd88d0988"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/copy-external/qpdf/semantic.txt",
+      "sha256": "0508aa58e060b32be422ec8e21a8d51889ce77130751259c2c1b654063233801"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/copy-external/result.properties",
+      "sha256": "a1b34e29bb7a9333e244edf1781c09f72435f65bbc101bbbddc87ce52905733e"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/copy-external/semantic-command.txt",
+      "sha256": "51faae834219a63516074763c6f48772244767a11d1f85e7eff5a6310ea88215"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/copy-external/semantic.txt",
+      "sha256": "0508aa58e060b32be422ec8e21a8d51889ce77130751259c2c1b654063233801"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/copy-external.pdf",
+      "sha256": "7d5223402e329eed324d7b9057bff91ed1c62c74737c1c727f50e271f6cdf956"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/copy-target/qpdf/observed.json",
+      "sha256": "9015ce398fdc754a587280e430ce5ed64a80b5ea50cdfa5cbfd84cf81419729b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/copy-target/qpdf/qpdf-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/copy-target/qpdf/qpdf-version-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/copy-target/qpdf/qpdf-version.txt",
+      "sha256": "b0f1ebae415a86dec89ce30992da3059f72fd0d00bac16c8f4b1820e26c214c2"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/copy-target/qpdf/qpdf.json",
+      "sha256": "7e584d45a0fd929fd9e604211e5f7c60a2119bc9d19ff341d4bfc848cfddfefa"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/copy-target/qpdf/result.properties",
+      "sha256": "453052ead11a3143b02aa971067ea28da42b174101968d5d3d21f42def4a2f5d"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/copy-target/qpdf/semantic.txt",
+      "sha256": "a4e47c9a04bb678a1eb4a15285bc2238c41ed73339136708f69b27bfa5626a99"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/copy-target/result.properties",
+      "sha256": "f63ac4e8b25388a0a6727d4f0266d2407c28e6fd77d6bcb49d076a2cc6f2b4a6"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/copy-target/semantic-command.txt",
+      "sha256": "2b03dec26f59f7e8b2d6647d0cf8f48b5abb743f1923f8e80e8b2d3a1c4e19a6"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/copy-target/semantic.txt",
+      "sha256": "a4e47c9a04bb678a1eb4a15285bc2238c41ed73339136708f69b27bfa5626a99"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/copy-target.pdf",
+      "sha256": "1e3fc1cc0baa69f176dd1bb6852eb2e17716c918957684c0fff39d5b089b58d8"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/direct-target/qpdf/observed.json",
+      "sha256": "e79aecd92800aca5dcd8c896e6cd56dcdbd5da60f35dd06e69019d67ce63b78c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/direct-target/qpdf/qpdf-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/direct-target/qpdf/qpdf-version-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/direct-target/qpdf/qpdf-version.txt",
+      "sha256": "b0f1ebae415a86dec89ce30992da3059f72fd0d00bac16c8f4b1820e26c214c2"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/direct-target/qpdf/qpdf.json",
+      "sha256": "64ad9ad322fbe536dd01a9ebd6ccc27ea5835e16c76e23f1d8ae1c9a101c4f36"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/direct-target/qpdf/result.properties",
+      "sha256": "cf0c5a0969ce6024bfc612ee1c5383ccb026b3b4263d31b772b2455206d58603"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/direct-target/qpdf/semantic.txt",
+      "sha256": "c6b96a1f552314cd7d8b6aa03ba6ec7f772878e0b3d2492dce2c53bcdb4bbf35"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/direct-target/result.properties",
+      "sha256": "8ce309dacc6fbf43a13cc73d3f8d797b78d022f15d4ae02d6f16b40d9a249929"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/direct-target/semantic-command.txt",
+      "sha256": "89104f6b673ff8ae5209a25c9d8f7f3e62a6eb91855b7703b52c0f00b99e6063"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/direct-target/semantic.txt",
+      "sha256": "c6b96a1f552314cd7d8b6aa03ba6ec7f772878e0b3d2492dce2c53bcdb4bbf35"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/direct-target.pdf",
+      "sha256": "ed8a19cf9d09dd440f51c774a5e0f2974b2231e586b0ce8333c8150aac7553ef"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/flatten-placement/qpdf/observed.json",
+      "sha256": "55aa3330fdcaa6b641672cd5680e62087b9dec99c985fc28080dfa4f1f72b527"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/flatten-placement/qpdf/qpdf-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/flatten-placement/qpdf/qpdf-version-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/flatten-placement/qpdf/qpdf-version.txt",
+      "sha256": "b0f1ebae415a86dec89ce30992da3059f72fd0d00bac16c8f4b1820e26c214c2"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/flatten-placement/qpdf/qpdf.json",
+      "sha256": "4c723be9d8d23d069e33f14c267caea3e721d1f909848d9b85e100ab53d8bf96"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/flatten-placement/qpdf/result.properties",
+      "sha256": "1f987fcb7dfc90e22dd3480141b255651e1cc67dd17f594cae7f3983e093e28d"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/flatten-placement/qpdf/semantic.txt",
+      "sha256": "5465e570938aa681dc7cf04adac8e773c86a08fe75305e02d77a17219c6b1850"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/flatten-placement/result.properties",
+      "sha256": "5b10da00bf9c041c0ae070b0920e40c2e5fe83b01686cbfe97b36feca1469cd1"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/flatten-placement/semantic-command.txt",
+      "sha256": "094f611fe7b2c419712b0d29ea543b94ee46f5ce27740b7569064dc9e6bc4b2c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/flatten-placement/semantic.txt",
+      "sha256": "5465e570938aa681dc7cf04adac8e773c86a08fe75305e02d77a17219c6b1850"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/flatten-placement.pdf",
+      "sha256": "f61c064a97196ef9075c00f1965b8855695384b0140de1eb750ab07986ea8e6b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/flatten-removal/qpdf/observed.json",
+      "sha256": "cb7a71d47d094b003e5536a251a0d2b113e5061842570272bd17fddfbd63219d"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/flatten-removal/qpdf/qpdf-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/flatten-removal/qpdf/qpdf-version-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/flatten-removal/qpdf/qpdf-version.txt",
+      "sha256": "b0f1ebae415a86dec89ce30992da3059f72fd0d00bac16c8f4b1820e26c214c2"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/flatten-removal/qpdf/qpdf.json",
+      "sha256": "26799e4774ef7204dd935d5c0c5e7c9e0d99108cef8acab2b3ad5983d0367bfc"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/flatten-removal/qpdf/result.properties",
+      "sha256": "ee27f6450213ec863ee96aa126ea1ccc3222c8e75a2c02e7a7b3e3073281e581"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/flatten-removal/qpdf/semantic.txt",
+      "sha256": "1bf580cf675df808243c5095680f0cfb1385b8329d3ea01f78df099a934b4d0a"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/flatten-removal/result.properties",
+      "sha256": "a89ba9178139afb85d611ec18787fb99e194b7646dc7ec54a54c42b76a49c414"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/flatten-removal/semantic-command.txt",
+      "sha256": "c2087de1417e1051f7f3fb0da3adecc7f96fb01e7c4a16e0b467c66397c94b22"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/flatten-removal/semantic.txt",
+      "sha256": "1bf580cf675df808243c5095680f0cfb1385b8329d3ea01f78df099a934b4d0a"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/flatten-removal.pdf",
+      "sha256": "e4f6597890534f1e42fb00fef2ec6b672d33f81730b63301a8381b6118106003"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/icon/qpdf/observed.json",
+      "sha256": "6c37d6a1d9f000181f5fe7f66157bd0e209e7fe522288d10a61a10cce5ed8b99"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/icon/qpdf/qpdf-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/icon/qpdf/qpdf-version-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/icon/qpdf/qpdf-version.txt",
+      "sha256": "b0f1ebae415a86dec89ce30992da3059f72fd0d00bac16c8f4b1820e26c214c2"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/icon/qpdf/qpdf.json",
+      "sha256": "ef9d1fd95c722fe75c6b5e7cbc9969855eaa37cf6fc98701e7a9c476dffc6dee"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/icon/qpdf/result.properties",
+      "sha256": "9c6060cd364c1b97571525215c938b05114699cb9b1aea0d1fa6644a20c5c528"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/icon/qpdf/semantic.txt",
+      "sha256": "45d73bb1c335d5e8066736033e2702418eeee8f9346c91d1df8f15b9701ce0dd"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/icon/result.properties",
+      "sha256": "6b19589902642ad6135d6e7844e862ef5c42865c0bf86049ed55be9a86fa835d"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/icon/semantic-command.txt",
+      "sha256": "d0eb45bb2947d985d47ae65adb60ff7db0599edc033885ed6153f67d7c6fdd34"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/icon/semantic.txt",
+      "sha256": "45d73bb1c335d5e8066736033e2702418eeee8f9346c91d1df8f15b9701ce0dd"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/icon.pdf",
+      "sha256": "1802530457dc4b3cea80ac40994d519c680e60dbab4444a8aead77cdf88b8c94"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/identifier/qpdf/observed.json",
+      "sha256": "6f1bbd1a661edd70e09f33658b0570bdee3595bc11568e6422dcac9392ffc962"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/identifier/qpdf/qpdf-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/identifier/qpdf/qpdf-version-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/identifier/qpdf/qpdf-version.txt",
+      "sha256": "b0f1ebae415a86dec89ce30992da3059f72fd0d00bac16c8f4b1820e26c214c2"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/identifier/qpdf/qpdf.json",
+      "sha256": "aaabac5aeef02584b61fb1a317f6e57c33fe85dc4c226472f2515c4a606eabc1"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/identifier/qpdf/result.properties",
+      "sha256": "f5383c80ce5af7109d14042560cd1a3b209fd4030016391473f302fa563505b8"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/identifier/qpdf/semantic.txt",
+      "sha256": "db3acac90869ca44a099834348d7deb3e16c272dd9367b4b44ecb6af471c5ba0"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/identifier/result.properties",
+      "sha256": "49e5c35c0e5230ddaffc7c0fd1eaa4f178384e6d6bbaed13498bad1656493948"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/identifier/semantic-command.txt",
+      "sha256": "45bea90878dc1670b0d758c3f276383da0cab839bc34be6ac7ba610267d69f19"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/identifier/semantic.txt",
+      "sha256": "db3acac90869ca44a099834348d7deb3e16c272dd9367b4b44ecb6af471c5ba0"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/identifier.pdf",
+      "sha256": "a78983aed65a40deabdfe5418f27589a5816e4bf5a7e8412e22e27cb5aa8c30a"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/merge-name/qpdf/observed.json",
+      "sha256": "bec907945c6bb1dd3f30a2ecd0254cf8f0b311558324cf18c51261b46c2d820a"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/merge-name/qpdf/qpdf-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/merge-name/qpdf/qpdf-version-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/merge-name/qpdf/qpdf-version.txt",
+      "sha256": "b0f1ebae415a86dec89ce30992da3059f72fd0d00bac16c8f4b1820e26c214c2"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/merge-name/qpdf/qpdf.json",
+      "sha256": "a98c861791faba8dd8053d39992883fb2c90231a539e917115d244f5d89123bb"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/merge-name/qpdf/result.properties",
+      "sha256": "5bbd6b881ccc5033ea7e3520f15efc8e4f0cb9aeacc50e0cea50fbb7ed49536c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/merge-name/qpdf/semantic.txt",
+      "sha256": "ca5fb1d43d0f5b410926b3ba352a0ca7f8257de2bbdf971bb016c3949869256a"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/merge-name/result.properties",
+      "sha256": "5897302efc1c35243ca67aaac41470adfd8f3d9b2c7db7f6f12a8a97da1d1d84"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/merge-name/semantic-command.txt",
+      "sha256": "34707ed9d120a2ad1a44210b401ea388b5b8774cfb0d50d8737e3491fd3df908"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/merge-name/semantic.txt",
+      "sha256": "ca5fb1d43d0f5b410926b3ba352a0ca7f8257de2bbdf971bb016c3949869256a"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/merge-name.pdf",
+      "sha256": "21f050b725bbf505a809b0d0053a5c724e6c81a41cdd6219e1bb17fc6b80f88e"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/named-target/qpdf/observed.json",
+      "sha256": "f389c7ff4ac288c8fbf40d2e905389ad36f390a870a32041b8dd603d10f5b7d3"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/named-target/qpdf/qpdf-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/named-target/qpdf/qpdf-version-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/named-target/qpdf/qpdf-version.txt",
+      "sha256": "b0f1ebae415a86dec89ce30992da3059f72fd0d00bac16c8f4b1820e26c214c2"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/named-target/qpdf/qpdf.json",
+      "sha256": "7b1c99bf89a057f4bbe5df75158adff44476e44e0263f4c9f453e765f1914690"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/named-target/qpdf/result.properties",
+      "sha256": "2df88847bcad67d5f8207edc3e6f135c014c092e37821b1563a08a2b80ec9c5f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/named-target/qpdf/semantic.txt",
+      "sha256": "e0edaf6cdabeac15728f0daa03a27d1713b72ed818042bf6e98377629ebb4103"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/named-target/result.properties",
+      "sha256": "7a61921b62d747de0701c5eea9266aa7ddf673d49d2ed2059c1e9d2df39b5b6e"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/named-target/semantic-command.txt",
+      "sha256": "a68653551f066bd023795e99acaf1c4575f236eb591ad8784f3a05c5b1d56213"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/named-target/semantic.txt",
+      "sha256": "e0edaf6cdabeac15728f0daa03a27d1713b72ed818042bf6e98377629ebb4103"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/named-target.pdf",
+      "sha256": "236b98fe2824f19bb76910a4d315fe10f32ebe32bf3eed531441768a6c43c7fd"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/open-adoption/qpdf/observed.json",
+      "sha256": "dace67c013585a2abab6ebd4d3f5528d91378a2be5467b3068a362b83f581a96"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/open-adoption/qpdf/qpdf-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/open-adoption/qpdf/qpdf-version-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/open-adoption/qpdf/qpdf-version.txt",
+      "sha256": "b0f1ebae415a86dec89ce30992da3059f72fd0d00bac16c8f4b1820e26c214c2"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/open-adoption/qpdf/qpdf.json",
+      "sha256": "b41c072f1488b0ee0315647a8398784ddcaa93cb97dd4874783e46ecc4890488"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/open-adoption/qpdf/result.properties",
+      "sha256": "bf5ef8281d71ed5bbe9b8408455f2db92196e81ac9d6086fccec4020b316af19"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/open-adoption/qpdf/semantic.txt",
+      "sha256": "c6d6c54ce58816c5fc465162e7855397948599506dde6c62a4520eb39d4768a7"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/open-adoption/result.properties",
+      "sha256": "cb53ec1e63cf2db160320ab9b6824f891a102be59b3521238162decaa49e7b63"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/open-adoption/semantic-command.txt",
+      "sha256": "bcce5c7e0a7e29101c80a262850bff656aac10e7833e8ddb4fea0e466c0b9f03"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/open-adoption/semantic.txt",
+      "sha256": "c6d6c54ce58816c5fc465162e7855397948599506dde6c62a4520eb39d4768a7"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/open-adoption.pdf",
+      "sha256": "f5d563b4d81145825596c12aa05b26b662363495c48c46afd08f386e304b3da0"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/order/qpdf/observed.json",
+      "sha256": "7d1267472597495b099b928452e114d506dc7f31f2a85ed1e2bc0279e0a10f6e"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/order/qpdf/qpdf-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/order/qpdf/qpdf-version-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/order/qpdf/qpdf-version.txt",
+      "sha256": "b0f1ebae415a86dec89ce30992da3059f72fd0d00bac16c8f4b1820e26c214c2"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/order/qpdf/qpdf.json",
+      "sha256": "ca40a49986650943de5d998c97179149698960bcfc79e5c7145979e98f670bbb"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/order/qpdf/result.properties",
+      "sha256": "037fe2deea934282a3f30d2743b20195cfef3dd18806755f5286121581608541"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/order/qpdf/semantic.txt",
+      "sha256": "c54466f67f269eaf94d49fb8eb3b01219543b5be09b14c2048e08189e8382d68"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/order/result.properties",
+      "sha256": "6a16ddeaf4f64874e012ca9aac3344df84be02647e34b4cbcb88c63d80f83580"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/order/semantic-command.txt",
+      "sha256": "022e7ad966e447fd80af62f0aca8b01f6f40b2ace6ca2d08d8a6619a96edc683"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/order/semantic.txt",
+      "sha256": "c54466f67f269eaf94d49fb8eb3b01219543b5be09b14c2048e08189e8382d68"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/order.pdf",
+      "sha256": "a90cb0399295c4db72564bd077acbf36d709b072ec549791ed0c27a9d6a88906"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/payload/qpdf/observed.json",
+      "sha256": "30931d4a5dbd7b01dc89eacae2f33811eabb01b91c1de88594ed41d8fed384b6"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/payload/qpdf/qpdf-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/payload/qpdf/qpdf-version-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/payload/qpdf/qpdf-version.txt",
+      "sha256": "b0f1ebae415a86dec89ce30992da3059f72fd0d00bac16c8f4b1820e26c214c2"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/payload/qpdf/qpdf.json",
+      "sha256": "10656f2be76d40c3945a635b7d3e127792965b1b93de43d79c9167a4ca6ccbc2"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/payload/qpdf/result.properties",
+      "sha256": "d57454159c350c60119eeb8e3313edd732550bcd4ec9030cf250dcbae1679360"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/payload/qpdf/semantic.txt",
+      "sha256": "0c3ceb2bcc042c929e9c08b77cb73dc114b539df6aae68d9d38985887d8214bb"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/payload/result.properties",
+      "sha256": "9e85ff89eea10d878afb605ab02a1af28021904061a18a2215d912a67ba223d4"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/payload/semantic-command.txt",
+      "sha256": "a37dc42c6c5488b763757c37994a6b47f903d5124610cbd7fc505275bcf98f17"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/payload/semantic.txt",
+      "sha256": "0c3ceb2bcc042c929e9c08b77cb73dc114b539df6aae68d9d38985887d8214bb"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/payload.pdf",
+      "sha256": "1288d4ce4d6cc1609d717fd4d9d05aeb6f34392e04b49c088499610f921b4f52"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/rectangle/qpdf/observed.json",
+      "sha256": "a70d4183d291b9da9751fd94cb02ee172126e3aaa83a7e402f32508c285ff442"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/rectangle/qpdf/qpdf-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/rectangle/qpdf/qpdf-version-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/rectangle/qpdf/qpdf-version.txt",
+      "sha256": "b0f1ebae415a86dec89ce30992da3059f72fd0d00bac16c8f4b1820e26c214c2"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/rectangle/qpdf/qpdf.json",
+      "sha256": "6befc6b96aefd943bbda04390fecf2579ac9596baa884448a1cbaf024c499ef3"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/rectangle/qpdf/result.properties",
+      "sha256": "2bd754f95c6a44dcdcacdbf921c6faf5f04e65351ed7076646dc17744b1d3ede"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/rectangle/qpdf/semantic.txt",
+      "sha256": "6a304a3339134b4053846391555d702c5eff6f9ff16e3db1f3817215798fdd5f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/rectangle/result.properties",
+      "sha256": "bad5da20747fe68f2437802b4a66254c670c3024900f6c209c6d5e7cbe40dc0d"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/rectangle/semantic-command.txt",
+      "sha256": "61c3829eb74c64a3effaeb6782492596aca9ae541131bfe0987d8ff009e7a644"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/rectangle/semantic.txt",
+      "sha256": "6a304a3339134b4053846391555d702c5eff6f9ff16e3db1f3817215798fdd5f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/rectangle.pdf",
+      "sha256": "aa1dea153c3b34702dceb4e49e1a1f119e7409232c69bac0f1be5d302431a82d"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/retained-paint/qpdf/observed.json",
+      "sha256": "012992c90e910da9cbf868ac2f142a027452f898688916adabc1e1883e822927"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/retained-paint/qpdf/qpdf-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/retained-paint/qpdf/qpdf-version-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/retained-paint/qpdf/qpdf-version.txt",
+      "sha256": "b0f1ebae415a86dec89ce30992da3059f72fd0d00bac16c8f4b1820e26c214c2"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/retained-paint/qpdf/qpdf.json",
+      "sha256": "fd2eb496ff5b5dc5b6ed9c37dc33f5a5d7f2fcc0b02021a05ff18c0629f8615e"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/retained-paint/qpdf/result.properties",
+      "sha256": "32b255b5f6d0547199074afa46f6d124a170205455186b49dcafab3e44853e59"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/retained-paint/qpdf/semantic.txt",
+      "sha256": "60d97ad4feea6f2e43792bb1d3783bac8a14d04912f3f6cf6d69fe87e14af5fe"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/retained-paint/result.properties",
+      "sha256": "251a425fcb3f7116093b68d34574a9a811d9815017757d3672e254edcce3b1b3"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/retained-paint/semantic-command.txt",
+      "sha256": "1852461339003605506f64a764a269b4afef7abec3ec112462a18e0cd02c04cd"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/retained-paint/semantic.txt",
+      "sha256": "60d97ad4feea6f2e43792bb1d3783bac8a14d04912f3f6cf6d69fe87e14af5fe"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/retained-paint.pdf",
+      "sha256": "f1f08054e5a00de7750e0cce2ea3964973219d3d2c7414cbc3b5f9c406d53bc4"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/split-survival/qpdf/observed.json",
+      "sha256": "ea29e408d67211c53130ab30cc768f13770dcc07051f954d73b51ba7eec650eb"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/split-survival/qpdf/qpdf-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/split-survival/qpdf/qpdf-version-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/split-survival/qpdf/qpdf-version.txt",
+      "sha256": "b0f1ebae415a86dec89ce30992da3059f72fd0d00bac16c8f4b1820e26c214c2"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/split-survival/qpdf/qpdf.json",
+      "sha256": "b13e227dd10dfff8bb41cba5360887aa8b71b231bbaa4196c5a5a79f99a0d52c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/split-survival/qpdf/result.properties",
+      "sha256": "bcc67887252d92131cd2b235daa32e195be16087ae9adb95061bad33d429c806"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/split-survival/qpdf/semantic.txt",
+      "sha256": "73612364638573ea6924c1d3f0c48e686610d1f7db93ec52d00acead0fea3f1d"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/split-survival/result.properties",
+      "sha256": "e419790e2614f30878e8413825055bd8f50905c50b3a9276c473c61d01dc7643"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/split-survival/semantic-command.txt",
+      "sha256": "ae1f4c9958eff1f6b994a085ebd1b975ebeb4ac88ea9152b9c0306b5c2858c12"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/split-survival/semantic.txt",
+      "sha256": "73612364638573ea6924c1d3f0c48e686610d1f7db93ec52d00acead0fea3f1d"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/negative/semantic/split-survival.pdf",
+      "sha256": "3877c8fb35bf3af3a4f06ac21e20f8829531b17f45245e5e4630b5caa84e795d"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/safety/probe/facade-chained-preserved.pdf",
+      "sha256": "339fd28b0049cb89601efa2fb5e4f93c26cdee5102501b9b67f509269e598b6a"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/safety/probe/facade-chained-replaced.pdf",
+      "sha256": "6731ea7cdc8219a03002da55c84bae7ef32cd7edb8e85c94c78ece2d7dcc72b3"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/safety/probe/facade-chained-source.pdf",
+      "sha256": "9e760389ebf227c403cc57a95b4fe007a0189dcc007257cd4f87b0a7ac047e84"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/safety/probe/facade-signed-target.pdf",
+      "sha256": "bed0f018926f6e0b097494849445096c2b55b8f9f6c1f09774fb6839073b9313"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/safety/probe/facade-unknown-preserved.pdf",
+      "sha256": "aeddc9c8a2513fbfe2334a0743bcc5c276c6ca6203ef5b0598b84fe489389b16"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/safety/probe/facade-unknown-replaced.pdf",
+      "sha256": "6731ea7cdc8219a03002da55c84bae7ef32cd7edb8e85c94c78ece2d7dcc72b3"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/safety/probe/facade-unknown-source.pdf",
+      "sha256": "6fdd2da788e126ab13247bdbfe8121e847b54f0e63fe231a1784a3d63181997b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/safety/probe/native-chained-preserved.pdf",
+      "sha256": "339fd28b0049cb89601efa2fb5e4f93c26cdee5102501b9b67f509269e598b6a"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/safety/probe/native-chained-replaced.pdf",
+      "sha256": "6731ea7cdc8219a03002da55c84bae7ef32cd7edb8e85c94c78ece2d7dcc72b3"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/safety/probe/native-chained-source.pdf",
+      "sha256": "9e760389ebf227c403cc57a95b4fe007a0189dcc007257cd4f87b0a7ac047e84"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/safety/probe/native-signed-target.pdf",
+      "sha256": "bed0f018926f6e0b097494849445096c2b55b8f9f6c1f09774fb6839073b9313"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/safety/probe/native-unknown-preserved.pdf",
+      "sha256": "aeddc9c8a2513fbfe2334a0743bcc5c276c6ca6203ef5b0598b84fe489389b16"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/safety/probe/native-unknown-replaced.pdf",
+      "sha256": "6731ea7cdc8219a03002da55c84bae7ef32cd7edb8e85c94c78ece2d7dcc72b3"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/safety/probe/native-unknown-source.pdf",
+      "sha256": "6fdd2da788e126ab13247bdbfe8121e847b54f0e63fe231a1784a3d63181997b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T74-r1-annotations/jdk11-in_process/observations/safety/probe/signed-docmdp-p3.pdf",
+      "sha256": "097e5febe12e153f2c95b433ee5d167e59c68f02d846a53fa44be9aded10a8e3"
+    }
+  ]
+}

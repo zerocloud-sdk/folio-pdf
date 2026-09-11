@@ -397,6 +397,19 @@ final class VisualProfile {
                 return profileId.contains("-edited-page-")
                         || profileId.contains("-merged-page-") ? 4 : 2;
             }
+        },
+        T12(T12Corpus.PROFILE + "-", Collections.singletonList(
+                "effective CropBox [0 0 120 100] points")) {
+            @Override
+            int pageCount(String profileId) throws IOException {
+                if (!profileId.matches(T12Corpus.PROFILE
+                        + "-(created|changed|flattened|copied|merged|adopted|left|right)-page-[1-5]")) {
+                    throw new IOException("Unsupported T12 visual profile ID: " + profileId);
+                }
+                if (profileId.contains("-copied-page-")) { return 5; }
+                if (profileId.contains("-merged-page-") || profileId.contains("-adopted-page-")) { return 4; }
+                return profileId.contains("-left-page-") || profileId.contains("-right-page-") ? 2 : 3;
+            }
         };
 
         private final String prefix;

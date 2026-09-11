@@ -48,7 +48,7 @@ public final class JarContractIT {
             "META-INF/folio-pdf/migration-itext7.edition";
 
     @Test
-    public void bothJava8ArtifactsContainTheExactLifecycleAndValueSurface() throws Exception {
+    public void bothJava8ArtifactsContainTheExactDeclaredSurface() throws Exception {
         Path previewArtifact = Paths.get(ContractTestProperties.required("artifactPath"));
         Path stableArtifact = Paths.get(
                 ContractTestProperties.required("stableArtifactPath"));
@@ -224,6 +224,10 @@ public final class JarContractIT {
                 "void addFileAttachment(net.zerocloud.pdf.EmbeddedFile)",
                 "java.util.List getFileAttachments(int)",
                 "java.util.Optional getFileAttachment(java.lang.String,long)",
+                "java.util.List getAnnotations(int,long,long)",
+                "void updateAnnotations(java.util.List,java.util.List)",
+                "net.zerocloud.pdf.DocumentActions getActions(int)",
+                "void flattenAnnotations(java.lang.String[])",
                 "net.zerocloud.pdf.itext7.kernel.utils.PdfMerger getMerger()",
                 "int getNumberOfPages()",
                 "net.zerocloud.pdf.itext7.kernel.pdf.PdfPage getPage(int)",
@@ -237,7 +241,13 @@ public final class JarContractIT {
 
         assertConstructors(page);
         assertMethods(page,
-                "net.zerocloud.pdf.itext7.kernel.pdf.PdfDictionary getPdfObject()");
+                "net.zerocloud.pdf.itext7.kernel.pdf.PdfDictionary getPdfObject()",
+                "java.util.List getAnnotations(int,long,long)",
+                "net.zerocloud.pdf.itext7.kernel.pdf.PdfPage addAnnotation(net.zerocloud.pdf.Annotation)",
+                "net.zerocloud.pdf.itext7.kernel.pdf.PdfPage removeAnnotation(java.lang.String)",
+                "net.zerocloud.pdf.itext7.kernel.pdf.PdfPage setNormalAppearance(java.lang.String,net.zerocloud.pdf.AnnotationAppearance)",
+                "net.zerocloud.pdf.itext7.kernel.pdf.PdfPage setAdditionalAction(net.zerocloud.pdf.itext7.kernel.pdf.PdfName,net.zerocloud.pdf.GoToAction)",
+                "java.util.Optional getAdditionalActions(int)");
 
         assertConstructors(merger,
                 "PdfMerger(net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument)");
@@ -349,7 +359,9 @@ public final class JarContractIT {
                 "boolean equals(java.lang.Object)", "int hashCode()");
         Class<?> catalog = loader.loadClass(prefix + "PdfCatalog");
         assertConstructors(catalog);
-        assertMethods(catalog, prefix + "PdfDictionary getPdfObject()");
+        assertMethods(catalog, prefix + "PdfDictionary getPdfObject()",
+                prefix + "PdfCatalog setOpenAction(net.zerocloud.pdf.GoToAction)",
+                "java.util.Optional getOpenAction(int)");
     }
 
     private static void assertConstructors(Class<?> type, String... expected) {

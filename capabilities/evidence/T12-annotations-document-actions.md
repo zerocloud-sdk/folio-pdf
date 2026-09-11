@@ -1,6 +1,6 @@
 # T12 annotations and document Actions evidence
 
-Status: `experimental`
+Status: `compatible`
 
 Capability: `document.annotations-actions.manage`
 
@@ -84,7 +84,7 @@ an Action and does not expose PDFBox or another backend type.
   invocations, exit codes, and raw findings accompany the separate syntax
   record.
 
-## Execution record — 2026-09-01
+## Historical Native execution record — 2026-09-01
 
 - Fixed review point:
   `3fe239e8d7082abcc088db4865bcf16b57b1f396`.
@@ -118,10 +118,48 @@ comprehensive hostile-input enforcement, and Worker codecs remain outside
 T12 itself; T20 and T21 now compose those latter policy and transport layers
 with the T12 contract.
 
-This record is implementation evidence, not independent Acceptance Evidence.
-The separate T12 qpdf record supplies a passing syntax chain only; qpdf syntax
-success is not a PDF standards-conformance claim. Standards, semantic, and
-visual Acceptance Evidence remain absent. The value-inspection, page, and
-metadata Dependency Gates are open because those prerequisites remain
-`experimental`. T12 therefore remains `experimental`, with T06 still required
-before a compatibility or certified-platform claim.
+## T74 independent certification
+
+T74 adds the complete 12-member Stable mapping, inherited unchanged by Preview,
+and selects the actual Native execution profile in all 36 Annotation workflow
+consumer cases. Nine Facade consumer cases run for each edition in the normal
+build. Every Foundation tuple runs the 36 Native cases, nine Stable Facade
+cases and two actual-jar/classpath contracts (47 total); Preview independently
+shares and verifies the Stable implementation and manifest.
+
+The original frozen corpus and procedure are in
+[docs/t12-certification.md](../../docs/t12-certification.md). Sixteen exact
+products cover create/change round trips, all supported APs and event/Link
+bindings, non-Widget flattening, copy, merge conflict/adoption and both split
+ranges. Independent semantics examine original qpdf object graphs and retained
+paint; public observations and publication receipts bind actual execution.
+
+The separate [syntax](T74-annotations-syntax.md),
+[standards](T74-annotations-standards.md),
+[semantic](T74-annotations-semantic.md) and
+[visual](T74-annotations-visual.md) indices cover pinned qpdf, 174 qualified
+strict offline pdfcpu/Arlington predicates, original graph expectations and
+exact original rasters. Required predicates retain original illegal controls
+and diagnostics. Eighteen actual product semantic defects and three actual
+appearance/placement/retained-paint visual defects fail against unchanged
+expectations. Original reference positives qualify standalone Widget rendering
+through an independently hashed PDFium AP projection; actual Native flattening
+is checked on the original product separately.
+
+A separately qualified Linux observer watches declared canary read/write,
+executable access, script file effects and loopback connections across the
+public probe's descendants. Unknown/chained JavaScript, URI, Launch and GoToR
+content stays inert during supported structure preservation; semantic queries
+and page copies reject atomically; explicit local GoTo replacement succeeds.
+Both Native modes and the fixed-IN_PROCESS Facade retain signed-Source rewrite
+protection. Detailed observer scope and qualification are recorded without
+asserting private backend identity or script-engine execution traces.
+
+The current [Foundation evidence authority](../foundation-evidence.yaml) binds
+eight actual Ubuntu 24.04/Linux x86-64 JDK 8/11/17/21 × Native
+IN_PROCESS/HARDENED_WORKER tuples to one candidate and contract. The Facade is
+recorded as IN_PROCESS in every tuple. Transactions, values, pages and metadata
+must also be satisfied for that same candidate. Windows and macOS remain
+uncertified. Static capability compatibility does not pre-certify a modified
+candidate; readiness checks exact inputs, artifacts, configuration, environment,
+producer identities, reports and negative controls.

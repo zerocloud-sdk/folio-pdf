@@ -1,0 +1,39 @@
+{
+  "child_exit": 0,
+  "command": [
+    "/opt/java/openjdk/bin/java",
+    "-cp",
+    "/workspace/target/foundation-0.1.0/artifacts/pdf-conversion-0.1.0.jar:/workspace/target/foundation-0.1.0/artifacts/pdf-document-0.1.0.jar:/workspace/target/foundation-0.1.0/artifacts/pdf-migration-itext7-0.1.0.jar:/workspace/target/foundation-0.1.0/artifacts/pdf-provider-contract-0.1.0.jar:/workspace/target/foundation-0.1.0/harness/acceptance.jar:/workspace/target/foundation-0.1.0/harness/facade-tests.jar:/workspace/target/foundation-0.1.0/harness/lib/common-image-3.14.0.jar:/workspace/target/foundation-0.1.0/harness/lib/common-io-3.14.0.jar:/workspace/target/foundation-0.1.0/harness/lib/common-lang-3.14.0.jar:/workspace/target/foundation-0.1.0/harness/lib/commons-logging-1.4.0.jar:/workspace/target/foundation-0.1.0/harness/lib/core-3.5.3.jar:/workspace/target/foundation-0.1.0/harness/lib/fontbox-3.0.8.jar:/workspace/target/foundation-0.1.0/harness/lib/hamcrest-core-1.3.jar:/workspace/target/foundation-0.1.0/harness/lib/icu4j-77.1.jar:/workspace/target/foundation-0.1.0/harness/lib/imageio-core-3.14.0.jar:/workspace/target/foundation-0.1.0/harness/lib/imageio-metadata-3.14.0.jar:/workspace/target/foundation-0.1.0/harness/lib/imageio-tiff-3.14.0.jar:/workspace/target/foundation-0.1.0/harness/lib/junit-4.13.2.jar:/workspace/target/foundation-0.1.0/harness/lib/okapibarcode-0.5.6.jar:/workspace/target/foundation-0.1.0/harness/lib/pdfbox-3.0.8.jar:/workspace/target/foundation-0.1.0/harness/lib/pdfbox-io-3.0.8.jar:/workspace/target/foundation-0.1.0/harness/lib/snakeyaml-2.2.jar:/workspace/target/foundation-0.1.0/harness/native-tests.jar",
+    "net.zerocloud.pdf.acceptance.T12ActionSafetyProbe",
+    "/workspace",
+    "/workspace/capabilities/evidence/foundation/T74-r1-annotations/jdk21-in_process/observations/safety/probe",
+    "IN_PROCESS"
+  ],
+  "effects": {
+    "network": 0,
+    "process": 0,
+    "read": 0,
+    "script": 0,
+    "write": 0
+  },
+  "kernel": "6.8.0-136-generic",
+  "observer_sha256": "f797318b573812f5b09b4db2d6527c905813b0a3f4712bd0e4570028a0b31aca",
+  "python_sha256": "1643dacd9feaedc58f3cc581e4d22577dfe25c09b10282936186ccf0f2e61118",
+  "python_version": "3.12.3 (main, Jun 19 2026, 12:46:00) [GCC 13.3.0]",
+  "qualification": {
+    "network": "pass",
+    "process": "pass",
+    "read": "pass",
+    "script": "pass",
+    "write": "pass"
+  },
+  "qualification_counts": {
+    "network": 1,
+    "process": 4,
+    "read": 2,
+    "script": 1,
+    "write": 1
+  },
+  "result": "pass",
+  "scope": "Declared Action canary file access, writes, launch access, script file effect and loopback connection; all descendant processes"
+}

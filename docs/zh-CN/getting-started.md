@@ -20,12 +20,12 @@ export FOLIO_HARFBUZZ_HELPER=/explicit/folio-harfbuzz-10.2.0/bin/folio-harfbuzz
 ```
 
 普通构建保留认证记录器的行为测试，包括缺工具时必须保留 `INDETERMINATE`
-记录。T03/T09/T10/T11 中依赖独立验收工具的测试须先按
+记录。T03/T09/T10/T11/T12 中依赖独立验收工具的测试须先按
 [固定工具安装说明](../third-party/t03-standards-tools.md) 完成配置，再显式运行：
 
 ```sh
 ./mvnw -B -ntp -Pindependent-certification -pl pdf-acceptance -am \
-  -Dtest=T03EvidenceCommandTest,T09EvidenceCommandTest,T10EvidenceCommandTest,T10StandardsQualificationTest,T11EvidenceCommandTest,T11StandardsQualificationTest \
+  -Dtest=T03EvidenceCommandTest,T09EvidenceCommandTest,T10EvidenceCommandTest,T10StandardsQualificationTest,T11EvidenceCommandTest,T11StandardsQualificationTest,T12EvidenceCommandTest,T12StandardsQualificationTest \
   -Dsurefire.failIfNoSpecifiedTests=false test
 ```
 
@@ -271,6 +271,66 @@ T11 对 Native 的两个执行模式在四个 Linux/JDK 环境分别认证；Fac
 [英文元数据合同](../metadata-navigation.md)。当前候选的权威记录是
 [Foundation Evidence 索引](../../capabilities/foundation-evidence.yaml)；其他未完成
 obligation 仍使整体 Foundation 状态为 NOT READY。
+
+## T12 注解、外观与局部 Action
+
+Stable Migration Facade 和复用同一源码的 Preview 均支持 Text、Stamp、Highlight、
+FileAttachment、独立 Widget 和 Link。它们使用 Native 的不可变 `Annotation`、
+`AnnotationAppearance`、`GoToAction` 等值，不创建 AcroForm 字段。
+Facade 的实际执行模式固定为 `IN_PROCESS`；Native 可通过
+`WorkflowRequest.Builder.executionProfile(...)` 选择 `HARDENED_WORKER`。
+
+`PdfPage.addAnnotation` 会将值放到该页面句柄当前所代表的页面；句柄在页面重排后
+仍指向原页面。`PdfDocument.updateAnnotations` 在一个原子命令中替换或删除多个
+标识；相同标识的最后一个值生效，其声明顺序取第一次出现的位置。未被替换的条目
+保留在前，替换条目追加在该页数组末尾。`setNormalAppearance` 遵循同一顺序规则。
+
+```java
+// 已在一个 PDF 2.0 PdfDocument 写入会话中；完整构造示例见下方英文合同。
+Annotation note = Annotation.text(
+        AnnotationProperties.version1("review-note", 1,
+                AnnotationRectangle.of(36, 700, 72, 730))
+                .contents("请复核此处").build(),
+        Annotation.TextIcon.NOTE, false);
+PdfPage page = document.getPage(1);
+page.addAnnotation(note).setNormalAppearance("review-note",
+        AnnotationAppearance.version1(AnnotationRectangle.of(0, 0, 12, 10),
+                "q 0 0 1 rg 0 0 12 10 re f Q\n".getBytes(StandardCharsets.US_ASCII)));
+GoToAction local = GoToAction.version1(
+        NavigationTarget.toPage(PageDestination.fit(1)));
+document.getCatalog().setOpenAction(local);
+page.setAdditionalAction(new PdfName("O"), local);
+List<Annotation> detached = document.getAnnotations(100, 1 << 20, 1 << 20);
+```
+
+代码中的 `PdfDocument`、`PdfPage`、`PdfName` 使用
+`net.zerocloud.pdf.itext7.kernel.pdf` 包，其余注解、几何、外观和导航值使用
+`net.zerocloud.pdf` 包。PDF 2.0 源文件与附件 AF 关系须使用带
+`PdfVersion.PDF_2_0` 的命名 Source/Target 构造器；普通 Reader/Writer 构造器
+默认输出 PDF 1.7。关闭文档后可检查 `getPublicationReceipts()`，再重开读取。
+
+`getAnnotations` 的三个边界分别限制整个文档的注解数、解码外观字节和解码附件
+字节；页面查询先应用这些全局边界再筛选页面。按页移除和修改外观固定使用
+100,000 个注解及各 8 MiB 的读取边界；不存在或属于其他页的标识会抛出
+`IllegalArgumentException`。文档级删除和 flatten 保留 Native 的
+`ANNOTATION_NOT_FOUND` 错误。
+
+仅 catalog OpenAction、页面 O/C 和 Link 的局部 GoTo 受支持。`null` 表示移除
+所选事件绑定；目标可为当前文档的显式页面或已存在的命名目的地。所有 Action
+都只作为数据保存。未知或 chained Action 在无需解释其语义的改写中结构保留，
+而查询或目的地重写会在变更前拒绝。异常保留稳定的 Native 错误码和安全诊断。
+
+`flattenAnnotations("review-note")` 将受支持的非 Widget 外观放入页面绘制并删除
+对应注解，保留既有绘制。AP/N 必须是不引用资源、identity Matrix、空 Resources
+的 Form；省略 Matrix 与显式 identity 等价。Widget flatten、AcroForm 字段、表单
+Action 和依赖字体/图片等资源的外观不在此范围。签名源仍遵循既有保护策略。
+
+[T12 英文合同](../annotations-actions.md)列出全部 12 个映射和完整示例；
+[认证合同](../t12-certification.md)说明原始预期、174 条标准规则、独立语义与像素
+验证、负向控制和安全观察器。八个 Linux/JDK/Native 模式组合的实际证据及同一
+candidate 的四项前置认证，以
+[Foundation evidence](../../capabilities/foundation-evidence.yaml)为准。
+Windows 和 macOS 仍未认证。
 
 ## T23 页面渲染
 

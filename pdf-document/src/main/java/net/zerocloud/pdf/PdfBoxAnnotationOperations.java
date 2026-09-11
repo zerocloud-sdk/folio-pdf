@@ -63,8 +63,6 @@ final class PdfBoxAnnotationOperations {
     private static final COSName GO_TO = COSName.getPDFName("GoTo");
     private static final COSName OPEN_ACTION = COSName.getPDFName("OpenAction");
     private static final int MAX_APPEARANCE_CONTENT_BYTES = 1024 * 1024;
-    private static final char[] HEX_DIGITS =
-            "0123456789abcdef".toCharArray();
 
     private final PDDocument document;
     private final PdfBoxMetadataOperations metadataOperations;
@@ -1114,7 +1112,8 @@ final class PdfBoxAnnotationOperations {
         }
         COSStream stream = (COSStream) normal;
         requireOnlyKeys(stream, "Length", "Filter", "DecodeParms", "DL",
-                "Type", "Subtype", "FormType", "BBox", "Resources");
+                "Type", "Subtype", "FormType", "BBox", "Resources", "Matrix");
+        requireIdentityAppearanceMatrix(stream.getItem(COSName.MATRIX));
         if (!COSName.XOBJECT.equals(dereference(stream.getItem(COSName.TYPE)))
                 || !COSName.FORM.equals(dereference(
                         stream.getItem(COSName.SUBTYPE)))) {
@@ -1144,6 +1143,24 @@ final class PdfBoxAnnotationOperations {
         } catch (DocumentFailure | RuntimeException failure) {
             decoded.close();
             throw failure;
+        }
+    }
+
+    private void requireIdentityAppearanceMatrix(COSBase raw) throws DocumentFailure {
+        if (raw == null) {
+            return;
+        }
+        COSBase value = dereference(raw);
+        if (!(value instanceof COSArray) || ((COSArray) value).size() != 6) {
+            throw invalidQuery();
+        }
+        COSArray matrix = (COSArray) value;
+        for (int index = 0; index < 6; index++) {
+            BigDecimal component = decimal(matrix.get(index));
+            BigDecimal expected = index == 0 || index == 3 ? BigDecimal.ONE : BigDecimal.ZERO;
+            if (component == null || component.compareTo(expected) != 0) {
+                throw invalidQuery();
+            }
         }
     }
 
@@ -1539,14 +1556,8 @@ final class PdfBoxAnnotationOperations {
                 if (character > 0x7e) {
                     throw invalidCommand();
                 }
-                if (character <= 0x20
-                        || "()<>[]{}/%#".indexOf(character) >= 0) {
-                    encoded.append('#');
-                    encoded.append(HEX_DIGITS[(character >> 4) & 0xf]);
-                    encoded.append(HEX_DIGITS[character & 0xf]);
-                } else {
-                    encoded.append(character);
-                }
+                // COSName performs PDF name escaping at serialization time.
+                encoded.append(character);
             }
             try {
                 return COSName.getPDFName(encoded.finishHeld(ownership));
@@ -1565,17 +1576,8 @@ final class PdfBoxAnnotationOperations {
         try (WorkflowResourceContext.OwnedTextAccumulator decoded =
                 resources.ownedTextAccumulator()) {
             for (int index = 0; index < encoded.length(); index++) {
-                char character = encoded.charAt(index);
-                if (character == '#' && index + 2 < encoded.length()) {
-                    int high = Character.digit(encoded.charAt(index + 1), 16);
-                    int low = Character.digit(encoded.charAt(index + 2), 16);
-                    if (high >= 0 && low >= 0) {
-                        decoded.append((char) (high * 16 + low));
-                        index += 2;
-                        continue;
-                    }
-                }
-                decoded.append(character);
+                // COSName already contains the decoded name, including literal hashes.
+                decoded.append(encoded.charAt(index));
             }
             return decoded.finishHeld(ownership);
         }

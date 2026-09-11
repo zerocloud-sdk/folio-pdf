@@ -41,6 +41,13 @@ mode. See [page manipulation](docs/page-manipulation.md) and the
 candidate and environment authority. Other Foundation obligations still keep
 global readiness at NOT READY.
 
+T74 adds the matching 12-member Stable Annotation/Action mapping, inherited by
+Preview: six Annotation families, bounded reads, resource-free AP/N, local
+GoTo/event bindings and non-Widget flattening. The
+[T12 contract](docs/t12-certification.md) defines independent original semantic,
+standards and visual expectations and the eight actual Native-mode/JDK tuples;
+the [usage guide](docs/annotations-actions.md) describes the public boundaries.
+
 T05 establishes the Capability Provider contract for in-process Java, native
 linkage, local subprocess, and explicitly authorized remote engines. The
 default Workflow Environment registers no Provider, remains offline, and
@@ -67,14 +74,15 @@ export FOLIO_HARFBUZZ_HELPER=/explicit/folio-harfbuzz-10.2.0/bin/folio-harfbuzz
 ```
 
 Ordinary verification tests recorder behavior, including unavailable tools, but
-does not run the T03/T09/T10/T11 tests that require independently provisioned
+does not run the T03/T09/T10/T11/T12 tests that require independently provisioned
 acceptance tools. After installing the pinned tools documented in
 [T03 certification](docs/t03-certification.md) and
-[T11 certification](docs/t11-certification.md), run those tests explicitly:
+[T11 certification](docs/t11-certification.md) and
+[T12 certification](docs/t12-certification.md), run those tests explicitly:
 
 ```sh
 ./mvnw -B -ntp -Pindependent-certification -pl pdf-acceptance -am \
-  -Dtest=T03EvidenceCommandTest,T09EvidenceCommandTest,T10EvidenceCommandTest,T10StandardsQualificationTest,T11EvidenceCommandTest,T11StandardsQualificationTest \
+  -Dtest=T03EvidenceCommandTest,T09EvidenceCommandTest,T10EvidenceCommandTest,T10StandardsQualificationTest,T11EvidenceCommandTest,T11StandardsQualificationTest,T12EvidenceCommandTest,T12StandardsQualificationTest \
   -Dsurefire.failIfNoSpecifiedTests=false test
 ```
 
@@ -405,8 +413,8 @@ move, copy, merge, split, and removal behavior. It never executes an Action,
 and unsupported Action graphs are preserved only when no semantic rewrite is
 required or rejected before mutation. See the authoritative
 [annotations and document Actions guide](docs/annotations-actions.md) for the
-exact allowlist, appearance operators, Forms boundary, failure policy, and
-page-operation rules, and [page manipulation](docs/page-manipulation.md) for the
+exact allowlist, appearance operators, Forms boundary, failure policy,
+page-operation rules and the 12-member Stable/Preview Annotation mapping, and [page manipulation](docs/page-manipulation.md) for the
 six Native Commands and the bounded Stable Migration Facade mapping. The
 [metadata, navigation and attachments guide](docs/metadata-navigation.md)
 defines the T11 Native and Stable Migration Facade contracts.

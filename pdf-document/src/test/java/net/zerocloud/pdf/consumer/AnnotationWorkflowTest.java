@@ -54,6 +54,7 @@ import net.zerocloud.pdf.PdfValue;
 import net.zerocloud.pdf.SaveMode;
 import net.zerocloud.pdf.WorkflowOutcome;
 import net.zerocloud.pdf.WorkflowRequest;
+import net.zerocloud.pdf.WorkflowExecutionProfile;
 import net.zerocloud.pdf.command.AddBlankPage;
 import net.zerocloud.pdf.command.CopyPages;
 import net.zerocloud.pdf.command.UpdateAnnotations;
@@ -82,6 +83,28 @@ public final class AnnotationWorkflowTest {
 
     @Rule
     public final TemporaryFolder temporaryFolder = new TemporaryFolder();
+
+    @Test
+    public void annotationOperationsUseTheSelectedExecutionProfile() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("selected-source.pdf");
+        Path output = temporaryFolder.getRoot().toPath().resolve("selected-output.pdf");
+        createBlankDocument(source);
+        Annotation expected = Annotation.text(AnnotationProperties.version1("selected", 1,
+                AnnotationRectangle.of(10, 20, 40, 50)).build(), Annotation.TextIcon.NOTE, false);
+        WorkflowOutcome<List<Annotation>> outcome = new DocumentWorkflow().execute(
+                rewriteRequest(source, output), session -> {
+                    session.execute(UpdateAnnotations.version1().put(expected).build());
+                    return session.query(Annotations.version1(1, 0, 0));
+                });
+        assertEquals(WorkflowExecutionProfile.valueOf(System.getProperty("folio.t12.executionProfile", "IN_PROCESS")),
+                outcome.getExecutionProfile());
+        assertEquals(Collections.singletonList(expected), outcome.getResult());
+        assertEquals(PublicationStatus.COMMITTED, outcome.getPublicationReceipts().get(0).getStatus());
+        WorkflowOutcome<List<Annotation>> reopened = new DocumentWorkflow().execute(sourceRequest(output),
+                session -> session.query(Annotations.version1(1, 0, 0)));
+        assertEquals(outcome.getExecutionProfile(), reopened.getExecutionProfile());
+        assertEquals(outcome.getResult(), reopened.getResult());
+    }
 
     @Test
     public void textAnnotationRoundTripsGeometryAndAppearanceThroughReopen()
@@ -1112,7 +1135,7 @@ public final class AnnotationWorkflowTest {
                     return null;
                 });
 
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = request()
                 .source("primary", DocumentSource.path(primary))
                 .source("appendix", DocumentSource.path(appendix))
                 .primarySource("primary")
@@ -1220,7 +1243,7 @@ public final class AnnotationWorkflowTest {
                     return null;
                 });
 
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = request()
                 .source("primary", DocumentSource.path(primary))
                 .source("appendix", DocumentSource.path(appendix))
                 .primarySource("primary")
@@ -1304,7 +1327,7 @@ public final class AnnotationWorkflowTest {
                     return null;
                 });
 
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = request()
                 .source("primary", DocumentSource.path(primary))
                 .source("appendix", DocumentSource.path(appendix))
                 .primarySource("primary")
@@ -1315,7 +1338,7 @@ public final class AnnotationWorkflowTest {
                 session.execute(MergeDocuments.version1("appendix"));
                 fail("Expected an unrenamable legacy identifier collision");
             } catch (DocumentFailure failure) {
-                assertEquals(DocumentFailureCode.PRESERVATION_UNSUPPORTED,
+                assertEquals(failure.getDiagnostic(), DocumentFailureCode.PRESERVATION_UNSUPPORTED,
                         failure.getCode());
                 assertEquals(
                         "document.page.manipulate-merge-split",
@@ -1422,7 +1445,7 @@ public final class AnnotationWorkflowTest {
                     return null;
                 });
 
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = request()
                 .source("input", DocumentSource.path(configured))
                 .primarySource("input")
                 .target("first", PublicationTarget.path(first))
@@ -1534,7 +1557,7 @@ public final class AnnotationWorkflowTest {
                     return null;
                 });
 
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = request()
                 .source("input", DocumentSource.path(configured))
                 .primarySource("input")
                 .target("first", PublicationTarget.path(first))
@@ -2373,6 +2396,98 @@ public final class AnnotationWorkflowTest {
         });
     }
 
+    @Test
+    public void explicitIdentityAppearanceMatrixIsAcceptedAndOtherMatricesFailBeforeMutation() throws Exception {
+        Path input = temporaryFolder.getRoot().toPath().resolve("explicit-matrix.pdf");
+        Path output = temporaryFolder.getRoot().toPath().resolve("explicit-matrix-copy.pdf");
+        createBlankDocument(input);
+        byte[] program = "q 0 1 0 rg 2 3 10 10 re f Q\n".getBytes(StandardCharsets.US_ASCII);
+        Annotation expected = Annotation.stamp(AnnotationProperties.version1("stamp", 1,
+                AnnotationRectangle.of(10, 20, 40, 50)).appearance(AnnotationAppearance.version1(
+                        AnnotationRectangle.of(2, 3, 12, 13), program)).build(), "Approved");
+        new DocumentWorkflow().execute(rewriteRequest(input, output), session -> {
+            PdfArray identity = PdfArray.of(PdfNumber.of(new java.math.BigDecimal("1.0")), PdfNumber.of(0),
+                    PdfNumber.of(0), PdfNumber.of(1), PdfNumber.of(0), PdfNumber.of(0));
+            PdfDictionary appearance = PdfDictionary.builder().put(PdfName.of("Type"), PdfName.of("XObject"))
+                    .put(PdfName.of("Subtype"), PdfName.of("Form")).put(PdfName.of("FormType"), PdfNumber.of(1))
+                    .put(PdfName.of("BBox"), PdfArray.of(PdfNumber.of(2), PdfNumber.of(3), PdfNumber.of(12), PdfNumber.of(13)))
+                    .put(PdfName.of("Matrix"), identity).put(PdfName.of("Resources"), PdfDictionary.builder().build()).build();
+            PdfDictionary annotation = PdfDictionary.builder().put(PdfName.of("Type"), PdfName.of("Annot"))
+                    .put(PdfName.of("Subtype"), PdfName.of("Stamp"))
+                    .put(PdfName.of("NM"), PdfString.of("stamp".getBytes(StandardCharsets.US_ASCII)))
+                    .put(PdfName.of("Rect"), PdfArray.of(PdfNumber.of(10), PdfNumber.of(20), PdfNumber.of(40), PdfNumber.of(50)))
+                    .put(PdfName.of("Name"), PdfName.of("Approved"))
+                    .put(PdfName.of("AP"), PdfDictionary.builder().put(PdfName.of("N"), PdfStream.of(appearance, program)).build()).build();
+            session.execute(DocumentPatch.builder().setDictionaryEntry(session.query(PageObjectReference.version1(1)),
+                    PdfName.of("Annots"), PdfArray.of(annotation)).build());
+            assertEquals(Collections.singletonList(expected), session.query(Annotations.version1(4, 4096, 0)));
+            session.execute(CopyPages.version1(PageRange.of(1, 1), 2));
+            assertEquals(2, session.query(Annotations.version1(4, 4096, 0)).size());
+            return null;
+        });
+        new DocumentWorkflow().execute(sourceRequest(output), session -> {
+            List<Annotation> annotations = session.query(Annotations.version1(4, 4096, 0));
+            assertEquals(expected, annotations.get(0));
+            PdfDictionary page = dictionaryValue(session, session.query(PageObjectReference.version1(1)));
+            PdfArray entries = (PdfArray) page.get(PdfName.of("Annots"));
+            PdfDictionary annotation = dictionaryValue(session, entries.get(0));
+            PdfDictionary appearances = dictionaryValue(session, annotation.get(PdfName.of("AP")));
+            PdfIndirectReference normal = (PdfIndirectReference) appearances.get(PdfName.of("N"));
+            for (PdfValue matrix : Arrays.<PdfValue>asList(
+                    PdfArray.of(PdfNumber.of(2), PdfNumber.of(0), PdfNumber.of(0), PdfNumber.of(1), PdfNumber.of(0), PdfNumber.of(0)),
+                    PdfArray.of(PdfNumber.of(1), PdfNumber.of(0)), PdfName.of("Invalid"))) {
+                session.execute(DocumentPatch.builder().setDictionaryEntry(normal.getReference(), PdfName.of("Matrix"), matrix).build());
+                try {
+                    session.query(Annotations.version1(4, 4096, 0));
+                    fail("Expected a non-identity or malformed appearance matrix rejection");
+                } catch (DocumentFailure failure) { assertEquals(DocumentFailureCode.QUERY_FAILED, failure.getCode()); }
+                try {
+                    session.execute(CopyPages.version1(PageRange.of(1, 1), 3));
+                    fail("Expected matrix rejection before page mutation");
+                } catch (DocumentFailure failure) { assertEquals(DocumentFailureCode.PRESERVATION_UNSUPPORTED, failure.getCode()); }
+                assertEquals(Integer.valueOf(2), session.query(net.zerocloud.pdf.query.PageCount.INSTANCE));
+            }
+            return null;
+        });
+    }
+
+    @Test
+    public void attachmentMimeNamesAreEscapedOnceAndLiteralHashSequencesSurvivePublication() throws Exception {
+        Path input = temporaryFolder.getRoot().toPath().resolve("mime-source.pdf");
+        Path output = temporaryFolder.getRoot().toPath().resolve("mime-published.pdf");
+        createBlankDocument(input);
+        new DocumentWorkflow().execute(rewriteRequest(input, output), session -> {
+            for (String mime : new String[] {"text/plain", "application/x#2Ffolio"}) {
+                Annotation file = Annotation.fileAttachment(AnnotationProperties.version1(mime, 1,
+                        AnnotationRectangle.of(10, 20, 40, 50)).build(), EmbeddedFile.version1("payload.txt",
+                                new byte[] {97, 98, 99}, mime, "Original payload", EmbeddedFile.Relationship.DATA),
+                        Annotation.FileAttachmentIcon.PAPERCLIP);
+                session.execute(UpdateAnnotations.version1().put(file).build());
+            }
+            assertAttachmentMimeNames(session);
+            return null;
+        });
+        new DocumentWorkflow().execute(sourceRequest(output), session -> {
+            assertAttachmentMimeNames(session);
+            return null;
+        });
+    }
+
+    private static void assertAttachmentMimeNames(DocumentSession session) throws DocumentFailure {
+        List<Annotation> annotations = session.query(Annotations.version1(2, 0, 4096));
+        PdfDictionary page = dictionaryValue(session, session.query(PageObjectReference.version1(1)));
+        PdfArray entries = (PdfArray) page.get(PdfName.of("Annots"));
+        String[] expected = {"text/plain", "application/x#2Ffolio"};
+        for (int index = 0; index < expected.length; index++) {
+            assertEquals(expected[index], annotations.get(index).getAttachment().get().getMimeSubtype().get());
+            PdfDictionary annotation = dictionaryValue(session, entries.get(index));
+            PdfDictionary specification = dictionaryValue(session, annotation.get(PdfName.of("FS")));
+            PdfDictionary embedded = dictionaryValue(session, specification.get(PdfName.of("EF")));
+            PdfStream payload = streamValue(session, embedded.get(PdfName.of("F")));
+            assertEquals(expected[index], ((PdfName) payload.getDictionary().get(PdfName.of("Subtype"))).getValue());
+        }
+    }
+
     private static void createBlankDocument(Path target) throws Exception {
         createBlankDocument(target, 1);
     }
@@ -2434,7 +2549,7 @@ public final class AnnotationWorkflowTest {
     private static void createBlankDocument(Path target, int pageCount)
             throws Exception {
         new DocumentWorkflow().execute(
-                WorkflowRequest.create(target, SaveMode.REWRITE),
+                request().target("output", PublicationTarget.path(target)).saveMode(SaveMode.REWRITE).build(),
                 session -> {
                     for (int page = 0; page < pageCount; page++) {
                         session.execute(AddBlankPage.INSTANCE);
@@ -2443,8 +2558,13 @@ public final class AnnotationWorkflowTest {
                 });
     }
 
+    private static WorkflowRequest.Builder request() {
+        return WorkflowRequest.builder().executionProfile(WorkflowExecutionProfile.valueOf(
+                System.getProperty("folio.t12.executionProfile", "IN_PROCESS")));
+    }
+
     private static WorkflowRequest rewriteRequest(Path input, Path output) {
-        return WorkflowRequest.builder()
+        return request()
                 .source("input", DocumentSource.path(input))
                 .primarySource("input")
                 .target("output", PublicationTarget.path(output))
@@ -2453,7 +2573,7 @@ public final class AnnotationWorkflowTest {
     }
 
     private static WorkflowRequest sourceRequest(Path input) {
-        return WorkflowRequest.builder()
+        return request()
                 .source("input", DocumentSource.path(input))
                 .primarySource("input")
                 .saveMode(SaveMode.REWRITE)

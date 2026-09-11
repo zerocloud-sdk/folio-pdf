@@ -8,10 +8,10 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 
 - Schema version: `1`
 - Release train: `0.1.0-SNAPSHOT`
-- Stable entries: `139`
+- Stable entries: `151`
 - Preview additions: `0`
-- Preview artifact entries: `139`
-- Explicit capability exclusions: `19`
+- Preview artifact entries: `151`
+- Explicit capability exclusions: `18`
 
 ## Stable surfaces
 
@@ -165,6 +165,17 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
 - Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
 
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_catalog_dot_get_dash_open_dash_action"></a>
+### `itext7.kernel.pdf-catalog.get-open-action`
+
+- Availability: `stable`
+- Reference status: `folio-extension`
+- Reference namespace: `com.itextpdf.kernel.pdf.PdfCatalog`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfCatalog#getOpenAction(int)`
+- Generic contract: Returns Optional<GoToAction> under an explicit document-wide catalog/page binding-count bound; empty means no document-open binding.
+- Exception contract: Rejects invalid bounds or a closed owner; malformed graphs, unsupported Actions and exhausted bounds retain the Native DocumentFailure code and safe diagnostic through PdfException.
+- Behavioral capabilities: [`document.annotations-actions.manage`](capability-matrix.md#capability-document_dot_annotations_dash_actions_dot_manage)
+
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_catalog_dot_get_dash_pdf_dash_object"></a>
 ### `itext7.kernel.pdf-catalog.get-pdf-object`
 
@@ -174,6 +185,17 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Generic contract: Returns the bounded mapped Catalog PdfDictionary; its reads and changes retain Session ownership.
 - Exception contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed or detached mutation targets reject with IllegalStateException.
 - Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_catalog_dot_set_dash_open_dash_action"></a>
+### `itext7.kernel.pdf-catalog.set-open-action`
+
+- Availability: `stable`
+- Reference status: `adapted`
+- Reference member: `com.itextpdf.kernel.pdf.PdfCatalog#setOpenAction(com.itextpdf.kernel.pdf.action.PdfAction)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfCatalog#setOpenAction(net.zerocloud.pdf.GoToAction)`
+- Generic contract: Stores one inert local GoToAction, or removes the binding when null, and returns this PdfCatalog. Direct and existing named destinations are supported.
+- Exception contract: Rejects read-only or closed owners and invalid input before mutation; operational failures retain the Native DocumentFailure code and safe diagnostic through PdfException.
+- Behavioral capabilities: [`document.annotations-actions.manage`](capability-matrix.md#capability-document_dot_annotations_dash_actions_dot_manage)
 
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_dictionary_dot_constructor"></a>
 ### `itext7.kernel.pdf-dictionary.constructor`
@@ -592,6 +614,39 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Exception contract: Rejects a closed or read-only document with IllegalStateException and maps invalid ranges, positions, collisions, or unsafe preservation through PdfException with the Native DocumentFailure cause before mutation.
 - Behavioral capabilities: [`document.page.manipulate-merge-split`](capability-matrix.md#capability-document_dot_page_dot_manipulate_dash_merge_dash_split)
 
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_flatten_dash_annotations"></a>
+### `itext7.kernel.pdf-document.flatten-annotations`
+
+- Availability: `stable`
+- Reference status: `folio-extension`
+- Reference namespace: `com.itextpdf.kernel.pdf.PdfDocument`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#flattenAnnotations(java.lang.String[])`
+- Generic contract: Accepts one or more document-wide identifiers and returns void after one atomic non-Widget Annotation Flattening Command; this extension does not map AcroForm flattening.
+- Exception contract: Rejects read-only or closed owners and invalid input before mutation; operational failures retain the Native DocumentFailure code and safe diagnostic through PdfException. Missing identifiers use ANNOTATION_NOT_FOUND; Widgets and unsafe or missing appearances use ANNOTATION_FLATTENING_UNSUPPORTED.
+- Behavioral capabilities: [`document.annotations-actions.manage`](capability-matrix.md#capability-document_dot_annotations_dash_actions_dot_manage)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_actions"></a>
+### `itext7.kernel.pdf-document.get-actions`
+
+- Availability: `stable`
+- Reference status: `folio-extension`
+- Reference namespace: `com.itextpdf.kernel.pdf.PdfDocument`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#getActions(int)`
+- Generic contract: Returns detached DocumentActions under an explicit catalog/page binding-count bound. Link activation belongs to the bounded Annotation read.
+- Exception contract: Rejects invalid bounds or a closed owner; malformed graphs, unsupported Actions and exhausted bounds retain the Native DocumentFailure code and safe diagnostic through PdfException.
+- Behavioral capabilities: [`document.annotations-actions.manage`](capability-matrix.md#capability-document_dot_annotations_dash_actions_dot_manage)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_annotations"></a>
+### `itext7.kernel.pdf-document.get-annotations`
+
+- Availability: `stable`
+- Reference status: `folio-extension`
+- Reference namespace: `com.itextpdf.kernel.pdf.PdfDocument`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#getAnnotations(int,long,long)`
+- Generic contract: Returns immutable List<Annotation> in page and annotation-array order under explicit document-wide annotation-count, decoded-appearance and decoded-attachment bounds.
+- Exception contract: Rejects invalid bounds or a closed owner; malformed graphs, unsupported Actions and exhausted bounds retain the Native DocumentFailure code and safe diagnostic through PdfException.
+- Behavioral capabilities: [`document.annotations-actions.manage`](capability-matrix.md#capability-document_dot_annotations_dash_actions_dot_manage)
+
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_catalog"></a>
 ### `itext7.kernel.pdf-document.get-catalog`
 
@@ -804,6 +859,17 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Generic contract: Returns void and defensively copies one well-formed XMP packet before an atomic Native Command.
 - Exception contract: Rejects null, malformed, oversized, externally resolving, read-only, closed, or unpreservable input without partial mutation; Native failures retain their cause through PdfException.
 - Behavioral capabilities: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_update_dash_annotations"></a>
+### `itext7.kernel.pdf-document.update-annotations`
+
+- Availability: `stable`
+- Reference status: `folio-extension`
+- Reference namespace: `com.itextpdf.kernel.pdf.PdfDocument`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#updateAnnotations(java.util.List,java.util.List)`
+- Generic contract: Accepts List<Annotation> replacements and List<String> identifier removals as one atomic Command. Duplicate replacement identifiers use the last supplied value at the first declaration position; unselected entries precede replacements on each page.
+- Exception contract: Rejects read-only or closed owners and invalid input before mutation; operational failures retain the Native DocumentFailure code and safe diagnostic through PdfException.
+- Behavioral capabilities: [`document.annotations-actions.manage`](capability-matrix.md#capability-document_dot_annotations_dash_actions_dot_manage)
 
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_exception_dot_constructor_dash_message_dash_cause"></a>
 ### `itext7.kernel.pdf-exception.constructor-message-cause`
@@ -1205,6 +1271,39 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
 - Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
 
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_page_dot_add_dash_annotation"></a>
+### `itext7.kernel.pdf-page.add-annotation`
+
+- Availability: `stable`
+- Reference status: `adapted`
+- Reference member: `com.itextpdf.kernel.pdf.PdfPage#addAnnotation(com.itextpdf.kernel.pdf.annot.PdfAnnotation)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfPage#addAnnotation(net.zerocloud.pdf.Annotation)`
+- Generic contract: Adapts the immutable Annotation to the handle's current page, creates or replaces its document-wide identifier, and returns this PdfPage. Replacing another page's identifier moves that annotation here.
+- Exception contract: Rejects read-only or closed owners and invalid input before mutation; operational failures retain the Native DocumentFailure code and safe diagnostic through PdfException.
+- Behavioral capabilities: [`document.annotations-actions.manage`](capability-matrix.md#capability-document_dot_annotations_dash_actions_dot_manage)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_page_dot_get_dash_additional_dash_actions"></a>
+### `itext7.kernel.pdf-page.get-additional-actions`
+
+- Availability: `stable`
+- Reference status: `folio-extension`
+- Reference namespace: `com.itextpdf.kernel.pdf.PdfPage`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfPage#getAdditionalActions(int)`
+- Generic contract: Returns Optional<PageActions> for this handle's current page under an explicit document-wide binding-count bound; empty means neither O nor C is present.
+- Exception contract: Rejects invalid bounds or a closed owner; malformed graphs, unsupported Actions and exhausted bounds retain the Native DocumentFailure code and safe diagnostic through PdfException.
+- Behavioral capabilities: [`document.annotations-actions.manage`](capability-matrix.md#capability-document_dot_annotations_dash_actions_dot_manage)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_page_dot_get_dash_annotations"></a>
+### `itext7.kernel.pdf-page.get-annotations`
+
+- Availability: `stable`
+- Reference status: `adapted`
+- Reference member: `com.itextpdf.kernel.pdf.PdfPage#getAnnotations()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfPage#getAnnotations(int,long,long)`
+- Generic contract: Returns immutable List<Annotation> for the handle's current page; explicit bounds apply to the complete document read before page selection. Handles follow page identity through reorder.
+- Exception contract: Rejects invalid bounds or a closed owner; malformed graphs, unsupported Actions and exhausted bounds retain the Native DocumentFailure code and safe diagnostic through PdfException.
+- Behavioral capabilities: [`document.annotations-actions.manage`](capability-matrix.md#capability-document_dot_annotations_dash_actions_dot_manage)
+
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_page_dot_get_dash_pdf_dash_object"></a>
 ### `itext7.kernel.pdf-page.get-pdf-object`
 
@@ -1214,6 +1313,39 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Generic contract: Returns the mapped PdfDictionary for the retained page identity through the bounded Values interface.
 - Exception contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; expired Session values reject with IllegalStateException.
 - Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen), [`document.page.manipulate-merge-split`](capability-matrix.md#capability-document_dot_page_dot_manipulate_dash_merge_dash_split)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_page_dot_remove_dash_annotation"></a>
+### `itext7.kernel.pdf-page.remove-annotation`
+
+- Availability: `stable`
+- Reference status: `adapted`
+- Reference member: `com.itextpdf.kernel.pdf.PdfPage#removeAnnotation(com.itextpdf.kernel.pdf.annot.PdfAnnotation)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfPage#removeAnnotation(java.lang.String)`
+- Generic contract: Selects an annotation on this page by document-wide identifier and returns this PdfPage; lookup bounds are 100000 annotations and 8 MiB each of decoded appearance and attachment bytes.
+- Exception contract: Rejects read-only or closed owners and invalid input before mutation; operational failures retain the Native DocumentFailure code and safe diagnostic through PdfException. A missing or other-page identifier is IllegalArgumentException.
+- Behavioral capabilities: [`document.annotations-actions.manage`](capability-matrix.md#capability-document_dot_annotations_dash_actions_dot_manage)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_page_dot_set_dash_additional_dash_action"></a>
+### `itext7.kernel.pdf-page.set-additional-action`
+
+- Availability: `stable`
+- Reference status: `adapted`
+- Reference member: `com.itextpdf.kernel.pdf.PdfPage#setAdditionalAction(com.itextpdf.kernel.pdf.PdfName,com.itextpdf.kernel.pdf.action.PdfAction)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfPage#setAdditionalAction(net.zerocloud.pdf.itext7.kernel.pdf.PdfName,net.zerocloud.pdf.GoToAction)`
+- Generic contract: Accepts only page O or C and an immutable local GoToAction; null removes that binding. Returns this PdfPage and follows the handle's page identity.
+- Exception contract: Rejects read-only or closed owners and invalid input before mutation; operational failures retain the Native DocumentFailure code and safe diagnostic through PdfException. Other event names are IllegalArgumentException.
+- Behavioral capabilities: [`document.annotations-actions.manage`](capability-matrix.md#capability-document_dot_annotations_dash_actions_dot_manage)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_page_dot_set_dash_normal_dash_appearance"></a>
+### `itext7.kernel.pdf-page.set-normal-appearance`
+
+- Availability: `stable`
+- Reference status: `folio-extension`
+- Reference namespace: `com.itextpdf.kernel.pdf.PdfPage`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfPage#setNormalAppearance(java.lang.String,net.zerocloud.pdf.AnnotationAppearance)`
+- Generic contract: Adapts the reference Annotation setter to page-owned selection by identifier; retains all other properties and returns this PdfPage. Uses the same fixed lookup bounds as removal and Native replacement ordering.
+- Exception contract: Rejects read-only or closed owners and invalid input before mutation; operational failures retain the Native DocumentFailure code and safe diagnostic through PdfException. A missing or other-page identifier is IllegalArgumentException; unsupported resource-free graphics programs retain ANNOTATION_INVALID.
+- Behavioral capabilities: [`document.annotations-actions.manage`](capability-matrix.md#capability-document_dot_annotations_dash_actions_dot_manage)
 
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_reader_dot_close"></a>
 ### `itext7.kernel.pdf-reader.close`
@@ -1509,13 +1641,6 @@ No preview additions (included with all stable surfaces) are declared.
 - Behavioral capability: [`conversion.rendering`](capability-matrix.md#capability-conversion_dot_rendering)
 - Deferred ticket: `T32`
 - Reason: Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #88 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
-
-<a id="excluded-capability-document_dot_annotations_dash_actions_dot_manage"></a>
-### `document.annotations-actions.manage`
-
-- Behavioral capability: [`document.annotations-actions.manage`](capability-matrix.md#capability-document_dot_annotations_dash_actions_dot_manage)
-- Deferred ticket: `T32`
-- Reason: Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #74 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 <a id="excluded-capability-document_dot_hardened_dash_worker"></a>
 ### `document.hardened-worker`

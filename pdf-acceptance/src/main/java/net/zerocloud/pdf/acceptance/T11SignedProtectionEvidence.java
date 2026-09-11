@@ -128,7 +128,7 @@ final class T11SignedProtectionEvidence {
         return result;
     }
 
-    private static byte[] signedFixture() throws IOException {
+    static byte[] signedFixture() throws IOException {
         List<String> objects = new ArrayList<String>();
         objects.add("<< /Type /Catalog /Pages 2 0 R /AcroForm 4 0 R "
                 + "/Perms << /DocMDP 6 0 R >> >>");

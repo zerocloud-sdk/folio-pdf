@@ -1037,7 +1037,8 @@ final class WorkerFailureCatalog {
                                         .VERSION_SECURITY_CAPABILITY_ID);
             case PRESERVATION_UNSUPPORTED:
                 return diagnostic.contains("annotation or Action")
-                        ? mask(PdfBoxAnnotationOperations.CAPABILITY_ID)
+                        ? mask(PdfBoxAnnotationOperations.CAPABILITY_ID,
+                                PdfBoxPageOperations.CAPABILITY_ID)
                         : mask(
                                 PdfBoxPageOperations.CAPABILITY_ID,
                                 PdfBoxMetadataOperations.CAPABILITY_ID);

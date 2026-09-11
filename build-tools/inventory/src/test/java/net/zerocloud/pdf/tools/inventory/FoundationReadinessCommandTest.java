@@ -88,6 +88,30 @@ public final class FoundationReadinessCommandTest {
     }
 
     @Test
+    public void staleEvidenceRemainsDiagnosedAfterMovingTheCheckout() throws Exception {
+        Fixture fixture = fixture(false);
+        fixture.text("input.txt", "Changed source still requires fresh certification.\n");
+        assertFailure(command("readiness", fixture.root),
+                "stale or mismatched artifact identity input.txt");
+        Result generated = command("generate", fixture.root);
+        assertEquals(generated.output, 0, generated.exit);
+        String document = read(fixture.root.resolve("docs/generated/foundation-readiness.md"));
+        assertTrue(document, document.contains("**NOT READY**"));
+        assertTrue(document, document.contains("stale or mismatched artifact identity input.txt"));
+
+        Path relocated = temporary.getRoot().toPath().resolve("relocated-checkout");
+        Files.move(fixture.root, relocated);
+        Result current = command("check", relocated);
+        assertEquals(current.output, 0, current.exit);
+        assertFailure(command("readiness", relocated),
+                "stale or mismatched artifact identity input.txt");
+        Result regenerated = command("generate", relocated);
+        assertEquals(regenerated.output, 0, regenerated.exit);
+        assertEquals(document, read(relocated.resolve("docs/generated/foundation-readiness.md")));
+        assertFalse(document, document.contains(fixture.root.toString()));
+    }
+
+    @Test
     public void independentlyCertifiedChildDoesNotCompleteItsAggregate() throws Exception {
         Fixture fixture = fixture(true);
         Result valid = command("validate", fixture.root);

@@ -138,9 +138,27 @@ final class VisualEvidenceRecorder {
 
         ProcessResult render;
         try {
+            Path renderInput = pdf;
+            if (chain.usesAppearanceProjection()) {
+                // PDFium's page renderer omits standalone Widget annotations. Its independent
+                // annotation flattener exposes their AP geometry without adding form behavior.
+                renderInput = artifacts.resolve(chain.projectionName());
+                Files.deleteIfExists(renderInput);
+                ProcessResult projection = ExternalProcess.run(pdfiumPin.executable(), artifacts,
+                        "flatten", pdf.getFileName().toString(), chain.projectionName());
+                appendInvocation(state.transcript, "PDFium appearance projection",
+                        "pdfium flatten " + pdf.getFileName() + " " + chain.projectionName(), projection);
+                if (projection.exitCode != 0 || !Files.isRegularFile(renderInput) || Files.size(renderInput) == 0) {
+                    return indeterminate(state, "The independent appearance projection was unavailable.", artifacts);
+                }
+                state.transcript.append("Original exact SHA-256: `").append(inputHash)
+                        .append("`\n\nProjection exact SHA-256: `").append(EvidenceFiles.sha256(renderInput))
+                        .append("`\n\nThe projection is an acceptance observation; the original product is unchanged. ")
+                        .append("Secondary rendering reads the original product directly.\n\n");
+            }
             List<String> arguments = new ArrayList<String>(Arrays.asList(
                     "render",
-                    pdf.getFileName().toString(),
+                    renderInput.getFileName().toString(),
                     chain.pdfiumRasterName(),
                     "--dpi",
                     Integer.toString(profile.dpi()),
@@ -153,7 +171,7 @@ final class VisualEvidenceRecorder {
             appendInvocation(
                     state.transcript,
                     "PDFium render",
-                    "pdfium render " + pdf.getFileName() + " "
+                    "pdfium render " + renderInput.getFileName() + " "
                             + chain.pdfiumRasterName() + " --dpi " + profile.dpi()
                             + " --file-type png --pages "
                             + (profile.pageNumber() == 1 ? "first" : Integer.toString(profile.pageNumber()))

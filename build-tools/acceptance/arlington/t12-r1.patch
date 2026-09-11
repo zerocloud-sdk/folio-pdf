@@ -1,0 +1,570 @@
+--- a/TestGrammar/CMakeLists.txt
++++ b/TestGrammar/CMakeLists.txt
+@@ -469,6 +469,11 @@
+ endif()
+ 
+ add_executable(TestGrammar src/Main.cpp ${SOURCES} ${SRC_PDFSDK})
++if(PDFSDK_PDFIUM)
++    # T11 metadata parsing uses a pinned static Expat archive; no runtime loader dependency.
++    find_library(FOLIO_EXPAT_STATIC NAMES libexpat.a REQUIRED)
++    target_link_libraries(TestGrammar ${FOLIO_EXPAT_STATIC})
++endif()
+ set_target_properties(TestGrammar PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
+ add_compile_definitions(TestGrammar $<$<CONFIG:DEBUG>:DEBUG>)
+ 
+--- a/TestGrammar/src/ArlingtonPDFShim.h
++++ b/TestGrammar/src/ArlingtonPDFShim.h
+@@ -25,6 +25,7 @@
+ #include <iostream>
+ #include <filesystem>
+ #include <vector>
++#include <array>
+ #include <memory>
+ #include <cassert>
+ 
+@@ -276,6 +277,14 @@
+ 
+         ArlPDFDictionary* get_dictionary();
+ 
++#ifdef ARL_PDFSDK_PDFIUM
++        struct DecodedContent {
++            std::vector<unsigned char> bytes;
++            std::array<unsigned char, 16> md5;
++        };
++        DecodedContent decoded_content();
++#endif
++
+         friend std::ostream& operator << (std::ostream& ofs, const ArlPDFStream& obj) {
+             ofs << "stream " << (ArlPDFObject&)obj;
+             return ofs;
+--- a/TestGrammar/src/ArlingtonPDFShimPDFium.cpp
++++ b/TestGrammar/src/ArlingtonPDFShimPDFium.cpp
+@@ -36,6 +36,7 @@
+ #include "core/include/fxge/fx_ge.h"
+ #include "core/include/fpdfapi/fpdf_parser.h"
+ #include "core/include/fpdfapi/fpdf_module.h"
++#include "core/include/fdrm/fx_crypt.h"
+ 
+ using namespace ArlingtonPDFShim;
+ 
+@@ -678,4 +679,16 @@
+     return retval;
+ }
+ 
++ArlPDFStream::DecodedContent ArlPDFStream::decoded_content()
++{
++    assert(object != nullptr && ((CPDF_Object*)object)->GetType() == PDFOBJ_STREAM);
++    CPDF_StreamAcc decoded;
++    decoded.LoadAllData(static_cast<CPDF_Stream*>(object));
++    DecodedContent result;
++    if (decoded.GetSize() > 0)
++        result.bytes.assign(decoded.GetData(), decoded.GetData() + decoded.GetSize());
++    CRYPT_MD5Generate(decoded.GetData(), decoded.GetSize(), result.md5.data());
++    return result;
++}
++
+ #endif // ARL_PDFSDK_PDFIUM
+--- /dev/null
++++ b/TestGrammar/src/FolioAnnotationChecks.h
+@@ -0,0 +1,54 @@
++// SPDX-License-Identifier: Apache-2.0
++// Original ISO 32000 annotation graph predicates for the qualified T12 checker.
++// This independent SDK observation never calls Folio or reads expected products.
++#ifndef FOLIO_ANNOTATION_CHECKS_H
++#define FOLIO_ANNOTATION_CHECKS_H
++
++#include "FolioMetadataChecks.h"
++
++namespace folio_annotation {
++using namespace ArlingtonPDFShim;
++using folio_metadata::Owned;
++using folio_metadata::dictionary;
++using folio_metadata::error;
++using folio_metadata::kind;
++
++inline bool present(ArlPDFObject* object) {
++    // ISO 32000 7.3.9: a dictionary entry whose value is null is absent.
++    return object != nullptr && object->get_object_type() != PDFObjectType::ArlPDFObjTypeNull;
++}
++
++inline void page(ArlPDFDictionary* page, std::ostream& output) {
++    Owned annotations(page->get_value(L"Annots"));
++    if (!kind(annotations.get(), PDFObjectType::ArlPDFObjTypeArray))
++        return; // The ordinary model reports malformed Annots values.
++    auto array = static_cast<ArlPDFArray*>(annotations.get());
++    std::set<std::wstring> names;
++    for (int index = 0; index < array->get_num_elements(); ++index) {
++        Owned item(array->get_value(index));
++        auto annotation = dictionary(item.get());
++        if (annotation == nullptr)
++            continue;
++        // ISO 32000-2:2020 Table 166 requires uniqueness within the containing page.
++        Owned name(annotation->get_value(L"NM"));
++        if (kind(name.get(), PDFObjectType::ArlPDFObjTypeString)) {
++            if (!names.insert(static_cast<ArlPDFString*>(name.get())->get_value()).second)
++                error(output, "annotation NM is duplicated within its page");
++        }
++        // Table 166: an optional indirect P identifies this containing page.
++        Owned owner(annotation->get_value(L"P"));
++        if (present(owner.get()) && owner->is_indirect_ref()
++                && owner->get_hash_id() != page->get_hash_id())
++            error(output, "annotation P does not identify its containing page");
++    }
++}
++
++inline void link(ArlPDFDictionary* annotation, std::ostream& output) {
++    // ISO 32000-2:2020 Table 176: either binding is optional; both cannot be present.
++    Owned destination(annotation->get_value(L"Dest"));
++    Owned action(annotation->get_value(L"A"));
++    if (present(destination.get()) && present(action.get()))
++        error(output, "Link annotation Dest and A are mutually exclusive");
++}
++}
++#endif
+--- /dev/null
++++ b/TestGrammar/src/FolioMetadataChecks.h
+@@ -0,0 +1,216 @@
++// SPDX-License-Identifier: Apache-2.0
++// Original supplemental ISO 32000 graph predicates for the qualified T11 checker.
++// They inspect the independent SDK graph; they never call Folio or read expected products.
++#ifndef FOLIO_METADATA_CHECKS_H
++#define FOLIO_METADATA_CHECKS_H
++
++#include <cmath>
++#include <cctype>
++#include <algorithm>
++#include <memory>
++#include <ostream>
++#include <set>
++#include <string>
++#include "ArlingtonPDFShim.h"
++#ifdef ARL_PDFSDK_PDFIUM
++#include <expat.h>
++#endif
++
++namespace folio_metadata {
++using namespace ArlingtonPDFShim;
++using Owned = std::unique_ptr<ArlPDFObject>;
++
++inline bool kind(ArlPDFObject* object, PDFObjectType type) {
++    return object != nullptr && object->get_object_type() == type;
++}
++inline ArlPDFDictionary* dictionary(ArlPDFObject* object) {
++    return kind(object, PDFObjectType::ArlPDFObjTypeDictionary) ? static_cast<ArlPDFDictionary*>(object) : nullptr;
++}
++inline void error(std::ostream& output, const char* message) {
++    output << "Error: " << message << '\n';
++}
++inline double integer(ArlPDFObject* object) {
++    return kind(object, PDFObjectType::ArlPDFObjTypeNumber)
++            && static_cast<ArlPDFNumber*>(object)->is_integer_value()
++            ? static_cast<ArlPDFNumber*>(object)->get_value() : 0;
++}
++
++inline bool mime_token(wchar_t value) {
++    return value >= 0 && value < 128 && (std::isalnum(static_cast<unsigned char>(value))
++            || std::wstring(L"!#$%&'*+-.^_`|~").find(value) != std::wstring::npos);
++}
++
++inline bool mime_name(const std::wstring& value) {
++    // Annex E first-class names may instead use a registered four-character prefix.
++    if (value.size() > 5 && value[4] == L'_' && std::all_of(value.begin(), value.begin() + 4,
++            [](wchar_t ch) { return ch >= 0 && ch < 128 && std::isalnum(static_cast<unsigned char>(ch)); }))
++        return true;
++    auto slash = value.find(L'/');
++    return slash != std::wstring::npos && slash != 0 && slash + 1 < value.size()
++            && std::all_of(value.begin(), value.begin() + slash, mime_token)
++            && std::all_of(value.begin() + slash + 1, value.end(), mime_token);
++}
++
++inline void file_specification(ArlPDFDictionary* specification, std::ostream& output) {
++    Owned ef(specification->get_value(L"EF"));
++    Owned type(specification->get_value(L"Type"));
++    if (ef != nullptr && (type == nullptr || kind(type.get(), PDFObjectType::ArlPDFObjTypeNull)))
++        error(output, "file specification Type is required when EF is present");
++}
++
++#ifdef ARL_PDFSDK_PDFIUM
++inline void metadata_xml(ArlPDFStream* stream, std::ostream& output) {
++    auto decoded = stream->decoded_content();
++    // A bounded checker failure is unavailable evidence, never a syntax rejection.
++    if (decoded.bytes.size() > 64U * 1024U * 1024U) {
++        output << "Warning: metadata XML exceeds the checker decoded-byte bound\n";
++        return;
++    }
++    XML_Parser parser = XML_ParserCreateNS(nullptr, '\x1f');
++    if (parser == nullptr) {
++        output << "Warning: metadata XML parser is unavailable\n";
++        return;
++    }
++    // Expat has no external-resource reader. No entity-loading handler is installed.
++    XML_SetParamEntityParsing(parser, XML_PARAM_ENTITY_PARSING_NEVER);
++    auto status = XML_Parse(parser, reinterpret_cast<const char*>(decoded.bytes.data()),
++                            static_cast<int>(decoded.bytes.size()), XML_TRUE);
++    if (status != XML_STATUS_OK)
++        error(output, "metadata stream is not well-formed XML");
++    XML_ParserFree(parser);
++}
++
++inline void embedded_file(ArlPDFStream* stream, ArlPDFDictionary* attributes, std::ostream& output) {
++    Owned subtype(attributes->get_value(L"Subtype"));
++    if (kind(subtype.get(), PDFObjectType::ArlPDFObjTypeName)
++            && !mime_name(static_cast<ArlPDFName*>(subtype.get())->get_value()))
++        error(output, "embedded file Subtype is not a MIME media type or prefixed name");
++    Owned params(attributes->get_value(L"Params"));
++    if (dictionary(params.get()) == nullptr)
++        return;
++    Owned size(dictionary(params.get())->get_value(L"Size"));
++    Owned checksum(dictionary(params.get())->get_value(L"CheckSum"));
++    if (size == nullptr && checksum == nullptr)
++        return;
++    auto decoded = stream->decoded_content();
++    if (kind(size.get(), PDFObjectType::ArlPDFObjTypeNumber)
++            && static_cast<ArlPDFNumber*>(size.get())->is_integer_value()
++            && integer(size.get()) != decoded.bytes.size())
++        error(output, "embedded file Size does not match decoded bytes");
++    if (kind(checksum.get(), PDFObjectType::ArlPDFObjTypeString)) {
++        auto expected = static_cast<ArlPDFString*>(checksum.get())->get_value();
++        if (expected.size() == 16) {
++            for (size_t index = 0; index < 16; ++index) {
++                if (static_cast<unsigned char>(expected[index]) != decoded.md5[index]) {
++                    error(output, "embedded file CheckSum does not match decoded bytes");
++                    break;
++                }
++            }
++        }
++    }
++}
++#endif
++
++inline void destination_keys(ArlPDFDictionary* node, std::set<std::string>& seen, std::set<std::wstring>& keys) {
++    if (node == nullptr || !seen.insert(node->get_hash_id()).second)
++        return;
++    Owned names(node->get_value(L"Names"));
++    if (kind(names.get(), PDFObjectType::ArlPDFObjTypeArray)) {
++        auto array = static_cast<ArlPDFArray*>(names.get());
++        for (int index = 0; index + 1 < array->get_num_elements(); index += 2) {
++            Owned key(array->get_value(index));
++            if (kind(key.get(), PDFObjectType::ArlPDFObjTypeString))
++                keys.insert(static_cast<ArlPDFString*>(key.get())->get_value());
++        }
++    }
++    Owned kids(node->get_value(L"Kids"));
++    if (kind(kids.get(), PDFObjectType::ArlPDFObjTypeArray)) {
++        auto array = static_cast<ArlPDFArray*>(kids.get());
++        for (int index = 0; index < array->get_num_elements(); ++index) {
++            Owned child(array->get_value(index));
++            destination_keys(dictionary(child.get()), seen, keys);
++        }
++    }
++}
++
++class OutlineHierarchy {
++    std::ostream& output;
++    std::set<std::string> visited;
++    std::set<std::wstring> string_targets, name_targets;
++
++    // Returns the count of visible siblings and their open descendants.
++    double level(ArlPDFDictionary* parent, bool root) {
++        Owned first(parent->get_value(L"First"));
++        Owned last(parent->get_value(L"Last"));
++        Owned count(parent->get_value(L"Count"));
++        if (first == nullptr && (last != nullptr || integer(count.get()) != 0))
++            error(output, "outline First is required for a nonempty hierarchy");
++        if (last == nullptr && first != nullptr)
++            error(output, "outline Last is required for a nonempty hierarchy");
++        if (dictionary(first.get()) == nullptr)
++            return 0;
++        double visible = 0;
++        std::string previous;
++        Owned current(std::move(first));
++        while (dictionary(current.get()) != nullptr) {
++            auto node = dictionary(current.get());
++            std::string identity = node->get_hash_id();
++            if (!visited.insert(identity).second) {
++                error(output, "outline contains a cycle or repeated item");
++                break;
++            }
++            Owned declared_parent(node->get_value(L"Parent"));
++            if (dictionary(declared_parent.get()) != nullptr && declared_parent->get_hash_id() != parent->get_hash_id())
++                error(output, "outline Parent does not identify the actual parent");
++            Owned prev(node->get_value(L"Prev"));
++            if (!previous.empty() && prev == nullptr)
++                error(output, "outline Prev is required after the first sibling");
++            else if (dictionary(prev.get()) != nullptr && prev->get_hash_id() != previous)
++                error(output, "outline Prev does not identify the previous sibling");
++            Owned destination(node->get_value(L"Dest"));
++            if (kind(destination.get(), PDFObjectType::ArlPDFObjTypeString)
++                    && string_targets.count(static_cast<ArlPDFString*>(destination.get())->get_value()) == 0)
++                error(output, "outline named destination does not resolve");
++            if (kind(destination.get(), PDFObjectType::ArlPDFObjTypeName)
++                    && name_targets.count(static_cast<ArlPDFName*>(destination.get())->get_value()) == 0)
++                error(output, "outline named destination does not resolve");
++            double descendants = level(node, false);
++            Owned child_count(node->get_value(L"Count"));
++            visible += 1 + (integer(child_count.get()) > 0 ? descendants : 0);
++            previous = identity;
++            current.reset(node->get_value(L"Next"));
++        }
++        if (dictionary(last.get()) != nullptr && last->get_hash_id() != previous)
++            error(output, "outline Last does not identify the last sibling");
++        if (count == nullptr && visible > 0)
++            error(output, "outline Count is required for visible descendants");
++        else if (kind(count.get(), PDFObjectType::ArlPDFObjTypeNumber)
++                && static_cast<ArlPDFNumber*>(count.get())->is_integer_value()
++                && (root ? integer(count.get()) : std::fabs(integer(count.get()))) != visible)
++            error(output, "outline Count does not match visible descendants");
++        return visible;
++    }
++
++public:
++    explicit OutlineHierarchy(std::ostream& stream) : output(stream) {}
++
++    void check(ArlPDFDictionary* catalog) {
++        Owned names(catalog->get_value(L"Names"));
++        if (dictionary(names.get()) != nullptr) {
++            Owned tree(dictionary(names.get())->get_value(L"Dests"));
++            std::set<std::string> seen;
++            destination_keys(dictionary(tree.get()), seen, string_targets);
++        }
++        Owned legacy(catalog->get_value(L"Dests"));
++        if (dictionary(legacy.get()) != nullptr) {
++            auto values = dictionary(legacy.get());
++            for (int index = 0; index < values->get_num_keys(); ++index)
++                name_targets.insert(values->get_key_name_by_index(index));
++        }
++        Owned outline(catalog->get_value(L"Outlines"));
++        if (dictionary(outline.get()) != nullptr)
++            level(dictionary(outline.get()), true);
++    }
++};
++}
++#endif
+--- a/TestGrammar/src/ParseObjects.cpp
++++ b/TestGrammar/src/ParseObjects.cpp
+@@ -38,6 +38,9 @@
+ #include <math.h>
+ #include <cassert>
+ #include <regex>
++#include <set>
++#include "FolioMetadataChecks.h"
++#include "FolioAnnotationChecks.h"
+ 
+ using namespace ArlingtonPDFShim;
+ namespace fs = std::filesystem;
+@@ -624,10 +627,19 @@
+ void CParsePDF::parse_name_tree(ArlPDFDictionary* obj, const std::vector<std::string> &links, const std::string context, const bool root) {
+     assert(obj != nullptr);
+     assert(obj->get_object_type() == PDFObjectType::ArlPDFObjTypeDictionary);
++    queue_elem fake_e(nullptr, obj, "name-tree", context);
++    if (root)
++        name_tree_seen.clear();
++    if (!name_tree_seen.insert(obj->get_hash_id()).second) {
++        show_context(fake_e);
++        output << COLOR_ERROR << "name tree contains a cycle or repeated child" << COLOR_RESET;
++        return;
++    }
+     ArlPDFObject *kids_obj   = obj->get_value(L"Kids");
+     ArlPDFObject *names_obj  = obj->get_value(L"Names");
+     ArlPDFObject *limits_obj = obj->get_value(L"Limits");
+-    queue_elem fake_e(nullptr, obj, "name-tree", context);
++    std::wstring first_key, last_key;
++    bool have_range = false;
+ 
+     // Validate integrity of name tree node (root vs intermediate/leaf)
+     if (root) {
+@@ -658,6 +670,10 @@
+ 
+     if ((names_obj != nullptr) && (names_obj->get_object_type() == PDFObjectType::ArlPDFObjTypeArray)) {
+         ArlPDFArray *array_obj = (ArlPDFArray*)names_obj;
++        // ISO 32000-1:2008 7.9.6: keys are distinct and ordered by PDF bytes.
++        // The PDFium shim widens char bytes, so signed wchar ordering is unsuitable.
++        std::set<std::wstring> seen_keys;
++        std::wstring previous_key;
+         for (int i = 0; i < array_obj->get_num_elements(); i += 2) {
+             // Pairs of entries: name (string), value. value has to be further validated
+             ArlPDFObject* obj1 = array_obj->get_value(i);
+@@ -667,6 +683,23 @@
+ 
+                 if (obj2 != nullptr) {
+                     std::wstring str = ((ArlPDFString*)obj1)->get_value();
++                    if (!have_range) {
++                        first_key = str;
++                        have_range = true;
++                    }
++                    last_key = str;
++                    if (!seen_keys.insert(str).second) {
++                        show_context(fake_e);
++                        output << COLOR_ERROR << "name tree key is duplicated for " << strip_leading_whitespace(context) << COLOR_RESET;
++                    }
++                    if ((i > 0) && std::lexicographical_compare(str.begin(), str.end(),
++                            previous_key.begin(), previous_key.end(), [](wchar_t left, wchar_t right) {
++                                return static_cast<unsigned char>(left) < static_cast<unsigned char>(right);
++                            })) {
++                        show_context(fake_e);
++                        output << COLOR_ERROR << "name tree keys are not in ascending byte order for " << strip_leading_whitespace(context) << COLOR_RESET;
++                    }
++                    previous_key = str;
+                     std::string  as = ToUtf8(str);
+                     std::string  best_link = recommended_link_for_object(obj2, links, as);
+                     if (best_link.size() > 0)
+@@ -703,8 +736,35 @@
+             ArlPDFArray* array_obj = (ArlPDFArray*)kids_obj;
+             for (int i = 0; i < array_obj->get_num_elements(); i++) {
+                 ArlPDFObject* item = array_obj->get_value(i);
+-                if ((item != nullptr) && (item->get_object_type() == PDFObjectType::ArlPDFObjTypeDictionary))
++                if ((item != nullptr) && (item->get_object_type() == PDFObjectType::ArlPDFObjTypeDictionary)) {
+                     parse_name_tree((ArlPDFDictionary*)item, links, context, false);
++                    ArlPDFObject* child_limits = ((ArlPDFDictionary*)item)->get_value(L"Limits");
++                    if (child_limits != nullptr && child_limits->get_object_type() == PDFObjectType::ArlPDFObjTypeArray
++                            && ((ArlPDFArray*)child_limits)->get_num_elements() == 2) {
++                        ArlPDFObject* lower = ((ArlPDFArray*)child_limits)->get_value(0);
++                        ArlPDFObject* upper = ((ArlPDFArray*)child_limits)->get_value(1);
++                        if (lower != nullptr && upper != nullptr
++                                && lower->get_object_type() == PDFObjectType::ArlPDFObjTypeString
++                                && upper->get_object_type() == PDFObjectType::ArlPDFObjTypeString) {
++                            std::wstring low = ((ArlPDFString*)lower)->get_value();
++                            if (have_range && !std::lexicographical_compare(last_key.begin(), last_key.end(),
++                                    low.begin(), low.end(), [](wchar_t a, wchar_t b) {
++                                        return static_cast<unsigned char>(a) < static_cast<unsigned char>(b);
++                                    })) {
++                                show_context(fake_e);
++                                output << COLOR_ERROR << "name tree child key ranges overlap or are unordered" << COLOR_RESET;
++                            }
++                            if (!have_range) {
++                                first_key = low;
++                                have_range = true;
++                            }
++                            last_key = ((ArlPDFString*)upper)->get_value();
++                        }
++                        delete lower;
++                        delete upper;
++                    }
++                    delete child_limits;
++                }
+                 else {
+                     // Error: individual kid isn't dictionary in PDF name tree
+                     show_context(fake_e);
+@@ -722,6 +782,34 @@
+             output << COLOR_ERROR << "name tree Kids object was not an array for " << strip_leading_whitespace(context) << COLOR_RESET;
+         }
+         delete kids_obj;
++    }
++    if (limits_obj != nullptr) {
++        if (limits_obj->get_object_type() != PDFObjectType::ArlPDFObjTypeArray) {
++            show_context(fake_e);
++            output << COLOR_ERROR << "name tree Limits must be an array" << COLOR_RESET;
++        }
++        else if (((ArlPDFArray*)limits_obj)->get_num_elements() != 2) {
++            show_context(fake_e);
++            output << COLOR_ERROR << "name tree Limits must contain two entries" << COLOR_RESET;
++        }
++        else {
++            ArlPDFObject* lower = ((ArlPDFArray*)limits_obj)->get_value(0);
++            ArlPDFObject* upper = ((ArlPDFArray*)limits_obj)->get_value(1);
++            if (lower == nullptr || upper == nullptr
++                    || lower->get_object_type() != PDFObjectType::ArlPDFObjTypeString
++                    || upper->get_object_type() != PDFObjectType::ArlPDFObjTypeString) {
++                show_context(fake_e);
++                output << COLOR_ERROR << "name tree Limits entries must be strings" << COLOR_RESET;
++            }
++            else if (!have_range || ((ArlPDFString*)lower)->get_value() != first_key
++                    || ((ArlPDFString*)upper)->get_value() != last_key) {
++                show_context(fake_e);
++                output << COLOR_ERROR << "name tree Limits do not match descendant keys" << COLOR_RESET;
++            }
++            delete lower;
++            delete upper;
++        }
++        delete limits_obj;
+     }
+ }
+ 
+@@ -936,6 +1024,13 @@
+             auto hash = elem.object->get_hash_id();
+             auto found = mapped.find(hash);
+             if (found != mapped.end()) {
++                // Tables 30/151: a Page reference cannot identify a Pages node.
++                // Preserve the existing visited-object guard and all other contexts.
++                if ((elem.link == "PageObject") &&
++                    ((found->second == "PageTreeNodeRoot") || (found->second == "PageTreeNode"))) {
++                    show_context(elem);
++                    output << COLOR_ERROR << "Page object was already identified as a page-tree node" << COLOR_RESET;
++                }
+                 // "_Universal..." objects match anything so ignore them.
+                 if ((found->second != elem.link) &&
+                     (((elem.link != "_UniversalDictionary") && (elem.link != "_UniversalArray")) &&
+@@ -984,6 +1079,21 @@
+                 dictObj = ((ArlPDFStream*)elem.object)->get_dictionary();
+             else
+                 dictObj = (ArlPDFDictionary*)elem.object;
++
++            if (elem.link == "Catalog")
++                folio_metadata::OutlineHierarchy(output).check(dictObj);
++            if (elem.link == "PageObject")
++                folio_annotation::page(dictObj, output);
++            if (elem.link == "AnnotLink")
++                folio_annotation::link(dictObj, output);
++            if (elem.link == "FileSpecification")
++                folio_metadata::file_specification(dictObj, output);
++#ifdef ARL_PDFSDK_PDFIUM
++            if (elem.link == "Metadata" && obj_type == PDFObjectType::ArlPDFObjTypeStream)
++                folio_metadata::metadata_xml(static_cast<ArlPDFStream*>(elem.object), output);
++            if (elem.link == "EmbeddedFileStream" && obj_type == PDFObjectType::ArlPDFObjTypeStream)
++                folio_metadata::embedded_file(static_cast<ArlPDFStream*>(elem.object), dictObj, output);
++#endif
+ 
+             // Check for duplicate keys of the same name. Depends on underlying PDF SDK!!
+             // https://assets.devoted.com/plan-documents/2022/DH-DisenrollmentForm-2022-ENG.pdf
+@@ -1323,6 +1433,23 @@
+                 pure_wildcard_idx = (int)tsv.size() - 1;
+ 
+             int array_size = arrayObj->get_num_elements();
++            // Table 151: both Fit and FitB contain exactly page and view name.
++            // The rule applies equally to local references and remote page indices.
++            if ((elem.link == "Dest0Array") && (array_size != 2)) {
++                show_context(elem);
++                output << COLOR_ERROR << "destination array length is not 2 for Dest0Array" << COLOR_RESET;
++            }
++            // Table 151 permits null for XYZ and one-coordinate fits, but not FitR.
++            if (elem.link == "Dest4Array") {
++                for (int index = 2; index < array_size; ++index) {
++                    ArlPDFObject* operand = arrayObj->get_value(index);
++                    if (operand == nullptr || operand->get_object_type() != PDFObjectType::ArlPDFObjTypeNumber) {
++                        show_context(elem);
++                        output << COLOR_ERROR << "FitR destination operands must all be numbers" << COLOR_RESET;
++                    }
++                    delete operand;
++                }
++            }
+ 
+             // Are all required rows present?
+             if ((first_optional_idx >= 0) && (array_size < first_optional_idx)) {
+--- a/TestGrammar/src/ParseObjects.h
++++ b/TestGrammar/src/ParseObjects.h
+@@ -31,6 +31,7 @@
+ #include <map>
+ #include <iostream>
+ #include <queue>
++#include <set>
+ #include <cassert>
+ 
+ #include "ArlingtonTSVGrammarFile.h"
+@@ -100,6 +101,7 @@
+     const ArlTSVmatrix& get_grammar(const std::string& link);
+ 
+     void parse_name_tree(ArlPDFDictionary* obj, const std::vector<std::string>& links, const std::string context, const bool root = true);
++    std::set<std::string> name_tree_seen;
+     void parse_number_tree(ArlPDFDictionary* obj, const std::vector<std::string>& links, const std::string context, const bool root = true);
+ 
+     std::string recommended_link_for_object(ArlPDFObject* obj, const std::vector<std::string> links, const std::string obj_name);
+--- a/TestGrammar/src/TestGrammarVers.h
++++ b/TestGrammar/src/TestGrammarVers.h
+@@ -54,6 +54,6 @@
+ #endif
+ 
+ /// @brief String showing version, build date/time, compiler, platform and configuration
+-#define TestGrammar_VERSION "v0.81 built " __DATE__ " " __TIME__ " (" TG_COMPILER " " TG_PLATFORM " " TG_CONFIG ")"
++#define TestGrammar_VERSION "v0.81-folio-t12-r1 built " __DATE__ " " __TIME__ " (" TG_COMPILER " " TG_PLATFORM " " TG_CONFIG ")"
+ 
+ #endif // TestGrammarVers_h

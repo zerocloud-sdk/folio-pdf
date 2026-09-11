@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prepare and bind repository-only T03/T09/T10/T11 observations; never publish a release."""
+"""Prepare and bind repository-only T03/T09/T10/T11/T12 observations; never publish a release."""
 import copy
 import hashlib
 from pathlib import Path
@@ -132,6 +132,27 @@ ARTIFACT_CONTRACT_TESTS = tuple(
     'net.zerocloud.pdf.migration.itext7.contract.' + name
     for name in ('JarContractIT', 'ClasspathExclusivityIT'))
 CERTIFICATION_CASES = {
+    'annotations': {
+        'profile': 'T12-annotations-document-actions',
+        'label': 'T12',
+        'test-count': 47,
+        'test-classes': [
+            'net.zerocloud.pdf.consumer.AnnotationWorkflowTest',
+            'net.zerocloud.pdf.itext7.consumer.AnnotationFacadeTest'],
+        'facade-execution-profile': 'IN_PROCESS',
+        'standards-producer': 'arlington-t12-r1',
+        'contract-timeout': 600,
+        'recorder-timeout': 1800,
+        'workflow-policy': 'REWRITE; explicit PDF 2.0 products; six Annotation types, resource-free normal appearances and inert local GoTo; exact geometry, ordering, targets, attachments and retained paint; non-Widget flattening; bounded queries and atomic safe failures; qualified Linux Action canary observations; signed Sources are protected; Native tests select the recorded execution profile; Facade execution remains IN_PROCESS',
+        'fonts': 'no fonts; the fixed T12 vector corpus has no text or font resources',
+        'configuration-paths': [
+            'capabilities/profiles/T12-annotations',
+            'capabilities/profiles/T12-standards',
+            'capabilities/expected/T12-standards-findings.json',
+            'build-tools/acceptance/arlington/t12-r1.patch',
+            'scripts/t12-arlington-pin.properties',
+            'scripts/t12-semantics.py',
+            'scripts/t12-safety-observer.py']},
     'metadata': {
         'profile': 'T11-metadata-outlines-destinations-attachments',
         'label': 'T11',
@@ -210,7 +231,20 @@ PAGE_OPERATION_EDITIONS = tuple(
     api + '-' + product
     for api in ('native', 'facade')
     for product in ('edited', 'merged', 'left', 'right'))
+ANNOTATION_PRODUCTS = {'created': 3, 'changed': 3, 'flattened': 3, 'copied': 5,
+                       'merged': 4, 'adopted': 4, 'left': 2, 'right': 2}
+ANNOTATION_CONTROLS = ('order', 'identifier', 'rectangle', 'appearance', 'appearance-box', 'payload', 'icon',
+                       'direct-target', 'action-operand', 'named-target', 'copy-target', 'copy-external',
+                       'merge-name', 'split-survival', 'open-adoption', 'flatten-removal', 'flatten-placement', 'retained-paint')
 REPORT_PROFILES = {
+    'annotations': {
+        'editions': tuple(api + '-' + product for api in ('native', 'facade') for product in ANNOTATION_PRODUCTS),
+        'artifact': 'annotations.pdf',
+        'checkers': ('pdfcpu', 'arlington-core', 'arlington-annotations'),
+        'paged-visual': True,
+        'negative-files': {'syntax': ('invalid.pdf',), 'standards': ('invalid-rectangle.pdf',)},
+        'negative-trees': {'semantic': ('semantic',), 'visual': ('visual',), 'standards': ('standards',)},
+        'safety': 'annotations'},
     'transactions': {
         'editions': ('native', 'facade'),
         'artifact': 'blank.pdf',
@@ -376,6 +410,118 @@ def metadata_safety_files(run, result, expected_native_profile):
     return [path for path in sorted((run / 'safety').rglob('*')) if path.is_file()]
 
 
+def annotation_safety_files(root, run, result, expected_native_profile):
+    """Require the exact public probe, receipts and independently qualified effect observations."""
+    import json
+    if expected_native_profile not in ('IN_PROCESS', 'HARDENED_WORKER') \
+            or result.get('native-execution-profile') != expected_native_profile \
+            or result.get('facade-execution-profile') != 'IN_PROCESS' or result.get('safety') != 'pass':
+        raise ValueError('Annotation safety does not match the selected execution profile')
+    safety = properties(run / 'safety/result.properties')
+    probe = properties(run / 'safety/probe/result.properties')
+    if safety.get('result') != 'pass' or any(safety.get(key) != value for key, value in probe.items()) \
+            or probe.get('result') != 'pass' or safety.get('native-execution-profile') != expected_native_profile \
+            or safety.get('facade-execution-profile') != 'IN_PROCESS':
+        raise ValueError('Incomplete Annotation safety or profile identity')
+    for api in ('native', 'facade'):
+        for graph in ('unknown', 'chained'):
+            key = api + '.' + graph + '.'
+            required = {'preserved': 'pass', 'replaced': 'pass', 'atomic': 'pass', 'source-unchanged': 'pass',
+                        'query-code': 'QUERY_FAILED', 'copy-code': 'PRESERVATION_UNSUPPORTED',
+                        'execution-profile': expected_native_profile if api == 'native' else 'IN_PROCESS'}
+            if any(safety.get(key + name) != value for name, value in required.items()):
+                raise ValueError('Incomplete Annotation Action safety scenario: ' + key)
+            for phase in ('source', 'preserved', 'replaced'):
+                pdf = run / 'safety/probe' / (api + '-' + graph + '-' + phase + '.pdf')
+                prefix = key + phase + '.'
+                if safety.get(prefix + 'sha256') != sha256(pdf) or safety.get(prefix + 'receipt-status') != 'COMMITTED' \
+                        or safety.get(prefix + 'partial-output-possible') != 'false':
+                    raise ValueError('Changed or incomplete Action safety publication: ' + prefix)
+        if safety.get(api + '.signed-code') != 'SIGNED_REWRITE_REJECTED' \
+                or safety.get(api + '.signed-target-unchanged') != 'pass' \
+                or (run / 'safety/probe' / (api + '-signed-target.pdf')).read_bytes() != b'FOLIO':
+            raise ValueError('Missing signed Annotation rewrite protection: ' + api)
+    if safety.get('signed-source-sha256') != sha256(run / 'safety/probe/signed-docmdp-p3.pdf'):
+        raise ValueError('Signed Annotation Source identity changed')
+    observed_path = run / 'safety/effects/observation.json'
+    observed = json.loads(observed_path.read_text())
+    effects = properties(run / 'safety/effects/observation.properties')
+    observer_hash = sha256(root / 'scripts/t12-safety-observer.py')
+    if effects.get('result') != 'pass' or effects.get('child-exit') != '0' \
+            or effects.get('observer-sha256') != observer_hash or observed.get('result') != 'pass' \
+            or observed.get('child_exit') != 0 or observed.get('observer_sha256') != observer_hash \
+            or safety.get('effect-observer-sha256') != observer_hash \
+            or safety.get('effect-observation-sha256') != sha256(observed_path):
+        raise ValueError('Missing or changed Annotation effect observer identity/result')
+    for effect in ('read', 'write', 'script', 'process', 'network'):
+        if effects.get('qualification.' + effect) != 'pass' or effects.get('effects.' + effect) != '0' \
+                or observed.get('qualification', {}).get(effect) != 'pass' or observed.get('effects', {}).get(effect) != 0:
+            raise ValueError('Annotation effect observation is unqualified or nonzero: ' + effect)
+    return [path for path in sorted((run / 'safety').rglob('*')) if path.is_file()]
+
+
+def require_annotation_observations(root, run, execution):
+    """Do not trust an aggregate verdict without all frozen controls and product identities."""
+    required = (root / 'capabilities/profiles/T12-standards/required-rules.txt').read_text().splitlines()
+    if len(required) != 174 or len(set(required)) != 174:
+        raise ValueError('Incomplete Annotation standards rule catalog')
+    assignments = {}
+    for checker in REPORT_PROFILES['annotations']['checkers']:
+        assigned = properties(root / ('capabilities/profiles/T12-standards/' + checker + '.properties'))['required-rules'].split(',')
+        assignments[checker] = assigned
+    all_assigned = [rule for rules in assignments.values() for rule in rules]
+    if sorted(all_assigned) != sorted(required):
+        raise ValueError('Annotation standards assignments do not cover exactly the required rules')
+    for change in ANNOTATION_CONTROLS:
+        control = run / 'negative/semantic' / change
+        observed = properties(control / 'result.properties')
+        if observed.get('semantic') != 'fail' or observed.get('input-sha256') != sha256(control.with_suffix('.pdf')):
+            raise ValueError('Missing detected Annotation semantic control: ' + change)
+    for change in ('appearance', 'rectangle', 'retained-paint'):
+        control = run / 'negative/visual' / change
+        observed = properties(control / 'result.properties')
+        if observed.get('visual') != 'fail' or observed.get('page.1.visual') != 'fail' \
+                or observed.get('input-sha256') != sha256(control.with_suffix('.pdf')):
+            raise ValueError('Missing detected Annotation visual control: ' + change)
+    pixel = run / 'negative/visual/one-pixel'
+    observed = properties(pixel / 'result.properties')
+    required_pixel = {'visual': 'fail', 'positive-absolute-error': '0', 'negative-absolute-error': '1',
+                      'threshold': '0', 'fuzz-percent': '0', 'metric': 'AE'}
+    original = root / 'capabilities/profiles/T12-annotations/expected/created-page-1.png'
+    if any(observed.get(key) != value for key, value in required_pixel.items()) \
+            or observed.get('original-sha256') != sha256(original) \
+            or observed.get('original-sha256') != sha256(pixel / 'original.png') \
+            or observed.get('changed-sha256') != sha256(pixel / 'one-pixel.png') \
+            or not (pixel / 'difference.png').is_file() or not (pixel / 'comparator.txt').is_file():
+        raise ValueError('Missing qualified Annotation one-pixel control at the frozen threshold')
+    standard = properties(run / 'negative/standards/standards.properties')
+    if standard.get('result') != 'fail' or standard.get('input-sha256') != sha256(run / 'negative/invalid-rectangle.pdf'):
+        raise ValueError('Missing detected Annotation standards product control')
+    for edition in REPORT_PROFILES['annotations']['editions']:
+        directory = run / edition
+        exact_hash = sha256(directory / 'annotations.pdf')
+        product = edition.partition('-')[2]
+        mode = execution if edition.startswith('native-') else 'IN_PROCESS'
+        observed = properties(directory / 'result.properties')
+        if observed.get('standards-rule-count') != '174' or observed.get('page-count') != str(ANNOTATION_PRODUCTS[product]):
+            raise ValueError('Incomplete Annotation rules or page count: ' + edition)
+        for checker, rules in assignments.items():
+            checker_result = properties(directory / checker / 'standards.properties')
+            if checker_result.get('input-sha256') != exact_hash \
+                    or sorted(checker_result.get('covered-rules', '').split(',')) != sorted(rules):
+                raise ValueError('Incomplete Annotation checker identity/rules: ' + edition + '/' + checker)
+        independent = properties(directory / 'qpdf/result.properties')
+        if independent.get('semantic') != 'pass' or independent.get('input-sha256') != exact_hash \
+                or independent.get('observer-sha256') != sha256(root / 'scripts/t12-semantics.py') \
+                or independent.get('qpdf-json-sha256') != sha256(directory / 'qpdf/qpdf.json'):
+            raise ValueError('Missing independent Annotation semantics: ' + edition)
+        receipt = properties(run / (edition + '-publication.properties'))
+        if receipt.get('receipt-count') != '1' or receipt.get('execution-profile') != mode \
+                or receipt.get('receipt.0.target') != product or receipt.get('receipt.0.status') != 'COMMITTED' \
+                or receipt.get('receipt.0.partial-output-possible') != 'false' or receipt.get('receipt.0.pdf-sha256') != exact_hash:
+            raise ValueError('Missing Annotation publication receipt: ' + edition)
+
+
 def append_source_visual(root, run, report):
     original = run / 'source'
     observed = properties(original / 'result.properties')
@@ -393,8 +539,11 @@ def collect_reports(root, run, obligation='transactions', execution_profile=None
     for chain in CHAINS:
         if result.get(chain) != 'pass':
             raise ValueError('Unobserved or non-passing ' + obligation + ' chain: ' + chain)
-    safety_files = metadata_safety_files(run, result, execution_profile) \
-        if profile.get('safety') else []
+    if obligation == 'annotations':
+        safety_files = annotation_safety_files(root, run, result, execution_profile)
+        require_annotation_observations(root, run, execution_profile)
+    else:
+        safety_files = metadata_safety_files(run, result, execution_profile) if profile.get('safety') else []
     negative = properties(run / 'negative/result.properties')
     reports = {}
     for chain in CHAINS:
@@ -434,6 +583,8 @@ def collect_reports(root, run, obligation='transactions', execution_profile=None
                                        'renderer-difference.png'):
                             report['findings'].append(reference(
                                 root, directory / ('page-' + str(page) + '-' + suffix)))
+                        if obligation == 'annotations':
+                            report['findings'].append(reference(root, directory / ('page-' + str(page) + '-appearance-projection.pdf')))
                 else:
                     report['findings'] += [reference(root, path)
                                            for path in sorted(directory.glob('*.png'))]
@@ -448,6 +599,13 @@ def collect_reports(root, run, obligation='transactions', execution_profile=None
                     for rule in observation['covered-rules'].split(','):
                         report['negative-controls'].append(reference(root, tool / ('negative-' + rule + '.txt')))
                         report['negative-controls'].append(reference(root, tool / ('control-' + rule + '.pdf')))
+            if chain == 'semantic' and obligation == 'annotations':
+                for path in sorted((directory / 'qpdf').rglob('*')):
+                    if path.is_file():
+                        report['findings'].append(reference(root, path))
+                for name in ('semantic.properties', 'semantic-command.txt'):
+                    report['findings'].append(reference(root, directory / name))
+                report['findings'].append(reference(root, run / (edition + '-publication.properties')))
         if chain == 'visual':
             report['negative-controls'] += [reference(root, path) for path in sorted((run / 'negative').glob('*.png'))]
             report['negative-controls'] += [reference(root, path) for path in sorted((run / 'negative').glob('one-pixel-control.properties'))]
@@ -693,6 +851,11 @@ def certification_tools():
          'path': '.build-cache/arlington/t11-r1/TestGrammar/bin/linux/TestGrammar',
          'pin': 'scripts/t11-arlington-pin.properties', 'hash-key': 'sha256',
          'chains': ['standards']},
+        {'id': 'arlington-t12-r1', 'kind': 'external-tool',
+         'version': '0.81-folio-t12-r1',
+         'path': '.build-cache/arlington/t12-r1/TestGrammar/bin/linux/TestGrammar',
+         'pin': 'scripts/t12-arlington-pin.properties', 'hash-key': 'sha256',
+         'chains': ['standards']},
         {'id': 'pdfium-cli', 'kind': 'external-tool',
          'version': 'v0.11.2-pdfium-chromium-7881',
          'path': '.build-cache/pdfium/v0.11.2-chromium-7881/bin/pdfium',
@@ -704,7 +867,7 @@ def certification_tools():
          'hash-key': 'IMAGEMAGICK_EXECUTABLE_SHA256', 'chains': ['visual']}]
     project = [{'id': 'folio-pdf-' + label, 'kind': 'project-test',
                 'version': '0.1.0', 'chains': ['semantic']}
-               for label in ('t03', 't09', 't10', 't11')]
+               for label in ('t03', 't09', 't10', 't11', 't12')]
     return external + project
 
 
@@ -929,7 +1092,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('action', choices=('stage', 'certify', 'collect', 'preservation', 'plan', 'merge-index'))
     parser.add_argument('output', nargs='?', type=Path)
-    parser.add_argument('--obligation', choices=('transactions', 'values', 'pages', 'metadata'), default='transactions')
+    parser.add_argument('--obligation', choices=('transactions', 'values', 'pages', 'metadata', 'annotations'), default='transactions')
     parser.add_argument('--execution-profile', choices=('IN_PROCESS', 'HARDENED_WORKER'))
     parser.add_argument('--root', type=Path, default=Path(__file__).resolve().parents[1])
     args = parser.parse_args()
@@ -950,10 +1113,10 @@ def main():
         import json
         if args.output is None:
             parser.error('collect requires an observation directory')
-        if args.obligation == 'metadata' and args.execution_profile is None:
-            parser.error('metadata collect requires --execution-profile')
-        if args.obligation != 'metadata' and args.execution_profile is not None:
-            parser.error('--execution-profile applies only to metadata collect')
+        if args.obligation in ('metadata', 'annotations') and args.execution_profile is None:
+            parser.error(args.obligation + ' collect requires --execution-profile')
+        if args.obligation not in ('metadata', 'annotations') and args.execution_profile is not None:
+            parser.error('--execution-profile applies only to metadata and annotations collect')
         print(json.dumps(collect_reports(root, (root / args.output).resolve(), args.obligation,
                                          args.execution_profile), indent=2))
         return

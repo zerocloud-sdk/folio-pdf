@@ -74,7 +74,7 @@ A missing capability, required behavior, compatible dependency, independent evid
 | [`values`](#values) | `document.value.inspect-patch` | [#71](https://github.com/zerocloud-sdk/folio-pdf/issues/71) | satisfied |
 | [`pages`](#pages) | `document.page.manipulate-merge-split` | [#72](https://github.com/zerocloud-sdk/folio-pdf/issues/72) | satisfied |
 | [`metadata`](#metadata) | `document.metadata.outlines-destinations-attachments` | [#73](https://github.com/zerocloud-sdk/folio-pdf/issues/73) | satisfied |
-| [`annotations`](#annotations) | `document.annotations-actions.manage` | [#74](https://github.com/zerocloud-sdk/folio-pdf/issues/74) | blocked |
+| [`annotations`](#annotations) | `document.annotations-actions.manage` | [#74](https://github.com/zerocloud-sdk/folio-pdf/issues/74) | satisfied |
 | [`text`](#text) | `document.text-structure.extract` | [#75](https://github.com/zerocloud-sdk/folio-pdf/issues/75) | blocked |
 | [`images`](#images) | `document.images-resources.extract` | [#76](https://github.com/zerocloud-sdk/folio-pdf/issues/76) | blocked |
 | [`incremental`](#incremental) | `document.incremental-signature.protect` | [#77](https://github.com/zerocloud-sdk/folio-pdf/issues/77) | blocked |
@@ -186,26 +186,9 @@ Read, create, update, remove, flatten, and preserve managed annotations and iner
 - Mandatory chains: `syntax, standards, semantic, visual`
 - Dependencies: `values, pages, metadata`
 - Aggregate members: none
-- Required Facade family: kernel annotations and GoTo Actions (`com.itextpdf.kernel.pdf.`); mappings: **missing**
+- Required Facade family: kernel annotations and GoTo Actions (`com.itextpdf.kernel.pdf.`); mappings: `itext7.kernel.pdf-document.get-annotations, itext7.kernel.pdf-document.update-annotations, itext7.kernel.pdf-document.get-actions, itext7.kernel.pdf-document.flatten-annotations, itext7.kernel.pdf-page.get-annotations, itext7.kernel.pdf-page.add-annotation, itext7.kernel.pdf-page.remove-annotation, itext7.kernel.pdf-page.set-normal-appearance, itext7.kernel.pdf-page.set-additional-action, itext7.kernel.pdf-page.get-additional-actions, itext7.kernel.pdf-catalog.set-open-action, itext7.kernel.pdf-catalog.get-open-action`
 - Source requirements: [`spec-us-16`](#spec-us-16), [`spec-us-17`](#spec-us-17), [`spec-id-26`](#spec-id-26), [`slice-74-1`](#slice-74-1), [`slice-74-2`](#slice-74-2), [`slice-74-3`](#slice-74-3), [`slice-74-4`](#slice-74-4)
 
-- Blocker: capability document.annotations-actions.manage is experimental, requires compatible
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on document.annotations-actions.manage
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on document.annotations-actions.manage
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on document.annotations-actions.manage
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk21 on document.annotations-actions.manage
-- Blocker: missing required Facade mapping set for kernel annotations and GoTo Actions
-- Blocker: unresolved retained limitation: The Foundation annotation subset and deferred AcroForm boundary require #74 reconciliation.
-- Blocker: unresolved retained limitation: The GoTo allowlist must cover the required Foundation Action subset under #74.
-- Blocker: unresolved retained limitation: Restricted appearance/flattening support must cover the required Foundation annotation behavior under #74.
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk8/IN_PROCESS (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk8/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk11/IN_PROCESS (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk11/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/IN_PROCESS (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
 
 <a id="text"></a>
 ### `text`
@@ -1182,7 +1165,6 @@ Close every Foundation behavior, aggregate, dependency and Facade obligation; ru
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk11/REPOSITORY (required chains: contract, review)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/REPOSITORY (required chains: contract, review)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/REPOSITORY (required chains: contract, review)
-- Blocker: incomplete prerequisite obligation annotations
 - Blocker: incomplete prerequisite obligation text
 - Blocker: incomplete prerequisite obligation images
 - Blocker: incomplete prerequisite obligation incremental
@@ -1260,11 +1242,11 @@ Classifications bind the exact Capability Matrix limitation text by SHA-256; cha
   Original limitation: Managed annotations and local GoTo Actions integrate through document.annotations-actions.manage; content extraction remains T13 and T14, and encryption remains T16.
 - `document.annotations-actions.manage` / `retained-contract` → [`annotations`](#annotations): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #74 must prove it without omitting required successful Foundation cases.
   Original limitation: T15 admits all T12 commands for unsigned INCREMENTAL publication; a sole coherent DocMDP P=3 policy admits only supported non-Widget UpdateAnnotations changes, while UpdateActions and FlattenAnnotations remain rejected for signed Sources.
-- `document.annotations-actions.manage` / `release-blocker` → [`annotations`](#annotations): The Foundation annotation subset and deferred AcroForm boundary require #74 reconciliation.
+- `document.annotations-actions.manage` / `retained-contract` → [`annotations`](#annotations): T74 created/changed products independently prove all six approved Annotation families and their properties through Native and inherited Stable/Preview Facade; the standalone Widget boundary is retained without AcroForm field or form-flattening scope. Current candidate evidence is required by annotations.
   Original limitation: Version 1 manages Text, Stamp, Highlight, FileAttachment, standalone Widget, and Link annotations. Widget values do not create AcroForm fields and cannot be flattened; AcroForm field behavior, form Actions, and form flattening remain outside T12.
-- `document.annotations-actions.manage` / `release-blocker` → [`annotations`](#annotations): The GoTo allowlist must cover the required Foundation Action subset under #74.
+- `document.annotations-actions.manage` / `retained-contract` → [`annotations`](#annotations): T74 created/changed/copied/merged/adopted/left/right products prove explicit and named local GoTo, catalog OpenAction, page O/C and both Link bindings, including exact retargeting; qualified public preserve-or-reject probes retain the inert Action boundary. Current candidate evidence is required by annotations.
   Original limitation: The complete Action allowlist is an inert local GoTo dictionary with one direct page or existing named-destination target, bound only to catalog open, page open or close, and Link annotations. Folio PDF never executes Actions; unsupported or chained Action graphs remain structurally unchanged only during rewrites that need not interpret them and are otherwise rejected before mutation. Source-byte preservation is not claimed.
-- `document.annotations-actions.manage` / `release-blocker` → [`annotations`](#annotations): Restricted appearance/flattening support must cover the required Foundation annotation behavior under #74.
+- `document.annotations-actions.manage` / `retained-contract` → [`annotations`](#annotations): T74 original rasters and independent object graphs prove resource-free normal appearances for all six families and geometry-correct non-Widget flattening with retained paint and removal. This proven Foundation boundary retains resource and form restrictions; current candidate evidence is required by annotations.
   Original limitation: Normal appearances are resource-free Form XObjects with an identity matrix, an empty Resources dictionary, a 1 MiB decoded-content limit, semantically range-checked graphics operands, and a strict operator allowlist. Flattening requires a validated normal appearance, isolates pre-existing page content with q/Q, and supports non-Widget annotations only.
 - `document.annotations-actions.manage` / `retained-contract` → [`annotations`](#annotations): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #74 must prove it without omitting required successful Foundation cases.
   Original limitation: Annotation counts, appearance bytes, and attachment bytes are caller-bounded on query. Each complete managed-graph command or page-operation validation or retargeting pass shares fixed document-wide 8 MiB decoded-appearance and 8 MiB decoded-attachment bounds. These local bounds compose with T20's shared transaction policy and are transported by T21's opt-in Hardened Worker codecs.
@@ -2721,22 +2703,22 @@ Classifications bind the exact Capability Matrix limitation text by SHA-256; cha
 <a id="slice-74-1"></a>
 - `slice-74-1` — https://github.com/zerocloud-sdk/folio-pdf/issues/74 — Acceptance criteria 1
   Certify the approved Annotation families, normal appearances, inert local GoTo Actions, supported event bindings and non-form Annotation Flattening through create-change-publish-reopen workflows.
-  Disposition: `required`. Approved certification slice; scope declarations do not assert implementation or certification. Obligations: `annotations`
+  Disposition: `required`. The frozen success cases, twelve inherited Stable/Preview mappings, 174 independently qualified rules, fixed raster controls and Action safety observations are defined by docs/t12-certification.md; actual candidate certification is required by foundation-evidence.yaml. Obligations: `annotations`
 
 <a id="slice-74-2"></a>
 - `slice-74-2` — https://github.com/zerocloud-sdk/folio-pdf/issues/74 — Acceptance criteria 2
   Implement the matching Annotation, appearance and local-action Migration Facade subset; no executable scripting or arbitrary external-action behavior is introduced.
-  Disposition: `required`. Approved certification slice; scope declarations do not assert implementation or certification. Obligations: `annotations`
+  Disposition: `required`. The frozen success cases, twelve inherited Stable/Preview mappings, 174 independently qualified rules, fixed raster controls and Action safety observations are defined by docs/t12-certification.md; actual candidate certification is required by foundation-evidence.yaml. Obligations: `annotations`
 
 <a id="slice-74-3"></a>
 - `slice-74-3` — https://github.com/zerocloud-sdk/folio-pdf/issues/74 — Acceptance criteria 3
   Independent semantics and raster evidence cover annotation order, identity collisions, copied destinations, appearance placement, retained page paint and flattening removal.
-  Disposition: `required`. Approved certification slice; scope declarations do not assert implementation or certification. Obligations: `annotations`
+  Disposition: `required`. The frozen success cases, twelve inherited Stable/Preview mappings, 174 independently qualified rules, fixed raster controls and Action safety observations are defined by docs/t12-certification.md; actual candidate certification is required by foundation-evidence.yaml. Obligations: `annotations`
 
 <a id="slice-74-4"></a>
 - `slice-74-4` — https://github.com/zerocloud-sdk/folio-pdf/issues/74 — Acceptance criteria 4
   Malformed appearances, unknown/chained Actions, unsafe graphs and unsupported Widget/form operations fail before mutation; AcroForm field work remains outside this Foundation slice.
-  Disposition: `required`. Approved certification slice; scope declarations do not assert implementation or certification. Obligations: `annotations`
+  Disposition: `required`. The frozen success cases, twelve inherited Stable/Preview mappings, 174 independently qualified rules, fixed raster controls and Action safety observations are defined by docs/t12-certification.md; actual candidate certification is required by foundation-evidence.yaml. Obligations: `annotations`
 
 <a id="slice-75-1"></a>
 - `slice-75-1` — https://github.com/zerocloud-sdk/folio-pdf/issues/75 — Acceptance criteria 1

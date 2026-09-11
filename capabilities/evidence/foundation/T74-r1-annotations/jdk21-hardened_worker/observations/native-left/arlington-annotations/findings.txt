@@ -1,0 +1,152 @@
+Version exit: 0
+[0m
+
+Arlington PDF Model C++ P.o.C. version v0.81-folio-t12-r1 built Sep 11 2026 00:00:00 (GNU-C linux release)
+Choose one of: --pdf, --checkdva or --validate.
+
+Usage:
+	TestGrammar --tsvdir <dir> [--force <ver>|exact] [--out <fname|dir>] [--no-color] [--clobber] [--debug] [--brief] [--extensions <extn1[,extn2]>] [--password <pwd>] [--exclude string | @textfile.txt] [--dryrun] [--allfiles] [--validate | --checkdva <formalrep> | --pdf <fname|dir|@file.txt> ]
+
+Options: 
+-h, --help                   This usage message.
+-b, --brief                  terse output when checking PDFs. The full PDF DOM tree is NOT output.
+-c, --checkdva               Adobe DVA formal-rep PDF file to compare against Arlington PDF model.
+-d, --debug                  output additional debugging information.
+    --clobber                always overwrite PDF output report files (--pdf) rather than append underscores.
+    --no-color               disable colorized text output (useful when redirecting or piping output)
+-m, --batchmode              stop popup error dialog windows and redirect everything to console (Windows only, includes memory leak reports).
+-o, --out                    output file or folder. Default is stdout. See --clobber for overwriting behavior.
+-p, --pdf                    input PDF file, folder, or text file of PDF files/folders.
+-f, --force                  force the PDF version to the specified value (1,0, 1.1, ..., 2.0 or 'exact'). Only applicable to --pdf.
+-t, --tsvdir                 [required] folder containing Arlington PDF model TSV file set.
+-v, --validate               validate the Arlington PDF model.
+-e, --extensions             a comma-separated list of extensions, or '*' for all extensions.
+    --password               password. Only applicable to --pdf.
+    --exclude                PDF exclusion string or filelist (# is a comment). Only applicable to --pdf.
+    --dryrun                 Dry run - don't do any actual processing.
+-a, --allfiles               Process all files regardless of file extension.
+    --explicit-values-only   Ignore wildcards in PossibleValues.
+
+Built using pdfium
+
+Validation exit: 0
+Processing "/workspace/capabilities/evidence/foundation/T74-r1-annotations/jdk21-hardened_worker/observations/native-left/annotations.pdf" to stdout BEGIN - TestGrammar v0.81-folio-t12-r1 built Sep 11 2026 00:00:00 (GNU-C linux release) pdfium
+Arlington TSV data: "/workspace/.build-cache/arlington/t12-r1/tsv/latest"
+PDF: "/workspace/capabilities/evidence/foundation/T74-r1-annotations/jdk21-hardened_worker/observations/native-left/annotations.pdf"
+Info: XRefStream detected.
+Info: Header is version PDF 2.0
+Info: Command line forced to PDF 2.0
+Info: Processing as PDF 2.0
+       1: Trailer (as XRefStream)
+       2:   Trailer (as XRefStream)->ID (as TrailerIDArray)
+       3:   Trailer (as XRefStream)->Index (as ArrayOfXRefIndexIntegers)
+       4:   Trailer (as XRefStream)->Root (as Catalog)
+Info: unknown key 'T74Keep' is not defined in Arlington for Catalog in PDF 2.0
+       5:   Trailer (as XRefStream)->W (as ArrayOfXRefWIntegers)
+       6:     Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)
+       7:       Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)
+       8:         Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]
+Info: unknown key 'T74Marker' is not defined in Arlington for PageObject in PDF 2.0
+       9:         Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[1 (as PageObject)]
+Info: unknown key 'T74Marker' is not defined in Arlington for PageObject in PDF 2.0
+      10:           Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->AA (as AddActionPageObject)
+      11:           Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)
+      12:           Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Contents (as Stream)
+      13:           Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Parent (as PageTreeNodeRoot)
+      14:           Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)
+      15:           Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[1 (as PageObject)]->Annots (as ArrayOfAnnots)
+      16:           Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[1 (as PageObject)]->Contents (as Stream)
+      17:           Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[1 (as PageObject)]->Parent (as PageTreeNodeRoot)
+      18:           Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[1 (as PageObject)]->Resources (as Resource)
+      19:             Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->AA (as AddActionPageObject)->O (as ActionGoTo)
+      20:             Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[0 (as AnnotText)]
+      21:             Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[1 (as AnnotStamp)]
+      22:             Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[2 (as AnnotHighlight)]
+      23:             Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[3 (as AnnotFileAttachment)]
+      24:             Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[4 (as AnnotWidget)]
+      25:             Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[1 (as PageObject)]->Annots (as ArrayOfAnnots)[0 (as AnnotLink)]
+      26:             Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[1 (as PageObject)]->Annots (as ArrayOfAnnots)[1 (as AnnotLink)]
+      27:               Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->AA (as AddActionPageObject)->O (as ActionGoTo)->D (as Dest1Array)
+      28:               Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[0 (as AnnotText)]->AP (as Appearance)
+      29:               Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[0 (as AnnotText)]->P (as PageObject)
+      30:               Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[1 (as AnnotStamp)]->AP (as Appearance)
+      31:               Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[1 (as AnnotStamp)]->P (as PageObject)
+      32:               Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[2 (as AnnotHighlight)]->AP (as Appearance)
+      33:               Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[2 (as AnnotHighlight)]->C (as ArrayOf_4NumbersColorAnnotation)
+      34:               Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[2 (as AnnotHighlight)]->P (as PageObject)
+      35:               Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[2 (as AnnotHighlight)]->QuadPoints (as ArrayOfQuadPoints)
+      36:               Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[3 (as AnnotFileAttachment)]->AP (as Appearance)
+      37:               Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[3 (as AnnotFileAttachment)]->FS (as FileSpecification)
+      38:               Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[3 (as AnnotFileAttachment)]->P (as PageObject)
+      39:               Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[4 (as AnnotWidget)]->AP (as Appearance)
+      40:               Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[4 (as AnnotWidget)]->P (as PageObject)
+      41:               Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[1 (as PageObject)]->Annots (as ArrayOfAnnots)[0 (as AnnotLink)]->AP (as Appearance)
+      42:               Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[1 (as PageObject)]->Annots (as ArrayOfAnnots)[0 (as AnnotLink)]->Border (as ArrayOf_4AnnotBorderCharacteristics)
+      43:               Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[1 (as PageObject)]->Annots (as ArrayOfAnnots)[0 (as AnnotLink)]->Dest (as Dest4Array)
+      44:               Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[1 (as PageObject)]->Annots (as ArrayOfAnnots)[0 (as AnnotLink)]->P (as PageObject)
+      45:               Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[1 (as PageObject)]->Annots (as ArrayOfAnnots)[1 (as AnnotLink)]->A (as ActionGoTo)
+      46:               Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[1 (as PageObject)]->Annots (as ArrayOfAnnots)[1 (as AnnotLink)]->AP (as Appearance)
+      47:               Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[1 (as PageObject)]->Annots (as ArrayOfAnnots)[1 (as AnnotLink)]->Border (as ArrayOf_4AnnotBorderCharacteristics)
+      48:               Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[1 (as PageObject)]->Annots (as ArrayOfAnnots)[1 (as AnnotLink)]->P (as PageObject)
+      49:                 Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->AA (as AddActionPageObject)->O (as ActionGoTo)->D (as Dest1Array)[0 (as PageObject)]
+      50:                 Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[0 (as AnnotText)]->AP (as Appearance)->N (as XObjectFormType1)
+      51:                 Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[1 (as AnnotStamp)]->AP (as Appearance)->N (as XObjectFormType1)
+      52:                 Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[2 (as AnnotHighlight)]->AP (as Appearance)->N (as XObjectFormType1)
+      53:                 Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[3 (as AnnotFileAttachment)]->AP (as Appearance)->N (as XObjectFormType1)
+      54:                 Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[3 (as AnnotFileAttachment)]->FS (as FileSpecification)->EF (as FileSpecEF)
+      55:                 Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[4 (as AnnotWidget)]->AP (as Appearance)->N (as XObjectFormType1)
+      56:                 Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[1 (as PageObject)]->Annots (as ArrayOfAnnots)[0 (as AnnotLink)]->AP (as Appearance)->N (as XObjectFormType1)
+      57:                 Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[1 (as PageObject)]->Annots (as ArrayOfAnnots)[0 (as AnnotLink)]->Dest (as Dest4Array)[0 (as PageObject)]
+      58:                 Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[1 (as PageObject)]->Annots (as ArrayOfAnnots)[1 (as AnnotLink)]->A (as ActionGoTo)->D (as DestXYZArray)
+      59:                 Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[1 (as PageObject)]->Annots (as ArrayOfAnnots)[1 (as AnnotLink)]->AP (as Appearance)->N (as XObjectFormType1)
+      60:                   Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[0 (as AnnotText)]->AP (as Appearance)->N (as XObjectFormType1)->Resources (as Resource)
+      61:                   Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[1 (as AnnotStamp)]->AP (as Appearance)->N (as XObjectFormType1)->Resources (as Resource)
+      62:                   Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[2 (as AnnotHighlight)]->AP (as Appearance)->N (as XObjectFormType1)->Resources (as Resource)
+      63:                   Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[3 (as AnnotFileAttachment)]->AP (as Appearance)->N (as XObjectFormType1)->Resources (as Resource)
+      64:                   Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[3 (as AnnotFileAttachment)]->FS (as FileSpecification)->EF (as FileSpecEF)->F (as EmbeddedFileStream)
+      65:                   Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[4 (as AnnotWidget)]->AP (as Appearance)->N (as XObjectFormType1)->Resources (as Resource)
+      66:                   Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[1 (as PageObject)]->Annots (as ArrayOfAnnots)[0 (as AnnotLink)]->AP (as Appearance)->N (as XObjectFormType1)->Resources (as Resource)
+      67:                   Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[1 (as PageObject)]->Annots (as ArrayOfAnnots)[1 (as AnnotLink)]->A (as ActionGoTo)->D (as DestXYZArray)[0 (as PageObject)]
+      68:                   Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[1 (as PageObject)]->Annots (as ArrayOfAnnots)[1 (as AnnotLink)]->AP (as Appearance)->N (as XObjectFormType1)->Resources (as Resource)
+Info: Latest Arlington object was PDF 1.6 (FileSpecification/Desc) compared using forced PDF 2.0
+END
+
+DONE - 1 files processed
+
+Negative control annotation-ap-dictionary sha256=92d5861d23f84c9987f8f73338d7a4e6c8d4053a729bd650b23947a40c59c1bd detected=true
+Negative control annotation-flags-reserved sha256=2703c5897695884ba5838b30ec1f62d85004158e56a4f567a9dd07e984ecaa73 detected=true
+Negative control annotation-id-unique sha256=9c56f0fcac89b7eeb4257010949a25532cfc52aee323742cf552e55c370dc203 detected=true
+Negative control annotation-page-owner sha256=16af8a1c43ab5d41370d13da641debd15dc6c2c36d33057ce2e76ffaaad79740 detected=true
+Negative control appearance-normal-required sha256=2af6105c937fdd0f04a983acefa6f5ac9070f4f91b7de785e2fa328e9403e182 detected=true
+Negative control appearance-normal-type sha256=3b39bad6cd261be4e4f648404a59db8aa26e382964b6202df5d0a32e8c349ac7 detected=true
+Negative control catalog-openaction-type sha256=7ea98af0c36a7067bef42955cc7634aa4f56d87cac00f7d69c599064b78a8e6f detected=true
+Negative control file-annotation-fs-required sha256=eafdd5c89110a1c278a94cfc6e7a82f483868921ed7f1ce8fc6f25f52b699ec4 detected=true
+Negative control file-annotation-fs-type sha256=77c79dab9b12a2314228cd5c83d1b7b794efcedc3c3bdcdcebef097db8ea6ffb detected=true
+Negative control file-appearance-required sha256=de4756c3f7c1ed5016d43bbe6b3ca0c66c43ee9fa0e23a494d2750415127735b detected=true
+Negative control file-icon-name sha256=135bbe31c0a5a01ec55bdf97d497b4750f451f694d93a8eec87b0f5fe5bed444 detected=true
+Negative control goto-d-required sha256=175a2a1763b5286e75c81af98cc9dc88bfc6d681bf7ecee0cb8560cec8f72f07 detected=true
+Negative control goto-d-type sha256=a4bd5253fbeb2ecb6698ae2cd9103bb5e55f4c26e8511c61c5af0722d5e8f20a detected=true
+Negative control goto-named-target sha256=c9b08cc156a78bb29345230087a8868cf8cd3963510083834f6762bc2eb5c9f3 detected=true
+Negative control goto-s-name sha256=75a7d86db79360746e41e9a5b178cbc5d2493952a04aa1fda349bb424c8c1484 detected=true
+Negative control goto-s-required sha256=67e7b97cfa081e7a063bb1c89ed963fcfb8688e3d667db77da8a70d6a0fdadc1 detected=true
+Negative control highlight-appearance-required sha256=156524100a6f1ac718394cac1f7850a42c34dec4b0e764d956f0e44e55df6370 detected=true
+Negative control highlight-color-array sha256=647dca46527bd06e6086eef651dd6de4e8b6cb6cc2cb407b5b6ce695835fa758 detected=true
+Negative control highlight-color-count sha256=110dd35fc15b8f0b1e4643d02ffd0b88a823fd147a1d922f4359824889be44db detected=true
+Negative control highlight-color-numbers sha256=28a9b8323c906c3ef0dee24a109d797f343168b3a52660a68bf7a328a30e30af detected=true
+Negative control highlight-color-range sha256=249f0dd30f9e91def98f8a6048e8601cbea0dc1290ee0822e3e1c6a92d0fbecf detected=true
+Negative control highlight-quads-array sha256=4086b69ab3389b7cf081d6ab9379721c7e0104729ca6ae6e434587c4c339a0e6 detected=true
+Negative control highlight-quads-count sha256=fca786e88b04e8d436a57220d93f0bc4a24a3c949dd3f38593297bf0e68c770c detected=true
+Negative control highlight-quads-numbers sha256=18eec7fd4621f4907f740ca9230737f5ce1b744d1cc3af9d7a5c25c266b64a45 detected=true
+Negative control highlight-quads-required sha256=31decad762f12691fced021968c8f457870d7d82733df785ed6147df2a502cf6 detected=true
+Negative control link-action-type sha256=175a25bfd6b5f226a3b674ed1f4559e95e0d62db56be536aa8d6788c3c393b5c detected=true
+Negative control link-activation-exclusive sha256=7a4d6cf751ad841a94510485295e7bf46ee51d32b662d396f79fcc0b120901eb detected=true
+Negative control link-destination-type sha256=e91791341c9f22798de9a4e7a9d70b3a97804e0daa202c80caf8464d0dca3e99 detected=true
+Negative control page-aa-dictionary sha256=f579311f2d0b4cc31ce51aba9d44a2a0c80caec6852ea05b4ce8bd45bd9aa963 detected=true
+Negative control page-close-action-type sha256=d1067ffff14339072f718c769eafed095e3b654b0d0cb479de12dc3b4b17319d detected=true
+Negative control page-open-action-type sha256=b1188f3ea492d70cc46b563a3e4fe5896b9c7a223c2323168e186624113c4bdd detected=true
+Negative control stamp-appearance-required sha256=299145658c97e167abf52a8bc5c6784c5f72b7175b651f48c547f191734ee16d detected=true
+Negative control stamp-name-name sha256=2c1d72f1b7137ad58dac0b2af3a1d8f040ac0a1560be8eb0644d24587b7d0e57 detected=true
+Negative control text-appearance-required sha256=535b4cd12504a45c2a56e162ea50c902699ece4e7ef6e5afec9786f09f6cb65a detected=true
+Negative control text-name-name sha256=7ac4bd3f191d1765407f497e52ead22dc828ea3a5c24abf45200dd2924a27aac detected=true
+Negative control text-open-boolean sha256=a80300e6b696495814551f6171286e191158dd128a4ef978673a01dda8d014b0 detected=true
+Negative control widget-appearance-required sha256=d40b80142eeb78e0e7afbec9b274dfed4e6625e0b1b4ca80caada9ce62abf548 detected=true

@@ -348,7 +348,19 @@ obligations:
   facade-families:
   - family: kernel annotations and GoTo Actions
     reference-prefix: com.itextpdf.kernel.pdf.
-    mappings: []
+    mappings:
+    - itext7.kernel.pdf-document.get-annotations
+    - itext7.kernel.pdf-document.update-annotations
+    - itext7.kernel.pdf-document.get-actions
+    - itext7.kernel.pdf-document.flatten-annotations
+    - itext7.kernel.pdf-page.get-annotations
+    - itext7.kernel.pdf-page.add-annotation
+    - itext7.kernel.pdf-page.remove-annotation
+    - itext7.kernel.pdf-page.set-normal-appearance
+    - itext7.kernel.pdf-page.set-additional-action
+    - itext7.kernel.pdf-page.get-additional-actions
+    - itext7.kernel.pdf-catalog.set-open-action
+    - itext7.kernel.pdf-catalog.get-open-action
 - id: text
   summary: Extract bounded deterministic page text, mapping evidence, marked content, and Tagged PDF logical structure
     as detached backend-neutral values.
@@ -1406,19 +1418,18 @@ limitations:
   obligation: annotations
 - capability: document.annotations-actions.manage
   sha256: c78639011fa22623955d40c578aa7959c7975b78fdea5de15c2446c1e70b0a37
-  disposition: release-blocker
-  reason: 'The Foundation annotation subset and deferred AcroForm boundary require #74 reconciliation.'
+  disposition: retained-contract
+  reason: T74 created/changed products independently prove all six approved Annotation families and their properties through Native and inherited Stable/Preview Facade; the standalone Widget boundary is retained without AcroForm field or form-flattening scope. Current candidate evidence is required by annotations.
   obligation: annotations
 - capability: document.annotations-actions.manage
   sha256: fac38f7a488916862dc5609531b449759bd326f5371aa12bc187e76c3068b9cd
-  disposition: release-blocker
-  reason: 'The GoTo allowlist must cover the required Foundation Action subset under #74.'
+  disposition: retained-contract
+  reason: T74 created/changed/copied/merged/adopted/left/right products prove explicit and named local GoTo, catalog OpenAction, page O/C and both Link bindings, including exact retargeting; qualified public preserve-or-reject probes retain the inert Action boundary. Current candidate evidence is required by annotations.
   obligation: annotations
 - capability: document.annotations-actions.manage
   sha256: f8872f83f044e2e6cfc6ab898a3901c7b1de9c6b016c88390a469874a82f20bc
-  disposition: release-blocker
-  reason: 'Restricted appearance/flattening support must cover the required Foundation annotation behavior under
-    #74.'
+  disposition: retained-contract
+  reason: T74 original rasters and independent object graphs prove resource-free normal appearances for all six families and geometry-correct non-Widget flattening with retained paint and removal. This proven Foundation boundary retains resource and form restrictions; current candidate evidence is required by annotations.
   obligation: annotations
 - capability: document.annotations-actions.manage
   sha256: 771ed6c56199b49544d4a58f824248d9f9a529fb0257ba914c095762d3492be9

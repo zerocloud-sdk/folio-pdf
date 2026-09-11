@@ -3,12 +3,15 @@ package net.zerocloud.pdf.itext7.kernel.pdf;
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import net.zerocloud.pdf.Annotation;
 import net.zerocloud.pdf.DocumentFailure;
+import net.zerocloud.pdf.DocumentActions;
 import net.zerocloud.pdf.DocumentCommand;
 import net.zerocloud.pdf.DocumentQuery;
 import net.zerocloud.pdf.DocumentWorkflow;
@@ -33,6 +36,8 @@ import net.zerocloud.pdf.command.SetXmpMetadata;
 import net.zerocloud.pdf.command.SetNamedDestinations;
 import net.zerocloud.pdf.command.ReplaceOutlineTree;
 import net.zerocloud.pdf.command.EmbedFile;
+import net.zerocloud.pdf.command.UpdateAnnotations;
+import net.zerocloud.pdf.command.FlattenAnnotations;
 import net.zerocloud.pdf.itext7.kernel.exceptions.PdfException;
 import net.zerocloud.pdf.itext7.kernel.utils.PdfMerger;
 import net.zerocloud.pdf.itext7.kernel.utils.PdfSplitter;
@@ -44,6 +49,8 @@ import net.zerocloud.pdf.query.NamedDestinations;
 import net.zerocloud.pdf.query.OutlineTree;
 import net.zerocloud.pdf.query.EmbeddedFiles;
 import net.zerocloud.pdf.query.ReadEmbeddedFile;
+import net.zerocloud.pdf.query.Annotations;
+import net.zerocloud.pdf.query.Actions;
 
 /**
  * Lifecycle mapping of the create, publish, reopen, and inspect workflow.
@@ -140,7 +147,7 @@ public final class PdfDocument implements Closeable {
         if (valueSession != null) {
             return valueSession.call(session -> {
                 session.execute(AddBlankPage.INSTANCE);
-                return new PdfPage(valueSession.referenceFor(session.query(
+                return new PdfPage(this, valueSession.referenceFor(session.query(
                         PageObjectReference.version1(session.query(PageCount.INSTANCE).intValue()))));
             });
         }
@@ -163,7 +170,7 @@ public final class PdfDocument implements Closeable {
         openValueSession();
         return valueSession.call(session -> {
             session.execute(InsertBlankPage.version1(pageNumber));
-            return new PdfPage(valueSession.referenceFor(session.query(PageObjectReference.version1(pageNumber))));
+            return new PdfPage(this, valueSession.referenceFor(session.query(PageObjectReference.version1(pageNumber))));
         });
     }
 
@@ -175,7 +182,7 @@ public final class PdfDocument implements Closeable {
     public PdfPage getPage(int pageNumber) {
         requireOpen();
         openValueSession();
-        return valueSession.call(session -> new PdfPage(valueSession.referenceFor(
+        return valueSession.call(session -> new PdfPage(this, valueSession.referenceFor(
                 session.query(PageObjectReference.version1(pageNumber)))));
     }
 
@@ -238,7 +245,7 @@ public final class PdfDocument implements Closeable {
             session.execute(CopyPages.version1(PageRange.of(firstPage, lastPage), insertion));
             List<PdfPage> copies = new ArrayList<PdfPage>();
             for (int offset = 0; offset <= lastPage - firstPage; offset++) {
-                copies.add(new PdfPage(valueSession.referenceFor(session.query(
+                copies.add(new PdfPage(this, valueSession.referenceFor(session.query(
                         PageObjectReference.version1(insertion + offset)))));
             }
             return Collections.unmodifiableList(copies);
@@ -255,6 +262,21 @@ public final class PdfDocument implements Closeable {
     void materializePageHandles() {
         requireOpen();
         openValueSession();
+    }
+
+    int pageNumber(PdfIndirectReference reference) {
+        requireOpen();
+        openValueSession();
+        return valueSession.call(session -> {
+            int count = session.query(PageCount.INSTANCE).intValue();
+            for (int number = 1; number <= count; number++) {
+                if (reference.nativeValue().getReference().equals(
+                        session.query(PageObjectReference.version1(number)))) {
+                    return Integer.valueOf(number);
+                }
+            }
+            throw new IllegalStateException("The page no longer belongs to this document.");
+        }).intValue();
     }
 
     /**
@@ -274,7 +296,7 @@ public final class PdfDocument implements Closeable {
             openValueSession();
             catalog = valueSession.call(session -> {
                 ObjectReference root = session.query(DocumentRootReference.INSTANCE);
-                return new PdfCatalog((PdfDictionary) valueSession.referenceFor(root).inspect(session));
+                return new PdfCatalog(this, (PdfDictionary) valueSession.referenceFor(root).inspect(session));
             });
         }
         return catalog;
@@ -307,7 +329,7 @@ public final class PdfDocument implements Closeable {
      * @return detached packet bytes, or null when absent
      */
     public byte[] getXmpMetadata(long maximumBytes) {
-        return queryMetadata(XmpMetadata.version1(maximumBytes));
+        return queryDocument(XmpMetadata.version1(maximumBytes));
     }
 
     /**
@@ -317,7 +339,7 @@ public final class PdfDocument implements Closeable {
      * @param packet non-null well-formed packet, at most 64 MiB
      */
     public void setXmpMetadata(byte[] packet) {
-        executeMetadata(SetXmpMetadata.version1(packet));
+        executeDocument(SetXmpMetadata.version1(packet));
     }
 
     /**
@@ -326,7 +348,7 @@ public final class PdfDocument implements Closeable {
      * @return immutable name-to-destination mapping
      */
     public Map<String, PageDestination> getNamedDestinations(int maximumEntries) {
-        return queryMetadata(NamedDestinations.version1(maximumEntries));
+        return queryDocument(NamedDestinations.version1(maximumEntries));
     }
 
     /**
@@ -335,7 +357,7 @@ public final class PdfDocument implements Closeable {
      * @param destination the exact page view with a one-based page number
      */
     public void addNamedDestination(String name, PageDestination destination) {
-        executeMetadata(SetNamedDestinations.version1().set(name, destination).build());
+        executeDocument(SetNamedDestinations.version1().set(name, destination).build());
     }
 
     /**
@@ -354,7 +376,7 @@ public final class PdfDocument implements Closeable {
         for (String name : removedNames) {
             update.remove(name);
         }
-        executeMetadata(update.build());
+        executeDocument(update.build());
     }
 
     /**
@@ -363,7 +385,7 @@ public final class PdfDocument implements Closeable {
      * @return immutable list of immutable outline items
      */
     public List<OutlineItem> getOutlines(int maximumItems) {
-        return queryMetadata(OutlineTree.version1(maximumItems));
+        return queryDocument(OutlineTree.version1(maximumItems));
     }
 
     /**
@@ -371,7 +393,7 @@ public final class PdfDocument implements Closeable {
      * @param items ordered root items; an empty list removes the outline tree
      */
     public void setOutlines(List<OutlineItem> items) {
-        executeMetadata(ReplaceOutlineTree.version1(items));
+        executeDocument(ReplaceOutlineTree.version1(items));
     }
 
     /**
@@ -380,7 +402,7 @@ public final class PdfDocument implements Closeable {
      * @param file immutable project-owned file specification
      */
     public void addFileAttachment(EmbeddedFile file) {
-        executeMetadata(EmbedFile.version1(file));
+        executeDocument(EmbedFile.version1(file));
     }
 
     /**
@@ -389,7 +411,7 @@ public final class PdfDocument implements Closeable {
      * @return immutable summaries in encoded name-tree order
      */
     public List<EmbeddedFileSummary> getFileAttachments(int maximumEntries) {
-        return queryMetadata(EmbeddedFiles.version1(maximumEntries));
+        return queryDocument(EmbeddedFiles.version1(maximumEntries));
     }
 
     /**
@@ -399,19 +421,77 @@ public final class PdfDocument implements Closeable {
      * @return content, declared MD5 and computed SHA-256, or empty if absent
      */
     public Optional<EmbeddedFileData> getFileAttachment(String name, long maximumBytes) {
-        return queryMetadata(ReadEmbeddedFile.version1(name, maximumBytes));
+        return queryDocument(ReadEmbeddedFile.version1(name, maximumBytes));
     }
 
-    <T> T queryMetadata(DocumentQuery<T> query) {
+    /**
+     * Reads detached annotations in page and annotation-array order.
+     * @param maximumAnnotations nonnegative document-wide count bound
+     * @param maximumAppearanceBytes nonnegative decoded appearance-byte bound
+     * @param maximumAttachmentBytes nonnegative decoded attachment-byte bound
+     * @return immutable annotations with immutable geometry and subtype data
+     */
+    public List<Annotation> getAnnotations(int maximumAnnotations,
+            long maximumAppearanceBytes, long maximumAttachmentBytes) {
+        return queryDocument(Annotations.version1(maximumAnnotations,
+                maximumAppearanceBytes, maximumAttachmentBytes));
+    }
+
+    /**
+     * Atomically creates, replaces, moves and removes annotations by identifier.
+     * Every value and the complete affected graph are validated before mutation.
+     * Repeated replacement identifiers retain the last supplied value and their
+     * first declaration position, as in the Native update builder. Replacements
+     * are appended after unselected annotations on each containing page.
+     * @param annotations replacements copied in iteration order
+     * @param removedIdentifiers removal identifiers, disjoint from replacements
+     */
+    public void updateAnnotations(List<Annotation> annotations, List<String> removedIdentifiers) {
+        Objects.requireNonNull(annotations, "annotations");
+        Objects.requireNonNull(removedIdentifiers, "removedIdentifiers");
+        UpdateAnnotations.Builder update = UpdateAnnotations.version1();
+        for (Annotation annotation : annotations) {
+            update.put(annotation);
+        }
+        for (String identifier : removedIdentifiers) {
+            update.remove(identifier);
+        }
+        executeDocument(update.build());
+    }
+
+    /**
+     * Reads detached catalog and page GoTo bindings; no Action is executed.
+     * @param maximumActions nonnegative document-wide binding bound
+     * @return immutable Actions in page order
+     */
+    public DocumentActions getActions(int maximumActions) {
+        return queryDocument(Actions.version1(maximumActions));
+    }
+
+    /**
+     * Atomically incorporates selected non-Widget normal appearances into page
+     * content and removes their annotations. Retained paint is isolated from
+     * the new appearance invocations. This never flattens AcroForm fields.
+     * @param identifiers one or more distinct nonempty annotation identifiers
+     */
+    public void flattenAnnotations(String... identifiers) {
+        String[] selected = Objects.requireNonNull(identifiers, "identifiers").clone();
+        if (selected.length == 0) {
+            throw new IllegalArgumentException("At least one annotation identifier is required.");
+        }
+        executeDocument(FlattenAnnotations.version1(selected[0], Arrays.copyOfRange(selected, 1, selected.length)));
+    }
+
+    <T> T queryDocument(DocumentQuery<T> query) {
         requireOpen();
         openValueSession();
         return valueSession.call(session -> session.query(query));
     }
 
-    void executeMetadata(DocumentCommand command) {
+    void executeDocument(DocumentCommand command) {
         requireOpen();
         if (!declarations.hasTargets()) {
-            throw new IllegalStateException("A read-only facade document cannot change metadata.");
+            throw new IllegalStateException("A read-only facade document cannot be changed.");
         }
         openValueSession();
         valueSession.call(session -> {

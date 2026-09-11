@@ -1,0 +1,137 @@
+{
+  "actions": {
+    "document-open": {
+      "kind": "NAMED",
+      "named": "shared"
+    },
+    "pages": [
+      {
+        "close": null,
+        "open": {
+          "kind": "NAMED",
+          "named": "shared-1"
+        },
+        "page": 2
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "appearance": {
+        "box": [
+          2,
+          3,
+          12,
+          13
+        ],
+        "color": [
+          1,
+          0,
+          0
+        ],
+        "matrix": [
+          1,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        "program": "q 1 0 0 rg 2 3 10 10 re f Q\n",
+        "resources": "empty"
+      },
+      "contents": "Appendix note",
+      "flags": [
+        "PRINT"
+      ],
+      "icon": "COMMENT",
+      "id": "note-1",
+      "open": false,
+      "page": 2,
+      "rectangle": [
+        5,
+        65,
+        20,
+        80
+      ],
+      "type": "TEXT"
+    },
+    {
+      "activation": "ACTION",
+      "appearance": {
+        "box": [
+          2,
+          3,
+          12,
+          13
+        ],
+        "color": [
+          0,
+          0,
+          1
+        ],
+        "matrix": [
+          1,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        "program": "q 0 0 1 rg 2 3 10 10 re f Q\n",
+        "resources": "empty"
+      },
+      "contents": "appendix-link original",
+      "flags": [
+        "PRINT"
+      ],
+      "id": "appendix-link",
+      "page": 2,
+      "rectangle": [
+        35,
+        65,
+        60,
+        80
+      ],
+      "target": {
+        "kind": "NAMED",
+        "named": "shared-1"
+      },
+      "type": "LINK"
+    }
+  ],
+  "destinations": {
+    "shared": {
+      "kind": "PAGE",
+      "page": 1,
+      "parameters": [],
+      "style": "FIT"
+    },
+    "shared-1": {
+      "kind": "PAGE",
+      "page": 2,
+      "parameters": [],
+      "style": "FIT"
+    }
+  },
+  "page-observations": [
+    {
+      "contents": [
+        "q 0 0 1 rg 10 20 40 30 re f Q\n\n"
+      ],
+      "flattened": [],
+      "marker": "C"
+    },
+    {
+      "contents": [
+        "q 0 0 0 rg 10 20 40 30 re f Q\n\n"
+      ],
+      "flattened": [],
+      "marker": "D"
+    }
+  ],
+  "pages": [
+    "C",
+    "D"
+  ]
+}

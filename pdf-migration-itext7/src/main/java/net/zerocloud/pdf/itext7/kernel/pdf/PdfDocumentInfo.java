@@ -153,7 +153,7 @@ public final class PdfDocumentInfo {
         } else {
             update.set("Trapped", value.nativeValue());
         }
-        document.executeMetadata(update.build());
+        document.executeDocument(update.build());
         return this;
     }
 
@@ -199,7 +199,7 @@ public final class PdfDocumentInfo {
                 update.set(entry.getKey(), new PdfString(entry.getValue()).nativeValue());
             }
         }
-        document.executeMetadata(update.build());
+        document.executeDocument(update.build());
     }
 
     /**
@@ -207,7 +207,7 @@ public final class PdfDocumentInfo {
      * @return an immutable detached dictionary, usable after document close
      */
     public net.zerocloud.pdf.PdfDictionary getEntries() {
-        return document.queryMetadata(DocumentInfo.INSTANCE);
+        return document.queryDocument(DocumentInfo.INSTANCE);
     }
 
     /**
@@ -226,7 +226,7 @@ public final class PdfDocumentInfo {
         for (String name : removedNames) {
             update.remove(name);
         }
-        document.executeMetadata(update.build());
+        document.executeDocument(update.build());
     }
 
     private static String currentPdfDate() {

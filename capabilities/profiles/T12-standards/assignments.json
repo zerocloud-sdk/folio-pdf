@@ -1,0 +1,1220 @@
+{
+  "annotation-ap-dictionary": {
+    "authority": "ISO 32000-2:2020 12.5.2, Table 166: AP is a dictionary",
+    "checker": "arlington",
+    "finding": "Error: wrong type: AP (AnnotText) should be dictionary in PDF 2.0 and is integer",
+    "path": "fixtures/annotation-ap-dictionary.pdf",
+    "sha256": "92d5861d23f84c9987f8f73338d7a4e6c8d4053a729bd650b23947a40c59c1bd"
+  },
+  "annotation-contents-string": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: page annotations: page annotations: page 1: page annotation obj#6: validate: dict=annotDict entry=Contents invalid type types.Integer",
+    "path": "../T10-standards/fixtures/annotation-contents-string.pdf",
+    "sha256": "65583444c8732466decc0991fe1cba647101cc0a5df937b95c8fadc27156d354"
+  },
+  "annotation-flags-integer": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: page annotations: page annotations: page 1: page annotation obj#6: validate: dict=annotDict entry=F invalid type",
+    "path": "../T10-standards/fixtures/annotation-flags-integer.pdf",
+    "sha256": "e2a5b62fc6d55bfde2635b8f7df81a7ac0286b117d0e52baae83d603182a1e54"
+  },
+  "annotation-flags-reserved": {
+    "authority": "ISO 32000-2:2020 12.5.3, Table 167: undefined annotation flag bits are zero",
+    "checker": "arlington",
+    "finding": "Error: special case not correct: F (AnnotText) in PDF 2.0 should be: bitmask [fn:Eval(fn:IsPDFVersion(1.1,fn:BitsClear(2,32)) && fn:IsPDFVersion(1.2,fn:BitsClear(4,32)) && fn:IsPDFVersion(1.3,fn:BitsClear(8,32)) && fn:IsPDFVersion(1.4,fn:BitsClear(9,32)) && fn:IsPDFVersion(1.5,fn:BitsClear(10,32)) && fn:IsPDFVersion(1.6,fn:BitsClear(10,32)) && fn:SinceVersion(1.7,fn:BitsClear(11,32)))] and is integer==2048",
+    "path": "fixtures/annotation-flags-reserved.pdf",
+    "sha256": "2703c5897695884ba5838b30ec1f62d85004158e56a4f567a9dd07e984ecaa73"
+  },
+  "annotation-id-unique": {
+    "authority": "ISO 32000-2:2020 12.5.2, Table 166: NM identifies an annotation uniquely among annotations on its page",
+    "checker": "arlington",
+    "finding": "Error: annotation NM is duplicated within its page",
+    "path": "fixtures/annotation-id-unique.pdf",
+    "sha256": "9c56f0fcac89b7eeb4257010949a25532cfc52aee323742cf552e55c370dc203"
+  },
+  "annotation-name-string": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: page annotations: page annotations: page 1: page annotation obj#6: validate: dict=annotDict entry=NM invalid type types.Integer",
+    "path": "../T10-standards/fixtures/annotation-name-string.pdf",
+    "sha256": "fdbdc6f88d4ef84423b81a55252bd4083b21dc337c9f27c7d218bd528d8e03a0"
+  },
+  "annotation-page-indirect": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: page annotations: page annotations: page 1: page annotation obj#6: validate: dict=annotDict entry=P invalid type",
+    "path": "../T10-standards/fixtures/annotation-page-indirect.pdf",
+    "sha256": "a1d1a4b23527b87dddd07686fbf5c3f55c0987aded44651080e5d71cf9fbbdd9"
+  },
+  "annotation-page-owner": {
+    "authority": "ISO 32000-2:2020 12.5.2, Table 166: P identifies the containing page",
+    "checker": "arlington",
+    "finding": "Error: annotation P does not identify its containing page",
+    "path": "fixtures/annotation-page-owner.pdf",
+    "sha256": "16af8a1c43ab5d41370d13da641debd15dc6c2c36d33057ce2e76ffaaad79740"
+  },
+  "annotation-page-type": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: page annotations: page annotations: page 1: page annotation obj#6: validate: dict=pageDict entry=Type invalid dict entry: Pages",
+    "path": "../T10-standards/fixtures/annotation-page-type.pdf",
+    "sha256": "4517afac64d32444cfe271c0ce9b70dee76812d3f5ac3bd6026715e46f750f27"
+  },
+  "annotation-rect-numbers": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: page annotations: page annotations: page 1: page annotation obj#6: validate: number array: invalid type at index 2",
+    "path": "../T10-standards/fixtures/annotation-rect-numbers.pdf",
+    "sha256": "3401da20a4e0134e7129ef24eb459c70c8523f70a301f5f3acf343098a39023b"
+  },
+  "annotation-rect-rectangle": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: page annotations: page annotations: page 1: page annotation obj#6: validate: dict=annotDict entry=Rect invalid dict entry",
+    "path": "../T10-standards/fixtures/annotation-rect-rectangle.pdf",
+    "sha256": "44c5636075c90fcea9cc19cf8525a1f149d232cd1ce31b32207422424b29612a"
+  },
+  "annotation-rect-required": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: page annotations: page annotations: page 1: page annotation obj#6: validate: dict=annotDict required entry=Rect missing",
+    "path": "../T10-standards/fixtures/annotation-rect-required.pdf",
+    "sha256": "af9eb8745aab872e276053965027696b2706308e840425fa89d4629f0b2b0c74"
+  },
+  "annotation-subtype-name": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: page annotations: page annotations: page 1: page annotation obj#6: validate: dict=annotDict entry=Subtype invalid type types.Integer",
+    "path": "../T10-standards/fixtures/annotation-subtype-name.pdf",
+    "sha256": "c1826406b74ce688f12b5874310c8abb9d786443e548af328623fd282035f2a7"
+  },
+  "annotation-subtype-required": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: page annotations: page annotations: page 1: page annotation obj#6: validate: dict=annotDict required entry=Subtype missing",
+    "path": "../T10-standards/fixtures/annotation-subtype-required.pdf",
+    "sha256": "307a48516e32276532df27e8d5b5cf1f14edd43c3014dddf5027843b4c040543"
+  },
+  "annotation-type-name": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: page annotations: page annotations: page 1: page annotation obj#6: validate: dict=annotDict entry=Type invalid type types.Integer",
+    "path": "../T10-standards/fixtures/annotation-type-name.pdf",
+    "sha256": "3549c57270689d90ea34f877a5926356ad90140dba1735cb984e9f3a981fd04b"
+  },
+  "annotation-type-value": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: page annotations: page annotations: page 1: page annotation obj#6: validate: dict=annotDict entry=Type invalid dict entry: Bad",
+    "path": "../T10-standards/fixtures/annotation-type-value.pdf",
+    "sha256": "8e5da8901e29fee18c8d7af050b1474cd4eccfcea0bf0459530a8cd7ac1f906f"
+  },
+  "appearance-normal-required": {
+    "authority": "ISO 32000-2:2020 12.5.5, Table 170: N is required",
+    "checker": "arlington",
+    "finding": "Error: non-inheritable required key does not exist: N (Appearance) in PDF 2.0",
+    "path": "fixtures/appearance-normal-required.pdf",
+    "sha256": "2af6105c937fdd0f04a983acefa6f5ac9070f4f91b7de785e2fa328e9403e182"
+  },
+  "appearance-normal-type": {
+    "authority": "ISO 32000-2:2020 12.5.5, Table 170: N is a stream or subdictionary",
+    "checker": "arlington",
+    "finding": "Error: wrong type: N (Appearance) should be fn:SinceVersion(1.3,dictionary);stream in PDF 2.0 and is integer",
+    "path": "fixtures/appearance-normal-type.pdf",
+    "sha256": "3b39bad6cd261be4e4f648404a59db8aa26e382964b6202df5d0a32e8c349ac7"
+  },
+  "catalog-names-dictionary": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Names: dict=rootDict entry=Names invalid type",
+    "path": "../T10-standards/fixtures/catalog-names-dictionary.pdf",
+    "sha256": "5306ec81e5df78956bc720cc2563852c8e19d4fd7d2145f8df79adc9d9be1bb5"
+  },
+  "catalog-openaction-type": {
+    "authority": "ISO 32000-2:2020 7.7.2, Table 29: OpenAction is an explicit destination array or Action dictionary",
+    "checker": "arlington",
+    "finding": "Error: wrong type: OpenAction (Catalog) should be array;dictionary in PDF 2.0 and is integer",
+    "path": "fixtures/catalog-openaction-type.pdf",
+    "sha256": "7ea98af0c36a7067bef42955cc7634aa4f56d87cac00f7d69c599064b78a8e6f"
+  },
+  "catalog-pages": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree root: missing \"Pages\"",
+    "path": "../T03-standards/fixtures/catalog-pages.pdf",
+    "sha256": "411166c5051b04d0d6a85710266b961ac57ca3302d6e920fdb7f183f28f1bb3f"
+  },
+  "catalog-pages-indirect": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree root: entry \"Pages\" must be an indirect reference",
+    "path": "../T03-standards/fixtures/catalog-pages-indirect.pdf",
+    "sha256": "15968efef75ed27fc29077dba4ac2c17bab7d57b60babd2ebebe84ad52da357b"
+  },
+  "catalog-type": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: dict=rootDict entry=Type invalid dict entry: Bogus",
+    "path": "../T03-standards/fixtures/catalog-type.pdf",
+    "sha256": "c1f95d7931bb320feb3294c3867d41e96a1302cb3920606dbaab7e12e101860f"
+  },
+  "catalog-type-required": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: dict=rootDict required entry=Type missing",
+    "path": "../T03-standards/fixtures/catalog-type-required.pdf",
+    "sha256": "1b232380a180eb3ced9c3625153ee010b06e11b3a628c6c0b1078aba437e0f33"
+  },
+  "destination-fit-count": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "arlington",
+    "finding": "Error: destination array length is not 2 for Dest0Array",
+    "path": "../T10-standards/fixtures/destination-fit-count.pdf",
+    "sha256": "2c09b29f347c89b32a8d20d9f76dc1880358db38674420dbffffd76db493326b"
+  },
+  "destination-fitb-count": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: destination array length is not 2 for Dest0Array",
+    "path": "../T11-standards/fixtures/destination-fitb-count.pdf",
+    "sha256": "bd27618081c24269a6f1e461e92d80c61e2b074466ff12dc6744acb6a5034ff2"
+  },
+  "destination-fitbh-count": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: array length was too short (needed 3, was 2) for Dest1Array",
+    "path": "../T11-standards/fixtures/destination-fitbh-count.pdf",
+    "sha256": "b802bf2169cef2c3f58dce1efb98dd68c21601db273704a03c825cadea4335c2"
+  },
+  "destination-fitbh-operand": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: wrong type: 2 (Dest1Array) should be null;number in PDF 2.0 and is name",
+    "path": "../T11-standards/fixtures/destination-fitbh-operand.pdf",
+    "sha256": "14e2b61131aec2f3251f26ce3ad18812ff2ec34341c65965da4e085f88b7ef06"
+  },
+  "destination-fitbv-count": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: array length was too short (needed 3, was 2) for Dest1Array",
+    "path": "../T11-standards/fixtures/destination-fitbv-count.pdf",
+    "sha256": "4f55f11785ddc7840035a408ef97c561e9573705d4ae318d5b0820082b758da2"
+  },
+  "destination-fitbv-operand": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: wrong type: 2 (Dest1Array) should be null;number in PDF 2.0 and is name",
+    "path": "../T11-standards/fixtures/destination-fitbv-operand.pdf",
+    "sha256": "728523986d3f637586feb2b7d5068e02e7964f37e3dd03d342a6f0f8c724fad2"
+  },
+  "destination-fith-count": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: array length was too short (needed 3, was 2) for Dest1Array",
+    "path": "../T11-standards/fixtures/destination-fith-count.pdf",
+    "sha256": "143e4330ff88d0a95875c50eae4f534a7d7690db187e13ca5406ecf856a91213"
+  },
+  "destination-fith-operand": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: wrong type: 2 (Dest1Array) should be null;number in PDF 2.0 and is name",
+    "path": "../T11-standards/fixtures/destination-fith-operand.pdf",
+    "sha256": "e1180742b1073be3cb9cbe8a4c9c4821fc13c5f9fdd75e4e18950017a4b826a8"
+  },
+  "destination-fitr-count": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: array length was too short (needed 6, was 5) for Dest4Array",
+    "path": "../T11-standards/fixtures/destination-fitr-count.pdf",
+    "sha256": "d66bc42c45e6b604d602c26e537f24cefade0b550ace3bc438b16ce1a4fd161c"
+  },
+  "destination-fitr-operand": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: FitR destination operands must all be numbers",
+    "path": "../T11-standards/fixtures/destination-fitr-operand.pdf",
+    "sha256": "9d2c2d89d425c9c323b33d72b072cac2c5de913e68bfd024d6590511e4493619"
+  },
+  "destination-fitv-count": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: array length was too short (needed 3, was 2) for Dest1Array",
+    "path": "../T11-standards/fixtures/destination-fitv-count.pdf",
+    "sha256": "b4c01b36fb69952cbab622e3d091f6016f6e0a0e03b4ee9953e7a94c81bb752a"
+  },
+  "destination-fitv-operand": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: wrong type: 2 (Dest1Array) should be null;number in PDF 2.0 and is name",
+    "path": "../T11-standards/fixtures/destination-fitv-operand.pdf",
+    "sha256": "0da8c24132904cf4a1a6e690a3c5e5b3915f0804a9df048c4b084848e84e99ae"
+  },
+  "destination-mode-name": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Names: name tree Dests key \"shared\": destination array[1]: expected name, got types.Integer",
+    "path": "../T10-standards/fixtures/destination-mode-name.pdf",
+    "sha256": "aeed8bc17c7bcfa5af169e5069439a7f5ce6540e145672e20ea3d60dd7836b4f"
+  },
+  "destination-mode-value": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Names: name tree Dests key \"shared\": destination array mode: invalid mode \"Bad\"",
+    "path": "../T10-standards/fixtures/destination-mode-value.pdf",
+    "sha256": "0d062bd6d6eac7434779de65df120e3a9916dd5f3621595e0b3b5ffeed6aea2d"
+  },
+  "destination-page-indirect": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Names: name tree Dests key \"shared\": destination array[0]: expected page dict, got types.Integer",
+    "path": "../T10-standards/fixtures/destination-page-indirect.pdf",
+    "sha256": "8b991c160debc5a9b3638173bb3c4bf35fc983a205159d2fbb1eda204e778e95"
+  },
+  "destination-page-type": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "arlington",
+    "finding": "Error: Page object was already identified as a page-tree node",
+    "path": "../T10-standards/fixtures/destination-page-type.pdf",
+    "sha256": "0a457454f7242645dbc1f8834278323704251091154645c9e3c28511f1582e48"
+  },
+  "destination-value-type": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Names: name tree Dests key \"shared\": destination: unsupported object type types.Integer",
+    "path": "../T10-standards/fixtures/destination-value-type.pdf",
+    "sha256": "6cdff37f9fe35f57aecfc55739b59770e48c43feb176bfc131c393c91cb0beee"
+  },
+  "destination-xyz-count": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: array length was too short (needed 5, was 4) for DestXYZArray",
+    "path": "../T11-standards/fixtures/destination-xyz-count.pdf",
+    "sha256": "f787d6ff1f9b5915e75ecc488f86446fede9b931a0e4e460a730faa4f50498fd"
+  },
+  "destination-xyz-operand": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: wrong type: 3 (DestXYZArray) should be null;number in PDF 2.0 and is name",
+    "path": "../T11-standards/fixtures/destination-xyz-operand.pdf",
+    "sha256": "bc9436aaaa2168c0c50302445652d84cbeb58d1f13f75624bc4385beb6acc084"
+  },
+  "embedded-checksum-length": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: special case not correct: CheckSum (EmbeddedFileParameter) in PDF 2.0 should be: string-byte [fn:Eval(fn:StringLength(CheckSum)==16)]",
+    "path": "../T11-standards/fixtures/embedded-checksum-length.pdf",
+    "sha256": "c635dce2345d853dc3fbbd81d0d5259f85c78b8093a751eb54dac8120ac58be3"
+  },
+  "embedded-checksum-string": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: wrong type: CheckSum (EmbeddedFileParameter) should be string-byte in PDF 2.0 and is integer",
+    "path": "../T11-standards/fixtures/embedded-checksum-string.pdf",
+    "sha256": "de7e5d38254741685772f81e3d46e54c72f3daeb06a1807ab77048220471e2e9"
+  },
+  "embedded-checksum-value": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: embedded file CheckSum does not match decoded bytes",
+    "path": "../T11-standards/fixtures/embedded-checksum-value.pdf",
+    "sha256": "e0f6e6052dcb6cf0307ac6aa09b8001e669b74843dd79d345024df9b4e6bf221"
+  },
+  "embedded-params-dictionary": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: wrong type: Params (EmbeddedFileStream) should be dictionary in PDF 2.0 and is integer",
+    "path": "../T11-standards/fixtures/embedded-params-dictionary.pdf",
+    "sha256": "5f1ac1d4b9f788873468e2f9da6281d4483fa807d3788be6ac32927898d8dbd7"
+  },
+  "embedded-size-integer": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: wrong type: Size (EmbeddedFileParameter) should be integer in PDF 2.0 and is number",
+    "path": "../T11-standards/fixtures/embedded-size-integer.pdf",
+    "sha256": "e1e78a84a1c6921f396e77ae65cfe9e74420696627fb7a837974c37fff55d8c9"
+  },
+  "embedded-size-value": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: embedded file Size does not match decoded bytes",
+    "path": "../T11-standards/fixtures/embedded-size-value.pdf",
+    "sha256": "cdf4a22aabfbac0991a56d27426d1cb561ffe221944e06cd6b760847694812fd"
+  },
+  "embedded-subtype-mime": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: embedded file Subtype is not a MIME media type or prefixed name",
+    "path": "../T11-standards/fixtures/embedded-subtype-mime.pdf",
+    "sha256": "2b894b60a2337dadd008b68fcca48e65272d6600f3d4225f9946ae7e0bf32f31"
+  },
+  "embedded-subtype-name": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: wrong type: Subtype (EmbeddedFileStream) should be name in PDF 2.0 and is integer",
+    "path": "../T11-standards/fixtures/embedded-subtype-name.pdf",
+    "sha256": "07b8a90850e3f8d0f32847d4627f2b7c449fa46eabc57a45f62ff93c9750543f"
+  },
+  "embedded-type-name": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: wrong type: Type (EmbeddedFileStream) should be name in PDF 2.0 and is integer",
+    "path": "../T11-standards/fixtures/embedded-type-name.pdf",
+    "sha256": "85124a4a1cc8428cde7e328350a07d03039be210ac4d52cdea65ec24ad0c92ae"
+  },
+  "embedded-type-value": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: wrong value for possible values: Type (EmbeddedFileStream) should be: name [EmbeddedFile] in PDF 2.0 and is name==Bad",
+    "path": "../T11-standards/fixtures/embedded-type-value.pdf",
+    "sha256": "f2c23fe2b3623959f2c87ff42256b1d505dead2501c6d30615184d3a40d6c93a"
+  },
+  "file-annotation-fs-required": {
+    "authority": "ISO 32000-2:2020 12.5.6.15, Table 187: FileAttachment FS is required",
+    "checker": "arlington",
+    "finding": "Error: non-inheritable required key does not exist: FS (AnnotFileAttachment) in PDF 2.0",
+    "path": "fixtures/file-annotation-fs-required.pdf",
+    "sha256": "eafdd5c89110a1c278a94cfc6e7a82f483868921ed7f1ce8fc6f25f52b699ec4"
+  },
+  "file-annotation-fs-type": {
+    "authority": "ISO 32000-2:2020 12.5.6.15, Table 187: FS is a file specification",
+    "checker": "arlington",
+    "finding": "Error: wrong type: FS (AnnotFileAttachment) should be dictionary;string in PDF 2.0 and is integer",
+    "path": "fixtures/file-annotation-fs-type.pdf",
+    "sha256": "77c79dab9b12a2314228cd5c83d1b7b794efcedc3c3bdcdcebef097db8ea6ffb"
+  },
+  "file-appearance-required": {
+    "authority": "ISO 32000-2:2020 12.5.2, Table 166: a nonzero-area file annotation requires AP in PDF 2.0",
+    "checker": "arlington",
+    "finding": "Error: non-inheritable required key does not exist: AP (AnnotFileAttachment) in PDF 2.0 because fn:IsRequired(fn:SinceVersion(2.0,(fn:RectWidth(Rect)>0) || (fn:RectHeight(Rect)>0)))",
+    "path": "fixtures/file-appearance-required.pdf",
+    "sha256": "de4756c3f7c1ed5016d43bbe6b3ca0c66c43ee9fa0e23a494d2750415127735b"
+  },
+  "file-icon-name": {
+    "authority": "ISO 32000-2:2020 12.5.6.15, Table 187: FileAttachment Name is a name",
+    "checker": "arlington",
+    "finding": "Error: wrong type: Name (AnnotFileAttachment) should be name in PDF 2.0 and is integer",
+    "path": "fixtures/file-icon-name.pdf",
+    "sha256": "135bbe31c0a5a01ec55bdf97d497b4750f451f694d93a8eec87b0f5fe5bed444"
+  },
+  "filespec-description-string": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: wrong type: Desc (FileSpecification) should be string-text in PDF 2.0 and is integer",
+    "path": "../T11-standards/fixtures/filespec-description-string.pdf",
+    "sha256": "0e446c30206e1f5fa18373e0c6e366a305843a3d4a2f71a96f968d2853f7fddb"
+  },
+  "filespec-dictionary": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: unexpected object type number for FileSpecification in PDF 2.0",
+    "path": "../T11-standards/fixtures/filespec-dictionary.pdf",
+    "sha256": "27b65499d3fabb834d1ea8d35c631385de4af24de8594acbfbe2d4eb92f2c5d9"
+  },
+  "filespec-ef-dictionary": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: wrong type: EF (FileSpecification) should be dictionary in PDF 2.0 and is integer",
+    "path": "../T11-standards/fixtures/filespec-ef-dictionary.pdf",
+    "sha256": "ffabf21100edd87bce0f992c7fd4f141f2fcda2642ca3e6ad3d0b28517cb5e3c"
+  },
+  "filespec-ef-f-stream": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: wrong type: F (FileSpecEF) should be stream in PDF 2.0 and is dictionary",
+    "path": "../T11-standards/fixtures/filespec-ef-f-stream.pdf",
+    "sha256": "6f9acabe844f76f3bae02ffb5f262c6bfbca26835c2b3087afb6aac8dc369d1f"
+  },
+  "filespec-ef-uf-stream": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: wrong type: UF (FileSpecEF) should be stream in PDF 2.0 and is dictionary",
+    "path": "../T11-standards/fixtures/filespec-ef-uf-stream.pdf",
+    "sha256": "b6ca931c4314bed175eaef437f4748c8757a4f5da9d6b24771b2fec567ad1ab4"
+  },
+  "filespec-f-string": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: wrong type: F (FileSpecification) should be string in PDF 2.0 and is integer",
+    "path": "../T11-standards/fixtures/filespec-f-string.pdf",
+    "sha256": "a2b549a3fc2dab4d1543db7503d2bac5e995a9673bd23643a96a1230963910a1"
+  },
+  "filespec-relationship-name": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: wrong type: AFRelationship (FileSpecification) should be name in PDF 2.0 and is integer",
+    "path": "../T11-standards/fixtures/filespec-relationship-name.pdf",
+    "sha256": "cd689ef55377a9e3a02be267df67ad66fb0d2e272d314e58d72b726f73e0d663"
+  },
+  "filespec-relationship-value": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: wrong value for possible values: AFRelationship (FileSpecification) should be: name [Source,Data,Alternative,Supplement,fn:SinceVersion(2.0,EncryptedPayload),fn:SinceVersion(2.0,FormData),fn:SinceVersion(2.0,Schema),Unspecified,fn:Extension(C2PA,C2PA_Manifest)] in PDF 2.0 and is name==Bad",
+    "path": "../T11-standards/fixtures/filespec-relationship-value.pdf",
+    "sha256": "9c48bda3587ad0fa5f00a01edbb61502e6cb452e1be3017a3527b9f83452e734"
+  },
+  "filespec-type-name": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: wrong type: Type (FileSpecification) should be name in PDF 2.0 and is integer",
+    "path": "../T11-standards/fixtures/filespec-type-name.pdf",
+    "sha256": "8b3ad2e36d9a5b0ccc6170d29f081dd0e940fac980c2498bbb75022d0e3a6cf0"
+  },
+  "filespec-type-required": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: file specification Type is required when EF is present",
+    "path": "../T11-standards/fixtures/filespec-type-required.pdf",
+    "sha256": "53fc4b48ea9e8afb4a139ef79276692fbb308fad4e1a7cda4336ab316c22a0b0"
+  },
+  "filespec-type-value": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: wrong value for possible values: Type (FileSpecification) should be: name [Filespec] in PDF 2.0 and is name==Bad",
+    "path": "../T11-standards/fixtures/filespec-type-value.pdf",
+    "sha256": "4343f6a7f867f4da7214281c9264e12aade7aa7e5474621302ff9b3b14d9add1"
+  },
+  "filespec-uf-string": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: wrong type: UF (FileSpecification) should be string-text in PDF 2.0 and is integer",
+    "path": "../T11-standards/fixtures/filespec-uf-string.pdf",
+    "sha256": "63c4c05ccc2657cd065038ced39549b325f850bc8602c05e09ec200f5557f7ad"
+  },
+  "form-bbox-numbers": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree: page obj#3: XObject resource Tile obj#4: xObject Form stream dict: number array: invalid type at index 2",
+    "path": "../T10-standards/fixtures/form-bbox-numbers.pdf",
+    "sha256": "a4007dcb12cbd03f8ff300face72f4e8b24f7819735c831145745754f52e9d78"
+  },
+  "form-bbox-rectangle": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree: page obj#3: XObject resource Tile obj#4: xObject Form stream dict: dict=formStreamDict entry=BBox invalid dict entry",
+    "path": "../T10-standards/fixtures/form-bbox-rectangle.pdf",
+    "sha256": "17abb36551a296da4d22263d91e1faa17a9d5759b22311a8a674b54ff2883f6e"
+  },
+  "form-bbox-required": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree: page obj#3: XObject resource Tile obj#4: xObject Form stream dict: dict=formStreamDict required entry=BBox missing",
+    "path": "../T10-standards/fixtures/form-bbox-required.pdf",
+    "sha256": "b2173c31116033e5f38d7f8debed3c2f3eed57eb8aeaffe719ffeb71604d7245"
+  },
+  "form-formtype-integer": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree: page obj#3: XObject resource Tile obj#4: xObject Form stream dict: dict=formStreamDict entry=FormType invalid type",
+    "path": "../T10-standards/fixtures/form-formtype-integer.pdf",
+    "sha256": "9e324a0e4541bd9eb2f646a6d4e2b7bfea096594296d1cb71bc0a5e54b34427c"
+  },
+  "form-formtype-value": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree: page obj#3: XObject resource Tile obj#4: xObject Form stream dict: dict=formStreamDict entry=FormType invalid dict entry",
+    "path": "../T10-standards/fixtures/form-formtype-value.pdf",
+    "sha256": "6338ee7bb101be956c4774c2872201ab8f8af3d65f77681c0499751543c5cad1"
+  },
+  "form-matrix-array": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree: page obj#3: XObject resource Tile obj#4: xObject Form stream dict: dict=formStreamDict entry=Matrix invalid type types.Integer",
+    "path": "../T10-standards/fixtures/form-matrix-array.pdf",
+    "sha256": "6115ef99bbcbab26df6751ae4d4431c3a18bf097502df24e25191f2786e5fb1a"
+  },
+  "form-matrix-count": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree: page obj#3: XObject resource Tile obj#4: xObject Form stream dict: dict=formStreamDict entry=Matrix invalid dict entry",
+    "path": "../T10-standards/fixtures/form-matrix-count.pdf",
+    "sha256": "4ff8aa92cea4ab351e6e65e8b07ad4b25e4b0290f54bc988e55fb18e186c4884"
+  },
+  "form-matrix-numbers": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree: page obj#3: XObject resource Tile obj#4: xObject Form stream dict: number array: invalid type at index 4",
+    "path": "../T10-standards/fixtures/form-matrix-numbers.pdf",
+    "sha256": "ebe8803395ddb3f5ab5163059e1547cb177fc1b7050be2bf936a7969fbeab44a"
+  },
+  "form-resources-dictionary": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree: page obj#3: XObject resource Tile obj#4: xObject Form stream dict: expected types.Dict, got types.Integer",
+    "path": "../T10-standards/fixtures/form-resources-dictionary.pdf",
+    "sha256": "c14215cdfc209c928a91660fecdf1da06ffd151b0ed04e9ccd45bdfbe141217e"
+  },
+  "form-subtype-name": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree: page obj#3: XObject resource Tile obj#4: xObjectStreamDict.Subtype: dict=xObjectStreamDict entry=Subtype invalid type types.Integer",
+    "path": "../T10-standards/fixtures/form-subtype-name.pdf",
+    "sha256": "7d808f8d431ff7c32761af503310d808e6bcdeb08ad5963242d64ab8be1beb59"
+  },
+  "form-subtype-required": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree: page obj#3: XObject resource Tile obj#4: xObjectStreamDict.Subtype: dict=xObjectStreamDict required entry=Subtype missing",
+    "path": "../T10-standards/fixtures/form-subtype-required.pdf",
+    "sha256": "0a391e7776956744de7819da6214602b4f4eb028d83d5521aad29360b8d0ead6"
+  },
+  "form-type-name": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree: page obj#3: XObject resource Tile obj#4: xObjectStreamDict.Type: dict=xObjectStreamDict entry=Type invalid type types.Integer",
+    "path": "../T10-standards/fixtures/form-type-name.pdf",
+    "sha256": "976119ca6c084ead6c783f42591c9aa9d237bec2523eb90fac9bb533233c3552"
+  },
+  "form-type-value": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree: page obj#3: XObject resource Tile obj#4: xObjectStreamDict.Type: dict=xObjectStreamDict entry=Type invalid dict entry: Bad",
+    "path": "../T10-standards/fixtures/form-type-value.pdf",
+    "sha256": "0d4ca6ca019c22b3b9e75e37d0fd599b834801f9f47a4b4e2e1c4596f85efd5c"
+  },
+  "goto-d-required": {
+    "authority": "ISO 32000-2:2020 12.6.4.2, Table 202 and 12.3.2.3: D is required",
+    "checker": "arlington",
+    "finding": "Error: non-inheritable required key does not exist: D (ActionGoTo) in PDF 2.0",
+    "path": "fixtures/goto-d-required.pdf",
+    "sha256": "175a2a1763b5286e75c81af98cc9dc88bfc6d681bf7ecee0cb8560cec8f72f07"
+  },
+  "goto-d-type": {
+    "authority": "ISO 32000-2:2020 12.6.4.2, Table 202 and 12.3.2.3: D is a name, string or explicit destination array",
+    "checker": "arlington",
+    "finding": "Error: wrong type: D (ActionGoTo) should be array;name;string-byte in PDF 2.0 and is integer",
+    "path": "fixtures/goto-d-type.pdf",
+    "sha256": "a4bd5253fbeb2ecb6698ae2cd9103bb5e55f4c26e8511c61c5af0722d5e8f20a"
+  },
+  "goto-named-target": {
+    "authority": "ISO 32000-2:2020 12.6.4.2, Table 202 and 12.3.2.3: a named D resolves in the destination name tree",
+    "checker": "arlington",
+    "finding": "Error: wrong value for possible values: D (ActionGoTo) should be: array;name;string-byte [];[];[fn:Eval(fn:InNameTree(trailer::Catalog::Names::Dests))] in PDF 2.0 and is string==absent",
+    "path": "fixtures/goto-named-target.pdf",
+    "sha256": "c9b08cc156a78bb29345230087a8868cf8cd3963510083834f6762bc2eb5c9f3"
+  },
+  "goto-s-name": {
+    "authority": "ISO 32000-2:2020 12.6.4.2, Table 202 and 12.3.2.3: S is a name",
+    "checker": "arlington",
+    "finding": "Error: wrong type: S (ActionGoTo) should be name in PDF 2.0 and is integer",
+    "path": "fixtures/goto-s-name.pdf",
+    "sha256": "75a7d86db79360746e41e9a5b178cbc5d2493952a04aa1fda349bb424c8c1484"
+  },
+  "goto-s-required": {
+    "authority": "ISO 32000-2:2020 12.6.4.2, Table 202 and 12.3.2.3: S is required",
+    "checker": "arlington",
+    "finding": "Error: non-inheritable required key does not exist: S (ActionGoTo) in PDF 2.0",
+    "path": "fixtures/goto-s-required.pdf",
+    "sha256": "67e7b97cfa081e7a063bb1c89ed963fcfb8688e3d667db77da8a70d6a0fdadc1"
+  },
+  "highlight-appearance-required": {
+    "authority": "ISO 32000-2:2020 12.5.2, Table 166: a nonzero-area highlight annotation requires AP in PDF 2.0",
+    "checker": "arlington",
+    "finding": "Error: non-inheritable required key does not exist: AP (AnnotHighlight) in PDF 2.0 because fn:IsRequired(fn:SinceVersion(2.0,(fn:RectWidth(Rect)>0) || (fn:RectHeight(Rect)>0)))",
+    "path": "fixtures/highlight-appearance-required.pdf",
+    "sha256": "156524100a6f1ac718394cac1f7850a42c34dec4b0e764d956f0e44e55df6370"
+  },
+  "highlight-color-array": {
+    "authority": "ISO 32000-2:2020 12.5.2, Table 166: C is an array",
+    "checker": "arlington",
+    "finding": "Error: wrong type: C (AnnotHighlight) should be array in PDF 2.0 and is integer",
+    "path": "fixtures/highlight-color-array.pdf",
+    "sha256": "647dca46527bd06e6086eef651dd6de4e8b6cb6cc2cb407b5b6ce695835fa758"
+  },
+  "highlight-color-count": {
+    "authority": "ISO 32000-2:2020 12.5.2, Table 166: C has zero, one, three or four components",
+    "checker": "arlington",
+    "finding": "Error: special case not correct: 1 (ArrayOf_4NumbersColorAnnotation) in PDF 2.0 should be: number [fn:Eval(fn:IsPresent(2))] and is number==1",
+    "path": "fixtures/highlight-color-count.pdf",
+    "sha256": "110dd35fc15b8f0b1e4643d02ffd0b88a823fd147a1d922f4359824889be44db"
+  },
+  "highlight-color-numbers": {
+    "authority": "ISO 32000-2:2020 12.5.2, Table 166: C components are numbers",
+    "checker": "arlington",
+    "finding": "Error: wrong type: 1 (ArrayOf_4NumbersColorAnnotation) should be number in PDF 2.0 and is name",
+    "path": "fixtures/highlight-color-numbers.pdf",
+    "sha256": "28a9b8323c906c3ef0dee24a109d797f343168b3a52660a68bf7a328a30e30af"
+  },
+  "highlight-color-range": {
+    "authority": "ISO 32000-2:2020 12.5.2, Table 166: C components lie from zero to one",
+    "checker": "arlington",
+    "finding": "Error: wrong value for possible values: 1 (ArrayOf_4NumbersColorAnnotation) should be: number [fn:Eval((@1>=0) && (@1<=1))] in PDF 2.0 and is number==2",
+    "path": "fixtures/highlight-color-range.pdf",
+    "sha256": "249f0dd30f9e91def98f8a6048e8601cbea0dc1290ee0822e3e1c6a92d0fbecf"
+  },
+  "highlight-quads-array": {
+    "authority": "ISO 32000-2:2020 12.5.6.10, Table 181: QuadPoints is an array",
+    "checker": "arlington",
+    "finding": "Error: wrong type: QuadPoints (AnnotHighlight) should be array in PDF 2.0 and is integer",
+    "path": "fixtures/highlight-quads-array.pdf",
+    "sha256": "4086b69ab3389b7cf081d6ab9379721c7e0104729ca6ae6e434587c4c339a0e6"
+  },
+  "highlight-quads-count": {
+    "authority": "ISO 32000-2:2020 12.5.6.10, Table 181: QuadPoints has eight numbers per quadrilateral",
+    "checker": "arlington",
+    "finding": "Error: array length was too short (needed 8, was 7) for ArrayOfQuadPoints",
+    "path": "fixtures/highlight-quads-count.pdf",
+    "sha256": "fca786e88b04e8d436a57220d93f0bc4a24a3c949dd3f38593297bf0e68c770c"
+  },
+  "highlight-quads-numbers": {
+    "authority": "ISO 32000-2:2020 12.5.6.10, Table 181: QuadPoints coordinates are numbers",
+    "checker": "arlington",
+    "finding": "Error: wrong type: 7* (ArrayOfQuadPoints) should be number in PDF 2.0 and is name",
+    "path": "fixtures/highlight-quads-numbers.pdf",
+    "sha256": "18eec7fd4621f4907f740ca9230737f5ce1b744d1cc3af9d7a5c25c266b64a45"
+  },
+  "highlight-quads-required": {
+    "authority": "ISO 32000-2:2020 12.5.6.10, Table 181: QuadPoints is required",
+    "checker": "arlington",
+    "finding": "Error: non-inheritable required key does not exist: QuadPoints (AnnotHighlight) in PDF 2.0",
+    "path": "fixtures/highlight-quads-required.pdf",
+    "sha256": "31decad762f12691fced021968c8f457870d7d82733df785ed6147df2a502cf6"
+  },
+  "link-action-type": {
+    "authority": "ISO 32000-2:2020 12.5.6.5, Table 176: A is an Action dictionary",
+    "checker": "arlington",
+    "finding": "Error: wrong type: A (AnnotLink) should be dictionary in PDF 2.0 and is integer",
+    "path": "fixtures/link-action-type.pdf",
+    "sha256": "175a25bfd6b5f226a3b674ed1f4559e95e0d62db56be536aa8d6788c3c393b5c"
+  },
+  "link-activation-exclusive": {
+    "authority": "ISO 32000-2:2020 12.5.6.5, Table 176: Dest and A are mutually exclusive",
+    "checker": "arlington",
+    "finding": "Error: Link annotation Dest and A are mutually exclusive",
+    "path": "fixtures/link-activation-exclusive.pdf",
+    "sha256": "7a4d6cf751ad841a94510485295e7bf46ee51d32b662d396f79fcc0b120901eb"
+  },
+  "link-destination-type": {
+    "authority": "ISO 32000-2:2020 12.5.6.5, Table 176: Dest is a name, string or explicit destination array",
+    "checker": "arlington",
+    "finding": "Error: wrong type: Dest (AnnotLink) should be array;name;string-byte in PDF 2.0 and is integer",
+    "path": "fixtures/link-destination-type.pdf",
+    "sha256": "e91791341c9f22798de9a4e7a9d70b3a97804e0daa202c80caf8464d0dca3e99"
+  },
+  "names-dests-tree": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Names: expected types.Dict, got types.Integer",
+    "path": "../T10-standards/fixtures/names-dests-tree.pdf",
+    "sha256": "98227a500399b40831ff5fc3f24b1a37c3d4287a808a89563fc50d7110258388"
+  },
+  "nametree-child-limits-array": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: name tree Limits must be an array",
+    "path": "../T11-standards/fixtures/nametree-child-limits-array.pdf",
+    "sha256": "4883b47744912d1a1c0b275aa5939da6bfa2c09c9a0b055964cfd9000ebd15cb"
+  },
+  "nametree-child-limits-count": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: name tree Limits must contain two entries",
+    "path": "../T11-standards/fixtures/nametree-child-limits-count.pdf",
+    "sha256": "e46bbdef0aec99fa191eda082f854ed7056779d008240440e54ae0a17222c92f"
+  },
+  "nametree-child-limits-required": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: name tree Limits was missing in non-root node for Trailer->Root (as Catalog)->Names (as Name)->Dests (as name-tree)",
+    "path": "../T11-standards/fixtures/nametree-child-limits-required.pdf",
+    "sha256": "e134ba9800c9a5e0c63161e15e458d515917a777215055ec9696f31b67b53371"
+  },
+  "nametree-child-limits-string": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: name tree Limits entries must be strings",
+    "path": "../T11-standards/fixtures/nametree-child-limits-string.pdf",
+    "sha256": "a488a05675cc3e738b541821be1a44e3cd99d6dcf6ec2531ab8bd9c0f6103829"
+  },
+  "nametree-child-limits-value": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: name tree Limits do not match descendant keys",
+    "path": "../T11-standards/fixtures/nametree-child-limits-value.pdf",
+    "sha256": "68c19480d7dfd307b6c8e3f6b796b35f50bd4a92a81ee368901cf7b6add462e5"
+  },
+  "nametree-key-order": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "arlington",
+    "finding": "Error: name tree keys are not in ascending byte order",
+    "path": "../T10-standards/fixtures/nametree-key-order.pdf",
+    "sha256": "54643d748342e78ec3ba2096c798d5828d35bb880be401905ba18297ef168f56"
+  },
+  "nametree-key-order-high-bytes": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "arlington",
+    "finding": "Error: name tree keys are not in ascending byte order",
+    "path": "../T10-standards/fixtures/nametree-key-order-high-bytes.pdf",
+    "sha256": "4d91dc4904f6854bcf30c9d3bb3c8a6e8261d60ddbf484b6f7bf4ffde2aefbac"
+  },
+  "nametree-key-string": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Names: name tree Dests Names[0]: expected string key: expected StringLiteral or HexLiteral",
+    "path": "../T10-standards/fixtures/nametree-key-string.pdf",
+    "sha256": "5336621be3dc8d4e1fb1f83a95ea492a1991ccc7f6e419090305676660f4aba0"
+  },
+  "nametree-key-unique": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "arlington",
+    "finding": "Error: name tree key is duplicated",
+    "path": "../T10-standards/fixtures/nametree-key-unique.pdf",
+    "sha256": "10bd658620fbd12fc7fa0e3af08993bedca87bf719e3635fc288b00a73dcfb92"
+  },
+  "nametree-key-unique-encoding": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "arlington",
+    "finding": "Error: name tree key is duplicated",
+    "path": "../T10-standards/fixtures/nametree-key-unique-encoding.pdf",
+    "sha256": "3056c5da1117b3c64560bac7ccaa92a0fd3e1a0bbe18194187f720276d9415a6"
+  },
+  "nametree-kids-array": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: name tree Kids object was not an array for Trailer->Root (as Catalog)->Names (as Name)->Dests (as name-tree)",
+    "path": "../T11-standards/fixtures/nametree-kids-array.pdf",
+    "sha256": "b9453046a580c7fc86a25ae3b1ea9a18424d95047cebc70ce56d99ce628d38eb"
+  },
+  "nametree-kids-cycle": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: name tree contains a cycle or repeated child",
+    "path": "../T11-standards/fixtures/nametree-kids-cycle.pdf",
+    "sha256": "4a55074e77a6a8d46a58b87403c595b3d4c50dc2807bcdac4050b96b63c18667"
+  },
+  "nametree-kids-member": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: name tree Kids array element number #0 was not a dictionary for Trailer->Root (as Catalog)->Names (as Name)->Dests (as name-tree)",
+    "path": "../T11-standards/fixtures/nametree-kids-member.pdf",
+    "sha256": "064ae834a337a834838e3f9bbe1541f8bb40ebb695e48cb469c783a7e5911520"
+  },
+  "nametree-names-array": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Names: name tree Dests Names: dereference array: wrong type types.Integer <42>",
+    "path": "../T10-standards/fixtures/nametree-names-array.pdf",
+    "sha256": "253d1dc19287c1fbc439d2683c70173bddc5e94aeaa3c715c2bd1c27a748c7cb"
+  },
+  "nametree-names-kids-exclusive": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T11 catalog",
+    "checker": "arlington",
+    "finding": "Error: name tree both Names and Kids are present in root node for Trailer->Root (as Catalog)->Names (as Name)->Dests (as name-tree)",
+    "path": "../T11-standards/fixtures/nametree-names-kids-exclusive.pdf",
+    "sha256": "e75996d2ff11756b7255d1e7886dc501a39977a77194febdec578d8c25d102a2"
+  },
+  "nametree-pair-count": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Names: name tree Dests Names: odd entry count 1",
+    "path": "../T10-standards/fixtures/nametree-pair-count.pdf",
+    "sha256": "75c4ccdee7330ec66b79d6c5633e948fe765f0d4fcf93550938545e2bafd068f"
+  },
+  "nametree-root-entry": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "arlington",
+    "finding": "Error: name tree both Names and Kids were missing in root node",
+    "path": "../T10-standards/fixtures/nametree-root-entry.pdf",
+    "sha256": "88f169d65e70a1df8e9fdffd5463782687ec024b50cce5013ad6d0ae25f504b3"
+  },
+  "page-aa-dictionary": {
+    "authority": "ISO 32000-2:2020 12.6.3, Tables 31 and 194: page AA is a dictionary",
+    "checker": "arlington",
+    "finding": "Error: wrong type: AA (PageObject) should be dictionary in PDF 2.0 and is integer",
+    "path": "fixtures/page-aa-dictionary.pdf",
+    "sha256": "f579311f2d0b4cc31ce51aba9d44a2a0c80caec6852ea05b4ce8bd45bd9aa963"
+  },
+  "page-annots-array": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: page annotations: page annotations: page 1: dict=pageDict entry=Annots invalid type types.Integer",
+    "path": "../T10-standards/fixtures/page-annots-array.pdf",
+    "sha256": "960d2371ead29d5ee1c14af25a2888a02fdb578c316951d4f1e4f34a5a47ba8d"
+  },
+  "page-annots-member": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: page annotations: page annotations: page 1: page annotation array: expected indirect references",
+    "path": "../T10-standards/fixtures/page-annots-member.pdf",
+    "sha256": "dade48cf37911dd882bd477e074fde2917d03010c748e788f3c79c1c6808031f"
+  },
+  "page-artbox-numbers": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree: page obj#3: number array: invalid type at index 2",
+    "path": "../T10-standards/fixtures/page-artbox-numbers.pdf",
+    "sha256": "637c4931b398627bfce8290d953670a40b21ff1acafc69ab6898a235931f0f09"
+  },
+  "page-artbox-rectangle": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree: page obj#3: dict=pagesDict entry=ArtBox invalid dict entry",
+    "path": "../T10-standards/fixtures/page-artbox-rectangle.pdf",
+    "sha256": "71657929b0b271bb6fdd419daa5e5e34958597a4bf2ca849aec9014e988ff81f"
+  },
+  "page-bleedbox-numbers": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree: page obj#3: number array: invalid type at index 2",
+    "path": "../T10-standards/fixtures/page-bleedbox-numbers.pdf",
+    "sha256": "fa9afe3bff30d99eec029246072e183849059afce30d48510ada80e881ddd183"
+  },
+  "page-bleedbox-rectangle": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree: page obj#3: dict=pagesDict entry=BleedBox invalid dict entry",
+    "path": "../T10-standards/fixtures/page-bleedbox-rectangle.pdf",
+    "sha256": "a164130665ed0e1423aed9793ea58aaedb3240f5d5f380cef446fb97344f0ab8"
+  },
+  "page-close-action-type": {
+    "authority": "ISO 32000-2:2020 12.6.3, Table 194: C is an Action dictionary",
+    "checker": "arlington",
+    "finding": "Error: wrong type: C (AddActionPageObject) should be dictionary in PDF 2.0 and is integer",
+    "path": "fixtures/page-close-action-type.pdf",
+    "sha256": "d1067ffff14339072f718c769eafed095e3b654b0d0cb479de12dc3b4b17319d"
+  },
+  "page-contents-array-member": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "arlington",
+    "finding": "Error: wrong type: * (ArrayOfStreamsGeneral) should be stream in PDF 2.0 and is dictionary",
+    "path": "../T09-standards/fixtures/page-contents-array-member.pdf",
+    "sha256": "ef72af9bee510e1cf20047c0bc87b32676965a904d019c5a6f16a709f87fa07d"
+  },
+  "page-contents-nonempty": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree: page obj#3: page contents: empty content array",
+    "path": "../T10-standards/fixtures/page-contents-nonempty.pdf",
+    "sha256": "8d64b6dbc941fb8dbef44a4b9e2da120278ebb3991772304881ad47424d2b953"
+  },
+  "page-contents-type": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "arlington",
+    "finding": "Error: wrong type: Contents (PageObject) should be array;stream in PDF 2.0 and is integer",
+    "path": "../T09-standards/fixtures/page-contents-type.pdf",
+    "sha256": "bb4e80a1c8b9b25d2448fb019d27176efc9cd544f2905e7a2a23df8d484ec6c9"
+  },
+  "page-cropbox-numbers": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree: page obj#3: number array: invalid type at index 2",
+    "path": "../T10-standards/fixtures/page-cropbox-numbers.pdf",
+    "sha256": "aa098cec1de44ddaeb3549f3988052240892c049c79324024f82652121ee6609"
+  },
+  "page-cropbox-rectangle": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree: page obj#3: dict=pagesDict entry=CropBox invalid dict entry",
+    "path": "../T10-standards/fixtures/page-cropbox-rectangle.pdf",
+    "sha256": "13b5923caecf27f256e26f97cedaba68355946f9b04d60b5f9f29d13d7971cce"
+  },
+  "page-mediabox-numbers": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree: page obj#3: number array: invalid type at index 2",
+    "path": "../T03-standards/fixtures/page-mediabox-numbers.pdf",
+    "sha256": "6ec1510cccbd9d7dcc664381d68e71ebb0d2a0300e7ee97a6b4cb89c2740713c"
+  },
+  "page-mediabox-rectangle": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree: page obj#3: dict=pageDict entry=MediaBox invalid dict entry",
+    "path": "../T03-standards/fixtures/page-mediabox-rectangle.pdf",
+    "sha256": "25bd505efea14dafefa8dd134879d5f35261db8be4da1d9c23b65d3ae2fc3432"
+  },
+  "page-mediabox-required": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree: page obj#3: dict=pageDict required entry=MediaBox missing",
+    "path": "../T03-standards/fixtures/page-mediabox-required.pdf",
+    "sha256": "2a5fb414c8b1f565b6021559f7d637c1f6475d5446987abb1084dfd74b374382"
+  },
+  "page-open-action-type": {
+    "authority": "ISO 32000-2:2020 12.6.3, Table 194: O is an Action dictionary",
+    "checker": "arlington",
+    "finding": "Error: wrong type: O (AddActionPageObject) should be dictionary in PDF 2.0 and is integer",
+    "path": "fixtures/page-open-action-type.pdf",
+    "sha256": "b1188f3ea492d70cc46b563a3e4fe5896b9c7a223c2323168e186624113c4bdd"
+  },
+  "page-parent-indirect": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree: node obj#3: missing parent node, expected obj#2",
+    "path": "../T03-standards/fixtures/page-parent-indirect.pdf",
+    "sha256": "a7bb58bcdf556530a2d2a978e5d7cbeaff67d318d033ba7a5a81fbc67dc3eae8"
+  },
+  "page-parent-link": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree: node obj#3: corrupt parent node, expected obj#2, got obj#1",
+    "path": "../T03-standards/fixtures/page-parent-link.pdf",
+    "sha256": "c7d96c8c614c6f9171109e5fd1af17e549bf7acc62099b6e1a28718209f39dfb"
+  },
+  "page-parent-required": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree: node obj#3: missing parent node, expected obj#2",
+    "path": "../T03-standards/fixtures/page-parent-required.pdf",
+    "sha256": "253228ff414804b4b799f336d7e21220b44e64285f81d60ea0ef3c98f149f2fd"
+  },
+  "page-resources-required": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "arlington",
+    "finding": "inheritable required key does not exist: Resources (PageObject) in PDF 2.0",
+    "path": "../T03-standards/fixtures/page-resources-required.pdf",
+    "sha256": "057453de6d8fe0490a10b2a44d06c824d0306c64bca64b3444b37ed4b3188dd3"
+  },
+  "page-resources-type": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree: page obj#3: expected types.Dict, got types.Integer",
+    "path": "../T03-standards/fixtures/page-resources-type.pdf",
+    "sha256": "33ff1741b362fb02856ba83e49f8be159dc32a2bda115a22a1ca32b7f5dad705"
+  },
+  "page-rotate-integer": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree: page obj#3: dict=pagesDict entry=Rotate invalid type",
+    "path": "../T10-standards/fixtures/page-rotate-integer.pdf",
+    "sha256": "2f18907696b948b7a5e3b51150fededd4cfbf808cb76f45d3903562de7a8a82c"
+  },
+  "page-rotate-value": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree: page obj#3: dict=pagesDict entry=Rotate invalid dict entry",
+    "path": "../T10-standards/fixtures/page-rotate-value.pdf",
+    "sha256": "27c96a0f9012f89cbcff448bbc32f5b56176e014236c18b65332d6aa10b8e79b"
+  },
+  "page-trimbox-numbers": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree: page obj#3: number array: invalid type at index 2",
+    "path": "../T10-standards/fixtures/page-trimbox-numbers.pdf",
+    "sha256": "c2ae027238e9b7d84103a9f33046378e87f2943db69d8af71143a05649116cae"
+  },
+  "page-trimbox-rectangle": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree: page obj#3: dict=pagesDict entry=TrimBox invalid dict entry",
+    "path": "../T10-standards/fixtures/page-trimbox-rectangle.pdf",
+    "sha256": "bec21282ed946865a47809e9729d8e17cf34e331ba3b02eec8665aa09e9eafeb"
+  },
+  "page-type": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree: node obj#3: missing Type",
+    "path": "../T03-standards/fixtures/page-type.pdf",
+    "sha256": "ef89d0046065ec31948ad50fda2f00c3d74c179c5f39582d7d1246df2841a37c"
+  },
+  "page-type-value": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree: node obj#3: unexpected dict type: Bogus",
+    "path": "../T03-standards/fixtures/page-type-value.pdf",
+    "sha256": "957a1ec451275bb287a11cedcbe3993eb49b30a9bcdceaf488e6c0fc71f98ec8"
+  },
+  "pages-count-integer": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree root: obj#2: corrupt \"Count\": wrong type <One>",
+    "path": "../T03-standards/fixtures/pages-count-integer.pdf",
+    "sha256": "553ae8c98a032fa94e3366d9b946569ab7073b770c4eaf73d154b1675379ebb5"
+  },
+  "pages-count-nonnegative": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree: counted 1 pages, expected -1",
+    "path": "../T03-standards/fixtures/pages-count-nonnegative.pdf",
+    "sha256": "9fe087f812420765adb7add8ed1fdc50a271624bd6eac7dfc4b508870258f62b"
+  },
+  "pages-count-required": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree root: obj#2: missing \"Count\"",
+    "path": "../T03-standards/fixtures/pages-count-required.pdf",
+    "sha256": "56986acd52560e6715727d47cc99c3a90b8641331b527e6d7445084d0dc16f11"
+  },
+  "pages-count-value": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree: counted 1 pages, expected 2",
+    "path": "../T03-standards/fixtures/pages-count-value.pdf",
+    "sha256": "56986c0732dd1534bb63e5c331f8f7dbcdb6301dadc4592ccd9938f7cce008c9"
+  },
+  "pages-kid-reference": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree: parent obj#2 kid[0]: expected indirect reference, got types.Integer",
+    "path": "../T03-standards/fixtures/pages-kid-reference.pdf",
+    "sha256": "1c0e162bdbf9b3d969f65af5e4553b88d4e811fde4de9670753cba4a053e55d0"
+  },
+  "pages-kids": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree: corrupt \"Kids\" entry",
+    "path": "../T03-standards/fixtures/pages-kids.pdf",
+    "sha256": "6e4226f52a6ce1c7020ab2d2788a85a79ef5d7a1d4eee45c0debf51fffc10ba0"
+  },
+  "pages-type": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "arlington",
+    "finding": "non-inheritable required key does not exist: Type (PageTreeNodeRoot) in PDF 2.0",
+    "path": "../T03-standards/fixtures/pages-type.pdf",
+    "sha256": "6fe72868d9f01b1fb929450a8f504f6b12fdc8508ae8e325d49009e6b43bbe1a"
+  },
+  "pages-type-value": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "arlington",
+    "finding": "wrong value for possible values: Type (PageTreeNodeRoot) should be: name [Pages] in PDF 2.0 and is name==Wrong",
+    "path": "../T03-standards/fixtures/pages-type-value.pdf",
+    "sha256": "46e9d3271b38bad3579ec1bff9388f580efd1990534924c2508f2b1fc6a88cfc"
+  },
+  "resource-xobject-map": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree: page obj#3: XObject resource dict: dereference dict: expected types.Dict, got types.Integer",
+    "path": "../T10-standards/fixtures/resource-xobject-map.pdf",
+    "sha256": "665acecb2515bef5e674ff5a477292ca4a7f93850fe1cbf87e111536db9c6159"
+  },
+  "resource-xobject-stream": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "pdfcpu",
+    "finding": "document catalog: catalog Pages: page tree: page obj#3: XObject resource Tile: xObject stream dict: dereference stream dict: dereferenceStreamDict: wrong type <42> types.Integer",
+    "path": "../T10-standards/fixtures/resource-xobject-stream.pdf",
+    "sha256": "8ea247a45ac9fee870dd4b60e24c7290c7fce0bb08929b37fbee0c3ba60439eb"
+  },
+  "stamp-appearance-required": {
+    "authority": "ISO 32000-2:2020 12.5.2, Table 166: a nonzero-area stamp annotation requires AP in PDF 2.0",
+    "checker": "arlington",
+    "finding": "Error: non-inheritable required key does not exist: AP (AnnotStamp) in PDF 2.0 because fn:IsRequired(fn:SinceVersion(2.0,(fn:RectWidth(Rect)>0) || (fn:RectHeight(Rect)>0)))",
+    "path": "fixtures/stamp-appearance-required.pdf",
+    "sha256": "299145658c97e167abf52a8bc5c6784c5f72b7175b651f48c547f191734ee16d"
+  },
+  "stamp-name-name": {
+    "authority": "ISO 32000-2:2020 12.5.6.12, Table 183: Stamp Name is a name",
+    "checker": "arlington",
+    "finding": "Error: wrong type: Name (AnnotStamp) should be name in PDF 2.0 and is integer",
+    "path": "fixtures/stamp-name-name.pdf",
+    "sha256": "2c1d72f1b7137ad58dac0b2af3a1d8f040ac0a1560be8eb0644d24587b7d0e57"
+  },
+  "stream-decodeparams-array-member": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T09 catalog",
+    "checker": "arlington",
+    "finding": "Error: wrong type: * (ArrayOfDecodeParams) should be dictionary;null in PDF 2.0 and is boolean",
+    "path": "../T09-standards/fixtures/stream-decodeparams-array-member.pdf",
+    "sha256": "7bf9e014418ec771fcbb76f46b7927dbbfc843efc3fa09b40d275bf40e43f1d3"
+  },
+  "stream-decodeparams-count": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T09 catalog",
+    "checker": "arlington",
+    "finding": "Error: special case not correct: DecodeParms (Stream) in PDF 2.0 should be: array;dictionary [fn:Eval(fn:ArrayLength(DecodeParms)==fn:ArrayLength(Filter))];[]",
+    "path": "../T09-standards/fixtures/stream-decodeparams-count.pdf",
+    "sha256": "973af11f633cebf99d633125e876ddc7248624f782ce19a2e2e6d963b133201f"
+  },
+  "stream-decodeparams-position": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T09 catalog",
+    "checker": "arlington",
+    "finding": "Error: wrong value for possible values: Predictor (FilterLZWDecode) should be: integer [1,2,10,11,12,13,14,15] in PDF 2.0 and is integer==9",
+    "path": "../T09-standards/fixtures/stream-decodeparams-position.pdf",
+    "sha256": "b736ea2ea2de2bd2dd1747606638787dcb8237b0b9ada9223554ea076c5ab057"
+  },
+  "stream-decodeparams-type": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T09 catalog",
+    "checker": "arlington",
+    "finding": "Error: wrong type: DecodeParms (Stream) should be array;dictionary in PDF 2.0 and is integer",
+    "path": "../T09-standards/fixtures/stream-decodeparams-type.pdf",
+    "sha256": "f5b29bddaa3a77933b86c985caa8ab3a2bbc433bb15c12e3670cfa79a19bd427"
+  },
+  "stream-filter-array-name-type": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "arlington",
+    "finding": "Error: wrong type: * (ArrayOfFilterNames) should be name in PDF 2.0 and is boolean",
+    "path": "../T09-standards/fixtures/stream-filter-array-name-type.pdf",
+    "sha256": "fac2d18c3f760a9d6eaa2182f452b68c3d2512951a5cb96a5cb3dba02fffe29c"
+  },
+  "stream-filter-array-name-value": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "arlington",
+    "finding": "Error: wrong value for possible values: * (ArrayOfFilterNames) should be: name [ASCIIHexDecode,ASCII85Decode,LZWDecode,fn:SinceVersion(1.2,FlateDecode),RunLengthDecode,CCITTFaxDecode,fn:SinceVersion(1.4,JBIG2Decode),DCTDecode,fn:SinceVersion(1.5,JPXDecode),fn:SinceVersion(1.5,Crypt)] in PDF 2.0 and is name==Bogus",
+    "path": "../T09-standards/fixtures/stream-filter-array-name-value.pdf",
+    "sha256": "ef18d21245a44471a7346b15ee658251a9a005ebf190396ac1d7d4f1a732a188"
+  },
+  "stream-filter-name-value": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "arlington",
+    "finding": "Error: wrong value for possible values: Filter (Stream) should be: array;name [];[ASCIIHexDecode,ASCII85Decode,LZWDecode,fn:SinceVersion(1.2,FlateDecode),RunLengthDecode,CCITTFaxDecode,fn:SinceVersion(1.4,JBIG2Decode),DCTDecode,fn:SinceVersion(1.5,JPXDecode),fn:SinceVersion(1.5,Crypt)] in PDF 2.0 and is name==Bogus",
+    "path": "../T09-standards/fixtures/stream-filter-name-value.pdf",
+    "sha256": "4224e00fdd257d3842799b59c0a1522f84f93d5dd0e66ba417b621be4df56fa4"
+  },
+  "stream-filter-type": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T10 catalog",
+    "checker": "arlington",
+    "finding": "Error: wrong type: Filter (Stream) should be array;name in PDF 2.0 and is integer",
+    "path": "../T09-standards/fixtures/stream-filter-type.pdf",
+    "sha256": "dc284a9e3ef213f5b10133af6b65fd8ba11a5af043dbb00359b23373b68a8eda"
+  },
+  "stream-flate-predictor-type": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T09 catalog",
+    "checker": "arlington",
+    "finding": "Error: wrong type: Predictor (FilterLZWDecode) should be integer in PDF 2.0 and is string",
+    "path": "../T09-standards/fixtures/stream-flate-predictor-type.pdf",
+    "sha256": "e372ccb9ba52dc549bf100f795f138eb3a1dea9c61886358f6d46546ed5e5d55"
+  },
+  "stream-flate-predictor-value": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T09 catalog",
+    "checker": "arlington",
+    "finding": "Error: wrong value for possible values: Predictor (FilterLZWDecode) should be: integer [1,2,10,11,12,13,14,15] in PDF 2.0 and is integer==9",
+    "path": "../T09-standards/fixtures/stream-flate-predictor-value.pdf",
+    "sha256": "4b37462527d107755a11350d286c98c3650fb18254f0610f08808e28cc83f27d"
+  },
+  "text-appearance-required": {
+    "authority": "ISO 32000-2:2020 12.5.2, Table 166: a nonzero-area text annotation requires AP in PDF 2.0",
+    "checker": "arlington",
+    "finding": "Error: non-inheritable required key does not exist: AP (AnnotText) in PDF 2.0 because fn:IsRequired(fn:SinceVersion(2.0,(fn:RectWidth(Rect)>0) || (fn:RectHeight(Rect)>0)))",
+    "path": "fixtures/text-appearance-required.pdf",
+    "sha256": "535b4cd12504a45c2a56e162ea50c902699ece4e7ef6e5afec9786f09f6cb65a"
+  },
+  "text-name-name": {
+    "authority": "ISO 32000-2:2020 12.5.6.4, Table 173: Text Name is a name",
+    "checker": "arlington",
+    "finding": "Error: wrong type: Name (AnnotText) should be name in PDF 2.0 and is integer",
+    "path": "fixtures/text-name-name.pdf",
+    "sha256": "7ac4bd3f191d1765407f497e52ead22dc828ea3a5c24abf45200dd2924a27aac"
+  },
+  "text-open-boolean": {
+    "authority": "ISO 32000-2:2020 12.5.6.4, Table 173: Text Open is boolean",
+    "checker": "arlington",
+    "finding": "Error: wrong type: Open (AnnotText) should be boolean in PDF 2.0 and is integer",
+    "path": "fixtures/text-open-boolean.pdf",
+    "sha256": "a80300e6b696495814551f6171286e191158dd128a4ef978673a01dda8d014b0"
+  },
+  "trailer-info-indirect": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T09 catalog",
+    "checker": "arlington",
+    "finding": "Error: not an indirect reference as required: Info (FileTrailer) in PDF 2.0",
+    "path": "../T09-standards/fixtures/trailer-info-indirect.pdf",
+    "sha256": "9e99abaa6ca013f826cc325130c0496765e92716fb320fa9bd13592214d84fb2"
+  },
+  "trailer-info-null": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T09 catalog",
+    "checker": "pdfcpu",
+    "finding": "document info: document info: missing required entry \"ModDate\"",
+    "path": "../T09-standards/fixtures/trailer-info-null.pdf",
+    "sha256": "7252e5c276cf658a50e1c30368da5d52f5530dbfe2caeac8e45f0774bf102963"
+  },
+  "trailer-info-required": {
+    "authority": "ISO 32000 core/Form/navigation/file requirement, qualified by the frozen T09 catalog",
+    "checker": "arlington",
+    "finding": "Error: non-inheritable required key does not exist: Info (FileTrailer) in PDF 2.0 because fn:IsRequired(fn:SinceVersion(1.4,fn:IsPresent(trailer::Catalog::PieceInfo)))",
+    "path": "../T09-standards/fixtures/trailer-info-required.pdf",
+    "sha256": "b872d21e15c25ba2d038bfb54ccdec6158715fa492905fc26161bf22ea01bc89"
+  },
+  "widget-appearance-required": {
+    "authority": "ISO 32000-2:2020 12.5.2, Table 166: a nonzero-area widget annotation requires AP in PDF 2.0",
+    "checker": "arlington",
+    "finding": "Error: non-inheritable required key does not exist: AP (AnnotWidget) in PDF 2.0 because fn:IsRequired(fn:SinceVersion(2.0,(fn:RectWidth(Rect)>0) || (fn:RectHeight(Rect)>0)))",
+    "path": "fixtures/widget-appearance-required.pdf",
+    "sha256": "d40b80142eeb78e0e7afbec9b274dfed4e6625e0b1b4ca80caada9ce62abf548"
+  }
+}

@@ -201,3 +201,23 @@ The command-boundary fixtures are synthetic project-owned data. Their success
 proves the checker accepts a controlled complete contract, not that the real
 Foundation Release is certified. Run them with
 `./mvnw -B -ntp -pl build-tools/inventory test`.
+
+
+## Annotation certification recorder
+
+The Foundation runner accepts `--obligation annotations` for the frozen T12
+profile. It executes all eight approved Linux/JDK/Native-mode combinations,
+with the inherited Stable Facade observed as IN_PROCESS, and retains 16 product
+cases per tuple. In addition to the four independent chains, its collector
+requires the complete 174-rule assignment, exact independent qpdf graphs,
+page-level AP projections, all committed receipts, 18 detected semantic defects,
+actual PDF visual defects, the exact one-pixel comparator control and qualified
+cross-process Action safety observations. Missing or inconsistent supporting
+records cannot be repaired by an aggregate PASS label.
+
+Use [the T12 procedure](t12-certification.md) after freezing and staging the
+candidate. Refresh transactions, values, pages and metadata for the same
+candidate; their prior identities become stale when source/contracts change.
+The five obligations can be satisfied while unrelated Foundation slices keep
+overall readiness NOT READY. The approved environment matrix and deferred
+Windows/macOS scope remain those in ADR-0040.

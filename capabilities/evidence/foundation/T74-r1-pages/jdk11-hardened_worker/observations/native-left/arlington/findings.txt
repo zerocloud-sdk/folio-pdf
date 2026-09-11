@@ -1,0 +1,101 @@
+Version exit: 0
+[0m
+
+Arlington PDF Model C++ P.o.C. version v0.81-folio-t10-r1 built Sep  9 2026 00:00:00 (GNU-C linux release)
+Choose one of: --pdf, --checkdva or --validate.
+
+Usage:
+	TestGrammar --tsvdir <dir> [--force <ver>|exact] [--out <fname|dir>] [--no-color] [--clobber] [--debug] [--brief] [--extensions <extn1[,extn2]>] [--password <pwd>] [--exclude string | @textfile.txt] [--dryrun] [--allfiles] [--validate | --checkdva <formalrep> | --pdf <fname|dir|@file.txt> ]
+
+Options: 
+-h, --help                   This usage message.
+-b, --brief                  terse output when checking PDFs. The full PDF DOM tree is NOT output.
+-c, --checkdva               Adobe DVA formal-rep PDF file to compare against Arlington PDF model.
+-d, --debug                  output additional debugging information.
+    --clobber                always overwrite PDF output report files (--pdf) rather than append underscores.
+    --no-color               disable colorized text output (useful when redirecting or piping output)
+-m, --batchmode              stop popup error dialog windows and redirect everything to console (Windows only, includes memory leak reports).
+-o, --out                    output file or folder. Default is stdout. See --clobber for overwriting behavior.
+-p, --pdf                    input PDF file, folder, or text file of PDF files/folders.
+-f, --force                  force the PDF version to the specified value (1,0, 1.1, ..., 2.0 or 'exact'). Only applicable to --pdf.
+-t, --tsvdir                 [required] folder containing Arlington PDF model TSV file set.
+-v, --validate               validate the Arlington PDF model.
+-e, --extensions             a comma-separated list of extensions, or '*' for all extensions.
+    --password               password. Only applicable to --pdf.
+    --exclude                PDF exclusion string or filelist (# is a comment). Only applicable to --pdf.
+    --dryrun                 Dry run - don't do any actual processing.
+-a, --allfiles               Process all files regardless of file extension.
+    --explicit-values-only   Ignore wildcards in PossibleValues.
+
+Built using pdfium
+
+Validation exit: 0
+Processing "/workspace/capabilities/evidence/foundation/T74-r1-pages/jdk11-hardened_worker/observations/native-left/pages.pdf" to stdout BEGIN - TestGrammar v0.81-folio-t10-r1 built Sep  9 2026 00:00:00 (GNU-C linux release) pdfium
+Arlington TSV data: "/workspace/.build-cache/arlington/t10-r1/tsv/latest"
+PDF: "/workspace/capabilities/evidence/foundation/T74-r1-pages/jdk11-hardened_worker/observations/native-left/pages.pdf"
+Info: XRefStream detected.
+Info: Header is version PDF 1.7
+Info: Command line forced to PDF 1.7
+Info: Processing as PDF 1.7
+       1: Trailer (as XRefStream)
+       2:   Trailer (as XRefStream)->ID (as TrailerIDArray)
+       3:   Trailer (as XRefStream)->Index (as ArrayOfXRefIndexIntegers)
+       4:   Trailer (as XRefStream)->Root (as Catalog)
+       5:   Trailer (as XRefStream)->W (as ArrayOfXRefWIntegers)
+       6:     Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)
+       7:     Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)
+       8:       Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[shared]
+       9:       Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)
+      10:         Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[shared][0 (as PageObject)]
+Info: unknown key 'T10Marker' is not defined in Arlington for PageObject in PDF 1.7
+      11:         Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]
+Info: unknown key 'T10Marker' is not defined in Arlington for PageObject in PDF 1.7
+      12:         Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[1 (as PageObject)]
+      13:         Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[2 (as PageObject)]
+Info: unknown key 'T10Marker' is not defined in Arlington for PageObject in PDF 1.7
+      14:           Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[shared][0 (as PageObject)]->Annots (as ArrayOfAnnots)
+      15:           Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[shared][0 (as PageObject)]->Contents (as Stream)
+      16:           Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[shared][0 (as PageObject)]->Parent (as PageTreeNodeRoot)
+      17:           Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[shared][0 (as PageObject)]->Resources (as Resource)
+      18:           Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)
+      19:           Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Contents (as Stream)
+      20:           Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Parent (as PageTreeNodeRoot)
+      21:           Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)
+      22:           Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[2 (as PageObject)]->Annots (as ArrayOfAnnots)
+      23:           Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[2 (as PageObject)]->Contents (as Stream)
+      24:           Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[2 (as PageObject)]->Parent (as PageTreeNodeRoot)
+      25:           Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[2 (as PageObject)]->Resources (as Resource)
+      26:             Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[shared][0 (as PageObject)]->Annots (as ArrayOfAnnots)[0 (as AnnotText)]
+      27:             Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[shared][0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)
+      28:             Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[0 (as AnnotText)]
+      29:             Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)
+      30:             Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[2 (as PageObject)]->Annots (as ArrayOfAnnots)[0 (as AnnotText)]
+      31:             Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[2 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)
+      32:               Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[shared][0 (as PageObject)]->Annots (as ArrayOfAnnots)[0 (as AnnotText)]->P (as PageObject)
+      33:               Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[shared][0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)->Tile (as XObjectFormType1)
+      34:               Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[0 (as AnnotText)]->P (as PageObject)
+      35:               Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)->Tile (as XObjectFormType1)
+      36:               Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[2 (as PageObject)]->Annots (as ArrayOfAnnots)[0 (as AnnotText)]->P (as PageObject)
+      37:               Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[2 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)->Tile (as XObjectFormType1)
+      38:                 Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[shared][0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)->Tile (as XObjectFormType1)->Resources (as Resource)
+Info: Latest Arlington object was PDF 1.5 (XRefStream/Filter) compared using forced PDF 1.7
+END
+
+DONE - 1 files processed
+
+Negative control destination-fit-count sha256=2c09b29f347c89b32a8d20d9f76dc1880358db38674420dbffffd76db493326b detected=true
+Negative control destination-page-type sha256=0a457454f7242645dbc1f8834278323704251091154645c9e3c28511f1582e48 detected=true
+Negative control nametree-key-order sha256=54643d748342e78ec3ba2096c798d5828d35bb880be401905ba18297ef168f56 detected=true
+Negative control nametree-key-order-high-bytes sha256=4d91dc4904f6854bcf30c9d3bb3c8a6e8261d60ddbf484b6f7bf4ffde2aefbac detected=true
+Negative control nametree-key-unique sha256=10bd658620fbd12fc7fa0e3af08993bedca87bf719e3635fc288b00a73dcfb92 detected=true
+Negative control nametree-key-unique-encoding sha256=3056c5da1117b3c64560bac7ccaa92a0fd3e1a0bbe18194187f720276d9415a6 detected=true
+Negative control nametree-root-entry sha256=88f169d65e70a1df8e9fdffd5463782687ec024b50cce5013ad6d0ae25f504b3 detected=true
+Negative control page-contents-array-member sha256=ef72af9bee510e1cf20047c0bc87b32676965a904d019c5a6f16a709f87fa07d detected=true
+Negative control page-contents-type sha256=bb4e80a1c8b9b25d2448fb019d27176efc9cd544f2905e7a2a23df8d484ec6c9 detected=true
+Negative control page-resources-required sha256=057453de6d8fe0490a10b2a44d06c824d0306c64bca64b3444b37ed4b3188dd3 detected=true
+Negative control pages-type sha256=6fe72868d9f01b1fb929450a8f504f6b12fdc8508ae8e325d49009e6b43bbe1a detected=true
+Negative control pages-type-value sha256=46e9d3271b38bad3579ec1bff9388f580efd1990534924c2508f2b1fc6a88cfc detected=true
+Negative control stream-filter-array-name-type sha256=fac2d18c3f760a9d6eaa2182f452b68c3d2512951a5cb96a5cb3dba02fffe29c detected=true
+Negative control stream-filter-array-name-value sha256=ef18d21245a44471a7346b15ee658251a9a005ebf190396ac1d7d4f1a732a188 detected=true
+Negative control stream-filter-name-value sha256=4224e00fdd257d3842799b59c0a1522f84f93d5dd0e66ba417b621be4df56fa4 detected=true
+Negative control stream-filter-type sha256=dc284a9e3ef213f5b10133af6b65fd8ba11a5af043dbb00359b23373b68a8eda detected=true

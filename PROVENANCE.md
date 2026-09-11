@@ -2250,3 +2250,86 @@ The signed-document probe authors a structural DocMDP P=3 Source and proves that
 T11 `REWRITE` changes are rejected with `SIGNED_REWRITE_REJECTED` while Source
 and sentinel Target bytes remain unchanged. These probes add no runtime
 dependency and make no signature-validity or Trust claim.
+
+
+## T74 annotation certification work
+
+Authored by OpenAI Codex for the Folio PDF by ZeroCloud contribution, against
+issue #74 and fixed implementation/review baseline
+`db88f8c21dcd2e8f33613838b71cd42216254527`. No commit, publication, tracker edit,
+or external review message is part of this work.
+
+The governing references are the complete public issues #1, #13, #33, #72,
+#73 and #74 and their comments; repository ADRs 0017, 0020, 0023, 0025, 0029,
+0034 and 0040; `docs/annotations-actions.md`; and ISO 32000-2 requirements for
+annotations, appearances, actions, destinations, embedded files and page
+structure. The public iText Core 7.2.6 API documentation for
+[PdfPage](https://api.itextpdf.com/iText/java/7.2.6/com/itextpdf/kernel/pdf/PdfPage.html),
+[PdfCatalog](https://api.itextpdf.com/iText/java/7.2.6/com/itextpdf/kernel/pdf/PdfCatalog.html),
+[PdfAnnotation](https://api.itextpdf.com/iText/java/7.2.6/com/itextpdf/kernel/pdf/annot/PdfAnnotation.html)
+and PdfAction supplied mapping names/signatures only. Adapted signatures and
+Folio extensions are explicit in the manifest. No iText implementation,
+resource, fixture, reverse-engineered binary detail, non-public implementation
+material or closed add-on material was consulted or copied.
+
+The T12 corpus, programs, original semantic expectations, independent raster
+grids and control defects are original Apache-2.0 project work. The authoring
+scripts reuse the repository-owned T10 raster primitives and T11 PDF/embedded-
+file authoring conventions. No Folio output, PDF renderer output or iText asset
+is used to author expected pixels. An original raster copy with exactly one
+changed pixel additionally qualifies AE=1 at the unchanged zero threshold. Sources A/B/C/D, eight Native and eight
+Facade products, nonzero AP bounding boxes, identity matrices, explicit/named
+GoTo operands, copy/merge/split collisions and retained page paint are frozen
+in `capabilities/profiles/T12-annotations`. `scripts/t12-semantics.py` observes
+actual qpdf JSON independently of Folio getters and product authoring code.
+Original positives and 18 isolated semantic defects qualify that observer;
+actual product mutations additionally qualify its use on published bytes.
+
+Standards qualification reuses 137 already authored T10/T09/T11 predicates
+and adds 37 original T12 defects with matching diagnostics. Every one of the
+174 required predicates is assigned exactly once to strict offline pdfcpu
+0.15.0 or the Arlington checker. `build-tools/acceptance/arlington/t12-r1.patch`
+is a cumulative Apache-2.0 supplement to pinned upstream commit
+`fe4a1a8897ec07f674c73160c35d748b29052f8f`. It retains the qualified T10/T11
+predicates and adds narrowly scoped page-local NM uniqueness, optional P-owner
+identity and Link Dest/A exclusivity checks. Legal same-name annotations on
+different pages, absent P/unbound Link, and null P/null A are positive controls.
+The fixed source, patch, model, executable and compiler/build provenance are
+recorded in `scripts/t12-arlington-pin.properties` and the acceptance tool README.
+No diagnostic is promoted globally from warning to failure.
+
+The existing PDFium v0.11.2/chromium-7881 CLI's independent flatten operation
+projects AP streams for visual observation because its direct page rendering
+omits standalone Widgets. Every projection and unchanged original has its
+exact hash recorded. All 26 original reference pages qualify this projection
+against the independently authored pixels with zero AE and zero renderer
+agreement error. Secondary PDFBox rendering reads the original document.
+Native flattening remains separately checked on the original product's object
+graph and paint/placement instructions. ImageMagick 7.1.2-30 and all inherited
+runtime dependencies keep their existing pins and licenses.
+
+`scripts/t12-safety-observer.py` is original acceptance-only Python standard-
+library code using Linux inotify and a loopback listener. Every invocation
+qualifies real read, write, executable-launch, script-file-effect and network
+observations before executing the public Native/Facade probe in a child JVM.
+It watches declared canary paths and the endpoint across descendant processes;
+it does not assert a private backend or claim to trace a JavaScript interpreter.
+The signed-Source probe reuses T11's original synthetic DocMDP P=3 PDF; it makes
+no cryptographic signing or trust-validation claim. Tool code, corpus fixtures,
+rasters and observer processes stay outside product runtime artifacts.
+
+Public verification exposed two Native gaps: explicit numeric identity
+appearance matrices were rejected despite the approved identity contract,
+and FileAttachment MIME names were double escaped. Minimal fixes accept the
+explicit identity while rejecting other matrices and let the PDF name serializer
+perform the single escape step, retaining literal hash sequences after reading.
+Worker failure transport now retains the page capability for an Annotation/Action
+preservation rejection. All observations use public Workflow outcomes, detached
+values, reopened products, receipts and stable safe errors; no new private
+engine testing seam was introduced.
+
+Container qualification exposed checkout-specific absolute paths in generated
+readiness findings. The repository-only Markdown now uses relative paths. An
+original synthetic relocation test exercises the public generate/check/readiness
+commands and preserves the stale-evidence diagnosis and NOT READY result after
+moving the checkout.

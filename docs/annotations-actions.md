@@ -30,7 +30,7 @@ An unsupported Action graph may remain structurally unchanged when a rewrite doe
 
 ## Appearance and flattening contract
 
-`AnnotationAppearance.version1` represents only the normal appearance (`AP/N`) as a Form XObject with an identity matrix, the supplied bounding box, and an empty Resources dictionary. Caller content is limited to 1 MiB and to resource-free graphics operators: graphics-state save/restore and numeric state, matrices, paths, painting, clipping, line dashes, rendering intent, and DeviceGray/RGB/CMYK color operators. Numeric graphics-state operands are checked semantically: widths and dash lengths are nonnegative, line cap and join values are integers from 0 through 2, miter limits are at least 1, flatness is from 0 through 100, device-color components are from 0 through 1, and a nonempty dash array cannot contain only zero lengths. Text, fonts, external objects, shadings, patterns, extended graphics state, inline images, marked-content properties, and malformed or unbalanced programs are rejected with `ANNOTATION_INVALID`; the query rejects an unproven appearance with `QUERY_FAILED`.
+`AnnotationAppearance.version1` represents only the normal appearance (`AP/N`) as a Form XObject with an identity matrix, the supplied bounding box, and an empty Resources dictionary. An omitted Matrix and an explicit numeric identity Matrix are equivalent; non-identity and malformed matrices remain unsupported. Caller content is limited to 1 MiB and to resource-free graphics operators: graphics-state save/restore and numeric state, matrices, paths, painting, clipping, line dashes, rendering intent, and DeviceGray/RGB/CMYK color operators. Numeric graphics-state operands are checked semantically: widths and dash lengths are nonnegative, line cap and join values are integers from 0 through 2, miter limits are at least 1, flatness is from 0 through 100, device-color components are from 0 through 1, and a nonempty dash array cannot contain only zero lengths. Text, fonts, external objects, shadings, patterns, extended graphics state, inline images, marked-content properties, and malformed or unbalanced programs are rejected with `ANNOTATION_INVALID`; the query rejects an unproven appearance with `QUERY_FAILED`.
 
 `FlattenAnnotations` accepts one or more identifiers atomically. Each selected annotation must be non-Widget and have a validated normal appearance. The engine adds that Form to page resources, encloses all pre-existing page content between dedicated `q` and `Q` streams so inherited graphics state cannot affect the new invocation, appends a geometry transform and `Do` invocation, and only then removes the annotation. Missing identifiers fail with `ANNOTATION_NOT_FOUND`; Widgets, missing appearances, malformed graphs, or unsafe page resources fail with `ANNOTATION_FLATTENING_UNSUPPORTED`. This is annotation flattening, not AcroForm field flattening.
 
@@ -74,3 +74,87 @@ workflow.execute(request, session -> {
     return session.query(Annotations.version1(64, 1024 * 1024, 1024 * 1024));
 });
 ```
+
+## Stable and inherited Preview Migration Facade
+
+The mapped subset uses the existing immutable Native values (`Annotation`,
+`AnnotationAppearance`, `GoToAction`, `NavigationTarget` and `PageActions`).
+The [Facade Surface Manifest](../capabilities/facade-surface.yaml) distinguishes
+adapted reference signatures from Folio extensions. Preview inherits the same
+Stable source and tests; it adds no separate T12 members. Both editions execute
+in `IN_PROCESS`, including when Native certification uses `HARDENED_WORKER`.
+
+| Owner | Mapped operations | Contract |
+| --- | --- | --- |
+| `PdfDocument` | `getAnnotations(int,long,long)`, `updateAnnotations(List<Annotation>,List<String>)` | Detached ordered reads and one atomic replacement/removal Command. |
+| `PdfPage` | `getAnnotations(int,long,long)`, `addAnnotation(Annotation)`, `removeAnnotation(String)` | A page handle follows its original page through reorder; creation adapts the value's containing page. |
+| `PdfPage` | `setNormalAppearance(String,AnnotationAppearance)` | Replaces AP/N and retains all other properties. |
+| `PdfCatalog` | `setOpenAction(GoToAction)`, `getOpenAction(int)` | Stores an inert direct/named local GoTo; null removes it; the read returns `Optional<GoToAction>`. |
+| `PdfPage` | `setAdditionalAction(PdfName,GoToAction)`, `getAdditionalActions(int)` | Supports only O/C; null removes the selected binding; the read returns `Optional<PageActions>`. |
+| `PdfDocument` | `getActions(int)`, `flattenAnnotations(String...)` | Bounded catalog/page bindings and atomic non-Widget flattening. |
+
+Page reads apply the supplied bounds to the complete document before selecting
+that page. Page removal and appearance edits use fixed bounds of 100,000
+annotations and 8 MiB each of decoded appearance and attachment bytes. A missing
+or other-page identifier is `IllegalArgumentException` for these page-owned
+selections. Document-wide removal and flattening retain
+`ANNOTATION_NOT_FOUND`. Malformed input and operational failures retain their
+Native code and safe diagnostic as the `PdfException` cause; expired and
+read-only owners reject edits. Returned values remain detached after close.
+
+The last value supplied for a repeated replacement identifier wins at its first
+declaration position. Replacements follow unselected entries on each page, so
+appearance replacement may change that annotation's array position. Creating
+an existing identifier on another page moves it to the handle's current page.
+Link activation remains part of the Annotation value; `getActions` counts only
+catalog/page event bindings.
+
+For PDF 2.0 Sources and associated-file relationships, choose the explicit
+version constructor. The two-argument Reader/Writer constructor retains its
+PDF 1.7 default. This example edits a Text annotation and stores local navigation:
+
+```java
+import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import net.zerocloud.pdf.Annotation;
+import net.zerocloud.pdf.AnnotationAppearance;
+import net.zerocloud.pdf.AnnotationProperties;
+import net.zerocloud.pdf.AnnotationRectangle;
+import net.zerocloud.pdf.GoToAction;
+import net.zerocloud.pdf.NavigationTarget;
+import net.zerocloud.pdf.PageDestination;
+import net.zerocloud.pdf.PdfVersion;
+import net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument;
+import net.zerocloud.pdf.itext7.kernel.pdf.PdfName;
+import net.zerocloud.pdf.itext7.kernel.pdf.PdfPage;
+import net.zerocloud.pdf.itext7.kernel.pdf.PdfReader;
+import net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter;
+
+try (PdfReader reader = new PdfReader("input.pdf");
+     PdfDocument document = new PdfDocument(
+             Collections.singletonMap("input", reader), "input",
+             Collections.singletonMap("result", new PdfWriter("annotated.pdf")),
+             PdfVersion.PDF_2_0)) {
+    Annotation note = Annotation.text(
+            AnnotationProperties.version1("review-note", 1,
+                    AnnotationRectangle.of(36, 700, 72, 730))
+                    .contents("Review this section").build(),
+            Annotation.TextIcon.NOTE, false);
+    PdfPage page = document.getPage(1);
+    page.addAnnotation(note).setNormalAppearance("review-note",
+            AnnotationAppearance.version1(AnnotationRectangle.of(0, 0, 12, 10),
+                    "q 0 0 1 rg 0 0 12 10 re f Q\n".getBytes(StandardCharsets.US_ASCII)));
+    GoToAction local = GoToAction.version1(
+            NavigationTarget.toPage(PageDestination.fit(1)));
+    document.getCatalog().setOpenAction(local);
+    page.setAdditionalAction(new PdfName("O"), local);
+    // To bake this supported appearance into page paint:
+    // document.flattenAnnotations("review-note");
+}
+```
+
+The [T12 certification contract](t12-certification.md) defines the independent
+original corpus, rule controls, exact visual expectations and environment
+bindings. Actual candidate readiness comes from
+[Foundation evidence](../capabilities/foundation-evidence.yaml), including
+transactions, values, pages and metadata for the same candidate.

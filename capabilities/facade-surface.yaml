@@ -1556,13 +1556,173 @@ surfaces:
       generic-contract: Parameters are Map<String, ? extends project-owned PdfValue> replacements and List<String> removals, applied in one atomic Command.
       exception-contract: Null, overlapping, indirect, stream, malformed, lifecycle, or unpreservable input rejects before mutation with the Native cause retained through PdfException where applicable.
       capabilities: [document.metadata.outlines-destinations-attachments]
+    - id: itext7.kernel.pdf-document.get-annotations
+      reference:
+        status: folio-extension
+        type: com.itextpdf.kernel.pdf.PdfDocument
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: getAnnotations(int,long,long)
+      generic-contract: Returns immutable List<Annotation> in page and annotation-array order under explicit document-wide
+        annotation-count, decoded-appearance and decoded-attachment bounds.
+      exception-contract: Rejects invalid bounds or a closed owner; malformed graphs, unsupported Actions and exhausted bounds
+        retain the Native DocumentFailure code and safe diagnostic through PdfException.
+      capabilities:
+      - document.annotations-actions.manage
+    - id: itext7.kernel.pdf-document.update-annotations
+      reference:
+        status: folio-extension
+        type: com.itextpdf.kernel.pdf.PdfDocument
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: updateAnnotations(java.util.List,java.util.List)
+      generic-contract: Accepts List<Annotation> replacements and List<String> identifier removals as one atomic Command.
+        Duplicate replacement identifiers use the last supplied value at the first declaration position; unselected entries
+        precede replacements on each page.
+      exception-contract: Rejects read-only or closed owners and invalid input before mutation; operational failures retain
+        the Native DocumentFailure code and safe diagnostic through PdfException.
+      capabilities:
+      - document.annotations-actions.manage
+    - id: itext7.kernel.pdf-document.get-actions
+      reference:
+        status: folio-extension
+        type: com.itextpdf.kernel.pdf.PdfDocument
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: getActions(int)
+      generic-contract: Returns detached DocumentActions under an explicit catalog/page binding-count bound. Link activation
+        belongs to the bounded Annotation read.
+      exception-contract: Rejects invalid bounds or a closed owner; malformed graphs, unsupported Actions and exhausted bounds
+        retain the Native DocumentFailure code and safe diagnostic through PdfException.
+      capabilities:
+      - document.annotations-actions.manage
+    - id: itext7.kernel.pdf-document.flatten-annotations
+      reference:
+        status: folio-extension
+        type: com.itextpdf.kernel.pdf.PdfDocument
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: flattenAnnotations(java.lang.String[])
+      generic-contract: Accepts one or more document-wide identifiers and returns void after one atomic non-Widget Annotation
+        Flattening Command; this extension does not map AcroForm flattening.
+      exception-contract: Rejects read-only or closed owners and invalid input before mutation; operational failures retain
+        the Native DocumentFailure code and safe diagnostic through PdfException. Missing identifiers use ANNOTATION_NOT_FOUND;
+        Widgets and unsafe or missing appearances use ANNOTATION_FLATTENING_UNSUPPORTED.
+      capabilities:
+      - document.annotations-actions.manage
+    - id: itext7.kernel.pdf-page.get-annotations
+      reference:
+        status: adapted
+        type: com.itextpdf.kernel.pdf.PdfPage
+        member: getAnnotations()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfPage
+        member: getAnnotations(int,long,long)
+      generic-contract: Returns immutable List<Annotation> for the handle's current page; explicit bounds apply to the complete
+        document read before page selection. Handles follow page identity through reorder.
+      exception-contract: Rejects invalid bounds or a closed owner; malformed graphs, unsupported Actions and exhausted bounds
+        retain the Native DocumentFailure code and safe diagnostic through PdfException.
+      capabilities:
+      - document.annotations-actions.manage
+    - id: itext7.kernel.pdf-page.add-annotation
+      reference:
+        status: adapted
+        type: com.itextpdf.kernel.pdf.PdfPage
+        member: addAnnotation(com.itextpdf.kernel.pdf.annot.PdfAnnotation)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfPage
+        member: addAnnotation(net.zerocloud.pdf.Annotation)
+      generic-contract: Adapts the immutable Annotation to the handle's current page, creates or replaces its document-wide
+        identifier, and returns this PdfPage. Replacing another page's identifier moves that annotation here.
+      exception-contract: Rejects read-only or closed owners and invalid input before mutation; operational failures retain
+        the Native DocumentFailure code and safe diagnostic through PdfException.
+      capabilities:
+      - document.annotations-actions.manage
+    - id: itext7.kernel.pdf-page.remove-annotation
+      reference:
+        status: adapted
+        type: com.itextpdf.kernel.pdf.PdfPage
+        member: removeAnnotation(com.itextpdf.kernel.pdf.annot.PdfAnnotation)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfPage
+        member: removeAnnotation(java.lang.String)
+      generic-contract: Selects an annotation on this page by document-wide identifier and returns this PdfPage; lookup bounds
+        are 100000 annotations and 8 MiB each of decoded appearance and attachment bytes.
+      exception-contract: Rejects read-only or closed owners and invalid input before mutation; operational failures retain
+        the Native DocumentFailure code and safe diagnostic through PdfException. A missing or other-page identifier is IllegalArgumentException.
+      capabilities:
+      - document.annotations-actions.manage
+    - id: itext7.kernel.pdf-page.set-normal-appearance
+      reference:
+        status: folio-extension
+        type: com.itextpdf.kernel.pdf.PdfPage
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfPage
+        member: setNormalAppearance(java.lang.String,net.zerocloud.pdf.AnnotationAppearance)
+      generic-contract: Adapts the reference Annotation setter to page-owned selection by identifier; retains all other properties
+        and returns this PdfPage. Uses the same fixed lookup bounds as removal and Native replacement ordering.
+      exception-contract: Rejects read-only or closed owners and invalid input before mutation; operational failures retain
+        the Native DocumentFailure code and safe diagnostic through PdfException. A missing or other-page identifier is IllegalArgumentException;
+        unsupported resource-free graphics programs retain ANNOTATION_INVALID.
+      capabilities:
+      - document.annotations-actions.manage
+    - id: itext7.kernel.pdf-page.set-additional-action
+      reference:
+        status: adapted
+        type: com.itextpdf.kernel.pdf.PdfPage
+        member: setAdditionalAction(com.itextpdf.kernel.pdf.PdfName,com.itextpdf.kernel.pdf.action.PdfAction)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfPage
+        member: setAdditionalAction(net.zerocloud.pdf.itext7.kernel.pdf.PdfName,net.zerocloud.pdf.GoToAction)
+      generic-contract: Accepts only page O or C and an immutable local GoToAction; null removes that binding. Returns this
+        PdfPage and follows the handle's page identity.
+      exception-contract: Rejects read-only or closed owners and invalid input before mutation; operational failures retain
+        the Native DocumentFailure code and safe diagnostic through PdfException. Other event names are IllegalArgumentException.
+      capabilities:
+      - document.annotations-actions.manage
+    - id: itext7.kernel.pdf-page.get-additional-actions
+      reference:
+        status: folio-extension
+        type: com.itextpdf.kernel.pdf.PdfPage
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfPage
+        member: getAdditionalActions(int)
+      generic-contract: Returns Optional<PageActions> for this handle's current page under an explicit document-wide binding-count
+        bound; empty means neither O nor C is present.
+      exception-contract: Rejects invalid bounds or a closed owner; malformed graphs, unsupported Actions and exhausted bounds
+        retain the Native DocumentFailure code and safe diagnostic through PdfException.
+      capabilities:
+      - document.annotations-actions.manage
+    - id: itext7.kernel.pdf-catalog.set-open-action
+      reference:
+        status: adapted
+        type: com.itextpdf.kernel.pdf.PdfCatalog
+        member: setOpenAction(com.itextpdf.kernel.pdf.action.PdfAction)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfCatalog
+        member: setOpenAction(net.zerocloud.pdf.GoToAction)
+      generic-contract: Stores one inert local GoToAction, or removes the binding when null, and returns this PdfCatalog.
+        Direct and existing named destinations are supported.
+      exception-contract: Rejects read-only or closed owners and invalid input before mutation; operational failures retain
+        the Native DocumentFailure code and safe diagnostic through PdfException.
+      capabilities:
+      - document.annotations-actions.manage
+    - id: itext7.kernel.pdf-catalog.get-open-action
+      reference:
+        status: folio-extension
+        type: com.itextpdf.kernel.pdf.PdfCatalog
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfCatalog
+        member: getOpenAction(int)
+      generic-contract: Returns Optional<GoToAction> under an explicit document-wide catalog/page binding-count bound; empty
+        means no document-open binding.
+      exception-contract: Rejects invalid bounds or a closed owner; malformed graphs, unsupported Actions and exhausted bounds
+        retain the Native DocumentFailure code and safe diagnostic through PdfException.
+      capabilities:
+      - document.annotations-actions.manage
   preview: []
 
 excluded-capabilities:
-- id: document.annotations-actions.manage
-  ticket: T32
-  reason: 'Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under
-    #74 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.'
 - id: document.text-structure.extract
   ticket: T32
   reason: 'Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under

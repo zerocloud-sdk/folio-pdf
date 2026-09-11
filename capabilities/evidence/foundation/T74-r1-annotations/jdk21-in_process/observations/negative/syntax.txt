@@ -1,0 +1,34 @@
+# T74 negative control qpdf syntax findings
+
+Input exact SHA-256: `50425b27c7887304ff3a494dfeeec58d060f6133f775471fcee78075f569cbcd`
+
+Input hash policy: `SHA-256 of the exact unmodified PDF bytes`
+
+Tool: `qpdf`
+
+Tool version: `12.4.0`
+
+Distribution SHA-256: `a3bca240f3bb61efdc3a90be89d1da4ed5e125326c3458c4e62df53ff4f153e3`
+
+Final determination: `fail`
+
+## invalid.pdf
+
+Invocation: `qpdf --check invalid.pdf`
+
+`invalid.pdf` exit code: `2`
+
+### Standard output
+
+```text
+
+```
+
+### Standard error
+
+```text
+WARNING: invalid.pdf: file is damaged
+WARNING: invalid.pdf: can't find startxref
+WARNING: invalid.pdf: Attempting to reconstruct cross-reference table
+qpdf: invalid.pdf: unable to find trailer dictionary while recovering damaged file
+```
