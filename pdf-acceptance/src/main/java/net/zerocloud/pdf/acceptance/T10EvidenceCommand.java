@@ -129,7 +129,7 @@ public final class T10EvidenceCommand {
                     String value = observed.getProperty(chain);
                     overall.setProperty(api + "." + product + "." + chain,
                             value);
-                    overall.setProperty(chain, T10IndependentEvidence.combine(
+                    overall.setProperty(chain, EvidenceResult.combine(
                             overall.getProperty(chain), value));
                 }
             }

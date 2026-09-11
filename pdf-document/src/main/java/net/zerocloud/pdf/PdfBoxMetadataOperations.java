@@ -353,7 +353,7 @@ final class PdfBoxMetadataOperations {
             }
 
             if (snapshot.xmpPacket != null) {
-                replaceMetadataStream(product, snapshot.xmpPacket);
+                replaceMetadataStream(product, snapshot.xmpPacket, snapshot.xmpExtensions, ownership);
             }
         } catch (DocumentFailure failure) {
             if (failure.getCode() == DocumentFailureCode.QUERY_FAILED) {
@@ -526,6 +526,9 @@ final class PdfBoxMetadataOperations {
             } else {
                 namedName = rewritten;
             }
+        } else if (!node.children.isEmpty() && children.isEmpty()) {
+            // A previously useful grouping branch disappears with its last target.
+            return null;
         }
         return new OutlineNode(node.title, destinationArray, namedName,
                 children);
@@ -616,9 +619,12 @@ final class PdfBoxMetadataOperations {
 
     private void replaceMetadataStream(
             PDDocument target,
-            byte[] packet) throws DocumentFailure {
+            byte[] packet,
+            COSDictionary extensions,
+            WorkflowResourceContext.OwnedMemoryScope ownership) throws DocumentFailure {
         try {
             COSStream fresh = target.getDocument().createCOSStream();
+            copyXmpExtensions(extensions, fresh, ownership);
             fresh.setItem(COSName.TYPE, COSName.METADATA);
             fresh.setItem(COSName.SUBTYPE, COSName.getPDFName("XML"));
             try (OutputStream copied = fresh.createOutputStream()) {
@@ -663,6 +669,7 @@ final class PdfBoxMetadataOperations {
         private final COSDictionary info;
         private WorkflowResourceContext.OwnedMemoryScope infoOwnership;
         private final byte[] xmpPacket;
+        private final COSDictionary xmpExtensions;
         private WorkflowResourceContext.OwnedBytes xmpPacketBytes;
         private final java.util.TreeMap<COSString, COSBase> destinations;
         private final java.util.TreeMap<COSString, COSDictionary> files;
@@ -674,6 +681,7 @@ final class PdfBoxMetadataOperations {
                 COSDictionary info,
                 WorkflowResourceContext.OwnedMemoryScope infoOwnership,
                 WorkflowResourceContext.OwnedBytes xmpPacketBytes,
+                COSDictionary xmpExtensions,
                 java.util.TreeMap<COSString, COSBase> destinations,
                 java.util.TreeMap<COSString, COSDictionary> files,
                 List<OutlineNode> outline) {
@@ -682,6 +690,7 @@ final class PdfBoxMetadataOperations {
             this.info = info;
             this.infoOwnership = infoOwnership;
             this.xmpPacketBytes = xmpPacketBytes;
+            this.xmpExtensions = xmpExtensions;
             this.xmpPacket = xmpPacketBytes == null
                     ? null : xmpPacketBytes.getBytes();
             this.destinations = destinations;
@@ -726,7 +735,9 @@ final class PdfBoxMetadataOperations {
             COSDictionary info = snapshotInfo(source, infoOwnership);
 
             COSBase rawMetadata = catalog.getItem(COSName.METADATA);
+            COSDictionary xmpExtensions = new COSDictionary();
             if (rawMetadata != null) {
+                copyXmpExtensions((COSStream) dereference(rawMetadata), xmpExtensions, infoOwnership);
                 packet = boundedDecodedContentWorking(
                         (COSStream) dereference(rawMetadata),
                         MAX_METADATA_PACKET_BYTES);
@@ -761,6 +772,7 @@ final class PdfBoxMetadataOperations {
                     info,
                     infoOwnership,
                     packet,
+                    xmpExtensions,
                     destinations,
                     files,
                     outline);
@@ -872,7 +884,7 @@ final class PdfBoxMetadataOperations {
                 for (MergedStructures source : sources) {
                     resources.checkpoint();
                     if (source.xmpPacket != null) {
-                        replaceMetadataStream(target, source.xmpPacket);
+                        replaceMetadataStream(target, source.xmpPacket, source.xmpExtensions, ownership);
                         break;
                     }
                 }
@@ -1091,6 +1103,40 @@ final class PdfBoxMetadataOperations {
         return snapshot;
     }
 
+    /** Copies already-preflighted inline Catalog metadata; the primary wins collisions. */
+    void copyInlineCatalogExtensions(PDDocument source, PDDocument target) throws DocumentFailure {
+        COSDictionary from = source.getDocumentCatalog().getCOSObject();
+        COSDictionary to = target.getDocumentCatalog().getCOSObject();
+        try (WorkflowResourceContext.OwnedMemoryScope ownership = resources.ownedMemoryScope()) {
+            for (Map.Entry<COSName, COSBase> entry : from.entrySet()) {
+                resources.checkpoint();
+                if (PdfBoxPageOperations.isInlineCatalogExtensionName(entry.getKey())
+                        && !to.containsKey(entry.getKey())) {
+                    COSBase copied = cloneMetadataValue(entry.getValue(),
+                            new IdentityHashMap<COSBase, COSBase>(), 0, ownership);
+                    markInline(copied);
+                    to.setItem(entry.getKey(), copied);
+                }
+            }
+            ownership.transfer();
+        }
+    }
+
+    private void markInline(COSBase value) throws DocumentFailure {
+        resources.checkpoint();
+        if (value instanceof COSDictionary) {
+            value.setDirect(true);
+            for (COSBase child : ((COSDictionary) value).getValues()) {
+                markInline(child);
+            }
+        } else if (value instanceof COSArray) {
+            value.setDirect(true);
+            for (COSBase child : (COSArray) value) {
+                markInline(child);
+            }
+        }
+    }
+
     private COSBase cloneMetadataValue(
             COSBase rawValue,
             IdentityHashMap<COSBase, COSBase> cloned,
@@ -1223,6 +1269,11 @@ final class PdfBoxMetadataOperations {
     void requireSafeCatalogStructures(PDDocument candidate)
             throws DocumentFailure {
         COSDictionary catalog = candidate.getDocumentCatalog().getCOSObject();
+        for (Map.Entry<COSName, COSBase> entry : catalog.entrySet()) {
+            if (PdfBoxPageOperations.isInlineCatalogExtensionName(entry.getKey())) {
+                requireMetadataSafeValue(entry.getValue(), new IdentityHashMap<COSBase, Boolean>(), 0);
+            }
+        }
         COSBase rawMetadata = catalog.getItem(COSName.METADATA);
         if (rawMetadata != null) {
             COSBase metadata = dereference(rawMetadata);
@@ -1386,6 +1437,22 @@ final class PdfBoxMetadataOperations {
                     array);
         }
 
+        COSBase rawOutlines = catalog.getItem(COSName.OUTLINES);
+        if (!command.getRemovedNames().isEmpty() && rawOutlines != null) {
+            java.util.TreeSet<COSString> currentNames =
+                    new java.util.TreeSet<COSString>(nameOrder);
+            for (NameTreeEntry entry : current) {
+                resources.checkpoint();
+                currentNames.add(entry.key);
+            }
+            requireOutlineNamesRetained(readOutlineNodes(
+                    rawOutlines,
+                    pageNumbersByDictionary(document, StructureFailure.COMMAND),
+                    currentNames,
+                    StructureFailure.COMMAND,
+                    -1L), merged.keySet());
+        }
+
         if (merged.isEmpty()) {
             if (names != null) {
                 names.removeItem(COSName.DESTS);
@@ -1409,6 +1476,20 @@ final class PdfBoxMetadataOperations {
         COSDictionary tree = new COSDictionary();
         tree.setItem(COSName.NAMES, keysAndValues);
         names.setItem(COSName.DESTS, tree);
+    }
+
+    private void requireOutlineNamesRetained(
+            List<OutlineNode> nodes,
+            java.util.Set<COSString> remainingNames) throws DocumentFailure {
+        for (OutlineNode node : nodes) {
+            resources.checkpoint();
+            if (node.namedName != null && !remainingNames.contains(node.namedName)) {
+                throw failure(
+                        DocumentFailureCode.DESTINATION_CONFLICT,
+                        "A named destination removal conflicts with an existing outline.");
+            }
+            requireOutlineNamesRetained(node.children, remainingNames);
+        }
     }
 
     private Map<String, PageDestination> namedDestinations(
@@ -2458,14 +2539,7 @@ final class PdfBoxMetadataOperations {
                             DocumentFailureCode.COMMAND_REJECTED,
                             "The embedded files could not be updated safely.");
                 }
-                if (character <= 0x20
-                        || "()<>[]{}/%#".indexOf(character) >= 0) {
-                    name.append('#');
-                    name.append(HEX_DIGITS[(character >> 4) & 0xF]);
-                    name.append(HEX_DIGITS[character & 0xF]);
-                } else {
-                    name.append(character);
-                }
+                name.append(character);
             }
             try {
                 return COSName.getPDFName(name.finishHeld(ownership));
@@ -2486,17 +2560,7 @@ final class PdfBoxMetadataOperations {
         try (WorkflowResourceContext.OwnedTextAccumulator decoded =
                 resources.ownedTextAccumulator()) {
             for (int index = 0; index < encoded.length(); index++) {
-                char character = encoded.charAt(index);
-                if (character == '#' && index + 2 < encoded.length()) {
-                    int high = Character.digit(encoded.charAt(index + 1), 16);
-                    int low = Character.digit(encoded.charAt(index + 2), 16);
-                    if (high >= 0 && low >= 0) {
-                        decoded.append((char) (high * 16 + low));
-                        index += 2;
-                        continue;
-                    }
-                }
-                decoded.append(character);
+                decoded.append(encoded.charAt(index));
             }
             return decoded.finishHeld(ownership);
         }
@@ -2985,7 +3049,7 @@ final class PdfBoxMetadataOperations {
         for (int index = 2; index < array.size(); index++) {
             COSBase operand = dereference(array.get(index));
             if (operand == null || operand instanceof COSNull) {
-                if (destinationStyle != PageDestination.Style.XYZ) {
+                if (destinationStyle == PageDestination.Style.FIT_R) {
                     return null;
                 }
                 operands.add(null);
@@ -3222,11 +3286,23 @@ final class PdfBoxMetadataOperations {
             throws DocumentFailure {
         try (WorkflowResourceContext.MemoryReservation packetMemory =
                 resources.reserveOwnedMemory(
-                        command.getXmpPacketLength())) {
+                        command.getXmpPacketLength());
+                WorkflowResourceContext.OwnedMemoryScope ownership = resources.ownedMemoryScope()) {
             byte[] packet = command.getXmpPacket();
             requireWellFormedXmpPacket(packet);
             try {
+                COSBase prior = dereference(document.getDocumentCatalog().getCOSObject().getItem(COSName.METADATA));
+                if (prior != null && (!(prior instanceof COSStream)
+                        || !COSName.METADATA.equals(((COSStream) prior).getCOSName(COSName.TYPE))
+                        || !COSName.getPDFName("XML").equals(((COSStream) prior).getCOSName(COSName.SUBTYPE)))) {
+                    throw unsafeXmpPreservation();
+                }
+                COSDictionary extensions = new COSDictionary();
+                if (prior != null) {
+                    copyXmpExtensions((COSStream) prior, extensions, ownership);
+                }
                 COSStream metadata = document.getDocument().createCOSStream();
+                metadata.addAll(extensions);
                 metadata.setItem(COSName.TYPE, COSName.METADATA);
                 metadata.setItem(
                         COSName.SUBTYPE,
@@ -3237,6 +3313,7 @@ final class PdfBoxMetadataOperations {
                 document.getDocumentCatalog().getCOSObject().setItem(
                         COSName.METADATA,
                         metadata);
+                ownership.transfer();
             } catch (IOException streamFailure) {
                 resources.rethrowResourceOrTerminalFailure(streamFailure);
                 throw failure(
@@ -3244,6 +3321,32 @@ final class PdfBoxMetadataOperations {
                         "The XMP metadata could not be updated safely.");
             }
         }
+    }
+
+    private void copyXmpExtensions(COSDictionary source, COSDictionary target,
+            WorkflowResourceContext.OwnedMemoryScope ownership) throws DocumentFailure {
+        for (Map.Entry<COSName, COSBase> entry : source.entrySet()) {
+            resources.checkpoint();
+            String name = entry.getKey().getName();
+            if (java.util.Arrays.asList("Type", "Subtype", "Length", "Filter", "DecodeParms",
+                    "F", "FFilter", "FDecodeParms", "DL").contains(name)) {
+                continue;
+            }
+            try {
+                requireMetadataSafeValue(entry.getValue(), new IdentityHashMap<COSBase, Boolean>(), 0);
+                COSBase value = cloneMetadataValue(entry.getValue(), new IdentityHashMap<COSBase, COSBase>(), 0, ownership);
+                markInline(value);
+                target.setItem(entry.getKey(), value);
+            } catch (DocumentFailure failure) {
+                resources.rethrowTerminalFailure();
+                throw unsafeXmpPreservation();
+            }
+        }
+    }
+
+    private static DocumentFailure unsafeXmpPreservation() {
+        return failure(DocumentFailureCode.PRESERVATION_UNSUPPORTED,
+                "The existing XMP stream contains entries that cannot be preserved safely.");
     }
 
     private byte[] xmpMetadata(XmpMetadata query) throws DocumentFailure {

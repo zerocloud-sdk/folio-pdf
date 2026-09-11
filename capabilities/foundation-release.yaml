@@ -284,7 +284,41 @@ obligations:
   facade-families:
   - family: kernel metadata, outlines, destinations and file specifications
     reference-prefix: com.itextpdf.kernel.
-    mappings: []
+    mappings:
+    - itext7.kernel.pdf-document.constructor-named-sources-targets-version
+    - itext7.kernel.pdf-document.get-document-info
+    - itext7.kernel.pdf-document.get-xmp-metadata
+    - itext7.kernel.pdf-document.get-xmp-metadata-bounded
+    - itext7.kernel.pdf-document.set-xmp-metadata
+    - itext7.kernel.pdf-document.get-named-destinations
+    - itext7.kernel.pdf-document.add-named-destination
+    - itext7.kernel.pdf-document.set-named-destinations
+    - itext7.kernel.pdf-document.get-outlines
+    - itext7.kernel.pdf-document.set-outlines
+    - itext7.kernel.pdf-document.add-file-attachment
+    - itext7.kernel.pdf-document.get-file-attachments
+    - itext7.kernel.pdf-document.get-file-attachment
+    - itext7.kernel.pdf-document-info.get-title
+    - itext7.kernel.pdf-document-info.set-title
+    - itext7.kernel.pdf-document-info.get-author
+    - itext7.kernel.pdf-document-info.set-author
+    - itext7.kernel.pdf-document-info.get-subject
+    - itext7.kernel.pdf-document-info.set-subject
+    - itext7.kernel.pdf-document-info.get-keywords
+    - itext7.kernel.pdf-document-info.set-keywords
+    - itext7.kernel.pdf-document-info.get-creator
+    - itext7.kernel.pdf-document-info.set-creator
+    - itext7.kernel.pdf-document-info.get-producer
+    - itext7.kernel.pdf-document-info.set-producer
+    - itext7.kernel.pdf-document-info.add-creation-date
+    - itext7.kernel.pdf-document-info.add-mod-date
+    - itext7.kernel.pdf-document-info.get-trapped
+    - itext7.kernel.pdf-document-info.set-trapped
+    - itext7.kernel.pdf-document-info.get-more-info
+    - itext7.kernel.pdf-document-info.set-more-info
+    - itext7.kernel.pdf-document-info.set-more-info-map
+    - itext7.kernel.pdf-document-info.get-entries
+    - itext7.kernel.pdf-document-info.update-entries
 - id: annotations
   summary: Read, create, update, remove, flatten, and preserve managed annotations and inert local GoTo Action bindings
     across page workflows.
@@ -1342,32 +1376,27 @@ limitations:
 - capability: document.metadata.outlines-destinations-attachments
   sha256: 6be4412eb39f84a69b8916aa914167c0c71587e8fd1642dfe6eed5d7cda1d4de
   disposition: retained-contract
-  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
-    #73 must prove it without omitting required successful Foundation cases.'
+  reason: T73 public Native and Facade contracts plus candidate-bound T11 evidence retain this requirement while covering all required successful Foundation metadata cases.
   obligation: metadata
 - capability: document.metadata.outlines-destinations-attachments
   sha256: 5d9fb0b25f6f4c23f412161ef949bb3e3d46e825f01b58cdc3cbc2487e33a42e
   disposition: retained-contract
-  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
-    #73 must prove it without omitting required successful Foundation cases.'
+  reason: T73 public Native and Facade contracts plus candidate-bound T11 evidence retain this requirement while covering all required successful Foundation metadata cases.
   obligation: metadata
 - capability: document.metadata.outlines-destinations-attachments
   sha256: fc519f5fb46ea6a0d59369764f17e9c4c2e24330d3eb65a41dee6dd0e2f4d08c
   disposition: retained-contract
-  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
-    #73 must prove it without omitting required successful Foundation cases.'
+  reason: T73 public Native and Facade contracts plus candidate-bound T11 evidence retain this requirement while covering all required successful Foundation metadata cases.
   obligation: metadata
 - capability: document.metadata.outlines-destinations-attachments
   sha256: 4ebbda78898bea736066a9ee1622a86e394d3d633b646c1ef4372c4e9f82a8c6
   disposition: retained-contract
-  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
-    #73 must prove it without omitting required successful Foundation cases.'
+  reason: T73 public Native and Facade contracts plus candidate-bound T11 evidence retain this requirement while covering all required successful Foundation metadata cases.
   obligation: metadata
 - capability: document.metadata.outlines-destinations-attachments
   sha256: 367f1f84bca96ec36cc0c9644b2085c743c4e8136c488a566fa502d207b56237
   disposition: retained-contract
-  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
-    #73 must prove it without omitting required successful Foundation cases.'
+  reason: T73 public Native and Facade contracts plus candidate-bound T11 evidence retain this requirement while covering all required successful Foundation metadata cases.
   obligation: metadata
 - capability: document.annotations-actions.manage
   sha256: b9390a16b2b2ad4bb1710544a7add0764dc5278faa715defdf3c4e6e9c8bd699

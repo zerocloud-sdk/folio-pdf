@@ -73,7 +73,7 @@ A missing capability, required behavior, compatible dependency, independent evid
 | [`transactions`](#transactions) | `document.blank.create-publish-reopen` | [#70](https://github.com/zerocloud-sdk/folio-pdf/issues/70) | satisfied |
 | [`values`](#values) | `document.value.inspect-patch` | [#71](https://github.com/zerocloud-sdk/folio-pdf/issues/71) | satisfied |
 | [`pages`](#pages) | `document.page.manipulate-merge-split` | [#72](https://github.com/zerocloud-sdk/folio-pdf/issues/72) | satisfied |
-| [`metadata`](#metadata) | `document.metadata.outlines-destinations-attachments` | [#73](https://github.com/zerocloud-sdk/folio-pdf/issues/73) | blocked |
+| [`metadata`](#metadata) | `document.metadata.outlines-destinations-attachments` | [#73](https://github.com/zerocloud-sdk/folio-pdf/issues/73) | satisfied |
 | [`annotations`](#annotations) | `document.annotations-actions.manage` | [#74](https://github.com/zerocloud-sdk/folio-pdf/issues/74) | blocked |
 | [`text`](#text) | `document.text-structure.extract` | [#75](https://github.com/zerocloud-sdk/folio-pdf/issues/75) | blocked |
 | [`images`](#images) | `document.images-resources.extract` | [#76](https://github.com/zerocloud-sdk/folio-pdf/issues/76) | blocked |
@@ -170,23 +170,9 @@ Read, create, update, and preserve document information, XMP metadata, outlines,
 - Mandatory chains: `syntax, standards, semantic, visual`
 - Dependencies: `values`
 - Aggregate members: none
-- Required Facade family: kernel metadata, outlines, destinations and file specifications (`com.itextpdf.kernel.`); mappings: **missing**
+- Required Facade family: kernel metadata, outlines, destinations and file specifications (`com.itextpdf.kernel.`); mappings: `itext7.kernel.pdf-document.constructor-named-sources-targets-version, itext7.kernel.pdf-document.get-document-info, itext7.kernel.pdf-document.get-xmp-metadata, itext7.kernel.pdf-document.get-xmp-metadata-bounded, itext7.kernel.pdf-document.set-xmp-metadata, itext7.kernel.pdf-document.get-named-destinations, itext7.kernel.pdf-document.add-named-destination, itext7.kernel.pdf-document.set-named-destinations, itext7.kernel.pdf-document.get-outlines, itext7.kernel.pdf-document.set-outlines, itext7.kernel.pdf-document.add-file-attachment, itext7.kernel.pdf-document.get-file-attachments, itext7.kernel.pdf-document.get-file-attachment, itext7.kernel.pdf-document-info.get-title, itext7.kernel.pdf-document-info.set-title, itext7.kernel.pdf-document-info.get-author, itext7.kernel.pdf-document-info.set-author, itext7.kernel.pdf-document-info.get-subject, itext7.kernel.pdf-document-info.set-subject, itext7.kernel.pdf-document-info.get-keywords, itext7.kernel.pdf-document-info.set-keywords, itext7.kernel.pdf-document-info.get-creator, itext7.kernel.pdf-document-info.set-creator, itext7.kernel.pdf-document-info.get-producer, itext7.kernel.pdf-document-info.set-producer, itext7.kernel.pdf-document-info.add-creation-date, itext7.kernel.pdf-document-info.add-mod-date, itext7.kernel.pdf-document-info.get-trapped, itext7.kernel.pdf-document-info.set-trapped, itext7.kernel.pdf-document-info.get-more-info, itext7.kernel.pdf-document-info.set-more-info, itext7.kernel.pdf-document-info.set-more-info-map, itext7.kernel.pdf-document-info.get-entries, itext7.kernel.pdf-document-info.update-entries`
 - Source requirements: [`spec-us-13`](#spec-us-13), [`spec-us-16`](#spec-us-16), [`spec-us-17`](#spec-us-17), [`spec-id-26`](#spec-id-26), [`slice-73-1`](#slice-73-1), [`slice-73-2`](#slice-73-2), [`slice-73-3`](#slice-73-3), [`slice-73-4`](#slice-73-4)
 
-- Blocker: capability document.metadata.outlines-destinations-attachments is experimental, requires compatible
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on document.metadata.outlines-destinations-attachments
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on document.metadata.outlines-destinations-attachments
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on document.metadata.outlines-destinations-attachments
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk21 on document.metadata.outlines-destinations-attachments
-- Blocker: missing required Facade mapping set for kernel metadata, outlines, destinations and file specifications
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk8/IN_PROCESS (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk8/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk11/IN_PROCESS (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk11/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/IN_PROCESS (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
 
 <a id="annotations"></a>
 ### `annotations`
@@ -204,7 +190,6 @@ Read, create, update, remove, flatten, and preserve managed annotations and iner
 - Source requirements: [`spec-us-16`](#spec-us-16), [`spec-us-17`](#spec-us-17), [`spec-id-26`](#spec-id-26), [`slice-74-1`](#slice-74-1), [`slice-74-2`](#slice-74-2), [`slice-74-3`](#slice-74-3), [`slice-74-4`](#slice-74-4)
 
 - Blocker: capability document.annotations-actions.manage is experimental, requires compatible
-- Blocker: incompatible Dependency Gate document.metadata.outlines-destinations-attachments
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on document.annotations-actions.manage
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on document.annotations-actions.manage
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on document.annotations-actions.manage
@@ -221,7 +206,6 @@ Read, create, update, remove, flatten, and preserve managed annotations and iner
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: incomplete prerequisite obligation metadata
 
 <a id="text"></a>
 ### `text`
@@ -933,7 +917,6 @@ Support and certify embedded-files-only input/output, crypt filters, authenticat
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
 - Blocker: incomplete prerequisite obligation password-baseline
-- Blocker: incomplete prerequisite obligation metadata
 
 <a id="tables-base"></a>
 ### `tables-base`
@@ -1199,7 +1182,6 @@ Close every Foundation behavior, aggregate, dependency and Facade obligation; ru
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk11/REPOSITORY (required chains: contract, review)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/REPOSITORY (required chains: contract, review)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/REPOSITORY (required chains: contract, review)
-- Blocker: incomplete prerequisite obligation metadata
 - Blocker: incomplete prerequisite obligation annotations
 - Blocker: incomplete prerequisite obligation text
 - Blocker: incomplete prerequisite obligation images
@@ -1266,15 +1248,15 @@ Classifications bind the exact Capability Matrix limitation text by SHA-256; cha
   Original limitation: T10 runs through the trusted in-process adapter by default; T21's opt-in Hardened Worker transports the same page, merge, and split commands and queries through closed version-1 codecs.
 - `document.page.manipulate-merge-split` / `retained-contract` → [`pages`](#pages): T72 public Native and Facade contracts plus candidate-bound T10 evidence retain this requirement while covering all required successful Foundation page cases.
   Original limitation: A new split product that has no trailer identifier receives one derived from a fixed-placeholder serialization of that product; existing identifiers and non-split publication are unchanged. T10 makes no broader source-byte-layout guarantee.
-- `document.metadata.outlines-destinations-attachments` / `retained-contract` → [`metadata`](#metadata): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #73 must prove it without omitting required successful Foundation cases.
+- `document.metadata.outlines-destinations-attachments` / `retained-contract` → [`metadata`](#metadata): T73 public Native and Facade contracts plus candidate-bound T11 evidence retain this requirement while covering all required successful Foundation metadata cases.
   Original limitation: T15 admits T11 commands for unsigned INCREMENTAL publication; Existing Signatures authorize no T11 command in version 1.
-- `document.metadata.outlines-destinations-attachments` / `retained-contract` → [`metadata`](#metadata): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #73 must prove it without omitting required successful Foundation cases.
+- `document.metadata.outlines-destinations-attachments` / `retained-contract` → [`metadata`](#metadata): T73 public Native and Facade contracts plus candidate-bound T11 evidence retain this requirement while covering all required successful Foundation metadata cases.
   Original limitation: Outlines are written all-open with positive visible-item counts, and name trees are written as one flat array sorted by unsigned encoded key-byte order; richer tree shapes are read only when they satisfy the proven safe invariants, and are otherwise preserved intact or rejected with PRESERVATION_UNSUPPORTED.
-- `document.metadata.outlines-destinations-attachments` / `retained-contract` → [`metadata`](#metadata): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #73 must prove it without omitting required successful Foundation cases.
+- `document.metadata.outlines-destinations-attachments` / `retained-contract` → [`metadata`](#metadata): T73 public Native and Facade contracts plus candidate-bound T11 evidence retain this requirement while covering all required successful Foundation metadata cases.
   Original limitation: A page removal that would orphan a managed destination fails with DESTINATION_CONFLICT before mutation; destinations that target pages outside a split selection are dropped from that product, and merge renames colliding destination and embedded-file names with a deterministic -N suffix.
-- `document.metadata.outlines-destinations-attachments` / `retained-contract` → [`metadata`](#metadata): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #73 must prove it without omitting required successful Foundation cases.
+- `document.metadata.outlines-destinations-attachments` / `retained-contract` → [`metadata`](#metadata): T73 public Native and Facade contracts plus candidate-bound T11 evidence retain this requirement while covering all required successful Foundation metadata cases.
   Original limitation: Inspection and payload bounds are explicit per-query limits failing with METADATA_LIMIT_EXCEEDED; XMP command packets must be well-formed XML carrying the XMP root marker within a 64 MiB bound, and embedded-file MIME subtypes are restricted to printable ASCII. These local bounds compose with T20's transaction policy and are transported by T21's opt-in Hardened Worker codecs.
-- `document.metadata.outlines-destinations-attachments` / `retained-contract` → [`metadata`](#metadata): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #73 must prove it without omitting required successful Foundation cases.
+- `document.metadata.outlines-destinations-attachments` / `retained-contract` → [`metadata`](#metadata): T73 public Native and Facade contracts plus candidate-bound T11 evidence retain this requirement while covering all required successful Foundation metadata cases.
   Original limitation: Managed annotations and local GoTo Actions integrate through document.annotations-actions.manage; content extraction remains T13 and T14, and encryption remains T16.
 - `document.annotations-actions.manage` / `retained-contract` → [`annotations`](#annotations): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #74 must prove it without omitting required successful Foundation cases.
   Original limitation: T15 admits all T12 commands for unsigned INCREMENTAL publication; a sole coherent DocMDP P=3 policy admits only supported non-Widget UpdateAnnotations changes, while UpdateActions and FlattenAnnotations remain rejected for signed Sources.

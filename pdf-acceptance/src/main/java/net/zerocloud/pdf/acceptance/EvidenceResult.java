@@ -23,4 +23,11 @@ public enum EvidenceResult {
     public String recordValue() {
         return recordValue;
     }
+
+    static String combine(String first, String second) {
+        return FAIL.recordValue.equals(first) || FAIL.recordValue.equals(second)
+                ? FAIL.recordValue
+                : PASS.recordValue.equals(first) && PASS.recordValue.equals(second)
+                        ? PASS.recordValue : INDETERMINATE.recordValue;
+    }
 }

@@ -102,7 +102,8 @@ final class T09IndependentEvidence {
                 root.resolve("scripts/" + checker + "-pin.properties").toString(),
                 root.resolve("capabilities/profiles/T09-standards/" + checker + ".properties").toString(), pdf.toString()});
             PinProperties observation = PinProperties.load(output.resolve("standards.properties"), "T09 standards");
-            standards = combine(standards, observation.required("result"));
+            standards = EvidenceResult.combine(
+                    standards, observation.required("result"));
             if (!T09EvidenceCommand.PROFILE.equals(observation.required("profile"))
                     || !exactHash.equals(observation.required("input-sha256"))) {
                 standards = "indeterminate";
@@ -172,8 +173,4 @@ final class T09IndependentEvidence {
         results.setProperty("visual", recordVisual(root, copied, output, VisualProfile.load(config), release));
     }
 
-    static String combine(String first, String second) {
-        return "fail".equals(first) || "fail".equals(second) ? "fail"
-                : "pass".equals(first) && "pass".equals(second) ? "pass" : "indeterminate";
-    }
 }

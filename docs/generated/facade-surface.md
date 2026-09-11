@@ -8,10 +8,10 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 
 - Schema version: `1`
 - Release train: `0.1.0-SNAPSHOT`
-- Stable entries: `105`
+- Stable entries: `139`
 - Preview additions: `0`
-- Preview artifact entries: `105`
-- Explicit capability exclusions: `20`
+- Preview artifact entries: `139`
+- Explicit capability exclusions: `19`
 
 ## Stable surfaces
 
@@ -265,6 +265,240 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Exception contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed or detached mutation targets reject with IllegalStateException.
 - Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
 
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dash_info_dot_add_dash_creation_dash_date"></a>
+### `itext7.kernel.pdf-document-info.add-creation-date`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocumentInfo#addCreationDate()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo#addCreationDate()`
+- Generic contract: Returns this mapped PdfDocumentInfo after writing the current date, time, and system offset to CreationDate in ISO 32000 PDF date syntax.
+- Exception contract: Read-only or closed lifecycle and Native failures reject before mutation with the cause retained through PdfException where applicable.
+- Behavioral capabilities: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dash_info_dot_add_dash_mod_dash_date"></a>
+### `itext7.kernel.pdf-document-info.add-mod-date`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocumentInfo#addModDate()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo#addModDate()`
+- Generic contract: Returns this mapped PdfDocumentInfo after writing the current date, time, and system offset to ModDate in ISO 32000 PDF date syntax.
+- Exception contract: Read-only or closed lifecycle and Native failures reject before mutation with the cause retained through PdfException where applicable.
+- Behavioral capabilities: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dash_info_dot_get_dash_author"></a>
+### `itext7.kernel.pdf-document-info.get-author`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocumentInfo#getAuthor()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo#getAuthor()`
+- Generic contract: Returns String text or null when Author is absent or not a supported text string.
+- Exception contract: The document-owned view rejects after close or from another thread; Native failures retain their DocumentFailure cause through PdfException.
+- Behavioral capabilities: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dash_info_dot_get_dash_creator"></a>
+### `itext7.kernel.pdf-document-info.get-creator`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocumentInfo#getCreator()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo#getCreator()`
+- Generic contract: Returns String text or null when Creator is absent or not a supported text string.
+- Exception contract: The document-owned view rejects after close or from another thread; Native failures retain their DocumentFailure cause through PdfException.
+- Behavioral capabilities: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dash_info_dot_get_dash_entries"></a>
+### `itext7.kernel.pdf-document-info.get-entries`
+
+- Availability: `stable`
+- Reference status: `folio-extension`
+- Reference namespace: `com.itextpdf.kernel.pdf.PdfDocumentInfo`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo#getEntries()`
+- Generic contract: Returns an immutable detached project-owned PdfDictionary preserving every supported standard and custom information entry.
+- Exception contract: Unsupported graphs and Native query failures retain their DocumentFailure cause through PdfException; the document-owned view rejects after its owning Document closes.
+- Behavioral capabilities: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dash_info_dot_get_dash_keywords"></a>
+### `itext7.kernel.pdf-document-info.get-keywords`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocumentInfo#getKeywords()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo#getKeywords()`
+- Generic contract: Returns String text or null when Keywords is absent or not a supported text string.
+- Exception contract: The document-owned view rejects after close or from another thread; Native failures retain their DocumentFailure cause through PdfException.
+- Behavioral capabilities: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dash_info_dot_get_dash_more_dash_info"></a>
+### `itext7.kernel.pdf-document-info.get-more-info`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocumentInfo#getMoreInfo(java.lang.String)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo#getMoreInfo(java.lang.String)`
+- Generic contract: Returns decoded String text for one named entry, or null when absent or not a supported text string.
+- Exception contract: Null names reject before access; lifecycle and Native failures retain their cause through IllegalStateException or PdfException respectively.
+- Behavioral capabilities: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dash_info_dot_get_dash_producer"></a>
+### `itext7.kernel.pdf-document-info.get-producer`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocumentInfo#getProducer()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo#getProducer()`
+- Generic contract: Returns String text or null when Producer is absent or not a supported text string.
+- Exception contract: The document-owned view rejects after close or from another thread; Native failures retain their DocumentFailure cause through PdfException.
+- Behavioral capabilities: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dash_info_dot_get_dash_subject"></a>
+### `itext7.kernel.pdf-document-info.get-subject`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocumentInfo#getSubject()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo#getSubject()`
+- Generic contract: Returns String text or null when Subject is absent or not a supported text string.
+- Exception contract: The document-owned view rejects after close or from another thread; Native failures retain their DocumentFailure cause through PdfException.
+- Behavioral capabilities: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dash_info_dot_get_dash_title"></a>
+### `itext7.kernel.pdf-document-info.get-title`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocumentInfo#getTitle()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo#getTitle()`
+- Generic contract: Returns String text or null when Title is absent or not a supported text string.
+- Exception contract: The document-owned view rejects after close or from another thread; Native failures retain their DocumentFailure cause through PdfException.
+- Behavioral capabilities: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dash_info_dot_get_dash_trapped"></a>
+### `itext7.kernel.pdf-document-info.get-trapped`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocumentInfo#getTrapped()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo#getTrapped()`
+- Generic contract: Returns a detached mapped PdfName or null when Trapped is absent or not a name.
+- Exception contract: The document-owned view rejects after close or from another thread; Native failures retain their DocumentFailure cause through PdfException.
+- Behavioral capabilities: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dash_info_dot_set_dash_author"></a>
+### `itext7.kernel.pdf-document-info.set-author`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocumentInfo#setAuthor(java.lang.String)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo#setAuthor(java.lang.String)`
+- Generic contract: Returns this mapped PdfDocumentInfo; null removes Author and text uses the mapped PDF string encoding.
+- Exception contract: Invalid text, read-only or closed lifecycle, and Native failures reject before mutation with the cause retained through PdfException.
+- Behavioral capabilities: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dash_info_dot_set_dash_creator"></a>
+### `itext7.kernel.pdf-document-info.set-creator`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocumentInfo#setCreator(java.lang.String)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo#setCreator(java.lang.String)`
+- Generic contract: Returns this mapped PdfDocumentInfo; null removes Creator and text uses the mapped PDF string encoding.
+- Exception contract: Invalid text, read-only or closed lifecycle, and Native failures reject before mutation with the cause retained through PdfException.
+- Behavioral capabilities: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dash_info_dot_set_dash_keywords"></a>
+### `itext7.kernel.pdf-document-info.set-keywords`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocumentInfo#setKeywords(java.lang.String)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo#setKeywords(java.lang.String)`
+- Generic contract: Returns this mapped PdfDocumentInfo; null removes Keywords and text uses the mapped PDF string encoding.
+- Exception contract: Invalid text, read-only or closed lifecycle, and Native failures reject before mutation with the cause retained through PdfException.
+- Behavioral capabilities: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dash_info_dot_set_dash_more_dash_info"></a>
+### `itext7.kernel.pdf-document-info.set-more-info`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocumentInfo#setMoreInfo(java.lang.String,java.lang.String)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo#setMoreInfo(java.lang.String,java.lang.String)`
+- Generic contract: Returns void; sets one mapped text entry or removes it when value is null.
+- Exception contract: Invalid names or text, lifecycle, preservation, and Native failures reject before mutation with the cause retained through PdfException where applicable.
+- Behavioral capabilities: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dash_info_dot_set_dash_more_dash_info_dash_map"></a>
+### `itext7.kernel.pdf-document-info.set-more-info-map`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocumentInfo#setMoreInfo(java.util.Map)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo#setMoreInfo(java.util.Map)`
+- Generic contract: Parameter is Map<String, String>; the map is iterated into one atomic Command and null values remove entries.
+- Exception contract: Null maps, invalid entries, lifecycle, preservation, and Native failures reject before mutation with the cause retained through PdfException where applicable.
+- Behavioral capabilities: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dash_info_dot_set_dash_producer"></a>
+### `itext7.kernel.pdf-document-info.set-producer`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocumentInfo#setProducer(java.lang.String)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo#setProducer(java.lang.String)`
+- Generic contract: Returns this mapped PdfDocumentInfo; null removes Producer and text uses the mapped PDF string encoding.
+- Exception contract: Invalid text, read-only or closed lifecycle, and Native failures reject before mutation with the cause retained through PdfException.
+- Behavioral capabilities: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dash_info_dot_set_dash_subject"></a>
+### `itext7.kernel.pdf-document-info.set-subject`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocumentInfo#setSubject(java.lang.String)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo#setSubject(java.lang.String)`
+- Generic contract: Returns this mapped PdfDocumentInfo; null removes Subject and text uses the mapped PDF string encoding.
+- Exception contract: Invalid text, read-only or closed lifecycle, and Native failures reject before mutation with the cause retained through PdfException.
+- Behavioral capabilities: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dash_info_dot_set_dash_title"></a>
+### `itext7.kernel.pdf-document-info.set-title`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocumentInfo#setTitle(java.lang.String)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo#setTitle(java.lang.String)`
+- Generic contract: Returns this mapped PdfDocumentInfo; null removes Title and text uses the mapped PDF string encoding.
+- Exception contract: Invalid text, read-only or closed lifecycle, and Native failures reject before mutation with the cause retained through PdfException.
+- Behavioral capabilities: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dash_info_dot_set_dash_trapped"></a>
+### `itext7.kernel.pdf-document-info.set-trapped`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocumentInfo#setTrapped(com.itextpdf.kernel.pdf.PdfName)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo#setTrapped(net.zerocloud.pdf.itext7.kernel.pdf.PdfName)`
+- Generic contract: Returns this mapped PdfDocumentInfo; null removes Trapped and a supplied mapped PdfName is copied.
+- Exception contract: Read-only or closed lifecycle and Native validation failures reject before mutation with the cause retained through PdfException.
+- Behavioral capabilities: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dash_info_dot_update_dash_entries"></a>
+### `itext7.kernel.pdf-document-info.update-entries`
+
+- Availability: `stable`
+- Reference status: `folio-extension`
+- Reference namespace: `com.itextpdf.kernel.pdf.PdfDocumentInfo`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo#updateEntries(java.util.Map,java.util.List)`
+- Generic contract: Parameters are Map<String, ? extends project-owned PdfValue> replacements and List<String> removals, applied in one atomic Command.
+- Exception contract: Null, overlapping, indirect, stream, malformed, lifecycle, or unpreservable input rejects before mutation with the Native cause retained through PdfException where applicable.
+- Behavioral capabilities: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_add_dash_file_dash_attachment"></a>
+### `itext7.kernel.pdf-document.add-file-attachment`
+
+- Availability: `stable`
+- Reference status: `adapted`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocument#addFileAttachment(java.lang.String,com.itextpdf.kernel.pdf.filespec.PdfFileSpec)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#addFileAttachment(net.zerocloud.pdf.EmbeddedFile)`
+- Generic contract: Returns void; copies one project-owned EmbeddedFile and creates or replaces its exact name-tree entry.
+- Exception contract: Invalid names, MIME, relationship metadata, unsafe existing structures, lifecycle, or resource bounds reject before mutation with the Native cause retained through PdfException.
+- Behavioral capabilities: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_add_dash_named_dash_destination"></a>
+### `itext7.kernel.pdf-document.add-named-destination`
+
+- Availability: `stable`
+- Reference status: `adapted`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocument#addNamedDestination(java.lang.String,com.itextpdf.kernel.pdf.PdfObject)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#addNamedDestination(java.lang.String,net.zerocloud.pdf.PageDestination)`
+- Generic contract: Returns void; creates or replaces one exact project-owned PageDestination without changing other names.
+- Exception contract: Invalid pages, names, tree structure, preservation, lifecycle, or ownership reject before mutation with the Native failure retained through PdfException.
+- Behavioral capabilities: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
+
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_add_dash_new_dash_page"></a>
 ### `itext7.kernel.pdf-document.add-new-page`
 
@@ -305,6 +539,17 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Generic contract: Parameters are Map<String, mapped PdfReader>, String, and Map<String, mapped PdfWriter>; declaration iteration order fixes Source consumption and publication-receipt order.
 - Exception contract: Rejects null, blank, duplicate-instance, unavailable, or inconsistent Source and Target declarations before transferring any Reader ownership.
 - Behavioral capabilities: [`document.page.manipulate-merge-split`](capability-matrix.md#capability-document_dot_page_dot_manipulate_dash_merge_dash_split)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_constructor_dash_named_dash_sources_dash_targets_dash_version"></a>
+### `itext7.kernel.pdf-document.constructor-named-sources-targets-version`
+
+- Availability: `stable`
+- Reference status: `folio-extension`
+- Reference namespace: `com.itextpdf.kernel.pdf.PdfDocument`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#<init>(java.util.Map,java.lang.String,java.util.Map,net.zerocloud.pdf.PdfVersion)`
+- Generic contract: Parameters are Map<String, mapped PdfReader>, String, Map<String, mapped PdfWriter>, and project-owned PdfVersion; the version applies to every declared Target.
+- Exception contract: Rejects invalid declarations before Reader transfer; unsupported output policy and Native failures retain their DocumentFailure cause through PdfException when execution starts.
+- Behavioral capabilities: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
 
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_constructor_dash_reader"></a>
 ### `itext7.kernel.pdf-document.constructor-reader`
@@ -357,6 +602,38 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Exception contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed or detached mutation targets reject with IllegalStateException.
 - Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
 
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_document_dash_info"></a>
+### `itext7.kernel.pdf-document.get-document-info`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocument#getDocumentInfo()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#getDocumentInfo()`
+- Generic contract: Returns one document-owned mapped PdfDocumentInfo view; repeated calls return the same view.
+- Exception contract: Rejects a closed document or non-owner thread with IllegalStateException; Native query failures retain their DocumentFailure cause through PdfException.
+- Behavioral capabilities: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_file_dash_attachment"></a>
+### `itext7.kernel.pdf-document.get-file-attachment`
+
+- Availability: `stable`
+- Reference status: `folio-extension`
+- Reference namespace: `com.itextpdf.kernel.pdf.PdfDocument`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#getFileAttachment(java.lang.String,long)`
+- Generic contract: Returns Optional<project-owned EmbeddedFileData> with detached exact bytes, declared MD5 when present, computed SHA-256, and an explicit decoded-byte bound.
+- Exception contract: Invalid bounds, malformed structures, and payload-limit failures retain their Native DocumentFailure cause through PdfException; absence returns Optional.empty().
+- Behavioral capabilities: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_file_dash_attachments"></a>
+### `itext7.kernel.pdf-document.get-file-attachments`
+
+- Availability: `stable`
+- Reference status: `adapted`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocument#getCatalog()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#getFileAttachments(int)`
+- Generic contract: Returns immutable List<project-owned EmbeddedFileSummary> in unsigned encoded-key order under an explicit entry bound.
+- Exception contract: Malformed specifications, streams, names, checksums, and limit failures retain their Native DocumentFailure cause through PdfException.
+- Behavioral capabilities: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
+
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_merger"></a>
 ### `itext7.kernel.pdf-document.get-merger`
 
@@ -368,6 +645,17 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Exception contract: Rejects a closed document with IllegalStateException; the returned view shares the document lifecycle.
 - Behavioral capabilities: [`document.page.manipulate-merge-split`](capability-matrix.md#capability-document_dot_page_dot_manipulate_dash_merge_dash_split)
 
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_named_dash_destinations"></a>
+### `itext7.kernel.pdf-document.get-named-destinations`
+
+- Availability: `stable`
+- Reference status: `adapted`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocument#getNamedDestinations()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#getNamedDestinations(int)`
+- Generic contract: Returns immutable Map<String, project-owned PageDestination> in unsigned encoded-key order under an explicit entry bound.
+- Exception contract: Malformed trees, invalid destinations, and limit failures retain their Native DocumentFailure cause through PdfException; closed documents reject with IllegalStateException.
+- Behavioral capabilities: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
+
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_number_dash_of_dash_pages"></a>
 ### `itext7.kernel.pdf-document.get-number-of-pages`
 
@@ -377,6 +665,17 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Generic contract: Returns the primitive page count.
 - Exception contract: Rejects a closed facade document with java.lang.IllegalStateException.
 - Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_outlines"></a>
+### `itext7.kernel.pdf-document.get-outlines`
+
+- Availability: `stable`
+- Reference status: `adapted`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocument#getOutlines(boolean)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#getOutlines(int)`
+- Generic contract: Returns immutable List<project-owned OutlineItem> with exact explicit or named destinations under an explicit item bound.
+- Exception contract: Malformed links, targets, cycles, and limit failures retain their Native DocumentFailure cause through PdfException; closed documents reject with IllegalStateException.
+- Behavioral capabilities: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
 
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_page"></a>
 ### `itext7.kernel.pdf-document.get-page`
@@ -409,6 +708,27 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Generic contract: Returns a mapped PdfSplitter view owned by this document; all publication Targets are declared before the Native Workflow begins.
 - Exception contract: Rejects a closed document with IllegalStateException; the returned view shares the document lifecycle.
 - Behavioral capabilities: [`document.page.manipulate-merge-split`](capability-matrix.md#capability-document_dot_page_dot_manipulate_dash_merge_dash_split)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_xmp_dash_metadata"></a>
+### `itext7.kernel.pdf-document.get-xmp-metadata`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocument#getXmpMetadata()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#getXmpMetadata()`
+- Generic contract: Returns a detached defensive byte[] of the exact decoded XMP packet, or null, under the fixed 64 MiB bound.
+- Exception contract: Rejects a closed document with IllegalStateException; malformed structure, limits, and Native failures retain their DocumentFailure cause through PdfException.
+- Behavioral capabilities: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_xmp_dash_metadata_dash_bounded"></a>
+### `itext7.kernel.pdf-document.get-xmp-metadata-bounded`
+
+- Availability: `stable`
+- Reference status: `adapted`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocument#getXmpMetadata()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#getXmpMetadata(long)`
+- Generic contract: Returns a detached defensive byte[] or null and adds an explicit nonnegative decoded-byte bound.
+- Exception contract: Invalid bounds reject before access; limit and structural failures retain their Native DocumentFailure cause through PdfException.
+- Behavioral capabilities: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
 
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_move_dash_page"></a>
 ### `itext7.kernel.pdf-document.move-page`
@@ -452,6 +772,38 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Generic contract: Extends the one-page reference operation to one explicit inclusive one-based range and returns void.
 - Exception contract: Rejects a closed or read-only document with IllegalStateException and maps an invalid range or unsafe preservation through PdfException with the Native DocumentFailure cause before mutation.
 - Behavioral capabilities: [`document.page.manipulate-merge-split`](capability-matrix.md#capability-document_dot_page_dot_manipulate_dash_merge_dash_split)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_set_dash_named_dash_destinations"></a>
+### `itext7.kernel.pdf-document.set-named-destinations`
+
+- Availability: `stable`
+- Reference status: `folio-extension`
+- Reference namespace: `com.itextpdf.kernel.pdf.PdfDocument`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#setNamedDestinations(java.util.Map,java.util.List)`
+- Generic contract: Parameters are Map<String, PageDestination> replacements and List<String> removals, copied and applied atomically in one Native Command.
+- Exception contract: Overlap, malformed input, unsafe preservation, and removals that orphan outlines reject before mutation; closed or read-only documents reject with IllegalStateException.
+- Behavioral capabilities: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_set_dash_outlines"></a>
+### `itext7.kernel.pdf-document.set-outlines`
+
+- Availability: `stable`
+- Reference status: `adapted`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocument#getOutlines(boolean)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#setOutlines(java.util.List)`
+- Generic contract: Returns void; defensively copies and atomically replaces the complete List<project-owned OutlineItem> tree.
+- Exception contract: Invalid pages, unresolved named targets, excessive or malformed trees, lifecycle, and unsafe preservation reject before mutation with the Native cause retained through PdfException.
+- Behavioral capabilities: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_set_dash_xmp_dash_metadata"></a>
+### `itext7.kernel.pdf-document.set-xmp-metadata`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocument#setXmpMetadata(byte[])`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#setXmpMetadata(byte[])`
+- Generic contract: Returns void and defensively copies one well-formed XMP packet before an atomic Native Command.
+- Exception contract: Rejects null, malformed, oversized, externally resolving, read-only, closed, or unpreservable input without partial mutation; Native failures retain their cause through PdfException.
+- Behavioral capabilities: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
 
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_exception_dot_constructor_dash_message_dash_cause"></a>
 ### `itext7.kernel.pdf-exception.constructor-message-cause`
@@ -1199,13 +1551,6 @@ No preview additions (included with all stable surfaces) are declared.
 - Behavioral capability: [`document.incremental-signature.protect`](capability-matrix.md#capability-document_dot_incremental_dash_signature_dot_protect)
 - Deferred ticket: `T32`
 - Reason: Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #77 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
-
-<a id="excluded-capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments"></a>
-### `document.metadata.outlines-destinations-attachments`
-
-- Behavioral capability: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
-- Deferred ticket: `T32`
-- Reason: Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #73 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 <a id="excluded-capability-document_dot_text_dash_structure_dot_extract"></a>
 ### `document.text-structure.extract`

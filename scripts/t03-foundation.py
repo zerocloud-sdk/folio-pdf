@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Prepare and bind repository-only T03/T09/T10 observations; never publish a release."""
+"""Prepare and bind repository-only T03/T09/T10/T11 observations; never publish a release."""
+import copy
 import hashlib
 from pathlib import Path
 
@@ -127,49 +128,136 @@ def stage_products(root, contract):
 
 
 CHAINS = ('syntax', 'standards', 'semantic', 'visual')
+ARTIFACT_CONTRACT_TESTS = tuple(
+    'net.zerocloud.pdf.migration.itext7.contract.' + name
+    for name in ('JarContractIT', 'ClasspathExclusivityIT'))
+CERTIFICATION_CASES = {
+    'metadata': {
+        'profile': 'T11-metadata-outlines-destinations-attachments',
+        'label': 'T11',
+        'test-count': 73,
+        'test-classes': [
+            'net.zerocloud.pdf.consumer.DocumentMetadataWorkflowTest',
+            'net.zerocloud.pdf.itext7.consumer.DocumentMetadataFacadeTest'],
+        'facade-execution-profile': 'IN_PROCESS',
+        'standards-producer': 'arlington-t11-r1',
+        'contract-timeout': 600,
+        'recorder-timeout': 1800,
+        'workflow-policy': 'REWRITE; explicit PDF 2.0 products; bounded document information, XMP, outlines, named destinations and embedded files; ordered named Sources and Targets; no network; exact XML external-access canaries; signed Sources are protected; Native tests select the recorded execution profile; Facade execution remains IN_PROCESS',
+        'fonts': 'no fonts; the fixed T11 vector corpus has no text or font resources',
+        'configuration-paths': [
+            'capabilities/profiles/T11-metadata',
+            'capabilities/profiles/T11-standards',
+            'capabilities/expected/T11-standards-findings.json',
+            'build-tools/acceptance/arlington/t11-r1.patch',
+            'scripts/t11-arlington-pin.properties']},
+    'pages': {
+        'profile': 'T10-page-manipulation-merge-split',
+        'label': 'T10',
+        'test-count': 65,
+        'test-classes': [
+            'net.zerocloud.pdf.consumer.PageManipulationWorkflowTest',
+            'net.zerocloud.pdf.itext7.consumer.PageManipulationFacadeTest'],
+        'facade-execution-profile': 'IN_PROCESS',
+        'standards-producer': 'arlington-t10-r1',
+        'contract-timeout': 600,
+        'recorder-timeout': 1800,
+        'workflow-policy': 'REWRITE; one-based inclusive page ranges; insert, remove, move and copy; ordered named Sources; exact split coverage of all declared Targets; finite system-default policies; no network; Native tests select the recorded execution profile; Facade execution remains IN_PROCESS',
+        'fonts': 'no fonts; the fixed T10 vector corpus has no text or font resources',
+        'configuration-paths': [
+            'capabilities/profiles/T10-pages',
+            'capabilities/profiles/T10-standards',
+            'capabilities/profiles/T03-standards',
+            'capabilities/profiles/T09-standards',
+            'build-tools/acceptance/arlington/t10-r1.patch',
+            'scripts/t10-arlington-pin.properties']},
+    'values': {
+        'profile': 'T09-document-value-inspection-patch',
+        'label': 'T09',
+        'test-count': 83,
+        'test-classes': [
+            'net.zerocloud.pdf.consumer.PdfValueWorkflowTest',
+            'net.zerocloud.pdf.itext7.consumer.PdfValuesFacadeTest'],
+        'facade-execution-profile': 'IN_PROCESS',
+        'workflow-policy': 'Native REWRITE and unsigned INCREMENTAL; Facade REWRITE; finite system-default policies; no network; Native tests select the recorded execution profile',
+        'fonts': 'none; fixed blue rectangle; private value streams are not painted',
+        'configuration-paths': [
+            'capabilities/profiles/T09-values',
+            'capabilities/profiles/T09-standards',
+            'capabilities/profiles/T03-standards',
+            'capabilities/profiles/T09-values-visual.properties',
+            'capabilities/expected/T09-values-144dpi-srgb.png']},
+    'transactions': {
+        'profile': 'T03-document-workflow-transaction',
+        'label': 'T03',
+        'test-count': 34,
+        'test-classes': [
+            'net.zerocloud.pdf.consumer.' + name for name in (
+                'BlankDocumentWorkflowTest',
+                'WorkflowLifecycleTest',
+                'WorkflowTransactionContractTest',
+                'WorkflowResourceOwnershipTest')]
+            + ['net.zerocloud.pdf.itext7.consumer.BlankDocumentFacadeTest'],
+        'facade-execution-profile': 'IN_PROCESS',
+        'workflow-policy': 'REWRITE; PDF 1.7; finite system-default resource/transaction/worker policies; no network; tests select the recorded execution profile',
+        'fonts': 'none; no text or resources in the T03 products',
+        'configuration-paths': [
+            'capabilities/profiles/T03-standards',
+            'capabilities/profiles/T03-document-blank-visual.properties',
+            'capabilities/expected/T03-document-blank-144dpi-srgb.png']}}
+
+PAGE_OPERATION_EDITIONS = tuple(
+    api + '-' + product
+    for api in ('native', 'facade')
+    for product in ('edited', 'merged', 'left', 'right'))
+REPORT_PROFILES = {
+    'transactions': {
+        'editions': ('native', 'facade'),
+        'artifact': 'blank.pdf',
+        'checkers': ('pdfcpu', 'arlington'),
+        'paged-visual': False,
+        'negative-files': {},
+        'negative-trees': {}},
+    'values': {
+        'editions': ('native-rewrite', 'native-incremental', 'facade'),
+        'artifact': 'values.pdf',
+        'checkers': ('pdfcpu', 'arlington'),
+        'paged-visual': False,
+        'negative-files': {
+            'syntax': ('invalid.pdf',),
+            'semantic': ('unchanged-values.pdf',),
+            'visual': ('values.pdf',)},
+        'negative-trees': {},
+        'source-visual': True},
+    'pages': {
+        'editions': PAGE_OPERATION_EDITIONS,
+        'artifact': 'pages.pdf',
+        'checkers': ('pdfcpu', 'arlington'),
+        'paged-visual': True,
+        'negative-files': {
+            'syntax': ('invalid.pdf',),
+            'semantic': ('wrong-order.pdf',)},
+        'negative-trees': {'visual': ('visual',)}},
+    'metadata': {
+        'editions': PAGE_OPERATION_EDITIONS,
+        'artifact': 'metadata.pdf',
+        'checkers': ('pdfcpu', 'arlington-core', 'arlington-metadata'),
+        'paged-visual': True,
+        'negative-files': {'syntax': ('invalid.pdf',)},
+        'negative-trees': {
+            'semantic': ('semantic',),
+            'visual': ('visual',)},
+        'safety': True}}
 
 
 def certification_case(obligation):
     """The frozen consumer and artifact obligations for one recorder invocation."""
-    artifacts = ['net.zerocloud.pdf.migration.itext7.contract.' + name
-                 for name in ('JarContractIT', 'ClasspathExclusivityIT')]
-    if obligation == 'pages':
-        return {'profile': 'T10-page-manipulation-merge-split', 'label': 'T10', 'test-count': 65,
-                'test-classes': ['net.zerocloud.pdf.consumer.PageManipulationWorkflowTest',
-                                 'net.zerocloud.pdf.itext7.consumer.PageManipulationFacadeTest'] + artifacts,
-                'facade-execution-profile': 'IN_PROCESS',
-                'standards-producer': 'arlington-t10-r1',
-                'contract-timeout': 600,
-                'recorder-timeout': 1800,
-                'workflow-policy': 'REWRITE; one-based inclusive page ranges; insert, remove, move and copy; ordered named Sources; exact split coverage of all declared Targets; finite system-default policies; no network; Native tests select the recorded execution profile; Facade execution remains IN_PROCESS',
-                'fonts': 'no fonts; the fixed T10 vector corpus has no text or font resources',
-                'configuration-paths': ['capabilities/profiles/T10-pages',
-                    'capabilities/profiles/T10-standards', 'capabilities/profiles/T03-standards',
-                    'capabilities/profiles/T09-standards',
-                    'build-tools/acceptance/arlington/t10-r1.patch',
-                    'scripts/t10-arlington-pin.properties']}
-    if obligation == 'values':
-        return {'profile': 'T09-document-value-inspection-patch', 'label': 'T09', 'test-count': 83,
-                'test-classes': ['net.zerocloud.pdf.consumer.PdfValueWorkflowTest',
-                                 'net.zerocloud.pdf.itext7.consumer.PdfValuesFacadeTest'] + artifacts,
-                'facade-execution-profile': 'IN_PROCESS',
-                'workflow-policy': 'Native REWRITE and unsigned INCREMENTAL; Facade REWRITE; finite system-default policies; no network; Native tests select the recorded execution profile',
-                'fonts': 'none; fixed blue rectangle; private value streams are not painted',
-                'configuration-paths': ['capabilities/profiles/T09-values', 'capabilities/profiles/T09-standards',
-                    'capabilities/profiles/T03-standards', 'capabilities/profiles/T09-values-visual.properties',
-                    'capabilities/expected/T09-values-144dpi-srgb.png']}
-    if obligation != 'transactions':
+    try:
+        case = copy.deepcopy(CERTIFICATION_CASES[obligation])
+    except KeyError:
         raise ValueError('Unknown certification obligation: ' + obligation)
-    return {'profile': 'T03-document-workflow-transaction', 'label': 'T03', 'test-count': 34,
-            'test-classes': ['net.zerocloud.pdf.consumer.' + name for name in
-                ('BlankDocumentWorkflowTest', 'WorkflowLifecycleTest', 'WorkflowTransactionContractTest', 'WorkflowResourceOwnershipTest')]
-                + ['net.zerocloud.pdf.itext7.consumer.BlankDocumentFacadeTest'] + artifacts,
-            'facade-execution-profile': 'IN_PROCESS',
-            'workflow-policy': 'REWRITE; PDF 1.7; finite system-default resource/transaction/worker policies; no network; tests select the recorded execution profile',
-            'fonts': 'none; no text or resources in the T03 products',
-            'configuration-paths': ['capabilities/profiles/T03-standards',
-                'capabilities/profiles/T03-document-blank-visual.properties',
-                'capabilities/expected/T03-document-blank-144dpi-srgb.png']}
+    case['test-classes'].extend(ARTIFACT_CONTRACT_TESTS)
+    return case
 
 
 def properties(path):
@@ -233,11 +321,80 @@ def record_preservation(root, run):
     return report
 
 
-def collect_reports(root, run, obligation='transactions'):
+def report_profile(obligation):
+    try:
+        return REPORT_PROFILES[obligation]
+    except KeyError:
+        raise ValueError('Unknown certification obligation: ' + obligation)
+
+
+def metadata_safety_files(run, result, expected_native_profile):
+    if result.get('safety') != 'pass':
+        raise ValueError('Unobserved or non-passing metadata safety evidence')
+    if expected_native_profile not in ('IN_PROCESS', 'HARDENED_WORKER'):
+        raise ValueError('Metadata certification has an invalid selected execution profile')
+    native_profile = result.get('native-execution-profile')
+    facade_profile = result.get('facade-execution-profile')
+    if native_profile not in ('IN_PROCESS', 'HARDENED_WORKER') \
+            or facade_profile != 'IN_PROCESS':
+        raise ValueError('Metadata safety profile identity is missing or invalid')
+    if native_profile != expected_native_profile:
+        raise ValueError('Metadata safety profile does not match the selected execution profile')
+    safety = properties(run / 'safety/result.properties')
+    signed = properties(run / 'safety/signed.properties')
+    if safety.get('result') != 'pass' or safety.get('signed') != 'pass' \
+            or signed.get('result') != 'pass':
+        raise ValueError('Incomplete metadata safety evidence')
+    if safety.get('native-execution-profile') != native_profile \
+            or safety.get('facade-execution-profile') != facade_profile \
+            or signed.get('native.execution-profile') != native_profile \
+            or signed.get('facade.execution-profile') != facade_profile:
+        raise ValueError('Metadata safety profile does not match the certification profile')
+    for api, expected in (('native', native_profile), ('facade', facade_profile)):
+        observed = properties(run / ('safety/' + api + '/safety.properties'))
+        if observed.get('result') != 'pass':
+            raise ValueError('Incomplete ' + api + ' XML safety evidence')
+        if observed.get('execution-profile') != expected:
+            raise ValueError(api + ' XML safety profile does not match the certification profile')
+        if expected == 'HARDENED_WORKER':
+            for key, value in (('worker-file-positive-control', 'denied'),
+                               ('worker-network-positive-control', 'denied'),
+                               ('worker-process-isolated', 'pass')):
+                if observed.get(key) != value:
+                    raise ValueError('Incomplete hardened-worker safety observation: ' + key)
+            for scenario in ('external-file', 'external-network', 'malformed',
+                             'inert-xinclude'):
+                for key, value in (('worker-file-positive-control', 'denied'),
+                                   ('worker-network-positive-control', 'denied'),
+                                   ('worker-process-isolated', 'pass')):
+                    if observed.get(scenario + '.' + key) != value:
+                        raise ValueError('Incomplete hardened-worker safety observation for '
+                                         + scenario + ': ' + key)
+        elif observed.get('observer.file-attempts') != '1' \
+                or observed.get('observer.network-attempts') != '1':
+            raise ValueError('Incomplete in-process safety observer positive control')
+    return [path for path in sorted((run / 'safety').rglob('*')) if path.is_file()]
+
+
+def append_source_visual(root, run, report):
+    original = run / 'source'
+    observed = properties(original / 'result.properties')
+    source = reference(root, original / 'values.pdf')
+    if observed.get('visual') != 'pass' or observed.get('input-sha256') != source['sha256']:
+        raise ValueError('Source visual observation is missing or changed')
+    report['products'].append(source)
+    report['findings'] += [reference(root, path) for path in sorted(original.iterdir())
+                           if path.is_file() and path.suffix != '.pdf']
+
+
+def collect_reports(root, run, obligation='transactions', execution_profile=None):
+    profile = report_profile(obligation)
     result = properties(run / 'result.properties')
     for chain in CHAINS:
         if result.get(chain) != 'pass':
             raise ValueError('Unobserved or non-passing ' + obligation + ' chain: ' + chain)
+    safety_files = metadata_safety_files(run, result, execution_profile) \
+        if profile.get('safety') else []
     negative = properties(run / 'negative/result.properties')
     reports = {}
     for chain in CHAINS:
@@ -245,21 +402,17 @@ def collect_reports(root, run, obligation='transactions'):
             raise ValueError('Missing detected negative control for ' + chain)
         report = {'chain': chain, 'result': 'pass', 'products': [], 'findings': [],
                   'negative-controls': [reference(root, run / 'negative' / (chain + '.txt'))]}
-        if obligation == 'pages':
-            editions = tuple(api + '-' + product for api in ('native', 'facade')
-                             for product in ('edited', 'merged', 'left', 'right'))
-        elif obligation == 'values':
-            editions = ('native-rewrite', 'native-incremental', 'facade')
-        else:
-            editions = ('native', 'facade')
-        for edition in editions:
+        for edition in profile['editions']:
             directory = run / edition
             observed = properties(directory / 'result.properties')
             if observed.get(chain) != 'pass':
                 raise ValueError(edition + ' chain did not pass: ' + chain)
-            artifact = 'values.pdf' if obligation == 'values' else (
-                'pages.pdf' if obligation == 'pages' else 'blank.pdf')
-            product = reference(root, directory / artifact)
+            if profile.get('safety'):
+                expected = execution_profile if edition.startswith('native-') else 'IN_PROCESS'
+                if observed.get('execution-profile') != expected:
+                    raise ValueError(edition + ' product execution profile does not match '
+                                     'the selected certification profile')
+            product = reference(root, directory / profile['artifact'])
             if product['sha256'] != observed.get('input-sha256'):
                 raise ValueError('Observed product changed after checking')
             report['products'].append(product)
@@ -268,13 +421,13 @@ def collect_reports(root, run, obligation='transactions'):
             if (directory / (chain + '.md')).is_file():
                 report['findings'].append(reference(root, directory / (chain + '.md')))
             if chain == 'visual':
-                if obligation == 'pages':
+                if profile['paged-visual']:
                     page_count = int(observed.get('page-count', '0'))
                     if page_count < 1:
-                        raise ValueError('Missing T10 visual page count: ' + edition)
+                        raise ValueError('Missing visual page count: ' + edition)
                     for page in range(1, page_count + 1):
                         if observed.get('page.' + str(page) + '.visual') != 'pass':
-                            raise ValueError('Missing passing T10 page visual: '
+                            raise ValueError('Missing passing page visual: '
                                              + edition + ' page ' + str(page))
                         for suffix in ('visual.md', 'visual.txt', 'expected.png', 'pdfium.png',
                                        'implementation.png', 'difference.png',
@@ -285,7 +438,7 @@ def collect_reports(root, run, obligation='transactions'):
                     report['findings'] += [reference(root, path)
                                            for path in sorted(directory.glob('*.png'))]
             if chain == 'standards':
-                for checker in ('pdfcpu', 'arlington'):
+                for checker in profile['checkers']:
                     tool = directory / checker
                     observation = properties(tool / 'standards.properties')
                     if observation.get('result') != 'pass' or not observation.get('covered-rules'):
@@ -298,28 +451,17 @@ def collect_reports(root, run, obligation='transactions'):
         if chain == 'visual':
             report['negative-controls'] += [reference(root, path) for path in sorted((run / 'negative').glob('*.png'))]
             report['negative-controls'] += [reference(root, path) for path in sorted((run / 'negative').glob('one-pixel-control.properties'))]
-        if obligation == 'values':
-            if chain in ('syntax', 'semantic'):
-                name = 'invalid.pdf' if chain == 'syntax' else 'unchanged-values.pdf'
-                report['negative-controls'].append(reference(root, run / 'negative' / name))
-            if chain == 'visual':
-                original = run / 'source'
-                observed = properties(original / 'result.properties')
-                source = reference(root, original / 'values.pdf')
-                if observed.get('visual') != 'pass' or observed.get('input-sha256') != source['sha256']:
-                    raise ValueError('Source visual observation is missing or changed')
-                report['products'].append(source)
-                report['findings'] += [reference(root, path) for path in sorted(original.iterdir())
-                                       if path.is_file() and path.suffix != '.pdf']
-                report['negative-controls'].append(reference(root, run / 'negative/values.pdf'))
-        elif obligation == 'pages':
-            if chain == 'syntax':
-                report['negative-controls'].append(reference(root, run / 'negative/invalid.pdf'))
-            elif chain == 'semantic':
-                report['negative-controls'].append(reference(root, run / 'negative/wrong-order.pdf'))
-            elif chain == 'visual':
-                report['negative-controls'] += [reference(root, path)
-                    for path in sorted((run / 'negative/visual').rglob('*')) if path.is_file()]
+            if profile.get('source-visual'):
+                append_source_visual(root, run, report)
+        for name in profile['negative-files'].get(chain, ()):
+            report['negative-controls'].append(reference(root, run / 'negative' / name))
+        for name in profile['negative-trees'].get(chain, ()):
+            report['negative-controls'] += [reference(root, path)
+                for path in sorted((run / 'negative' / name).rglob('*')) if path.is_file()]
+        if chain == 'semantic' and safety_files:
+            report['findings'] += [reference(root, path) for path in safety_files]
+            report['negative-controls'] += [reference(root, path) for path in safety_files
+                                            if path.suffix == '.pdf']
         reports[chain] = report
     return reports
 
@@ -546,6 +688,11 @@ def certification_tools():
          'path': '.build-cache/arlington/t10-r1/TestGrammar/bin/linux/TestGrammar',
          'pin': 'scripts/t10-arlington-pin.properties', 'hash-key': 'sha256',
          'chains': ['standards']},
+        {'id': 'arlington-t11-r1', 'kind': 'external-tool',
+         'version': '0.81-folio-t11-r1',
+         'path': '.build-cache/arlington/t11-r1/TestGrammar/bin/linux/TestGrammar',
+         'pin': 'scripts/t11-arlington-pin.properties', 'hash-key': 'sha256',
+         'chains': ['standards']},
         {'id': 'pdfium-cli', 'kind': 'external-tool',
          'version': 'v0.11.2-pdfium-chromium-7881',
          'path': '.build-cache/pdfium/v0.11.2-chromium-7881/bin/pdfium',
@@ -557,7 +704,7 @@ def certification_tools():
          'hash-key': 'IMAGEMAGICK_EXECUTABLE_SHA256', 'chains': ['visual']}]
     project = [{'id': 'folio-pdf-' + label, 'kind': 'project-test',
                 'version': '0.1.0', 'chains': ['semantic']}
-               for label in ('t03', 't09', 't10')]
+               for label in ('t03', 't09', 't10', 't11')]
     return external + project
 
 
@@ -725,7 +872,7 @@ def certify(root, output, contract, helper, obligation='transactions'):
                 raise ValueError('The complete ' + case['label'] + ' consumer/artifact contract suite did not execute')
             run_logged(evidence_command, scope / 'recorder.txt', cwd=root,
                        timeout=case.get('recorder-timeout', 300))
-            reports = collect_reports(root, scope / 'observations', obligation)
+            reports = collect_reports(root, scope / 'observations', obligation, execution)
             if obligation == 'values':
                 write_json(scope / 'raw-preservation-command.json', plan['preservation-command'])
                 run_logged(plan['preservation-command'], scope / 'raw-preservation.txt', cwd=root, timeout=60)
@@ -782,7 +929,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('action', choices=('stage', 'certify', 'collect', 'preservation', 'plan', 'merge-index'))
     parser.add_argument('output', nargs='?', type=Path)
-    parser.add_argument('--obligation', choices=('transactions', 'values', 'pages'), default='transactions')
+    parser.add_argument('--obligation', choices=('transactions', 'values', 'pages', 'metadata'), default='transactions')
+    parser.add_argument('--execution-profile', choices=('IN_PROCESS', 'HARDENED_WORKER'))
     parser.add_argument('--root', type=Path, default=Path(__file__).resolve().parents[1])
     args = parser.parse_args()
     root = args.root.resolve()
@@ -802,7 +950,12 @@ def main():
         import json
         if args.output is None:
             parser.error('collect requires an observation directory')
-        print(json.dumps(collect_reports(root, (root / args.output).resolve(), args.obligation), indent=2))
+        if args.obligation == 'metadata' and args.execution_profile is None:
+            parser.error('metadata collect requires --execution-profile')
+        if args.obligation != 'metadata' and args.execution_profile is not None:
+            parser.error('--execution-profile applies only to metadata collect')
+        print(json.dumps(collect_reports(root, (root / args.output).resolve(), args.obligation,
+                                         args.execution_profile), indent=2))
         return
     import yaml
     contract = yaml.safe_load((root / 'capabilities/foundation-release.yaml').read_text())

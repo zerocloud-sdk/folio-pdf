@@ -1,0 +1,472 @@
+{
+  "schema-version": 1,
+  "candidate-sha256": "29df80066be3d76e60e8fc51005b2c1505d20ed95116e7a48309eb8d2bfa0267",
+  "environment-sha256": "769018b553ff6d5b6a6a0b2efccc27d263768c8ca7e4b4601c4ba7289716a797",
+  "acceptance-profile": "T09-document-value-inspection-patch",
+  "execution-profile": "HARDENED_WORKER",
+  "command": [
+    "podman",
+    "run",
+    "--rm",
+    "--network=none",
+    "--userns=keep-id",
+    "--volume",
+    "/home/ubuntu/IdeaProjects/open-pdf:/workspace:ro",
+    "--volume",
+    "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/harfbuzz/10.2.0-final:/folio-harfbuzz:ro",
+    "--volume",
+    "/usr/bin/python3.12:/usr/bin/python3.12:ro",
+    "--volume",
+    "/usr/lib/python3.12:/usr/lib/python3.12:ro",
+    "--volume",
+    "/usr/lib/x86_64-linux-gnu/libexpat.so.1.9.1:/lib/x86_64-linux-gnu/libexpat.so.1:ro",
+    "--workdir",
+    "/workspace",
+    "--env",
+    "LANG=C.UTF-8",
+    "--env",
+    "LC_ALL=C.UTF-8",
+    "--env",
+    "TZ=UTC",
+    "--env",
+    "FOLIO_HARFBUZZ_HELPER=/folio-harfbuzz/bin/folio-harfbuzz",
+    "--volume",
+    "/home/ubuntu/IdeaProjects/open-pdf/capabilities/evidence/foundation/T73-r3-values/jdk21-hardened_worker:/workspace/capabilities/evidence/foundation/T73-r3-values/jdk21-hardened_worker:rw",
+    "docker.io/library/eclipse-temurin@sha256:1ca5e470ad60db0d5b4137c1357068fa210051d815ad98ea9964f4bbe7367f8c",
+    "java",
+    "-Xmx1024m",
+    "-Duser.language=en",
+    "-Duser.country=US",
+    "-Duser.timezone=UTC",
+    "-Dfolio.harfBuzzHelper=/folio-harfbuzz/bin/folio-harfbuzz",
+    "-Dfolio.t09.executionProfile=HARDENED_WORKER",
+    "-cp",
+    "/workspace/target/foundation-0.1.0/artifacts/pdf-conversion-0.1.0.jar:/workspace/target/foundation-0.1.0/artifacts/pdf-document-0.1.0.jar:/workspace/target/foundation-0.1.0/artifacts/pdf-migration-itext7-0.1.0.jar:/workspace/target/foundation-0.1.0/artifacts/pdf-provider-contract-0.1.0.jar:/workspace/target/foundation-0.1.0/harness/acceptance.jar:/workspace/target/foundation-0.1.0/harness/facade-tests.jar:/workspace/target/foundation-0.1.0/harness/lib/common-image-3.14.0.jar:/workspace/target/foundation-0.1.0/harness/lib/common-io-3.14.0.jar:/workspace/target/foundation-0.1.0/harness/lib/common-lang-3.14.0.jar:/workspace/target/foundation-0.1.0/harness/lib/commons-logging-1.4.0.jar:/workspace/target/foundation-0.1.0/harness/lib/core-3.5.3.jar:/workspace/target/foundation-0.1.0/harness/lib/fontbox-3.0.8.jar:/workspace/target/foundation-0.1.0/harness/lib/hamcrest-core-1.3.jar:/workspace/target/foundation-0.1.0/harness/lib/icu4j-77.1.jar:/workspace/target/foundation-0.1.0/harness/lib/imageio-core-3.14.0.jar:/workspace/target/foundation-0.1.0/harness/lib/imageio-metadata-3.14.0.jar:/workspace/target/foundation-0.1.0/harness/lib/imageio-tiff-3.14.0.jar:/workspace/target/foundation-0.1.0/harness/lib/junit-4.13.2.jar:/workspace/target/foundation-0.1.0/harness/lib/okapibarcode-0.5.6.jar:/workspace/target/foundation-0.1.0/harness/lib/pdfbox-3.0.8.jar:/workspace/target/foundation-0.1.0/harness/lib/pdfbox-io-3.0.8.jar:/workspace/target/foundation-0.1.0/harness/lib/snakeyaml-2.2.jar:/workspace/target/foundation-0.1.0/harness/native-tests.jar",
+    "net.zerocloud.pdf.acceptance.T09EvidenceCommand",
+    "/workspace",
+    "/workspace/capabilities/evidence/foundation/T73-r3-values/jdk21-hardened_worker/observations",
+    "HARDENED_WORKER",
+    "0.1.0"
+  ],
+  "java-options": [
+    "-Xmx1024m",
+    "-Duser.language=en",
+    "-Duser.country=US",
+    "-Duser.timezone=UTC",
+    "-Dfolio.harfBuzzHelper=/folio-harfbuzz/bin/folio-harfbuzz",
+    "-Dfolio.t09.executionProfile=HARDENED_WORKER"
+  ],
+  "locale": "en_US / C.UTF-8",
+  "timezone": "UTC",
+  "settings": {
+    "workflow-policy": "Native REWRITE and unsigned INCREMENTAL; Facade REWRITE; finite system-default policies; no network; Native tests select the recorded execution profile",
+    "fonts": "none; fixed blue rectangle; private value streams are not painted",
+    "providers": "none; Stable Facade execution is IN_PROCESS"
+  },
+  "inputs": [
+    {
+      "path": ".build-cache/imagemagick/7.1.2-30/runtime/libX11.so.6",
+      "sha256": "c5b5d782bd9cab3420a62df88f5c991507edf3331a89f98464ddbc538c37b879"
+    },
+    {
+      "path": ".build-cache/imagemagick/7.1.2-30/runtime/libfribidi.so.0",
+      "sha256": "550020af7ff4f77e3f05500e71051b676ee76f530479c2a836dfe899fcaf8395"
+    },
+    {
+      "path": ".build-cache/imagemagick/7.1.2-30/runtime/libgraphite2.so.3",
+      "sha256": "fcfaf843b25b58b88319ced52f826fc8213a661f3693c916f88641eddffe05b8"
+    },
+    {
+      "path": ".build-cache/imagemagick/7.1.2-30/runtime/libharfbuzz.so.0",
+      "sha256": "4562cfcfd18935324ba3ac74a944898b867ab87a56e925ab3e351ba773f1513e"
+    },
+    {
+      "path": ".build-cache/imagemagick/7.1.2-30/runtime/libxcb.so.1",
+      "sha256": "7958a0136b121bdc4c708968569ad152a9ed208ab026e2537b1005dde64ca440"
+    },
+    {
+      "path": "capabilities/expected/T09-values-144dpi-srgb.png",
+      "sha256": "f74af509a0267ddf480a6d1fb1d17110b68503f53f9120d48c905e9477976f4c"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/README.md",
+      "sha256": "5408442e284510bfd918f396b73e35433c3d55a0556672b02a813932ccdb4039"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/arlington.properties",
+      "sha256": "08360f8f8edb123bb4a2840fdcfbb6f94df0a61a71c935f962ae5f07105aa2a8"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/catalog-pages-indirect.pdf",
+      "sha256": "15968efef75ed27fc29077dba4ac2c17bab7d57b60babd2ebebe84ad52da357b"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/catalog-pages.pdf",
+      "sha256": "411166c5051b04d0d6a85710266b961ac57ca3302d6e920fdb7f183f28f1bb3f"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/catalog-type-required.pdf",
+      "sha256": "1b232380a180eb3ced9c3625153ee010b06e11b3a628c6c0b1078aba437e0f33"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/catalog-type.pdf",
+      "sha256": "c1f95d7931bb320feb3294c3867d41e96a1302cb3920606dbaab7e12e101860f"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/page-mediabox-numbers.pdf",
+      "sha256": "6ec1510cccbd9d7dcc664381d68e71ebb0d2a0300e7ee97a6b4cb89c2740713c"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/page-mediabox-rectangle.pdf",
+      "sha256": "25bd505efea14dafefa8dd134879d5f35261db8be4da1d9c23b65d3ae2fc3432"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/page-mediabox-required.pdf",
+      "sha256": "2a5fb414c8b1f565b6021559f7d637c1f6475d5446987abb1084dfd74b374382"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/page-parent-indirect.pdf",
+      "sha256": "a7bb58bcdf556530a2d2a978e5d7cbeaff67d318d033ba7a5a81fbc67dc3eae8"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/page-parent-link.pdf",
+      "sha256": "c7d96c8c614c6f9171109e5fd1af17e549bf7acc62099b6e1a28718209f39dfb"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/page-parent-required.pdf",
+      "sha256": "253228ff414804b4b799f336d7e21220b44e64285f81d60ea0ef3c98f149f2fd"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/page-resources-required.pdf",
+      "sha256": "057453de6d8fe0490a10b2a44d06c824d0306c64bca64b3444b37ed4b3188dd3"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/page-resources-type.pdf",
+      "sha256": "33ff1741b362fb02856ba83e49f8be159dc32a2bda115a22a1ca32b7f5dad705"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/page-type-value.pdf",
+      "sha256": "957a1ec451275bb287a11cedcbe3993eb49b30a9bcdceaf488e6c0fc71f98ec8"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/page-type.pdf",
+      "sha256": "ef89d0046065ec31948ad50fda2f00c3d74c179c5f39582d7d1246df2841a37c"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/pages-count-integer.pdf",
+      "sha256": "553ae8c98a032fa94e3366d9b946569ab7073b770c4eaf73d154b1675379ebb5"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/pages-count-nonnegative.pdf",
+      "sha256": "9fe087f812420765adb7add8ed1fdc50a271624bd6eac7dfc4b508870258f62b"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/pages-count-required.pdf",
+      "sha256": "56986acd52560e6715727d47cc99c3a90b8641331b527e6d7445084d0dc16f11"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/pages-count-value.pdf",
+      "sha256": "56986c0732dd1534bb63e5c331f8f7dbcdb6301dadc4592ccd9938f7cce008c9"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/pages-kid-reference.pdf",
+      "sha256": "1c0e162bdbf9b3d969f65af5e4553b88d4e811fde4de9670753cba4a053e55d0"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/pages-kids.pdf",
+      "sha256": "6e4226f52a6ce1c7020ab2d2788a85a79ef5d7a1d4eee45c0debf51fffc10ba0"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/pages-type-value.pdf",
+      "sha256": "46e9d3271b38bad3579ec1bff9388f580efd1990534924c2508f2b1fc6a88cfc"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/pages-type.pdf",
+      "sha256": "6fe72868d9f01b1fb929450a8f504f6b12fdc8508ae8e325d49009e6b43bbe1a"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/valid.pdf",
+      "sha256": "bd5f9b66edb616fc72e9cbcd480c2e000904a9c7c7edc62f69877443bb0cd9a0"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/pdfcpu.properties",
+      "sha256": "04981b139e4fde409eb5ef3f90582b42a9c061cf598c48129229b2702425035f"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/README.md",
+      "sha256": "ef2311dcf0c5bd9bb4199db328a982f3bbe19eb33dab1ef3e9c48cb34ec46961"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/arlington.properties",
+      "sha256": "8df7a451d78a233ab69d56d6dad0765ed4228d6765fce8e8887b2119a38aaeaf"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/catalog-lang-string.pdf",
+      "sha256": "2de7cfe80673b19bc0844455c65b2ab159956f9b453ade5cf5c7991cf7288d7c"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/catalog-page-mode-name.pdf",
+      "sha256": "8448711d31c93743915881ca9b4fac7d20e1fd5544cd6eab87b932105d027a05"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/catalog-page-mode-value.pdf",
+      "sha256": "4105f57be42ef29c2bc854e6df9b897cf97bd7de0e359c241ef80daafa37569f"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/data-lastmodified-date.pdf",
+      "sha256": "4314c9e958387445df6b93c1a0a2f749ce9c07baf8dd039b0f2cc91e04cc1b95"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/data-lastmodified-null.pdf",
+      "sha256": "41ea72ef30941df1e05152af0ef77e1c833e963b767a7d48d78cc0bde5bf254d"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/data-lastmodified-required.pdf",
+      "sha256": "057044e69998ea8cfccf7c92c51ecd83ef57d9e3f07d9280c93f26e349468bd7"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/info-moddate-date.pdf",
+      "sha256": "cabfc3da00218f043214e43f99bb574887080a1d7a7c6084aee13b06fff04b9c"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/info-moddate-required.pdf",
+      "sha256": "2264cc130c171e0b0dd5ae5ccb821a9264735f1b9f3bf47da0e78979e6b84c88"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/page-contents-array-member.pdf",
+      "sha256": "ef72af9bee510e1cf20047c0bc87b32676965a904d019c5a6f16a709f87fa07d"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/page-contents-type.pdf",
+      "sha256": "bb4e80a1c8b9b25d2448fb019d27176efc9cd544f2905e7a2a23df8d484ec6c9"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/piece-entry-dictionary.pdf",
+      "sha256": "842ece5cbdbaf1eb338d9eb47bb619b40f56140487a4ce2227c303730420cdc9"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/pieceinfo-dictionary.pdf",
+      "sha256": "6e54c9834eb1e24e844c067736da7589a960edb0db92925dee1a15bb89d65948"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/positive-null-decodeparams.pdf",
+      "sha256": "3f6c8a192ad22ea6f96f7963fe06b4fc37791593dcd8ea33a9dd5ee8b2b40e0a"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/stream-decodeparams-array-member.pdf",
+      "sha256": "7bf9e014418ec771fcbb76f46b7927dbbfc843efc3fa09b40d275bf40e43f1d3"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/stream-decodeparams-count.pdf",
+      "sha256": "973af11f633cebf99d633125e876ddc7248624f782ce19a2e2e6d963b133201f"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/stream-decodeparams-position.pdf",
+      "sha256": "b736ea2ea2de2bd2dd1747606638787dcb8237b0b9ada9223554ea076c5ab057"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/stream-decodeparams-type.pdf",
+      "sha256": "f5b29bddaa3a77933b86c985caa8ab3a2bbc433bb15c12e3670cfa79a19bd427"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/stream-filter-array-name-type.pdf",
+      "sha256": "fac2d18c3f760a9d6eaa2182f452b68c3d2512951a5cb96a5cb3dba02fffe29c"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/stream-filter-array-name-value.pdf",
+      "sha256": "ef18d21245a44471a7346b15ee658251a9a005ebf190396ac1d7d4f1a732a188"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/stream-filter-name-value.pdf",
+      "sha256": "4224e00fdd257d3842799b59c0a1522f84f93d5dd0e66ba417b621be4df56fa4"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/stream-filter-type.pdf",
+      "sha256": "dc284a9e3ef213f5b10133af6b65fd8ba11a5af043dbb00359b23373b68a8eda"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/stream-flate-predictor-type.pdf",
+      "sha256": "e372ccb9ba52dc549bf100f795f138eb3a1dea9c61886358f6d46546ed5e5d55"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/stream-flate-predictor-value.pdf",
+      "sha256": "4b37462527d107755a11350d286c98c3650fb18254f0610f08808e28cc83f27d"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/trailer-info-indirect.pdf",
+      "sha256": "9e99abaa6ca013f826cc325130c0496765e92716fb320fa9bd13592214d84fb2"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/trailer-info-null.pdf",
+      "sha256": "7252e5c276cf658a50e1c30368da5d52f5530dbfe2caeac8e45f0774bf102963"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/trailer-info-required.pdf",
+      "sha256": "b872d21e15c25ba2d038bfb54ccdec6158715fa492905fc26161bf22ea01bc89"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/viewer-hide-toolbar-boolean.pdf",
+      "sha256": "cb9a1dbeff0e2a9522adde260ab043a1ae4486a65024fbe6a1687d92d58ea3b0"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/viewer-numcopies-integer.pdf",
+      "sha256": "84c89986c0b945b77b7e25dc742ad6e985139e69ea71763ad9f088e53e1153a1"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/viewer-numcopies-positive.pdf",
+      "sha256": "cb8ff0bc669e165e52fcb6a546a31c63af9ba9b186c878e73763e8a0d9a0ecec"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/viewer-preferences-dictionary.pdf",
+      "sha256": "87279803212106a8b657e23fafa78728c178e450799b42c02526ec6c455a2155"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/pdfcpu.properties",
+      "sha256": "ba229f61ce7235916f41bacaa9f21046f69dfbfe7b2423a9ae98008939e6a221"
+    },
+    {
+      "path": "capabilities/profiles/T09-values/fixtures/reencoded-incremental.pdf",
+      "sha256": "5d99ad6b086b6cb5be10af2508be7eee22705b82dc4b50c25488183c8f3d212d"
+    },
+    {
+      "path": "capabilities/profiles/T09-values/fixtures/values.pdf",
+      "sha256": "c94455cd71eaebf2e2f9f6c32f320bc04087f1e1477c58b596a48a2f106dbca6"
+    },
+    {
+      "path": "capabilities/profiles/T09-values-visual.properties",
+      "sha256": "2bffd270c9e666915d016fd0702e7bfacbbe61435ba39add974e3ed06126887f"
+    },
+    {
+      "path": "scripts/arlington-pin.properties",
+      "sha256": "c7e3be5214ad09346530cb1a3d8fd7ab6589a8ddf992ee87bbdfcca633d4fffd"
+    },
+    {
+      "path": "scripts/imagemagick-pin.properties",
+      "sha256": "0cbd171a2ac7bf35623c4a2cf83f0a3850b15efe3873cb7b40b4e765c5458374"
+    },
+    {
+      "path": "scripts/imagemagick-runtime.sha256",
+      "sha256": "96d4b79b69a922ac4abe10887d52e7711da8de724e46f38cf1fd2187bacc0f2c"
+    },
+    {
+      "path": "scripts/pdfcpu-pin.properties",
+      "sha256": "21c58822196a4123561cac927e1f8ba487e6581ba8f488d5b7f40ba949429fc8"
+    },
+    {
+      "path": "scripts/pdfium-pin.properties",
+      "sha256": "0037480e2d77ae1a6d72566c43cf4c5fb9ccf9bb446b31b2c124e0e51c52ac0e"
+    },
+    {
+      "path": "scripts/qpdf-pin.properties",
+      "sha256": "62c63de3d888ba08b60df9e3c33c9ebefe4cc0c8ee747cc5269390017b57169c"
+    },
+    {
+      "path": "scripts/t10-arlington-pin.properties",
+      "sha256": "9c26dc17077bc116844dae3a216df506c38bb2823b9009d29e2f4cd1b6b84ede"
+    },
+    {
+      "path": "scripts/t11-arlington-pin.properties",
+      "sha256": "1ce7aa610b33cbb709efe7391e2ee0d9f5d8d7d9359862496f1c73ac41bfc47b"
+    },
+    {
+      "path": "target/foundation-0.1.0/artifacts/pdf-conversion-0.1.0.jar",
+      "sha256": "ac1aa17eec63d7fb8d2d20cc5910a84be1fb4e04a2fcd65132df4c40e7ba8215"
+    },
+    {
+      "path": "target/foundation-0.1.0/artifacts/pdf-document-0.1.0.jar",
+      "sha256": "1c19af8b3dadab6b8bbd581469353c1b352934867f8a41f8f2dd49d6ece474b6"
+    },
+    {
+      "path": "target/foundation-0.1.0/artifacts/pdf-migration-itext7-0.1.0.jar",
+      "sha256": "b8a3b8856a36eca941a799aba5d6b0c370d2cd4cb76972d1ccce8bab53da1f65"
+    },
+    {
+      "path": "target/foundation-0.1.0/artifacts/pdf-provider-contract-0.1.0.jar",
+      "sha256": "ec1348967fc5b72fad38f8f54550869f18d3309ce4ea7ba42125a8956aa1e00e"
+    },
+    {
+      "path": "target/foundation-0.1.0/build-command.json",
+      "sha256": "76b3d096020e5fd925bb8e47354e246210f9e68d33be9bfca66929d443d9ca19"
+    },
+    {
+      "path": "target/foundation-0.1.0/build-inputs.json",
+      "sha256": "cea89814ef0f42badbbef45117433d6d9ad8b8a9103748344f242e33d3393e33"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/acceptance.jar",
+      "sha256": "65645657905ec3e4d9e800388b4c9594296c5cb6dae02e7f8f0c40a2d61e9435"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/facade-tests.jar",
+      "sha256": "43df9f6e7875e7ad95ee1e8c3840aeb7486244610b4bbc760ec61c9f5c4cd67b"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/common-image-3.14.0.jar",
+      "sha256": "9edb1afd32278d20ad660869bfa5b0a27cf9b3553b6eb3f8fc51a2fc13109b66"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/common-io-3.14.0.jar",
+      "sha256": "ae01308bd48c68e76f6a1f76880cf7f4a3a004aa83d78e5448de358a4d957e8f"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/common-lang-3.14.0.jar",
+      "sha256": "8d4529d6f56a010bc7e130ebfcdaf14bc11586e9d9ae66f6dca66f91da7eafef"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/commons-logging-1.4.0.jar",
+      "sha256": "d175dbd751dd782a63bde28c7a039520e971f25e84b79c19b8435edc3603e0dc"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/core-3.5.3.jar",
+      "sha256": "8d8064c1636fdaef7189dd9055c7d59950a8940a12f2293956446ec3c109fd82"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/fontbox-3.0.8.jar",
+      "sha256": "a1915c24e3edbe0ecec93896dfbf6d41427810b663ade97bd4e8bae86ec3fdab"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/hamcrest-core-1.3.jar",
+      "sha256": "66fdef91e9739348df7a096aa384a5685f4e875584cce89386a7a47251c4d8e9"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/icu4j-77.1.jar",
+      "sha256": "b3640b9f416a4411fd33c59abbeea8fd57d024c23e1819bf9673220a97499fe3"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/imageio-core-3.14.0.jar",
+      "sha256": "a1b832b5090bd4677696f999b5ccb8954e987eb9674632a6286a6de2bb1c3c78"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/imageio-metadata-3.14.0.jar",
+      "sha256": "03768fc012bd2573236da803099aba6961dfb29c190103f9790fc49ac27f84c1"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/imageio-tiff-3.14.0.jar",
+      "sha256": "68aa1b4a176d1242b9e49334df188ebfbb7c9201f6071dfe42500d63486224b6"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/junit-4.13.2.jar",
+      "sha256": "8e495b634469d64fb8acfa3495a065cbacc8a0fff55ce1e31007be4c16dc57d3"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/okapibarcode-0.5.6.jar",
+      "sha256": "fc07c5e28f200a53b980e36719901e095e06d1432d7ae959a22456f838765f2a"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/pdfbox-3.0.8.jar",
+      "sha256": "97647cfbde61ebcfc06b4cf8c9b0ffcaaee073396eceb4a7f6836a9b9128903c"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/pdfbox-io-3.0.8.jar",
+      "sha256": "36a0e04001010b4c764857817412b96339930b19755e728959805cc0352061b2"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/snakeyaml-2.2.jar",
+      "sha256": "1467931448a0817696ae2805b7b8b20bfb082652bf9c4efaed528930dc49389b"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/native-tests.jar",
+      "sha256": "0ba73f3749133cc8b88ea4349f92715573891d19524312865b58de9b081ec345"
+    }
+  ]
+}

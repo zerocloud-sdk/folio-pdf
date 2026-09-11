@@ -138,6 +138,8 @@ final class WorkerFailureCatalog {
                 "A destination removal conflicts with an existing managed "
                         + "annotation or Action target."),
         descriptor(DocumentFailureCode.DESTINATION_CONFLICT,
+                "A named destination removal conflicts with an existing outline."),
+        descriptor(DocumentFailureCode.DESTINATION_CONFLICT,
                 "A page removal conflicts with an existing managed destination."),
         descriptor(DocumentFailureCode.DOCUMENT_PERMISSION_DENIED,
                 "Protected rewrite requires proven owner authority."),
@@ -380,6 +382,8 @@ final class WorkerFailureCatalog {
         descriptor(DocumentFailureCode.POSITIONED_TEXT_PRESERVATION_UNSUPPORTED,
                 "The page content or resources cannot be preserved safely "
                         + "for positioned text."),
+        descriptor(DocumentFailureCode.PRESERVATION_UNSUPPORTED,
+                "The existing XMP stream contains entries that cannot be preserved safely."),
         descriptor(DocumentFailureCode.PRESERVATION_UNSUPPORTED,
                 "The document contains annotation or Action structures that "
                         + "this page operation cannot preserve safely."),

@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -43,6 +44,8 @@ import net.zerocloud.pdf.PublicationTarget;
 import net.zerocloud.pdf.SaveMode;
 import net.zerocloud.pdf.WorkflowOutcome;
 import net.zerocloud.pdf.WorkflowRequest;
+import net.zerocloud.pdf.WorkflowExecutionProfile;
+import net.zerocloud.pdf.WorkflowResourcePolicy;
 import net.zerocloud.pdf.command.AddBlankPage;
 import net.zerocloud.pdf.command.CopyPages;
 import net.zerocloud.pdf.command.EmbedFile;
@@ -77,6 +80,113 @@ public final class DocumentMetadataWorkflowTest {
     public final TemporaryFolder temporaryFolder = new TemporaryFolder();
 
     @Test
+    public void splitPrunesAGroupingBranchWhoseLastTargetWasFiltered() throws Exception {
+        Path output = temporaryFolder.getRoot().toPath().resolve("outline-pruned.pdf");
+        OutlineItem originalEmpty = OutlineItem.grouping("Originally empty", Collections.<OutlineItem>emptyList());
+        new DocumentWorkflow().execute(requestBuilder().target("right", PublicationTarget.path(output))
+                .saveMode(SaveMode.REWRITE).build(), session -> {
+            session.execute(AddBlankPage.INSTANCE);
+            session.execute(AddBlankPage.INSTANCE);
+            session.execute(ReplaceOutlineTree.version1(Arrays.asList(
+                    OutlineItem.grouping("Only left", Collections.singletonList(OutlineItem.toPage("Left",
+                            PageDestination.fit(1), Collections.<OutlineItem>emptyList()))), originalEmpty)));
+            session.execute(SplitDocument.version1().target("right", PageRange.of(2, 2)).build());
+            return null;
+        });
+        new DocumentWorkflow().execute(sourceRequest(output), session -> {
+            assertEquals(Collections.singletonList(originalEmpty), session.query(OutlineTree.version1(10)));
+            return null;
+        });
+    }
+
+    @Test
+    public void catalogMetadataBeyondTheCloneBoundIsRejectedBeforeAnyPageMutation() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("deep-catalog.pdf");
+        StringBuilder nested = new StringBuilder();
+        for (int depth = 0; depth < 70; depth++) { nested.append('['); }
+        nested.append('1');
+        for (int depth = 0; depth < 70; depth++) { nested.append(']'); }
+        java.nio.file.Files.write(source, pdfFixture(Arrays.asList(
+                "<< /Type /Catalog /Pages 2 0 R /PrivateMetadata " + nested + " >>",
+                "<< /Type /Pages /Kids [3 0 R] /Count 1 /MediaBox [0 0 120 100] >>",
+                "<< /Type /Page /Parent 2 0 R >>"), ""));
+        new DocumentWorkflow().execute(sourceRequest(source), session -> {
+            try {
+                session.execute(InsertBlankPage.version1(1));
+                fail("Catalog metadata must be proven cloneable before changing pages");
+            } catch (DocumentFailure failure) {
+                assertEquals(DocumentFailureCode.PRESERVATION_UNSUPPORTED, failure.getCode());
+                assertEquals("document.page.manipulate-merge-split", failure.getCapabilityId());
+            }
+            assertEquals(Integer.valueOf(1), session.query(PageCount.INSTANCE));
+            return null;
+        });
+    }
+
+    @Test
+    public void inlineCatalogMetadataSurvivesPageEditsAndDetachedSplitProducts() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("inline-catalog.pdf");
+        Path left = temporaryFolder.getRoot().toPath().resolve("inline-left.pdf");
+        Path right = temporaryFolder.getRoot().toPath().resolve("inline-right.pdf");
+        java.nio.file.Files.write(source, pdfFixture(Arrays.asList(
+                "<< /Type /Catalog /Pages 2 0 R /PrivateMetadata << /Flag true /Numbers [1 2] >> >>",
+                "<< /Type /Pages /Kids [3 0 R 4 0 R] /Count 2 /MediaBox [0 0 120 100] >>",
+                "<< /Type /Page /Parent 2 0 R >>", "<< /Type /Page /Parent 2 0 R >>"), ""));
+        byte[] before = java.nio.file.Files.readAllBytes(source);
+        new DocumentWorkflow().execute(requestBuilder().source("input", DocumentSource.path(source))
+                .primarySource("input").target("left", PublicationTarget.path(left))
+                .target("right", PublicationTarget.path(right)).saveMode(SaveMode.REWRITE).build(), session -> {
+            session.execute(UpdateDocumentInfo.version1().set("Title", PdfString.of(new byte[] {65})).build());
+            session.execute(MovePages.version1(PageRange.of(2, 2), 1));
+            session.execute(CopyPages.version1(PageRange.of(1, 1), 3));
+            session.execute(SplitDocument.version1().target("left", PageRange.of(1, 1))
+                    .target("right", PageRange.of(2, 3)).build());
+            return null;
+        });
+        for (Path product : Arrays.asList(left, right)) {
+            new DocumentWorkflow().execute(sourceRequest(product), session -> {
+                PdfDictionary catalog = (PdfDictionary) session.query(InspectObject.version1(
+                        session.query(DocumentRootReference.INSTANCE), PdfInspectionLimits.of(1000, 0)));
+                PdfDictionary retained = (PdfDictionary) catalog.get(PdfName.of("PrivateMetadata"));
+                assertEquals(2, retained.size());
+                assertEquals(net.zerocloud.pdf.PdfBoolean.of(true), retained.get(PdfName.of("Flag")));
+                net.zerocloud.pdf.PdfArray numbers = (net.zerocloud.pdf.PdfArray) retained.get(PdfName.of("Numbers"));
+                assertEquals(2, numbers.size());
+                assertEquals(PdfNumber.of(1), numbers.get(0));
+                assertEquals(PdfNumber.of(2), numbers.get(1));
+                return null;
+            });
+        }
+        byte[] sibling = java.nio.file.Files.readAllBytes(right);
+        new DocumentWorkflow().execute(rewriteRequest(left, left), session -> {
+            session.execute(UpdateDocumentInfo.version1().set("Title", PdfString.of(new byte[] {66})).build());
+            return null;
+        });
+        assertArrayEquals(sibling, java.nio.file.Files.readAllBytes(right));
+        assertArrayEquals(before, java.nio.file.Files.readAllBytes(source));
+    }
+
+    @Test
+    public void catalogExtensionReferencesAreRejectedBeforePageMutation() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("linked-catalog.pdf");
+        java.nio.file.Files.write(source, pdfFixture(Arrays.asList(
+                "<< /Type /Catalog /Pages 2 0 R /PrivateMetadata << /Target 3 0 R >> >>",
+                "<< /Type /Pages /Kids [3 0 R] /Count 1 /MediaBox [0 0 120 100] >>",
+                "<< /Type /Page /Parent 2 0 R >>"), ""));
+        new DocumentWorkflow().execute(sourceRequest(source), session -> {
+            try {
+                session.execute(InsertBlankPage.version1(1));
+                fail("An unknown Catalog graph containing a page reference must remain protected");
+            } catch (DocumentFailure failure) {
+                assertEquals(DocumentFailureCode.PRESERVATION_UNSUPPORTED, failure.getCode());
+                assertEquals("document.page.manipulate-merge-split", failure.getCapabilityId());
+            }
+            assertEquals(Integer.valueOf(1), session.query(PageCount.INSTANCE));
+            return null;
+        });
+    }
+
+    @Test
     public void infoEntriesRoundTripThroughRewriteAndReopen() throws Exception {
         Path input = temporaryFolder.getRoot().toPath().resolve("input.pdf");
         Path output = temporaryFolder.getRoot().toPath().resolve("output.pdf");
@@ -107,10 +217,13 @@ public final class DocumentMetadataWorkflowTest {
                 });
 
         assertEquals(CAPABILITY, outcome.getCapabilityId());
+        assertEquals(requestedExecutionProfile(), outcome.getExecutionProfile());
 
-        Map<String, PdfValue> reopened = new DocumentWorkflow().execute(
+        WorkflowOutcome<Map<String, PdfValue>> reopenedOutcome = new DocumentWorkflow().execute(
                 sourceRequest(output),
-                session -> readInfoEntries(session)).getResult();
+                session -> readInfoEntries(session));
+        assertEquals(requestedExecutionProfile(), reopenedOutcome.getExecutionProfile());
+        Map<String, PdfValue> reopened = reopenedOutcome.getResult();
         assertEquals(3, reopened.size());
         assertEquals(
                 PdfString.of("Folio T11 metadata".getBytes(
@@ -251,7 +364,7 @@ public final class DocumentMetadataWorkflowTest {
 
     private void assertInfoQueryRejected(byte[] source) throws Exception {
         new DocumentWorkflow().execute(
-                WorkflowRequest.builder()
+                requestBuilder()
                         .source("input",
                                 DocumentSource.bytes(source, source.length))
                         .primarySource("input")
@@ -386,7 +499,7 @@ public final class DocumentMetadataWorkflowTest {
 
     private void assertXmpQueryRejected(byte[] source) throws Exception {
         new DocumentWorkflow().execute(
-                WorkflowRequest.builder()
+                requestBuilder()
                         .source("input",
                                 DocumentSource.bytes(source, source.length))
                         .primarySource("input")
@@ -469,7 +582,23 @@ public final class DocumentMetadataWorkflowTest {
         byte[] oversized = new byte[64 * 1024 * 1024 + 1];
         Arrays.fill(oversized, (byte) 'x');
 
-        new DocumentWorkflow().execute(sourceRequest(input), session -> {
+        // Isolate the 64 MiB command bound from the stricter default ledger
+        // bound while accounting for both sides of Worker transport staging.
+        WorkflowResourcePolicy defaults = WorkflowResourcePolicy.safeDefaults();
+        WorkflowResourcePolicy policy = WorkflowResourcePolicy.builder()
+                .maximumInputBytes(defaults.getMaximumInputBytes())
+                .maximumPages(defaults.getMaximumPages())
+                .maximumObjects(defaults.getMaximumObjects())
+                .maximumNestingDepth(defaults.getMaximumNestingDepth())
+                .maximumDecompressedBytes(defaults.getMaximumDecompressedBytes())
+                .maximumDecodedPixels(defaults.getMaximumDecodedPixels())
+                .maximumOwnedMemoryBytes(512L << 20)
+                .maximumTemporaryStorageBytes(defaults.getMaximumTemporaryStorageBytes())
+                .maximumElapsedTime(defaults.getMaximumElapsedTime())
+                .maximumConcurrentWorkflows(defaults.getMaximumConcurrentWorkflows()).build();
+        WorkflowRequest request = requestBuilder().source("input", DocumentSource.path(input))
+                .primarySource("input").saveMode(SaveMode.REWRITE).resourcePolicy(policy).build();
+        new DocumentWorkflow().execute(request, session -> {
             try {
                 session.execute(SetXmpMetadata.version1(oversized));
                 fail("Expected the oversized XMP packet to be rejected");
@@ -482,6 +611,36 @@ public final class DocumentMetadataWorkflowTest {
             assertNull(session.query(XmpMetadata.version1(4096L)));
             return null;
         });
+    }
+
+    @Test
+    public void xmpReplacementAndSplitRetainUnknownStreamEntries() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("xmp-replace.pdf");
+        Path output = temporaryFolder.getRoot().toPath().resolve("xmp-replace-split.pdf");
+        java.nio.file.Files.write(source, xmpExtendedFixture(xmpPacket("original")));
+        byte[] expected = xmpPacket("replacement");
+        new DocumentWorkflow().execute(rewriteRequest(source, output), session -> {
+            session.execute(SetXmpMetadata.version1(expected));
+            assertRetainedXmpExtra(session, expected);
+            session.execute(SplitDocument.version1().target("output", PageRange.of(1, 1)).build());
+            return null;
+        });
+        new DocumentWorkflow().execute(sourceRequest(output), session -> {
+            assertRetainedXmpExtra(session, expected);
+            return null;
+        });
+    }
+
+    private static void assertRetainedXmpExtra(DocumentSession session, byte[] expected) throws DocumentFailure {
+        assertArrayEquals(expected, session.query(XmpMetadata.version1(4096)));
+        PdfDictionary catalog = (PdfDictionary) session.query(InspectObject.version1(
+                session.query(DocumentRootReference.INSTANCE), PdfInspectionLimits.of(100, 4096)));
+        PdfValue value = catalog.get(PdfName.of("Metadata"));
+        PdfStream metadata = (PdfStream) (value instanceof PdfIndirectReference
+                ? session.query(InspectObject.version1(((PdfIndirectReference) value).getReference(),
+                        PdfInspectionLimits.of(100, 4096))) : value);
+        assertEquals(PdfName.of("Preserved"), metadata.getDictionary().get(PdfName.of("T11Extra")));
+        assertArrayEquals(expected, metadata.readBytes());
     }
 
     @Test
@@ -599,6 +758,47 @@ public final class DocumentMetadataWorkflowTest {
     }
 
     @Test
+    public void nullableFitCoordinatesSurviveQueryMutationMoveAndReopen() throws Exception {
+        Path input = temporaryFolder.getRoot().toPath().resolve("nullable-destinations.pdf");
+        Path output = temporaryFolder.getRoot().toPath().resolve("nullable-retargeted.pdf");
+        byte[] original = pdfFixture(Arrays.asList(
+                "<< /Type /Catalog /Pages 2 0 R /Names << /Dests 5 0 R >> >>",
+                "<< /Type /Pages /Kids [3 0 R 4 0 R] /Count 2 /MediaBox [0 0 120 100] /Resources << >> >>",
+                "<< /Type /Page /Parent 2 0 R >>",
+                "<< /Type /Page /Parent 2 0 R >>",
+                "<< /Names [(bh) [3 0 R /FitBH null] (bv) [3 0 R /FitBV null]"
+                        + " (h) [3 0 R /FitH null] (v) [3 0 R /FitV null]] >>"), "");
+        java.nio.file.Files.write(input, original);
+        new DocumentWorkflow().execute(rewriteRequest(input, output), session -> {
+            Map<String, PageDestination> observed = session.query(NamedDestinations.version1(4));
+            assertEquals(4, observed.size());
+            assertEquals(PageDestination.Style.FIT_BH, observed.get("bh").getStyle());
+            assertEquals(PageDestination.Style.FIT_BV, observed.get("bv").getStyle());
+            assertEquals(PageDestination.Style.FIT_H, observed.get("h").getStyle());
+            assertEquals(PageDestination.Style.FIT_V, observed.get("v").getStyle());
+            for (PageDestination destination : observed.values()) {
+                assertEquals(Collections.<BigDecimal>singletonList(null), destination.getOperands());
+                assertEquals(1, destination.getPageNumber());
+            }
+            session.execute(SetNamedDestinations.version1().set("bh", PageDestination.fitBH(1, null))
+                    .set("bv", PageDestination.fitBV(1, null)).set("h", PageDestination.fitH(1, null))
+                    .set("v", PageDestination.fitV(1, null)).build());
+            session.execute(MovePages.version1(PageRange.of(1, 1), 2));
+            return null;
+        });
+        new DocumentWorkflow().execute(sourceRequest(output), session -> {
+            Map<String, PageDestination> expected = new LinkedHashMap<String, PageDestination>();
+            expected.put("bh", PageDestination.fitBH(2, null));
+            expected.put("bv", PageDestination.fitBV(2, null));
+            expected.put("h", PageDestination.fitH(2, null));
+            expected.put("v", PageDestination.fitV(2, null));
+            assertEquals(expected, session.query(NamedDestinations.version1(4)));
+            return null;
+        });
+        assertArrayEquals(original, java.nio.file.Files.readAllBytes(input));
+    }
+
+    @Test
     public void namedDestinationUpdatePreservesUnnamedEntries()
             throws Exception {
         Path input = temporaryFolder.getRoot().toPath().resolve("dests.pdf");
@@ -658,6 +858,38 @@ public final class DocumentMetadataWorkflowTest {
             }
             assertTrue(session.query(
                     NamedDestinations.version1(16)).isEmpty());
+            return null;
+        });
+    }
+
+    @Test
+    public void namedDestinationRemovalCannotOrphanAnOutline() throws Exception {
+        Path input = temporaryFolder.getRoot().toPath().resolve("outlined-source.pdf");
+        Path output = temporaryFolder.getRoot().toPath().resolve("outlined-preserved.pdf");
+        createBlankDocument(input);
+        List<OutlineItem> outline = Collections.singletonList(OutlineItem.grouping("Parent",
+                Collections.singletonList(OutlineItem.toNamedDestination("Child", "shared",
+                        Collections.<OutlineItem>emptyList()))));
+        new DocumentWorkflow().execute(rewriteRequest(input, output), session -> {
+            session.execute(SetNamedDestinations.version1().set("shared", PageDestination.fit(1)).build());
+            session.execute(ReplaceOutlineTree.version1(outline));
+            try {
+                session.execute(SetNamedDestinations.version1().set("new", PageDestination.fit(1))
+                        .remove("shared").build());
+                fail("Removing a named destination cannot orphan an outline");
+            } catch (DocumentFailure failure) {
+                assertSafeMetadataFailure(failure, DocumentFailureCode.DESTINATION_CONFLICT,
+                        "A named destination removal conflicts with an existing outline.");
+            }
+            assertEquals(Collections.singletonMap("shared", PageDestination.fit(1)),
+                    session.query(NamedDestinations.version1(2)));
+            assertEquals(outline, session.query(OutlineTree.version1(2)));
+            return null;
+        });
+        new DocumentWorkflow().execute(sourceRequest(output), session -> {
+            assertEquals(Collections.singletonMap("shared", PageDestination.fit(1)),
+                    session.query(NamedDestinations.version1(2)));
+            assertEquals(outline, session.query(OutlineTree.version1(2)));
             return null;
         });
     }
@@ -761,7 +993,7 @@ public final class DocumentMetadataWorkflowTest {
     public void infoQueryRejectsExcessivelyDeepGraphs() throws Exception {
         byte[] source = deepInfoFixture(70);
         new DocumentWorkflow().execute(
-                WorkflowRequest.builder()
+                requestBuilder()
                         .source("input",
                                 DocumentSource.bytes(source, source.length))
                         .primarySource("input")
@@ -790,7 +1022,7 @@ public final class DocumentMetadataWorkflowTest {
     private void assertNamedDestinationsQueryRejected(byte[] source)
             throws Exception {
         new DocumentWorkflow().execute(
-                WorkflowRequest.builder()
+                requestBuilder()
                         .source("input",
                                 DocumentSource.bytes(source, source.length))
                         .primarySource("input")
@@ -836,7 +1068,7 @@ public final class DocumentMetadataWorkflowTest {
     public void namedDestinationCommandRejectsMalformedExistingTrees()
             throws Exception {
         new DocumentWorkflow().execute(
-                WorkflowRequest.builder()
+                requestBuilder()
                         .source("input", DocumentSource.bytes(
                                 unsortedNameTreeFixture(),
                                 unsortedNameTreeFixture().length))
@@ -971,7 +1203,7 @@ public final class DocumentMetadataWorkflowTest {
     @Test
     public void outlineCommandRejectsMalformedExistingTrees() throws Exception {
         new DocumentWorkflow().execute(
-                WorkflowRequest.builder()
+                requestBuilder()
                         .source("input", DocumentSource.bytes(
                                 cyclicOutlineFixture(),
                                 cyclicOutlineFixture().length))
@@ -1048,7 +1280,7 @@ public final class DocumentMetadataWorkflowTest {
     @Test
     public void outlineQueryHonorsItemBound() throws Exception {
         new DocumentWorkflow().execute(
-                WorkflowRequest.builder()
+                requestBuilder()
                         .source("input", DocumentSource.bytes(
                                 outlineFixture(),
                                 outlineFixture().length))
@@ -1107,7 +1339,7 @@ public final class DocumentMetadataWorkflowTest {
 
     private void assertOutlineQueryRejected(byte[] source) throws Exception {
         new DocumentWorkflow().execute(
-                WorkflowRequest.builder()
+                requestBuilder()
                         .source("input", DocumentSource.bytes(
                                 source, source.length))
                         .primarySource("input")
@@ -1253,6 +1485,12 @@ public final class DocumentMetadataWorkflowTest {
                     return null;
                 });
 
+        String serialized = new String(
+                java.nio.file.Files.readAllBytes(updated),
+                StandardCharsets.ISO_8859_1);
+        assertTrue(serialized.contains("/Subtype /text#2Fcsv"));
+        assertTrue(!serialized.contains("/Subtype /text#232Fcsv"));
+
         new DocumentWorkflow().execute(sourceRequest(updated), session -> {
             List<EmbeddedFileSummary> files = session.query(
                     EmbeddedFiles.version1(4));
@@ -1296,7 +1534,7 @@ public final class DocumentMetadataWorkflowTest {
         assertEmbeddedFilesListRejected(embeddedFilesUnknownKeyFixture());
         assertEmbeddedFilesListRejected(embeddedFilesNonStreamFixture());
         new DocumentWorkflow().execute(
-                WorkflowRequest.builder()
+                requestBuilder()
                         .source("input", DocumentSource.bytes(
                                 embeddedFilesWrongTypeFixture(),
                                 embeddedFilesWrongTypeFixture().length))
@@ -1322,7 +1560,7 @@ public final class DocumentMetadataWorkflowTest {
     @Test
     public void embedFileRejectsMalformedExistingTrees() throws Exception {
         new DocumentWorkflow().execute(
-                WorkflowRequest.builder()
+                requestBuilder()
                         .source("input", DocumentSource.bytes(
                                 embeddedFilesThumbnailFixture(),
                                 embeddedFilesThumbnailFixture().length))
@@ -1375,7 +1613,7 @@ public final class DocumentMetadataWorkflowTest {
     @Test
     public void embeddedFileQueriesHonorDeclaredBounds() throws Exception {
         new DocumentWorkflow().execute(
-                WorkflowRequest.builder()
+                requestBuilder()
                         .source("input", DocumentSource.bytes(
                                 embeddedFilesFixture(),
                                 embeddedFilesFixture().length))
@@ -1417,7 +1655,7 @@ public final class DocumentMetadataWorkflowTest {
     private void assertEmbeddedFilesListRejected(byte[] source)
             throws Exception {
         new DocumentWorkflow().execute(
-                WorkflowRequest.builder()
+                requestBuilder()
                         .source("input", DocumentSource.bytes(
                                 source, source.length))
                         .primarySource("input")
@@ -1605,7 +1843,7 @@ public final class DocumentMetadataWorkflowTest {
                     return null;
                 });
 
-        WorkflowRequest mergeRequest = WorkflowRequest.builder()
+        WorkflowRequest mergeRequest = requestBuilder()
                 .source("primary", DocumentSource.path(primary))
                 .source("appendix", DocumentSource.path(appendix))
                 .primarySource("primary")
@@ -1713,7 +1951,7 @@ public final class DocumentMetadataWorkflowTest {
                     return null;
                 });
 
-        WorkflowRequest splitRequest = WorkflowRequest.builder()
+        WorkflowRequest splitRequest = requestBuilder()
                 .source("input", DocumentSource.path(input))
                 .primarySource("input")
                 .target("first", PublicationTarget.path(firstOutput))
@@ -1825,7 +2063,7 @@ public final class DocumentMetadataWorkflowTest {
                     return null;
                 });
 
-        WorkflowRequest mergeRequest = WorkflowRequest.builder()
+        WorkflowRequest mergeRequest = requestBuilder()
                 .source("primary", DocumentSource.path(primary))
                 .source("appendix", DocumentSource.path(appendix))
                 .primarySource("primary")
@@ -1883,7 +2121,7 @@ public final class DocumentMetadataWorkflowTest {
                     return null;
                 });
 
-        WorkflowRequest splitRequest = WorkflowRequest.builder()
+        WorkflowRequest splitRequest = requestBuilder()
                 .source("input", DocumentSource.path(input))
                 .primarySource("input")
                 .target("first", PublicationTarget.path(firstOutput))
@@ -1923,7 +2161,7 @@ public final class DocumentMetadataWorkflowTest {
         createBlankDocument(primary);
         byte[] appendix = oversizedMetadataFixture();
 
-        WorkflowRequest mergeRequest = WorkflowRequest.builder()
+        WorkflowRequest mergeRequest = requestBuilder()
                 .source("primary", DocumentSource.path(primary))
                 .source("appendix",
                         DocumentSource.bytes(appendix, appendix.length))
@@ -1949,7 +2187,7 @@ public final class DocumentMetadataWorkflowTest {
                 "split-oversize-output.pdf");
         byte[] source = oversizedMetadataFixture();
 
-        WorkflowRequest splitRequest = WorkflowRequest.builder()
+        WorkflowRequest splitRequest = requestBuilder()
                 .source("input", DocumentSource.bytes(source, source.length))
                 .primarySource("input")
                 .target("product", PublicationTarget.path(output))
@@ -1998,7 +2236,7 @@ public final class DocumentMetadataWorkflowTest {
     private void assertPageMutationRejects(byte[] source, String outputName)
             throws Exception {
         Path output = temporaryFolder.getRoot().toPath().resolve(outputName);
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = requestBuilder()
                 .source("input", DocumentSource.bytes(source, source.length))
                 .primarySource("input")
                 .target("output", PublicationTarget.path(output))
@@ -2629,8 +2867,16 @@ public final class DocumentMetadataWorkflowTest {
         output.write(bytes, 0, bytes.length);
     }
 
+    private static WorkflowRequest.Builder requestBuilder() {
+        return WorkflowRequest.builder().executionProfile(requestedExecutionProfile());
+    }
+
+    private static WorkflowExecutionProfile requestedExecutionProfile() {
+        return WorkflowExecutionProfile.valueOf(System.getProperty("folio.t11.executionProfile", "IN_PROCESS"));
+    }
+
     private static WorkflowRequest rewriteRequest(Path input, Path output) {
-        return WorkflowRequest.builder()
+        return requestBuilder()
                 .source("input", DocumentSource.path(input))
                 .primarySource("input")
                 .target("output", PublicationTarget.path(output))
@@ -2639,7 +2885,7 @@ public final class DocumentMetadataWorkflowTest {
     }
 
     private static WorkflowRequest sourceRequest(Path source) {
-        return WorkflowRequest.builder()
+        return requestBuilder()
                 .source("input", DocumentSource.path(source))
                 .primarySource("input")
                 .saveMode(SaveMode.REWRITE)
@@ -2652,7 +2898,7 @@ public final class DocumentMetadataWorkflowTest {
 
     private static void createBlankDocument(Path target, int pageCount)
             throws Exception {
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = requestBuilder()
                 .target("output", PublicationTarget.path(target))
                 .saveMode(SaveMode.REWRITE)
                 .build();

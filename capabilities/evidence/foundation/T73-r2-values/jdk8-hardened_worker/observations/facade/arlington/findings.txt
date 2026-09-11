@@ -1,0 +1,99 @@
+Version exit: 0
+[0m
+
+Arlington PDF Model C++ P.o.C. version v0.81 built Sep  8 2026 00:00:00 (GNU-C linux release)
+Choose one of: --pdf, --checkdva or --validate.
+
+Usage:
+	TestGrammar --tsvdir <dir> [--force <ver>|exact] [--out <fname|dir>] [--no-color] [--clobber] [--debug] [--brief] [--extensions <extn1[,extn2]>] [--password <pwd>] [--exclude string | @textfile.txt] [--dryrun] [--allfiles] [--validate | --checkdva <formalrep> | --pdf <fname|dir|@file.txt> ]
+
+Options: 
+-h, --help                   This usage message.
+-b, --brief                  terse output when checking PDFs. The full PDF DOM tree is NOT output.
+-c, --checkdva               Adobe DVA formal-rep PDF file to compare against Arlington PDF model.
+-d, --debug                  output additional debugging information.
+    --clobber                always overwrite PDF output report files (--pdf) rather than append underscores.
+    --no-color               disable colorized text output (useful when redirecting or piping output)
+-m, --batchmode              stop popup error dialog windows and redirect everything to console (Windows only, includes memory leak reports).
+-o, --out                    output file or folder. Default is stdout. See --clobber for overwriting behavior.
+-p, --pdf                    input PDF file, folder, or text file of PDF files/folders.
+-f, --force                  force the PDF version to the specified value (1,0, 1.1, ..., 2.0 or 'exact'). Only applicable to --pdf.
+-t, --tsvdir                 [required] folder containing Arlington PDF model TSV file set.
+-v, --validate               validate the Arlington PDF model.
+-e, --extensions             a comma-separated list of extensions, or '*' for all extensions.
+    --password               password. Only applicable to --pdf.
+    --exclude                PDF exclusion string or filelist (# is a comment). Only applicable to --pdf.
+    --dryrun                 Dry run - don't do any actual processing.
+-a, --allfiles               Process all files regardless of file extension.
+    --explicit-values-only   Ignore wildcards in PossibleValues.
+
+Built using pdfium
+
+Validation exit: 0
+Processing "/workspace/capabilities/evidence/foundation/T73-r2-values/jdk8-hardened_worker/observations/facade/values.pdf" to stdout BEGIN - TestGrammar v0.81 built Sep  8 2026 00:00:00 (GNU-C linux release) pdfium
+Arlington TSV data: "/workspace/.build-cache/arlington/fe4a1a8/tsv/latest"
+PDF: "/workspace/capabilities/evidence/foundation/T73-r2-values/jdk8-hardened_worker/observations/facade/values.pdf"
+Info: XRefStream detected.
+Info: Header is version PDF 1.7
+Info: Command line forced to PDF 1.7
+Info: Processing as PDF 1.7
+       1: Trailer (as XRefStream)
+       2:   Trailer (as XRefStream)->ID (as TrailerIDArray)
+       3:   Trailer (as XRefStream)->Index (as ArrayOfXRefIndexIntegers)
+       4:   Trailer (as XRefStream)->Info (as DocInfo)
+       5:   Trailer (as XRefStream)->Root (as Catalog)
+       6:   Trailer (as XRefStream)->W (as ArrayOfXRefWIntegers)
+       7:     Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)
+       8:     Trailer (as XRefStream)->Root (as Catalog)->PieceInfo (as PagePiece)
+       9:     Trailer (as XRefStream)->Root (as Catalog)->ViewerPreferences
+      10:       Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)
+      11:       Trailer (as XRefStream)->Root (as Catalog)->PieceInfo (as PagePiece)->FolioPDF (as Data)
+      12:         Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]
+      13:         Trailer (as XRefStream)->Root (as Catalog)->PieceInfo (as PagePiece)->FolioPDF (as Data)->Private (as _UniversalDictionary)
+      14:           Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Contents (as Stream)
+      15:           Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Parent (as PageTreeNodeRoot)
+      16:           Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)
+      17:           Trailer (as XRefStream)->Root (as Catalog)->PieceInfo (as PagePiece)->FolioPDF (as Data)->Private (as _UniversalDictionary)->Array (as _UniversalArray)
+      18:           Trailer (as XRefStream)->Root (as Catalog)->PieceInfo (as PagePiece)->FolioPDF (as Data)->Private (as _UniversalDictionary)->Dictionary (as _UniversalDictionary)
+      19:           Trailer (as XRefStream)->Root (as Catalog)->PieceInfo (as PagePiece)->FolioPDF (as Data)->Private (as _UniversalDictionary)->Reference (as Stream)
+      20:           Trailer (as XRefStream)->Root (as Catalog)->PieceInfo (as PagePiece)->FolioPDF (as Data)->Private (as _UniversalDictionary)->RetainedStream (as Stream)
+      21:           Trailer (as XRefStream)->Root (as Catalog)->PieceInfo (as PagePiece)->FolioPDF (as Data)->Private (as _UniversalDictionary)->Stream (as Stream)
+      22:           Trailer (as XRefStream)->Root (as Catalog)->PieceInfo (as PagePiece)->FolioPDF (as Data)->Private (as _UniversalDictionary)->Unknown (as _UniversalDictionary)
+      23:             Trailer (as XRefStream)->Root (as Catalog)->PieceInfo (as PagePiece)->FolioPDF (as Data)->Private (as _UniversalDictionary)->Array (as _UniversalArray)[5 (as _UniversalDictionary)]
+      24:             Trailer (as XRefStream)->Root (as Catalog)->PieceInfo (as PagePiece)->FolioPDF (as Data)->Private (as _UniversalDictionary)->Array (as _UniversalArray)[6 (as Stream)]
+      25:             Trailer (as XRefStream)->Root (as Catalog)->PieceInfo (as PagePiece)->FolioPDF (as Data)->Private (as _UniversalDictionary)->Reference (as Stream)->DecodeParms (as ArrayOfDecodeParams)
+      26:             Trailer (as XRefStream)->Root (as Catalog)->PieceInfo (as PagePiece)->FolioPDF (as Data)->Private (as _UniversalDictionary)->Reference (as Stream)->Filter (as ArrayOfFilterNames)
+      27:               Trailer (as XRefStream)->Root (as Catalog)->PieceInfo (as PagePiece)->FolioPDF (as Data)->Private (as _UniversalDictionary)->Reference (as Stream)->DecodeParms (as ArrayOfDecodeParams)[0 (as FilterLZWDecode)]
+Info: Latest Arlington object was PDF 1.7 (ViewerPreferences/NumCopies) compared using forced PDF 1.7
+END
+
+DONE - 1 files processed
+
+Negative control catalog-lang-string sha256=2de7cfe80673b19bc0844455c65b2ab159956f9b453ade5cf5c7991cf7288d7c detected=true
+Negative control catalog-page-mode-name sha256=8448711d31c93743915881ca9b4fac7d20e1fd5544cd6eab87b932105d027a05 detected=true
+Negative control catalog-page-mode-value sha256=4105f57be42ef29c2bc854e6df9b897cf97bd7de0e359c241ef80daafa37569f detected=true
+Negative control data-lastmodified-date sha256=4314c9e958387445df6b93c1a0a2f749ce9c07baf8dd039b0f2cc91e04cc1b95 detected=true
+Negative control data-lastmodified-required sha256=057044e69998ea8cfccf7c92c51ecd83ef57d9e3f07d9280c93f26e349468bd7 detected=true
+Negative control page-contents-array-member sha256=ef72af9bee510e1cf20047c0bc87b32676965a904d019c5a6f16a709f87fa07d detected=true
+Negative control page-contents-type sha256=bb4e80a1c8b9b25d2448fb019d27176efc9cd544f2905e7a2a23df8d484ec6c9 detected=true
+Negative control page-resources-required sha256=057453de6d8fe0490a10b2a44d06c824d0306c64bca64b3444b37ed4b3188dd3 detected=true
+Negative control pages-type sha256=6fe72868d9f01b1fb929450a8f504f6b12fdc8508ae8e325d49009e6b43bbe1a detected=true
+Negative control pages-type-value sha256=46e9d3271b38bad3579ec1bff9388f580efd1990534924c2508f2b1fc6a88cfc detected=true
+Negative control piece-entry-dictionary sha256=842ece5cbdbaf1eb338d9eb47bb619b40f56140487a4ce2227c303730420cdc9 detected=true
+Negative control pieceinfo-dictionary sha256=6e54c9834eb1e24e844c067736da7589a960edb0db92925dee1a15bb89d65948 detected=true
+Negative control stream-decodeparams-array-member sha256=7bf9e014418ec771fcbb76f46b7927dbbfc843efc3fa09b40d275bf40e43f1d3 detected=true
+Negative control stream-decodeparams-count sha256=973af11f633cebf99d633125e876ddc7248624f782ce19a2e2e6d963b133201f detected=true
+Negative control stream-decodeparams-position sha256=b736ea2ea2de2bd2dd1747606638787dcb8237b0b9ada9223554ea076c5ab057 detected=true
+Negative control stream-decodeparams-type sha256=f5b29bddaa3a77933b86c985caa8ab3a2bbc433bb15c12e3670cfa79a19bd427 detected=true
+Negative control stream-filter-array-name-type sha256=fac2d18c3f760a9d6eaa2182f452b68c3d2512951a5cb96a5cb3dba02fffe29c detected=true
+Negative control stream-filter-array-name-value sha256=ef18d21245a44471a7346b15ee658251a9a005ebf190396ac1d7d4f1a732a188 detected=true
+Negative control stream-filter-name-value sha256=4224e00fdd257d3842799b59c0a1522f84f93d5dd0e66ba417b621be4df56fa4 detected=true
+Negative control stream-filter-type sha256=dc284a9e3ef213f5b10133af6b65fd8ba11a5af043dbb00359b23373b68a8eda detected=true
+Negative control stream-flate-predictor-type sha256=e372ccb9ba52dc549bf100f795f138eb3a1dea9c61886358f6d46546ed5e5d55 detected=true
+Negative control stream-flate-predictor-value sha256=4b37462527d107755a11350d286c98c3650fb18254f0610f08808e28cc83f27d detected=true
+Negative control trailer-info-indirect sha256=9e99abaa6ca013f826cc325130c0496765e92716fb320fa9bd13592214d84fb2 detected=true
+Negative control trailer-info-required sha256=b872d21e15c25ba2d038bfb54ccdec6158715fa492905fc26161bf22ea01bc89 detected=true
+Negative control viewer-hide-toolbar-boolean sha256=cb9a1dbeff0e2a9522adde260ab043a1ae4486a65024fbe6a1687d92d58ea3b0 detected=true
+Negative control viewer-numcopies-integer sha256=84c89986c0b945b77b7e25dc742ad6e985139e69ea71763ad9f088e53e1153a1 detected=true
+Negative control viewer-numcopies-positive sha256=cb8ff0bc669e165e52fcb6a546a31c63af9ba9b186c878e73763e8a0d9a0ecec detected=true
+Negative control viewer-preferences-dictionary sha256=87279803212106a8b657e23fafa78728c178e450799b42c02526ec6c455a2155 detected=true

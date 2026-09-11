@@ -21,6 +21,7 @@ public final class ClasspathExclusivityIT {
     private static final List<String> MAPPED_PUBLIC_CLASSES = Arrays.asList(
             "net.zerocloud.pdf.itext7.kernel.exceptions.PdfException",
             "net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument",
+            "net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo",
             "net.zerocloud.pdf.itext7.kernel.pdf.PdfPage",
             "net.zerocloud.pdf.itext7.kernel.pdf.PdfReader",
             "net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter",

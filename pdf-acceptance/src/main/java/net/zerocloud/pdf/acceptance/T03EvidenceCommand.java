@@ -85,7 +85,8 @@ public final class T03EvidenceCommand {
                 "pass".equals(nativeResults.getProperty("standards")) && "pass".equals(facadeResults.getProperty("standards")));
         Properties results = new Properties();
         for (String chain : CHAINS) {
-            String value = combine(nativeResults.getProperty(chain), facadeResults.getProperty(chain));
+            String value = EvidenceResult.combine(
+                    nativeResults.getProperty(chain), facadeResults.getProperty(chain));
             if (!"fail".equals(controls.getProperty(chain))) {
                 value = "indeterminate";
             }
@@ -116,7 +117,8 @@ public final class T03EvidenceCommand {
                 root.resolve("scripts/" + checker + "-pin.properties").toString(),
                 root.resolve("capabilities/profiles/T03-standards/" + checker + ".properties").toString(), pdf.toString()});
             PinProperties observation = PinProperties.load(directory.resolve("standards.properties"), "standards observation");
-            standardResult = combine(standardResult, observation.required("result"));
+            standardResult = EvidenceResult.combine(
+                    standardResult, observation.required("result"));
             if ("pass".equals(observation.required("result"))) {
                 covered.addAll(Arrays.asList(observation.required("covered-rules").split(",")));
             }
@@ -242,11 +244,6 @@ public final class T03EvidenceCommand {
                 || !"AE".equals(visual.comparisonMetric()) || !GOLDEN_SHA256.equals(visual.expectedRasterSha256())) {
             throw new IOException("T03 requires its original 144 DPI, opaque sRGB, AE 0, zero-fuzz profile");
         }
-    }
-
-    private static String combine(String first, String second) {
-        return "fail".equals(first) || "fail".equals(second) ? "fail"
-                : "pass".equals(first) && "pass".equals(second) ? "pass" : "indeterminate";
     }
 
     private static Properties load(Path path) throws IOException {

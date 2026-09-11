@@ -72,6 +72,7 @@ public final class JarContractIT {
                 "net/zerocloud/pdf/itext7/kernel/pdf/PdfStream.class",
                 "net/zerocloud/pdf/itext7/kernel/pdf/PdfIndirectReference.class",
                 "net/zerocloud/pdf/itext7/kernel/pdf/PdfCatalog.class",
+                "net/zerocloud/pdf/itext7/kernel/pdf/PdfDocumentInfo.class",
                 "net/zerocloud/pdf/itext7/kernel/utils/PdfMerger.class",
                 "net/zerocloud/pdf/itext7/kernel/utils/PdfSplitter.class",
                 "net/zerocloud/pdf/itext7/layout/Document.class"));
@@ -204,12 +205,25 @@ public final class JarContractIT {
                 "PdfDocument(net.zerocloud.pdf.itext7.kernel.pdf.PdfReader)",
                 "PdfDocument(net.zerocloud.pdf.itext7.kernel.pdf.PdfReader,net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter)",
                 "PdfDocument(net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter)",
-                "PdfDocument(java.util.Map,java.lang.String,java.util.Map)");
+                "PdfDocument(java.util.Map,java.lang.String,java.util.Map)",
+                "PdfDocument(java.util.Map,java.lang.String,java.util.Map,net.zerocloud.pdf.PdfVersion)");
         assertMethods(document,
                 "net.zerocloud.pdf.itext7.kernel.pdf.PdfPage addNewPage()",
                 "net.zerocloud.pdf.itext7.kernel.pdf.PdfPage addNewPage(int)",
                 "java.util.List copyPages(int,int,int)",
                 "net.zerocloud.pdf.itext7.kernel.pdf.PdfCatalog getCatalog()",
+                "net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo getDocumentInfo()",
+                "byte[] getXmpMetadata()",
+                "byte[] getXmpMetadata(long)",
+                "void setXmpMetadata(byte[])",
+                "java.util.Map getNamedDestinations(int)",
+                "void addNamedDestination(java.lang.String,net.zerocloud.pdf.PageDestination)",
+                "void setNamedDestinations(java.util.Map,java.util.List)",
+                "java.util.List getOutlines(int)",
+                "void setOutlines(java.util.List)",
+                "void addFileAttachment(net.zerocloud.pdf.EmbeddedFile)",
+                "java.util.List getFileAttachments(int)",
+                "java.util.Optional getFileAttachment(java.lang.String,long)",
                 "net.zerocloud.pdf.itext7.kernel.utils.PdfMerger getMerger()",
                 "int getNumberOfPages()",
                 "net.zerocloud.pdf.itext7.kernel.pdf.PdfPage getPage(int)",
@@ -244,6 +258,35 @@ public final class JarContractIT {
                 "PdfException(java.lang.String,java.lang.Throwable)");
         assertMethods(exception);
         assertValueSurface(loader);
+        assertMetadataSurface(loader);
+    }
+
+    private static void assertMetadataSurface(ClassLoader loader) throws Exception {
+        String prefix = "net.zerocloud.pdf.itext7.kernel.pdf.";
+        Class<?> info = loader.loadClass(prefix + "PdfDocumentInfo");
+        assertConstructors(info);
+        assertMethods(info,
+                prefix + "PdfDocumentInfo addCreationDate()",
+                prefix + "PdfDocumentInfo addModDate()",
+                "java.lang.String getTitle()",
+                prefix + "PdfDocumentInfo setTitle(java.lang.String)",
+                "java.lang.String getAuthor()",
+                prefix + "PdfDocumentInfo setAuthor(java.lang.String)",
+                "java.lang.String getSubject()",
+                prefix + "PdfDocumentInfo setSubject(java.lang.String)",
+                "java.lang.String getKeywords()",
+                prefix + "PdfDocumentInfo setKeywords(java.lang.String)",
+                "java.lang.String getCreator()",
+                prefix + "PdfDocumentInfo setCreator(java.lang.String)",
+                "java.lang.String getProducer()",
+                prefix + "PdfDocumentInfo setProducer(java.lang.String)",
+                prefix + "PdfName getTrapped()",
+                prefix + "PdfDocumentInfo setTrapped(" + prefix + "PdfName)",
+                "java.lang.String getMoreInfo(java.lang.String)",
+                "void setMoreInfo(java.lang.String,java.lang.String)",
+                "void setMoreInfo(java.util.Map)",
+                "net.zerocloud.pdf.PdfDictionary getEntries()",
+                "void updateEntries(java.util.Map,java.util.List)");
     }
 
     private static void assertValueSurface(ClassLoader loader) throws Exception {

@@ -20,12 +20,12 @@ export FOLIO_HARFBUZZ_HELPER=/explicit/folio-harfbuzz-10.2.0/bin/folio-harfbuzz
 ```
 
 普通构建保留认证记录器的行为测试，包括缺工具时必须保留 `INDETERMINATE`
-记录。T03/T09/T10 中依赖独立验收工具的测试须先按
+记录。T03/T09/T10/T11 中依赖独立验收工具的测试须先按
 [固定工具安装说明](../third-party/t03-standards-tools.md) 完成配置，再显式运行：
 
 ```sh
 ./mvnw -B -ntp -Pindependent-certification -pl pdf-acceptance -am \
-  -Dtest=T03EvidenceCommandTest,T09EvidenceCommandTest,T10EvidenceCommandTest,T10StandardsQualificationTest \
+  -Dtest=T03EvidenceCommandTest,T09EvidenceCommandTest,T10EvidenceCommandTest,T10StandardsQualificationTest,T11EvidenceCommandTest,T11StandardsQualificationTest \
   -Dsurefire.failIfNoSpecifiedTests=false test
 ```
 
@@ -211,6 +211,66 @@ JDK 8、11、17、21 上认证，Facade 则单独记录实际 IN_PROCESS。每�
 [Foundation Evidence 索引](../../capabilities/foundation-evidence.yaml)；Windows、
 macOS 与其他未完成 Foundation obligation 不在本次认证范围内，全局状态仍为
 NOT READY。复跑步骤见 [T10 认证合同](../t10-certification.md)。
+
+## T11 文档信息、导航与附件
+
+Native Workflow 可用项目自有的 Command、Query 和值类型处理 Info 字典、XMP、
+书签树、具名／显式目标和嵌入文件。Stable Migration Facade 把同一合同映射到
+`PdfDocument` 和文档持有的 `PdfDocumentInfo` 视图。下例修改已有文件；所有修改
+在关闭 Document 后才通过一次 Native `REWRITE` 发布：
+
+```java
+import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import net.zerocloud.pdf.EmbeddedFile;
+import net.zerocloud.pdf.OutlineItem;
+import net.zerocloud.pdf.PageDestination;
+import net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument;
+import net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo;
+import net.zerocloud.pdf.itext7.kernel.pdf.PdfReader;
+import net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter;
+
+try (PdfReader reader = new PdfReader("input.pdf");
+     PdfDocument document = new PdfDocument(reader, new PdfWriter("output.pdf"))) {
+    PdfDocumentInfo info = document.getDocumentInfo();
+    info.setTitle("季度报告").setAuthor("ZeroCloud")
+            .addCreationDate().addModDate();
+
+    document.setXmpMetadata(("<x:xmpmeta xmlns:x=\"adobe:ns:meta/\">"
+            + "<x:label>季度报告</x:label></x:xmpmeta>")
+            .getBytes(StandardCharsets.UTF_8));
+    document.addNamedDestination("summary",
+            PageDestination.xyz(1, BigDecimal.ZERO, null, null));
+    document.setOutlines(Collections.singletonList(
+            OutlineItem.toNamedDestination("摘要", "summary",
+                    Collections.<OutlineItem>emptyList())));
+    document.addFileAttachment(EmbeddedFile.version1(
+            "data.csv", "a,b\n1,2\n".getBytes(StandardCharsets.UTF_8), "text/csv"));
+}
+```
+
+Info 视图属于 Document，只能在创建 Document 的线程使用，关闭后失效；
+`getEntries()`、XMP 字节、书签、目标和附件结果则是可脱离 Document 使用的不可变
+或防御性副本。读取 XMP、书签、目标和附件时必须提供或使用明确上限。非法 XML、
+外部实体、恶意树图、越界载荷、会使书签悬空的目标删除和已有签名上的元数据修改
+都会在部分修改发生前以安全的 Native failure 拒绝。
+`addCreationDate()` 和 `addModDate()` 使用当前系统时间与时区偏移写入 PDF 日期；
+需要固定日期时可用 `setMoreInfo` 传入明确的 PDF 日期字符串。
+
+具名目标按 PDF 字符串编码后的无符号字节顺序处理。页面移动、复制、合并和拆分会
+按页面身份重定向目标；名称冲突稳定改名为 `-N`，书签中的具名引用也同步改写。
+拆分只保留指向存活页面的目标和书签分支，并为每个产品复制附件与安全的未知内容。
+如需写入 PDF 2.0 的标准 `AFRelationship`，应使用接受
+`Map<String, PdfReader>`、primary 名、`Map<String, PdfWriter>` 和
+`PdfVersion.PDF_2_0` 的四参数构造器；三参数及简化构造器继续默认 PDF 1.7。
+
+T11 对 Native 的两个执行模式在四个 Linux/JDK 环境分别认证；Facade 的实际身份
+始终单独记录为 IN_PROCESS。四条证据链、XML 访问 canary、签名保护、精确附件哈希
+和候选绑定规则见[英文 T11 认证合同](../t11-certification.md)，完整成员和失败边界见
+[英文元数据合同](../metadata-navigation.md)。当前候选的权威记录是
+[Foundation Evidence 索引](../../capabilities/foundation-evidence.yaml)；其他未完成
+obligation 仍使整体 Foundation 状态为 NOT READY。
 
 ## T23 页面渲染
 

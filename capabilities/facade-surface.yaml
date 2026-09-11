@@ -1196,13 +1196,369 @@ surfaces:
         or detached mutation targets reject with IllegalStateException.
       capabilities:
       - document.value.inspect-patch
+    - id: itext7.kernel.pdf-document.constructor-named-sources-targets-version
+      reference:
+        status: folio-extension
+        type: com.itextpdf.kernel.pdf.PdfDocument
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: <init>(java.util.Map,java.lang.String,java.util.Map,net.zerocloud.pdf.PdfVersion)
+      generic-contract: Parameters are Map<String, mapped PdfReader>, String, Map<String, mapped PdfWriter>, and project-owned PdfVersion; the version applies to every declared Target.
+      exception-contract: Rejects invalid declarations before Reader transfer; unsupported output policy and Native failures retain their DocumentFailure cause through PdfException when execution starts.
+      capabilities:
+      - document.metadata.outlines-destinations-attachments
+    - id: itext7.kernel.pdf-document.get-document-info
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDocument
+        member: getDocumentInfo()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: getDocumentInfo()
+      generic-contract: Returns one document-owned mapped PdfDocumentInfo view; repeated calls return the same view.
+      exception-contract: Rejects a closed document or non-owner thread with IllegalStateException; Native query failures retain their DocumentFailure cause through PdfException.
+      capabilities:
+      - document.metadata.outlines-destinations-attachments
+    - id: itext7.kernel.pdf-document.get-xmp-metadata
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDocument
+        member: getXmpMetadata()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: getXmpMetadata()
+      generic-contract: Returns a detached defensive byte[] of the exact decoded XMP packet, or null, under the fixed 64 MiB bound.
+      exception-contract: Rejects a closed document with IllegalStateException; malformed structure, limits, and Native failures retain their DocumentFailure cause through PdfException.
+      capabilities:
+      - document.metadata.outlines-destinations-attachments
+    - id: itext7.kernel.pdf-document.get-xmp-metadata-bounded
+      reference:
+        status: adapted
+        type: com.itextpdf.kernel.pdf.PdfDocument
+        member: getXmpMetadata()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: getXmpMetadata(long)
+      generic-contract: Returns a detached defensive byte[] or null and adds an explicit nonnegative decoded-byte bound.
+      exception-contract: Invalid bounds reject before access; limit and structural failures retain their Native DocumentFailure cause through PdfException.
+      capabilities:
+      - document.metadata.outlines-destinations-attachments
+    - id: itext7.kernel.pdf-document.set-xmp-metadata
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDocument
+        member: setXmpMetadata(byte[])
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: setXmpMetadata(byte[])
+      generic-contract: Returns void and defensively copies one well-formed XMP packet before an atomic Native Command.
+      exception-contract: Rejects null, malformed, oversized, externally resolving, read-only, closed, or unpreservable input without partial mutation; Native failures retain their cause through PdfException.
+      capabilities:
+      - document.metadata.outlines-destinations-attachments
+    - id: itext7.kernel.pdf-document.get-named-destinations
+      reference:
+        status: adapted
+        type: com.itextpdf.kernel.pdf.PdfDocument
+        member: getNamedDestinations()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: getNamedDestinations(int)
+      generic-contract: Returns immutable Map<String, project-owned PageDestination> in unsigned encoded-key order under an explicit entry bound.
+      exception-contract: Malformed trees, invalid destinations, and limit failures retain their Native DocumentFailure cause through PdfException; closed documents reject with IllegalStateException.
+      capabilities:
+      - document.metadata.outlines-destinations-attachments
+    - id: itext7.kernel.pdf-document.add-named-destination
+      reference:
+        status: adapted
+        type: com.itextpdf.kernel.pdf.PdfDocument
+        member: addNamedDestination(java.lang.String,com.itextpdf.kernel.pdf.PdfObject)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: addNamedDestination(java.lang.String,net.zerocloud.pdf.PageDestination)
+      generic-contract: Returns void; creates or replaces one exact project-owned PageDestination without changing other names.
+      exception-contract: Invalid pages, names, tree structure, preservation, lifecycle, or ownership reject before mutation with the Native failure retained through PdfException.
+      capabilities:
+      - document.metadata.outlines-destinations-attachments
+    - id: itext7.kernel.pdf-document.set-named-destinations
+      reference:
+        status: folio-extension
+        type: com.itextpdf.kernel.pdf.PdfDocument
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: setNamedDestinations(java.util.Map,java.util.List)
+      generic-contract: Parameters are Map<String, PageDestination> replacements and List<String> removals, copied and applied atomically in one Native Command.
+      exception-contract: Overlap, malformed input, unsafe preservation, and removals that orphan outlines reject before mutation; closed or read-only documents reject with IllegalStateException.
+      capabilities:
+      - document.metadata.outlines-destinations-attachments
+    - id: itext7.kernel.pdf-document.get-outlines
+      reference:
+        status: adapted
+        type: com.itextpdf.kernel.pdf.PdfDocument
+        member: getOutlines(boolean)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: getOutlines(int)
+      generic-contract: Returns immutable List<project-owned OutlineItem> with exact explicit or named destinations under an explicit item bound.
+      exception-contract: Malformed links, targets, cycles, and limit failures retain their Native DocumentFailure cause through PdfException; closed documents reject with IllegalStateException.
+      capabilities:
+      - document.metadata.outlines-destinations-attachments
+    - id: itext7.kernel.pdf-document.set-outlines
+      reference:
+        status: adapted
+        type: com.itextpdf.kernel.pdf.PdfDocument
+        member: getOutlines(boolean)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: setOutlines(java.util.List)
+      generic-contract: Returns void; defensively copies and atomically replaces the complete List<project-owned OutlineItem> tree.
+      exception-contract: Invalid pages, unresolved named targets, excessive or malformed trees, lifecycle, and unsafe preservation reject before mutation with the Native cause retained through PdfException.
+      capabilities:
+      - document.metadata.outlines-destinations-attachments
+    - id: itext7.kernel.pdf-document.add-file-attachment
+      reference:
+        status: adapted
+        type: com.itextpdf.kernel.pdf.PdfDocument
+        member: addFileAttachment(java.lang.String,com.itextpdf.kernel.pdf.filespec.PdfFileSpec)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: addFileAttachment(net.zerocloud.pdf.EmbeddedFile)
+      generic-contract: Returns void; copies one project-owned EmbeddedFile and creates or replaces its exact name-tree entry.
+      exception-contract: Invalid names, MIME, relationship metadata, unsafe existing structures, lifecycle, or resource bounds reject before mutation with the Native cause retained through PdfException.
+      capabilities:
+      - document.metadata.outlines-destinations-attachments
+    - id: itext7.kernel.pdf-document.get-file-attachments
+      reference:
+        status: adapted
+        type: com.itextpdf.kernel.pdf.PdfDocument
+        member: getCatalog()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: getFileAttachments(int)
+      generic-contract: Returns immutable List<project-owned EmbeddedFileSummary> in unsigned encoded-key order under an explicit entry bound.
+      exception-contract: Malformed specifications, streams, names, checksums, and limit failures retain their Native DocumentFailure cause through PdfException.
+      capabilities:
+      - document.metadata.outlines-destinations-attachments
+    - id: itext7.kernel.pdf-document.get-file-attachment
+      reference:
+        status: folio-extension
+        type: com.itextpdf.kernel.pdf.PdfDocument
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: getFileAttachment(java.lang.String,long)
+      generic-contract: Returns Optional<project-owned EmbeddedFileData> with detached exact bytes, declared MD5 when present, computed SHA-256, and an explicit decoded-byte bound.
+      exception-contract: Invalid bounds, malformed structures, and payload-limit failures retain their Native DocumentFailure cause through PdfException; absence returns Optional.empty().
+      capabilities:
+      - document.metadata.outlines-destinations-attachments
+    - id: itext7.kernel.pdf-document-info.get-title
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDocumentInfo
+        member: getTitle()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo
+        member: getTitle()
+      generic-contract: Returns String text or null when Title is absent or not a supported text string.
+      exception-contract: The document-owned view rejects after close or from another thread; Native failures retain their DocumentFailure cause through PdfException.
+      capabilities: [document.metadata.outlines-destinations-attachments]
+    - id: itext7.kernel.pdf-document-info.set-title
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDocumentInfo
+        member: setTitle(java.lang.String)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo
+        member: setTitle(java.lang.String)
+      generic-contract: Returns this mapped PdfDocumentInfo; null removes Title and text uses the mapped PDF string encoding.
+      exception-contract: Invalid text, read-only or closed lifecycle, and Native failures reject before mutation with the cause retained through PdfException.
+      capabilities: [document.metadata.outlines-destinations-attachments]
+    - id: itext7.kernel.pdf-document-info.get-author
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDocumentInfo
+        member: getAuthor()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo
+        member: getAuthor()
+      generic-contract: Returns String text or null when Author is absent or not a supported text string.
+      exception-contract: The document-owned view rejects after close or from another thread; Native failures retain their DocumentFailure cause through PdfException.
+      capabilities: [document.metadata.outlines-destinations-attachments]
+    - id: itext7.kernel.pdf-document-info.set-author
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDocumentInfo
+        member: setAuthor(java.lang.String)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo
+        member: setAuthor(java.lang.String)
+      generic-contract: Returns this mapped PdfDocumentInfo; null removes Author and text uses the mapped PDF string encoding.
+      exception-contract: Invalid text, read-only or closed lifecycle, and Native failures reject before mutation with the cause retained through PdfException.
+      capabilities: [document.metadata.outlines-destinations-attachments]
+    - id: itext7.kernel.pdf-document-info.get-subject
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDocumentInfo
+        member: getSubject()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo
+        member: getSubject()
+      generic-contract: Returns String text or null when Subject is absent or not a supported text string.
+      exception-contract: The document-owned view rejects after close or from another thread; Native failures retain their DocumentFailure cause through PdfException.
+      capabilities: [document.metadata.outlines-destinations-attachments]
+    - id: itext7.kernel.pdf-document-info.set-subject
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDocumentInfo
+        member: setSubject(java.lang.String)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo
+        member: setSubject(java.lang.String)
+      generic-contract: Returns this mapped PdfDocumentInfo; null removes Subject and text uses the mapped PDF string encoding.
+      exception-contract: Invalid text, read-only or closed lifecycle, and Native failures reject before mutation with the cause retained through PdfException.
+      capabilities: [document.metadata.outlines-destinations-attachments]
+    - id: itext7.kernel.pdf-document-info.get-keywords
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDocumentInfo
+        member: getKeywords()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo
+        member: getKeywords()
+      generic-contract: Returns String text or null when Keywords is absent or not a supported text string.
+      exception-contract: The document-owned view rejects after close or from another thread; Native failures retain their DocumentFailure cause through PdfException.
+      capabilities: [document.metadata.outlines-destinations-attachments]
+    - id: itext7.kernel.pdf-document-info.set-keywords
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDocumentInfo
+        member: setKeywords(java.lang.String)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo
+        member: setKeywords(java.lang.String)
+      generic-contract: Returns this mapped PdfDocumentInfo; null removes Keywords and text uses the mapped PDF string encoding.
+      exception-contract: Invalid text, read-only or closed lifecycle, and Native failures reject before mutation with the cause retained through PdfException.
+      capabilities: [document.metadata.outlines-destinations-attachments]
+    - id: itext7.kernel.pdf-document-info.get-creator
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDocumentInfo
+        member: getCreator()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo
+        member: getCreator()
+      generic-contract: Returns String text or null when Creator is absent or not a supported text string.
+      exception-contract: The document-owned view rejects after close or from another thread; Native failures retain their DocumentFailure cause through PdfException.
+      capabilities: [document.metadata.outlines-destinations-attachments]
+    - id: itext7.kernel.pdf-document-info.set-creator
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDocumentInfo
+        member: setCreator(java.lang.String)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo
+        member: setCreator(java.lang.String)
+      generic-contract: Returns this mapped PdfDocumentInfo; null removes Creator and text uses the mapped PDF string encoding.
+      exception-contract: Invalid text, read-only or closed lifecycle, and Native failures reject before mutation with the cause retained through PdfException.
+      capabilities: [document.metadata.outlines-destinations-attachments]
+    - id: itext7.kernel.pdf-document-info.get-producer
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDocumentInfo
+        member: getProducer()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo
+        member: getProducer()
+      generic-contract: Returns String text or null when Producer is absent or not a supported text string.
+      exception-contract: The document-owned view rejects after close or from another thread; Native failures retain their DocumentFailure cause through PdfException.
+      capabilities: [document.metadata.outlines-destinations-attachments]
+    - id: itext7.kernel.pdf-document-info.set-producer
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDocumentInfo
+        member: setProducer(java.lang.String)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo
+        member: setProducer(java.lang.String)
+      generic-contract: Returns this mapped PdfDocumentInfo; null removes Producer and text uses the mapped PDF string encoding.
+      exception-contract: Invalid text, read-only or closed lifecycle, and Native failures reject before mutation with the cause retained through PdfException.
+      capabilities: [document.metadata.outlines-destinations-attachments]
+    - id: itext7.kernel.pdf-document-info.add-creation-date
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDocumentInfo
+        member: addCreationDate()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo
+        member: addCreationDate()
+      generic-contract: Returns this mapped PdfDocumentInfo after writing the current date, time, and system offset to CreationDate in ISO 32000 PDF date syntax.
+      exception-contract: Read-only or closed lifecycle and Native failures reject before mutation with the cause retained through PdfException where applicable.
+      capabilities: [document.metadata.outlines-destinations-attachments]
+    - id: itext7.kernel.pdf-document-info.add-mod-date
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDocumentInfo
+        member: addModDate()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo
+        member: addModDate()
+      generic-contract: Returns this mapped PdfDocumentInfo after writing the current date, time, and system offset to ModDate in ISO 32000 PDF date syntax.
+      exception-contract: Read-only or closed lifecycle and Native failures reject before mutation with the cause retained through PdfException where applicable.
+      capabilities: [document.metadata.outlines-destinations-attachments]
+    - id: itext7.kernel.pdf-document-info.get-trapped
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDocumentInfo
+        member: getTrapped()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo
+        member: getTrapped()
+      generic-contract: Returns a detached mapped PdfName or null when Trapped is absent or not a name.
+      exception-contract: The document-owned view rejects after close or from another thread; Native failures retain their DocumentFailure cause through PdfException.
+      capabilities: [document.metadata.outlines-destinations-attachments]
+    - id: itext7.kernel.pdf-document-info.set-trapped
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDocumentInfo
+        member: setTrapped(com.itextpdf.kernel.pdf.PdfName)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo
+        member: setTrapped(net.zerocloud.pdf.itext7.kernel.pdf.PdfName)
+      generic-contract: Returns this mapped PdfDocumentInfo; null removes Trapped and a supplied mapped PdfName is copied.
+      exception-contract: Read-only or closed lifecycle and Native validation failures reject before mutation with the cause retained through PdfException.
+      capabilities: [document.metadata.outlines-destinations-attachments]
+    - id: itext7.kernel.pdf-document-info.get-more-info
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDocumentInfo
+        member: getMoreInfo(java.lang.String)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo
+        member: getMoreInfo(java.lang.String)
+      generic-contract: Returns decoded String text for one named entry, or null when absent or not a supported text string.
+      exception-contract: Null names reject before access; lifecycle and Native failures retain their cause through IllegalStateException or PdfException respectively.
+      capabilities: [document.metadata.outlines-destinations-attachments]
+    - id: itext7.kernel.pdf-document-info.set-more-info
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDocumentInfo
+        member: setMoreInfo(java.lang.String,java.lang.String)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo
+        member: setMoreInfo(java.lang.String,java.lang.String)
+      generic-contract: Returns void; sets one mapped text entry or removes it when value is null.
+      exception-contract: Invalid names or text, lifecycle, preservation, and Native failures reject before mutation with the cause retained through PdfException where applicable.
+      capabilities: [document.metadata.outlines-destinations-attachments]
+    - id: itext7.kernel.pdf-document-info.set-more-info-map
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDocumentInfo
+        member: setMoreInfo(java.util.Map)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo
+        member: setMoreInfo(java.util.Map)
+      generic-contract: Parameter is Map<String, String>; the map is iterated into one atomic Command and null values remove entries.
+      exception-contract: Null maps, invalid entries, lifecycle, preservation, and Native failures reject before mutation with the cause retained through PdfException where applicable.
+      capabilities: [document.metadata.outlines-destinations-attachments]
+    - id: itext7.kernel.pdf-document-info.get-entries
+      reference:
+        status: folio-extension
+        type: com.itextpdf.kernel.pdf.PdfDocumentInfo
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo
+        member: getEntries()
+      generic-contract: Returns an immutable detached project-owned PdfDictionary preserving every supported standard and custom information entry.
+      exception-contract: Unsupported graphs and Native query failures retain their DocumentFailure cause through PdfException; the document-owned view rejects after its owning Document closes.
+      capabilities: [document.metadata.outlines-destinations-attachments]
+    - id: itext7.kernel.pdf-document-info.update-entries
+      reference:
+        status: folio-extension
+        type: com.itextpdf.kernel.pdf.PdfDocumentInfo
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo
+        member: updateEntries(java.util.Map,java.util.List)
+      generic-contract: Parameters are Map<String, ? extends project-owned PdfValue> replacements and List<String> removals, applied in one atomic Command.
+      exception-contract: Null, overlapping, indirect, stream, malformed, lifecycle, or unpreservable input rejects before mutation with the Native cause retained through PdfException where applicable.
+      capabilities: [document.metadata.outlines-destinations-attachments]
   preview: []
 
 excluded-capabilities:
-- id: document.metadata.outlines-destinations-attachments
-  ticket: T32
-  reason: 'Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under
-    #73 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.'
 - id: document.annotations-actions.manage
   ticket: T32
   reason: 'Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under

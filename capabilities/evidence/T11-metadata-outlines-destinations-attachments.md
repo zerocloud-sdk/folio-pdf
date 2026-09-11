@@ -1,6 +1,6 @@
 # T11 metadata, outlines, destinations, and attachments evidence
 
-Status: `experimental`
+Status: `compatible`
 
 Capability: `document.metadata.outlines-destinations-attachments`
 
@@ -52,12 +52,14 @@ would orphan any managed destination fails with the stable
 - `./scripts/inventory check`, `./mvnw -B -ntp verify`, and
   `./scripts/verify-jdk-matrix.sh` are the repository gates for inventory
   drift, full verification, and JDK 8/11/17/21 execution.
-- The repository-owned acceptance command creates representative T11 products
-  by exercising every metadata Command through merge and split on
-  `DocumentWorkflow.execute`. Pinned qpdf 12.4.0 reports no syntax or
-  stream-encoding errors for either product; the exact PDFs, hashes,
-  invocations, exit codes, and raw findings accompany the independent syntax
-  record.
+- `DocumentMetadataFacadeTest`, the exact-jar contract and classpath-exclusivity
+  test establish the declared Stable surface and its inherited Preview surface.
+  The Facade uses project-owned values and its actual execution remains
+  `IN_PROCESS`.
+- The repository-owned T11 command creates edited, merged, left-split and
+  right-split Native and Facade products. It records separate syntax,
+  standards, semantic and per-page visual observations, real controls for each
+  chain, adversarial XML access canaries and signed-document protection.
 
 ## Execution record — 2026-08-14
 
@@ -93,10 +95,14 @@ comprehensive hostile-input policy, and T21 separately transports the T11
 contract through the opt-in Hardened Worker. T11 makes no source-byte-layout
 or cross-Session object-identity claim.
 
-This record is implementation evidence, not independent Acceptance Evidence.
-The separate T11 qpdf record supplies a passing syntax chain only; qpdf
-syntax success is not a PDF standards-conformance claim. Standards, semantic,
-and visual Acceptance Evidence remain absent. The value-inspection Dependency
-Gate is also open because that prerequisite remains `experimental`. T11
-therefore remains `experimental`, with T06 still required before a
-compatibility or certified-platform claim.
+The four T73 chain indexes describe the required producers and controls; the
+current `capabilities/foundation-evidence.yaml` remains the authority for the
+eight candidate-specific JDK/execution observations. It binds all eight exact
+products, raw reports, safety findings, qualified checker identities, staged
+artifacts, source and contract hashes, immutable Ubuntu images, actual JDK
+builds and execution configurations. A chain index cannot pre-certify a later
+candidate. The value-inspection Dependency Gate is compatible, and T11 is
+compatible only while those current candidate records cover all four Ubuntu
+24.04/Linux x86-64 JDK 8/11/17/21 environments under both Native execution
+profiles. Overall Foundation readiness remains governed by every other
+obligation.

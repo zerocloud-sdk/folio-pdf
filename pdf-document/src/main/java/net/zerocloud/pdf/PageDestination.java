@@ -10,8 +10,9 @@ import java.util.Objects;
  * An immutable backend-neutral explicit page destination.
  *
  * <p>The page number is one-based. Operand positions follow the destination
- * syntax of ISO 32000; only the {@link Style#XYZ} form permits a {@code null}
- * operand, which leaves the corresponding view setting unchanged.</p>
+ * syntax of ISO 32000. XYZ and the horizontal/vertical fit forms permit a
+ * {@code null} coordinate, leaving the corresponding view setting unchanged.
+ * FitR requires all four rectangle coordinates.</p>
  *
  * @since 0.1.0
  */
@@ -97,60 +98,56 @@ public final class PageDestination {
      * Creates a fit-width destination.
      *
      * @param pageNumber the one-based page number
-     * @param top the top coordinate
+     * @param top the top coordinate, or null to retain the current value
      * @return the immutable destination
      */
     public static PageDestination fitH(int pageNumber, BigDecimal top) {
         return new PageDestination(
                 pageNumber,
                 Style.FIT_H,
-                Collections.singletonList(
-                        Objects.requireNonNull(top, "top")));
+                Collections.singletonList(top));
     }
 
     /**
      * Creates a fit-bounding-box-width destination.
      *
      * @param pageNumber the one-based page number
-     * @param top the top coordinate
+     * @param top the top coordinate, or null to retain the current value
      * @return the immutable destination
      */
     public static PageDestination fitBH(int pageNumber, BigDecimal top) {
         return new PageDestination(
                 pageNumber,
                 Style.FIT_BH,
-                Collections.singletonList(
-                        Objects.requireNonNull(top, "top")));
+                Collections.singletonList(top));
     }
 
     /**
      * Creates a fit-height destination.
      *
      * @param pageNumber the one-based page number
-     * @param left the left coordinate
+     * @param left the left coordinate, or null to retain the current value
      * @return the immutable destination
      */
     public static PageDestination fitV(int pageNumber, BigDecimal left) {
         return new PageDestination(
                 pageNumber,
                 Style.FIT_V,
-                Collections.singletonList(
-                        Objects.requireNonNull(left, "left")));
+                Collections.singletonList(left));
     }
 
     /**
      * Creates a fit-bounding-box-height destination.
      *
      * @param pageNumber the one-based page number
-     * @param left the left coordinate
+     * @param left the left coordinate, or null to retain the current value
      * @return the immutable destination
      */
     public static PageDestination fitBV(int pageNumber, BigDecimal left) {
         return new PageDestination(
                 pageNumber,
                 Style.FIT_BV,
-                Collections.singletonList(
-                        Objects.requireNonNull(left, "left")));
+                Collections.singletonList(left));
     }
 
     /**
@@ -220,7 +217,7 @@ public final class PageDestination {
     /**
      * Returns the immutable style operands in destination syntax order.
      *
-     * @return the operands; only {@link Style#XYZ} may contain {@code null}
+     * @return the operands; XYZ and horizontal/vertical fits may contain null
      */
     public List<BigDecimal> getOperands() {
         return operands;

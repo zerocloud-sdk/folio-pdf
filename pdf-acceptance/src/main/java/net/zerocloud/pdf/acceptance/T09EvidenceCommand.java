@@ -93,7 +93,8 @@ public final class T09EvidenceCommand {
             EvidenceResult observation = T09ValuesSemantics.inspect(pdf, actual);
             observed.setProperty("semantic", observation.recordValue());
             for (String chain : new String[] {"syntax", "standards", "semantic", "visual"}) {
-                result.setProperty(chain, T09IndependentEvidence.combine(result.getProperty(chain), observed.getProperty(chain)));
+                result.setProperty(chain, EvidenceResult.combine(
+                        result.getProperty(chain), observed.getProperty(chain)));
             }
             EvidenceFiles.write(directory.resolve("semantic.txt"), "Public Native reopen; execution=" + actual
                     + "\ninput-sha256=" + observed.getProperty("input-sha256") + "\n" + semanticFinding(observation)

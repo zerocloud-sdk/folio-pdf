@@ -1,0 +1,820 @@
+{
+  "schema-version": 1,
+  "candidate-sha256": "29df80066be3d76e60e8fc51005b2c1505d20ed95116e7a48309eb8d2bfa0267",
+  "environment-sha256": "769018b553ff6d5b6a6a0b2efccc27d263768c8ca7e4b4601c4ba7289716a797",
+  "acceptance-profile": "T10-page-manipulation-merge-split",
+  "execution-profile": "IN_PROCESS",
+  "command": [
+    "podman",
+    "run",
+    "--rm",
+    "--network=none",
+    "--userns=keep-id",
+    "--volume",
+    "/home/ubuntu/IdeaProjects/open-pdf:/workspace:ro",
+    "--volume",
+    "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/harfbuzz/10.2.0-final:/folio-harfbuzz:ro",
+    "--volume",
+    "/usr/bin/python3.12:/usr/bin/python3.12:ro",
+    "--volume",
+    "/usr/lib/python3.12:/usr/lib/python3.12:ro",
+    "--volume",
+    "/usr/lib/x86_64-linux-gnu/libexpat.so.1.9.1:/lib/x86_64-linux-gnu/libexpat.so.1:ro",
+    "--workdir",
+    "/workspace",
+    "--env",
+    "LANG=C.UTF-8",
+    "--env",
+    "LC_ALL=C.UTF-8",
+    "--env",
+    "TZ=UTC",
+    "--env",
+    "FOLIO_HARFBUZZ_HELPER=/folio-harfbuzz/bin/folio-harfbuzz",
+    "--volume",
+    "/home/ubuntu/IdeaProjects/open-pdf/capabilities/evidence/foundation/T73-r3-pages/jdk21-in_process:/workspace/capabilities/evidence/foundation/T73-r3-pages/jdk21-in_process:rw",
+    "docker.io/library/eclipse-temurin@sha256:1ca5e470ad60db0d5b4137c1357068fa210051d815ad98ea9964f4bbe7367f8c",
+    "java",
+    "-Xmx1024m",
+    "-Duser.language=en",
+    "-Duser.country=US",
+    "-Duser.timezone=UTC",
+    "-Dfolio.harfBuzzHelper=/folio-harfbuzz/bin/folio-harfbuzz",
+    "-Dfolio.t10.executionProfile=IN_PROCESS",
+    "-cp",
+    "/workspace/target/foundation-0.1.0/artifacts/pdf-conversion-0.1.0.jar:/workspace/target/foundation-0.1.0/artifacts/pdf-document-0.1.0.jar:/workspace/target/foundation-0.1.0/artifacts/pdf-migration-itext7-0.1.0.jar:/workspace/target/foundation-0.1.0/artifacts/pdf-provider-contract-0.1.0.jar:/workspace/target/foundation-0.1.0/harness/acceptance.jar:/workspace/target/foundation-0.1.0/harness/facade-tests.jar:/workspace/target/foundation-0.1.0/harness/lib/common-image-3.14.0.jar:/workspace/target/foundation-0.1.0/harness/lib/common-io-3.14.0.jar:/workspace/target/foundation-0.1.0/harness/lib/common-lang-3.14.0.jar:/workspace/target/foundation-0.1.0/harness/lib/commons-logging-1.4.0.jar:/workspace/target/foundation-0.1.0/harness/lib/core-3.5.3.jar:/workspace/target/foundation-0.1.0/harness/lib/fontbox-3.0.8.jar:/workspace/target/foundation-0.1.0/harness/lib/hamcrest-core-1.3.jar:/workspace/target/foundation-0.1.0/harness/lib/icu4j-77.1.jar:/workspace/target/foundation-0.1.0/harness/lib/imageio-core-3.14.0.jar:/workspace/target/foundation-0.1.0/harness/lib/imageio-metadata-3.14.0.jar:/workspace/target/foundation-0.1.0/harness/lib/imageio-tiff-3.14.0.jar:/workspace/target/foundation-0.1.0/harness/lib/junit-4.13.2.jar:/workspace/target/foundation-0.1.0/harness/lib/okapibarcode-0.5.6.jar:/workspace/target/foundation-0.1.0/harness/lib/pdfbox-3.0.8.jar:/workspace/target/foundation-0.1.0/harness/lib/pdfbox-io-3.0.8.jar:/workspace/target/foundation-0.1.0/harness/lib/snakeyaml-2.2.jar:/workspace/target/foundation-0.1.0/harness/native-tests.jar",
+    "net.zerocloud.pdf.acceptance.T10EvidenceCommand",
+    "/workspace",
+    "/workspace/capabilities/evidence/foundation/T73-r3-pages/jdk21-in_process/observations",
+    "IN_PROCESS",
+    "0.1.0"
+  ],
+  "java-options": [
+    "-Xmx1024m",
+    "-Duser.language=en",
+    "-Duser.country=US",
+    "-Duser.timezone=UTC",
+    "-Dfolio.harfBuzzHelper=/folio-harfbuzz/bin/folio-harfbuzz",
+    "-Dfolio.t10.executionProfile=IN_PROCESS"
+  ],
+  "locale": "en_US / C.UTF-8",
+  "timezone": "UTC",
+  "settings": {
+    "workflow-policy": "REWRITE; one-based inclusive page ranges; insert, remove, move and copy; ordered named Sources; exact split coverage of all declared Targets; finite system-default policies; no network; Native tests select the recorded execution profile; Facade execution remains IN_PROCESS",
+    "fonts": "no fonts; the fixed T10 vector corpus has no text or font resources",
+    "providers": "none; Stable Facade execution is IN_PROCESS"
+  },
+  "inputs": [
+    {
+      "path": ".build-cache/imagemagick/7.1.2-30/runtime/libX11.so.6",
+      "sha256": "c5b5d782bd9cab3420a62df88f5c991507edf3331a89f98464ddbc538c37b879"
+    },
+    {
+      "path": ".build-cache/imagemagick/7.1.2-30/runtime/libfribidi.so.0",
+      "sha256": "550020af7ff4f77e3f05500e71051b676ee76f530479c2a836dfe899fcaf8395"
+    },
+    {
+      "path": ".build-cache/imagemagick/7.1.2-30/runtime/libgraphite2.so.3",
+      "sha256": "fcfaf843b25b58b88319ced52f826fc8213a661f3693c916f88641eddffe05b8"
+    },
+    {
+      "path": ".build-cache/imagemagick/7.1.2-30/runtime/libharfbuzz.so.0",
+      "sha256": "4562cfcfd18935324ba3ac74a944898b867ab87a56e925ab3e351ba773f1513e"
+    },
+    {
+      "path": ".build-cache/imagemagick/7.1.2-30/runtime/libxcb.so.1",
+      "sha256": "7958a0136b121bdc4c708968569ad152a9ed208ab026e2537b1005dde64ca440"
+    },
+    {
+      "path": "build-tools/acceptance/arlington/t10-r1.patch",
+      "sha256": "ebdf4b1e23a1d6f1e211ba88eda9ef0f9777e373640a95f3ee81e5001d25506a"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/README.md",
+      "sha256": "5408442e284510bfd918f396b73e35433c3d55a0556672b02a813932ccdb4039"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/arlington.properties",
+      "sha256": "08360f8f8edb123bb4a2840fdcfbb6f94df0a61a71c935f962ae5f07105aa2a8"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/catalog-pages-indirect.pdf",
+      "sha256": "15968efef75ed27fc29077dba4ac2c17bab7d57b60babd2ebebe84ad52da357b"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/catalog-pages.pdf",
+      "sha256": "411166c5051b04d0d6a85710266b961ac57ca3302d6e920fdb7f183f28f1bb3f"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/catalog-type-required.pdf",
+      "sha256": "1b232380a180eb3ced9c3625153ee010b06e11b3a628c6c0b1078aba437e0f33"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/catalog-type.pdf",
+      "sha256": "c1f95d7931bb320feb3294c3867d41e96a1302cb3920606dbaab7e12e101860f"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/page-mediabox-numbers.pdf",
+      "sha256": "6ec1510cccbd9d7dcc664381d68e71ebb0d2a0300e7ee97a6b4cb89c2740713c"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/page-mediabox-rectangle.pdf",
+      "sha256": "25bd505efea14dafefa8dd134879d5f35261db8be4da1d9c23b65d3ae2fc3432"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/page-mediabox-required.pdf",
+      "sha256": "2a5fb414c8b1f565b6021559f7d637c1f6475d5446987abb1084dfd74b374382"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/page-parent-indirect.pdf",
+      "sha256": "a7bb58bcdf556530a2d2a978e5d7cbeaff67d318d033ba7a5a81fbc67dc3eae8"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/page-parent-link.pdf",
+      "sha256": "c7d96c8c614c6f9171109e5fd1af17e549bf7acc62099b6e1a28718209f39dfb"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/page-parent-required.pdf",
+      "sha256": "253228ff414804b4b799f336d7e21220b44e64285f81d60ea0ef3c98f149f2fd"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/page-resources-required.pdf",
+      "sha256": "057453de6d8fe0490a10b2a44d06c824d0306c64bca64b3444b37ed4b3188dd3"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/page-resources-type.pdf",
+      "sha256": "33ff1741b362fb02856ba83e49f8be159dc32a2bda115a22a1ca32b7f5dad705"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/page-type-value.pdf",
+      "sha256": "957a1ec451275bb287a11cedcbe3993eb49b30a9bcdceaf488e6c0fc71f98ec8"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/page-type.pdf",
+      "sha256": "ef89d0046065ec31948ad50fda2f00c3d74c179c5f39582d7d1246df2841a37c"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/pages-count-integer.pdf",
+      "sha256": "553ae8c98a032fa94e3366d9b946569ab7073b770c4eaf73d154b1675379ebb5"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/pages-count-nonnegative.pdf",
+      "sha256": "9fe087f812420765adb7add8ed1fdc50a271624bd6eac7dfc4b508870258f62b"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/pages-count-required.pdf",
+      "sha256": "56986acd52560e6715727d47cc99c3a90b8641331b527e6d7445084d0dc16f11"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/pages-count-value.pdf",
+      "sha256": "56986c0732dd1534bb63e5c331f8f7dbcdb6301dadc4592ccd9938f7cce008c9"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/pages-kid-reference.pdf",
+      "sha256": "1c0e162bdbf9b3d969f65af5e4553b88d4e811fde4de9670753cba4a053e55d0"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/pages-kids.pdf",
+      "sha256": "6e4226f52a6ce1c7020ab2d2788a85a79ef5d7a1d4eee45c0debf51fffc10ba0"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/pages-type-value.pdf",
+      "sha256": "46e9d3271b38bad3579ec1bff9388f580efd1990534924c2508f2b1fc6a88cfc"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/pages-type.pdf",
+      "sha256": "6fe72868d9f01b1fb929450a8f504f6b12fdc8508ae8e325d49009e6b43bbe1a"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/fixtures/valid.pdf",
+      "sha256": "bd5f9b66edb616fc72e9cbcd480c2e000904a9c7c7edc62f69877443bb0cd9a0"
+    },
+    {
+      "path": "capabilities/profiles/T03-standards/pdfcpu.properties",
+      "sha256": "04981b139e4fde409eb5ef3f90582b42a9c061cf598c48129229b2702425035f"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/README.md",
+      "sha256": "ef2311dcf0c5bd9bb4199db328a982f3bbe19eb33dab1ef3e9c48cb34ec46961"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/arlington.properties",
+      "sha256": "8df7a451d78a233ab69d56d6dad0765ed4228d6765fce8e8887b2119a38aaeaf"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/catalog-lang-string.pdf",
+      "sha256": "2de7cfe80673b19bc0844455c65b2ab159956f9b453ade5cf5c7991cf7288d7c"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/catalog-page-mode-name.pdf",
+      "sha256": "8448711d31c93743915881ca9b4fac7d20e1fd5544cd6eab87b932105d027a05"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/catalog-page-mode-value.pdf",
+      "sha256": "4105f57be42ef29c2bc854e6df9b897cf97bd7de0e359c241ef80daafa37569f"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/data-lastmodified-date.pdf",
+      "sha256": "4314c9e958387445df6b93c1a0a2f749ce9c07baf8dd039b0f2cc91e04cc1b95"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/data-lastmodified-null.pdf",
+      "sha256": "41ea72ef30941df1e05152af0ef77e1c833e963b767a7d48d78cc0bde5bf254d"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/data-lastmodified-required.pdf",
+      "sha256": "057044e69998ea8cfccf7c92c51ecd83ef57d9e3f07d9280c93f26e349468bd7"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/info-moddate-date.pdf",
+      "sha256": "cabfc3da00218f043214e43f99bb574887080a1d7a7c6084aee13b06fff04b9c"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/info-moddate-required.pdf",
+      "sha256": "2264cc130c171e0b0dd5ae5ccb821a9264735f1b9f3bf47da0e78979e6b84c88"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/page-contents-array-member.pdf",
+      "sha256": "ef72af9bee510e1cf20047c0bc87b32676965a904d019c5a6f16a709f87fa07d"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/page-contents-type.pdf",
+      "sha256": "bb4e80a1c8b9b25d2448fb019d27176efc9cd544f2905e7a2a23df8d484ec6c9"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/piece-entry-dictionary.pdf",
+      "sha256": "842ece5cbdbaf1eb338d9eb47bb619b40f56140487a4ce2227c303730420cdc9"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/pieceinfo-dictionary.pdf",
+      "sha256": "6e54c9834eb1e24e844c067736da7589a960edb0db92925dee1a15bb89d65948"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/positive-null-decodeparams.pdf",
+      "sha256": "3f6c8a192ad22ea6f96f7963fe06b4fc37791593dcd8ea33a9dd5ee8b2b40e0a"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/stream-decodeparams-array-member.pdf",
+      "sha256": "7bf9e014418ec771fcbb76f46b7927dbbfc843efc3fa09b40d275bf40e43f1d3"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/stream-decodeparams-count.pdf",
+      "sha256": "973af11f633cebf99d633125e876ddc7248624f782ce19a2e2e6d963b133201f"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/stream-decodeparams-position.pdf",
+      "sha256": "b736ea2ea2de2bd2dd1747606638787dcb8237b0b9ada9223554ea076c5ab057"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/stream-decodeparams-type.pdf",
+      "sha256": "f5b29bddaa3a77933b86c985caa8ab3a2bbc433bb15c12e3670cfa79a19bd427"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/stream-filter-array-name-type.pdf",
+      "sha256": "fac2d18c3f760a9d6eaa2182f452b68c3d2512951a5cb96a5cb3dba02fffe29c"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/stream-filter-array-name-value.pdf",
+      "sha256": "ef18d21245a44471a7346b15ee658251a9a005ebf190396ac1d7d4f1a732a188"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/stream-filter-name-value.pdf",
+      "sha256": "4224e00fdd257d3842799b59c0a1522f84f93d5dd0e66ba417b621be4df56fa4"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/stream-filter-type.pdf",
+      "sha256": "dc284a9e3ef213f5b10133af6b65fd8ba11a5af043dbb00359b23373b68a8eda"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/stream-flate-predictor-type.pdf",
+      "sha256": "e372ccb9ba52dc549bf100f795f138eb3a1dea9c61886358f6d46546ed5e5d55"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/stream-flate-predictor-value.pdf",
+      "sha256": "4b37462527d107755a11350d286c98c3650fb18254f0610f08808e28cc83f27d"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/trailer-info-indirect.pdf",
+      "sha256": "9e99abaa6ca013f826cc325130c0496765e92716fb320fa9bd13592214d84fb2"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/trailer-info-null.pdf",
+      "sha256": "7252e5c276cf658a50e1c30368da5d52f5530dbfe2caeac8e45f0774bf102963"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/trailer-info-required.pdf",
+      "sha256": "b872d21e15c25ba2d038bfb54ccdec6158715fa492905fc26161bf22ea01bc89"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/viewer-hide-toolbar-boolean.pdf",
+      "sha256": "cb9a1dbeff0e2a9522adde260ab043a1ae4486a65024fbe6a1687d92d58ea3b0"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/viewer-numcopies-integer.pdf",
+      "sha256": "84c89986c0b945b77b7e25dc742ad6e985139e69ea71763ad9f088e53e1153a1"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/viewer-numcopies-positive.pdf",
+      "sha256": "cb8ff0bc669e165e52fcb6a546a31c63af9ba9b186c878e73763e8a0d9a0ecec"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/fixtures/viewer-preferences-dictionary.pdf",
+      "sha256": "87279803212106a8b657e23fafa78728c178e450799b42c02526ec6c455a2155"
+    },
+    {
+      "path": "capabilities/profiles/T09-standards/pdfcpu.properties",
+      "sha256": "ba229f61ce7235916f41bacaa9f21046f69dfbfe7b2423a9ae98008939e6a221"
+    },
+    {
+      "path": "capabilities/profiles/T10-pages/corpus.json",
+      "sha256": "7044a1036e15a0c32465e1d818f5b38f37cfec0699ce1fac9d86c7927ab94c65"
+    },
+    {
+      "path": "capabilities/profiles/T10-pages/corpus.properties",
+      "sha256": "e2777799c86dcfba25173fd3ed48cf99bc9d2472c68a2ad6dd5efc0320466293"
+    },
+    {
+      "path": "capabilities/profiles/T10-pages/expected/A.png",
+      "sha256": "dcd8066d4df3f9e3c8ce0846b757f7b9564955df95b276bc79e3f209a4409555"
+    },
+    {
+      "path": "capabilities/profiles/T10-pages/expected/B.png",
+      "sha256": "68cee8d440ae21bf907b1934966e41613e3d8e38cbed4e0cbdef2844dca6036c"
+    },
+    {
+      "path": "capabilities/profiles/T10-pages/expected/C.png",
+      "sha256": "304f1fa0d5f5c120dad71a78a1c43595832359b1f663a33a9c92cf3248c3d03b"
+    },
+    {
+      "path": "capabilities/profiles/T10-pages/expected/D.png",
+      "sha256": "82ae591c57878d17c8b9a52066c7407fe6fa574798a29cb29c1a6a103136434b"
+    },
+    {
+      "path": "capabilities/profiles/T10-pages/expected/E.png",
+      "sha256": "dfdb73aeb2477386f9aa01bf5968e0463f72047cfaa706a7d8e99d386141ada6"
+    },
+    {
+      "path": "capabilities/profiles/T10-pages/expected/blank.png",
+      "sha256": "d51b77e9e89793a844f5472019e11fb9c2c84f7407d322a1b42abfc64c496c01"
+    },
+    {
+      "path": "capabilities/profiles/T10-pages/expected/copy-A.png",
+      "sha256": "8e1bab0e2e3f021e6ea8bae7040f67d062ba58f8c1c69b4c5b96aaffb76882fc"
+    },
+    {
+      "path": "capabilities/profiles/T10-pages/fixtures/appendix.pdf",
+      "sha256": "2f6336e50ea1efae7763ba4db9c779f3d5e4c11515d4d0c6ab91e8e2b7f95027"
+    },
+    {
+      "path": "capabilities/profiles/T10-pages/fixtures/cover.pdf",
+      "sha256": "10b41ddbd3eb4f6fa07e286611fbdd69419580a4c7c48be40ca2f335fd8256e5"
+    },
+    {
+      "path": "capabilities/profiles/T10-pages/fixtures/primary.pdf",
+      "sha256": "ce30bab5122750151dd5fa5dc4ba9db50ab4426c5297e8e6fbf16e5817c861b2"
+    },
+    {
+      "path": "capabilities/profiles/T10-pages/visual/edited-page-1.properties",
+      "sha256": "78bd9ceb2604eff7d78d9eeb52eaeb27f53117d23e1c6023f9c666cf94a57185"
+    },
+    {
+      "path": "capabilities/profiles/T10-pages/visual/edited-page-2.properties",
+      "sha256": "6eefa4cea545c05c3066caa36a749fce4e5461467d30dc78a87d89d416abd965"
+    },
+    {
+      "path": "capabilities/profiles/T10-pages/visual/edited-page-3.properties",
+      "sha256": "3e20f6762430f1b4f624ff92f978daa5aec656b23f080b6f4d75994715d86dac"
+    },
+    {
+      "path": "capabilities/profiles/T10-pages/visual/edited-page-4.properties",
+      "sha256": "fd79701a7c66318e9b3fb24266b1c7b7a9a0ea3fcba8b08f11a7f9c1e7173429"
+    },
+    {
+      "path": "capabilities/profiles/T10-pages/visual/left-page-1.properties",
+      "sha256": "df424a1f8e8fa6807a6d8bf68bf054620027c3e57a2538852414fc5f839a27bb"
+    },
+    {
+      "path": "capabilities/profiles/T10-pages/visual/left-page-2.properties",
+      "sha256": "7398d7fd97a15c8fd02e7ae37243adc32b69109de5d1a96dd646afcc4829d1e6"
+    },
+    {
+      "path": "capabilities/profiles/T10-pages/visual/left-page-3.properties",
+      "sha256": "2082802ab275b738d4e5f60a1d1054893af0103b7fd20a560eae1104a227350e"
+    },
+    {
+      "path": "capabilities/profiles/T10-pages/visual/merged-page-1.properties",
+      "sha256": "4f9b49098c0b4b51dd63bcacae40d75dea798368752b829e3d6d4fd259ac4b77"
+    },
+    {
+      "path": "capabilities/profiles/T10-pages/visual/merged-page-2.properties",
+      "sha256": "2a874b6f91c9806ee5051ceae5a37fe5d4e248587d880d75bfa21de89c741557"
+    },
+    {
+      "path": "capabilities/profiles/T10-pages/visual/merged-page-3.properties",
+      "sha256": "057e0e2225737e86eed605356a1199847b1516429ed67ddeb5f59f8a3994363c"
+    },
+    {
+      "path": "capabilities/profiles/T10-pages/visual/merged-page-4.properties",
+      "sha256": "74a9b4323210801f5c5f5b332f886f4055e317342aab5db2966e8999aff023bd"
+    },
+    {
+      "path": "capabilities/profiles/T10-pages/visual/merged-page-5.properties",
+      "sha256": "6b5e6a062ed923d8deb56fcbe2baf651e6f9f9de9398b94cdaa2fd36bbe4c4a9"
+    },
+    {
+      "path": "capabilities/profiles/T10-pages/visual/right-page-1.properties",
+      "sha256": "d9e26468bdca6468a82dfab106c09a0f40f4375558c80b7b868a47163354c840"
+    },
+    {
+      "path": "capabilities/profiles/T10-pages/visual/right-page-2.properties",
+      "sha256": "c48626fbc7c3da5904a029fac92a2d6e5b3509985f38a8baecad5c49f57fbdbd"
+    },
+    {
+      "path": "capabilities/profiles/T10-pages/visual/right-page-3.properties",
+      "sha256": "c4a1a48347e9284f7c17425c6077ccaf0ede6f340d6ca2251f2d4ea349ce7219"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/arlington.properties",
+      "sha256": "f07cbe2b7d8d0d20316288b2c4ee832b7019348ecff3a30efc1d0c2a7ac6cb5a"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/controls.json",
+      "sha256": "2736577ec6a14db3d0c0550fd6189e7a86af9a3211b14ad75617694e777dca0b"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/annotation-contents-string.pdf",
+      "sha256": "65583444c8732466decc0991fe1cba647101cc0a5df937b95c8fadc27156d354"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/annotation-flags-integer.pdf",
+      "sha256": "e2a5b62fc6d55bfde2635b8f7df81a7ac0286b117d0e52baae83d603182a1e54"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/annotation-name-string.pdf",
+      "sha256": "fdbdc6f88d4ef84423b81a55252bd4083b21dc337c9f27c7d218bd528d8e03a0"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/annotation-page-indirect.pdf",
+      "sha256": "a1d1a4b23527b87dddd07686fbf5c3f55c0987aded44651080e5d71cf9fbbdd9"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/annotation-page-type.pdf",
+      "sha256": "4517afac64d32444cfe271c0ce9b70dee76812d3f5ac3bd6026715e46f750f27"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/annotation-rect-numbers.pdf",
+      "sha256": "3401da20a4e0134e7129ef24eb459c70c8523f70a301f5f3acf343098a39023b"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/annotation-rect-rectangle.pdf",
+      "sha256": "44c5636075c90fcea9cc19cf8525a1f149d232cd1ce31b32207422424b29612a"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/annotation-rect-required.pdf",
+      "sha256": "af9eb8745aab872e276053965027696b2706308e840425fa89d4629f0b2b0c74"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/annotation-subtype-name.pdf",
+      "sha256": "c1826406b74ce688f12b5874310c8abb9d786443e548af328623fd282035f2a7"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/annotation-subtype-required.pdf",
+      "sha256": "307a48516e32276532df27e8d5b5cf1f14edd43c3014dddf5027843b4c040543"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/annotation-type-name.pdf",
+      "sha256": "3549c57270689d90ea34f877a5926356ad90140dba1735cb984e9f3a981fd04b"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/annotation-type-value.pdf",
+      "sha256": "8e5da8901e29fee18c8d7af050b1474cd4eccfcea0bf0459530a8cd7ac1f906f"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/catalog-names-dictionary.pdf",
+      "sha256": "5306ec81e5df78956bc720cc2563852c8e19d4fd7d2145f8df79adc9d9be1bb5"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/destination-fit-count.pdf",
+      "sha256": "2c09b29f347c89b32a8d20d9f76dc1880358db38674420dbffffd76db493326b"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/destination-mode-name.pdf",
+      "sha256": "aeed8bc17c7bcfa5af169e5069439a7f5ce6540e145672e20ea3d60dd7836b4f"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/destination-mode-value.pdf",
+      "sha256": "0d062bd6d6eac7434779de65df120e3a9916dd5f3621595e0b3b5ffeed6aea2d"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/destination-page-indirect.pdf",
+      "sha256": "8b991c160debc5a9b3638173bb3c4bf35fc983a205159d2fbb1eda204e778e95"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/destination-page-type.pdf",
+      "sha256": "0a457454f7242645dbc1f8834278323704251091154645c9e3c28511f1582e48"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/destination-value-type.pdf",
+      "sha256": "6cdff37f9fe35f57aecfc55739b59770e48c43feb176bfc131c393c91cb0beee"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/form-bbox-numbers.pdf",
+      "sha256": "a4007dcb12cbd03f8ff300face72f4e8b24f7819735c831145745754f52e9d78"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/form-bbox-rectangle.pdf",
+      "sha256": "17abb36551a296da4d22263d91e1faa17a9d5759b22311a8a674b54ff2883f6e"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/form-bbox-required.pdf",
+      "sha256": "b2173c31116033e5f38d7f8debed3c2f3eed57eb8aeaffe719ffeb71604d7245"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/form-formtype-integer.pdf",
+      "sha256": "9e324a0e4541bd9eb2f646a6d4e2b7bfea096594296d1cb71bc0a5e54b34427c"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/form-formtype-value.pdf",
+      "sha256": "6338ee7bb101be956c4774c2872201ab8f8af3d65f77681c0499751543c5cad1"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/form-matrix-array.pdf",
+      "sha256": "6115ef99bbcbab26df6751ae4d4431c3a18bf097502df24e25191f2786e5fb1a"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/form-matrix-count.pdf",
+      "sha256": "4ff8aa92cea4ab351e6e65e8b07ad4b25e4b0290f54bc988e55fb18e186c4884"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/form-matrix-numbers.pdf",
+      "sha256": "ebe8803395ddb3f5ab5163059e1547cb177fc1b7050be2bf936a7969fbeab44a"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/form-resources-dictionary.pdf",
+      "sha256": "c14215cdfc209c928a91660fecdf1da06ffd151b0ed04e9ccd45bdfbe141217e"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/form-subtype-name.pdf",
+      "sha256": "7d808f8d431ff7c32761af503310d808e6bcdeb08ad5963242d64ab8be1beb59"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/form-subtype-required.pdf",
+      "sha256": "0a391e7776956744de7819da6214602b4f4eb028d83d5521aad29360b8d0ead6"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/form-type-name.pdf",
+      "sha256": "976119ca6c084ead6c783f42591c9aa9d237bec2523eb90fac9bb533233c3552"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/form-type-value.pdf",
+      "sha256": "0d4ca6ca019c22b3b9e75e37d0fd599b834801f9f47a4b4e2e1c4596f85efd5c"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/names-dests-tree.pdf",
+      "sha256": "98227a500399b40831ff5fc3f24b1a37c3d4287a808a89563fc50d7110258388"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/nametree-key-order-high-bytes.pdf",
+      "sha256": "4d91dc4904f6854bcf30c9d3bb3c8a6e8261d60ddbf484b6f7bf4ffde2aefbac"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/nametree-key-order.pdf",
+      "sha256": "54643d748342e78ec3ba2096c798d5828d35bb880be401905ba18297ef168f56"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/nametree-key-string.pdf",
+      "sha256": "5336621be3dc8d4e1fb1f83a95ea492a1991ccc7f6e419090305676660f4aba0"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/nametree-key-unique-encoding.pdf",
+      "sha256": "3056c5da1117b3c64560bac7ccaa92a0fd3e1a0bbe18194187f720276d9415a6"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/nametree-key-unique.pdf",
+      "sha256": "10bd658620fbd12fc7fa0e3af08993bedca87bf719e3635fc288b00a73dcfb92"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/nametree-names-array.pdf",
+      "sha256": "253d1dc19287c1fbc439d2683c70173bddc5e94aeaa3c715c2bd1c27a748c7cb"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/nametree-pair-count.pdf",
+      "sha256": "75c4ccdee7330ec66b79d6c5633e948fe765f0d4fcf93550938545e2bafd068f"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/nametree-root-entry.pdf",
+      "sha256": "88f169d65e70a1df8e9fdffd5463782687ec024b50cce5013ad6d0ae25f504b3"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/page-annots-array.pdf",
+      "sha256": "960d2371ead29d5ee1c14af25a2888a02fdb578c316951d4f1e4f34a5a47ba8d"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/page-annots-member.pdf",
+      "sha256": "dade48cf37911dd882bd477e074fde2917d03010c748e788f3c79c1c6808031f"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/page-artbox-numbers.pdf",
+      "sha256": "637c4931b398627bfce8290d953670a40b21ff1acafc69ab6898a235931f0f09"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/page-artbox-rectangle.pdf",
+      "sha256": "71657929b0b271bb6fdd419daa5e5e34958597a4bf2ca849aec9014e988ff81f"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/page-bleedbox-numbers.pdf",
+      "sha256": "fa9afe3bff30d99eec029246072e183849059afce30d48510ada80e881ddd183"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/page-bleedbox-rectangle.pdf",
+      "sha256": "a164130665ed0e1423aed9793ea58aaedb3240f5d5f380cef446fb97344f0ab8"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/page-contents-nonempty.pdf",
+      "sha256": "8d64b6dbc941fb8dbef44a4b9e2da120278ebb3991772304881ad47424d2b953"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/page-cropbox-numbers.pdf",
+      "sha256": "aa098cec1de44ddaeb3549f3988052240892c049c79324024f82652121ee6609"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/page-cropbox-rectangle.pdf",
+      "sha256": "13b5923caecf27f256e26f97cedaba68355946f9b04d60b5f9f29d13d7971cce"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/page-rotate-integer.pdf",
+      "sha256": "2f18907696b948b7a5e3b51150fededd4cfbf808cb76f45d3903562de7a8a82c"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/page-rotate-value.pdf",
+      "sha256": "27c96a0f9012f89cbcff448bbc32f5b56176e014236c18b65332d6aa10b8e79b"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/page-trimbox-numbers.pdf",
+      "sha256": "c2ae027238e9b7d84103a9f33046378e87f2943db69d8af71143a05649116cae"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/page-trimbox-rectangle.pdf",
+      "sha256": "bec21282ed946865a47809e9729d8e17cf34e331ba3b02eec8665aa09e9eafeb"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/positive-name-byte-order.pdf",
+      "sha256": "db0f1cdf5ed3fa92ada42917ffb85e35522191e0c3925094e65fb36ae78f31aa"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/resource-xobject-map.pdf",
+      "sha256": "665acecb2515bef5e674ff5a477292ca4a7f93850fe1cbf87e111536db9c6159"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/resource-xobject-stream.pdf",
+      "sha256": "8ea247a45ac9fee870dd4b60e24c7290c7fce0bb08929b37fbee0c3ba60439eb"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/fixtures/valid.pdf",
+      "sha256": "005cb2f8b97cb7d8488ba2fd0bb9c4e25714197fec801bcb106100b3f3a34964"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/pdfcpu.properties",
+      "sha256": "1e23be30ee10ec043e9178ca331473561c8c04f3110874c25864a387b153d3d0"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/required-rules.txt",
+      "sha256": "ef9fca293259a1d19aa49c179f4f7932960abe7410b7592093ba53da9bc022dd"
+    },
+    {
+      "path": "capabilities/profiles/T10-standards/rules.md",
+      "sha256": "9c79a43f5f9f51cb40214c77618244822f9c38ccf22d91608c20e7c4071b2d41"
+    },
+    {
+      "path": "scripts/arlington-pin.properties",
+      "sha256": "c7e3be5214ad09346530cb1a3d8fd7ab6589a8ddf992ee87bbdfcca633d4fffd"
+    },
+    {
+      "path": "scripts/imagemagick-pin.properties",
+      "sha256": "0cbd171a2ac7bf35623c4a2cf83f0a3850b15efe3873cb7b40b4e765c5458374"
+    },
+    {
+      "path": "scripts/imagemagick-runtime.sha256",
+      "sha256": "96d4b79b69a922ac4abe10887d52e7711da8de724e46f38cf1fd2187bacc0f2c"
+    },
+    {
+      "path": "scripts/pdfcpu-pin.properties",
+      "sha256": "21c58822196a4123561cac927e1f8ba487e6581ba8f488d5b7f40ba949429fc8"
+    },
+    {
+      "path": "scripts/pdfium-pin.properties",
+      "sha256": "0037480e2d77ae1a6d72566c43cf4c5fb9ccf9bb446b31b2c124e0e51c52ac0e"
+    },
+    {
+      "path": "scripts/qpdf-pin.properties",
+      "sha256": "62c63de3d888ba08b60df9e3c33c9ebefe4cc0c8ee747cc5269390017b57169c"
+    },
+    {
+      "path": "scripts/t10-arlington-pin.properties",
+      "sha256": "9c26dc17077bc116844dae3a216df506c38bb2823b9009d29e2f4cd1b6b84ede"
+    },
+    {
+      "path": "scripts/t11-arlington-pin.properties",
+      "sha256": "1ce7aa610b33cbb709efe7391e2ee0d9f5d8d7d9359862496f1c73ac41bfc47b"
+    },
+    {
+      "path": "target/foundation-0.1.0/artifacts/pdf-conversion-0.1.0.jar",
+      "sha256": "ac1aa17eec63d7fb8d2d20cc5910a84be1fb4e04a2fcd65132df4c40e7ba8215"
+    },
+    {
+      "path": "target/foundation-0.1.0/artifacts/pdf-document-0.1.0.jar",
+      "sha256": "1c19af8b3dadab6b8bbd581469353c1b352934867f8a41f8f2dd49d6ece474b6"
+    },
+    {
+      "path": "target/foundation-0.1.0/artifacts/pdf-migration-itext7-0.1.0.jar",
+      "sha256": "b8a3b8856a36eca941a799aba5d6b0c370d2cd4cb76972d1ccce8bab53da1f65"
+    },
+    {
+      "path": "target/foundation-0.1.0/artifacts/pdf-provider-contract-0.1.0.jar",
+      "sha256": "ec1348967fc5b72fad38f8f54550869f18d3309ce4ea7ba42125a8956aa1e00e"
+    },
+    {
+      "path": "target/foundation-0.1.0/build-command.json",
+      "sha256": "76b3d096020e5fd925bb8e47354e246210f9e68d33be9bfca66929d443d9ca19"
+    },
+    {
+      "path": "target/foundation-0.1.0/build-inputs.json",
+      "sha256": "cea89814ef0f42badbbef45117433d6d9ad8b8a9103748344f242e33d3393e33"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/acceptance.jar",
+      "sha256": "65645657905ec3e4d9e800388b4c9594296c5cb6dae02e7f8f0c40a2d61e9435"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/facade-tests.jar",
+      "sha256": "43df9f6e7875e7ad95ee1e8c3840aeb7486244610b4bbc760ec61c9f5c4cd67b"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/common-image-3.14.0.jar",
+      "sha256": "9edb1afd32278d20ad660869bfa5b0a27cf9b3553b6eb3f8fc51a2fc13109b66"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/common-io-3.14.0.jar",
+      "sha256": "ae01308bd48c68e76f6a1f76880cf7f4a3a004aa83d78e5448de358a4d957e8f"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/common-lang-3.14.0.jar",
+      "sha256": "8d4529d6f56a010bc7e130ebfcdaf14bc11586e9d9ae66f6dca66f91da7eafef"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/commons-logging-1.4.0.jar",
+      "sha256": "d175dbd751dd782a63bde28c7a039520e971f25e84b79c19b8435edc3603e0dc"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/core-3.5.3.jar",
+      "sha256": "8d8064c1636fdaef7189dd9055c7d59950a8940a12f2293956446ec3c109fd82"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/fontbox-3.0.8.jar",
+      "sha256": "a1915c24e3edbe0ecec93896dfbf6d41427810b663ade97bd4e8bae86ec3fdab"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/hamcrest-core-1.3.jar",
+      "sha256": "66fdef91e9739348df7a096aa384a5685f4e875584cce89386a7a47251c4d8e9"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/icu4j-77.1.jar",
+      "sha256": "b3640b9f416a4411fd33c59abbeea8fd57d024c23e1819bf9673220a97499fe3"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/imageio-core-3.14.0.jar",
+      "sha256": "a1b832b5090bd4677696f999b5ccb8954e987eb9674632a6286a6de2bb1c3c78"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/imageio-metadata-3.14.0.jar",
+      "sha256": "03768fc012bd2573236da803099aba6961dfb29c190103f9790fc49ac27f84c1"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/imageio-tiff-3.14.0.jar",
+      "sha256": "68aa1b4a176d1242b9e49334df188ebfbb7c9201f6071dfe42500d63486224b6"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/junit-4.13.2.jar",
+      "sha256": "8e495b634469d64fb8acfa3495a065cbacc8a0fff55ce1e31007be4c16dc57d3"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/okapibarcode-0.5.6.jar",
+      "sha256": "fc07c5e28f200a53b980e36719901e095e06d1432d7ae959a22456f838765f2a"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/pdfbox-3.0.8.jar",
+      "sha256": "97647cfbde61ebcfc06b4cf8c9b0ffcaaee073396eceb4a7f6836a9b9128903c"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/pdfbox-io-3.0.8.jar",
+      "sha256": "36a0e04001010b4c764857817412b96339930b19755e728959805cc0352061b2"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/snakeyaml-2.2.jar",
+      "sha256": "1467931448a0817696ae2805b7b8b20bfb082652bf9c4efaed528930dc49389b"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/native-tests.jar",
+      "sha256": "0ba73f3749133cc8b88ea4349f92715573891d19524312865b58de9b081ec345"
+    }
+  ]
+}

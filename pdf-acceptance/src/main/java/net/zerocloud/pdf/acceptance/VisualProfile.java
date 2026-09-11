@@ -38,7 +38,7 @@ final class VisualProfile {
                     + "antialiasing to affect";
     private static final String OPAQUE_SRGB_COLOR_POLICY =
             "sRGB, opaque 8-bit RGB PNG after compositing over opaque white";
-    private static final String T18_FONT_POLICY =
+    private static final String NO_FONT_RESOURCES_POLICY =
             "not applicable; the artifact has no text or font resources and "
                     + "uses no system fonts";
     private static final String T18_ANTIALIASING_POLICY =
@@ -57,6 +57,8 @@ final class VisualProfile {
             "effective CropBox [0 0 240 180] points",
             "effective CropBox [5 15 155 185] points",
             "effective CropBox [0 0 612 792] points"));
+    private static final RenderingPolicy PAGE_WORKFLOW_POLICY = new RenderingPolicy(
+            OPAQUE_SRGB_COLOR_POLICY, NO_FONT_RESOURCES_POLICY, T10_ANTIALIASING_POLICY);
     private static final Map<String, RenderingPolicy> SUPPORTED_POLICIES =
             supportedPolicies();
 
@@ -133,15 +135,15 @@ final class VisualProfile {
         String expectedReference = required(properties, "EXPECTED_RASTER");
         String profileId = required(properties, "PROFILE_ID");
         boolean shaping = profileId.startsWith("T29-shaping-");
-        boolean t10 = profileId.startsWith(T10_PROFILE_PREFIX);
+        PageWorkflowFamily pageWorkflow = PageWorkflowFamily.from(profileId);
         int pageNumber = 1;
         int pageCount = 1;
         if (profileId.equals("T24-paragraph-composition") || profileId.startsWith("T25-paragraph-")
                 || profileId.equals("T26-table-composition") || profileId.equals("T27-table-pagination")
-                || profileId.startsWith("T28-unicode-") || shaping || t10) {
+                || profileId.startsWith("T28-unicode-") || shaping || pageWorkflow != null) {
             pageNumber = positiveInt(properties, "PAGE_SELECTION");
             pageCount = positiveInt(properties, "PAGE_COUNT");
-            int expectedPages = t10 ? t10PageCount(profileId)
+            int expectedPages = pageWorkflow != null ? pageWorkflow.pageCount(profileId)
                     : shaping ? 8 : profileId.startsWith("T28-unicode-") ? 7
                     : profileId.equals("T27-table-pagination") ? T27TableExpectations.PAGE_COUNT
                     : profileId.equals("T26-table-composition") ? 3 : 2;
@@ -175,15 +177,13 @@ final class VisualProfile {
         String antialiasingPolicy = required(properties, "ANTIALIASING_POLICY");
         String background = required(properties, "BACKGROUND");
         String comparisonMetric = required(properties, "COMPARISON_METRIC");
-        if (t10) {
-            if (!T10_PAGE_BOXES.contains(pageBox)) {
-                throw new IOException("Unsupported visual profile property PAGE_BOX: " + pageBox);
-            }
+        if (pageWorkflow != null) {
+            pageWorkflow.requirePageBox(pageBox);
         } else {
             requireSupported("PAGE_BOX", pageBox, shaping ? T29_PAGE_BOX : SUPPORTED_PAGE_BOX);
         }
-        RenderingPolicy supportedPolicy = t10
-                ? new RenderingPolicy(OPAQUE_SRGB_COLOR_POLICY, T18_FONT_POLICY, T10_ANTIALIASING_POLICY)
+        RenderingPolicy supportedPolicy = pageWorkflow != null
+                ? pageWorkflow.renderingPolicy
                 : SUPPORTED_POLICIES.get(profileId);
         if (supportedPolicy == null) {
             throw new IOException("Unsupported visual profile ID: " + profileId);
@@ -243,11 +243,11 @@ final class VisualProfile {
                 T03_ANTIALIASING_POLICY));
         policies.put(T18_PROFILE, new RenderingPolicy(
                 OPAQUE_SRGB_COLOR_POLICY,
-                T18_FONT_POLICY,
+                NO_FONT_RESOURCES_POLICY,
                 T18_ANTIALIASING_POLICY));
         policies.put("T09-document-value-inspection-patch", new RenderingPolicy(
                 OPAQUE_SRGB_COLOR_POLICY,
-                T18_FONT_POLICY,
+                NO_FONT_RESOURCES_POLICY,
                 "pinned PDFium default smoothing; vector edges are axis-aligned"));
         policies.put(T19_PROFILE, new RenderingPolicy(
                 OPAQUE_SRGB_COLOR_POLICY,
@@ -333,7 +333,8 @@ final class VisualProfile {
     boolean requiresExactChangedPixels() {
         return profileId.startsWith("T25-paragraph-") || profileId.equals("T26-table-composition")
                 || profileId.equals("T27-table-pagination") || profileId.startsWith("T28-unicode-")
-                || profileId.startsWith("T29-shaping-") || profileId.startsWith(T10_PROFILE_PREFIX);
+                || profileId.startsWith("T29-shaping-")
+                || PageWorkflowFamily.from(profileId) != null;
     }
 
     long comparisonThreshold() {
@@ -371,14 +372,59 @@ final class VisualProfile {
         }
     }
 
-    private static int t10PageCount(String profileId) throws IOException {
-        if (!profileId.matches("T10-page-manipulation-merge-split-(edited|merged|left|right)-page-[1-5]")) {
-            throw new IOException("Unsupported T10 visual profile ID: " + profileId);
+    private enum PageWorkflowFamily {
+        T10(T10_PROFILE_PREFIX, T10_PAGE_BOXES) {
+            @Override
+            int pageCount(String profileId) throws IOException {
+                if (!profileId.matches(
+                        "T10-page-manipulation-merge-split-(edited|merged|left|right)-page-[1-5]")) {
+                    throw new IOException("Unsupported T10 visual profile ID: " + profileId);
+                }
+                if (profileId.contains("-edited-page-")) {
+                    return 4;
+                }
+                return profileId.contains("-merged-page-") ? 5 : 3;
+            }
+        },
+        T11(T11Corpus.PROFILE + "-", Collections.singletonList(
+                "effective CropBox [0 0 120 100] points")) {
+            @Override
+            int pageCount(String profileId) throws IOException {
+                if (!profileId.matches(
+                        T11Corpus.PROFILE + "-(edited|merged|left|right)-page-[1-4]")) {
+                    throw new IOException("Unsupported T11 visual profile ID: " + profileId);
+                }
+                return profileId.contains("-edited-page-")
+                        || profileId.contains("-merged-page-") ? 4 : 2;
+            }
+        };
+
+        private final String prefix;
+        private final List<String> pageBoxes;
+        private final RenderingPolicy renderingPolicy;
+
+        PageWorkflowFamily(String prefix, List<String> pageBoxes) {
+            this.prefix = prefix;
+            this.pageBoxes = pageBoxes;
+            this.renderingPolicy = PAGE_WORKFLOW_POLICY;
         }
-        if (profileId.contains("-edited-page-")) {
-            return 4;
+
+        abstract int pageCount(String profileId) throws IOException;
+
+        void requirePageBox(String pageBox) throws IOException {
+            if (!pageBoxes.contains(pageBox)) {
+                throw new IOException("Unsupported visual profile property PAGE_BOX: " + pageBox);
+            }
         }
-        return profileId.contains("-merged-page-") ? 5 : 3;
+
+        static PageWorkflowFamily from(String profileId) {
+            for (PageWorkflowFamily family : values()) {
+                if (profileId.startsWith(family.prefix)) {
+                    return family;
+                }
+            }
+            return null;
+        }
     }
 
     private static int positiveInt(Properties properties, String key)

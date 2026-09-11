@@ -94,7 +94,7 @@ final class T10IndependentEvidence {
                     checkerOutput.resolve("standards.properties"),
                     "T10 " + checker + " standards");
             String checkerResult = observation.required("result");
-            standards = combine(standards, checkerResult);
+            standards = EvidenceResult.combine(standards, checkerResult);
             if (!T10Corpus.PROFILE.equals(observation.required("profile"))
                     || !exactHash.equals(observation.required("input-sha256"))) {
                 standards = "indeterminate";
@@ -199,7 +199,7 @@ final class T10IndependentEvidence {
                     release);
             String pageResult = evidence.result().recordValue();
             result.setProperty("page." + page + ".visual", pageResult);
-            combined = combine(combined, pageResult);
+            combined = EvidenceResult.combine(combined, pageResult);
             aggregate.append("page ").append(page).append('=')
                     .append(pageResult).append('\n');
             EvidenceFiles.write(
@@ -388,9 +388,4 @@ final class T10IndependentEvidence {
         }
     }
 
-    static String combine(String first, String second) {
-        return "fail".equals(first) || "fail".equals(second) ? "fail"
-                : "pass".equals(first) && "pass".equals(second)
-                        ? "pass" : "indeterminate";
-    }
 }

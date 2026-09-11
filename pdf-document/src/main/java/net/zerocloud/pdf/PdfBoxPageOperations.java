@@ -595,11 +595,13 @@ final class PdfBoxPageOperations {
                         metadataOperations.extractAndStripManagedStructures(
                                 sourceDocument));
                 merger.appendDocument(combinedSources, sourceDocument);
+                metadataOperations.copyInlineCatalogExtensions(sourceDocument, combinedSources);
             }
             annotationOperations.requireMergeIdentifiersSafe(
                     annotationStructures);
             int originalPageCount = document.getNumberOfPages();
             merger.appendDocument(document, combinedSources);
+            metadataOperations.copyInlineCatalogExtensions(combinedSources, document);
             for (int index = originalPageCount;
                     index < document.getNumberOfPages();
                     index++) {
@@ -685,6 +687,7 @@ final class PdfBoxPageOperations {
                         .split(document);
                 PDDocument productDocument = documents.get(0);
                 created.put(product.getKey(), productDocument);
+                metadataOperations.copyInlineCatalogExtensions(document, productDocument);
                 makeLibraryOwnedPageTreeIndirect(productDocument);
                 repairPageParentReferences(productDocument);
                 int[] mapping = splitMapping(
@@ -942,7 +945,10 @@ final class PdfBoxPageOperations {
                                     .hasOnlyPreservableAdobeSecurityExtension(
                                             candidate))
                     && !PdfBoxMetadataOperations.isManagedCatalogEntry(name)
-                    && !PdfBoxAnnotationOperations.isManagedCatalogEntry(name)) {
+                    && !PdfBoxAnnotationOperations.isManagedCatalogEntry(name)
+                    && !(isInlineCatalogExtensionName(name)
+                            && isSafeInlineExtension(catalog.getItem(name),
+                                    new IdentityHashMap<COSBase, Boolean>()))) {
                 throw preservationUnsupported();
             }
         }
@@ -976,6 +982,15 @@ final class PdfBoxPageOperations {
                 throw preservationUnsupported();
             }
         }
+    }
+
+    /** Standard Catalog entries retain their existing, explicit preservation policies. */
+    static boolean isInlineCatalogExtensionName(COSName name) {
+        return !isOneOf(name, "Type", "Version", "Extensions", "Pages", "PageLabels", "Names", "Dests",
+                "ViewerPreferences", "PageLayout", "PageMode", "Outlines", "Threads", "OpenAction", "AA",
+                "URI", "AcroForm", "Metadata", "StructTreeRoot", "MarkInfo", "Lang", "SpiderInfo",
+                "OutputIntents", "PieceInfo", "OCProperties", "Perms", "Legal", "Requirements", "Collection",
+                "NeedsRendering", "DSS", "AF", "DPartRoot");
     }
 
     private void requireSafeTrailer(PDDocument candidate)

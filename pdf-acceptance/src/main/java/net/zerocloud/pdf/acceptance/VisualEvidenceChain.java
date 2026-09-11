@@ -69,6 +69,11 @@ final class VisualEvidenceChain {
                 T10Corpus.PROFILE, "pages.pdf", "page-" + page, repositoryRoot);
     }
 
+    static VisualEvidenceChain t11(Path repositoryRoot, int page) {
+        return new VisualEvidenceChain("T11", "document.metadata.outlines-destinations-attachments",
+                T11Corpus.PROFILE, "metadata.pdf", "page-" + page, repositoryRoot);
+    }
+
     String artifactPrefix() {
         return repositoryRoot == null ? "artifacts/" : "";
     }
@@ -90,7 +95,7 @@ final class VisualEvidenceChain {
     }
 
     private boolean usesExactInputHash() {
-        return "T09".equals(label) || "T10".equals(label);
+        return "T09".equals(label) || "T10".equals(label) || "T11".equals(label);
     }
 
     static VisualEvidenceChain t18() {

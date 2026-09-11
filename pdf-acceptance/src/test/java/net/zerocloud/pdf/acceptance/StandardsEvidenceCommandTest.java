@@ -112,6 +112,20 @@ public final class StandardsEvidenceCommandTest {
     }
 
     @Test
+    public void pdf20NoticeIsAcceptedOnlyForAnExplicitPdf20Profile() throws Exception {
+        Path root = temporary.getRoot().toPath();
+        Path pdf20 = recordPdfcpuNotice(Files.createDirectory(root.resolve("pdf20")), "2.0");
+        Path pdf17 = recordPdfcpuNotice(Files.createDirectory(root.resolve("pdf17")), "1.7");
+        Path pdf20WithoutNotice = recordQualifiedPdfVersion(
+                Files.createDirectory(root.resolve("pdf20-without-notice")), "2.0");
+
+        assertTrue(read(pdf20.resolve("standards.properties")).contains("result=pass"));
+        assertTrue(read(pdf17.resolve("standards.properties")).contains("result=indeterminate"));
+        assertTrue(read(pdf20WithoutNotice.resolve("standards.properties"))
+                .contains("result=indeterminate"));
+    }
+
+    @Test
     public void anInputChangedDuringValidationCannotBeCertified() throws Exception {
         Path output = recordQualified(temporary.getRoot().toPath(), "echo changed >> \"$7\"\n");
 
@@ -144,6 +158,47 @@ public final class StandardsEvidenceCommandTest {
         return java.nio.file.Paths.get(arguments[0]);
     }
 
+    private static Path recordQualifiedPdfVersion(Path root, String pdfVersion) throws Exception {
+        String[] arguments = qualifiedArguments(root, "");
+        Path profile = java.nio.file.Paths.get(arguments[2]);
+        write(profile, read(profile).replace("pdf-version=1.7", "pdf-version=" + pdfVersion));
+        StandardsEvidenceCommand.main(arguments);
+        return java.nio.file.Paths.get(arguments[0]);
+    }
+
+    private static Path recordPdfcpuNotice(Path root, String pdfVersion) throws Exception {
+        String notice = "***************************** Disclaimer ****************************\n"
+                + "* PDF 2.0 features are supported on a need basis.                   *\n"
+                + "* (See ISO 32000:2 6.3.2 Conformance of PDF processors)             *\n"
+                + "* At the moment pdfcpu ships with basic PDF 2.0 support.            *\n"
+                + "* Please let us know which feature you would like to see supported, *\n"
+                + "* provide a sample PDF file and create an issue:                    *\n"
+                + "* https://github.com/pdfcpu/pdfcpu/issues/new/choose                *\n"
+                + "* Thank you for using pdfcpu <3                                     *\n"
+                + "*********************************************************************";
+        Path checker = write(root.resolve("qualified-pdfcpu"), "#!/bin/sh\n"
+                + "if [ \"$1\" = version ]; then echo 'version: 0.15.0'; exit 0; fi\n"
+                + "case \"${7##*/}\" in control-*) echo 'validation error: entry=Type invalid dict entry' >&2; exit 1;; esac\n"
+                + "echo \"validating(mode=strict) $7 ...\" >&2\necho >&2\n"
+                + "cat >&2 <<'NOTICE'\n" + notice + "\nNOTICE\n"
+                + "echo 'validation ok' >&2\n");
+        assertTrue(checker.toFile().setExecutable(true));
+        Path negative = write(root.resolve("control-catalog-type.pdf"),
+                "%PDF-" + pdfVersion + "\n1 0 obj\n<< /Type /Bogus >>\nendobj\n%%EOF\n");
+        Path profile = write(root.resolve("profile.properties"),
+                "profile=T11-metadata-outlines-destinations-attachments\n"
+                        + "pdf-version=" + pdfVersion + "\n"
+                        + "required-rules=catalog-type\ncovered-rules=catalog-type\n"
+                        + "negative.catalog-type.path=" + negative + "\n"
+                        + "negative.catalog-type.sha256=" + EvidenceFiles.sha256(negative) + "\n"
+                        + "negative.catalog-type.finding=entry=Type invalid dict entry\n");
+        Path input = write(root.resolve("valid.pdf"), "%PDF-" + pdfVersion + "\n%%EOF\n");
+        Path output = root.resolve("evidence");
+        StandardsEvidenceCommand.main(new String[] {output.toString(),
+                toolPin(root, checker, "qualified").toString(), profile.toString(), input.toString()});
+        return output;
+    }
+
     private static String[] qualifiedArguments(Path root, String duringValidation) throws Exception {
         Path checker = write(root.resolve("qualified-pdfcpu"), "#!/bin/sh\n"
                 + "if [ \"$1\" = version ]; then echo 'version: 0.15.0'; exit 0; fi\n"
@@ -156,6 +211,7 @@ public final class StandardsEvidenceCommandTest {
                 "%PDF-1.7\n1 0 obj\n<< /Type /Bogus >>\nendobj\n%%EOF\n");
         Path profile = write(root.resolve("qualified-profile.properties"),
                 "profile=T03-document-workflow-transaction\n"
+                        + "pdf-version=1.7\n"
                         + "required-rules=catalog-type\ncovered-rules=catalog-type\n"
                         + "negative.catalog-type.path=" + negative + "\n"
                         + "negative.catalog-type.sha256=" + EvidenceFiles.sha256(negative) + "\n"

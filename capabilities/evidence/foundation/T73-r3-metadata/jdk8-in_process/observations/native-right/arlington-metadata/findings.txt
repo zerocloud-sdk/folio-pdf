@@ -1,0 +1,206 @@
+Version exit: 0
+[0m
+
+Arlington PDF Model C++ P.o.C. version v0.81-folio-t11-r1 built Sep 10 2026 00:00:00 (GNU-C linux release)
+Choose one of: --pdf, --checkdva or --validate.
+
+Usage:
+	TestGrammar --tsvdir <dir> [--force <ver>|exact] [--out <fname|dir>] [--no-color] [--clobber] [--debug] [--brief] [--extensions <extn1[,extn2]>] [--password <pwd>] [--exclude string | @textfile.txt] [--dryrun] [--allfiles] [--validate | --checkdva <formalrep> | --pdf <fname|dir|@file.txt> ]
+
+Options: 
+-h, --help                   This usage message.
+-b, --brief                  terse output when checking PDFs. The full PDF DOM tree is NOT output.
+-c, --checkdva               Adobe DVA formal-rep PDF file to compare against Arlington PDF model.
+-d, --debug                  output additional debugging information.
+    --clobber                always overwrite PDF output report files (--pdf) rather than append underscores.
+    --no-color               disable colorized text output (useful when redirecting or piping output)
+-m, --batchmode              stop popup error dialog windows and redirect everything to console (Windows only, includes memory leak reports).
+-o, --out                    output file or folder. Default is stdout. See --clobber for overwriting behavior.
+-p, --pdf                    input PDF file, folder, or text file of PDF files/folders.
+-f, --force                  force the PDF version to the specified value (1,0, 1.1, ..., 2.0 or 'exact'). Only applicable to --pdf.
+-t, --tsvdir                 [required] folder containing Arlington PDF model TSV file set.
+-v, --validate               validate the Arlington PDF model.
+-e, --extensions             a comma-separated list of extensions, or '*' for all extensions.
+    --password               password. Only applicable to --pdf.
+    --exclude                PDF exclusion string or filelist (# is a comment). Only applicable to --pdf.
+    --dryrun                 Dry run - don't do any actual processing.
+-a, --allfiles               Process all files regardless of file extension.
+    --explicit-values-only   Ignore wildcards in PossibleValues.
+
+Built using pdfium
+
+Validation exit: 0
+Processing "/workspace/capabilities/evidence/foundation/T73-r3-metadata/jdk8-in_process/observations/native-right/metadata.pdf" to stdout BEGIN - TestGrammar v0.81-folio-t11-r1 built Sep 10 2026 00:00:00 (GNU-C linux release) pdfium
+Arlington TSV data: "/workspace/.build-cache/arlington/t11-r1/tsv/latest"
+PDF: "/workspace/capabilities/evidence/foundation/T73-r3-metadata/jdk8-in_process/observations/native-right/metadata.pdf"
+Info: XRefStream detected.
+Info: Header is version PDF 2.0
+Info: Command line forced to PDF 2.0
+Info: Processing as PDF 2.0
+       1: Trailer (as XRefStream)
+       2:   Trailer (as XRefStream)->ID (as TrailerIDArray)
+       3:   Trailer (as XRefStream)->Index (as ArrayOfXRefIndexIntegers)
+       4:   Trailer (as XRefStream)->Info (as DocInfo)
+Info: detected a dictionary key version-based feature that was deprecated in PDF 2.0 (using PDF 2.0) for DocInfo/Author
+Info: detected a dictionary key version-based feature that was deprecated in PDF 2.0 (using PDF 2.0) for DocInfo/Subject
+Info: detected a dictionary wildcard version-based feature that was deprecated in PDF 2.0 (using PDF 2.0) for DocInfo/T73Keep
+Info: detected a dictionary key version-based feature that was deprecated in PDF 2.0 (using PDF 2.0) for DocInfo/Title
+       5:   Trailer (as XRefStream)->Root (as Catalog)
+Info: unknown key 'T73Keep' is not defined in Arlington for Catalog in PDF 2.0
+       6:   Trailer (as XRefStream)->W (as ArrayOfXRefWIntegers)
+       7:     Trailer (as XRefStream)->Root (as Catalog)->Metadata
+Info: unknown key 'T73Keep' is not defined in Arlington for Metadata in PDF 2.0
+       8:     Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)
+       9:     Trailer (as XRefStream)->Root (as Catalog)->Outlines (as Outline)
+      10:     Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)
+      11:       Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[bv]
+      12:       Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[shared-1]
+      13:       Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[v]
+      14:       Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[xyz]
+      15:       Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)->EmbeddedFiles (as name-tree)->[payload.txt]
+      16:       Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)->EmbeddedFiles (as name-tree)->[payload.txt-1]
+      17:       Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)->EmbeddedFiles (as name-tree)->[secondary.bin]
+      18:       Trailer (as XRefStream)->Root (as Catalog)->Outlines (as Outline)->First (as OutlineItem)
+      19:       Trailer (as XRefStream)->Root (as Catalog)->Outlines (as Outline)->Last (as OutlineItem)
+      20:       Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)
+      21:         Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[bv][0 (as PageObject)]
+Info: unknown key 'T73Marker' is not defined in Arlington for PageObject in PDF 2.0
+      22:         Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[shared-1][0 (as PageObject)]
+Info: unknown key 'T73Marker' is not defined in Arlington for PageObject in PDF 2.0
+      23:         Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[v][0 (as PageObject)]
+      24:         Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[xyz][0 (as PageObject)]
+      25:         Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)->EmbeddedFiles (as name-tree)->[payload.txt]->EF (as FileSpecEF)
+      26:         Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)->EmbeddedFiles (as name-tree)->[payload.txt-1]->EF (as FileSpecEF)
+      27:         Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)->EmbeddedFiles (as name-tree)->[secondary.bin]->EF (as FileSpecEF)
+      28:         Trailer (as XRefStream)->Root (as Catalog)->Outlines (as Outline)->First (as OutlineItem)->Dest (as DestXYZArray)
+      29:         Trailer (as XRefStream)->Root (as Catalog)->Outlines (as Outline)->First (as OutlineItem)->Next (as OutlineItem)
+      30:         Trailer (as XRefStream)->Root (as Catalog)->Outlines (as Outline)->First (as OutlineItem)->Parent (as Outline)
+      31:         Trailer (as XRefStream)->Root (as Catalog)->Outlines (as Outline)->Last (as OutlineItem)->Parent (as Outline)
+      32:         Trailer (as XRefStream)->Root (as Catalog)->Outlines (as Outline)->Last (as OutlineItem)->Prev (as OutlineItem)
+      33:         Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]
+      34:         Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[1 (as PageObject)]
+      35:           Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[bv][0 (as PageObject)]->Contents (as Stream)
+      36:           Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[bv][0 (as PageObject)]->Parent (as PageTreeNodeRoot)
+      37:           Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[bv][0 (as PageObject)]->Resources (as Resource)
+      38:           Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[shared-1][0 (as PageObject)]->Contents (as Stream)
+      39:           Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[shared-1][0 (as PageObject)]->Parent (as PageTreeNodeRoot)
+      40:           Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)->Dests (as name-tree)->[shared-1][0 (as PageObject)]->Resources (as Resource)
+      41:           Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)->EmbeddedFiles (as name-tree)->[payload.txt]->EF (as FileSpecEF)->F (as EmbeddedFileStream)
+      42:           Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)->EmbeddedFiles (as name-tree)->[payload.txt]->EF (as FileSpecEF)->UF (as EmbeddedFileStream)
+      43:           Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)->EmbeddedFiles (as name-tree)->[payload.txt-1]->EF (as FileSpecEF)->F (as EmbeddedFileStream)
+      44:           Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)->EmbeddedFiles (as name-tree)->[payload.txt-1]->EF (as FileSpecEF)->UF (as EmbeddedFileStream)
+      45:           Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)->EmbeddedFiles (as name-tree)->[secondary.bin]->EF (as FileSpecEF)->F (as EmbeddedFileStream)
+      46:           Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)->EmbeddedFiles (as name-tree)->[secondary.bin]->EF (as FileSpecEF)->UF (as EmbeddedFileStream)
+      47:           Trailer (as XRefStream)->Root (as Catalog)->Outlines (as Outline)->First (as OutlineItem)->Dest (as DestXYZArray)[0 (as PageObject)]
+      48:             Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)->EmbeddedFiles (as name-tree)->[payload.txt]->EF (as FileSpecEF)->F (as EmbeddedFileStream)->Params (as EmbeddedFileParameter)
+      49:             Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)->EmbeddedFiles (as name-tree)->[payload.txt-1]->EF (as FileSpecEF)->F (as EmbeddedFileStream)->Params (as EmbeddedFileParameter)
+      50:             Trailer (as XRefStream)->Root (as Catalog)->Names (as Name)->EmbeddedFiles (as name-tree)->[secondary.bin]->EF (as FileSpecEF)->F (as EmbeddedFileStream)->Params (as EmbeddedFileParameter)
+Info: Latest Arlington object was PDF 1.7 (FileSpecification/UF) compared using forced PDF 2.0
+END
+
+DONE - 1 files processed
+
+Negative control destination-fitb-count sha256=bd27618081c24269a6f1e461e92d80c61e2b074466ff12dc6744acb6a5034ff2 detected=true
+Negative control destination-fitbh-count sha256=b802bf2169cef2c3f58dce1efb98dd68c21601db273704a03c825cadea4335c2 detected=true
+Negative control destination-fitbh-operand sha256=14e2b61131aec2f3251f26ce3ad18812ff2ec34341c65965da4e085f88b7ef06 detected=true
+Negative control destination-fitbv-count sha256=4f55f11785ddc7840035a408ef97c561e9573705d4ae318d5b0820082b758da2 detected=true
+Negative control destination-fitbv-operand sha256=728523986d3f637586feb2b7d5068e02e7964f37e3dd03d342a6f0f8c724fad2 detected=true
+Negative control destination-fith-count sha256=143e4330ff88d0a95875c50eae4f534a7d7690db187e13ca5406ecf856a91213 detected=true
+Negative control destination-fith-operand sha256=e1180742b1073be3cb9cbe8a4c9c4821fc13c5f9fdd75e4e18950017a4b826a8 detected=true
+Negative control destination-fitr-count sha256=d66bc42c45e6b604d602c26e537f24cefade0b550ace3bc438b16ce1a4fd161c detected=true
+Negative control destination-fitr-operand sha256=9d2c2d89d425c9c323b33d72b072cac2c5de913e68bfd024d6590511e4493619 detected=true
+Negative control destination-fitv-count sha256=b4c01b36fb69952cbab622e3d091f6016f6e0a0e03b4ee9953e7a94c81bb752a detected=true
+Negative control destination-fitv-operand sha256=0da8c24132904cf4a1a6e690a3c5e5b3915f0804a9df048c4b084848e84e99ae detected=true
+Negative control destination-xyz-count sha256=f787d6ff1f9b5915e75ecc488f86446fede9b931a0e4e460a730faa4f50498fd detected=true
+Negative control destination-xyz-operand sha256=bc9436aaaa2168c0c50302445652d84cbeb58d1f13f75624bc4385beb6acc084 detected=true
+Negative control embedded-checksum-length sha256=c635dce2345d853dc3fbbd81d0d5259f85c78b8093a751eb54dac8120ac58be3 detected=true
+Negative control embedded-checksum-string sha256=de7e5d38254741685772f81e3d46e54c72f3daeb06a1807ab77048220471e2e9 detected=true
+Negative control embedded-checksum-value sha256=e0f6e6052dcb6cf0307ac6aa09b8001e669b74843dd79d345024df9b4e6bf221 detected=true
+Negative control embedded-params-dictionary sha256=5f1ac1d4b9f788873468e2f9da6281d4483fa807d3788be6ac32927898d8dbd7 detected=true
+Negative control embedded-size-integer sha256=e1e78a84a1c6921f396e77ae65cfe9e74420696627fb7a837974c37fff55d8c9 detected=true
+Negative control embedded-size-value sha256=cdf4a22aabfbac0991a56d27426d1cb561ffe221944e06cd6b760847694812fd detected=true
+Negative control embedded-subtype-mime sha256=2b894b60a2337dadd008b68fcca48e65272d6600f3d4225f9946ae7e0bf32f31 detected=true
+Negative control embedded-subtype-name sha256=07b8a90850e3f8d0f32847d4627f2b7c449fa46eabc57a45f62ff93c9750543f detected=true
+Negative control embedded-type-name sha256=85124a4a1cc8428cde7e328350a07d03039be210ac4d52cdea65ec24ad0c92ae detected=true
+Negative control embedded-type-value sha256=f2c23fe2b3623959f2c87ff42256b1d505dead2501c6d30615184d3a40d6c93a detected=true
+Negative control filespec-description-string sha256=0e446c30206e1f5fa18373e0c6e366a305843a3d4a2f71a96f968d2853f7fddb detected=true
+Negative control filespec-dictionary sha256=27b65499d3fabb834d1ea8d35c631385de4af24de8594acbfbe2d4eb92f2c5d9 detected=true
+Negative control filespec-ef-dictionary sha256=ffabf21100edd87bce0f992c7fd4f141f2fcda2642ca3e6ad3d0b28517cb5e3c detected=true
+Negative control filespec-ef-f-stream sha256=6f9acabe844f76f3bae02ffb5f262c6bfbca26835c2b3087afb6aac8dc369d1f detected=true
+Negative control filespec-ef-uf-stream sha256=b6ca931c4314bed175eaef437f4748c8757a4f5da9d6b24771b2fec567ad1ab4 detected=true
+Negative control filespec-f-string sha256=a2b549a3fc2dab4d1543db7503d2bac5e995a9673bd23643a96a1230963910a1 detected=true
+Negative control filespec-relationship-name sha256=cd689ef55377a9e3a02be267df67ad66fb0d2e272d314e58d72b726f73e0d663 detected=true
+Negative control filespec-relationship-value sha256=9c48bda3587ad0fa5f00a01edbb61502e6cb452e1be3017a3527b9f83452e734 detected=true
+Negative control filespec-type-name sha256=8b3ad2e36d9a5b0ccc6170d29f081dd0e940fac980c2498bbb75022d0e3a6cf0 detected=true
+Negative control filespec-type-required sha256=53fc4b48ea9e8afb4a139ef79276692fbb308fad4e1a7cda4336ab316c22a0b0 detected=true
+Negative control filespec-type-value sha256=4343f6a7f867f4da7214281c9264e12aade7aa7e5474621302ff9b3b14d9add1 detected=true
+Negative control filespec-uf-string sha256=63c4c05ccc2657cd065038ced39549b325f850bc8602c05e09ec200f5557f7ad detected=true
+Negative control info-author-string sha256=223f55f31d1bfd39bcc9d9759ad8e904eef365600017fd8277fff974ec0e362c detected=true
+Negative control info-creationdate-date sha256=11267e0e5563c43bf40ddcbedd236b8d48df0685580fe35b38487167934ec247 detected=true
+Negative control info-creationdate-string sha256=6ef17e4d7ac4416c2e754114f7a1caa5c180a09d8ccbb1ac212a22069947dd93 detected=true
+Negative control info-creator-string sha256=a79f43f8d0ee2cae8b7ada9a4c8e3e5a7d13cecdb9af75310d413ffa495d30db detected=true
+Negative control info-custom-string sha256=378c8ad1c933a8f83a46349ee644a0f31ce736bf94672a580a01111c7f9c4988 detected=true
+Negative control info-dictionary sha256=08c7131d62eab48cafd3512f4e19d32f2d6fce41f4a60ca602ad4d162efe57a0 detected=true
+Negative control info-keywords-string sha256=8877951089e70913782f9eaf64390bb08100c821b90e9b6d17b181c687fe9df4 detected=true
+Negative control info-moddate-date sha256=619b9d6949c555dac7545a1e064fab3a730d99870677a7c93023b44f3bcf5d44 detected=true
+Negative control info-moddate-string sha256=600f92e0323e8c353af7d048e943aa1eef9b35c71d062025cd040a7bc7a3ce1e detected=true
+Negative control info-producer-string sha256=9965bf554e60fcf96444a275578d2660610de9ae0bcaf7ab9a17d581a3d7ffd6 detected=true
+Negative control info-subject-string sha256=6a6101796cdde0baed505ff18583aebc10a98cac6f8cb40be67c64c67f669dc2 detected=true
+Negative control info-title-string sha256=1b6892e63c42daf5797c1c25a412bb9cc996bb7b133d065463da1bf5eb89ffa7 detected=true
+Negative control info-trapped-name sha256=dfa070ee273150f6dbfc16ec392ee1ad909c40c1904fa150112bf380b847d5c6 detected=true
+Negative control info-trapped-value sha256=4b75919b52c37669897176e723c6a9550e1b493609dab0880b670a8f04efa8c4 detected=true
+Negative control metadata-stream sha256=df3dff317730caa2f802898035b49471a3cc6125d3a9f7b24727f9a426f26eab detected=true
+Negative control metadata-subtype-name sha256=9cab71e5bd00eec9421b3bfee05212b0bd589a30d239e7140258846939811fc7 detected=true
+Negative control metadata-subtype-required sha256=93580e6c3bffd8973b89dba2d4f7bec29121ada4f48750fc02011b384f147bd2 detected=true
+Negative control metadata-subtype-value sha256=7bb83f2ab7e5398a1dbfd4e7632115f104ea9053f769e5f372b453cbcf4f028d detected=true
+Negative control metadata-type-name sha256=7ca3bfd54d98c031b8468f52ae4c5109a7e74e3d76c54b14a8006e729e5b9603 detected=true
+Negative control metadata-type-required sha256=2a6c56c78c2c988975919cf1a6813a07086fb3142168e37c0b6f31f331c13228 detected=true
+Negative control metadata-type-value sha256=77bcf0a033883ca771fcc6758df7742054572247b37c75aa6dffafb76b7cadab detected=true
+Negative control metadata-xml-wellformed sha256=a9317f7b514056747f58e56a9e1120419b04e2fdb31ee3bc3c12b8e6bb46ca38 detected=true
+Negative control names-embedded-tree sha256=c8bd7831ecc8400fbf95f2e1e1be45dbb5186f6f4dc522be4b4647ce60de2b64 detected=true
+Negative control nametree-child-limits-array sha256=4883b47744912d1a1c0b275aa5939da6bfa2c09c9a0b055964cfd9000ebd15cb detected=true
+Negative control nametree-child-limits-count sha256=e46bbdef0aec99fa191eda082f854ed7056779d008240440e54ae0a17222c92f detected=true
+Negative control nametree-child-limits-required sha256=e134ba9800c9a5e0c63161e15e458d515917a777215055ec9696f31b67b53371 detected=true
+Negative control nametree-child-limits-string sha256=a488a05675cc3e738b541821be1a44e3cd99d6dcf6ec2531ab8bd9c0f6103829 detected=true
+Negative control nametree-child-limits-value sha256=68c19480d7dfd307b6c8e3f6b796b35f50bd4a92a81ee368901cf7b6add462e5 detected=true
+Negative control nametree-kids-array sha256=b9453046a580c7fc86a25ae3b1ea9a18424d95047cebc70ce56d99ce628d38eb detected=true
+Negative control nametree-kids-cycle sha256=4a55074e77a6a8d46a58b87403c595b3d4c50dc2807bcdac4050b96b63c18667 detected=true
+Negative control nametree-kids-member sha256=064ae834a337a834838e3f9bbe1541f8bb40ebb695e48cb469c783a7e5911520 detected=true
+Negative control nametree-names-kids-exclusive sha256=e75996d2ff11756b7255d1e7886dc501a39977a77194febdec578d8c25d102a2 detected=true
+Negative control outline-child-count-integer sha256=2862e98e54ae61d95a3654e90a732286264e3aeeaba92ae842175e1bd7aa6454 detected=true
+Negative control outline-child-count-required sha256=87e98789a929e07a5a6acdf206ab8b4668bb5e7f7fd43376874ce9e1e5460d19 detected=true
+Negative control outline-child-count-value sha256=e8fcc891cfad8a8846f29a20cfde8f997bebc186f7bda6f35072aa58d168497c detected=true
+Negative control outline-child-last-link sha256=c7d1070fe819dd51b7f8157546f6f5ea324ee70c340bcbd7a625bbf4413312e8 detected=true
+Negative control outline-count-integer sha256=88823835957cb9c11a1fb979799f3f561642c39f5a5e9b26478cf621ab231e6b detected=true
+Negative control outline-count-nonnegative sha256=c8b50dc13d933b2e73c64ef590fa23e1e151ddeb0d68df80ec2184e478834a0d detected=true
+Negative control outline-count-required sha256=ab426cace870e585834fa8fb137569517599d6eb0e8c9d51f38e992a85561144 detected=true
+Negative control outline-count-value sha256=1c0de7a69c4b864e1f719cb40974a8022f4cb34fdd9df3c6b4b5d0a8aa559395 detected=true
+Negative control outline-destination-type sha256=924dca04769f2874aab2ddaed1246478a465ea7636239fde19fe4b30be5a6bbe detected=true
+Negative control outline-dictionary sha256=2c490802573a8919b8ba69e9226ce647701651f6c856b7ac26fc85635e1cb311 detected=true
+Negative control outline-first-dictionary sha256=9d4e570182291c43c92ea849c624758d789c4ddfa2105b7eccfdab33b8cbfd43 detected=true
+Negative control outline-first-indirect sha256=261509ab146fe48be1aab950a71c394ddf799bacba0e25fc6b0411899c476b6a detected=true
+Negative control outline-first-required sha256=f2f6a7905a8ab4a43d5b4df05d3b414f21b854004724f89b5b587a000697cccc detected=true
+Negative control outline-item-first-dictionary sha256=371229ec4dfe7235ccc465a9f6cd2f4f7848f2fbfa93176fc32f4329a37aab74 detected=true
+Negative control outline-item-first-indirect sha256=93125343ef34d2c0b231f54d5960b8257b442055c4f3b3f8503e9fda7623be4f detected=true
+Negative control outline-item-last-dictionary sha256=a1ef55ef4890b83f77ca10297f2b32975c9c0068c6f042e5a314bb7a0a7236da detected=true
+Negative control outline-item-last-indirect sha256=1330d64eb6c63157ad4e09169a954e2eb3497e9b569c522b93f2de0987d7fa88 detected=true
+Negative control outline-item-next-dictionary sha256=11f219f62735e760dfea1ae7d120b312597b76a7105087b1774c8a4fb07cff28 detected=true
+Negative control outline-item-next-indirect sha256=1d90c8f60d90f4adbdbeeb4cb1602af3ca02f651f097b4f841a964279e1e9d3a detected=true
+Negative control outline-item-prev-dictionary sha256=caf4c1455d5e74f77347581bc820ff4f92b574dcc9b0cfa7e5afbff5770112ba detected=true
+Negative control outline-item-prev-indirect sha256=1db87e54b2c85679a0200df31b636ccf89f128d24f1509aa7fade3640c1c8f22 detected=true
+Negative control outline-last-dictionary sha256=45be6f7bd35c069dbbdab9cb301df64d09be2dd358fa98f91acb0a9d56ed93df detected=true
+Negative control outline-last-indirect sha256=ff921a690c7c9e2f94af150a749e4ae830b27707a071fc03ad4ed7bb3a66f948 detected=true
+Negative control outline-last-link sha256=ee54daa8bed92032de2713ae80fe8da82668f825a1fc7ebb962bf893c0e73162 detected=true
+Negative control outline-last-required sha256=a3a162f29ba64dc6f77cb2c94cb1fac87ba5fec3eeb67b135c7fb340dfa1bd8f detected=true
+Negative control outline-named-target sha256=2a4f3b424a052e2fd71ff7ce54072c9734a85e5bf54d3d3343b7be263e6f0619 detected=true
+Negative control outline-next-cycle sha256=6452a43a9893070a05e55396e9349c1c6952a7996cc8f49dbe15358f429a0df4 detected=true
+Negative control outline-parent-dictionary sha256=0bc2f6c8bbff991c633bd6c16a6cd1dddd40d031b0b1371d06f8383cc9f9eac2 detected=true
+Negative control outline-parent-indirect sha256=697e555912d8c505265e709b1fceeccbda6e3fe7611e2df7a1cabf0288f53eef detected=true
+Negative control outline-parent-link sha256=9d71fa8e0b4a45c6e8a41ba9826eb7b797d71a5d4f431e9361e269c836f41e33 detected=true
+Negative control outline-parent-required sha256=f6d947acda4e85c684a4d6895f32dd2781a1271de3d3ac02f6f6fdf771d47aae detected=true
+Negative control outline-prev-link sha256=a14c0b9e7ba561475cbf0b497cfb5a966fb1253969a90b84c129a9cbcec9889e detected=true
+Negative control outline-prev-required sha256=1803c9282e9275d19ccbc42d757d0704f04b50e33ea2b069840c9e78bec397ae detected=true
+Negative control outline-title-required sha256=6953eb9267ec56d03aa25c28c0aa722768867bfd7cd2e176de4712afe0d84449 detected=true
+Negative control outline-title-string sha256=d248a86a73c272a2b39669aa1ca2ba7aa1239242690414d1eabc83f0761fd31b detected=true
+Negative control outline-type-name sha256=e99316be4584c6f76c1e4b06856dba69f3c094c5961dbd1b7efd4e475e4c5894 detected=true
+Negative control outline-type-value sha256=535a32753fc8a6ff30a1a0ed801ebc17d2f51e476f26715ea0ac0910590ff8c7 detected=true

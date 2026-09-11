@@ -1,0 +1,108 @@
+Input exact SHA-256: 86194bb4ca9b0c8ff83a96a6d01f4d517e964e2f8c694fc725708140dbaf6ab6
+pdfcpu
+result=pass
+profile=T03-document-workflow-transaction
+covered-rules=catalog-pages,catalog-pages-indirect,catalog-type,catalog-type-required,page-mediabox-numbers,page-mediabox-rectangle,page-mediabox-required,page-parent-indirect,page-parent-link,page-parent-required,page-resources-type,page-type,page-type-value,pages-count-integer,pages-count-nonnegative,pages-count-required,pages-count-value,pages-kid-reference,pages-kids
+executable-sha256=5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d
+model-sha256=none
+patch-sha256=none
+input-sha256=86194bb4ca9b0c8ff83a96a6d01f4d517e964e2f8c694fc725708140dbaf6ab6
+pin-sha256=21c58822196a4123561cac927e1f8ba487e6581ba8f488d5b7f40ba949429fc8
+profile-sha256=04981b139e4fde409eb5ef3f90582b42a9c061cf598c48129229b2702425035f
+Version exit: 0
+version: 0.15.0
+ config: 
+ commit: f2686555
+   date: 2026-08-11 20:50:54 UTC
+     go: go1.26.5
+
+Validation exit: 0
+
+validating(mode=strict) /workspace/capabilities/evidence/foundation/T73-r5-transactions/jdk11-hardened_worker/observations/facade/blank.pdf ...
+validation ok
+Negative control catalog-pages sha256=411166c5051b04d0d6a85710266b961ac57ca3302d6e920fdb7f183f28f1bb3f detected=true
+Negative control catalog-pages-indirect sha256=15968efef75ed27fc29077dba4ac2c17bab7d57b60babd2ebebe84ad52da357b detected=true
+Negative control catalog-type sha256=c1f95d7931bb320feb3294c3867d41e96a1302cb3920606dbaab7e12e101860f detected=true
+Negative control catalog-type-required sha256=1b232380a180eb3ced9c3625153ee010b06e11b3a628c6c0b1078aba437e0f33 detected=true
+Negative control page-mediabox-numbers sha256=6ec1510cccbd9d7dcc664381d68e71ebb0d2a0300e7ee97a6b4cb89c2740713c detected=true
+Negative control page-mediabox-rectangle sha256=25bd505efea14dafefa8dd134879d5f35261db8be4da1d9c23b65d3ae2fc3432 detected=true
+Negative control page-mediabox-required sha256=2a5fb414c8b1f565b6021559f7d637c1f6475d5446987abb1084dfd74b374382 detected=true
+Negative control page-parent-indirect sha256=a7bb58bcdf556530a2d2a978e5d7cbeaff67d318d033ba7a5a81fbc67dc3eae8 detected=true
+Negative control page-parent-link sha256=c7d96c8c614c6f9171109e5fd1af17e549bf7acc62099b6e1a28718209f39dfb detected=true
+Negative control page-parent-required sha256=253228ff414804b4b799f336d7e21220b44e64285f81d60ea0ef3c98f149f2fd detected=true
+Negative control page-resources-type sha256=33ff1741b362fb02856ba83e49f8be159dc32a2bda115a22a1ca32b7f5dad705 detected=true
+Negative control page-type sha256=ef89d0046065ec31948ad50fda2f00c3d74c179c5f39582d7d1246df2841a37c detected=true
+Negative control page-type-value sha256=957a1ec451275bb287a11cedcbe3993eb49b30a9bcdceaf488e6c0fc71f98ec8 detected=true
+Negative control pages-count-integer sha256=553ae8c98a032fa94e3366d9b946569ab7073b770c4eaf73d154b1675379ebb5 detected=true
+Negative control pages-count-nonnegative sha256=9fe087f812420765adb7add8ed1fdc50a271624bd6eac7dfc4b508870258f62b detected=true
+Negative control pages-count-required sha256=56986acd52560e6715727d47cc99c3a90b8641331b527e6d7445084d0dc16f11 detected=true
+Negative control pages-count-value sha256=56986c0732dd1534bb63e5c331f8f7dbcdb6301dadc4592ccd9938f7cce008c9 detected=true
+Negative control pages-kid-reference sha256=1c0e162bdbf9b3d969f65af5e4553b88d4e811fde4de9670753cba4a053e55d0 detected=true
+Negative control pages-kids sha256=6e4226f52a6ce1c7020ab2d2788a85a79ef5d7a1d4eee45c0debf51fffc10ba0 detected=true
+arlington
+result=pass
+profile=T03-document-workflow-transaction
+covered-rules=page-resources-required,pages-type,pages-type-value
+executable-sha256=45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458
+model-sha256=334aa8d6ccd88c96cf01c463971f3079206a47f5cf2101bf6d8cf81f374d5408
+patch-sha256=none
+input-sha256=86194bb4ca9b0c8ff83a96a6d01f4d517e964e2f8c694fc725708140dbaf6ab6
+pin-sha256=c7e3be5214ad09346530cb1a3d8fd7ab6589a8ddf992ee87bbdfcca633d4fffd
+profile-sha256=08360f8f8edb123bb4a2840fdcfbb6f94df0a61a71c935f962ae5f07105aa2a8
+Version exit: 0
+[0m
+
+Arlington PDF Model C++ P.o.C. version v0.81 built Sep  8 2026 00:00:00 (GNU-C linux release)
+Choose one of: --pdf, --checkdva or --validate.
+
+Usage:
+	TestGrammar --tsvdir <dir> [--force <ver>|exact] [--out <fname|dir>] [--no-color] [--clobber] [--debug] [--brief] [--extensions <extn1[,extn2]>] [--password <pwd>] [--exclude string | @textfile.txt] [--dryrun] [--allfiles] [--validate | --checkdva <formalrep> | --pdf <fname|dir|@file.txt> ]
+
+Options: 
+-h, --help                   This usage message.
+-b, --brief                  terse output when checking PDFs. The full PDF DOM tree is NOT output.
+-c, --checkdva               Adobe DVA formal-rep PDF file to compare against Arlington PDF model.
+-d, --debug                  output additional debugging information.
+    --clobber                always overwrite PDF output report files (--pdf) rather than append underscores.
+    --no-color               disable colorized text output (useful when redirecting or piping output)
+-m, --batchmode              stop popup error dialog windows and redirect everything to console (Windows only, includes memory leak reports).
+-o, --out                    output file or folder. Default is stdout. See --clobber for overwriting behavior.
+-p, --pdf                    input PDF file, folder, or text file of PDF files/folders.
+-f, --force                  force the PDF version to the specified value (1,0, 1.1, ..., 2.0 or 'exact'). Only applicable to --pdf.
+-t, --tsvdir                 [required] folder containing Arlington PDF model TSV file set.
+-v, --validate               validate the Arlington PDF model.
+-e, --extensions             a comma-separated list of extensions, or '*' for all extensions.
+    --password               password. Only applicable to --pdf.
+    --exclude                PDF exclusion string or filelist (# is a comment). Only applicable to --pdf.
+    --dryrun                 Dry run - don't do any actual processing.
+-a, --allfiles               Process all files regardless of file extension.
+    --explicit-values-only   Ignore wildcards in PossibleValues.
+
+Built using pdfium
+
+Validation exit: 0
+Processing "/workspace/capabilities/evidence/foundation/T73-r5-transactions/jdk11-hardened_worker/observations/facade/blank.pdf" to stdout BEGIN - TestGrammar v0.81 built Sep  8 2026 00:00:00 (GNU-C linux release) pdfium
+Arlington TSV data: "/workspace/.build-cache/arlington/fe4a1a8/tsv/latest"
+PDF: "/workspace/capabilities/evidence/foundation/T73-r5-transactions/jdk11-hardened_worker/observations/facade/blank.pdf"
+Info: XRefStream detected.
+Info: Header is version PDF 1.7
+Info: Command line forced to PDF 1.7
+Info: Processing as PDF 1.7
+       1: Trailer (as XRefStream)
+       2:   Trailer (as XRefStream)->ID (as TrailerIDArray)
+       3:   Trailer (as XRefStream)->Index (as ArrayOfXRefIndexIntegers)
+       4:   Trailer (as XRefStream)->Root (as Catalog)
+       5:   Trailer (as XRefStream)->W (as ArrayOfXRefWIntegers)
+       6:     Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)
+       7:       Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)
+       8:         Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]
+       9:           Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Parent (as PageTreeNodeRoot)
+      10:           Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)
+Info: Latest Arlington object was PDF 1.5 (XRefStream/Filter) compared using forced PDF 1.7
+END
+
+DONE - 1 files processed
+
+Negative control page-resources-required sha256=057453de6d8fe0490a10b2a44d06c824d0306c64bca64b3444b37ed4b3188dd3 detected=true
+Negative control pages-type sha256=6fe72868d9f01b1fb929450a8f504f6b12fdc8508ae8e325d49009e6b43bbe1a detected=true
+Negative control pages-type-value sha256=46e9d3271b38bad3579ec1bff9388f580efd1990534924c2508f2b1fc6a88cfc detected=true

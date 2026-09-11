@@ -10,6 +10,8 @@ import java.util.Objects;
 import java.util.Optional;
 import net.zerocloud.pdf.CancellationToken;
 import net.zerocloud.pdf.DocumentSource;
+import net.zerocloud.pdf.PdfOutputPolicy;
+import net.zerocloud.pdf.PdfVersion;
 import net.zerocloud.pdf.PublicationReceipt;
 import net.zerocloud.pdf.PublicationStatus;
 import net.zerocloud.pdf.SaveMode;
@@ -25,7 +27,7 @@ final class FacadeDeclarations implements AutoCloseable {
     private final Map<String, PdfWriter> targets;
 
     FacadeDeclarations(Map<String, PdfReader> sourceReaders, String primarySource,
-            Map<String, PdfWriter> targetWriters) {
+            Map<String, PdfWriter> targetWriters, PdfVersion outputVersion) {
         Map<String, PdfReader> readers = new LinkedHashMap<String, PdfReader>(
                 Objects.requireNonNull(sourceReaders, "sources"));
         targets = Collections.unmodifiableMap(new LinkedHashMap<String, PdfWriter>(
@@ -33,6 +35,7 @@ final class FacadeDeclarations implements AutoCloseable {
         Map<String, FacadeSource> snapshots = new LinkedHashMap<String, FacadeSource>();
         IdentityHashMap<PdfReader, Boolean> uniqueReaders = new IdentityHashMap<PdfReader, Boolean>();
         WorkflowRequest.Builder builder = WorkflowRequest.builder().saveMode(SaveMode.REWRITE)
+                .outputPolicy(PdfOutputPolicy.version(Objects.requireNonNull(outputVersion, "outputVersion")))
                 .cancellationToken(cancellation);
         long reserved = 0;
         long maximum = WorkflowResourcePolicy.safeDefaults().getMaximumTemporaryStorageBytes();

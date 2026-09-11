@@ -324,9 +324,10 @@ may reference only `compatible` or `experimental` capabilities. A surface
 cannot appear in both lists. These are disjoint availability tiers: the Stable
 artifact exposes the `stable` list, and the Preview artifact exposes the union
 of `stable` and `preview`. Preview may have no additions; it still contains every
-Stable mapping. Stable currently contains 105 entries and Preview has no
+Stable mapping. Stable currently contains 139 entries and Preview has no
 additions. The T70 lifecycle family contributes 12 entries; T72 contributes 17
-page, merger, and splitter entries.
+page, merger, and splitter entries; and T73 contributes 34 metadata, outline,
+destination, and attachment entries.
 
 Reference types must be below `com.itextpdf.*`. Their Folio PDF types must
 preserve the exact suffix below `net.zerocloud.pdf.itext7.*`, so the declared
@@ -371,10 +372,21 @@ and real negative control. The aggregate records alone cannot certify a later
 candidate. T10 is `compatible`; the unfinished Foundation obligations listed by
 `./scripts/inventory readiness` remain release blockers.
 
-The T11 through T16 profiles likewise have one passing qpdf syntax record for
-each pair of public-workflow products. Their mandatory standards, semantic,
-and visual Acceptance Evidence chains remain absent. T17 has passing syntax
-and project-owned semantic records, while its mandatory standards and visual
+T11 has separate aggregate syntax, standards, semantic, and visual records at
+`capabilities/evidence/T73-metadata-{syntax,standards,semantic,visual}.md`.
+The Foundation inventory binds those claims to the exact candidate, four
+Ubuntu/JDK identities, both Native execution profiles, eight Native products,
+the separately exercised IN_PROCESS Facade products, qualified tools, raw
+reports, and real negative controls. Use the
+[T11 certification contract](../docs/t11-certification.md) and
+`scripts/t03-foundation.py --obligation metadata` to reproduce that routing;
+transactions, values, and pages must be refreshed for the same candidate. T11
+is `compatible` and contributes 34 Stable Migration Facade entries.
+
+The T12 through T16 profiles have one passing qpdf syntax record for each pair
+of public-workflow products. Their mandatory standards, semantic, and visual
+Acceptance Evidence chains remain absent. T17 has passing syntax and
+project-owned semantic records, while its mandatory standards and visual
 chains remain absent. T18 has passing syntax, project-owned semantic, and
 independent visual records, while its mandatory standards chain remains
 absent. Their Dependency Gates remain open while prerequisites are

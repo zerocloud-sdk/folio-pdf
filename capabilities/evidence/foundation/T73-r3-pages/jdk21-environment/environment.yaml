@@ -1,0 +1,127 @@
+{
+  "schema-version": 1,
+  "profile": "ubuntu-24.04-linux-x86-64-jdk21",
+  "identity": {
+    "os": "ubuntu",
+    "os-version": "24.04",
+    "architecture": "x86-64",
+    "image": "docker.io/library/eclipse-temurin@sha256:1ca5e470ad60db0d5b4137c1357068fa210051d815ad98ea9964f4bbe7367f8c",
+    "os-release-sha256": "01af466feb100306498c86aa6bad1815e33036019aa34d4362c20f374ea5c829",
+    "jdk-major": 21,
+    "jdk-vendor": "Eclipse Adoptium",
+    "jdk-build": "21.0.12+8-LTS",
+    "java-sha256": "11af352aa2c506c4123a4e4c19c187d59e06cd0dff317d54f5e6806e07c6715d"
+  },
+  "host": {
+    "kernel": "6.8.0-136-generic",
+    "architecture": "x86-64"
+  },
+  "native-engine": {
+    "name": "harfbuzz",
+    "version": "10.2.0",
+    "helper-sha256": "169389e19e28bc96e3e878a9468671c31ccc6d5e7abbc3d38c4b8470526cdc65",
+    "library-sha256": "8a4c67dc9ead9b0752bcf256fa46c39eb3592e403a282bb341637ed989196e10",
+    "installation-sha256": "b17c12c25135d2aea3708dabcbd436e8ca1f1b88ce5e14d6bc8ebd3f2ad1b178"
+  },
+  "tools": [
+    {
+      "id": "qpdf",
+      "kind": "external-tool",
+      "version": "12.4.0",
+      "chains": [
+        "syntax"
+      ],
+      "sha256": "9ac787a28597e8428289a12ba3fedafd74bdfb4b4da1be814722faf76f14f21b"
+    },
+    {
+      "id": "pdfcpu",
+      "kind": "external-tool",
+      "version": "0.15.0",
+      "chains": [
+        "standards"
+      ],
+      "sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d"
+    },
+    {
+      "id": "arlington",
+      "kind": "external-tool",
+      "version": "0.81",
+      "chains": [
+        "standards"
+      ],
+      "sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458"
+    },
+    {
+      "id": "arlington-t10-r1",
+      "kind": "external-tool",
+      "version": "0.81-folio-t10-r1",
+      "chains": [
+        "standards"
+      ],
+      "sha256": "35c15bc7d78f70c2a378938623d2c5e604d66019aefe9f485b71cac63a46bee5"
+    },
+    {
+      "id": "arlington-t11-r1",
+      "kind": "external-tool",
+      "version": "0.81-folio-t11-r1",
+      "chains": [
+        "standards"
+      ],
+      "sha256": "2df679442bdedd9d598d6fd50638e673700628e78885fa967561a544ebb2ff8d"
+    },
+    {
+      "id": "pdfium-cli",
+      "kind": "external-tool",
+      "version": "v0.11.2-pdfium-chromium-7881",
+      "chains": [
+        "visual"
+      ],
+      "sha256": "3ef3375c429ce665e834f933a028225bf28ac837695aaa69c6fc21facf6780ab"
+    },
+    {
+      "id": "imagemagick",
+      "kind": "external-tool",
+      "version": "7.1.2-30",
+      "chains": [
+        "visual"
+      ],
+      "sha256": "372af8a3fd61ef5f15c6331cde3e21f840eb165d8b533f34ed05d68736dd682e"
+    },
+    {
+      "id": "folio-pdf-t03",
+      "kind": "project-test",
+      "version": "0.1.0",
+      "chains": [
+        "semantic"
+      ],
+      "sha256": "65645657905ec3e4d9e800388b4c9594296c5cb6dae02e7f8f0c40a2d61e9435"
+    },
+    {
+      "id": "folio-pdf-t09",
+      "kind": "project-test",
+      "version": "0.1.0",
+      "chains": [
+        "semantic"
+      ],
+      "sha256": "65645657905ec3e4d9e800388b4c9594296c5cb6dae02e7f8f0c40a2d61e9435"
+    },
+    {
+      "id": "folio-pdf-t10",
+      "kind": "project-test",
+      "version": "0.1.0",
+      "chains": [
+        "semantic"
+      ],
+      "sha256": "65645657905ec3e4d9e800388b4c9594296c5cb6dae02e7f8f0c40a2d61e9435"
+    },
+    {
+      "id": "folio-pdf-t11",
+      "kind": "project-test",
+      "version": "0.1.0",
+      "chains": [
+        "semantic"
+      ],
+      "sha256": "65645657905ec3e4d9e800388b4c9594296c5cb6dae02e7f8f0c40a2d61e9435"
+    }
+  ]
+}

@@ -457,7 +457,41 @@ capabilities:
       failure: net.zerocloud.pdf.DocumentFailure
       failure-code: net.zerocloud.pdf.DocumentFailureCode
     migration-facade:
-      stable: []
+      stable:
+        - itext7.kernel.pdf-document.constructor-named-sources-targets-version
+        - itext7.kernel.pdf-document.get-document-info
+        - itext7.kernel.pdf-document.get-xmp-metadata
+        - itext7.kernel.pdf-document.get-xmp-metadata-bounded
+        - itext7.kernel.pdf-document.set-xmp-metadata
+        - itext7.kernel.pdf-document.get-named-destinations
+        - itext7.kernel.pdf-document.add-named-destination
+        - itext7.kernel.pdf-document.set-named-destinations
+        - itext7.kernel.pdf-document.get-outlines
+        - itext7.kernel.pdf-document.set-outlines
+        - itext7.kernel.pdf-document.add-file-attachment
+        - itext7.kernel.pdf-document.get-file-attachments
+        - itext7.kernel.pdf-document.get-file-attachment
+        - itext7.kernel.pdf-document-info.get-title
+        - itext7.kernel.pdf-document-info.set-title
+        - itext7.kernel.pdf-document-info.get-author
+        - itext7.kernel.pdf-document-info.set-author
+        - itext7.kernel.pdf-document-info.get-subject
+        - itext7.kernel.pdf-document-info.set-subject
+        - itext7.kernel.pdf-document-info.get-keywords
+        - itext7.kernel.pdf-document-info.set-keywords
+        - itext7.kernel.pdf-document-info.get-creator
+        - itext7.kernel.pdf-document-info.set-creator
+        - itext7.kernel.pdf-document-info.get-producer
+        - itext7.kernel.pdf-document-info.set-producer
+        - itext7.kernel.pdf-document-info.add-creation-date
+        - itext7.kernel.pdf-document-info.add-mod-date
+        - itext7.kernel.pdf-document-info.get-trapped
+        - itext7.kernel.pdf-document-info.set-trapped
+        - itext7.kernel.pdf-document-info.get-more-info
+        - itext7.kernel.pdf-document-info.set-more-info
+        - itext7.kernel.pdf-document-info.set-more-info-map
+        - itext7.kernel.pdf-document-info.get-entries
+        - itext7.kernel.pdf-document-info.update-entries
       preview: []
     limitations:
       - T15 admits T11 commands for unsigned INCREMENTAL publication; Existing Signatures authorize no T11 command in version 1.
@@ -468,12 +502,10 @@ capabilities:
     dependency-gates:
       - capability: document.value.inspect-patch
         required-status: compatible
-    promotion-gates:
-      - ticket: T06
-        requirement: Complete the independent acceptance evidence required before compatibility.
+    promotion-gates: []
     acceptance-profile:
       id: T11-metadata-outlines-destinations-attachments
-      state: experimental
+      state: compatible
       mandatory-evidence:
         - syntax
         - standards
@@ -493,19 +525,47 @@ capabilities:
       - kind: cross-jdk-contract
         path: scripts/verify-jdk-matrix.sh
         assertion: Maven verification runs the T11 public workflow contract on JDK 8, 11, 17, and 21.
+      - kind: migration-facade-consumer-contract
+        path: pdf-migration-itext7/src/test/java/net/zerocloud/pdf/itext7/consumer/DocumentMetadataFacadeTest.java
+        assertion: Public Stable and Preview consumers prove equivalent reopened document information, XMP, outline, destination, embedded-file, page-retargeting, collision, preservation, ownership, lifecycle, failure, Publication Receipt, and Source-isolation results through the fixed IN_PROCESS Facade.
+      - kind: migration-facade-artifact-contract
+        path: pdf-migration-itext7/src/test/java/net/zerocloud/pdf/migration/itext7/contract/JarContractIT.java
+        assertion: Actual Stable and Preview jars exactly match every declared PdfDocument and PdfDocumentInfo metadata member; Preview retains Stable, both artifacts use Java 8 bytecode, and no undeclared public type is present.
+      - kind: facade-classpath-exclusivity-contract
+        path: pdf-migration-itext7/src/test/java/net/zerocloud/pdf/migration/itext7/contract/ClasspathExclusivityIT.java
+        assertion: Stable-plus-Preview classpaths reject observably in either jar order after the metadata surface is added.
+      - kind: acceptance-command
+        path: pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T11EvidenceCommand.java
+        assertion: The repository-only command produces eight exact Native and Facade metadata PDFs plus separate syntax, standards, semantic, visual, XML safety, signed-document protection, and real negative-control records from the frozen corpus.
+      - kind: foundation-certification-command
+        path: scripts/t03-foundation.py
+        assertion: Candidate-bound T11 recording runs JDK 8, 11, 17 and 21 with Native IN_PROCESS and HARDENED_WORKER while recording Facade execution separately as IN_PROCESS and retaining all products, reports, controls, tools, environment observations and safety evidence.
     acceptance-evidence:
       - chain: syntax
         result: pass
-        record: capabilities/evidence/T11-metadata-outlines-destinations-attachments-syntax.md
-        producer:
-          kind: external-tool
-          name: qpdf
-          version: "12.4.0"
+        record: capabilities/evidence/T73-metadata-syntax.md
+        producer: {kind: external-tool, name: qpdf, version: '12.4.0'}
+      - chain: standards
+        result: pass
+        record: capabilities/evidence/T73-metadata-standards.md
+        producer: {kind: external-tool, name: arlington-t11-r1, version: '0.81-folio-t11-r1'}
+      - chain: semantic
+        result: pass
+        record: capabilities/evidence/T73-metadata-semantic.md
+        producer: {kind: project-test, name: folio-pdf-t11, version: '0.1.0'}
+      - chain: visual
+        result: pass
+        record: capabilities/evidence/T73-metadata-visual.md
+        producer: {kind: external-tool, name: pdfium-cli, version: 'v0.11.2-pdfium-chromium-7881'}
     provenance:
       path: PROVENANCE.md
       record: T11 metadata-outlines-destinations-attachments record
-    certified-platforms: []
-    status: experimental
+    certified-platforms:
+      - ubuntu-24.04-linux-x86-64-jdk8
+      - ubuntu-24.04-linux-x86-64-jdk11
+      - ubuntu-24.04-linux-x86-64-jdk17
+      - ubuntu-24.04-linux-x86-64-jdk21
+    status: compatible
 
   - id: document.annotations-actions.manage
     context: document-engine

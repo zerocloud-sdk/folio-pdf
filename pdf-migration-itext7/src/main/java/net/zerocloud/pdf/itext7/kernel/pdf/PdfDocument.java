@@ -7,11 +7,19 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import net.zerocloud.pdf.DocumentFailure;
 import net.zerocloud.pdf.DocumentCommand;
+import net.zerocloud.pdf.DocumentQuery;
 import net.zerocloud.pdf.DocumentWorkflow;
+import net.zerocloud.pdf.EmbeddedFile;
+import net.zerocloud.pdf.EmbeddedFileData;
+import net.zerocloud.pdf.EmbeddedFileSummary;
 import net.zerocloud.pdf.ObjectReference;
+import net.zerocloud.pdf.OutlineItem;
+import net.zerocloud.pdf.PageDestination;
 import net.zerocloud.pdf.PageRange;
+import net.zerocloud.pdf.PdfVersion;
 import net.zerocloud.pdf.PublicationReceipt;
 import net.zerocloud.pdf.WorkflowOutcome;
 import net.zerocloud.pdf.command.AddBlankPage;
@@ -21,12 +29,21 @@ import net.zerocloud.pdf.command.MovePages;
 import net.zerocloud.pdf.command.MergeDocuments;
 import net.zerocloud.pdf.command.RemovePages;
 import net.zerocloud.pdf.command.SplitDocument;
+import net.zerocloud.pdf.command.SetXmpMetadata;
+import net.zerocloud.pdf.command.SetNamedDestinations;
+import net.zerocloud.pdf.command.ReplaceOutlineTree;
+import net.zerocloud.pdf.command.EmbedFile;
 import net.zerocloud.pdf.itext7.kernel.exceptions.PdfException;
 import net.zerocloud.pdf.itext7.kernel.utils.PdfMerger;
 import net.zerocloud.pdf.itext7.kernel.utils.PdfSplitter;
 import net.zerocloud.pdf.query.DocumentRootReference;
 import net.zerocloud.pdf.query.PageCount;
 import net.zerocloud.pdf.query.PageObjectReference;
+import net.zerocloud.pdf.query.XmpMetadata;
+import net.zerocloud.pdf.query.NamedDestinations;
+import net.zerocloud.pdf.query.OutlineTree;
+import net.zerocloud.pdf.query.EmbeddedFiles;
+import net.zerocloud.pdf.query.ReadEmbeddedFile;
 
 /**
  * Lifecycle mapping of the create, publish, reopen, and inspect workflow.
@@ -44,6 +61,7 @@ public final class PdfDocument implements Closeable {
     private FacadeSession valueSession;
     private boolean valueSessionRequested;
     private PdfCatalog catalog;
+    private PdfDocumentInfo documentInfo;
     private final List<PdfPage> queuedPageHandles = new ArrayList<PdfPage>();
     private int pageCount;
     private boolean closed;
@@ -89,7 +107,22 @@ public final class PdfDocument implements Closeable {
      */
     public PdfDocument(Map<String, PdfReader> sources, String primarySource,
             Map<String, PdfWriter> targets) {
-        declarations = new FacadeDeclarations(sources, primarySource, targets);
+        this(sources, primarySource, targets, PdfVersion.PDF_1_7);
+    }
+
+    /**
+     * Declares Sources and Targets with an explicit Native output version.
+     * All products use the selected version, including split products. PDF 2.0
+     * makes the standard embedded-file relationship entry available. Unsupported
+     * version choices retain the Native operational failure when execution starts.
+     * @param sources named Reader snapshots, with no repeated Reader instance
+     * @param primarySource the declared primary name, or null for no Sources
+     * @param targets named publication destinations in receipt order
+     * @param outputVersion explicit version for every published product
+     */
+    public PdfDocument(Map<String, PdfReader> sources, String primarySource,
+            Map<String, PdfWriter> targets, PdfVersion outputVersion) {
+        declarations = new FacadeDeclarations(sources, primarySource, targets, outputVersion);
         pageCount = declarations.sourcePageCount;
     }
 
@@ -245,6 +278,146 @@ public final class PdfDocument implements Closeable {
             });
         }
         return catalog;
+    }
+
+    /**
+     * Returns the document-owned information view. Its reads observe earlier
+     * Commands; the view expires when this document closes.
+     * @return the thread-confined information view
+     */
+    public PdfDocumentInfo getDocumentInfo() {
+        requireOpen();
+        if (documentInfo == null) {
+            documentInfo = new PdfDocumentInfo(this);
+        }
+        return documentInfo;
+    }
+
+    /**
+     * Reads the exact XMP packet with a 64 MiB decoded-byte bound.
+     * @return detached packet bytes, or null when absent
+     */
+    public byte[] getXmpMetadata() {
+        return getXmpMetadata(64L * 1024L * 1024L);
+    }
+
+    /**
+     * Reads the exact XMP packet under the explicit decoded-byte bound.
+     * @param maximumBytes nonnegative maximum decoded size
+     * @return detached packet bytes, or null when absent
+     */
+    public byte[] getXmpMetadata(long maximumBytes) {
+        return queryMetadata(XmpMetadata.version1(maximumBytes));
+    }
+
+    /**
+     * Copies and validates the complete XMP packet before replacement.
+     * Unknown packet content and safely preservable stream entries retain
+     * the Native contract; this does not synchronize document Info.
+     * @param packet non-null well-formed packet, at most 64 MiB
+     */
+    public void setXmpMetadata(byte[] packet) {
+        executeMetadata(SetXmpMetadata.version1(packet));
+    }
+
+    /**
+     * Reads detached targets with the Native unsigned encoded-key ordering.
+     * @param maximumEntries nonnegative entry bound
+     * @return immutable name-to-destination mapping
+     */
+    public Map<String, PageDestination> getNamedDestinations(int maximumEntries) {
+        return queryMetadata(NamedDestinations.version1(maximumEntries));
+    }
+
+    /**
+     * Creates or replaces one named destination, preserving all other names.
+     * @param name the nonempty destination name
+     * @param destination the exact page view with a one-based page number
+     */
+    public void addNamedDestination(String name, PageDestination destination) {
+        executeMetadata(SetNamedDestinations.version1().set(name, destination).build());
+    }
+
+    /**
+     * Applies replacements and removals in one validated Native Command.
+     * Referenced or invalid targets fail before mutation.
+     * @param entries replacements, copied in iteration order
+     * @param removedNames removal names, disjoint from replacement names
+     */
+    public void setNamedDestinations(Map<String, PageDestination> entries, List<String> removedNames) {
+        Objects.requireNonNull(entries, "entries");
+        Objects.requireNonNull(removedNames, "removedNames");
+        SetNamedDestinations.Builder update = SetNamedDestinations.version1();
+        for (Map.Entry<String, PageDestination> entry : entries.entrySet()) {
+            update.set(entry.getKey(), entry.getValue());
+        }
+        for (String name : removedNames) {
+            update.remove(name);
+        }
+        executeMetadata(update.build());
+    }
+
+    /**
+     * Reads a detached ordered outline tree with explicit and named targets.
+     * @param maximumItems nonnegative bound including descendants
+     * @return immutable list of immutable outline items
+     */
+    public List<OutlineItem> getOutlines(int maximumItems) {
+        return queryMetadata(OutlineTree.version1(maximumItems));
+    }
+
+    /**
+     * Validates and replaces the complete outline tree with all items open.
+     * @param items ordered root items; an empty list removes the outline tree
+     */
+    public void setOutlines(List<OutlineItem> items) {
+        executeMetadata(ReplaceOutlineTree.version1(items));
+    }
+
+    /**
+     * Creates or replaces an embedded file by its declared name, retaining
+     * its exact bytes, MIME subtype, description and relationship metadata.
+     * @param file immutable project-owned file specification
+     */
+    public void addFileAttachment(EmbeddedFile file) {
+        executeMetadata(EmbedFile.version1(file));
+    }
+
+    /**
+     * Reads detached file summaries without requesting payload bytes.
+     * @param maximumEntries nonnegative entry bound
+     * @return immutable summaries in encoded name-tree order
+     */
+    public List<EmbeddedFileSummary> getFileAttachments(int maximumEntries) {
+        return queryMetadata(EmbeddedFiles.version1(maximumEntries));
+    }
+
+    /**
+     * Reads one detached embedded file under a decoded-byte bound.
+     * @param name the exact name-tree key
+     * @param maximumBytes nonnegative decoded payload bound
+     * @return content, declared MD5 and computed SHA-256, or empty if absent
+     */
+    public Optional<EmbeddedFileData> getFileAttachment(String name, long maximumBytes) {
+        return queryMetadata(ReadEmbeddedFile.version1(name, maximumBytes));
+    }
+
+    <T> T queryMetadata(DocumentQuery<T> query) {
+        requireOpen();
+        openValueSession();
+        return valueSession.call(session -> session.query(query));
+    }
+
+    void executeMetadata(DocumentCommand command) {
+        requireOpen();
+        if (!declarations.hasTargets()) {
+            throw new IllegalStateException("A read-only facade document cannot change metadata.");
+        }
+        openValueSession();
+        valueSession.call(session -> {
+            session.execute(command);
+            return null;
+        });
     }
 
     /** @return the ordered named-Source merger owned by this document */

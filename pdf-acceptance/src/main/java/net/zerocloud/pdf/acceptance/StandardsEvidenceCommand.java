@@ -14,6 +14,19 @@ import java.util.stream.Stream;
 
 /** Repository-only independent standards recording; never a product validator. */
 public final class StandardsEvidenceCommand {
+    // Exact informational notice emitted by the pinned pdfcpu 0.15.0 for PDF 2.0.
+    // It remains in the retained report and does not supply any rule coverage.
+    private static final String PDFCPU_20_NOTICE =
+            "***************************** Disclaimer ****************************\n"
+            + "* PDF 2.0 features are supported on a need basis.                   *\n"
+            + "* (See ISO 32000:2 6.3.2 Conformance of PDF processors)             *\n"
+            + "* At the moment pdfcpu ships with basic PDF 2.0 support.            *\n"
+            + "* Please let us know which feature you would like to see supported, *\n"
+            + "* provide a sample PDF file and create an issue:                    *\n"
+            + "* https://github.com/pdfcpu/pdfcpu/issues/new/choose                *\n"
+            + "* Thank you for using pdfcpu <3                                     *\n"
+            + "*********************************************************************";
+
     private StandardsEvidenceCommand() {
     }
 
@@ -84,7 +97,7 @@ public final class StandardsEvidenceCommand {
                             .append(check.combinedOutput());
                     if (invalid(check, arlington)) {
                         result = EvidenceResult.FAIL;
-                    } else if (valid(check, arlington)) {
+                    } else if (valid(check, arlington, profile.required("pdf-version"))) {
                         Set<String> required = rules(profile.required("required-rules"));
                         Set<String> covered = rules(profile.required("covered-rules"));
                         if (!covered.containsAll(required)) {
@@ -188,7 +201,7 @@ public final class StandardsEvidenceCommand {
                     || result.standardError.contains("validation error (obj#:"));
     }
 
-    private static boolean valid(ProcessResult result, boolean arlington) {
+    private static boolean valid(ProcessResult result, boolean arlington, String pdfVersion) {
         if (result.exitCode != 0) {
             return false;
         }
@@ -200,8 +213,11 @@ public final class StandardsEvidenceCommand {
                     && !result.standardOutput.contains("Error:")
                     && !result.standardOutput.contains("Warning:");
         }
+        String notice = "2.0".equals(pdfVersion)
+                ? "\\n\\n" + java.util.regex.Pattern.quote(PDFCPU_20_NOTICE) + "\\n"
+                : "\\r?\\n";
         return result.combinedOutput().trim().matches(
-                "validating\\(mode=strict\\) [^\\r\\n]+ \\.\\.\\.\\r?\\nvalidation ok");
+                "validating\\(mode=strict\\) [^\\r\\n]+ \\.\\.\\." + notice + "validation ok");
     }
 
     private static ProcessResult check(PinProperties pin, PinProperties profile,

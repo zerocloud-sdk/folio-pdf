@@ -2128,3 +2128,125 @@ Evidence inventory is the authority for candidate-specific claims; historical
 T70/T71 records keep their bytes and are refreshed only by new observations of
 the same staged candidate. No signing, upload, publication, Windows claim, or
 macOS claim is performed by this work.
+
+## T73 metadata certification work
+
+OpenAI Codex authored the metadata Facade mappings and public consumer tests
+for the maintainer from issues #73/#33/#1/#12, the existing project-owned Native
+Commands, Queries, values and Facade lifecycle, and the public iText 7.2.6 API
+documentation for
+[PdfDocument](https://api.itextpdf.com/iText/java/7.2.6/com/itextpdf/kernel/pdf/PdfDocument.html),
+[PdfDocumentInfo](https://api.itextpdf.com/iText/java/7.2.6/com/itextpdf/kernel/pdf/PdfDocumentInfo.html),
+[PdfOutline](https://api.itextpdf.com/iText/java/7.2.6/com/itextpdf/kernel/pdf/PdfOutline.html),
+and [PdfFileSpec](https://api.itextpdf.com/iText/java/7.2.6/com/itextpdf/kernel/pdf/filespec/PdfFileSpec.html).
+During review remediation, public iText 7.2.5 `PdfDocumentInfo` source was
+briefly inspected only to confirm that the public `addCreationDate()` and
+`addModDate()` conveniences use the current time. No implementation code,
+binary-derived internals, fixtures, or closed add-on material was copied.
+Folio's implementation was authored independently from the ISO 32000 date
+syntax and public API contract. The new data values reuse Folio's existing
+model; no runtime dependency was added.
+
+The new minimal PDF, XML packets, Unicode labels and attachment bytes are
+original Apache-2.0 project test material. Known ASCII payloads `abc` and
+`hello` followed by LF have independently fixed SHA-256 and MD5 expectations;
+expected hashes are not inferred from a product-reported digest. Public tests
+observe round trips, original Source bytes, receipt ordering, ownership and
+lifetimes without backend object-identity or private-call assertions.
+
+The public [ISO 32000-1:2008](https://opensource.adobe.com/dc-acrobat-sdk-docs/pdfstandards/PDF32000_2008.pdf)
+is the normative metadata/navigation reference. Table 151 exposed a Native
+gap for nullable FitH, FitV, FitBH and FitBV coordinates. An original raw-PDF
+Workflow regression failed on query before the value factories and reader were
+corrected; rectangle coordinates remain required. Clause 14.3.3 also requires
+custom Info entries to be strings, so the independent positive corpus keeps
+private structural data in the Catalog. Safe preservation tests for existing
+non-string Info entries make no standards-conformance claim for those files.
+
+The metadata suite's execution-identity assertion first detected its previous
+IN_PROCESS-only requests before the test request builder gained explicit
+profile selection. Facade execution remains IN_PROCESS. Development tests and
+the frozen contracts do not themselves establish Foundation certification;
+candidate claims require the separate qualified chains and actual environment
+records described by the T11 contract.
+
+The T73 public regression also demonstrated that removing a named destination
+could orphan an existing outline. The metadata owner now validates surviving
+encoded name keys against the already validated outline graph before mutation;
+its fixed safe diagnostic is included in the closed Worker failure vocabulary.
+The full 57-test Native metadata suite subsequently passed under actual
+HARDENED_WORKER execution, and both Facade editions passed nine metadata tests.
+These development results do not constitute independent certification.
+
+Independent Spec review identified the two current-date conveniences as missing
+from the frozen `PdfDocumentInfo` surface. Exact jar-contract assertions and
+public consumer assertions failed before both fluent methods were implemented,
+then passed with PDF date syntax and the current system offset. The same review
+identified an annotation MIME edit as downstream #74 scope; it was reverted in
+full. Standards review led to descriptor-based certification report layouts and
+T10/T11 visual profile families without changing their frozen observations.
+
+`scripts/generate-t11-corpus.py` authors original PDF Sources, literal metadata
+expectations and 144-DPI RGB pixel grids without reading Folio products or
+renderer output. It reuses only project-owned T10 pixel/PNG serialization.
+`scripts/generate-t11-standards.py` authors 104 original metadata defects and
+retains the established core/navigation checker assignments in a separate
+required-rule catalog. Existing evidence and historical profiles are untouched.
+
+Before any T73 product observations, pinned pdfcpu strict validation rejected the
+original fixture's PDF 1.7 declaration because it contained AFRelationship.
+The profile now explicitly uses PDF 2.0, consistent with ISO 32000-2:2020 Table 43
+and the PDF Association's published corrections at
+https://pdf-issues.pdfa.org/32000-2-2020/clause07.html . The original PDF 2.0 fixture
+passes that initial strict check. The Facade's additional declaration constructor
+selects the existing Native PdfVersion explicitly for all Targets; other
+constructors retain their PDF 1.7 default. No security-policy mapping is added.
+
+Baseline CI run 34435836626 eventually completed with all four JDK jobs failing
+on stale `docs/generated/foundation-readiness.md`. The retained baseline is
+55528893ed7167e103365eb4bff2062f839f2835; this failure is not a successful current
+validation result and must be resolved by final candidate regeneration/checks.
+
+The T11 standards checker is a separately versioned Arlington
+`0.81-folio-t11-r1` build from the same pinned public upstream source, with the
+project-owned patch at `build-tools/acceptance/arlington/t11-r1.patch`. Its
+supplemental predicates use Arlington's independent PDFium graph, decoded
+stream bytes and existing PDFium MD5 implementation. Expat 2.6.1 is linked
+statically for XML parsing; the Ubuntu package, archive hash and MIT license are
+recorded in `scripts/t11-arlington-pin.properties`. No Expat dependency was
+added to any Folio runtime module. Only Expat's public API documentation
+(https://libexpat.github.io/doc/api/latest/) and installed public headers were
+used for the parser calls.
+
+Qualification exposed 24 missing or unbounded checker behaviors, including a
+cyclic name tree that previously recursed without a cycle diagnostic. Focused
+public standards-recorder tests failed against those gaps before the predicate
+implementations, then passed against the actual rebuilt and repinned checker.
+The complete frozen union of 170 rules subsequently qualified with real illegal
+controls. This qualifies tools and original fixtures; final products and all
+required environment/execution tuples still need their own retained records.
+
+The first independently generated corpus draft mixed PDF string encodings in a
+way that could not express one self-consistent name-tree key order. It was
+discarded before candidate certification. The replacement uses explicit ASCII
+keys (`b`, `bh`, `bv`, `fit`, `h`, `r`, `shared`, `v`, `xyz`, `z`, `za` and
+`secondary.bin`) whose encoded-byte order is worked in the frozen corpus; the
+separate inherited high-byte and equivalent-encoding controls retain coverage
+of those ordering rules. No observation from the discarded draft is evidence.
+
+A public serialized-output regression then exposed MIME subtype double escaping:
+pre-escaping `/` before constructing a PDF name emitted `#23` followed by `2F`
+rather than the required single `#2F` escape. The writer now passes the decoded
+printable-ASCII subtype to the PDF name implementation exactly once, and the
+reader returns its decoded value. The regression inspects the published bytes,
+and all T11 product semantics were rerun after the correction.
+
+The XML safety probe is project-authored and executes each Native and Facade
+case in an isolated child JVM. Targeted access counters first prove that their
+exact canary file and loopback endpoint are observable, then prove that file and
+network external entities are rejected without access or mutation, malformed
+packets are rejected atomically, and an XInclude-looking element remains inert.
+The signed-document probe authors a structural DocMDP P=3 Source and proves that
+T11 `REWRITE` changes are rejected with `SIGNED_REWRITE_REJECTED` while Source
+and sentinel Target bytes remain unchanged. These probes add no runtime
+dependency and make no signature-validity or Trust claim.

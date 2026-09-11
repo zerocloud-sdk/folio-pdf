@@ -1,10 +1,13 @@
 """Acceptance-only candidate identity and stale-input rejection contracts."""
+import contextlib
 import importlib.util
+import io
+import json
 import pathlib
 import tempfile
 import unittest
 import zipfile
-import json
+from unittest import mock
 
 
 SPEC = importlib.util.spec_from_file_location(
@@ -12,6 +15,195 @@ SPEC = importlib.util.spec_from_file_location(
 
 
 class FoundationCandidateTest(unittest.TestCase):
+    def test_metadata_collect_cli_requires_and_threads_selected_execution_profile(self):
+        module = importlib.util.module_from_spec(SPEC)
+        SPEC.loader.exec_module(module)
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            run = root / "observations"
+            run.mkdir()
+            command = ["t03-foundation.py", "collect", str(run), "--root", str(root),
+                       "--obligation", "metadata"]
+            with mock.patch("sys.argv", command), contextlib.redirect_stderr(io.StringIO()):
+                with self.assertRaises(SystemExit):
+                    module.main()
+
+            command += ["--execution-profile", "HARDENED_WORKER"]
+            with mock.patch.object(module, "collect_reports", return_value={}) as collect:
+                with mock.patch("sys.argv", command), contextlib.redirect_stdout(io.StringIO()):
+                    module.main()
+            collect.assert_called_once_with(root.resolve(), run.resolve(), "metadata",
+                                            "HARDENED_WORKER")
+
+    def test_metadata_case_freezes_t11_contract_tools_and_eight_tuple_plan(self):
+        module = importlib.util.module_from_spec(SPEC)
+        SPEC.loader.exec_module(module)
+        case = module.certification_case("metadata")
+        self.assertEqual("T11-metadata-outlines-destinations-attachments", case["profile"])
+        self.assertEqual("T11", case["label"])
+        self.assertEqual(73, case["test-count"])
+        self.assertEqual([
+            "net.zerocloud.pdf.consumer.DocumentMetadataWorkflowTest",
+            "net.zerocloud.pdf.itext7.consumer.DocumentMetadataFacadeTest",
+            "net.zerocloud.pdf.migration.itext7.contract.JarContractIT",
+            "net.zerocloud.pdf.migration.itext7.contract.ClasspathExclusivityIT",
+        ], case["test-classes"])
+        self.assertEqual("arlington-t11-r1", case["standards-producer"])
+        self.assertIn("capabilities/profiles/T11-metadata", case["configuration-paths"])
+        self.assertIn("capabilities/profiles/T11-standards", case["configuration-paths"])
+        self.assertIn("capabilities/expected/T11-standards-findings.json", case["configuration-paths"])
+        self.assertIn("build-tools/acceptance/arlington/t11-r1.patch", case["configuration-paths"])
+        self.assertIn("scripts/t11-arlington-pin.properties", case["configuration-paths"])
+
+        tools = {item["id"]: item for item in module.certification_tools()}
+        self.assertEqual("0.81-folio-t11-r1", tools["arlington-t11-r1"]["version"])
+        self.assertEqual(["standards"], tools["arlington-t11-r1"]["chains"])
+        self.assertEqual(["semantic"], tools["folio-pdf-t11"]["chains"])
+
+        root = pathlib.Path("/workspace-source")
+        scope = root / "target/metadata-plan/jdk21-hardened_worker"
+        plan = module.execution_plan(root, scope, "example.invalid/image@sha256:abc",
+                                     pathlib.Path("/cache/harfbuzz/bin/folio-harfbuzz"),
+                                     "/workspace/candidate.jar", case, "HARDENED_WORKER")
+        self.assertIn("-Dfolio.t11.executionProfile=HARDENED_WORKER", plan["java-options"])
+        self.assertIn("net.zerocloud.pdf.acceptance.T11EvidenceCommand", plan["recorder-command"])
+        self.assertEqual(73, plan["required-test-count"])
+        self.assertEqual(case["test-classes"], plan["contract-tests-command"][-4:])
+
+    def test_metadata_reports_bind_eight_products_three_checkers_controls_and_safety(self):
+        module = importlib.util.module_from_spec(SPEC)
+        SPEC.loader.exec_module(module)
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            run = root / "run"
+            run.mkdir()
+            passing = ("syntax=pass\nstandards=pass\nsemantic=pass\nvisual=pass\nsafety=pass\n"
+                       "native-execution-profile=HARDENED_WORKER\n"
+                       "facade-execution-profile=IN_PROCESS\n")
+            (run / "result.properties").write_text(passing)
+            negative = run / "negative"
+            negative.mkdir()
+            (negative / "result.properties").write_text(
+                "syntax=fail\nstandards=fail\nsemantic=fail\nvisual=fail\n")
+            for chain in module.CHAINS:
+                (negative / (chain + ".txt")).write_text("detected " + chain)
+            (negative / "invalid.pdf").write_bytes(b"invalid")
+            semantic_controls = negative / "semantic"
+            semantic_controls.mkdir()
+            for change in ("target", "operand", "packet", "payload", "retained-info"):
+                (semantic_controls / (change + ".pdf")).write_bytes(change.encode())
+                (semantic_controls / (change + ".properties")).write_text("semantic=fail\n")
+            visual_controls = negative / "visual"
+            visual_controls.mkdir()
+            (visual_controls / "one-pixel-control.png").write_bytes(b"png")
+            (visual_controls / "one-pixel-control.properties").write_text("visual=fail\n")
+
+            safety = run / "safety"
+            safety.mkdir()
+            (safety / "result.properties").write_text(
+                "result=pass\nsigned=pass\n"
+                "native-execution-profile=HARDENED_WORKER\n"
+                "facade-execution-profile=IN_PROCESS\n")
+            (safety / "signed.properties").write_text(
+                "result=pass\nnative.execution-profile=HARDENED_WORKER\n"
+                "facade.execution-profile=IN_PROCESS\n")
+            for api in ("native", "facade"):
+                api_dir = safety / api
+                api_dir.mkdir()
+                worker_scenarios = "".join(
+                    scenario + ".worker-file-positive-control=denied\n"
+                    + scenario + ".worker-network-positive-control=denied\n"
+                    + scenario + ".worker-process-isolated=pass\n"
+                    for scenario in ("external-file", "external-network", "malformed",
+                                     "inert-xinclude"))
+                observed = ("result=pass\nexecution-profile=HARDENED_WORKER\n"
+                            "worker-file-positive-control=denied\n"
+                            "worker-network-positive-control=denied\n"
+                            "worker-process-isolated=pass\n" + worker_scenarios) if api == "native" else (
+                                "result=pass\nexecution-profile=IN_PROCESS\n"
+                                "observer.file-attempts=1\nobserver.network-attempts=1\n")
+                (api_dir / "safety.properties").write_text(observed)
+                (api_dir / "child.log").write_text("guard installed\n")
+
+            editions = [api + "-" + product for api in ("native", "facade")
+                        for product in ("edited", "merged", "left", "right")]
+            for edition in editions:
+                product = run / edition
+                product.mkdir()
+                artifact = product / "metadata.pdf"
+                artifact.write_bytes(("metadata " + edition).encode())
+                (product / "result.properties").write_text(
+                    passing + "execution-profile="
+                    + ("HARDENED_WORKER" if edition.startswith("native-") else "IN_PROCESS")
+                    + "\ninput-sha256=" + module.sha256(artifact)
+                    + "\npage-count=1\npage.1.visual=pass\n")
+                for chain in module.CHAINS:
+                    (product / (chain + ".txt")).write_text(edition + " " + chain)
+                for suffix in ("visual.md", "visual.txt", "expected.png", "pdfium.png",
+                               "implementation.png", "difference.png", "renderer-difference.png"):
+                    (product / ("page-1-" + suffix)).write_bytes(suffix.encode())
+                for checker in ("pdfcpu", "arlington-core", "arlington-metadata"):
+                    tool = product / checker
+                    tool.mkdir()
+                    rule = checker + "-rule"
+                    (tool / "standards.properties").write_text(
+                        "result=pass\ncovered-rules=" + rule + "\n")
+                    (tool / "findings.txt").write_text("qualified")
+                    (tool / ("negative-" + rule + ".txt")).write_text("detected")
+                    (tool / ("control-" + rule + ".pdf")).write_bytes(b"illegal")
+
+            reports = module.collect_reports(root, run, "metadata", "HARDENED_WORKER")
+            self.assertEqual(8, len(reports["syntax"]["products"]))
+            self.assertTrue(any(item["path"].endswith(
+                "arlington-metadata/standards.properties")
+                for item in reports["standards"]["findings"]))
+            self.assertTrue(any(item["path"].endswith("safety/signed.properties")
+                                for item in reports["semantic"]["findings"]))
+            self.assertTrue(any(item["path"].endswith("negative/semantic/target.pdf")
+                                for item in reports["semantic"]["negative-controls"]))
+            self.assertTrue(any(item["path"].endswith("negative/visual/one-pixel-control.png")
+                                for item in reports["visual"]["negative-controls"]))
+
+            self_consistent_files = [
+                run / "result.properties",
+                safety / "result.properties",
+                safety / "signed.properties",
+                safety / "native/safety.properties",
+            ] + [run / edition / "result.properties"
+                 for edition in editions if edition.startswith("native-")]
+            hardened_contents = {path: path.read_text() for path in self_consistent_files}
+            for path in self_consistent_files:
+                path.write_text(path.read_text().replace("HARDENED_WORKER", "IN_PROCESS"))
+            with self.assertRaisesRegex(ValueError, "selected execution profile"):
+                module.collect_reports(root, run, "metadata", "HARDENED_WORKER")
+            for path, content in hardened_contents.items():
+                path.write_text(content)
+
+            native_product = run / "native-edited/result.properties"
+            native_product.write_text(native_product.read_text().replace(
+                "execution-profile=HARDENED_WORKER", "execution-profile=IN_PROCESS"))
+            with self.assertRaisesRegex(ValueError, "native-edited.*profile"):
+                module.collect_reports(root, run, "metadata", "HARDENED_WORKER")
+            native_product.write_text(hardened_contents[native_product])
+
+            (safety / "result.properties").write_text(
+                "result=pass\nsigned=pass\n"
+                "native-execution-profile=IN_PROCESS\n"
+                "facade-execution-profile=IN_PROCESS\n")
+            with self.assertRaisesRegex(ValueError, "safety.*profile"):
+                module.collect_reports(root, run, "metadata", "HARDENED_WORKER")
+
+            (safety / "result.properties").write_text(
+                "result=pass\nsigned=pass\n"
+                "native-execution-profile=HARDENED_WORKER\n"
+                "facade-execution-profile=IN_PROCESS\n")
+            native_safety = safety / "native/safety.properties"
+            native_safety.write_text(native_safety.read_text().replace(
+                "external-network.worker-network-positive-control=denied",
+                "external-network.worker-network-positive-control=allowed"))
+            with self.assertRaisesRegex(ValueError, "external-network"):
+                module.collect_reports(root, run, "metadata", "HARDENED_WORKER")
+
     def test_snapshot_requires_the_actual_complete_artifact_set(self):
         module = importlib.util.module_from_spec(SPEC)
         SPEC.loader.exec_module(module)

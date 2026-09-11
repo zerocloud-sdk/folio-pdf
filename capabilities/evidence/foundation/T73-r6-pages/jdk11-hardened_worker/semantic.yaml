@@ -1,0 +1,32 @@
+{
+  "schema-version": 1,
+  "obligation": "pages",
+  "acceptance-profile": "T10-page-manipulation-merge-split",
+  "release": "0.1.0",
+  "candidate-sha256": "3b91256b302efb44e77521a1e5bbd826ed3e11bc7adb4d70e3bd8c6da5653b5b",
+  "contract-sha256": "8208a29ad8bf010c8052f834b449e8f4a7d0eb290a42e28a09944eb5947c784c",
+  "environment-sha256": "f510d8c9518b134b09b96d34bea3e4350733aeb52ff2b2bf4b58589f1d46597a",
+  "execution-configuration-sha256": "9429494c5ada358ac1a8b01cb870bbefa5a3974a65efb6822424bc1b83b35b72",
+  "execution-profile": "HARDENED_WORKER",
+  "chain": "semantic",
+  "result": "pass",
+  "producer": "folio-pdf-t10",
+  "configuration": {
+    "path": "capabilities/evidence/T10-page-manipulation-merge-split.md",
+    "sha256": "8117b5024841a866f1123e82039afcdc312d4e827e1a320fca4b4847753d2a4f"
+  },
+  "report": {
+    "path": "capabilities/evidence/foundation/T73-r6-pages/jdk11-hardened_worker/semantic-report.json",
+    "sha256": "975f9a67e3233bacc21d68e88e56c1da63424733581f52565a743e3ccbcc9a3d"
+  },
+  "negative-controls": [
+    {
+      "path": "capabilities/evidence/foundation/T73-r6-pages/jdk11-hardened_worker/observations/negative/semantic.txt",
+      "sha256": "b6bcffaa3d3e65e13f517043a8c00006dcfed4b602137b97f885e2827ce33ad8"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T73-r6-pages/jdk11-hardened_worker/observations/negative/wrong-order.pdf",
+      "sha256": "f3369c51504304ec52795cb4141b0b66a81cead24893a6d9e5eb3dd7c6fa689a"
+    }
+  ]
+}
