@@ -1,0 +1,18 @@
+...F
+======================================================================
+FAIL: test_stream_owners_identify_an_appearance_of_an_annotation_on_the_declared_page (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_stream_owners_identify_an_appearance_of_an_annotation_on_the_declared_page) (stream_owner='wrong-appearance')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 194, in test_stream_owners_identify_an_appearance_of_an_annotation_on_the_declared_page
+    self.observe(directory, name, self.pdf(objects), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 638, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'indeterminate'
+- fail
++ indeterminate
+ : wrong-appearance: Only Form definitions are qualified as referenced non-page content
+
+----------------------------------------------------------------------
+Ran 4 tests in 4.948s
+
+FAILED (failures=1)

@@ -93,6 +93,7 @@ final class PdfBoxDocumentSession implements DocumentSession {
         this.extractionOperations =
                 new PdfBoxTextStructureExtractionOperations(
                         document,
+                        valueAdapter,
                         resources);
         this.imageResourceExtractionOperations =
                 new PdfBoxImageResourceExtractionOperations(

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prepare and bind repository-only T03/T09/T10/T11/T12 observations; never publish a release."""
+"""Prepare and bind repository-only T03/T09/T10/T11/T12/T13 observations; never publish a release."""
 import copy
 import hashlib
 from pathlib import Path
@@ -132,6 +132,29 @@ ARTIFACT_CONTRACT_TESTS = tuple(
     'net.zerocloud.pdf.migration.itext7.contract.' + name
     for name in ('JarContractIT', 'ClasspathExclusivityIT'))
 CERTIFICATION_CASES = {
+    'text': {
+        'profile': 'T13-text-logical-structure',
+        'label': 'T13',
+        'test-count': 126,
+        'test-classes': [
+            'net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest',
+            'net.zerocloud.pdf.itext7.consumer.TextStructureFacadeTest'],
+        'facade-execution-profile': 'IN_PROCESS',
+        'standards-producer': 'arlington-t13-r1',
+        'contract-timeout': 600,
+        'recorder-timeout': 1800,
+        'workflow-policy': 'REWRITE; explicit PDF 2.0 products; deterministic content execution, glyph geometry and mapping uncertainty; bounded Marked Content and Logical Structure; detached values, preceding Commands, Source ownership, all fifteen limit boundaries and atomic safe failures; Native tests select the recorded execution profile; Facade execution remains IN_PROCESS',
+        'fonts': 'original embedded Type3, Type1C and CID CFF rectangles, with separate simple and CID TrueType programs; no system fonts or substitution',
+        'configuration-paths': [
+            'capabilities/profiles/T13-text',
+            'capabilities/profiles/T13-fonts',
+            'capabilities/profiles/T13-standards',
+            'build-tools/acceptance/arlington/t13-r1.patch',
+            'scripts/t13-arlington-pin.properties',
+            'scripts/t13-program-standards.py',
+            'scripts/t13-semantics.py',
+            'scripts/t13-qpdf-runtime.sha256',
+            'scripts/t13_foundation_reports.py']},
     'annotations': {
         'profile': 'T12-annotations-document-actions',
         'label': 'T12',
@@ -534,6 +557,9 @@ def append_source_visual(root, run, report):
 
 
 def collect_reports(root, run, obligation='transactions', execution_profile=None):
+    if obligation == 'text':
+        from t13_foundation_reports import collect_reports as collect_text_reports
+        return collect_text_reports(root, run, execution_profile)
     profile = report_profile(obligation)
     result = properties(run / 'result.properties')
     for chain in CHAINS:
@@ -832,7 +858,7 @@ def certification_tools():
         {'id': 'qpdf', 'kind': 'external-tool', 'version': '12.4.0',
          'path': '.build-cache/qpdf/12.4.0/bin/qpdf',
          'pin': 'scripts/qpdf-pin.properties', 'hash-key': 'QPDF_BINARY_SHA256',
-         'chains': ['syntax']},
+         'chains': ['syntax', 'standards', 'semantic']},
         {'id': 'pdfcpu', 'kind': 'external-tool', 'version': '0.15.0',
          'path': '.build-cache/pdfcpu/0.15.0/pdfcpu',
          'pin': 'scripts/pdfcpu-pin.properties', 'hash-key': 'sha256',
@@ -856,6 +882,11 @@ def certification_tools():
          'path': '.build-cache/arlington/t12-r1/TestGrammar/bin/linux/TestGrammar',
          'pin': 'scripts/t12-arlington-pin.properties', 'hash-key': 'sha256',
          'chains': ['standards']},
+        {'id': 'arlington-t13-r1', 'kind': 'external-tool',
+         'version': '0.81-folio-t13-r1',
+         'path': '.build-cache/arlington/t13-r1/TestGrammar/bin/linux/TestGrammar',
+         'pin': 'scripts/t13-arlington-pin.properties', 'hash-key': 'sha256',
+         'chains': ['standards']},
         {'id': 'pdfium-cli', 'kind': 'external-tool',
          'version': 'v0.11.2-pdfium-chromium-7881',
          'path': '.build-cache/pdfium/v0.11.2-chromium-7881/bin/pdfium',
@@ -867,7 +898,7 @@ def certification_tools():
          'hash-key': 'IMAGEMAGICK_EXECUTABLE_SHA256', 'chains': ['visual']}]
     project = [{'id': 'folio-pdf-' + label, 'kind': 'project-test',
                 'version': '0.1.0', 'chains': ['semantic']}
-               for label in ('t03', 't09', 't10', 't11', 't12')]
+               for label in ('t03', 't09', 't10', 't11', 't12', 't13')]
     return external + project
 
 
@@ -970,7 +1001,8 @@ def record_plan(root, output, contract, helper, obligation):
         for execution in ('IN_PROCESS', 'HARDENED_WORKER'):
             scope = output / ('jdk' + str(profile['identity']['jdk-major']) + '-' + execution.lower())
             executions.append(execution_plan(root, scope, profile['identity']['image'], helper, cp, case, execution))
-    write_json(output / 'plan.json', {'status': 'unverified-plan', 'configuration-paths': case['configuration-paths'], 'executions': executions})
+    write_json(output / 'plan.json', {'status': 'unverified-plan', 'configuration-paths': case['configuration-paths'],
+                                     'tools': certification_tools(), 'executions': executions})
 
 
 def certify(root, output, contract, helper, obligation='transactions'):
@@ -1092,7 +1124,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('action', choices=('stage', 'certify', 'collect', 'preservation', 'plan', 'merge-index'))
     parser.add_argument('output', nargs='?', type=Path)
-    parser.add_argument('--obligation', choices=('transactions', 'values', 'pages', 'metadata', 'annotations'), default='transactions')
+    parser.add_argument('--obligation', choices=('transactions', 'values', 'pages', 'metadata', 'annotations', 'text'), default='transactions')
     parser.add_argument('--execution-profile', choices=('IN_PROCESS', 'HARDENED_WORKER'))
     parser.add_argument('--root', type=Path, default=Path(__file__).resolve().parents[1])
     args = parser.parse_args()
@@ -1113,10 +1145,10 @@ def main():
         import json
         if args.output is None:
             parser.error('collect requires an observation directory')
-        if args.obligation in ('metadata', 'annotations') and args.execution_profile is None:
+        if args.obligation in ('metadata', 'annotations', 'text') and args.execution_profile is None:
             parser.error(args.obligation + ' collect requires --execution-profile')
-        if args.obligation not in ('metadata', 'annotations') and args.execution_profile is not None:
-            parser.error('--execution-profile applies only to metadata and annotations collect')
+        if args.obligation not in ('metadata', 'annotations', 'text') and args.execution_profile is not None:
+            parser.error('--execution-profile applies only to metadata, annotations and text collect')
         print(json.dumps(collect_reports(root, (root / args.output).resolve(), args.obligation,
                                          args.execution_profile), indent=2))
         return

@@ -1,0 +1,13 @@
+F
+======================================================================
+FAIL: test_cmap_dictionary_controls_distinguish_encoding_and_tounicode_requirements (test_t13_standards.T13StandardsTest.test_cmap_dictionary_controls_distinguish_encoding_and_tounicode_requirements)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_standards.py", line 24, in test_cmap_dictionary_controls_distinguish_encoding_and_tounicode_requirements
+    self.assertTrue(required.issubset(controls), sorted(required - set(controls)))
+AssertionError: False is not true : ['cmap-encoding-name-name', 'cmap-encoding-name-required', 'cmap-encoding-parent-type', 'cmap-encoding-ros-dictionary', 'cmap-encoding-ros-required', 'cmap-encoding-type-name', 'cmap-encoding-type-required', 'cmap-encoding-type-value', 'cmap-encoding-wmode-integer', 'cmap-encoding-wmode-value', 'cmap-unicode-name-name', 'cmap-unicode-parent-type', 'cmap-unicode-ros-dictionary', 'cmap-unicode-type-name', 'cmap-unicode-type-value', 'cmap-unicode-wmode-integer', 'cmap-unicode-wmode-value']
+
+----------------------------------------------------------------------
+Ran 1 test in 0.094s
+
+FAILED (failures=1)

@@ -1720,13 +1720,84 @@ surfaces:
         retain the Native DocumentFailure code and safe diagnostic through PdfException.
       capabilities:
       - document.annotations-actions.manage
+    - id: itext7.kernel.pdf-text-extractor.get-text-from-page
+      reference:
+        type: com.itextpdf.kernel.pdf.canvas.parser.PdfTextExtractor
+        member: getTextFromPage(com.itextpdf.kernel.pdf.PdfPage)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.canvas.parser.PdfTextExtractor
+        member: getTextFromPage(net.zerocloud.pdf.itext7.kernel.pdf.PdfPage)
+      generic-contract: Returns detached String Page Text in content execution order after the complete document Query succeeds
+        under the fixed finite convenience limits in docs/t13-certification.md; preserves ActualText precedence and mapping
+        uncertainty without inferred whitespace, reading order or OCR.
+      exception-contract: Null pages and closed or invalid page handles reject; Native Query failures retain their stable
+        DocumentFailure code and safe diagnostic through PdfException without returning a valid-looking prefix.
+      capabilities: [document.text-structure.extract]
+    - id: itext7.kernel.pdf-text-extractor.get-text-from-page-limits
+      reference:
+        status: folio-extension
+        type: com.itextpdf.kernel.pdf.canvas.parser.PdfTextExtractor
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.canvas.parser.PdfTextExtractor
+        member: getTextFromPage(net.zerocloud.pdf.itext7.kernel.pdf.PdfPage,net.zerocloud.pdf.ExtractionLimits)
+      generic-contract: Returns detached String Page Text only after the complete document Query succeeds under the supplied
+        immutable document-wide ExtractionLimits; follows the same Native replacement-text and mapping-evidence contract.
+      exception-contract: Null inputs and closed or invalid handles reject; Native failures retain their stable DocumentFailure
+        code and safe diagnostic through PdfException, with no partial extraction result.
+      capabilities: [document.text-structure.extract]
+    - id: itext7.kernel.pdf-page.get-page-text
+      reference:
+        status: folio-extension
+        type: com.itextpdf.kernel.pdf.PdfPage
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfPage
+        member: getPageText(net.zerocloud.pdf.ExtractionLimits)
+      generic-contract: Returns immutable detached PageText including glyph geometry, original source bytes, mapping evidence
+        and marked-content occurrences; the complete document Query succeeds before selecting the current page identity.
+      exception-contract: Null limits and expired page handles reject; Native failures preserve DocumentFailure code and safe
+        diagnostic through PdfException, without publishing a partial result or changing Source ownership.
+      capabilities: [document.text-structure.extract]
+    - id: itext7.kernel.pdf-document.get-text-and-structure
+      reference:
+        status: folio-extension
+        type: com.itextpdf.kernel.pdf.PdfDocument
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: getTextAndStructure(net.zerocloud.pdf.ExtractionLimits)
+      generic-contract: Returns the complete immutable detached TextStructureExtraction, including every Page Text,
+        diagnostic and ordered Logical Structure child kind, observing preceding Session Commands in actual IN_PROCESS mode.
+      exception-contract: Null limits and closed documents reject; Native failures retain their stable DocumentFailure code
+        and safe diagnostic through PdfException. Results remain valid after close and no partial value is returned.
+      capabilities: [document.text-structure.extract]
+    - id: itext7.kernel.pdf-document.get-struct-tree-root
+      reference:
+        status: adapted
+        type: com.itextpdf.kernel.pdf.PdfDocument
+        member: getStructTreeRoot()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: getStructTreeRoot()
+      generic-contract: Adapts the return type to immutable detached List<net.zerocloud.pdf.LogicalStructureElement>; ordered
+        roots are selected only after complete extraction under the fixed finite convenience limits. An absent tree returns
+        an empty list and is never created.
+      exception-contract: Closed documents reject; Native failures retain their stable DocumentFailure code and safe diagnostic
+        through PdfException, with no partial structure result.
+      capabilities: [document.text-structure.extract]
+    - id: itext7.kernel.pdf-document.get-struct-tree-root-limits
+      reference:
+        status: folio-extension
+        type: com.itextpdf.kernel.pdf.PdfDocument
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: getStructTreeRoot(net.zerocloud.pdf.ExtractionLimits)
+      generic-contract: Returns immutable detached List<net.zerocloud.pdf.LogicalStructureElement> in root order after complete
+        extraction under explicit document-wide limits; absence is an empty list, with no mutable tagging wrapper.
+      exception-contract: Null limits and closed documents reject; Native failures retain their stable DocumentFailure code
+        and safe diagnostic through PdfException, with no partial structure result.
+      capabilities: [document.text-structure.extract]
   preview: []
 
 excluded-capabilities:
-- id: document.text-structure.extract
-  ticket: T32
-  reason: 'Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under
-    #75 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.'
 - id: document.images-resources.extract
   ticket: T32
   reason: 'Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under

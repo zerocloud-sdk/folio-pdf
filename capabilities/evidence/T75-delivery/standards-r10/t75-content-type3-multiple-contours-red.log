@@ -1,0 +1,20 @@
+test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds) ... 
+  test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds) (glyph='glyph-multiple-contours') ... FAIL
+
+======================================================================
+FAIL: test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds) (glyph='glyph-multiple-contours')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 38, in test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds
+    self.observe(directory, pdf, expected, rule, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 786, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'indeterminate' != 'pass'
+- indeterminate
++ pass
+ : glyph-multiple-contours.pdf: Qualified content and Type3 rectangles satisfy operand, state, resource, property and ink-bound predicates.
+
+----------------------------------------------------------------------
+Ran 1 test in 3.184s
+
+FAILED (failures=1)

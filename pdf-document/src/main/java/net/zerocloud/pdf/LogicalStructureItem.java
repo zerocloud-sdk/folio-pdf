@@ -14,33 +14,48 @@ public final class LogicalStructureItem {
     public enum Kind {
         /** A nested logical-structure element. */
         ELEMENT,
-        /** A reference to page marked content. */
-        MARKED_CONTENT
+        /** A reference to marked content in a page or Form stream. */
+        MARKED_CONTENT,
+        /** A reference to an entire object associated with a page. */
+        OBJECT
     }
 
     private final Kind kind;
     private final LogicalStructureElement element;
     private final MarkedContentReference markedContent;
+    private final LogicalObjectReference objectReference;
 
     private LogicalStructureItem(
             Kind kind,
             LogicalStructureElement element,
-            MarkedContentReference markedContent) {
+            MarkedContentReference markedContent,
+            LogicalObjectReference objectReference) {
         this.kind = Objects.requireNonNull(kind, "kind");
         this.element = element;
         this.markedContent = markedContent;
+        this.objectReference = objectReference;
     }
 
     static LogicalStructureItem element(LogicalStructureElement value) {
         return new LogicalStructureItem(
                 Kind.ELEMENT,
                 Objects.requireNonNull(value, "value"),
+                null,
                 null);
     }
 
     static LogicalStructureItem markedContent(MarkedContentReference value) {
         return new LogicalStructureItem(
                 Kind.MARKED_CONTENT,
+                null,
+                Objects.requireNonNull(value, "value"),
+                null);
+    }
+
+    static LogicalStructureItem objectReference(LogicalObjectReference value) {
+        return new LogicalStructureItem(
+                Kind.OBJECT,
+                null,
                 null,
                 Objects.requireNonNull(value, "value"));
     }
@@ -56,5 +71,10 @@ public final class LogicalStructureItem {
     /** @return the content reference only for {@link Kind#MARKED_CONTENT} */
     public Optional<MarkedContentReference> getMarkedContent() {
         return Optional.ofNullable(markedContent);
+    }
+
+    /** @return the object reference only for {@link Kind#OBJECT} */
+    public Optional<LogicalObjectReference> getObjectReference() {
+        return Optional.ofNullable(objectReference);
     }
 }

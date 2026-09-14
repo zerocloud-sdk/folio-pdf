@@ -1,0 +1,20 @@
+F
+======================================================================
+FAIL: test_public_plan_binds_all_eight_native_combinations_and_actual_facade_mode (scripts.tests.test_t13_foundation.T13FoundationTest.test_public_plan_binds_all_eight_native_combinations_and_actual_facade_mode)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_foundation.py", line 31, in test_public_plan_binds_all_eight_native_combinations_and_actual_facade_mode
+    self.assertEqual(0, result.returncode, result.stderr)
+AssertionError: 0 != 2 : usage: t03-foundation.py [-h]
+                         [--obligation {transactions,values,pages,metadata,annotations}]
+                         [--execution-profile {IN_PROCESS,HARDENED_WORKER}]
+                         [--root ROOT]
+                         {stage,certify,collect,preservation,plan,merge-index}
+                         [output]
+t03-foundation.py: error: argument --obligation: invalid choice: 'text' (choose from 'transactions', 'values', 'pages', 'metadata', 'annotations')
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.062s
+
+FAILED (failures=1)

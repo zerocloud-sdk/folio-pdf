@@ -1,5 +1,7 @@
 package net.zerocloud.pdf.tools.inventory;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -17,6 +19,8 @@ import org.yaml.snakeyaml.error.YAMLException;
 
 /** Strict field reader shared by the Foundation authorities and evidence records. */
 final class InventoryYaml {
+    private static final int MAX_CHAIN_RECORD_BYTES = 16 * 1024 * 1024;
+
     final Map<String, Object> values;
     final String location;
     final List<String> errors;
@@ -28,19 +32,45 @@ final class InventoryYaml {
     }
 
     static InventoryYaml load(Path file, List<String> errors) {
+        try (InputStream input = Files.newInputStream(file)) {
+            return parse(input, file, errors, 3_000_000);
+        } catch (IOException | YAMLException exception) {
+            return unreadable(file, errors, exception);
+        }
+    }
+
+    static InventoryYaml loadChainRecord(Path file, List<String> errors) {
+        try (InputStream input = Files.newInputStream(file)) {
+            ByteArrayOutputStream retained = new ByteArrayOutputStream();
+            byte[] buffer = new byte[8192];
+            int count;
+            while ((count = input.read(buffer)) != -1) {
+                if (count > MAX_CHAIN_RECORD_BYTES - retained.size()) {
+                    throw new IOException("chain record exceeds " + MAX_CHAIN_RECORD_BYTES + " bytes");
+                }
+                retained.write(buffer, 0, count);
+            }
+            return parse(new ByteArrayInputStream(retained.toByteArray()), file, errors,
+                    MAX_CHAIN_RECORD_BYTES);
+        } catch (IOException | YAMLException exception) {
+            return unreadable(file, errors, exception);
+        }
+    }
+
+    private static InventoryYaml parse(InputStream input, Path file, List<String> errors, int codePointLimit) {
         LoaderOptions options = new LoaderOptions();
         options.setAllowDuplicateKeys(false);
         options.setAllowRecursiveKeys(false);
         options.setMaxAliasesForCollections(0);
         options.setNestingDepthLimit(30);
-        options.setCodePointLimit(3_000_000);
-        try (InputStream input = Files.newInputStream(file)) {
-            return object(new Yaml(new SafeConstructor(options)).load(input), file.toString(), errors);
-        } catch (IOException | YAMLException exception) {
-            errors.add(file + ": cannot read YAML: "
-                    + exception.getMessage().replace('\n', ' ').replace('\r', ' '));
-            return new InventoryYaml(Collections.<String, Object>emptyMap(), file.toString(), errors);
-        }
+        options.setCodePointLimit(codePointLimit);
+        return object(new Yaml(new SafeConstructor(options)).load(input), file.toString(), errors);
+    }
+
+    private static InventoryYaml unreadable(Path file, List<String> errors, Exception exception) {
+        errors.add(file + ": cannot read YAML: "
+                + exception.getMessage().replace('\n', ' ').replace('\r', ' '));
+        return new InventoryYaml(Collections.<String, Object>emptyMap(), file.toString(), errors);
     }
 
     static InventoryYaml object(Object value, String location, List<String> errors) {

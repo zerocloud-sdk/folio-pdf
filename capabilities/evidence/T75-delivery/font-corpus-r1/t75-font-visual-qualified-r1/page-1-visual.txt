@@ -1,0 +1,96 @@
+Input exact SHA-256: c8671742fb673b13d1654a1f0a0dcd834a7c0cb1deed6bc2c81ac2a3418a577d
+# T13 visual-chain raw findings
+
+Input exact SHA-256: `c8671742fb673b13d1654a1f0a0dcd834a7c0cb1deed6bc2c81ac2a3418a577d`
+
+Input hash policy: `SHA-256 of the exact unmodified PDF bytes`
+
+Expected raster SHA-256: `e9f66a99024128e3b15d78e3e2aed1faf93cf92aed7a10f8c78885f71df154ed`
+
+PDFium raster SHA-256: `37c85d3e47dacee9f6e30f4317e300b06f9f0a7788fa04f6e87576e7a980f2d8`
+
+Implementation raster SHA-256: `unavailable`
+
+Difference raster SHA-256: `unavailable`
+
+Renderer difference raster SHA-256: `unavailable`
+
+Profile: `T13-text-logical-structure-embedded-font-kinds-page-1`
+
+Page box: `effective CropBox [0 0 120 100] points`
+
+DPI: `144`
+
+Color policy: `sRGB, opaque 8-bit RGB PNG after compositing over opaque white`
+
+Font policy: `original embedded Type1C, CID CFF and TrueType rectangle glyphs; no system fonts or substitution`
+
+Antialiasing policy: `pinned PDFium default smoothing; vector edges are axis-aligned`
+
+Raster dimensions: `240x200`
+
+Comparison metric: `AE`
+
+Comparison fuzz percent: `0`
+
+Comparison threshold: `0`
+
+Renderer agreement threshold: `0`
+
+Expected comparison AE: `unavailable`
+
+Renderer agreement AE: `unavailable`
+
+PDFium CLI version: `v0.11.2`
+
+PDFium engine version: `chromium-7881`
+
+ImageMagick version: `unavailable`
+
+Implementation renderer version: `unavailable`
+
+Review required: `false`
+
+## Process findings
+
+## PDFium identity
+
+Invocation: `pdfium --version`
+
+Exit code: `0`
+
+### Standard output
+
+```text
+pdfium version v0.11.2
+```
+
+### Standard error
+
+```text
+
+```
+
+## PDFium render
+
+Invocation: `pdfium render extraction.pdf page-1-pdfium.png --dpi 144 --file-type png --pages first`
+
+Exit code: `0`
+
+### Standard output
+
+```text
+Rendered page 1 into page-1-pdfium.png
+```
+
+### Standard error
+
+```text
+
+```
+
+Secondary renderer validation: `indeterminate`
+
+Final visual finding: The secondary implementation renderer ended unexpectedly.
+
+Final determination: `indeterminate`

@@ -1,0 +1,186 @@
+test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding) ... 
+  test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding) (program='cff-default-500.1-pdf-500.1') ... FAIL
+  test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding) (program='cff-default-500.1-pdf-500.2') ... FAIL
+  test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding) (program='cff-default-500.5-pdf-500.5') ... FAIL
+  test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding) (program='cff-nominal-500.1-pdf-500.1') ... FAIL
+  test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding) (program='cff-nominal-500.1-pdf-500.2') ... FAIL
+  test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding) (program='cff-nominal-500.5-pdf-500.5') ... FAIL
+  test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding) (program='cidcff-default-500.1-pdf-500.1') ... FAIL
+  test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding) (program='cidcff-default-500.1-pdf-500.2') ... FAIL
+  test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding) (program='cidcff-default-500.5-pdf-500.5') ... FAIL
+  test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding) (program='cidcff-nominal-500.1-pdf-500.1') ... FAIL
+  test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding) (program='cidcff-nominal-500.1-pdf-500.2') ... FAIL
+  test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding) (program='cidcff-nominal-500.5-pdf-500.5') ... FAIL
+
+======================================================================
+FAIL: test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding) (program='cff-default-500.1-pdf-500.1')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 26, in test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding
+    result = self.observe(directory, fixtures / (name + '.pdf'), 'indeterminate', scope='font-metrics')
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 594, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'indeterminate' != 'fail'
+- indeterminate
++ fail
+ : cff-default-500.1-pdf-500.1.pdf: PDF Widths disagrees with the selected embedded glyph advance
+
+======================================================================
+FAIL: test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding) (program='cff-default-500.1-pdf-500.2')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 26, in test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding
+    result = self.observe(directory, fixtures / (name + '.pdf'), 'indeterminate', scope='font-metrics')
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 594, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'indeterminate' != 'fail'
+- indeterminate
++ fail
+ : cff-default-500.1-pdf-500.2.pdf: PDF Widths disagrees with the selected embedded glyph advance
+
+======================================================================
+FAIL: test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding) (program='cff-default-500.5-pdf-500.5')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 26, in test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding
+    result = self.observe(directory, fixtures / (name + '.pdf'), 'indeterminate', scope='font-metrics')
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 594, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'indeterminate' != 'pass'
+- indeterminate
++ pass
+ : cff-default-500.5-pdf-500.5.pdf: Embedded font programs satisfy the qualified layout, outline, name and bounds predicates. Selected simple and CID advances agree with PDF widths.
+
+======================================================================
+FAIL: test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding) (program='cff-nominal-500.1-pdf-500.1')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 26, in test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding
+    result = self.observe(directory, fixtures / (name + '.pdf'), 'indeterminate', scope='font-metrics')
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 594, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'indeterminate' != 'fail'
+- indeterminate
++ fail
+ : cff-nominal-500.1-pdf-500.1.pdf: PDF Widths disagrees with the selected embedded glyph advance
+
+======================================================================
+FAIL: test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding) (program='cff-nominal-500.1-pdf-500.2')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 26, in test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding
+    result = self.observe(directory, fixtures / (name + '.pdf'), 'indeterminate', scope='font-metrics')
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 594, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'indeterminate' != 'fail'
+- indeterminate
++ fail
+ : cff-nominal-500.1-pdf-500.2.pdf: PDF Widths disagrees with the selected embedded glyph advance
+
+======================================================================
+FAIL: test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding) (program='cff-nominal-500.5-pdf-500.5')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 26, in test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding
+    result = self.observe(directory, fixtures / (name + '.pdf'), 'indeterminate', scope='font-metrics')
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 594, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'indeterminate' != 'pass'
+- indeterminate
++ pass
+ : cff-nominal-500.5-pdf-500.5.pdf: Embedded font programs satisfy the qualified layout, outline, name and bounds predicates. Selected simple and CID advances agree with PDF widths.
+
+======================================================================
+FAIL: test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding) (program='cidcff-default-500.1-pdf-500.1')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 26, in test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding
+    result = self.observe(directory, fixtures / (name + '.pdf'), 'indeterminate', scope='font-metrics')
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 594, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'indeterminate' != 'fail'
+- indeterminate
++ fail
+ : cidcff-default-500.1-pdf-500.1.pdf: PDF W or DW disagrees with the selected embedded CID glyph advance
+
+======================================================================
+FAIL: test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding) (program='cidcff-default-500.1-pdf-500.2')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 26, in test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding
+    result = self.observe(directory, fixtures / (name + '.pdf'), 'indeterminate', scope='font-metrics')
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 594, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'indeterminate' != 'fail'
+- indeterminate
++ fail
+ : cidcff-default-500.1-pdf-500.2.pdf: PDF W or DW disagrees with the selected embedded CID glyph advance
+
+======================================================================
+FAIL: test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding) (program='cidcff-default-500.5-pdf-500.5')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 26, in test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding
+    result = self.observe(directory, fixtures / (name + '.pdf'), 'indeterminate', scope='font-metrics')
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 594, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'indeterminate' != 'pass'
+- indeterminate
++ pass
+ : cidcff-default-500.5-pdf-500.5.pdf: Embedded font programs satisfy the qualified layout, outline, name and bounds predicates. Selected simple and CID advances agree with PDF widths.
+
+======================================================================
+FAIL: test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding) (program='cidcff-nominal-500.1-pdf-500.1')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 26, in test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding
+    result = self.observe(directory, fixtures / (name + '.pdf'), 'indeterminate', scope='font-metrics')
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 594, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'indeterminate' != 'fail'
+- indeterminate
++ fail
+ : cidcff-nominal-500.1-pdf-500.1.pdf: PDF W or DW disagrees with the selected embedded CID glyph advance
+
+======================================================================
+FAIL: test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding) (program='cidcff-nominal-500.1-pdf-500.2')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 26, in test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding
+    result = self.observe(directory, fixtures / (name + '.pdf'), 'indeterminate', scope='font-metrics')
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 594, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'indeterminate' != 'fail'
+- indeterminate
++ fail
+ : cidcff-nominal-500.1-pdf-500.2.pdf: PDF W or DW disagrees with the selected embedded CID glyph advance
+
+======================================================================
+FAIL: test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding) (program='cidcff-nominal-500.5-pdf-500.5')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 26, in test_cff_real_dictionary_widths_remain_unqualified_after_float_decoding
+    result = self.observe(directory, fixtures / (name + '.pdf'), 'indeterminate', scope='font-metrics')
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 594, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'indeterminate' != 'pass'
+- indeterminate
++ pass
+ : cidcff-nominal-500.5-pdf-500.5.pdf: Embedded font programs satisfy the qualified layout, outline, name and bounds predicates. Selected simple and CID advances agree with PDF widths.
+
+----------------------------------------------------------------------
+Ran 1 test in 8.127s
+
+FAILED (failures=12)

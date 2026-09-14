@@ -1,0 +1,132 @@
+test_structure_dictionary_positions_reject_stream_objects (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_dictionary_positions_reject_stream_objects) ... 
+  test_structure_dictionary_positions_reject_stream_objects (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_dictionary_positions_reject_stream_objects) (stream='root') ... FAIL
+  test_structure_dictionary_positions_reject_stream_objects (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_dictionary_positions_reject_stream_objects) (stream='element') ... FAIL
+  test_structure_dictionary_positions_reject_stream_objects (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_dictionary_positions_reject_stream_objects) (stream='mcr') ... FAIL
+  test_structure_dictionary_positions_reject_stream_objects (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_dictionary_positions_reject_stream_objects) (stream='objr') ... FAIL
+  test_structure_dictionary_positions_reject_stream_objects (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_dictionary_positions_reject_stream_objects) (stream='parent-tree-root') ... FAIL
+  test_structure_dictionary_positions_reject_stream_objects (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_dictionary_positions_reject_stream_objects) (stream='parent-tree-leaf') ... FAIL
+  test_structure_dictionary_positions_reject_stream_objects (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_dictionary_positions_reject_stream_objects) (stream='namespace') ... FAIL
+  test_structure_dictionary_positions_reject_stream_objects (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_dictionary_positions_reject_stream_objects) (stream='role-map') ... FAIL
+  test_structure_dictionary_positions_reject_stream_objects (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_dictionary_positions_reject_stream_objects) (stream='namespace-role-map') ... FAIL
+
+======================================================================
+FAIL: test_structure_dictionary_positions_reject_stream_objects (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_dictionary_positions_reject_stream_objects) (stream='root')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 46, in test_structure_dictionary_positions_reject_stream_objects
+    self.observe(directory, name, self.pdf(changed), 'fail', rule, scope=scope)
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 209, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : root: The qualified structure hierarchy has valid child kinds and unique matching parent relationships.
+
+======================================================================
+FAIL: test_structure_dictionary_positions_reject_stream_objects (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_dictionary_positions_reject_stream_objects) (stream='element')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 46, in test_structure_dictionary_positions_reject_stream_objects
+    self.observe(directory, name, self.pdf(changed), 'fail', rule, scope=scope)
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 209, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : element: The qualified structure hierarchy has valid child kinds and unique matching parent relationships.
+
+======================================================================
+FAIL: test_structure_dictionary_positions_reject_stream_objects (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_dictionary_positions_reject_stream_objects) (stream='mcr')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 46, in test_structure_dictionary_positions_reject_stream_objects
+    self.observe(directory, name, self.pdf(changed), 'fail', rule, scope=scope)
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 209, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : mcr: The qualified structure hierarchy has valid child kinds and unique matching parent relationships.
+
+======================================================================
+FAIL: test_structure_dictionary_positions_reject_stream_objects (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_dictionary_positions_reject_stream_objects) (stream='objr')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 46, in test_structure_dictionary_positions_reject_stream_objects
+    self.observe(directory, name, self.pdf(changed), 'fail', rule, scope=scope)
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 209, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : objr: The qualified structure hierarchy has valid child kinds and unique matching parent relationships.
+
+======================================================================
+FAIL: test_structure_dictionary_positions_reject_stream_objects (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_dictionary_positions_reject_stream_objects) (stream='parent-tree-root')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 46, in test_structure_dictionary_positions_reject_stream_objects
+    self.observe(directory, name, self.pdf(changed), 'fail', rule, scope=scope)
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 209, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : parent-tree-root: The qualified ParentTree has ordered integer keys, structural parent values and a fresh optional next key.
+
+======================================================================
+FAIL: test_structure_dictionary_positions_reject_stream_objects (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_dictionary_positions_reject_stream_objects) (stream='parent-tree-leaf')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 46, in test_structure_dictionary_positions_reject_stream_objects
+    self.observe(directory, name, self.pdf(changed), 'fail', rule, scope=scope)
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 209, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : parent-tree-leaf: The qualified ParentTree has ordered integer keys, structural parent values and a fresh optional next key.
+
+======================================================================
+FAIL: test_structure_dictionary_positions_reject_stream_objects (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_dictionary_positions_reject_stream_objects) (stream='namespace')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 46, in test_structure_dictionary_positions_reject_stream_objects
+    self.observe(directory, name, self.pdf(changed), 'fail', rule, scope=scope)
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 209, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : namespace: The qualified namespace declarations have listed element identities and typed role-map destinations.
+
+======================================================================
+FAIL: test_structure_dictionary_positions_reject_stream_objects (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_dictionary_positions_reject_stream_objects) (stream='role-map')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 46, in test_structure_dictionary_positions_reject_stream_objects
+    self.observe(directory, name, self.pdf(changed), 'fail', rule, scope=scope)
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 209, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : role-map: The qualified namespace declarations have listed element identities and typed role-map destinations.
+
+======================================================================
+FAIL: test_structure_dictionary_positions_reject_stream_objects (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_dictionary_positions_reject_stream_objects) (stream='namespace-role-map')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 46, in test_structure_dictionary_positions_reject_stream_objects
+    self.observe(directory, name, self.pdf(changed), 'fail', rule, scope=scope)
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 209, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : namespace-role-map: The qualified namespace declarations have listed element identities and typed role-map destinations.
+
+----------------------------------------------------------------------
+Ran 1 test in 2.742s
+
+FAILED (failures=9)

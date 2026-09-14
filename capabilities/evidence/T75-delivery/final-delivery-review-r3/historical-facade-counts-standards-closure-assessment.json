@@ -1,0 +1,39 @@
+{
+  "utc": "2026-09-13T09:43:53.220117+00:00",
+  "addendum": "capabilities/evidence/T75-delivery/final-delivery-review-r3/historical-facade-counts.md",
+  "addendum-sha256": "b1819867dc2e0b25b8d62759fcf75b205dbd19715fe0723455dd7ed9684a2a37",
+  "links-resolve": true,
+  "outside-frozen-source-and-contract-inputs": true,
+  "current-1933-source-plus-30-contract-mismatches": [],
+  "actual-dual-order-class-probe-list": [
+    "net.zerocloud.pdf.itext7.kernel.exceptions.PdfException",
+    "net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument",
+    "net.zerocloud.pdf.itext7.kernel.pdf.PdfDocumentInfo",
+    "net.zerocloud.pdf.itext7.kernel.pdf.PdfPage",
+    "net.zerocloud.pdf.itext7.kernel.pdf.PdfReader",
+    "net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter",
+    "net.zerocloud.pdf.itext7.kernel.pdf.PdfObject",
+    "net.zerocloud.pdf.itext7.kernel.pdf.PdfNull",
+    "net.zerocloud.pdf.itext7.kernel.pdf.PdfBoolean",
+    "net.zerocloud.pdf.itext7.kernel.pdf.PdfNumber",
+    "net.zerocloud.pdf.itext7.kernel.pdf.PdfString",
+    "net.zerocloud.pdf.itext7.kernel.pdf.PdfName",
+    "net.zerocloud.pdf.itext7.kernel.pdf.PdfArray",
+    "net.zerocloud.pdf.itext7.kernel.pdf.PdfDictionary",
+    "net.zerocloud.pdf.itext7.kernel.pdf.PdfStream",
+    "net.zerocloud.pdf.itext7.kernel.pdf.PdfIndirectReference",
+    "net.zerocloud.pdf.itext7.kernel.pdf.PdfCatalog",
+    "net.zerocloud.pdf.itext7.kernel.utils.PdfMerger",
+    "net.zerocloud.pdf.itext7.kernel.utils.PdfSplitter",
+    "net.zerocloud.pdf.itext7.layout.Document"
+  ],
+  "new-class-initialization-proof": "PdfTextExtractor.java static initializer calls Class.forName(PdfDocument.class.getName(), true, PdfDocument.class.getClassLoader()), forcing the already individually probed PdfDocument initializer. This is source reasoning, not a claimed twenty-first standalone dual-order run.",
+  "classification": {
+    "new-hard-violations": [],
+    "new-actionable-smells": [],
+    "pre-existing-issue": "Two unchanged docs retain 19/105 as historical whole-artifact wording after later expansion; baseline already had20/151.",
+    "judgement": "The inspected explicit addendum correctly binds historical family counts to current manifest authority and precise observed coverage. No identity-affecting source-document correction is required by the applicable task or repository rule for this bounded issue."
+  },
+  "project-execution": false,
+  "repository-mutation": false
+}

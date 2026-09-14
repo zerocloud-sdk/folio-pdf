@@ -1,0 +1,13 @@
+F
+======================================================================
+FAIL: test_cid_and_composite_declarations_have_separate_qualified_profiles (test_t13_standards.T13StandardsTest.test_cid_and_composite_declarations_have_separate_qualified_profiles)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_standards.py", line 31, in test_cid_and_composite_declarations_have_separate_qualified_profiles
+    self.assertTrue(required.issubset(controls), sorted(required - set(controls)))
+AssertionError: False is not true : ['cid0-basefont-name', 'cid0-basefont-required', 'cid0-descriptor-dictionary', 'cid0-descriptor-required', 'cid0-dw-number', 'cid0-dw2-array', 'cid0-dw2-cardinality', 'cid0-dw2-numbers', 'cid0-ordering-required', 'cid0-ordering-string', 'cid0-registry-required', 'cid0-registry-string', 'cid0-ros-dictionary', 'cid0-ros-required', 'cid0-supplement-integer', 'cid0-supplement-required', 'cid0-w-array', 'cid0-w-numbers', 'cid0-w2-array', 'cid0-w2-numbers', 'cid2-basefont-name', 'cid2-basefont-required', 'cid2-descriptor-dictionary', 'cid2-descriptor-required', 'cid2-dw-number', 'cid2-dw2-array', 'cid2-dw2-cardinality', 'cid2-dw2-numbers', 'cid2-map-name', 'cid2-map-type', 'cid2-ordering-required', 'cid2-ordering-string', 'cid2-registry-required', 'cid2-registry-string', 'cid2-ros-dictionary', 'cid2-ros-required', 'cid2-supplement-integer', 'cid2-supplement-required', 'cid2-w-array', 'cid2-w-numbers', 'cid2-w2-array', 'cid2-w2-numbers', 'type0-basefont-name', 'type0-basefont-required', 'type0-descendants-array', 'type0-descendants-nonempty', 'type0-descendants-required', 'type0-encoding-required', 'type0-encoding-type', 'type0-tounicode-stream']
+
+----------------------------------------------------------------------
+Ran 1 test in 0.062s
+
+FAILED (failures=1)

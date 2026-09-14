@@ -1,6 +1,6 @@
 # T13 text and logical-structure extraction evidence
 
-Status: `experimental`
+Status: `compatible`
 
 Capability: `document.text-structure.extract`
 
@@ -8,149 +8,129 @@ Acceptance Profile: `T13-text-logical-structure`
 
 Release train: `0.1.0-SNAPSHOT`
 
-T13 exposes one immutable, backend-neutral, version-1 Document Query for
-bounded page text, source-code mapping evidence, marked content, and Tagged PDF
-logical structure. The complete result is detached from its Document Session;
-PDFBox and FontBox remain private implementation details.
+This profile covers the bounded version-1 `ExtractTextAndStructure` Document
+Query and its six matching Stable and Preview Migration Facade members. The
+complete result is immutable, detached from its Document Session and free of
+backend types. The [public guide](../../docs/text-logical-structure.md) defines
+ordering, geometry, mapping uncertainty, relationships and all fifteen limits.
+The [T13 certification contract](../../docs/t13-certification.md) fixes the
+successful cases, source authorities, corpus and independent qualification.
 
-## Implementation evidence
+The compatible candidate declaration is supported by the four qualified chains
+below. Platform declarations are frozen contract inputs, not environment
+observations. A candidate is accepted only after its actual eight Native
+combinations, refreshed prior obligations and final validation/review gates
+pass. The [Foundation evidence authority](../foundation-evidence.yaml) binds
+those observations to the candidate, compiled artifacts, immutable images,
+observed JDK builds, execution settings and tools. Changing those identities
+invalidates certification. No global Foundation readiness follows from this
+profile; unrelated unfinished obligations remain mandatory.
 
-- `TextStructureExtractionWorkflowTest` drives every observation through
-  `DocumentWorkflow.execute`. Project-authored fixtures cover same-Session
-  command/query ordering; detached untagged text; multi-page, multi-stream,
-  repeated-query, and reopen determinism; translated, transformed, rotated,
-  spaced, and non-identity nested-Form geometry and ordering; explicit,
-  code-specific `Differences` inference with absent or unknown bases,
-  contradictory, and missing mappings with exact defensive source bytes;
-  bounded hostile-CMap rejection; and query-only source and publication non-
-  mutation.
-- Tagged and nested marked-content fixtures expose begin-order sequences,
-  nesting, parent and text-item associations, outer ActualText precedence,
-  MCID-to-page and logical-content links, catalog,
-  ancestor, and directly declared language behavior, PDF 1.7 standard and
-  RoleMap-resolved custom roles, unresolved PDF 2.0-only names, Alt, and
-  distinct ActualText replacement behavior.
-  MarkInfo, page StructParents, the ParentTree, and structure-parent links make
-  it a fully linked Tagged PDF fixture. All logical children retain `/K` order.
-- Every one of the fifteen mandatory `ExtractionLimits` accepts an exact
-  boundary and fails on its first excess with
-  `EXTRACTION_LIMIT_EXCEEDED`, capability
-  `document.text-structure.extract`, and one fixed safe diagnostic. Nested
-  Form tests independently exercise stream occurrence, decoded-byte, and
-  depth accounting, including the exact version-1 Form depth ceiling of 32 and
-  its first excess. Bounded iterative page-tree traversal rejects deep excess,
-  false, negative, or oversized counts, inconsistent parents, cycles, and
-  repeated nodes,
-  and a 4,096-level tree resolves inherited page attributes without backend
-  recursion; raw `/Contents` arrays are bounded and type-checked before backend
-  traversal. A valid hexadecimal token split across two Contents members
-  proves combined-stream parsing, while unterminated content, trailing orphan
-  operands, malformed supported-operator operands, text operators outside
-  `BT`/`ET`, or unbalanced
-  page/Form `BT`/`ET` and `q`/`Q` state fail instead of publishing a valid-
-  looking prefix. Malformed inherited
-  page geometry and direct UserUnit values,
-  malformed Form type, box, matrix, resources, form type, and cross-stream
-  marked-content endings, repeated/shared structure elements, inconsistent
-  structure parents, oversized MCIDs, OBJR and Form-stream MCR children, and
-  structure namespaces all fail before backend coercion. A two-hop RoleMap
-  resolves to its standard role and an authored RoleMap cycle fails
-  repeatedly. Authored cyclic Form and
-  logical-structure graphs fail repeatedly
-  with stable `QUERY_FAILED` values, while a 4,096-level logical hierarchy
-  accepts its exact element, item, and depth boundary through iterative
-  traversal and fails safely one level below it. All terminate within policy
-  and leave source bytes unchanged.
-- A hostile four-byte `ToUnicode` range proves that caller-bounded mapping
-  preflight, including decimal count syntax and signed four-byte range
-  endpoints, rejects eager expansion before backend font construction. Direct
-  and public cases also prove the carrying scalar-range materialization used
-  by PDFBox's non-strict embedded-font construction path, the `endcmap` stop,
-  exact declared mapping counts and terminators, non-reversed source ranges,
-  acceptance and public mapping evidence for a valid paired-surrogate
-  destination, and rejection of name, empty, odd-byte, or unpaired-surrogate
-  destinations before backend coercion. Exact and exhausted byte bounds cover
-  decoded embedded font data, while a cached entry bound covers distinct
-  simple-font `Differences` arrays even when they are shared by encoding
-  dictionaries. Exact code-specific overrides remain inferred with an absent
-  or unknown base, while unoverridden codes stay missing; an oversized
-  character-code integer fails before it can wrap into fabricated inferred
-  Unicode. The same mandatory font-data-entry bound covers raw simple
-  and CID width arrays plus the entries that compact CID ranges would
-  materialize; hostile ranges are rejected before font construction. Present
-  simple character ranges, CID default widths, selectors, and scalar metrics
-  are validated without fractional coercion, and a large single text string
-  proves prompt deterministic text-item exhaustion before result publication.
-  Missing or invalid font types and subtypes, recursive Type 0 descendants,
-  non-stream embedded-font entries, invalid `CIDToGIDMap` names, missing or
-  arbitrary Type 0 encodings,
-  embedded font headers that contradict their descendant subtype, Type 3 glyph
-  programs, and missing or stream-masquerading named Font, XObject, ExtGState,
-  or marked-content Property resources fail repeatedly through the stable
-  public diagnostic before backend parsing. The subtype-repair case observes
-  the live low-level value before and after the rejected query and verifies a
-  subsequent target rewrite retains the original value. A standard-font
-  fixture with no declared Encoding remains `MISSING` instead of acquiring
-  confidence from embedded, substituted, or system-font data.
-- A low-limit ExtGState fixture retains its validated optional `Font` setting
-  while a 4,096-entry line-dash array is ignored through a detached one-key
-  view, proving that extraction does not delegate unrelated graphics-state
-  arrays to the backend or mutate the source.
-- `PublicApiLeakageIT` reflectively checks all public and protected signatures,
-  including the query, result, limits, mapping, diagnostic, geometry, marked-
-  content, and logical-structure types, for backend leakage. `JarContractIT`
-  verifies the stable module name, Java 8 class-file version, notices, and
-  absence of bundled PDFBox classes.
-- The repository-owned acceptance command creates one multi-page page-text
-  artifact and one tagged-structure artifact only through public workflows,
-  runs a same-Session public Query probe before publication, and submits the
-  unmodified products to pinned qpdf 12.4.0. Its repeat-run regression compares
-  PDF bytes under the repository's ID-neutral trailer policy plus exact
-  evidence metadata, hashes, invocations, exit codes, and raw findings.
+## Successful public behavior
 
-## Execution record — 2026-09-02
+`TextStructureExtractionWorkflowTest` exercises 115 cases through
+`DocumentWorkflow.execute`. Each certified Native tuple must run those cases,
+nine Stable `TextStructureFacadeTest` cases and two compiled-artifact contracts,
+for 126 mandatory cases. Preview inherits the same implementation and tests;
+its compiled surface is checked separately. Public observations cover:
 
-- Fixed review point:
-  `daf244af801516b6b595498819995a3797d61c4c`.
-- The final focused T13 run passes 58 tests: 44 public workflow tests, 9 CMap
-  preflight tests, and 5 font-metric preflight tests. The complete Maven
-  reactor passes all ten modules, including 253 Document Engine unit tests,
-  both Document Engine contract integration tests, 20 acceptance tests, 6
-  inventory tests, and 11 release tests.
-- `scripts/verify-jdk-matrix.sh` passes the complete ten-module reactor on JDK
-  8, 11, 17, and 21 with the same final T13 test counts. Inventory generation
-  and checking report 7 capabilities, 12 facade surfaces, and 6 exclusions,
-  with generated documentation current; `git diff --check` also passes.
-- The canonical acceptance command ran twice into separately created clean
-  temporary directories. Both runs report the T13 qpdf 12.4.0 syntax chain as
-  `pass`; their syntax records and raw qpdf findings are byte-for-byte equal
-  to each other and to the checked-in records. Under the documented
-  ID-neutral trailer policy, both runs reproduce page-text hash
-  `f6b0752b4573347c3c5d371ec2bc5406f29dff1e4c158541b0f1ba4881414a06`,
-  tagged-structure hash
-  `96c26835680700b5a49ff0d62887fec6c022e034334f97a0be88a7b604e949ea`,
-  and product-set hash
-  `95336a44f958a36a6a0e760e1a9588b0f036976d5dc3f3be6ad793d6ec6eb7c5`.
-- Parallel Standards and Spec reviews compared the final implementation and
-  evidence with repository policy and the fixed-point ticket. Their
-  actionable findings were addressed and rechecked; both final verdicts were
-  `CLEAN`.
+- Deterministic page and content-stream execution order, nested and repeated
+  Forms, tokens split across Contents members, and independently specified
+  matrix, advance, rotation, spacing and coordinate expectations.
+- Defensive exact source bytes and explicit, inferred, contradictory or missing
+  Unicode evidence; no fabricated mapping certainty or reading-order text.
+- Ordered marked-content occurrences, outer ActualText replacement precedence,
+  independent Alt, inherited language, MCIDs, ordered structure children,
+  annotation-owned appearance MCRs, whole annotation/Form OBJRs, ParentTree
+  backlinks and detached Session object identity.
+  Omitted/null optional StmOwn retains no fabricated owner identity. Normal
+  appearance roots participate in bounded invocation checks even without their
+  own structure item; direct and transitive repeated descendants fail safely.
+  Whole Form OBJRs accept direct appearances and actual nested appearance calls;
+  same-page repetitions remain valid for whole Forms without internal structure
+  claims. Resource declarations without the needed call do not establish an
+  appearance descendant's page association.
+- PDF 2.0 namespace identities, distinct standard vocabularies, transitive
+  RoleMapNS associations, root RoleMap separation, bounded unresolved roles
+  and direct root namespace declarations with indirect element/target identity.
+  Invoked and referenced Forms accept absent or null optional Type entries.
+- Type3 declared geometry and bounded glyph programs; embedded font kinds;
+  all 61 standard predefined Encodings; bounded embedded CMap inheritance;
+  four predefined UCS2 parents; exact code identities, local overrides,
+  codespaces, CID metrics and safe rejection of contradictory declarations.
+- Exact-boundary success and first-excess failure for all fifteen limits,
+  iterative graph traversal, bounded decompression/font construction,
+  all-or-nothing failures, Source preservation, explicit ownership,
+  preceding Session Commands and values usable after Session close.
 
-Version 1 preserves content execution order rather than inferred visual or
-semantic reading order. It does not synthesize whitespace, line breaks, OCR,
-layout, or font-program mappings. Composite-font encodings are limited to
-`Identity-H` and `Identity-V`, and Type 3 fonts are unsupported;
-marked content inside Forms, Form-stream MCRs, OBJR structure children, and
-PDF 2.0 structure namespaces fail safely instead of being approximated.
-Query-specific bounds do not replace T20's comprehensive memory, time, image,
-decompression, and concurrency policy or T21's separate opt-in Worker
-isolation.
+The six Facade members are `PdfTextExtractor.getTextFromPage(PdfPage)` and its
+`ExtractionLimits` overload, `PdfPage.getPageText(ExtractionLimits)`,
+`PdfDocument.getTextAndStructure(ExtractionLimits)`, and both
+`PdfDocument.getStructTreeRoot` overloads. The last pair returns immutable
+`List<LogicalStructureElement>` values. The two convenience overloads use the
+fixed fifteen-bound profile in the certification contract. Every overload
+queries the whole document before selecting its result. Public parity checks
+include reopened products, committed Publication Receipts, detached values and
+stable safe failures. The Facade's actual execution mode is `IN_PROCESS`.
 
-This record is implementation evidence, not independent Acceptance Evidence.
-The separate T13 qpdf record supplies a passing syntax chain only after the
-canonical evidence command produces it; qpdf syntax success is not a PDF
-standards-conformance claim. Mandatory standards, semantic, and visual
-Acceptance Evidence remain absent. The T09 Dependency Gate is open because
-that prerequisite remains `experimental`, and T06 remains a promotion gate.
-T13 therefore remains `experimental`, with no compatibility or certified-
-platform claim.
+The exact six mappings appear in the [Facade Surface Manifest](../facade-surface.yaml)
+and the Foundation text obligation. Compiled Stable and Preview surfaces,
+Java 8 class versions, backend isolation and classpath exclusivity are checked
+through their public artifact contracts.
+
+## Independent acceptance evidence
+
+The frozen original corpus has five products, each observed through Native and
+Facade publication. All ten products require syntax, standards and semantic
+chains; nested/split content, marked structure and direct embedded fonts also
+require visual evidence, producing six visual observations. Inherited-font
+and uncertain-geometry cases retain their explicitly different chain scope.
+
+- [Syntax](T75-text-syntax.md): pinned qpdf 12.4.0, original input/output,
+  exact process receipts and a truncated-document negative control.
+- [Standards](T75-text-standards.md): strict offline pdfcpu and the qualified
+  Arlington T13 supplement cover 334 declaration rules in seven profiles.
+  The independent Python/fontTools program observer adds 42 predicates across
+  eight scopes with 165 original illegal controls. All 376 required rules,
+  legal boundaries and exact negative diagnostics must be present.
+- [Semantic](T75-text-semantic.md): an independent qpdf graph observer compares
+  unchanged original Sources with each product; separately authored complete
+  public-value expectations and twelve source-derived defects cover the
+  extraction contract without using the Folio backend as a correctness oracle.
+- [Visual](T75-text-visual.md): pinned PDFium and ImageMagick compare original
+  rectangular-glyph expectations at 144 DPI. Primary comparison is exact;
+  the independent secondary font-edge allowance keeps decimal AE separate
+  from exact changed pixels. Four PDF defects and three exact raster defects
+  must fail, while the edge-only positive must pass.
+
+Producer receipts retain the original bytes and bind complete file sets.
+The Foundation collector checks authority identities, actual tool processes,
+qualified coverage, all negative batches and original public outcomes before
+and after collection. Raster controls require the specified changes to the
+frozen opaque RGB8 original. Missing tools/rules, changed bytes or failed
+controls cannot be repaired by changing report labels. Protocol fixtures test
+collector rejection and do not replace independent PDF/tool qualification.
+
+Original qualification, actual development observations, RED/GREEN logs and
+independent review closures are retained in [T75 delivery evidence](T75-delivery/README.md).
+Final certification requires Ubuntu 24.04/Linux x86-64 JDK 8/11/17/21 with both
+`IN_PROCESS` and `HARDENED_WORKER` Native execution. Windows x86-64 and macOS
+x86-64/arm64 remain uncertified under ADR-0040.
+
+## Retained boundaries and history
+
+The contract preserves execution order without inventing whitespace, layout,
+bidi order or OCR. Unsupported font/relationship shapes remain explicit in
+the public guide and independently qualified profile; safe rejection alone
+is not evidence for a required successful case. The successful structure and
+font/CMap cases above resolve the two former limitation blockers. Query bounds
+compose with the shared Workflow Resource Policy and opt-in Worker isolation.
+Image/resource extraction, encryption and later capability slices are outside
+this profile.
+
+The complete original 2026-09-02 implementation/syntax-only record is preserved
+byte-for-byte as [historical T13 evidence](T75-delivery/historical-T13-text-logical-structure.md),
+with its original identity in the adjacent JSON record. Its experimental state,
+old unsupported boundaries and historical validation counts describe that
+prior implementation. The original qpdf syntax record remains intact. Clean-room
+inputs and acceptance-only tools/resources are recorded in [PROVENANCE.md](../../PROVENANCE.md).

@@ -538,10 +538,11 @@ public final class UnicodeCompositionWorkflowTest {
     }
 
     private static List<PageText> extract(DocumentSession session) throws DocumentFailure {
+        // These text fixtures select at most two complete Identity-H tables.
         return session.query(ExtractTextAndStructure.version1(ExtractionLimits.builder()
                 .maximumPages(16).maximumPageTreeNodes(64).maximumContentStreams(4096)
                 .maximumContentStreamDepth(8).maximumDecodedBytes(1 << 20).maximumTextItems(10000)
-                .maximumUnicodeCodePoints(10000).maximumToUnicodeMappings(10000).maximumFontDataEntries(10000)
+                .maximumUnicodeCodePoints(10000).maximumToUnicodeMappings(10000).maximumFontDataEntries(2 * 65536 + 10000)
                 .maximumMarkedContentSequences(8).maximumMarkedContentDepth(4).maximumStructureElements(8)
                 .maximumStructureItems(8).maximumStructureDepth(4).maximumRoleMappings(4).build())).getPages();
     }

@@ -1,0 +1,31 @@
+FF
+======================================================================
+FAIL: test_encoding_character_collection_matches_its_cidfont_without_requiring_equal_supplement (test_t13_program_standards.T13ProgramStandardsTest.test_encoding_character_collection_matches_its_cidfont_without_requiring_equal_supplement) (name='different-registry')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 32, in test_encoding_character_collection_matches_its_cidfont_without_requiring_equal_supplement
+    self.observe(directory, pdf, expected, 'cmap-font-collection' if expected == 'fail' else None)
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 111, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : different-registry.pdf: Decoded CMap grammar, character domains and declared inheritance are consistent.
+
+======================================================================
+FAIL: test_encoding_character_collection_matches_its_cidfont_without_requiring_equal_supplement (test_t13_program_standards.T13ProgramStandardsTest.test_encoding_character_collection_matches_its_cidfont_without_requiring_equal_supplement) (name='different-ordering')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 32, in test_encoding_character_collection_matches_its_cidfont_without_requiring_equal_supplement
+    self.observe(directory, pdf, expected, 'cmap-font-collection' if expected == 'fail' else None)
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 111, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : different-ordering.pdf: Decoded CMap grammar, character domains and declared inheritance are consistent.
+
+----------------------------------------------------------------------
+Ran 1 test in 0.394s
+
+FAILED (failures=2)

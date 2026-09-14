@@ -1,0 +1,87 @@
+FFFFFF
+======================================================================
+FAIL: test_cff_index_offsets_start_at_one_and_remain_inside_the_program (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cff_index_offsets_start_at_one_and_remain_inside_the_program) (font='FolioT13Rectangle.cff', field='first-offset-zero')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 31, in test_cff_index_offsets_start_at_one_and_remain_inside_the_program
+    self.observe(directory, pdf, 'fail', 'font-program-layout', scope='fonts')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 344, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : FolioT13Rectangle.cff-first-offset-zero.pdf: Embedded CFF and TrueType headers, dictionaries and checked font tables are readable.
+
+======================================================================
+FAIL: test_cff_index_offsets_start_at_one_and_remain_inside_the_program (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cff_index_offsets_start_at_one_and_remain_inside_the_program) (font='FolioT13Rectangle.cff', field='first-offset-two')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 31, in test_cff_index_offsets_start_at_one_and_remain_inside_the_program
+    self.observe(directory, pdf, 'fail', 'font-program-layout', scope='fonts')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 344, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : FolioT13Rectangle.cff-first-offset-two.pdf: Embedded CFF and TrueType headers, dictionaries and checked font tables are readable.
+
+======================================================================
+FAIL: test_cff_index_offsets_start_at_one_and_remain_inside_the_program (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cff_index_offsets_start_at_one_and_remain_inside_the_program) (font='FolioT13Rectangle.cff', field='last-offset-outside-file')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 31, in test_cff_index_offsets_start_at_one_and_remain_inside_the_program
+    self.observe(directory, pdf, 'fail', 'font-program-layout', scope='fonts')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 352, in observe
+    self.assertEqual(rule, values['rule'])
+AssertionError: 'font-program-layout' != 'font-program-data'
+- font-program-layout
+?              ^ ---
++ font-program-data
+?              ^  +
+
+
+======================================================================
+FAIL: test_cff_index_offsets_start_at_one_and_remain_inside_the_program (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cff_index_offsets_start_at_one_and_remain_inside_the_program) (font='FolioT13RectangleCID.cff', field='first-offset-zero')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 31, in test_cff_index_offsets_start_at_one_and_remain_inside_the_program
+    self.observe(directory, pdf, 'fail', 'font-program-layout', scope='fonts')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 344, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : FolioT13RectangleCID.cff-first-offset-zero.pdf: Embedded CFF and TrueType headers, dictionaries and checked font tables are readable.
+
+======================================================================
+FAIL: test_cff_index_offsets_start_at_one_and_remain_inside_the_program (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cff_index_offsets_start_at_one_and_remain_inside_the_program) (font='FolioT13RectangleCID.cff', field='first-offset-two')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 31, in test_cff_index_offsets_start_at_one_and_remain_inside_the_program
+    self.observe(directory, pdf, 'fail', 'font-program-layout', scope='fonts')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 344, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : FolioT13RectangleCID.cff-first-offset-two.pdf: Embedded CFF and TrueType headers, dictionaries and checked font tables are readable.
+
+======================================================================
+FAIL: test_cff_index_offsets_start_at_one_and_remain_inside_the_program (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cff_index_offsets_start_at_one_and_remain_inside_the_program) (font='FolioT13RectangleCID.cff', field='last-offset-outside-file')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 31, in test_cff_index_offsets_start_at_one_and_remain_inside_the_program
+    self.observe(directory, pdf, 'fail', 'font-program-layout', scope='fonts')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 352, in observe
+    self.assertEqual(rule, values['rule'])
+AssertionError: 'font-program-layout' != 'font-program-data'
+- font-program-layout
+?              ^ ---
++ font-program-data
+?              ^  +
+
+
+----------------------------------------------------------------------
+Ran 1 test in 3.829s
+
+FAILED (failures=6)

@@ -56,7 +56,8 @@ final class T24ParagraphSemanticAssertions {
         List<PageText> pages = session.query(ExtractTextAndStructure.version1(ExtractionLimits.builder()
                 .maximumPages(4).maximumPageTreeNodes(32).maximumContentStreams(128).maximumContentStreamDepth(8)
                 .maximumDecodedBytes(1 << 20).maximumTextItems(64).maximumUnicodeCodePoints(64)
-                .maximumToUnicodeMappings(64).maximumFontDataEntries(256).maximumMarkedContentSequences(4)
+                // Both selected fonts include complete Identity-H tables.
+                .maximumToUnicodeMappings(64).maximumFontDataEntries(2 * 65536 + 256).maximumMarkedContentSequences(4)
                 .maximumMarkedContentDepth(4).maximumStructureElements(4).maximumStructureItems(4)
                 .maximumStructureDepth(4).maximumRoleMappings(4).build())).getPages();
         boolean geometry = pages.size() == 2;

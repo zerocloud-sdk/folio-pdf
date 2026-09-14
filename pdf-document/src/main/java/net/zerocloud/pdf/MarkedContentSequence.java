@@ -18,6 +18,7 @@ import java.util.Optional;
 public final class MarkedContentSequence {
 
     private final int id;
+    private final int contentStreamId;
     private final String tag;
     private final Integer markedContentId;
     private final Integer parentId;
@@ -28,6 +29,7 @@ public final class MarkedContentSequence {
 
     MarkedContentSequence(
             int id,
+            int contentStreamId,
             String tag,
             Integer markedContentId,
             Integer parentId,
@@ -36,6 +38,7 @@ public final class MarkedContentSequence {
             String actualText,
             List<Integer> textItemIndices) {
         this.id = id;
+        this.contentStreamId = contentStreamId;
         this.tag = tag;
         this.markedContentId = markedContentId;
         this.parentId = parentId;
@@ -48,6 +51,15 @@ public final class MarkedContentSequence {
 
     /** @return the one-based page-local sequence identifier */
     public int getId() { return id; }
+
+    /**
+     * Identifies the stream that defines this sequence. Zero means the owning
+     * page's combined Contents; a positive value identifies a distinct Form
+     * stream within this extraction. Repeated Form invocations retain the same
+     * stream identifier and have separate sequence identifiers.
+     * @return the extraction-local content-stream identifier
+     */
+    public int getContentStreamId() { return contentStreamId; }
 
     /** @return the PDF marked-content tag */
     public String getTag() { return tag; }

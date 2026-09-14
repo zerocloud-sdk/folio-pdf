@@ -1,0 +1,28 @@
+FE
+======================================================================
+ERROR: test_type3_names_have_matching_and_optional_positives_and_an_illegal_mismatch (test_t13_standards.T13StandardsTest.test_type3_names_have_matching_and_optional_positives_and_an_illegal_mismatch)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_standards.py", line 20, in test_type3_names_have_matching_and_optional_positives_and_an_illegal_mismatch
+    named = (output / 'fixtures/positive-named-type3-fonts.pdf').read_bytes()
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1021, in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpn35c1ejg/controls/fixtures/positive-named-type3-fonts.pdf'
+
+======================================================================
+FAIL: test_marked_structure_source_freezes_replacement_order_and_stream_scoped_links (test_t13_corpus.T13CorpusTest.test_marked_structure_source_freezes_replacement_order_and_stream_scoped_links)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_corpus.py", line 118, in test_marked_structure_source_freezes_replacement_order_and_stream_scoped_links
+    self.assertIn(b'/Subtype /Type3 /Name /F1', data)
+AssertionError: b'/Subtype /Type3 /Name /F1' not found in b'%PDF-1.7\n%\xe2\xe3\xcf\xd3\n1 0 obj\n<< /Type /Catalog /Version /2.0 /Pages 2 0 R /Lang (en) /MarkInfo << /Marked true >> /StructTreeRoot 8 0 R >>\nendobj\n2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 120 100] /CropBox [0 0 120 100] /Rotate 0 /Resources << /Font << /F1 5 0 R >> /XObject << /Fm 7 0 R >> >> /Contents 4 0 R /StructParents 0 /Annots [12 0 R] >>\nendobj\n4 0 obj\n<<  /Length 190 >>\nstream\n/Span << /MCID 0 /ActualText (Outer) /Alt (PageAlt) >> BDC\nBT /F1 10 Tf 1 0 0 1 10 10 Tm (A) Tj ET\n/Span << /ActualText (Inner) >> BDC\nBT /F1 10 Tf 1 0 0 1 20 10 Tm (A) Tj ET EMC EMC /Fm Do\nendstream\nendobj\n5 0 obj\n<< /Type /Font /Subtype /Type3 /FontBBox [0 0 400 600] /FontMatrix [.001 0 0 .001 0 0] /FirstChar 65 /LastChar 65 /Widths [500] /Encoding << /Type /Encoding /Differences [65 /A] >> /CharProcs << /A 6 0 R >> /Resources << >> /FontDescriptor 17 0 R >>\nendobj\n6 0 obj\n<<  /Length 38 >>\nstream\n500 0 0 0 400 600 d1 0 0 400 600 re f\nendstream\nendobj\n7 0 obj\n<< /Type /XObject /Subtype /Form /BBox [0 0 120 100] /Matrix [1 0 0 1 20 30] /Resources << /Font << /F1 5 0 R >> >> /StructParents 1 /Length 116 >>\nstream\n/Span << /MCID 0 /Lang (de) /Alt (FormAlt) >> BDC\n/Span << /ActualText (Form) >> BDC BT /F1 10 Tf (A) Tj ET EMC EMC\nendstream\nendobj\n8 0 obj\n<< /Type /StructTreeRoot /K 9 0 R /ParentTree 13 0 R /ParentTreeNextKey 3 /Namespaces [14 0 R 15 0 R 16 0 R] >>\nendobj\n9 0 obj\n<< /Type /StructElem /S /Custom /NS 14 0 R /P 8 0 R /Pg 3 0 R /Lang (fr) /Alt (RootAlt) /ActualText (RootActual) /K [10 0 R] >>\nendobj\n10 0 obj\n<< /Type /StructElem /S /P /NS 15 0 R /P 9 0 R /Pg 3 0 R /K [0 << /Type /MCR /Pg 3 0 R /Stm 7 0 R /MCID 0 >> << /Type /OBJR /Pg 3 0 R /Obj 12 0 R >> 11 0 R] >>\nendobj\n11 0 obj\n<< /Type /StructElem /S /Span /NS 15 0 R /P 10 0 R /Pg 3 0 R /Lang (ja) /ActualText () >>\nendobj\n12 0 obj\n<< /Type /Annot /Subtype /Text /P 3 0 R /Rect [0 0 0 0] /F 2 /Contents (Linked object) /StructParent 2 >>\nendobj\n13 0 obj\n<< /Nums [0 [10 0 R] 1 [10 0 R] 2 10 0 R] >>\nendobj\n14 0 obj\n<< /Type /Namespace /NS (urn:folio:t13:roles) /RoleMapNS << /Custom [/Intermediate 16 0 R] >> >>\nendobj\n15 0 obj\n<< /Type /Namespace /NS (http://iso.org/pdf2/ssn) >>\nendobj\n16 0 obj\n<< /Type /Namespace /NS (urn:folio:t13:bridge) /RoleMapNS << /Intermediate [/Document 15 0 R] >> >>\nendobj\n17 0 obj\n<< /Type /FontDescriptor /Flags 33 /FontBBox [0 0 400 600] /ItalicAngle 0 /Ascent 600 /Descent 0 /CapHeight 600 /StemV 400 >>\nendobj\nxref\n0 18\n0000000000 65535 f \n0000000015 00000 n \n0000000140 00000 n \n0000000197 00000 n \n0000000415 00000 n \n0000000656 00000 n \n0000000921 00000 n \n0000001009 00000 n \n0000001305 00000 n \n0000001432 00000 n \n0000001575 00000 n \n0000001751 00000 n \n0000001857 00000 n \n0000001979 00000 n \n0000002040 00000 n \n0000002153 00000 n \n0000002222 00000 n \n0000002338 00000 n \ntrailer\n<< /Size 18 /Root 1 0 R /ID [<a33fdf237a14c18c12a1455cc03dc678><a33fdf237a14c18c12a1455cc03dc678>] >>\nstartxref\n2480\n%%EOF\n'
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.109s
+
+FAILED (failures=1, errors=1)

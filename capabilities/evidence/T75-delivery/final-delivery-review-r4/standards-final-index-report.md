@@ -1,0 +1,11 @@
+Independent Standards phase 2 covers fixed baseline `5b1603c435f11c40368f75b7b9a2777c9c5e9761` through frozen index tree `b12a83ab82a0e59425c87fecd16bf317e581adaf`. This continues the existing independent reviewer and closed source/incremental reviews; no fresh agent creation is claimed.
+
+Hard violations in this increment: **0**. The disclosed loss of two historical r3 derived summaries remains a preservation limitation. Their 55,109/79,646 original bytes and SHA identities are unavailable; intact certification originals and restored review coverage do not recover those summaries.
+
+Judgment findings: **1 documentation correction; 0 new Fowler smells**. `capabilities/evidence/T75-text-semantic.md:24` says the current contract requires **124** cases. `docs/t13-certification.md:513–514`, the reviewed Worker split and every current text tuple require **126**. Correct this evidence-index sentence in the bounded final delta; it is outside the frozen source/contract inputs. The correction has not yet occurred.
+
+The 1,933 source and 30 contract inputs match the complete review lineage, including cumulative 26-source/one-contract changes. Completed host/matrix validation continuity holds. Six certifiers and their queue actually exited 0: 48 certifications and 192 PASS records match publication identities. Final inventory passed with six satisfied rows; overall Foundation remains NOT READY. Nine newly completed archives (2,481 members) match originals; all fourteen certification-review archives bind 9,900 originals.
+
+All 648,091 staged entries match the frozen tree. Every 272,499 changed original reproduces its staged Git object ID and retained SHA256; all 84,651 actual objects have matching type/size. All 782 intended ignored logs are staged; no baseline deletion, loose build/cache artifact or oversized changed file was found. Scoped attributes preserve 59 diagnosed files and match 91 retained-data paths; ordinary source/document checks remain unchanged. Failed staging exit 1 and successful retry exit 0 remain distinct.
+
+Completed technical-evidence and frozen-index checks close. Final Standards delivery approval awaits the exact 124→126 correction and bounded final archive/status delta. Commit, push and issue closure remain pending. No project execution, raw-rule/RGB replay or repository mutation occurred.

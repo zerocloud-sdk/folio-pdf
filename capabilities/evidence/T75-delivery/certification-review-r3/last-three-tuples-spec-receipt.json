@@ -1,0 +1,353 @@
+{
+  "created-utc": "2026-09-13T08:48:52.000817+00:00",
+  "reviewer": "independent Spec agent /root/final_spec",
+  "conclusion": "CLEAN final three actual tuples; complete eight-tuple evidence linked; actual outer exit/publication deferred",
+  "report": {
+    "path": "report.md",
+    "sha256": "3097a16e2cd97f3596369a90776679f3659a8369fe12ad0f953a1c73bc829b69",
+    "bytes": 2507
+  },
+  "report-word-count": 302,
+  "baseline": "5b1603c435f11c40368f75b7b9a2777c9c5e9761",
+  "candidate": "e2dd9ebbeae5668ccc8e2985ccd8af17c8921d1ec5e12e0c913cbd1fa00dfbd6",
+  "contract": "3de508f79fcbef7258feee8abc013d6f02b000840cac1cb263cb0d6f927b8f2b",
+  "build-inputs-sha256": "edc129bd06eb5ee6ac00c4653173a524f72367f73ac1c14f040f8f5c9eb8aa70",
+  "newly-audited-tuples": [
+    "jdk17-hardened_worker",
+    "jdk21-in_process",
+    "jdk21-hardened_worker"
+  ],
+  "formal-126-test-times-seconds": [
+    356.507,
+    9.672,
+    373.013
+  ],
+  "actual-Facade-mode-in-every-tuple": "IN_PROCESS",
+  "original-scope": {
+    "path": "scope.json",
+    "sha256": "6fe5a33d65f6698596f476f824030891204f39fbfc14a2745db281bae7e12c96",
+    "bytes": 1903
+  },
+  "prior-reviews": [
+    {
+      "report-path": "/tmp/t75-final-spec-r3-two-tuples-_xr8bj_5/report.md",
+      "report-sha256": "a3b4c9767d5c1cd6619fb34890c2f29c4a60f4e5d4aa88ecdc5666a3a3d59baa",
+      "receipt-sha256": "39d01f29952d3b18c8ac0e0bcb6f58a9c8efdf4d0005113e9e4d536a48880a4c",
+      "input-manifest-sha256": "cea2c1b726fa9c6d364ea03b23d329c6558a3aa07377e7b320e633e9d712056a"
+    },
+    {
+      "report-path": "/tmp/t75-final-spec-r3-three-tuples-smdhs3w8/report.md",
+      "report-sha256": "928d8d32a554e571550319637f279aac5470d40a3ad5f7b1eb382f99b24cfccb",
+      "receipt-sha256": "bdc9df75d1acb62dbb20305e3bc5d5c3be661d494fc14b3b59f0565e951840df",
+      "input-manifest-sha256": "30b34b3826c4b53a1e630bfade988d1d3aaaaa372345e551ea4b2e927ed677ab"
+    }
+  ],
+  "previously-reviewed-original-files-rehashed": 98623,
+  "complete-eight-evidence-review-linked": true,
+  "exact-chain-records": 32,
+  "evidence-identities": {
+    "path": "inspected-source-sha256.json",
+    "sha256": "5892db886c9c6aca8aa1b8c7f7bf9d29649ccd1896a877c0d3b5a62a72f18cb2",
+    "bytes": 72653335
+  },
+  "unique-inspected-paths": 159968,
+  "small-original-copies": {
+    "path": "source-copy-identities.json",
+    "sha256": "6b02f574f2ae8ddf859b256b89a32a251e978601db5d72c08ed33c2874b46d07",
+    "bytes": 72615
+  },
+  "small-original-copy-count": 198,
+  "phases": [
+    {
+      "phase": "stage-audit",
+      "command": {
+        "path": "stage-audit-command.json",
+        "sha256": "748e3cb066a21f1fb3fe4c63490d024eeb9110203ce77c88045ea1bbc6798946",
+        "bytes": 425
+      },
+      "result": {
+        "path": "stage-audit-result.json",
+        "sha256": "bddc1da4f36df1638e09083a5e1f86bb229e9541a612b32fc743eb81a8739373",
+        "bytes": 593
+      },
+      "original-output": {
+        "path": "stage-audit-output.txt",
+        "sha256": "d9a31e34b0833bccabc69d449b19ae0cf91e7de0ee3eac9fdbcb89a6f8d577a1",
+        "bytes": 107
+      },
+      "inspection": {
+        "path": "stage-environment-contract-inspection.json",
+        "sha256": "4cbf63530e21488eb5dc92476b118e81db4ec1d52dbb3e86a2cbc7710bd74f58",
+        "bytes": 39186
+      },
+      "unresolved-diagnostics": 0
+    },
+    {
+      "phase": "reference-audit",
+      "command": {
+        "path": "reference-audit-command.json",
+        "sha256": "e8563eb57c2330c73614bc3efbe47ba443eb2eece13548760aad062baf181d3a",
+        "bytes": 429
+      },
+      "result": {
+        "path": "reference-audit-result.json",
+        "sha256": "3f9c12bd9c300fcf682a04d8fcef80a86a1bdfb118ef4349aab53dd8af990226",
+        "bytes": 597
+      },
+      "original-output": {
+        "path": "reference-audit-output.txt",
+        "sha256": "8c54e6ce7172ab54bd0860de0d9caa4bac8385d75487cdcbd04cb5473afbae2b",
+        "bytes": 100
+      },
+      "inspection": {
+        "path": "complete-reference-inspection.json",
+        "sha256": "19298128ca9a4d20cd703bbb4b3fe05bc08e56a0ba6386f8cdcc375ee755e164",
+        "bytes": 7507
+      },
+      "unresolved-diagnostics": 0
+    },
+    {
+      "phase": "qualification-audit",
+      "command": {
+        "path": "qualification-audit-command.json",
+        "sha256": "a4b54c46415dc6547842d0187070ca064efe53480250cf96924b720e0c2430d6",
+        "bytes": 433
+      },
+      "result": {
+        "path": "qualification-audit-result.json",
+        "sha256": "b265b2d044e6913af7d829472f1fa68db27a93719dae8e2586473dd33d9c5ef6",
+        "bytes": 601
+      },
+      "original-output": {
+        "path": "qualification-audit-output.txt",
+        "sha256": "06c70e1df4e09f99f3fad3c09f88b245f430ae7aa4c00750a84dbed91e2ada64",
+        "bytes": 114
+      },
+      "inspection": {
+        "path": "qualification-and-public-outcome-inspection.json",
+        "sha256": "592e5f85859472ac5def883b2d942c497b0a084d6cb0d795aab85f592e57ff45",
+        "bytes": 16299
+      },
+      "unresolved-diagnostics": 0
+    },
+    {
+      "phase": "chain-controls-audit",
+      "command": {
+        "path": "chain-controls-audit-command.json",
+        "sha256": "1730c1553254df2716ca400010a67e395535507f59d5fb0a2abc035388a9d935",
+        "bytes": 434
+      },
+      "result": {
+        "path": "chain-controls-audit-result.json",
+        "sha256": "fc192aefc70d68c0b04c50a0898d23e1307698c0c13300b81e1e3c6dc01cc1c0",
+        "bytes": 602
+      },
+      "original-output": {
+        "path": "chain-controls-audit-output.txt",
+        "sha256": "ff281c513513e5c834a0faf40c1040ba4ccf38eef85312d5ab2a774770aed724",
+        "bytes": 103
+      },
+      "inspection": {
+        "path": "separate-chain-control-inspection.json",
+        "sha256": "c52ab9157fba67b041b18c10feba12c4296374889284b6d2549fd3c79ad7558b",
+        "bytes": 82221
+      },
+      "unresolved-diagnostics": 0
+    },
+    {
+      "phase": "report-coverage-audit",
+      "command": {
+        "path": "report-coverage-audit-command.json",
+        "sha256": "75d5e0054491b0d9c47bd3124b752d80e1ceb95710d3e3d3aecc0eeca39b593b",
+        "bytes": 435
+      },
+      "result": {
+        "path": "report-coverage-audit-result.json",
+        "sha256": "c59cd90ce0158885f84c2a6f46d80f4c5c2df0fab8c525ba262d74dacd863e1e",
+        "bytes": 603
+      },
+      "original-output": {
+        "path": "report-coverage-audit-output.txt",
+        "sha256": "c484677f506f54fc3f52de75d0d025cab361b0323ed8cd949d538bda9142dc64",
+        "bytes": 100
+      },
+      "inspection": {
+        "path": "report-array-coverage-inspection.json",
+        "sha256": "e0d582efecf09bd07ea2b5c513e7655da65183cd16e8c53e55a12ca3e0325ccd",
+        "bytes": 2864
+      },
+      "unresolved-diagnostics": 0
+    },
+    {
+      "phase": "raster-controls-audit",
+      "command": {
+        "path": "raster-controls-audit-command.json",
+        "sha256": "cc74a267c937f880e46ea67eb87f8aabf20795b4e247676dd0231e89debd79fe",
+        "bytes": 435
+      },
+      "result": {
+        "path": "raster-controls-audit-result.json",
+        "sha256": "8c5cd79d531a96389147e4ad79c8fc75b366bc42823512a330b5f6a19b851017",
+        "bytes": 603
+      },
+      "original-output": {
+        "path": "raster-controls-audit-output.txt",
+        "sha256": "ed932c99d11713270f2a2589c3df6bcc11cb116228e13ae0a240c0ba093b482e",
+        "bytes": 102
+      },
+      "inspection": {
+        "path": "complete-raster-control-inspection.json",
+        "sha256": "10efd48ae3edaa95b5776a787752e59a977fc10d8e845a4fa54598f138e32ada",
+        "bytes": 13801
+      },
+      "unresolved-diagnostics": 0
+    },
+    {
+      "phase": "original-source-copy-audit",
+      "command": {
+        "path": "original-source-copy-audit-command.json",
+        "sha256": "e0aacb76382b8b803bb4df47e40a99913dd36a2e861d78e22ee3c7e2a87971ca",
+        "bytes": 440
+      },
+      "result": {
+        "path": "original-source-copy-audit-result.json",
+        "sha256": "ffddaceb61ac3cb99be998b5db3334bcebdb105076f6ffaa682271a8da912934",
+        "bytes": 608
+      },
+      "original-output": {
+        "path": "original-source-copy-audit-output.txt",
+        "sha256": "bad467d3aa61d5896a44b80a13ad54dd68caab35e50652f37d284fa130379914",
+        "bytes": 100
+      },
+      "inspection": {
+        "path": "original-source-copy-inspection.json",
+        "sha256": "c5589358062e86fa44b53ae14e865fbf2ea502dccd55d9a3b827a9c7bd9a95ec",
+        "bytes": 810
+      },
+      "unresolved-diagnostics": 0
+    },
+    {
+      "phase": "eight-linkage-audit",
+      "command": {
+        "path": "eight-linkage-audit-command.json",
+        "sha256": "18ab5e918deae2db7f3729faa24fc0bfe2e2a56a86b6d1525cb399d4ce92e249",
+        "bytes": 433
+      },
+      "result": {
+        "path": "eight-linkage-audit-result.json",
+        "sha256": "b7dff1f6c3a26369136c4ad5f0dcf3ed9ae258f34529ae625efb1eb1b515c385",
+        "bytes": 601
+      },
+      "original-output": {
+        "path": "eight-linkage-audit-output.txt",
+        "sha256": "e5e7d23a071406cc05c5b21838beeed58ecafeff1c21d3df68af5355a28fbc0e",
+        "bytes": 108
+      },
+      "inspection": {
+        "path": "eight-tuple-review-linkage-inspection.json",
+        "sha256": "43de2c4cf09efda9def657bad1bf70ef7a7be9ad5ef0e61f916ae1bc0e7e2e79",
+        "bytes": 9976
+      },
+      "unresolved-diagnostics": 0
+    },
+    {
+      "phase": "finalize-evidence-identities",
+      "command": {
+        "path": "finalize-evidence-identities-command.json",
+        "sha256": "e2f6e31eb97d73e2b34f2205440ec56884bc76d88b09e999bf023e8c1f7332d8",
+        "bytes": 442
+      },
+      "result": {
+        "path": "finalize-evidence-identities-result.json",
+        "sha256": "09fdd5983a067995e82db6125f7e9807bc49b09f3b68294ae0d08faf85235231",
+        "bytes": 610
+      },
+      "original-output": {
+        "path": "finalize-evidence-identities-output.txt",
+        "sha256": "022640131a29a8bc750f52560795ddbdd04455c7e2a1ba9926c0bc136a64b454",
+        "bytes": 424
+      },
+      "inspection": {
+        "path": "end-of-evidence-review-identities.json",
+        "sha256": "267c7edd008ec532a3edcada0fa33330a0d967a2b35d0d5800565750b9307bf0",
+        "bytes": 57441
+      },
+      "unresolved-diagnostics": 0
+    }
+  ],
+  "prior-PNG-method-diagnostic-linkage": {
+    "path": "complete-raster-control-inspection.json",
+    "sha256": "10efd48ae3edaa95b5776a787752e59a977fc10d8e845a4fa54598f138e32ada",
+    "bytes": 13801
+  },
+  "copy-reader-history": {
+    "earlier-attempts": [
+      {
+        "command": {
+          "path": "source-copy-audit-command.json",
+          "sha256": "27460efaddd2ccca2f1e44bfe5d45beef79d83733fbaa1da33d91868f8422d95",
+          "bytes": 431
+        },
+        "result": {
+          "path": "source-copy-audit-result.json",
+          "sha256": "cc5e6b6c0ae988fec0c559e8130d2ddd92da223fa4f99021791cbdb209914c1a",
+          "bytes": 599
+        },
+        "original-output": {
+          "path": "source-copy-audit-output.txt",
+          "sha256": "925ae8254cfb2d1b8a26edab06a6e17ee715d2651256b9d4d22711738d322f32",
+          "bytes": 723
+        }
+      },
+      {
+        "command": {
+          "path": "source-copy-completion-command.json",
+          "sha256": "da34b32f997e229d0d7ad604e6e41d6862d229a58dc235fb382811fd8d3bde09",
+          "bytes": 436
+        },
+        "result": {
+          "path": "source-copy-completion-result.json",
+          "sha256": "a7c7fa810a03bb7f888bb97cd266cda9fccbc4a7dc51cbe13c2c32be46122fab",
+          "bytes": 604
+        },
+        "original-output": {
+          "path": "source-copy-completion-output.txt",
+          "sha256": "a728ceb2b2a3e042723624d088e5d63538eb3c83be1572e836089e22d464de63",
+          "bytes": 758
+        }
+      }
+    ],
+    "closure": {
+      "path": "original-source-copy-inspection.json",
+      "sha256": "c5589358062e86fa44b53ae14e865fbf2ea502dccd55d9a3b827a9c7bd9a95ec",
+      "bytes": 810
+    },
+    "classification": "Two independent copy-reader bookkeeping guards stopped copies: missing authorized identities metadata names, then missing JDK11 AFTER to JDK21 AFTER mapping. Separate corrected reader completed original copies with zero errors. Neither was a project/certification failure; all original outputs retained."
+  },
+  "initial-publication-observation": {
+    "path": "initial-publication-state.json",
+    "sha256": "2138ea6253757df25abeb7e192de42ab9e130037199e976240ed3322da699244",
+    "bytes": 1466
+  },
+  "final-evidence-identity-observation": {
+    "path": "end-of-evidence-review-identities.json",
+    "sha256": "267c7edd008ec532a3edcada0fa33330a0d967a2b35d0d5800565750b9307bf0",
+    "bytes": 57441
+  },
+  "authority-snapshot": {
+    "path": "end-of-evidence-review-authority.yaml",
+    "sha256": "5ce28dc586c25486baefc48e2fd95003b46822d73fbd1db15e56b63d0d24d5b8",
+    "bytes": 314562
+  },
+  "outer-exit-and-text-publication-approved": false,
+  "publication-status-at-evidence-close": "Original outer result absent; authority contained no text certifications. Close only after actual outer exit0 and eight authority text records equal unchanged observed index. Other obligation additions are expected and must not be treated as mutation of text records.",
+  "all48-or-final-delivery-approved": false,
+  "completion-criteria-marked": false,
+  "methods": {
+    "repository-mutated": false,
+    "project-code-checkers-tests-probes-certifier-staging-renderers-executed": false,
+    "independent-retained-PNG-decoding-and-comparison": true,
+    "writes": "this /tmp directory only"
+  },
+  "unresolved-Spec-findings": []
+}

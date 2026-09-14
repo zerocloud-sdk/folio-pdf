@@ -1,0 +1,18 @@
+test_redirected_pin_cannot_substitute_the_observed_pdf (scripts.tests.test_t13_qpdf_identity.T13QpdfIdentityTest.test_redirected_pin_cannot_substitute_the_observed_pdf) ... ok
+test_shared_library_identity_is_required_even_when_observations_are_unchanged (scripts.tests.test_t13_qpdf_identity.T13QpdfIdentityTest.test_shared_library_identity_is_required_even_when_observations_are_unchanged) ... FAIL
+test_modified_tool_wrapper_cannot_turn_a_changed_pdf_into_a_passing_graph (scripts.tests.test_t13_semantics.T13SemanticsTest.test_modified_tool_wrapper_cannot_turn_a_changed_pdf_into_a_passing_graph) ... ok
+test_original_graphs_and_reserialization_pass_but_changed_stream_and_relationship_fail (scripts.tests.test_t13_semantics.T13SemanticsTest.test_original_graphs_and_reserialization_pass_but_changed_stream_and_relationship_fail) ... ok
+test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms) ... ok
+
+======================================================================
+FAIL: test_shared_library_identity_is_required_even_when_observations_are_unchanged (scripts.tests.test_t13_qpdf_identity.T13QpdfIdentityTest.test_shared_library_identity_is_required_even_when_observations_are_unchanged)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_qpdf_identity.py", line 34, in test_shared_library_identity_is_required_even_when_observations_are_unchanged
+    self.assertLess(load_end, len(data) - 1)
+AssertionError: 4501080 not less than 4501079
+
+----------------------------------------------------------------------
+Ran 5 tests in 5.626s
+
+FAILED (failures=1)

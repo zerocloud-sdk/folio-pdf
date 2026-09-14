@@ -29,6 +29,22 @@ capabilities/evidence/T72-standards-qualification/**/*.txt -text whitespace=-bla
 capabilities/evidence/T72-source-visual-qualification/*.txt -text whitespace=-blank-at-eol,-blank-at-eof
 capabilities/evidence/foundation/T72-*/**/*.txt -text whitespace=-blank-at-eol,-blank-at-eof
 
+# Preserve exact T75 qualification, certification, and development output.
+capabilities/evidence/T75-*/**/*.txt -text whitespace=-blank-at-eol,-blank-at-eof
+capabilities/evidence/T75-*/**/*.log -text whitespace=-blank-at-eol,-blank-at-eof
+
+# Preserve the pinned T13 patch's diff context and tab-separated model fields.
+build-tools/acceptance/arlington/t13-r1.patch -text whitespace=-blank-at-eol
+
+# Preserve the original standards reference fetched for the null interpretation.
+capabilities/evidence/T75-delivery/standards-r11/null-interpretation-review/clause14.html -text whitespace=-blank-at-eol,-blank-at-eof
+
+# These extraction values intentionally end with a mapped U+0020 character.
+capabilities/profiles/T13-text/corpus.properties -text whitespace=-blank-at-eol
+capabilities/evidence/T75-foundation-20260914-r4/text/*/observations/*-uncertain-geometry/*.properties -text whitespace=-blank-at-eol
+capabilities/evidence/T75-foundation-20260914-r4/text/*/observations/*-uncertain-geometry/semantic/observation.properties -text whitespace=-blank-at-eol
+capabilities/evidence/T75-foundation-20260914-r4/text/*/observations/negative/semantic/positive-uncertain-geometry/observation.properties -text whitespace=-blank-at-eol
+
 *.sh text eol=lf
 mvnw text eol=lf
 *.cmd text eol=crlf

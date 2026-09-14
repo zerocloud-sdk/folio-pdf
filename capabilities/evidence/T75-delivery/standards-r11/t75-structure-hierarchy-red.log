@@ -1,0 +1,272 @@
+test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks) ... 
+  test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks) (source='embedded-font-inheritance.pdf') ... FAIL
+  test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks) (source='embedded-font-kinds.pdf') ... FAIL
+  test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks) (source='marked-structure.pdf') ... FAIL
+  test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks) (source='nested-split-type3.pdf') ... FAIL
+  test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks) (source='uncertain-geometry.pdf') ... FAIL
+  test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks) (hierarchy='root-type') ... FAIL
+  test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks) (hierarchy='root-content-child') ... FAIL
+  test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks) (hierarchy='root-null-child') ... FAIL
+  test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks) (hierarchy='root-absent-children') ... FAIL
+  test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks) (hierarchy='element-root-backlink') ... FAIL
+  test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks) (hierarchy='element-child-backlink') ... FAIL
+  test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks) (hierarchy='element-cycle') ... FAIL
+  test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks) (hierarchy='element-unknown-kind') ... FAIL
+  test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks) (hierarchy='element-optional-type') ... FAIL
+  test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks) (hierarchy='element-missing-role') ... FAIL
+  test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks) (hierarchy='element-numeric-role') ... FAIL
+  test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks) (hierarchy='element-null-children') ... FAIL
+  test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks) (hierarchy='element-numeric-children') ... FAIL
+test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks) ... FAIL
+
+======================================================================
+FAIL: test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks) (source='embedded-font-inheritance.pdf')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 44, in test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks
+    self.observe(directory, 'source-' + path.stem, path.read_bytes(), 'pass')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 23, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'pass' != 'indeterminate'
+- pass
++ indeterminate
+ : source-embedded-font-inheritance: Unknown program qualification scope
+
+======================================================================
+FAIL: test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks) (source='embedded-font-kinds.pdf')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 44, in test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks
+    self.observe(directory, 'source-' + path.stem, path.read_bytes(), 'pass')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 23, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'pass' != 'indeterminate'
+- pass
++ indeterminate
+ : source-embedded-font-kinds: Unknown program qualification scope
+
+======================================================================
+FAIL: test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks) (source='marked-structure.pdf')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 44, in test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks
+    self.observe(directory, 'source-' + path.stem, path.read_bytes(), 'pass')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 23, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'pass' != 'indeterminate'
+- pass
++ indeterminate
+ : source-marked-structure: Unknown program qualification scope
+
+======================================================================
+FAIL: test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks) (source='nested-split-type3.pdf')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 44, in test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks
+    self.observe(directory, 'source-' + path.stem, path.read_bytes(), 'pass')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 23, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'pass' != 'indeterminate'
+- pass
++ indeterminate
+ : source-nested-split-type3: Unknown program qualification scope
+
+======================================================================
+FAIL: test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks) (source='uncertain-geometry.pdf')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 44, in test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks
+    self.observe(directory, 'source-' + path.stem, path.read_bytes(), 'pass')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 23, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'pass' != 'indeterminate'
+- pass
++ indeterminate
+ : source-uncertain-geometry: Unknown program qualification scope
+
+======================================================================
+FAIL: test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks) (hierarchy='root-type')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 60, in test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks
+    self.observe(directory, name, self.change(original, number, before, after), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 23, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'indeterminate'
+- fail
++ indeterminate
+ : root-type: Unknown program qualification scope
+
+======================================================================
+FAIL: test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks) (hierarchy='root-content-child')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 60, in test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks
+    self.observe(directory, name, self.change(original, number, before, after), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 23, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'indeterminate'
+- fail
++ indeterminate
+ : root-content-child: Unknown program qualification scope
+
+======================================================================
+FAIL: test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks) (hierarchy='root-null-child')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 60, in test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks
+    self.observe(directory, name, self.change(original, number, before, after), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 23, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'indeterminate'
+- fail
++ indeterminate
+ : root-null-child: Unknown program qualification scope
+
+======================================================================
+FAIL: test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks) (hierarchy='root-absent-children')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 60, in test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks
+    self.observe(directory, name, self.change(original, number, before, after), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 23, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'pass' != 'indeterminate'
+- pass
++ indeterminate
+ : root-absent-children: Unknown program qualification scope
+
+======================================================================
+FAIL: test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks) (hierarchy='element-root-backlink')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 60, in test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks
+    self.observe(directory, name, self.change(original, number, before, after), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 23, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'indeterminate'
+- fail
++ indeterminate
+ : element-root-backlink: Unknown program qualification scope
+
+======================================================================
+FAIL: test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks) (hierarchy='element-child-backlink')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 60, in test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks
+    self.observe(directory, name, self.change(original, number, before, after), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 23, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'indeterminate'
+- fail
++ indeterminate
+ : element-child-backlink: Unknown program qualification scope
+
+======================================================================
+FAIL: test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks) (hierarchy='element-cycle')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 60, in test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks
+    self.observe(directory, name, self.change(original, number, before, after), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 23, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'indeterminate'
+- fail
++ indeterminate
+ : element-cycle: Unknown program qualification scope
+
+======================================================================
+FAIL: test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks) (hierarchy='element-unknown-kind')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 60, in test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks
+    self.observe(directory, name, self.change(original, number, before, after), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 23, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'indeterminate'
+- fail
++ indeterminate
+ : element-unknown-kind: Unknown program qualification scope
+
+======================================================================
+FAIL: test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks) (hierarchy='element-optional-type')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 60, in test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks
+    self.observe(directory, name, self.change(original, number, before, after), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 23, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'pass' != 'indeterminate'
+- pass
++ indeterminate
+ : element-optional-type: Unknown program qualification scope
+
+======================================================================
+FAIL: test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks) (hierarchy='element-missing-role')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 60, in test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks
+    self.observe(directory, name, self.change(original, number, before, after), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 23, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'indeterminate'
+- fail
++ indeterminate
+ : element-missing-role: Unknown program qualification scope
+
+======================================================================
+FAIL: test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks) (hierarchy='element-numeric-role')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 60, in test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks
+    self.observe(directory, name, self.change(original, number, before, after), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 23, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'indeterminate'
+- fail
++ indeterminate
+ : element-numeric-role: Unknown program qualification scope
+
+======================================================================
+FAIL: test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks) (hierarchy='element-null-children')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 60, in test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks
+    self.observe(directory, name, self.change(original, number, before, after), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 23, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'indeterminate'
+- fail
++ indeterminate
+ : element-null-children: Unknown program qualification scope
+
+======================================================================
+FAIL: test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks) (hierarchy='element-numeric-children')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 60, in test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks
+    self.observe(directory, name, self.change(original, number, before, after), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 23, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'indeterminate'
+- fail
++ indeterminate
+ : element-numeric-children: Unknown program qualification scope
+
+======================================================================
+FAIL: test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 63, in test_structure_hierarchy_has_typed_children_unique_elements_and_matching_parent_backlinks
+    self.observe(directory, 'shared-child', self.change(original, 10, children, b'/K [11 0 R 11 0 R]'),
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 23, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'indeterminate'
+- fail
++ indeterminate
+ : shared-child: Unknown program qualification scope
+
+----------------------------------------------------------------------
+Ran 1 test in 4.323s
+
+FAILED (failures=19)

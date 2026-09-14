@@ -1,0 +1,48 @@
+test_structure_root_and_parent_edges_preserve_required_indirect_identity (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_root_and_parent_edges_preserve_required_indirect_identity) ... 
+  test_structure_root_and_parent_edges_preserve_required_indirect_identity (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_root_and_parent_edges_preserve_required_indirect_identity) (identity='pdf2-direct-root') ... FAIL
+  test_structure_root_and_parent_edges_preserve_required_indirect_identity (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_root_and_parent_edges_preserve_required_indirect_identity) (identity='catalog-overrides-header') ... FAIL
+  test_structure_root_and_parent_edges_preserve_required_indirect_identity (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_root_and_parent_edges_preserve_required_indirect_identity) (identity='legacy-parent-value-copy') ... FAIL
+
+======================================================================
+FAIL: test_structure_root_and_parent_edges_preserve_required_indirect_identity (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_root_and_parent_edges_preserve_required_indirect_identity) (identity='pdf2-direct-root')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 36, in test_structure_root_and_parent_edges_preserve_required_indirect_identity
+    self.observe(directory, name, data, expected, 'structure-hierarchy' if expected == 'fail' else None)
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 265, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : pdf2-direct-root: The qualified structure hierarchy has valid child kinds and unique matching parent relationships.
+
+======================================================================
+FAIL: test_structure_root_and_parent_edges_preserve_required_indirect_identity (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_root_and_parent_edges_preserve_required_indirect_identity) (identity='catalog-overrides-header')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 36, in test_structure_root_and_parent_edges_preserve_required_indirect_identity
+    self.observe(directory, name, data, expected, 'structure-hierarchy' if expected == 'fail' else None)
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 265, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : catalog-overrides-header: The qualified structure hierarchy has valid child kinds and unique matching parent relationships.
+
+======================================================================
+FAIL: test_structure_root_and_parent_edges_preserve_required_indirect_identity (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_root_and_parent_edges_preserve_required_indirect_identity) (identity='legacy-parent-value-copy')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 36, in test_structure_root_and_parent_edges_preserve_required_indirect_identity
+    self.observe(directory, name, data, expected, 'structure-hierarchy' if expected == 'fail' else None)
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 265, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : legacy-parent-value-copy: The qualified structure hierarchy has valid child kinds and unique matching parent relationships.
+
+----------------------------------------------------------------------
+Ran 1 test in 1.652s
+
+FAILED (failures=3)

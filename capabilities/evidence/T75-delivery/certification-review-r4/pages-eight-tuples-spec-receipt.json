@@ -1,0 +1,1053 @@
+{
+  "reviewer": "/root/final_spec",
+  "axis": "Spec",
+  "sealed-utc": "2026-09-13T21:27:46.067045+00:00",
+  "scope": "Only r4 pages/T10 eight complete raw tuples and own observed-index, no actual outer exit/publication conclusion",
+  "baseline": "5b1603c435f11c40368f75b7b9a2777c9c5e9761",
+  "candidate": "ab18cc9c0473730a6aabec5d12e3172f22bea23a0a0f9529052a2bc186cbfc1b",
+  "contract": "3de508f79fcbef7258feee8abc013d6f02b000840cac1cb263cb0d6f927b8f2b",
+  "findings": [],
+  "report": {
+    "path": "report.md",
+    "sha256": "b5b10b3604ebb0f5ccf58249b61ac1dd121c966dac471dad5c2a32a5e3e452bf",
+    "words": 283
+  },
+  "current-stage-input-counts": {
+    "sources": 1933,
+    "contracts": 30,
+    "artifacts": 23,
+    "harness": 24
+  },
+  "current-stage-environment": {
+    "inspection": "stage-environment-contract-all-eight-inspection.json",
+    "sha256": "53b7350a27a8aeab0d596a8d6a091e14a05d9daf22a8e247c9b9dc720ff17b59",
+    "matches-r4-host-and-four-JDK": true,
+    "all-four-BEFORE-AFTER-equal": true,
+    "actual-tool-identities": 15
+  },
+  "actual-formal-suites": [
+    {
+      "tuple": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-in_process",
+      "contract-tests-sha256": "f36766c0a10c049e971f4cb621a986f5e04f0e272fdae911b576bc897172ade1",
+      "tests": 65,
+      "time-seconds": 4.419,
+      "execution-configuration-sha256": "5debf08056e3af680ea07a86e07453ebc57113f688c5cc72fa8a74488b714e62",
+      "configuration-inputs": 190,
+      "actual-native-mode": "IN_PROCESS",
+      "actual-facade-mode": "IN_PROCESS",
+      "staged-classpath-paths": [
+        "target/foundation-0.1.0/artifacts/pdf-conversion-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-document-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-migration-itext7-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-provider-contract-0.1.0.jar",
+        "target/foundation-0.1.0/harness/acceptance.jar",
+        "target/foundation-0.1.0/harness/facade-tests.jar",
+        "target/foundation-0.1.0/harness/lib/common-image-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/common-io-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/common-lang-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/commons-logging-1.4.0.jar",
+        "target/foundation-0.1.0/harness/lib/core-3.5.3.jar",
+        "target/foundation-0.1.0/harness/lib/fontbox-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/hamcrest-core-1.3.jar",
+        "target/foundation-0.1.0/harness/lib/icu4j-77.1.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-core-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-metadata-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-tiff-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/junit-4.13.2.jar",
+        "target/foundation-0.1.0/harness/lib/okapibarcode-0.5.6.jar",
+        "target/foundation-0.1.0/harness/lib/pdfbox-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/pdfbox-io-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/snakeyaml-2.2.jar",
+        "target/foundation-0.1.0/harness/native-tests.jar"
+      ]
+    },
+    {
+      "tuple": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-hardened_worker",
+      "contract-tests-sha256": "0d97b245f60a027e99030aefc0fb2d81823cde81d6dc5258eaee4d7c7ed2b18a",
+      "tests": 65,
+      "time-seconds": 129.378,
+      "execution-configuration-sha256": "5d74cd788083d765fba2280aab34af531703f4a2aa01b37393ada1a3d7b148ba",
+      "configuration-inputs": 190,
+      "actual-native-mode": "HARDENED_WORKER",
+      "actual-facade-mode": "IN_PROCESS",
+      "staged-classpath-paths": [
+        "target/foundation-0.1.0/artifacts/pdf-conversion-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-document-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-migration-itext7-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-provider-contract-0.1.0.jar",
+        "target/foundation-0.1.0/harness/acceptance.jar",
+        "target/foundation-0.1.0/harness/facade-tests.jar",
+        "target/foundation-0.1.0/harness/lib/common-image-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/common-io-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/common-lang-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/commons-logging-1.4.0.jar",
+        "target/foundation-0.1.0/harness/lib/core-3.5.3.jar",
+        "target/foundation-0.1.0/harness/lib/fontbox-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/hamcrest-core-1.3.jar",
+        "target/foundation-0.1.0/harness/lib/icu4j-77.1.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-core-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-metadata-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-tiff-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/junit-4.13.2.jar",
+        "target/foundation-0.1.0/harness/lib/okapibarcode-0.5.6.jar",
+        "target/foundation-0.1.0/harness/lib/pdfbox-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/pdfbox-io-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/snakeyaml-2.2.jar",
+        "target/foundation-0.1.0/harness/native-tests.jar"
+      ]
+    },
+    {
+      "tuple": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-in_process",
+      "contract-tests-sha256": "b47cfe0f2c79f07765324ceae92ef7220dee8bde01e8a1a34d900f3131670769",
+      "tests": 65,
+      "time-seconds": 4.638,
+      "execution-configuration-sha256": "de95bca04982a4c35d9b9ca50442b54506f5a974a51a2b5e00b47138d4729dfd",
+      "configuration-inputs": 190,
+      "actual-native-mode": "IN_PROCESS",
+      "actual-facade-mode": "IN_PROCESS",
+      "staged-classpath-paths": [
+        "target/foundation-0.1.0/artifacts/pdf-conversion-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-document-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-migration-itext7-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-provider-contract-0.1.0.jar",
+        "target/foundation-0.1.0/harness/acceptance.jar",
+        "target/foundation-0.1.0/harness/facade-tests.jar",
+        "target/foundation-0.1.0/harness/lib/common-image-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/common-io-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/common-lang-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/commons-logging-1.4.0.jar",
+        "target/foundation-0.1.0/harness/lib/core-3.5.3.jar",
+        "target/foundation-0.1.0/harness/lib/fontbox-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/hamcrest-core-1.3.jar",
+        "target/foundation-0.1.0/harness/lib/icu4j-77.1.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-core-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-metadata-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-tiff-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/junit-4.13.2.jar",
+        "target/foundation-0.1.0/harness/lib/okapibarcode-0.5.6.jar",
+        "target/foundation-0.1.0/harness/lib/pdfbox-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/pdfbox-io-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/snakeyaml-2.2.jar",
+        "target/foundation-0.1.0/harness/native-tests.jar"
+      ]
+    },
+    {
+      "tuple": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-hardened_worker",
+      "contract-tests-sha256": "169b4959326cc1544e48af8ab546c631bbbec1f6a0f37def9b19417a4a248211",
+      "tests": 65,
+      "time-seconds": 116.632,
+      "execution-configuration-sha256": "5d1a5530224b1844b2bc521c6ff1ffa1604d6ac7ce4904b13baf51c159b82267",
+      "configuration-inputs": 190,
+      "actual-native-mode": "HARDENED_WORKER",
+      "actual-facade-mode": "IN_PROCESS",
+      "staged-classpath-paths": [
+        "target/foundation-0.1.0/artifacts/pdf-conversion-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-document-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-migration-itext7-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-provider-contract-0.1.0.jar",
+        "target/foundation-0.1.0/harness/acceptance.jar",
+        "target/foundation-0.1.0/harness/facade-tests.jar",
+        "target/foundation-0.1.0/harness/lib/common-image-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/common-io-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/common-lang-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/commons-logging-1.4.0.jar",
+        "target/foundation-0.1.0/harness/lib/core-3.5.3.jar",
+        "target/foundation-0.1.0/harness/lib/fontbox-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/hamcrest-core-1.3.jar",
+        "target/foundation-0.1.0/harness/lib/icu4j-77.1.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-core-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-metadata-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-tiff-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/junit-4.13.2.jar",
+        "target/foundation-0.1.0/harness/lib/okapibarcode-0.5.6.jar",
+        "target/foundation-0.1.0/harness/lib/pdfbox-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/pdfbox-io-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/snakeyaml-2.2.jar",
+        "target/foundation-0.1.0/harness/native-tests.jar"
+      ]
+    },
+    {
+      "tuple": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-in_process",
+      "contract-tests-sha256": "97c11c892497f39ef2964056488850497a85618561a44c1960fda21608fecb30",
+      "tests": 65,
+      "time-seconds": 3.736,
+      "execution-configuration-sha256": "6cb7852857600e362fd505b1941b58237f36991e0fe61866f87faf842239af3e",
+      "configuration-inputs": 190,
+      "actual-native-mode": "IN_PROCESS",
+      "actual-facade-mode": "IN_PROCESS",
+      "staged-classpath-paths": [
+        "target/foundation-0.1.0/artifacts/pdf-conversion-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-document-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-migration-itext7-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-provider-contract-0.1.0.jar",
+        "target/foundation-0.1.0/harness/acceptance.jar",
+        "target/foundation-0.1.0/harness/facade-tests.jar",
+        "target/foundation-0.1.0/harness/lib/common-image-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/common-io-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/common-lang-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/commons-logging-1.4.0.jar",
+        "target/foundation-0.1.0/harness/lib/core-3.5.3.jar",
+        "target/foundation-0.1.0/harness/lib/fontbox-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/hamcrest-core-1.3.jar",
+        "target/foundation-0.1.0/harness/lib/icu4j-77.1.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-core-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-metadata-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-tiff-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/junit-4.13.2.jar",
+        "target/foundation-0.1.0/harness/lib/okapibarcode-0.5.6.jar",
+        "target/foundation-0.1.0/harness/lib/pdfbox-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/pdfbox-io-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/snakeyaml-2.2.jar",
+        "target/foundation-0.1.0/harness/native-tests.jar"
+      ]
+    },
+    {
+      "tuple": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-hardened_worker",
+      "contract-tests-sha256": "8f432c1a64b531b35942a071a3d4b263c57c9806bd9cfbfc29db8cd25708d2c6",
+      "tests": 65,
+      "time-seconds": 105.376,
+      "execution-configuration-sha256": "3c14305b78d449f602b17b537870156fc7cf1f9e542132ce431ba4658e74011a",
+      "configuration-inputs": 190,
+      "actual-native-mode": "HARDENED_WORKER",
+      "actual-facade-mode": "IN_PROCESS",
+      "staged-classpath-paths": [
+        "target/foundation-0.1.0/artifacts/pdf-conversion-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-document-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-migration-itext7-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-provider-contract-0.1.0.jar",
+        "target/foundation-0.1.0/harness/acceptance.jar",
+        "target/foundation-0.1.0/harness/facade-tests.jar",
+        "target/foundation-0.1.0/harness/lib/common-image-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/common-io-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/common-lang-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/commons-logging-1.4.0.jar",
+        "target/foundation-0.1.0/harness/lib/core-3.5.3.jar",
+        "target/foundation-0.1.0/harness/lib/fontbox-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/hamcrest-core-1.3.jar",
+        "target/foundation-0.1.0/harness/lib/icu4j-77.1.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-core-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-metadata-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-tiff-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/junit-4.13.2.jar",
+        "target/foundation-0.1.0/harness/lib/okapibarcode-0.5.6.jar",
+        "target/foundation-0.1.0/harness/lib/pdfbox-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/pdfbox-io-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/snakeyaml-2.2.jar",
+        "target/foundation-0.1.0/harness/native-tests.jar"
+      ]
+    },
+    {
+      "tuple": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-in_process",
+      "contract-tests-sha256": "51ff97c1038be23ef5e412708bae0a89a1ec30e9c115f7af44c75c8970e335e1",
+      "tests": 65,
+      "time-seconds": 4.048,
+      "execution-configuration-sha256": "44a0601da2ba432663d649709bf58c79e9bd652b2f9924da1351121f46462942",
+      "configuration-inputs": 190,
+      "actual-native-mode": "IN_PROCESS",
+      "actual-facade-mode": "IN_PROCESS",
+      "staged-classpath-paths": [
+        "target/foundation-0.1.0/artifacts/pdf-conversion-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-document-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-migration-itext7-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-provider-contract-0.1.0.jar",
+        "target/foundation-0.1.0/harness/acceptance.jar",
+        "target/foundation-0.1.0/harness/facade-tests.jar",
+        "target/foundation-0.1.0/harness/lib/common-image-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/common-io-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/common-lang-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/commons-logging-1.4.0.jar",
+        "target/foundation-0.1.0/harness/lib/core-3.5.3.jar",
+        "target/foundation-0.1.0/harness/lib/fontbox-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/hamcrest-core-1.3.jar",
+        "target/foundation-0.1.0/harness/lib/icu4j-77.1.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-core-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-metadata-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-tiff-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/junit-4.13.2.jar",
+        "target/foundation-0.1.0/harness/lib/okapibarcode-0.5.6.jar",
+        "target/foundation-0.1.0/harness/lib/pdfbox-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/pdfbox-io-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/snakeyaml-2.2.jar",
+        "target/foundation-0.1.0/harness/native-tests.jar"
+      ]
+    },
+    {
+      "tuple": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-hardened_worker",
+      "contract-tests-sha256": "4efe10a45d08447f1c349868ab36110a7487529cfc2a34c142993f740f1fb4a8",
+      "tests": 65,
+      "time-seconds": 112.384,
+      "execution-configuration-sha256": "f31befac55bee330b5df30ee37d54789d90e7d75eaa2e447e154be01d26fd79d",
+      "configuration-inputs": 190,
+      "actual-native-mode": "HARDENED_WORKER",
+      "actual-facade-mode": "IN_PROCESS",
+      "staged-classpath-paths": [
+        "target/foundation-0.1.0/artifacts/pdf-conversion-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-document-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-migration-itext7-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-provider-contract-0.1.0.jar",
+        "target/foundation-0.1.0/harness/acceptance.jar",
+        "target/foundation-0.1.0/harness/facade-tests.jar",
+        "target/foundation-0.1.0/harness/lib/common-image-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/common-io-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/common-lang-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/commons-logging-1.4.0.jar",
+        "target/foundation-0.1.0/harness/lib/core-3.5.3.jar",
+        "target/foundation-0.1.0/harness/lib/fontbox-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/hamcrest-core-1.3.jar",
+        "target/foundation-0.1.0/harness/lib/icu4j-77.1.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-core-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-metadata-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-tiff-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/junit-4.13.2.jar",
+        "target/foundation-0.1.0/harness/lib/okapibarcode-0.5.6.jar",
+        "target/foundation-0.1.0/harness/lib/pdfbox-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/pdfbox-io-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/snakeyaml-2.2.jar",
+        "target/foundation-0.1.0/harness/native-tests.jar"
+      ]
+    }
+  ],
+  "actual-Facade-mode": "IN_PROCESS",
+  "exact-configurations": 8,
+  "exact-records": 32,
+  "own-index-sha256": "287d0e623cd5f11d54731e7307e1f55693c8075c046de9b677c925f4e49337d3",
+  "complete-original-raw-files": 13513,
+  "complete-tuple-files": 13424,
+  "per-tuple-file-and-reference-counts": [
+    {
+      "tuple": "jdk8-in_process",
+      "physical-files": 1678,
+      "observation-files": 1666,
+      "original-manifests": 0,
+      "reports": [
+        {
+          "chain": "syntax",
+          "record-sha256": "7993dc411ff12c30fd53d0a8608a643e8d507ff08b0df65a683473f6ffc9ca14",
+          "report-sha256": "19a1ec2c4d1a01e74934a2d7d7e42b46e016d7b2bde34b391e5f29d3c6e630f8",
+          "report-references": 45,
+          "counts": {
+            "products": 8,
+            "findings": 24,
+            "negative-controls": 2,
+            "environment-observations": 11
+          }
+        },
+        {
+          "chain": "standards",
+          "record-sha256": "2d49cc52a1b007114e1208f776cd39c323d0f2836c0c0f6ccf80c67dc28424c3",
+          "report-sha256": "8ce833945d3272c62bd8ea17855f1c2bff7e1002da1ea6a2b42e415a76e7c025",
+          "report-references": 1412,
+          "counts": {
+            "products": 8,
+            "findings": 48,
+            "negative-controls": 1345,
+            "environment-observations": 11
+          }
+        },
+        {
+          "chain": "semantic",
+          "record-sha256": "4920e5e4ed9f637b68b19f597762dfd8f464aa40acd07d36b61cd3eaf9127813",
+          "report-sha256": "36856f6ba7d273abe96aa4ef52e2ab92f78abc4bb24c95a7a90110bac2bf93e0",
+          "report-references": 39,
+          "counts": {
+            "products": 8,
+            "findings": 18,
+            "negative-controls": 2,
+            "environment-observations": 11
+          }
+        },
+        {
+          "chain": "visual",
+          "record-sha256": "a588d211990c23d3f0cc8bdd577b48d0928553fb1396bdeccf1b3563eb53bf66",
+          "report-sha256": "70eddfc4eff453b81b29d964cc1e60c46c443699f561aba1a1efc6b5a2fa08cb",
+          "report-references": 256,
+          "counts": {
+            "products": 8,
+            "findings": 226,
+            "negative-controls": 11,
+            "environment-observations": 11
+          }
+        }
+      ],
+      "report-reference-count": 1752,
+      "record-report-reference-occurrences": 3120
+    },
+    {
+      "tuple": "jdk8-hardened_worker",
+      "physical-files": 1678,
+      "observation-files": 1666,
+      "original-manifests": 0,
+      "reports": [
+        {
+          "chain": "syntax",
+          "record-sha256": "89fff7ce8cd72186fe984504843482f2fb6fd64dbc98fd0c5b14ecb7df4db448",
+          "report-sha256": "d3c935accb9c39e720795283c4641f00fc6adf3a35b1a5ed770a2d61695ec9b9",
+          "report-references": 45,
+          "counts": {
+            "products": 8,
+            "findings": 24,
+            "negative-controls": 2,
+            "environment-observations": 11
+          }
+        },
+        {
+          "chain": "standards",
+          "record-sha256": "7eccd71d2532db4410d917502f1de7ceea941779f04d080d9cf8b29f83c81013",
+          "report-sha256": "82ef72310d5269c8e510898eb4501d2426fb85d5a6e705fde32bf094de82a0bf",
+          "report-references": 1412,
+          "counts": {
+            "products": 8,
+            "findings": 48,
+            "negative-controls": 1345,
+            "environment-observations": 11
+          }
+        },
+        {
+          "chain": "semantic",
+          "record-sha256": "4fbea357df1932733524a93ccffbe18058ef13285a44911f62496227b9b4ddb3",
+          "report-sha256": "226816912097bf589ab56bb7a3f011ce954437d5167cc71c8c1e5273bf0bb20d",
+          "report-references": 39,
+          "counts": {
+            "products": 8,
+            "findings": 18,
+            "negative-controls": 2,
+            "environment-observations": 11
+          }
+        },
+        {
+          "chain": "visual",
+          "record-sha256": "1be68f06893dde20718bd4985488b39780e8bcd150b431696c462f58e0d57404",
+          "report-sha256": "a73636087f98d9152c1565e74318790c0374d83070d28db305436b95bafb2738",
+          "report-references": 256,
+          "counts": {
+            "products": 8,
+            "findings": 226,
+            "negative-controls": 11,
+            "environment-observations": 11
+          }
+        }
+      ],
+      "report-reference-count": 1752,
+      "record-report-reference-occurrences": 3120
+    },
+    {
+      "tuple": "jdk11-in_process",
+      "physical-files": 1678,
+      "observation-files": 1666,
+      "original-manifests": 0,
+      "reports": [
+        {
+          "chain": "syntax",
+          "record-sha256": "cfca42c5ed6adc94075aa60d224c2c893707f714e54d31b60cc0530e26d7ad5f",
+          "report-sha256": "b1ff5e7839e5c3189305150a8fd66b809a3419b52e97895bdbfe6ad328257e92",
+          "report-references": 45,
+          "counts": {
+            "products": 8,
+            "findings": 24,
+            "negative-controls": 2,
+            "environment-observations": 11
+          }
+        },
+        {
+          "chain": "standards",
+          "record-sha256": "75a2b846b23c3cffeb114a3b4c602f7d23c9c24b1c37aeb9dc1748cd3e13954c",
+          "report-sha256": "8045b78353fd5535c882f62c39a595125137976b6011a3d77906824bce2539aa",
+          "report-references": 1412,
+          "counts": {
+            "products": 8,
+            "findings": 48,
+            "negative-controls": 1345,
+            "environment-observations": 11
+          }
+        },
+        {
+          "chain": "semantic",
+          "record-sha256": "d50bbd504b1fe23f52273e0f9d07cd3f5cbf734fdf3a7f80f57bcbe96d482a8d",
+          "report-sha256": "a6a1d8481d06473ca7e08ca72f3243467ec4fdab06655cab75b6f760183e452e",
+          "report-references": 39,
+          "counts": {
+            "products": 8,
+            "findings": 18,
+            "negative-controls": 2,
+            "environment-observations": 11
+          }
+        },
+        {
+          "chain": "visual",
+          "record-sha256": "25e7928af8326c5095d84c58051c61bee854aaf0acffc14d026e7ea86a2aa4d5",
+          "report-sha256": "17305cfe1d383b02b66016b4b44e34a2977f1dff5ac6249251ddde4c70341adb",
+          "report-references": 256,
+          "counts": {
+            "products": 8,
+            "findings": 226,
+            "negative-controls": 11,
+            "environment-observations": 11
+          }
+        }
+      ],
+      "report-reference-count": 1752,
+      "record-report-reference-occurrences": 3120
+    },
+    {
+      "tuple": "jdk11-hardened_worker",
+      "physical-files": 1678,
+      "observation-files": 1666,
+      "original-manifests": 0,
+      "reports": [
+        {
+          "chain": "syntax",
+          "record-sha256": "30a89dc9cef1cd0d5f996c8bc1b8ea0469b9e04a9fbc01b6ddbe8fb8be64dddd",
+          "report-sha256": "ff3b61a39decffff2104d9c3ac87a9663df7dc0a63f025f79dcea35d77c5aaa4",
+          "report-references": 45,
+          "counts": {
+            "products": 8,
+            "findings": 24,
+            "negative-controls": 2,
+            "environment-observations": 11
+          }
+        },
+        {
+          "chain": "standards",
+          "record-sha256": "3be4b01d2c6e539540089201f5aba7e6bf29a26d839ba2e6117bbd41dd168ad7",
+          "report-sha256": "04ca38877870684fc9a999b924d9b71dcfe626ac4214b432cd36f1127588e44c",
+          "report-references": 1412,
+          "counts": {
+            "products": 8,
+            "findings": 48,
+            "negative-controls": 1345,
+            "environment-observations": 11
+          }
+        },
+        {
+          "chain": "semantic",
+          "record-sha256": "1b3401a075ead23566f573f73b597cd8350b5d923dae7ab51f989376e156415b",
+          "report-sha256": "e99b4591b94da340bcaccbc6c3a3e71d24271ba4c7b902f37456d8193971cde1",
+          "report-references": 39,
+          "counts": {
+            "products": 8,
+            "findings": 18,
+            "negative-controls": 2,
+            "environment-observations": 11
+          }
+        },
+        {
+          "chain": "visual",
+          "record-sha256": "3b84a5204837859bd4546909dd4481c6448b20dd57c2ba2d702d10e112c5e068",
+          "report-sha256": "8156546f8815c9203932e69360344b5be4b2360ddb63e7858f50b9262d26d016",
+          "report-references": 256,
+          "counts": {
+            "products": 8,
+            "findings": 226,
+            "negative-controls": 11,
+            "environment-observations": 11
+          }
+        }
+      ],
+      "report-reference-count": 1752,
+      "record-report-reference-occurrences": 3120
+    },
+    {
+      "tuple": "jdk17-in_process",
+      "physical-files": 1678,
+      "observation-files": 1666,
+      "original-manifests": 0,
+      "reports": [
+        {
+          "chain": "syntax",
+          "record-sha256": "2565c4c5681c7bf5e7aa98e95bf1257bec191b66072f8869ca0c149a9d818146",
+          "report-sha256": "ba6713a5b96e63298c2db6f192be3b4cf567fb32b3d89ebf92d1e62a632e846e",
+          "report-references": 45,
+          "counts": {
+            "products": 8,
+            "findings": 24,
+            "negative-controls": 2,
+            "environment-observations": 11
+          }
+        },
+        {
+          "chain": "standards",
+          "record-sha256": "10911627f379a03500d4dcd09b13b94cf48562cd6d4ed6821301fb4b6edbc9fb",
+          "report-sha256": "808b4a176fb18d25fe61fd2b71e8058ea27f6798870f28ad1f2bd635b17f305a",
+          "report-references": 1412,
+          "counts": {
+            "products": 8,
+            "findings": 48,
+            "negative-controls": 1345,
+            "environment-observations": 11
+          }
+        },
+        {
+          "chain": "semantic",
+          "record-sha256": "bc1c8f6f1bd30fde5c05a8e37f4649cdc2075244c89dc37800203f4fc58faa4f",
+          "report-sha256": "007349ee62b98236727a89bd64a95178d08e74f7a00453a2d3faec1da2460288",
+          "report-references": 39,
+          "counts": {
+            "products": 8,
+            "findings": 18,
+            "negative-controls": 2,
+            "environment-observations": 11
+          }
+        },
+        {
+          "chain": "visual",
+          "record-sha256": "34d190252ee0b292c9977bc0628e8db6b9cfddfe761eae6398c146a50f4754c7",
+          "report-sha256": "66f51e4bbdab1e9ca8743fd576656a530613babc8162cea8538dfaa8dbbd7177",
+          "report-references": 256,
+          "counts": {
+            "products": 8,
+            "findings": 226,
+            "negative-controls": 11,
+            "environment-observations": 11
+          }
+        }
+      ],
+      "report-reference-count": 1752,
+      "record-report-reference-occurrences": 3120
+    },
+    {
+      "tuple": "jdk17-hardened_worker",
+      "physical-files": 1678,
+      "observation-files": 1666,
+      "original-manifests": 0,
+      "reports": [
+        {
+          "chain": "syntax",
+          "record-sha256": "4d19ce1662f3c5e0526736f0feb06d011f3702f31020977c7cab1aef41d7ad66",
+          "report-sha256": "7b050cdb5414f0d4aa958a76069c7a922f092b225309ffb5dd68a061a21d1241",
+          "report-references": 45,
+          "counts": {
+            "products": 8,
+            "findings": 24,
+            "negative-controls": 2,
+            "environment-observations": 11
+          }
+        },
+        {
+          "chain": "standards",
+          "record-sha256": "c5d38245c6e0840d2a080b26148f0b159cb1519d50ecb7fb21de144dc011c03a",
+          "report-sha256": "962b6ec0db5f958a6a0b5482bf327c65e8a060f3cccc960d717f7a8950fff2a0",
+          "report-references": 1412,
+          "counts": {
+            "products": 8,
+            "findings": 48,
+            "negative-controls": 1345,
+            "environment-observations": 11
+          }
+        },
+        {
+          "chain": "semantic",
+          "record-sha256": "4b35fd4fde875928ecfc0eba455457307fec1b1c48fdfc1e8768cb42a7411db3",
+          "report-sha256": "59e2c3df381d13a67f20fd608100a3b11d55510e9faef98f5774ccb26c3ea218",
+          "report-references": 39,
+          "counts": {
+            "products": 8,
+            "findings": 18,
+            "negative-controls": 2,
+            "environment-observations": 11
+          }
+        },
+        {
+          "chain": "visual",
+          "record-sha256": "304efea49e0344b429ca6d864d4905868bea7639ac7f1a77bba5099751dc7346",
+          "report-sha256": "1bd44c4130675b534df192dc21e99dfaf6b8e87c3dd60ed33bc1166ae2cb84bc",
+          "report-references": 256,
+          "counts": {
+            "products": 8,
+            "findings": 226,
+            "negative-controls": 11,
+            "environment-observations": 11
+          }
+        }
+      ],
+      "report-reference-count": 1752,
+      "record-report-reference-occurrences": 3120
+    },
+    {
+      "tuple": "jdk21-in_process",
+      "physical-files": 1678,
+      "observation-files": 1666,
+      "original-manifests": 0,
+      "reports": [
+        {
+          "chain": "syntax",
+          "record-sha256": "d8092c95ab58d76138db0ac753851a34bf3345679ee9c352cc0bd59cada39639",
+          "report-sha256": "e7446343e2fcb25b9593e4bf93bf61c28e5b3791b436dcabd9583611bf3f5660",
+          "report-references": 45,
+          "counts": {
+            "products": 8,
+            "findings": 24,
+            "negative-controls": 2,
+            "environment-observations": 11
+          }
+        },
+        {
+          "chain": "standards",
+          "record-sha256": "cafa333a02c6d4d41c3496e5521cc16386ecba2c366012536d9454565d169134",
+          "report-sha256": "809d2458a7b056c8c0f69030492ffe179f5e6f05904ceb0061e353738c0d5fb8",
+          "report-references": 1412,
+          "counts": {
+            "products": 8,
+            "findings": 48,
+            "negative-controls": 1345,
+            "environment-observations": 11
+          }
+        },
+        {
+          "chain": "semantic",
+          "record-sha256": "9ff7030dcb232960177770dcc4503ebf447f06f5026202f3aee33a19c4f0472b",
+          "report-sha256": "5f7f245e5840b556374acc6838f64683f58f1b8ca811cf09f32763360fb7ec56",
+          "report-references": 39,
+          "counts": {
+            "products": 8,
+            "findings": 18,
+            "negative-controls": 2,
+            "environment-observations": 11
+          }
+        },
+        {
+          "chain": "visual",
+          "record-sha256": "95992c2e401d0944de3c783d6289f0629057576c24e8422eedd5aac1a69885b7",
+          "report-sha256": "5f193ccaa982c9f3bd87f3513f1ef9676bab5df697dc8a1c425b3a0620266cf1",
+          "report-references": 256,
+          "counts": {
+            "products": 8,
+            "findings": 226,
+            "negative-controls": 11,
+            "environment-observations": 11
+          }
+        }
+      ],
+      "report-reference-count": 1752,
+      "record-report-reference-occurrences": 3120
+    },
+    {
+      "tuple": "jdk21-hardened_worker",
+      "physical-files": 1678,
+      "observation-files": 1666,
+      "original-manifests": 0,
+      "reports": [
+        {
+          "chain": "syntax",
+          "record-sha256": "bbc90b527ea9fcf34988cf2abbe8776f296670a2e2c98c2f54d244d27924ea89",
+          "report-sha256": "1fb79c6887775cb40157451e211892cc77addbf62a89497767125eb39fb461b6",
+          "report-references": 45,
+          "counts": {
+            "products": 8,
+            "findings": 24,
+            "negative-controls": 2,
+            "environment-observations": 11
+          }
+        },
+        {
+          "chain": "standards",
+          "record-sha256": "90ce6159901dd047689157bbbf8e06f39adde27280cfe202211caf267d51af9f",
+          "report-sha256": "ae10765413ca722b50d991119ae47bbafa98e8a99f6ab6891fb2cfd785e5181e",
+          "report-references": 1412,
+          "counts": {
+            "products": 8,
+            "findings": 48,
+            "negative-controls": 1345,
+            "environment-observations": 11
+          }
+        },
+        {
+          "chain": "semantic",
+          "record-sha256": "034033cbd3eb9161338e238b295ee46b116d5cc4500ba0bf3ab9c1322410cfee",
+          "report-sha256": "87f2cb8cec959633af8e92aa20bf176b3157f216ffab882be8bee385405e98fd",
+          "report-references": 39,
+          "counts": {
+            "products": 8,
+            "findings": 18,
+            "negative-controls": 2,
+            "environment-observations": 11
+          }
+        },
+        {
+          "chain": "visual",
+          "record-sha256": "373ba0844dd6799fb48880cd58a3c02d1a53304b85205661b750430a44d415a4",
+          "report-sha256": "900cbee3b120c1199072505a94a4ab2c9606ed668af7498947a87181b422807b",
+          "report-references": 256,
+          "counts": {
+            "products": 8,
+            "findings": 226,
+            "negative-controls": 11,
+            "environment-observations": 11
+          }
+        }
+      ],
+      "report-reference-count": 1752,
+      "record-report-reference-occurrences": 3120
+    }
+  ],
+  "report-reference-count": 14016,
+  "record-and-report-reference-occurrences": 24960,
+  "qualified-rule-count": 84,
+  "rule-assignment-counts": {
+    "pdfcpu": 68,
+    "arlington": 16
+  },
+  "actual-illegal-controls": 5376,
+  "positive-public-products": 64,
+  "positive-page-visual-observations": 240,
+  "negative-PDF-visual-observations": 8,
+  "complete-RGB-input-observations": 759,
+  "declared-geometry-profile-edition-pairs": 30,
+  "complete-authored-corpus-properties": 317,
+  "original-T10-producer-manifests-required": false,
+  "ownership-boundary": "Invalid selections fail before mutation; successful split is terminal; receipts preserve declared target order. Failed publication remains ordered COMMITTED/FAILED/NOT_ATTEMPTED and can expose partial caller-stream output; no global rollback or atomic multi-target claim. Source/sibling isolation and caller ownership remain in the actual public suite.",
+  "artifact-scope-boundary": "Current actual JAR contracts cover 21 types/157 members. Historical mixed-classpath probe executes 20 classes in both orders; PdfTextExtractor initialization delegates to PdfDocument by previously closed source review. The historical 19/105 family boundary is not a current whole-JAR limit.",
+  "completed-components": [
+    {
+      "path": "initial-schema-inspection.json",
+      "sha256": "b82b5e1c823e0ce8cd16d89d7d07ebf06f7fa112d0c08dd5b07452ed0987365e"
+    },
+    {
+      "path": "reader-adaptation-inspection.json",
+      "sha256": "9a5ac13988d32e7b8ab2df6cc9c71d0e42d83913a2472a8c8559f516608fca1c"
+    },
+    {
+      "path": "stage-environment-contract-all-eight-inspection.json",
+      "sha256": "53b7350a27a8aeab0d596a8d6a091e14a05d9daf22a8e247c9b9dc720ff17b59"
+    },
+    {
+      "path": "pages-all-eight-evidence-inspection.json",
+      "sha256": "384003a45dc442295458ba233e26f9a066b0606fcc173ed2968073695fedf723"
+    },
+    {
+      "path": "complete-config-and-index-inspection.json",
+      "sha256": "719d94f7333dc46a550fad7e31fc92ec0e2fd3fdd7ce0427d4ac8fc28a9aaaa8"
+    },
+    {
+      "path": "complete-rgb-raster-inspection.json",
+      "sha256": "e2a5dfa4fa954b57e33f16f6aea2b71e3a2ca18561262ba735649fddd74c80c2"
+    },
+    {
+      "path": "source-contract-inspection.json",
+      "sha256": "e990da8fb59acb6a295a84923e61c8588084503e19af4acf59c24ff15e50d6d2"
+    },
+    {
+      "path": "context-discovery-inspection.json",
+      "sha256": "fc5a6547f92ecc4225e45e1766fb559988a4e685a171ae651bfff61a53973b3d"
+    },
+    {
+      "path": "prior-review-linkage-inspection.json",
+      "sha256": "7d1018b77f1aa4b2f993aee884da2533fdd4e359363c1cfce2ea92ee2b730b2a"
+    },
+    {
+      "path": "selected-original-retention-inspection.json",
+      "sha256": "74ff29e3a61c08b4f6bf3aaf0c65d240261c1807a0166f6cae4cda5f7382d0bd"
+    }
+  ],
+  "actual-completed-reader-results": [
+    {
+      "name": "inspect-schema",
+      "returncode": 0,
+      "command-sha256": "84cec245f9641a61678c258a7e8c73411e9deba239017621226c9ad897b1ecd8",
+      "result-sha256": "a3c0a5b6b2d3975697fc7afa85c71a1e9887c96554d84fa69813cb18f5ec652d",
+      "stdout-sha256": "4b7501eba13b0ae844287445616875a1e0dc0ba54bab875416533e854c38f5b9",
+      "stderr-sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "prepare-readers",
+      "returncode": 0,
+      "command-sha256": "6957554d1019e6dd51cfb871967dbd1613a9470ec87da3f66b5effb84b96b3b1",
+      "result-sha256": "bdf019eb0315a370a078eb3e0b9771a46cbd933891eeea364a95b1d2604f54b6",
+      "stdout-sha256": "eb33119e650627e3c4a4361b79dd1327a2968aebaa058279d2b2284b89355c1f",
+      "stderr-sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "stage-audit",
+      "returncode": 0,
+      "command-sha256": "fb7db655ec769e276ce866996bb0f9d8cd7b23ec6c63396482d0a5f442114e73",
+      "result-sha256": "71a77e96d4f9cb53d21f736e5957b7f6d1939a13476c40d764955a50712d6956",
+      "stdout-sha256": "81e41df8c76281d90d1b711fb8523bc2a8352aa63ac5e0b41ab8011c9fe4145c",
+      "stderr-sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "evidence-audit",
+      "returncode": 0,
+      "command-sha256": "12093af840012b94e358851498860847b116b38b0c5f193f63b37e7675b53d9d",
+      "result-sha256": "69fc8ef5a54f565192af611de760a205fea364118f69fb3c501d5dcab129979c",
+      "stdout-sha256": "e637ffdbd1df8524dec6b43e6b6dbbeda84c6890e86cc2ecb37c800a08545304",
+      "stderr-sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "complete-config-audit",
+      "returncode": 0,
+      "command-sha256": "e9645e666559e96e64f25e28e225bb622af3aabdd4bb4478184d228e8eaaa963",
+      "result-sha256": "41f04abacd0f11ab41d42fef8bfcc08394aa00feefa2eed5a5ca702d9be67022",
+      "stdout-sha256": "c747bcc99dcec5d82e7977c7c76322dd534fb62b29a0cd67989edc9c010d3103",
+      "stderr-sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "raster-audit",
+      "returncode": 0,
+      "command-sha256": "13e36cadfc67d92f44aa465a91ef6f129336159e95088d9ad45d058e438074c2",
+      "result-sha256": "b7ad4eb9c852c296bd3025b7cec416942f2b789e75ab338ac28d765cc286b5b2",
+      "stdout-sha256": "d021f16b4dc0a7779b3a5b7189d86c410d8b90f3613e4ba6d14fd2ba603adeeb",
+      "stderr-sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "source-contract-audit",
+      "returncode": 0,
+      "command-sha256": "4eb27f564b01bc294efa25f0c668198cfc7d7a6049965a57182d2a48b6e85460",
+      "result-sha256": "a218959eb1001d50af9da4909be95f774258d2c9c217decd0ac9ca75099a5484",
+      "stdout-sha256": "f92f7df647d0273fa5b721fdb3160768bb0e853d03109649d40765268281765f",
+      "stderr-sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "context-discovery",
+      "returncode": 0,
+      "command-sha256": "30876af4d5c40b1ea07018dc12f4939a94d2723afab8ea70decf41b5e7d4c82d",
+      "result-sha256": "fa4b1ef81303ae2d93d43ce0b5add8890a9243f3980a0f06fbf092ccc0394ae4",
+      "stdout-sha256": "8e17d5307e0d288e2e90d5184bd0b5e25221008ac0d16aaf6fdb725149d5b766",
+      "stderr-sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "prior-review-linkage",
+      "returncode": 0,
+      "command-sha256": "e70130767848eff1118e9114c08cb38df60af4cce07ae770c3d6c3d6466de603",
+      "result-sha256": "cf245e2f36bfb24caf1abef3eb600207d83cad6692051b656c910f06f5abdad8",
+      "stdout-sha256": "8d2127ab59ec5642284c8d5ac1bd8febdb0d6ee8431547844e08dde277d1aa85",
+      "stderr-sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "retain-originals",
+      "returncode": 0,
+      "command-sha256": "a5362c99d4ac4e0251941090d27d614140d7f63883dac18b6c6c7e160a730c76",
+      "result-sha256": "8f35354f7f504b9a55d8d0df42ae47e8810c9fc28fbb5c4917fb4a07f53adbe4",
+      "stdout-sha256": "78b2d007ca8a8fd21df967fa6940b271369f42af8c3ae16b49af249995aef875",
+      "stderr-sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "current-finalizer-envelope": "This reader is still executing while receipt is written; its wrapper retains the actual complete command/stdout/stderr/result before archive-manifest.json is sealed.",
+  "complete-inspected-input-catalog": {
+    "path": "complete-inspected-input-identities.json",
+    "sha256": "55a409317adeb38843b9b1ab03fba4ad2272b4ef79d3f4ecb383b772b64616c0",
+    "unique-files": 16540,
+    "all-rechecked-unchanged": true
+  },
+  "complete-current-raw-catalog": {
+    "path": "complete-current-raw-file-identities.json",
+    "sha256": "9c5518f3e9caf1f6a264fc9a6feaac544cc1d7346dabd01eab5b2fff4b9efe87",
+    "files": 13513
+  },
+  "complete-original-reference-catalog": {
+    "path": "original-report-reference-identities.json",
+    "sha256": "ba5d136bb3ade74ae8dd221d46c72710dc86715638c262d5866ac5f34a17809c"
+  },
+  "selected-original-copies": {
+    "catalog": "selected-current-original-copy-identities.json",
+    "sha256": "66e32bb0d35d930eb5b60ec899918137c17be58a9873654baa0c3e7cef05fb9d",
+    "count": 985,
+    "bytes": 10401953,
+    "whole-raw-tree-copied": false
+  },
+  "prior-closed-review-lineage": {
+    "scope": "Already closed text/transactions/values publication identity linkage only; no prior raw replay or current pages publication assertion",
+    "candidate": "ab18cc9c0473730a6aabec5d12e3172f22bea23a0a0f9529052a2bc186cbfc1b",
+    "contract": "3de508f79fcbef7258feee8abc013d6f02b000840cac1cb263cb0d6f927b8f2b",
+    "closed-prior-reviews": [
+      {
+        "obligation": "text",
+        "original-directory": "/tmp/t75-final-spec-r4-text-publication-qr473m_z",
+        "report-sha256": "7c904da466cd5ffa3618fa4f2b28291b3898aba21260c2577d96d94d1d275f08",
+        "receipt-sha256": "78c5e2b5c593bdfac465d3ba192f58ea7d189561d00324870399125d0337ad30",
+        "own-index-sha256": "1c2417c868e977908834f7405d222435a1692297103766758e6316346d87cb61",
+        "closed-prior-approvals": [
+          "text-eight-actual-outer-exit",
+          "text-eight-authority-publication"
+        ],
+        "current-raw-details-replayed": false
+      },
+      {
+        "obligation": "transactions",
+        "original-directory": "/tmp/t75-final-spec-r4-transactions-publication-i1nh1gtr",
+        "report-sha256": "146ac5ef8bafb7c16dbd01fdaedce0fc9ed9f4ff90f30d750bbb7c41347e856e",
+        "receipt-sha256": "6c37100dd56159f0b4e8bcd803ca4d77eb36354e563a6c240db07855058c6122",
+        "own-index-sha256": "cb303cebbf6f50de4a7732ba0c8b5d525ca5a4e607b46802c6db3a7269b496fe",
+        "closed-prior-approvals": [
+          "transactions-actual-outer-exit",
+          "transactions-eight-exact-publication",
+          "existing-text-eight-preservation"
+        ],
+        "current-raw-details-replayed": false
+      },
+      {
+        "obligation": "values",
+        "original-directory": "/tmp/t75-r4-values-publication-spec-fbsksqo5",
+        "report-sha256": "e733e01b73e1134b1601c5e3cd7a66202a7992400b56aecf32b5a4bf85cd57fa",
+        "receipt-sha256": "34b25acd8a8ac5883cfdfbcb48aa83f4a23d67c1bc1f176565037af51a0169cf",
+        "own-index-sha256": "1d255a5bb55fc6dc7e33b1c68445d1bdbf751327005f22ef36b548beb64203bc",
+        "closed-prior-approvals": [
+          "values-actual-outer-exit",
+          "values-eight-exact-publication",
+          "existing-text-eight-and-transactions-eight-preserved"
+        ],
+        "current-raw-details-replayed": false
+      }
+    ],
+    "unchanged-original-packets": [
+      {
+        "obligation": "text",
+        "archive": "/home/ubuntu/IdeaProjects/open-pdf/capabilities/evidence/T75-delivery/certification-review-r4/text-publication-spec.tar.xz",
+        "archive-sha256": "bdcca3024295ef7f006ccec8b87d357a6b2c49317f0cc395faec8ae592744855",
+        "members": 111,
+        "all-prior-original-members-unchanged": true
+      },
+      {
+        "obligation": "transactions",
+        "archive": "/home/ubuntu/IdeaProjects/open-pdf/capabilities/evidence/T75-delivery/certification-review-r4/transactions-publication-spec.tar.xz",
+        "archive-sha256": "5e232cfe64c16e2cabf5eed05765aa5f3ed30af9559dea7cec8c043f6632fdfa",
+        "members": 155,
+        "all-prior-original-members-unchanged": true
+      },
+      {
+        "obligation": "values",
+        "archive": "/home/ubuntu/IdeaProjects/open-pdf/capabilities/evidence/T75-delivery/certification-review-r4/values-publication-spec.tar.xz",
+        "archive-sha256": "da2e29250773ee67538087ff7f24cbddf849c398eb01bf783e3ec44af2245ef8",
+        "members": 45,
+        "all-prior-original-members-unchanged": true
+      }
+    ],
+    "dated-prior-authority": {
+      "path": "/tmp/t75-final-values-certified-r4-sihb0x55/authority-at-retention.yaml",
+      "sha256": "63f73cf7483a2b91fd2fb3bef76024f8f5c9e089e61b2f32f3414528d95234c9",
+      "certifications": 24,
+      "exact-subsets": {
+        "text": 8,
+        "transactions": 8,
+        "values": 8
+      }
+    },
+    "pages-own-index-sha256": "287d0e623cd5f11d54731e7307e1f55693c8075c046de9b677c925f4e49337d3",
+    "pages-prior-index-binds-closed-values-publication": true,
+    "new-publication-or-final-readiness-approved": false,
+    "errors": []
+  },
+  "source-review-boundary": {
+    "fixed-baseline-T10-inputs-unchanged": 11,
+    "five-file-inventory-correction-review-repeated": false,
+    "prior-raw-detail-replayed": false
+  },
+  "reader-diagnostics": {
+    "current-formal-reader-failures": 0,
+    "unresolved": [],
+    "historical-reader-corrections-retained": "originals/prior-reader-diagnostic-closures.json",
+    "auxiliary-display-limit": "auxiliary-display-boundary.json",
+    "original-current-outputs-overwritten": false,
+    "certification-originals-modified": false,
+    "historical-r3-annotations-loss-disclosure-preserved": true
+  },
+  "approvals": {
+    "pages-eight-raw-and-own-index": true,
+    "pages-actual-outer-exit": false,
+    "pages-authority-publication": false,
+    "other-obligations": false,
+    "final48-inventory-index-delivery": false,
+    "completion-criteria-marked": false
+  },
+  "repository-mutations": false,
+  "project-executions": false,
+  "retention": "Exclusive /tmp outputs. Archive manifest explicitly excludes only itself and includes completed finalizer envelope; full raw catalogs and selected original bytes are retained."
+}

@@ -1,0 +1,44 @@
+FFF
+======================================================================
+FAIL: test_whole_form_identity_uses_stream_kind_with_optional_xobject_type (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_whole_form_identity_uses_stream_kind_with_optional_xobject_type) (object_identity='executed-optional-type')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 35, in test_whole_form_identity_uses_stream_kind_with_optional_xobject_type
+    self.observe(directory, name, self.pdf(objects), expected, scope='structure-content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 563, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'pass' != 'fail'
+- pass
++ fail
+ : executed-optional-type: The declared dictionary position must contain a dictionary object, not a stream
+
+======================================================================
+FAIL: test_whole_form_identity_uses_stream_kind_with_optional_xobject_type (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_whole_form_identity_uses_stream_kind_with_optional_xobject_type) (object_identity='definition-optional-type')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 35, in test_whole_form_identity_uses_stream_kind_with_optional_xobject_type
+    self.observe(directory, name, self.pdf(objects), expected, scope='structure-content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 563, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'pass' != 'fail'
+- pass
++ fail
+ : definition-optional-type: The declared dictionary position must contain a dictionary object, not a stream
+
+======================================================================
+FAIL: test_whole_form_identity_uses_stream_kind_with_optional_xobject_type (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_whole_form_identity_uses_stream_kind_with_optional_xobject_type) (object_identity='dictionary-masquerading-as-image')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 35, in test_whole_form_identity_uses_stream_kind_with_optional_xobject_type
+    self.observe(directory, name, self.pdf(objects), expected, scope='structure-content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 563, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'indeterminate' != 'pass'
+- indeterminate
++ pass
+ : dictionary-masquerading-as-image: The qualified structure content references have typed fields and matching ParentTree backlinks.
+
+----------------------------------------------------------------------
+Ran 1 test in 1.176s
+
+FAILED (failures=3)

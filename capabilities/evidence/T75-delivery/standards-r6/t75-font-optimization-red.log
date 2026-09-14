@@ -1,0 +1,42 @@
+EFF
+======================================================================
+ERROR: test_font_checksums_cannot_be_qualified_with_python_assertions_disabled (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_font_checksums_cannot_be_qualified_with_python_assertions_disabled) (optimization=0)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 31, in test_font_checksums_cannot_be_qualified_with_python_assertions_disabled
+    self.assertEqual(str(level), values['python-optimization-level'])
+                                 ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'python-optimization-level'
+
+======================================================================
+FAIL: test_font_checksums_cannot_be_qualified_with_python_assertions_disabled (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_font_checksums_cannot_be_qualified_with_python_assertions_disabled) (optimization=1)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 29, in test_font_checksums_cannot_be_qualified_with_python_assertions_disabled
+    values = self.observe(directory, pdf, 'indeterminate' if level else 'fail',
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 213, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'indeterminate' != 'pass'
+- indeterminate
++ pass
+ : optimized-1.pdf: Embedded CFF and TrueType headers, dictionaries and checked font tables are readable.
+
+======================================================================
+FAIL: test_font_checksums_cannot_be_qualified_with_python_assertions_disabled (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_font_checksums_cannot_be_qualified_with_python_assertions_disabled) (optimization=2)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 29, in test_font_checksums_cannot_be_qualified_with_python_assertions_disabled
+    values = self.observe(directory, pdf, 'indeterminate' if level else 'fail',
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 213, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'indeterminate' != 'pass'
+- indeterminate
++ pass
+ : optimized-2.pdf: Embedded CFF and TrueType headers, dictionaries and checked font tables are readable.
+
+----------------------------------------------------------------------
+Ran 1 test in 2.343s
+
+FAILED (failures=2, errors=1)

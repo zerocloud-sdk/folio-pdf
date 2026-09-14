@@ -1,0 +1,36 @@
+test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules) ... 
+  test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules) (lexical='left-brace-name') ... FAIL
+  test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules) (lexical='right-brace-name') ... FAIL
+test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings) ... ok
+test_cmap_program_names_and_comments_follow_postscript_lexical_rules (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cmap_program_names_and_comments_follow_postscript_lexical_rules) ... ok
+
+======================================================================
+FAIL: test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules) (lexical='left-brace-name')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 208, in test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules
+    self.observe(directory, pdf, 'pass', scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 834, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'pass' != 'indeterminate'
+- pass
++ indeterminate
+ : left-brace-name.pdf: Pinned qpdf did not complete without findings
+
+======================================================================
+FAIL: test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules) (lexical='right-brace-name')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 208, in test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules
+    self.observe(directory, pdf, 'pass', scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 834, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'pass' != 'indeterminate'
+- pass
++ indeterminate
+ : right-brace-name.pdf: Pinned qpdf did not complete without findings
+
+----------------------------------------------------------------------
+Ran 3 tests in 5.894s
+
+FAILED (failures=2)

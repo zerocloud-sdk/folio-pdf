@@ -79,6 +79,11 @@ final class VisualEvidenceChain {
                 T12Corpus.PROFILE, "annotations.pdf", "page-" + page, repositoryRoot);
     }
 
+    static VisualEvidenceChain t13(Path repositoryRoot, int page) {
+        return new VisualEvidenceChain("T13", "document.text-structure.extract",
+                T13Corpus.PROFILE, "extraction.pdf", "page-" + page, repositoryRoot);
+    }
+
     boolean usesAppearanceProjection() { return "T12".equals(label); }
 
     String projectionName() { return pdfiumRasterName.replace("-pdfium.png", "-appearance-projection.pdf"); }
@@ -104,7 +109,8 @@ final class VisualEvidenceChain {
     }
 
     private boolean usesExactInputHash() {
-        return "T09".equals(label) || "T10".equals(label) || "T11".equals(label) || "T12".equals(label);
+        return "T09".equals(label) || "T10".equals(label) || "T11".equals(label)
+                || "T12".equals(label) || "T13".equals(label);
     }
 
     static VisualEvidenceChain t18() {

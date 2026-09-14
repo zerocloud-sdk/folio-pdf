@@ -1,0 +1,76 @@
+test_forms_use_local_named_resources_in_pdf2_and_legacy_fallback_remains_unqualified (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_forms_use_local_named_resources_in_pdf2_and_legacy_fallback_remains_unqualified) ... 
+  test_forms_use_local_named_resources_in_pdf2_and_legacy_fallback_remains_unqualified (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_forms_use_local_named_resources_in_pdf2_and_legacy_fallback_remains_unqualified) (resource='pdf2-caller-form-font') ... FAIL
+  test_forms_use_local_named_resources_in_pdf2_and_legacy_fallback_remains_unqualified (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_forms_use_local_named_resources_in_pdf2_and_legacy_fallback_remains_unqualified) (resource='legacy-caller-form-font') ... FAIL
+  test_forms_use_local_named_resources_in_pdf2_and_legacy_fallback_remains_unqualified (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_forms_use_local_named_resources_in_pdf2_and_legacy_fallback_remains_unqualified) (resource='catalog-pdf2-form-font') ... FAIL
+  test_forms_use_local_named_resources_in_pdf2_and_legacy_fallback_remains_unqualified (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_forms_use_local_named_resources_in_pdf2_and_legacy_fallback_remains_unqualified) (resource='catalog-legacy-form-font') ... FAIL
+  test_forms_use_local_named_resources_in_pdf2_and_legacy_fallback_remains_unqualified (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_forms_use_local_named_resources_in_pdf2_and_legacy_fallback_remains_unqualified) (resource='header-pdf2-over-lower-catalog') ... FAIL
+
+======================================================================
+FAIL: test_forms_use_local_named_resources_in_pdf2_and_legacy_fallback_remains_unqualified (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_forms_use_local_named_resources_in_pdf2_and_legacy_fallback_remains_unqualified) (resource='pdf2-caller-form-font')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 48, in test_forms_use_local_named_resources_in_pdf2_and_legacy_fallback_remains_unqualified
+    self.observe(directory, pdf, expected, 'content-resource' if expected == 'fail' else None, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 865, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : pdf2-caller-form-font.pdf: Qualified content and Type3 rectangles satisfy operand, state, resource, property and ink-bound predicates.
+
+======================================================================
+FAIL: test_forms_use_local_named_resources_in_pdf2_and_legacy_fallback_remains_unqualified (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_forms_use_local_named_resources_in_pdf2_and_legacy_fallback_remains_unqualified) (resource='legacy-caller-form-font')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 48, in test_forms_use_local_named_resources_in_pdf2_and_legacy_fallback_remains_unqualified
+    self.observe(directory, pdf, expected, 'content-resource' if expected == 'fail' else None, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 865, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'indeterminate' != 'pass'
+- indeterminate
++ pass
+ : legacy-caller-form-font.pdf: Qualified content and Type3 rectangles satisfy operand, state, resource, property and ink-bound predicates.
+
+======================================================================
+FAIL: test_forms_use_local_named_resources_in_pdf2_and_legacy_fallback_remains_unqualified (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_forms_use_local_named_resources_in_pdf2_and_legacy_fallback_remains_unqualified) (resource='catalog-pdf2-form-font')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 48, in test_forms_use_local_named_resources_in_pdf2_and_legacy_fallback_remains_unqualified
+    self.observe(directory, pdf, expected, 'content-resource' if expected == 'fail' else None, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 865, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : catalog-pdf2-form-font.pdf: Qualified content and Type3 rectangles satisfy operand, state, resource, property and ink-bound predicates.
+
+======================================================================
+FAIL: test_forms_use_local_named_resources_in_pdf2_and_legacy_fallback_remains_unqualified (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_forms_use_local_named_resources_in_pdf2_and_legacy_fallback_remains_unqualified) (resource='catalog-legacy-form-font')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 48, in test_forms_use_local_named_resources_in_pdf2_and_legacy_fallback_remains_unqualified
+    self.observe(directory, pdf, expected, 'content-resource' if expected == 'fail' else None, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 865, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'indeterminate' != 'pass'
+- indeterminate
++ pass
+ : catalog-legacy-form-font.pdf: Qualified content and Type3 rectangles satisfy operand, state, resource, property and ink-bound predicates.
+
+======================================================================
+FAIL: test_forms_use_local_named_resources_in_pdf2_and_legacy_fallback_remains_unqualified (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_forms_use_local_named_resources_in_pdf2_and_legacy_fallback_remains_unqualified) (resource='header-pdf2-over-lower-catalog')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 48, in test_forms_use_local_named_resources_in_pdf2_and_legacy_fallback_remains_unqualified
+    self.observe(directory, pdf, expected, 'content-resource' if expected == 'fail' else None, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 865, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : header-pdf2-over-lower-catalog.pdf: Qualified content and Type3 rectangles satisfy operand, state, resource, property and ink-bound predicates.
+
+----------------------------------------------------------------------
+Ran 1 test in 2.157s
+
+FAILED (failures=5)

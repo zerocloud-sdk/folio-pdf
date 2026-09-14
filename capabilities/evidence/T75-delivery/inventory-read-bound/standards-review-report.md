@@ -1,0 +1,11 @@
+Hard documented-standard violations: **0**. Open judgement/smell findings: **0**.
+
+Reviewed only the five-file inventory reader increment, using the frozen before/after diff and the five-path working-tree diff against 5b1603c435f11c40368f75b7b9a2777c9c5e9761. The canonical three-dot diff and commit list are empty because HEAD remains the fixed baseline; this is the explicitly requested precommit adaptation. All before, frozen-after and live identities matched.
+
+InventoryYaml.java:42–73 separates chain-record loading, caps retained input at 16 MiB before parsing, and shares the unchanged strict parser options. A failing read can consume one 8 KiB chunk beyond the accepted length; the byte-array copy and YAML objects require additional heap. The documented limit is an input budget. FoundationEvidence.java:142 changes only the loader call: candidate/contract/environment/configuration identities, independent producers, reports and negative controls remain validated, consistent with ADR-0023 and ADR-0040.
+
+FoundationReadinessCommandTest.java:91–155,581–627 exercises the real public command process with project-owned synthetic fixtures. Retained sources and original results establish leading-comment RED→GREEN and exact-bound/first-excess RED→GREEN. The earlier trailing-comment attempt actually passed and remains explicitly non-reproducing. Later controls preserve authority limits and reject changed control bytes and failed results.
+
+The retained final three-regression run and complete inventory module verification passed; the latter records **17 tests, zero failures/errors/skips**, plus the generated-document check. No Maven process was started by this reviewer. Java 8 APIs and the existing SnakeYAML pin remain consistent with CONTRIBUTING.md; the increment changes no product/runtime dependency. The provenance and guide describe the bounded scope and historical evidence accurately.
+
+The real post-fix report has no YAML-read errors and correctly rejects the five stale source identities. Fresh candidate certification, complete host/JDK validation, final review and delivery remain separate gates; this review does not approve historical r3 evidence for the changed source.

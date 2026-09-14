@@ -1,0 +1,18 @@
+F
+======================================================================
+FAIL: test_appearance_programs_do_not_inherit_a_previous_page_invocation_font (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_appearance_programs_do_not_inherit_a_previous_page_invocation_font) (appearance_font_state='page-and-appearance-unknown-font')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 34, in test_appearance_programs_do_not_inherit_a_previous_page_invocation_font
+    self.observe(directory, name, self.pdf(objects), expected, scope='structure-content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 719, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'indeterminate' != 'pass'
+- indeterminate
++ pass
+ : page-and-appearance-unknown-font: The qualified structure content references have typed fields and matching ParentTree backlinks.
+
+----------------------------------------------------------------------
+Ran 1 test in 0.944s
+
+FAILED (failures=1)

@@ -1,0 +1,20 @@
+.E
+======================================================================
+ERROR: test_original_type1_cff_snapshot_has_the_same_literal_rectangle_and_advance (test_t13_fonts.T13FontsTest.test_original_type1_cff_snapshot_has_the_same_literal_rectangle_and_advance)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_fonts.py", line 26, in test_original_type1_cff_snapshot_has_the_same_literal_rectangle_and_advance
+    data = path.read_bytes()
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1021, in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpf1a10wn4/fonts/FolioT13Rectangle.cff'
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.515s
+
+FAILED (errors=1)

@@ -1,0 +1,520 @@
+{
+  "schema-version": 1,
+  "review-axis": "Spec",
+  "created-utc": "2026-09-14T00:36:03.611646+00:00",
+  "result": "CLEAN",
+  "findings": [],
+  "hard-findings": 0,
+  "open-findings": 0,
+  "scope": "Only r4 annotations actual outer exit/publication and exact preservation of prior40",
+  "fixed-baseline": "5b1603c435f11c40368f75b7b9a2777c9c5e9761",
+  "candidate": "ab18cc9c0473730a6aabec5d12e3172f22bea23a0a0f9529052a2bc186cbfc1b",
+  "contract": "3de508f79fcbef7258feee8abc013d6f02b000840cac1cb263cb0d6f927b8f2b",
+  "actual-command": {
+    "command": [
+      "/usr/bin/python3",
+      "scripts/t03-foundation.py",
+      "certify",
+      "capabilities/evidence/T75-foundation-20260914-r4/annotations",
+      "--obligation",
+      "annotations"
+    ],
+    "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+    "started-utc": "2026-09-13T22:22:04.576988+00:00",
+    "wrapper-pid": 649016,
+    "explicit-environment": {
+      "FOLIO_HARFBUZZ_HELPER": "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/harfbuzz/10.2.0-final/bin/folio-harfbuzz"
+    },
+    "original-log": "/tmp/t75-final-annotations-certify-r4.log"
+  },
+  "actual-result": {
+    "command": [
+      "/usr/bin/python3",
+      "scripts/t03-foundation.py",
+      "certify",
+      "capabilities/evidence/T75-foundation-20260914-r4/annotations",
+      "--obligation",
+      "annotations"
+    ],
+    "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+    "started-utc": "2026-09-13T22:22:04.576988+00:00",
+    "wrapper-pid": 649016,
+    "explicit-environment": {
+      "FOLIO_HARFBUZZ_HELPER": "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/harfbuzz/10.2.0-final/bin/folio-harfbuzz"
+    },
+    "original-log": "/tmp/t75-final-annotations-certify-r4.log",
+    "command-pid": 649017,
+    "returncode": 0,
+    "completed-utc": "2026-09-14T00:11:36.482684+00:00"
+  },
+  "original-outer-log-lines": 13,
+  "original-outer-log-sha256": "684a719cb885f590ef7d19a3f9cf09e8789ea9504b50d1a796e9d38cbad81102",
+  "outer-stderr": "Merged into original log; formal47 details retained per tuple",
+  "command-retention": {
+    "path": "/home/ubuntu/IdeaProjects/open-pdf/capabilities/evidence/T75-delivery/final-certification-r4/annotations-command.tar.xz",
+    "sha256": "2327cdaffecb692e9cdeca503dfdff45752a691877f924ecd681b15fcd730b91",
+    "metadata": "/home/ubuntu/IdeaProjects/open-pdf/capabilities/evidence/T75-delivery/final-certification-r4/annotations-command-archive-identity.json",
+    "metadata-sha256": "e03afdee40c1bc5333009764e5b31efc33e58e886928069f5c4f3983bf250d59",
+    "original": "/tmp/t75-final-annotations-certified-r4-4jvjl8vo",
+    "members": 10,
+    "byte-exact": true
+  },
+  "closed-raw-review": {
+    "original": "/tmp/t75-final-spec-r4-annotations-eight-2e38t91l",
+    "pins": {
+      "report.md": "bf727825a8bad25002f340127501df333b70f59ef91c1c4205d0e7318e1973a1",
+      "receipt.json": "0baaedb202aae59d351786b6c9889c28a502b9e202e3acb79fabe4d4994bfb45",
+      "manifest.json": "92624faff536d9a812d2350b7e27c7fa354967d2fb93501b26beecc2399067c1"
+    },
+    "archive": {
+      "path": "/home/ubuntu/IdeaProjects/open-pdf/capabilities/evidence/T75-delivery/certification-review-r4/annotations-eight-tuples-spec.tar.xz",
+      "sha256": "8dc9405652fe8af3f2c53d6279271e64186f177a2bd6a5e3fff70f8fb6636574",
+      "metadata": "/home/ubuntu/IdeaProjects/open-pdf/capabilities/evidence/T75-delivery/certification-review-r4/annotations-eight-tuples-spec-archive-identity.json",
+      "metadata-sha256": "faa9223512d136ce7ea1a146ee4bbd42881cdce2c82b2b56163beb39ebeca4c4",
+      "original": "/tmp/t75-final-spec-r4-annotations-eight-2e38t91l",
+      "members": 1486,
+      "byte-exact": true
+    },
+    "own-index-sha256": "65fd03587b74a6adea0177c9692d6fe50b4368c411e1d53c97b5a94d9b7b330e",
+    "references": 101736,
+    "raw-replayed": false,
+    "deferred-report-unchanged": true
+  },
+  "closed-prior-metadata-archive": {
+    "path": "/home/ubuntu/IdeaProjects/open-pdf/capabilities/evidence/T75-delivery/certification-review-r4/metadata-publication-spec.tar.xz",
+    "sha256": "3b6893481086767e6f0ce30577b43c3651f85ab5d9d7d9146aa5cafe00adb4a2",
+    "metadata": "/home/ubuntu/IdeaProjects/open-pdf/capabilities/evidence/T75-delivery/certification-review-r4/metadata-publication-spec-archive-identity.json",
+    "metadata-sha256": "26802219562c95edeb65f6a3dc2e75e5d457e7fe97eb9de44617c632bd4e968d",
+    "original": "/tmp/t75-r4-metadata-publication-spec-q58y9z6e",
+    "members": 77,
+    "byte-exact": true
+  },
+  "closed-prior-publications": [
+    {
+      "obligation": "text",
+      "original-directory": "/tmp/t75-final-spec-r4-text-publication-qr473m_z",
+      "report-sha256": "7c904da466cd5ffa3618fa4f2b28291b3898aba21260c2577d96d94d1d275f08",
+      "receipt-sha256": "78c5e2b5c593bdfac465d3ba192f58ea7d189561d00324870399125d0337ad30",
+      "own-index-sha256": "1c2417c868e977908834f7405d222435a1692297103766758e6316346d87cb61",
+      "closed-prior-approvals": [
+        "text-eight-actual-outer-exit",
+        "text-eight-authority-publication"
+      ],
+      "current-raw-details-replayed": false
+    },
+    {
+      "obligation": "transactions",
+      "original-directory": "/tmp/t75-final-spec-r4-transactions-publication-i1nh1gtr",
+      "report-sha256": "146ac5ef8bafb7c16dbd01fdaedce0fc9ed9f4ff90f30d750bbb7c41347e856e",
+      "receipt-sha256": "6c37100dd56159f0b4e8bcd803ca4d77eb36354e563a6c240db07855058c6122",
+      "own-index-sha256": "cb303cebbf6f50de4a7732ba0c8b5d525ca5a4e607b46802c6db3a7269b496fe",
+      "closed-prior-approvals": [
+        "transactions-actual-outer-exit",
+        "transactions-eight-exact-publication",
+        "existing-text-eight-preservation"
+      ],
+      "current-raw-details-replayed": false
+    },
+    {
+      "obligation": "values",
+      "original-directory": "/tmp/t75-r4-values-publication-spec-fbsksqo5",
+      "report-sha256": "e733e01b73e1134b1601c5e3cd7a66202a7992400b56aecf32b5a4bf85cd57fa",
+      "receipt-sha256": "34b25acd8a8ac5883cfdfbcb48aa83f4a23d67c1bc1f176565037af51a0169cf",
+      "own-index-sha256": "1d255a5bb55fc6dc7e33b1c68445d1bdbf751327005f22ef36b548beb64203bc",
+      "closed-prior-approvals": [
+        "values-actual-outer-exit",
+        "values-eight-exact-publication",
+        "existing-text-eight-and-transactions-eight-preserved"
+      ],
+      "current-raw-details-replayed": false
+    },
+    {
+      "obligation": "pages",
+      "original-directory": "/tmp/t75-final-spec-r4-pages-publication-blveufbw",
+      "report-sha256": "9649bda6776162fdab739ff0f4c8c964bc92f4f0c6e3a389ecf629cde0bd279b",
+      "receipt-sha256": "52e6b96dce92f8ba15ed1edcb3908c56671291c54b4dc9c3f454b7170394015f",
+      "own-index-sha256": "287d0e623cd5f11d54731e7307e1f55693c8075c046de9b677c925f4e49337d3"
+    },
+    {
+      "obligation": "metadata",
+      "original-directory": "/tmp/t75-r4-metadata-publication-spec-q58y9z6e",
+      "report-sha256": "6d46b5b2f3307439962d3d1745be4318c5e5263c9896efdf3264624c28953f37",
+      "receipt-sha256": "39c19d724c9621b6478104af20728462aaafe562f523161ef25e8399a70f9a22",
+      "own-index-sha256": "203547cbc419229b4582a6a644861bc409d245105f6b26b10b88a0fe15e65901"
+    }
+  ],
+  "dated-authority": {
+    "path": "/tmp/t75-final-annotations-certified-r4-4jvjl8vo/authority-at-retention.yaml",
+    "sha256": "c78fef2dd298de6de9e0e2e83895dcdea1b401bb139538428422855c21cdacc2",
+    "exact-subsets": {
+      "text": 8,
+      "transactions": 8,
+      "values": 8,
+      "pages": 8,
+      "metadata": 8,
+      "annotations": 8
+    }
+  },
+  "prior-authority": {
+    "path": "/tmp/t75-final-metadata-certified-r4-1jfzac5p/authority-at-retention.yaml",
+    "sha256": "5bf50523743557327f502c344637bd0a8d9aa75187576dddef42faf42c7725c9",
+    "prior40-preserved": true
+  },
+  "current-authority-observation": {
+    "snapshot": "authority-current-observation.yaml",
+    "sha256": "c78fef2dd298de6de9e0e2e83895dcdea1b401bb139538428422855c21cdacc2",
+    "started-utc": "2026-09-14T00:29:56.446721+00:00",
+    "completed-utc": "2026-09-14T00:29:56.938452+00:00",
+    "total-observed": 48,
+    "pass-records-observed": 192,
+    "exact-subsets": {
+      "text": 8,
+      "transactions": 8,
+      "values": 8,
+      "pages": 8,
+      "metadata": 8,
+      "annotations": 8
+    }
+  },
+  "final-authority-observation": {
+    "path": "authority-final-observation.yaml",
+    "sha256": "c78fef2dd298de6de9e0e2e83895dcdea1b401bb139538428422855c21cdacc2",
+    "observed-utc": "2026-09-14T00:36:03.612787+00:00"
+  },
+  "counts": {
+    "annotations-tuples": 8,
+    "annotations-records-and-reports": 32,
+    "annotations-configurations": 8,
+    "formal-tests-per-tuple": 47,
+    "formal-test-family-split": {
+      "Native": 36,
+      "Stable-Facade": 9,
+      "artifact-contracts": 2
+    },
+    "annotations-environment-originals": 84,
+    "prior-preserved-tuples": 40,
+    "prior-preserved-records": 160,
+    "prior-preserved-configurations": 40,
+    "observed-authority-tuples": 48,
+    "observed-PASS-records": 192,
+    "command-archive-members": 10,
+    "raw-review-archive-members": 1486,
+    "metadata-publication-archive-members": 77,
+    "stage": {
+      "sources": 1933,
+      "contracts": 30,
+      "artifacts": 23,
+      "harness": 24
+    }
+  },
+  "actual-formal-transcripts": [
+    {
+      "tuple": "jdk8-in_process",
+      "tests": 47,
+      "seconds": 6.746,
+      "sha256": "7fe974e040afaa47bb45ca95326aedec2d7ba3a698e274a2891a93ace3928f78",
+      "actual-Native-mode": "IN_PROCESS",
+      "actual-Facade-mode": "IN_PROCESS"
+    },
+    {
+      "tuple": "jdk8-hardened_worker",
+      "tests": 47,
+      "seconds": 83.208,
+      "sha256": "f6c09e0a78c4ee469f63970b4ec39aae014d00f1de0672dc93e7d644e6d69beb",
+      "actual-Native-mode": "HARDENED_WORKER",
+      "actual-Facade-mode": "IN_PROCESS"
+    },
+    {
+      "tuple": "jdk11-in_process",
+      "tests": 47,
+      "seconds": 6.651,
+      "sha256": "88373bbfa31b1943eaab0a63ff398ba7beddfb6bd63eef3f6c25264dde6757c7",
+      "actual-Native-mode": "IN_PROCESS",
+      "actual-Facade-mode": "IN_PROCESS"
+    },
+    {
+      "tuple": "jdk11-hardened_worker",
+      "tests": 47,
+      "seconds": 75.181,
+      "sha256": "41795478a9b678f87772e5d5cd40df747db8c35609290e33be00126fd64fb33a",
+      "actual-Native-mode": "HARDENED_WORKER",
+      "actual-Facade-mode": "IN_PROCESS"
+    },
+    {
+      "tuple": "jdk17-in_process",
+      "tests": 47,
+      "seconds": 6.19,
+      "sha256": "f963e5b50c0e88821b5b58f06966958b69f12cca222e2ddc545672f7571e5cc7",
+      "actual-Native-mode": "IN_PROCESS",
+      "actual-Facade-mode": "IN_PROCESS"
+    },
+    {
+      "tuple": "jdk17-hardened_worker",
+      "tests": 47,
+      "seconds": 68.196,
+      "sha256": "c41abfba40df7f265dde00479d3b5fd9aa02ef18811a832d166edd954d7e1f55",
+      "actual-Native-mode": "HARDENED_WORKER",
+      "actual-Facade-mode": "IN_PROCESS"
+    },
+    {
+      "tuple": "jdk21-in_process",
+      "tests": 47,
+      "seconds": 6.169,
+      "sha256": "b4be18167a2f263ac64f93c6d0abc07cedf4891b5e0c244a9351bf1fbd233e83",
+      "actual-Native-mode": "IN_PROCESS",
+      "actual-Facade-mode": "IN_PROCESS"
+    },
+    {
+      "tuple": "jdk21-hardened_worker",
+      "tests": 47,
+      "seconds": 72.102,
+      "sha256": "1a04990f77d88ea0aacbad15a6af5b422e0fac7ac14b1e3764da052e80fd8441",
+      "actual-Native-mode": "HARDENED_WORKER",
+      "actual-Facade-mode": "IN_PROCESS"
+    }
+  ],
+  "actual-Facade-mode": "IN_PROCESS",
+  "before-after-equality": "Closed raw reconstruction bound through all84 unchanged originals; AFTER intentionally has no environment.yaml.",
+  "publication-inspection": {
+    "path": "actual-publication-inspection.json",
+    "sha256": "325b61fdafd136b69165acf2ed2adddbc9fca27d7acad7f1597497aaaedde4af",
+    "original-exit": 1,
+    "only-diagnostic": "Pages prior receipt uses own-pages-index-sha256, not generic own-index-sha256. All other checks completed."
+  },
+  "separate-diagnostic-closure": {
+    "path": "reader-diagnostic-scoped-closure-inspection.json",
+    "sha256": "7e505ab3a2ff0b80f22a4b1ef2d26040a8c89d7269219575d93e01018757c256",
+    "actual-result": "reader-diagnostic-scoped-closure-result.json",
+    "actual-result-sha256": "7cf1393f5595e9f558ecf9090d52f3f2070b92e7ebfd06815c8e3e438d3c2308",
+    "actual-exit": 0,
+    "original-diagnostics-overwritten": false
+  },
+  "input-catalog": {
+    "path": "input-identities.json",
+    "sha256": "957fff076b4b5bb7c2e77ea5f9fca9f03458afeba78aa7409c0c74fe85bcc0f6",
+    "files": 4451,
+    "immutable-inputs-rechecked": 4186
+  },
+  "selected-originals": {
+    "path": "selected-original-copy-identities.json",
+    "sha256": "61d9092af5f1583cf1ff2df8dba06b5f6468a9b661d8b884b1f356593b742cb7",
+    "copy-bindings": 231,
+    "unique-copies": 231
+  },
+  "all-original-reader-command-results": [
+    {
+      "name": "actual-schema-v1",
+      "actual-exit": 0,
+      "actual-result": {
+        "path": "/tmp/t75-final-spec-r4-annotations-publication-9wr02_ab/actual-schema-v1-result.json",
+        "sha256": "27d233e92e878352b03858f2dfe33cc69326d81f82621e010a284a4d58be1201"
+      },
+      "command.json": {
+        "path": "/tmp/t75-final-spec-r4-annotations-publication-9wr02_ab/actual-schema-v1-command.json",
+        "sha256": "898ad20ba6fe3ee409ffc8eeb09d45d023ac4b5eb829fd04f032a92ba498e43f",
+        "bytes": 596
+      },
+      "stdout.txt": {
+        "path": "/tmp/t75-final-spec-r4-annotations-publication-9wr02_ab/actual-schema-v1-stdout.txt",
+        "sha256": "f772b7a6f10537993f975374d8055bb3838e8dbfe189555d5a7606857a41d383",
+        "bytes": 64189
+      },
+      "stderr.txt": {
+        "path": "/tmp/t75-final-spec-r4-annotations-publication-9wr02_ab/actual-schema-v1-stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "name": "bounded-actual-schema",
+      "actual-exit": 1,
+      "actual-result": {
+        "path": "/tmp/t75-final-spec-r4-annotations-publication-9wr02_ab/bounded-actual-schema-result.json",
+        "sha256": "11b1450fd88f426ca1a935e9d874e3cd64b86336a4980d5513c215da86d3f7d4"
+      },
+      "command.json": {
+        "path": "/tmp/t75-final-spec-r4-annotations-publication-9wr02_ab/bounded-actual-schema-command.json",
+        "sha256": "ca8f1c1421a7806f52e78e28ab8c0ec679bd936bab4ff981c3f9ec68115dd4c6",
+        "bytes": 601
+      },
+      "stdout.txt": {
+        "path": "/tmp/t75-final-spec-r4-annotations-publication-9wr02_ab/bounded-actual-schema-stdout.txt",
+        "sha256": "41a190d1de136d73fab5ffc0d0f6d0157bf43689e59813bbdd09bb4e53a57f66",
+        "bytes": 10580
+      },
+      "stderr.txt": {
+        "path": "/tmp/t75-final-spec-r4-annotations-publication-9wr02_ab/bounded-actual-schema-stderr.txt",
+        "sha256": "d36cf8a46af5fdbc18a851b905972ee72bc36c51289297a4d90bc45d9254beb0",
+        "bytes": 460
+      }
+    },
+    {
+      "name": "bounded-actual-schema-v2",
+      "actual-exit": 0,
+      "actual-result": {
+        "path": "/tmp/t75-final-spec-r4-annotations-publication-9wr02_ab/bounded-actual-schema-v2-result.json",
+        "sha256": "6eb73e279edf32a732f39535d90404ebf3825b33cd124dc6dc64133489eddb2c"
+      },
+      "command.json": {
+        "path": "/tmp/t75-final-spec-r4-annotations-publication-9wr02_ab/bounded-actual-schema-v2-command.json",
+        "sha256": "83f2c3f54a4b63a0fee5c8044578ea8a4935a24fc5dccce83351e9d3b9f4c4ba",
+        "bytes": 604
+      },
+      "stdout.txt": {
+        "path": "/tmp/t75-final-spec-r4-annotations-publication-9wr02_ab/bounded-actual-schema-v2-stdout.txt",
+        "sha256": "9ae6e2544e9bb5f08cf8e2edd3917a8cd7c8d6a5341e4b8c7ebc5db97e8e0904",
+        "bytes": 11774
+      },
+      "stderr.txt": {
+        "path": "/tmp/t75-final-spec-r4-annotations-publication-9wr02_ab/bounded-actual-schema-v2-stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "name": "initial-discovery",
+      "actual-exit": 0,
+      "actual-result": {
+        "path": "/tmp/t75-final-spec-r4-annotations-publication-9wr02_ab/initial-discovery-result.json",
+        "sha256": "8f3161243280fab98ad5ebfbe5b8edc28f49e0e0ddca674858ccf364cc5043b6"
+      },
+      "command.json": {
+        "path": "/tmp/t75-final-spec-r4-annotations-publication-9wr02_ab/initial-discovery-command.json",
+        "sha256": "2b0f6de20bacb9bc96900a71a842d662bea9ba7bed43fb8d8d5047b9cb9b8532",
+        "bytes": 430
+      },
+      "stdout.txt": {
+        "path": "/tmp/t75-final-spec-r4-annotations-publication-9wr02_ab/initial-discovery-stdout.txt",
+        "sha256": "ae032d3f6b5c3f0da10dd7e49371b6784e5a87caabcaaccca713052012c15ca3",
+        "bytes": 66138
+      },
+      "stderr.txt": {
+        "path": "/tmp/t75-final-spec-r4-annotations-publication-9wr02_ab/initial-discovery-stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "name": "pages-own-index-schema",
+      "actual-exit": 0,
+      "actual-result": {
+        "path": "/tmp/t75-final-spec-r4-annotations-publication-9wr02_ab/pages-own-index-schema-result.json",
+        "sha256": "6c25632c3c9f50e615e2d6e8f46fd3ac6cd6e37f9e4a0bdcbeb7144e08436236"
+      },
+      "command.json": {
+        "path": "/tmp/t75-final-spec-r4-annotations-publication-9wr02_ab/pages-own-index-schema-command.json",
+        "sha256": "99da6305a18ce2d28d128993a15ee5b1048520c8ccf88d6ea70f7fc084d22c3d",
+        "bytes": 602
+      },
+      "stdout.txt": {
+        "path": "/tmp/t75-final-spec-r4-annotations-publication-9wr02_ab/pages-own-index-schema-stdout.txt",
+        "sha256": "9df460af7e8a516801eabe0f127dd52fff25375f51dcc90859b3bc11b892c02e",
+        "bytes": 1213
+      },
+      "stderr.txt": {
+        "path": "/tmp/t75-final-spec-r4-annotations-publication-9wr02_ab/pages-own-index-schema-stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "name": "protocol-inspection-v1",
+      "actual-exit": 0,
+      "actual-result": {
+        "path": "/tmp/t75-final-spec-r4-annotations-publication-9wr02_ab/protocol-inspection-v1-result.json",
+        "sha256": "a11d117eb91cc122bb2ab2dc0afa565258cc29b48ff93ea52bf02c17438984a9"
+      },
+      "command.json": {
+        "path": "/tmp/t75-final-spec-r4-annotations-publication-9wr02_ab/protocol-inspection-v1-command.json",
+        "sha256": "58ff84fe8e318bfb680eea5f06cf34b678502b264e25bd0043d9681424c3a192",
+        "bytes": 315
+      },
+      "stdout.txt": {
+        "path": "/tmp/t75-final-spec-r4-annotations-publication-9wr02_ab/protocol-inspection-v1-stdout.txt",
+        "sha256": "98febb205407937015b6307999241b667e67ec3e0583b939656194c74fb38cf6",
+        "bytes": 57619
+      },
+      "stderr.txt": {
+        "path": "/tmp/t75-final-spec-r4-annotations-publication-9wr02_ab/protocol-inspection-v1-stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "name": "publication-audit",
+      "actual-exit": 1,
+      "actual-result": {
+        "path": "/tmp/t75-final-spec-r4-annotations-publication-9wr02_ab/publication-audit-result.json",
+        "sha256": "adb0f9e852c154848d3deb4518f14d121f6053b026b67070a04f572dd6cb5e23"
+      },
+      "command.json": {
+        "path": "/tmp/t75-final-spec-r4-annotations-publication-9wr02_ab/publication-audit-command.json",
+        "sha256": "a51e48b3255b979b5b810f739da6c795079a48e6601ae5ac64c73169c7fedd82",
+        "bytes": 597
+      },
+      "stdout.txt": {
+        "path": "/tmp/t75-final-spec-r4-annotations-publication-9wr02_ab/publication-audit-stdout.txt",
+        "sha256": "f634a9d06ddff3e8b838b0a99827eefdf33f97658aeaaf5aa0e9b13f75b7d5f4",
+        "bytes": 262
+      },
+      "stderr.txt": {
+        "path": "/tmp/t75-final-spec-r4-annotations-publication-9wr02_ab/publication-audit-stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "name": "reader-diagnostic-scoped-closure",
+      "actual-exit": 0,
+      "actual-result": {
+        "path": "/tmp/t75-final-spec-r4-annotations-publication-9wr02_ab/reader-diagnostic-scoped-closure-result.json",
+        "sha256": "7cf1393f5595e9f558ecf9090d52f3f2070b92e7ebfd06815c8e3e438d3c2308"
+      },
+      "command.json": {
+        "path": "/tmp/t75-final-spec-r4-annotations-publication-9wr02_ab/reader-diagnostic-scoped-closure-command.json",
+        "sha256": "359784ad48f08026a67b1430729dbb9f558945adb0f678def9ae96da57eb770d",
+        "bytes": 612
+      },
+      "stdout.txt": {
+        "path": "/tmp/t75-final-spec-r4-annotations-publication-9wr02_ab/reader-diagnostic-scoped-closure-stdout.txt",
+        "sha256": "b450501aa53212dff93ac147f903537fab6dbd868e2ddd3a689901271ca7fd00",
+        "bytes": 119
+      },
+      "stderr.txt": {
+        "path": "/tmp/t75-final-spec-r4-annotations-publication-9wr02_ab/reader-diagnostic-scoped-closure-stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    }
+  ],
+  "raw-rules-RGB-replayed": false,
+  "five-file-source-correction-reopened": false,
+  "historical-retention-limitation": {
+    "original-incident": {
+      "path": "/tmp/t75-final-spec-r4-annotations-eight-2e38t91l/selected-originals/prior-reader-originals/reader-output-incident-and-closure.json",
+      "sha256": "3927ee99491a3f71fe24f4dc536cf086608b45e441289e6ab14a2033b3007149",
+      "bytes": 2097
+    },
+    "lost-original-derived-summaries-recovered": false,
+    "all-historical-derived-review-artifacts-preserved": false,
+    "current-r4-review-is-fresh-evidence": true
+  },
+  "no-current-output-overwrites": true,
+  "approvals": {
+    "annotations-actual-outer-exit": true,
+    "annotations-eight-exact-publication": true,
+    "prior40-exact-preservation": true,
+    "other-obligations-reapproved": false,
+    "consolidated-final48-validation-inventory-index-readiness-delivery": false,
+    "completion-criteria-marked": false
+  },
+  "no-project-execution": true,
+  "no-repository-Git-tracker-mutation": true,
+  "progress-document-boundary": "Canonical README progress may advance after its dated retained copies; no equality requirement across observation times.",
+  "report": {
+    "path": "report.md",
+    "sha256": "44580255cbc93d6d0382710590d24080dd4fcd619c3643e4d6cf09bb1ad3a68e",
+    "words": 230
+  },
+  "manifest-contract": "manifest.json is created after final reader command/results and includes every retained file except itself."
+}

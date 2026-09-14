@@ -1,0 +1,2372 @@
+{
+  "schema-version": 1,
+  "candidate-sha256": "ab18cc9c0473730a6aabec5d12e3172f22bea23a0a0f9529052a2bc186cbfc1b",
+  "environment-sha256": "933a11e7cfc3657e1be2831fbebd04ad66e0949159fe587b11a9331e38b49373",
+  "acceptance-profile": "T13-text-logical-structure",
+  "execution-profile": "IN_PROCESS",
+  "command": [
+    "podman",
+    "run",
+    "--rm",
+    "--network=none",
+    "--userns=keep-id",
+    "--volume",
+    "/home/ubuntu/IdeaProjects/open-pdf:/workspace:ro",
+    "--volume",
+    "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/harfbuzz/10.2.0-final:/folio-harfbuzz:ro",
+    "--volume",
+    "/usr/bin/python3.12:/usr/bin/python3.12:ro",
+    "--volume",
+    "/usr/lib/python3.12:/usr/lib/python3.12:ro",
+    "--volume",
+    "/usr/lib/x86_64-linux-gnu/libexpat.so.1.9.1:/lib/x86_64-linux-gnu/libexpat.so.1:ro",
+    "--workdir",
+    "/workspace",
+    "--env",
+    "LANG=C.UTF-8",
+    "--env",
+    "LC_ALL=C.UTF-8",
+    "--env",
+    "TZ=UTC",
+    "--env",
+    "FOLIO_HARFBUZZ_HELPER=/folio-harfbuzz/bin/folio-harfbuzz",
+    "--volume",
+    "/home/ubuntu/IdeaProjects/open-pdf/capabilities/evidence/T75-foundation-20260914-r4/text/jdk21-in_process:/workspace/capabilities/evidence/T75-foundation-20260914-r4/text/jdk21-in_process:rw",
+    "docker.io/library/eclipse-temurin@sha256:1ca5e470ad60db0d5b4137c1357068fa210051d815ad98ea9964f4bbe7367f8c",
+    "java",
+    "-Xmx1024m",
+    "-Duser.language=en",
+    "-Duser.country=US",
+    "-Duser.timezone=UTC",
+    "-Dfolio.harfBuzzHelper=/folio-harfbuzz/bin/folio-harfbuzz",
+    "-Dfolio.t13.executionProfile=IN_PROCESS",
+    "-cp",
+    "/workspace/target/foundation-0.1.0/artifacts/pdf-conversion-0.1.0.jar:/workspace/target/foundation-0.1.0/artifacts/pdf-document-0.1.0.jar:/workspace/target/foundation-0.1.0/artifacts/pdf-migration-itext7-0.1.0.jar:/workspace/target/foundation-0.1.0/artifacts/pdf-provider-contract-0.1.0.jar:/workspace/target/foundation-0.1.0/harness/acceptance.jar:/workspace/target/foundation-0.1.0/harness/facade-tests.jar:/workspace/target/foundation-0.1.0/harness/lib/common-image-3.14.0.jar:/workspace/target/foundation-0.1.0/harness/lib/common-io-3.14.0.jar:/workspace/target/foundation-0.1.0/harness/lib/common-lang-3.14.0.jar:/workspace/target/foundation-0.1.0/harness/lib/commons-logging-1.4.0.jar:/workspace/target/foundation-0.1.0/harness/lib/core-3.5.3.jar:/workspace/target/foundation-0.1.0/harness/lib/fontbox-3.0.8.jar:/workspace/target/foundation-0.1.0/harness/lib/hamcrest-core-1.3.jar:/workspace/target/foundation-0.1.0/harness/lib/icu4j-77.1.jar:/workspace/target/foundation-0.1.0/harness/lib/imageio-core-3.14.0.jar:/workspace/target/foundation-0.1.0/harness/lib/imageio-metadata-3.14.0.jar:/workspace/target/foundation-0.1.0/harness/lib/imageio-tiff-3.14.0.jar:/workspace/target/foundation-0.1.0/harness/lib/junit-4.13.2.jar:/workspace/target/foundation-0.1.0/harness/lib/okapibarcode-0.5.6.jar:/workspace/target/foundation-0.1.0/harness/lib/pdfbox-3.0.8.jar:/workspace/target/foundation-0.1.0/harness/lib/pdfbox-io-3.0.8.jar:/workspace/target/foundation-0.1.0/harness/lib/snakeyaml-2.2.jar:/workspace/target/foundation-0.1.0/harness/native-tests.jar",
+    "net.zerocloud.pdf.acceptance.T13EvidenceCommand",
+    "/workspace",
+    "/workspace/capabilities/evidence/T75-foundation-20260914-r4/text/jdk21-in_process/observations",
+    "IN_PROCESS",
+    "0.1.0"
+  ],
+  "java-options": [
+    "-Xmx1024m",
+    "-Duser.language=en",
+    "-Duser.country=US",
+    "-Duser.timezone=UTC",
+    "-Dfolio.harfBuzzHelper=/folio-harfbuzz/bin/folio-harfbuzz",
+    "-Dfolio.t13.executionProfile=IN_PROCESS"
+  ],
+  "locale": "en_US / C.UTF-8",
+  "timezone": "UTC",
+  "settings": {
+    "workflow-policy": "REWRITE; explicit PDF 2.0 products; deterministic content execution, glyph geometry and mapping uncertainty; bounded Marked Content and Logical Structure; detached values, preceding Commands, Source ownership, all fifteen limit boundaries and atomic safe failures; Native tests select the recorded execution profile; Facade execution remains IN_PROCESS",
+    "fonts": "original embedded Type3, Type1C and CID CFF rectangles, with separate simple and CID TrueType programs; no system fonts or substitution",
+    "providers": "none; Stable Facade execution is IN_PROCESS"
+  },
+  "inputs": [
+    {
+      "path": ".build-cache/imagemagick/7.1.2-30/runtime/libX11.so.6",
+      "sha256": "c5b5d782bd9cab3420a62df88f5c991507edf3331a89f98464ddbc538c37b879"
+    },
+    {
+      "path": ".build-cache/imagemagick/7.1.2-30/runtime/libfribidi.so.0",
+      "sha256": "550020af7ff4f77e3f05500e71051b676ee76f530479c2a836dfe899fcaf8395"
+    },
+    {
+      "path": ".build-cache/imagemagick/7.1.2-30/runtime/libgraphite2.so.3",
+      "sha256": "fcfaf843b25b58b88319ced52f826fc8213a661f3693c916f88641eddffe05b8"
+    },
+    {
+      "path": ".build-cache/imagemagick/7.1.2-30/runtime/libharfbuzz.so.0",
+      "sha256": "4562cfcfd18935324ba3ac74a944898b867ab87a56e925ab3e351ba773f1513e"
+    },
+    {
+      "path": ".build-cache/imagemagick/7.1.2-30/runtime/libxcb.so.1",
+      "sha256": "7958a0136b121bdc4c708968569ad152a9ed208ab026e2537b1005dde64ca440"
+    },
+    {
+      "path": "build-tools/acceptance/arlington/t13-r1.patch",
+      "sha256": "b6e0ae70e1c5efa9cbe901a8d56a69ee7f331385523d8d5646e1e2f0d32e8a23"
+    },
+    {
+      "path": "capabilities/profiles/T13-fonts/FolioT13Rectangle.cff",
+      "sha256": "8cf18cd4e2c873af964be2ebff686deadb8db10a96343fd86636f7e460779bc2"
+    },
+    {
+      "path": "capabilities/profiles/T13-fonts/FolioT13Rectangle.ttf",
+      "sha256": "148b880e4f5ce722430de5ed3ecf893d629ae1ce5c68de0b30219b5eeab413ab"
+    },
+    {
+      "path": "capabilities/profiles/T13-fonts/FolioT13RectangleCID.cff",
+      "sha256": "e13bc2975a68ccdbe34088f8b9f7e400b2f69aec8295dc728389a0b3d12c5322"
+    },
+    {
+      "path": "capabilities/profiles/T13-fonts/FolioT13RectangleCID.ttf",
+      "sha256": "bc846fd8f382e7bd59f2742e81fe33ce5905f7f365026abfce261cd12f548651"
+    },
+    {
+      "path": "capabilities/profiles/T13-fonts/README.md",
+      "sha256": "54cb30e1e4fd0f246ca6a2dba12a0fd6dfd601d2238e0a434cb839033632a66e"
+    },
+    {
+      "path": "capabilities/profiles/T13-fonts/embedded-font-kinds-reference.pdf",
+      "sha256": "e016ccb3e411f70ee07b9e583ab9791d9664bbb1f0c8c5efa7874cb89cff2ada"
+    },
+    {
+      "path": "capabilities/profiles/T13-fonts/embedded-font-kinds-reference.png",
+      "sha256": "a835cd6affd09b91f34d189aaa109d96aa36833b796578d5bdaa6f11f412e788"
+    },
+    {
+      "path": "capabilities/profiles/T13-fonts/fonts.json",
+      "sha256": "eb792922946ce0c0d93af0ffd4cb91de7a92443708f90fde2d88c22e92f5dd8f"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/README.md",
+      "sha256": "ca4fbb412b4dd8a2995774df6f64d4d8c933d5f8b6110699ab4dfc4710d50139"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/arlington-cid.properties",
+      "sha256": "d358219f7da9c26bb85e0a211c88c6f7ae9e00eac2423eda763f6321418181dd"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/arlington-cmaps.properties",
+      "sha256": "3382bf1a8b36dd513873a17b7d9c460384c1a9e34250af3b8465245a19b5a369"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/arlington-core.properties",
+      "sha256": "178df803628eb17a0e6a87e9c9faac441373edbc60db115cba8e71dbb0d6d586"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/arlington-descriptors.properties",
+      "sha256": "92e09969447f8384d0a0c9b693f9fc8f17261e02582b93b6bccd361503224a95"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/arlington-fonts.properties",
+      "sha256": "7c4889c2f294cc4094bacc9dfd8af59642e183b3153de6c1b31f30429f253852"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/arlington-text.properties",
+      "sha256": "41e5d9fd856574038ac59ce7e26c4a96f6a28ab78599b7d5f6c9afca723555bf"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/assignments.json",
+      "sha256": "a66dd48477655338d0d6901f97ccdcba2859b60ea1df0fecd04241afbf525368"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/content-controls.json",
+      "sha256": "acb78f2a522a803144c0076e7c0ff5b8ce2b772350dfb579e141580ce28c7629"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/controls.json",
+      "sha256": "ef8d774dee2a8e84e8626a2e6d181b14f790995969524913654e0d72a4afdc9a"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-basefont-name.pdf",
+      "sha256": "7ed30183100e4aa2d4ac434d1939d0abae8684bd6c34022e677b0b3987f8b047"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-basefont-required.pdf",
+      "sha256": "36b8b9b330fdb777cedfac2a64eb01cab40d4a3b5967a6fafe3bc417264fa91d"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-descriptor-ascent-number.pdf",
+      "sha256": "30f79741a7c017beabcbc66da842f4339b119fd43a1a3342e16412753fd7eceb"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-descriptor-ascent-required.pdf",
+      "sha256": "f7ab474241298a6009401f4bd5a494bb40821f53d8835ebb69ff3d3e89ba3348"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-descriptor-bbox-numbers.pdf",
+      "sha256": "1a46b9918b0a0835dae3a8e75cc81f98e07d92cdc10d0bc9454e5f425b7aa82f"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-descriptor-bbox-required.pdf",
+      "sha256": "0ab7dfc79d8429c85ab076070de7450019b46ee245fcf3c0871433e561cb72c0"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-descriptor-capheight-number.pdf",
+      "sha256": "b0b764eb2b7067270c875f302cff3d963b4c11b479467ec56c4e54247d640f5b"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-descriptor-descent-nonpositive.pdf",
+      "sha256": "1a0352a1754b0a26693586758b667f9b89ae7b4b2e4ad2e28fddcc52a8197720"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-descriptor-descent-number.pdf",
+      "sha256": "2b90259da338964285a3776e2b57c04b4c665df0db6a4f73086629d671de3b12"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-descriptor-descent-required.pdf",
+      "sha256": "5e7fb350b10b1ff537466baa92a770b7c05114c9732bbecfe0afc1cd5780c9a2"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-descriptor-dictionary.pdf",
+      "sha256": "f70c545bcc3e272aa8ffd7f95773ed18b82e2faee9c2c8432b748fa05853c459"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-descriptor-flags-integer.pdf",
+      "sha256": "d195ab0df1bb6c28a65370f38f4ffe449a04ed14fb5ab0078f01b1698ee1c226"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-descriptor-flags-required.pdf",
+      "sha256": "a83aad193e14432ff5b55a8e1d0d887501a1f3fc5fecfad9e818a20701878e86"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-descriptor-fontname-name.pdf",
+      "sha256": "dd4a98c193f6bf5e7b2a278d29e26d27c6df7727893b3d439ae6b9e2fe396354"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-descriptor-fontname-required.pdf",
+      "sha256": "706099e445da92de2e8cdddb523252e287ac25d93f9d9e8fc37cce8233e78caa"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-descriptor-italicangle-number.pdf",
+      "sha256": "b80edeba8b0ee9581fbb7d0917e3850ac256992a47b5e9715ef9ca0ad073bd94"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-descriptor-italicangle-required.pdf",
+      "sha256": "67be69a4e1d6041850bca11e63c48866598cd3b62898e073bb964766800d14b5"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-descriptor-required.pdf",
+      "sha256": "ce0153916f5f204307651066c9d9d0c996bea8d2f3e94f10e4aa82bf749eb7f3"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-descriptor-stemv-number.pdf",
+      "sha256": "dfe02c121bf2ba395185b1bf28494c864494f40959265ad7e03e62c936788854"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-descriptor-stemv-required.pdf",
+      "sha256": "14d604edfde45a94e48f2062b86364ee23002e697b990550f981e43e9a780693"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-descriptor-type-name.pdf",
+      "sha256": "90966922baaa13e571cd1340ec22c87970de76b5a35a088177853b4f52f6d824"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-descriptor-type-required.pdf",
+      "sha256": "98796ce4313cf199aa7f7efa06cca8ba5ddbd3bd236bcbfa09350ce3156d1688"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-dw-number.pdf",
+      "sha256": "6becff22e6248df0a92ae760a9685c90522ef6d409d775b13d3b8aa1d7d6aa7c"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-dw2-array.pdf",
+      "sha256": "27b1469f60761d8532247a082ab1116633a7ea562d007b0d54989374d24f21b2"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-dw2-cardinality.pdf",
+      "sha256": "91977673d4649da0ee01d4d7e30e1e9f9131fcd88825bc60b90b5e2a803458bb"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-dw2-numbers.pdf",
+      "sha256": "240ffe3f22446352719d5f15d1dbe4c3032edd01ebbe13946ff3700e93f61ab2"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-fontfile-stream.pdf",
+      "sha256": "59cc0ba82df0a5587fa4b64d69dde959f01d3f8bf18b5c5668353dc8ccc65921"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-fontname-consistent.pdf",
+      "sha256": "41ead4cc938319a01a3c62b26b467d85f91215b68bc05aa09fe95df4290585a1"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-ordering-required.pdf",
+      "sha256": "bd479a54019e60f037cdbfbc7fdf6e7b691253ab302bed994495e0f2cbf06725"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-ordering-string.pdf",
+      "sha256": "490357509c7b3a7dae1d3d7ff02d13e0f2b1ee14040c83c287c2744865966c73"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-program-subtype-required.pdf",
+      "sha256": "c11e1fc7f291f6641875f81fe779fb5b04e45de9e04031520472fb7882d387f3"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-program-subtype-value.pdf",
+      "sha256": "f1671fd712283a7c86fe241035bf685e025e6ffd3755c663921cf5c2469dd51e"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-registry-required.pdf",
+      "sha256": "3ff0e1ecc13252f0bf4a84d28c18157a304b097276561e828544326f102186b0"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-registry-string.pdf",
+      "sha256": "63e3f6a31ded8fe6879d530bff218db5468e7ad4a854877887660d74100f1af5"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-ros-dictionary.pdf",
+      "sha256": "a9656194ac89fc2660b34ffc7fb235ddc034605504e2ae26a00f1fee2a81c92b"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-ros-required.pdf",
+      "sha256": "221e2c5e75520e016e2b34cc8a6f2204f04ecccbc6907efaa9e176ccd677967d"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-supplement-integer.pdf",
+      "sha256": "72d5c542fb046457b574019330451f3496a5e4ab7972e9b2a322289179449b4f"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-supplement-required.pdf",
+      "sha256": "60b44df62222a42e00fafe60f75dd02a51af05a181efe341b3fcbf853db7f192"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-w-array.pdf",
+      "sha256": "e6a5ebf02188b656f9fcefd309127590625fe0f6b0885b2e6c24e4e6919c91c1"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-w-numbers.pdf",
+      "sha256": "636bc169a40655c0c962febb48088641f5bc1e36c671bf964dfd3a4e94f5f221"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-w2-array.pdf",
+      "sha256": "32946d7d7713df96368223964ec992f911e3926703158e3cfe8f4275fd838dfb"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-w2-numbers.pdf",
+      "sha256": "fbc658271018f28e4be738ec2fc76d3b71cb99b89edc635c634f0d4430bf82e6"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid0-w2-triples.pdf",
+      "sha256": "e3e843e331136c0e884cb9df9bfa95e113cca1862b3aa4f6340d2a5b98735146"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-basefont-name.pdf",
+      "sha256": "a901426947cd9cca2635c30496bf5bfe8fc59e2d72760a8b2832d72497622cfc"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-basefont-required.pdf",
+      "sha256": "dd0ffe6340c4778baed0f59b49b932ab9af6d56e90ec80c1e0d2b5c0c8a73ecd"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-descriptor-ascent-number.pdf",
+      "sha256": "d02ede999234ff02e1bb25429c8b326d66f02d8bc68cd506c248bb03da649c09"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-descriptor-ascent-required.pdf",
+      "sha256": "da1a657d8df96aeee620c76f42af2c5f410f6c42514adb00e7a9ddf7a26fe3ab"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-descriptor-bbox-numbers.pdf",
+      "sha256": "e7b19a0b2f04ebfebcd4a9466f6c6cc63fc98017a7de7e9ab61f886a8e83385c"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-descriptor-bbox-required.pdf",
+      "sha256": "d1b2801a28caa4cdc26200cc5cc757eeb2516ee40eb0591f52240848186023c9"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-descriptor-capheight-number.pdf",
+      "sha256": "dc98a6a1f4633d887bea3649ae957b674ce3b90da6293853544e9e525e6cdfa3"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-descriptor-descent-nonpositive.pdf",
+      "sha256": "98e1596b30a46c21346250ec99d72a65fd2fd160f9679eb3d1544a0184bb5ec3"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-descriptor-descent-number.pdf",
+      "sha256": "09db37cb621239aea0041f6f3245da38cd1d42eaefec6c33b6990aba2406d285"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-descriptor-descent-required.pdf",
+      "sha256": "30ce67ea30b905dcd16851cbb4dd518598fc86bef534e3339d3c4513dd964b34"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-descriptor-dictionary.pdf",
+      "sha256": "ad33266548b3c3a3206009f839dcde22b18e4f7625ab8abe5c5aeb7ef680671c"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-descriptor-flags-integer.pdf",
+      "sha256": "88bc55bc429dd087cbecdd56c8a8f9e217cf45f27544f6d661adb0f53921cfd8"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-descriptor-flags-required.pdf",
+      "sha256": "1f159ad87d5210cd98f3fcaf896b397fafcd09018c36af54da65635c0baa7eaf"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-descriptor-fontname-name.pdf",
+      "sha256": "de84354492d981ba46acb90c8c4c97d4a18e922e340b1050d597b686730cc0ce"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-descriptor-fontname-required.pdf",
+      "sha256": "a0c65700372d63b88f65608fd5c6761a2cd07784b962b85b66592c8c3ceac3ee"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-descriptor-italicangle-number.pdf",
+      "sha256": "15cc141ba7f0476abe736c7316079ffdda7628bdcaa2a3d4ce7ace085cf78645"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-descriptor-italicangle-required.pdf",
+      "sha256": "6b326b6bac56e9cec34052096873f74cc425f34df0733b9dee9e590194761922"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-descriptor-required.pdf",
+      "sha256": "b99283f0d75232952898709a274d92a7fb0f10391b2de8deb5192715076efe69"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-descriptor-stemv-number.pdf",
+      "sha256": "99b449574ff3dabf162cc1b293eae9fc2e51a1f1ac380d7703a8ffcc43a136e4"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-descriptor-stemv-required.pdf",
+      "sha256": "5262c54f339bcc4d9f24b542b3036c0d6201fda26f7941f625a379b0a7043e35"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-descriptor-type-name.pdf",
+      "sha256": "657930524402c8d8616b588cd715e8bb9d4bb11675e05b68b27bbabbe74fb339"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-descriptor-type-required.pdf",
+      "sha256": "a72bebacf512b1d7e71f67ebaef4d34a3bd467833c7a3ea294f38e15c6deb865"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-dw-number.pdf",
+      "sha256": "f8739d46951c30e91419107e6679d7375232dfcb3d0d06df53d2251551a6093b"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-dw2-array.pdf",
+      "sha256": "ee028e6a465d74903c433a36df7ebb15083c7a5f27cf16df7774e557c7668130"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-dw2-cardinality.pdf",
+      "sha256": "1a552daef4216587a4ee23b298912885e85a74ecfd4a3add4e34a3217dd67775"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-dw2-numbers.pdf",
+      "sha256": "357f66bd7f8ae5df38532384fab111352431c38bf03c792a5c5c8711e1b91a3e"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-fontfile-stream.pdf",
+      "sha256": "a455bf1cd7ad5af14213a5f0158a31072cbcfbbfc20552b5f07879dff9928fe5"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-fontname-consistent.pdf",
+      "sha256": "1a2288809aaf1b74230f1f96424e06b46833719b9d14aff3ddf95488087e960b"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-map-name.pdf",
+      "sha256": "c9481bbb90095c6b19ca47dea92b086d99adb771bab5967c2b6af9c6cadc4a11"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-map-type.pdf",
+      "sha256": "c26c4a32f455bfd6db7d04bfa74c26d43f3328803cd389505c821928197e47ce"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-ordering-required.pdf",
+      "sha256": "a9fb5f9a35fdc1820269ee45bb0f072fd762b6333c274e9f033496ed48e1d385"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-ordering-string.pdf",
+      "sha256": "85cee7232d51c0b6d2e9fb3f386177fc4d824adaf268d15e84bbe918b163e1be"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-registry-required.pdf",
+      "sha256": "a53d88c5106defc3a73e439463d96ba59ed1fc21a16b4799cca3eb8ac8f5290b"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-registry-string.pdf",
+      "sha256": "957b79b35510cade6ddfc67d5d921e6b9cf854b1bd9348c2ec0a727b8d665515"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-ros-dictionary.pdf",
+      "sha256": "56c66bab958d3abb0f77b116ed7b12536ef87ea1cf5f48be6846a1a49f8ca171"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-ros-required.pdf",
+      "sha256": "e24b2807f78468159a8bc75f03090dccc5fff49700e233389205d76994afd14b"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-supplement-integer.pdf",
+      "sha256": "a105230fee9b6750c87a54dd5c545660ff02c4d487b80ddb2440e98651b82c56"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-supplement-required.pdf",
+      "sha256": "863d9f45fe4a59f8ae4e847c2dfa9408ad2a91d9f69f2950d76df288195a4eac"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-w-array.pdf",
+      "sha256": "57d56bb8bba2dc5266cdee7094d84033ce7e29d4610b83740fe2339f8bbb6ef2"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-w-numbers.pdf",
+      "sha256": "8bf327921d46de1dd1ed568b778ec1a26ee69b1bcf9904c296e1a0b2c99863f7"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-w2-array.pdf",
+      "sha256": "4b7d205b43f557b5bd88746a0acbc65dfc3b5429231d6697b7b03b7bb232f152"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-w2-numbers.pdf",
+      "sha256": "a8f153c0f77921f16f36d938e5b34ad39136844a5a6829af06c44209f7d80ab5"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cid2-w2-triples.pdf",
+      "sha256": "81d8ba3a55e3b895d1dfd1073f6f3d09cccb92bca3460f478c5e8a81dd2bd139"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cmap-encoding-name-name.pdf",
+      "sha256": "d80a0f24cf42df82f6856e8aff6f5660367656d90bf851d9a105f4dc65160db5"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cmap-encoding-name-required.pdf",
+      "sha256": "efa7688640f84400dbdf43115fdf283a54a6dcd834aecaf1309d8fb3a02b04d6"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cmap-encoding-parent-type.pdf",
+      "sha256": "7ad3422449f3b7287dfe00370a88d1c7c59c9f80930fe48cf55bca0d1ed821d3"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cmap-encoding-ros-dictionary.pdf",
+      "sha256": "b328fd97f86df7c2dc736e36b4d42261a83dc561cc08e5b2b955f1215acc8eb3"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cmap-encoding-ros-required.pdf",
+      "sha256": "563dec7d4ddc1b012374e9539806f760f64fc4979694509492e6f2116cd16662"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cmap-encoding-type-name.pdf",
+      "sha256": "7bdd45458faeb7d568dcaeaf91b6d01977c3deb2498477807ad8158de11d5e33"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cmap-encoding-type-required.pdf",
+      "sha256": "baf3de9af7b467de259135fdb6967ac10e43d89956422eebbb11b6164cfa8a5a"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cmap-encoding-type-value.pdf",
+      "sha256": "dc9dfc7e6251a57ad1f88403957640e26b7e6c95fd1f995afcef32958f8833b8"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cmap-encoding-wmode-integer.pdf",
+      "sha256": "b56125870d9ba0573adb4888a14857491bdd020e0861eabb35799b50e57079a9"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cmap-encoding-wmode-value.pdf",
+      "sha256": "4658f9cc4b929a9ed5c44c178973ea0ae454ad79b7a532bfb1d2a9ad3b4a5b2e"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cmap-unicode-name-name.pdf",
+      "sha256": "d8de5ceb2eb6699dd8985bbc1d5035b31fb26a5d6a8dfbf257f4bd4c4c0200a7"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cmap-unicode-parent-type.pdf",
+      "sha256": "95a4cfb1761cd561bc444f329861be4f792a744cb9a6d968432309b772eed4ea"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cmap-unicode-ros-dictionary.pdf",
+      "sha256": "da96a76426430588d58f1fb2d8281c531c1039506c545c916f71df41952b1db5"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cmap-unicode-type-name.pdf",
+      "sha256": "5f8aace004219eeb447c593d4d79a5681ed09d92732627f1a21bc8947486fab0"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cmap-unicode-type-value.pdf",
+      "sha256": "89ad3fde5db147ac6e6e2b6b24643e9a0a406ada479f7f5ff972a65184a9f43f"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cmap-unicode-wmode-integer.pdf",
+      "sha256": "bbbeab6f8aac52e153cb34c972358b409919df2e586c197dc557dd32abba3835"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/cmap-unicode-wmode-value.pdf",
+      "sha256": "aec073e5679baf3bfcb44efa99f2ca00e0b8d7b3c59134cf7e0a3e4c8ba940fa"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-boolean-mcid.pdf",
+      "sha256": "957f8dda00467092b15383991b7c8c2ae3a562e69a6fb16f74be73b93f1b7dbe"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-catalog-pdf2-form-caller-font.pdf",
+      "sha256": "157e189413e0fba6834b6cd2a11690a2deffd68b24dd777bcec8b161a67a2b68"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-concatenate-inside-text.pdf",
+      "sha256": "bed7ef3af520c2fdca6d7036e14a0e713eed8056cd244c1badbb55d40dd23024"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-dictionary-name-alias.pdf",
+      "sha256": "9940c144492a0eb07b0fafd7777c475a3d6e18e7a1f47e60d6702e6f1768b887"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-dictionary-word.pdf",
+      "sha256": "3d3fb6cc700ee542cf987f88ba7afd1ca8fd902bd3682ca9c9eefa366a10e5c7"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-different-font-name-byte.pdf",
+      "sha256": "0c9b59db5afa89f76768300a9b18461729d97df312407b0858676423d3ea0e05"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-different-font-name-utf8.pdf",
+      "sha256": "4943739e5264712cb217f5d04ff360a4896cef7f33ac3323120c235f61007214"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-duplicate-mcid.pdf",
+      "sha256": "2a51c676fbf3eb29e0882a44f7787d42844a29161ebcb5ce8c9ed080b77d7a93"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-font-box-too-small.pdf",
+      "sha256": "54b8f9afbeb30cda2bd6d0af9eee8db798923719e0f716ca782f0792f8e84d70"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-font-restored-to-unset.pdf",
+      "sha256": "b7aa8cef0efb5e3c333f668a2cdbd72b00f9e45a3e9bd9e01459e94076dbb6fd"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-font-size-name.pdf",
+      "sha256": "6297accef88582b905ff9448a6fc00344e61bd0fdcac2fbab8ab1136e18127b7"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-form-does-not-pop-caller-graphics.pdf",
+      "sha256": "40e0822b22d1abd79249496143284b67d2315b06ba0b60dc1336dd9ae4df14ac"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-form-in-text-object.pdf",
+      "sha256": "47251557bb188bfccd66188d067caa3ca42a56a985cb97811b109ffd94135403"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-form-name.pdf",
+      "sha256": "cd0ce1531a5d67879aac6964d83c04abccfed6bb757e86f3369e984c0c02b8fa"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-form-used-as-font.pdf",
+      "sha256": "1e2725139cbabf56c09c642a71ed92fb142f1834911cbbc597a4c8d262bb86b7"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-glyph-missing-header.pdf",
+      "sha256": "3a1a7639a73c87ffa56adf0fdc9da2766ed7a45d76805c2652bdeb433f90bfa4"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-glyph-outside-d1-bounds.pdf",
+      "sha256": "26ee30654cafab695d7d1e497753e4b2aa83453a6e1e792e49aeaf6bda2be102"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-glyph-rectangle-arity.pdf",
+      "sha256": "cabcacf2fdae901bf3a9099215079a0ded57fa8daf8eb81dc47b4be8e9709c8c"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-glyph-rectangle-name.pdf",
+      "sha256": "8f0dffb2272c806837d65ffa8e3a53de61283c161e5af90d7648323f499fe3eb"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-glyph-repeated-header.pdf",
+      "sha256": "8e11534fb339bab66d623d27b36fe1f07bac9576fb6c36703628695e8efdd04b"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-glyph-unpainted-path.pdf",
+      "sha256": "bf876f37833985f861a36eea7edff8dea98c49a41ad78caedca2383aea459f32"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-graphics-crosses-marked.pdf",
+      "sha256": "b012ab83e94a1ef70f66d8a312d89913a157ae883202415f06ecb0244a18909e"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-graphics-unclosed.pdf",
+      "sha256": "441eadbc65951d3b854029f0a2b140032c4c510ccfa5a395ae1cefb45684bc8a"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-graphics-underflow.pdf",
+      "sha256": "10da68e7b6805f20345c7be7bb37fe8a9d3f46b41572db373b07338972ffaed0"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-marked-crosses-graphics.pdf",
+      "sha256": "43e19fcde2c1285b325af3e3e99d7c2252a3b9cb9da7acc5d40de592f287252b"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-marked-crosses-text.pdf",
+      "sha256": "6840cc2ff39fd6b616480d2f42e454c6222d34ee23e7fb88c7a3177ad743711c"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-marked-unclosed.pdf",
+      "sha256": "025574650a076df0f2a00023150a370ad7c103fea32b4c2b908c644337414228"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-marked-underflow.pdf",
+      "sha256": "c140ba9208195ba9b07b89cd291c70196e0de88938502d57d57ac77aa109cfe9"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-matrix-outside-text.pdf",
+      "sha256": "141d89fd65644e1b6831b694ba8602233989652eb7d1c52688b15c4d27381538"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-missing-font-resource.pdf",
+      "sha256": "c69a01ed0f032dcf04d8ae0baf1b17b0575731eb95b051371c49f314c5dfa082"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-missing-form-resource.pdf",
+      "sha256": "4a9b14ce99fdd62191f52d90feb49f06eb826482cff24592b21cb3da7ce3078b"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-missing-name-escape.pdf",
+      "sha256": "3142700f671999171665cdd211c78189613fbae4a07b821e3546e3d034a6bd1b"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-missing-property-resource.pdf",
+      "sha256": "79a53b2823fea2bac395c645c8c159ec10e55c257b497e421e38f09f75438d73"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-name-alternate.pdf",
+      "sha256": "fc699f3ffd4cdf488b5a37f659c7e75826a1c38f7028e872cb2d4304a82f895b"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-name-mcid.pdf",
+      "sha256": "e13497fa89516796c99c164386ea5b6ef8d01ac5ac6df8f8b3c65bc061bb15f4"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-named-property-wrong-type.pdf",
+      "sha256": "a93edfdd04d7716135c2f69db4f49e04ee5d216559f2fbe812849b63eac32fa3"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-negative-mcid.pdf",
+      "sha256": "0d97421014f6ff51cf962a0a975d42876a823927ecf7c8a31599242cb279e4ef"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-nested-form-caller-font.pdf",
+      "sha256": "a46b6879f4e2813fe011ad3aa2dde5b42785861711b52ce98f9c812f29cf6bd6"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-nested-text.pdf",
+      "sha256": "3e786bc4a72c1e0d6694606648fd6ec678039f739ae8ffa3166b5a220c080e5e"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-no-selected-font.pdf",
+      "sha256": "e6d68d3cc3348056b3a9b7812e7c558ef10b971431c42c07cd3f87dd8e45bb0a"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-nonhex-name-escape.pdf",
+      "sha256": "438bde845f7183df91302a9802d70601380bf1b946691a955ae8cd43f59d1022"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-null-name-escape.pdf",
+      "sha256": "de1695fef139cae581e31ef0fd614571c1816a8ec208cd3a9392f1a0431d075c"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-numeric-language.pdf",
+      "sha256": "2424f5bec94f66a5a6a0b3c6cf90ffb7affe2fc108ed211df0077438cdfc7464"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-numeric-replacement.pdf",
+      "sha256": "ca16b6e66647a5985db05e75f7d5d8ac4aa92e9734d9cadc77a9d5e7a9a0cd8b"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-real-mcid.pdf",
+      "sha256": "8c86241fd2756196ef8580402800318c95346ca25352cc444e6eaf886f2a066d"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-restore-inside-text.pdf",
+      "sha256": "8b72db5eb9abc253eb25711254a16a0def0a8bfb72689063be4e5a79487e6b10"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-rgb-name.pdf",
+      "sha256": "884d3ccf814522e63ef330425f5a06d57220585ceac25cb6e084afdb7fb1c99b"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-save-inside-text.pdf",
+      "sha256": "3d22d9a79b599e306d13ad2fbeda156fe06a9203a5cd116152661ba538ace3a7"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-show-name.pdf",
+      "sha256": "f88b731e842299dce1f0b66e35683db63722d7df66123fa12d0e3d6e079e4b2f"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-show-outside-text.pdf",
+      "sha256": "848c3b978833b9d303c4b73c9a53f227fe4656d1c88deb0656d0ce8ea0dd8c85"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-text-crosses-marked.pdf",
+      "sha256": "a29811035d002c4fe34cdd12fcb28927ace83a2ab85edf4b525af20d4fc36b4c"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-text-matrix-arity.pdf",
+      "sha256": "90d3814595c499e7742acc13c7fcff8facd768c26dc17ee3098613b1e77a1b33"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-text-matrix-name.pdf",
+      "sha256": "594c504391c691f8878f867b1b7cea0438c066b392c845b0616f1a98fb6209e2"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-unmatched-text-end.pdf",
+      "sha256": "61d8f887a64420487007d8fedb01cc9d95340f49c2d06cc4d3d454b2e39be96f"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/content-unterminated-text.pdf",
+      "sha256": "76e830eb6b889e26a088bab4ee146f0c4659af9443ed00af96c0519be27f3f8e"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/glyph-boundary-base-encoding.pdf",
+      "sha256": "e77cd42550ce9bdbda656fa08bc9cbacf2cef96244e20b5baa236ac1c08e53b7"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/glyph-boundary-comments.pdf",
+      "sha256": "cc5effa1f7368154771c8cca85d5484af59d54e7bc43fdb86b28a8fd9f3782ee"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/glyph-boundary-delimiter.pdf",
+      "sha256": "d027261bbcef30e8fb23a6d30afb39ca4ab6fc2fbefca4c79a2e0890c054ec82"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/glyph-boundary-empty-differences.pdf",
+      "sha256": "014ddf0bcdfa195cd9234c90b87104fd65cc49319d8dc5ff0dede538e8bdd71a"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/glyph-boundary-fractional.pdf",
+      "sha256": "391fcc0dcdaf1bc8a49e2e1d9526fe0aa2bdd3a395193c33f20fab0525f0fd4e"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/glyph-boundary-numeric-range.pdf",
+      "sha256": "4927f02371061d88a22d44f6288e45945e47ad3ef88c748ccbadbe73e58e4f98"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/glyph-boundary-unmapped-glyph.pdf",
+      "sha256": "91bfe8afcd00f95cfd31ddf75f0d41c66723b248ef28082d3993bac47e8dcf39"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/metric-cid-cff-widths-array.pdf",
+      "sha256": "909eda32db55b24327653b84f6ba56086dabe960421761a0a1020ba3147f2aa7"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/metric-cid-cff-widths-default.pdf",
+      "sha256": "dcee0484baa6d4a6d49884a10f31602cb1fb5585d3bfb1526392e6906145d1a6"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/metric-cid-cff-widths-range.pdf",
+      "sha256": "8a066239c79eed725d6262ea76153c0df89a4f805e0cab37e44461e301767954"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/metric-cid-truetype-widths-array.pdf",
+      "sha256": "6b1557946cbf73f9a690b386aaaa417ace8c97fa7b0d3f13c903967b323066bc"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/metric-cid-truetype-widths-default.pdf",
+      "sha256": "404eac3aec29715c82e9425a9c204e8adb81242c8da957582a9c7eb73ec7e7ea"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/metric-cid-truetype-widths-range.pdf",
+      "sha256": "a95458a925c8a50bc84da6aa68d0b3760727618a236fce7d019c9c3522054fa9"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/metric-mmtype1-widths.pdf",
+      "sha256": "73387035ebc64707b4f79c99616a05e4b598fdb9bf5e3560ddb6fb943c0bc491"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/metric-truetype-widths.pdf",
+      "sha256": "60e41ac63944393282b14893f7d8ea3e16dd663307e82de6565fafe4383053e2"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/metric-type1-widths.pdf",
+      "sha256": "00fb12ddce2bf59914a1779212ca649333f04d239540bad45a7d6a7d96e806e1"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/mmtype1-basefont-name.pdf",
+      "sha256": "a0a941fabadd53b187c4453ccae082fe83a8f3c4e12c7fa9aedd68b0a35501dc"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/mmtype1-basefont-null.pdf",
+      "sha256": "768d185e305f5f2616f8541df3e2e46394865e0e640eba6c863f835f075a19bf"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/mmtype1-basefont-required.pdf",
+      "sha256": "cdcd3bf1e600da8e853eb16c573979cba8bbc9e82e76e76a8292857c9a7614c4"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/mmtype1-descriptor-dictionary.pdf",
+      "sha256": "447f446bf5336840b1c06e70f168a8efcc90c17a514255bfca4b1b1bd670334c"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/mmtype1-descriptor-null.pdf",
+      "sha256": "ca7b637e3d61779b7df9aa6070182f47bf8fe5b749d76fd2336d768bc48bfeb9"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/mmtype1-descriptor-required.pdf",
+      "sha256": "fa56d123dc72f68feaa3f4f5b92e2e4f6bc8706ca192044781e36ae48d1e19bf"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/mmtype1-encoding-type.pdf",
+      "sha256": "d8de4829b81428010f86c31026f2cfb376e0529bb3219036ee437b309379e547"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/mmtype1-firstchar-integer.pdf",
+      "sha256": "ff9babe8ff0c81849b9acfa2527cd73090c3ec248014925a7fd742cd93cb2790"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/mmtype1-firstchar-null.pdf",
+      "sha256": "4ee398808e6012460ad6605d156ec56e0015ddd8cdec83e3e8edc98302d96624"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/mmtype1-firstchar-required.pdf",
+      "sha256": "9b3727a0fda2cecb6d42b43777acbfae6b1a9510faa520c2f688201a9d7c452a"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/mmtype1-lastchar-integer.pdf",
+      "sha256": "3462a94b10a3f564664881e422f0d6108621e8032d69d5e82974583579bd888e"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/mmtype1-lastchar-null.pdf",
+      "sha256": "4045e6f1ac3636b0931d561130a3fd709059c4d9f24118b480a2d8c32cf75553"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/mmtype1-lastchar-required.pdf",
+      "sha256": "5172e0d4fb6eb14987a3aaacf132a8113d528e8cb050bbee19c9b8c7e0a1fc08"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/mmtype1-widths-array.pdf",
+      "sha256": "8dfeff102eae57b0bd3331432fe7974c2d80222bff4a356629af9a29a36b7b86"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/mmtype1-widths-cardinality.pdf",
+      "sha256": "27400b77d2f6d7f7b46c602a9c64d5e290eabecdc89e522bceb7f8b06d79064a"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/mmtype1-widths-null.pdf",
+      "sha256": "76ac1864ff19ffec3487be736696f9abf914f5e6175abf2df760202ad646ba12"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/mmtype1-widths-numbers.pdf",
+      "sha256": "953fb1bb4f038f83d665af3f2c909fab5461972c56d1bf494e6557faa06eb3fc"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/mmtype1-widths-required.pdf",
+      "sha256": "2e1996c9f6d5c49a30d9b035fdcd902e674f50bf8d9b0b863f60a2ed7b3e4179"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/page-userunit-number.pdf",
+      "sha256": "ec92724158703737549b461ea5355be31928b2037b15a5d62f0db5821897124f"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/page-userunit-positive.pdf",
+      "sha256": "bbb6d18fda8c455918f7e18e9de77bbf350eadbb896974f82e5937e79440d4ca"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/positive-descriptor-name-only-type3-fonts.pdf",
+      "sha256": "b88c8553bca7db6ecc345523923c1f1d205b732eac25bb20f6e3fd456deec235"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/positive-direct-fonts.pdf",
+      "sha256": "e016ccb3e411f70ee07b9e583ab9791d9664bbb1f0c8c5efa7874cb89cff2ada"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/positive-font-name-only-type3-fonts.pdf",
+      "sha256": "24dc0b227ee6c7a728a4ba6fabf12562a210f7005771c325a1f3e93867ae6cba"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/positive-inherited-fonts.pdf",
+      "sha256": "d44fafaa0000b999ac41059e6d952bfc0c60ac2118d96f889bc247ff07fedcd8"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/positive-named-type3-fonts.pdf",
+      "sha256": "8ab0ade118339b4d9efe0939be481dd6453482edf0751961d745f9b6c52bcac6"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/positive-pdf20-nested-split-type3.pdf",
+      "sha256": "c18f66297b3a903bdbf13468fb499e49f9e068fc8a7d3fc0002052abda318207"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/positive-unnamed-type3-fonts.pdf",
+      "sha256": "e948e353e6a0ef4f510a206a079d647837b59cb10b90c3c35679f33c83f1b5db"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-binding-simple-two-byte.pdf",
+      "sha256": "a5c813f4bd27bfd78980283bdac91720760a45b30171b2771ae8d3840bb816fb"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-binding-type0-one-byte.pdf",
+      "sha256": "7c0e34fbc8e036157a7a97ea039c74fb5bbc5859388a203e7ea7d2c9d1e2c866"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-boundary-codespaces-256.pdf",
+      "sha256": "06f5f6d13684463e62b6675516da0e1efef6fe78340f29f5cdce9c648d5023cb"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-boundary-codespaces-257.pdf",
+      "sha256": "41a3d883fcd614d18a92d04646599f863a8ce1b3047468b0060bf9f3404979f9"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-boundary-direct-font-bad.pdf",
+      "sha256": "5ec726ee009d6e40a86808f1669fefef4e00e80079a54e8ff3dbc1e66a3ff9c0"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-boundary-direct-font.pdf",
+      "sha256": "61c0d8c69d265a3872dff0597ee6993027fca95df35ddaa5ca39dc21208b77ec"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-boundary-inherited-sources-4096.pdf",
+      "sha256": "b4ec69ef9928064843a0083fbc7e84a00b521d437b4cb15fad1aaab57d98b71c"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-boundary-inherited-sources-4097.pdf",
+      "sha256": "eddfbeda49b042bd02d42403e9acaa70e7d616f8f09a5d0dffa7a31c2f238aaf"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-boundary-mappings-4096.pdf",
+      "sha256": "634448d6a1dfcdd731fdcd1e1ac6a21b00557bc0ff8c492f4a3b5524184ac5f3"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-boundary-mappings-4352.pdf",
+      "sha256": "aedd45697acb67c9081fafde20deaa2e15054b8632a342467159d44527e7f7f8"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-cmap-block-count.pdf",
+      "sha256": "b733db2943fb049b66fc10df251bf90a5bdfe3f724209d9b38bfe0dae913863a"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-cmap-encoding-bfchar.pdf",
+      "sha256": "b94b41052b491a95ba11cf14f1a6fcd5228d27e427dcf17056c1868f3ed1a447"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-cmap-encoding-type.pdf",
+      "sha256": "cadb060a7d3715fb74e87e1e2edd5ed04fadf8b8f309b49ffd182514354689c6"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-cmap-font-ordering.pdf",
+      "sha256": "6c9f7d28d60b8d123c39c74f227ca0d186384e92b9497beff53a45c799d00a79"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-cmap-font-registry.pdf",
+      "sha256": "2b9883851b06182dd9a8c97307ad477a4461c7fd1c0467536e1041fafa1709c1"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-cmap-font-simple-domain.pdf",
+      "sha256": "a5c813f4bd27bfd78980283bdac91720760a45b30171b2771ae8d3840bb816fb"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-cmap-font-type0-domain.pdf",
+      "sha256": "7c0e34fbc8e036157a7a97ea039c74fb5bbc5859388a203e7ea7d2c9d1e2c866"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-cmap-inherited-codespace.pdf",
+      "sha256": "57fcba075367b7c383256334f5e3c80b71721685dcf477c7c4ece61606db7a2d"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-cmap-late-codespace.pdf",
+      "sha256": "2899f8f99ed8acd5c6e6a17fa44ca8113038ab01468bae5fc5546c8b343ab6c5"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-cmap-mapping-code.pdf",
+      "sha256": "e993d82dceef27c3c1a8bc7e8407e9bba8394f63bce5c9b6c30fbdaa70c0f29b"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-cmap-missing-begin.pdf",
+      "sha256": "31d36757960e54eb2a3926a9d140c936226fba23ff247ce34755d8c3d3618fda"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-cmap-missing-end.pdf",
+      "sha256": "176ae8e740ae2337418ac1663e66f5e2bb07e4d40490329c8c552ac94cbaa409"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-cmap-missing-parent-space.pdf",
+      "sha256": "37570c839db64112553b139c9e2e081b8677000aad103f4bdae77af63eb7d10b"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-cmap-mode-agreement.pdf",
+      "sha256": "e01d00a29ca41e68d3470d0a6b260d3f0c58079f17006f71847c1ad7df622f03"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-cmap-name-agreement.pdf",
+      "sha256": "046ffe639254c4b06d2686515506b81d7f8f0fe44edae50ce691fb02af68090c"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-cmap-negative-cid.pdf",
+      "sha256": "e195858cc4fe40a71813dc7de37cd5bf079677b60cfdb3d48b1e9e4dd01ab018"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-cmap-overlap.pdf",
+      "sha256": "dacc73284a64036b8fd91ca1324cb504c42306b22b4f123a4d17b46456c620eb"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-cmap-parent-cycle.pdf",
+      "sha256": "94dee8188526ac703030af018d31cd78016c2f7ea7e474a5c55d4b0e06993b78"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-cmap-range-cardinality.pdf",
+      "sha256": "a49b51b1ef0ae675c907e27eeafda31446e9d14090476dfbea0df477395abd20"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-cmap-reversed-byte.pdf",
+      "sha256": "277e1e21ba4d750c41bc6c70f780341103d87066b94c9a64cfdcf73b2d306bb5"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-cmap-reversed.pdf",
+      "sha256": "868a6d39913e2d0eb1ad4a4319e4ceb46f4112c7ee235bf46ed4fd82535b1b4b"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-cmap-ros-agreement.pdf",
+      "sha256": "41011caba472b0e9fef4d8bc0fcc8ca1563e00802cfc8a53f07943d9f76a3a1e"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-cmap-surrogate.pdf",
+      "sha256": "977c3d2e73ca99d486f3e2eeb55d48b27c03dde9d74d25a029d9a52da591f357"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-cmap-uid-string.pdf",
+      "sha256": "16bba1b7686b9c944f90522796f2119710173c7efccdc3f1d98d5377393964ec"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-cmap-unequal-length.pdf",
+      "sha256": "02cdef0c63d1e58bcc1795f1220de3f379b85fe0f0c06417b91d0d16f6174275"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-cmap-unicode-cidchar.pdf",
+      "sha256": "e9fe82bb540672fe92a52289d9ef28b2e98a888766c434e581227b914d0fa54f"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-cmap-unicode-type.pdf",
+      "sha256": "9c4c5abc40cd2a9e79c765c1751a8f2bd5c4f741eb80c76f27c9f99f8111cdb8"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-cmap-usecmap-late.pdf",
+      "sha256": "9c768e4113b36ad8b974ccbdcad1ae1c06c0b51b8321c6ead2d479f62f6825f5"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-cmap-usecmap-missing-parent.pdf",
+      "sha256": "5e0b401f9e40b1b6e9c9f00ecbecf6fc3ba61028c74613e5da58629577263a09"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-cmap-usecmap-name.pdf",
+      "sha256": "0486346dfd91bee0f9d8b5ddb85e4400724c2f8f4fc2990ff57f8a00f81e1726"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-cmap-usefont-nonzero.pdf",
+      "sha256": "2f23222fd9c07cde9e2b019032c9442889949e7ade1321ff83f25d87ddd0595e"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-cmap-version-string.pdf",
+      "sha256": "367d487521320c3de0596989a88185f8fba632b34c96f5dba872d4beb3dc583a"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-cmap-xuid-string.pdf",
+      "sha256": "0fd8bfb19a7e67976096e5fad793f69c71d994524b379d041c41b7c4a2e21ce3"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-cff-as-cid.pdf",
+      "sha256": "7dd44170cf50728a65b0d2c54b3954cc73bd330cd323bcbbf03cb55218e0fa86"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-cff-descriptor-bounds.pdf",
+      "sha256": "6a91241f63f5954cee1583d81172145dcaa47d5e96be4115f2bbcc2a3932a96f"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-cff-first-offset-two.pdf",
+      "sha256": "cb46b0a1e99cd71d3604135c7825efdb1ca83789631edebfe3ca7dfeb804590e"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-cff-first-offset-zero.pdf",
+      "sha256": "69aec33704f306487306727df8fb53df7c550b16bb426f9836d1fefcb2e41766"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-cff-glyph-first-offset-two.pdf",
+      "sha256": "5156df2f9be6b0cf4034bc66dca95cf0ca5cc541e3e1670453c749d828dbc4f6"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-cff-header.pdf",
+      "sha256": "8fd659d7ff9a0b457ed98afbae25b8240f596fc2b64961d3afc1770debcda851"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-cff-last-offset-outside-file.pdf",
+      "sha256": "4dddc1f1c4e73d677fcb4c1d20978aafff403f31677c4ff8d7e5adee985fb2e7"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-cff-missing-endchar.pdf",
+      "sha256": "77df45b70e2357f5fa618b7389e93eb0a6d5fc1c7e82445433ac1ade289f6259"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-cff-missing-moveto.pdf",
+      "sha256": "4c3057bf5e61f117d198deda4dad33eae92ff6c8ecf0fbfaf381ee05457676e0"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-cff-program-name.pdf",
+      "sha256": "2298ced18d6b2c0784539aa9da352e47a093d7b7d1b24fe0017b8deb4706b2b8"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-cff-topdict-count.pdf",
+      "sha256": "51cee60efe509fe8a7aa1541b81b387e40e9474c18504d0c8edcfce944a1d0b4"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-cff-wrong-moveto-arity.pdf",
+      "sha256": "bce7fcb119643851b59c6ec5c4a98b3eb96110ff02380d916268757edae3b14f"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-cid-as-cff.pdf",
+      "sha256": "39e664c356070aefeee5f103bc487fffffe4e4d452e3fbcd74da461b0c1c988c"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-cid-cff-descriptor-bounds.pdf",
+      "sha256": "f1cbb99314e7da1fdde36e2a9e5ff1f90525ac91f804ac46ad42c6bdd5c253a4"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-cid-cff-first-offset-two.pdf",
+      "sha256": "651be03809f980ccc20cb20a6d09d86d88bee50ef6fdd5d496923a6b4375b3e3"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-cid-cff-first-offset-zero.pdf",
+      "sha256": "069312664ec1c968874588dfa72db6789706f8ee02874d97451c7d30c780c53a"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-cid-cff-glyph-first-offset-two.pdf",
+      "sha256": "6775ff8d127d0734f7d873552d7ac600914633a8d9212c5c17603fa40838eeb5"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-cid-cff-header.pdf",
+      "sha256": "4db11f26eaa15b6a02e40e88afccafb8c4c01e7deaab34acf849970b99d1ca1d"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-cid-cff-last-offset-outside-file.pdf",
+      "sha256": "49d93798e19b0887a0cca701eabded9d2738616867169e06ba3dcd70fbe01e96"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-cid-cff-missing-endchar.pdf",
+      "sha256": "ac69c454dcd3ef3d93d9e7a7839aefc06ed8b0698eaed4927701d01fafd2d358"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-cid-cff-missing-fdarray.pdf",
+      "sha256": "f5a395a7c666626a040dbdc011cf66d94ea088654913d1304ed17297ec870c06"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-cid-cff-missing-fdselect.pdf",
+      "sha256": "7b79d4b34d9f1f647963f611334fc45963b59d01a84bb2d48f769657c2bcb5a0"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-cid-cff-missing-moveto.pdf",
+      "sha256": "fe0d8ec160e392b02d2d9af14936ca464042410ea03ad5630248a658ba705999"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-cid-cff-program-name.pdf",
+      "sha256": "432592c30a50ead8c1edd17fd21429a311ec1d564cd75e5b9c37b594c6a694ee"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-cid-cff-topdict-count.pdf",
+      "sha256": "1003cda1660ffe0823c46ba4a00f821dfccd17545a035f0bcd2496659ec88112"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-cid-cff-wrong-moveto-arity.pdf",
+      "sha256": "9388711756b8c131da0a0c0a1653d633e24d2de3d4049665c95dc28872fc7a45"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-cid-truetype-descriptor-bounds.pdf",
+      "sha256": "ff594e7c1a6b35fe9bfab456513c924f89d14792f2dd4761ee4dbff12cd1791b"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-truetype-decoded-length.pdf",
+      "sha256": "b8d3eba87eee417b733e930ccd3a5e9d7408a3a447a9f3978abccb2dfd2a894c"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-truetype-descriptor-bounds.pdf",
+      "sha256": "c4951465ca8934667132054a3e567ca5fef32ad79bb137737ce104d7895a56f0"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-truetype-entry-selector.pdf",
+      "sha256": "12b42f8d609d84337f38f14fee9ea81276f85cfa4b47e2b3f143b295a47d116d"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-truetype-glyph-bounds.pdf",
+      "sha256": "46e9877b4e3f0f41e92b56c6ddbf17261ec38d4c4ba42f50bacb6c6a019b5d9f"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-truetype-header.pdf",
+      "sha256": "928adcd88cb19f69a1e4ddd3f317906a0a352ccbd686614d7761938f1709c5e8"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-truetype-nonzero-padding.pdf",
+      "sha256": "c15bbb0cb0c8207a7650177af2652f0e4c9a8ea15f7ee8ea2733a62c1a3b0dd3"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-truetype-program-name.pdf",
+      "sha256": "9eb26d5862ab56b7729b3674ecfa79abeecc1f43fdde6a60ad51d239b5a8de70"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-truetype-range-shift.pdf",
+      "sha256": "dca7d11118abbb72270f7ba3aec18a90148b7a3e0cd3fd3c5c243730634771f5"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-truetype-search-range.pdf",
+      "sha256": "33daf90a5818e2248d358d2b4100a071c9ef68ecfa21bdae62646715893bbbc1"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-truetype-table-checksum.pdf",
+      "sha256": "8f67011ab070a1a34fb70b6792e8e679da9bb02a3ee3998e22724e0eaace41ef"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-truetype-table-order.pdf",
+      "sha256": "3cf610ac4c9c0c03f57eeab5ae31cc993d6a9779380ced6aa0bce2140f289965"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-truetype-table-outside-file.pdf",
+      "sha256": "83a45d0a693ab5a1c06639f4852c5f5ddde7f053a926559d5a7399a4633a7bce"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-truetype-table-tag.pdf",
+      "sha256": "93a07661a776d0dc35ad6e7a48be807b9769b52e2b035008341d5a1983231692"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-truetype-unaligned-table.pdf",
+      "sha256": "8d2e4600165446fccab4c9e958828fced2af06e18034a3fa93ce8f3f62c3fec8"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-truetype-units-per-em-0.pdf",
+      "sha256": "9e88941daa4e5acb15bacd11f499969e4638f62e097d5d361867c79d181eca19"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-truetype-units-per-em-15.pdf",
+      "sha256": "65958c7948abc04829a706d19dfdb374df83799bf0eb16cf6fbdd28101c72787"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-truetype-units-per-em-16385.pdf",
+      "sha256": "1ab962af85e5b1786ab269e1d51e16dad0bd3364324fb234f7e9e1543efd0a10"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-font-truetype-whole-checksum.pdf",
+      "sha256": "68ff69ea2731e9a86f36a559ad9c9b282a38ca422972e64f3a6108cb8b50211d"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-positive-bfrange-array.pdf",
+      "sha256": "6e9791b47a30689bf3f06cf59f1e1fd30602bf7d3c2be2ac6f320d6c6b7d06f3"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-positive-bfrange-string.pdf",
+      "sha256": "d91c156a2c14cc0d1504191a25c5a5f1c47f7eaf0c1e529add537d6d96811598"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-positive-cidrange.pdf",
+      "sha256": "617e649d4a886eccac533fdbfc09b5bb693b373a0a9c291af65f7700d2dfc645"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-positive-usecmap.pdf",
+      "sha256": "52f4977c57dd813ffcf74eb141c7e73840e4f707c3dd43feb138e2d1a3909d94"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/program-positive-usefont.pdf",
+      "sha256": "a7e1a0568a7f2063a0f47df28ada52de708921208a698e56c663a4abd6aee6b5"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/shared-fontname-consistent.pdf",
+      "sha256": "1b804da68dea12cc3861788158f2724909ecaea0d2c48129f613021d48fb41ca"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/structure-content-annotation-page.pdf",
+      "sha256": "884df1364759dc0521fd50c99e631c116b45b120d19b0828dee08c46e84f8eb7"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/structure-content-both-parent-keys.pdf",
+      "sha256": "f01575f4cfd727856f290fe9fef32a01f68d17e9a9f9af75904511a60ecbf726"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/structure-content-direct-object.pdf",
+      "sha256": "6c559bd8221e0c1d75faa93e39bd8dae0bc58f9c2c62197e921a56023e02784f"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/structure-content-form-parent.pdf",
+      "sha256": "11ce354be7cadbd59f6c5aa862791074cd352380f69debe139874be4baa82422"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/structure-content-missing-form-mcid.pdf",
+      "sha256": "17326740eb50b073e3bef1cddceed5da8509ee6fdf5eb4ce5972f8ba27de212e"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/structure-content-missing-page-mcid.pdf",
+      "sha256": "35d7a85623b5daafc70a71abae0cdbcb8abe95c1c748d952c248366a8ba4c904"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/structure-content-object-parent.pdf",
+      "sha256": "f9c7be6c592099c0aec92327830c53fb1b5881268c50aa0c1b6e61a73d0162a9"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/structure-content-page-key.pdf",
+      "sha256": "3ad03dbd0ebcc3ae3418830098a1a5690c331ba0b1a3a11d711c78185b99bba8"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/structure-missing-role.pdf",
+      "sha256": "2b44b342e6c974eb1fa37de02b61ea5dbd5b393fc1a93c9f17074c2a1233cab1"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/structure-namespace-direct-target.pdf",
+      "sha256": "1a5cfb14e2547af8f0fe0f6a63de348606003882927f39989632a5c1b4a5d992"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/structure-namespace-mapping-type.pdf",
+      "sha256": "fd3f31fb1eedc83564f4772ed8a82d085231dc64bb0158ab3df5c0b6930d9972"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/structure-namespace-name-type.pdf",
+      "sha256": "b3648d095403065a3aac64c72430ce8c9e7ea34a59256cacd0cb0c794c652d95"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/structure-namespace-unlisted.pdf",
+      "sha256": "97831e89d08b4609a67979a2d20e2e37767e5b1a305fa119d1fbd49c86dba334"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/structure-parent-backlink.pdf",
+      "sha256": "18b5d3dff8ea48127795d09ca96d05834c3e5b2f09d6b50156d3309a688f93d7"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/structure-parent-key-order.pdf",
+      "sha256": "93a6dae24d994aeadf13222b714284f32356b97ad1d8783fad56271c44cbc8d0"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/structure-parent-key-type.pdf",
+      "sha256": "8510d08a24a8df405e0a8d526b875f9fc7981c1001bdcfa8d432745ccbe39e77"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/structure-parent-next-key.pdf",
+      "sha256": "347556b5c2bd9f9e09a8ce8180f4c7121218ec93f20ba1cc6e5e1952c0bbef2c"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/structure-parent-nonstructural-value.pdf",
+      "sha256": "a42a5c997132242f655c4a63e0643b6b96f3a8873b43a7613cd68ed62016ddc5"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/structure-root-content-child.pdf",
+      "sha256": "ee2f0f75d818301aab6ba8c53e22bb13540a9d721352c32027eefc212a4d89df"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/structure-root-type.pdf",
+      "sha256": "468726fffbb2fbc819900115f46d76f6a30d228f22af8ee969a41bd80f545f47"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/structure-shared-child.pdf",
+      "sha256": "b1bba4b3c8c123cb659604da5923017ed35dfb9245385c8cf0653b389d8bde0f"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/structure-text-actual-name.pdf",
+      "sha256": "0380fef08773a813ebf16a00146cdfdcbad3c302462a0950115d86f5f6c768f3"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/structure-text-language-name.pdf",
+      "sha256": "78b076e7bd4923d7fe398548df998065acbbc0600bce8f77f750a644b90e8722"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/truetype-basefont-name.pdf",
+      "sha256": "7b388b13af06a555d254f9c991077cde3bdfed86c97521d4cb621124c1c30e1b"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/truetype-basefont-null.pdf",
+      "sha256": "dbe56d7b640753d818a043fd20be6a0baa4a6d60c3e8ff059c72416c487c26e8"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/truetype-basefont-required.pdf",
+      "sha256": "4c327b4a987a1eaaed756eac39d62af496e41eb05537bc6b74051f2256fbd5ef"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/truetype-descriptor-ascent-number.pdf",
+      "sha256": "2dfc7c4c87698757733e28999160aa21137ed3a1981ac4212df95c16bb87ed8d"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/truetype-descriptor-ascent-required.pdf",
+      "sha256": "948df07870c934adf5d3c196782890a88af8f194f14cd20a277fae74ce39c718"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/truetype-descriptor-bbox-numbers.pdf",
+      "sha256": "99112b49afef282bd56f74f7a1a6284467c0aa9b39b979f73ba85f6ce60ab13e"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/truetype-descriptor-bbox-required.pdf",
+      "sha256": "cc0885d500c4967ffb249d373bf6b5f72f1fdb764df54e01027014008c44eb2e"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/truetype-descriptor-capheight-number.pdf",
+      "sha256": "700736ab54d1891630c6cbec5aaffb83333bad7232ee6c45d938eba978c607c7"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/truetype-descriptor-descent-nonpositive.pdf",
+      "sha256": "d40c29ff60af3b83ffb78e96db5058f11e8a6aeaa42bf67c7c7545ecec63d490"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/truetype-descriptor-descent-number.pdf",
+      "sha256": "28ed77eedb8c76cc83b703282d1df4dd1505901a2137d8a2157a96ebbdb93e07"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/truetype-descriptor-descent-required.pdf",
+      "sha256": "97cbc0637287b0add7edc3c42f451145a5a12ee5ffb39c271706fcb690de815c"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/truetype-descriptor-dictionary.pdf",
+      "sha256": "b1e1916cfe8b4407eb350774f769d95a296b2950a8f96b06b498f409660cc300"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/truetype-descriptor-flags-integer.pdf",
+      "sha256": "5d8561d38af32f25a59891f25935d166c59b1cb8f9b4884e282a47b0c52cc25b"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/truetype-descriptor-flags-required.pdf",
+      "sha256": "adf8958e0954feea5841730468c3d4417593a8c605ef6d986e135027fda83a00"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/truetype-descriptor-fontname-name.pdf",
+      "sha256": "c83c31dba0337a1cdba0f907f45f8ac3435668b760893d588a89073ed846e825"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/truetype-descriptor-fontname-required.pdf",
+      "sha256": "e97158a7e1ec53b603e82111ea46f2363dc68ff82eb5789fc8bdcbb269934a47"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/truetype-descriptor-italicangle-number.pdf",
+      "sha256": "10d807ce5802c86b57ded8b602a600779d4e79c4166e6f7029a40057385cce70"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/truetype-descriptor-italicangle-required.pdf",
+      "sha256": "3c9b5e2d4fec54956b46bf530fb3db695febea6cc77850fc2f0b12ca4a471219"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/truetype-descriptor-null.pdf",
+      "sha256": "9083760f30e84af348f0dd2209e4fb0c22c2fde9d146a3d05d3a965fcc76aa6e"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/truetype-descriptor-required.pdf",
+      "sha256": "328d80c62cbf4210130bc3e112bf5e4cdc074c8bf6454068c8a391fbd0471685"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/truetype-descriptor-stemv-number.pdf",
+      "sha256": "0571c54aa71d5871bf95a2081bf51ccd7c0b60dbd431e51b9a7a671682b9da76"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/truetype-descriptor-stemv-required.pdf",
+      "sha256": "0a2d97c6b189a543c0290b77073becdfbda0e32f417850c073d608b8765e198f"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/truetype-descriptor-type-name.pdf",
+      "sha256": "68d247dbebdb1b2902fb145fdca8db4bec28e566979971e619c46f63072e7c30"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/truetype-descriptor-type-required.pdf",
+      "sha256": "ef713a6d883ffc9b20ce0c23244b4e353ac5d8214b042ba409fbc793ce8166e3"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/truetype-encoding-type.pdf",
+      "sha256": "4ba665097c17c6b95753541a6c2df334f3c0a3ff3d8128ef498849208eddf438"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/truetype-firstchar-integer.pdf",
+      "sha256": "d7d83e2c24aac91ef8353a415862950616812ca87ade381f1716251170bec020"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/truetype-firstchar-null.pdf",
+      "sha256": "40f6824349efb6bb46155aba1edf12e84d5c685b6e7f510fc13ea10e732b1756"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/truetype-firstchar-required.pdf",
+      "sha256": "851f293e2b558277f7d76a271cdc143915c5b40b71a4c7da4ed83dfc9c2815bb"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/truetype-fontfile-stream.pdf",
+      "sha256": "fa8be71c710f7f1fae7da6d927a821e0b608829d05e008d409c75fc547e271df"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/truetype-fontname-consistent.pdf",
+      "sha256": "ff4f35d31bffc504df3d9bcd2abad49504ad05937028b38ed32c10783858e602"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/truetype-lastchar-integer.pdf",
+      "sha256": "749cbd660e9afbda22f31d6bd3c1611e470119b0cb7a14289c1b331e3fe9b676"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/truetype-lastchar-null.pdf",
+      "sha256": "bbdec8ac8a104df94ff2871e9084f77a6ce59b6885e2b9cc3442e2fe52b87b93"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/truetype-lastchar-required.pdf",
+      "sha256": "5309c66c06ec32e530377ff1645ca211b851c00f715de5edf696f7357b3aa5be"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/truetype-program-length1-integer.pdf",
+      "sha256": "ebae7954b4b499adcff7a952fc3ad29060f5dcd365f6749d31b1b163cde20771"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/truetype-widths-array.pdf",
+      "sha256": "a29cc371f6a5b646e6fd44fdab8047a414cf940351919cc34d5917c1d6e7548f"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/truetype-widths-cardinality.pdf",
+      "sha256": "0e1a84e2e91eef2d06dc3da18a4c84659356b00cd87c9234f019b756a1fc62eb"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/truetype-widths-null.pdf",
+      "sha256": "c9aba377b47d04c8377538a86c2f0e21ac078ad496672529c85885c07fcf04f0"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/truetype-widths-numbers.pdf",
+      "sha256": "a2ef20115d050bed6c828d2956bf63b894470aedc1f777e145faa0041b1b7a9c"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/truetype-widths-required.pdf",
+      "sha256": "89043830034959430233a5fa0ea4f878aca293a84c03c3fad18c83c1d8445f36"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type0-basefont-name.pdf",
+      "sha256": "2dd08aefd99b4147954b66b7768d179c807c9bc38bc897620e53149eca1c4e96"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type0-basefont-required.pdf",
+      "sha256": "85226ccd551705ffc772b03fa9f57741a84d14179b86ddb4b4eb7c22619fb470"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type0-descendants-array.pdf",
+      "sha256": "cf792c64269cacf742c7cc4991db1ec2629aeced1a6e2cc00e86be4ba109c66a"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type0-descendants-nonempty.pdf",
+      "sha256": "9b45c389c5208d3601ed2b690b421223d6de8a36c56e20b7526bdc050696f874"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type0-descendants-required.pdf",
+      "sha256": "9bb6433b097ce15d6e7afbc0a2dd35d425f17e5996e0bad35ca8bd051196b043"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type0-encoding-required.pdf",
+      "sha256": "384896ecb26283ad6f03c37c82fd625a211618a59cc404420f8545374cace276"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type0-encoding-type.pdf",
+      "sha256": "fbe7d64f1a31cf08d5b3428faaa88ee01a8a1e6dd6323e055349b35a04232aa3"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type0-tounicode-stream.pdf",
+      "sha256": "cb3bacc4dca477ea9d96a2d0da163e6f462e679184bdd6f97dea9bcade70ead1"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type1-basefont-name.pdf",
+      "sha256": "fb7d764f3a48c07e09f29d8dfe2bf04d866a09f287fffc447d0302338daa7ceb"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type1-basefont-null.pdf",
+      "sha256": "19fbbc3a9b4982228d09183b931445c3383be157e5a99f7a5ea4746e4898c741"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type1-basefont-required.pdf",
+      "sha256": "4c22409ba6c6a73b5d97c9ca95a86c6e3dc0c5e417b8f66e49b26dbb1b02b49a"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type1-descriptor-ascent-number.pdf",
+      "sha256": "6b23a2aa628b17d817f8102a10b53ee7677c7ce05bfe1b4a5f354d1f83e29ff5"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type1-descriptor-ascent-required.pdf",
+      "sha256": "60c535aead824195669f7d7c771a9d734351bcdaf94f7b1c237caa0906031e96"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type1-descriptor-bbox-numbers.pdf",
+      "sha256": "2b3842baea5fd26b2341ce2399ff18f3e66ce569c7eb3802c482966e1aa0d7b4"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type1-descriptor-bbox-required.pdf",
+      "sha256": "6ec07d1bb2d5d0a88d0e8da702dd0bfb749806ff5b8bc0cb59ed7109c06021ce"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type1-descriptor-capheight-number.pdf",
+      "sha256": "377d9f1fdd0247b2a7842a76c6b46c5153771a6656d553183c03db115a230f7c"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type1-descriptor-descent-nonpositive.pdf",
+      "sha256": "b5da6e9567a175b1ba90bc6bb0c007c7fa85c1e744b1bfb8bfc396c122e0f2b5"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type1-descriptor-descent-number.pdf",
+      "sha256": "0c0e12f78282b152f30f9acc90218c4a080734e06e49a8e8300eefa13c12cc13"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type1-descriptor-descent-required.pdf",
+      "sha256": "d83e9dce7166c913346a1cf05c591a09942273b64ba873fa3391c825377f406d"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type1-descriptor-dictionary.pdf",
+      "sha256": "ac4a9d34a361a345ab2f4084fab5cce8021ebdf55946a059d8f8ff4aa8bc84ef"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type1-descriptor-flags-integer.pdf",
+      "sha256": "11ef8fe2ec6944dc9dad15ca580c2657a885b9ac4c41749ec1f002e413d8f4b7"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type1-descriptor-flags-required.pdf",
+      "sha256": "7d0e968a6bd37b7c4bcd04e2f9491143c0f3e514808e6606f59644b6915d208c"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type1-descriptor-fontname-name.pdf",
+      "sha256": "5cce7b78bb89d1e4c5b8df13440987b5cc02f4b265756fda76150b434faa1388"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type1-descriptor-fontname-required.pdf",
+      "sha256": "a57cd6beeb2c99f79d225b5b0b48edcce9c70374e1b7eac36e4554eca50e46b1"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type1-descriptor-italicangle-number.pdf",
+      "sha256": "bb0f780db449bf73a52f5a567d3953822e22552cc75b4c99e4d86c487564b5c4"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type1-descriptor-italicangle-required.pdf",
+      "sha256": "852425146e89022f66e63d7455bc031fb68af42d2b58f423313d74204db4da17"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type1-descriptor-null.pdf",
+      "sha256": "071f1f474cc93c1f11021d375b70aa047e5b9bb9861f4a1be7927e8bf08316e5"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type1-descriptor-required.pdf",
+      "sha256": "5b742945587678058fe6358a4c02a884e75350356b792aed28abc75cde111902"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type1-descriptor-stemv-number.pdf",
+      "sha256": "06b316a1e27f896142fe8c44fff263d8636346c2cc47ec28c771d0c5dd423ebe"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type1-descriptor-stemv-required.pdf",
+      "sha256": "a8ca53ff26d425ccd31779c992eec8016301795b8a95507c9631bfa2b8e340c0"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type1-descriptor-type-name.pdf",
+      "sha256": "981db9348356975bfc41bc7e806152eafe461f3adcc6a68d262da782c4d514db"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type1-descriptor-type-required.pdf",
+      "sha256": "70a74cf8f0ef547bdd9c85df69a35ccfa1fcfb008be786bcbe07eeffbb3ab9ae"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type1-encoding-type.pdf",
+      "sha256": "2a9187a6bc2adfaa3c4060a4c8cf4a5e0451dede6f384fe71b19d1519c270598"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type1-firstchar-integer.pdf",
+      "sha256": "7a5c6f69beebc2cdf61f2f83800f03351cad843b87b785958dd209fad4a636c4"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type1-firstchar-null.pdf",
+      "sha256": "6616368a14d0928e3985341b93c87622b3ca697b8de107b4d86ce986cb12d3f6"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type1-firstchar-required.pdf",
+      "sha256": "340761ed4861434735e7857ea629cfaa13611a5840cbb1a75d3d10d8fb48dae5"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type1-fontfile-stream.pdf",
+      "sha256": "b32807e11229ea89af6166565bd50cf51ca45edc1f049325fd02ba6af964197a"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type1-fontname-consistent.pdf",
+      "sha256": "1cd72394fd206647d40d9f549b9aa3a088f6793954ba27ef93e0776124dcd802"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type1-lastchar-integer.pdf",
+      "sha256": "168ba16e805ed7990e2fccbcf82d843dfa391a392635424081a92570548022b0"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type1-lastchar-null.pdf",
+      "sha256": "a371daf7d762905c29ccc4ab0dfcd1ab1da7a47be72a719e885a865f066d528c"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type1-lastchar-required.pdf",
+      "sha256": "ae2a0b1f9a6eca328c632adfae1a4b253471879aca058a2c9bee575fa045e0ce"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type1-program-subtype-required.pdf",
+      "sha256": "d220627686fe8cb69d9e0eaf5f0b899f17d493033454771701de2e66c7a1c21c"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type1-program-subtype-value.pdf",
+      "sha256": "cf2030d0f43e3311f2e7a7d249af5b3fd8aa6f6a6d7ef26935c43da0229c9ee1"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type1-widths-array.pdf",
+      "sha256": "f6a1caf0369f3b5bf03268717a0bc0a7fbe4d6a3d471dac7d05d69fd876b505e"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type1-widths-cardinality.pdf",
+      "sha256": "dcee16a5a68235e0bd94999061103ef3cc7dd7a2c61edeba6913d74b77f73dcb"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type1-widths-null.pdf",
+      "sha256": "ca6d4a58396d2811cd909b866c4f06a8519ef85860264e7a9fda2a18eea3635a"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type1-widths-numbers.pdf",
+      "sha256": "9225b3d1bc28866233dc7b1d2edd75cf92d6e2672bad9b18c75e18943d262286"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type1-widths-required.pdf",
+      "sha256": "1b1e01a2c0112e075d58e8fdc8307f316a008d7ce8fcc59fa4ee37b28cb691b7"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type3-bbox-numbers.pdf",
+      "sha256": "fcc59fdbaa7f6a94de17cb758703d1f6e18f189516afaefeca3005dae8e1f9b0"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type3-bbox-required.pdf",
+      "sha256": "e2b545707dfcc8ca1bb03f5289af4f23f2c6a32ab1ad2e535d3869d819eecfa0"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type3-charproc-stream.pdf",
+      "sha256": "b60ca74f1ed3801963fefecc5beb51e5dc8877a4e429bbf985be3458dc6ef3e1"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type3-charprocs-dictionary.pdf",
+      "sha256": "17fee24a24d5331a1ee7ebcf82fa7be2ca1aafc22b3e257fe38451ba0c1b385f"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type3-charprocs-required.pdf",
+      "sha256": "78b474754e2e6b6861099d2f2c78f3717ff95bf791f970bb0bb000863533f676"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type3-descriptor-ascent-number.pdf",
+      "sha256": "3826ddd878e047449782c64e1a5318a9a45d4f78eb7f146d5d72030f0f7b8dfb"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type3-descriptor-bbox-numbers.pdf",
+      "sha256": "919ed83c68d5f79ce0eea381099cfb3c0f1085ca7093595115a75d80dd687b39"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type3-descriptor-capheight-number.pdf",
+      "sha256": "2bf418866cd4caebbf02d48fc72f5724bb6a3aee43ff016939da1251d25b37f9"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type3-descriptor-descent-nonpositive.pdf",
+      "sha256": "db166988950300fb95e6c70becd788e3b1f1eea310714fc894ac0bffdb981e48"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type3-descriptor-descent-number.pdf",
+      "sha256": "2d4f2209818a8883d1d91a8ee5027d1665702c439b99503a0212f7022ea9346b"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type3-descriptor-flags-integer.pdf",
+      "sha256": "6664cb5731e042673248bbc8797905a6ddd7565ea88f0611e645a871cb17a9db"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type3-descriptor-flags-required.pdf",
+      "sha256": "2335789b5d4095ebfa4e21d88e9bfed0d8865ad52ea9bf01556249180a098a91"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type3-descriptor-fontname-name.pdf",
+      "sha256": "d0cc8f089101cdd2e4d68109c589d518ec24783c25c93f9d0589f8bc9f597e7a"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type3-descriptor-italicangle-number.pdf",
+      "sha256": "b069f5019c9ff4b41fc2cd9df685b16723174227aa2dd5f82eeed853f874ed85"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type3-descriptor-italicangle-required.pdf",
+      "sha256": "1ae3ceab6e0dad4ed7d19efe238ff92c540b2fdb1080966d80cd471ea855cdf2"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type3-descriptor-stemv-number.pdf",
+      "sha256": "703767f9071fb52f7e8314c645a2a11cbaa4a3b587bd5f2bee5417fb345ae412"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type3-descriptor-type-name.pdf",
+      "sha256": "c39f5bd7ec979180e19d9fd18fe317e1d87e9101cfd5d7aa6e3cfe0f662aa3e2"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type3-descriptor-type-required.pdf",
+      "sha256": "2d3beb5b0ec1c5977a807c3c573925b674f2ba770341c8ad7a5065403c9d551d"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type3-differences-disjoint.pdf",
+      "sha256": "672c9133b6a77d9613ca673276e2f46c67fd11768352ed6d2345538fb5a33061"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type3-encoding-dictionary.pdf",
+      "sha256": "5247c28636d684164b2b712898a71088074f194839ec74c2221424ca3b9d94f9"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type3-encoding-required.pdf",
+      "sha256": "ac59e21550dd3083d01464f723576d710782ec7a5e91be296f8c18c1fe4770c0"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type3-firstchar-integer.pdf",
+      "sha256": "5f661ac67847842c5db8b8b536ad1f38d17564d5dd3b679388c3b8df93b52b3f"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type3-firstchar-required.pdf",
+      "sha256": "3eaa3453e8698e002561c5db8427a84e63b937046bb2b5746bcdc2845b096b3e"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type3-fontname-consistent.pdf",
+      "sha256": "b8948588b081a4f4bee151cb2cfe747674b0a78c3e5b3526aad23cadcb1c6733"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type3-glyph-fractional-width-agreement.pdf",
+      "sha256": "374dc9e33c7a1ebb5fc0363ad0d2d1d5e9a15ba30233c3526eaa46791cd0ddc8"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type3-glyph-header-operands.pdf",
+      "sha256": "09048fcecce448392eccdb1852e73a5e91aa6f62b8624e7ce8b965adb999d40c"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type3-glyph-header-operator.pdf",
+      "sha256": "09785b87cd5814438085e23c305c42c646150731d133d165974a9ec124cb3830"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type3-glyph-width-agreement.pdf",
+      "sha256": "1305470f12e46a19fc53ced1e8791b43b44261e600cbf83f1f01522081d2fb58"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type3-glyph-zero-wy.pdf",
+      "sha256": "b23e5374bdc080d953d7f02d65865a73315694b381a7a20fd74ed9a7120f3c87"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type3-lastchar-integer.pdf",
+      "sha256": "286a9c58ae989f2cd5a96949b07db072ed01fe44760e19f1ace9db3e4a1c4bf6"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type3-lastchar-required.pdf",
+      "sha256": "f73bfa7b33a014e8126ee9d9a8a7a74d859e13134e24611f6ec0fec43d391da8"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type3-matrix-count.pdf",
+      "sha256": "7da2c70c69656545acbbe71a02fc86e506d307621e5825166bd54c3c2fc19d3a"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type3-matrix-numbers.pdf",
+      "sha256": "f5f0410d8b64fb5d21b99b372fe1f349630e38663c95f124e44bef92bb2aced5"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type3-matrix-required.pdf",
+      "sha256": "093eadc17a00b39fb8a5fa579f48448ef66deba9a1b8490d5af5b018504618a0"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type3-resources-dictionary.pdf",
+      "sha256": "f3cf3c3b6a1aae45f6ca0af3386bd79d327ff912fb992b99f68c4cf49ea23c72"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type3-tagged-descriptor-required.pdf",
+      "sha256": "5390c81765dfc6b352e342c23c805fb7fc66443303cf4ab7bb89282c679774d8"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type3-widths-cardinality.pdf",
+      "sha256": "e63efa5f203246d04c0dc29fd6d73ef17b82ef0904eed4502921ce4aa7356f50"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type3-widths-numbers.pdf",
+      "sha256": "ca8672897f7a95398f454c8941d6df920eb5e4ee0e850395188a384bdd5c48c2"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/fixtures/type3-widths-required.pdf",
+      "sha256": "553ee43ac46fce0afb194bbe71d6ae8bc9eab2903e862f4e39e3ae591280e5ea"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/font-metric-controls.json",
+      "sha256": "2eb065ff014ad341064bf4dece695f72426581dcfb3c85c0729ed013ea805f85"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/font-program-controls.json",
+      "sha256": "aafc3afcff68b9eb59333ba2474130736373afa6d2e8c3a37218b8a3ea42fe0c"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/pdfcpu.properties",
+      "sha256": "dcf92c9e8ab6a48fea9d581c99cfed86dc993d74e3a8de5cb6e9ae1da919f707"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/program-controls.json",
+      "sha256": "f67576f694c85deec7a42ff617d9385107790deca194908c581d16c121ef72b7"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/program-qualification.properties",
+      "sha256": "0ea2838ccc0ce9b7920f822db6459fed8beba33a6709bbcc04c0be5e6715f9ce"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/required-rules.txt",
+      "sha256": "98e35f2d6c7201bd0fe1c86452ec5f9497f19e4ca58b9d19b7b8b1ca3bece8bd"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/README.md",
+      "sha256": "385d8089170780e02ae66ab08b52f2ffc232a5bb96213d4f26dc03616955b67a"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/cff-default-500.1-pdf-500.1.pdf",
+      "sha256": "28ad2925dc67bdd80cb1b0e5c5aa5eb84d7f1ae1cb70258366dd47631f7ce7c5"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/cff-default-500.1-pdf-500.2.pdf",
+      "sha256": "6e59a962018a363d466a123ac9cbc3fd8aa10f7598443ec1eff1b25be795a7e8"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/cff-default-500.5-pdf-500.5.pdf",
+      "sha256": "515b08c87661daa0526dc4715a5e83b512f7f19db7f428de443bd8bb350e06ed"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/cff-explicit-charset-4097.pdf",
+      "sha256": "c2138bfc2e0850f50f1e802403ea6c44a9c794f30ef5cdb4c7885b5a4c9824bf"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/cff-explicit-decimal-matrix-0051.pdf",
+      "sha256": "e4acfbe521559a111540102238460da5da4051ae4ab8a4f2dceee4bf99d1442b"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/cff-explicit-decimal-matrix.pdf",
+      "sha256": "b542a842f197f2ca9e5ffa4ac7139b6f690a72ba6fe14db81ce8c04995d70733"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/cff-minor-one.pdf",
+      "sha256": "25e26e7ebda799de72b7e52d5aa5469bc8a8debe918d6a922716e0dd8f64607a"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/cff-missing-charstrings.pdf",
+      "sha256": "1d5c3423a87cfb56359547baf88721cb116b13d78c4aa7344ec79dd6cda52a3c"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/cff-nominal-500.1-pdf-500.1.pdf",
+      "sha256": "80bbf407e7be217fcbf4e8def48d929a60d27fbde14aee074fd3187f8dbccf2a"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/cff-nominal-500.1-pdf-500.2.pdf",
+      "sha256": "e664812783f96cd3cae7d7f24ecae1863a1832b595b152de93357988273d4c7a"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/cff-nominal-500.5-pdf-500.5.pdf",
+      "sha256": "87ef902c30839c1bf1a89f9ac492d4223c15602eb02e1adeeaedcbdd98213234"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/cff-reserved-topdict-operator.pdf",
+      "sha256": "7271eeee62eb1851390c03061542dff1182970d776e274fb3cbefdae4bf9cb96"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/cff-unknown-charset-format.pdf",
+      "sha256": "84a0b063644a0a66f2901be8229891596f3a40bffe3fee24271fe0236ae84b36"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/cidcff-default-500.1-pdf-500.1.pdf",
+      "sha256": "e2df335c6bbcdc4485a3932c777b3409cca30662813668431936d400364b0be8"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/cidcff-default-500.1-pdf-500.2.pdf",
+      "sha256": "3d71bbb4a09412b306606f25ab4282e3d5ff2e991f6990fb57ba518e819e2d05"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/cidcff-default-500.5-pdf-500.5.pdf",
+      "sha256": "e169b85d7d0479b68cebccf53cc0f1589cf7d6864c7f95a00a3555ee77e7e30e"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/cidcff-explicit-fd-matrix.pdf",
+      "sha256": "364a365037486af9e558ace652e36ec60225795a3fbf4813051daedfaa1e73bc"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/cidcff-minor-one.pdf",
+      "sha256": "9f2a7404d9c289b45238cb88596525ea6ca8f90abc841ec458a5fe5e1a7017ab"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/cidcff-missing-fdselect.pdf",
+      "sha256": "89e8f1b049707a49173e862f977c6258ff270014b60d89c638940a9e93ebfe16"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/cidcff-nominal-500.1-pdf-500.1.pdf",
+      "sha256": "4858bbffea1967e2832815de5e7477a33e3efb7e2ea6dd6c4196bec05d796238"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/cidcff-nominal-500.1-pdf-500.2.pdf",
+      "sha256": "9fb1ae7464b361992cd79b77e930fbdee60318ea9b7f27d736b5d91278b89966"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/cidcff-nominal-500.5-pdf-500.5.pdf",
+      "sha256": "d006adb72a624c3d407916b406e42215f38e915ef2c69df36a40211a6e4ec6da"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/cidcff-unknown-charset-format.pdf",
+      "sha256": "be35ca23257bea400a8167b725c4dc969a400e28ff00cee4f52dd5bad5346595"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/cidttf-rational-200.4.pdf",
+      "sha256": "407016c22cdb7276cb72155a80dec6370b17438191f50e3af09f7566a676b009"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/codespace-after-mapping.pdf",
+      "sha256": "d908356bf66b1c9710775491d8e3038290818b49ede0b2e62692ee812f95a54f"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/exact-fractional-truetype-width.pdf",
+      "sha256": "b6d83c1f05a1216b1f6bdb07bd9361283f7109425900ba01cdfc43d4c714cbcb"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/ff-comment-hidden-bfchar.pdf",
+      "sha256": "3f7c6c7b1966399a15bcd363e7731be1ca5ac6e6eebd4ac3167a7ab1471b5f42"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/font-bbox-indirect-coordinate.pdf",
+      "sha256": "ffb1e55ddcf9cdcca3d572a5ae05390ee23bc09407672c7e83d960179aa52b26"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/font-sha256.json",
+      "sha256": "d5194666a5658d2622287d971f8b384d4e5cc6e6af59f458706ed97157771816"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/hash-name-legal.pdf",
+      "sha256": "b96c4ca5495cccf08d0b1b39e1937ad2cc330a0ee6b3e043b2946f194126c34c"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/hash-name-mismatch.pdf",
+      "sha256": "02a562170b5542717fecd03d8d5492c3969a59648071098ea2a2f5672e705411"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/indirect-subtype-negative-cid.pdf",
+      "sha256": "8db85a3d55abc1227e2ba0c7cd4e62c0c4317ea674eda69a1a0cd0aaefe914c2"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/mixed-conflicting-prefixes.pdf",
+      "sha256": "aebda087da676f1c244bbbe7eac01c8cf1d6242525d8e6b374ab01e11b76993d"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/sha256.json",
+      "sha256": "f8f8ad03f8fbf5b50e100c535cbb070126efeeb48badb8289367646c26abcecc"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/ttf-bbox-exact-320.8.pdf",
+      "sha256": "43a22c1b63a389b01486617a54c218b9f40cfe47742361c65bbec0925ccecfff"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/ttf-bbox-margin-321.pdf",
+      "sha256": "ce71d2e4f48031ddc60e684ffc9497741dc1d8c537d67a3fa577bc88eb8309d3"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/ttf-conflicting-postscript-names.pdf",
+      "sha256": "26532f786092b31a3949c7aeab510e4e64c8ebe412c63f0eac670ba9e29fae18"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/ttf-duplicate-hides-bad-checksum.pdf",
+      "sha256": "ef07ccc55659c396f8642509b2c4f5a2611b17510b5e2aa053c11d8eecdb2ee4"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/ttf-offcurve-bbox-legal.pdf",
+      "sha256": "a37b0de37ddf90d776135c4c548026ce0276d518490f2a91466a3e7dbf246cda"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/ttf-rational-200.4.pdf",
+      "sha256": "06afeca6b1955e649e1b39c0e3e972371806cd21576ee650be9a5804b7a35cf7"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/ttf-rational-200.5.pdf",
+      "sha256": "2af2c70894f48a09f064f5742db28b024cd62d9df6262638a1e3bac8fc805af0"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/unicode-usefont-zero.pdf",
+      "sha256": "fb569f8d78a4bed38bd5e048cc0ebfb87237091bfb50e9d99a0dbaf93cc37dd2"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/xuid-executable.pdf",
+      "sha256": "c2339f404403bbadb8b836a92ae4ca68cd5cee66a5cb39a68644ef093b9c8a44"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/xuid-string.pdf",
+      "sha256": "861424befab0ee9d38237a17098c4ba409762be9219f9dcf07c967ad9721a2cb"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/review-fixtures/zero-block-before-codespace.pdf",
+      "sha256": "ba28cdefb74e97d34dd68a1201be5ce8c3751a2d32c4d34e4c9f3367f220522b"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/structure-controls.json",
+      "sha256": "aafa46345cad06a78b24c8f956c56f640f229095f9bc8ccf628e42b376d7abac"
+    },
+    {
+      "path": "capabilities/profiles/T13-standards/text-controls.json",
+      "sha256": "d4f736949d796135f29ce30a585f1bd6f15f123d50d029fba347cdd4048f3108"
+    },
+    {
+      "path": "capabilities/profiles/T13-text/corpus.json",
+      "sha256": "fb348a2b139df12b93633cbf9c999490c584030aebeacc9b95bff57c9982707f"
+    },
+    {
+      "path": "capabilities/profiles/T13-text/corpus.properties",
+      "sha256": "2b6ebdd09f9ee86bae7c60e3916f82feb8ba413aab6b4d1465c53823646b79d1"
+    },
+    {
+      "path": "capabilities/profiles/T13-text/expected/embedded-font-inheritance-page-1.png",
+      "sha256": "e9f66a99024128e3b15d78e3e2aed1faf93cf92aed7a10f8c78885f71df154ed"
+    },
+    {
+      "path": "capabilities/profiles/T13-text/expected/embedded-font-kinds-page-1.png",
+      "sha256": "a835cd6affd09b91f34d189aaa109d96aa36833b796578d5bdaa6f11f412e788"
+    },
+    {
+      "path": "capabilities/profiles/T13-text/expected/marked-structure-page-1.png",
+      "sha256": "ed8d814148dd00bbfd0d6dfd2d80ea584161f639ec7bc42602d7ba0559672a05"
+    },
+    {
+      "path": "capabilities/profiles/T13-text/expected/nested-split-type3-page-1.png",
+      "sha256": "8332ac67f70cc70b314c027087c8899afe6fbaeb37704ca66edcf5671c0b1b88"
+    },
+    {
+      "path": "capabilities/profiles/T13-text/fixtures/embedded-font-inheritance.pdf",
+      "sha256": "d44fafaa0000b999ac41059e6d952bfc0c60ac2118d96f889bc247ff07fedcd8"
+    },
+    {
+      "path": "capabilities/profiles/T13-text/fixtures/embedded-font-kinds.pdf",
+      "sha256": "e016ccb3e411f70ee07b9e583ab9791d9664bbb1f0c8c5efa7874cb89cff2ada"
+    },
+    {
+      "path": "capabilities/profiles/T13-text/fixtures/marked-structure.pdf",
+      "sha256": "8ab0ade118339b4d9efe0939be481dd6453482edf0751961d745f9b6c52bcac6"
+    },
+    {
+      "path": "capabilities/profiles/T13-text/fixtures/nested-split-type3.pdf",
+      "sha256": "29088f179d7b2f978ff9fc3ba0f4eb1d7505c91aece1a9a2bf4b036a37fe15fc"
+    },
+    {
+      "path": "capabilities/profiles/T13-text/fixtures/uncertain-geometry.pdf",
+      "sha256": "c83e336abcf10b817d0255c1bb6732c672b9c1390f5bfac348611b86037e4a5a"
+    },
+    {
+      "path": "capabilities/profiles/T13-text/visual/embedded-font-inheritance-page-1.properties",
+      "sha256": "32eaff08a5c7a0acc37f52ad8251ae53865d7838854f26541212699f2ac9e160"
+    },
+    {
+      "path": "capabilities/profiles/T13-text/visual/embedded-font-kinds-page-1.properties",
+      "sha256": "effc462a2f5908f43a46fdc03f8e692a12aaa17bed669bc9f60ade2a7d11b8d3"
+    },
+    {
+      "path": "capabilities/profiles/T13-text/visual/marked-structure-page-1.properties",
+      "sha256": "f38c0a25bad1556796969d8ebc8e8d05a2bbd485110c53e33d8164af7730e18a"
+    },
+    {
+      "path": "capabilities/profiles/T13-text/visual/nested-split-type3-page-1.properties",
+      "sha256": "0d0b52b89de73bb4e37e0b0be8bc6b44002f9f35b2142fb9e24851314bba62a2"
+    },
+    {
+      "path": "scripts/arlington-pin.properties",
+      "sha256": "c7e3be5214ad09346530cb1a3d8fd7ab6589a8ddf992ee87bbdfcca633d4fffd"
+    },
+    {
+      "path": "scripts/imagemagick-pin.properties",
+      "sha256": "0cbd171a2ac7bf35623c4a2cf83f0a3850b15efe3873cb7b40b4e765c5458374"
+    },
+    {
+      "path": "scripts/imagemagick-runtime.sha256",
+      "sha256": "96d4b79b69a922ac4abe10887d52e7711da8de724e46f38cf1fd2187bacc0f2c"
+    },
+    {
+      "path": "scripts/pdfcpu-pin.properties",
+      "sha256": "21c58822196a4123561cac927e1f8ba487e6581ba8f488d5b7f40ba949429fc8"
+    },
+    {
+      "path": "scripts/pdfium-pin.properties",
+      "sha256": "0037480e2d77ae1a6d72566c43cf4c5fb9ccf9bb446b31b2c124e0e51c52ac0e"
+    },
+    {
+      "path": "scripts/qpdf-pin.properties",
+      "sha256": "62c63de3d888ba08b60df9e3c33c9ebefe4cc0c8ee747cc5269390017b57169c"
+    },
+    {
+      "path": "scripts/t10-arlington-pin.properties",
+      "sha256": "9c26dc17077bc116844dae3a216df506c38bb2823b9009d29e2f4cd1b6b84ede"
+    },
+    {
+      "path": "scripts/t11-arlington-pin.properties",
+      "sha256": "1ce7aa610b33cbb709efe7391e2ee0d9f5d8d7d9359862496f1c73ac41bfc47b"
+    },
+    {
+      "path": "scripts/t12-arlington-pin.properties",
+      "sha256": "c3e6ea64e66a64ca552c36aeabd9a4d3cf84d0e96ca4e1cd600b4ca30d87fcbb"
+    },
+    {
+      "path": "scripts/t13-arlington-pin.properties",
+      "sha256": "e00f7b42bd5712f45b346bba68061fc89ac64888bc35c6b4a32f043784900c8b"
+    },
+    {
+      "path": "scripts/t13-program-standards.py",
+      "sha256": "653633a52a8ff973914af14495fc2a9fd9dc989ccec9da94064fcd8a2e430766"
+    },
+    {
+      "path": "scripts/t13-qpdf-runtime.sha256",
+      "sha256": "a06ee3eb9314e2fa3db4fb475d806f8249f82e0daea85528535c04362fa280ad"
+    },
+    {
+      "path": "scripts/t13-semantics.py",
+      "sha256": "8971a28d5f2f230c861243a2b56ec90b415bd5f9add6487b05f8940d19c42cbc"
+    },
+    {
+      "path": "scripts/t13_foundation_reports.py",
+      "sha256": "e5b8ef1f66c933d3b7842a5c28ebde0d0ee7ecade7fca2c056fecaf68d4aa9e8"
+    },
+    {
+      "path": "target/foundation-0.1.0/artifacts/pdf-conversion-0.1.0.jar",
+      "sha256": "6b893b014f8134121ef2e9dcc6ccd8bdc22e9f4bfbf29b6c682e1cce37497333"
+    },
+    {
+      "path": "target/foundation-0.1.0/artifacts/pdf-document-0.1.0.jar",
+      "sha256": "18781409a605c047737813fcb4695cc05ec4a64d2b0616218a87e79dc9667f18"
+    },
+    {
+      "path": "target/foundation-0.1.0/artifacts/pdf-migration-itext7-0.1.0.jar",
+      "sha256": "2bde8ea94fbc0e81d3d7b759fe4bb1dea58608f52e630288f939f64fcfa8752c"
+    },
+    {
+      "path": "target/foundation-0.1.0/artifacts/pdf-provider-contract-0.1.0.jar",
+      "sha256": "5a67ac1306c1096beeb9e61a8bea78ab9977a965b38c140c22132560ac127cd7"
+    },
+    {
+      "path": "target/foundation-0.1.0/build-command.json",
+      "sha256": "76b3d096020e5fd925bb8e47354e246210f9e68d33be9bfca66929d443d9ca19"
+    },
+    {
+      "path": "target/foundation-0.1.0/build-inputs.json",
+      "sha256": "64cb458acef6c0e98aa5b0dbf8023d85fe569fa2269eb6c3c343959779325e02"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/acceptance.jar",
+      "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/facade-tests.jar",
+      "sha256": "1ff336eb11209e323d6585846e81848556f6317e5c7bd7c759426bbd0093b9c9"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/common-image-3.14.0.jar",
+      "sha256": "9edb1afd32278d20ad660869bfa5b0a27cf9b3553b6eb3f8fc51a2fc13109b66"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/common-io-3.14.0.jar",
+      "sha256": "ae01308bd48c68e76f6a1f76880cf7f4a3a004aa83d78e5448de358a4d957e8f"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/common-lang-3.14.0.jar",
+      "sha256": "8d4529d6f56a010bc7e130ebfcdaf14bc11586e9d9ae66f6dca66f91da7eafef"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/commons-logging-1.4.0.jar",
+      "sha256": "d175dbd751dd782a63bde28c7a039520e971f25e84b79c19b8435edc3603e0dc"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/core-3.5.3.jar",
+      "sha256": "8d8064c1636fdaef7189dd9055c7d59950a8940a12f2293956446ec3c109fd82"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/fontbox-3.0.8.jar",
+      "sha256": "a1915c24e3edbe0ecec93896dfbf6d41427810b663ade97bd4e8bae86ec3fdab"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/hamcrest-core-1.3.jar",
+      "sha256": "66fdef91e9739348df7a096aa384a5685f4e875584cce89386a7a47251c4d8e9"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/icu4j-77.1.jar",
+      "sha256": "b3640b9f416a4411fd33c59abbeea8fd57d024c23e1819bf9673220a97499fe3"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/imageio-core-3.14.0.jar",
+      "sha256": "a1b832b5090bd4677696f999b5ccb8954e987eb9674632a6286a6de2bb1c3c78"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/imageio-metadata-3.14.0.jar",
+      "sha256": "03768fc012bd2573236da803099aba6961dfb29c190103f9790fc49ac27f84c1"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/imageio-tiff-3.14.0.jar",
+      "sha256": "68aa1b4a176d1242b9e49334df188ebfbb7c9201f6071dfe42500d63486224b6"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/junit-4.13.2.jar",
+      "sha256": "8e495b634469d64fb8acfa3495a065cbacc8a0fff55ce1e31007be4c16dc57d3"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/okapibarcode-0.5.6.jar",
+      "sha256": "fc07c5e28f200a53b980e36719901e095e06d1432d7ae959a22456f838765f2a"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/pdfbox-3.0.8.jar",
+      "sha256": "97647cfbde61ebcfc06b4cf8c9b0ffcaaee073396eceb4a7f6836a9b9128903c"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/pdfbox-io-3.0.8.jar",
+      "sha256": "36a0e04001010b4c764857817412b96339930b19755e728959805cc0352061b2"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/lib/snakeyaml-2.2.jar",
+      "sha256": "1467931448a0817696ae2805b7b8b20bfb082652bf9c4efaed528930dc49389b"
+    },
+    {
+      "path": "target/foundation-0.1.0/harness/native-tests.jar",
+      "sha256": "3346087626584af7f7c120ea60346a6d8c1c90734919ece35585512899df67a4"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+test_truetype_widths_preserve_exact_units_per_em_ratios (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_truetype_widths_preserve_exact_units_per_em_ratios) ... 
+  test_truetype_widths_preserve_exact_units_per_em_ratios (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_truetype_widths_preserve_exact_units_per_em_ratios) (program='exact-fractional-truetype-width') ... FAIL
+  test_truetype_widths_preserve_exact_units_per_em_ratios (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_truetype_widths_preserve_exact_units_per_em_ratios) (program='ttf-rational-200.4') ... FAIL
+  test_truetype_widths_preserve_exact_units_per_em_ratios (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_truetype_widths_preserve_exact_units_per_em_ratios) (program='cidttf-rational-200.4') ... FAIL
+
+======================================================================
+FAIL: test_truetype_widths_preserve_exact_units_per_em_ratios (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_truetype_widths_preserve_exact_units_per_em_ratios) (program='exact-fractional-truetype-width')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 29, in test_truetype_widths_preserve_exact_units_per_em_ratios
+    self.observe(directory, pdf, expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 569, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'pass' != 'fail'
+- pass
++ fail
+ : exact-fractional-truetype-width.pdf: PDF Widths disagrees with the selected embedded glyph advance
+
+======================================================================
+FAIL: test_truetype_widths_preserve_exact_units_per_em_ratios (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_truetype_widths_preserve_exact_units_per_em_ratios) (program='ttf-rational-200.4')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 29, in test_truetype_widths_preserve_exact_units_per_em_ratios
+    self.observe(directory, pdf, expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 569, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'pass' != 'fail'
+- pass
++ fail
+ : ttf-rational-200.4.pdf: PDF Widths disagrees with the selected embedded glyph advance
+
+======================================================================
+FAIL: test_truetype_widths_preserve_exact_units_per_em_ratios (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_truetype_widths_preserve_exact_units_per_em_ratios) (program='cidttf-rational-200.4')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 29, in test_truetype_widths_preserve_exact_units_per_em_ratios
+    self.observe(directory, pdf, expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 569, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'pass' != 'fail'
+- pass
++ fail
+ : cidttf-rational-200.4.pdf: PDF W or DW disagrees with the selected embedded CID glyph advance
+
+----------------------------------------------------------------------
+Ran 1 test in 2.653s
+
+FAILED (failures=3)

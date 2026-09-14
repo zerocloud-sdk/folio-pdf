@@ -3,6 +3,7 @@ package net.zerocloud.pdf.consumer;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -11,6 +12,7 @@ import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import net.zerocloud.pdf.CharacterMapping;
@@ -22,6 +24,7 @@ import net.zerocloud.pdf.ExtractionDiagnostic;
 import net.zerocloud.pdf.DocumentSource;
 import net.zerocloud.pdf.DocumentWorkflow;
 import net.zerocloud.pdf.ExtractionLimits;
+import net.zerocloud.pdf.LogicalObjectReference;
 import net.zerocloud.pdf.LogicalStructureElement;
 import net.zerocloud.pdf.LogicalStructureItem;
 import net.zerocloud.pdf.MarkedContentReference;
@@ -33,6 +36,7 @@ import net.zerocloud.pdf.PdfDictionary;
 import net.zerocloud.pdf.PdfIndirectReference;
 import net.zerocloud.pdf.PdfInspectionLimits;
 import net.zerocloud.pdf.PdfName;
+import net.zerocloud.pdf.PdfString;
 import net.zerocloud.pdf.PdfNumber;
 import net.zerocloud.pdf.PdfStream;
 import net.zerocloud.pdf.PdfValue;
@@ -41,6 +45,7 @@ import net.zerocloud.pdf.SaveMode;
 import net.zerocloud.pdf.TextItem;
 import net.zerocloud.pdf.TextStructureExtraction;
 import net.zerocloud.pdf.WorkflowOutcome;
+import net.zerocloud.pdf.WorkflowExecutionProfile;
 import net.zerocloud.pdf.WorkflowRequest;
 import net.zerocloud.pdf.command.AddBlankPage;
 import net.zerocloud.pdf.query.ExtractTextAndStructure;
@@ -68,6 +73,13 @@ public final class TextStructureExtractionWorkflowTest {
     private static final byte[] EMBEDDED_FONT_PROGRAM =
             "Folio T13 bounded font program".getBytes(
                     StandardCharsets.US_ASCII);
+    private static final String TYPE3_CONTENT = "BT /F1 10 Tf 1 0 0 1 20 30 Tm (AAA) Tj ET\n";
+    private static final String TYPE3_GLYPH = "600 0 d0 0 0 500 700 re f\n";
+    private static final String TYPE3_FONT =
+            "<< /Type /Font /Subtype /Type3 /Name /F1 /FontBBox [0 0 600 700] "
+                    + "/FontMatrix [.002 0 0 .003 0 0] /FirstChar 65 /LastChar 65 /Widths [600] "
+                    + "/Encoding << /Type /Encoding /Differences [65 /A] >> "
+                    + "/CharProcs << /A 6 0 R /Alias 6 0 R >> /Resources << >> >>";
 
     @Rule
     public final TemporaryFolder temporaryFolder = new TemporaryFolder();
@@ -79,7 +91,7 @@ public final class TextStructureExtractionWorkflowTest {
 
         WorkflowOutcome<TextStructureExtraction> outcome =
                 new DocumentWorkflow().execute(
-                        WorkflowRequest.builder()
+                        requestBuilder()
                                 .target("output", PublicationTarget.path(output))
                                 .saveMode(SaveMode.REWRITE)
                                 .build(),
@@ -177,7 +189,7 @@ public final class TextStructureExtractionWorkflowTest {
                 "spaced-text.pdf");
 
         TextStructureExtraction extraction = new DocumentWorkflow().execute(
-                WorkflowRequest.builder()
+                requestBuilder()
                         .target("output", PublicationTarget.path(output))
                         .saveMode(SaveMode.REWRITE)
                         .build(),
@@ -332,7 +344,7 @@ public final class TextStructureExtractionWorkflowTest {
                 "uncertain-mappings.pdf");
 
         TextStructureExtraction extraction = new DocumentWorkflow().execute(
-                WorkflowRequest.builder()
+                requestBuilder()
                         .target("output", PublicationTarget.path(output))
                         .saveMode(SaveMode.REWRITE)
                         .build(),
@@ -412,6 +424,385 @@ public final class TextStructureExtractionWorkflowTest {
     }
 
     @Test(timeout = 10000L)
+    public void inheritedToUnicodeMappingsUseExactBytesAndLocalOverrides() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("inherited-to-unicode.pdf");
+        String content = "BT /F1 10 Tf 1 0 0 1 20 30 Tm (ABCD) Tj /F1 10 Tf (ABCD) Tj ET\n";
+        String parent = "begincmap\n1 begincodespacerange\n<00> <FF>\nendcodespacerange\n"
+                + "1 beginbfrange\n<41> <42> <0058>\nendbfrange\n"
+                + "2 beginbfchar\n<43> <005A>\n<44> <0044>\nendbfchar\nendcmap\n";
+        String child = "begincmap\n1 beginbfchar\n<41> <0041>\nendbfchar\n"
+                + "1 beginbfrange\n<42> <43> [<0042> <0043>]\nendbfrange\nendcmap\n";
+        writePdf(source,
+                "<< /Type /Catalog /Pages 2 0 R >>",
+                "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+                "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] "
+                        + "/Resources << /Font << /F1 5 0 R >> >> /Contents 4 0 R >>",
+                streamObject(content, ""),
+                "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding /ToUnicode 6 0 R >>",
+                streamObject(child, "/UseCMap 7 0 R"), streamObject(parent, ""));
+        byte[] before = Files.readAllBytes(source);
+        long bytes = content.length() + parent.length() + child.length();
+        PageText page = query(source, new BoundaryLimits().textItems(8).unicode(8).toUnicodeMappings(7)
+                .fontDataEntries(3).decodedBytes(bytes).build()).getPages().get(0);
+        assertEquals("ABCDABCD", page.getText());
+        for (int index = 0; index < 8; index++) {
+            CharacterMapping mapping = page.getTextItems().get(index).getCharacterMapping();
+            assertEquals(CharacterMapping.Confidence.EXPLICIT, mapping.getConfidence());
+            assertArrayEquals(new byte[] {(byte) ('A' + index % 4)}, mapping.getSourceCode());
+        }
+        assertEquals(20.0, page.getTextItems().get(0).getGeometry().getE().doubleValue(), 0.0001);
+        assertEquals(6.67, page.getTextItems().get(0).getGeometry().getAdvanceX().doubleValue(), 0.001);
+        assertLimitFailure(source, new BoundaryLimits().textItems(8).unicode(8).toUnicodeMappings(6)
+                .fontDataEntries(3).decodedBytes(bytes).build());
+        assertLimitFailure(source, new BoundaryLimits().textItems(8).unicode(8).toUnicodeMappings(7)
+                .fontDataEntries(2).decodedBytes(bytes).build());
+        assertLimitFailure(source, new BoundaryLimits().textItems(8).unicode(8).toUnicodeMappings(7)
+                .fontDataEntries(3).decodedBytes(bytes - 1).build());
+        assertArrayEquals(before, Files.readAllBytes(source));
+    }
+
+    @Test(timeout = 10000L)
+    public void toUnicodeNodesAndCodeSpaceDeclarationsShareFontDataBounds() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("cmap-codespace-budget.pdf");
+        String content = "BT /F1 12 Tf (A) Tj /F1 12 Tf (A) Tj ET\n";
+        String cmap = "begincmap\n/CMapName /FolioT75CodeSpaces def\n/CMapType 2 def\n"
+                + "2 begincodespacerange\n<00> <7F>\n<80> <FF>\nendcodespacerange\n"
+                + "1 beginbfchar\n<41> <0041>\nendbfchar\nendcmap\n";
+        writePdf(source,
+                "<< /Type /Catalog /Pages 2 0 R >>",
+                "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+                "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] "
+                        + "/Resources << /Font << /F1 5 0 R >> >> /Contents 4 0 R >>",
+                streamObject(content, ""),
+                "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding /ToUnicode 6 0 R >>",
+                streamObject(cmap, ""));
+        byte[] before = Files.readAllBytes(source);
+        PageText page = query(source, new BoundaryLimits().textItems(2).unicode(2).toUnicodeMappings(1)
+                .fontDataEntries(3).decodedBytes(content.length() + cmap.length()).build()).getPages().get(0);
+        assertEquals("AA", page.getText());
+        assertEquals(CharacterMapping.Confidence.EXPLICIT,
+                page.getTextItems().get(0).getCharacterMapping().getConfidence());
+        assertLimitFailure(source, new BoundaryLimits().textItems(2).unicode(2).toUnicodeMappings(1)
+                .fontDataEntries(2).decodedBytes(content.length() + cmap.length()).build());
+        assertArrayEquals(before, Files.readAllBytes(source));
+    }
+
+    @Test(timeout = 10000L)
+    public void unrelatedCMapMetadataDoesNotConsumeMappingEntries() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("cmap-metadata-array.pdf");
+        String program = "begincmap /XUID [1 10 25404 9999] def "
+                + "1 begincodespacerange <00> <FF> endcodespacerange "
+                + "1 beginbfchar <41> <0041> endbfchar endcmap\n";
+        writeToUnicodeHeaderFixture(source, true, program, "");
+        byte[] before = Files.readAllBytes(source);
+        PageText page = query(source, new BoundaryLimits().textItems(1).unicode(1)
+                .toUnicodeMappings(1).fontDataEntries(3).decodedBytes(1024).build()).getPages().get(0);
+        assertEquals("A", page.getText());
+        assertEquals(CharacterMapping.Confidence.EXPLICIT,
+                page.getTextItems().get(0).getCharacterMapping().getConfidence());
+        assertArrayEquals(before, Files.readAllBytes(source));
+    }
+
+    @Test(timeout = 10000L)
+    public void inheritedToUnicodeCannotRedefineItsCodespace() throws Exception {
+        String parent = "begincmap 1 begincodespacerange <00> <7F> endcodespacerange "
+                + "1 beginbfchar <41> <0041> endbfchar endcmap\n";
+        String[] localSpaces = {"<80> <FF>", "<00> <7F>"};
+        for (int index = 0; index < localSpaces.length; index++) {
+            Path source = temporaryFolder.getRoot().toPath().resolve("redefined-cmap-space-" + index + ".pdf");
+            String child = "begincmap 1 begincodespacerange " + localSpaces[index]
+                    + " endcodespacerange 1 beginbfchar <41> <0041> endbfchar endcmap\n";
+            writeToUnicodeInheritanceFixture(source, "BT /F1 12 Tf (A) Tj ET\n", child, parent);
+            byte[] before = Files.readAllBytes(source);
+            assertQueryFailure(source, limits());
+            assertArrayEquals(before, Files.readAllBytes(source));
+        }
+    }
+
+    @Test(timeout = 10000L)
+    public void textualToUnicodeInheritanceResolvesTheDeclaredEmbeddedParent() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("textual-cmap-parent.pdf");
+        String parent = "begincmap /CMapName /FolioParent def "
+                + "1 begincodespacerange <00> <FF> endcodespacerange "
+                + "2 beginbfchar <41> <0041> <42> <0058> endbfchar endcmap\n";
+        String child = "begincmap /FolioParent usecmap /CMapName /FolioChild def "
+                + "1 beginbfchar <42> <0042> endbfchar endcmap\n";
+        writeToUnicodeInheritanceFixture(source, "BT /F1 12 Tf (AB) Tj ET\n", child, parent);
+        byte[] before = Files.readAllBytes(source);
+        PageText page = query(source, limits()).getPages().get(0);
+        assertEquals("AB", page.getText());
+        assertEquals(CharacterMapping.Confidence.EXPLICIT,
+                page.getTextItems().get(0).getCharacterMapping().getConfidence());
+        assertArrayEquals(before, Files.readAllBytes(source));
+        String[] invalid = {
+            child.replace("/FolioParent usecmap", "/Foreign usecmap"),
+            child.replace("/FolioParent usecmap", "/FolioParent usecmap /FolioParent usecmap"),
+            child.replace("/FolioParent usecmap", "").replace("endcmap", "/FolioParent usecmap endcmap")
+        };
+        for (int index = 0; index < invalid.length; index++) {
+            Path malformed = temporaryFolder.getRoot().toPath().resolve("bad-textual-cmap-parent-" + index + ".pdf");
+            writeToUnicodeInheritanceFixture(malformed, "BT /F1 12 Tf (AB) Tj ET\n", invalid[index], parent);
+            assertQueryFailure(malformed, limits());
+        }
+    }
+
+    @Test(timeout = 30000L)
+    public void predefinedToUnicodeInheritanceUsesOnlyBoundedBundledResources() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("predefined-tounicode-parent.pdf");
+        String content = "BT /F1 10 Tf 1 0 0 1 20 30 Tm <0001003D> Tj /F1 10 Tf <0001003D> Tj ET\n";
+        String child = "begincmap /Adobe-Japan1-UCS2 usecmap /CMapName /FolioOverride def "
+                + "1 beginbfchar <0001> <0041> endbfchar endcmap\n";
+        writePdf(source,
+                "<< /Type /Catalog /Pages 2 0 R >>",
+                "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+                "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] "
+                        + "/Resources << /Font << /F1 5 0 R >> >> /Contents 4 0 R >>",
+                streamObject(content, ""),
+                "<< /Type /Font /Subtype /Type0 /BaseFont /FolioT75 /Encoding /Identity-H "
+                        + "/DescendantFonts [6 0 R] /ToUnicode 7 0 R >>",
+                "<< /Type /Font /Subtype /CIDFontType2 /BaseFont /FolioT75 "
+                        + "/CIDSystemInfo << /Registry (Folio) /Ordering (T75) /Supplement 0 >> /DW 500 >>",
+                streamObject(child, "/UseCMap /Adobe-Japan1-UCS2"));
+        byte[] before = Files.readAllBytes(source);
+        // Pinned FontBox 3.0.8 resource: 284124 bytes, 23058 declared source
+        // mappings and one codespace. The local override still costs one entry.
+        long bytes = content.length() + child.length() + 284124 + 7889L;
+        PageText page = query(source, new BoundaryLimits().textItems(4).unicode(4)
+                .toUnicodeMappings(23059).fontDataEntries(65541).decodedBytes(bytes).build()).getPages().get(0);
+        assertEquals("A\u00a5A\u00a5", page.getText());
+        assertEquals(5.0, page.getTextItems().get(0).getGeometry().getAdvanceX().doubleValue(), 0.0001);
+        assertArrayEquals(new byte[] {0, 0x3d}, page.getTextItems().get(1).getCharacterMapping().getSourceCode());
+        assertEquals(CharacterMapping.Confidence.EXPLICIT,
+                page.getTextItems().get(1).getCharacterMapping().getConfidence());
+        assertLimitFailure(source, new BoundaryLimits().textItems(4).unicode(4)
+                .toUnicodeMappings(23058).fontDataEntries(65541).decodedBytes(bytes).build());
+        assertLimitFailure(source, new BoundaryLimits().textItems(4).unicode(4)
+                .toUnicodeMappings(23059).fontDataEntries(65540).decodedBytes(bytes).build());
+        assertLimitFailure(source, new BoundaryLimits().textItems(4).unicode(4)
+                .toUnicodeMappings(23059).fontDataEntries(65541).decodedBytes(bytes - 1).build());
+        assertArrayEquals(before, Files.readAllBytes(source));
+    }
+
+    @Test(timeout = 10000L)
+    public void predefinedUnicodeRangesRetainTheirDeclaredCarry() throws Exception {
+        String[] names = {"Adobe-Japan1-UCS2", "Adobe-CNS1-UCS2"};
+        String[] codes = {"55E655E7", "2F492F4A"};
+        String[] expected = {"\u73ff\u7400", "\u6fff\u7000"};
+        for (int index = 0; index < names.length; index++) {
+            Path source = temporaryFolder.getRoot().toPath().resolve("bundled-unicode-carry-" + index + ".pdf");
+            writePdf(source,
+                    "<< /Type /Catalog /Pages 2 0 R >>",
+                    "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+                    "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] "
+                            + "/Resources << /Font << /F1 5 0 R >> >> /Contents 4 0 R >>",
+                    streamObject("BT /F1 10 Tf <" + codes[index] + "> Tj ET\n", ""),
+                    "<< /Type /Font /Subtype /Type0 /BaseFont /FolioT75 /Encoding /Identity-H "
+                            + "/DescendantFonts [6 0 R] /ToUnicode 7 0 R >>",
+                    "<< /Type /Font /Subtype /CIDFontType2 /BaseFont /FolioT75 "
+                            + "/CIDSystemInfo << /Registry (Folio) /Ordering (T75) /Supplement 0 >> /DW 500 >>",
+                    streamObject("begincmap /" + names[index] + " usecmap endcmap\n", "/UseCMap /" + names[index]));
+            byte[] before = Files.readAllBytes(source);
+            PageText page = query(source, new BoundaryLimits().textItems(2).unicode(2)
+                    .toUnicodeMappings(40000).fontDataEntries(65541).decodedBytes(400000).build()).getPages().get(0);
+            assertEquals(expected[index], page.getText());
+            assertEquals(CharacterMapping.Confidence.EXPLICIT,
+                    page.getTextItems().get(1).getCharacterMapping().getConfidence());
+            assertArrayEquals(before, Files.readAllBytes(source));
+        }
+    }
+
+    @Test(timeout = 30000L)
+    public void pdfTwoToUnicodeStreamTypeAndNameMatchTheirPrograms() throws Exception {
+        String parent = "begincmap /CMapName /FolioParent def "
+                + "1 begincodespacerange <00> <FF> endcodespacerange "
+                + "1 beginbfchar <41> <0041> endbfchar endcmap\n";
+        String child = "begincmap /FolioParent usecmap /CMapName /FolioChild def endcmap\n";
+        String[] headers = {"", "/Type /CMap /CMapName /FolioParent", "/CMapName /Wrong",
+            "/CMapName (FolioParent)", "/Type /Font"};
+        for (boolean pdfTwo : new boolean[] {true, false}) {
+            for (int index = 0; index < headers.length; index++) {
+                Path source = temporaryFolder.getRoot().toPath().resolve("cmap-header-" + pdfTwo + "-" + index + ".pdf");
+                writePdf(source,
+                        "<< /Type /Catalog /Pages 2 0 R " + (pdfTwo ? "/Version /2.0" : "") + " >>",
+                        "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+                        "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] "
+                                + "/Resources << /Font << /F1 5 0 R >> >> /Contents 4 0 R >>",
+                        streamObject("BT /F1 12 Tf (A) Tj ET\n", ""),
+                        "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /ToUnicode 6 0 R >>",
+                        streamObject(child, "/Type /CMap /CMapName /FolioChild /UseCMap 7 0 R"),
+                        streamObject(parent, headers[index]));
+                byte[] before = Files.readAllBytes(source);
+                if (pdfTwo && index >= 2) {
+                    assertQueryFailure(source, limits());
+                } else {
+                    assertEquals("A", query(source, limits()).getPages().get(0).getText());
+                }
+                assertArrayEquals(before, Files.readAllBytes(source));
+            }
+        }
+    }
+
+    @Test(timeout = 60000L)
+    public void pdfTwoToUnicodeWritingModeMatchesItsProgram() throws Exception {
+        String program = "begincmap /WMode 1 def "
+                + "1 begincodespacerange <00> <FF> endcodespacerange "
+                + "1 beginbfchar <41> <0041> endbfchar endcmap\n";
+        String[] headers = {"/WMode 1", "/WMode 0", "/WMode 2", "/WMode 1.0", "/WMode (1)"};
+        for (boolean pdfTwo : new boolean[] {true, false}) {
+            for (int index = 0; index < headers.length; index++) {
+                Path source = temporaryFolder.getRoot().toPath().resolve("cmap-mode-" + pdfTwo + "-" + index + ".pdf");
+                writeToUnicodeHeaderFixture(source, pdfTwo, program, headers[index]);
+                byte[] before = Files.readAllBytes(source);
+                if (pdfTwo && index != 0) {
+                    assertQueryFailure(source, limits());
+                } else {
+                    assertEquals("A", query(source, limits()).getPages().get(0).getText());
+                }
+                assertArrayEquals(before, Files.readAllBytes(source));
+            }
+        }
+    }
+
+    @Test(timeout = 60000L)
+    public void pdfTwoToUnicodeCharacterCollectionMatchesItsProgram() throws Exception {
+        String[] collections = {
+            "<< /Registry (Folio\\(A\\)) /Ordering <543735> /Supplement 2 >>",
+            "3 dict dup begin /Registry (Folio\\(A\\)) def /Ordering (T75) def /Supplement 2 def end"
+        };
+        String correct = "<< /Registry (Folio\\(A\\)) /Ordering (T75) /Supplement 2 >>";
+        String[] headers = {"", "/CIDSystemInfo " + correct,
+            "/CIDSystemInfo << /Registry (Wrong) /Ordering (T75) /Supplement 2 >>",
+            "/CIDSystemInfo << /Registry (Folio\\(A\\)) /Ordering (Wrong) /Supplement 2 >>",
+            "/CIDSystemInfo << /Registry (Folio\\(A\\)) /Ordering (T75) /Supplement 3 >>",
+            "/CIDSystemInfo << /Registry /Folio /Ordering (T75) /Supplement 2 >>",
+            "/CIDSystemInfo [" + correct + "]"
+        };
+        for (boolean pdfTwo : new boolean[] {true, false}) {
+            for (int form = 0; form < collections.length; form++) {
+                String program = "begincmap /CIDSystemInfo " + collections[form] + " def "
+                        + "1 begincodespacerange <00> <FF> endcodespacerange "
+                        + "1 beginbfchar <41> <0041> endbfchar endcmap\n";
+                for (int index = 0; index < headers.length; index++) {
+                    Path source = temporaryFolder.getRoot().toPath().resolve(
+                            "cmap-collection-" + pdfTwo + "-" + form + "-" + index + ".pdf");
+                    writeToUnicodeHeaderFixture(source, pdfTwo, program, headers[index]);
+                    byte[] before = Files.readAllBytes(source);
+                    if (pdfTwo && index >= 2) {
+                        assertQueryFailure(source, limits());
+                    } else {
+                        assertEquals("A", query(source, limits()).getPages().get(0).getText());
+                    }
+                    assertArrayEquals(before, Files.readAllBytes(source));
+                }
+            }
+        }
+    }
+
+    private static void writeToUnicodeHeaderFixture(Path source, boolean pdfTwo, String program,
+            String headers) throws Exception {
+        writePdf(source,
+                "<< /Type /Catalog /Pages 2 0 R " + (pdfTwo ? "/Version /2.0" : "") + " >>",
+                "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+                "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] "
+                        + "/Resources << /Font << /F1 5 0 R >> >> /Contents 4 0 R >>",
+                streamObject("BT /F1 12 Tf (A) Tj ET\n", ""),
+                "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /ToUnicode 6 0 R >>",
+                streamObject("begincmap endcmap\n", "/UseCMap 7 0 R"),
+                streamObject(program, headers));
+    }
+
+    @Test(timeout = 10000L)
+    public void undefinedLocalToUnicodeRangeDoesNotRestoreAnAncestorMapping() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("undefined-local-cmap-range.pdf");
+        String parent = "begincmap 1 begincodespacerange <00> <FF> endcodespacerange "
+                + "1 beginbfchar <02> <0042> endbfchar endcmap\n";
+        String child = "begincmap 1 beginbfrange <01> <02> <00FF> endbfrange endcmap\n";
+        writeToUnicodeInheritanceFixture(source, "BT /F1 12 Tf <0102> Tj ET\n", child, parent);
+        byte[] before = Files.readAllBytes(source);
+        PageText page = query(source, limits()).getPages().get(0);
+        assertEquals("\u00ff", page.getText());
+        CharacterMapping missing = page.getTextItems().get(1).getCharacterMapping();
+        assertEquals(CharacterMapping.Confidence.MISSING, missing.getConfidence());
+        assertFalse(missing.getExplicitUnicode().isPresent());
+        assertArrayEquals(new byte[] {2}, missing.getSourceCode());
+        assertArrayEquals(before, Files.readAllBytes(source));
+    }
+
+    @Test(timeout = 30000L)
+    public void detachedMappingTextRemainsOwnedAfterTheQueryCompletes() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("retained-mapping-text.pdf");
+        StringBuilder target = new StringBuilder();
+        for (int index = 0; index < 256; index++) {
+            target.append("0058");
+        }
+        String parent = "begincmap 1 begincodespacerange <00> <FF> endcodespacerange "
+                + "1 beginbfchar <41> <" + target + "> endbfchar endcmap\n";
+        writeToUnicodeInheritanceFixture(source,
+                "/Span << /ActualText () >> BDC BT /F1 12 Tf (A) Tj ET EMC\n",
+                "begincmap endcmap\n", parent);
+        byte[] before = Files.readAllBytes(source);
+        WorkflowOutcome<List<TextStructureExtraction>> once = repeatedMappingQueries(source, 1);
+        WorkflowOutcome<List<TextStructureExtraction>> repeated = repeatedMappingQueries(source, 64);
+        // Each retained Query result contains its own 512-byte declared Unicode
+        // value even though ActualText suppresses all aggregate Page Text.
+        assertTrue(repeated.getResourceUsage().getPeakOwnedMemoryBytes()
+                >= once.getResourceUsage().getPeakOwnedMemoryBytes() + 63L * 512L);
+        CharacterMapping mapping = repeated.getResult().get(63).getPages().get(0)
+                .getTextItems().get(0).getCharacterMapping();
+        assertEquals(256, mapping.getExplicitUnicode().get().length());
+        assertEquals("", repeated.getResult().get(63).getPages().get(0).getText());
+        assertArrayEquals(before, Files.readAllBytes(source));
+    }
+
+    private static WorkflowOutcome<List<TextStructureExtraction>> repeatedMappingQueries(Path source, int count)
+            throws Exception {
+        return new DocumentWorkflow().execute(sourceRequest(source), session -> {
+            List<TextStructureExtraction> values = new ArrayList<TextStructureExtraction>();
+            for (int index = 0; index < count; index++) {
+                values.add(session.query(ExtractTextAndStructure.version1(limits())));
+            }
+            return values;
+        });
+    }
+
+    private static void writeToUnicodeInheritanceFixture(Path source, String content, String child, String parent)
+            throws Exception {
+        writePdf(source,
+                "<< /Type /Catalog /Pages 2 0 R >>",
+                "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+                "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] "
+                        + "/Resources << /Font << /F1 5 0 R >> >> /Contents 4 0 R >>",
+                streamObject(content, ""),
+                "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /ToUnicode 6 0 R >>",
+                streamObject(child, "/UseCMap 7 0 R"), streamObject(parent, ""));
+    }
+
+    @Test(timeout = 30000L)
+    public void malformedToUnicodeProgramsCannotProduceInferredPrefixes() throws Exception {
+        String[] programs = {
+            "begincmap beginbfchar <41> <0041> endbfchar endcmap",
+            "begincmap 1 begincidchar <41> 1 endcidchar endcmap",
+            "begincmap 1 beginbfchar <41> <0041> endbfchar",
+            "1 beginbfchar <41> <0041> endbfchar endcmap",
+            "begincmap 1 beginbfchar <41> <0041> endbfchar endbfchar endcmap"
+        };
+        for (int index = 0; index < programs.length; index++) {
+            Path source = temporaryFolder.getRoot().toPath().resolve("malformed-cmap-program-" + index + ".pdf");
+            writePdf(source,
+                    "<< /Type /Catalog /Pages 2 0 R >>",
+                    "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+                    "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] "
+                            + "/Resources << /Font << /F1 5 0 R >> >> /Contents 4 0 R >>",
+                    streamObject("BT /F1 12 Tf (A) Tj ET\n", ""),
+                    "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding /ToUnicode 6 0 R >>",
+                    streamObject(programs[index], ""));
+            byte[] before = Files.readAllBytes(source);
+            assertQueryFailure(source, limits());
+            assertArrayEquals(before, Files.readAllBytes(source));
+        }
+    }
+
+    @Test(timeout = 10000L)
     public void toUnicodeRangeExpansionIsCallerBoundedBeforeParsing()
             throws Exception {
         Path exact = temporaryFolder.getRoot().toPath().resolve(
@@ -440,7 +831,7 @@ public final class TextStructureExtractionWorkflowTest {
         createToUnicodeRangeFixture(
                 embeddedCarry,
                 "1",
-                "<0000> <00FF> <00FF>",
+                "<00> <FF> <00FF>",
                 "A");
 
         assertEquals("AB", query(exact, mappingLimits(2))
@@ -580,7 +971,8 @@ public final class TextStructureExtractionWorkflowTest {
         assertLimitFailure(source, fontInputLimits(exactBytes, 1));
     }
 
-    @Test(timeout = 10000L)
+    // Each case starts independent Workflows; include their cumulative Worker startup time.
+    @Test(timeout = 60000L)
     public void malformedFontKindsAndMetricsFailBeforeBackendCoercion()
             throws Exception {
         String cidPrefix = "<< /Type /Font /Subtype /Type0 /BaseFont /FolioT13 "
@@ -678,9 +1070,425 @@ public final class TextStructureExtractionWorkflowTest {
                 "bounded-cid-metrics.pdf");
         writeCidMetricFixture(source, "[65 66 500]");
 
-        assertEquals("AB", query(source, cidFontLimits(5))
+        // Five metric entries, two ToUnicode entries and 65,538 Identity-H entries.
+        assertEquals("AB", query(source, cidFontLimits(65545))
                 .getPages().get(0).getText());
-        assertLimitFailure(source, cidFontLimits(4));
+        assertLimitFailure(source, cidFontLimits(65544));
+    }
+
+    @Test(timeout = 30000L)
+    public void identityEncodingsChargeTheirActualProgramsAndKeepSourceCodeMetrics() throws Exception {
+        String content = "BT /F1 10 Tf 7 Tw 1 0 0 1 20 30 Tm <00410020> Tj /F1 10 Tf <0041> Tj ET\n";
+        for (boolean vertical : new boolean[] {false, true}) {
+            Path source = temporaryFolder.getRoot().toPath().resolve("identity-cmap-" + vertical + ".pdf");
+            writePdf(source,
+                    "<< /Type /Catalog /Pages 2 0 R >>",
+                    "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+                    "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] "
+                            + "/Resources << /Font << /F1 5 0 R >> >> /Contents 4 0 R >>",
+                    streamObject(content, ""),
+                    "<< /Type /Font /Subtype /Type0 /BaseFont /FolioT75 /Encoding /Identity-"
+                            + (vertical ? "V" : "H") + " /DescendantFonts [6 0 R] >>",
+                    "<< /Type /Font /Subtype /CIDFontType2 /BaseFont /FolioT75 "
+                            + "/CIDSystemInfo << /Registry (Folio) /Ordering (T75) /Supplement 0 >> /DW 500 >>");
+            byte[] before = Files.readAllBytes(source);
+            int entries = vertical ? 65539 : 65538;
+            long decoded = content.length() + 7889 + (vertical ? 2688 : 0);
+            PageText page = query(source, new BoundaryLimits().textItems(3).unicode(0)
+                    .fontDataEntries(entries).decodedBytes(decoded).build()).getPages().get(0);
+            assertEquals("", page.getText());
+            assertEquals(3, page.getTextItems().size());
+            for (int index = 0; index < 3; index++) {
+                TextItem item = page.getTextItems().get(index);
+                assertEquals(CharacterMapping.Confidence.MISSING, item.getCharacterMapping().getConfidence());
+                assertArrayEquals(new byte[] {0, (byte) (index == 1 ? 32 : 65)},
+                        item.getCharacterMapping().getSourceCode());
+                assertEquals(vertical ? 0 : 5, item.getGeometry().getAdvanceX().doubleValue(), 0.0001);
+                assertEquals(vertical ? -10 : 0, item.getGeometry().getAdvanceY().doubleValue(), 0.0001);
+                assertEquals(vertical ? 17.5 : 20 + 5 * index, item.getGeometry().getE().doubleValue(), 0.0001);
+                assertEquals(vertical ? 21.2 - 10 * index : 30, item.getGeometry().getF().doubleValue(), 0.0001);
+            }
+            assertLimitFailure(source, new BoundaryLimits().textItems(3).unicode(0)
+                    .fontDataEntries(entries - 1).decodedBytes(decoded).build());
+            assertLimitFailure(source, new BoundaryLimits().textItems(3).unicode(0)
+                    .fontDataEntries(entries).decodedBytes(decoded - 1).build());
+            assertArrayEquals(before, Files.readAllBytes(source));
+        }
+    }
+
+    @Test(timeout = 10000L)
+    public void embeddedEncodingUsesExactCodeLengthsAndCidDeclaredWidths() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("embedded-encoding.pdf");
+        String content = "BT /F1 10 Tf 7 Tw 1 0 0 1 20 30 Tm <2021802020810001> Tj ET\n";
+        String encoding = "begincmap /CMapName /FolioEncoding def /CMapType 1 def /WMode 0 def "
+                + "/CIDSystemInfo << /Registry (Folio) /Ordering (T75) /Supplement 0 >> def "
+                + "3 begincodespacerange <20> <21> <8000> <80FF> <810000> <81FFFF> endcodespacerange "
+                + "2 begincidchar <20> 7 <8020> 0 endcidchar "
+                + "1 begincidrange <21> <21> 32 endcidrange "
+                + "1 begincidchar <810001> 8 endcidchar endcmap\n";
+        writePdf(source,
+                "<< /Type /Catalog /Pages 2 0 R >>",
+                "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+                "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] "
+                        + "/Resources << /Font << /F1 5 0 R >> >> /Contents 4 0 R >>",
+                streamObject(content, ""),
+                "<< /Type /Font /Subtype /Type0 /BaseFont /FolioT75 /Encoding 7 0 R /DescendantFonts [6 0 R] >>",
+                "<< /Type /Font /Subtype /CIDFontType2 /BaseFont /FolioT75 "
+                        + "/CIDSystemInfo << /Registry (Folio) /Ordering (T75) /Supplement 0 >> "
+                        + "/DW 500 /W [0 [300] 7 [700 800] 32 [900]] >>",
+                streamObject(encoding, "/Type /CMap /CMapName /FolioEncoding /WMode 0 "
+                        + "/CIDSystemInfo << /Registry (Folio) /Ordering (T75) /Supplement 0 >>"));
+        byte[] before = Files.readAllBytes(source);
+        PageText page = query(source, new BoundaryLimits().textItems(5).unicode(0)
+                .fontDataEntries(18).decodedBytes(content.length() + encoding.length()).build()).getPages().get(0);
+        byte[][] sources = {{32}, {33}, {(byte) 0x80, 32}, {32}, {(byte) 0x81, 0, 1}};
+        double[] positions = {20, 34, 43, 46, 60};
+        double[] advances = {7, 9, 3, 7, 8};
+        assertEquals(5, page.getTextItems().size());
+        for (int index = 0; index < 5; index++) {
+            TextItem item = page.getTextItems().get(index);
+            assertArrayEquals(sources[index], item.getCharacterMapping().getSourceCode());
+            assertEquals(CharacterMapping.Confidence.MISSING, item.getCharacterMapping().getConfidence());
+            assertEquals(positions[index], item.getGeometry().getE().doubleValue(), 0.0001);
+            assertEquals(advances[index], item.getGeometry().getAdvanceX().doubleValue(), 0.0001);
+        }
+        assertLimitFailure(source, new BoundaryLimits().textItems(5).unicode(0)
+                .fontDataEntries(17).decodedBytes(content.length() + encoding.length()).build());
+        assertLimitFailure(source, new BoundaryLimits().textItems(5).unicode(0)
+                .fontDataEntries(18).decodedBytes(content.length() + encoding.length() - 1).build());
+        assertArrayEquals(before, Files.readAllBytes(source));
+    }
+
+    @Test(timeout = 30000L)
+    public void predefinedEncodingUsesBoundedProgramsAndVerticalOverrides() throws Exception {
+        String[] names = {"83pv-RKSJ-H", "90ms-RKSJ-H", "90ms-RKSJ-V"};
+        int[] entries = {8028, 7920, 8031};
+        int[] resourceBytes = {7149, 6139, 10437};
+        String content = "BT /F1 10 Tf 1 0 0 1 20 30 Tm <418141> Tj ET\n";
+        String unicode = "begincmap 2 begincodespacerange <00> <7F> <8000> <FFFF> endcodespacerange "
+                + "2 beginbfchar <41> <0041> <8141> <3001> endbfchar endcmap\n";
+        for (int index = 0; index < names.length; index++) {
+            boolean vertical = index == 2;
+            Path source = temporaryFolder.getRoot().toPath().resolve("predefined-encoding-" + names[index] + ".pdf");
+            writePdf(source,
+                    "<< /Type /Catalog /Pages 2 0 R >>",
+                    "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+                    "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] "
+                            + "/Resources << /Font << /F1 5 0 R >> >> /Contents 4 0 R >>",
+                    streamObject(content, ""),
+                    "<< /Type /Font /Subtype /Type0 /BaseFont /FolioT75 /Encoding /" + names[index]
+                            + " /DescendantFonts [6 0 R] /ToUnicode 7 0 R >>",
+                    "<< /Type /Font /Subtype /CIDFontType2 /BaseFont /FolioT75 "
+                            + "/CIDSystemInfo << /Registry (Adobe) /Ordering (Japan1) /Supplement 7 >> "
+                            + "/DW 1000 /W [34 [400] 264 [500] 634 [600] 7887 [800]] "
+                            + (vertical ? "/W2 [7887 [-900 400 700]] " : "") + ">>",
+                    streamObject(unicode, ""));
+            byte[] before = Files.readAllBytes(source);
+            int cost = entries[index] + 12 + 3 + (vertical ? 5 : 0);
+            long bytes = content.length() + unicode.length() + resourceBytes[index];
+            PageText page = query(source, new BoundaryLimits().textItems(2).unicode(2)
+                    .toUnicodeMappings(2).fontDataEntries(cost).decodedBytes(bytes).build()).getPages().get(0);
+            assertEquals("A\u3001", page.getText());
+            assertArrayEquals(new byte[] {65}, page.getTextItems().get(0).getCharacterMapping().getSourceCode());
+            assertArrayEquals(new byte[] {(byte) 0x81, 65}, page.getTextItems().get(1).getCharacterMapping().getSourceCode());
+            assertEquals(vertical ? -10 : (index == 0 ? 4 : 5),
+                    (vertical ? page.getTextItems().get(0).getGeometry().getAdvanceY()
+                            : page.getTextItems().get(0).getGeometry().getAdvanceX()).doubleValue(), 0.0001);
+            assertEquals(vertical ? -9 : 6,
+                    (vertical ? page.getTextItems().get(1).getGeometry().getAdvanceY()
+                            : page.getTextItems().get(1).getGeometry().getAdvanceX()).doubleValue(), 0.0001);
+            assertEquals(vertical ? 16 : (index == 0 ? 24 : 25),
+                    page.getTextItems().get(1).getGeometry().getE().doubleValue(), 0.0001);
+            assertEquals(vertical ? 13 : 30, page.getTextItems().get(1).getGeometry().getF().doubleValue(), 0.0001);
+            assertLimitFailure(source, new BoundaryLimits().textItems(2).unicode(2)
+                    .toUnicodeMappings(2).fontDataEntries(cost - 1).decodedBytes(bytes).build());
+            assertLimitFailure(source, new BoundaryLimits().textItems(2).unicode(2)
+                    .toUnicodeMappings(2).fontDataEntries(cost).decodedBytes(bytes - 1).build());
+            assertArrayEquals(before, Files.readAllBytes(source));
+        }
+    }
+
+    @Test(timeout = 180000L)
+    public void everyStandardPredefinedEncodingAcceptsItsIndependentlyCountedBudget() throws Exception {
+        // Original literal counts from the pinned resource archive, independent
+        // of the product parser. Source mappings and licenses remain in FontBox.
+        String[] resources = {
+            "83pv-RKSJ-H,Japan1,1,8028,7149",
+            "90ms-RKSJ-H,Japan1,2,7920,6139",
+            "90ms-RKSJ-V,Japan1,2,8031,10437",
+            "90msp-RKSJ-H,Japan1,2,7920,6070",
+            "90msp-RKSJ-V,Japan1,2,8031,10351",
+            "90pv-RKSJ-H,Japan1,1,7393,7884",
+            "Add-RKSJ-H,Japan1,1,7379,15107",
+            "Add-RKSJ-V,Japan1,1,7466,18999",
+            "B5pc-H,CNS1,0,13628,7616",
+            "B5pc-V,CNS1,0,13649,10621",
+            "CNS-EUC-H,CNS1,0,19951,12315",
+            "CNS-EUC-V,CNS1,0,19951,13347",
+            "ETen-B5-H,CNS1,0,13996,7772",
+            "ETen-B5-V,CNS1,0,14019,10815",
+            "ETenms-B5-H,CNS1,0,14092,10570",
+            "ETenms-B5-V,CNS1,0,14123,13680",
+            "EUC-H,Japan1,1,7074,5144",
+            "EUC-V,Japan1,1,7128,8436",
+            "Ext-RKSJ-H,Japan1,2,7813,15676",
+            "Ext-RKSJ-V,Japan1,2,7894,19226",
+            "GB-EUC-H,GB1,0,7737,4496",
+            "GB-EUC-V,GB1,0,7774,7665",
+            "GBK-EUC-H,GB1,2,22153,83171",
+            "GBK-EUC-V,GB1,2,22190,86329",
+            "GBK2K-H,GB1,5,30260,90995",
+            "GBK2K-V,GB1,5,30318,94546",
+            "GBKp-EUC-H,GB1,2,22153,83152",
+            "GBKp-EUC-V,GB1,2,22190,86316",
+            "GBpc-EUC-H,GB1,0,7742,4524",
+            "GBpc-EUC-V,GB1,0,7779,7705",
+            "H,Japan1,1,6881,5010",
+            "HKscs-B5-H,CNS1,6,18705,23322",
+            "HKscs-B5-V,CNS1,6,18728,26352",
+            "Identity-H,Identity,0,65538,7889",
+            "Identity-V,Identity,0,65539,10577",
+            "KSC-EUC-H,Korea1,0,8353,11797",
+            "KSC-EUC-V,Korea1,0,8393,14902",
+            "KSCms-UHC-H,Korea1,1,17175,16009",
+            "KSCms-UHC-HW-H,Korea1,1,17175,16005",
+            "KSCms-UHC-HW-V,Korea1,1,17215,19123",
+            "KSCms-UHC-V,Korea1,1,17215,19128",
+            "KSCpc-EUC-H,Korea1,0,9499,12624",
+            "UniCNS-UCS2-H,CNS1,3,18320,326418",
+            "UniCNS-UCS2-V,CNS1,3,18341,329458",
+            "UniCNS-UTF16-H,CNS1,6,23712,252742",
+            "UniCNS-UTF16-V,CNS1,6,23733,255771",
+            "UniGB-UCS2-H,GB1,4,28875,274452",
+            "UniGB-UCS2-V,GB1,4,28912,277688",
+            "UniGB-UTF16-H,GB1,5,30247,199956",
+            "UniGB-UTF16-V,GB1,5,30283,203086",
+            "UniJIS-UCS2-H,Japan1,4,9807,168666",
+            "UniJIS-UCS2-HW-H,Japan1,4,9904,171555",
+            "UniJIS-UCS2-HW-V,Japan1,4,10155,175326",
+            "UniJIS-UCS2-V,Japan1,4,10059,175244",
+            "UniJIS-UTF16-H,Japan1,6,15812,187728",
+            "UniJIS-UTF16-V,Japan1,6,16101,193490",
+            "UniKS-UCS2-H,Korea1,1,17361,166078",
+            "UniKS-UCS2-V,Korea1,1,17400,169223",
+            "UniKS-UTF16-H,Korea1,1,17521,122974",
+            "UniKS-UTF16-V,Korea1,1,17560,126073",
+            "V,Japan1,1,6935,8278"
+        };
+        String content = "BT /F1 12 Tf ET\n";
+        for (String row : resources) {
+            String[] data = row.split(",");
+            Path source = temporaryFolder.getRoot().toPath().resolve("standard-encoding-" + data[0] + ".pdf");
+            writePdf(source,
+                    "<< /Type /Catalog /Pages 2 0 R >>",
+                    "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+                    "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] "
+                            + "/Resources << /Font << /F1 5 0 R >> >> /Contents 4 0 R >>",
+                    streamObject(content, ""),
+                    "<< /Type /Font /Subtype /Type0 /BaseFont /FolioT75 /Encoding /" + data[0]
+                            + " /DescendantFonts [6 0 R] >>",
+                    "<< /Type /Font /Subtype /CIDFontType2 /BaseFont /FolioT75 "
+                            + "/CIDSystemInfo << /Registry (Adobe) /Ordering (" + data[1]
+                            + ") /Supplement " + data[2] + " >> /DW 500 >>");
+            byte[] before = Files.readAllBytes(source);
+            PageText page = query(source, new BoundaryLimits().textItems(0).unicode(0)
+                    .fontDataEntries(Integer.parseInt(data[3]))
+                    .decodedBytes(content.length() + Long.parseLong(data[4])).build()).getPages().get(0);
+            assertEquals(data[0], "", page.getText());
+            assertArrayEquals(before, Files.readAllBytes(source));
+        }
+    }
+
+    @Test(timeout = 60000L)
+    public void cmapMappingsStayWithinTheirDeclaredOrderedCodespaces() throws Exception {
+        String codespace = "1 begincodespacerange <20> <20> endcodespacerange ";
+        for (boolean unicode : new boolean[] {false, true}) {
+            String valid = unicode ? "1 beginbfchar <20> <0041> endbfchar "
+                    : "1 begincidchar <20> 1 endcidchar ";
+            String[] invalid = unicode
+                    ? new String[] {"1 beginbfchar <21> <0042> endbfchar ",
+                            "1 beginbfrange <20> <21> <0041> endbfrange "}
+                    : new String[] {"1 begincidchar <21> 2 endcidchar ",
+                            "1 begincidrange <20> <21> 1 endcidrange ",
+                            "1 beginnotdefchar <21> 2 endnotdefchar ",
+                            "1 beginnotdefrange <20> <21> 1 endnotdefrange "};
+            List<String> programs = new ArrayList<String>();
+            for (String mapping : invalid) {
+                programs.add(codespace + valid + mapping);
+            }
+            programs.add(valid + codespace);
+            programs.add("2 begincodespacerange <20> <21> <21> <22> endcodespacerange " + valid);
+            for (int index = 0; index <= programs.size(); index++) {
+                boolean inherited = index == programs.size();
+                Path source = temporaryFolder.getRoot().toPath().resolve("cmap-domain-" + unicode + "-" + index + ".pdf");
+                String metadata = "/CMapType " + (unicode ? "2" : "1") + " def "
+                        + "/CIDSystemInfo << /Registry (Folio) /Ordering (T75) /Supplement 0 >> def ";
+                String root = "begincmap /CMapName /Root def " + metadata
+                        + (inherited ? invalid[0] : programs.get(index)) + "endcmap\n";
+                String parent = "begincmap /CMapName /Base def " + metadata + codespace + valid + "endcmap\n";
+                writePdf(source,
+                        "<< /Type /Catalog /Pages 2 0 R >>",
+                        "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+                        "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] "
+                                + "/Resources << /Font << /F1 5 0 R >> >> /Contents 4 0 R >>",
+                        streamObject("BT /F1 12 Tf <20> Tj ET\n", ""),
+                        unicode ? "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /ToUnicode 6 0 R >>"
+                                : "<< /Type /Font /Subtype /Type0 /BaseFont /FolioT75 "
+                                        + "/Encoding 6 0 R /DescendantFonts [8 0 R] >>",
+                        streamObject(root, "/Type /CMap /CMapName /Root "
+                                + "/CIDSystemInfo << /Registry (Folio) /Ordering (T75) /Supplement 0 >> "
+                                + (inherited ? "/UseCMap 7 0 R" : "")),
+                        streamObject(parent, "/Type /CMap /CMapName /Base "
+                                + "/CIDSystemInfo << /Registry (Folio) /Ordering (T75) /Supplement 0 >>"),
+                        "<< /Type /Font /Subtype /CIDFontType2 /BaseFont /FolioT75 "
+                                + "/CIDSystemInfo << /Registry (Folio) /Ordering (T75) /Supplement 0 >> /DW 500 >>");
+                byte[] before = Files.readAllBytes(source);
+                assertQueryFailure(source, limits());
+                assertArrayEquals(before, Files.readAllBytes(source));
+            }
+        }
+    }
+
+    @Test(timeout = 30000L)
+    public void sharedCidMetricsChargeEverySelectedFontConstruction() throws Exception {
+        String encoding = "begincmap /CMapName /SharedEncoding def /CMapType 1 def "
+                + "/CIDSystemInfo << /Registry (Folio) /Ordering (T75) /Supplement 0 >> def "
+                + "1 begincodespacerange <41> <41> endcodespacerange "
+                + "1 begincidchar <41> 65 endcidchar endcmap\n";
+        for (boolean sameFont : new boolean[] {false, true}) {
+            Path source = temporaryFolder.getRoot().toPath().resolve("shared-cid-metrics-" + sameFont + ".pdf");
+            String content = "BT /F1 10 Tf 1 0 0 1 20 30 Tm <41> Tj /F2 10 Tf <41> Tj ET\n";
+            String font = "<< /Type /Font /Subtype /Type0 /BaseFont /FolioT75 "
+                    + "/Encoding 8 0 R /DescendantFonts [7 0 R] >>";
+            writePdf(source,
+                    "<< /Type /Catalog /Pages 2 0 R >>",
+                    "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+                    "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] "
+                            + "/Resources << /Font << /F1 5 0 R /F2 " + (sameFont ? "5" : "6")
+                            + " 0 R >> >> /Contents 4 0 R >>",
+                    streamObject(content, ""), font, font,
+                    "<< /Type /Font /Subtype /CIDFontType2 /BaseFont /FolioT75 "
+                            + "/CIDSystemInfo << /Registry (Folio) /Ordering (T75) /Supplement 0 >> "
+                            + "/DW 500 /W [0 4095 700] >>",
+                    streamObject(encoding, "/Type /CMap /CMapName /SharedEncoding "
+                            + "/CIDSystemInfo << /Registry (Folio) /Ordering (T75) /Supplement 0 >>"));
+            byte[] before = Files.readAllBytes(source);
+            int count = sameFont ? 1 : 2;
+            int cost = 4102 * count; // 4099 W materializations + 3 Encoding entries per font.
+            long bytes = content.length() + count * encoding.length();
+            PageText page = query(source, new BoundaryLimits().textItems(2).unicode(0)
+                    .fontDataEntries(cost).decodedBytes(bytes).build()).getPages().get(0);
+            assertEquals(2, page.getTextItems().size());
+            assertEquals(20, page.getTextItems().get(0).getGeometry().getE().doubleValue(), 0.0001);
+            assertEquals(27, page.getTextItems().get(1).getGeometry().getE().doubleValue(), 0.0001);
+            for (TextItem item : page.getTextItems()) {
+                assertArrayEquals(new byte[] {65}, item.getCharacterMapping().getSourceCode());
+                assertEquals(7, item.getGeometry().getAdvanceX().doubleValue(), 0.0001);
+            }
+            assertLimitFailure(source, new BoundaryLimits().textItems(2).unicode(0)
+                    .fontDataEntries(cost - 1).decodedBytes(bytes).build());
+            assertArrayEquals(before, Files.readAllBytes(source));
+        }
+    }
+
+    @Test(timeout = 30000L)
+    public void inheritedEncodingResolvesCidZeroNotdefAndBothDescendantKinds() throws Exception {
+        String content = "BT /F1 10 Tf 1 0 0 1 20 30 Tm <2021> Tj /GS gs <22232425> Tj ET\n";
+        for (boolean vertical : new boolean[] {false, true}) {
+            for (String kind : new String[] {"CIDFontType0", "CIDFontType2"}) {
+                Path source = temporaryFolder.getRoot().toPath().resolve("inherited-encoding-" + vertical + "-" + kind + ".pdf");
+                String metadata = "/CMapType 1 def /WMode " + (vertical ? "1" : "0") + " def "
+                        + "/CIDSystemInfo << /Registry (Folio) /Ordering (T75) /Supplement 0 >> def ";
+                String parent = "begincmap /CMapName /Base def " + metadata
+                        + "1 begincodespacerange <20> <25> endcodespacerange "
+                        + "1 begincidrange <20> <22> 5 endcidrange "
+                        + "1 beginnotdefrange <23> <24> 12 endnotdefrange endcmap\n";
+                String child = "begincmap /Base usecmap /CMapName /Child def " + metadata
+                        + "1 begincidchar <20> 0 endcidchar "
+                        + "1 begincidrange <21> <22> 8 endcidrange "
+                        + "1 beginnotdefchar <24> 13 endnotdefchar endcmap\n";
+                String headers = "/Type /CMap /WMode " + (vertical ? "1" : "0")
+                        + " /CIDSystemInfo << /Registry (Folio) /Ordering (T75) /Supplement 0 >> ";
+                writePdf(source,
+                        "<< /Type /Catalog /Pages 2 0 R >>",
+                        "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+                        "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] "
+                                + "/Resources << /Font << /F1 5 0 R >> "
+                                + "/ExtGState << /GS << /Font [5 0 R 10] >> >> >> /Contents 4 0 R >>",
+                        streamObject(content, ""),
+                        "<< /Type /Font /Subtype /Type0 /BaseFont /FolioT75 /Encoding 7 0 R /DescendantFonts [6 0 R] >>",
+                        "<< /Type /Font /Subtype /" + kind + " /BaseFont /FolioT75 "
+                                + "/CIDSystemInfo << /Registry (Folio) /Ordering (T75) /Supplement 0 >> "
+                                + "/DW 500 /W [0 [300] 5 [500] 8 [800 900] 12 [400 500]] "
+                                + (vertical ? "/W2 [0 [-400 150 700] 8 [-600 400 800 -700 450 850] "
+                                        + "12 [-800 200 750 -900 250 760]] " : "") + ">>",
+                        streamObject(child, headers + "/CMapName /Child /UseCMap 8 0 R"),
+                        streamObject(parent, headers + "/CMapName /Base"));
+                byte[] before = Files.readAllBytes(source);
+                int cost = vertical ? 47 : 26;
+                long bytes = content.length() + child.length() + parent.length();
+                PageText page = query(source, new BoundaryLimits().textItems(6).unicode(0)
+                        .fontDataEntries(cost).decodedBytes(bytes).build()).getPages().get(0);
+                double[] x = vertical ? new double[] {18.5, 16, 15.5, 18, 17.5, 18.5}
+                        : new double[] {20, 23, 31, 40, 44, 49};
+                double[] y = vertical ? new double[] {23, 18, 11.5, 5.5, -2.6, -11}
+                        : new double[] {30, 30, 30, 30, 30, 30};
+                double[] advance = vertical ? new double[] {-4, -6, -7, -8, -9, -4}
+                        : new double[] {3, 8, 9, 4, 5, 3};
+                assertEquals("", page.getText());
+                assertEquals(6, page.getTextItems().size());
+                for (int index = 0; index < 6; index++) {
+                    TextItem item = page.getTextItems().get(index);
+                    assertArrayEquals(new byte[] {(byte) (32 + index)}, item.getCharacterMapping().getSourceCode());
+                    assertEquals(CharacterMapping.Confidence.MISSING, item.getCharacterMapping().getConfidence());
+                    assertEquals(x[index], item.getGeometry().getE().doubleValue(), 0.0001);
+                    assertEquals(y[index], item.getGeometry().getF().doubleValue(), 0.0001);
+                    assertEquals(advance[index], (vertical ? item.getGeometry().getAdvanceY()
+                            : item.getGeometry().getAdvanceX()).doubleValue(), 0.0001);
+                }
+                assertLimitFailure(source, new BoundaryLimits().textItems(6).unicode(0)
+                        .fontDataEntries(cost - 1).decodedBytes(bytes).build());
+                assertLimitFailure(source, new BoundaryLimits().textItems(6).unicode(0)
+                        .fontDataEntries(cost).decodedBytes(bytes - 1).build());
+                assertArrayEquals(before, Files.readAllBytes(source));
+            }
+        }
+    }
+
+    @Test(timeout = 10000L)
+    public void fourByteUnicodeRangesUseUnsignedSourceOrdering() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("unsigned-source-cmap.pdf");
+        String content = "BT /F1 10 Tf <7FFFFFFF80000000> Tj ET\n";
+        String encoding = "begincmap /CMapName /UnsignedSource def /CMapType 1 def "
+                + "/CIDSystemInfo << /Registry (Folio) /Ordering (T75) /Supplement 0 >> def "
+                + "1 begincodespacerange <7F000000> <80FFFFFF> endcodespacerange "
+                + "1 begincidrange <7FFFFFFF> <80000000> 7 endcidrange endcmap\n";
+        String unicode = "begincmap 1 begincodespacerange <7F000000> <80FFFFFF> endcodespacerange "
+                + "1 beginbfrange <7FFFFFFF> <80000000> <0041> endbfrange endcmap\n";
+        writePdf(source,
+                "<< /Type /Catalog /Pages 2 0 R >>",
+                "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+                "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] "
+                        + "/Resources << /Font << /F1 5 0 R >> >> /Contents 4 0 R >>",
+                streamObject(content, ""),
+                "<< /Type /Font /Subtype /Type0 /BaseFont /FolioT75 /Encoding 7 0 R "
+                        + "/DescendantFonts [6 0 R] /ToUnicode 8 0 R >>",
+                "<< /Type /Font /Subtype /CIDFontType2 /BaseFont /FolioT75 "
+                        + "/CIDSystemInfo << /Registry (Folio) /Ordering (T75) /Supplement 0 >> "
+                        + "/DW 500 /W [7 [700 800]] >>",
+                streamObject(encoding, "/Type /CMap /CMapName /UnsignedSource "
+                        + "/CIDSystemInfo << /Registry (Folio) /Ordering (T75) /Supplement 0 >>"),
+                streamObject(unicode, ""));
+        byte[] before = Files.readAllBytes(source);
+        PageText page = query(source, new BoundaryLimits().textItems(2).unicode(2).toUnicodeMappings(2)
+                .fontDataEntries(10).decodedBytes(content.length() + encoding.length() + unicode.length())
+                .build()).getPages().get(0);
+        assertEquals("AB", page.getText());
+        assertArrayEquals(new byte[] {0x7f, -1, -1, -1}, page.getTextItems().get(0).getCharacterMapping().getSourceCode());
+        assertArrayEquals(new byte[] {(byte) 0x80, 0, 0, 0}, page.getTextItems().get(1).getCharacterMapping().getSourceCode());
+        assertEquals(7, page.getTextItems().get(0).getGeometry().getAdvanceX().doubleValue(), 0.0001);
+        assertEquals(8, page.getTextItems().get(1).getGeometry().getAdvanceX().doubleValue(), 0.0001);
+        assertArrayEquals(before, Files.readAllBytes(source));
     }
 
     @Test
@@ -694,9 +1502,10 @@ public final class TextStructureExtractionWorkflowTest {
                 "/DW2 [880 -1000] "
                         + "/W2 [65 66 -1000 250 880]");
 
-        assertEquals("AB", query(source, cidFontLimits(12))
+        // Twelve metric entries, two ToUnicode entries and 65,538 Identity-H entries.
+        assertEquals("AB", query(source, cidFontLimits(65552))
                 .getPages().get(0).getText());
-        assertLimitFailure(source, cidFontLimits(11));
+        assertLimitFailure(source, cidFontLimits(65551));
     }
 
     @Test(timeout = 10000L)
@@ -725,7 +1534,7 @@ public final class TextStructureExtractionWorkflowTest {
     }
 
     @Test(timeout = 10000L)
-    public void type0EncodingsAreRestrictedBeforeBackendCMapLoading()
+    public void type0EncodingsRequireKnownProgramsWithinCallerBounds()
             throws Exception {
         Path missing = temporaryFolder.getRoot().toPath().resolve(
                 "missing-type0-encoding.pdf");
@@ -737,8 +1546,8 @@ public final class TextStructureExtractionWorkflowTest {
         byte[] predefinedBefore = Files.readAllBytes(predefined);
 
         assertQueryFailure(missing, limits());
-        assertQueryFailure(predefined, limits());
-        assertQueryFailure(predefined, limits());
+        assertLimitFailure(predefined, limits());
+        assertLimitFailure(predefined, limits());
         assertArrayEquals(missingBefore, Files.readAllBytes(missing));
         assertArrayEquals(predefinedBefore, Files.readAllBytes(predefined));
     }
@@ -753,7 +1562,7 @@ public final class TextStructureExtractionWorkflowTest {
         writeMismatchedEmbeddedType0Fixture(source);
         byte[] before = Files.readAllBytes(source);
 
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = requestBuilder()
                 .source("input", DocumentSource.path(source))
                 .primarySource("input")
                 .target("output", PublicationTarget.path(target))
@@ -794,7 +1603,7 @@ public final class TextStructureExtractionWorkflowTest {
                 "indirect-form-names-rewritten.pdf");
         writeIndirectFormNameFixture(source);
 
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = requestBuilder()
                 .source("input", DocumentSource.path(source))
                 .primarySource("input")
                 .target("output", PublicationTarget.path(target))
@@ -832,16 +1641,135 @@ public final class TextStructureExtractionWorkflowTest {
     }
 
     @Test(timeout = 10000L)
-    public void type3GlyphProgramsAreRejectedWithoutDecoding()
+    public void type3GlyphProgramsRespectDecodedByteLimits()
             throws Exception {
         Path source = temporaryFolder.getRoot().toPath().resolve(
                 "type3-glyph-program.pdf");
         writeType3FontFixture(source, 256 * 1024);
         byte[] before = Files.readAllBytes(source);
 
-        assertQueryFailure(source, limits());
+        assertLimitFailure(source, limits());
+        assertLimitFailure(source, limits());
+        assertArrayEquals(before, Files.readAllBytes(source));
+    }
+
+    @Test(timeout = 10000L)
+    public void type3DeclaredMetricsExtractWithoutExecutingGlyphPrograms() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("type3-declared-metrics.pdf");
+        writeType3MetricFixture(source, TYPE3_FONT, TYPE3_CONTENT, TYPE3_GLYPH);
+        byte[] before = Files.readAllBytes(source);
+        // One width, two Differences items, two CharProcs aliases; the shared stream decodes once.
+        ExtractionLimits exact = new BoundaryLimits().textItems(3).unicode(3).fontDataEntries(5)
+                .decodedBytes(TYPE3_CONTENT.length() + TYPE3_GLYPH.length()).build();
+        PageText page = query(source, exact).getPages().get(0);
+        assertEquals("AAA", page.getText());
+        assertEquals(3, page.getTextItems().size());
+        double[] origins = {20, 32, 44};
+        for (int index = 0; index < origins.length; index++) {
+            TextItem item = page.getTextItems().get(index);
+            assertEquals(CharacterMapping.Confidence.INFERRED, item.getCharacterMapping().getConfidence());
+            assertArrayEquals(new byte[] {65}, item.getCharacterMapping().getSourceCode());
+            assertEquals(10, item.getGeometry().getA().doubleValue(), 0.0001);
+            assertEquals(10, item.getGeometry().getD().doubleValue(), 0.0001);
+            assertEquals(origins[index], item.getGeometry().getE().doubleValue(), 0.0001);
+            assertEquals(30, item.getGeometry().getF().doubleValue(), 0.0001);
+            assertEquals(12, item.getGeometry().getAdvanceX().doubleValue(), 0.0001);
+            assertEquals(0, item.getGeometry().getAdvanceY().doubleValue(), 0.0001);
+        }
+        assertLimitFailure(source, new BoundaryLimits().textItems(3).unicode(3).fontDataEntries(4)
+                .decodedBytes(TYPE3_CONTENT.length() + TYPE3_GLYPH.length()).build());
+        assertLimitFailure(source, new BoundaryLimits().textItems(3).unicode(3).fontDataEntries(5)
+                .decodedBytes(TYPE3_CONTENT.length() + TYPE3_GLYPH.length() - 1).build());
+        assertArrayEquals(before, Files.readAllBytes(source));
+    }
+
+    @Test(timeout = 10000L)
+    public void type3RotatedMetricsStayHorizontalAndUndefinedWidthsStayZero() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("type3-horizontal-declared-widths.pdf");
+        String font = TYPE3_FONT.replace(".002 0 0 .003", ".002 .003 0 .001")
+                .replace("[65 /A]", "[65 /A /B]").replace("/Alias 6 0 R", "/B 6 0 R");
+        for (boolean graphicsStateFont : new boolean[] {false, true}) {
+            String content = TYPE3_CONTENT.replace("(AAA)", "(ABA)");
+            if (graphicsStateFont) {
+                content = content.replace("/F1 10 Tf", "/G1 gs");
+            }
+            writeType3MetricFixture(source, font, content, TYPE3_GLYPH);
+            byte[] before = Files.readAllBytes(source);
+            PageText page = query(source, limits()).getPages().get(0);
+            assertEquals("ABA", page.getText());
+            double[] origins = {20, 32, 32};
+            double[] advances = {12, 0, 12};
+            for (int index = 0; index < 3; index++) {
+                TextItem item = page.getTextItems().get(index);
+                assertEquals(origins[index], item.getGeometry().getE().doubleValue(), 0.0001);
+                assertEquals(30, item.getGeometry().getF().doubleValue(), 0.0001);
+                assertEquals(advances[index], item.getGeometry().getAdvanceX().doubleValue(), 0.0001);
+                assertEquals(0, item.getGeometry().getAdvanceY().doubleValue(), 0.0001);
+            }
+            assertArrayEquals(before, Files.readAllBytes(source));
+        }
+    }
+
+    @Test(timeout = 10000L)
+    public void type3GlyphMetricsMustAgreeWithTheDeclaredWidth() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("type3-width-agreement.pdf");
+        writeType3MetricFixture(source, TYPE3_FONT, TYPE3_CONTENT, "600 0 0 0 500 700 d1 0 0 500 700 re f\n");
+        assertEquals("AAA", query(source, limits()).getPages().get(0).getText());
+        writeType3MetricFixture(source, TYPE3_FONT, TYPE3_CONTENT, TYPE3_GLYPH.replace("600 0 d0", "601 0 d0"));
+        byte[] before = Files.readAllBytes(source);
         assertQueryFailure(source, limits());
         assertArrayEquals(before, Files.readAllBytes(source));
+    }
+
+    @Test(timeout = 10000L)
+    public void type3SharedGlyphStreamsAreChargedOnceAcrossDistinctSelectedFonts() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("type3-shared-font-program.pdf");
+        String content = "BT /F1 10 Tf (A) Tj /F2 10 Tf (A) Tj /F1 10 Tf (A) Tj ET\n";
+        String glyph = "600 0 d0 BT /Ink 10 Tf (Hidden) Tj ET\n";
+        String font = TYPE3_FONT.replace("/Resources << >>", "/Resources << /Font << /Ink "
+                + "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >> >> >>");
+        writePdf(source,
+                "<< /Type /Catalog /Pages 2 0 R >>",
+                "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+                "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] "
+                        + "/Resources << /Font << /F1 5 0 R /F2 7 0 R >> >> /Contents 4 0 R >>",
+                streamObject(content, ""), font, streamObject(glyph, ""), font);
+        byte[] before = Files.readAllBytes(source);
+        PageText page = query(source, new BoundaryLimits().textItems(3).unicode(3).fontDataEntries(10)
+                .decodedBytes(content.length() + glyph.length()).build()).getPages().get(0);
+        assertEquals("AAA", page.getText());
+        assertEquals(3, page.getTextItems().size());
+        assertTrue(page.getMarkedContentSequences().isEmpty());
+        assertLimitFailure(source, new BoundaryLimits().textItems(3).unicode(3).fontDataEntries(9)
+                .decodedBytes(content.length() + glyph.length()).build());
+        assertLimitFailure(source, new BoundaryLimits().textItems(3).unicode(3).fontDataEntries(10)
+                .decodedBytes(content.length() + glyph.length() - 1).build());
+        assertArrayEquals(before, Files.readAllBytes(source));
+    }
+
+    @Test(timeout = 30000L)
+    public void malformedType3MetricsAndProgramsFailWithoutChangingTheSource() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("malformed-type3-font.pdf");
+        String[] fonts = {
+            TYPE3_FONT.replace("[0 0 600 700]", "[0 0 600]"),
+            TYPE3_FONT.replace("[.002 0 0 .003 0 0]", "[.002 0 0 /Wrong 0 0]"),
+            TYPE3_FONT.replace("/FirstChar 65", ""),
+            TYPE3_FONT.replace("/Widths [600]", ""),
+            TYPE3_FONT.replace("/Widths [600]", "/Widths [600 600]"),
+            TYPE3_FONT.replace("/A 6 0 R", "/A 42")
+        };
+        for (String font : fonts) {
+            writeType3MetricFixture(source, font, TYPE3_CONTENT, TYPE3_GLYPH);
+            byte[] before = Files.readAllBytes(source);
+            assertQueryFailure(source, limits());
+            assertArrayEquals(before, Files.readAllBytes(source));
+        }
+        for (String glyph : new String[] {"q 600 0 d0 Q\n", "600 1 d0\n", "600 0 d0 (unfinished"}) {
+            writeType3MetricFixture(source, TYPE3_FONT, TYPE3_CONTENT, glyph);
+            byte[] before = Files.readAllBytes(source);
+            assertQueryFailure(source, limits());
+            assertArrayEquals(before, Files.readAllBytes(source));
+        }
     }
 
     @Test(timeout = 10000L)
@@ -997,7 +1925,25 @@ public final class TextStructureExtractionWorkflowTest {
         String[] malformedOperators = {
             "BT /F1 12 Tf (A) Tj",
             "BT /F1 12 Tf (A) Tj ET ET",
-            "BT BT /F1 12 Tf (A) Tj ET ET",
+            "BT BT /F1 12 Tf (A) Tj ET ET"
+        };
+        for (int index = 0; index < malformedOperators.length; index++) {
+            Path source = temporaryFolder.getRoot().toPath().resolve(
+                    "unbalanced-page-text-operator-" + index + ".pdf");
+            writeSimpleTextFixture(
+                    source, malformedOperators[index] + "\n");
+            byte[] before = Files.readAllBytes(source);
+
+            assertQueryFailure(source, limits());
+            assertQueryFailure(source, limits());
+            assertArrayEquals(before, Files.readAllBytes(source));
+        }
+    }
+
+    @Test(timeout = 10000L)
+    public void unbalancedGraphicsAndPositioningStateCannotPublishPrefix()
+            throws Exception {
+        String[] malformedOperators = {
             "BT /F1 12 Tf (A) Tj ET q",
             "BT /F1 12 Tf (A) Tj ET Q",
             "1 0 0 1 0 0 Tm",
@@ -1014,7 +1960,11 @@ public final class TextStructureExtractionWorkflowTest {
             assertQueryFailure(source, limits());
             assertArrayEquals(before, Files.readAllBytes(source));
         }
+    }
 
+    @Test(timeout = 10000L)
+    public void unbalancedFormOperatorStateCannotPublishPrefix()
+            throws Exception {
         Path form = temporaryFolder.getRoot().toPath().resolve(
                 "unbalanced-form-operator.pdf");
         writeFormFixture(
@@ -1050,7 +2000,8 @@ public final class TextStructureExtractionWorkflowTest {
         assertQueryFailure(cycle, limits());
     }
 
-    @Test(timeout = 10000L)
+    // Each case starts independent Workflows; include their cumulative Worker startup time.
+    @Test(timeout = 60000L)
     public void malformedPageGeometryAttributesFailBeforeBackendCoercion()
             throws Exception {
         String[] attributes = {
@@ -1087,7 +2038,8 @@ public final class TextStructureExtractionWorkflowTest {
         }
     }
 
-    @Test(timeout = 10000L)
+    // Each case starts independent Workflows; include their cumulative Worker startup time.
+    @Test(timeout = 60000L)
     public void malformedFormGeometryAndResourcesFailBeforeBackendCoercion()
             throws Exception {
         String[] entries = {
@@ -1114,7 +2066,7 @@ public final class TextStructureExtractionWorkflowTest {
             assertArrayEquals(before, Files.readAllBytes(source));
         }
         String[] types = {
-            "/Subtype /Form /BBox [0 0 100 100] /Resources << >>",
+            "/Type (XObject) /Subtype /Form /BBox [0 0 100 100] /Resources << >>",
             "/Type /NotXObject /Subtype /Form /BBox [0 0 100 100] "
                     + "/Resources << >>"
         };
@@ -1128,6 +2080,649 @@ public final class TextStructureExtractionWorkflowTest {
             assertQueryFailure(source, limits());
             assertArrayEquals(before, Files.readAllBytes(source));
         }
+    }
+
+    @Test(timeout = 15000L)
+    public void optionalFormTypePreservesExecutedAndReferencedFormOutcomes() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("optional-form-type.pdf");
+        for (String type : new String[] {"              ", "/Type null    "}) {
+            for (int kind = 0; kind < 4; kind++) {
+                if (kind == 0) {
+                    createNestedFormFixture(source);
+                } else if (kind == 1) {
+                    writeTwoPageObjectReferenceFixture(source, true);
+                } else if (kind == 2) {
+                    writeUnexecutedWholeObjectFixture(source, 1);
+                } else {
+                    writeAppearanceMcrFixture(source, "/Span <</MCID 0>> BDC EMC\n");
+                }
+                String original = new String(Files.readAllBytes(source), StandardCharsets.ISO_8859_1);
+                String changed = original.replace("/Type /XObject", type);
+                assertTrue(original.contains("/Type /XObject"));
+                assertEquals(original.length(), changed.length());
+                Files.write(source, changed.getBytes(StandardCharsets.ISO_8859_1));
+                byte[] before = Files.readAllBytes(source);
+                TextStructureExtraction result = query(source, limits());
+                assertEquals(kind == 0 ? "ABC" : kind == 1 ? "Form" : "", result.getPages().get(0).getText());
+                if (kind == 1 || kind == 2) {
+                    assertEquals("Form", result.getStructureRoots().get(0).getChildren().get(0)
+                            .getObjectReference().get().getSubtype());
+                } else if (kind == 3) {
+                    assertEquals(0, result.getStructureRoots().get(0).getChildren().get(0)
+                            .getMarkedContent().get().getMarkedContentId());
+                }
+                assertArrayEquals(before, Files.readAllBytes(source));
+            }
+        }
+    }
+
+    @Test(timeout = 10000L)
+    public void markedContentInsideRepeatedFormsRetainsOccurrencesAndOuterActualText()
+            throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("marked-form.pdf");
+        writeFormFixture(source,
+                "/Outer <</MCID 0 /ActualText (Outer)>> BDC /Fm Do EMC /Fm Do\n",
+                "/Inner <</MCID 0 /Alt (description) /ActualText (Inner)>> BDC "
+                        + "BT /F1 12 Tf 10 20 Td (A) Tj ET EMC\n",
+                "/BBox [0 0 100 100] /Matrix [1 0 0 1 5 7] "
+                        + "/Resources << /Font << /F1 << /Type /Font /Subtype /Type1 "
+                        + "/BaseFont /Helvetica /Encoding /WinAnsiEncoding >> >> >>");
+        byte[] before = Files.readAllBytes(source);
+
+        TextStructureExtraction extraction = query(source, limits());
+
+        PageText page = extraction.getPages().get(0);
+        assertEquals("OuterInner", page.getText());
+        assertEquals(2, page.getTextItems().size());
+        assertEquals(3, page.getMarkedContentSequences().size());
+        MarkedContentSequence outer = page.getMarkedContentSequences().get(0);
+        MarkedContentSequence first = page.getMarkedContentSequences().get(1);
+        MarkedContentSequence repeated = page.getMarkedContentSequences().get(2);
+        assertEquals(Integer.valueOf(outer.getId()), first.getParentId().get());
+        assertFalse(repeated.getParentId().isPresent());
+        assertEquals("description", first.getAlternateText().get());
+        assertEquals("Inner", repeated.getActualText().get());
+        assertEquals(java.util.Arrays.asList(1, 2),
+                page.getTextItems().get(0).getMarkedContentSequenceIds());
+        assertEquals(java.util.Collections.singletonList(3),
+                page.getTextItems().get(1).getMarkedContentSequenceIds());
+        assertEquals(java.util.Collections.singletonList(1), first.getTextItemIndices());
+        assertEquals(java.util.Collections.singletonList(2), repeated.getTextItemIndices());
+        assertEquals(new BigDecimal("15"), page.getTextItems().get(0).getGeometry().getE());
+        assertEquals(new BigDecimal("27"), page.getTextItems().get(0).getGeometry().getF());
+        assertArrayEquals(before, Files.readAllBytes(source));
+    }
+
+    @Test(timeout = 10000L)
+    public void pageAndFormMcrsUseDistinctStreamScopesInBothProfiles()
+            throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("stream-mcids.pdf");
+        writeScopedMcrFixture(source, "/Fm Do");
+        byte[] before = Files.readAllBytes(source);
+        for (WorkflowExecutionProfile profile : WorkflowExecutionProfile.values()) {
+            WorkflowOutcome<TextStructureExtraction> outcome = new DocumentWorkflow().execute(
+                    requestBuilder().executionProfile(profile)
+                            .source("input", DocumentSource.path(source)).primarySource("input")
+                            .saveMode(SaveMode.REWRITE).build(),
+                    session -> session.query(ExtractTextAndStructure.version1(limits())));
+            assertEquals(profile, outcome.getExecutionProfile());
+            assertTrue(outcome.getPublicationReceipts().isEmpty());
+            TextStructureExtraction extraction = outcome.getResult();
+            PageText page = extraction.getPages().get(0);
+            assertEquals("ABee", page.getText());
+            MarkedContentReference pageReference = childElement(extraction.getStructureRoots().get(0), 0)
+                    .getChildren().get(0).getMarkedContent().get();
+            MarkedContentReference formReference = childElement(extraction.getStructureRoots().get(0), 1)
+                    .getChildren().get(0).getMarkedContent().get();
+            assertEquals(0, pageReference.getContentStreamId());
+            assertEquals(1, formReference.getContentStreamId());
+            assertEquals(Integer.valueOf(1), pageReference.getMarkedContentSequenceId().get());
+            assertEquals(Integer.valueOf(2), formReference.getMarkedContentSequenceId().get());
+            assertEquals(0, page.getMarkedContentSequences().get(0).getContentStreamId());
+            assertEquals(1, page.getMarkedContentSequences().get(1).getContentStreamId());
+            assertArrayEquals(before, Files.readAllBytes(source));
+        }
+    }
+
+    @Test(timeout = 10000L)
+    public void annotationObjectReferencesRetainOrderedDetachedSessionIdentityInBothProfiles()
+            throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("structure-objr.pdf");
+        writePdf(source,
+                "<< /Type /Catalog /Pages 2 0 R /StructTreeRoot 5 0 R >>",
+                "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+                "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Annots [4 0 R] >>",
+                "<< /Type /Annot /Subtype /Link /Rect [10 10 30 30] /P 3 0 R /StructParent 0 >>",
+                "<< /Type /StructTreeRoot /K 6 0 R /ParentTree 7 0 R >>",
+                "<< /Type /StructElem /S /Link /P 5 0 R /Pg 3 0 R /Alt (Example link) "
+                        + "/K << /Type /OBJR /Obj 4 0 R >> >>",
+                "<< /Nums [0 6 0 R] >>");
+        byte[] before = Files.readAllBytes(source);
+        for (WorkflowExecutionProfile profile : WorkflowExecutionProfile.values()) {
+            WorkflowOutcome<TextStructureExtraction> outcome = new DocumentWorkflow().execute(
+                    requestBuilder().executionProfile(profile)
+                            .source("input", DocumentSource.path(source)).primarySource("input")
+                            .saveMode(SaveMode.REWRITE).build(), session -> {
+                        TextStructureExtraction result = session.query(
+                                ExtractTextAndStructure.version1(limits()));
+                        LogicalStructureItem item = result.getStructureRoots().get(0).getChildren().get(0);
+                        assertEquals(LogicalStructureItem.Kind.OBJECT, item.getKind());
+                        assertFalse(item.getElement().isPresent());
+                        assertFalse(item.getMarkedContent().isPresent());
+                        ObjectReference reference = item.getObjectReference().get().getObjectReference();
+                        PdfDictionary annotation = inspectedDictionary(session, reference);
+                        assertEquals(PdfName.of("Link"), annotation.get(PdfName.of("Subtype")));
+                        PdfDictionary page = inspectedDictionary(session,
+                                session.query(PageObjectReference.version1(1)));
+                        PdfArray annotations = (PdfArray) page.get(PdfName.of("Annots"));
+                        assertEquals(((PdfIndirectReference) annotations.get(0)).getReference(), reference);
+                        return result;
+                    });
+            assertEquals(profile, outcome.getExecutionProfile());
+            assertTrue(outcome.getPublicationReceipts().isEmpty());
+            LogicalStructureItem detached = outcome.getResult().getStructureRoots().get(0).getChildren().get(0);
+            assertEquals(1, detached.getObjectReference().get().getPageNumber());
+            assertEquals("Link", detached.getObjectReference().get().getSubtype());
+            assertEquals("Example link", outcome.getResult().getStructureRoots().get(0).getAlternateText().get());
+            assertArrayEquals(before, Files.readAllBytes(source));
+        }
+    }
+
+    @Test(timeout = 10000L)
+    public void wholeFormObjectReferenceCoversRepeatedRenderingOnItsPage() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("form-objr.pdf");
+        writePdf(source,
+                "<< /Type /Catalog /Pages 2 0 R /StructTreeRoot 6 0 R >>",
+                "<< /Type /Pages /Count 1 /Kids [3 0 R] /Resources << /XObject << /Fm 5 0 R >> >> >>",
+                "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R >>",
+                streamObject("/Fm Do /Fm Do\n", ""),
+                streamObject("/Span <</ActualText (Form)>> BDC EMC\n",
+                        "/Type /XObject /Subtype /Form /BBox [0 0 100 100] /Resources << >> /StructParent 0 "),
+                "<< /Type /StructTreeRoot /K 7 0 R /ParentTree 8 0 R >>",
+                "<< /Type /StructElem /S /Figure /P 6 0 R /Pg 3 0 R /K << /Type /OBJR /Obj 5 0 R >> >>",
+                "<< /Nums [0 7 0 R] >>");
+        byte[] before = Files.readAllBytes(source);
+        for (WorkflowExecutionProfile profile : WorkflowExecutionProfile.values()) {
+            WorkflowOutcome<TextStructureExtraction> outcome = new DocumentWorkflow().execute(
+                    requestBuilder().executionProfile(profile)
+                            .source("input", DocumentSource.path(source)).primarySource("input")
+                            .saveMode(SaveMode.REWRITE).build(), session -> session.query(
+                                    ExtractTextAndStructure.version1(limits())));
+            assertEquals(profile, outcome.getExecutionProfile());
+            TextStructureExtraction result = outcome.getResult();
+            assertEquals("FormForm", result.getPages().get(0).getText());
+            assertEquals(1, result.getStructureRoots().get(0).getChildren().size());
+            assertEquals("Form", result.getStructureRoots().get(0).getChildren().get(0)
+                    .getObjectReference().get().getSubtype());
+            assertArrayEquals(before, Files.readAllBytes(source));
+        }
+    }
+
+    @Test(timeout = 10000L)
+    public void appearanceMcrRetainsItsAnnotationOwnerWithoutInventingPageText() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("appearance-mcr.pdf");
+        writeAppearanceMcrFixture(source, "/Span <</MCID 0 /ActualText (Appearance)>> BDC EMC\n");
+        byte[] before = Files.readAllBytes(source);
+        for (WorkflowExecutionProfile profile : WorkflowExecutionProfile.values()) {
+            TextStructureExtraction extraction = new DocumentWorkflow().execute(
+                    requestBuilder().executionProfile(profile)
+                            .source("input", DocumentSource.path(source)).primarySource("input")
+                            .saveMode(SaveMode.REWRITE).build(), session -> {
+                        TextStructureExtraction result = session.query(ExtractTextAndStructure.version1(limits()));
+                        MarkedContentReference reference = result.getStructureRoots().get(0)
+                                .getChildren().get(0).getMarkedContent().get();
+                        PdfDictionary owner = inspectedDictionary(session, reference.getStreamOwner().get());
+                        assertEquals(PdfName.of("Stamp"), owner.get(PdfName.of("Subtype")));
+                        return result;
+                    }).getResult();
+            MarkedContentReference reference = extraction.getStructureRoots().get(0)
+                    .getChildren().get(0).getMarkedContent().get();
+            assertEquals(1, reference.getPageNumber());
+            assertEquals(1, reference.getContentStreamId());
+            assertFalse(reference.getMarkedContentSequenceId().isPresent());
+            assertEquals("", extraction.getPages().get(0).getText());
+            assertTrue(extraction.getPages().get(0).getTextItems().isEmpty());
+            assertArrayEquals(before, Files.readAllBytes(source));
+        }
+    }
+
+    @Test(timeout = 10000L)
+    public void appearanceMcrAcceptsAnOmittedOrNullOptionalStreamOwner() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("appearance-mcr-optional-owner.pdf");
+        for (String owner : new String[] {"             ", "/StmOwn null "}) {
+            writeAppearanceMcrFixture(source, "/Span <</MCID 0 /ActualText (Appearance)>> BDC EMC\n");
+            String original = new String(Files.readAllBytes(source), StandardCharsets.US_ASCII);
+            assertEquals("/StmOwn 4 0 R".length(), owner.length());
+            Files.write(source, original.replace("/StmOwn 4 0 R", owner).getBytes(StandardCharsets.US_ASCII));
+            byte[] before = Files.readAllBytes(source);
+            TextStructureExtraction result = query(source, limits());
+            MarkedContentReference reference = result.getStructureRoots().get(0)
+                    .getChildren().get(0).getMarkedContent().get();
+            assertEquals(1, reference.getPageNumber());
+            assertEquals(1, reference.getContentStreamId());
+            assertEquals(0, reference.getMarkedContentId());
+            assertFalse(reference.getStreamOwner().isPresent());
+            assertFalse(reference.getMarkedContentSequenceId().isPresent());
+            assertEquals("", result.getPages().get(0).getText());
+            assertTrue(result.getPages().get(0).getTextItems().isEmpty());
+            assertArrayEquals(before, Files.readAllBytes(source));
+        }
+    }
+
+    @Test(timeout = 10000L)
+    public void inconsistentParentTreeBacklinkFailsTheWholeQueryInBothProfiles() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("wrong-parent-tree.pdf");
+        writeScopedMcrFixture(source, "/Fm Do");
+        byte[] original = Files.readAllBytes(source);
+        String changed = new String(original, StandardCharsets.US_ASCII)
+                .replace("/Nums [0 [9 0 R] 1 [10 0 R]]", "/Nums [0 [9 0 R] 1 [ 9 0 R]]");
+        Files.write(source, changed.getBytes(StandardCharsets.US_ASCII));
+        byte[] before = Files.readAllBytes(source);
+        for (WorkflowExecutionProfile profile : WorkflowExecutionProfile.values()) {
+            try {
+                new DocumentWorkflow().execute(
+                        requestBuilder().executionProfile(profile)
+                                .source("input", DocumentSource.path(source)).primarySource("input")
+                                .saveMode(SaveMode.REWRITE).build(), session -> session.query(
+                                        ExtractTextAndStructure.version1(limits())));
+                fail("Expected inconsistent ParentTree to fail");
+            } catch (DocumentFailure failure) {
+                assertEquals(DocumentFailureCode.QUERY_FAILED, failure.getCode());
+                assertEquals(CAPABILITY, failure.getCapabilityId());
+                assertEquals("The document text and logical structure could not be extracted safely.",
+                        failure.getDiagnostic());
+            }
+            assertArrayEquals(before, Files.readAllBytes(source));
+        }
+    }
+
+    @Test(timeout = 10000L)
+    public void formMcrCannotClaimAStreamOutsideItsDeclaredPageResources() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("foreign-form-mcr.pdf");
+        writeScopedMcrFixture(source, "");
+        String original = new String(Files.readAllBytes(source), StandardCharsets.US_ASCII);
+        Files.write(source, original.replace("/XObject << /Fm 5 0 R >>", "                        ")
+                .getBytes(StandardCharsets.US_ASCII));
+        byte[] before = Files.readAllBytes(source);
+        assertQueryFailure(source, limits());
+        assertArrayEquals(before, Files.readAllBytes(source));
+    }
+
+    @Test(timeout = 10000L)
+    public void unexecutedAppearanceMcrRequiresBalancedContentAndItsDeclaredMcid() throws Exception {
+        String[] programs = {
+            "EMC\n",
+            "/Span <</MCID 0>> BDC\n",
+            "/Span <</MCID 1>> BDC EMC\n",
+            "/Span <</MCID 0>> BDC EMC /Span <</MCID 0>> BDC EMC\n"
+        };
+        for (int index = 0; index < programs.length; index++) {
+            Path source = temporaryFolder.getRoot().toPath().resolve("invalid-appearance-mcr-" + index + ".pdf");
+            writeAppearanceMcrFixture(source, programs[index]);
+            byte[] before = Files.readAllBytes(source);
+            assertQueryFailure(source, limits());
+            assertArrayEquals(before, Files.readAllBytes(source));
+        }
+    }
+
+    @Test(timeout = 10000L)
+    public void unexecutedAppearanceContentItemsRemainLeavesInEitherStructureOrder() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("appearance-nested-mcr.pdf");
+        writeAppearanceMcrPairFixture(source, false, false);
+        TextStructureExtraction result = query(source, limits());
+        assertEquals("", result.getPages().get(0).getText());
+        assertEquals(2, result.getStructureRoots().get(0).getChildren().size());
+        for (LogicalStructureItem child : result.getStructureRoots().get(0).getChildren()) {
+            assertFalse(child.getMarkedContent().get().getMarkedContentSequenceId().isPresent());
+        }
+        for (boolean reverse : new boolean[] {false, true}) {
+            writeAppearanceMcrPairFixture(source, true, reverse);
+            byte[] before = Files.readAllBytes(source);
+            assertQueryFailure(source, limits());
+            assertArrayEquals(before, Files.readAllBytes(source));
+        }
+    }
+
+    @Test(timeout = 10000L)
+    public void wholeFormObjectReferenceRequiresEachRenderedPage() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("two-page-form-objr.pdf");
+        writeTwoPageObjectReferenceFixture(source, false);
+        byte[] before = Files.readAllBytes(source);
+        assertQueryFailure(source, limits());
+        assertArrayEquals(before, Files.readAllBytes(source));
+
+        writeTwoPageObjectReferenceFixture(source, true);
+        TextStructureExtraction extraction = query(source, limits());
+        List<LogicalStructureItem> children = extraction.getStructureRoots().get(0).getChildren();
+        assertEquals(2, children.size());
+        assertEquals(1, children.get(0).getObjectReference().get().getPageNumber());
+        assertEquals(2, children.get(1).getObjectReference().get().getPageNumber());
+        assertEquals(children.get(0).getObjectReference().get().getObjectReference(),
+                children.get(1).getObjectReference().get().getObjectReference());
+        assertEquals("Form", extraction.getPages().get(0).getText());
+        assertEquals("Form", extraction.getPages().get(1).getText());
+    }
+
+    @Test(timeout = 10000L)
+    public void parentTreeRequiresAccurateRangesAndOrderedChildren() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("parent-tree-ranges.pdf");
+        String[][] trees = {
+            {"<< /Kids [12 0 R 13 0 R] >>", "<< /Limits [5 5] /Nums [0 [9 0 R]] >>"},
+            {"<< /Kids [12 0 R 13 0 R] >>", "<< /Nums [0 [9 0 R]] >>"},
+            {"<< /Kids [13 0 R 12 0 R] >>", "<< /Limits [0 0] /Nums [0 [9 0 R]] >>"}
+        };
+        for (String[] tree : trees) {
+            writeScopedMcrFixture(source, "/Fm Do", tree[0], tree[1],
+                    "<< /Limits [1 1] /Nums [1 [10 0 R]] >>");
+            byte[] before = Files.readAllBytes(source);
+            assertQueryFailure(source, limits());
+            assertArrayEquals(before, Files.readAllBytes(source));
+        }
+        writeScopedMcrFixture(source, "/Fm Do", "<< /Kids [12 0 R 13 0 R] >>",
+                "<< /Limits [0 0] /Nums [0 [9 0 R]] >>",
+                "<< /Limits [1 1] /Nums [1 [10 0 R]] >>");
+        assertEquals("ABee", query(source, limits()).getPages().get(0).getText());
+    }
+
+    @Test(timeout = 10000L)
+    public void structuralContentItemsCannotClaimBothAnInvocationAndItsInternalMcid() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("nested-structural-content.pdf");
+        for (boolean reverse : new boolean[] {false, true}) {
+            writeScopedMcrFixture(source, "/Fm Do");
+            String original = new String(Files.readAllBytes(source), StandardCharsets.US_ASCII);
+            String nested = original.replace("ET EMC /Fm Do", "ET /Fm Do EMC");
+            if (reverse) {
+                nested = nested.replace("/K [9 0 R 10 0 R]", "/K [10 0 R 9 0 R]");
+            }
+            assertEquals(original.length(), nested.length());
+            Files.write(source, nested.getBytes(StandardCharsets.US_ASCII));
+            byte[] before = Files.readAllBytes(source);
+            assertQueryFailure(source, limits());
+            assertArrayEquals(before, Files.readAllBytes(source));
+        }
+    }
+
+    @Test(timeout = 10000L)
+    public void structuralMarkedContentCannotEncloseAWholeObjectContentItem() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("mcr-encloses-objr.pdf");
+        writeMcrObjectOverlapFixture(source, false, false);
+        assertEquals("PageForm", query(source, limits()).getPages().get(0).getText());
+        for (boolean reverse : new boolean[] {false, true}) {
+            writeMcrObjectOverlapFixture(source, true, reverse);
+            byte[] before = Files.readAllBytes(source);
+            assertQueryFailure(source, limits());
+            assertArrayEquals(before, Files.readAllBytes(source));
+        }
+    }
+
+    @Test(timeout = 10000L)
+    public void wholeStructuralObjectCannotInvokeAnotherStructuralObject() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("objr-invokes-objr.pdf");
+        writeObjectNestingFixture(source, false, false);
+        assertEquals("OuterInner", query(source, limits()).getPages().get(0).getText());
+        for (boolean reverse : new boolean[] {false, true}) {
+            writeObjectNestingFixture(source, true, reverse);
+            byte[] before = Files.readAllBytes(source);
+            assertQueryFailure(source, limits());
+            assertArrayEquals(before, Files.readAllBytes(source));
+        }
+    }
+
+    @Test(timeout = 10000L)
+    public void wholeStructuralObjectCannotContainAnotherFormsStructuralMcid() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("objr-contains-mcr.pdf");
+        writeObjectNestingFixture(source, false, false, true);
+        assertEquals("OuterInner", query(source, limits()).getPages().get(0).getText());
+        for (boolean reverse : new boolean[] {false, true}) {
+            writeObjectNestingFixture(source, true, reverse, true);
+            byte[] before = Files.readAllBytes(source);
+            assertQueryFailure(source, limits());
+            assertArrayEquals(before, Files.readAllBytes(source));
+        }
+    }
+
+    @Test(timeout = 10000L)
+    public void unexecutedFormDefinitionsStillKeepStructuralContentItemsAsLeaves() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("unexecuted-structural-form.pdf");
+        writeUnexecutedObjectNestingFixture(source, true, false);
+        TextStructureExtraction separate = query(source, limits());
+        assertEquals("", separate.getPages().get(0).getText());
+        assertFalse(separate.getStructureRoots().get(0).getChildren().get(0)
+                .getMarkedContent().get().getMarkedContentSequenceId().isPresent());
+        for (boolean marked : new boolean[] {true, false}) {
+            writeUnexecutedObjectNestingFixture(source, marked, true);
+            byte[] before = Files.readAllBytes(source);
+            assertQueryFailure(source, limits());
+            assertArrayEquals(before, Files.readAllBytes(source));
+        }
+    }
+
+    @Test(timeout = 10000L)
+    public void unexecutedFormDefinitionsChargeDecodedBytesWithoutInventingExecutions() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("unexecuted-definition-byte-limit.pdf");
+        writeUnexecutedObjectNestingFixture(source, true, false);
+        byte[] before = Files.readAllBytes(source);
+        // The authored outer definition is 33 ASCII bytes; the inner definition is empty.
+        ExtractionLimits exact = new BoundaryLimits().streams(0).streamDepth(0).textItems(0)
+                .decodedBytes(33).structureElements(2).structureItems(64).build();
+        TextStructureExtraction result = query(source, exact);
+        assertEquals("", result.getPages().get(0).getText());
+        assertTrue(result.getPages().get(0).getTextItems().isEmpty());
+        assertTrue(result.getPages().get(0).getMarkedContentSequences().isEmpty());
+        assertLimitFailure(source, new BoundaryLimits().streams(0).streamDepth(0).textItems(0)
+                .decodedBytes(32).structureElements(2).structureItems(64).build());
+        assertArrayEquals(before, Files.readAllBytes(source));
+    }
+
+    @Test(timeout = 10000L)
+    public void unexecutedWholeObjectFormsRequireUniqueMcidDefinitions() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("unexecuted-duplicate-mcid.pdf");
+        writeUnexecutedWholeObjectFixture(source, 1);
+        TextStructureExtraction result = query(source, limits());
+        assertEquals("", result.getPages().get(0).getText());
+        assertTrue(result.getPages().get(0).getMarkedContentSequences().isEmpty());
+        assertEquals(LogicalStructureItem.Kind.OBJECT,
+                result.getStructureRoots().get(0).getChildren().get(0).getKind());
+        writeUnexecutedWholeObjectFixture(source, 0);
+        byte[] before = Files.readAllBytes(source);
+        assertQueryFailure(source, limits());
+        assertArrayEquals(before, Files.readAllBytes(source));
+    }
+
+    @Test(timeout = 10000L)
+    public void referencedAppearancesCannotRepeatAnInternallyStructuredDescendant() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("appearance-repeated-child.pdf");
+        writeAppearanceInvocationFixture(source, 1, true, false);
+        TextStructureExtraction single = query(source, limits());
+        assertEquals("", single.getPages().get(0).getText());
+        assertFalse(single.getStructureRoots().get(1).getChildren().get(0)
+                .getMarkedContent().get().getMarkedContentSequenceId().isPresent());
+        writeAppearanceInvocationFixture(source, 2, false, false);
+        assertEquals("", query(source, limits()).getPages().get(0).getText());
+        for (boolean throughOrdinaryForm : new boolean[] {false, true}) {
+            writeAppearanceInvocationFixture(source, 2, true, throughOrdinaryForm);
+            byte[] before = Files.readAllBytes(source);
+            assertQueryFailure(source, limits());
+            assertArrayEquals(before, Files.readAllBytes(source));
+        }
+    }
+
+    @Test(timeout = 10000L)
+    public void independentAppearanceEntryPointsShareStructuralInvocationCounts() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("independent-appearance-invocations.pdf");
+        writeSharedAppearanceDescendantFixture(source, false, false, false, false);
+        assertEquals("", query(source, limits()).getPages().get(0).getText());
+        for (boolean reverse : new boolean[] {false, true}) {
+            for (int scenario = 0; scenario < 3; scenario++) {
+                writeSharedAppearanceDescendantFixture(source,
+                        scenario == 0, scenario == 1, scenario == 2, reverse);
+                byte[] before = Files.readAllBytes(source);
+                assertQueryFailure(source, limits());
+                assertArrayEquals(before, Files.readAllBytes(source));
+            }
+        }
+    }
+
+    @Test(timeout = 10000L)
+    public void normalAppearanceRootsWithoutStructuralItemsShareInvocationCounts() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("unlinked-appearance-root.pdf");
+        for (boolean throughOrdinaryForm : new boolean[] {false, true}) {
+            writeUnlinkedAppearanceRootFixture(source, false, throughOrdinaryForm);
+            byte[] before = Files.readAllBytes(source);
+            TextStructureExtraction result = query(source, limits());
+            assertEquals("", result.getPages().get(0).getText());
+            assertFalse(result.getStructureRoots().get(0).getChildren().get(0)
+                    .getMarkedContent().get().getMarkedContentSequenceId().isPresent());
+            assertArrayEquals(before, Files.readAllBytes(source));
+
+            String original = new String(before, StandardCharsets.US_ASCII);
+            Files.write(source, original.replace("/Target Do\n", "          \n")
+                    .getBytes(StandardCharsets.US_ASCII));
+            before = Files.readAllBytes(source);
+            assertQueryFailure(source, limits());
+            assertArrayEquals(before, Files.readAllBytes(source));
+
+            writeUnlinkedAppearanceRootFixture(source, true, throughOrdinaryForm);
+            before = Files.readAllBytes(source);
+            assertQueryFailure(source, limits());
+            assertArrayEquals(before, Files.readAllBytes(source));
+        }
+    }
+
+    @Test(timeout = 10000L)
+    public void appearanceOnlyWholeFormReferencesRetainDetachedPageAssociation() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("appearance-whole-form.pdf");
+        for (boolean throughOrdinaryForm : new boolean[] {false, true}) {
+            writePdf(source,
+                    "<< /Type /Catalog /Pages 2 0 R /StructTreeRoot 6 0 R >>",
+                    "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+                    "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 100 100] /Annots [4 0 R] >>",
+                    "<< /Type /Annot /Subtype /Stamp /Rect [0 0 100 100] /P 3 0 R /F 0 /AP << /N "
+                            + (throughOrdinaryForm ? 9 : 5) + " 0 R >> >>",
+                    streamObject("/Artifact BMC EMC\n", "/Type /XObject /Subtype /Form "
+                            + "/BBox [0 0 100 100] /Resources << >> /StructParent 0 "),
+                    "<< /Type /StructTreeRoot /K 7 0 R /ParentTree 8 0 R >>",
+                    "<< /Type /StructElem /S /Figure /P 6 0 R /Pg 3 0 R "
+                            + "/K << /Type /OBJR /Obj 5 0 R >> >>",
+                    "<< /Nums [0 7 0 R] >>",
+                    streamObject("/F Do /F Do\n", "/Type /XObject /Subtype /Form /BBox [0 0 100 100] "
+                            + "/Resources << /XObject << /F 5 0 R >> >> "));
+            byte[] before = Files.readAllBytes(source);
+            TextStructureExtraction result = query(source, limits());
+            LogicalObjectReference reference = result.getStructureRoots().get(0)
+                    .getChildren().get(0).getObjectReference().get();
+            assertEquals(1, reference.getPageNumber());
+            assertEquals("Form", reference.getSubtype());
+            assertNotNull(reference.getObjectReference());
+            assertEquals("", result.getPages().get(0).getText());
+            assertTrue(result.getPages().get(0).getTextItems().isEmpty());
+            assertArrayEquals(before, Files.readAllBytes(source));
+            if (throughOrdinaryForm) {
+                String original = new String(before, StandardCharsets.US_ASCII);
+                String noInvocations = "           \n";
+                assertEquals("/F Do /F Do\n".length(), noInvocations.length());
+                Files.write(source, original.replace("/F Do /F Do\n", noInvocations)
+                        .getBytes(StandardCharsets.US_ASCII));
+                before = Files.readAllBytes(source);
+                assertQueryFailure(source, limits());
+                assertArrayEquals(before, Files.readAllBytes(source));
+            }
+        }
+    }
+
+    @Test(timeout = 10000L)
+    public void wholeFormObjectReferenceRequiresEachNormalAppearancePage() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("two-page-appearance-objr.pdf");
+        for (boolean throughOrdinaryForm : new boolean[] {false, true}) {
+            writeTwoPageAppearanceObjectReferenceFixture(source, throughOrdinaryForm, true, true);
+            byte[] before = Files.readAllBytes(source);
+            TextStructureExtraction result = query(source, limits());
+            List<LogicalStructureItem> children = result.getStructureRoots().get(0).getChildren();
+            assertEquals(2, children.size());
+            assertEquals(1, children.get(0).getObjectReference().get().getPageNumber());
+            assertEquals(2, children.get(1).getObjectReference().get().getPageNumber());
+            assertEquals(children.get(0).getObjectReference().get().getObjectReference(),
+                    children.get(1).getObjectReference().get().getObjectReference());
+            assertEquals("", result.getPages().get(0).getText());
+            assertEquals("", result.getPages().get(1).getText());
+            assertArrayEquals(before, Files.readAllBytes(source));
+
+            writeTwoPageAppearanceObjectReferenceFixture(source, throughOrdinaryForm, false, true);
+            before = Files.readAllBytes(source);
+            assertQueryFailure(source, limits());
+            assertArrayEquals(before, Files.readAllBytes(source));
+        }
+
+        writeTwoPageAppearanceObjectReferenceFixture(source, true, false, false);
+        byte[] before = Files.readAllBytes(source);
+        TextStructureExtraction result = query(source, limits());
+        assertEquals(1, result.getStructureRoots().get(0).getChildren().size());
+        assertEquals("", result.getPages().get(1).getText());
+        assertArrayEquals(before, Files.readAllBytes(source));
+    }
+
+    @Test(timeout = 10000L)
+    public void distinctAppearanceOwnersRemainSeparateInvocationEntryPoints() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("distinct-appearance-owners.pdf");
+        for (boolean ordinaryIntermediate : new boolean[] {false, true}) {
+            writeSharedAppearanceOwnerFixture(source, false, ordinaryIntermediate, false);
+            assertEquals("", query(source, limits()).getPages().get(0).getText());
+            for (boolean reverse : new boolean[] {false, true}) {
+                writeSharedAppearanceOwnerFixture(source, true, ordinaryIntermediate, reverse);
+                byte[] before = Files.readAllBytes(source);
+                assertQueryFailure(source, limits());
+                assertArrayEquals(before, Files.readAllBytes(source));
+            }
+        }
+    }
+
+    @Test(timeout = 10000L)
+    public void executedContentReferencesRequireAnExistingMcidDefinition() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("missing-executed-mcid.pdf");
+        for (String changedSequence : new String[] {"/P <</MCID 0>>", "/P <</MCID 0 /ActualText"}) {
+            writeScopedMcrFixture(source, "/Fm Do");
+            String original = new String(Files.readAllBytes(source), StandardCharsets.US_ASCII);
+            Files.write(source, original.replace(changedSequence, changedSequence.replace("MCID 0", "MCID 1"))
+                    .getBytes(StandardCharsets.US_ASCII));
+            byte[] before = Files.readAllBytes(source);
+            assertQueryFailure(source, limits());
+            assertArrayEquals(before, Files.readAllBytes(source));
+        }
+    }
+
+    @Test(timeout = 10000L)
+    public void publicExtractionObserverUsesRequestedExecutionProfile() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("observer-profile.pdf");
+        createBoundaryFixture(source);
+        WorkflowOutcome<TextStructureExtraction> outcome = new DocumentWorkflow().execute(
+                requestBuilder().source("input", DocumentSource.path(source)).primarySource("input")
+                        .saveMode(SaveMode.REWRITE).build(), session -> session.query(
+                                ExtractTextAndStructure.version1(new BoundaryLimits().build())));
+        assertEquals(WorkflowExecutionProfile.valueOf(System.getProperty(
+                "folio.t13.executionProfile", "IN_PROCESS")), outcome.getExecutionProfile());
+        assertEquals("A", outcome.getResult().getPages().get(0).getText());
+        assertTrue(outcome.getPublicationReceipts().isEmpty());
+    }
+
+    @Test(timeout = 10000L)
+    public void internallyStructuredFormCannotBeInvokedRepeatedly() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("repeated-structural-form.pdf");
+        writeScopedMcrFixture(source, "/Fm Do /Fm Do");
+        byte[] before = Files.readAllBytes(source);
+        assertQueryFailure(source, limits());
+        assertArrayEquals(before, Files.readAllBytes(source));
+    }
+
+    @Test(timeout = 10000L)
+    public void duplicateMcidDefinitionsInsideOneFormFailSafely() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("duplicate-form-mcid.pdf");
+        writeFormFixture(source, "/Fm Do\n",
+                "/Span <</MCID 0>> BDC EMC /Span <</MCID 0>> BDC EMC\n",
+                "/BBox [0 0 100 100] /Resources << >>");
+        byte[] before = Files.readAllBytes(source);
+
+        assertQueryFailure(source, limits());
+        assertArrayEquals(before, Files.readAllBytes(source));
     }
 
     @Test(timeout = 10000L)
@@ -1255,7 +2850,7 @@ public final class TextStructureExtractionWorkflowTest {
         assertLimitFailure(source, new BoundaryLimits()
                 .structureElements(0).build());
         assertLimitFailure(source, new BoundaryLimits()
-                .structureItems(1).build());
+                .structureItems(4).build());
         assertLimitFailure(source, new BoundaryLimits()
                 .structureDepth(0).build());
         assertLimitFailure(source, new BoundaryLimits()
@@ -1347,24 +2942,263 @@ public final class TextStructureExtractionWorkflowTest {
                 "content-cycle.pdf");
         Path structureCycle = temporaryFolder.getRoot().toPath().resolve(
                 "structure-cycle.pdf");
-        Path roleMapCycle = temporaryFolder.getRoot().toPath().resolve(
-                "role-map-cycle.pdf");
         writeContentCycleFixture(contentCycle);
         writeStructureCycleFixture(structureCycle);
-        writeRoleMapCycleFixture(roleMapCycle);
         byte[] contentBefore = Files.readAllBytes(contentCycle);
         byte[] structureBefore = Files.readAllBytes(structureCycle);
-        byte[] roleMapBefore = Files.readAllBytes(roleMapCycle);
 
         assertQueryFailure(contentCycle, limits());
         assertQueryFailure(contentCycle, limits());
         assertQueryFailure(structureCycle, limits());
         assertQueryFailure(structureCycle, limits());
-        assertQueryFailure(roleMapCycle, limits());
-        assertQueryFailure(roleMapCycle, limits());
         assertArrayEquals(contentBefore, Files.readAllBytes(contentCycle));
         assertArrayEquals(structureBefore, Files.readAllBytes(structureCycle));
-        assertArrayEquals(roleMapBefore, Files.readAllBytes(roleMapCycle));
+    }
+
+    @Test(timeout = 10000L)
+    public void unqualifiedStandardNamesHonorTheDocumentRoleMap() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("remapped-standard-name.pdf");
+        writeRoleFixture(source, "P", "/P /Span");
+        byte[] before = Files.readAllBytes(source);
+        LogicalStructureElement element = query(source, limits()).getStructureRoots().get(0);
+        assertEquals("P", element.getRole());
+        assertEquals("Span", element.getResolvedRole().get());
+        assertEquals(LogicalStructureElement.RoleResolution.ROLE_MAP, element.getRoleResolution());
+        assertArrayEquals(before, Files.readAllBytes(source));
+    }
+
+    @Test(timeout = 10000L)
+    public void circularUnqualifiedRolesResolveBoundedlyWithoutInventingAStandardRole() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("circular-unqualified-role.pdf");
+        writeRoleFixture(source, "A", "/A /B /B /A");
+        byte[] before = Files.readAllBytes(source);
+        LogicalStructureElement element = query(source, limits()).getStructureRoots().get(0);
+        assertEquals("A", element.getRole());
+        assertFalse(element.getResolvedRole().isPresent());
+        assertEquals(LogicalStructureElement.RoleResolution.UNRESOLVED, element.getRoleResolution());
+        assertArrayEquals(before, Files.readAllBytes(source));
+        writeRoleFixture(source, "A", "/A /P /P /A");
+        assertEquals("P", query(source, limits()).getStructureRoots().get(0).getResolvedRole().get());
+        writeRoleMapCycleFixture(source);
+        assertTrue(query(source, limits()).getStructureRoots().isEmpty());
+    }
+
+    @Test(timeout = 10000L)
+    public void explicitPdfTwoNamespaceRetainsIdentityAndResolvesItsStandardRole() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("pdf2-namespace.pdf");
+        writeNamespaceFixture(source, "Title", "<< /NS (http://iso.org/pdf2/ssn) >>");
+        byte[] before = Files.readAllBytes(source);
+        TextStructureExtraction result = new DocumentWorkflow().execute(
+                requestBuilder().source("input", DocumentSource.path(source)).primarySource("input")
+                        .saveMode(SaveMode.REWRITE).build(), session -> {
+                    TextStructureExtraction extraction = session.query(ExtractTextAndStructure.version1(limits()));
+                    LogicalStructureElement element = extraction.getStructureRoots().get(0);
+                    assertEquals(PdfString.of("http://iso.org/pdf2/ssn".getBytes(StandardCharsets.US_ASCII)),
+                            inspectedDictionary(session, element.getNamespaceReference().get()).get(PdfName.of("NS")));
+                    return extraction;
+                }).getResult();
+        LogicalStructureElement element = result.getStructureRoots().get(0);
+        assertEquals("Title", element.getRole());
+        assertEquals("Title", element.getResolvedRole().get());
+        assertEquals(LogicalStructureElement.RoleResolution.STANDARD, element.getRoleResolution());
+        assertEquals("http://iso.org/pdf2/ssn", element.getDeclaredNamespaceName().get());
+        assertEquals("http://iso.org/pdf2/ssn", element.getResolvedNamespaceName().get());
+        assertTrue(element.getNamespaceReference().isPresent());
+        assertArrayEquals(before, Files.readAllBytes(source));
+    }
+
+    @Test(timeout = 10000L)
+    public void namespaceRoleChainsPreserveDeclaredIdentityAndUseOneSharedGraphBudget() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("namespace-role-chain.pdf");
+        writeNamespaceChainFixture(source);
+        byte[] before = Files.readAllBytes(source);
+        ExtractionLimits exact = new BoundaryLimits().roleMappings(7).unicode(512)
+                .structureElements(4).structureItems(4).structureDepth(2).build();
+        LogicalStructureElement root = query(source, exact).getStructureRoots().get(0);
+        assertEquals("Story", root.getRole());
+        assertEquals("urn:folio:story", root.getDeclaredNamespaceName().get());
+        assertEquals("Title", root.getResolvedRole().get());
+        assertEquals("http://iso.org/pdf2/ssn", root.getResolvedNamespaceName().get());
+        assertEquals(LogicalStructureElement.RoleResolution.ROLE_MAP, root.getRoleResolution());
+        LogicalStructureElement term = root.getChildren().get(0).getElement().get();
+        assertEquals(root.getNamespaceReference(), term.getNamespaceReference());
+        assertEquals("P", term.getResolvedRole().get());
+        assertEquals("http://iso.org/pdf/ssn", term.getResolvedNamespaceName().get());
+        assertEquals("fr-CA", term.getEffectiveLanguage().get());
+        assertEquals(LogicalStructureElement.LanguageSource.ANCESTOR, term.getLanguageSource());
+        LogicalStructureElement unqualified = root.getChildren().get(1).getElement().get();
+        assertFalse(unqualified.getDeclaredNamespaceName().isPresent());
+        assertFalse(unqualified.getNamespaceReference().isPresent());
+        assertEquals("Span", unqualified.getResolvedRole().get());
+        assertEquals("http://iso.org/pdf/ssn", unqualified.getResolvedNamespaceName().get());
+        assertEquals("H7", root.getChildren().get(2).getElement().get().getResolvedRole().get());
+        assertLimitFailure(source, new BoundaryLimits().roleMappings(6).unicode(512)
+                .structureElements(4).structureItems(4).structureDepth(2).build());
+        assertArrayEquals(before, Files.readAllBytes(source));
+    }
+
+    @Test(timeout = 10000L)
+    public void pdfTwoUndefinedNamespaceAppliesTheWholeRoleMapBeforeResolving() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("pdf2-unqualified-role.pdf");
+        writeRoleFixture(source, "P", "/P /Span /Span /Note", true);
+        LogicalStructureElement element = query(source, limits()).getStructureRoots().get(0);
+        assertEquals("Note", element.getResolvedRole().get());
+        assertEquals("http://iso.org/pdf/ssn", element.getResolvedNamespaceName().get());
+        assertEquals(LogicalStructureElement.RoleResolution.ROLE_MAP, element.getRoleResolution());
+        writeRoleFixture(source, "P", "/P /Span /Span /P", true);
+        element = query(source, limits()).getStructureRoots().get(0);
+        assertFalse(element.getResolvedRole().isPresent());
+        assertFalse(element.getResolvedNamespaceName().isPresent());
+    }
+
+    @Test(timeout = 10000L)
+    public void malformedNamespacesAndRoleTargetsFailWithoutPublishingAPrefix() throws Exception {
+        String[] namespaces = {
+            "<< /Type /Other /NS (urn:folio:custom) >>",
+            "<< /NS /WrongKind >>",
+            "<< /Type /Namespace >>",
+            "<< /NS (urn:folio:custom) /RoleMapNS 42 >>",
+            "<< /NS (urn:folio:custom) /RoleMapNS << /Story [/P] >> >>",
+            "<< /NS (urn:folio:custom) /RoleMapNS << /Story [/P << /NS (http://iso.org/pdf/ssn) >>] >> >>",
+            "<< /NS (urn:folio:custom) /RoleMapNS << /Story [42 6 0 R] >> >>"
+        };
+        Path source = temporaryFolder.getRoot().toPath().resolve("malformed-namespace.pdf");
+        for (String namespace : namespaces) {
+            writeNamespaceFixture(source, "Story", namespace);
+            byte[] before = Files.readAllBytes(source);
+            assertQueryFailure(source, limits());
+            assertArrayEquals(before, Files.readAllBytes(source));
+        }
+    }
+
+    @Test(timeout = 10000L)
+    public void namespaceVocabularyAndRootMembershipControlResolution() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("namespace-vocabulary.pdf");
+        for (String[] vocabulary : new String[][] {
+            {"P", "urn:folio:custom"}, {"Art", "http://iso.org/pdf2/ssn"}, {"Title", "http://iso.org/pdf/ssn"}
+        }) {
+            writeNamespaceFixture(source, vocabulary[0], "<< /NS (" + vocabulary[1] + ") >>");
+            LogicalStructureElement element = query(source, limits()).getStructureRoots().get(0);
+            assertEquals(vocabulary[1], element.getDeclaredNamespaceName().get());
+            assertEquals(LogicalStructureElement.RoleResolution.UNRESOLVED, element.getRoleResolution());
+            assertFalse(element.getResolvedRole().isPresent());
+            assertFalse(element.getResolvedNamespaceName().isPresent());
+        }
+        writeNamespaceFixture(source, "P", "<< /NS (http://iso.org/pdf/ssn) >>");
+        String original = new String(Files.readAllBytes(source), StandardCharsets.US_ASCII);
+        Files.write(source, original.replace("/Namespaces [6 0 R]", "/Namespaces [     ]")
+                .getBytes(StandardCharsets.US_ASCII));
+        assertQueryFailure(source, limits());
+    }
+
+    @Test(timeout = 10000L)
+    public void explicitStandardNamespaceMappingsTargetAnotherNamespace() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("explicit-standard-role-map.pdf");
+        writeNamespaceFixture(source, "Title",
+                "<< /NS (http://iso.org/pdf2/ssn) /RoleMapNS << /Title /P >> >>");
+        LogicalStructureElement element = query(source, limits()).getStructureRoots().get(0);
+        assertEquals("Title", element.getResolvedRole().get());
+        assertEquals("http://iso.org/pdf2/ssn", element.getResolvedNamespaceName().get());
+        for (String namespace : new String[] {
+            "<< /NS (http://iso.org/pdf2/ssn) /RoleMapNS << /P [/Span 6 0 R] >> >>",
+            "<< /NS (http://iso.org/pdf/ssn) /RoleMapNS << /P /Span >> >>"
+        }) {
+            writeNamespaceFixture(source, "P", namespace);
+            byte[] before = Files.readAllBytes(source);
+            assertQueryFailure(source, limits());
+            assertArrayEquals(before, Files.readAllBytes(source));
+        }
+    }
+
+    @Test(timeout = 10000L)
+    public void namespaceMappingsRemainSeparateFromTheUndefinedNamespaceRoleMap() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("namespace-default-target.pdf");
+        writeNamespaceFixture(source, "Story",
+                "<< /NS (urn:folio:custom) /RoleMapNS << /Story /P >> >>", "/P /Span");
+        LogicalStructureElement element = query(source, limits()).getStructureRoots().get(0);
+        assertEquals("P", element.getResolvedRole().get());
+        assertEquals("http://iso.org/pdf/ssn", element.getResolvedNamespaceName().get());
+    }
+
+    @Test(timeout = 10000L)
+    public void unknownCrossNamespaceCycleTerminatesWithAnUnresolvedObservation() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("namespace-cycle.pdf");
+        writePdf(source,
+                "<< /Type /Catalog /Version /2.0 /Pages 2 0 R /StructTreeRoot 4 0 R >>",
+                "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+                "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << >> >>",
+                "<< /Type /StructTreeRoot /K 5 0 R /Namespaces [6 0 R 7 0 R] >>",
+                "<< /S /Story /NS 6 0 R /P 4 0 R >>",
+                "<< /NS (urn:folio:story) /RoleMapNS << /Story [/Chapter 7 0 R] >> >>",
+                "<< /NS (urn:folio:chapter) /RoleMapNS << /Chapter [/Story 6 0 R] >> >>");
+        byte[] before = Files.readAllBytes(source);
+        LogicalStructureElement element = query(source, new BoundaryLimits().roleMappings(4).unicode(128).build())
+                .getStructureRoots().get(0);
+        assertEquals(LogicalStructureElement.RoleResolution.UNRESOLVED, element.getRoleResolution());
+        assertEquals("urn:folio:story", element.getDeclaredNamespaceName().get());
+        assertFalse(element.getResolvedRole().isPresent());
+        assertFalse(element.getResolvedNamespaceName().isPresent());
+        assertLimitFailure(source, new BoundaryLimits().roleMappings(3).unicode(128).build());
+        assertArrayEquals(before, Files.readAllBytes(source));
+    }
+
+    @Test(timeout = 10000L)
+    public void distinctNamespaceObjectsShareOneRoleMapWithoutSharingTheirIdentity() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("shared-namespace-role-map.pdf");
+        writePdf(source,
+                "<< /Type /Catalog /Version /2.0 /Pages 2 0 R /StructTreeRoot 4 0 R >>",
+                "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+                "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << >> >>",
+                "<< /Type /StructTreeRoot /K [5 0 R 6 0 R] /Namespaces [7 0 R 8 0 R] >>",
+                "<< /S /Story /NS 7 0 R /P 4 0 R >>",
+                "<< /S /Story /NS 8 0 R /P 4 0 R >>",
+                "<< /NS (urn:folio:custom) /RoleMapNS 9 0 R >>",
+                "<< /NS (urn:folio:custom) /RoleMapNS 9 0 R >>",
+                "<< /Story /P >>");
+        List<LogicalStructureElement> roots = query(source, new BoundaryLimits().roleMappings(3).unicode(128)
+                .structureElements(2).build()).getStructureRoots();
+        assertEquals("P", roots.get(0).getResolvedRole().get());
+        assertEquals("P", roots.get(1).getResolvedRole().get());
+        assertEquals(roots.get(0).getDeclaredNamespaceName(), roots.get(1).getDeclaredNamespaceName());
+        assertFalse(roots.get(0).getNamespaceReference().equals(roots.get(1).getNamespaceReference()));
+        assertLimitFailure(source, new BoundaryLimits().roleMappings(2).unicode(128).structureElements(2).build());
+    }
+
+    @Test(timeout = 10000L)
+    public void namespaceAdmissionChecksTheFirstExcessBeforeSchedulingLaterDeclarations() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("namespace-admission.pdf");
+        writePdf(source,
+                "<< /Type /Catalog /Version /2.0 /Pages 2 0 R /StructTreeRoot 4 0 R >>",
+                "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+                "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << >> >>",
+                "<< /Type /StructTreeRoot /K 5 0 R /Namespaces [6 0 R 42] >>",
+                "<< /S /Title /NS 6 0 R /P 4 0 R >>",
+                "<< /NS (http://iso.org/pdf2/ssn) >>");
+        byte[] before = Files.readAllBytes(source);
+        assertLimitFailure(source, new BoundaryLimits().roleMappings(0).unicode(128).build());
+        assertQueryFailure(source, new BoundaryLimits().roleMappings(1).unicode(128).build());
+        assertArrayEquals(before, Files.readAllBytes(source));
+    }
+
+    @Test(timeout = 10000L)
+    public void directRootNamespaceDeclarationsRetainIndirectElementIdentityAndExactBounds() throws Exception {
+        Path source = temporaryFolder.getRoot().toPath().resolve("direct-namespace-declaration.pdf");
+        writePdf(source,
+                "<< /Type /Catalog /Version /2.0 /Pages 2 0 R /StructTreeRoot 4 0 R >>",
+                "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+                "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 100 100] /Resources << >> >>",
+                "<< /Type /StructTreeRoot /K 5 0 R /Namespaces ["
+                        + "<< /NS (urn:folio:declaration) /RoleMapNS << /Unused /P >> >> 6 0 R] >>",
+                "<< /S /Title /NS 6 0 R /P 4 0 R >>",
+                "<< /NS (http://iso.org/pdf2/ssn) >>");
+        byte[] before = Files.readAllBytes(source);
+        LogicalStructureElement result = query(source, new BoundaryLimits().roleMappings(3).unicode(128).build())
+                .getStructureRoots().get(0);
+        assertEquals("Title", result.getResolvedRole().get());
+        assertEquals("http://iso.org/pdf2/ssn", result.getDeclaredNamespaceName().get());
+        assertTrue(result.getNamespaceReference().isPresent());
+        assertLimitFailure(source, new BoundaryLimits().roleMappings(2).unicode(128).build());
+        assertArrayEquals(before, Files.readAllBytes(source));
     }
 
     @Test(timeout = 10000L)
@@ -1431,14 +3265,15 @@ public final class TextStructureExtractionWorkflowTest {
                 "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
                 "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] "
                         + "/Resources << /Font << /F1 5 0 R >> >> "
-                        + "/Contents 4 0 R >>",
+                        + "/Contents 4 0 R /StructParents 0 >>",
                 streamObject(BOUNDED_CONTENT, ""),
                 "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica "
                         + "/Encoding /WinAnsiEncoding >>",
                 "<< /Type /StructTreeRoot /RoleMap << /Custom /Span >> "
-                        + "/K 7 0 R >>",
+                        + "/K 7 0 R /ParentTree 8 0 R >>",
                 "<< /Type /StructElem /S /Custom /P 6 0 R /Pg 3 0 R "
-                        + "/K 0 >>");
+                        + "/K 0 >>",
+                "<< /Nums [0 [7 0 R]] >>");
     }
 
     private static void createNestedFormFixture(Path target) throws Exception {
@@ -1455,7 +3290,7 @@ public final class TextStructureExtractionWorkflowTest {
                 "Middle", middle);
 
         new DocumentWorkflow().execute(
-                WorkflowRequest.builder()
+                requestBuilder()
                         .target("output", PublicationTarget.path(target))
                         .saveMode(SaveMode.REWRITE)
                         .build(),
@@ -1511,7 +3346,7 @@ public final class TextStructureExtractionWorkflowTest {
                         .build())
                 .build();
         new DocumentWorkflow().execute(
-                WorkflowRequest.builder()
+                requestBuilder()
                         .target("output", PublicationTarget.path(target))
                         .saveMode(SaveMode.REWRITE)
                         .build(),
@@ -1566,7 +3401,7 @@ public final class TextStructureExtractionWorkflowTest {
                         .build())
                 .build();
         new DocumentWorkflow().execute(
-                WorkflowRequest.builder()
+                requestBuilder()
                         .target("output", PublicationTarget.path(target))
                         .saveMode(SaveMode.REWRITE)
                         .build(),
@@ -1667,7 +3502,7 @@ public final class TextStructureExtractionWorkflowTest {
                 .maximumStructureDepth(0)
                 .maximumRoleMappings(0)
                 .maximumToUnicodeMappings(mappings)
-                .maximumFontDataEntries(0)
+                .maximumFontDataEntries(2)
                 .build();
     }
 
@@ -2073,6 +3908,17 @@ public final class TextStructureExtractionWorkflowTest {
                 streamObject("\u0000\u0001\u0000\u0000", ""));
     }
 
+    private static void writeType3MetricFixture(Path target, String font, String content, String glyph)
+            throws Exception {
+        writePdf(target,
+                "<< /Type /Catalog /Pages 2 0 R >>",
+                "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+                "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] "
+                        + "/Resources << /Font << /F1 5 0 R >> "
+                        + "/ExtGState << /G1 << /Font [5 0 R 10] >> >> >> /Contents 4 0 R >>",
+                streamObject(content, ""), font, streamObject(glyph, ""));
+    }
+
     private static void writeType3FontFixture(
             Path target,
             int glyphProgramBytes) throws Exception {
@@ -2391,6 +4237,306 @@ public final class TextStructureExtractionWorkflowTest {
         writePdf(target, bodies);
     }
 
+    private static void writeTwoPageObjectReferenceFixture(Path target, boolean bothPages) throws Exception {
+        writePdf(target,
+                "<< /Type /Catalog /Pages 2 0 R /StructTreeRoot 7 0 R >>",
+                "<< /Type /Pages /Count 2 /Kids [3 0 R 4 0 R] /Resources << /XObject << /Fm 6 0 R >> >> >>",
+                "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 5 0 R >>",
+                "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 5 0 R >>",
+                streamObject("/Fm Do\n", ""),
+                streamObject("/Span <</ActualText (Form)>> BDC EMC\n",
+                        "/Type /XObject /Subtype /Form /BBox [0 0 100 100] /Resources << >> /StructParent 0 "),
+                "<< /Type /StructTreeRoot /K 8 0 R /ParentTree 9 0 R >>",
+                "<< /Type /StructElem /S /Figure /P 7 0 R /K [<< /Type /OBJR /Pg 3 0 R /Obj 6 0 R >> "
+                        + (bothPages ? "<< /Type /OBJR /Pg 4 0 R /Obj 6 0 R >>" : "") + "] >>",
+                "<< /Nums [0 8 0 R] >>");
+    }
+
+    private static void writeAppearanceMcrFixture(Path target, String formContent) throws Exception {
+        writePdf(target,
+                "<< /Type /Catalog /Pages 2 0 R /StructTreeRoot 6 0 R >>",
+                "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+                "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Annots [4 0 R] >>",
+                "<< /Type /Annot /Subtype /Stamp /Rect [10 10 30 30] /P 3 0 R /AP << /N 5 0 R >> >>",
+                streamObject(formContent,
+                        "/Type /XObject /Subtype /Form /BBox [0 0 100 100] /Resources << >> /StructParents 0 "),
+                "<< /Type /StructTreeRoot /K 7 0 R /ParentTree 8 0 R >>",
+                "<< /Type /StructElem /S /Figure /P 6 0 R /Pg 3 0 R "
+                        + "/K << /Type /MCR /Stm 5 0 R /StmOwn 4 0 R /MCID 0 >> >>",
+                "<< /Nums [0 [7 0 R]] >>");
+    }
+
+    private static void writeMcrObjectOverlapFixture(Path target, boolean nested, boolean reverse)
+            throws Exception {
+        writePdf(target,
+                "<< /Type /Catalog /Pages 2 0 R /StructTreeRoot 6 0 R >>",
+                "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+                "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /StructParents 0 "
+                        + "/Resources << /XObject << /Fm 5 0 R >> >> /Contents 4 0 R >>",
+                streamObject("/Span <</MCID 0 /ActualText (Page)>> BDC "
+                        + (nested ? "/Fm Do EMC\n" : "EMC /Fm Do\n"), ""),
+                streamObject("/Span <</ActualText (Form)>> BDC EMC\n",
+                        "/Type /XObject /Subtype /Form /BBox [0 0 100 100] /Resources << >> /StructParent 1 "),
+                "<< /Type /StructTreeRoot /K [" + (reverse ? "8 0 R 7 0 R" : "7 0 R 8 0 R")
+                        + "] /ParentTree 9 0 R >>",
+                "<< /Type /StructElem /S /Span /P 6 0 R /Pg 3 0 R /K 0 >>",
+                "<< /Type /StructElem /S /Figure /P 6 0 R /Pg 3 0 R /K << /Type /OBJR /Obj 5 0 R >> >>",
+                "<< /Nums [0 [7 0 R] 1 8 0 R] >>");
+    }
+
+    private static void writeAppearanceMcrPairFixture(Path target, boolean nested, boolean reverse)
+            throws Exception {
+        writePdf(target,
+                "<< /Type /Catalog /Pages 2 0 R /StructTreeRoot 6 0 R >>",
+                "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+                "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Annots [4 0 R] >>",
+                "<< /Type /Annot /Subtype /Stamp /Rect [10 10 30 30] /P 3 0 R /AP << /N 5 0 R >> >>",
+                streamObject("/Span /Outer BDC " + (nested ? "" : "EMC ")
+                        + "/Artifact BMC /Span <</MCID 1>> BDC EMC EMC " + (nested ? "EMC\n" : "\n"),
+                        "/Type /XObject /Subtype /Form /BBox [0 0 100 100] /StructParents 0 "
+                                + "/Resources << /Properties << /Outer <</MCID 0>> >> >> "),
+                "<< /Type /StructTreeRoot /K 7 0 R /ParentTree 8 0 R >>",
+                "<< /Type /StructElem /S /Figure /P 6 0 R /Pg 3 0 R /K ["
+                        + "<< /Type /MCR /Stm 5 0 R /StmOwn 4 0 R /MCID " + (reverse ? 1 : 0) + " >> "
+                        + "<< /Type /MCR /Stm 5 0 R /StmOwn 4 0 R /MCID " + (reverse ? 0 : 1) + " >>] >>",
+                "<< /Nums [0 [7 0 R 7 0 R]] >>");
+    }
+
+    private static void writeObjectNestingFixture(Path target, boolean nested, boolean reverse)
+            throws Exception {
+        writeObjectNestingFixture(target, nested, reverse, false);
+    }
+
+    private static void writeObjectNestingFixture(Path target, boolean nested, boolean reverse, boolean innerMcid)
+            throws Exception {
+        writePdf(target,
+                "<< /Type /Catalog /Pages 2 0 R /StructTreeRoot 7 0 R >>",
+                "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+                "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] "
+                        + "/Resources << /XObject << /Outer 5 0 R /Inner 6 0 R >> >> /Contents 4 0 R >>",
+                streamObject(nested ? "/Outer Do\n" : "/Outer Do /Inner Do\n", ""),
+                streamObject("/Span <</ActualText (Outer)>> BDC EMC " + (nested ? "/Inner Do\n" : "\n"),
+                        "/Type /XObject /Subtype /Form /BBox [0 0 100 100] /StructParent 0 "
+                                + "/Resources << /XObject << /Inner 6 0 R >> >> "),
+                streamObject("/Span <<" + (innerMcid ? "/MCID 0 " : "") + "/ActualText (Inner)>> BDC EMC\n",
+                        "/Type /XObject /Subtype /Form /BBox [0 0 100 100] /Resources << >> "
+                                + (innerMcid ? "/StructParents 1 " : "/StructParent 1 ")),
+                "<< /Type /StructTreeRoot /K [" + (reverse ? "9 0 R 8 0 R" : "8 0 R 9 0 R")
+                        + "] /ParentTree 10 0 R >>",
+                "<< /Type /StructElem /S /Figure /P 7 0 R /Pg 3 0 R /K << /Type /OBJR /Obj 5 0 R >> >>",
+                "<< /Type /StructElem /S /Figure /P 7 0 R /Pg 3 0 R /K << /Type /"
+                        + (innerMcid ? "MCR /Stm 6 0 R /MCID 0" : "OBJR /Obj 6 0 R") + " >> >>",
+                "<< /Nums [0 8 0 R 1 " + (innerMcid ? "[9 0 R]" : "9 0 R") + "] >>");
+    }
+
+    private static void writeSharedAppearanceOwnerFixture(Path target, boolean separateOwner,
+            boolean ordinaryIntermediate, boolean reverse) throws Exception {
+        String children = ordinaryIntermediate ? "9 0 R 10 0 R" : "9 0 R 10 0 R 14 0 R";
+        if (reverse) {
+            children = ordinaryIntermediate ? "10 0 R 9 0 R" : "14 0 R 10 0 R 9 0 R";
+        }
+        writePdf(target,
+                "<< /Type /Catalog /Pages 2 0 R /StructTreeRoot 7 0 R >>",
+                "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+                "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 100 100] /Annots [8 0 R "
+                        + (separateOwner ? "12 0 R" : "") + "] "
+                        + "/Resources << /XObject << /Inner 6 0 R >> >> /Contents 4 0 R >>",
+                streamObject("", ""),
+                streamObject("/P <</MCID 0>> BDC EMC "
+                                + (ordinaryIntermediate ? "" : "/P <</MCID 1>> BDC EMC ") + "/Target Do\n",
+                        "/Type /XObject /Subtype /Form /BBox [0 0 100 100] /StructParents 0 "
+                                + "/Resources << /XObject << /Target " + (ordinaryIntermediate ? 13 : 6)
+                                + " 0 R >> >> "),
+                streamObject("/P <</MCID 0>> BDC EMC\n",
+                        "/Type /XObject /Subtype /Form /BBox [0 0 100 100] /StructParents 1 /Resources << >> "),
+                "<< /Type /StructTreeRoot /K [" + children + "] /ParentTree 11 0 R >>",
+                "<< /Type /Annot /Subtype /Stamp /Rect [0 0 100 100] /P 3 0 R /AP << /N 5 0 R >> >>",
+                "<< /S /Figure /P 7 0 R /Pg 3 0 R "
+                        + "/K << /Type /MCR /Stm 5 0 R /StmOwn 8 0 R /MCID 0 >> >>",
+                "<< /S /Figure /P 7 0 R /Pg 3 0 R /K << /Type /MCR /Stm 6 0 R /MCID 0 >> >>",
+                "<< /Nums [0 [9 0 R " + (ordinaryIntermediate ? "" : "14 0 R") + "] 1 [10 0 R]] >>",
+                "<< /Type /Annot /Subtype /Stamp /Rect [0 0 100 100] /P 3 0 R /AP << /N "
+                        + (ordinaryIntermediate ? 13 : 5) + " 0 R >> >>",
+                streamObject("/Inner Do\n", "/Type /XObject /Subtype /Form /BBox [0 0 100 100] "
+                        + "/Resources << /XObject << /Inner 6 0 R >> >> "),
+                "<< /S /Figure /P 7 0 R /Pg 3 0 R /K << /Type /MCR /Stm 5 0 R /StmOwn "
+                        + (separateOwner ? 12 : 8) + " 0 R /MCID 1 >> >>");
+    }
+
+    private static void writeSharedAppearanceDescendantFixture(Path target, boolean secondInvokes,
+            boolean childOwned, boolean pageInvokes, boolean reverse) throws Exception {
+        String children = childOwned ? "9 0 R 10 0 R" : "9 0 R 10 0 R 14 0 R";
+        if (reverse) {
+            children = childOwned ? "10 0 R 9 0 R" : "14 0 R 10 0 R 9 0 R";
+        }
+        writePdf(target,
+                "<< /Type /Catalog /Pages 2 0 R /StructTreeRoot 7 0 R >>",
+                "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+                "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 100 100] /Annots [8 0 R 12 0 R] "
+                        + "/Resources << /XObject << /Inner 6 0 R >> >> /Contents 4 0 R >>",
+                streamObject(pageInvokes ? "/Inner Do\n" : "", ""),
+                streamObject("/P <</MCID 0>> BDC EMC /Inner Do\n",
+                        "/Type /XObject /Subtype /Form /BBox [0 0 100 100] /StructParents 0 "
+                                + "/Resources << /XObject << /Inner 6 0 R >> >> "),
+                streamObject("/P <</MCID 0>> BDC EMC\n",
+                        "/Type /XObject /Subtype /Form /BBox [0 0 100 100] /StructParents 1 /Resources << >> "),
+                "<< /Type /StructTreeRoot /K [" + children + "] /ParentTree 11 0 R >>",
+                "<< /Type /Annot /Subtype /Stamp /Rect [0 0 100 100] /P 3 0 R /AP << /N 5 0 R >> >>",
+                "<< /S /Figure /P 7 0 R /Pg 3 0 R "
+                        + "/K << /Type /MCR /Stm 5 0 R /StmOwn 8 0 R /MCID 0 >> >>",
+                "<< /S /Figure /P 7 0 R /Pg 3 0 R /K << /Type /MCR /Stm 6 0 R "
+                        + (childOwned ? "/StmOwn 12 0 R " : "") + "/MCID 0 >> >>",
+                "<< /Nums [0 [9 0 R] 1 [10 0 R] " + (childOwned ? "" : "2 [14 0 R]") + "] >>",
+                "<< /Type /Annot /Subtype /Stamp /Rect [0 0 100 100] /P 3 0 R /AP << /N "
+                        + (childOwned ? 6 : 13) + " 0 R >> >>",
+                streamObject("/P <</MCID 0>> BDC EMC " + (secondInvokes ? "/Inner Do\n" : "\n"),
+                        "/Type /XObject /Subtype /Form /BBox [0 0 100 100] /StructParents 2 "
+                                + "/Resources << /XObject << /Inner 6 0 R >> >> "),
+                "<< /S /Figure /P 7 0 R /Pg 3 0 R "
+                        + "/K << /Type /MCR /Stm 13 0 R /StmOwn 12 0 R /MCID 0 >> >>");
+    }
+
+    private static void writeTwoPageAppearanceObjectReferenceFixture(
+            Path target, boolean throughOrdinaryForm, boolean secondPageReference,
+            boolean secondPageInvokes) throws Exception {
+        writePdf(target,
+                "<< /Type /Catalog /Pages 2 0 R /StructTreeRoot 8 0 R >>",
+                "<< /Type /Pages /Count 2 /Kids [3 0 R 4 0 R] >>",
+                "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 100 100] /Annots [5 0 R] >>",
+                "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 100 100] /Annots [6 0 R] >>",
+                "<< /Type /Annot /Subtype /Stamp /Rect [0 0 100 100] /P 3 0 R /F 0 /AP << /N "
+                        + (throughOrdinaryForm ? 11 : 7) + " 0 R >> >>",
+                "<< /Type /Annot /Subtype /Stamp /Rect [0 0 100 100] /P 4 0 R /F 0 /AP << /N "
+                        + (throughOrdinaryForm ? 12 : 7) + " 0 R >> >>",
+                streamObject("/Artifact BMC EMC\n", "/Type /XObject /Subtype /Form "
+                        + "/BBox [0 0 100 100] /Resources << >> /StructParent 0 "),
+                "<< /Type /StructTreeRoot /K 9 0 R /ParentTree 10 0 R >>",
+                "<< /Type /StructElem /S /Figure /P 8 0 R "
+                        + "/K [<< /Type /OBJR /Pg 3 0 R /Obj 7 0 R >>"
+                        + (secondPageReference ? " << /Type /OBJR /Pg 4 0 R /Obj 7 0 R >>" : "") + "] >>",
+                "<< /Nums [0 9 0 R] >>",
+                streamObject("/F Do /F Do\n", "/Type /XObject /Subtype /Form /BBox [0 0 100 100] "
+                        + "/Resources << /XObject << /F 7 0 R >> >> "),
+                streamObject(secondPageInvokes ? "/F Do\n" : "", "/Type /XObject /Subtype /Form "
+                        + "/BBox [0 0 100 100] /Resources << /XObject << /F 7 0 R >> >> "));
+    }
+
+    private static void writeUnlinkedAppearanceRootFixture(
+            Path target, boolean pageInvokes, boolean throughOrdinaryForm) throws Exception {
+        writePdf(target,
+                "<< /Type /Catalog /Pages 2 0 R /StructTreeRoot 7 0 R >>",
+                "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+                "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 100 100] /Annots [10 0 R] "
+                        + (pageInvokes ? "/Resources << /XObject << /Inner 6 0 R >> >> " : "")
+                        + "/Contents 4 0 R >>",
+                streamObject(pageInvokes ? "/Inner Do\n" : "", ""),
+                streamObject("/Target Do\n",
+                        "/Type /XObject /Subtype /Form /BBox [0 0 100 100] "
+                                + "/Resources << /XObject << /Target " + (throughOrdinaryForm ? 11 : 6)
+                                + " 0 R >> >> "),
+                streamObject("/Span <</MCID 0>> BDC EMC\n",
+                        "/Type /XObject /Subtype /Form /BBox [0 0 100 100] "
+                                + "/Resources << >> /StructParents 0 "),
+                "<< /Type /StructTreeRoot /K 8 0 R /ParentTree 9 0 R >>",
+                "<< /Type /StructElem /S /Span /P 7 0 R /Pg 3 0 R "
+                        + "/K << /Type /MCR /Stm 6 0 R /MCID 0 >> >>",
+                "<< /Nums [0 [8 0 R]] >>",
+                "<< /Type /Annot /Subtype /Stamp /Rect [0 0 100 100] /P 3 0 R /F 0 /AP << /N 5 0 R >> >>",
+                streamObject("/Inner Do\n", "/Type /XObject /Subtype /Form /BBox [0 0 100 100] "
+                        + "/Resources << /XObject << /Inner 6 0 R >> >> "));
+    }
+
+    private static void writeAppearanceInvocationFixture(
+            Path target, int invocations, boolean linked, boolean throughOrdinaryForm) throws Exception {
+        StringBuilder appearance = new StringBuilder("/P <</MCID 0>> BDC EMC ");
+        for (int index = 0; index < invocations; index++) {
+            appearance.append("/Target Do ");
+        }
+        appearance.append('\n');
+        writePdf(target,
+                "<< /Type /Catalog /Pages 2 0 R /StructTreeRoot 7 0 R >>",
+                "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+                "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 100 100] /Annots [8 0 R] "
+                        + "/Resources << /XObject << /Inner 6 0 R >> >> /Contents 4 0 R >>",
+                streamObject("", ""),
+                streamObject(appearance.toString(),
+                        "/Type /XObject /Subtype /Form /BBox [0 0 100 100] /StructParents 0 "
+                                + "/Resources << /XObject << /Target " + (throughOrdinaryForm ? 12 : 6)
+                                + " 0 R >> >> "),
+                streamObject("/P <</MCID 0>> BDC EMC\n",
+                        "/Type /XObject /Subtype /Form /BBox [0 0 100 100] /Resources << >> "
+                                + (linked ? "/StructParents 1 " : "")),
+                "<< /Type /StructTreeRoot /K [9 0 R " + (linked ? "10 0 R" : "")
+                        + "] /ParentTree 11 0 R >>",
+                "<< /Type /Annot /Subtype /Stamp /Rect [0 0 100 100] /P 3 0 R /AP << /N 5 0 R >> >>",
+                "<< /S /Figure /P 7 0 R /Pg 3 0 R "
+                        + "/K << /Type /MCR /Stm 5 0 R /StmOwn 8 0 R /MCID 0 >> >>",
+                "<< /S /Figure /P 7 0 R /Pg 3 0 R /K << /Type /MCR /Stm 6 0 R /MCID 0 >> >>",
+                "<< /Nums [0 [9 0 R] " + (linked ? "1 [10 0 R]" : "") + "] >>",
+                streamObject("/Inner Do\n", "/Type /XObject /Subtype /Form /BBox [0 0 100 100] "
+                        + "/Resources << /XObject << /Inner 6 0 R >> >> "));
+    }
+
+    private static void writeUnexecutedWholeObjectFixture(Path target, int secondMcid) throws Exception {
+        writePdf(target,
+                "<< /Type /Catalog /Pages 2 0 R /StructTreeRoot 5 0 R >>",
+                "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+                "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 100 100] "
+                        + "/Resources << /XObject << /Fm 4 0 R >> >> >>",
+                streamObject("/P <</MCID 0>> BDC EMC /Span /Named BDC EMC\n",
+                        "/Type /XObject /Subtype /Form /BBox [0 0 100 100] /StructParent 0 "
+                                + "/Resources << /Properties << /Named <</MCID " + secondMcid + ">> >> >> "),
+                "<< /Type /StructTreeRoot /K 6 0 R /ParentTree 7 0 R >>",
+                "<< /S /Figure /P 5 0 R /Pg 3 0 R /K << /Type /OBJR /Obj 4 0 R >> >>",
+                "<< /Nums [0 6 0 R] >>");
+    }
+
+    private static void writeUnexecutedObjectNestingFixture(Path target, boolean marked, boolean nested)
+            throws Exception {
+        writePdf(target,
+                "<< /Type /Catalog /Pages 2 0 R /StructTreeRoot 6 0 R >>",
+                "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+                "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] "
+                        + "/Resources << /XObject << /Outer 4 0 R /Inner 5 0 R >> >> >>",
+                streamObject(marked ? "/P <</MCID 0>> BDC " + (nested ? "/Inner Do EMC\n" : "EMC /Inner Do\n")
+                        : "/Inner Do\n",
+                        "/Type /XObject /Subtype /Form /BBox [0 0 100 100] "
+                                + (marked ? "/StructParents 0 " : "/StructParent 0 ")
+                                + "/Resources << /XObject << /Inner 5 0 R >> >> "),
+                streamObject("", "/Type /XObject /Subtype /Form /BBox [0 0 100 100] "
+                        + "/StructParent 1 /Resources << >> "),
+                "<< /Type /StructTreeRoot /K [7 0 R 8 0 R] /ParentTree 9 0 R >>",
+                "<< /S /P /P 6 0 R /Pg 3 0 R /K << /Type /"
+                        + (marked ? "MCR /Stm 4 0 R /MCID 0" : "OBJR /Obj 4 0 R") + " >> >>",
+                "<< /S /Figure /P 6 0 R /Pg 3 0 R /K << /Type /OBJR /Obj 5 0 R >> >>",
+                "<< /Nums [0 " + (marked ? "[7 0 R]" : "7 0 R") + " 1 8 0 R] >>");
+    }
+
+    private static void writeScopedMcrFixture(Path target, String invocations) throws Exception {
+        writeScopedMcrFixture(target, invocations, "<< /Nums [0 [9 0 R] 1 [10 0 R]] >>");
+    }
+
+    private static void writeScopedMcrFixture(Path target, String invocations, String... treeNodes)
+            throws Exception {
+        java.util.ArrayList<String> objects = new java.util.ArrayList<String>(java.util.Arrays.asList(
+                "<< /Type /Catalog /Pages 2 0 R /StructTreeRoot 7 0 R /MarkInfo << /Marked true >> >>",
+                "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+                "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /StructParents 0 "
+                        + "/Resources << /Font << /F1 6 0 R >> /XObject << /Fm 5 0 R >> >> /Contents 4 0 R >>",
+                streamObject("/P <</MCID 0>> BDC BT /F1 12 Tf (A) Tj ET EMC " + invocations + "\n", ""),
+                streamObject("/P <</MCID 0 /ActualText (Bee)>> BDC BT /F1 12 Tf (B) Tj ET EMC\n",
+                        "/Type /XObject /Subtype /Form /BBox [0 0 100 100] /StructParents 1 "
+                                + "/Resources << /Font << /F1 6 0 R >> >>"),
+                "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>",
+                "<< /Type /StructTreeRoot /K 8 0 R /ParentTree 11 0 R >>",
+                "<< /Type /StructElem /S /Document /P 7 0 R /Pg 3 0 R /K [9 0 R 10 0 R] >>",
+                "<< /Type /StructElem /S /P /P 8 0 R /Pg 3 0 R /K 0 >>",
+                "<< /Type /StructElem /S /P /P 8 0 R /Pg 3 0 R "
+                        + "/K << /Type /MCR /Stm 5 0 R /MCID 0 >> >>"));
+        objects.addAll(java.util.Arrays.asList(treeNodes));
+        writePdf(target, objects.toArray(new String[objects.size()]));
+    }
+
     private static void writeTaggedHierarchyFixture(Path target)
             throws Exception {
         writePdf(target,
@@ -2430,6 +4576,50 @@ public final class TextStructureExtractionWorkflowTest {
                         + "/Resources << >> >>",
                 "<< /Type /StructTreeRoot /K 5 0 R >>",
                 "<< /Type /StructElem /S /" + role + " /P 4 0 R >>");
+    }
+
+    private static void writeRoleFixture(Path target, String role, String mappings) throws Exception {
+        writeRoleFixture(target, role, mappings, false);
+    }
+
+    private static void writeRoleFixture(Path target, String role, String mappings, boolean pdfTwo) throws Exception {
+        writePdf(target,
+                "<< /Type /Catalog " + (pdfTwo ? "/Version /2.0 " : "") + "/Pages 2 0 R /StructTreeRoot 4 0 R >>",
+                "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+                "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << >> >>",
+                "<< /Type /StructTreeRoot /K 5 0 R /RoleMap << " + mappings + " >> >>",
+                "<< /Type /StructElem /S /" + role + " /P 4 0 R >>");
+    }
+
+    private static void writeNamespaceFixture(Path target, String role, String namespace) throws Exception {
+        writeNamespaceFixture(target, role, namespace, "");
+    }
+
+    private static void writeNamespaceFixture(Path target, String role, String namespace, String rootRoleMap)
+            throws Exception {
+        writePdf(target,
+                "<< /Type /Catalog /Version /2.0 /Pages 2 0 R /StructTreeRoot 4 0 R >>",
+                "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+                "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << >> >>",
+                "<< /Type /StructTreeRoot /K 5 0 R /Namespaces [6 0 R] /RoleMap << " + rootRoleMap + " >> >>",
+                "<< /Type /StructElem /S /" + role + " /NS 6 0 R /P 4 0 R >>",
+                namespace);
+    }
+
+    private static void writeNamespaceChainFixture(Path target) throws Exception {
+        writePdf(target,
+                "<< /Type /Catalog /Version /2.0 /Pages 2 0 R /StructTreeRoot 4 0 R /Lang (en-US) >>",
+                "<< /Type /Pages /Count 1 /Kids [3 0 R] >>",
+                "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << >> >>",
+                "<< /Type /StructTreeRoot /K 5 0 R /Namespaces [6 0 R 7 0 R 8 0 R 6 0 R] "
+                        + "/RoleMap << /Title /Span >> >>",
+                "<< /Type /StructElem /S /Story /NS 6 0 R /P 4 0 R /Lang (fr-CA) /K [9 0 R 10 0 R 11 0 R] >>",
+                "<< /Type /Namespace /NS (urn:folio:story) /RoleMapNS << /Story [/Chapter 7 0 R] /Term /P >> >>",
+                "<< /NS (urn:folio:chapter) /RoleMapNS << /Chapter [/Title 8 0 R] >> >>",
+                "<< /NS (http://iso.org/pdf2/ssn) >>",
+                "<< /S /Term /NS 6 0 R /P 5 0 R >>",
+                "<< /S /Title /P 5 0 R >>",
+                "<< /S /H7 /NS 8 0 R /P 5 0 R >>");
     }
 
     private static String streamObject(String data, String entries) {
@@ -2540,7 +4730,7 @@ public final class TextStructureExtractionWorkflowTest {
 
     private static void createDeterministicFixture(Path target) throws Exception {
         new DocumentWorkflow().execute(
-                WorkflowRequest.builder()
+                requestBuilder()
                         .target("output", PublicationTarget.path(target))
                         .saveMode(SaveMode.REWRITE)
                         .build(),
@@ -2675,7 +4865,7 @@ public final class TextStructureExtractionWorkflowTest {
     }
 
     private static WorkflowRequest sourceRequest(Path source) {
-        return WorkflowRequest.builder()
+        return requestBuilder()
                 .source("input", DocumentSource.path(source))
                 .primarySource("input")
                 .saveMode(SaveMode.REWRITE)
@@ -2778,6 +4968,11 @@ public final class TextStructureExtractionWorkflowTest {
                 .build();
     }
 
+    private static WorkflowRequest.Builder requestBuilder() {
+        return WorkflowRequest.builder().executionProfile(WorkflowExecutionProfile.valueOf(
+                System.getProperty("folio.t13.executionProfile", "IN_PROCESS")));
+    }
+
     private static final class BoundaryLimits {
 
         private int pages = 1;
@@ -2790,7 +4985,8 @@ public final class TextStructureExtractionWorkflowTest {
         private int markedSequences = 1;
         private int markedDepth = 1;
         private int structureElements = 1;
-        private int structureItems = 2;
+        // Root K + element K + ParentTree node + number-tree value + MCID slot.
+        private int structureItems = 5;
         private int structureDepth = 1;
         private int roleMappings = 1;
         private int toUnicodeMappings;

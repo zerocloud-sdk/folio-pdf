@@ -1,0 +1,13 @@
+F
+======================================================================
+FAIL: test_type3_dictionary_obligations_have_isolated_source_grounded_controls (test_t13_standards.T13StandardsTest.test_type3_dictionary_obligations_have_isolated_source_grounded_controls)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_standards.py", line 27, in test_type3_dictionary_obligations_have_isolated_source_grounded_controls
+    self.assertTrue(required.issubset(controls), sorted(required - set(controls)))
+AssertionError: False is not true : ['type3-bbox-numbers', 'type3-bbox-required', 'type3-charproc-stream', 'type3-charprocs-dictionary', 'type3-charprocs-required', 'type3-encoding-dictionary', 'type3-encoding-required', 'type3-firstchar-integer', 'type3-firstchar-required', 'type3-lastchar-integer', 'type3-lastchar-required', 'type3-matrix-count', 'type3-matrix-numbers', 'type3-matrix-required', 'type3-resources-dictionary', 'type3-tagged-descriptor-required', 'type3-widths-cardinality', 'type3-widths-numbers', 'type3-widths-required']
+
+----------------------------------------------------------------------
+Ran 1 test in 0.049s
+
+FAILED (failures=1)

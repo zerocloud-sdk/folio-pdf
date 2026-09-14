@@ -1,0 +1,293 @@
+{
+  "created-utc": "2026-09-13T08:08:50.173742+00:00",
+  "reviewer": "independent Spec agent /root/final_spec",
+  "conclusion": "CLEAN only within the expressly bounded current scope",
+  "report": {
+    "path": "report.md",
+    "sha256": "928d8d32a554e571550319637f279aac5470d40a3ad5f7b1eb382f99b24cfccb",
+    "bytes": 2473
+  },
+  "report-word-count": 297,
+  "baseline": "5b1603c435f11c40368f75b7b9a2777c9c5e9761",
+  "candidate": "e2dd9ebbeae5668ccc8e2985ccd8af17c8921d1ec5e12e0c913cbd1fa00dfbd6",
+  "contract": "3de508f79fcbef7258feee8abc013d6f02b000840cac1cb263cb0d6f927b8f2b",
+  "build-inputs-sha256": "edc129bd06eb5ee6ac00c4653173a524f72367f73ac1c14f040f8f5c9eb8aa70",
+  "tuples": [
+    "jdk11-in_process",
+    "jdk11-hardened_worker",
+    "jdk17-in_process"
+  ],
+  "environments": [
+    "jdk11-environment",
+    "jdk11-environment-after",
+    "jdk17-environment",
+    "jdk17-environment-after"
+  ],
+  "formal-126-test-times-seconds": [
+    9.529,
+    390.653,
+    8.37
+  ],
+  "actual-Facade-mode-in-every-tuple": "IN_PROCESS",
+  "original-scope": {
+    "path": "scope.json",
+    "sha256": "61754feeb9aade9d00c366ad6831d7c371d855ecbb6645da7342d39c163f1b2a",
+    "bytes": 1127
+  },
+  "authorized-environment-amendment": {
+    "path": "scope-amendment-jdk17-after.json",
+    "sha256": "2f4e47de475e7166812b32efdd2b7d94a0d287ff92e4602497384c10daf3010d",
+    "bytes": 560
+  },
+  "prior-r3-JDK8-review": {
+    "path": "/tmp/t75-final-spec-r3-two-tuples-_xr8bj_5/report.md",
+    "sha256": "a3b4c9767d5c1cd6619fb34890c2f29c4a60f4e5d4aa88ecdc5666a3a3d59baa"
+  },
+  "input-identities": {
+    "path": "inspected-source-sha256.json",
+    "sha256": "30b34b3826c4b53a1e630bfade988d1d3aaaaa372345e551ea4b2e927ed677ab",
+    "bytes": 30098178
+  },
+  "unique-inspected-paths": 61356,
+  "small-original-copies": {
+    "path": "source-copy-identities.json",
+    "sha256": "b19e2aed005a3fe14ca587711055e7a45854c92387a3e6640490333ec61275f4",
+    "bytes": 68520
+  },
+  "small-original-copy-count": 185,
+  "phases": [
+    {
+      "phase": "stage-audit",
+      "command": {
+        "path": "stage-audit-command.json",
+        "sha256": "4be464a72d1443954738df9ec52e9b7b637bebdf777f90fffe6a8cb1a63abd9b",
+        "bytes": 429
+      },
+      "result": {
+        "path": "stage-audit-result.json",
+        "sha256": "3e3633b7c1eab1634184dcb7bb714da433d9601d655332095badddf4235b9bce",
+        "bytes": 597
+      },
+      "original-output": {
+        "path": "stage-audit-output.txt",
+        "sha256": "1b55fba63470f036c042d9af133de16d589b57a276847611512eefd4a3d355e5",
+        "bytes": 107
+      },
+      "inspection": {
+        "path": "stage-environment-contract-inspection.json",
+        "sha256": "bcb5e4d7ffa61bb4f26ce2e45ffbf63ce4cfe9a8a29655c61a3992284055ba5b",
+        "bytes": 32069
+      },
+      "recorded-diagnostics": 0
+    },
+    {
+      "phase": "reference-audit",
+      "command": {
+        "path": "reference-audit-command.json",
+        "sha256": "4287f25bfa4eb6204aa89c024fbade8cc5b7070ec83d52d1ac40be5ad1a87de6",
+        "bytes": 433
+      },
+      "result": {
+        "path": "reference-audit-result.json",
+        "sha256": "10726eb248fa675ad8f4684f651d8d9fc05aae1d4735b0816d5734d27c476253",
+        "bytes": 601
+      },
+      "original-output": {
+        "path": "reference-audit-output.txt",
+        "sha256": "8c54e6ce7172ab54bd0860de0d9caa4bac8385d75487cdcbd04cb5473afbae2b",
+        "bytes": 100
+      },
+      "inspection": {
+        "path": "complete-reference-inspection.json",
+        "sha256": "daf8c24f6b9c45e6c78483a239c49bb93c4a9edf0cd9d32021b8273832d4cb7a",
+        "bytes": 7502
+      },
+      "recorded-diagnostics": 0
+    },
+    {
+      "phase": "qualification-audit",
+      "command": {
+        "path": "qualification-audit-command.json",
+        "sha256": "469358e03ce087e391f9dae3cf3f2944db3926dd339ec002e716a930a241428f",
+        "bytes": 437
+      },
+      "result": {
+        "path": "qualification-audit-result.json",
+        "sha256": "85f77af3e45f4c05b612ca142d33db24f0334a92f8c92e86866e7aac4616a11f",
+        "bytes": 605
+      },
+      "original-output": {
+        "path": "qualification-audit-output.txt",
+        "sha256": "06c70e1df4e09f99f3fad3c09f88b245f430ae7aa4c00750a84dbed91e2ada64",
+        "bytes": 114
+      },
+      "inspection": {
+        "path": "qualification-and-public-outcome-inspection.json",
+        "sha256": "7a38ee99d1b65c0c212b6efe6f3be9e43df11becb590bc0c9924507156031fda",
+        "bytes": 16219
+      },
+      "recorded-diagnostics": 0
+    },
+    {
+      "phase": "chain-controls-audit",
+      "command": {
+        "path": "chain-controls-audit-command.json",
+        "sha256": "cd9b879fd43d43a80ca9f600707665784d4bbbba0111b5313f3e157519288971",
+        "bytes": 438
+      },
+      "result": {
+        "path": "chain-controls-audit-result.json",
+        "sha256": "a335131475530c335f66604e935f2fecce5e47600204c022be67010d2080c446",
+        "bytes": 606
+      },
+      "original-output": {
+        "path": "chain-controls-audit-output.txt",
+        "sha256": "710e5dba4c33867c16ab61acf4e1913fb6a2ec16b95c174ac73405170769fbf4",
+        "bytes": 7654
+      },
+      "inspection": {
+        "path": "separate-chain-control-inspection.json",
+        "sha256": "141e0978a8bc5a91a9458c6c766ab0e43edc5e9851affd1f67554ad5e6be62e3",
+        "bytes": 99802
+      },
+      "recorded-diagnostics": 24
+    },
+    {
+      "phase": "report-coverage-audit",
+      "command": {
+        "path": "report-coverage-audit-command.json",
+        "sha256": "375134bdb425ff5f4a5e1975818f593dd08465dc952c5b068fb5905ed0a332f7",
+        "bytes": 439
+      },
+      "result": {
+        "path": "report-coverage-audit-result.json",
+        "sha256": "da10405b742b4370ececf6bf6b5048cb3bf265b282816542468e5d6b71aa4f47",
+        "bytes": 607
+      },
+      "original-output": {
+        "path": "report-coverage-audit-output.txt",
+        "sha256": "c484677f506f54fc3f52de75d0d025cab361b0323ed8cd949d538bda9142dc64",
+        "bytes": 100
+      },
+      "inspection": {
+        "path": "report-array-coverage-inspection.json",
+        "sha256": "e69a583bc299af5aec467fe9d6134156eec4aebc228cf95c6d78dc920861d58a",
+        "bytes": 2844
+      },
+      "recorded-diagnostics": 0
+    },
+    {
+      "phase": "raster-control-closure",
+      "command": {
+        "path": "raster-control-closure-command.json",
+        "sha256": "e8b2ec15a7bf181b03b68c1f9c74352a53d87d3e2ac6ac3d5e251e12a51c2287",
+        "bytes": 440
+      },
+      "result": {
+        "path": "raster-control-closure-result.json",
+        "sha256": "f9334cd7b265f81b660407bde0dc93d700d83e004dbed9c7a05ae8c1805c6647",
+        "bytes": 608
+      },
+      "original-output": {
+        "path": "raster-control-closure-output.txt",
+        "sha256": "64a06467875860fec86ed6dc9e4e5f5a7dea97e3de2fef50180f58f4ac34fecc",
+        "bytes": 97
+      },
+      "inspection": {
+        "path": "raster-control-method-closure.json",
+        "sha256": "aea68f1812d3376ba12bc163956287f22330b2f08671af69b4096d582e77e54e",
+        "bytes": 14025
+      },
+      "recorded-diagnostics": 0
+    },
+    {
+      "phase": "environment-after-closure",
+      "command": {
+        "path": "environment-after-closure-command.json",
+        "sha256": "e44d474feb100975226ca0745e0aef7d05ac4080d29adac87d9c63b50ab76c63",
+        "bytes": 443
+      },
+      "result": {
+        "path": "environment-after-closure-result.json",
+        "sha256": "e7fd1f3800c461ef6d5948f0d4a22f3d3e8119c339b54aa4bebe1e4ac973830c",
+        "bytes": 611
+      },
+      "original-output": {
+        "path": "environment-after-closure-output.txt",
+        "sha256": "bf2329d89754661220b3df7da3e2f8fd57cdb86280b26bab02368019166ba9d5",
+        "bytes": 99
+      },
+      "inspection": {
+        "path": "jdk17-after-environment-closure.json",
+        "sha256": "9743df2b3b0fff349d163fb15f3edc319adfe1d9658e2da5c86ef6018ab14d35",
+        "bytes": 7630
+      },
+      "recorded-diagnostics": 0
+    },
+    {
+      "phase": "finalize-identities",
+      "command": {
+        "path": "finalize-identities-command.json",
+        "sha256": "2653773369cc2dbf7fe32a09a5297e6979202413f86b86cd6ae47167ad7e8b8b",
+        "bytes": 436
+      },
+      "result": {
+        "path": "finalize-identities-result.json",
+        "sha256": "3b2394a4e9b22ad8f17513702501ea200f183de2a43d38d85c9a8c99879516aa",
+        "bytes": 604
+      },
+      "original-output": {
+        "path": "finalize-identities-output.txt",
+        "sha256": "31ed64e6adeb036312dca3e9260b3d7523da3829a992e940fe35b2be2a46e3ee",
+        "bytes": 388
+      },
+      "inspection": {
+        "path": "end-of-review-identities.json",
+        "sha256": "6be275992160d32a437801935463539d11afe27c7100eb9825b5249253286a32",
+        "bytes": 25433
+      },
+      "recorded-diagnostics": 0
+    }
+  ],
+  "history-preservation": {
+    "original-raster-method-diagnostics": 24,
+    "original-raster-method-diagnostic-report": {
+      "path": "separate-chain-control-inspection.json",
+      "sha256": "141e0978a8bc5a91a9458c6c766ab0e43edc5e9851affd1f67554ad5e6be62e3",
+      "bytes": 99802
+    },
+    "resolution": {
+      "path": "raster-control-method-closure.json",
+      "sha256": "aea68f1812d3376ba12bc163956287f22330b2f08671af69b4096d582e77e54e",
+      "bytes": 14025
+    },
+    "reason": "Initial audit incorrectly required cross-JDK PNG compressed byte equality. Complete decoded RGB and each tuple own raw SHA satisfy the contract. All original diagnostics accounted for; original evidence and diagnostic report remain unchanged.",
+    "original-JDK17-after-deferral": {
+      "path": "stage-environment-contract-inspection.json",
+      "sha256": "bcb5e4d7ffa61bb4f26ce2e45ffbf63ce4cfe9a8a29655c61a3992284055ba5b",
+      "bytes": 32069
+    },
+    "subsequent-JDK17-after-closure": {
+      "path": "jdk17-after-environment-closure.json",
+      "sha256": "9743df2b3b0fff349d163fb15f3edc319adfe1d9658e2da5c86ef6018ab14d35",
+      "bytes": 7630
+    }
+  },
+  "methods": {
+    "repository-mutated": false,
+    "Maven-tests-probes-certifier-staging-project-tools-executed": false,
+    "independent-retained-PNG-decoding-and-comparison": true,
+    "original-raster-rendering-or-editing": false,
+    "writes": "this /tmp directory only"
+  },
+  "unresolved-findings": [],
+  "authorities-unchanged": true,
+  "complete-eight-tuple-index-existed-at-final-check": false,
+  "overall-eight-or-forty-eight-or-delivery-approved": false,
+  "excluded": [
+    "jdk17-hardened_worker tuple",
+    "all JDK21 tuple evidence",
+    "old five obligation refresh completion",
+    "tracker/Git/delivery operations"
+  ]
+}

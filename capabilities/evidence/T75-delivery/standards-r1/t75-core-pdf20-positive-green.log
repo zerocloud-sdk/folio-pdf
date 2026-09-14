@@ -1,0 +1,18 @@
+....E
+======================================================================
+ERROR: test_t13_corpus (unittest.loader._FailedTest.test_t13_corpus)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_t13_corpus
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/unittest/loader.py", line 137, in loadTestsFromName
+    module = __import__(module_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_corpus.py", line 10, in <module>
+    from test_t10_corpus import rgb
+ModuleNotFoundError: No module named 'test_t10_corpus'
+
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.384s
+
+FAILED (errors=1)

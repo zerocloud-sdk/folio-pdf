@@ -1,0 +1,47 @@
+FFF
+======================================================================
+FAIL: test_explicit_cff_matrices_remain_unqualified_in_the_default_matrix_profile (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_explicit_cff_matrices_remain_unqualified_in_the_default_matrix_profile) (program='cff-explicit-decimal-matrix')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 24, in test_explicit_cff_matrices_remain_unqualified_in_the_default_matrix_profile
+    values = self.observe(directory, pdf, 'indeterminate', scope='fonts')
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 508, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'indeterminate' != 'fail'
+- indeterminate
++ fail
+ : cff-explicit-decimal-matrix.pdf: PDF FontBBox does not enclose the embedded glyph outlines
+
+======================================================================
+FAIL: test_explicit_cff_matrices_remain_unqualified_in_the_default_matrix_profile (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_explicit_cff_matrices_remain_unqualified_in_the_default_matrix_profile) (program='cff-explicit-decimal-matrix-0051')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 24, in test_explicit_cff_matrices_remain_unqualified_in_the_default_matrix_profile
+    values = self.observe(directory, pdf, 'indeterminate', scope='fonts')
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 508, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'indeterminate' != 'fail'
+- indeterminate
++ fail
+ : cff-explicit-decimal-matrix-0051.pdf: PDF FontBBox does not enclose the embedded glyph outlines
+
+======================================================================
+FAIL: test_explicit_cff_matrices_remain_unqualified_in_the_default_matrix_profile (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_explicit_cff_matrices_remain_unqualified_in_the_default_matrix_profile) (program='cidcff-explicit-fd-matrix')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 24, in test_explicit_cff_matrices_remain_unqualified_in_the_default_matrix_profile
+    values = self.observe(directory, pdf, 'indeterminate', scope='fonts')
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 508, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'indeterminate' != 'pass'
+- indeterminate
++ pass
+ : cidcff-explicit-fd-matrix.pdf: Embedded CFF and TrueType headers, dictionaries and checked font tables are readable.
+
+----------------------------------------------------------------------
+Ran 1 test in 1.940s
+
+FAILED (failures=3)

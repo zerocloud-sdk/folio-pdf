@@ -1,0 +1,16 @@
+exit: 1
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/t03-foundation.py", line 1194, in <module>
+    main()
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/t03-foundation.py", line 1152, in main
+    print(json.dumps(collect_reports(root, (root / args.output).resolve(), args.obligation,
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/t03-foundation.py", line 562, in collect_reports
+    return collect_text_reports(root, run, execution_profile)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/t13_foundation_reports.py", line 536, in collect_reports
+    visual(root, directory / 'visual', files.expected[pdf], product,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/t13_foundation_reports.py", line 353, in visual
+    raise ValueError('Missing T13 visual comparison metric')
+ValueError: Missing T13 visual comparison metric
+

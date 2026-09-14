@@ -1,0 +1,19 @@
+F
+======================================================================
+FAIL: test_conflicting_platform_postscript_names_cannot_qualify_one_program_name (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_conflicting_platform_postscript_names_cannot_qualify_one_program_name)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 20, in test_conflicting_platform_postscript_names_cannot_qualify_one_program_name
+    values = self.observe(Path(temporary), pdf, 'indeterminate', scope='fonts')
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 430, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'indeterminate' != 'pass'
+- indeterminate
++ pass
+ : ttf-conflicting-postscript-names.pdf: Embedded CFF and TrueType headers, dictionaries and checked font tables are readable.
+
+----------------------------------------------------------------------
+Ran 1 test in 0.637s
+
+FAILED (failures=1)

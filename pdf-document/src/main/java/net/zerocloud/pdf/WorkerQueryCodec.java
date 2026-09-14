@@ -466,7 +466,8 @@ final class WorkerQueryCodec {
         } else if (query instanceof ExtractTextAndStructure) {
             WorkerTextExtractionCodec.write(
                     output,
-                    (TextStructureExtraction) result);
+                    (TextStructureExtraction) result,
+                    references);
         } else if (query instanceof RenderSnapshotQuery) {
             WorkerRenderingCodec.writeSnapshot(output, (RenderingSnapshot) result);
         } else if (query instanceof RenderPage) {
@@ -554,7 +555,7 @@ final class WorkerQueryCodec {
             return readDocumentActions(input);
         }
         if (query instanceof ExtractTextAndStructure) {
-            return WorkerTextExtractionCodec.read(input);
+            return WorkerTextExtractionCodec.read(input, references);
         }
         if (query instanceof ExtractImagesAndResources) {
             return WorkerResourceInventoryCodec.read(input, references);

@@ -32,9 +32,11 @@ exact Ubuntu/JDK environment or Stable Facade mapping returns nonzero.
 `validate` and normal `verify` may pass while Foundation remains not ready.
 See [the evidence and identity contract](../docs/foundation-readiness.md).
 
-For candidate-bound T03, T09, and T10 four-chain certification, use the isolated
+For candidate-bound T03, T09, T10, T11, T12 and T13 four-chain certification, use the isolated
 runner described by the [transaction](../docs/t03-certification.md),
-[values](../docs/t09-certification.md), and [page](../docs/t10-certification.md)
+[values](../docs/t09-certification.md), [page](../docs/t10-certification.md),
+[metadata](../docs/t11-certification.md), [annotation](../docs/t12-certification.md)
+and [text](../docs/t13-certification.md)
 contracts. Older aggregate records retain their historical identities and cannot
 certify a later candidate.
 
@@ -324,10 +326,11 @@ may reference only `compatible` or `experimental` capabilities. A surface
 cannot appear in both lists. These are disjoint availability tiers: the Stable
 artifact exposes the `stable` list, and the Preview artifact exposes the union
 of `stable` and `preview`. Preview may have no additions; it still contains every
-Stable mapping. Stable currently contains 139 entries and Preview has no
+Stable mapping. Stable currently contains 157 entries and Preview has no
 additions. The T70 lifecycle family contributes 12 entries; T72 contributes 17
-page, merger, and splitter entries; and T73 contributes 34 metadata, outline,
-destination, and attachment entries.
+page, merger, and splitter entries; T73 contributes 34 metadata, outline,
+destination, and attachment entries; T74 contributes 12 annotation entries;
+and T75 contributes six text and logical-structure extraction entries.
 
 Reference types must be below `com.itextpdf.*`. Their Folio PDF types must
 preserve the exact suffix below `net.zerocloud.pdf.itext7.*`, so the declared
@@ -383,7 +386,18 @@ reports, and real negative controls. Use the
 transactions, values, and pages must be refreshed for the same candidate. T11
 is `compatible` and contributes 34 Stable Migration Facade entries.
 
-The T12 through T16 profiles have one passing qpdf syntax record for each pair
+T12 records its four qualified chains in
+`capabilities/evidence/T74-annotations-{syntax,standards,semantic,visual}.md`
+and is `compatible`, with 12 Stable mappings. T13 records its four qualified
+chains in `capabilities/evidence/T75-text-{syntax,standards,semantic,visual}.md`
+and its compatible candidate has six Stable mappings. The
+[T13 certification contract](../docs/t13-certification.md) fixes the five-product
+corpus, actual IN_PROCESS Facade observations, all eight Native tuples and the
+required refresh of transactions, values, pages, metadata and annotations.
+These indices support the qualified scope; the Foundation evidence authority
+alone records actual candidate and environment certification.
+
+The T14 through T16 profiles have one passing qpdf syntax record for each pair
 of public-workflow products. Their mandatory standards, semantic, and visual
 Acceptance Evidence chains remain absent. T17 has passing syntax and
 project-owned semantic records, while its mandatory standards and visual
@@ -392,8 +406,9 @@ independent visual records, while its mandatory standards chain remains
 absent. Their Dependency Gates remain open while prerequisites are
 `experimental`; none is promoted beyond `experimental`. T19 likewise has
 passing syntax, project semantic, and independent visual records, while its
-mandatory standards chain and T13/T14/T17 compatible-status Dependency Gates
-remain open.
+mandatory standards chain and T14/T17 compatible-status Dependency Gates
+remain open. Its T13 compatible-status dependency is satisfied by the current
+T13 profile; that does not close its remaining gates.
 
 The T08 release-gate evidence is recorded in
 `capabilities/evidence/T08-secure-maven-central-rehearsal.md`. T08 validates a

@@ -1,0 +1,11 @@
+Standards: 0 hard breaches; 0 actionable heuristic smells in this bounded retention review.
+
+Scope: `T75-delivery/observer-budget` and `final-review`, their identity files, probe clarification and the top-level delivery explanation. Earlier evidence groups and implementation correctness rely on the separately preserved full, appearance and observer-budget reviews; this is not a new complete code review.
+
+All 27 archive SHA-256 identities match. For 26 archives, I streamed and hashed all 1,925 members (46,544,316 bytes), confirming names, sizes and digests without extracting files to disk. For the historical interrupted-certification archive, I checked its compressed identity and all 12,417 declared member records only; its 72 MB raw tree was not decompressed. All 34 standalone logs match their retained identities and original files. The other archived originals also match, except the old candidate README now appends its accurately documented superseded status; its historical archive remains unchanged.
+
+The recomputed original 1,933-source-input comparison contains exactly 22 changed source inputs and one contract input, all matching my independent closure identities. The probe clarification correctly names PdfBoxCMapPreflight and the distinct main extractor; the original receipt and RED-source identities agree. No compiled program artifact or unexplained external reference was found in the inspected archive members. The generated probe class and full external ISO document/text are explicitly excluded with identities; the original standards URL remains retained. READMEs preserve failures, partial observations and review limitations without claiming final certification.
+
+Delivery TODO: explicitly retain and verify in the Git index all 34 currently ignored standalone logs, as root has planned. Five inventory logs have no archive byte-copy within this scope. This pre-staging condition is recorded as a remaining delivery gate, not a present defect.
+
+No project tests, probes, Maven, source edits or authority changes were performed. Full validation, actual tuple certification, matrix validation, final staging and authorized delivery remain outside this review and pending.

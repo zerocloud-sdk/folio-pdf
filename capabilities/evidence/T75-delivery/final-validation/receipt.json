@@ -1,0 +1,736 @@
+{
+  "command": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "verify"
+  ],
+  "working-directory": "/home/ubuntu/IdeaProjects/open-pdf",
+  "environment": {
+    "FOLIO_HARFBUZZ_HELPER": "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/harfbuzz/10.2.0-final/bin/folio-harfbuzz"
+  },
+  "helper-sha256": "169389e19e28bc96e3e878a9468671c31ccc6d5e7abbc3d38c4b8470526cdc65",
+  "result": "pass",
+  "exit-code": 0,
+  "test-totals": {
+    "tests": 1502,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 4
+  },
+  "class-results": 87,
+  "original-log": "/tmp/t75-final-full-verify-r2.log",
+  "original-log-sha256": "064d7d9380fc93368db8db3a7b654be2778a8415af189d42b17f13c8b5ea731a",
+  "reports": [
+    {
+      "path": "pdf-provider-contract/target/surefire-reports/TEST-net.zerocloud.pdf.provider.ProviderCatalogTest.xml",
+      "sha256": "4c8254360078bc11b7de7a421b0f650902e8fb7c5bdcbfc762271bbbdd9bbf20"
+    },
+    {
+      "path": "pdf-provider-contract/target/surefire-reports/net.zerocloud.pdf.provider.ProviderCatalogTest.txt",
+      "sha256": "2b696fe4cedde5d33f7a18e4d77834706e81bd338d5122998e84a11da9b5c5dd"
+    },
+    {
+      "path": "pdf-conversion/target/surefire-reports/TEST-net.zerocloud.pdf.conversion.HarfBuzzCapabilityProviderTest.xml",
+      "sha256": "eedebe125dd51de7408e2dde5e1c58938005288f71a2f0d9812f3b2802e8fed6"
+    },
+    {
+      "path": "pdf-conversion/target/surefire-reports/TEST-net.zerocloud.pdf.conversion.SubprocessCapabilityProviderTest.xml",
+      "sha256": "f39ceda5fa880aa1506aafdd80e84895eb80ad95199c148680d38e0d53dd9cb0"
+    },
+    {
+      "path": "pdf-conversion/target/surefire-reports/net.zerocloud.pdf.conversion.HarfBuzzCapabilityProviderTest.txt",
+      "sha256": "09f95c72d99fd0bc1c39fc2860f9f356d279a80a917e6117c48a17b95fcda599"
+    },
+    {
+      "path": "pdf-conversion/target/surefire-reports/net.zerocloud.pdf.conversion.SubprocessCapabilityProviderTest.txt",
+      "sha256": "8f54f058a48e992d013bde04e87a6b8945bc743ed642ccb51ed09f29cb285a4a"
+    },
+    {
+      "path": "pdf-conversion/target/failsafe-reports/TEST-net.zerocloud.pdf.conversion.contract.JarContractIT.xml",
+      "sha256": "8c36bb92733adee2ea825681f9320df0a05862503df8be24738a3234ced55101"
+    },
+    {
+      "path": "pdf-conversion/target/failsafe-reports/TEST-net.zerocloud.pdf.conversion.contract.PublicApiLeakageIT.xml",
+      "sha256": "9174b7fe568a8fec2ce16ab2985da24c20cf15bebb2b0a581868a74db186ac04"
+    },
+    {
+      "path": "pdf-conversion/target/failsafe-reports/failsafe-summary.xml",
+      "sha256": "148c53f8f020ff6213746b781b2f0ee3f842e0f10cef43f51cb392155a44c655"
+    },
+    {
+      "path": "pdf-conversion/target/failsafe-reports/net.zerocloud.pdf.conversion.contract.JarContractIT.txt",
+      "sha256": "b2b14fe6db8c25c99bb3b9db710a964e7b88a403708e26a19dd7e16a5f43b0a7"
+    },
+    {
+      "path": "pdf-conversion/target/failsafe-reports/net.zerocloud.pdf.conversion.contract.PublicApiLeakageIT.txt",
+      "sha256": "41625aa6b2c0ff585bc3c2871a842d64f48810c7775b7120dba7d60fa3dd0052"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.HardenedWorkerIsolationTest.xml",
+      "sha256": "64d127cb570a320364a267dbd813c0bc03928ac7fe77991e8890b797a1490991"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.HardenedWorkerRecoveryFaultTest.xml",
+      "sha256": "d9722e267da7e339eb101a6bee79eff6a94018ff0dc771cd43df97060eac0d7d"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.PdfBoxCMapPreflightTest.xml",
+      "sha256": "ab622535e0c40ecfbb7ee4452830a9c88fa450d87b0ed94fc5236447fb3e53d0"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.PdfBoxFontMetricPreflightTest.xml",
+      "sha256": "47f3ef0be37f8aa70e0c882c01d5007a6538816baf6b63f7fb7b41e93cbe7c68"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.WorkerCodecContractTest.xml",
+      "sha256": "319fd041beb217bdecb2563f840f810ee508d03205a606fd40d7c573ec1280b1"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.WorkerProtocolBoundaryTest.xml",
+      "sha256": "2b4b741d6839e1b84a7094ab7e8402b136adb48fb69b31b89ab57dfc5388d7c0"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.WorkflowResourceCacheAccountingTest.xml",
+      "sha256": "2e791ec8b75c42331e2be23990d06d8c5e53f59a89e1b491e82a5a0c318be85b"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.consumer.AnnotationWorkflowTest.xml",
+      "sha256": "7d4d57bd1d771ff4338527eb1adb09b2076f4126d4430e12bd06f7a410d41e61"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.consumer.Barcode2DWorkflowTest.xml",
+      "sha256": "1b1f24e1fa855413080b9c9227b4c083b300c3a75511a5b5fcd15cef65dc66ff"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.consumer.BarcodeWorkflowTest.xml",
+      "sha256": "70cc9f33e596bf99f66a21c9e5f02af95b42b0c182e76a744b29b58ecb6bdb7b"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.consumer.BlankDocumentWorkflowTest.xml",
+      "sha256": "ecc63cc0be6c621e195e9fc576cf04b7a8aacf5cd065f6a1ef622e20b8f4f6be"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.consumer.CanvasImageColorTransparencyWorkflowTest.xml",
+      "sha256": "f548cae38fb9ada58f5f1b7e40d99854ac70ea4a1821be93a41bbac04826983f"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.consumer.CanvasWorkflowTest.xml",
+      "sha256": "3db8e932d0093c32c936ebf7cb7a527c601674004cd172a6af1aab3c3f3099c5"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.consumer.DocumentMetadataWorkflowTest.xml",
+      "sha256": "68f6bb2ae71a096dd17a7602577127a9aea413d9ae0a71ebb9c90899650c52d9"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.consumer.FontLoadingWorkflowTest.xml",
+      "sha256": "859ead3afdbf35e7bd2ce619bdd35379ae17677986d9b1c0823d9e3a18331645"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.consumer.HardenedWorkerRecoveryTest.xml",
+      "sha256": "ed29c5ce3aca177f91ee4c12a3740a5ae5766207da25dd89fde975c12c6e821d"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.consumer.HardenedWorkerScaleProfileTest.xml",
+      "sha256": "06e55ae6e967e95661fb4cd26e358ea57e0371cc148794903cfe9c1fd2ece32c"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.consumer.HardenedWorkerWorkflowTest.xml",
+      "sha256": "9638e2659ab01b48c9031d93cd5486fe722bf10573339e94f13e4d3e99f887a4"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.consumer.HostileInputWorkflowTest.xml",
+      "sha256": "67c65b9d7b9c30fce5e14e2030938556a36e756bc770e1cbb62c9deb25761685"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.consumer.ImageResourceExtractionWorkflowTest.xml",
+      "sha256": "57dcd0e5da72a7890b1ccddbccb89a6c0435629dd284cf25ee6f3a2e340be0ad"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.consumer.IncrementalSignatureWorkflowTest.xml",
+      "sha256": "30c8a85adb0162bca5ec6240dc017742121a25353a207c97927178d62c2323e7"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.consumer.LargeTableWorkflowTest.xml",
+      "sha256": "f93e81aff4d7504ab38c20e57f120bb9fe99bdb2f4cc1c2730d614228919e714"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.consumer.PageManipulationWorkflowTest.xml",
+      "sha256": "006e234a37971cba50248fe8d75e0dd789fe361bceabfcc49cd437cb9ac75901"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.consumer.ParagraphCompositionWorkflowTest.xml",
+      "sha256": "7f25aa07c9b1af19a62cac816a529bd4f6b22d118166e9811bce694df97bef77"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest.xml",
+      "sha256": "09a837914ade36f0da269be534457e1d8cd3e1705b234de7137513bd11f5176b"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.consumer.PdfValueWorkflowTest.xml",
+      "sha256": "3a6f56c5d51151cad87b1549a61e62aa425b121aef280f4fae6fd0bb09dc3d07"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.consumer.PdfVersionPasswordSecurityWorkflowTest.xml",
+      "sha256": "e4d289de2297e4229d0ac8029ef78815f1c71e0610966eafa99a1765db5a38a9"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.consumer.RenderingColdStartTest.xml",
+      "sha256": "b4f7ffd61d17253f6681bcc578806ac422cde2045e04f12f6abc0fec9e151a9d"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.consumer.RenderingWorkflowContractTest.xml",
+      "sha256": "ad567b837afe2d20251d9e0a357eb036909a026687a14b4be9f89da9179c7289"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest.xml",
+      "sha256": "8cbb4207ec80337770df0b2a05a42c7a60d0aae5be2b9002606d44cff77276d8"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.consumer.TableCompositionWorkflowTest.xml",
+      "sha256": "7a612941d56ab96b77ad159b2f2572c3e748e70251af531454fef3508cc2ee4f"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.consumer.TablePaginationWorkflowTest.xml",
+      "sha256": "1a1ff32d54f806a0798a162d003813a67826e3b34c813397bb4f92668ff9d1f2"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest.xml",
+      "sha256": "d0776c5151eaf85c256f6fda4950d9378e239b65491ad8e63e1baf7b888fbb77"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest.xml",
+      "sha256": "9cc675777c0d74b3aebb9fedd6646b90e2325af03ed9f763c247a770a656176f"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.consumer.WorkflowCapabilityProviderTest.xml",
+      "sha256": "ab74bd13803c1125ed90314db17f7d9110ac8c350e08676258e83e27ea058f50"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest.xml",
+      "sha256": "312a4ca5ebacc15d7c21dd14001ba93eed000ae07481b2376645691972c78b83"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.consumer.WorkflowLifecycleTest.xml",
+      "sha256": "13f7932c4e5a32f520c196ae5484660f2da0e7fb2be5d65d6fdb2c0a05c7f4d0"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.consumer.WorkflowResourceOwnershipTest.xml",
+      "sha256": "49a1516e6c0238e0c0dc1214e587dba34b42ddbe0ffb05bb7d08d0268b147119"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.consumer.WorkflowTransactionContractTest.xml",
+      "sha256": "22561f2d3a4272454a4a0bd1a6cd89174285ffe843c6c1a0791a474a7dc5f807"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/net.zerocloud.pdf.HardenedWorkerIsolationTest.txt",
+      "sha256": "2be0995a58fce1b5d5be9e14755b7abdcb63ebd2b9cbe8ee4941217ecbdf6115"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/net.zerocloud.pdf.HardenedWorkerRecoveryFaultTest.txt",
+      "sha256": "c6cb7f433b9128c6f094b8bfd01e80b263d137318df38696a0e8a9089cc478ba"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/net.zerocloud.pdf.PdfBoxCMapPreflightTest.txt",
+      "sha256": "390253014be27e123711978fc683569637b868b51da582763781f61e3c6ab6dd"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/net.zerocloud.pdf.PdfBoxFontMetricPreflightTest.txt",
+      "sha256": "7411b88206a8d21a189a5ace326aa011589d441a349ea5b5c4c8a5ea47484fdb"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/net.zerocloud.pdf.WorkerCodecContractTest.txt",
+      "sha256": "8c860a289770d1989cfda8c963bf3913801ee625be4efcf663f0430ee8cf7b68"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/net.zerocloud.pdf.WorkerProtocolBoundaryTest.txt",
+      "sha256": "be095b2d2466f334d7f0319ad18fd16f3c9b5d4d73438eccc5312e129f64d1d7"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/net.zerocloud.pdf.WorkflowResourceCacheAccountingTest.txt",
+      "sha256": "cdca39cda84132c412885b66ed0e45b65ee4ef82412e723a6f859239a185f6a0"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/net.zerocloud.pdf.consumer.AnnotationWorkflowTest.txt",
+      "sha256": "912c981b8ae5cdfaf926a407af32d9e1801e75763c1afcb41e1c9ce4711c8f01"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/net.zerocloud.pdf.consumer.Barcode2DWorkflowTest.txt",
+      "sha256": "c9f3081f812c0d0c6659c27fd97598cd5e34240f37d90e9504add625296ac7a4"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/net.zerocloud.pdf.consumer.BarcodeWorkflowTest.txt",
+      "sha256": "fea6c18252abf20dedf1aba0b3cef0add0eb98580202510935ebc5f87e65ef41"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/net.zerocloud.pdf.consumer.BlankDocumentWorkflowTest.txt",
+      "sha256": "e3039049b8c4bd87a55e24de431215f191489d0c12f80fa20b56f86214d91503"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/net.zerocloud.pdf.consumer.CanvasImageColorTransparencyWorkflowTest.txt",
+      "sha256": "3167c1ed461e95a0aff01889b84a5c748d8be023deef99a68a716a4c0e67e8b7"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/net.zerocloud.pdf.consumer.CanvasWorkflowTest.txt",
+      "sha256": "1ebef46b964d3dbdbae1f00cd0f86d50e854bbe38a5af1ff8d680bcebb51b8e4"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/net.zerocloud.pdf.consumer.DocumentMetadataWorkflowTest.txt",
+      "sha256": "042487c8d43eea1788725e9a3f9d7e0f571a80a8d41fb94737c0f072a2dd6617"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/net.zerocloud.pdf.consumer.FontLoadingWorkflowTest.txt",
+      "sha256": "4a803dd0911dd7f2a24e524d3c4d41096bcaa30ab97517bd9c778db2c3b7fdc2"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/net.zerocloud.pdf.consumer.HardenedWorkerRecoveryTest.txt",
+      "sha256": "78d4083d182c185c03daf2ebe29c961a35539588142efe883d3d9e6acf151f20"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/net.zerocloud.pdf.consumer.HardenedWorkerScaleProfileTest.txt",
+      "sha256": "fe34044a8fe07240c849ecf447edf224f780f628bbe26914134903cbce9d6399"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/net.zerocloud.pdf.consumer.HardenedWorkerWorkflowTest.txt",
+      "sha256": "27d229937372a02160b701e3a6474477fb5cd24a31e9b149c481ccba62cb5a60"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/net.zerocloud.pdf.consumer.HostileInputWorkflowTest.txt",
+      "sha256": "f7cc8b1ad564a35a381ccb27763bcbee19ff0c70c13282f7376f06c9a3985086"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/net.zerocloud.pdf.consumer.ImageResourceExtractionWorkflowTest.txt",
+      "sha256": "b6c14fc2c8be795a5cffb58926e6412011e2a91b5f761e64b53b26be7cc9ca58"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/net.zerocloud.pdf.consumer.IncrementalSignatureWorkflowTest.txt",
+      "sha256": "d5f284e2241d4b950d8f5cf05decc01aa22f1b1fb2cdc1cebe04dd8bdd5b1598"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/net.zerocloud.pdf.consumer.LargeTableWorkflowTest.txt",
+      "sha256": "68046c271850c96e9345148a5ea662fdd8b77ffa62d9753fb0f5e23866ad255c"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/net.zerocloud.pdf.consumer.PageManipulationWorkflowTest.txt",
+      "sha256": "9aeb534b34491d27df79be48c2402476c541f01d7ac1f87ca773de5f1eaf0c11"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/net.zerocloud.pdf.consumer.ParagraphCompositionWorkflowTest.txt",
+      "sha256": "d79250efa240674873be3c8e0e078964f0a24cf884d9bee1c36d0a752389ee41"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest.txt",
+      "sha256": "fdd19f22288e518ff57495837b38721fdd6e440ac46e7891017a01187dc2a43f"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/net.zerocloud.pdf.consumer.PdfValueWorkflowTest.txt",
+      "sha256": "78b0409c96adfed36117626b9f558c323a68c3c08b44738f7deebab3d72250e6"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/net.zerocloud.pdf.consumer.PdfVersionPasswordSecurityWorkflowTest.txt",
+      "sha256": "01f11015ecb4167f45f03b6a0704581384a05d38bf7f216c8a8dd199c346141a"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/net.zerocloud.pdf.consumer.RenderingColdStartTest.txt",
+      "sha256": "124815897dd3fe8d26c0e5b7360668f1d64251c91d5e5d4f2dc557a23ab574bc"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/net.zerocloud.pdf.consumer.RenderingWorkflowContractTest.txt",
+      "sha256": "f7f21aba8cdaa1c65b6ec6e6fe41bb9af82c9c123db47f8fc073d2913f1ba213"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest.txt",
+      "sha256": "e659ad274a7f6dcd7d304e70b1119b3b265b3143c3206cf7e2dbfab9f5303f89"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/net.zerocloud.pdf.consumer.TableCompositionWorkflowTest.txt",
+      "sha256": "d5b474d9e0e6c034c1e407b803d326f1a948332ceba7f1a9127528450a0807ad"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/net.zerocloud.pdf.consumer.TablePaginationWorkflowTest.txt",
+      "sha256": "d9943ef80caaa613385d7ba8ee7309f1901b75bac563f52c8ae933a68cbd19d1"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest.txt",
+      "sha256": "fd8d29dee0813c902ff01c7cfd9aafaba6a9bb50a9e995591eba4b1cf2bb1a21"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest.txt",
+      "sha256": "a5049a5145376678c2fc27746ecb618da01b59683942ed7cb30251e3cff428af"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/net.zerocloud.pdf.consumer.WorkflowCapabilityProviderTest.txt",
+      "sha256": "dd475a90cdd23cd4d6ba4b33f337bd739edf716c94b68ec71a08c6099efa6ba8"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest.txt",
+      "sha256": "e257f50f6a740034c02c78876f99caa8fa988cc97c0e08bd199600c5d48a8e3c"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/net.zerocloud.pdf.consumer.WorkflowLifecycleTest.txt",
+      "sha256": "4075b03e3ae28761fd937dfa35a93ce6d2547b85044bad65b4889080538f86e2"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/net.zerocloud.pdf.consumer.WorkflowResourceOwnershipTest.txt",
+      "sha256": "9f37a8d9d53cc29b34c362e69514410874e9a61b557865a1abe5c59f5cb9498d"
+    },
+    {
+      "path": "pdf-document/target/surefire-reports/net.zerocloud.pdf.consumer.WorkflowTransactionContractTest.txt",
+      "sha256": "e906dd04b01492b88cc34c16d2a62b7c9249782eec609c2192e7abb4c0f448ca"
+    },
+    {
+      "path": "pdf-document/target/failsafe-reports/TEST-net.zerocloud.pdf.contract.JarContractIT.xml",
+      "sha256": "a91e8c44140bee7521d64928ef470d37dfea165065816703ea1a978e9f4b2173"
+    },
+    {
+      "path": "pdf-document/target/failsafe-reports/TEST-net.zerocloud.pdf.contract.PublicApiLeakageIT.xml",
+      "sha256": "051bd24f67bdf32f7b6b27bc52c68f7d84f021adbd6ddf4c19c90d9f0d5d082f"
+    },
+    {
+      "path": "pdf-document/target/failsafe-reports/failsafe-summary.xml",
+      "sha256": "cfb078a42c0bd2a73021f0a8cc9cd9fbcff6812c585395c273f00af15bc0d41b"
+    },
+    {
+      "path": "pdf-document/target/failsafe-reports/net.zerocloud.pdf.contract.JarContractIT.txt",
+      "sha256": "dd8c234818240101a9c01908c12907cb7ba84cc88b6cd0c74957f2c0a648f0e8"
+    },
+    {
+      "path": "pdf-document/target/failsafe-reports/net.zerocloud.pdf.contract.PublicApiLeakageIT.txt",
+      "sha256": "fb3e229870c041d94c925a9d63a865d3818e3a8dc0a7ccf6c4d0811e44a5262e"
+    },
+    {
+      "path": "pdf-migration-itext7/target/surefire-reports/TEST-net.zerocloud.pdf.itext7.consumer.AnnotationFacadeTest.xml",
+      "sha256": "70a09b4c3ab4f0eaf8218e33ade82f7f695621b219a27cde5effe30db37a7297"
+    },
+    {
+      "path": "pdf-migration-itext7/target/surefire-reports/TEST-net.zerocloud.pdf.itext7.consumer.BlankDocumentFacadeTest.xml",
+      "sha256": "5ae335ccabec31265f6691e734969cda2d8246f24ccea8d4605257d99eae163c"
+    },
+    {
+      "path": "pdf-migration-itext7/target/surefire-reports/TEST-net.zerocloud.pdf.itext7.consumer.DocumentMetadataFacadeTest.xml",
+      "sha256": "0ca310bf9a063f2bc92fca68bfce7d5428adb565f19323a13cba60877da54ed0"
+    },
+    {
+      "path": "pdf-migration-itext7/target/surefire-reports/TEST-net.zerocloud.pdf.itext7.consumer.PageManipulationFacadeTest.xml",
+      "sha256": "8a70564e21db9b791214d879ade4b0ba31dd62a4b2894adaad81b3ce1de4b131"
+    },
+    {
+      "path": "pdf-migration-itext7/target/surefire-reports/TEST-net.zerocloud.pdf.itext7.consumer.PdfValuesFacadeTest.xml",
+      "sha256": "96bf63641376df47296d10de5c2c2554bf462d26b9bd0d6752093ecbbb4d72f7"
+    },
+    {
+      "path": "pdf-migration-itext7/target/surefire-reports/TEST-net.zerocloud.pdf.itext7.consumer.TextStructureFacadeTest.xml",
+      "sha256": "1ffbdfef79fac5386bf760f0e509f7cb37827bf4c9d79bd3152dc1a12449a7ad"
+    },
+    {
+      "path": "pdf-migration-itext7/target/surefire-reports/net.zerocloud.pdf.itext7.consumer.AnnotationFacadeTest.txt",
+      "sha256": "8e3a0d1a84399f209e1226d95bf479876560849a096b43eb8f1ce58e2ab632db"
+    },
+    {
+      "path": "pdf-migration-itext7/target/surefire-reports/net.zerocloud.pdf.itext7.consumer.BlankDocumentFacadeTest.txt",
+      "sha256": "f9fd8d234d9b686c13b4ecf322df4062f340fabe7277cacada79e0a242f7a53d"
+    },
+    {
+      "path": "pdf-migration-itext7/target/surefire-reports/net.zerocloud.pdf.itext7.consumer.DocumentMetadataFacadeTest.txt",
+      "sha256": "92b7d57bead09836564a95a8bbf03f02476a94f8f9be173d63858bb96d95dc80"
+    },
+    {
+      "path": "pdf-migration-itext7/target/surefire-reports/net.zerocloud.pdf.itext7.consumer.PageManipulationFacadeTest.txt",
+      "sha256": "d5ec043edd223b97153ae1e52372f40b08f7c380f7288b450ef03f76976cc374"
+    },
+    {
+      "path": "pdf-migration-itext7/target/surefire-reports/net.zerocloud.pdf.itext7.consumer.PdfValuesFacadeTest.txt",
+      "sha256": "94e4dd983ae44b126fc09a43d4383bbf1aaebb1b22805ca8d117ff0c07405271"
+    },
+    {
+      "path": "pdf-migration-itext7/target/surefire-reports/net.zerocloud.pdf.itext7.consumer.TextStructureFacadeTest.txt",
+      "sha256": "70e72259be52d40ff3aa804aca638fe96094a3d4ad7d955923f8989d4cc7fc7a"
+    },
+    {
+      "path": "pdf-migration-itext7-preview/target/surefire-reports/TEST-net.zerocloud.pdf.itext7.consumer.AnnotationFacadeTest.xml",
+      "sha256": "2dbbfb0b3be2fbc76340fb610f1ed2d7e5c8372a275872235a18e22ae8c817b6"
+    },
+    {
+      "path": "pdf-migration-itext7-preview/target/surefire-reports/TEST-net.zerocloud.pdf.itext7.consumer.BlankDocumentFacadeTest.xml",
+      "sha256": "0b6f3b54f1a657a24d74633081f62e135fea1c82bcc6962fe802196aedade387"
+    },
+    {
+      "path": "pdf-migration-itext7-preview/target/surefire-reports/TEST-net.zerocloud.pdf.itext7.consumer.DocumentMetadataFacadeTest.xml",
+      "sha256": "34ed9026d1c1ea2ee4bd6b43c40288333609a65257a6100376b86426bb425427"
+    },
+    {
+      "path": "pdf-migration-itext7-preview/target/surefire-reports/TEST-net.zerocloud.pdf.itext7.consumer.PageManipulationFacadeTest.xml",
+      "sha256": "53d4138d5a51ec6c3e94e31e52bfb921a3bc900433a53bf87a2d7119ece36052"
+    },
+    {
+      "path": "pdf-migration-itext7-preview/target/surefire-reports/TEST-net.zerocloud.pdf.itext7.consumer.PdfValuesFacadeTest.xml",
+      "sha256": "d5078743207c5a26886094b369b0759088b1bc7ec8ae1980cf973b07dee93c11"
+    },
+    {
+      "path": "pdf-migration-itext7-preview/target/surefire-reports/TEST-net.zerocloud.pdf.itext7.consumer.TextStructureFacadeTest.xml",
+      "sha256": "0eb501fac6af1a1d0b53ee86346b238eb52415105ac839aefadadcbb77f0afa6"
+    },
+    {
+      "path": "pdf-migration-itext7-preview/target/surefire-reports/net.zerocloud.pdf.itext7.consumer.AnnotationFacadeTest.txt",
+      "sha256": "f8f4a0469a573f66c034e3794597ec6e28f145314c4d0cc2d5c33b46b12db142"
+    },
+    {
+      "path": "pdf-migration-itext7-preview/target/surefire-reports/net.zerocloud.pdf.itext7.consumer.BlankDocumentFacadeTest.txt",
+      "sha256": "2c23d5656e1479b14d0b169637836e4be77b43ac2410bd2698e1ce902d07706f"
+    },
+    {
+      "path": "pdf-migration-itext7-preview/target/surefire-reports/net.zerocloud.pdf.itext7.consumer.DocumentMetadataFacadeTest.txt",
+      "sha256": "e5b2e604c2ef46463006915a302d268e161088b4c966373240505445c3b17b0e"
+    },
+    {
+      "path": "pdf-migration-itext7-preview/target/surefire-reports/net.zerocloud.pdf.itext7.consumer.PageManipulationFacadeTest.txt",
+      "sha256": "3b48223f2244278a6def7ecdb7b7d8d3e7dddc5a2fe28ab6654a9ede2bb3fbd7"
+    },
+    {
+      "path": "pdf-migration-itext7-preview/target/surefire-reports/net.zerocloud.pdf.itext7.consumer.PdfValuesFacadeTest.txt",
+      "sha256": "59d28c76e3ac08803b1ba7d50d8e2770a889bd0a1d1023ba363d61ab8ff60ca5"
+    },
+    {
+      "path": "pdf-migration-itext7-preview/target/surefire-reports/net.zerocloud.pdf.itext7.consumer.TextStructureFacadeTest.txt",
+      "sha256": "975c7588ae57df4a66c53199b85e17957d9611257930469e3704a056709497d5"
+    },
+    {
+      "path": "pdf-migration-itext7-preview/target/failsafe-reports/TEST-net.zerocloud.pdf.migration.itext7.contract.ClasspathExclusivityIT.xml",
+      "sha256": "559ca84c8483c0b64d4c8ba65852128d2d9587f0f394a70ddf60176d6239bbd1"
+    },
+    {
+      "path": "pdf-migration-itext7-preview/target/failsafe-reports/TEST-net.zerocloud.pdf.migration.itext7.contract.JarContractIT.xml",
+      "sha256": "deda28733f21ffa729cef1817c5dbe78a1a724cc73a1ec9a6c1ac3013eedec23"
+    },
+    {
+      "path": "pdf-migration-itext7-preview/target/failsafe-reports/failsafe-summary.xml",
+      "sha256": "148c53f8f020ff6213746b781b2f0ee3f842e0f10cef43f51cb392155a44c655"
+    },
+    {
+      "path": "pdf-migration-itext7-preview/target/failsafe-reports/net.zerocloud.pdf.migration.itext7.contract.ClasspathExclusivityIT.txt",
+      "sha256": "76a36b754c40a450f38b6718f20fe4195992985665bf8f5755c404aa73a11213"
+    },
+    {
+      "path": "pdf-migration-itext7-preview/target/failsafe-reports/net.zerocloud.pdf.migration.itext7.contract.JarContractIT.txt",
+      "sha256": "28ad6545c0a6ba5291ac61d68706e1a09dc5e75268f54e183322e0828b8825bd"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/TEST-net.zerocloud.pdf.acceptance.AcceptanceEvidenceCommandTest.xml",
+      "sha256": "35a49e2a281407c5a593cf2080dc74cc3de5173a1c3666f47cbbbb0cf1373c1f"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/TEST-net.zerocloud.pdf.acceptance.StandardsEvidenceCommandTest.xml",
+      "sha256": "eed0ce40ea5f3c810c3dc5af83f53393c4f3fe2320fd42f49986ffddb39004e5"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/TEST-net.zerocloud.pdf.acceptance.T03BlankSemanticsTest.xml",
+      "sha256": "cc9e7ef61d849fdede3ed9635a13daf2a27e4852b434b5dadedf4dbca2c3033e"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/TEST-net.zerocloud.pdf.acceptance.T03EvidenceCommandTest.xml",
+      "sha256": "0ff9b5fe4751076648c870568f7aefced14ba2621d3895291a0d645e31427a56"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/TEST-net.zerocloud.pdf.acceptance.T09EvidenceCommandTest.xml",
+      "sha256": "7c3e696caa8d7b87cbeabd3d2ee9ed480160a9b8c475621e039857dbfc5f4e8d"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/TEST-net.zerocloud.pdf.acceptance.T10EvidenceCommandTest.xml",
+      "sha256": "ea8b688b76d08251d3c4ff02df57831731eefef36befc1f8728b5ad9f07decb5"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/TEST-net.zerocloud.pdf.acceptance.T11EvidenceCommandTest.xml",
+      "sha256": "d6cd01f2c1c51d2c55e325e0249eb32081c157f5a9d76e8331b7152f6f41a6d6"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/TEST-net.zerocloud.pdf.acceptance.T12EvidenceCommandTest.xml",
+      "sha256": "f27df492f62298320a771811f611270ccaffa32a1b0100474025414d9083ff42"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/TEST-net.zerocloud.pdf.acceptance.T13EvidenceCommandTest.xml",
+      "sha256": "ce48e38eec3c3887cf94ab850eb9a0cf6a7d6fb51964593cec9006726ef34f8b"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/TEST-net.zerocloud.pdf.acceptance.T24ParagraphEvidenceCommandTest.xml",
+      "sha256": "4f257b8ca8b65e328d7f492256675cd14a0e1c4f0892d3c6d943f1e263e2616c"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/TEST-net.zerocloud.pdf.acceptance.T25ParagraphEvidenceCommandTest.xml",
+      "sha256": "a1194535f84d6b29710e8eca619eacbb6ab0e6982cffbcf91a627623022d74f9"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/TEST-net.zerocloud.pdf.acceptance.T26TableEvidenceCommandTest.xml",
+      "sha256": "eb4fe5c3f5d0b5c01f9b0ec6d96b88b286c52c303b3ea41cbf32e5f1c7e6ff3c"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/TEST-net.zerocloud.pdf.acceptance.T27TableEvidenceCommandTest.xml",
+      "sha256": "eed5f3d79161e785ee0bffdf948666a9fc8fb6dc60c9b8c4788b0724751bb8de"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/TEST-net.zerocloud.pdf.acceptance.T28UnicodeEvidenceCommandTest.xml",
+      "sha256": "c77b1d16c2f8e0ccc4fad6a8ecd1823fe43c1fe46a3161633b03da2e471e66d6"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/TEST-net.zerocloud.pdf.acceptance.T29NativeShapingAssertionsTest.xml",
+      "sha256": "77b5a31f7a0dfdcf67b2ba903a81bce5e961266308004957c0d9fa586dc32a2f"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/TEST-net.zerocloud.pdf.acceptance.T29ShapingEvidenceCommandTest.xml",
+      "sha256": "bc79370d57ac4af8c74fa4cf0b4b9f2b5401905b7e34c36f66579e435af358a8"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/TEST-net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest.xml",
+      "sha256": "d23685097d70411fccc1eb38b293e23720a5bdf04ac121b0b056fe299aef6def"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/TEST-net.zerocloud.pdf.acceptance.T31BarcodeEvidenceCommandTest.xml",
+      "sha256": "537c5a8bd49c69bd9f101b0602b452cacb3b64b54d669e1ed05d258fa6ac56e6"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/TEST-net.zerocloud.pdf.acceptance.T31BarcodeEvidenceTest.xml",
+      "sha256": "d8b0016156f60bd341d077bfcb1d6ee3b25b62a50de69aef4ceb9bf5bb29d8ca"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/TEST-net.zerocloud.pdf.acceptance.T31DataMatrixEvidenceTest.xml",
+      "sha256": "3f92ce89025b1a28c5cdb8be00481f8b450a27815eb3caeea9e2550fdc881bd3"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/TEST-net.zerocloud.pdf.acceptance.T31NegativeEvidenceTest.xml",
+      "sha256": "fad608f83748e38c2cbafe6fe2532b7196213fdcfbdf3962c12d9f9d564c5c9e"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/TEST-net.zerocloud.pdf.acceptance.T31PaddingEvidenceTest.xml",
+      "sha256": "e79e9249ffcac80f08e2c9db73d970e097114a76cc0c680dd514ae410651cb99"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/TEST-net.zerocloud.pdf.acceptance.T31RasterEvidenceTest.xml",
+      "sha256": "9f872ab3cc56aa118d6026aaa45321a46a5f9e1cbc6ef475836f71ca4be8c901"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/net.zerocloud.pdf.acceptance.AcceptanceEvidenceCommandTest.txt",
+      "sha256": "ca5de432abd261587a8e2674edf485b2a37bc8b33e977b86a9be462cfe9f8e8a"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/net.zerocloud.pdf.acceptance.StandardsEvidenceCommandTest.txt",
+      "sha256": "03850fb8be16ac0ace61b1ee4a8a543324e3ab874ae88a1a8ba2fda454c91edd"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/net.zerocloud.pdf.acceptance.T03BlankSemanticsTest.txt",
+      "sha256": "e0efefc6bdcc9238763780e6cef846bf71c9a6b279725015d2f6c98686a54910"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/net.zerocloud.pdf.acceptance.T03EvidenceCommandTest.txt",
+      "sha256": "bf1ee79849f3308691db253980393a8a614036775314f48dbd6640bf87a64c29"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/net.zerocloud.pdf.acceptance.T09EvidenceCommandTest.txt",
+      "sha256": "76aae77755f16161c664532562d925e0c7e717c2b8e6f08096b2dd3ec24ea9bc"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/net.zerocloud.pdf.acceptance.T10EvidenceCommandTest.txt",
+      "sha256": "db3e74bc10740c7006f908b3e2d3a8f6314a91ba8bdf796c5bba663345720124"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/net.zerocloud.pdf.acceptance.T11EvidenceCommandTest.txt",
+      "sha256": "7f0cd4b7b302a326b5e275d33ecf9038a69cc30df81b6ea3766623f1b472200a"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/net.zerocloud.pdf.acceptance.T12EvidenceCommandTest.txt",
+      "sha256": "75b4459e4fbf4433cff1c5669e45597024fd3c864a11cbe7fb1343e7c2f0d121"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/net.zerocloud.pdf.acceptance.T13EvidenceCommandTest.txt",
+      "sha256": "a4666b3c2075054a1e9cf7b5283a92e0882ba1a78003f8e70db95dd1f91fff05"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/net.zerocloud.pdf.acceptance.T24ParagraphEvidenceCommandTest.txt",
+      "sha256": "c230bbcaeffebfd2d89cc36b0aff4b3d83cdfa48eb9bb935609febb83b867925"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/net.zerocloud.pdf.acceptance.T25ParagraphEvidenceCommandTest.txt",
+      "sha256": "714ac150213ae429a7bb2ca71e58aee1a108028f442b89cd06a89fe62ded2a54"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/net.zerocloud.pdf.acceptance.T26TableEvidenceCommandTest.txt",
+      "sha256": "aaf12aaef5e7e7cd535663178757df50095de1c660ae929d460eb476765a80af"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/net.zerocloud.pdf.acceptance.T27TableEvidenceCommandTest.txt",
+      "sha256": "2ad388ef1d5a9c43c781a4cab09e3c8152df5cdbdc40643d2f15619823aae1b2"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/net.zerocloud.pdf.acceptance.T28UnicodeEvidenceCommandTest.txt",
+      "sha256": "dc4a4d76e746c05c00a4a32e1814c4f88a0c5e5c8256b3619f850f6ce3d25910"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/net.zerocloud.pdf.acceptance.T29NativeShapingAssertionsTest.txt",
+      "sha256": "d9ab54b9dee610a561b29a8d9afdb6e80e5a204c2917b2dcadfb4ac9848e6549"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/net.zerocloud.pdf.acceptance.T29ShapingEvidenceCommandTest.txt",
+      "sha256": "1510d4986b779cc86bbe79cf91f8f7842f26da68ebd62f2774864dc5e11995f7"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest.txt",
+      "sha256": "5aa74c3548739b33fa447404ca597dc67e6ab131dcd707b8542f524ae62b415f"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/net.zerocloud.pdf.acceptance.T31BarcodeEvidenceCommandTest.txt",
+      "sha256": "830eaf2f8fa11e83d9dd60c9f82b87b7df1524e1011d5b2270cd2a9dbb494051"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/net.zerocloud.pdf.acceptance.T31BarcodeEvidenceTest.txt",
+      "sha256": "fe3d429572a7351e20c2ac648b76997a4dcbef4f2dbcf79d96c0f72b1a8b3bba"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/net.zerocloud.pdf.acceptance.T31DataMatrixEvidenceTest.txt",
+      "sha256": "36532cf29d2520a6ad862d9c4ad38f8fa7debb439ee5143e8b9230cdea6214a9"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/net.zerocloud.pdf.acceptance.T31NegativeEvidenceTest.txt",
+      "sha256": "b08797efda9c115ad19c00e9cebfe3c1d99ee099a918bab92db3f2c72e1b43d7"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/net.zerocloud.pdf.acceptance.T31PaddingEvidenceTest.txt",
+      "sha256": "73b3c0c44deb230d8ff15e77120a845eef3ee271e4d813e12bdcded9e70d3c10"
+    },
+    {
+      "path": "pdf-acceptance/target/surefire-reports/net.zerocloud.pdf.acceptance.T31RasterEvidenceTest.txt",
+      "sha256": "81554246daec36e5b55215a3f5dbf90a521dcfd3d68f90b7ea9374e1a4842c0c"
+    },
+    {
+      "path": "build-tools/inventory/target/surefire-reports/TEST-net.zerocloud.pdf.tools.inventory.FoundationReadinessCommandTest.xml",
+      "sha256": "113f6819ea2c00ae735be060c35137e3fed034940f16c55cd9fb5b0cecccd4a6"
+    },
+    {
+      "path": "build-tools/inventory/target/surefire-reports/TEST-net.zerocloud.pdf.tools.inventory.InventoryCommandTest.xml",
+      "sha256": "4edf1e50ced4c2b3e9eda296c84c1e29c97116e72c5b1048c2d6214561e89714"
+    },
+    {
+      "path": "build-tools/inventory/target/surefire-reports/net.zerocloud.pdf.tools.inventory.FoundationReadinessCommandTest.txt",
+      "sha256": "c8d9978afeb05c5ecdf4da5f6afc80b6f0fc45eae2774363308b6c52ec63d913"
+    },
+    {
+      "path": "build-tools/inventory/target/surefire-reports/net.zerocloud.pdf.tools.inventory.InventoryCommandTest.txt",
+      "sha256": "00a26ef746101433da2f46b0fddb496781e9557b3a653d203259c0cc81e55367"
+    },
+    {
+      "path": "build-tools/release/target/surefire-reports/TEST-net.zerocloud.pdf.tools.release.ReleasePolicyContractTest.xml",
+      "sha256": "348756e30517eacb365b83a959597a6563ce16a987e52c8a16c68b63daa4e90e"
+    },
+    {
+      "path": "build-tools/release/target/surefire-reports/TEST-net.zerocloud.pdf.tools.release.ReleaseRehearsalCommandTest.xml",
+      "sha256": "1e956d0d5ec9e880b9bbec6a674039ddeb2c36edf91c2364b4b98145fff0d445"
+    },
+    {
+      "path": "build-tools/release/target/surefire-reports/net.zerocloud.pdf.tools.release.ReleasePolicyContractTest.txt",
+      "sha256": "3ef55f44d27eccfa5f95c052f49621867d7042dd6d61dacc33ba7c3a699636c4"
+    },
+    {
+      "path": "build-tools/release/target/surefire-reports/net.zerocloud.pdf.tools.release.ReleaseRehearsalCommandTest.txt",
+      "sha256": "57da78f78512dc6180d374d56ea52644ec5dfab3cb07b2d28627b85860c8c1b3"
+    }
+  ],
+  "unselected-preexisting-report-files-excluded": [],
+  "scope": "Complete default Maven verify on the unchanged reviewed source, using the explicit pinned native helper. Four skips: three opt-in large Worker tests and one opt-in T30 offline raster test. Independent text qualification and final certification are separate gates."
+}

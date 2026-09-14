@@ -1,0 +1,76 @@
+{
+  "reviewer": "/root/final_standards",
+  "axis": "Standards",
+  "scope": "r4 complete host verification evidence only",
+  "utc": "2026-09-13T14:55:07.051518+00:00",
+  "baseline": "5b1603c435f11c40368f75b7b9a2777c9c5e9761",
+  "head": "5b1603c435f11c40368f75b7b9a2777c9c5e9761",
+  "commits": [],
+  "report-sha256": "60e938ec4c240863ad7464abe820ac74f26f40ddbd6a0ed2110fd79d2a6c148f",
+  "report-word-count": 303,
+  "hard-breaches": [],
+  "open-judgement-findings": [],
+  "host-actual-returncode": 0,
+  "host-results": {
+    "tests": 1507,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 4
+  },
+  "host-archive": {
+    "identity": "capabilities/evidence/T75-delivery/final-validation-r4/host-full-verify-archive-identity.json",
+    "identity-sha256": "5164631acd838212f4aad529fbab1f1584795d5c638883efda808221d26445b4",
+    "archive": "capabilities/evidence/T75-delivery/final-validation-r4/host-full-verify.tar.xz",
+    "archive-sha256": "9b25f6e28ee328ec00acb1c762dcec3c226d520619b071a3decb1052e497c604",
+    "member-count": 184,
+    "uncompressed-bytes": 1472349,
+    "every-frozen-original-and-manifest-byte-identity-matches": true,
+    "errors": []
+  },
+  "host-Java-versions": {
+    "17.0.9": 87
+  },
+  "new-inventory-regression-methods": [
+    "chainRecordAcceptsExactByteBoundAndRejectsFirstExcess",
+    "completeLargeChainRecordRetainsReadinessAndGeneratedScope",
+    "largeChainRecordBudgetDoesNotExpandTheAuthorityBudget"
+  ],
+  "new-independent-source-review-archive-member-count": 504,
+  "source-input-count": 1933,
+  "contract-input-count": 30,
+  "source-delta-from-r3": 5,
+  "contract-delta-from-r3": 0,
+  "cumulative-source-delta": 26,
+  "cumulative-contract-delta": 1,
+  "frozen-input-receipt-sha256": "50988226c0db8a0eddd622ec3d9656d5ad6eb1e25328f22a067ee0e54add392d",
+  "source-current-mismatches": [],
+  "matrix-reviewed": false,
+  "fresh-stage-reviewed": false,
+  "fresh-candidate-certification-approved": false,
+  "final-delivery-approved": false,
+  "completion-criteria-marked": false,
+  "project-execution": false,
+  "environment-observation": false,
+  "repository-or-Git-index-or-authority-writes": false,
+  "writes": "Exclusively created files under this fresh /tmp directory.",
+  "diagnostic-retention": [
+    "commands/metadata-inspection-result.json",
+    "commands/metadata-inspection.stderr",
+    "commands/metadata-inspection-v2-result.json",
+    "commands/host-audit-result.json",
+    "commands/host-audit.stderr",
+    "reader-reactor-method-correction.txt",
+    "commands/host-audit-v2-result.json"
+  ],
+  "manifest-boundary": "Artifact manifest excludes itself and the three subsequent finalization stdout/stderr/result files to avoid circular hashes; those original finalization outputs are retained separately.",
+  "detailed-audits": {
+    "attempt-v2/XML-result-identities.json": "40e77ef78371c0151cf6081bf09d71421bd0f455c51d762544718c3b62ef66f1",
+    "attempt-v2/copied-source-identities.json": "8e009183b9d02e988953fe98bced1e764f7e9f0af4ba5a683ed799ab3b01a1b8",
+    "attempt-v2/host-archive-byte-audit.json": "153d1d2426cd69ca67b2d2e6d66a6281feeef18dcd463454f0d3ff03cc37b510",
+    "attempt-v2/host-log-XML-audit.json": "065881fc41ae3689009a8e9bb0beffeaa9d70b9d2a690ad5829fa7e358c464ea",
+    "attempt-v2/independent-new-closure-archive-audit.json": "b3b6c7ac9758db93f349c1d7163d3e0a5db766d80b6973b7d38769c1f6d9d7f5",
+    "attempt-v2/original-process-and-helper-audit.json": "e747d6f8154b597def8320c0b3192417d31f53e82db3a92246222ef5c5fc81af",
+    "attempt-v2/source-contract-continuity-audit.json": "012851dad4b34219604953a90aa0fab995953ca28094c355aa016d58969d4461"
+  },
+  "closing-input-and-archive-identities-sha256": "71c15ac00efaa4a144989aa8070b2fcf58fbd7ee42c611a6c6a4f1c247f9da97"
+}

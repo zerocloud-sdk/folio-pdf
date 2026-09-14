@@ -843,9 +843,10 @@ public final class LargeTableWorkflowTest {
         }
     }
     private static ExtractionLimits extraction() {
+        // Includes both selected fonts' complete Identity-H tables across flushes.
         return ExtractionLimits.builder().maximumPages(64).maximumPageTreeNodes(256).maximumContentStreams(1024)
                 .maximumContentStreamDepth(8).maximumDecodedBytes(1 << 20).maximumTextItems(10000)
-                .maximumUnicodeCodePoints(10000).maximumToUnicodeMappings(64).maximumFontDataEntries(512)
+                .maximumUnicodeCodePoints(10000).maximumToUnicodeMappings(64).maximumFontDataEntries(2 * 65536 + 512)
                 .maximumMarkedContentSequences(8).maximumMarkedContentDepth(4).maximumStructureElements(8)
                 .maximumStructureItems(8).maximumStructureDepth(4).maximumRoleMappings(4).build();
     }

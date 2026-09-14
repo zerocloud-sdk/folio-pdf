@@ -1,0 +1,188 @@
+test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context) ... 
+  test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context) (state='nested-text') ... FAIL
+  test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context) (state='unmatched-text-end') ... FAIL
+  test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context) (state='unterminated-text') ... FAIL
+  test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context) (state='matrix-outside-text') ... FAIL
+  test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context) (state='show-outside-text') ... FAIL
+  test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context) (state='graphics-underflow') ... FAIL
+  test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context) (state='graphics-unclosed') ... FAIL
+  test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context) (state='marked-underflow') ... FAIL
+  test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context) (state='marked-unclosed') ... FAIL
+  test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context) (state='marked-crosses-text') ... FAIL
+  test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context) (state='text-crosses-marked') ... FAIL
+  test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context) (state='form-in-text-object') ... FAIL
+  test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context) (state='form-does-not-pop-caller-graphics') ... FAIL
+
+======================================================================
+FAIL: test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context) (state='nested-text')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 41, in test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context
+    self.observe(directory, pdf, expected, 'content-state' if expected == 'fail' else None, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 695, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : nested-text.pdf: Page and nested Form content satisfy the qualified operand grammar.
+
+======================================================================
+FAIL: test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context) (state='unmatched-text-end')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 41, in test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context
+    self.observe(directory, pdf, expected, 'content-state' if expected == 'fail' else None, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 695, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : unmatched-text-end.pdf: Page and nested Form content satisfy the qualified operand grammar.
+
+======================================================================
+FAIL: test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context) (state='unterminated-text')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 41, in test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context
+    self.observe(directory, pdf, expected, 'content-state' if expected == 'fail' else None, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 695, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : unterminated-text.pdf: Page and nested Form content satisfy the qualified operand grammar.
+
+======================================================================
+FAIL: test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context) (state='matrix-outside-text')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 41, in test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context
+    self.observe(directory, pdf, expected, 'content-state' if expected == 'fail' else None, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 695, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : matrix-outside-text.pdf: Page and nested Form content satisfy the qualified operand grammar.
+
+======================================================================
+FAIL: test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context) (state='show-outside-text')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 41, in test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context
+    self.observe(directory, pdf, expected, 'content-state' if expected == 'fail' else None, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 695, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : show-outside-text.pdf: Page and nested Form content satisfy the qualified operand grammar.
+
+======================================================================
+FAIL: test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context) (state='graphics-underflow')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 41, in test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context
+    self.observe(directory, pdf, expected, 'content-state' if expected == 'fail' else None, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 695, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : graphics-underflow.pdf: Page and nested Form content satisfy the qualified operand grammar.
+
+======================================================================
+FAIL: test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context) (state='graphics-unclosed')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 41, in test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context
+    self.observe(directory, pdf, expected, 'content-state' if expected == 'fail' else None, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 695, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : graphics-unclosed.pdf: Page and nested Form content satisfy the qualified operand grammar.
+
+======================================================================
+FAIL: test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context) (state='marked-underflow')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 41, in test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context
+    self.observe(directory, pdf, expected, 'content-state' if expected == 'fail' else None, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 695, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : marked-underflow.pdf: Page and nested Form content satisfy the qualified operand grammar.
+
+======================================================================
+FAIL: test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context) (state='marked-unclosed')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 41, in test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context
+    self.observe(directory, pdf, expected, 'content-state' if expected == 'fail' else None, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 695, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : marked-unclosed.pdf: Page and nested Form content satisfy the qualified operand grammar.
+
+======================================================================
+FAIL: test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context) (state='marked-crosses-text')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 41, in test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context
+    self.observe(directory, pdf, expected, 'content-state' if expected == 'fail' else None, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 695, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : marked-crosses-text.pdf: Page and nested Form content satisfy the qualified operand grammar.
+
+======================================================================
+FAIL: test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context) (state='text-crosses-marked')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 41, in test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context
+    self.observe(directory, pdf, expected, 'content-state' if expected == 'fail' else None, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 695, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : text-crosses-marked.pdf: Page and nested Form content satisfy the qualified operand grammar.
+
+======================================================================
+FAIL: test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context) (state='form-in-text-object')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 53, in test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context
+    self.observe(directory, pdf, 'fail', 'content-state', scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 695, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : form-in-text-object.pdf: Page and nested Form content satisfy the qualified operand grammar.
+
+======================================================================
+FAIL: test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context) (state='form-does-not-pop-caller-graphics')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 58, in test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context
+    self.observe(directory, pdf, 'fail', 'content-state', scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 695, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : form-does-not-pop-caller-graphics.pdf: Page and nested Form content satisfy the qualified operand grammar.
+
+----------------------------------------------------------------------
+Ran 1 test in 4.239s
+
+FAILED (failures=13)

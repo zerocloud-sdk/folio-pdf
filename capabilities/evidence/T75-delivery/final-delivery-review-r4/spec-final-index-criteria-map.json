@@ -1,0 +1,1057 @@
+{
+  "original-goal": {
+    "path": "/home/ubuntu/.codex/attachments/77353239-0dda-4ee1-b4bb-ce7fb3fa0f9b/pasted-text-1.txt",
+    "sha256": "794423d41161169ea6a4fee993553f777d6249cb05c5fe4d34f59657ab18f83f"
+  },
+  "phase1-map": {
+    "path": "/tmp/t75-final-spec-r4-phase1-3jll045g/goal-28-criteria-map-final.json",
+    "sha256": "09cbb08dc23a919a76136ddf1657458a60686c5727afc79a9210af12b76c40d6"
+  },
+  "reviewed-baseline": "5b1603c435f11c40368f75b7b9a2777c9c5e9761",
+  "reviewed-frozen-tree": "b12a83ab82a0e59425c87fecd16bf317e581adaf",
+  "candidate": "ab18cc9c0473730a6aabec5d12e3172f22bea23a0a0f9529052a2bc186cbfc1b",
+  "contract": "3de508f79fcbef7258feee8abc013d6f02b000840cac1cb263cb0d6f927b8f2b",
+  "criteria": [
+    {
+      "number": 1,
+      "goal-first-line": 57,
+      "goal-last-line": 58,
+      "exact-lines": [
+        "  - [ ] Page Text preserves deterministic page/content-stream execution order,",
+        "        including nested Form invocations and split Contents arrays."
+      ],
+      "criterion": "Page Text preserves deterministic page/content-stream execution order, including nested Form invocations and split Contents arrays.",
+      "phase1-assessment": "Deterministic execution order covers nested/repeated Forms and tokens spanning Contents members.",
+      "phase1-evidence": [
+        "complete-source-review-coverage-inspection.json",
+        "five-certification-continuity-inspection.json",
+        "docs/t13-certification.md:75"
+      ],
+      "current-public-observers": [
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 153,
+          "method": "pageAndStreamOrderGeometryAndExplicitMappingsAreDeterministic",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 1910,
+          "method": "contentSyntaxCanSpanContentsMembersAsOneCombinedStream",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 2879,
+          "method": "nestedFormsAreOrderedAndBoundedByTraversalDepthAndBytes",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        }
+      ],
+      "completion-marked": false,
+      "phase2-status": "Technical evidence established for the reviewed frozen tree",
+      "phase2-evidence": [
+        "independent-frozen-index-inspection.json",
+        "all-six-publication-inventory-inspection.json",
+        "completed-evidence-archive-inspection.json"
+      ],
+      "phase2-assessment": "Exact frozen source/contract/artifact/harness and complete staged-file/Git-blob identity preserve the independently closed phase1 behavior and public observers; six current certifications and validation are now complete."
+    },
+    {
+      "number": 2,
+      "goal-first-line": 59,
+      "goal-last-line": 60,
+      "exact-lines": [
+        "  - [ ] Glyph geometry matches independently specified expectations under the",
+        "        documented matrix, advance, rotation and coordinate conventions."
+      ],
+      "criterion": "Glyph geometry matches independently specified expectations under the documented matrix, advance, rotation and coordinate conventions.",
+      "phase1-assessment": "Authored matrices/advances and independent full RGB/control inspections cover geometry; renderer output does not define expectations.",
+      "phase1-evidence": [
+        "complete-source-review-coverage-inspection.json",
+        "five-certification-continuity-inspection.json",
+        "capabilities/evidence/T75-text-semantic.md",
+        "capabilities/evidence/T75-text-visual.md",
+        "docs/t13-certification.md:216"
+      ],
+      "current-public-observers": [
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 186,
+          "method": "geometrySeparatesGlyphAdvanceFromSpacingAndTjAdjustments",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 1687,
+          "method": "type3RotatedMetricsStayHorizontalAndUndefinedWidthsStayZero",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        }
+      ],
+      "completion-marked": false,
+      "phase2-status": "Technical evidence established for the reviewed frozen tree",
+      "phase2-evidence": [
+        "independent-frozen-index-inspection.json",
+        "all-six-publication-inventory-inspection.json",
+        "completed-evidence-archive-inspection.json"
+      ],
+      "phase2-assessment": "Exact frozen source/contract/artifact/harness and complete staged-file/Git-blob identity preserve the independently closed phase1 behavior and public observers; six current certifications and validation are now complete."
+    },
+    {
+      "number": 3,
+      "goal-first-line": 61,
+      "goal-last-line": 62,
+      "exact-lines": [
+        "  - [ ] Character mappings retain exact source bytes and explicit/inferred/",
+        "        contradictory/missing evidence without fabricated Unicode certainty."
+      ],
+      "criterion": "Character mappings retain exact source bytes and explicit/inferred/ contradictory/missing evidence without fabricated Unicode certainty.",
+      "phase1-assessment": "Exact source bytes and explicit, inferred, contradictory and missing mapping observations remain distinct; no fabricated Unicode certainty.",
+      "phase1-evidence": [
+        "complete-source-review-coverage-inspection.json",
+        "five-certification-continuity-inspection.json",
+        "docs/adr/0035-represent-uncertain-unicode-mappings.md"
+      ],
+      "current-public-observers": [
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 341,
+          "method": "missingAndContradictoryMappingsRemainExplicitUncertainty",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 427,
+          "method": "inheritedToUnicodeMappingsUseExactBytesAndLocalOverrides",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 732,
+          "method": "detachedMappingTextRemainsOwnedAfterTheQueryCompletes",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-migration-itext7/src/test/java/net/zerocloud/pdf/itext7/consumer/TextStructureFacadeTest.java",
+          "line": 274,
+          "method": "mappingEvidenceAndDiagnosticsRemainUncertainAcrossAllTextViews",
+          "source-sha256": "a81a3373ec466810bf8ed023924126915807ff1e9f49bd0ba158334737b01ebe"
+        }
+      ],
+      "completion-marked": false,
+      "phase2-status": "Technical evidence established for the reviewed frozen tree",
+      "phase2-evidence": [
+        "independent-frozen-index-inspection.json",
+        "all-six-publication-inventory-inspection.json",
+        "completed-evidence-archive-inspection.json"
+      ],
+      "phase2-assessment": "Exact frozen source/contract/artifact/harness and complete staged-file/Git-blob identity preserve the independently closed phase1 behavior and public observers; six current certifications and validation are now complete."
+    },
+    {
+      "number": 4,
+      "goal-first-line": 63,
+      "goal-last-line": 65,
+      "exact-lines": [
+        "  - [ ] Marked Content and the approved read-only Logical Structure profile",
+        "        satisfy their documented ordering, MCID, role, language and replacement/",
+        "        alternate-text contracts."
+      ],
+      "criterion": "Marked Content and the approved read-only Logical Structure profile satisfy their documented ordering, MCID, role, language and replacement/ alternate-text contracts.",
+      "phase1-assessment": "Public ordering, stream MCIDs, roles, languages, ActualText and Alt are covered; original structure findings and all later appearance/namespace corrections are closed.",
+      "phase1-evidence": [
+        "complete-source-review-coverage-inspection.json",
+        "five-certification-continuity-inspection.json",
+        "selected-review-originals/final-review/appearance-spec-final-closure/report.md"
+      ],
+      "current-public-observers": [
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 232,
+          "method": "taggedHierarchyKeepsContentLanguageRolesAndAlternatesDistinct",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 313,
+          "method": "nestedMarkedContentPreservesOrderParentsAndActualTextPrecedence",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 2157,
+          "method": "pageAndFormMcrsUseDistinctStreamScopesInBothProfiles",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 3011,
+          "method": "namespaceRoleChainsPreserveDeclaredIdentityAndUseOneSharedGraphBudget",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-migration-itext7/src/test/java/net/zerocloud/pdf/itext7/consumer/TextStructureFacadeTest.java",
+          "line": 161,
+          "method": "boundedStructureRootsRetainRolesLanguagesReplacementsAndOrderedContent",
+          "source-sha256": "a81a3373ec466810bf8ed023924126915807ff1e9f49bd0ba158334737b01ebe"
+        }
+      ],
+      "completion-marked": false,
+      "phase2-status": "Technical evidence established for the reviewed frozen tree",
+      "phase2-evidence": [
+        "independent-frozen-index-inspection.json",
+        "all-six-publication-inventory-inspection.json",
+        "completed-evidence-archive-inspection.json"
+      ],
+      "phase2-assessment": "Exact frozen source/contract/artifact/harness and complete staged-file/Git-blob identity preserve the independently closed phase1 behavior and public observers; six current certifications and validation are now complete."
+    },
+    {
+      "number": 5,
+      "goal-first-line": 66,
+      "goal-last-line": 67,
+      "exact-lines": [
+        "  - [ ] The structure limitation blocker is resolved through source-traceable",
+        "        behavior and evidence covering the required Foundation profile."
+      ],
+      "criterion": "The structure limitation blocker is resolved through source-traceable behavior and evidence covering the required Foundation profile.",
+      "phase1-assessment": "Required successful MCR/OBJR/Form/namespace/appearance cases are implemented and certified, with explicit unsupported boundaries rather than safe rejection replacing required success.",
+      "phase1-evidence": [
+        "complete-source-review-coverage-inspection.json",
+        "five-certification-continuity-inspection.json",
+        "selected-review-originals/step4-review/optional-spec-closure/report.md",
+        "selected-review-originals/final-review/appearance-spec-final-closure/report.md",
+        "docs/t13-certification.md:64"
+      ],
+      "current-public-observers": [
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 2086,
+          "method": "optionalFormTypePreservesExecutedAndReferencedFormOutcomes",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 2290,
+          "method": "appearanceMcrAcceptsAnOmittedOrNullOptionalStreamOwner",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 2634,
+          "method": "wholeFormObjectReferenceRequiresEachNormalAppearancePage",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 3184,
+          "method": "directRootNamespaceDeclarationsRetainIndirectElementIdentityAndExactBounds",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        }
+      ],
+      "completion-marked": false,
+      "phase2-status": "Technical evidence established for the reviewed frozen tree",
+      "phase2-evidence": [
+        "independent-frozen-index-inspection.json",
+        "all-six-publication-inventory-inspection.json",
+        "completed-evidence-archive-inspection.json"
+      ],
+      "phase2-assessment": "Exact frozen source/contract/artifact/harness and complete staged-file/Git-blob identity preserve the independently closed phase1 behavior and public observers; six current certifications and validation are now complete."
+    },
+    {
+      "number": 6,
+      "goal-first-line": 68,
+      "goal-last-line": 69,
+      "exact-lines": [
+        "  - [ ] The font/CMap/content limitation blocker is resolved through",
+        "        source-traceable behavior and evidence covering required extraction cases."
+      ],
+      "criterion": "The font/CMap/content limitation blocker is resolved through source-traceable behavior and evidence covering required extraction cases.",
+      "phase1-assessment": "Type 3 declared metrics, 61 predefined Encoding programs, four UCS2 parents and bounded embedded CMap inheritance have successful public coverage and qualified controls; source/provenance closures remain exact.",
+      "phase1-evidence": [
+        "complete-source-review-coverage-inspection.json",
+        "five-certification-continuity-inspection.json",
+        "docs/t13-certification.md:76"
+      ],
+      "current-public-observers": [
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 1657,
+          "method": "type3DeclaredMetricsExtractWithoutExecutingGlyphPrograms",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 1212,
+          "method": "everyStandardPredefinedEncodingAcceptsItsIndependentlyCountedBudget",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 550,
+          "method": "predefinedToUnicodeInheritanceUsesOnlyBoundedBundledResources",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 1395,
+          "method": "inheritedEncodingResolvesCidZeroNotdefAndBothDescendantKinds",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        }
+      ],
+      "completion-marked": false,
+      "phase2-status": "Technical evidence established for the reviewed frozen tree",
+      "phase2-evidence": [
+        "independent-frozen-index-inspection.json",
+        "all-six-publication-inventory-inspection.json",
+        "completed-evidence-archive-inspection.json"
+      ],
+      "phase2-assessment": "Exact frozen source/contract/artifact/harness and complete staged-file/Git-blob identity preserve the independently closed phase1 behavior and public observers; six current certifications and validation are now complete."
+    },
+    {
+      "number": 7,
+      "goal-first-line": 70,
+      "goal-last-line": 71,
+      "exact-lines": [
+        "  - [ ] The complete matching extraction Facade member set is implemented and",
+        "        recorded in the Foundation obligation and Facade Surface Manifest."
+      ],
+      "criterion": "The complete matching extraction Facade member set is implemented and recorded in the Foundation obligation and Facade Surface Manifest.",
+      "phase1-assessment": "Six matching extraction members are present in both authorities and implementation; complete detached value access is retained.",
+      "phase1-evidence": [
+        "complete-source-review-coverage-inspection.json",
+        "capabilities/facade-surface.yaml",
+        "capabilities/foundation-requirements.yaml",
+        "docs/t13-certification.md:18"
+      ],
+      "current-public-observers": [],
+      "completion-marked": false,
+      "phase2-status": "Technical evidence established for the reviewed frozen tree",
+      "phase2-evidence": [
+        "independent-frozen-index-inspection.json",
+        "all-six-publication-inventory-inspection.json",
+        "completed-evidence-archive-inspection.json"
+      ],
+      "phase2-assessment": "Exact frozen source/contract/artifact/harness and complete staged-file/Git-blob identity preserve the independently closed phase1 behavior and public observers; six current certifications and validation are now complete."
+    },
+    {
+      "number": 8,
+      "goal-first-line": 72,
+      "goal-last-line": 73,
+      "exact-lines": [
+        "  - [ ] Compiled Stable and Preview artifact surfaces agree with that manifest;",
+        "        every new Stable member has compatible behavioral evidence."
+      ],
+      "criterion": "Compiled Stable and Preview artifact surfaces agree with that manifest; every new Stable member has compatible behavioral evidence.",
+      "phase1-assessment": "Each actual text tuple runs nine public Stable cases and two compiled artifact contracts. Whole Stable/Preview scope is 21 types/157 members; #75 adds 1 type/6 members. Twenty coexistence probes run in both orders; new extractor initialization delegation is source-reviewed, not a twenty-first probe.",
+      "phase1-evidence": [
+        "complete-source-review-coverage-inspection.json",
+        "five-certification-continuity-inspection.json",
+        "capabilities/evidence/T75-delivery/final-delivery-review-r3/historical-facade-counts.md"
+      ],
+      "current-public-observers": [],
+      "completion-marked": false,
+      "phase2-status": "Technical evidence established for the reviewed frozen tree",
+      "phase2-evidence": [
+        "independent-frozen-index-inspection.json",
+        "all-six-publication-inventory-inspection.json",
+        "completed-evidence-archive-inspection.json"
+      ],
+      "phase2-assessment": "Exact frozen source/contract/artifact/harness and complete staged-file/Git-blob identity preserve the independently closed phase1 behavior and public observers; six current certifications and validation are now complete."
+    },
+    {
+      "number": 9,
+      "goal-first-line": 74,
+      "goal-last-line": 76,
+      "exact-lines": [
+        "  - [ ] Independent project-owned fixtures cover nested Forms, split content",
+        "        arrays, ActualText/Alt, role/language inheritance, and malformed or",
+        "        unsupported structure relationships."
+      ],
+      "criterion": "Independent project-owned fixtures cover nested Forms, split content arrays, ActualText/Alt, role/language inheritance, and malformed or unsupported structure relationships.",
+      "phase1-assessment": "Five authored corpus Sources and ten Native/Facade products bind independent geometry/text/structure expectations and malformed controls; original new/untracked fixtures are covered by complete frozen-input review.",
+      "phase1-evidence": [
+        "complete-source-review-coverage-inspection.json",
+        "five-certification-continuity-inspection.json",
+        "capabilities/evidence/T13-text-logical-structure.md:81",
+        "docs/t13-certification.md:269"
+      ],
+      "current-public-observers": [],
+      "completion-marked": false,
+      "phase2-status": "Technical evidence established for the reviewed frozen tree",
+      "phase2-evidence": [
+        "independent-frozen-index-inspection.json",
+        "all-six-publication-inventory-inspection.json",
+        "completed-evidence-archive-inspection.json"
+      ],
+      "phase2-assessment": "Exact frozen source/contract/artifact/harness and complete staged-file/Git-blob identity preserve the independently closed phase1 behavior and public observers; six current certifications and validation are now complete."
+    },
+    {
+      "number": 10,
+      "goal-first-line": 77,
+      "goal-last-line": 77,
+      "exact-lines": [
+        "  - [ ] Public observers prove detached results remain valid after Session close."
+      ],
+      "criterion": "Public observers prove detached results remain valid after Session close.",
+      "phase1-assessment": "Public values survive Session/document close without backend identity assertions.",
+      "phase1-evidence": [
+        "complete-source-review-coverage-inspection.json",
+        "five-certification-continuity-inspection.json"
+      ],
+      "current-public-observers": [
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 88,
+          "method": "untaggedPageTextObservesEarlierPatchAndReturnsDetachedEvidence",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 732,
+          "method": "detachedMappingTextRemainsOwnedAfterTheQueryCompletes",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-migration-itext7/src/test/java/net/zerocloud/pdf/itext7/consumer/TextStructureFacadeTest.java",
+          "line": 59,
+          "method": "completeExtractionRetainsNativeValuesAfterCloseWithoutChangingTheSource",
+          "source-sha256": "a81a3373ec466810bf8ed023924126915807ff1e9f49bd0ba158334737b01ebe"
+        }
+      ],
+      "completion-marked": false,
+      "phase2-status": "Technical evidence established for the reviewed frozen tree",
+      "phase2-evidence": [
+        "independent-frozen-index-inspection.json",
+        "all-six-publication-inventory-inspection.json",
+        "completed-evidence-archive-inspection.json"
+      ],
+      "phase2-assessment": "Exact frozen source/contract/artifact/harness and complete staged-file/Git-blob identity preserve the independently closed phase1 behavior and public observers; six current certifications and validation are now complete."
+    },
+    {
+      "number": 11,
+      "goal-first-line": 78,
+      "goal-last-line": 78,
+      "exact-lines": [
+        "  - [ ] Public observers prove Queries observe preceding Session Commands."
+      ],
+      "criterion": "Public observers prove Queries observe preceding Session Commands.",
+      "phase1-assessment": "Queries observe earlier Session commands and publication/reopen outcomes.",
+      "phase1-evidence": [
+        "complete-source-review-coverage-inspection.json",
+        "five-certification-continuity-inspection.json"
+      ],
+      "current-public-observers": [
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 88,
+          "method": "untaggedPageTextObservesEarlierPatchAndReturnsDetachedEvidence",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-migration-itext7/src/test/java/net/zerocloud/pdf/itext7/consumer/TextStructureFacadeTest.java",
+          "line": 93,
+          "method": "pageTextFollowsPageIdentityAndEarlierCommandsThroughPublication",
+          "source-sha256": "a81a3373ec466810bf8ed023924126915807ff1e9f49bd0ba158334737b01ebe"
+        }
+      ],
+      "completion-marked": false,
+      "phase2-status": "Technical evidence established for the reviewed frozen tree",
+      "phase2-evidence": [
+        "independent-frozen-index-inspection.json",
+        "all-six-publication-inventory-inspection.json",
+        "completed-evidence-archive-inspection.json"
+      ],
+      "phase2-assessment": "Exact frozen source/contract/artifact/harness and complete staged-file/Git-blob identity preserve the independently closed phase1 behavior and public observers; six current certifications and validation are now complete."
+    },
+    {
+      "number": 12,
+      "goal-first-line": 79,
+      "goal-last-line": 80,
+      "exact-lines": [
+        "  - [ ] Public observers prove exact-boundary success and first-excess failure",
+        "        for traversal, decompression and font-mapping limits."
+      ],
+      "criterion": "Public observers prove exact-boundary success and first-excess failure for traversal, decompression and font-mapping limits.",
+      "phase1-assessment": "All fifteen caller-limit dimensions retain exact-boundary and first-excess public evidence. Observer-budget and timeout closures do not relax product limits.",
+      "phase1-evidence": [
+        "complete-source-review-coverage-inspection.json",
+        "five-certification-continuity-inspection.json",
+        "selected-review-originals/observer-budget/spec-final-closure/report.md",
+        "selected-review-originals/worker-batch-timeout/spec-closure/report.md"
+      ],
+      "current-public-observers": [
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 2824,
+          "method": "everyLimitAcceptsItsExactBoundaryAndFailsOnExhaustion",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 806,
+          "method": "toUnicodeRangeExpansionIsCallerBoundedBeforeParsing",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 1212,
+          "method": "everyStandardPredefinedEncodingAcceptsItsIndependentlyCountedBudget",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 2901,
+          "method": "formDepthHasStackSafeVersion1CeilingAndExactBoundary",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        }
+      ],
+      "completion-marked": false,
+      "phase2-status": "Technical evidence established for the reviewed frozen tree",
+      "phase2-evidence": [
+        "independent-frozen-index-inspection.json",
+        "all-six-publication-inventory-inspection.json",
+        "completed-evidence-archive-inspection.json"
+      ],
+      "phase2-assessment": "Exact frozen source/contract/artifact/harness and complete staged-file/Git-blob identity preserve the independently closed phase1 behavior and public observers; six current certifications and validation are now complete."
+    },
+    {
+      "number": 13,
+      "goal-first-line": 81,
+      "goal-last-line": 82,
+      "exact-lines": [
+        "  - [ ] Public observers prove safe all-or-nothing extraction failure in both",
+        "        Native execution profiles, without publishing a valid-looking prefix."
+      ],
+      "criterion": "Public observers prove safe all-or-nothing extraction failure in both Native execution profiles, without publishing a valid-looking prefix.",
+      "phase1-assessment": "All eight actual Native suites prove complete query failure. Split timeout tests preserve fixture coverage and product/resource guards; no valid-looking prefix is published.",
+      "phase1-evidence": [
+        "complete-source-review-coverage-inspection.json",
+        "five-certification-continuity-inspection.json"
+      ],
+      "current-public-observers": [
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 1864,
+          "method": "malformedContentSyntaxCannotPublishAValidLookingPrefix",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 1923,
+          "method": "unbalancedSupportedOperatorStateCannotPublishPrefix",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 1944,
+          "method": "unbalancedGraphicsAndPositioningStateCannotPublishPrefix",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 1966,
+          "method": "unbalancedFormOperatorStateCannotPublishPrefix",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-migration-itext7/src/test/java/net/zerocloud/pdf/itext7/consumer/TextStructureFacadeTest.java",
+          "line": 240,
+          "method": "everyFacadeEntryRejectsMalformedLaterContentWithoutReturningAPrefix",
+          "source-sha256": "a81a3373ec466810bf8ed023924126915807ff1e9f49bd0ba158334737b01ebe"
+        }
+      ],
+      "completion-marked": false,
+      "phase2-status": "Technical evidence established for the reviewed frozen tree",
+      "phase2-evidence": [
+        "independent-frozen-index-inspection.json",
+        "all-six-publication-inventory-inspection.json",
+        "completed-evidence-archive-inspection.json"
+      ],
+      "phase2-assessment": "Exact frozen source/contract/artifact/harness and complete staged-file/Git-blob identity preserve the independently closed phase1 behavior and public observers; six current certifications and validation are now complete."
+    },
+    {
+      "number": 14,
+      "goal-first-line": 83,
+      "goal-last-line": 83,
+      "exact-lines": [
+        "  - [ ] Public observers prove resource ownership and Source preservation."
+      ],
+      "criterion": "Public observers prove resource ownership and Source preservation.",
+      "phase1-assessment": "Public ownership, closed-handle behavior, original Source preservation and rewrite/reopen controls are covered.",
+      "phase1-evidence": [
+        "complete-source-review-coverage-inspection.json",
+        "five-certification-continuity-inspection.json"
+      ],
+      "current-public-observers": [
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 1556,
+          "method": "mismatchedEmbeddedType0FontCannotRepairTheLiveCosGraph",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 1598,
+          "method": "indirectFormNamesRemainReferencesInTheLiveAndRewrittenGraph",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 1751,
+          "method": "malformedType3MetricsAndProgramsFailWithoutChangingTheSource",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-migration-itext7/src/test/java/net/zerocloud/pdf/itext7/consumer/TextStructureFacadeTest.java",
+          "line": 331,
+          "method": "callerStreamsRemainOpenAndClosedHandlesRejectEveryExtractionEntry",
+          "source-sha256": "a81a3373ec466810bf8ed023924126915807ff1e9f49bd0ba158334737b01ebe"
+        }
+      ],
+      "completion-marked": false,
+      "phase2-status": "Technical evidence established for the reviewed frozen tree",
+      "phase2-evidence": [
+        "independent-frozen-index-inspection.json",
+        "all-six-publication-inventory-inspection.json",
+        "completed-evidence-archive-inspection.json"
+      ],
+      "phase2-assessment": "Exact frozen source/contract/artifact/harness and complete staged-file/Git-blob identity preserve the independently closed phase1 behavior and public observers; six current certifications and validation are now complete."
+    },
+    {
+      "number": 15,
+      "goal-first-line": 84,
+      "goal-last-line": 85,
+      "exact-lines": [
+        "  - [ ] Native and Facade parity is demonstrated through public outcomes,",
+        "        reopened files, Publication Receipts and stable safe failures."
+      ],
+      "criterion": "Native and Facade parity is demonstrated through public outcomes, reopened files, Publication Receipts and stable safe failures.",
+      "phase1-assessment": "Native and actual IN_PROCESS Facade outcomes, detached values, reopened products, Publication Receipts and stable safe failure match. Facade never supplies Worker evidence.",
+      "phase1-evidence": [
+        "complete-source-review-coverage-inspection.json",
+        "five-certification-continuity-inspection.json"
+      ],
+      "current-public-observers": [
+        {
+          "path": "pdf-migration-itext7/src/test/java/net/zerocloud/pdf/itext7/consumer/TextStructureFacadeTest.java",
+          "line": 93,
+          "method": "pageTextFollowsPageIdentityAndEarlierCommandsThroughPublication",
+          "source-sha256": "a81a3373ec466810bf8ed023924126915807ff1e9f49bd0ba158334737b01ebe"
+        },
+        {
+          "path": "pdf-migration-itext7/src/test/java/net/zerocloud/pdf/itext7/consumer/TextStructureFacadeTest.java",
+          "line": 274,
+          "method": "mappingEvidenceAndDiagnosticsRemainUncertainAcrossAllTextViews",
+          "source-sha256": "a81a3373ec466810bf8ed023924126915807ff1e9f49bd0ba158334737b01ebe"
+        },
+        {
+          "path": "pdf-migration-itext7/src/test/java/net/zerocloud/pdf/itext7/consumer/TextStructureFacadeTest.java",
+          "line": 240,
+          "method": "everyFacadeEntryRejectsMalformedLaterContentWithoutReturningAPrefix",
+          "source-sha256": "a81a3373ec466810bf8ed023924126915807ff1e9f49bd0ba158334737b01ebe"
+        }
+      ],
+      "completion-marked": false,
+      "phase2-status": "Technical evidence established for the reviewed frozen tree",
+      "phase2-evidence": [
+        "independent-frozen-index-inspection.json",
+        "all-six-publication-inventory-inspection.json",
+        "completed-evidence-archive-inspection.json"
+      ],
+      "phase2-assessment": "Exact frozen source/contract/artifact/harness and complete staged-file/Git-blob identity preserve the independently closed phase1 behavior and public observers; six current certifications and validation are now complete."
+    },
+    {
+      "number": 16,
+      "goal-first-line": 86,
+      "goal-last-line": 87,
+      "exact-lines": [
+        "  - [ ] Separate independent syntax, standards, semantic and visual chains pass",
+        "        for this slice, with retained negative controls and qualified rule coverage."
+      ],
+      "criterion": "Separate independent syntax, standards, semantic and visual chains pass for this slice, with retained negative controls and qualified rule coverage.",
+      "phase1-assessment": "Text has eight independently closed raw scopes and 32 PASS chain records: separate syntax/standards/semantic/visual chains, 334 declaration +42 program rules, all retained controls and original producer provenance. Prior sealed raw readers inspect every referenced original and complete RGB.",
+      "phase1-evidence": [
+        "five-certification-continuity-inspection.json",
+        "capabilities/evidence/T75-delivery/certification-review-r4/text-jdk8-two-tuples-spec-report.md",
+        "capabilities/evidence/T75-delivery/certification-review-r4/text-jdk11-and-jdk17-three-tuples-spec-report.md",
+        "capabilities/evidence/T75-delivery/certification-review-r4/text-jdk17-and-jdk21-last-three-spec-report.md"
+      ],
+      "current-public-observers": [],
+      "completion-marked": false,
+      "phase2-status": "Technical evidence established for the reviewed frozen tree",
+      "phase2-evidence": [
+        "independent-frozen-index-inspection.json",
+        "all-six-publication-inventory-inspection.json",
+        "completed-evidence-archive-inspection.json"
+      ],
+      "phase2-assessment": "Exact frozen source/contract/artifact/harness and complete staged-file/Git-blob identity preserve the independently closed phase1 behavior and public observers; six current certifications and validation are now complete."
+    },
+    {
+      "number": 17,
+      "goal-first-line": 88,
+      "goal-last-line": 91,
+      "exact-lines": [
+        "  - [ ] Certification covers all eight actual Ubuntu 24.04/Linux x86-64",
+        "        JDK 8/11/17/21 × IN_PROCESS/HARDENED_WORKER Native combinations.",
+        "        Each record binds the tested artifacts, candidate, immutable image,",
+        "        observed JDK vendor/build, execution configuration and tool identities."
+      ],
+      "criterion": "Certification covers all eight actual Ubuntu 24.04/Linux x86-64 JDK 8/11/17/21 × IN_PROCESS/HARDENED_WORKER Native combinations. Each record binds the tested artifacts, candidate, immutable image, observed JDK vendor/build, execution configuration and tool identities.",
+      "phase1-assessment": "Text actual outer exit 0 and eight own-index tuples match dated publication, observed JDK/image, artifacts, configuration and tool identities on current candidate. Per-tuple formal126 has zero skips.",
+      "phase1-evidence": [
+        "five-certification-continuity-inspection.json",
+        "capabilities/evidence/T75-delivery/final-certification-r4/text-result.json",
+        "capabilities/evidence/T75-foundation-20260914-r4/text/observed-index.json"
+      ],
+      "current-public-observers": [],
+      "completion-marked": false,
+      "phase2-status": "Technical evidence established for the reviewed frozen tree",
+      "phase2-evidence": [
+        "independent-frozen-index-inspection.json",
+        "all-six-publication-inventory-inspection.json",
+        "completed-evidence-archive-inspection.json"
+      ],
+      "phase2-assessment": "Exact frozen source/contract/artifact/harness and complete staged-file/Git-blob identity preserve the independently closed phase1 behavior and public observers; six current certifications and validation are now complete."
+    },
+    {
+      "number": 18,
+      "goal-first-line": 92,
+      "goal-last-line": 93,
+      "exact-lines": [
+        "  - [ ] Evidence validation rejects missing tools/rules, failed controls and",
+        "        mismatched identities; changing labels or producer names cannot yield PASS."
+      ],
+      "criterion": "Evidence validation rejects missing tools/rules, failed controls and mismatched identities; changing labels or producer names cannot yield PASS.",
+      "phase1-assessment": "Source/qualification negative controls reject opacity, tool/rule omissions, failed controls, mismatched identities and relabeling. Final inventory validation of the completed authority is still required.",
+      "phase1-evidence": [
+        "complete-source-review-coverage-inspection.json",
+        "five-certification-continuity-inspection.json",
+        "scripts/t13_foundation_reports.py",
+        "scripts/tests/test_t13_foundation.py",
+        "capabilities/evidence/T75-delivery/recorder-r6/README.md"
+      ],
+      "current-public-observers": [],
+      "completion-marked": false,
+      "phase2-status": "Technical evidence established for the reviewed frozen tree",
+      "phase2-evidence": [
+        "independent-frozen-index-inspection.json",
+        "all-six-publication-inventory-inspection.json",
+        "completed-evidence-archive-inspection.json"
+      ],
+      "phase2-assessment": "Retained negative-control/source review remains bound; actual final inventory validate exited0 on all48certifications/192PASS, retaining strict tool/rule/control/identity validation."
+    },
+    {
+      "number": 19,
+      "goal-first-line": 94,
+      "goal-last-line": 95,
+      "exact-lines": [
+        "  - [ ] Capability Matrix, Facade Surface, Foundation authorities, generated/public",
+        "        English contracts, Chinese usage material and clean-room provenance agree."
+      ],
+      "criterion": "Capability Matrix, Facade Surface, Foundation authorities, generated/public English contracts, Chinese usage material and clean-room provenance agree.",
+      "phase1-assessment": "Frozen source/contracts and scope/count addendum are covered. Final generated authority/views and final index agreement remain unobserved in this phase.",
+      "phase1-evidence": [
+        "complete-source-review-coverage-inspection.json",
+        "capabilities/capability-matrix.yaml",
+        "capabilities/facade-surface.yaml",
+        "README.md",
+        "docs/zh-CN/getting-started.md",
+        "PROVENANCE.md"
+      ],
+      "current-public-observers": [],
+      "completion-marked": false,
+      "phase2-status": "Partial: current documentation finding SPEC-DOC-01",
+      "phase2-evidence": [
+        "independent-frozen-index-inspection.json",
+        "all-six-publication-inventory-inspection.json",
+        "completed-evidence-archive-inspection.json",
+        "semantic-evidence-index-current-finding.json"
+      ],
+      "phase2-assessment": "Current capability/facade/provenance/English-Chinese sources and actual generated authorities remain bound, but T75-text-semantic.md:24 says124 while current T13 and every actual text tuple require126. The exact documentation-only correction and final index binding remain required.",
+      "open-finding": "SPEC-DOC-01"
+    },
+    {
+      "number": 20,
+      "goal-first-line": 96,
+      "goal-last-line": 98,
+      "exact-lines": [
+        "  - [ ] Foundation readiness reports text satisfied and retains valid certification",
+        "        for previously completed obligations on the final candidate. Unrelated",
+        "        unfinished obligations may keep overall readiness NOT READY."
+      ],
+      "criterion": "Foundation readiness reports text satisfied and retains valid certification for previously completed obligations on the final candidate. Unrelated unfinished obligations may keep overall readiness NOT READY.",
+      "phase1-assessment": "Five current obligations are published: text/transactions/values/pages/metadata =40 certifications/160 PASS. Annotations, final48/192, and actual all-six-satisfied readiness assertions are explicitly deferred; unrelated overall NOT READY is permitted.",
+      "phase1-evidence": [
+        "five-certification-continuity-inspection.json",
+        "docs/t13-certification.md:509"
+      ],
+      "current-public-observers": [],
+      "completion-marked": false,
+      "phase2-status": "Technical evidence established for the reviewed frozen tree",
+      "phase2-evidence": [
+        "independent-frozen-index-inspection.json",
+        "all-six-publication-inventory-inspection.json",
+        "completed-evidence-archive-inspection.json"
+      ],
+      "phase2-assessment": "All six current own-indexes equal their published subsets:48certifications/192PASS. Actual final inventory separately found one satisfied row per obligation. Overall NOT READY remains correct for unrelated obligations."
+    },
+    {
+      "number": 21,
+      "goal-first-line": 99,
+      "goal-last-line": 100,
+      "exact-lines": [
+        "  - [ ] Focused behavior, Facade, recorder and independent-tool qualification tests",
+        "        pass; independent-tool tests actually run with the required tools."
+      ],
+      "criterion": "Focused behavior, Facade, recorder and independent-tool qualification tests pass; independent-tool tests actually run with the required tools.",
+      "phase1-assessment": "Closed full/incremental reviews bind focused RED/GREEN behavior, Facade, recorder and actual-tool qualification lineage. Current full host/matrix and formal tuple checks pass; earlier failed aggregates remain failed historical observations.",
+      "phase1-evidence": [
+        "complete-source-review-coverage-inspection.json",
+        "validation-history-binding-inspection.json",
+        "five-certification-continuity-inspection.json",
+        "selected-review-originals/observer-budget/spec-final-closure/report.md",
+        "selected-review-originals/worker-batch-timeout/spec-closure/report.md",
+        "selected-review-originals/inventory-read-bound/spec-review-archive-identity/report.md"
+      ],
+      "current-public-observers": [],
+      "completion-marked": false,
+      "phase2-status": "Technical evidence established for the reviewed frozen tree",
+      "phase2-evidence": [
+        "independent-frozen-index-inspection.json",
+        "all-six-publication-inventory-inspection.json",
+        "completed-evidence-archive-inspection.json"
+      ],
+      "phase2-assessment": "Closed focused/actual-tool qualification lineage, complete host/four-JDK validation and every current formal suite remain exact. Historical failed aggregates are not relabeled as passing."
+    },
+    {
+      "number": 22,
+      "goal-first-line": 101,
+      "goal-last-line": 102,
+      "exact-lines": [
+        "  - [ ] ./scripts/inventory validate and ./scripts/inventory check pass, including",
+        "        resolution of the recorded generated-readiness failure."
+      ],
+      "criterion": "./scripts/inventory validate and ./scripts/inventory check pass, including resolution of the recorded generated-readiness failure.",
+      "phase1-assessment": "Known baseline stale-readiness failure and later r3 oversize text-evidence issue are retained. The exact five-file reader fix passed17 inventory tests with both review axes closed; its16MiB accepted-input bound does not claim total-I/O or heap bounds. Final generate/validate/check plus explicit satisfied assertion have not been approved.",
+      "phase1-evidence": [
+        "complete-source-review-coverage-inspection.json",
+        "validation-history-binding-inspection.json",
+        "selected-review-originals/inventory-read-bound/spec-review-archive-identity/report.md",
+        "capabilities/evidence/T75-delivery/inventory-read-bound/README.md"
+      ],
+      "current-public-observers": [],
+      "completion-marked": false,
+      "phase2-status": "Technical evidence established for the reviewed frozen tree",
+      "phase2-evidence": [
+        "independent-frozen-index-inspection.json",
+        "all-six-publication-inventory-inspection.json",
+        "completed-evidence-archive-inspection.json"
+      ],
+      "phase2-assessment": "Actual final generate, validate, check and their queue all exited0; explicit six-row satisfied assertions passed. The frozen1933/30 input set is unchanged; the independently closed16MiB accepted-record bound retains its documented total-I/O/heap limits."
+    },
+    {
+      "number": 23,
+      "goal-first-line": 103,
+      "goal-last-line": 103,
+      "exact-lines": [
+        "  - [ ] ./mvnw -B -ntp verify passes."
+      ],
+      "criterion": "./mvnw -B -ntp verify passes.",
+      "phase1-assessment": "Current r4 full host verify actual0; 1507 tests,0 failures,0 errors,4 documented default skips,all10modules. All177 reports/87XML and log are retained and independently checked.",
+      "phase1-evidence": [
+        "validation-history-binding-inspection.json",
+        "capabilities/evidence/T75-delivery/final-validation-r4/host-full-verify-receipt.json"
+      ],
+      "current-public-observers": [],
+      "completion-marked": false,
+      "phase2-status": "Technical evidence established for the reviewed frozen tree",
+      "phase2-evidence": [
+        "independent-frozen-index-inspection.json",
+        "all-six-publication-inventory-inspection.json",
+        "completed-evidence-archive-inspection.json"
+      ],
+      "phase2-assessment": "Complete current host verify actual0,1507tests/0failures/0errors/4 documented defaultskips; retained177reports/87XML and full log remain identity-bound to phase1 validation review."
+    },
+    {
+      "number": 24,
+      "goal-first-line": 104,
+      "goal-last-line": 104,
+      "exact-lines": [
+        "  - [ ] ./scripts/verify-jdk-matrix.sh passes on JDK 8, 11, 17 and 21."
+      ],
+      "criterion": "./scripts/verify-jdk-matrix.sh passes on JDK 8, 11, 17 and 21.",
+      "phase1-assessment": "Current r4 four-JDK matrix actual0; each1507/0/0/4,all10modules. Complete log covers allfour;177reports/87XML represent lastJDK21 only, without claiming earlier XML copies.",
+      "phase1-evidence": [
+        "validation-history-binding-inspection.json",
+        "capabilities/evidence/T75-delivery/final-validation-r4/jdk-matrix-receipt.json"
+      ],
+      "current-public-observers": [],
+      "completion-marked": false,
+      "phase2-status": "Technical evidence established for the reviewed frozen tree",
+      "phase2-evidence": [
+        "independent-frozen-index-inspection.json",
+        "all-six-publication-inventory-inspection.json",
+        "completed-evidence-archive-inspection.json"
+      ],
+      "phase2-assessment": "Complete current four-JDK matrix actual0; each1507/0/0/4 and all10modules. Full log coversall4; retained177reports/87XML correspond only to finalJDK21."
+    },
+    {
+      "number": 25,
+      "goal-first-line": 105,
+      "goal-last-line": 106,
+      "exact-lines": [
+        "  - [ ] The applicable code-review flow completes Standards and Spec review against",
+        "        5b1603c435f11c40368f75b7b9a2777c9c5e9761, with applicable findings resolved."
+      ],
+      "criterion": "The applicable code-review flow completes Standards and Spec review against 5b1603c435f11c40368f75b7b9a2777c9c5e9761, with applicable findings resolved.",
+      "phase1-assessment": "Original complete independent reviews and all27 cumulative identity-affecting deltas are bound to fixed baseline and current1933source/30contract inputs, including new/untracked files. This originally fork-none independent thread continues after allocation limit; no newly created fresh thread is claimed. Final two-axis frozen-index approval remains deferred.",
+      "phase1-evidence": [
+        "complete-source-review-coverage-inspection.json",
+        "review-archive-inspection.json",
+        "/tmp/t75-final-review-fixed-baseline-r4-zpbk95st/reviewer-allocation-boundary.json"
+      ],
+      "current-public-observers": [],
+      "completion-marked": false,
+      "phase2-status": "Final review closure pending the bounded documentation/artifact delta",
+      "phase2-evidence": [
+        "independent-frozen-index-inspection.json",
+        "all-six-publication-inventory-inspection.json",
+        "completed-evidence-archive-inspection.json"
+      ],
+      "phase2-assessment": "Original complete independent source review and every26source/1contract increment remain exact. This independent Spec phase2 checked the complete fixed-BASE frozen index and records one current documentation finding. Parent must close the correction and combine both independent axes before completion marks. Existing independent thread reuse after allocation failure is explicit."
+    },
+    {
+      "number": 26,
+      "goal-first-line": 107,
+      "goal-last-line": 109,
+      "exact-lines": [
+        "  - [ ] The commit gate is respected: commit only when authorized in the execution",
+        "        session and after all criteria pass, using the required real-name DCO",
+        "        sign-off. Without authorization, leave the reviewed changes uncommitted."
+      ],
+      "criterion": "The commit gate is respected: commit only when authorized in the execution session and after all criteria pass, using the required real-name DCO sign-off. Without authorization, leave the reviewed changes uncommitted.",
+      "phase1-assessment": "Later explicit user instruction authorizes DCO commit/push/close only after all technical gates. HEAD remains baseline, canonical committed diff and staged index are empty at setup; WIP is reviewed as such. No delivery action is performed or approved by phase1.",
+      "phase1-evidence": [
+        "authorization.json",
+        "/tmp/t75-final-review-fixed-baseline-r4-zpbk95st/reviewer-allocation-boundary.json",
+        "docs/t13-certification.md:520"
+      ],
+      "current-public-observers": [],
+      "completion-marked": false,
+      "phase2-status": "Authorized delivery actions pending completed technical gates",
+      "phase2-evidence": [
+        "independent-frozen-index-inspection.json",
+        "all-six-publication-inventory-inspection.json",
+        "completed-evidence-archive-inspection.json"
+      ],
+      "phase2-assessment": "Later user instruction authorizes real-name DCOcommit, push, remote verification and closure#75. HEAD remains fixedBASE and this reviewer performs none of those actions. No permission is requested again."
+    },
+    {
+      "number": 27,
+      "goal-first-line": 110,
+      "goal-last-line": 112,
+      "exact-lines": [
+        "  - [ ] Final git diff --check passes and the workspace contains only intentional",
+        "        ticket changes plus protected pre-existing work; remove only task-created",
+        "        temporary artifacts."
+      ],
+      "criterion": "Final git diff --check passes and the workspace contains only intentional ticket changes plus protected pre-existing work; remove only task-created temporary artifacts.",
+      "phase1-assessment": "Bounded Git attributes preserve raw .txt/.log bytes and have independent closure. Final force-staging of ignored logs, full frozen-index byte verification, intentional workspace and diff--check remain required. Historical duplicate removal only followed full254118-member archive/live equality.",
+      "phase1-evidence": [
+        "validation-history-binding-inspection.json",
+        "capabilities/evidence/T75-delivery/git-retention/spec-report.md"
+      ],
+      "current-public-observers": [],
+      "completion-marked": false,
+      "phase2-status": "Technical evidence established for the reviewed frozen tree",
+      "phase2-evidence": [
+        "independent-frozen-index-inspection.json",
+        "all-six-publication-inventory-inspection.json",
+        "completed-evidence-archive-inspection.json",
+        "scoped-retention-rule-inspection.json",
+        "final-staged-intent-and-retention-inspection.json"
+      ],
+      "phase2-assessment": "All648091stagedentries match frozen treeb12a83ab82a0e59425c87fecd16bf317e581adaf; every272499changedoriginal matches its actual Gitblob, mode and SHA. Both retained whitespace checks exited0 after six narrowly scoped retention rules. All782ignoredoriginal logs are included; no baseline path removed. The rules match91data paths, not merely59diagnosed paths. All39385files in five removed historical tmpdirs remain archive-bound. Later documentation/audit delta requires its own byte/index/whitespace verification."
+    },
+    {
+      "number": 28,
+      "goal-first-line": 113,
+      "goal-last-line": 114,
+      "exact-lines": [
+        "  - [ ] The execution receipt identifies validation results, evidence locations,",
+        "        review outcome, commit status and any remaining limitations."
+      ],
+      "criterion": "The execution receipt identifies validation results, evidence locations, review outcome, commit status and any remaining limitations.",
+      "phase1-assessment": "Draft receipt correctly distinguishes complete validation/five publications from pending final technical/delivery gates and the exact historical derived-summary exception. Final receipt/commit/push/issue status remain deferred.",
+      "phase1-evidence": [
+        "snapshot-final-execution-receipt.md",
+        "validation-history-binding-inspection.json"
+      ],
+      "current-public-observers": [],
+      "completion-marked": false,
+      "phase2-status": "Accurate pre-delivery receipt observed; final status and delivery receipt pending",
+      "phase2-evidence": [
+        "independent-frozen-index-inspection.json",
+        "all-six-publication-inventory-inspection.json",
+        "completed-evidence-archive-inspection.json",
+        "snapshot-final-execution-receipt.md"
+      ],
+      "phase2-assessment": "The staged draft reports actual validation/certification/inventory results, archive locations, pending review/delivery and the exact historical derived-summary exception. After both phase2 packets seal, finalstatus documentation and audit artifacts require bounded delta review; actual commit/push/issue status is supplied after delivery."
+    }
+  ],
+  "summary": {
+    "technical-evidence-established-for-reviewed-tree": 24,
+    "current-documentation-finding-criterion": 19,
+    "final-review-and-delivery-status-criteria": [
+      25,
+      26,
+      28
+    ],
+    "no-completion-marks": true
+  },
+  "open-current-findings": [
+    {
+      "id": "SPEC-DOC-01",
+      "severity": "P2",
+      "status": "Open in frozen tree; root plans exact124-to126 documentation-only delta after phase2 seals",
+      "spec": "Original Goal criterion19: Capability Matrix, Facade Surface, Foundation authorities, generated/public English contracts, Chinese usage material and clean-room provenance agree.",
+      "path": "capabilities/evidence/T75-text-semantic.md",
+      "frozen-index": {
+        "path": "capabilities/evidence/T75-text-semantic.md",
+        "mode": "100644",
+        "git-oid": "16e67ab2cc0b25f7cc8b0b99ccca99be0e381dc3",
+        "bytes": 1422,
+        "sha256": "e4284bac2c389943ea8b02d086802ed959c85734830ed01e7047fb06f453398f",
+        "change": "added"
+      },
+      "stale-current-text": [
+        {
+          "line": 24,
+          "text": "requires all 124 public consumer/artifact cases in each Native tuple. Facade"
+        }
+      ],
+      "required-current-formal-count": 126,
+      "current-contract": "docs/t13-certification.md:512-514",
+      "evidence": "Eight actual126 formal transcripts and independent text raw/publication closures; phase1/final all-six inspections",
+      "source-contract-freeze-membership": false,
+      "behavior-test-or-certification-failure": false,
+      "required-closure": "Change only the stale124 count to126, retain original observation, confirm1933source/30contract freeze unchanged, and independently review/index-bind the exact final documentation delta before delivery."
+    }
+  ],
+  "known-historical-constraint-exception": {
+    "goal-sentence": "Preserve historical evidence.",
+    "goal-lines": [
+      131
+    ],
+    "record": "capabilities/evidence/T75-delivery/certification-review-r3/annotations-reader-output-incident-and-closure.json",
+    "assessment": "Two original historical derived summaries are unavailable (55109/79646 bytes; oldSHA unknown). Raw certification, original commands/stdout and fresh independently checked behavior remain retained. Preservation is partial for those two derived files; no recovery or complete historical-derived retention is claimed.",
+    "new-product-or-current-r4-raw-defect": false
+  },
+  "no-current-implementation-defect-or-unauthorized-scope-expansion-found": true,
+  "final-approval": false,
+  "required-bounded-final-delta": [
+    "Exact124-to126 change in capabilities/evidence/T75-text-semantic.md",
+    "Retain/add the nine parent baseline/index audit artifacts and both sealed phase2review packets",
+    "Update only finalstatus receipt/README documentation",
+    "Confirm same1933source/30contract/candidate/contract and unchangedpriorindex/raw bytes; bind exact newindexdelta and both whitespace checks",
+    "Close SPEC-DOC-01 and combine Standards/Spec before marks or authorized delivery"
+  ]
+}

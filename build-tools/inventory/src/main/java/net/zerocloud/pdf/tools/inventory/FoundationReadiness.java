@@ -3,6 +3,7 @@ package net.zerocloud.pdf.tools.inventory;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -15,14 +16,18 @@ import java.util.stream.Stream;
 
 /** Evaluates retained evidence. It never runs acceptance tools or promotes a capability. */
 final class FoundationReadiness {
+    enum Scope { CURRENT_CANDIDATE, RETAINED_EVIDENCE }
+
     final FoundationInventory foundation;
+    private final Scope scope;
     final List<String> global = new ArrayList<String>();
     final Map<String, List<String>> blockers = new LinkedHashMap<String, List<String>>();
     String candidateIdentity = "";
     String contractIdentity = "";
 
-    FoundationReadiness(FoundationInventory foundation) {
+    FoundationReadiness(FoundationInventory foundation, Scope scope) {
         this.foundation = foundation;
+        this.scope = scope;
     }
 
     void evaluate() throws IOException {
@@ -81,6 +86,10 @@ final class FoundationReadiness {
     }
 
     boolean ready() {
+        return scope == Scope.CURRENT_CANDIDATE && recordsComplete();
+    }
+
+    boolean recordsComplete() {
         if (!global.isEmpty()) {
             return false;
         }
@@ -203,13 +212,42 @@ final class FoundationReadiness {
     private Map<String, String> verifyFiles(List<InventoryYaml> references) {
         Map<String, String> result = new TreeMap<String, String>();
         for (InventoryYaml reference : references) {
-            FoundationHashes.verify(foundation.inventory.repositoryRoot, reference, global);
+            verifyInput(reference, global);
             String path = reference.string("path");
             if (result.put(path, reference.string("sha256")) != null) {
                 reference.error("duplicate candidate file " + path);
             }
         }
         return result;
+    }
+
+    /** Portable documentation checks retained identities; the readiness gate also checks local bytes. */
+    void verifyInput(InventoryYaml reference, List<String> errors) {
+        String path = reference.string("path");
+        boolean localInput = foundation.requiredArtifacts.contains(path)
+                || path.startsWith("target/foundation-" + foundation.release + "/")
+                || path.startsWith(".build-cache/");
+        for (String source : foundation.sourceRoots) {
+            if (path.equals(source) || path.startsWith(source + "/")) {
+                localInput = false;
+            }
+        }
+        if (scope == Scope.CURRENT_CANDIDATE || !localInput) {
+            FoundationHashes.verify(foundation.inventory.repositoryRoot, reference, errors);
+            return;
+        }
+        reference.keys("path", "sha256");
+        FoundationHashes.requireHash(reference.string("sha256"), reference.location, errors);
+        try {
+            Path relative = Paths.get(path);
+            if (relative.isAbsolute() || path.indexOf('\\') >= 0
+                    || !relative.normalize().toString().replace('\\', '/').equals(path)
+                    || relative.startsWith("..")) {
+                errors.add(reference.location + ": expected a canonical repository-relative input path");
+            }
+        } catch (RuntimeException exception) {
+            errors.add(reference.location + ": invalid repository input path");
+        }
     }
 
     private Set<String> sourceFiles() throws IOException {

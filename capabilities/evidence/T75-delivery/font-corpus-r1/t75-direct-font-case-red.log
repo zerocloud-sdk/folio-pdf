@@ -1,0 +1,23 @@
+EE..
+======================================================================
+ERROR: test_direct_font_visual_case_preserves_inheritance_as_a_separate_required_semantic_case (test_t13_corpus.T13CorpusTest.test_direct_font_visual_case_preserves_inheritance_as_a_separate_required_semantic_case)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_corpus.py", line 24, in test_direct_font_visual_case_preserves_inheritance_as_a_separate_required_semantic_case
+    inherited = corpus['products']['embedded-font-inheritance']
+                ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'embedded-font-inheritance'
+
+======================================================================
+ERROR: test_embedded_font_kinds_have_literal_horizontal_vertical_and_inherited_mapping_expectations (test_t13_corpus.T13CorpusTest.test_embedded_font_kinds_have_literal_horizontal_vertical_and_inherited_mapping_expectations)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_corpus.py", line 40, in test_embedded_font_kinds_have_literal_horizontal_vertical_and_inherited_mapping_expectations
+    product = corpus['products']['embedded-font-inheritance']
+              ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'embedded-font-inheritance'
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.420s
+
+FAILED (errors=2)

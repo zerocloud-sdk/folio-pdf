@@ -1,0 +1,14 @@
+test_public_plan_binds_all_eight_native_combinations_and_actual_facade_mode (scripts.tests.test_t13_foundation.T13FoundationTest.test_public_plan_binds_all_eight_native_combinations_and_actual_facade_mode) ... FAIL
+
+======================================================================
+FAIL: test_public_plan_binds_all_eight_native_combinations_and_actual_facade_mode (scripts.tests.test_t13_foundation.T13FoundationTest.test_public_plan_binds_all_eight_native_combinations_and_actual_facade_mode)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_foundation.py", line 49, in test_public_plan_binds_all_eight_native_combinations_and_actual_facade_mode
+    self.assertIn(path, plan['configuration-paths'])
+AssertionError: 'scripts/t13-qpdf-runtime.sha256' not found in ['capabilities/profiles/T13-text', 'capabilities/profiles/T13-fonts', 'capabilities/profiles/T13-standards', 'build-tools/acceptance/arlington/t13-r1.patch', 'scripts/t13-arlington-pin.properties', 'scripts/t13-program-standards.py', 'scripts/t13-semantics.py']
+
+----------------------------------------------------------------------
+Ran 1 test in 0.097s
+
+FAILED (failures=1)

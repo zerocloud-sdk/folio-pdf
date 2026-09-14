@@ -473,11 +473,13 @@ public final class WorkerCodecContractTest {
                 8_000_000,
                 output -> WorkerTextExtractionCodec.write(
                         output,
-                        extraction));
+                        extraction,
+                        WorkerReferenceRegistry.forWorker()));
         WorkerCodecIO.Input structureInput = WorkerCodecIO.input(
                 structurePayload);
         LogicalStructureElement decodedStructure =
-                WorkerTextExtractionCodec.read(structureInput)
+                WorkerTextExtractionCodec.read(structureInput,
+                        WorkerReferenceRegistry.forProxy(new Object()))
                         .getStructureRoots().get(0);
         structureInput.requireFullyConsumed();
         int structureDepth = 0;
@@ -568,7 +570,8 @@ public final class WorkerCodecContractTest {
                 8_000_000,
                 output -> WorkerTextExtractionCodec.write(
                         output,
-                        excessiveStructure)));
+                        excessiveStructure,
+                        WorkerReferenceRegistry.forWorker())));
         byte[] encodedStructure = WorkerCodecIO.encode(
                 8_000_000,
                 output -> {
@@ -579,6 +582,9 @@ public final class WorkerCodecContractTest {
                         output.writeString("Div");
                         output.writeNullableString(null);
                         output.writeString("STANDARD");
+                        output.writeNullableString(null);
+                        output.writeBoolean(false);
+                        output.writeNullableString(null);
                         output.writeNullableString(null);
                         output.writeNullableString(null);
                         output.writeString("NONE");
@@ -592,7 +598,8 @@ public final class WorkerCodecContractTest {
                     output.writeInt(0);
                 });
         assertNestingFailure(() -> WorkerTextExtractionCodec.read(
-                WorkerCodecIO.input(encodedStructure)));
+                WorkerCodecIO.input(encodedStructure),
+                WorkerReferenceRegistry.forProxy(new Object())));
     }
 
     private static byte[] values(WorkerCodecIO.Encoder encoder)
@@ -696,6 +703,9 @@ public final class WorkerCodecContractTest {
                 "Div",
                 "Div",
                 LogicalStructureElement.RoleResolution.STANDARD,
+                null,
+                null,
+                "http://iso.org/pdf/ssn",
                 null,
                 null,
                 LogicalStructureElement.LanguageSource.NONE,

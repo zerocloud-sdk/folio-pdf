@@ -1,0 +1,19 @@
+F
+======================================================================
+FAIL: test_embedded_font_headers_match_the_declared_binary_format (test_t13_program_standards.T13ProgramStandardsTest.test_embedded_font_headers_match_the_declared_binary_format)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 21, in test_embedded_font_headers_match_the_declared_binary_format
+    values = self.observe(directory, pdf, 'pass', scope='fonts')
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 157, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'pass' != 'indeterminate'
+- pass
++ indeterminate
+ : nested-split-type3.pdf: Unknown program qualification scope
+
+----------------------------------------------------------------------
+Ran 1 test in 0.126s
+
+FAILED (failures=1)

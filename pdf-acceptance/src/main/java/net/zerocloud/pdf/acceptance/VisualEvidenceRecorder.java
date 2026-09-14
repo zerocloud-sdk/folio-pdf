@@ -344,6 +344,24 @@ final class VisualEvidenceRecorder {
             }
             state.transcript.append("Exact changed RGB pixels, expected to PDFium: ").append(primaryPixels)
                     .append("\nExact changed RGB pixels, PDFium to secondary: ").append(secondaryPixels).append("\n\n");
+            // These shells describe the frozen reference, so apply them only
+            // after primary geometry has matched it. Changed primary geometry
+            // is rejected below by the zero-pixel capability bound.
+            if (primaryPixels == 0 && (T13Corpus.PROFILE + "-embedded-font-kinds-page-1").equals(profile.profileId())) {
+                try {
+                    java.util.Properties edges = T13FontRasterAgreement.inspect(actual, implementation);
+                    state.fontRasterFiles = new RetainedEvidence(artifacts);
+                    state.fontRasterFiles.write(artifacts.resolve("font-raster-agreement.properties"), edges);
+                    state.transcript.append("Secondary differences outside original one-pixel glyph edges: ")
+                            .append(edges.getProperty("outside-edge-pixels")).append("\n\n");
+                    if (!"pass".equals(edges.getProperty("raster-agreement"))) {
+                        state.reviewRequired = true;
+                        return indeterminate(state, "Secondary rendering disagreed outside the original glyph edges.", artifacts);
+                    }
+                } catch (IOException unavailable) {
+                    return indeterminate(state, "The original glyph-edge agreement observation was unavailable.", artifacts);
+                }
+            }
             if (secondaryPixels > profile.rendererAgreementThreshold()) {
                 state.reviewRequired = true;
                 return indeterminate(state, "Secondary rendering exceeded the fixed changed-pixel bound.", artifacts);
@@ -477,7 +495,7 @@ final class VisualEvidenceRecorder {
     private static VisualEvidence indeterminate(
             RunState state,
             String finding,
-            Path artifacts) {
+            Path artifacts) throws IOException {
         return finish(state, EvidenceResult.INDETERMINATE, finding, artifacts);
     }
 
@@ -485,7 +503,7 @@ final class VisualEvidenceRecorder {
             RunState state,
             EvidenceResult result,
             String finding,
-            Path artifacts) {
+            Path artifacts) throws IOException {
         state.transcript.append("Final visual finding: ")
                 .append(finding)
                 .append("\n\n")
@@ -494,7 +512,18 @@ final class VisualEvidenceRecorder {
                 .append("`\n");
         String record = record(state, result, finding, artifacts);
         String rawFindings = rawFindings(state);
-        return new VisualEvidence(result, record, rawFindings);
+        RetainedEvidence retained = new RetainedEvidence(artifacts);
+        for (String[] file : new String[][] {
+            {state.chain.expectedRasterName(), state.expectedHash},
+            {state.chain.pdfiumRasterName(), state.actualHash},
+            {state.chain.implementationRasterName(), state.implementationHash},
+            {state.chain.differenceRasterName(), state.differenceHash},
+            {state.chain.rendererDifferenceRasterName(), state.rendererDifferenceHash}
+        }) {
+            if (file[1].matches("[0-9a-f]{64}")) { retained.retain(artifacts.resolve(file[0]), file[1]); }
+        }
+        if (state.fontRasterFiles != null) { retained.include(state.fontRasterFiles); }
+        return new VisualEvidence(result, record, rawFindings, retained);
     }
 
     private static String record(
@@ -808,6 +837,7 @@ final class VisualEvidenceRecorder {
         private String primaryMetric = "unavailable";
         private String rendererAgreementMetric = "unavailable";
         private boolean reviewRequired;
+        private RetainedEvidence fontRasterFiles;
 
         RunState(
                 VisualEvidenceChain chain,

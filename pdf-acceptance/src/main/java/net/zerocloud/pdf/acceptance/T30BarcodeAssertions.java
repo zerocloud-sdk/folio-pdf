@@ -253,9 +253,10 @@ final class T30BarcodeAssertions {
     }
 
     private static ExtractionLimits textLimits() {
+        // All labels share one Session font and its complete Identity-H table.
         return ExtractionLimits.builder().maximumPages(128).maximumPageTreeNodes(256).maximumContentStreams(1024)
                 .maximumContentStreamDepth(4).maximumDecodedBytes(16 * 1024 * 1024).maximumTextItems(16384).maximumUnicodeCodePoints(16384)
-                .maximumToUnicodeMappings(16384).maximumFontDataEntries(32768).maximumMarkedContentSequences(8).maximumMarkedContentDepth(4)
+                .maximumToUnicodeMappings(16384).maximumFontDataEntries(65536 + 32768).maximumMarkedContentSequences(8).maximumMarkedContentDepth(4)
                 .maximumStructureElements(8).maximumStructureItems(8).maximumStructureDepth(4).maximumRoleMappings(4).build();
     }
 

@@ -1,0 +1,701 @@
+{
+  "created-utc": "2026-09-13T09:28:58.673834+00:00",
+  "reviewer": "independent Spec subagent /root/final_spec",
+  "verdict": "CLEAN within exact eight r3 transactions/T03 observation and publication scope; prior text8 retained",
+  "baseline": "5b1603c435f11c40368f75b7b9a2777c9c5e9761",
+  "candidate-sha256": "e2dd9ebbeae5668ccc8e2985ccd8af17c8921d1ec5e12e0c913cbd1fa00dfbd6",
+  "contract-sha256": "3de508f79fcbef7258feee8abc013d6f02b000840cac1cb263cb0d6f927b8f2b",
+  "report": {
+    "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/report.md",
+    "sha256": "1773a333e835cc00e0ae9ccf22c0e29d8ca859e1d66b5b096d1e8a3c2a37e775",
+    "bytes": 2440
+  },
+  "report-word-count": 291,
+  "original-goal": {
+    "path": "/home/ubuntu/.codex/attachments/77353239-0dda-4ee1-b4bb-ce7fb3fa0f9b/pasted-text-1.txt",
+    "sha256": "794423d41161169ea6a4fee993553f777d6249cb05c5fe4d34f59657ab18f83f",
+    "bytes": 12279
+  },
+  "original-scope": {
+    "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/scope.json",
+    "sha256": "1df6b56db45e510df8b85df89036a6eba1c97283066a85615dfccaa0b451de91",
+    "bytes": 1062
+  },
+  "authorized-publication-supplement": {
+    "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/scope-publication-amendment.json",
+    "sha256": "6671897178eb4ce5fb9879a8ecd24cfef38245fe1d3b0952816ecfc56004cddd",
+    "bytes": 468
+  },
+  "input-counts": {
+    "sources": 1933,
+    "contracts": 30,
+    "artifacts": 23,
+    "harness": 24
+  },
+  "staged-build-inputs": {
+    "path": "/home/ubuntu/IdeaProjects/open-pdf/capabilities/evidence/T75-delivery/final-candidate-r3/build-inputs.json",
+    "sha256": "edc129bd06eb5ee6ac00c4653173a524f72367f73ac1c14f040f8f5c9eb8aa70",
+    "bytes": 384848
+  },
+  "formal-tuples": [
+    {
+      "tuple": "capabilities/evidence/T75-foundation-20260913-r3/transactions/jdk8-in_process",
+      "contract-tests-sha256": "a380e4c6b614b5e20540bd3c341c7af8c2d4b7079004e886ec6307a733e041ce",
+      "tests": 34,
+      "time-seconds": 3.647,
+      "execution-configuration-sha256": "01eacf806583a4c747be7e2f1fba36dc5bfc8b1305d49c4e70d7e27398e9d73e",
+      "configuration-inputs": 68,
+      "actual-native-mode": "IN_PROCESS",
+      "actual-facade-mode": "IN_PROCESS",
+      "staged-classpath-paths": [
+        "target/foundation-0.1.0/artifacts/pdf-conversion-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-document-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-migration-itext7-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-provider-contract-0.1.0.jar",
+        "target/foundation-0.1.0/harness/acceptance.jar",
+        "target/foundation-0.1.0/harness/facade-tests.jar",
+        "target/foundation-0.1.0/harness/lib/common-image-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/common-io-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/common-lang-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/commons-logging-1.4.0.jar",
+        "target/foundation-0.1.0/harness/lib/core-3.5.3.jar",
+        "target/foundation-0.1.0/harness/lib/fontbox-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/hamcrest-core-1.3.jar",
+        "target/foundation-0.1.0/harness/lib/icu4j-77.1.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-core-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-metadata-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-tiff-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/junit-4.13.2.jar",
+        "target/foundation-0.1.0/harness/lib/okapibarcode-0.5.6.jar",
+        "target/foundation-0.1.0/harness/lib/pdfbox-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/pdfbox-io-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/snakeyaml-2.2.jar",
+        "target/foundation-0.1.0/harness/native-tests.jar"
+      ]
+    },
+    {
+      "tuple": "capabilities/evidence/T75-foundation-20260913-r3/transactions/jdk8-hardened_worker",
+      "contract-tests-sha256": "f03551a660d3fa9d9899b01865ddcf6be00cde6bec81f9c662724edc2b48668c",
+      "tests": 34,
+      "time-seconds": 42.651,
+      "execution-configuration-sha256": "9ceaa3f8ee908544321df006c9070c5c554ce75797f001f01f9158100ca104a3",
+      "configuration-inputs": 68,
+      "actual-native-mode": "HARDENED_WORKER",
+      "actual-facade-mode": "IN_PROCESS",
+      "staged-classpath-paths": [
+        "target/foundation-0.1.0/artifacts/pdf-conversion-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-document-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-migration-itext7-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-provider-contract-0.1.0.jar",
+        "target/foundation-0.1.0/harness/acceptance.jar",
+        "target/foundation-0.1.0/harness/facade-tests.jar",
+        "target/foundation-0.1.0/harness/lib/common-image-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/common-io-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/common-lang-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/commons-logging-1.4.0.jar",
+        "target/foundation-0.1.0/harness/lib/core-3.5.3.jar",
+        "target/foundation-0.1.0/harness/lib/fontbox-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/hamcrest-core-1.3.jar",
+        "target/foundation-0.1.0/harness/lib/icu4j-77.1.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-core-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-metadata-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-tiff-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/junit-4.13.2.jar",
+        "target/foundation-0.1.0/harness/lib/okapibarcode-0.5.6.jar",
+        "target/foundation-0.1.0/harness/lib/pdfbox-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/pdfbox-io-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/snakeyaml-2.2.jar",
+        "target/foundation-0.1.0/harness/native-tests.jar"
+      ]
+    },
+    {
+      "tuple": "capabilities/evidence/T75-foundation-20260913-r3/transactions/jdk11-in_process",
+      "contract-tests-sha256": "416db8269dbd1f58dccdc0684d9ddd039a9164fd4bedeb2a50ae8eb5b14ffc8d",
+      "tests": 34,
+      "time-seconds": 3.539,
+      "execution-configuration-sha256": "4a08be6ea945c99832c13d0012b4b08c5c9d91429408010b5d988d899504a1c9",
+      "configuration-inputs": 68,
+      "actual-native-mode": "IN_PROCESS",
+      "actual-facade-mode": "IN_PROCESS",
+      "staged-classpath-paths": [
+        "target/foundation-0.1.0/artifacts/pdf-conversion-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-document-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-migration-itext7-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-provider-contract-0.1.0.jar",
+        "target/foundation-0.1.0/harness/acceptance.jar",
+        "target/foundation-0.1.0/harness/facade-tests.jar",
+        "target/foundation-0.1.0/harness/lib/common-image-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/common-io-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/common-lang-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/commons-logging-1.4.0.jar",
+        "target/foundation-0.1.0/harness/lib/core-3.5.3.jar",
+        "target/foundation-0.1.0/harness/lib/fontbox-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/hamcrest-core-1.3.jar",
+        "target/foundation-0.1.0/harness/lib/icu4j-77.1.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-core-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-metadata-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-tiff-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/junit-4.13.2.jar",
+        "target/foundation-0.1.0/harness/lib/okapibarcode-0.5.6.jar",
+        "target/foundation-0.1.0/harness/lib/pdfbox-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/pdfbox-io-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/snakeyaml-2.2.jar",
+        "target/foundation-0.1.0/harness/native-tests.jar"
+      ]
+    },
+    {
+      "tuple": "capabilities/evidence/T75-foundation-20260913-r3/transactions/jdk11-hardened_worker",
+      "contract-tests-sha256": "7a4b8011b2b58c6717a6cbf70b102e05a666250c49f9725bfdbebe0aa7e2947f",
+      "tests": 34,
+      "time-seconds": 39.145,
+      "execution-configuration-sha256": "fa09bf44a38bb71745d7317e05e3b594d0a114c1147423cb935d8e9ae17e238b",
+      "configuration-inputs": 68,
+      "actual-native-mode": "HARDENED_WORKER",
+      "actual-facade-mode": "IN_PROCESS",
+      "staged-classpath-paths": [
+        "target/foundation-0.1.0/artifacts/pdf-conversion-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-document-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-migration-itext7-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-provider-contract-0.1.0.jar",
+        "target/foundation-0.1.0/harness/acceptance.jar",
+        "target/foundation-0.1.0/harness/facade-tests.jar",
+        "target/foundation-0.1.0/harness/lib/common-image-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/common-io-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/common-lang-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/commons-logging-1.4.0.jar",
+        "target/foundation-0.1.0/harness/lib/core-3.5.3.jar",
+        "target/foundation-0.1.0/harness/lib/fontbox-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/hamcrest-core-1.3.jar",
+        "target/foundation-0.1.0/harness/lib/icu4j-77.1.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-core-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-metadata-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-tiff-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/junit-4.13.2.jar",
+        "target/foundation-0.1.0/harness/lib/okapibarcode-0.5.6.jar",
+        "target/foundation-0.1.0/harness/lib/pdfbox-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/pdfbox-io-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/snakeyaml-2.2.jar",
+        "target/foundation-0.1.0/harness/native-tests.jar"
+      ]
+    },
+    {
+      "tuple": "capabilities/evidence/T75-foundation-20260913-r3/transactions/jdk17-in_process",
+      "contract-tests-sha256": "fb75a1a3c7bb2abf9b917d362351aeabfa81ecb0b2e68b9a5360535cdea481b7",
+      "tests": 34,
+      "time-seconds": 3.016,
+      "execution-configuration-sha256": "84f6dbe2edd2bc63615df611aa1843cfa4015465a8535f6ac5423c37f1e2349f",
+      "configuration-inputs": 68,
+      "actual-native-mode": "IN_PROCESS",
+      "actual-facade-mode": "IN_PROCESS",
+      "staged-classpath-paths": [
+        "target/foundation-0.1.0/artifacts/pdf-conversion-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-document-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-migration-itext7-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-provider-contract-0.1.0.jar",
+        "target/foundation-0.1.0/harness/acceptance.jar",
+        "target/foundation-0.1.0/harness/facade-tests.jar",
+        "target/foundation-0.1.0/harness/lib/common-image-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/common-io-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/common-lang-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/commons-logging-1.4.0.jar",
+        "target/foundation-0.1.0/harness/lib/core-3.5.3.jar",
+        "target/foundation-0.1.0/harness/lib/fontbox-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/hamcrest-core-1.3.jar",
+        "target/foundation-0.1.0/harness/lib/icu4j-77.1.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-core-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-metadata-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-tiff-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/junit-4.13.2.jar",
+        "target/foundation-0.1.0/harness/lib/okapibarcode-0.5.6.jar",
+        "target/foundation-0.1.0/harness/lib/pdfbox-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/pdfbox-io-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/snakeyaml-2.2.jar",
+        "target/foundation-0.1.0/harness/native-tests.jar"
+      ]
+    },
+    {
+      "tuple": "capabilities/evidence/T75-foundation-20260913-r3/transactions/jdk17-hardened_worker",
+      "contract-tests-sha256": "751d5dd7149b005b6dba2ea150405df6240e3f39249073951233cc4a23699eaf",
+      "tests": 34,
+      "time-seconds": 34.749,
+      "execution-configuration-sha256": "0e5891a2a37033a56e7bd99d3e62deda8b530d2abf61717373fad5e8ea2be331",
+      "configuration-inputs": 68,
+      "actual-native-mode": "HARDENED_WORKER",
+      "actual-facade-mode": "IN_PROCESS",
+      "staged-classpath-paths": [
+        "target/foundation-0.1.0/artifacts/pdf-conversion-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-document-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-migration-itext7-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-provider-contract-0.1.0.jar",
+        "target/foundation-0.1.0/harness/acceptance.jar",
+        "target/foundation-0.1.0/harness/facade-tests.jar",
+        "target/foundation-0.1.0/harness/lib/common-image-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/common-io-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/common-lang-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/commons-logging-1.4.0.jar",
+        "target/foundation-0.1.0/harness/lib/core-3.5.3.jar",
+        "target/foundation-0.1.0/harness/lib/fontbox-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/hamcrest-core-1.3.jar",
+        "target/foundation-0.1.0/harness/lib/icu4j-77.1.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-core-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-metadata-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-tiff-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/junit-4.13.2.jar",
+        "target/foundation-0.1.0/harness/lib/okapibarcode-0.5.6.jar",
+        "target/foundation-0.1.0/harness/lib/pdfbox-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/pdfbox-io-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/snakeyaml-2.2.jar",
+        "target/foundation-0.1.0/harness/native-tests.jar"
+      ]
+    },
+    {
+      "tuple": "capabilities/evidence/T75-foundation-20260913-r3/transactions/jdk21-in_process",
+      "contract-tests-sha256": "171879f8abd10c856182d7ff263ad134bfdfa7d7013bd5ab9ec15155c0a01d19",
+      "tests": 34,
+      "time-seconds": 3.351,
+      "execution-configuration-sha256": "a28f0cd8a4296e9f1ac86fd169bdf96dc2854521c65f80b4fa334a4b9c7dc979",
+      "configuration-inputs": 68,
+      "actual-native-mode": "IN_PROCESS",
+      "actual-facade-mode": "IN_PROCESS",
+      "staged-classpath-paths": [
+        "target/foundation-0.1.0/artifacts/pdf-conversion-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-document-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-migration-itext7-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-provider-contract-0.1.0.jar",
+        "target/foundation-0.1.0/harness/acceptance.jar",
+        "target/foundation-0.1.0/harness/facade-tests.jar",
+        "target/foundation-0.1.0/harness/lib/common-image-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/common-io-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/common-lang-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/commons-logging-1.4.0.jar",
+        "target/foundation-0.1.0/harness/lib/core-3.5.3.jar",
+        "target/foundation-0.1.0/harness/lib/fontbox-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/hamcrest-core-1.3.jar",
+        "target/foundation-0.1.0/harness/lib/icu4j-77.1.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-core-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-metadata-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-tiff-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/junit-4.13.2.jar",
+        "target/foundation-0.1.0/harness/lib/okapibarcode-0.5.6.jar",
+        "target/foundation-0.1.0/harness/lib/pdfbox-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/pdfbox-io-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/snakeyaml-2.2.jar",
+        "target/foundation-0.1.0/harness/native-tests.jar"
+      ]
+    },
+    {
+      "tuple": "capabilities/evidence/T75-foundation-20260913-r3/transactions/jdk21-hardened_worker",
+      "contract-tests-sha256": "3a5bd73fd6062c7f4107d907a580e3c9792e41d19939e4df8ec53a8fc725f594",
+      "tests": 34,
+      "time-seconds": 37.038,
+      "execution-configuration-sha256": "35767689f160513e8bab97ee30dca7463baa57f9f3bfe96ae90c2b2254cf7418",
+      "configuration-inputs": 68,
+      "actual-native-mode": "HARDENED_WORKER",
+      "actual-facade-mode": "IN_PROCESS",
+      "staged-classpath-paths": [
+        "target/foundation-0.1.0/artifacts/pdf-conversion-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-document-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-migration-itext7-0.1.0.jar",
+        "target/foundation-0.1.0/artifacts/pdf-provider-contract-0.1.0.jar",
+        "target/foundation-0.1.0/harness/acceptance.jar",
+        "target/foundation-0.1.0/harness/facade-tests.jar",
+        "target/foundation-0.1.0/harness/lib/common-image-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/common-io-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/common-lang-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/commons-logging-1.4.0.jar",
+        "target/foundation-0.1.0/harness/lib/core-3.5.3.jar",
+        "target/foundation-0.1.0/harness/lib/fontbox-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/hamcrest-core-1.3.jar",
+        "target/foundation-0.1.0/harness/lib/icu4j-77.1.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-core-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-metadata-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/imageio-tiff-3.14.0.jar",
+        "target/foundation-0.1.0/harness/lib/junit-4.13.2.jar",
+        "target/foundation-0.1.0/harness/lib/okapibarcode-0.5.6.jar",
+        "target/foundation-0.1.0/harness/lib/pdfbox-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/pdfbox-io-3.0.8.jar",
+        "target/foundation-0.1.0/harness/lib/snakeyaml-2.2.jar",
+        "target/foundation-0.1.0/harness/native-tests.jar"
+      ]
+    }
+  ],
+  "aggregate-timeout-seconds": 300,
+  "public-contract-source-method-counts": {
+    "BlankDocumentWorkflowTest": 1,
+    "WorkflowLifecycleTest": 7,
+    "WorkflowTransactionContractTest": 16,
+    "WorkflowResourceOwnershipTest": 3,
+    "BlankDocumentFacadeTest": 5
+  },
+  "observed-index-sha256": "df2e7c48662b04cbcdd75414a9e6b97d6b57f952bfc757fdfc00f3cf3647a688",
+  "closed-prior-text-review": {
+    "report": "/tmp/t75-final-spec-text-publication-du17bdo8/report.md",
+    "report-sha256": "2b5c8fb9d12f0778ef99a6c8cf9df75a3825e040cc9dd226481d397403564872",
+    "receipt-sha256": "7c1d27438718a71bba80df7c9a8848e3364f02330c3fd6437825e392098b5418"
+  },
+  "actual-publication": {
+    "scope": "Authorized supplement: original actual transactions outer exit/publication plus unchanged existing text eight retained",
+    "original-command": {
+      "path": "/tmp/t75-final-transactions-certify-r3-command.json",
+      "sha256": "c318939d4d405ebe5159c4c6b5e30924d5740df225bd0eab3bd9197e7f4c9154"
+    },
+    "original-stdout": {
+      "path": "/tmp/t75-final-transactions-certify-r3.log",
+      "sha256": "a83b919384bc64dca61dbcb9ca55b366d3fb29c558dd38f85577ba00747fd45f"
+    },
+    "original-result": {
+      "path": "/tmp/t75-final-transactions-certify-r3-result.json",
+      "sha256": "e21decd5f08ffd590a762ed959897154985473e5afdfc0e79cbe79340f261969"
+    },
+    "original-started-utc": "2026-09-13T08:52:25.817673+00:00",
+    "original-completed-utc": "2026-09-13T09:18:12.417480+00:00",
+    "original-returncode": 0,
+    "exact-published-transactions": 8,
+    "exact-transaction-chain-records": 32,
+    "retained-text-certifications": 8,
+    "retained-text-records-rehashed": 32,
+    "huge-text-raw-tree-replayed": false,
+    "authority": {
+      "path": "/home/ubuntu/IdeaProjects/open-pdf/capabilities/foundation-evidence.yaml",
+      "copy": "publication-originals/authority-snapshot.json",
+      "sha256": "c079d5a0b3d4ad3f70b8597bd932716f910c7c46e08323f531a5987ce7216b74",
+      "bytes": 397495,
+      "at-utc": "2026-09-13T09:22:35.979600+00:00",
+      "transaction-count": 8,
+      "text-count": 8,
+      "other-count": 0
+    },
+    "transactions-exit-and-publication-gate-closed": true,
+    "prior-pending-observation-preserved": true,
+    "other-obligations-all48-finaldelivery-approved": false,
+    "errors": []
+  },
+  "final-identity-recheck": {
+    "created-utc": "2026-09-13T09:27:42.773683+00:00",
+    "unique-original-identities-rehashed": 3978,
+    "total-original-bytes-rehashed": 446696026,
+    "byte-exact-original-copies": 1335,
+    "selected-source-copies": 1332,
+    "outer-completed-original-copies": 3,
+    "authority-snapshots": 2,
+    "original-eight-tuple-files": 1200,
+    "all-original-tree-membership-and-identities-unchanged": true,
+    "final-authority": {
+      "path": "/home/ubuntu/IdeaProjects/open-pdf/capabilities/foundation-evidence.yaml",
+      "copy": "publication-originals/final-authority-snapshot.json",
+      "sha256": "c079d5a0b3d4ad3f70b8597bd932716f910c7c46e08323f531a5987ce7216b74",
+      "bytes": 397495,
+      "at-utc": "2026-09-13T09:27:42.734666+00:00",
+      "counts": {
+        "transactions": 8,
+        "text": 8,
+        "other": 0
+      },
+      "other-obligation-additions-permitted": true
+    },
+    "preserved-original-reader-diagnostics": {
+      "summary-schema": 32,
+      "relative-interpreter-spelling": 1
+    },
+    "separate-reader-diagnostic-closures-complete": true,
+    "transactions-only-publication-and-retained-text-subset": true,
+    "all48-or-final-delivery-approved": false,
+    "errors": []
+  },
+  "inspected-input-identities": {
+    "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/inspected-input-identities.json",
+    "sha256": "b98591f19a5c22865c363cba462a14d2aa806527236bbbbd29b4cdbd6f34acea",
+    "bytes": 1456660
+  },
+  "copied-original-source-identities": {
+    "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/source-copy-identities.json",
+    "sha256": "9917a02d94635a1e97d4999a45688b2cfeaa1b834390e2873847911f59645bf8",
+    "bytes": 585232
+  },
+  "completed-outer-original-copies": {
+    "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/publication-original-copy-identities.json",
+    "sha256": "462692fdccee058ef5f9f1f6b1202411e29b8c0ce5fe3a18d3946f3ad2d721be",
+    "bytes": 760
+  },
+  "actual-independent-review-phases": [
+    {
+      "name": "stage-audit",
+      "script": {
+        "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/stage-audit.py",
+        "sha256": "42e31ad7c1996a981b1c749b6f315fb0b09b2f1d291b8d7a6779760ed1946f81",
+        "bytes": 10773
+      },
+      "command": {
+        "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/stage-audit-command.json",
+        "sha256": "89044bcdeabe043ad00b7db629f89db567426d04575f6d3b0b7d7491a39b40e5",
+        "bytes": 435
+      },
+      "output": {
+        "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/stage-audit-output.txt",
+        "sha256": "f5a010a51615a6c78c8229fdf9a8f0b3afee3d77bf97ad27027936f086388ee0",
+        "bytes": 107
+      },
+      "result": {
+        "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/stage-audit-result.json",
+        "sha256": "e63687670bf2b032b31cfd38c2c2fd0ae2fd80a518e21f2532b538390ea5a5c3",
+        "bytes": 603
+      },
+      "actual-returncode": 0,
+      "started-utc": "2026-09-13T09:06:23.155384+00:00",
+      "completed-utc": "2026-09-13T09:06:34.949736+00:00"
+    },
+    {
+      "name": "evidence-audit",
+      "script": {
+        "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/evidence-audit.py",
+        "sha256": "f4a0b75e69628cf251d6cefbc05c80b9c728545e4616e423d7ac831e676d253e",
+        "bytes": 16763
+      },
+      "command": {
+        "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/evidence-audit-command.json",
+        "sha256": "d9701616a8ad146f19248842bb5faf0d0dc2171852a44908c5a64e06d9714162",
+        "bytes": 438
+      },
+      "output": {
+        "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/evidence-audit-output.txt",
+        "sha256": "6f03aa03d25e3013a73e47edffc808a32798a4c513b4cfb5c089de4be5c3b2dd",
+        "bytes": 3815
+      },
+      "result": {
+        "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/evidence-audit-result.json",
+        "sha256": "94d21566b358159283e707f6b5388da5b499c4416e3ff8050dc5cc4c58828177",
+        "bytes": 606
+      },
+      "actual-returncode": 0,
+      "started-utc": "2026-09-13T09:11:27.820818+00:00",
+      "completed-utc": "2026-09-13T09:11:29.141638+00:00"
+    },
+    {
+      "name": "complete-config-audit",
+      "script": {
+        "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/complete-config-audit.py",
+        "sha256": "46d98ae870b540940ff854d75dda86f8168e332854792372945457085f918a40",
+        "bytes": 6104
+      },
+      "command": {
+        "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/complete-config-audit-command.json",
+        "sha256": "9beefa4215a4be81b3b37ba93c1ecc59341ad99936a3f69e50b8b37df04dd62f",
+        "bytes": 445
+      },
+      "output": {
+        "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/complete-config-audit-output.txt",
+        "sha256": "3dd39952133893dcbb0e93bb9f5955573b58e344c7618064b5cd102b0dd84588",
+        "bytes": 104
+      },
+      "result": {
+        "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/complete-config-audit-result.json",
+        "sha256": "5483e56c79d473ddd00a4602d3aff37351247060f42c10d4f15d3d05b6750f0c",
+        "bytes": 613
+      },
+      "actual-returncode": 0,
+      "started-utc": "2026-09-13T09:13:29.129619+00:00",
+      "completed-utc": "2026-09-13T09:13:29.224049+00:00"
+    },
+    {
+      "name": "raster-audit",
+      "script": {
+        "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/raster-audit.py",
+        "sha256": "d85869ac828df2086a70700a38fcaa4856a917849808017eda7334ce8a0c68d1",
+        "bytes": 3946
+      },
+      "command": {
+        "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/raster-audit-command.json",
+        "sha256": "6ef435d6dcc083c1dd3bbf7776759036f2ef7031a24262692776d0dde4b329e8",
+        "bytes": 436
+      },
+      "output": {
+        "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/raster-audit-output.txt",
+        "sha256": "ed53786257184cfa040374555a0cbd361638e0f886d10b0dd2c5b4d23a8a222b",
+        "bytes": 98
+      },
+      "result": {
+        "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/raster-audit-result.json",
+        "sha256": "314dbec6374c77f7827a590037206da5bd79758ce975e4314ea62bb28a24ad4b",
+        "bytes": 604
+      },
+      "actual-returncode": 0,
+      "started-utc": "2026-09-13T09:13:29.115740+00:00",
+      "completed-utc": "2026-09-13T09:13:29.400227+00:00"
+    },
+    {
+      "name": "visual-summary-closure-audit",
+      "script": {
+        "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/visual-summary-closure-audit.py",
+        "sha256": "8aa72f1f4510e98f3b55c52931027dcbce2f9c5d8638da0c52a22bd287a8d02e",
+        "bytes": 2152
+      },
+      "command": {
+        "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/visual-summary-closure-audit-command.json",
+        "sha256": "e6a7a4caab69f169bf3f138905def64dccdbe38a4aa1314b84565aadf09cf6e6",
+        "bytes": 452
+      },
+      "output": {
+        "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/visual-summary-closure-audit-output.txt",
+        "sha256": "a84610dc9c7277827f70dcdbb798dbd7bac13b002ca88f376dbc04f20b885d8a",
+        "bytes": 97
+      },
+      "result": {
+        "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/visual-summary-closure-audit-result.json",
+        "sha256": "7095d0eb3648efe9426769135de60261880529d1034d944c748cf8adbbbbf1b1",
+        "bytes": 620
+      },
+      "actual-returncode": 0,
+      "started-utc": "2026-09-13T09:17:12.086704+00:00",
+      "completed-utc": "2026-09-13T09:17:12.148067+00:00"
+    },
+    {
+      "name": "scope-source-audit",
+      "script": {
+        "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/scope-source-audit.py",
+        "sha256": "b7f5520015a2248054d3d84dad068d8926ca2c5d2a3c77399432c1ebb775c4d8",
+        "bytes": 4171
+      },
+      "command": {
+        "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/scope-source-audit-command.json",
+        "sha256": "bc007ce446c1881f6091ee0b373bcbbe46c2ba95812b5e829fe22a45ecbd58c8",
+        "bytes": 442
+      },
+      "output": {
+        "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/scope-source-audit-output.txt",
+        "sha256": "796801dcadfe4b5786577aa481a92708799afd96e21b9b212e55edbb719e3484",
+        "bytes": 479
+      },
+      "result": {
+        "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/scope-source-audit-result.json",
+        "sha256": "9db2a27e5a36f505341e1d44cdfd33da6aa8ee8388bcbb738ceab636669be9f1",
+        "bytes": 610
+      },
+      "actual-returncode": 0,
+      "started-utc": "2026-09-13T09:17:12.101719+00:00",
+      "completed-utc": "2026-09-13T09:17:12.541963+00:00"
+    },
+    {
+      "name": "outer-command-closure-audit",
+      "script": {
+        "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/outer-command-closure-audit.py",
+        "sha256": "bdb3e556a7bd17399e0a7b6a4df78c74b0c118421631d222ec57b80575d1a390",
+        "bytes": 1794
+      },
+      "command": {
+        "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/outer-command-closure-audit-command.json",
+        "sha256": "e9daca534f5e96da875ffa9481e3cb954cfde1c2fcbb4189c633e748f2358fb4",
+        "bytes": 451
+      },
+      "output": {
+        "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/outer-command-closure-audit-output.txt",
+        "sha256": "2065925c31a82febe4add7e218af3bd993e291dfd3c32b1980afb3fc123b8a1a",
+        "bytes": 103
+      },
+      "result": {
+        "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/outer-command-closure-audit-result.json",
+        "sha256": "8892c2203fe3b0647190daaa07c0f5e320c4bb6c6d40677009e6ce0da597d447",
+        "bytes": 619
+      },
+      "actual-returncode": 0,
+      "started-utc": "2026-09-13T09:18:05.304368+00:00",
+      "completed-utc": "2026-09-13T09:18:05.436840+00:00"
+    },
+    {
+      "name": "publication-audit",
+      "script": {
+        "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/publication-audit.py",
+        "sha256": "9860e5ca8c744e2d80de860b19c87ef717d9cf1b665b74f6920b0b23d0866c0d",
+        "bytes": 5662
+      },
+      "command": {
+        "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/publication-audit-command.json",
+        "sha256": "c554d07e2c480683f8de5097a3696bbcd823c41d9da4b540a0130486b6b5ee7b",
+        "bytes": 441
+      },
+      "output": {
+        "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/publication-audit-output.txt",
+        "sha256": "47d3c46d2625a61b38b809bdbcbda6385f9d0a54cf109f28e38c69e74c2fac2f",
+        "bytes": 103
+      },
+      "result": {
+        "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/publication-audit-result.json",
+        "sha256": "79367c3dedee70834d208fb0fcd8d34877b4a9ba11f06a17e87064e263fa6820",
+        "bytes": 609
+      },
+      "actual-returncode": 0,
+      "started-utc": "2026-09-13T09:22:35.687251+00:00",
+      "completed-utc": "2026-09-13T09:22:35.988511+00:00"
+    },
+    {
+      "name": "finalize-audit",
+      "script": {
+        "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/finalize-audit.py",
+        "sha256": "4b4b92a7c46f2b96d51e60f1064e9b64798c5481436d1f8785a05b02766f1a60",
+        "bytes": 5323
+      },
+      "command": {
+        "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/finalize-audit-command.json",
+        "sha256": "e654f0951a5d08b780337b56e9cd33b1d8dc068894ed56454033e92cbd4169c6",
+        "bytes": 438
+      },
+      "output": {
+        "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/finalize-audit-output.txt",
+        "sha256": "df603ddb0f8e9434eea5855eaf904567543fc1dbe1fe6a48f7219be68d39e432",
+        "bytes": 1057
+      },
+      "result": {
+        "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/finalize-audit-result.json",
+        "sha256": "6b59efd18421181fcc95f589ec3ff6255d7d2ea9020dfe7cda1044cec3860096",
+        "bytes": 606
+      },
+      "actual-returncode": 0,
+      "started-utc": "2026-09-13T09:27:41.254059+00:00",
+      "completed-utc": "2026-09-13T09:27:42.785634+00:00"
+    }
+  ],
+  "original-reader-diagnostics-and-separate-closures": [
+    {
+      "original": {
+        "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/transactions-evidence-inspection.json",
+        "sha256": "cabfcc8d3c28dc498f8435b743c7c567795a50e2e66153eed3a56fbb8e2026a9",
+        "bytes": 56335
+      },
+      "original-count": 32,
+      "closure": {
+        "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/visual-summary-schema-closure.json",
+        "sha256": "1cc365193e2e7ed8ff5a906b2c1e9250677a4214b71362880c394faaaea9d6c5",
+        "bytes": 17243
+      },
+      "classification": "Reader added duplicate raw difference SHA summary fields absent from original T03 schema; all authoritative report/raw references valid."
+    },
+    {
+      "original": {
+        "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/original-source-copy-inspection.json",
+        "sha256": "600acd63beda3a7bfbbb5bba034979fd829d13efcb4a5268f45403a9a33a3ab1",
+        "bytes": 953
+      },
+      "original-count": 1,
+      "closure": {
+        "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/outer-command-interpretation-closure.json",
+        "sha256": "a606090746a3b604888ca9629272f4f7f513368bd008cf876dbc3925700a6eb1",
+        "bytes": 1091
+      },
+      "classification": "Reader expected relative python3 spelling; original explicit /usr/bin/python3 resolves to the same observed executable."
+    }
+  ],
+  "original-pending-observations-preserved": [
+    {
+      "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/outer-publication-progress-observation.json",
+      "sha256": "5d1686743a5de8c7189debb631826b3d640f1101271e5116574ab05863911ce6",
+      "bytes": 490
+    },
+    {
+      "path": "/tmp/t75-final-spec-transactions-eight-5yptf21z/outer-log-progress-snapshot.txt",
+      "sha256": "fd6aab1587f79355f4a9182067a03f3a914c3b5c2c06a0a108cff3ac46ca636f",
+      "bytes": 413
+    }
+  ],
+  "validation-boundary": "Only independent read-only source, retained original evidence, SHA and complete PNG byte inspection; no Maven, project CLI, certifier, environment observer, tests, probes, renderers, Git/tracker/repo mutation. Existing T03 Linux descriptor condition retained; no extra assertion about JUnit assumption counts.",
+  "other-obligations-all48-or-final-delivery-approved": false,
+  "completion-criteria-marked": false
+}

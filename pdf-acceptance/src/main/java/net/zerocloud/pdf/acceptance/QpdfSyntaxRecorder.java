@@ -21,6 +21,11 @@ final class QpdfSyntaxRecorder {
             String inputHash,
             String releaseTrain,
             Profile profile) throws IOException {
+        return record(output, artifacts, qpdfPin, inputHash, releaseTrain, profile, null);
+    }
+
+    static EvidenceResult record(Path output, Path artifacts, QpdfPin qpdfPin, String inputHash,
+            String releaseTrain, Profile profile, RetainedEvidence retained) throws IOException {
         EvidenceResult result;
         String observedVersion;
         String finding;
@@ -69,15 +74,21 @@ final class QpdfSyntaxRecorder {
             findings = indeterminateFindings(
                     inputHash, observedVersion, finding, qpdfPin, profile);
         }
-        write(artifacts.resolve(profile.findings), findings);
-        write(output.resolve(profile.record), syntaxRecord(
+        String record = syntaxRecord(
                 inputHash,
                 releaseTrain,
                 observedVersion,
                 result,
                 finding,
                 qpdfPin,
-                profile));
+                profile);
+        if (retained == null) {
+            write(artifacts.resolve(profile.findings), findings);
+            write(output.resolve(profile.record), record);
+        } else {
+            retained.write(artifacts.resolve(profile.findings), findings);
+            retained.write(output.resolve(profile.record), record);
+        }
         return result;
     }
 

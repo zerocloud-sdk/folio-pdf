@@ -1,0 +1,19 @@
+F
+======================================================================
+FAIL: test_inherited_source_budget_allows_overrides_and_rejects_the_first_new_excess (test_t13_program_standards.T13ProgramStandardsTest.test_inherited_source_budget_allows_overrides_and_rejects_the_first_new_excess)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 21, in test_inherited_source_budget_allows_overrides_and_rejects_the_first_new_excess
+    values = self.observe(directory, pdf, expected)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 139, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'indeterminate' != 'pass'
+- indeterminate
++ pass
+ : program-boundary-inherited-sources-4097.pdf: Decoded CMap grammar, character domains and declared inheritance are consistent.
+
+----------------------------------------------------------------------
+Ran 1 test in 0.336s
+
+FAILED (failures=1)

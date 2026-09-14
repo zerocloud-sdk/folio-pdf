@@ -1,0 +1,20 @@
+E
+======================================================================
+ERROR: test_decoded_program_controls_and_legal_inheritance_examples_are_original (test_t13_standards.T13StandardsTest.test_decoded_program_controls_and_legal_inheritance_examples_are_original)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_standards.py", line 24, in test_decoded_program_controls_and_legal_inheritance_examples_are_original
+    controls = json.loads((output / 'program-controls.json').read_text())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1029, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmppxubps8n/controls/program-controls.json'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.094s
+
+FAILED (errors=1)

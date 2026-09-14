@@ -139,7 +139,7 @@ final class FoundationEvidence {
             if (!files.add(file)) {
                 errors.add("independent chains require distinct record files: " + file);
             }
-            InventoryYaml record = InventoryYaml.load(file, errors);
+            InventoryYaml record = InventoryYaml.loadChainRecord(file, errors);
             record.keys("schema-version", "obligation", "acceptance-profile", "release", "candidate-sha256",
                     "contract-sha256", "environment-sha256", "execution-profile", "chain", "result", "producer",
                     "configuration", "execution-configuration-sha256", "report", "negative-controls");
@@ -226,7 +226,7 @@ final class FoundationEvidence {
             configuration.error("execution configuration requires the actual corpus/font/policy/tool configuration inputs");
         }
         for (InventoryYaml input : inputs) {
-            FoundationHashes.verify(foundation.inventory.repositoryRoot, input, errors);
+            readiness.verifyInput(input, errors);
         }
         return reference.string("sha256");
     }

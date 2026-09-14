@@ -1,0 +1,90 @@
+test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules) ... 
+  test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules) (lexical='escaped-form-name') ... FAIL
+  test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules) (lexical='form-feed-comment') ... FAIL
+  test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules) (lexical='missing-name-escape') ... FAIL
+  test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules) (lexical='nonhex-name-escape') ... FAIL
+  test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules) (lexical='dictionary-word') ... FAIL
+  test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules) (lexical='dictionary-name-alias') ... FAIL
+
+======================================================================
+FAIL: test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules) (lexical='escaped-form-name')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 26, in test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules
+    self.observe(directory, pdf, 'pass', scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 651, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'pass' != 'indeterminate'
+- pass
++ indeterminate
+ : escaped-form-name.pdf: Program stream reference is unavailable
+
+======================================================================
+FAIL: test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules) (lexical='form-feed-comment')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 40, in test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules
+    self.observe(directory, pdf, expected, 'program-token' if expected == 'fail' else None, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 651, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'pass' != 'indeterminate'
+- pass
++ indeterminate
+ : form-feed-comment.pdf: Content operator is outside the qualified grammar: BAD
+
+======================================================================
+FAIL: test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules) (lexical='missing-name-escape')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 40, in test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules
+    self.observe(directory, pdf, expected, 'program-token' if expected == 'fail' else None, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 651, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : missing-name-escape.pdf: Page and nested Form content satisfy the qualified operand grammar.
+
+======================================================================
+FAIL: test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules) (lexical='nonhex-name-escape')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 40, in test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules
+    self.observe(directory, pdf, expected, 'program-token' if expected == 'fail' else None, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 651, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : nonhex-name-escape.pdf: Page and nested Form content satisfy the qualified operand grammar.
+
+======================================================================
+FAIL: test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules) (lexical='dictionary-word')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 40, in test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules
+    self.observe(directory, pdf, expected, 'program-token' if expected == 'fail' else None, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 651, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : dictionary-word.pdf: Page and nested Form content satisfy the qualified operand grammar.
+
+======================================================================
+FAIL: test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules) (lexical='dictionary-name-alias')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 40, in test_content_names_comments_and_dictionary_values_follow_pdf_lexical_rules
+    self.observe(directory, pdf, expected, 'program-token' if expected == 'fail' else None, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 651, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : dictionary-name-alias.pdf: Page and nested Form content satisfy the qualified operand grammar.
+
+----------------------------------------------------------------------
+Ran 1 test in 1.862s
+
+FAILED (failures=6)

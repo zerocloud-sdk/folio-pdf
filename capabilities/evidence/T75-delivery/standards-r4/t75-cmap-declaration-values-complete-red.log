@@ -1,0 +1,70 @@
+FFFFF
+======================================================================
+FAIL: test_cmap_optional_identifiers_cannot_hide_unchecked_declarations (test_t13_program_standards.T13ProgramStandardsTest.test_cmap_optional_identifiers_cannot_hide_unchecked_declarations) (name='xuid-string')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 22, in test_cmap_optional_identifiers_cannot_hide_unchecked_declarations
+    self.observe(directory, fixtures / (name + '.pdf'), outcome, rule)
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 61, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : xuid-string.pdf: Decoded CMap grammar, character domains and declared inheritance are consistent.
+
+======================================================================
+FAIL: test_cmap_optional_identifiers_cannot_hide_unchecked_declarations (test_t13_program_standards.T13ProgramStandardsTest.test_cmap_optional_identifiers_cannot_hide_unchecked_declarations) (name='xuid-executable')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 22, in test_cmap_optional_identifiers_cannot_hide_unchecked_declarations
+    self.observe(directory, fixtures / (name + '.pdf'), outcome, rule)
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 61, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'indeterminate' != 'pass'
+- indeterminate
++ pass
+ : xuid-executable.pdf: Decoded CMap grammar, character domains and declared inheritance are consistent.
+
+======================================================================
+FAIL: test_cmap_optional_identifiers_cannot_hide_unchecked_declarations (test_t13_program_standards.T13ProgramStandardsTest.test_cmap_optional_identifiers_cannot_hide_unchecked_declarations) (name='xuid-nested-code')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 37, in test_cmap_optional_identifiers_cannot_hide_unchecked_declarations
+    self.observe(directory, pdf, outcome, 'cmap-declaration-type' if outcome == 'fail' else None)
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 61, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'indeterminate' != 'pass'
+- indeterminate
++ pass
+ : xuid-nested-code.pdf: Decoded CMap grammar, character domains and declared inheritance are consistent.
+
+======================================================================
+FAIL: test_cmap_optional_identifiers_cannot_hide_unchecked_declarations (test_t13_program_standards.T13ProgramStandardsTest.test_cmap_optional_identifiers_cannot_hide_unchecked_declarations) (name='version-string')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 37, in test_cmap_optional_identifiers_cannot_hide_unchecked_declarations
+    self.observe(directory, pdf, outcome, 'cmap-declaration-type' if outcome == 'fail' else None)
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 61, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : version-string.pdf: Decoded CMap grammar, character domains and declared inheritance are consistent.
+
+======================================================================
+FAIL: test_cmap_optional_identifiers_cannot_hide_unchecked_declarations (test_t13_program_standards.T13ProgramStandardsTest.test_cmap_optional_identifiers_cannot_hide_unchecked_declarations) (name='uid-string')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 37, in test_cmap_optional_identifiers_cannot_hide_unchecked_declarations
+    self.observe(directory, pdf, outcome, 'cmap-declaration-type' if outcome == 'fail' else None)
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 61, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : uid-string.pdf: Decoded CMap grammar, character domains and declared inheritance are consistent.
+
+----------------------------------------------------------------------
+Ran 1 test in 1.061s
+
+FAILED (failures=5)

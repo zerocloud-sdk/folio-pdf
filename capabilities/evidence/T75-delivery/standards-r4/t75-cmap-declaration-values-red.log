@@ -1,0 +1,31 @@
+FF
+======================================================================
+FAIL: test_cmap_optional_identifiers_cannot_hide_unchecked_declarations (test_t13_program_standards.T13ProgramStandardsTest.test_cmap_optional_identifiers_cannot_hide_unchecked_declarations) (name='xuid-string')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 22, in test_cmap_optional_identifiers_cannot_hide_unchecked_declarations
+    self.observe(directory, fixtures / (name + '.pdf'), outcome, rule)
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 46, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : xuid-string.pdf: Decoded CMap grammar, character domains and declared inheritance are consistent.
+
+======================================================================
+FAIL: test_cmap_optional_identifiers_cannot_hide_unchecked_declarations (test_t13_program_standards.T13ProgramStandardsTest.test_cmap_optional_identifiers_cannot_hide_unchecked_declarations) (name='xuid-executable')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 22, in test_cmap_optional_identifiers_cannot_hide_unchecked_declarations
+    self.observe(directory, fixtures / (name + '.pdf'), outcome, rule)
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 46, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'indeterminate' != 'pass'
+- indeterminate
++ pass
+ : xuid-executable.pdf: Decoded CMap grammar, character domains and declared inheritance are consistent.
+
+----------------------------------------------------------------------
+Ran 1 test in 0.248s
+
+FAILED (failures=2)

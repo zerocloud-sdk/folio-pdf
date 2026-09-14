@@ -410,6 +410,32 @@ final class VisualProfile {
                 if (profileId.contains("-merged-page-") || profileId.contains("-adopted-page-")) { return 4; }
                 return profileId.contains("-left-page-") || profileId.contains("-right-page-") ? 2 : 3;
             }
+        },
+        T13_FONTS(T13Corpus.PROFILE + "-embedded-font-kinds-", Collections.singletonList(
+                "effective CropBox [0 0 120 100] points"), new RenderingPolicy(
+                        OPAQUE_SRGB_COLOR_POLICY,
+                        "original embedded Type1C, CID CFF and TrueType rectangle glyphs; no system fonts or substitution",
+                        "pinned PDFium default font smoothing; independent original PDF reference")) {
+            @Override
+            int pageCount(String profileId) throws IOException {
+                if (!(T13Corpus.PROFILE + "-embedded-font-kinds-page-1").equals(profileId)) {
+                    throw new IOException("Unsupported T13 embedded-font visual profile ID: " + profileId);
+                }
+                return 1;
+            }
+        },
+        T13(T13Corpus.PROFILE + "-", Collections.singletonList(
+                "effective CropBox [0 0 120 100] points"), new RenderingPolicy(
+                        OPAQUE_SRGB_COLOR_POLICY,
+                        "original embedded Type3 rectangle glyph; no system fonts or substitution",
+                        "pinned PDFium default smoothing; vector edges are axis-aligned")) {
+            @Override
+            int pageCount(String profileId) throws IOException {
+                if (!profileId.matches(T13Corpus.PROFILE + "-(nested-split-type3|marked-structure)-page-1")) {
+                    throw new IOException("Unsupported T13 visual profile ID: " + profileId);
+                }
+                return 1;
+            }
         };
 
         private final String prefix;
@@ -417,9 +443,13 @@ final class VisualProfile {
         private final RenderingPolicy renderingPolicy;
 
         PageWorkflowFamily(String prefix, List<String> pageBoxes) {
+            this(prefix, pageBoxes, PAGE_WORKFLOW_POLICY);
+        }
+
+        PageWorkflowFamily(String prefix, List<String> pageBoxes, RenderingPolicy renderingPolicy) {
             this.prefix = prefix;
             this.pageBoxes = pageBoxes;
-            this.renderingPolicy = PAGE_WORKFLOW_POLICY;
+            this.renderingPolicy = renderingPolicy;
         }
 
         abstract int pageCount(String profileId) throws IOException;

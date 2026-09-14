@@ -332,6 +332,40 @@ candidate 的四项前置认证，以
 [Foundation evidence](../../capabilities/foundation-evidence.yaml)为准。
 Windows 和 macOS 仍未认证。
 
+## T13 文本与逻辑结构提取
+
+`ExtractTextAndStructure.version1(limits)` 按页树和内容流执行顺序提取文本，
+包括嵌套 Form 和拆分 Contents。返回的 `TextStructureExtraction` 可在 Session
+关闭后继续读取；几何位于未应用页面显示旋转的用户空间，`Rotate` 和 `UserUnit`
+单独保留。代码不会推断阅读顺序、空白、换行或 OCR 文本。
+
+每个 `CharacterMapping` 保留原始字节和 EXPLICIT、INFERRED、CONTRADICTORY、
+MISSING 状态。矛盾或缺失的映射没有选定 Unicode；不要把空的文本贡献视为成功
+识别。ActualText 按外层替换优先规则作用于页面聚合文本，Alt 保持独立。
+逻辑结构保留角色、命名空间、语言来源和有序的元素、MCR、OBJR 子项。
+
+Stable 和 Preview 均提供六个对应 Facade 入口：
+
+- `PdfTextExtractor.getTextFromPage(page)` 和 `(page, limits)` 返回聚合文本。
+- `PdfPage.getPageText(limits)` 返回包含全部字形观察的 `PageText`。
+- `PdfDocument.getTextAndStructure(limits)` 返回完整 Native 结果。
+- `PdfDocument.getStructTreeRoot()` 和 `(limits)` 返回不可变的
+  `List<LogicalStructureElement>`；这是明确适配的返回类型，无树时返回空列表。
+
+这里的 `PdfTextExtractor` 位于
+`net.zerocloud.pdf.itext7.kernel.pdf.canvas.parser`。两个无 limits 入口使用同一组
+有限默认值，包括 64 MiB 解码字节、100 万字形、100 万字体数据项和 128 层结构
+深度；[英文合同](../t13-certification.md)列出全部 15 项。显式重载使用 Native 的
+`ExtractionLimits`，所有限额都约束整份文档。其他页损坏或超限时，选中的页也不会
+返回看似有效的前缀。Facade 实际使用 IN_PROCESS，并通过 `PdfException` 保留
+Native 失败码和安全诊断。关闭后页面句柄失效，已经返回的值仍可读取。
+
+[T13 认证合同](../t13-certification.md)规定独立语法、标准、语义和视觉证据的
+范围，以及 Ubuntu 24.04/Linux x86-64 上 JDK 8/11/17/21 与两种 Native 执行
+模式的八个实际组合。具体候选、环境和模式的认证记录以
+[Foundation 证据权威](../../capabilities/foundation-evidence.yaml)为准。
+Windows 和 macOS 仍未认证；其他未完成义务可使整体 Foundation 保持 NOT READY。
+
 ## T23 页面渲染
 
 `Rendering` 通过项目自有 `RenderPage` Query 渲染当前页面，默认使用离线的

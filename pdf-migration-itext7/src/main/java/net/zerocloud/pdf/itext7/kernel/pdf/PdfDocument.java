@@ -18,12 +18,15 @@ import net.zerocloud.pdf.DocumentWorkflow;
 import net.zerocloud.pdf.EmbeddedFile;
 import net.zerocloud.pdf.EmbeddedFileData;
 import net.zerocloud.pdf.EmbeddedFileSummary;
+import net.zerocloud.pdf.ExtractionLimits;
+import net.zerocloud.pdf.LogicalStructureElement;
 import net.zerocloud.pdf.ObjectReference;
 import net.zerocloud.pdf.OutlineItem;
 import net.zerocloud.pdf.PageDestination;
 import net.zerocloud.pdf.PageRange;
 import net.zerocloud.pdf.PdfVersion;
 import net.zerocloud.pdf.PublicationReceipt;
+import net.zerocloud.pdf.TextStructureExtraction;
 import net.zerocloud.pdf.WorkflowOutcome;
 import net.zerocloud.pdf.command.AddBlankPage;
 import net.zerocloud.pdf.command.InsertBlankPage;
@@ -51,6 +54,7 @@ import net.zerocloud.pdf.query.EmbeddedFiles;
 import net.zerocloud.pdf.query.ReadEmbeddedFile;
 import net.zerocloud.pdf.query.Annotations;
 import net.zerocloud.pdf.query.Actions;
+import net.zerocloud.pdf.query.ExtractTextAndStructure;
 
 /**
  * Lifecycle mapping of the create, publish, reopen, and inspect workflow.
@@ -466,6 +470,50 @@ public final class PdfDocument implements Closeable {
      */
     public DocumentActions getActions(int maximumActions) {
         return queryDocument(Actions.version1(maximumActions));
+    }
+
+    /**
+     * Extracts the complete detached page-text and logical-structure value model.
+     * Text follows content execution order with no inferred whitespace or layout.
+     * Mapping uncertainty, geometry and limits follow the Native Query contract.
+     * @param limits non-null document-wide extraction bounds
+     * @return the immutable complete result, usable after this document closes
+     */
+    public TextStructureExtraction getTextAndStructure(ExtractionLimits limits) {
+        return queryDocument(ExtractTextAndStructure.version1(limits));
+    }
+
+    /**
+     * Reads ordered detached structure roots after the complete extraction succeeds.
+     * An absent tree returns an empty list and is never created by this read.
+     * This adapted reference member returns Native immutable values.
+     * @param limits non-null document-wide extraction bounds
+     * @return immutable logical-structure roots, usable after this document closes
+     */
+    public List<LogicalStructureElement> getStructTreeRoot(ExtractionLimits limits) {
+        return getTextAndStructure(limits).getStructureRoots();
+    }
+
+    /**
+     * Reads detached structure roots using the finite Foundation convenience profile.
+     * The bounds match PdfTextExtractor's no-limit overload: 10,000 pages,
+     * 100,000 page-tree nodes and content streams, content depth 32, 64 MiB
+     * decoded bytes, 1,000,000 text items, 2,000,000 Unicode code points,
+     * 1,000,000 ToUnicode mappings and font-data entries, 100,000 marked-content
+     * sequences and structure elements, marked-content and structure depth 128,
+     * 250,000 structure items and 10,000 role mappings.
+     * @return immutable ordered roots, or an empty list when no tree is present
+     */
+    public List<LogicalStructureElement> getStructTreeRoot() {
+        return getStructTreeRoot(ExtractionLimits.builder()
+                .maximumPages(10000).maximumPageTreeNodes(100000)
+                .maximumContentStreams(100000).maximumContentStreamDepth(32)
+                .maximumDecodedBytes(64L << 20).maximumTextItems(1000000)
+                .maximumUnicodeCodePoints(2000000).maximumToUnicodeMappings(1000000)
+                .maximumFontDataEntries(1000000).maximumMarkedContentSequences(100000)
+                .maximumMarkedContentDepth(128).maximumStructureElements(100000)
+                .maximumStructureItems(250000).maximumStructureDepth(128)
+                .maximumRoleMappings(10000).build());
     }
 
     /**

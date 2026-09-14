@@ -70,7 +70,8 @@ public final class InventoryCommand {
 
         FoundationReadiness readiness = null;
         if (model.foundation != null) {
-            readiness = new FoundationReadiness(model.foundation);
+            readiness = new FoundationReadiness(model.foundation, "readiness".equals(action)
+                    ? FoundationReadiness.Scope.CURRENT_CANDIDATE : FoundationReadiness.Scope.RETAINED_EVIDENCE);
             if (evidencePath == null) {
                 readiness.evaluate();
             } else {

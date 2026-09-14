@@ -1,0 +1,160 @@
+test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms) ... 
+  test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms) (source='nested-split-type3') ... FAIL
+  test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms) (source='marked-structure') ... FAIL
+  test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms) (source='embedded-font-kinds') ... FAIL
+  test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms) (source='embedded-font-inheritance') ... FAIL
+  test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms) (source='uncertain-geometry') ... FAIL
+  test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms) (defect='text-matrix-name') ... FAIL
+  test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms) (defect='text-matrix-arity') ... FAIL
+  test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms) (defect='font-size-name') ... FAIL
+  test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms) (defect='show-name') ... FAIL
+  test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms) (defect='form-name') ... FAIL
+  test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms) (defect='rgb-name') ... FAIL
+
+======================================================================
+FAIL: test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms) (source='nested-split-type3')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 25, in test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms
+    self.observe(directory, fixtures / (product + '.pdf'), 'pass', scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 626, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'pass' != 'indeterminate'
+- pass
++ indeterminate
+ : nested-split-type3.pdf: Unknown program qualification scope
+
+======================================================================
+FAIL: test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms) (source='marked-structure')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 25, in test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms
+    self.observe(directory, fixtures / (product + '.pdf'), 'pass', scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 626, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'pass' != 'indeterminate'
+- pass
++ indeterminate
+ : marked-structure.pdf: Unknown program qualification scope
+
+======================================================================
+FAIL: test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms) (source='embedded-font-kinds')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 25, in test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms
+    self.observe(directory, fixtures / (product + '.pdf'), 'pass', scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 626, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'pass' != 'indeterminate'
+- pass
++ indeterminate
+ : embedded-font-kinds.pdf: Unknown program qualification scope
+
+======================================================================
+FAIL: test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms) (source='embedded-font-inheritance')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 25, in test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms
+    self.observe(directory, fixtures / (product + '.pdf'), 'pass', scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 626, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'pass' != 'indeterminate'
+- pass
++ indeterminate
+ : embedded-font-inheritance.pdf: Unknown program qualification scope
+
+======================================================================
+FAIL: test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms) (source='uncertain-geometry')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 25, in test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms
+    self.observe(directory, fixtures / (product + '.pdf'), 'pass', scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 626, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'pass' != 'indeterminate'
+- pass
++ indeterminate
+ : uncertain-geometry.pdf: Unknown program qualification scope
+
+======================================================================
+FAIL: test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms) (defect='text-matrix-name')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 41, in test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms
+    self.observe(directory, pdf, 'fail', 'content-operands', scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 626, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'indeterminate'
+- fail
++ indeterminate
+ : text-matrix-name.pdf: Unknown program qualification scope
+
+======================================================================
+FAIL: test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms) (defect='text-matrix-arity')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 41, in test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms
+    self.observe(directory, pdf, 'fail', 'content-operands', scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 626, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'indeterminate'
+- fail
++ indeterminate
+ : text-matrix-arity.pdf: Unknown program qualification scope
+
+======================================================================
+FAIL: test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms) (defect='font-size-name')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 41, in test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms
+    self.observe(directory, pdf, 'fail', 'content-operands', scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 626, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'indeterminate'
+- fail
++ indeterminate
+ : font-size-name.pdf: Unknown program qualification scope
+
+======================================================================
+FAIL: test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms) (defect='show-name')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 41, in test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms
+    self.observe(directory, pdf, 'fail', 'content-operands', scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 626, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'indeterminate'
+- fail
++ indeterminate
+ : show-name.pdf: Unknown program qualification scope
+
+======================================================================
+FAIL: test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms) (defect='form-name')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 41, in test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms
+    self.observe(directory, pdf, 'fail', 'content-operands', scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 626, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'indeterminate'
+- fail
++ indeterminate
+ : form-name.pdf: Unknown program qualification scope
+
+======================================================================
+FAIL: test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms) (defect='rgb-name')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 41, in test_pdf_content_operand_grammar_follows_split_pages_and_nested_forms
+    self.observe(directory, pdf, 'fail', 'content-operands', scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 626, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'indeterminate'
+- fail
++ indeterminate
+ : rgb-name.pdf: Unknown program qualification scope
+
+----------------------------------------------------------------------
+Ran 1 test in 1.450s
+
+FAILED (failures=11)

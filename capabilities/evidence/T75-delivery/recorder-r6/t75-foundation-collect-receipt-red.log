@@ -1,0 +1,20 @@
+F
+======================================================================
+FAIL: test_public_collect_preserves_required_chain_products_and_original_artifact_receipts (scripts.tests.test_t13_foundation.T13FoundationTest.test_public_collect_preserves_required_chain_products_and_original_artifact_receipts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_foundation.py", line 94, in test_public_collect_preserves_required_chain_products_and_original_artifact_receipts
+    self.assertEqual(0, completed.returncode, completed.stderr)
+AssertionError: 0 != 2 : usage: t03-foundation.py [-h]
+                         [--obligation {transactions,values,pages,metadata,annotations,text}]
+                         [--execution-profile {IN_PROCESS,HARDENED_WORKER}]
+                         [--root ROOT]
+                         {stage,certify,collect,preservation,plan,merge-index}
+                         [output]
+t03-foundation.py: error: --execution-profile applies only to metadata and annotations collect
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.097s
+
+FAILED (failures=1)

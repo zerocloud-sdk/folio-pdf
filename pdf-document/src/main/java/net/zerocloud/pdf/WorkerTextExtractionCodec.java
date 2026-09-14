@@ -14,7 +14,8 @@ final class WorkerTextExtractionCodec {
 
     static void write(
             WorkerCodecIO.Output output,
-            TextStructureExtraction extraction)
+            TextStructureExtraction extraction,
+            WorkerReferenceRegistry references)
             throws IOException, DocumentFailure {
         output.writeInt(extraction.getPages().size());
         for (PageText page : extraction.getPages()) {
@@ -22,7 +23,7 @@ final class WorkerTextExtractionCodec {
         }
         output.writeInt(extraction.getStructureRoots().size());
         for (LogicalStructureElement root : extraction.getStructureRoots()) {
-            writeStructureElement(output, root);
+            writeStructureElement(output, root, references);
         }
         output.writeInt(extraction.getDiagnostics().size());
         for (ExtractionDiagnostic diagnostic : extraction.getDiagnostics()) {
@@ -34,7 +35,8 @@ final class WorkerTextExtractionCodec {
         }
     }
 
-    static TextStructureExtraction read(WorkerCodecIO.Input input)
+    static TextStructureExtraction read(
+            WorkerCodecIO.Input input, WorkerReferenceRegistry references)
             throws DocumentFailure {
         int pageCount = WorkerCommandCodec.readCount(input, "text page result");
         List<PageText> pages = new ArrayList<PageText>(pageCount);
@@ -47,7 +49,7 @@ final class WorkerTextExtractionCodec {
         List<LogicalStructureElement> roots =
                 new ArrayList<LogicalStructureElement>(rootCount);
         for (int index = 0; index < rootCount; index++) {
-            roots.add(readStructureElement(input));
+            roots.add(readStructureElement(input, references));
         }
         int diagnosticCount = WorkerCommandCodec.readCount(
                 input,
@@ -188,6 +190,7 @@ final class WorkerTextExtractionCodec {
             WorkerCodecIO.Output output,
             MarkedContentSequence value) throws IOException {
         output.writeInt(value.getId());
+        output.writeInt(value.getContentStreamId());
         output.writeNullableString(value.getTag());
         writeNullableInteger(output, value.getMarkedContentId().orElse(null));
         writeNullableInteger(output, value.getParentId().orElse(null));
@@ -201,6 +204,7 @@ final class WorkerTextExtractionCodec {
             WorkerCodecIO.Input input) throws DocumentFailure {
         return new MarkedContentSequence(
                 input.readInt(),
+                input.readInt(),
                 input.readNullableString(),
                 readNullableInteger(input),
                 readNullableInteger(input),
@@ -212,11 +216,12 @@ final class WorkerTextExtractionCodec {
 
     private static void writeStructureElement(
             WorkerCodecIO.Output output,
-            LogicalStructureElement element)
+            LogicalStructureElement element,
+            WorkerReferenceRegistry references)
             throws IOException, DocumentFailure {
         Deque<StructureWriteFrame> frames =
                 new ArrayDeque<StructureWriteFrame>();
-        writeStructureHeader(output, element);
+        writeStructureHeader(output, element, references);
         frames.push(new StructureWriteFrame(element));
         while (!frames.isEmpty()) {
             StructureWriteFrame frame = frames.peek();
@@ -230,26 +235,40 @@ final class WorkerTextExtractionCodec {
             if (item.getKind() == LogicalStructureItem.Kind.ELEMENT) {
                 LogicalStructureElement child = item.getElement().get();
                 output.requireNestingDepth(frames.size());
-                writeStructureHeader(output, child);
+                writeStructureHeader(output, child, references);
                 frames.push(new StructureWriteFrame(child));
+            } else if (item.getKind() == LogicalStructureItem.Kind.OBJECT) {
+                LogicalObjectReference reference = item.getObjectReference().get();
+                output.writeInt(reference.getPageNumber());
+                references.write(output, reference.getObjectReference());
+                output.writeString(reference.getSubtype());
             } else {
                 MarkedContentReference reference = item.getMarkedContent().get();
                 output.writeInt(reference.getPageNumber());
                 output.writeInt(reference.getMarkedContentId());
-                writeNullableInteger(
-                        output,
-                        reference.getMarkedContentSequenceId().orElse(null));
+                output.writeInt(reference.getContentStreamId());
+                writeNullableInteger(output, reference.getMarkedContentSequenceId().orElse(null));
+                output.writeBoolean(reference.getStreamOwner().isPresent());
+                if (reference.getStreamOwner().isPresent()) {
+                    references.write(output, reference.getStreamOwner().get());
+                }
             }
         }
     }
 
     private static void writeStructureHeader(
             WorkerCodecIO.Output output,
-            LogicalStructureElement element) throws IOException {
+            LogicalStructureElement element, WorkerReferenceRegistry references) throws IOException, DocumentFailure {
         output.writeInt(element.getId());
         output.writeString(element.getRole());
         output.writeNullableString(element.getResolvedRole().orElse(null));
         output.writeString(element.getRoleResolution().name());
+        output.writeNullableString(element.getDeclaredNamespaceName().orElse(null));
+        output.writeBoolean(element.getNamespaceReference().isPresent());
+        if (element.getNamespaceReference().isPresent()) {
+            references.write(output, element.getNamespaceReference().get());
+        }
+        output.writeNullableString(element.getResolvedNamespaceName().orElse(null));
         output.writeNullableString(element.getDeclaredLanguage().orElse(null));
         output.writeNullableString(element.getEffectiveLanguage().orElse(null));
         output.writeString(element.getLanguageSource().name());
@@ -259,10 +278,10 @@ final class WorkerTextExtractionCodec {
     }
 
     private static LogicalStructureElement readStructureElement(
-            WorkerCodecIO.Input input) throws DocumentFailure {
+            WorkerCodecIO.Input input, WorkerReferenceRegistry references) throws DocumentFailure {
         Deque<StructureReadFrame> frames =
                 new ArrayDeque<StructureReadFrame>();
-        frames.push(readStructureHeader(input));
+        frames.push(readStructureHeader(input, references));
         while (true) {
             StructureReadFrame frame = frames.peek();
             if (frame.children.size() == frame.childCount) {
@@ -281,19 +300,24 @@ final class WorkerTextExtractionCodec {
                     "logical-structure child kind");
             if (kind == LogicalStructureItem.Kind.ELEMENT) {
                 input.requireNestingDepth(frames.size());
-                frames.push(readStructureHeader(input));
+                frames.push(readStructureHeader(input, references));
+            } else if (kind == LogicalStructureItem.Kind.OBJECT) {
+                frame.children.add(LogicalStructureItem.objectReference(
+                        new LogicalObjectReference(input.readInt(), references.read(input), input.readString())));
             } else {
                 frame.children.add(LogicalStructureItem.markedContent(
                         new MarkedContentReference(
                                 input.readInt(),
                                 input.readInt(),
-                                readNullableInteger(input))));
+                                input.readInt(),
+                                readNullableInteger(input),
+                                input.readBoolean() ? references.read(input) : null)));
             }
         }
     }
 
     private static StructureReadFrame readStructureHeader(
-            WorkerCodecIO.Input input) throws DocumentFailure {
+            WorkerCodecIO.Input input, WorkerReferenceRegistry references) throws DocumentFailure {
         int id = input.readInt();
         String role = input.readString();
         String resolvedRole = input.readNullableString();
@@ -302,6 +326,9 @@ final class WorkerTextExtractionCodec {
                         LogicalStructureElement.RoleResolution.class,
                         input.readString(),
                         "logical-structure role resolution");
+        String declaredNamespaceName = input.readNullableString();
+        ObjectReference namespaceReference = input.readBoolean() ? references.read(input) : null;
+        String resolvedNamespaceName = input.readNullableString();
         String declaredLanguage = input.readNullableString();
         String effectiveLanguage = input.readNullableString();
         LogicalStructureElement.LanguageSource languageSource =
@@ -319,6 +346,9 @@ final class WorkerTextExtractionCodec {
                 role,
                 resolvedRole,
                 resolution,
+                declaredNamespaceName,
+                namespaceReference,
+                resolvedNamespaceName,
                 declaredLanguage,
                 effectiveLanguage,
                 languageSource,
@@ -343,6 +373,9 @@ final class WorkerTextExtractionCodec {
         private final String role;
         private final String resolvedRole;
         private final LogicalStructureElement.RoleResolution resolution;
+        private final String declaredNamespaceName;
+        private final ObjectReference namespaceReference;
+        private final String resolvedNamespaceName;
         private final String declaredLanguage;
         private final String effectiveLanguage;
         private final LogicalStructureElement.LanguageSource languageSource;
@@ -356,6 +389,9 @@ final class WorkerTextExtractionCodec {
                 String role,
                 String resolvedRole,
                 LogicalStructureElement.RoleResolution resolution,
+                String declaredNamespaceName,
+                ObjectReference namespaceReference,
+                String resolvedNamespaceName,
                 String declaredLanguage,
                 String effectiveLanguage,
                 LogicalStructureElement.LanguageSource languageSource,
@@ -366,6 +402,9 @@ final class WorkerTextExtractionCodec {
             this.role = role;
             this.resolvedRole = resolvedRole;
             this.resolution = resolution;
+            this.declaredNamespaceName = declaredNamespaceName;
+            this.namespaceReference = namespaceReference;
+            this.resolvedNamespaceName = resolvedNamespaceName;
             this.declaredLanguage = declaredLanguage;
             this.effectiveLanguage = effectiveLanguage;
             this.languageSource = languageSource;
@@ -381,6 +420,9 @@ final class WorkerTextExtractionCodec {
                     role,
                     resolvedRole,
                     resolution,
+                    declaredNamespaceName,
+                    namespaceReference,
+                    resolvedNamespaceName,
                     declaredLanguage,
                     effectiveLanguage,
                     languageSource,

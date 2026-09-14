@@ -1,0 +1,18 @@
+...............F
+======================================================================
+FAIL: test_tounicode_mapping_sources_must_belong_to_the_owning_encoding_domain (test_t13_program_standards.T13ProgramStandardsTest.test_tounicode_mapping_sources_must_belong_to_the_owning_encoding_domain)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 23, in test_tounicode_mapping_sources_must_belong_to_the_owning_encoding_domain
+    self.observe(directory, pdf, 'fail', 'cmap-font-domain')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 129, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : unicode-code-outside-encoding.pdf: Decoded CMap grammar, character domains and declared inheritance are consistent.
+
+----------------------------------------------------------------------
+Ran 16 tests in 12.015s
+
+FAILED (failures=1)

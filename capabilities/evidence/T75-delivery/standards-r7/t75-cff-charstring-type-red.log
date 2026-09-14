@@ -1,0 +1,61 @@
+FFFF
+======================================================================
+FAIL: test_cff_charstring_type_must_match_the_qualified_outline_grammar (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cff_charstring_type_must_match_the_qualified_outline_grammar) (font='FolioT13Rectangle.cff', charstring_type=1)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 29, in test_cff_charstring_type_must_match_the_qualified_outline_grammar
+    values = self.observe(directory, pdf, 'pass' if kind == 2 else 'indeterminate', scope='fonts')
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 424, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'indeterminate' != 'pass'
+- indeterminate
++ pass
+ : FolioT13Rectangle.cff-charstring-type-1.pdf: Embedded CFF and TrueType headers, dictionaries and checked font tables are readable.
+
+======================================================================
+FAIL: test_cff_charstring_type_must_match_the_qualified_outline_grammar (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cff_charstring_type_must_match_the_qualified_outline_grammar) (font='FolioT13Rectangle.cff', charstring_type=3)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 29, in test_cff_charstring_type_must_match_the_qualified_outline_grammar
+    values = self.observe(directory, pdf, 'pass' if kind == 2 else 'indeterminate', scope='fonts')
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 424, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'indeterminate' != 'pass'
+- indeterminate
++ pass
+ : FolioT13Rectangle.cff-charstring-type-3.pdf: Embedded CFF and TrueType headers, dictionaries and checked font tables are readable.
+
+======================================================================
+FAIL: test_cff_charstring_type_must_match_the_qualified_outline_grammar (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cff_charstring_type_must_match_the_qualified_outline_grammar) (font='FolioT13RectangleCID.cff', charstring_type=1)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 29, in test_cff_charstring_type_must_match_the_qualified_outline_grammar
+    values = self.observe(directory, pdf, 'pass' if kind == 2 else 'indeterminate', scope='fonts')
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 424, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'indeterminate' != 'pass'
+- indeterminate
++ pass
+ : FolioT13RectangleCID.cff-charstring-type-1.pdf: Embedded CFF and TrueType headers, dictionaries and checked font tables are readable.
+
+======================================================================
+FAIL: test_cff_charstring_type_must_match_the_qualified_outline_grammar (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cff_charstring_type_must_match_the_qualified_outline_grammar) (font='FolioT13RectangleCID.cff', charstring_type=3)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 29, in test_cff_charstring_type_must_match_the_qualified_outline_grammar
+    values = self.observe(directory, pdf, 'pass' if kind == 2 else 'indeterminate', scope='fonts')
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 424, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'indeterminate' != 'pass'
+- indeterminate
++ pass
+ : FolioT13RectangleCID.cff-charstring-type-3.pdf: Embedded CFF and TrueType headers, dictionaries and checked font tables are readable.
+
+----------------------------------------------------------------------
+Ran 1 test in 3.919s
+
+FAILED (failures=4)

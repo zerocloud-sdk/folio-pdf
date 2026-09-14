@@ -1,0 +1,39 @@
+FFF
+======================================================================
+FAIL: test_pdf_font_names_must_identify_the_actual_embedded_program (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_pdf_font_names_must_identify_the_actual_embedded_program) (font='cff')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 30, in test_pdf_font_names_must_identify_the_actual_embedded_program
+    self.observe(directory, pdf, 'fail', 'font-program-name', scope='fonts')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 399, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : program-name-cff.pdf: Embedded CFF and TrueType headers, dictionaries and checked font tables are readable.
+
+======================================================================
+FAIL: test_pdf_font_names_must_identify_the_actual_embedded_program (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_pdf_font_names_must_identify_the_actual_embedded_program) (font='cid-cff')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 30, in test_pdf_font_names_must_identify_the_actual_embedded_program
+    self.observe(directory, pdf, 'fail', 'font-program-name', scope='fonts')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 399, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : program-name-cid-cff.pdf: Embedded CFF and TrueType headers, dictionaries and checked font tables are readable.
+
+======================================================================
+FAIL: test_pdf_font_names_must_identify_the_actual_embedded_program (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_pdf_font_names_must_identify_the_actual_embedded_program) (font='truetype')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 26, in test_pdf_font_names_must_identify_the_actual_embedded_program
+    self.assertEqual(len(before), len(after))
+AssertionError: 19 != 20
+
+----------------------------------------------------------------------
+Ran 1 test in 1.264s
+
+FAILED (failures=3)

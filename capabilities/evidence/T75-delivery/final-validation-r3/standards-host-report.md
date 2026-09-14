@@ -1,0 +1,11 @@
+Hard violations: none in this bounded r3 host-verification evidence review.
+
+The archive SHA-256 matches its identity file. I streamed all 183 members (1,462,288 bytes), checking every name, size and digest against the manifest and frozen original; no mismatch, unexpected executable/compiled member or unsafe path was found. The durable original command, result and complete log agree with the archived copies and receipt. The recorded actual process exit is 0, and all ten reactor modules report SUCCESS.
+
+Independent per-class multiset comparison confirms 1,504 reported cases, zero failures/errors and four skips across 87 class results, including 115 passing Native extraction cases. All 87 selected XML suite results exactly match the complete log, preserving repeated Stable/Preview class names. The selection contains 177 original report files. Every XML identifies Java 17/17.0.9, consistent with the retained host Java observation. The four skipped method identities and reasons match the previous host run’s three unselected Worker scale cases and one unselected T30 offline-raster case; their gates remain unchanged.
+
+All 1,933 current source inputs and 30 contract inputs match the pre-run and Worker-batch closure snapshots. I recomputed the original full-review delta: 22 source inputs and one contract input differ, all bound to my prior independent appearance, observer-budget and six-file Worker-batch closure identities. The retained latest Standards report matches my original report SHA. The explicit native-helper identity and preceding inventory command/result/log identities also agree; all three inventory results record exit 0.
+
+Judgement calls: no actionable evidence-packaging or documentation concern. The README accurately limits the completed result to host verification and labels the new matrix and 48-tuple certification separately. This is evidence verification by an independent reviewer, not implementing-agent self-review or a rerun.
+
+No project execution, repository/authority/index changes or tracker operations occurred. This closes only r3 complete host-verification evidence. No current matrix PASS, candidate certification, final staging or delivery approval is inferred.

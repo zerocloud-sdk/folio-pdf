@@ -388,7 +388,13 @@ obligations:
   facade-families:
   - family: kernel text and logical structure extraction
     reference-prefix: com.itextpdf.kernel.pdf.
-    mappings: []
+    mappings:
+    - itext7.kernel.pdf-text-extractor.get-text-from-page
+    - itext7.kernel.pdf-text-extractor.get-text-from-page-limits
+    - itext7.kernel.pdf-page.get-page-text
+    - itext7.kernel.pdf-document.get-text-and-structure
+    - itext7.kernel.pdf-document.get-struct-tree-root
+    - itext7.kernel.pdf-document.get-struct-tree-root-limits
 - id: images
   summary: Extract a bounded deterministic inventory of page and nested-Form resources, including detached image
     metadata and explicitly selected bytes plus font identity and usage.
@@ -1456,15 +1462,14 @@ limitations:
     #75 must prove it without omitting required successful Foundation cases.'
   obligation: text
 - capability: document.text-structure.extract
-  sha256: 58b084ed8313ab90be1fc79a35fc1ed376ddb6a8b8525ebb749830d6e51d1b45
-  disposition: release-blocker
-  reason: 'Required Logical Structure extraction must be reconciled with the restricted MCR/OBJR/PDF 2.0 profiles
-    by #75.'
+  sha256: 096982c976ed81968dc83ed33395bf768293d9873d6d8c3dd340acdf2c102c46
+  disposition: retained-contract
+  reason: Public Workflow successes and independent qualified controls cover page and Form MCRs, annotation-owned appearances, whole-object OBJRs, ParentTree backlinks and PDF 2.0 namespaces/roles. The retained bounds and unsupported relationships are source-traceable in docs/t13-certification.md; final candidate certification remains required.
   obligation: text
 - capability: document.text-structure.extract
-  sha256: e5e279230edefdce90bab98d071eea58144970e138f70236330d5d9dca46924e
-  disposition: release-blocker
-  reason: 'Restricted font/CMap/content profiles require #75 coverage of required Foundation extraction cases.'
+  sha256: 76de492420e3da3abbdff8f8bfad6a570df86c0e27e2c8b12aa1a41efda842f3
+  disposition: retained-contract
+  reason: Public Workflow successes and independent qualified declaration/program controls cover Type3 geometry, embedded font kinds, all 61 standard Encodings, bounded inherited CMaps, four predefined UCS2 parents and exact mapping evidence. The retained bounds are fixed by docs/t13-certification.md; final candidate certification remains required.
   obligation: text
 - capability: document.text-structure.extract
   sha256: d56c4a6ac8015d6d31642cf40aebbc977f71d7972bb6fd1cf73439947beec23c

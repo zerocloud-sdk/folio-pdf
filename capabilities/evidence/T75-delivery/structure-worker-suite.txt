@@ -1,0 +1,226 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent                                    [pom]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract              [jar]
+[INFO] Folio PDF by ZeroCloud - Conversion                                [jar]
+[INFO] Folio PDF by ZeroCloud - Document Engine                           [jar]
+[INFO] 
+[INFO] ----------------------< net.zerocloud:pdf-parent >----------------------
+[INFO] Building Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT            [1/4]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-parent ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.version.RequireMavenVersion passed
+[INFO] Rule 1: org.apache.maven.enforcer.rules.version.RequireJavaVersion passed
+[INFO] 
+[INFO] ----------------< net.zerocloud:pdf-provider-contract >-----------------
+[INFO] Building Folio PDF by ZeroCloud - Capability Provider Contract 0.1.0-SNAPSHOT [2/4]
+[INFO]   from pdf-provider-contract/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-provider-contract ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-provider-contract ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-provider-contract/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --------------------< net.zerocloud:pdf-conversion >--------------------
+[INFO] Building Folio PDF by ZeroCloud - Conversion 0.1.0-SNAPSHOT        [3/4]
+[INFO]   from pdf-conversion/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-conversion ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-conversion/src/main/resources
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /home/ubuntu/IdeaProjects/open-pdf/pdf-conversion/src/test/resources
+[INFO] Copying 1 resource from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-conversion ---
+[INFO] 
+[INFO] ---------------------< net.zerocloud:pdf-document >---------------------
+[INFO] Building Folio PDF by ZeroCloud - Document Engine 0.1.0-SNAPSHOT   [4/4]
+[INFO]   from pdf-document/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-document ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-document ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-document ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-document ---
+[INFO] Copying 12 resources from src/test/resources to target/test-classes
+[INFO] Copying 15 resources from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-document ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-document ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest
+[ERROR] Tests run: 59, Failures: 0, Errors: 3, Skipped: 0, Time elapsed: 139.9 s <<< FAILURE! -- in net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest
+[ERROR] net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest.malformedFormGeometryAndResourcesFailBeforeBackendCoercion -- Time elapsed: 10.01 s <<< ERROR!
+org.junit.runners.model.TestTimedOutException: test timed out after 10000 milliseconds
+	at java.base@17.0.9/java.security.MessageDigest.update(MessageDigest.java:351)
+	at app//net.zerocloud.pdf.HardenedWorkerEngine.sha256(HardenedWorkerEngine.java:2548)
+	at app//net.zerocloud.pdf.HardenedWorkerEngine.requireExactDependencyCodeSource(HardenedWorkerEngine.java:2328)
+	at app//net.zerocloud.pdf.HardenedWorkerEngine.addDependencyCodeSource(HardenedWorkerEngine.java:2283)
+	at app//net.zerocloud.pdf.HardenedWorkerEngine.workerClassPath(HardenedWorkerEngine.java:2238)
+	at app//net.zerocloud.pdf.HardenedWorkerEngine$WorkerConnection.start(HardenedWorkerEngine.java:1350)
+	at app//net.zerocloud.pdf.HardenedWorkerEngine.execute(HardenedWorkerEngine.java:198)
+	at app//net.zerocloud.pdf.DocumentWorkflow.executeOnce(DocumentWorkflow.java:177)
+	at app//net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:103)
+	at app//net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:64)
+	at app//net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest.query(TextStructureExtractionWorkflowTest.java:1723)
+	at app//net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest.assertQueryFailure(TextStructureExtractionWorkflowTest.java:1734)
+	at app//net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest.malformedFormGeometryAndResourcesFailBeforeBackendCoercion(TextStructureExtractionWorkflowTest.java:1129)
+	at java.base@17.0.9/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base@17.0.9/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base@17.0.9/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base@17.0.9/java.lang.reflect.Method.invoke(Method.java:568)
+	at app//org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at app//org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at app//org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at app//org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:299)
+	at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:293)
+	at java.base@17.0.9/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base@17.0.9/java.lang.Thread.run(Thread.java:840)
+
+[ERROR] net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest.malformedFontKindsAndMetricsFailBeforeBackendCoercion -- Time elapsed: 10.00 s <<< ERROR!
+org.junit.runners.model.TestTimedOutException: test timed out after 10000 milliseconds
+	at java.base@17.0.9/jdk.internal.misc.Unsafe.park(Native Method)
+	at java.base@17.0.9/java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:252)
+	at java.base@17.0.9/java.util.concurrent.CompletableFuture$Signaller.block(CompletableFuture.java:1866)
+	at java.base@17.0.9/java.util.concurrent.ForkJoinPool.unmanagedBlock(ForkJoinPool.java:3465)
+	at java.base@17.0.9/java.util.concurrent.ForkJoinPool.managedBlock(ForkJoinPool.java:3436)
+	at java.base@17.0.9/java.util.concurrent.CompletableFuture.timedGet(CompletableFuture.java:1939)
+	at java.base@17.0.9/java.util.concurrent.CompletableFuture.get(CompletableFuture.java:2095)
+	at app//net.zerocloud.pdf.HardenedWorkerEngine$WorkerConnection.exchange(HardenedWorkerEngine.java:1443)
+	at app//net.zerocloud.pdf.HardenedWorkerEngine$WorkerConnection.exchange(HardenedWorkerEngine.java:1416)
+	at app//net.zerocloud.pdf.HardenedWorkerEngine$WorkerConnection.exchange(HardenedWorkerEngine.java:1396)
+	at app//net.zerocloud.pdf.HardenedWorkerEngine$ProxyDocumentSession.query(HardenedWorkerEngine.java:962)
+	at app//net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest.lambda$query$15(TextStructureExtractionWorkflowTest.java:1725)
+	at app//net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest$$Lambda$65/0x00007b85940c1f38.perform(Unknown Source)
+	at app//net.zerocloud.pdf.HardenedWorkerEngine.execute(HardenedWorkerEngine.java:237)
+	at app//net.zerocloud.pdf.DocumentWorkflow.executeOnce(DocumentWorkflow.java:177)
+	at app//net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:103)
+	at app//net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:64)
+	at app//net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest.query(TextStructureExtractionWorkflowTest.java:1723)
+	at app//net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest.assertQueryFailure(TextStructureExtractionWorkflowTest.java:1734)
+	at app//net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest.malformedFontKindsAndMetricsFailBeforeBackendCoercion(TextStructureExtractionWorkflowTest.java:623)
+	at java.base@17.0.9/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base@17.0.9/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base@17.0.9/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base@17.0.9/java.lang.reflect.Method.invoke(Method.java:568)
+	at app//org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at app//org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at app//org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at app//org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:299)
+	at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:293)
+	at java.base@17.0.9/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base@17.0.9/java.lang.Thread.run(Thread.java:840)
+
+[ERROR] net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest.malformedPageGeometryAttributesFailBeforeBackendCoercion -- Time elapsed: 10.00 s <<< ERROR!
+org.junit.runners.model.TestTimedOutException: test timed out after 10000 milliseconds
+	at java.base@17.0.9/java.security.MessageDigest.update(MessageDigest.java:351)
+	at app//net.zerocloud.pdf.HardenedWorkerEngine.sha256(HardenedWorkerEngine.java:2548)
+	at app//net.zerocloud.pdf.HardenedWorkerEngine.requireExactDependencyCodeSource(HardenedWorkerEngine.java:2328)
+	at app//net.zerocloud.pdf.HardenedWorkerEngine.addDependencyCodeSource(HardenedWorkerEngine.java:2283)
+	at app//net.zerocloud.pdf.HardenedWorkerEngine.workerClassPath(HardenedWorkerEngine.java:2238)
+	at app//net.zerocloud.pdf.HardenedWorkerEngine$WorkerConnection.start(HardenedWorkerEngine.java:1350)
+	at app//net.zerocloud.pdf.HardenedWorkerEngine.execute(HardenedWorkerEngine.java:198)
+	at app//net.zerocloud.pdf.DocumentWorkflow.executeOnce(DocumentWorkflow.java:177)
+	at app//net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:103)
+	at app//net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:64)
+	at app//net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest.query(TextStructureExtractionWorkflowTest.java:1723)
+	at app//net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest.assertQueryFailure(TextStructureExtractionWorkflowTest.java:1734)
+	at app//net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest.malformedPageGeometryAttributesFailBeforeBackendCoercion(TextStructureExtractionWorkflowTest.java:1085)
+	at java.base@17.0.9/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base@17.0.9/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base@17.0.9/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base@17.0.9/java.lang.reflect.Method.invoke(Method.java:568)
+	at app//org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at app//org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at app//org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at app//org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:299)
+	at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:293)
+	at java.base@17.0.9/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base@17.0.9/java.lang.Thread.run(Thread.java:840)
+
+[INFO] Running net.zerocloud.pdf.PdfBoxCMapPreflightTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s -- in net.zerocloud.pdf.PdfBoxCMapPreflightTest
+[INFO] Running net.zerocloud.pdf.PdfBoxFontMetricPreflightTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s -- in net.zerocloud.pdf.PdfBoxFontMetricPreflightTest
+[INFO] Running net.zerocloud.pdf.WorkerCodecContractTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.326 s -- in net.zerocloud.pdf.WorkerCodecContractTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Errors: 
+[ERROR]   TextStructureExtractionWorkflowTest.malformedFontKindsAndMetricsFailBeforeBackendCoercion:623->assertQueryFailure:1734->query:1723->lambda$query$15:1725 » TestTimedOut test timed out after 10000 milliseconds
+[ERROR]   TextStructureExtractionWorkflowTest.malformedFormGeometryAndResourcesFailBeforeBackendCoercion:1129->assertQueryFailure:1734->query:1723 » TestTimedOut test timed out after 10000 milliseconds
+[ERROR]   TextStructureExtractionWorkflowTest.malformedPageGeometryAttributesFailBeforeBackendCoercion:1085->assertQueryFailure:1734->query:1723 » TestTimedOut test timed out after 10000 milliseconds
+[INFO] 
+[ERROR] Tests run: 84, Failures: 0, Errors: 3, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent .................... SUCCESS [  0.420 s]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract SUCCESS [  0.474 s]
+[INFO] Folio PDF by ZeroCloud - Conversion ................ SUCCESS [  0.067 s]
+[INFO] Folio PDF by ZeroCloud - Document Engine ........... FAILURE [02:20 min]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  02:22 min
+[INFO] Finished at: 2026-09-12T11:10:01+08:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.5.4:test (default-test) on project pdf-document: 
+[ERROR] 
+[ERROR] See /home/ubuntu/IdeaProjects/open-pdf/pdf-document/target/surefire-reports for the individual test results.
+[ERROR] See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+[ERROR] 
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :pdf-document

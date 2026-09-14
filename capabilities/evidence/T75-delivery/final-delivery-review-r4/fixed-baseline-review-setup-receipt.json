@@ -1,0 +1,85 @@
+{
+  "recorded-utc": "2026-09-13T23:19:28.296692+00:00",
+  "baseline": "5b1603c435f11c40368f75b7b9a2777c9c5e9761",
+  "commands": [
+    {
+      "label": "baseline",
+      "command": [
+        "git",
+        "rev-parse",
+        "5b1603c435f11c40368f75b7b9a2777c9c5e9761"
+      ],
+      "returncode": 0,
+      "stdout-bytes": 41,
+      "stdout-sha256": "46e41275f9b956cd253c4a67eb18a65fea9210acba5cf641833dc9c24629fa13",
+      "stderr-bytes": 0
+    },
+    {
+      "label": "head",
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "returncode": 0,
+      "stdout-bytes": 41,
+      "stdout-sha256": "46e41275f9b956cd253c4a67eb18a65fea9210acba5cf641833dc9c24629fa13",
+      "stderr-bytes": 0
+    },
+    {
+      "label": "canonical-committed-diff",
+      "command": [
+        "git",
+        "diff",
+        "5b1603c435f11c40368f75b7b9a2777c9c5e9761...HEAD",
+        "--"
+      ],
+      "returncode": 0,
+      "stdout-bytes": 0,
+      "stdout-sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr-bytes": 0
+    },
+    {
+      "label": "commit-list",
+      "command": [
+        "git",
+        "log",
+        "5b1603c435f11c40368f75b7b9a2777c9c5e9761..HEAD",
+        "--oneline"
+      ],
+      "returncode": 0,
+      "stdout-bytes": 0,
+      "stdout-sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr-bytes": 0
+    },
+    {
+      "label": "tracked-work-in-progress-diff",
+      "command": [
+        "git",
+        "diff",
+        "5b1603c435f11c40368f75b7b9a2777c9c5e9761",
+        "--"
+      ],
+      "returncode": 0,
+      "stdout-bytes": 909588,
+      "stdout-sha256": "5cd34fe19bd37c641790404802a4790baf6ff50a9081052311a2f36c3306df6c",
+      "stderr-bytes": 0
+    },
+    {
+      "label": "current-index-diff",
+      "command": [
+        "git",
+        "diff",
+        "--cached",
+        "5b1603c435f11c40368f75b7b9a2777c9c5e9761",
+        "--"
+      ],
+      "returncode": 0,
+      "stdout-bytes": 0,
+      "stdout-sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr-bytes": 0
+    }
+  ],
+  "scope": "Final review setup only. Committed diff and commit list are empty because authorized implementation remains uncommitted. Explicit WIP adaptation uses tracked baseline diff plus the frozen source/contract manifests for new files. Current index is empty. Active annotations evidence, final inventory views, delivery status and eventual staged index remain excluded until separately frozen and supplied.",
+  "no-approval": true
+}

@@ -1,0 +1,30 @@
+test_shared_library_identity_is_required_even_when_observations_are_unchanged (scripts.tests.test_t13_qpdf_identity.T13QpdfIdentityTest.test_shared_library_identity_is_required_even_when_observations_are_unchanged) ... 
+  test_shared_library_identity_is_required_even_when_observations_are_unchanged (scripts.tests.test_t13_qpdf_identity.T13QpdfIdentityTest.test_shared_library_identity_is_required_even_when_observations_are_unchanged) (observer='t13-program-standards.py') ... FAIL
+  test_shared_library_identity_is_required_even_when_observations_are_unchanged (scripts.tests.test_t13_qpdf_identity.T13QpdfIdentityTest.test_shared_library_identity_is_required_even_when_observations_are_unchanged) (observer='t13-semantics.py') ... FAIL
+
+======================================================================
+FAIL: test_shared_library_identity_is_required_even_when_observations_are_unchanged (scripts.tests.test_t13_qpdf_identity.T13QpdfIdentityTest.test_shared_library_identity_is_required_even_when_observations_are_unchanged) (observer='t13-program-standards.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_qpdf_identity.py", line 59, in test_shared_library_identity_is_required_even_when_observations_are_unchanged
+    self.assertEqual('indeterminate', values[chain], values['finding'])
+AssertionError: 'indeterminate' != 'pass'
+- indeterminate
++ pass
+ : Decoded CMap grammar, character domains and declared inheritance are consistent.
+
+======================================================================
+FAIL: test_shared_library_identity_is_required_even_when_observations_are_unchanged (scripts.tests.test_t13_qpdf_identity.T13QpdfIdentityTest.test_shared_library_identity_is_required_even_when_observations_are_unchanged) (observer='t13-semantics.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_qpdf_identity.py", line 59, in test_shared_library_identity_is_required_even_when_observations_are_unchanged
+    self.assertEqual('indeterminate', values[chain], values['finding'])
+AssertionError: 'indeterminate' != 'pass'
+- indeterminate
++ pass
+ : The complete reachable decoded graph matches the frozen original Source.
+
+----------------------------------------------------------------------
+Ran 1 test in 0.317s
+
+FAILED (failures=2)

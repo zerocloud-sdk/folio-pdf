@@ -37,6 +37,10 @@ public final class StandardsEvidenceCommand {
      * @throws Exception if input or evidence storage is unavailable
      */
     public static void main(String[] arguments) throws Exception {
+        observe(arguments);
+    }
+
+    static RetainedEvidence observe(String[] arguments) throws Exception {
         if (arguments.length != 4) {
             throw new IllegalArgumentException(
                     "Usage: StandardsEvidenceCommand <output> <tool-pin> <profile> <pdf>");
@@ -51,6 +55,7 @@ public final class StandardsEvidenceCommand {
         PinProperties pin = PinProperties.load(pinPath, "standards tool");
         PinProperties profile = PinProperties.load(profilePath, "standards profile");
         Files.createDirectory(output);
+        RetainedEvidence retainedFiles = new RetainedEvidence(output);
         EvidenceResult result = EvidenceResult.INDETERMINATE;
         StringBuilder findings = new StringBuilder();
         String executableHash = "unavailable";
@@ -118,8 +123,9 @@ public final class StandardsEvidenceCommand {
                                 if (!controlHash.equals(EvidenceFiles.sha256(retained))) {
                                     throw new IOException("Negative control changed while staging");
                                 }
+                                retainedFiles.retain(retained, controlHash);
                                 ProcessResult negative = check(pin, profile, output, retained, arlington);
-                                EvidenceFiles.write(output.resolve("negative-" + rule + ".txt"),
+                                retainedFiles.write(output.resolve("negative-" + rule + ".txt"),
                                         "exit=" + negative.exitCode + "\n" + negative.combinedOutput());
                                 boolean detected = invalid(negative, arlington) && negative.combinedOutput().contains(
                                         profile.required(prefix + ".finding"));
@@ -151,6 +157,7 @@ public final class StandardsEvidenceCommand {
                 coveredRules = "";
                 findings.append("Checker or configuration identity changed during validation.\n");
             }
+            retainedFiles.verify();
         } catch (ExternalProcess.LimitExceededException limit) {
             result = EvidenceResult.INDETERMINATE;
             coveredRules = "";
@@ -159,15 +166,16 @@ public final class StandardsEvidenceCommand {
         } catch (IOException unavailable) {
             result = EvidenceResult.INDETERMINATE;
             coveredRules = "";
-            findings.append("The pinned checker is unavailable.\n");
+            findings.append("The pinned checker or retained evidence is unavailable: ")
+                    .append(unavailable.getMessage()).append('\n');
         } catch (InterruptedException interrupted) {
             Thread.currentThread().interrupt();
             result = EvidenceResult.INDETERMINATE;
             coveredRules = "";
             findings.append("The checker was interrupted.\n");
         }
-        EvidenceFiles.write(output.resolve("findings.txt"), findings.toString());
-        EvidenceFiles.write(output.resolve("standards.properties"),
+        retainedFiles.write(output.resolve("findings.txt"), findings.toString());
+        retainedFiles.write(output.resolve("standards.properties"),
                 "result=" + result.recordValue() + "\n"
                         + "profile=" + profile.required("profile") + "\n"
                         + "covered-rules=" + coveredRules + "\n"
@@ -177,6 +185,7 @@ public final class StandardsEvidenceCommand {
                         + "input-sha256=" + inputHash + "\n"
                         + "pin-sha256=" + pinHash + "\n"
                         + "profile-sha256=" + profileHash + "\n");
+        return retainedFiles;
     }
 
     private static Set<String> rules(String value) throws IOException {
@@ -232,7 +241,7 @@ public final class StandardsEvidenceCommand {
                 Integer.parseInt(pin.required("max-output-bytes")), arguments);
     }
 
-    private static String modelHash(Path model) throws IOException {
+    static String modelHash(Path model) throws IOException {
         List<Path> files = new ArrayList<Path>();
         try (Stream<Path> entries = Files.list(model)) {
             entries.filter(path -> path.toString().endsWith(".tsv")).forEach(files::add);

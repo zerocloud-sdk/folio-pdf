@@ -1,0 +1,13 @@
+CLEAN for the eight complete r3 metadata/T11 observation tuples; no actionable Spec finding.
+
+Fixed baseline: `5b1603c435f11c40368f75b7b9a2777c9c5e9761`. Candidate: `e2dd9ebbeae5668ccc8e2985ccd8af17c8921d1ec5e12e0c913cbd1fa00dfbd6`; contract: `3de508f79fcbef7258feee8abc013d6f02b000840cac1cb263cb0d6f927b8f2b`.
+
+The Goal requires “Refresh invalidated certifications rather than reusing stale hashes” and disallows added functionality during revalidation (original Goal:131–133). All 155 inspected T11 dedicated source, test, contract and fixture files remain byte-identical to baseline. All 1,933 source, 30 contract, 23 artifact and 24 harness identities match the reviewed r3 Worker correction and refreshed host/JDK validation.
+
+Eight original suites actually pass 73 cases each: 62 selected-mode Native, nine actual IN_PROCESS Stable Facade, and two artifact classes. Exact classpaths, 177 configuration inputs, 15 tool identities and all four reconstructed BEFORE/AFTER environments agree. Formal 600-second and recorder 1,800-second guards remain unchanged. Preview coverage is artifact reflection; the nine Facade workflows do not claim Preview execution.
+
+Read and hashed 24,448 tuple files, 32 records and 25,128 report references. Verified 64 public products and all 170 assigned rules (31 pdfcpu, 35 Arlington core, 104 Arlington metadata), with 10,880 original illegal-control/diagnostic pairs (docs/t11-certification.md:76–84,135–157). Separate non-PDF, five semantic mutations, signed-Source rejection and one-pixel controls all retain their required outcomes. Every byte of 612 decoded RGB inputs matches prescribed geometry and pixels, with zero AE/fuzz thresholds and per-file original PNG hashes (contract:17–22,105–109).
+
+All 64 XML scenarios retain their safety results; every one of the 16 actual Worker scenarios has file, network and distinct-process controls from the same active Session after the candidate (contract:95–103; T11XmlSafetyProbe.java:229–270). Exact metadata, unknown values, navigation, payloads, declaration-order receipts, terminal split, caller ownership and Source/sibling isolation remain covered (contract:24–72,86–93; DocumentMetadataFacadeTest.java:264–460). The 64 MiB command and finite policy boundaries are unchanged (contract:113–116).
+
+Reader casing/path diagnostics remain preserved with separate clean closures. Prior text/transactions/values/pages review identities and exact published subsets are unchanged. T11 requires no T13 producer manifests; zero were observed. Metadata actual outer exit and exact authority publication remain deferred. No all48, final-delivery or completion-criterion approval is given.

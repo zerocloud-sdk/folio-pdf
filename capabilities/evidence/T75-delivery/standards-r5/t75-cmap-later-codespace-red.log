@@ -1,0 +1,31 @@
+FF
+======================================================================
+FAIL: test_no_codespace_block_can_follow_a_mapping_block_even_when_empty (test_t13_program_standards.T13ProgramStandardsTest.test_no_codespace_block_can_follow_a_mapping_block_even_when_empty) (kind='nonempty')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 20, in test_no_codespace_block_can_follow_a_mapping_block_even_when_empty
+    self.observe(directory, pdf, 'fail', 'cmap-codespace')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 92, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : codespace-after-mapping.pdf: Decoded CMap grammar, character domains and declared inheritance are consistent.
+
+======================================================================
+FAIL: test_no_codespace_block_can_follow_a_mapping_block_even_when_empty (test_t13_program_standards.T13ProgramStandardsTest.test_no_codespace_block_can_follow_a_mapping_block_even_when_empty) (kind='empty')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 27, in test_no_codespace_block_can_follow_a_mapping_block_even_when_empty
+    self.observe(directory, empty, 'fail', 'cmap-codespace')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 92, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : codespace-after-empty-mapping.pdf: Decoded CMap grammar, character domains and declared inheritance are consistent.
+
+----------------------------------------------------------------------
+Ran 1 test in 0.249s
+
+FAILED (failures=2)

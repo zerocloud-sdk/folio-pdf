@@ -1,0 +1,44 @@
+FFF
+======================================================================
+FAIL: test_cmap_program_names_and_comments_follow_postscript_lexical_rules (test_t13_program_standards.T13ProgramStandardsTest.test_cmap_program_names_and_comments_follow_postscript_lexical_rules) (name='hash-name-mismatch')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 23, in test_cmap_program_names_and_comments_follow_postscript_lexical_rules
+    self.observe(directory, fixtures / (name + '.pdf'), outcome, rule)
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 37, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : hash-name-mismatch.pdf: Decoded CMap grammar, character domains and declared inheritance are consistent.
+
+======================================================================
+FAIL: test_cmap_program_names_and_comments_follow_postscript_lexical_rules (test_t13_program_standards.T13ProgramStandardsTest.test_cmap_program_names_and_comments_follow_postscript_lexical_rules) (name='hash-name-legal')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 23, in test_cmap_program_names_and_comments_follow_postscript_lexical_rules
+    self.observe(directory, fixtures / (name + '.pdf'), outcome, rule)
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 37, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'pass' != 'fail'
+- pass
++ fail
+ : hash-name-legal.pdf: CMapName differs between dictionary and decoded program
+
+======================================================================
+FAIL: test_cmap_program_names_and_comments_follow_postscript_lexical_rules (test_t13_program_standards.T13ProgramStandardsTest.test_cmap_program_names_and_comments_follow_postscript_lexical_rules) (name='ff-comment-hidden-bfchar')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 23, in test_cmap_program_names_and_comments_follow_postscript_lexical_rules
+    self.observe(directory, fixtures / (name + '.pdf'), outcome, rule)
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 37, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : ff-comment-hidden-bfchar.pdf: Decoded CMap grammar, character domains and declared inheritance are consistent.
+
+----------------------------------------------------------------------
+Ran 1 test in 0.375s
+
+FAILED (failures=3)

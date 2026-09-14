@@ -1,0 +1,20 @@
+E
+======================================================================
+ERROR: test_program_qualification_profile_binds_all_scopes_and_negative_control_files (scripts.tests.test_t13_standards.T13StandardsTest.test_program_qualification_profile_binds_all_scopes_and_negative_control_files)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_standards.py", line 21, in test_program_qualification_profile_binds_all_scopes_and_negative_control_files
+    profile = dict(line.split('=', 1) for line in (output / 'program-qualification.properties').read_text().splitlines())
+                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1029, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpsqspn21g/controls/program-qualification.properties'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.170s
+
+FAILED (errors=1)

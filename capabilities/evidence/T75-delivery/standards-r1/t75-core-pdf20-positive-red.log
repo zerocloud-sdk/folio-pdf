@@ -1,0 +1,20 @@
+E
+======================================================================
+ERROR: test_required_core_rules_retain_their_original_negative_identities (scripts.tests.test_t13_standards.T13StandardsTest.test_required_core_rules_retain_their_original_negative_identities)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_standards.py", line 21, in test_required_core_rules_retain_their_original_negative_identities
+    positive = (output / 'fixtures/positive-pdf20-nested-split-type3.pdf').read_bytes()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1021, in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpzrr0npap/controls/fixtures/positive-pdf20-nested-split-type3.pdf'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.048s
+
+FAILED (errors=1)

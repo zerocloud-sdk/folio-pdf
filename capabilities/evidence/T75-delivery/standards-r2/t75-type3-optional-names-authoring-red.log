@@ -1,0 +1,20 @@
+E
+======================================================================
+ERROR: test_type3_names_have_matching_and_optional_positives_and_an_illegal_mismatch (test_t13_standards.T13StandardsTest.test_type3_names_have_matching_and_optional_positives_and_an_illegal_mismatch)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_standards.py", line 41, in test_type3_names_have_matching_and_optional_positives_and_an_illegal_mismatch
+    font_only = (output / 'fixtures/positive-font-name-only-type3-fonts.pdf').read_bytes()
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1021, in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmp2nyh75ke/controls/fixtures/positive-font-name-only-type3-fonts.pdf'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.049s
+
+FAILED (errors=1)

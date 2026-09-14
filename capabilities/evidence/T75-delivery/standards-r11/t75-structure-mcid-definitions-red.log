@@ -1,0 +1,62 @@
+test_structural_mcids_must_exist_in_the_declared_page_or_form_content (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_mcids_must_exist_in_the_declared_page_or_form_content) ... 
+  test_structural_mcids_must_exist_in_the_declared_page_or_form_content (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_mcids_must_exist_in_the_declared_page_or_form_content) (definition='page-different-mcid') ... FAIL
+  test_structural_mcids_must_exist_in_the_declared_page_or_form_content (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_mcids_must_exist_in_the_declared_page_or_form_content) (definition='form-different-mcid') ... FAIL
+  test_structural_mcids_must_exist_in_the_declared_page_or_form_content (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_mcids_must_exist_in_the_declared_page_or_form_content) (definition='page-without-mcid') ... FAIL
+  test_structural_mcids_must_exist_in_the_declared_page_or_form_content (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_mcids_must_exist_in_the_declared_page_or_form_content) (definition='form-without-mcid') ... FAIL
+
+======================================================================
+FAIL: test_structural_mcids_must_exist_in_the_declared_page_or_form_content (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_mcids_must_exist_in_the_declared_page_or_form_content) (definition='page-different-mcid')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 26, in test_structural_mcids_must_exist_in_the_declared_page_or_form_content
+    self.observe(directory, name, self.change(original, number, b'/MCID 0', after),
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 358, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : page-different-mcid: The qualified structure content references have typed fields and matching ParentTree backlinks.
+
+======================================================================
+FAIL: test_structural_mcids_must_exist_in_the_declared_page_or_form_content (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_mcids_must_exist_in_the_declared_page_or_form_content) (definition='form-different-mcid')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 26, in test_structural_mcids_must_exist_in_the_declared_page_or_form_content
+    self.observe(directory, name, self.change(original, number, b'/MCID 0', after),
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 358, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : form-different-mcid: The qualified structure content references have typed fields and matching ParentTree backlinks.
+
+======================================================================
+FAIL: test_structural_mcids_must_exist_in_the_declared_page_or_form_content (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_mcids_must_exist_in_the_declared_page_or_form_content) (definition='page-without-mcid')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 26, in test_structural_mcids_must_exist_in_the_declared_page_or_form_content
+    self.observe(directory, name, self.change(original, number, b'/MCID 0', after),
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 358, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : page-without-mcid: The qualified structure content references have typed fields and matching ParentTree backlinks.
+
+======================================================================
+FAIL: test_structural_mcids_must_exist_in_the_declared_page_or_form_content (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_mcids_must_exist_in_the_declared_page_or_form_content) (definition='form-without-mcid')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 26, in test_structural_mcids_must_exist_in_the_declared_page_or_form_content
+    self.observe(directory, name, self.change(original, number, b'/MCID 0', after),
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 358, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : form-without-mcid: The qualified structure content references have typed fields and matching ParentTree backlinks.
+
+----------------------------------------------------------------------
+Ran 1 test in 1.144s
+
+FAILED (failures=4)

@@ -1,0 +1,118 @@
+test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds) ... 
+  test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds) (glyph='glyph-missing-header') ... FAIL
+  test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds) (glyph='glyph-repeated-header') ... FAIL
+  test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds) (glyph='glyph-rectangle-name') ... FAIL
+  test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds) (glyph='glyph-rectangle-arity') ... FAIL
+  test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds) (glyph='glyph-unpainted-path') ... FAIL
+  test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds) (glyph='glyph-outside-d1-bounds') ... FAIL
+  test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds) (glyph='glyph-other-graphics') ... FAIL
+  test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds) (glyph='font-box-too-small') ... FAIL
+
+======================================================================
+FAIL: test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds) (glyph='glyph-missing-header')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 37, in test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds
+    self.observe(directory, pdf, expected, rule, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 786, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : glyph-missing-header.pdf: Page and nested Form content satisfy the qualified operand grammar.
+
+======================================================================
+FAIL: test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds) (glyph='glyph-repeated-header')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 37, in test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds
+    self.observe(directory, pdf, expected, rule, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 786, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : glyph-repeated-header.pdf: Page and nested Form content satisfy the qualified operand grammar.
+
+======================================================================
+FAIL: test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds) (glyph='glyph-rectangle-name')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 37, in test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds
+    self.observe(directory, pdf, expected, rule, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 786, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : glyph-rectangle-name.pdf: Page and nested Form content satisfy the qualified operand grammar.
+
+======================================================================
+FAIL: test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds) (glyph='glyph-rectangle-arity')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 37, in test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds
+    self.observe(directory, pdf, expected, rule, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 786, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : glyph-rectangle-arity.pdf: Page and nested Form content satisfy the qualified operand grammar.
+
+======================================================================
+FAIL: test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds) (glyph='glyph-unpainted-path')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 37, in test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds
+    self.observe(directory, pdf, expected, rule, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 786, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : glyph-unpainted-path.pdf: Page and nested Form content satisfy the qualified operand grammar.
+
+======================================================================
+FAIL: test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds) (glyph='glyph-outside-d1-bounds')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 37, in test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds
+    self.observe(directory, pdf, expected, rule, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 786, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : glyph-outside-d1-bounds.pdf: Page and nested Form content satisfy the qualified operand grammar.
+
+======================================================================
+FAIL: test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds) (glyph='glyph-other-graphics')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 37, in test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds
+    self.observe(directory, pdf, expected, rule, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 786, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'indeterminate' != 'pass'
+- indeterminate
++ pass
+ : glyph-other-graphics.pdf: Page and nested Form content satisfy the qualified operand grammar.
+
+======================================================================
+FAIL: test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds) (glyph='font-box-too-small')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 44, in test_type3_rectangle_glyph_programs_have_valid_paths_and_declared_ink_bounds
+    self.observe(directory, pdf, expected, 'type3-bounds' if expected == 'fail' else None, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 786, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : font-box-too-small.pdf: Page and nested Form content satisfy the qualified operand grammar.
+
+----------------------------------------------------------------------
+Ran 1 test in 2.522s
+
+FAILED (failures=8)

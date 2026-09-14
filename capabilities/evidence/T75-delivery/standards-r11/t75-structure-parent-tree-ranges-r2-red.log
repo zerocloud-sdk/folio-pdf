@@ -1,0 +1,132 @@
+test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys) ... 
+  test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys) (number_tree='multi-level') ... FAIL
+  test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys) (number_tree='missing-limits') ... FAIL
+  test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys) (number_tree='incorrect-limits') ... FAIL
+  test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys) (number_tree='overlapping-ranges') ... FAIL
+  test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys) (number_tree='unordered-children') ... FAIL
+  test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys) (number_tree='cyclic-tree') ... FAIL
+  test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys) (number_tree='root-limits') ... FAIL
+  test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys) (number_tree='mixed-kids-and-nums') ... FAIL
+  test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys) (number_tree='direct-tree-child') ... FAIL
+
+======================================================================
+FAIL: test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys) (number_tree='multi-level')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 33, in test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys
+    self.observe(directory, 'multi-level', tree, 'pass', scope='structure-parent-tree')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 129, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'pass' != 'indeterminate'
+- pass
++ indeterminate
+ : multi-level: Multi-level ParentTree nodes are not yet qualified
+
+======================================================================
+FAIL: test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys) (number_tree='missing-limits')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 41, in test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys
+    self.observe(directory, name, self.change(tree, number, before, after),
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 129, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'indeterminate'
+- fail
++ indeterminate
+ : missing-limits: Multi-level ParentTree nodes are not yet qualified
+
+======================================================================
+FAIL: test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys) (number_tree='incorrect-limits')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 41, in test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys
+    self.observe(directory, name, self.change(tree, number, before, after),
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 129, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'indeterminate'
+- fail
++ indeterminate
+ : incorrect-limits: Multi-level ParentTree nodes are not yet qualified
+
+======================================================================
+FAIL: test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys) (number_tree='overlapping-ranges')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 41, in test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys
+    self.observe(directory, name, self.change(tree, number, before, after),
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 129, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'indeterminate'
+- fail
++ indeterminate
+ : overlapping-ranges: Multi-level ParentTree nodes are not yet qualified
+
+======================================================================
+FAIL: test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys) (number_tree='unordered-children')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 41, in test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys
+    self.observe(directory, name, self.change(tree, number, before, after),
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 129, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'indeterminate'
+- fail
++ indeterminate
+ : unordered-children: Multi-level ParentTree nodes are not yet qualified
+
+======================================================================
+FAIL: test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys) (number_tree='cyclic-tree')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 41, in test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys
+    self.observe(directory, name, self.change(tree, number, before, after),
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 129, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'indeterminate'
+- fail
++ indeterminate
+ : cyclic-tree: Multi-level ParentTree nodes are not yet qualified
+
+======================================================================
+FAIL: test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys) (number_tree='root-limits')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 47, in test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys
+    self.observe(directory, name, self.change(tree, 13, b'/Kids [18 0 R 19 0 R]'.ljust(len(nums)), replacement),
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 129, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'indeterminate'
+- fail
++ indeterminate
+ : root-limits: Multi-level ParentTree nodes are not yet qualified
+
+======================================================================
+FAIL: test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys) (number_tree='mixed-kids-and-nums')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 47, in test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys
+    self.observe(directory, name, self.change(tree, 13, b'/Kids [18 0 R 19 0 R]'.ljust(len(nums)), replacement),
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 129, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'indeterminate'
+- fail
++ indeterminate
+ : mixed-kids-and-nums: Multi-level ParentTree nodes are not yet qualified
+
+======================================================================
+FAIL: test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys) (number_tree='direct-tree-child')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 47, in test_parent_tree_child_ranges_match_ordered_disjoint_leaf_keys
+    self.observe(directory, name, self.change(tree, 13, b'/Kids [18 0 R 19 0 R]'.ljust(len(nums)), replacement),
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 129, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'indeterminate'
+- fail
++ indeterminate
+ : direct-tree-child: Multi-level ParentTree nodes are not yet qualified
+
+----------------------------------------------------------------------
+Ran 1 test in 2.047s
+
+FAILED (failures=9)

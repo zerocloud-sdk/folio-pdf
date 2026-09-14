@@ -1,0 +1,34 @@
+test_element_child_arrays_are_nonempty_while_root_arrays_can_be_empty (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_element_child_arrays_are_nonempty_while_root_arrays_can_be_empty) ... 
+  test_element_child_arrays_are_nonempty_while_root_arrays_can_be_empty (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_element_child_arrays_are_nonempty_while_root_arrays_can_be_empty) (children='element-empty-k') ... FAIL
+  test_element_child_arrays_are_nonempty_while_root_arrays_can_be_empty (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_element_child_arrays_are_nonempty_while_root_arrays_can_be_empty) (children='element-indirect-empty-k') ... FAIL
+
+======================================================================
+FAIL: test_element_child_arrays_are_nonempty_while_root_arrays_can_be_empty (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_element_child_arrays_are_nonempty_while_root_arrays_can_be_empty) (children='element-empty-k')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 32, in test_element_child_arrays_are_nonempty_while_root_arrays_can_be_empty
+    self.observe(directory, name, self.pdf(changed), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 228, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : element-empty-k: The qualified structure hierarchy has valid child kinds and unique matching parent relationships.
+
+======================================================================
+FAIL: test_element_child_arrays_are_nonempty_while_root_arrays_can_be_empty (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_element_child_arrays_are_nonempty_while_root_arrays_can_be_empty) (children='element-indirect-empty-k')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 32, in test_element_child_arrays_are_nonempty_while_root_arrays_can_be_empty
+    self.observe(directory, name, self.pdf(changed), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 228, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : element-indirect-empty-k: The qualified structure hierarchy has valid child kinds and unique matching parent relationships.
+
+----------------------------------------------------------------------
+Ran 1 test in 1.374s
+
+FAILED (failures=2)

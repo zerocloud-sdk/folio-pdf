@@ -725,10 +725,11 @@ public final class ShapingCompositionWorkflowTest {
     }
 
     private static ExtractionLimits extractionLimits() {
+        // Text observations select at most two emitted Identity-H subsets.
         return ExtractionLimits.builder().maximumPages(2).maximumPageTreeNodes(16)
                 .maximumContentStreams(64).maximumContentStreamDepth(8).maximumDecodedBytes(1 << 20)
                 .maximumTextItems(1024).maximumUnicodeCodePoints(1024).maximumToUnicodeMappings(1024)
-                .maximumFontDataEntries(4096).maximumMarkedContentSequences(64)
+                .maximumFontDataEntries(2 * 65536 + 4096).maximumMarkedContentSequences(64)
                 .maximumMarkedContentDepth(4).maximumStructureElements(8).maximumStructureItems(8)
                 .maximumStructureDepth(4).maximumRoleMappings(4).build();
     }

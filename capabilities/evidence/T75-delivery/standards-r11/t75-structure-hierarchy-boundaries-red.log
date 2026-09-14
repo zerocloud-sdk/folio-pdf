@@ -1,0 +1,34 @@
+test_hierarchy_qualification_admits_exact_depth_and_item_bounds (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_hierarchy_qualification_admits_exact_depth_and_item_bounds) ... 
+  test_hierarchy_qualification_admits_exact_depth_and_item_bounds (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_hierarchy_qualification_admits_exact_depth_and_item_bounds) (boundary='depth-128') ... FAIL
+  test_hierarchy_qualification_admits_exact_depth_and_item_bounds (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_hierarchy_qualification_admits_exact_depth_and_item_bounds) (boundary='items-10000') ... FAIL
+
+======================================================================
+FAIL: test_hierarchy_qualification_admits_exact_depth_and_item_bounds (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_hierarchy_qualification_admits_exact_depth_and_item_bounds) (boundary='depth-128')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 41, in test_hierarchy_qualification_admits_exact_depth_and_item_bounds
+    self.observe(directory, name, data, expected)
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 68, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'pass' != 'indeterminate'
+- pass
++ indeterminate
+ : depth-128: Pinned qpdf did not complete without findings
+
+======================================================================
+FAIL: test_hierarchy_qualification_admits_exact_depth_and_item_bounds (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_hierarchy_qualification_admits_exact_depth_and_item_bounds) (boundary='items-10000')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 41, in test_hierarchy_qualification_admits_exact_depth_and_item_bounds
+    self.observe(directory, name, data, expected)
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 68, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'pass' != 'indeterminate'
+- pass
++ indeterminate
+ : items-10000: Pinned qpdf did not complete without findings
+
+----------------------------------------------------------------------
+Ran 1 test in 1.648s
+
+FAILED (failures=2)

@@ -1,0 +1,26 @@
+F
+======================================================================
+FAIL: test_public_observer_refuses_preexisting_output_links_without_changing_their_targets (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_public_observer_refuses_preexisting_output_links_without_changing_their_targets)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 66, in test_public_observer_refuses_preexisting_output_links_without_changing_their_targets
+    self.assertEqual([], failures)
+AssertionError: Lists differ: [] != ['raw-json-link: external target changed',[243 chars]ted']
+
+Second list contains 7 additional elements.
+First extra element 0:
+'raw-json-link: external target changed'
+
+- []
++ ['raw-json-link: external target changed',
++  'raw-json-link: input changed',
++  'raw-report-link: external target changed',
++  'raw-report-link: input changed',
++  'raw-report-link: existing output accepted',
++  'raw-json-hardlink: external target changed',
++  'raw-json-hardlink: existing output accepted']
+
+----------------------------------------------------------------------
+Ran 1 test in 0.772s
+
+FAILED (failures=1)

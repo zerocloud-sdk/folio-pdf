@@ -1,0 +1,83 @@
+FFFFFF
+======================================================================
+FAIL: test_cid_widths_and_default_widths_agree_with_selected_embedded_glyphs (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cid_widths_and_default_widths_agree_with_selected_embedded_glyphs) (font=18, field='W', positive=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 37, in test_cid_widths_and_default_widths_agree_with_selected_embedded_glyphs
+    self.observe(directory, pdf, 'fail', 'font-widths', scope='font-metrics')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 550, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : cid-18-W-wrong.pdf: Embedded CFF and TrueType headers, dictionaries and checked font tables are readable.
+
+======================================================================
+FAIL: test_cid_widths_and_default_widths_agree_with_selected_embedded_glyphs (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cid_widths_and_default_widths_agree_with_selected_embedded_glyphs) (font=18, field='DW', positive=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 32, in test_cid_widths_and_default_widths_agree_with_selected_embedded_glyphs
+    self.observe(directory, pdf, 'pass', scope='font-metrics')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 550, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'pass' != 'indeterminate'
+- pass
++ indeterminate
+ : cid-18-DW-positive.pdf: Pinned qpdf did not complete without findings
+
+======================================================================
+FAIL: test_cid_widths_and_default_widths_agree_with_selected_embedded_glyphs (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cid_widths_and_default_widths_agree_with_selected_embedded_glyphs) (font=18, field='DW', positive=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 37, in test_cid_widths_and_default_widths_agree_with_selected_embedded_glyphs
+    self.observe(directory, pdf, 'fail', 'font-widths', scope='font-metrics')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 550, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'indeterminate'
+- fail
++ indeterminate
+ : cid-18-DW-wrong.pdf: Pinned qpdf did not complete without findings
+
+======================================================================
+FAIL: test_cid_widths_and_default_widths_agree_with_selected_embedded_glyphs (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cid_widths_and_default_widths_agree_with_selected_embedded_glyphs) (font=21, field='W', positive=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 37, in test_cid_widths_and_default_widths_agree_with_selected_embedded_glyphs
+    self.observe(directory, pdf, 'fail', 'font-widths', scope='font-metrics')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 550, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : cid-21-W-wrong.pdf: Embedded CFF and TrueType headers, dictionaries and checked font tables are readable.
+
+======================================================================
+FAIL: test_cid_widths_and_default_widths_agree_with_selected_embedded_glyphs (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cid_widths_and_default_widths_agree_with_selected_embedded_glyphs) (font=21, field='DW', positive=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 32, in test_cid_widths_and_default_widths_agree_with_selected_embedded_glyphs
+    self.observe(directory, pdf, 'pass', scope='font-metrics')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 550, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'pass' != 'indeterminate'
+- pass
++ indeterminate
+ : cid-21-DW-positive.pdf: Pinned qpdf did not complete without findings
+
+======================================================================
+FAIL: test_cid_widths_and_default_widths_agree_with_selected_embedded_glyphs (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cid_widths_and_default_widths_agree_with_selected_embedded_glyphs) (font=21, field='DW', positive=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 37, in test_cid_widths_and_default_widths_agree_with_selected_embedded_glyphs
+    self.observe(directory, pdf, 'fail', 'font-widths', scope='font-metrics')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 550, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'indeterminate'
+- fail
++ indeterminate
+ : cid-21-DW-wrong.pdf: Pinned qpdf did not complete without findings
+
+----------------------------------------------------------------------
+Ran 1 test in 3.324s
+
+FAILED (failures=6)

@@ -1,0 +1,966 @@
+{
+  "sealed-utc": "2026-09-13T22:03:37.137077+00:00",
+  "review-axis": "Spec",
+  "scope": "Independent r4 metadata/T11 completed raw8 and own-index only",
+  "baseline": "5b1603c435f11c40368f75b7b9a2777c9c5e9761",
+  "observed-head": "5b1603c435f11c40368f75b7b9a2777c9c5e9761",
+  "canonical-committed-diff-empty": true,
+  "explicit-work-in-progress-evidence-scope": true,
+  "candidate-sha256": "ab18cc9c0473730a6aabec5d12e3172f22bea23a0a0f9529052a2bc186cbfc1b",
+  "contract-sha256": "3de508f79fcbef7258feee8abc013d6f02b000840cac1cb263cb0d6f927b8f2b",
+  "findings": [],
+  "report": {
+    "path": "report.md",
+    "sha256": "3ab3146ed407f2ffa8b2a894167d153e4f3d9278acdd5406b6f728d2a0974e14",
+    "bytes": 2426
+  },
+  "report-word-count": 291,
+  "current-stage-input-counts": {
+    "sources": 1933,
+    "contracts": 30,
+    "artifacts": 23,
+    "harness": 24
+  },
+  "source-baseline-file-count": 155,
+  "complete-scope-inspection": {
+    "path": "final-complete-scope-inspection.json",
+    "sha256": "ce31598b345b9f57c25761a5b3e4aeedcd32afe5067b05b4bfbf073911b6efa4",
+    "bytes": 1942
+  },
+  "own-index-inspection": {
+    "path": "final-own-index-inspection.json",
+    "sha256": "b97b28a8d5936ab5744d53eb2c9fe93213c2b28e9fb40f157120cf6b97c1851b",
+    "bytes": 12444
+  },
+  "own-index-sha256": "203547cbc419229b4582a6a644861bc409d245105f6b26b10b88a0fe15e65901",
+  "input-catalog": {
+    "path": "final-input-catalog.json",
+    "sha256": "da36e83bff31ba0146c79123384b50d702e4312777e2ddc8af68275fb4109e1f",
+    "bytes": 8275070
+  },
+  "input-file-count": 27505,
+  "complete-raw-tree-input-catalog": {
+    "path": "final-complete-raw-tree-input-catalog.json",
+    "sha256": "ec436e879dd95de89c0fd873eccd259dbadb07ff35ca81b4390be984ad6c0770",
+    "bytes": 7606318
+  },
+  "complete-raw-tree-file-count": 24537,
+  "immutable-input-verification": {
+    "path": "final-immutable-input-verification.json",
+    "sha256": "30f08bd04b5a24af3e9e6771f2347b0ebd7788130993de784f315e46f714aab1",
+    "bytes": 32520
+  },
+  "prior-distinct-inputs-rechecked": 27289,
+  "selected-original-copies": {
+    "path": "final-selected-original-copies.json",
+    "sha256": "daee7852c72677d3a245f26670bb88cd62a0c7fad2adc8f3efc14b3bd6ae55fa",
+    "bytes": 20669
+  },
+  "selected-original-copy-count": 57,
+  "independent-check-counts": {
+    "formal-tests-per-tuple": 73,
+    "formal-test-total": 584,
+    "formal-native-tests-per-tuple": 62,
+    "formal-stable-tests-per-tuple": 9,
+    "formal-artifact-tests-per-tuple": 2,
+    "configuration-inputs-per-tuple": 177,
+    "complete-before-after-records": 8,
+    "records-and-reports": 32,
+    "required-rules": 170,
+    "qualified-illegal-controls": 10880,
+    "public-products": 64,
+    "XML-scenarios": 64,
+    "actual-Worker-scenarios": 16,
+    "positive-page-comparisons": 192,
+    "one-pixel-negative-comparisons": 8,
+    "full-RGB-inputs": 612,
+    "full-difference-RGBA-images": 400,
+    "all-decoded-PNG-files": 1012,
+    "complete-rawroot-files": 24537,
+    "finding-count": 0
+  },
+  "actual-reader-commands": [
+    {
+      "label": "boundary-source-navigation-corrected",
+      "command": {
+        "argv": [
+          "rg",
+          "-n",
+          "-C",
+          "6",
+          "sameSession|same.session|forbidden|processIdentity|64 \\* 1024|512|PDFCPU_20_NOTICE|java.security.manager|isolation",
+          "docs/t11-certification.md",
+          "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T11XmlSafetyProbe.java",
+          "pdf-acceptance/src/main/java/net/zerocloud/pdf/T11WorkerSafetyObserver.java",
+          "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/StandardsEvidenceCommand.java",
+          "pdf-document/src/main/java/net/zerocloud/pdf/HardenedWorkerEngine.java",
+          "pdf-document/src/main/java/net/zerocloud/pdf/HardenedWorkerMain.java"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T21:49:30.730014+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T21:49:30.730014+00:00",
+        "finished_utc": "2026-09-13T21:49:30.739430+00:00"
+      }
+    },
+    {
+      "label": "boundary-source-navigation",
+      "command": {
+        "argv": [
+          "rg",
+          "-n",
+          "sameSession|same.session|forbidden|processIdentity|64 \\* 1024|512|PDFCPU_20_NOTICE|java.security.manager|XMP|isolation",
+          "docs/t11-certification.md",
+          "build-tools/acceptance/src/main/java/net/zerocloud/pdf/tools/acceptance/T11XmlSafetyProbe.java",
+          "build-tools/acceptance/src/main/java/net/zerocloud/pdf/tools/acceptance/T11WorkerSafetyObserver.java",
+          "build-tools/acceptance/src/main/java/net/zerocloud/pdf/tools/acceptance/StandardsEvidenceCommand.java"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T21:49:08.649471+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 2,
+        "started_utc": "2026-09-13T21:49:08.649471+00:00",
+        "finished_utc": "2026-09-13T21:49:08.664457+00:00"
+      }
+    },
+    {
+      "label": "boundary-source-path-discovery",
+      "command": {
+        "argv": [
+          "rg",
+          "--files",
+          "-g",
+          "T11XmlSafetyProbe.java",
+          "-g",
+          "T11WorkerSafetyObserver.java",
+          "-g",
+          "StandardsEvidenceCommand.java",
+          "-g",
+          "HardenedWorkerEngine.java",
+          "-g",
+          "HardenedWorkerMain.java",
+          "-g",
+          "NativeMetadataContractTest.java",
+          "-g",
+          "StableMetadataContractTest.java"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T21:49:18.512251+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T21:49:18.512251+00:00",
+        "finished_utc": "2026-09-13T21:49:18.814765+00:00"
+      }
+    },
+    {
+      "label": "canonical-baseline-diff-check",
+      "command": {
+        "argv": [
+          "git",
+          "diff",
+          "--stat",
+          "5b1603c435f11c40368f75b7b9a2777c9c5e9761...HEAD"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T21:52:54.543305+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T21:52:54.543305+00:00",
+        "finished_utc": "2026-09-13T21:52:54.546572+00:00"
+      }
+    },
+    {
+      "label": "config-reader-read",
+      "command": {
+        "argv": [
+          "cat",
+          "/tmp/t75-final-spec-metadata-eight-uncpifp_/complete-config-audit.py"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T21:38:02.681768+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T21:38:02.681768+00:00",
+        "finished_utc": "2026-09-13T21:38:02.683729+00:00"
+      }
+    },
+    {
+      "label": "current-jdk8-inp-schema-read",
+      "command": {
+        "argv": [
+          "python3",
+          "-B",
+          "-"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T21:39:46.907286+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T21:39:46.907286+00:00",
+        "finished_utc": "2026-09-13T21:39:46.968842+00:00"
+      }
+    },
+    {
+      "label": "eighth-config-check",
+      "command": {
+        "argv": [
+          "python3",
+          "-B",
+          "/tmp/t75-r4-metadata-spec-qm8qa5w2/environment-config-audit.py",
+          "authorization-08.json",
+          "eighth"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T22:01:30.051551+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T22:01:30.051551+00:00",
+        "finished_utc": "2026-09-13T22:01:31.240100+00:00"
+      }
+    },
+    {
+      "label": "eighth-difference-notice-check",
+      "command": {
+        "argv": [
+          "python3",
+          "-B",
+          "/tmp/t75-r4-metadata-spec-qm8qa5w2/difference-notice-audit.py",
+          "authorization-08.json",
+          "eighth"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T22:01:30.212060+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T22:01:30.212060+00:00",
+        "finished_utc": "2026-09-13T22:01:30.473660+00:00"
+      }
+    },
+    {
+      "label": "eighth-evidence-check",
+      "command": {
+        "argv": [
+          "python3",
+          "-B",
+          "/tmp/t75-r4-metadata-spec-qm8qa5w2/evidence-audit.py",
+          "authorization-08.json",
+          "eighth"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T22:01:30.078756+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T22:01:30.078756+00:00",
+        "finished_utc": "2026-09-13T22:01:35.426015+00:00"
+      }
+    },
+    {
+      "label": "eighth-rgb-check",
+      "command": {
+        "argv": [
+          "python3",
+          "-B",
+          "/tmp/t75-r4-metadata-spec-qm8qa5w2/raster-audit.py",
+          "authorization-08.json",
+          "eighth"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T22:01:30.125336+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T22:01:30.125336+00:00",
+        "finished_utc": "2026-09-13T22:01:30.311475+00:00"
+      }
+    },
+    {
+      "label": "evidence-reader-read",
+      "command": {
+        "argv": [
+          "python3",
+          "-B",
+          "-"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T21:37:39.415097+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T21:37:39.415097+00:00",
+        "finished_utc": "2026-09-13T21:37:39.446250+00:00"
+      }
+    },
+    {
+      "label": "evidence-reader-tail-read",
+      "command": {
+        "argv": [
+          "python3",
+          "-B",
+          "-"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T21:38:02.580657+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T21:38:02.580657+00:00",
+        "finished_utc": "2026-09-13T21:38:02.612300+00:00"
+      }
+    },
+    {
+      "label": "fifth-config-check",
+      "command": {
+        "argv": [
+          "python3",
+          "-B",
+          "/tmp/t75-r4-metadata-spec-qm8qa5w2/environment-config-audit.py",
+          "authorization-05.json",
+          "fifth"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T21:50:16.887381+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T21:50:16.887381+00:00",
+        "finished_utc": "2026-09-13T21:50:18.072933+00:00"
+      }
+    },
+    {
+      "label": "fifth-evidence-check",
+      "command": {
+        "argv": [
+          "python3",
+          "-B",
+          "/tmp/t75-r4-metadata-spec-qm8qa5w2/evidence-audit.py",
+          "authorization-05.json",
+          "fifth"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T21:50:16.914439+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T21:50:16.914439+00:00",
+        "finished_utc": "2026-09-13T21:50:22.586529+00:00"
+      }
+    },
+    {
+      "label": "fifth-rgb-check",
+      "command": {
+        "argv": [
+          "python3",
+          "-B",
+          "/tmp/t75-r4-metadata-spec-qm8qa5w2/raster-audit.py",
+          "authorization-05.json",
+          "fifth"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T21:50:16.946505+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T21:50:16.946505+00:00",
+        "finished_utc": "2026-09-13T21:50:17.142863+00:00"
+      }
+    },
+    {
+      "label": "final-complete-scope-check",
+      "command": {
+        "argv": [
+          "python3",
+          "-B",
+          "/tmp/t75-r4-metadata-spec-qm8qa5w2/complete-scope-audit.py",
+          "authorization-final.json",
+          "final"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T22:02:42.058880+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T22:02:42.058880+00:00",
+        "finished_utc": "2026-09-13T22:02:50.655119+00:00"
+      }
+    },
+    {
+      "label": "final-own-index-check",
+      "command": {
+        "argv": [
+          "python3",
+          "-B",
+          "/tmp/t75-r4-metadata-spec-qm8qa5w2/own-index-audit.py",
+          "authorization-final.json",
+          "final"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T22:01:30.280669+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T22:01:30.280669+00:00",
+        "finished_utc": "2026-09-13T22:01:30.408628+00:00"
+      }
+    },
+    {
+      "label": "first-five-difference-notice-check",
+      "command": {
+        "argv": [
+          "python3",
+          "-B",
+          "/tmp/t75-r4-metadata-spec-qm8qa5w2/difference-notice-audit.py",
+          "authorization-through-five.json",
+          "first-five"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T21:51:32.956053+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T21:51:32.956053+00:00",
+        "finished_utc": "2026-09-13T21:51:33.411627+00:00"
+      }
+    },
+    {
+      "label": "first-three-config-check",
+      "command": {
+        "argv": [
+          "python3",
+          "-B",
+          "/tmp/t75-r4-metadata-spec-qm8qa5w2/environment-config-audit.py",
+          "authorization-03.json",
+          "first-three"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T21:45:31.781868+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T21:45:31.781868+00:00",
+        "finished_utc": "2026-09-13T21:45:35.000821+00:00"
+      }
+    },
+    {
+      "label": "first-three-evidence-check",
+      "command": {
+        "argv": [
+          "python3",
+          "-B",
+          "/tmp/t75-r4-metadata-spec-qm8qa5w2/evidence-audit.py",
+          "authorization-03.json",
+          "first-three"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T21:45:31.834903+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T21:45:31.834903+00:00",
+        "finished_utc": "2026-09-13T21:45:46.959442+00:00"
+      }
+    },
+    {
+      "label": "first-three-rgb-check",
+      "command": {
+        "argv": [
+          "python3",
+          "-B",
+          "/tmp/t75-r4-metadata-spec-qm8qa5w2/raster-audit.py",
+          "authorization-03.json",
+          "first-three"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T21:45:31.655750+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T21:45:31.655750+00:00",
+        "finished_utc": "2026-09-13T21:45:31.943977+00:00"
+      }
+    },
+    {
+      "label": "fixed-head-check",
+      "command": {
+        "argv": [
+          "git",
+          "rev-parse",
+          "HEAD"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T21:52:54.508941+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T21:52:54.508941+00:00",
+        "finished_utc": "2026-09-13T21:52:54.511475+00:00"
+      }
+    },
+    {
+      "label": "fixed-protocol-check",
+      "command": {
+        "argv": [
+          "python3",
+          "-B",
+          "/tmp/t75-r4-metadata-spec-qm8qa5w2/protocol-probe.py",
+          "authorization-through-five.json",
+          "fixed-protocol"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T21:50:16.975265+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T21:50:16.975265+00:00",
+        "finished_utc": "2026-09-13T21:50:17.142571+00:00"
+      }
+    },
+    {
+      "label": "fourth-config-check",
+      "command": {
+        "argv": [
+          "python3",
+          "-B",
+          "/tmp/t75-r4-metadata-spec-qm8qa5w2/environment-config-audit.py",
+          "authorization-04.json",
+          "fourth"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T21:49:08.510845+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T21:49:08.510845+00:00",
+        "finished_utc": "2026-09-13T21:49:09.657628+00:00"
+      }
+    },
+    {
+      "label": "fourth-evidence-check",
+      "command": {
+        "argv": [
+          "python3",
+          "-B",
+          "/tmp/t75-r4-metadata-spec-qm8qa5w2/evidence-audit.py",
+          "authorization-04.json",
+          "fourth"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T21:49:08.546467+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T21:49:08.546467+00:00",
+        "finished_utc": "2026-09-13T21:49:13.748485+00:00"
+      }
+    },
+    {
+      "label": "fourth-rgb-check",
+      "command": {
+        "argv": [
+          "python3",
+          "-B",
+          "/tmp/t75-r4-metadata-spec-qm8qa5w2/raster-audit.py",
+          "authorization-04.json",
+          "fourth"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T21:49:08.610553+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T21:49:08.610553+00:00",
+        "finished_utc": "2026-09-13T21:49:08.783651+00:00"
+      }
+    },
+    {
+      "label": "frozen-source-contract-check",
+      "command": {
+        "argv": [
+          "python3",
+          "-B",
+          "/tmp/t75-r4-metadata-spec-qm8qa5w2/source-contract-audit.py",
+          "authorization-03.json",
+          "frozen"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T21:45:31.701451+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T21:45:31.701451+00:00",
+        "finished_utc": "2026-09-13T21:45:32.391727+00:00"
+      }
+    },
+    {
+      "label": "frozen-stage-check",
+      "command": {
+        "argv": [
+          "python3",
+          "-B",
+          "/tmp/t75-r4-metadata-spec-qm8qa5w2/frozen-stage-audit.py",
+          "authorization-02.json",
+          "frozen"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T21:43:07.555064+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T21:43:07.555064+00:00",
+        "finished_utc": "2026-09-13T21:43:12.667994+00:00"
+      }
+    },
+    {
+      "label": "initial-context-read",
+      "command": {
+        "argv": [
+          "python3",
+          "-B",
+          "-"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T21:37:39.341950+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T21:37:39.341950+00:00",
+        "finished_utc": "2026-09-13T21:37:39.373849+00:00"
+      }
+    },
+    {
+      "label": "prepare-readers-check",
+      "command": {
+        "argv": [
+          "python3",
+          "-B",
+          "/tmp/t75-r4-metadata-spec-qm8qa5w2/prepare-readers.py"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T21:41:58.385218+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T21:41:58.385218+00:00",
+        "finished_utc": "2026-09-13T21:41:58.425255+00:00"
+      }
+    },
+    {
+      "label": "protocol-gaps-read",
+      "command": {
+        "argv": [
+          "python3",
+          "-B",
+          "-"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T21:38:23.131955+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T21:38:23.131955+00:00",
+        "finished_utc": "2026-09-13T21:38:23.162648+00:00"
+      }
+    },
+    {
+      "label": "public-xmp-boundary-check",
+      "command": {
+        "argv": [
+          "python3",
+          "-B",
+          "/tmp/t75-r4-metadata-spec-qm8qa5w2/public-xmp-boundary-audit.py",
+          "authorization-through-five.json",
+          "fixed-xmp"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T21:51:32.929126+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T21:51:32.929126+00:00",
+        "finished_utc": "2026-09-13T21:51:32.979478+00:00"
+      }
+    },
+    {
+      "label": "raster-reader-read",
+      "command": {
+        "argv": [
+          "cat",
+          "/tmp/t75-final-spec-metadata-eight-uncpifp_/raster-audit.py"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T21:38:02.601144+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T21:38:02.601144+00:00",
+        "finished_utc": "2026-09-13T21:38:02.602760+00:00"
+      }
+    },
+    {
+      "label": "seventh-config-check",
+      "command": {
+        "argv": [
+          "python3",
+          "-B",
+          "/tmp/t75-r4-metadata-spec-qm8qa5w2/environment-config-audit.py",
+          "authorization-07.json",
+          "seventh"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T21:57:15.471256+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T21:57:15.471256+00:00",
+        "finished_utc": "2026-09-13T21:57:16.605120+00:00"
+      }
+    },
+    {
+      "label": "seventh-difference-notice-check",
+      "command": {
+        "argv": [
+          "python3",
+          "-B",
+          "/tmp/t75-r4-metadata-spec-qm8qa5w2/difference-notice-audit.py",
+          "authorization-07.json",
+          "seventh"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T21:57:15.632233+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T21:57:15.632233+00:00",
+        "finished_utc": "2026-09-13T21:57:15.862703+00:00"
+      }
+    },
+    {
+      "label": "seventh-evidence-check",
+      "command": {
+        "argv": [
+          "python3",
+          "-B",
+          "/tmp/t75-r4-metadata-spec-qm8qa5w2/evidence-audit.py",
+          "authorization-07.json",
+          "seventh"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T21:57:15.551688+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T21:57:15.551688+00:00",
+        "finished_utc": "2026-09-13T21:57:21.125772+00:00"
+      }
+    },
+    {
+      "label": "seventh-rgb-check",
+      "command": {
+        "argv": [
+          "python3",
+          "-B",
+          "/tmp/t75-r4-metadata-spec-qm8qa5w2/raster-audit.py",
+          "authorization-07.json",
+          "seventh"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T21:57:15.518386+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T21:57:15.518386+00:00",
+        "finished_utc": "2026-09-13T21:57:15.823414+00:00"
+      }
+    },
+    {
+      "label": "sixth-config-check",
+      "command": {
+        "argv": [
+          "python3",
+          "-B",
+          "/tmp/t75-r4-metadata-spec-qm8qa5w2/environment-config-audit.py",
+          "authorization-06.json",
+          "sixth"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T21:55:13.491973+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T21:55:13.491973+00:00",
+        "finished_utc": "2026-09-13T21:55:14.735794+00:00"
+      }
+    },
+    {
+      "label": "sixth-difference-notice-check",
+      "command": {
+        "argv": [
+          "python3",
+          "-B",
+          "/tmp/t75-r4-metadata-spec-qm8qa5w2/difference-notice-audit.py",
+          "authorization-06.json",
+          "sixth"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T21:55:13.573713+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T21:55:13.573713+00:00",
+        "finished_utc": "2026-09-13T21:55:13.777634+00:00"
+      }
+    },
+    {
+      "label": "sixth-evidence-check",
+      "command": {
+        "argv": [
+          "python3",
+          "-B",
+          "/tmp/t75-r4-metadata-spec-qm8qa5w2/evidence-audit.py",
+          "authorization-06.json",
+          "sixth"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T21:55:13.522539+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T21:55:13.522539+00:00",
+        "finished_utc": "2026-09-13T21:55:19.218208+00:00"
+      }
+    },
+    {
+      "label": "sixth-rgb-check",
+      "command": {
+        "argv": [
+          "python3",
+          "-B",
+          "/tmp/t75-r4-metadata-spec-qm8qa5w2/raster-audit.py",
+          "authorization-06.json",
+          "sixth"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T21:55:13.662588+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T21:55:13.662588+00:00",
+        "finished_utc": "2026-09-13T21:55:13.850350+00:00"
+      }
+    },
+    {
+      "label": "source-contract-reader-read",
+      "command": {
+        "argv": [
+          "cat",
+          "/tmp/t75-final-spec-metadata-eight-uncpifp_/source-contract-audit.py"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T21:38:23.202799+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T21:38:23.202799+00:00",
+        "finished_utc": "2026-09-13T21:38:23.204639+00:00"
+      }
+    },
+    {
+      "label": "stage-reader-read",
+      "command": {
+        "argv": [
+          "cat",
+          "/tmp/t75-final-spec-metadata-eight-uncpifp_/stage-audit.py"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T21:38:02.644192+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T21:38:02.644192+00:00",
+        "finished_utc": "2026-09-13T21:38:02.646177+00:00"
+      }
+    },
+    {
+      "label": "writer-preflight-check",
+      "command": {
+        "argv": [
+          "python3",
+          "-B",
+          "-c",
+          "import ast,pathlib; p=pathlib.Path(\"/tmp/t75-r4-metadata-spec-qm8qa5w2/write-report-receipt.py\"); t=ast.parse(p.read_text()); v=next(n.value.value for n in t.body if isinstance(n,ast.Assign) and any(isinstance(x,ast.Name) and x.id==\"report\" for x in n.targets)); assert len(v.split()) < 400; print(\"report_words\",len(v.split()))"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T22:03:00.303491+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T22:03:00.303491+00:00",
+        "finished_utc": "2026-09-13T22:03:00.339627+00:00"
+      }
+    },
+    {
+      "label": "final-integrity-check",
+      "command": {
+        "argv": [
+          "python3",
+          "-B",
+          "/tmp/t75-r4-metadata-spec-qm8qa5w2/final-integrity-audit-v2.py",
+          "authorization-final.json",
+          "final"
+        ],
+        "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+        "started_utc": "2026-09-13T22:03:14.477543+00:00"
+      },
+      "actual-result": {
+        "actual_exit": 0,
+        "started_utc": "2026-09-13T22:03:14.477543+00:00",
+        "finished_utc": "2026-09-13T22:03:22.800055+00:00"
+      }
+    }
+  ],
+  "reader-diagnostics": [
+    {
+      "initial-command": "boundary-source-navigation",
+      "actual-exit": 2,
+      "cause": "Navigation guessed nonexistent build-tools acceptance paths.",
+      "closure-command": "boundary-source-navigation-corrected",
+      "closure-actual-exit": 0,
+      "original-source-inspection": "fixed-protocol-check",
+      "finding": false
+    }
+  ],
+  "preflight-reader-path-note": {
+    "path": "preflight-reader-path-note.json",
+    "sha256": "a34a7597d5a9a1b1bae164fc76e9bc8051a14199a145acd0a43d56e22c334f22",
+    "bytes": 293
+  },
+  "discovery-retention-boundary": "Initial stdin context/schema navigation retains command, full stdout/stderr and actual result. All decisive checks use retained named scripts; no conclusion depends on an unretained stdin program. Display limits never truncate the underlying original inputs or saved audit results.",
+  "history": "No old live r3 raw tree is required or replayed; prior disclosed loss of two derived annotations summaries is unchanged, and no restoration is claimed.",
+  "prohibited-operations-executed": [],
+  "approvals": {
+    "metadata-eight-raw-and-own-index": true,
+    "actual-outer-command": false,
+    "authority-publication": false,
+    "other-obligations": false,
+    "final48-inventory-readiness-delivery": false,
+    "completion-criteria-marked": false
+  },
+  "retention": {
+    "manifest": "artifact-manifest.json",
+    "manifest-excludes": [
+      "artifact-manifest.json"
+    ],
+    "baseline-git-show-originals": "155 exact source stdout files and per-file actual command/exit/stderr identities retained in frozen-source-contract-inspection.json and baseline-source-copies/.",
+    "writer-envelope": "The current final writer envelope is retained by run-bounded.py after the writer finishes; all its command/stdout/stderr/actual-result bytes are included in the final manifest.",
+    "raw-copy-policy": "Complete input SHA catalogs plus selected originals; no full raw tree, archived previous raw tree, compiled artifacts or product rerun copied/executed."
+  }
+}

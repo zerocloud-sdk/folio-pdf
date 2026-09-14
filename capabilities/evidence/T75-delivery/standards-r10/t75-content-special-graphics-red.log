@@ -1,0 +1,48 @@
+test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context) ... 
+  test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context) (state='save-inside-text') ... FAIL
+  test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context) (state='restore-inside-text') ... FAIL
+  test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context) (state='concatenate-inside-text') ... FAIL
+
+======================================================================
+FAIL: test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context) (state='save-inside-text')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 135, in test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context
+    self.observe(directory, pdf, expected, 'content-state' if expected == 'fail' else None, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 789, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : save-inside-text.pdf: Qualified content and Type3 rectangles satisfy operand, state, resource, property and ink-bound predicates.
+
+======================================================================
+FAIL: test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context) (state='restore-inside-text')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 135, in test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context
+    self.observe(directory, pdf, expected, 'content-state' if expected == 'fail' else None, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 789, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : restore-inside-text.pdf: Qualified content and Type3 rectangles satisfy operand, state, resource, property and ink-bound predicates.
+
+======================================================================
+FAIL: test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context) (state='concatenate-inside-text')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 135, in test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context
+    self.observe(directory, pdf, expected, 'content-state' if expected == 'fail' else None, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 789, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : concatenate-inside-text.pdf: Qualified content and Type3 rectangles satisfy operand, state, resource, property and ink-bound predicates.
+
+----------------------------------------------------------------------
+Ran 1 test in 5.151s
+
+FAILED (failures=3)

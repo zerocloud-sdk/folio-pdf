@@ -1,0 +1,48 @@
+test_next_parent_tree_key_has_integer_type_even_without_content_or_a_parent_tree (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_next_parent_tree_key_has_integer_type_even_without_content_or_a_parent_tree) ... 
+  test_next_parent_tree_key_has_integer_type_even_without_content_or_a_parent_tree (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_next_parent_tree_key_has_integer_type_even_without_content_or_a_parent_tree) (next_key='name') ... FAIL
+  test_next_parent_tree_key_has_integer_type_even_without_content_or_a_parent_tree (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_next_parent_tree_key_has_integer_type_even_without_content_or_a_parent_tree) (next_key='real') ... FAIL
+  test_next_parent_tree_key_has_integer_type_even_without_content_or_a_parent_tree (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_next_parent_tree_key_has_integer_type_even_without_content_or_a_parent_tree) (next_key='boolean') ... FAIL
+
+======================================================================
+FAIL: test_next_parent_tree_key_has_integer_type_even_without_content_or_a_parent_tree (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_next_parent_tree_key_has_integer_type_even_without_content_or_a_parent_tree) (next_key='name')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 28, in test_next_parent_tree_key_has_integer_type_even_without_content_or_a_parent_tree
+    self.observe(directory, name, self.pdf(objects), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 243, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : name: The qualified ParentTree has ordered integer keys, structural parent values and a fresh optional next key.
+
+======================================================================
+FAIL: test_next_parent_tree_key_has_integer_type_even_without_content_or_a_parent_tree (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_next_parent_tree_key_has_integer_type_even_without_content_or_a_parent_tree) (next_key='real')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 28, in test_next_parent_tree_key_has_integer_type_even_without_content_or_a_parent_tree
+    self.observe(directory, name, self.pdf(objects), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 243, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : real: The qualified ParentTree has ordered integer keys, structural parent values and a fresh optional next key.
+
+======================================================================
+FAIL: test_next_parent_tree_key_has_integer_type_even_without_content_or_a_parent_tree (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_next_parent_tree_key_has_integer_type_even_without_content_or_a_parent_tree) (next_key='boolean')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 28, in test_next_parent_tree_key_has_integer_type_even_without_content_or_a_parent_tree
+    self.observe(directory, name, self.pdf(objects), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 243, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : boolean: The qualified ParentTree has ordered integer keys, structural parent values and a fresh optional next key.
+
+----------------------------------------------------------------------
+Ran 1 test in 1.377s
+
+FAILED (failures=3)

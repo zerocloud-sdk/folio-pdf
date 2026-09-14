@@ -1,0 +1,18 @@
+F
+======================================================================
+FAIL: test_tounicode_can_select_font_zero_and_rejects_a_different_font_number (test_t13_program_standards.T13ProgramStandardsTest.test_tounicode_can_select_font_zero_and_rejects_a_different_font_number)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 19, in test_tounicode_can_select_font_zero_and_rejects_a_different_font_number
+    self.observe(directory, pdf, 'pass')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 72, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'pass' != 'fail'
+- pass
++ fail
+ : unicode-usefont-zero.pdf: PDF Encoding CMaps may select only font zero
+
+----------------------------------------------------------------------
+Ran 1 test in 0.123s
+
+FAILED (failures=1)

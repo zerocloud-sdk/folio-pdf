@@ -1,0 +1,76 @@
+test_unexecuted_referenced_forms_are_qualified_from_their_definitions (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_unexecuted_referenced_forms_are_qualified_from_their_definitions) ... 
+  test_unexecuted_referenced_forms_are_qualified_from_their_definitions (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_unexecuted_referenced_forms_are_qualified_from_their_definitions) (definition='unexecuted-form') ... FAIL
+  test_unexecuted_referenced_forms_are_qualified_from_their_definitions (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_unexecuted_referenced_forms_are_qualified_from_their_definitions) (definition='unexecuted-appearance') ... FAIL
+  test_unexecuted_referenced_forms_are_qualified_from_their_definitions (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_unexecuted_referenced_forms_are_qualified_from_their_definitions) (definition='unexecuted-missing-mcid') ... FAIL
+  test_unexecuted_referenced_forms_are_qualified_from_their_definitions (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_unexecuted_referenced_forms_are_qualified_from_their_definitions) (definition='unexecuted-different-mcid') ... FAIL
+  test_unexecuted_referenced_forms_are_qualified_from_their_definitions (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_unexecuted_referenced_forms_are_qualified_from_their_definitions) (definition='unexecuted-whole-unsupported-program') ... FAIL
+
+======================================================================
+FAIL: test_unexecuted_referenced_forms_are_qualified_from_their_definitions (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_unexecuted_referenced_forms_are_qualified_from_their_definitions) (definition='unexecuted-form')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 40, in test_unexecuted_referenced_forms_are_qualified_from_their_definitions
+    self.observe(directory, name, self.pdf(objects), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 517, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'pass' != 'indeterminate'
+- pass
++ indeterminate
+ : unexecuted-form: Unexecuted referenced streams are outside the current content qualification
+
+======================================================================
+FAIL: test_unexecuted_referenced_forms_are_qualified_from_their_definitions (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_unexecuted_referenced_forms_are_qualified_from_their_definitions) (definition='unexecuted-appearance')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 40, in test_unexecuted_referenced_forms_are_qualified_from_their_definitions
+    self.observe(directory, name, self.pdf(objects), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 517, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'pass' != 'indeterminate'
+- pass
++ indeterminate
+ : unexecuted-appearance: Unexecuted referenced streams are outside the current content qualification
+
+======================================================================
+FAIL: test_unexecuted_referenced_forms_are_qualified_from_their_definitions (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_unexecuted_referenced_forms_are_qualified_from_their_definitions) (definition='unexecuted-missing-mcid')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 40, in test_unexecuted_referenced_forms_are_qualified_from_their_definitions
+    self.observe(directory, name, self.pdf(objects), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 517, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'indeterminate'
+- fail
++ indeterminate
+ : unexecuted-missing-mcid: Unexecuted referenced streams are outside the current content qualification
+
+======================================================================
+FAIL: test_unexecuted_referenced_forms_are_qualified_from_their_definitions (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_unexecuted_referenced_forms_are_qualified_from_their_definitions) (definition='unexecuted-different-mcid')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 40, in test_unexecuted_referenced_forms_are_qualified_from_their_definitions
+    self.observe(directory, name, self.pdf(objects), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 517, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'indeterminate'
+- fail
++ indeterminate
+ : unexecuted-different-mcid: Unexecuted referenced streams are outside the current content qualification
+
+======================================================================
+FAIL: test_unexecuted_referenced_forms_are_qualified_from_their_definitions (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_unexecuted_referenced_forms_are_qualified_from_their_definitions) (definition='unexecuted-whole-unsupported-program')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 40, in test_unexecuted_referenced_forms_are_qualified_from_their_definitions
+    self.observe(directory, name, self.pdf(objects), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 517, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'indeterminate' != 'pass'
+- indeterminate
++ pass
+ : unexecuted-whole-unsupported-program: The qualified structure content references have typed fields and matching ParentTree backlinks.
+
+----------------------------------------------------------------------
+Ran 1 test in 1.627s
+
+FAILED (failures=5)

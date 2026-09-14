@@ -431,7 +431,13 @@ malformed explicit Unicode destination, or unbounded `ToUnicode` range
 expansion is accepted. See the
 [text and logical-structure guide](docs/text-logical-structure.md) for the
 coordinate system, ordering, all mandatory limits, safe failures, and the
-version-1 unsupported cases.
+version-1 unsupported cases. Six matching read-only members are available in
+both Stable and Preview Facades. The [T13 certification contract](docs/t13-certification.md)
+defines the independently qualified corpus and the eight required Ubuntu
+24.04/Linux x86-64 JDK 8/11/17/21 × Native execution-mode combinations. The
+Facade executes in `IN_PROCESS`; candidate-specific certification is recorded
+by the [Foundation evidence authority](capabilities/foundation-evidence.yaml).
+Windows and macOS remain uncertified.
 
 T14 adds the bounded `ExtractImagesAndResources` Document Query. Its detached
 inventory walks effective page and nested Form resources deterministically,

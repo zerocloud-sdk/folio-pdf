@@ -1,0 +1,48 @@
+test_structural_pages_and_annotation_objects_belong_to_the_declared_document_page (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_pages_and_annotation_objects_belong_to_the_declared_document_page) ... 
+  test_structural_pages_and_annotation_objects_belong_to_the_declared_document_page (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_pages_and_annotation_objects_belong_to_the_declared_document_page) (page_membership='annotation-missing-from-page') ... FAIL
+  test_structural_pages_and_annotation_objects_belong_to_the_declared_document_page (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_pages_and_annotation_objects_belong_to_the_declared_document_page) (page_membership='annotation-p-mismatch') ... FAIL
+  test_structural_pages_and_annotation_objects_belong_to_the_declared_document_page (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_pages_and_annotation_objects_belong_to_the_declared_document_page) (page_membership='detached-page-reference') ... FAIL
+
+======================================================================
+FAIL: test_structural_pages_and_annotation_objects_belong_to_the_declared_document_page (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_pages_and_annotation_objects_belong_to_the_declared_document_page) (page_membership='annotation-missing-from-page')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 36, in test_structural_pages_and_annotation_objects_belong_to_the_declared_document_page
+    self.observe(directory, name, self.pdf(objects), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 457, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : annotation-missing-from-page: The qualified structure content references have typed fields and matching ParentTree backlinks.
+
+======================================================================
+FAIL: test_structural_pages_and_annotation_objects_belong_to_the_declared_document_page (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_pages_and_annotation_objects_belong_to_the_declared_document_page) (page_membership='annotation-p-mismatch')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 36, in test_structural_pages_and_annotation_objects_belong_to_the_declared_document_page
+    self.observe(directory, name, self.pdf(objects), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 457, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : annotation-p-mismatch: The qualified structure content references have typed fields and matching ParentTree backlinks.
+
+======================================================================
+FAIL: test_structural_pages_and_annotation_objects_belong_to_the_declared_document_page (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_pages_and_annotation_objects_belong_to_the_declared_document_page) (page_membership='detached-page-reference')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 36, in test_structural_pages_and_annotation_objects_belong_to_the_declared_document_page
+    self.observe(directory, name, self.pdf(objects), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 457, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : detached-page-reference: The qualified structure content references have typed fields and matching ParentTree backlinks.
+
+----------------------------------------------------------------------
+Ran 1 test in 1.154s
+
+FAILED (failures=3)

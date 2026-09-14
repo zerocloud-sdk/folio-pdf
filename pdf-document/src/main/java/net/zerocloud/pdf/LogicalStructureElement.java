@@ -43,6 +43,9 @@ public final class LogicalStructureElement {
     private final String role;
     private final String resolvedRole;
     private final RoleResolution roleResolution;
+    private final String declaredNamespaceName;
+    private final ObjectReference namespaceReference;
+    private final String resolvedNamespaceName;
     private final String declaredLanguage;
     private final String effectiveLanguage;
     private final LanguageSource languageSource;
@@ -55,6 +58,9 @@ public final class LogicalStructureElement {
             String role,
             String resolvedRole,
             RoleResolution roleResolution,
+            String declaredNamespaceName,
+            ObjectReference namespaceReference,
+            String resolvedNamespaceName,
             String declaredLanguage,
             String effectiveLanguage,
             LanguageSource languageSource,
@@ -66,6 +72,9 @@ public final class LogicalStructureElement {
         this.resolvedRole = resolvedRole;
         this.roleResolution = Objects.requireNonNull(
                 roleResolution, "roleResolution");
+        this.declaredNamespaceName = declaredNamespaceName;
+        this.namespaceReference = namespaceReference;
+        this.resolvedNamespaceName = resolvedNamespaceName;
         this.declaredLanguage = declaredLanguage;
         this.effectiveLanguage = effectiveLanguage;
         this.languageSource = Objects.requireNonNull(
@@ -89,6 +98,21 @@ public final class LogicalStructureElement {
 
     /** @return how the role was resolved */
     public RoleResolution getRoleResolution() { return roleResolution; }
+
+    /** @return the explicitly declared namespace URI; never inherited or fetched */
+    public Optional<String> getDeclaredNamespaceName() {
+        return Optional.ofNullable(declaredNamespaceName);
+    }
+
+    /** @return the namespace dictionary's detached Session identity, when explicitly declared */
+    public Optional<ObjectReference> getNamespaceReference() {
+        return Optional.ofNullable(namespaceReference);
+    }
+
+    /** @return the namespace URI of the resolved standard role, when resolved */
+    public Optional<String> getResolvedNamespaceName() {
+        return Optional.ofNullable(resolvedNamespaceName);
+    }
 
     /** @return the language declared directly on this element, when present */
     public Optional<String> getDeclaredLanguage() {

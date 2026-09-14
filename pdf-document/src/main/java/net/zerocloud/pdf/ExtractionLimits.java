@@ -10,17 +10,19 @@ package net.zerocloud.pdf;
  * count page streams and executed Form occurrences; page-stream depth starts
  * at one and cannot exceed
  * {@link #MAXIMUM_CONTENT_STREAM_DEPTH_VERSION_1}. Decoded bytes also include
- * distinct {@code ToUnicode},
- * embedded font-program, and CID-to-GID streams reached by extraction.
+ * distinct Encoding and {@code ToUnicode} CMaps, embedded font programs,
+ * Type 3 glyph programs, and CID-to-GID streams reached by extraction.
  * Structure items count root and element {@code K} entries, and
  * structure depth starts at one for a root element. The Unicode budget covers
  * accepted mapping observations and extracted metadata without charging an
  * aggregate view of the same text again. The {@code ToUnicode} mapping budget
- * bounds every character entry that FontBox would materialize, including each
+ * bounds every character entry that extraction would materialize, including each
  * code represented by a range. The font-data-entry budget bounds every item
  * inspected in distinct simple-font {@code Differences} arrays, every raw
- * font-width array item inspected, and every CID width entry that PDFBox
- * would materialize from a compact range.</p>
+ * font-width array item inspected, and every CID width entry materialized from
+ * a compact range. It also charges each selected font's CMap inheritance node,
+ * codespace declaration and expanded Encoding CID/notdef mapping declaration,
+ * including duplicates and overrides, and each Type 3 CharProcs entry.</p>
  *
  * @since 0.1.0
  */

@@ -1,0 +1,230 @@
+test_structural_content_backlinks_match_each_mcid_and_whole_object_parent (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_content_backlinks_match_each_mcid_and_whole_object_parent) ... 
+  test_structural_content_backlinks_match_each_mcid_and_whole_object_parent (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_content_backlinks_match_each_mcid_and_whole_object_parent) (backlink='missing-page-key') ... FAIL
+  test_structural_content_backlinks_match_each_mcid_and_whole_object_parent (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_content_backlinks_match_each_mcid_and_whole_object_parent) (backlink='missing-form-key') ... FAIL
+  test_structural_content_backlinks_match_each_mcid_and_whole_object_parent (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_content_backlinks_match_each_mcid_and_whole_object_parent) (backlink='missing-object-key') ... FAIL
+  test_structural_content_backlinks_match_each_mcid_and_whole_object_parent (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_content_backlinks_match_each_mcid_and_whole_object_parent) (backlink='unknown-page-key') ... FAIL
+  test_structural_content_backlinks_match_each_mcid_and_whole_object_parent (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_content_backlinks_match_each_mcid_and_whole_object_parent) (backlink='named-page-key') ... FAIL
+  test_structural_content_backlinks_match_each_mcid_and_whole_object_parent (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_content_backlinks_match_each_mcid_and_whole_object_parent) (backlink='real-page-key') ... FAIL
+  test_structural_content_backlinks_match_each_mcid_and_whole_object_parent (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_content_backlinks_match_each_mcid_and_whole_object_parent) (backlink='shared-page-form-key') ... FAIL
+  test_structural_content_backlinks_match_each_mcid_and_whole_object_parent (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_content_backlinks_match_each_mcid_and_whole_object_parent) (backlink='wrong-page-parent') ... FAIL
+  test_structural_content_backlinks_match_each_mcid_and_whole_object_parent (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_content_backlinks_match_each_mcid_and_whole_object_parent) (backlink='wrong-form-parent') ... FAIL
+  test_structural_content_backlinks_match_each_mcid_and_whole_object_parent (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_content_backlinks_match_each_mcid_and_whole_object_parent) (backlink='wrong-object-parent') ... FAIL
+  test_structural_content_backlinks_match_each_mcid_and_whole_object_parent (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_content_backlinks_match_each_mcid_and_whole_object_parent) (backlink='missing-mcid-parent') ... FAIL
+  test_structural_content_backlinks_match_each_mcid_and_whole_object_parent (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_content_backlinks_match_each_mcid_and_whole_object_parent) (backlink='page-parent-not-array') ... FAIL
+  test_structural_content_backlinks_match_each_mcid_and_whole_object_parent (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_content_backlinks_match_each_mcid_and_whole_object_parent) (backlink='object-parent-not-reference') ... FAIL
+  test_structural_content_backlinks_match_each_mcid_and_whole_object_parent (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_content_backlinks_match_each_mcid_and_whole_object_parent) (backlink='page-mcid-beyond-array') ... FAIL
+  test_structural_content_backlinks_match_each_mcid_and_whole_object_parent (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_content_backlinks_match_each_mcid_and_whole_object_parent) (backlink='form-mcid-beyond-array') ... FAIL
+  test_structural_content_backlinks_match_each_mcid_and_whole_object_parent (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_content_backlinks_match_each_mcid_and_whole_object_parent) (backlink='both-page-parent-keys') ... FAIL
+
+======================================================================
+FAIL: test_structural_content_backlinks_match_each_mcid_and_whole_object_parent (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_content_backlinks_match_each_mcid_and_whole_object_parent) (backlink='missing-page-key')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 40, in test_structural_content_backlinks_match_each_mcid_and_whole_object_parent
+    self.observe(directory, name, self.change(original, number, before, after), 'fail',
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 345, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : missing-page-key: The qualified structure content references have typed page, stream, object and MCID fields.
+
+======================================================================
+FAIL: test_structural_content_backlinks_match_each_mcid_and_whole_object_parent (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_content_backlinks_match_each_mcid_and_whole_object_parent) (backlink='missing-form-key')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 40, in test_structural_content_backlinks_match_each_mcid_and_whole_object_parent
+    self.observe(directory, name, self.change(original, number, before, after), 'fail',
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 345, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : missing-form-key: The qualified structure content references have typed page, stream, object and MCID fields.
+
+======================================================================
+FAIL: test_structural_content_backlinks_match_each_mcid_and_whole_object_parent (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_content_backlinks_match_each_mcid_and_whole_object_parent) (backlink='missing-object-key')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 40, in test_structural_content_backlinks_match_each_mcid_and_whole_object_parent
+    self.observe(directory, name, self.change(original, number, before, after), 'fail',
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 345, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : missing-object-key: The qualified structure content references have typed page, stream, object and MCID fields.
+
+======================================================================
+FAIL: test_structural_content_backlinks_match_each_mcid_and_whole_object_parent (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_content_backlinks_match_each_mcid_and_whole_object_parent) (backlink='unknown-page-key')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 40, in test_structural_content_backlinks_match_each_mcid_and_whole_object_parent
+    self.observe(directory, name, self.change(original, number, before, after), 'fail',
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 345, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : unknown-page-key: The qualified structure content references have typed page, stream, object and MCID fields.
+
+======================================================================
+FAIL: test_structural_content_backlinks_match_each_mcid_and_whole_object_parent (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_content_backlinks_match_each_mcid_and_whole_object_parent) (backlink='named-page-key')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 40, in test_structural_content_backlinks_match_each_mcid_and_whole_object_parent
+    self.observe(directory, name, self.change(original, number, before, after), 'fail',
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 345, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : named-page-key: The qualified structure content references have typed page, stream, object and MCID fields.
+
+======================================================================
+FAIL: test_structural_content_backlinks_match_each_mcid_and_whole_object_parent (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_content_backlinks_match_each_mcid_and_whole_object_parent) (backlink='real-page-key')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 40, in test_structural_content_backlinks_match_each_mcid_and_whole_object_parent
+    self.observe(directory, name, self.change(original, number, before, after), 'fail',
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 345, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : real-page-key: The qualified structure content references have typed page, stream, object and MCID fields.
+
+======================================================================
+FAIL: test_structural_content_backlinks_match_each_mcid_and_whole_object_parent (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_content_backlinks_match_each_mcid_and_whole_object_parent) (backlink='shared-page-form-key')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 40, in test_structural_content_backlinks_match_each_mcid_and_whole_object_parent
+    self.observe(directory, name, self.change(original, number, before, after), 'fail',
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 345, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : shared-page-form-key: The qualified structure content references have typed page, stream, object and MCID fields.
+
+======================================================================
+FAIL: test_structural_content_backlinks_match_each_mcid_and_whole_object_parent (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_content_backlinks_match_each_mcid_and_whole_object_parent) (backlink='wrong-page-parent')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 40, in test_structural_content_backlinks_match_each_mcid_and_whole_object_parent
+    self.observe(directory, name, self.change(original, number, before, after), 'fail',
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 345, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : wrong-page-parent: The qualified structure content references have typed page, stream, object and MCID fields.
+
+======================================================================
+FAIL: test_structural_content_backlinks_match_each_mcid_and_whole_object_parent (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_content_backlinks_match_each_mcid_and_whole_object_parent) (backlink='wrong-form-parent')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 40, in test_structural_content_backlinks_match_each_mcid_and_whole_object_parent
+    self.observe(directory, name, self.change(original, number, before, after), 'fail',
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 345, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : wrong-form-parent: The qualified structure content references have typed page, stream, object and MCID fields.
+
+======================================================================
+FAIL: test_structural_content_backlinks_match_each_mcid_and_whole_object_parent (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_content_backlinks_match_each_mcid_and_whole_object_parent) (backlink='wrong-object-parent')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 40, in test_structural_content_backlinks_match_each_mcid_and_whole_object_parent
+    self.observe(directory, name, self.change(original, number, before, after), 'fail',
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 345, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : wrong-object-parent: The qualified structure content references have typed page, stream, object and MCID fields.
+
+======================================================================
+FAIL: test_structural_content_backlinks_match_each_mcid_and_whole_object_parent (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_content_backlinks_match_each_mcid_and_whole_object_parent) (backlink='missing-mcid-parent')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 40, in test_structural_content_backlinks_match_each_mcid_and_whole_object_parent
+    self.observe(directory, name, self.change(original, number, before, after), 'fail',
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 345, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : missing-mcid-parent: The qualified structure content references have typed page, stream, object and MCID fields.
+
+======================================================================
+FAIL: test_structural_content_backlinks_match_each_mcid_and_whole_object_parent (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_content_backlinks_match_each_mcid_and_whole_object_parent) (backlink='page-parent-not-array')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 40, in test_structural_content_backlinks_match_each_mcid_and_whole_object_parent
+    self.observe(directory, name, self.change(original, number, before, after), 'fail',
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 345, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : page-parent-not-array: The qualified structure content references have typed page, stream, object and MCID fields.
+
+======================================================================
+FAIL: test_structural_content_backlinks_match_each_mcid_and_whole_object_parent (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_content_backlinks_match_each_mcid_and_whole_object_parent) (backlink='object-parent-not-reference')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 40, in test_structural_content_backlinks_match_each_mcid_and_whole_object_parent
+    self.observe(directory, name, self.change(original, number, before, after), 'fail',
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 345, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : object-parent-not-reference: The qualified structure content references have typed page, stream, object and MCID fields.
+
+======================================================================
+FAIL: test_structural_content_backlinks_match_each_mcid_and_whole_object_parent (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_content_backlinks_match_each_mcid_and_whole_object_parent) (backlink='page-mcid-beyond-array')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 40, in test_structural_content_backlinks_match_each_mcid_and_whole_object_parent
+    self.observe(directory, name, self.change(original, number, before, after), 'fail',
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 345, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : page-mcid-beyond-array: The qualified structure content references have typed page, stream, object and MCID fields.
+
+======================================================================
+FAIL: test_structural_content_backlinks_match_each_mcid_and_whole_object_parent (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_content_backlinks_match_each_mcid_and_whole_object_parent) (backlink='form-mcid-beyond-array')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 40, in test_structural_content_backlinks_match_each_mcid_and_whole_object_parent
+    self.observe(directory, name, self.change(original, number, before, after), 'fail',
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 345, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : form-mcid-beyond-array: The qualified structure content references have typed page, stream, object and MCID fields.
+
+======================================================================
+FAIL: test_structural_content_backlinks_match_each_mcid_and_whole_object_parent (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_content_backlinks_match_each_mcid_and_whole_object_parent) (backlink='both-page-parent-keys')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 40, in test_structural_content_backlinks_match_each_mcid_and_whole_object_parent
+    self.observe(directory, name, self.change(original, number, before, after), 'fail',
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 345, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : both-page-parent-keys: The qualified structure content references have typed page, stream, object and MCID fields.
+
+----------------------------------------------------------------------
+Ran 1 test in 3.924s
+
+FAILED (failures=16)

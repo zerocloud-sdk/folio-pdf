@@ -1,0 +1,1061 @@
+{
+  "goal": {
+    "path": "/home/ubuntu/.codex/attachments/77353239-0dda-4ee1-b4bb-ce7fb3fa0f9b/pasted-text-1.txt",
+    "sha256": "794423d41161169ea6a4fee993553f777d6249cb05c5fe4d34f59657ab18f83f"
+  },
+  "phase": "initial frozen-source and five-certification scope only",
+  "criteria": [
+    {
+      "number": 1,
+      "goal-first-line": 57,
+      "goal-last-line": 58,
+      "exact-lines": [
+        "  - [ ] Page Text preserves deterministic page/content-stream execution order,",
+        "        including nested Form invocations and split Contents arrays."
+      ],
+      "criterion": "Page Text preserves deterministic page/content-stream execution order, including nested Form invocations and split Contents arrays.",
+      "scope-status": "established on frozen candidate; final delivery not approved",
+      "independent-assessment": "Deterministic execution order covers nested/repeated Forms and tokens spanning Contents members.",
+      "evidence": [
+        "complete-source-review-coverage-inspection.json",
+        "five-certification-continuity-inspection.json",
+        "docs/t13-certification.md:75"
+      ],
+      "current-public-observers": [
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 153,
+          "method": "pageAndStreamOrderGeometryAndExplicitMappingsAreDeterministic",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 1910,
+          "method": "contentSyntaxCanSpanContentsMembersAsOneCombinedStream",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 2879,
+          "method": "nestedFormsAreOrderedAndBoundedByTraversalDepthAndBytes",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        }
+      ],
+      "completion-marked": false
+    },
+    {
+      "number": 2,
+      "goal-first-line": 59,
+      "goal-last-line": 60,
+      "exact-lines": [
+        "  - [ ] Glyph geometry matches independently specified expectations under the",
+        "        documented matrix, advance, rotation and coordinate conventions."
+      ],
+      "criterion": "Glyph geometry matches independently specified expectations under the documented matrix, advance, rotation and coordinate conventions.",
+      "scope-status": "established on frozen candidate; final delivery not approved",
+      "independent-assessment": "Authored matrices/advances and independent full RGB/control inspections cover geometry; renderer output does not define expectations.",
+      "evidence": [
+        "complete-source-review-coverage-inspection.json",
+        "five-certification-continuity-inspection.json",
+        "capabilities/evidence/T75-text-semantic.md",
+        "capabilities/evidence/T75-text-visual.md",
+        "docs/t13-certification.md:216"
+      ],
+      "current-public-observers": [
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 186,
+          "method": "geometrySeparatesGlyphAdvanceFromSpacingAndTjAdjustments",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 1687,
+          "method": "type3RotatedMetricsStayHorizontalAndUndefinedWidthsStayZero",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        }
+      ],
+      "completion-marked": false
+    },
+    {
+      "number": 3,
+      "goal-first-line": 61,
+      "goal-last-line": 62,
+      "exact-lines": [
+        "  - [ ] Character mappings retain exact source bytes and explicit/inferred/",
+        "        contradictory/missing evidence without fabricated Unicode certainty."
+      ],
+      "criterion": "Character mappings retain exact source bytes and explicit/inferred/ contradictory/missing evidence without fabricated Unicode certainty.",
+      "scope-status": "established on frozen candidate; final delivery not approved",
+      "independent-assessment": "Exact source bytes and explicit, inferred, contradictory and missing mapping observations remain distinct; no fabricated Unicode certainty.",
+      "evidence": [
+        "complete-source-review-coverage-inspection.json",
+        "five-certification-continuity-inspection.json",
+        "docs/adr/0035-represent-uncertain-unicode-mappings.md"
+      ],
+      "current-public-observers": [
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 341,
+          "method": "missingAndContradictoryMappingsRemainExplicitUncertainty",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 427,
+          "method": "inheritedToUnicodeMappingsUseExactBytesAndLocalOverrides",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 732,
+          "method": "detachedMappingTextRemainsOwnedAfterTheQueryCompletes",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-migration-itext7/src/test/java/net/zerocloud/pdf/itext7/consumer/TextStructureFacadeTest.java",
+          "line": 274,
+          "method": "mappingEvidenceAndDiagnosticsRemainUncertainAcrossAllTextViews",
+          "source-sha256": "a81a3373ec466810bf8ed023924126915807ff1e9f49bd0ba158334737b01ebe"
+        }
+      ],
+      "completion-marked": false
+    },
+    {
+      "number": 4,
+      "goal-first-line": 63,
+      "goal-last-line": 65,
+      "exact-lines": [
+        "  - [ ] Marked Content and the approved read-only Logical Structure profile",
+        "        satisfy their documented ordering, MCID, role, language and replacement/",
+        "        alternate-text contracts."
+      ],
+      "criterion": "Marked Content and the approved read-only Logical Structure profile satisfy their documented ordering, MCID, role, language and replacement/ alternate-text contracts.",
+      "scope-status": "established on frozen candidate; final delivery not approved",
+      "independent-assessment": "Public ordering, stream MCIDs, roles, languages, ActualText and Alt are covered; original structure findings and all later appearance/namespace corrections are closed.",
+      "evidence": [
+        "complete-source-review-coverage-inspection.json",
+        "five-certification-continuity-inspection.json",
+        "selected-review-originals/final-review/appearance-spec-final-closure/report.md"
+      ],
+      "current-public-observers": [
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 232,
+          "method": "taggedHierarchyKeepsContentLanguageRolesAndAlternatesDistinct",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 313,
+          "method": "nestedMarkedContentPreservesOrderParentsAndActualTextPrecedence",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 2157,
+          "method": "pageAndFormMcrsUseDistinctStreamScopesInBothProfiles",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 3011,
+          "method": "namespaceRoleChainsPreserveDeclaredIdentityAndUseOneSharedGraphBudget",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-migration-itext7/src/test/java/net/zerocloud/pdf/itext7/consumer/TextStructureFacadeTest.java",
+          "line": 161,
+          "method": "boundedStructureRootsRetainRolesLanguagesReplacementsAndOrderedContent",
+          "source-sha256": "a81a3373ec466810bf8ed023924126915807ff1e9f49bd0ba158334737b01ebe"
+        }
+      ],
+      "completion-marked": false
+    },
+    {
+      "number": 5,
+      "goal-first-line": 66,
+      "goal-last-line": 67,
+      "exact-lines": [
+        "  - [ ] The structure limitation blocker is resolved through source-traceable",
+        "        behavior and evidence covering the required Foundation profile."
+      ],
+      "criterion": "The structure limitation blocker is resolved through source-traceable behavior and evidence covering the required Foundation profile.",
+      "scope-status": "established on frozen candidate; final delivery not approved",
+      "independent-assessment": "Required successful MCR/OBJR/Form/namespace/appearance cases are implemented and certified, with explicit unsupported boundaries rather than safe rejection replacing required success.",
+      "evidence": [
+        "complete-source-review-coverage-inspection.json",
+        "five-certification-continuity-inspection.json",
+        "selected-review-originals/step4-review/optional-spec-closure/report.md",
+        "selected-review-originals/final-review/appearance-spec-final-closure/report.md",
+        "docs/t13-certification.md:64"
+      ],
+      "current-public-observers": [
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 2086,
+          "method": "optionalFormTypePreservesExecutedAndReferencedFormOutcomes",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 2290,
+          "method": "appearanceMcrAcceptsAnOmittedOrNullOptionalStreamOwner",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 2634,
+          "method": "wholeFormObjectReferenceRequiresEachNormalAppearancePage",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 3184,
+          "method": "directRootNamespaceDeclarationsRetainIndirectElementIdentityAndExactBounds",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        }
+      ],
+      "completion-marked": false
+    },
+    {
+      "number": 6,
+      "goal-first-line": 68,
+      "goal-last-line": 69,
+      "exact-lines": [
+        "  - [ ] The font/CMap/content limitation blocker is resolved through",
+        "        source-traceable behavior and evidence covering required extraction cases."
+      ],
+      "criterion": "The font/CMap/content limitation blocker is resolved through source-traceable behavior and evidence covering required extraction cases.",
+      "scope-status": "established on frozen candidate; final delivery not approved",
+      "independent-assessment": "Type 3 declared metrics, 61 predefined Encoding programs, four UCS2 parents and bounded embedded CMap inheritance have successful public coverage and qualified controls; source/provenance closures remain exact.",
+      "evidence": [
+        "complete-source-review-coverage-inspection.json",
+        "five-certification-continuity-inspection.json",
+        "docs/t13-certification.md:76"
+      ],
+      "current-public-observers": [
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 1657,
+          "method": "type3DeclaredMetricsExtractWithoutExecutingGlyphPrograms",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 1212,
+          "method": "everyStandardPredefinedEncodingAcceptsItsIndependentlyCountedBudget",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 550,
+          "method": "predefinedToUnicodeInheritanceUsesOnlyBoundedBundledResources",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 1395,
+          "method": "inheritedEncodingResolvesCidZeroNotdefAndBothDescendantKinds",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        }
+      ],
+      "completion-marked": false
+    },
+    {
+      "number": 7,
+      "goal-first-line": 70,
+      "goal-last-line": 71,
+      "exact-lines": [
+        "  - [ ] The complete matching extraction Facade member set is implemented and",
+        "        recorded in the Foundation obligation and Facade Surface Manifest."
+      ],
+      "criterion": "The complete matching extraction Facade member set is implemented and recorded in the Foundation obligation and Facade Surface Manifest.",
+      "scope-status": "established on frozen candidate; final delivery not approved",
+      "independent-assessment": "Six matching extraction members are present in both authorities and implementation; complete detached value access is retained.",
+      "evidence": [
+        "complete-source-review-coverage-inspection.json",
+        "capabilities/facade-surface.yaml",
+        "capabilities/foundation-requirements.yaml",
+        "docs/t13-certification.md:18"
+      ],
+      "current-public-observers": [],
+      "completion-marked": false
+    },
+    {
+      "number": 8,
+      "goal-first-line": 72,
+      "goal-last-line": 73,
+      "exact-lines": [
+        "  - [ ] Compiled Stable and Preview artifact surfaces agree with that manifest;",
+        "        every new Stable member has compatible behavioral evidence."
+      ],
+      "criterion": "Compiled Stable and Preview artifact surfaces agree with that manifest; every new Stable member has compatible behavioral evidence.",
+      "scope-status": "established on frozen candidate; final delivery not approved",
+      "independent-assessment": "Each actual text tuple runs nine public Stable cases and two compiled artifact contracts. Whole Stable/Preview scope is 21 types/157 members; #75 adds 1 type/6 members. Twenty coexistence probes run in both orders; new extractor initialization delegation is source-reviewed, not a twenty-first probe.",
+      "evidence": [
+        "complete-source-review-coverage-inspection.json",
+        "five-certification-continuity-inspection.json",
+        "capabilities/evidence/T75-delivery/final-delivery-review-r3/historical-facade-counts.md"
+      ],
+      "current-public-observers": [],
+      "completion-marked": false
+    },
+    {
+      "number": 9,
+      "goal-first-line": 74,
+      "goal-last-line": 76,
+      "exact-lines": [
+        "  - [ ] Independent project-owned fixtures cover nested Forms, split content",
+        "        arrays, ActualText/Alt, role/language inheritance, and malformed or",
+        "        unsupported structure relationships."
+      ],
+      "criterion": "Independent project-owned fixtures cover nested Forms, split content arrays, ActualText/Alt, role/language inheritance, and malformed or unsupported structure relationships.",
+      "scope-status": "established on frozen candidate; final delivery not approved",
+      "independent-assessment": "Five authored corpus Sources and ten Native/Facade products bind independent geometry/text/structure expectations and malformed controls; original new/untracked fixtures are covered by complete frozen-input review.",
+      "evidence": [
+        "complete-source-review-coverage-inspection.json",
+        "five-certification-continuity-inspection.json",
+        "capabilities/evidence/T13-text-logical-structure.md:81",
+        "docs/t13-certification.md:269"
+      ],
+      "current-public-observers": [],
+      "completion-marked": false
+    },
+    {
+      "number": 10,
+      "goal-first-line": 77,
+      "goal-last-line": 77,
+      "exact-lines": [
+        "  - [ ] Public observers prove detached results remain valid after Session close."
+      ],
+      "criterion": "Public observers prove detached results remain valid after Session close.",
+      "scope-status": "established on frozen candidate; final delivery not approved",
+      "independent-assessment": "Public values survive Session/document close without backend identity assertions.",
+      "evidence": [
+        "complete-source-review-coverage-inspection.json",
+        "five-certification-continuity-inspection.json"
+      ],
+      "current-public-observers": [
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 88,
+          "method": "untaggedPageTextObservesEarlierPatchAndReturnsDetachedEvidence",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 732,
+          "method": "detachedMappingTextRemainsOwnedAfterTheQueryCompletes",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-migration-itext7/src/test/java/net/zerocloud/pdf/itext7/consumer/TextStructureFacadeTest.java",
+          "line": 59,
+          "method": "completeExtractionRetainsNativeValuesAfterCloseWithoutChangingTheSource",
+          "source-sha256": "a81a3373ec466810bf8ed023924126915807ff1e9f49bd0ba158334737b01ebe"
+        }
+      ],
+      "completion-marked": false
+    },
+    {
+      "number": 11,
+      "goal-first-line": 78,
+      "goal-last-line": 78,
+      "exact-lines": [
+        "  - [ ] Public observers prove Queries observe preceding Session Commands."
+      ],
+      "criterion": "Public observers prove Queries observe preceding Session Commands.",
+      "scope-status": "established on frozen candidate; final delivery not approved",
+      "independent-assessment": "Queries observe earlier Session commands and publication/reopen outcomes.",
+      "evidence": [
+        "complete-source-review-coverage-inspection.json",
+        "five-certification-continuity-inspection.json"
+      ],
+      "current-public-observers": [
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 88,
+          "method": "untaggedPageTextObservesEarlierPatchAndReturnsDetachedEvidence",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-migration-itext7/src/test/java/net/zerocloud/pdf/itext7/consumer/TextStructureFacadeTest.java",
+          "line": 93,
+          "method": "pageTextFollowsPageIdentityAndEarlierCommandsThroughPublication",
+          "source-sha256": "a81a3373ec466810bf8ed023924126915807ff1e9f49bd0ba158334737b01ebe"
+        }
+      ],
+      "completion-marked": false
+    },
+    {
+      "number": 12,
+      "goal-first-line": 79,
+      "goal-last-line": 80,
+      "exact-lines": [
+        "  - [ ] Public observers prove exact-boundary success and first-excess failure",
+        "        for traversal, decompression and font-mapping limits."
+      ],
+      "criterion": "Public observers prove exact-boundary success and first-excess failure for traversal, decompression and font-mapping limits.",
+      "scope-status": "established on frozen candidate; final delivery not approved",
+      "independent-assessment": "All fifteen caller-limit dimensions retain exact-boundary and first-excess public evidence. Observer-budget and timeout closures do not relax product limits.",
+      "evidence": [
+        "complete-source-review-coverage-inspection.json",
+        "five-certification-continuity-inspection.json",
+        "selected-review-originals/observer-budget/spec-final-closure/report.md",
+        "selected-review-originals/worker-batch-timeout/spec-closure/report.md"
+      ],
+      "current-public-observers": [
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 2824,
+          "method": "everyLimitAcceptsItsExactBoundaryAndFailsOnExhaustion",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 806,
+          "method": "toUnicodeRangeExpansionIsCallerBoundedBeforeParsing",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 1212,
+          "method": "everyStandardPredefinedEncodingAcceptsItsIndependentlyCountedBudget",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 2901,
+          "method": "formDepthHasStackSafeVersion1CeilingAndExactBoundary",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        }
+      ],
+      "completion-marked": false
+    },
+    {
+      "number": 13,
+      "goal-first-line": 81,
+      "goal-last-line": 82,
+      "exact-lines": [
+        "  - [ ] Public observers prove safe all-or-nothing extraction failure in both",
+        "        Native execution profiles, without publishing a valid-looking prefix."
+      ],
+      "criterion": "Public observers prove safe all-or-nothing extraction failure in both Native execution profiles, without publishing a valid-looking prefix.",
+      "scope-status": "established on frozen candidate; final delivery not approved",
+      "independent-assessment": "All eight actual Native suites prove complete query failure. Split timeout tests preserve fixture coverage and product/resource guards; no valid-looking prefix is published.",
+      "evidence": [
+        "complete-source-review-coverage-inspection.json",
+        "five-certification-continuity-inspection.json"
+      ],
+      "current-public-observers": [
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 1864,
+          "method": "malformedContentSyntaxCannotPublishAValidLookingPrefix",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 1923,
+          "method": "unbalancedSupportedOperatorStateCannotPublishPrefix",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 1944,
+          "method": "unbalancedGraphicsAndPositioningStateCannotPublishPrefix",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 1966,
+          "method": "unbalancedFormOperatorStateCannotPublishPrefix",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-migration-itext7/src/test/java/net/zerocloud/pdf/itext7/consumer/TextStructureFacadeTest.java",
+          "line": 240,
+          "method": "everyFacadeEntryRejectsMalformedLaterContentWithoutReturningAPrefix",
+          "source-sha256": "a81a3373ec466810bf8ed023924126915807ff1e9f49bd0ba158334737b01ebe"
+        }
+      ],
+      "completion-marked": false
+    },
+    {
+      "number": 14,
+      "goal-first-line": 83,
+      "goal-last-line": 83,
+      "exact-lines": [
+        "  - [ ] Public observers prove resource ownership and Source preservation."
+      ],
+      "criterion": "Public observers prove resource ownership and Source preservation.",
+      "scope-status": "established on frozen candidate; final delivery not approved",
+      "independent-assessment": "Public ownership, closed-handle behavior, original Source preservation and rewrite/reopen controls are covered.",
+      "evidence": [
+        "complete-source-review-coverage-inspection.json",
+        "five-certification-continuity-inspection.json"
+      ],
+      "current-public-observers": [
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 1556,
+          "method": "mismatchedEmbeddedType0FontCannotRepairTheLiveCosGraph",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 1598,
+          "method": "indirectFormNamesRemainReferencesInTheLiveAndRewrittenGraph",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "line": 1751,
+          "method": "malformedType3MetricsAndProgramsFailWithoutChangingTheSource",
+          "source-sha256": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-migration-itext7/src/test/java/net/zerocloud/pdf/itext7/consumer/TextStructureFacadeTest.java",
+          "line": 331,
+          "method": "callerStreamsRemainOpenAndClosedHandlesRejectEveryExtractionEntry",
+          "source-sha256": "a81a3373ec466810bf8ed023924126915807ff1e9f49bd0ba158334737b01ebe"
+        }
+      ],
+      "completion-marked": false
+    },
+    {
+      "number": 15,
+      "goal-first-line": 84,
+      "goal-last-line": 85,
+      "exact-lines": [
+        "  - [ ] Native and Facade parity is demonstrated through public outcomes,",
+        "        reopened files, Publication Receipts and stable safe failures."
+      ],
+      "criterion": "Native and Facade parity is demonstrated through public outcomes, reopened files, Publication Receipts and stable safe failures.",
+      "scope-status": "established on frozen candidate; final delivery not approved",
+      "independent-assessment": "Native and actual IN_PROCESS Facade outcomes, detached values, reopened products, Publication Receipts and stable safe failure match. Facade never supplies Worker evidence.",
+      "evidence": [
+        "complete-source-review-coverage-inspection.json",
+        "five-certification-continuity-inspection.json"
+      ],
+      "current-public-observers": [
+        {
+          "path": "pdf-migration-itext7/src/test/java/net/zerocloud/pdf/itext7/consumer/TextStructureFacadeTest.java",
+          "line": 93,
+          "method": "pageTextFollowsPageIdentityAndEarlierCommandsThroughPublication",
+          "source-sha256": "a81a3373ec466810bf8ed023924126915807ff1e9f49bd0ba158334737b01ebe"
+        },
+        {
+          "path": "pdf-migration-itext7/src/test/java/net/zerocloud/pdf/itext7/consumer/TextStructureFacadeTest.java",
+          "line": 274,
+          "method": "mappingEvidenceAndDiagnosticsRemainUncertainAcrossAllTextViews",
+          "source-sha256": "a81a3373ec466810bf8ed023924126915807ff1e9f49bd0ba158334737b01ebe"
+        },
+        {
+          "path": "pdf-migration-itext7/src/test/java/net/zerocloud/pdf/itext7/consumer/TextStructureFacadeTest.java",
+          "line": 240,
+          "method": "everyFacadeEntryRejectsMalformedLaterContentWithoutReturningAPrefix",
+          "source-sha256": "a81a3373ec466810bf8ed023924126915807ff1e9f49bd0ba158334737b01ebe"
+        }
+      ],
+      "completion-marked": false
+    },
+    {
+      "number": 16,
+      "goal-first-line": 86,
+      "goal-last-line": 87,
+      "exact-lines": [
+        "  - [ ] Separate independent syntax, standards, semantic and visual chains pass",
+        "        for this slice, with retained negative controls and qualified rule coverage."
+      ],
+      "criterion": "Separate independent syntax, standards, semantic and visual chains pass for this slice, with retained negative controls and qualified rule coverage.",
+      "scope-status": "established on frozen candidate; final delivery not approved",
+      "independent-assessment": "Text has eight independently closed raw scopes and 32 PASS chain records: separate syntax/standards/semantic/visual chains, 334 declaration +42 program rules, all retained controls and original producer provenance. Prior sealed raw readers inspect every referenced original and complete RGB.",
+      "evidence": [
+        "five-certification-continuity-inspection.json",
+        "capabilities/evidence/T75-delivery/certification-review-r4/text-jdk8-two-tuples-spec-report.md",
+        "capabilities/evidence/T75-delivery/certification-review-r4/text-jdk11-and-jdk17-three-tuples-spec-report.md",
+        "capabilities/evidence/T75-delivery/certification-review-r4/text-jdk17-and-jdk21-last-three-spec-report.md"
+      ],
+      "current-public-observers": [],
+      "completion-marked": false
+    },
+    {
+      "number": 17,
+      "goal-first-line": 88,
+      "goal-last-line": 91,
+      "exact-lines": [
+        "  - [ ] Certification covers all eight actual Ubuntu 24.04/Linux x86-64",
+        "        JDK 8/11/17/21 × IN_PROCESS/HARDENED_WORKER Native combinations.",
+        "        Each record binds the tested artifacts, candidate, immutable image,",
+        "        observed JDK vendor/build, execution configuration and tool identities."
+      ],
+      "criterion": "Certification covers all eight actual Ubuntu 24.04/Linux x86-64 JDK 8/11/17/21 × IN_PROCESS/HARDENED_WORKER Native combinations. Each record binds the tested artifacts, candidate, immutable image, observed JDK vendor/build, execution configuration and tool identities.",
+      "scope-status": "established on frozen candidate; final delivery not approved",
+      "independent-assessment": "Text actual outer exit 0 and eight own-index tuples match dated publication, observed JDK/image, artifacts, configuration and tool identities on current candidate. Per-tuple formal126 has zero skips.",
+      "evidence": [
+        "five-certification-continuity-inspection.json",
+        "capabilities/evidence/T75-delivery/final-certification-r4/text-result.json",
+        "capabilities/evidence/T75-foundation-20260914-r4/text/observed-index.json"
+      ],
+      "current-public-observers": [],
+      "completion-marked": false
+    },
+    {
+      "number": 18,
+      "goal-first-line": 92,
+      "goal-last-line": 93,
+      "exact-lines": [
+        "  - [ ] Evidence validation rejects missing tools/rules, failed controls and",
+        "        mismatched identities; changing labels or producer names cannot yield PASS."
+      ],
+      "criterion": "Evidence validation rejects missing tools/rules, failed controls and mismatched identities; changing labels or producer names cannot yield PASS.",
+      "scope-status": "partly established; explicit final gate deferred",
+      "independent-assessment": "Source/qualification negative controls reject opacity, tool/rule omissions, failed controls, mismatched identities and relabeling. Final inventory validation of the completed authority is still required.",
+      "evidence": [
+        "complete-source-review-coverage-inspection.json",
+        "five-certification-continuity-inspection.json",
+        "scripts/t13_foundation_reports.py",
+        "scripts/tests/test_t13_foundation.py",
+        "capabilities/evidence/T75-delivery/recorder-r6/README.md"
+      ],
+      "current-public-observers": [],
+      "completion-marked": false
+    },
+    {
+      "number": 19,
+      "goal-first-line": 94,
+      "goal-last-line": 95,
+      "exact-lines": [
+        "  - [ ] Capability Matrix, Facade Surface, Foundation authorities, generated/public",
+        "        English contracts, Chinese usage material and clean-room provenance agree."
+      ],
+      "criterion": "Capability Matrix, Facade Surface, Foundation authorities, generated/public English contracts, Chinese usage material and clean-room provenance agree.",
+      "scope-status": "partly established; explicit final gate deferred",
+      "independent-assessment": "Frozen source/contracts and scope/count addendum are covered. Final generated authority/views and final index agreement remain unobserved in this phase.",
+      "evidence": [
+        "complete-source-review-coverage-inspection.json",
+        "capabilities/capability-matrix.yaml",
+        "capabilities/facade-surface.yaml",
+        "README.md",
+        "docs/zh-CN/getting-started.md",
+        "PROVENANCE.md"
+      ],
+      "current-public-observers": [],
+      "completion-marked": false
+    },
+    {
+      "number": 20,
+      "goal-first-line": 96,
+      "goal-last-line": 98,
+      "exact-lines": [
+        "  - [ ] Foundation readiness reports text satisfied and retains valid certification",
+        "        for previously completed obligations on the final candidate. Unrelated",
+        "        unfinished obligations may keep overall readiness NOT READY."
+      ],
+      "criterion": "Foundation readiness reports text satisfied and retains valid certification for previously completed obligations on the final candidate. Unrelated unfinished obligations may keep overall readiness NOT READY.",
+      "scope-status": "partly established; explicit final gate deferred",
+      "independent-assessment": "Five current obligations are published: text/transactions/values/pages/metadata =40 certifications/160 PASS. Annotations, final48/192, and actual all-six-satisfied readiness assertions are explicitly deferred; unrelated overall NOT READY is permitted.",
+      "evidence": [
+        "five-certification-continuity-inspection.json",
+        "docs/t13-certification.md:509"
+      ],
+      "current-public-observers": [],
+      "completion-marked": false
+    },
+    {
+      "number": 21,
+      "goal-first-line": 99,
+      "goal-last-line": 100,
+      "exact-lines": [
+        "  - [ ] Focused behavior, Facade, recorder and independent-tool qualification tests",
+        "        pass; independent-tool tests actually run with the required tools."
+      ],
+      "criterion": "Focused behavior, Facade, recorder and independent-tool qualification tests pass; independent-tool tests actually run with the required tools.",
+      "scope-status": "established on frozen candidate; final delivery not approved",
+      "independent-assessment": "Closed full/incremental reviews bind focused RED/GREEN behavior, Facade, recorder and actual-tool qualification lineage. Current full host/matrix and formal tuple checks pass; earlier failed aggregates remain failed historical observations.",
+      "evidence": [
+        "complete-source-review-coverage-inspection.json",
+        "validation-history-binding-inspection.json",
+        "five-certification-continuity-inspection.json",
+        "selected-review-originals/observer-budget/spec-final-closure/report.md",
+        "selected-review-originals/worker-batch-timeout/spec-closure/report.md",
+        "selected-review-originals/inventory-read-bound/spec-review-archive-identity/report.md"
+      ],
+      "current-public-observers": [],
+      "completion-marked": false
+    },
+    {
+      "number": 22,
+      "goal-first-line": 101,
+      "goal-last-line": 102,
+      "exact-lines": [
+        "  - [ ] ./scripts/inventory validate and ./scripts/inventory check pass, including",
+        "        resolution of the recorded generated-readiness failure."
+      ],
+      "criterion": "./scripts/inventory validate and ./scripts/inventory check pass, including resolution of the recorded generated-readiness failure.",
+      "scope-status": "partly established; explicit final gate deferred",
+      "independent-assessment": "Known baseline stale-readiness failure and later r3 oversize text-evidence issue are retained. The exact five-file reader fix passed17 inventory tests with both review axes closed; its16MiB accepted-input bound does not claim total-I/O or heap bounds. Final generate/validate/check plus explicit satisfied assertion have not been approved.",
+      "evidence": [
+        "complete-source-review-coverage-inspection.json",
+        "validation-history-binding-inspection.json",
+        "selected-review-originals/inventory-read-bound/spec-review-archive-identity/report.md",
+        "capabilities/evidence/T75-delivery/inventory-read-bound/README.md"
+      ],
+      "current-public-observers": [],
+      "completion-marked": false
+    },
+    {
+      "number": 23,
+      "goal-first-line": 103,
+      "goal-last-line": 103,
+      "exact-lines": [
+        "  - [ ] ./mvnw -B -ntp verify passes."
+      ],
+      "criterion": "./mvnw -B -ntp verify passes.",
+      "scope-status": "established on frozen candidate; final delivery not approved",
+      "independent-assessment": "Current r4 full host verify actual0; 1507 tests,0 failures,0 errors,4 documented default skips,all10modules. All177 reports/87XML and log are retained and independently checked.",
+      "evidence": [
+        "validation-history-binding-inspection.json",
+        "capabilities/evidence/T75-delivery/final-validation-r4/host-full-verify-receipt.json"
+      ],
+      "current-public-observers": [],
+      "completion-marked": false
+    },
+    {
+      "number": 24,
+      "goal-first-line": 104,
+      "goal-last-line": 104,
+      "exact-lines": [
+        "  - [ ] ./scripts/verify-jdk-matrix.sh passes on JDK 8, 11, 17 and 21."
+      ],
+      "criterion": "./scripts/verify-jdk-matrix.sh passes on JDK 8, 11, 17 and 21.",
+      "scope-status": "established on frozen candidate; final delivery not approved",
+      "independent-assessment": "Current r4 four-JDK matrix actual0; each1507/0/0/4,all10modules. Complete log covers allfour;177reports/87XML represent lastJDK21 only, without claiming earlier XML copies.",
+      "evidence": [
+        "validation-history-binding-inspection.json",
+        "capabilities/evidence/T75-delivery/final-validation-r4/jdk-matrix-receipt.json"
+      ],
+      "current-public-observers": [],
+      "completion-marked": false
+    },
+    {
+      "number": 25,
+      "goal-first-line": 105,
+      "goal-last-line": 106,
+      "exact-lines": [
+        "  - [ ] The applicable code-review flow completes Standards and Spec review against",
+        "        5b1603c435f11c40368f75b7b9a2777c9c5e9761, with applicable findings resolved."
+      ],
+      "criterion": "The applicable code-review flow completes Standards and Spec review against 5b1603c435f11c40368f75b7b9a2777c9c5e9761, with applicable findings resolved.",
+      "scope-status": "partly established; explicit final gate deferred",
+      "independent-assessment": "Original complete independent reviews and all27 cumulative identity-affecting deltas are bound to fixed baseline and current1933source/30contract inputs, including new/untracked files. This originally fork-none independent thread continues after allocation limit; no newly created fresh thread is claimed. Final two-axis frozen-index approval remains deferred.",
+      "evidence": [
+        "complete-source-review-coverage-inspection.json",
+        "review-archive-inspection.json",
+        "/tmp/t75-final-review-fixed-baseline-r4-zpbk95st/reviewer-allocation-boundary.json"
+      ],
+      "current-public-observers": [],
+      "completion-marked": false
+    },
+    {
+      "number": 26,
+      "goal-first-line": 107,
+      "goal-last-line": 109,
+      "exact-lines": [
+        "  - [ ] The commit gate is respected: commit only when authorized in the execution",
+        "        session and after all criteria pass, using the required real-name DCO",
+        "        sign-off. Without authorization, leave the reviewed changes uncommitted."
+      ],
+      "criterion": "The commit gate is respected: commit only when authorized in the execution session and after all criteria pass, using the required real-name DCO sign-off. Without authorization, leave the reviewed changes uncommitted.",
+      "scope-status": "partly established; explicit final gate deferred",
+      "independent-assessment": "Later explicit user instruction authorizes DCO commit/push/close only after all technical gates. HEAD remains baseline, canonical committed diff and staged index are empty at setup; WIP is reviewed as such. No delivery action is performed or approved by phase1.",
+      "evidence": [
+        "authorization.json",
+        "/tmp/t75-final-review-fixed-baseline-r4-zpbk95st/reviewer-allocation-boundary.json",
+        "docs/t13-certification.md:520"
+      ],
+      "current-public-observers": [],
+      "completion-marked": false
+    },
+    {
+      "number": 27,
+      "goal-first-line": 110,
+      "goal-last-line": 112,
+      "exact-lines": [
+        "  - [ ] Final git diff --check passes and the workspace contains only intentional",
+        "        ticket changes plus protected pre-existing work; remove only task-created",
+        "        temporary artifacts."
+      ],
+      "criterion": "Final git diff --check passes and the workspace contains only intentional ticket changes plus protected pre-existing work; remove only task-created temporary artifacts.",
+      "scope-status": "partly established; explicit final gate deferred",
+      "independent-assessment": "Bounded Git attributes preserve raw .txt/.log bytes and have independent closure. Final force-staging of ignored logs, full frozen-index byte verification, intentional workspace and diff--check remain required. Historical duplicate removal only followed full254118-member archive/live equality.",
+      "evidence": [
+        "validation-history-binding-inspection.json",
+        "capabilities/evidence/T75-delivery/git-retention/spec-report.md"
+      ],
+      "current-public-observers": [],
+      "completion-marked": false
+    },
+    {
+      "number": 28,
+      "goal-first-line": 113,
+      "goal-last-line": 114,
+      "exact-lines": [
+        "  - [ ] The execution receipt identifies validation results, evidence locations,",
+        "        review outcome, commit status and any remaining limitations."
+      ],
+      "criterion": "The execution receipt identifies validation results, evidence locations, review outcome, commit status and any remaining limitations.",
+      "scope-status": "partly established; explicit final gate deferred",
+      "independent-assessment": "Draft receipt correctly distinguishes complete validation/five publications from pending final technical/delivery gates and the exact historical derived-summary exception. Final receipt/commit/push/issue status remain deferred.",
+      "evidence": [
+        "snapshot-final-execution-receipt.md",
+        "validation-history-binding-inspection.json"
+      ],
+      "current-public-observers": [],
+      "completion-marked": false
+    }
+  ],
+  "resolved-evidence-references": [
+    {
+      "reference": "/tmp/t75-final-review-fixed-baseline-r4-zpbk95st/reviewer-allocation-boundary.json",
+      "path": "/tmp/t75-final-review-fixed-baseline-r4-zpbk95st/reviewer-allocation-boundary.json",
+      "sha256": "16e6ad1216923e20dae8851c7cb3cb55427fd0fe4e62e4824d5f77ef2ff60e0f"
+    },
+    {
+      "reference": "PROVENANCE.md",
+      "path": "/home/ubuntu/IdeaProjects/open-pdf/PROVENANCE.md",
+      "sha256": "99a3d31abac6e8841c126deb3fdce26e72520f762a4158468990e58daf532ced"
+    },
+    {
+      "reference": "README.md",
+      "path": "/home/ubuntu/IdeaProjects/open-pdf/README.md",
+      "sha256": "e26ed0bc6d05dc6b162799214bff4e1f635c4350e2013eb26507ef1ac893619d"
+    },
+    {
+      "reference": "authorization.json",
+      "path": "/tmp/t75-final-spec-r4-phase1-3jll045g/authorization.json",
+      "sha256": "c07a87790e29baee73e74026093357a107798a55ff7a47d74c1679d440a08354"
+    },
+    {
+      "reference": "capabilities/capability-matrix.yaml",
+      "path": "/home/ubuntu/IdeaProjects/open-pdf/capabilities/capability-matrix.yaml",
+      "sha256": "953b82d4adfd26c01dce3fbe441ced0c9d13ca7ac8db7a26d4eaf0db17e3e643"
+    },
+    {
+      "reference": "capabilities/evidence/T13-text-logical-structure.md:81",
+      "path": "/home/ubuntu/IdeaProjects/open-pdf/capabilities/evidence/T13-text-logical-structure.md",
+      "sha256": "7cdb3ade494786b6f0978c25e08e1ae07b0ee0966346e5b0695eba8968088de1"
+    },
+    {
+      "reference": "capabilities/evidence/T75-delivery/certification-review-r4/text-jdk11-and-jdk17-three-tuples-spec-report.md",
+      "path": "/home/ubuntu/IdeaProjects/open-pdf/capabilities/evidence/T75-delivery/certification-review-r4/text-jdk11-and-jdk17-three-tuples-spec-report.md",
+      "sha256": "dc7c9de0d32e23f95089d7dbfc4639a9dc8939868ab23aee7e20b7d016fcb7d3"
+    },
+    {
+      "reference": "capabilities/evidence/T75-delivery/certification-review-r4/text-jdk17-and-jdk21-last-three-spec-report.md",
+      "path": "/home/ubuntu/IdeaProjects/open-pdf/capabilities/evidence/T75-delivery/certification-review-r4/text-jdk17-and-jdk21-last-three-spec-report.md",
+      "sha256": "efc3f53d88b48003b5aa90895ff17ce90d89ead3db094c0ad269615deed17ae9"
+    },
+    {
+      "reference": "capabilities/evidence/T75-delivery/certification-review-r4/text-jdk8-two-tuples-spec-report.md",
+      "path": "/home/ubuntu/IdeaProjects/open-pdf/capabilities/evidence/T75-delivery/certification-review-r4/text-jdk8-two-tuples-spec-report.md",
+      "sha256": "ad25c9d7729a9db4a27076bfb2cb798e466bba544b6f4c0efe47ba1359921246"
+    },
+    {
+      "reference": "capabilities/evidence/T75-delivery/final-certification-r4/text-result.json",
+      "path": "/home/ubuntu/IdeaProjects/open-pdf/capabilities/evidence/T75-delivery/final-certification-r4/text-result.json",
+      "sha256": "bca5c7d5de51af48026fb20728418d55c12e921633a5ecc2d7f39a3f9a5de339"
+    },
+    {
+      "reference": "capabilities/evidence/T75-delivery/final-delivery-review-r3/historical-facade-counts.md",
+      "path": "/home/ubuntu/IdeaProjects/open-pdf/capabilities/evidence/T75-delivery/final-delivery-review-r3/historical-facade-counts.md",
+      "sha256": "b1819867dc2e0b25b8d62759fcf75b205dbd19715fe0723455dd7ed9684a2a37"
+    },
+    {
+      "reference": "capabilities/evidence/T75-delivery/final-validation-r4/host-full-verify-receipt.json",
+      "path": "/home/ubuntu/IdeaProjects/open-pdf/capabilities/evidence/T75-delivery/final-validation-r4/host-full-verify-receipt.json",
+      "sha256": "bb174db5e65fc017c3c7ee26d106ead254cb95fccd6c710ce7f3e40d75cb6fb3"
+    },
+    {
+      "reference": "capabilities/evidence/T75-delivery/final-validation-r4/jdk-matrix-receipt.json",
+      "path": "/home/ubuntu/IdeaProjects/open-pdf/capabilities/evidence/T75-delivery/final-validation-r4/jdk-matrix-receipt.json",
+      "sha256": "a4df35b3996fc7d98e457fe2baa7ee4c0050b55fe36f8f93655afea19a25473d"
+    },
+    {
+      "reference": "capabilities/evidence/T75-delivery/git-retention/spec-report.md",
+      "path": "/home/ubuntu/IdeaProjects/open-pdf/capabilities/evidence/T75-delivery/git-retention/spec-report.md",
+      "sha256": "f1a3c7037b65b121cabde191da045e900b5c1b857caa0dd7c2ddc500b4123a88"
+    },
+    {
+      "reference": "capabilities/evidence/T75-delivery/inventory-read-bound/README.md",
+      "path": "/home/ubuntu/IdeaProjects/open-pdf/capabilities/evidence/T75-delivery/inventory-read-bound/README.md",
+      "sha256": "75a8913ffcdbe5dad3906d0050707da8acb7b30330786f9f10bae0f3875d20b2"
+    },
+    {
+      "reference": "capabilities/evidence/T75-delivery/recorder-r6/README.md",
+      "path": "/home/ubuntu/IdeaProjects/open-pdf/capabilities/evidence/T75-delivery/recorder-r6/README.md",
+      "sha256": "18915e3fa8f9edb0908c560cff552aa373b94c25775dd996e240a5d7c3032461"
+    },
+    {
+      "reference": "capabilities/evidence/T75-foundation-20260914-r4/text/observed-index.json",
+      "path": "/home/ubuntu/IdeaProjects/open-pdf/capabilities/evidence/T75-foundation-20260914-r4/text/observed-index.json",
+      "sha256": "1c2417c868e977908834f7405d222435a1692297103766758e6316346d87cb61"
+    },
+    {
+      "reference": "capabilities/evidence/T75-text-semantic.md",
+      "path": "/home/ubuntu/IdeaProjects/open-pdf/capabilities/evidence/T75-text-semantic.md",
+      "sha256": "e4284bac2c389943ea8b02d086802ed959c85734830ed01e7047fb06f453398f"
+    },
+    {
+      "reference": "capabilities/evidence/T75-text-visual.md",
+      "path": "/home/ubuntu/IdeaProjects/open-pdf/capabilities/evidence/T75-text-visual.md",
+      "sha256": "a60a3e29ff7de634e2a287546c94d91624856786d4a7b554f88e32c9547c3eec"
+    },
+    {
+      "reference": "capabilities/facade-surface.yaml",
+      "path": "/home/ubuntu/IdeaProjects/open-pdf/capabilities/facade-surface.yaml",
+      "sha256": "64efd1985dd2f8390df547226242d404fb6d41c555f406e1661eefdd8548073b"
+    },
+    {
+      "reference": "capabilities/foundation-requirements.yaml",
+      "path": "/home/ubuntu/IdeaProjects/open-pdf/capabilities/foundation-requirements.yaml",
+      "sha256": "89bd8cd3ac1e29c9455bf56f8e25e2278fa1e07d55fb164ccf114177a7278163"
+    },
+    {
+      "reference": "complete-source-review-coverage-inspection.json",
+      "path": "/tmp/t75-final-spec-r4-phase1-3jll045g/complete-source-review-coverage-inspection.json",
+      "sha256": "bf3185c2d5d309186b24ebfa4aacd13ace55849dcefe54edb31f78264c8b3ef6"
+    },
+    {
+      "reference": "docs/adr/0035-represent-uncertain-unicode-mappings.md",
+      "path": "/home/ubuntu/IdeaProjects/open-pdf/docs/adr/0035-represent-uncertain-unicode-mappings.md",
+      "sha256": "1a6eb1f7c29879750254c40e8eecc4db8e6131ef4b0f86b817f124520c96931a"
+    },
+    {
+      "reference": "docs/t13-certification.md:18",
+      "path": "/home/ubuntu/IdeaProjects/open-pdf/docs/t13-certification.md",
+      "sha256": "fcfe5a526e4ca4320060874e911b26ad9415c04eb445ef693e6e56027f6c0ea5"
+    },
+    {
+      "reference": "docs/t13-certification.md:216",
+      "path": "/home/ubuntu/IdeaProjects/open-pdf/docs/t13-certification.md",
+      "sha256": "fcfe5a526e4ca4320060874e911b26ad9415c04eb445ef693e6e56027f6c0ea5"
+    },
+    {
+      "reference": "docs/t13-certification.md:269",
+      "path": "/home/ubuntu/IdeaProjects/open-pdf/docs/t13-certification.md",
+      "sha256": "fcfe5a526e4ca4320060874e911b26ad9415c04eb445ef693e6e56027f6c0ea5"
+    },
+    {
+      "reference": "docs/t13-certification.md:509",
+      "path": "/home/ubuntu/IdeaProjects/open-pdf/docs/t13-certification.md",
+      "sha256": "fcfe5a526e4ca4320060874e911b26ad9415c04eb445ef693e6e56027f6c0ea5"
+    },
+    {
+      "reference": "docs/t13-certification.md:520",
+      "path": "/home/ubuntu/IdeaProjects/open-pdf/docs/t13-certification.md",
+      "sha256": "fcfe5a526e4ca4320060874e911b26ad9415c04eb445ef693e6e56027f6c0ea5"
+    },
+    {
+      "reference": "docs/t13-certification.md:64",
+      "path": "/home/ubuntu/IdeaProjects/open-pdf/docs/t13-certification.md",
+      "sha256": "fcfe5a526e4ca4320060874e911b26ad9415c04eb445ef693e6e56027f6c0ea5"
+    },
+    {
+      "reference": "docs/t13-certification.md:75",
+      "path": "/home/ubuntu/IdeaProjects/open-pdf/docs/t13-certification.md",
+      "sha256": "fcfe5a526e4ca4320060874e911b26ad9415c04eb445ef693e6e56027f6c0ea5"
+    },
+    {
+      "reference": "docs/t13-certification.md:76",
+      "path": "/home/ubuntu/IdeaProjects/open-pdf/docs/t13-certification.md",
+      "sha256": "fcfe5a526e4ca4320060874e911b26ad9415c04eb445ef693e6e56027f6c0ea5"
+    },
+    {
+      "reference": "docs/zh-CN/getting-started.md",
+      "path": "/home/ubuntu/IdeaProjects/open-pdf/docs/zh-CN/getting-started.md",
+      "sha256": "85dc2e3fddc4751325e804582bb9edc7c10784aa55849a9f60195d398f4124e2"
+    },
+    {
+      "reference": "five-certification-continuity-inspection.json",
+      "path": "/tmp/t75-final-spec-r4-phase1-3jll045g/five-certification-continuity-inspection.json",
+      "sha256": "6266c8e20dd3fe39a17955664d5f612ba129564149983648910414e8d85eb8df"
+    },
+    {
+      "reference": "review-archive-inspection.json",
+      "path": "/tmp/t75-final-spec-r4-phase1-3jll045g/review-archive-inspection.json",
+      "sha256": "bf5341dde74fb86ecf1f3c5561a4baf9128189b8b35edd1a154f1bca97932308"
+    },
+    {
+      "reference": "scripts/t13_foundation_reports.py",
+      "path": "/home/ubuntu/IdeaProjects/open-pdf/scripts/t13_foundation_reports.py",
+      "sha256": "e5b8ef1f66c933d3b7842a5c28ebde0d0ee7ecade7fca2c056fecaf68d4aa9e8"
+    },
+    {
+      "reference": "scripts/tests/test_t13_foundation.py",
+      "path": "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_foundation.py",
+      "sha256": "36c80383987d3548c1bc77df0294d33ffcee982946187633844ac745ca8f9345"
+    },
+    {
+      "reference": "selected-review-originals/final-review/appearance-spec-final-closure/report.md",
+      "path": "/tmp/t75-final-spec-r4-phase1-3jll045g/selected-review-originals/final-review/appearance-spec-final-closure/report.md",
+      "sha256": "292b177fdf5e81dbe3bcaea5dc0f86021954288c68d0b0a53bf5bf89dde6121b"
+    },
+    {
+      "reference": "selected-review-originals/inventory-read-bound/spec-review-archive-identity/report.md",
+      "path": "/tmp/t75-final-spec-r4-phase1-3jll045g/selected-review-originals/inventory-read-bound/spec-review-archive-identity/report.md",
+      "sha256": "8d410dc16e26e196e2f601a2aff105d9334fa017aff683fdb99264abac10a297"
+    },
+    {
+      "reference": "selected-review-originals/observer-budget/spec-final-closure/report.md",
+      "path": "/tmp/t75-final-spec-r4-phase1-3jll045g/selected-review-originals/observer-budget/spec-final-closure/report.md",
+      "sha256": "3f42cabdea1f152d3e20cc9a532da710350859efe3a754d3a6edd43cf30effc2"
+    },
+    {
+      "reference": "selected-review-originals/step4-review/optional-spec-closure/report.md",
+      "path": "/tmp/t75-final-spec-r4-phase1-3jll045g/selected-review-originals/step4-review/optional-spec-closure/report.md",
+      "sha256": "8d4648e462c136373b908a70cb66368de43eccd010b72b04297949020c48f0bc"
+    },
+    {
+      "reference": "selected-review-originals/worker-batch-timeout/spec-closure/report.md",
+      "path": "/tmp/t75-final-spec-r4-phase1-3jll045g/selected-review-originals/worker-batch-timeout/spec-closure/report.md",
+      "sha256": "9d13522cfb0e8d7d9208f39f4c5c7537baba70d7b0ff81a9d0bf37d0f437bbef"
+    },
+    {
+      "reference": "snapshot-final-execution-receipt.md",
+      "path": "/tmp/t75-final-spec-r4-phase1-3jll045g/snapshot-final-execution-receipt.md",
+      "sha256": "b5ebcb1a405d65ed0d30229583de20c32ee554dabddcd92c482589a23d94ab0d"
+    },
+    {
+      "reference": "validation-history-binding-inspection.json",
+      "path": "/tmp/t75-final-spec-r4-phase1-3jll045g/validation-history-binding-inspection.json",
+      "sha256": "14256e8496324dce4a0ea95190b4795651823965768894f016a8f889637e24cd"
+    }
+  ],
+  "unresolved-navigation-references": [],
+  "known-historical-constraint-exception": {
+    "goal-sentence": "Preserve historical evidence.",
+    "goal-lines": [
+      131
+    ],
+    "record": "capabilities/evidence/T75-delivery/certification-review-r3/annotations-reader-output-incident-and-closure.json",
+    "assessment": "Two original historical derived summaries are unavailable (55109/79646 bytes; oldSHA unknown). Raw certification, original commands/stdout and fresh independently checked behavior remain retained. Preservation is partial for those two derived files; no recovery or complete historical-derived retention is claimed.",
+    "new-product-or-current-r4-raw-defect": false
+  },
+  "scope-expansion-findings": [],
+  "new-behavioral-findings": [],
+  "all-completion-marks": false,
+  "navigation-correction": {
+    "original": "goal-28-criteria-map.json",
+    "retained-diagnostic": "goal-criteria-mapping-check.stdout.txt",
+    "scope": "Four unresolvable hand-written navigation aliases only; existing underlying source and actual certification continuity checks used their true paths and were already complete. No product defect or certification output change.",
+    "exact-path-corrections": {
+      "capabilities/evidence/T75-delivery/certification-review-r4/text-first-two-spec-report.md": "capabilities/evidence/T75-delivery/certification-review-r4/text-jdk8-two-tuples-spec-report.md",
+      "capabilities/evidence/T75-delivery/certification-review-r4/text-next-three-spec-report.md": "capabilities/evidence/T75-delivery/certification-review-r4/text-jdk11-and-jdk17-three-tuples-spec-report.md",
+      "capabilities/evidence/T75-delivery/certification-review-r4/text-final-three-spec-report.md": "capabilities/evidence/T75-delivery/certification-review-r4/text-jdk17-and-jdk21-last-three-spec-report.md",
+      "capabilities/evidence/T75-delivery/final-certification-r4/text-command-result.json": "capabilities/evidence/T75-delivery/final-certification-r4/text-result.json"
+    }
+  }
+}

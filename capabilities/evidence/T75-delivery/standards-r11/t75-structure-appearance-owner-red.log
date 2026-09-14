@@ -1,0 +1,76 @@
+test_stream_owners_identify_an_appearance_of_an_annotation_on_the_declared_page (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_stream_owners_identify_an_appearance_of_an_annotation_on_the_declared_page) ... 
+  test_stream_owners_identify_an_appearance_of_an_annotation_on_the_declared_page (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_stream_owners_identify_an_appearance_of_an_annotation_on_the_declared_page) (stream_owner='wrong-appearance') ... FAIL
+  test_stream_owners_identify_an_appearance_of_an_annotation_on_the_declared_page (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_stream_owners_identify_an_appearance_of_an_annotation_on_the_declared_page) (stream_owner='missing-appearance') ... FAIL
+  test_stream_owners_identify_an_appearance_of_an_annotation_on_the_declared_page (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_stream_owners_identify_an_appearance_of_an_annotation_on_the_declared_page) (stream_owner='owner-not-on-page') ... FAIL
+  test_stream_owners_identify_an_appearance_of_an_annotation_on_the_declared_page (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_stream_owners_identify_an_appearance_of_an_annotation_on_the_declared_page) (stream_owner='owner-page-backlink') ... FAIL
+  test_stream_owners_identify_an_appearance_of_an_annotation_on_the_declared_page (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_stream_owners_identify_an_appearance_of_an_annotation_on_the_declared_page) (stream_owner='owner-without-stream') ... FAIL
+
+======================================================================
+FAIL: test_stream_owners_identify_an_appearance_of_an_annotation_on_the_declared_page (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_stream_owners_identify_an_appearance_of_an_annotation_on_the_declared_page) (stream_owner='wrong-appearance')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 46, in test_stream_owners_identify_an_appearance_of_an_annotation_on_the_declared_page
+    self.observe(directory, name, self.pdf(objects), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 490, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : wrong-appearance: The qualified structure content references have typed fields and matching ParentTree backlinks.
+
+======================================================================
+FAIL: test_stream_owners_identify_an_appearance_of_an_annotation_on_the_declared_page (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_stream_owners_identify_an_appearance_of_an_annotation_on_the_declared_page) (stream_owner='missing-appearance')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 46, in test_stream_owners_identify_an_appearance_of_an_annotation_on_the_declared_page
+    self.observe(directory, name, self.pdf(objects), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 490, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : missing-appearance: The qualified structure content references have typed fields and matching ParentTree backlinks.
+
+======================================================================
+FAIL: test_stream_owners_identify_an_appearance_of_an_annotation_on_the_declared_page (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_stream_owners_identify_an_appearance_of_an_annotation_on_the_declared_page) (stream_owner='owner-not-on-page')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 46, in test_stream_owners_identify_an_appearance_of_an_annotation_on_the_declared_page
+    self.observe(directory, name, self.pdf(objects), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 490, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : owner-not-on-page: The qualified structure content references have typed fields and matching ParentTree backlinks.
+
+======================================================================
+FAIL: test_stream_owners_identify_an_appearance_of_an_annotation_on_the_declared_page (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_stream_owners_identify_an_appearance_of_an_annotation_on_the_declared_page) (stream_owner='owner-page-backlink')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 46, in test_stream_owners_identify_an_appearance_of_an_annotation_on_the_declared_page
+    self.observe(directory, name, self.pdf(objects), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 490, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : owner-page-backlink: The qualified structure content references have typed fields and matching ParentTree backlinks.
+
+======================================================================
+FAIL: test_stream_owners_identify_an_appearance_of_an_annotation_on_the_declared_page (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_stream_owners_identify_an_appearance_of_an_annotation_on_the_declared_page) (stream_owner='owner-without-stream')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 46, in test_stream_owners_identify_an_appearance_of_an_annotation_on_the_declared_page
+    self.observe(directory, name, self.pdf(objects), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 490, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : owner-without-stream: The qualified structure content references have typed fields and matching ParentTree backlinks.
+
+----------------------------------------------------------------------
+Ran 1 test in 2.062s
+
+FAILED (failures=5)

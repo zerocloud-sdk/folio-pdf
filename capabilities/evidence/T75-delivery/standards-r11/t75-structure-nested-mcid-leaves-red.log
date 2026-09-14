@@ -1,0 +1,34 @@
+test_structural_marked_content_is_leaf_content_in_either_k_order (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_marked_content_is_leaf_content_in_either_k_order) ... 
+  test_structural_marked_content_is_leaf_content_in_either_k_order (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_marked_content_is_leaf_content_in_either_k_order) (leaf_content='nested-claims') ... FAIL
+  test_structural_marked_content_is_leaf_content_in_either_k_order (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_marked_content_is_leaf_content_in_either_k_order) (leaf_content='reversed-nested-claims') ... FAIL
+
+======================================================================
+FAIL: test_structural_marked_content_is_leaf_content_in_either_k_order (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_marked_content_is_leaf_content_in_either_k_order) (leaf_content='nested-claims')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 29, in test_structural_marked_content_is_leaf_content_in_either_k_order
+    self.observe(directory, name, self.pdf(objects), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 407, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : nested-claims: The qualified structure content references have typed fields and matching ParentTree backlinks.
+
+======================================================================
+FAIL: test_structural_marked_content_is_leaf_content_in_either_k_order (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_marked_content_is_leaf_content_in_either_k_order) (leaf_content='reversed-nested-claims')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 29, in test_structural_marked_content_is_leaf_content_in_either_k_order
+    self.observe(directory, name, self.pdf(objects), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 407, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : reversed-nested-claims: The qualified structure content references have typed fields and matching ParentTree backlinks.
+
+----------------------------------------------------------------------
+Ran 1 test in 0.918s
+
+FAILED (failures=2)

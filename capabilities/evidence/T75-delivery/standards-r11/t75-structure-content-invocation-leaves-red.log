@@ -1,0 +1,48 @@
+test_structural_content_cannot_invoke_other_structural_form_content (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_content_cannot_invoke_other_structural_form_content) ... 
+  test_structural_content_cannot_invoke_other_structural_form_content (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_content_cannot_invoke_other_structural_form_content) (content_invocation='marked-item-invokes-structured-form') ... FAIL
+  test_structural_content_cannot_invoke_other_structural_form_content (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_content_cannot_invoke_other_structural_form_content) (content_invocation='marked-item-invokes-whole-form') ... FAIL
+  test_structural_content_cannot_invoke_other_structural_form_content (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_content_cannot_invoke_other_structural_form_content) (content_invocation='transitive-structured-form-invocation') ... FAIL
+
+======================================================================
+FAIL: test_structural_content_cannot_invoke_other_structural_form_content (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_content_cannot_invoke_other_structural_form_content) (content_invocation='marked-item-invokes-structured-form')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 40, in test_structural_content_cannot_invoke_other_structural_form_content
+    self.observe(directory, name, self.pdf(objects), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 434, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : marked-item-invokes-structured-form: The qualified structure content references have typed fields and matching ParentTree backlinks.
+
+======================================================================
+FAIL: test_structural_content_cannot_invoke_other_structural_form_content (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_content_cannot_invoke_other_structural_form_content) (content_invocation='marked-item-invokes-whole-form')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 40, in test_structural_content_cannot_invoke_other_structural_form_content
+    self.observe(directory, name, self.pdf(objects), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 434, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : marked-item-invokes-whole-form: The qualified structure content references have typed fields and matching ParentTree backlinks.
+
+======================================================================
+FAIL: test_structural_content_cannot_invoke_other_structural_form_content (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structural_content_cannot_invoke_other_structural_form_content) (content_invocation='transitive-structured-form-invocation')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 40, in test_structural_content_cannot_invoke_other_structural_form_content
+    self.observe(directory, name, self.pdf(objects), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 434, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : transitive-structured-form-invocation: The qualified structure content references have typed fields and matching ParentTree backlinks.
+
+----------------------------------------------------------------------
+Ran 1 test in 1.404s
+
+FAILED (failures=3)

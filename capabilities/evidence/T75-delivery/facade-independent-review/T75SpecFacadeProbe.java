@@ -1,0 +1,41 @@
+import java.io.*;
+import java.nio.file.*;
+import java.util.*;
+import net.zerocloud.pdf.*;
+import net.zerocloud.pdf.query.ExtractTextAndStructure;
+import net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument;
+import net.zerocloud.pdf.itext7.kernel.pdf.PdfReader;
+import net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter;
+import net.zerocloud.pdf.itext7.kernel.pdf.PdfPage;
+import net.zerocloud.pdf.itext7.kernel.pdf.canvas.parser.PdfTextExtractor;
+import net.zerocloud.pdf.itext7.kernel.exceptions.PdfException;
+public class T75SpecFacadeProbe {
+ static class Input extends ByteArrayInputStream {boolean closed; Input(byte[] b){super(b);} public void close(){closed=true;}}
+ static class Output extends ByteArrayOutputStream {boolean closed; public void close(){closed=true;}}
+ static void eq(Object a,Object b){if(!Objects.equals(a,b))throw new AssertionError(a+" != "+b);}
+ static ExtractionLimits limits(){return limits(1000);}
+ static ExtractionLimits limits(int items){return ExtractionLimits.builder().maximumPages(100).maximumPageTreeNodes(1000).maximumContentStreams(1000).maximumContentStreamDepth(32).maximumDecodedBytes(1048576L).maximumTextItems(items).maximumUnicodeCodePoints(1000).maximumToUnicodeMappings(1000).maximumFontDataEntries(1000).maximumMarkedContentSequences(1000).maximumMarkedContentDepth(128).maximumStructureElements(1000).maximumStructureItems(10000).maximumStructureDepth(128).maximumRoleMappings(1000).build();}
+ static void failure(DocumentFailureCode code,Runnable r){try{r.run();throw new AssertionError("accepted failure");}catch(PdfException x){if(!(x.getCause() instanceof DocumentFailure))throw new AssertionError(x);DocumentFailure f=(DocumentFailure)x.getCause();eq(code,f.getCode());eq(code.name()+": "+f.getDiagnostic(),x.getMessage());if(x.getMessage().contains("PRIVATE_PROBE_PREFIX")||x.getMessage().contains("facade-spec"))throw new AssertionError("unsafe diagnostic");}}
+ static void expired(Runnable r){try{r.run();throw new AssertionError("accepted expired");}catch(IllegalStateException expected){}}
+ static void immutable(Runnable r){try{r.run();throw new AssertionError("mutable result");}catch(UnsupportedOperationException expected){}}
+ static void values(TextStructureExtraction r){PageText p=r.getPages().get(0);eq("Outer",p.getText());eq(4,p.getTextItems().size());eq(2,p.getMarkedContentSequences().size());eq("Outer",p.getMarkedContentSequences().get(0).getActualText().get());eq("content-alt",p.getMarkedContentSequences().get(0).getAlternateText().get());eq("de-DE",p.getMarkedContentSequences().get(0).getLanguage().get());
+  CharacterMapping.Confidence[] c={CharacterMapping.Confidence.EXPLICIT,CharacterMapping.Confidence.CONTRADICTORY,CharacterMapping.Confidence.MISSING,CharacterMapping.Confidence.INFERRED};for(int i=0;i<4;i++){CharacterMapping m=p.getTextItems().get(i).getCharacterMapping();eq(c[i],m.getConfidence());eq((byte)(65+i),m.getSourceCode()[0]);}
+  eq("X",p.getTextItems().get(1).getCharacterMapping().getExplicitUnicode().get());eq("B",p.getTextItems().get(1).getCharacterMapping().getInferredUnicode().get());
+  LogicalStructureElement root=r.getStructureRoots().get(0);eq("Document",root.getResolvedRole().get());eq("en-US",root.getEffectiveLanguage().get());LogicalStructureElement story=root.getChildren().get(0).getElement().get();eq("Story",story.getRole());eq("Sect",story.getResolvedRole().get());eq("structure-alt",story.getAlternateText().get());eq("structure-actual",story.getActualText().get());LogicalStructureElement leaf=story.getChildren().get(0).getElement().get();eq("fr-CA",leaf.getEffectiveLanguage().get());eq(LogicalStructureElement.LanguageSource.ANCESTOR,leaf.getLanguageSource());MarkedContentReference ref=leaf.getChildren().get(0).getMarkedContent().get();eq(1,ref.getPageNumber());eq(0,ref.getMarkedContentId());eq(Integer.valueOf(1),ref.getMarkedContentSequenceId().get());
+ }
+ public static void main(String[] args)throws Exception{
+  Path dir=Paths.get(args[0]), tagged=dir.resolve("facade-spec-tagged.pdf"), good=dir.resolve("facade-spec-two-pages.pdf"), bad=dir.resolve("facade-spec-malformed.pdf");
+  byte[] before=Files.readAllBytes(tagged);Input in=new Input(before);PdfDocument d=new PdfDocument(new PdfReader(in));final PdfPage page=d.getPage(1);TextStructureExtraction result;List<LogicalStructureElement> roots;
+  try{result=d.getTextAndStructure(limits());values(result);eq("Outer",page.getPageText(limits()).getText());eq("Outer",PdfTextExtractor.getTextFromPage(page));eq("Outer",PdfTextExtractor.getTextFromPage(page,limits()));roots=d.getStructTreeRoot();eq(1,roots.size());eq("Sect",d.getStructTreeRoot(limits()).get(0).getChildren().get(0).getElement().get().getResolvedRole().get());}finally{d.close();}
+  eq(false,in.closed);eq(0,d.getPublicationReceipts().size());values(result);immutable(()->roots.clear());immutable(()->result.getPages().clear());byte[] src=result.getPages().get(0).getTextItems().get(0).getCharacterMapping().getSourceCode();src[0]=0;eq((byte)65,result.getPages().get(0).getTextItems().get(0).getCharacterMapping().getSourceCode()[0]);
+  for(Runnable r:new Runnable[]{()->d.getTextAndStructure(limits()),()->d.getStructTreeRoot(),()->d.getStructTreeRoot(limits()),()->page.getPageText(limits()),()->PdfTextExtractor.getTextFromPage(page),()->PdfTextExtractor.getTextFromPage(page,limits())})expired(r);
+  TextStructureExtraction nativeResult=new DocumentWorkflow().execute(WorkflowRequest.open(tagged,SaveMode.REWRITE),s->s.query(ExtractTextAndStructure.version1(limits()))).getResult();values(nativeResult);eq(true,Arrays.equals(before,Files.readAllBytes(tagged)));System.out.println("PASS all six, exact uncertainty/ActualText/roles/languages/MCR, detach, expired handles, source and Native parity");
+  try(PdfDocument bounded=new PdfDocument(new PdfReader(good.toString()))){PdfPage first=bounded.getPage(1);eq("A",PdfTextExtractor.getTextFromPage(first,limits(2)));failure(DocumentFailureCode.EXTRACTION_LIMIT_EXCEEDED,()->first.getPageText(limits(1)));failure(DocumentFailureCode.EXTRACTION_LIMIT_EXCEEDED,()->bounded.getStructTreeRoot(limits(1)));eq("A",PdfTextExtractor.getTextFromPage(first));}
+  Output repaired=new Output();Input badInput=new Input(Files.readAllBytes(bad));PdfDocument malformed=new PdfDocument(new PdfReader(badInput),new PdfWriter(repaired));PdfPage first=malformed.getPage(1);
+  try{for(Runnable r:new Runnable[]{()->malformed.getTextAndStructure(limits()),()->malformed.getStructTreeRoot(),()->malformed.getStructTreeRoot(limits()),()->first.getPageText(limits()),()->PdfTextExtractor.getTextFromPage(first),()->PdfTextExtractor.getTextFromPage(first,limits())})failure(DocumentFailureCode.QUERY_FAILED,r);eq(0,repaired.size());malformed.removePage(2);eq("A",PdfTextExtractor.getTextFromPage(first));}finally{malformed.close();}
+  eq(false,repaired.closed);eq(false,badInput.closed);eq(PublicationStatus.COMMITTED,malformed.getPublicationReceipts().get(0).getStatus());eq(true,repaired.size()>0);System.out.println("PASS whole-document limits and malformed second page for all six, fixed safe failures, recovery and stream ownership");
+  Output out=new Output();byte[] goodBefore=Files.readAllBytes(good);PdfDocument moved=new PdfDocument(new PdfReader(good.toString()),new PdfWriter(out));PdfPage retained=moved.getPage(1);
+  try{moved.addNewPage(1);eq(2,retained.getPageText(limits()).getPageNumber());eq("A",PdfTextExtractor.getTextFromPage(retained));PdfPage copy=moved.copyPages(2,2,1).get(0);eq(3,retained.getPageText(limits()).getPageNumber());moved.removePage(3);expired(()->retained.getPageText(limits()));eq("A",copy.getPageText(limits()).getText());eq(0,out.size());}finally{moved.close();}eq(false,out.closed);eq(true,Arrays.equals(goodBefore,Files.readAllBytes(good)));System.out.println("PASS retained page identity after insert/copy/removal and staged publication");
+  Output created=new Output();try(PdfDocument fresh=new PdfDocument(new PdfWriter(created))){PdfPage queued=fresh.addNewPage();eq("",PdfTextExtractor.getTextFromPage(queued));fresh.addNewPage();fresh.movePage(1,2);eq(2,queued.getPageText(limits()).getPageNumber());eq(0,fresh.getStructTreeRoot().size());}eq(false,created.closed);System.out.println("PASS queued page materialization and absent structure roots");
+ }
+}

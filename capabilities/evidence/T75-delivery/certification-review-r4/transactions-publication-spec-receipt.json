@@ -1,0 +1,2124 @@
+{
+  "reviewer": "/root/final_spec",
+  "axis": "Spec",
+  "sealed-utc": "2026-09-13T20:46:12.975621+00:00",
+  "scope": "r4 transactions actual outer exit / authority publication only",
+  "baseline": "5b1603c435f11c40368f75b7b9a2777c9c5e9761",
+  "candidate": "ab18cc9c0473730a6aabec5d12e3172f22bea23a0a0f9529052a2bc186cbfc1b",
+  "contract": "3de508f79fcbef7258feee8abc013d6f02b000840cac1cb263cb0d6f927b8f2b",
+  "actual-command": {
+    "command": [
+      "/usr/bin/python3",
+      "scripts/t03-foundation.py",
+      "certify",
+      "capabilities/evidence/T75-foundation-20260914-r4/transactions",
+      "--obligation",
+      "transactions"
+    ],
+    "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+    "started-utc": "2026-09-13T19:42:22.210574+00:00",
+    "wrapper-pid": 381809,
+    "explicit-environment": {
+      "FOLIO_HARFBUZZ_HELPER": "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/harfbuzz/10.2.0-final/bin/folio-harfbuzz"
+    },
+    "original-log": "/tmp/t75-final-transactions-certify-r4.log"
+  },
+  "actual-result": {
+    "command": [
+      "/usr/bin/python3",
+      "scripts/t03-foundation.py",
+      "certify",
+      "capabilities/evidence/T75-foundation-20260914-r4/transactions",
+      "--obligation",
+      "transactions"
+    ],
+    "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+    "started-utc": "2026-09-13T19:42:22.210574+00:00",
+    "wrapper-pid": 381809,
+    "explicit-environment": {
+      "FOLIO_HARFBUZZ_HELPER": "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/harfbuzz/10.2.0-final/bin/folio-harfbuzz"
+    },
+    "original-log": "/tmp/t75-final-transactions-certify-r4.log",
+    "command-pid": 381810,
+    "returncode": 0,
+    "completed-utc": "2026-09-13T20:08:32.754733+00:00"
+  },
+  "complete-original-log-sha256": "a83b919384bc64dca61dbcb9ca55b366d3fb29c558dd38f85577ba00747fd45f",
+  "original-command-retention": {
+    "directory": "/tmp/t75-final-transactions-certified-r4-pj5b_vlc",
+    "count": 10,
+    "archive": {
+      "path": "capabilities/evidence/T75-delivery/final-certification-r4/transactions-command.tar.xz",
+      "sha256": "9edc3be5a95403688d353a5e066a49512dcb1c6e7eeae7c289d99c849079c84e"
+    },
+    "archive-member-identities": {
+      "path": "actual-command-archive-member-identities.json",
+      "sha256": "e56f911eef95c13176c85fac5e13f524c1d6eb7625038a0793d9bb721445188b"
+    }
+  },
+  "actual-stored-suite-transcripts": [
+    {
+      "tuple": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk8-in_process",
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk8-in_process/contract-tests.txt",
+      "sha256": "2c8509016dfacf008a08d8bbe66cd834e6c9fb59225f49160b5a64aadf1509ed",
+      "tests": 34,
+      "time-seconds": 3.614,
+      "raw-gate-linkage": "Already independently closed; only original transcript identity and location checked here."
+    },
+    {
+      "tuple": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk8-hardened_worker",
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk8-hardened_worker/contract-tests.txt",
+      "sha256": "8bc8e695aba1ea92f45d67d69549b3c774f8a9b42f9178e3744a91f90a8bb192",
+      "tests": 34,
+      "time-seconds": 43.345,
+      "raw-gate-linkage": "Already independently closed; only original transcript identity and location checked here."
+    },
+    {
+      "tuple": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk11-in_process",
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk11-in_process/contract-tests.txt",
+      "sha256": "0aa074b9a2cee9c6cddbf2e34f500059a729f272255107d7803035ec51614f1c",
+      "tests": 34,
+      "time-seconds": 3.473,
+      "raw-gate-linkage": "Already independently closed; only original transcript identity and location checked here."
+    },
+    {
+      "tuple": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk11-hardened_worker",
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk11-hardened_worker/contract-tests.txt",
+      "sha256": "5b83dfb557715b754524342dc929f8f6d57ab95d68a551d600e7880a1106f661",
+      "tests": 34,
+      "time-seconds": 40.263,
+      "raw-gate-linkage": "Already independently closed; only original transcript identity and location checked here."
+    },
+    {
+      "tuple": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk17-in_process",
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk17-in_process/contract-tests.txt",
+      "sha256": "385897fe66f1fa3abe9b94b292ece6cf0d6791d44cc2ffbe665765949a7bbaa0",
+      "tests": 34,
+      "time-seconds": 3.147,
+      "raw-gate-linkage": "Already independently closed; only original transcript identity and location checked here."
+    },
+    {
+      "tuple": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk17-hardened_worker",
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk17-hardened_worker/contract-tests.txt",
+      "sha256": "0c83c24acf0b96ba945f711d0c93c41dfbc400d555852008d8410df2397c0229",
+      "tests": 34,
+      "time-seconds": 34.694,
+      "raw-gate-linkage": "Already independently closed; only original transcript identity and location checked here."
+    },
+    {
+      "tuple": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk21-in_process",
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk21-in_process/contract-tests.txt",
+      "sha256": "bcad6459cd129d23d6bce33e177686fcc42026888f7f741545d5d355acbcbef8",
+      "tests": 34,
+      "time-seconds": 3.233,
+      "raw-gate-linkage": "Already independently closed; only original transcript identity and location checked here."
+    },
+    {
+      "tuple": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk21-hardened_worker",
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk21-hardened_worker/contract-tests.txt",
+      "sha256": "5224b9cc9d064d9fbdf4ca2250b6b0bf6fe9e3b0a7befa1eafeac8631d59b123",
+      "tests": 34,
+      "time-seconds": 36.687,
+      "raw-gate-linkage": "Already independently closed; only original transcript identity and location checked here."
+    }
+  ],
+  "actual-outer-log-protocol": {
+    "sha256": "a83b919384bc64dca61dbcb9ca55b366d3fb29c558dd38f85577ba00747fd45f",
+    "lines": 13
+  },
+  "dated-authority": {
+    "path": "/tmp/t75-final-transactions-certified-r4-pj5b_vlc/authority-at-retention.yaml",
+    "sha256": "1edb38695b69a9bf40bf80c3cf067169d9b7478a8a2093b61e637b74ee860dac",
+    "exact-subsets": {
+      "text": 8,
+      "transactions": 8
+    }
+  },
+  "current-authority-observation": {
+    "original": "/home/ubuntu/IdeaProjects/open-pdf/capabilities/foundation-evidence.yaml",
+    "observed-at-utc": "2026-09-13T20:46:12.941925+00:00",
+    "copy": "originals/authority-at-sealing-observation.yaml",
+    "sha256": "63f73cf7483a2b91fd2fb3bef76024f8f5c9e089e61b2f32f3414528d95234c9",
+    "exact-reviewed-subsets": {
+      "text": 8,
+      "transactions": 8
+    },
+    "other-obligation-names-observed-but-excluded": [
+      "values"
+    ],
+    "other-obligation-raw-or-environment-references-read": false,
+    "mutable-source-path-not-a-frozen-input": true
+  },
+  "own-transactions-index-sha256": "cb303cebbf6f50de4a7732ba0c8b5d525ca5a4e607b46802c6db3a7269b496fe",
+  "preserved-text-index-sha256": "1c2417c868e977908834f7405d222435a1692297103766758e6316346d87cb61",
+  "exact-reviewed-published-subsets": {
+    "transactions": 8,
+    "text": 8
+  },
+  "record-count": 32,
+  "configuration-count": 8,
+  "records-and-report-bindings": [
+    {
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk8-in_process/syntax.yaml",
+        "sha256": "cf51bfcd4184bd1b45da2811de7dd95451894d50b29df43be1f8ffb531ac5bb0"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk8-in_process/syntax-report.json",
+        "sha256": "3bf83b53b21faf4efed32d4ebdcb6c3d6e54436c6ca302e659c49ece282d39a3"
+      },
+      "profile": "IN_PROCESS",
+      "chain": "syntax",
+      "result": "pass"
+    },
+    {
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk8-in_process/standards.yaml",
+        "sha256": "7af5c5f5c369f4dd83be8c2dc5f7780c22b4824261eb362afbbf4da3d9e16677"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk8-in_process/standards-report.json",
+        "sha256": "5875f8ac63b389ada8dcbc39e0f01d457c1a515724bdaa42fe3c4f76d62c8873"
+      },
+      "profile": "IN_PROCESS",
+      "chain": "standards",
+      "result": "pass"
+    },
+    {
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk8-in_process/semantic.yaml",
+        "sha256": "91ffc2c71f2c4e4f17ae46debe39e54773ec8824ae63a51cdb4a20d8d2ba91c2"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk8-in_process/semantic-report.json",
+        "sha256": "6e3b06f6c6ca67428f0f514763b7748d91c217a6b5653b094edbfa5a082343a8"
+      },
+      "profile": "IN_PROCESS",
+      "chain": "semantic",
+      "result": "pass"
+    },
+    {
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk8-in_process/visual.yaml",
+        "sha256": "df5d76a68408325d6f95b7ef44936bfe8f1d3f2dad0000d8f6b4f38c96bba167"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk8-in_process/visual-report.json",
+        "sha256": "656530141795e7217a91d07ef2aee3e96b74dff4bdc897613d8b62d14d24bbfa"
+      },
+      "profile": "IN_PROCESS",
+      "chain": "visual",
+      "result": "pass"
+    },
+    {
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk8-hardened_worker/syntax.yaml",
+        "sha256": "1cca67ad86d6a3b017898d7373b91d976dfdec70b685b550abafbc20a40003d1"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk8-hardened_worker/syntax-report.json",
+        "sha256": "fca63fbd1bbfc50a4433dd1ef1c24919c7734ac2dad54ab77ed3ed10a431aee9"
+      },
+      "profile": "HARDENED_WORKER",
+      "chain": "syntax",
+      "result": "pass"
+    },
+    {
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk8-hardened_worker/standards.yaml",
+        "sha256": "3544566a85a7a0e6f438828a17a3476d7029ba3dd6741db0af9dd294e41e6f9d"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk8-hardened_worker/standards-report.json",
+        "sha256": "ae1cc4f83e9e5ce7e1648982374d74fc397e40d65f5e80e07a3d792e7bbc5d0b"
+      },
+      "profile": "HARDENED_WORKER",
+      "chain": "standards",
+      "result": "pass"
+    },
+    {
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk8-hardened_worker/semantic.yaml",
+        "sha256": "817c6a9485a3dc8fa4852aa35d1f9ed66d6df999e99726f0ab412d1a022a8934"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk8-hardened_worker/semantic-report.json",
+        "sha256": "b9c68b21c4279b0487274ed1ed01fe649515d918f90581ca99f59bf3338cead5"
+      },
+      "profile": "HARDENED_WORKER",
+      "chain": "semantic",
+      "result": "pass"
+    },
+    {
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk8-hardened_worker/visual.yaml",
+        "sha256": "b01bba03878ec4035c4bf698bf95094affd7b0fba7f040d6596f9a5febf7b97b"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk8-hardened_worker/visual-report.json",
+        "sha256": "f5f22e4b174be2733cfe4fcaf0a525e41bccba631566830ad54f211378adf92d"
+      },
+      "profile": "HARDENED_WORKER",
+      "chain": "visual",
+      "result": "pass"
+    },
+    {
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk11-in_process/syntax.yaml",
+        "sha256": "56eefc1fb6fbf4a99efcb0844f88270fc2b032a21c12af778ab856c48e130583"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk11-in_process/syntax-report.json",
+        "sha256": "2322b88b5faa02909fd994bfc5de69a2496fa1732a42995cd8af3e01608e3fa4"
+      },
+      "profile": "IN_PROCESS",
+      "chain": "syntax",
+      "result": "pass"
+    },
+    {
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk11-in_process/standards.yaml",
+        "sha256": "9ab9afdf239f4d4e32237bc6208ca8e332bd436adc920d9b2ab298db1df461bd"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk11-in_process/standards-report.json",
+        "sha256": "e727c4412ea5043942259576d2070d83ca897cb9dc2eec37da2ce23448c2c760"
+      },
+      "profile": "IN_PROCESS",
+      "chain": "standards",
+      "result": "pass"
+    },
+    {
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk11-in_process/semantic.yaml",
+        "sha256": "63f9b01fc31162ac6ca295e11ea2cf6ba1134c5798ee1c8a70fd5a3970372b84"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk11-in_process/semantic-report.json",
+        "sha256": "69aa3b825c095a967c9178e5c1acf18abf300ee7b4f265dd424b3b1c559f5022"
+      },
+      "profile": "IN_PROCESS",
+      "chain": "semantic",
+      "result": "pass"
+    },
+    {
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk11-in_process/visual.yaml",
+        "sha256": "5d8b46fc15c84a6837cee2075a9d10d89b31c4eeee09214c3b6506ae8aef9326"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk11-in_process/visual-report.json",
+        "sha256": "e4153bd2a1e38b9b6d83f6d584feaf45820872853fcb717a62ed4d06d17ea019"
+      },
+      "profile": "IN_PROCESS",
+      "chain": "visual",
+      "result": "pass"
+    },
+    {
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk11-hardened_worker/syntax.yaml",
+        "sha256": "ad1a0d14f7b134eab91118da120d64378961f6aa8cbdb9e03c899f7459a19e0e"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk11-hardened_worker/syntax-report.json",
+        "sha256": "ae748761a7c9d999f7f9ccd56f51ae5022070a028de2a5c879e42b9a0564338a"
+      },
+      "profile": "HARDENED_WORKER",
+      "chain": "syntax",
+      "result": "pass"
+    },
+    {
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk11-hardened_worker/standards.yaml",
+        "sha256": "f4780ee5fa3371562bf4e1aa4c3118becf54910cadb04a7c8e129a295594b590"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk11-hardened_worker/standards-report.json",
+        "sha256": "eb8e5252b5001804680f3381f21849e93831c55c8d1f0bd3fb9d83eb0dd05f85"
+      },
+      "profile": "HARDENED_WORKER",
+      "chain": "standards",
+      "result": "pass"
+    },
+    {
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk11-hardened_worker/semantic.yaml",
+        "sha256": "d184b2c51a3cf350cd0328d14f22ba9a3a9d4cfa3547dec2720d0341b8a142e0"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk11-hardened_worker/semantic-report.json",
+        "sha256": "ffe84f303f9d4a654184247623c3e98cbe051f0f55301009ea05b3e3c1429eb7"
+      },
+      "profile": "HARDENED_WORKER",
+      "chain": "semantic",
+      "result": "pass"
+    },
+    {
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk11-hardened_worker/visual.yaml",
+        "sha256": "8286c415a3af6920c198fed8dd5ff9e1e57236c2913b317f9cf98315f50113be"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk11-hardened_worker/visual-report.json",
+        "sha256": "439119fab85af4ff4e467ca0258b2e72311ee11cd94b896602a58087b197a431"
+      },
+      "profile": "HARDENED_WORKER",
+      "chain": "visual",
+      "result": "pass"
+    },
+    {
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk17-in_process/syntax.yaml",
+        "sha256": "be834463bb5770723a99ced00a18e2d2646acec4769c8221e5d0285db892df2e"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk17-in_process/syntax-report.json",
+        "sha256": "912c5a122e9697a74a135d84cf5074f2c2ab612fe56a98ec1e4553f9ede83d61"
+      },
+      "profile": "IN_PROCESS",
+      "chain": "syntax",
+      "result": "pass"
+    },
+    {
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk17-in_process/standards.yaml",
+        "sha256": "a42bbdb2417d2b8f789d99dc11226b6a8a68df38ba0274e2263151ac3a597fe5"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk17-in_process/standards-report.json",
+        "sha256": "2d86744d2061e9b3e3969526fe5dd22607c4e99181e12ebbe527630e153ebe2d"
+      },
+      "profile": "IN_PROCESS",
+      "chain": "standards",
+      "result": "pass"
+    },
+    {
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk17-in_process/semantic.yaml",
+        "sha256": "2ec0619f95ae7820e46a23a51a78ec27ba0744da237ba1e64f4e7a9ade5d3c68"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk17-in_process/semantic-report.json",
+        "sha256": "2e3e557729eca476f99bb45a49376da355b2563a02f169835ec02614d1a168f7"
+      },
+      "profile": "IN_PROCESS",
+      "chain": "semantic",
+      "result": "pass"
+    },
+    {
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk17-in_process/visual.yaml",
+        "sha256": "c2e1ee44df4a852ac5fccea36319870a75ffff9358d12c6bf0174645280695bb"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk17-in_process/visual-report.json",
+        "sha256": "9a426e73e6776e8e85d921b5a8647c27c3c260df7df5b21c5631a37838aecb19"
+      },
+      "profile": "IN_PROCESS",
+      "chain": "visual",
+      "result": "pass"
+    },
+    {
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk17-hardened_worker/syntax.yaml",
+        "sha256": "226f64ac52f103bb34a50235f57ebba947c3d8a82bbe524e4a950b325ef623bd"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk17-hardened_worker/syntax-report.json",
+        "sha256": "e57e7bc82350e416cf97e34113dd24a6c03cd9088c8077578cc272b0e556e835"
+      },
+      "profile": "HARDENED_WORKER",
+      "chain": "syntax",
+      "result": "pass"
+    },
+    {
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk17-hardened_worker/standards.yaml",
+        "sha256": "27a5e3392752639275f7dcad622e92e0999f15c70a6bed7f3a4933decf3db23b"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk17-hardened_worker/standards-report.json",
+        "sha256": "2fe9a862fe037a9b45096609865e884bd4028e573de65c30051d36464e9b10af"
+      },
+      "profile": "HARDENED_WORKER",
+      "chain": "standards",
+      "result": "pass"
+    },
+    {
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk17-hardened_worker/semantic.yaml",
+        "sha256": "286e223e216bc490164bbc2a14e5570e4264d7db35ac1ae27deb7cc83ff63028"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk17-hardened_worker/semantic-report.json",
+        "sha256": "2b5b79d8f1b071649cccc2b2da5fa529c55447532a663ce68a838b9064de2c38"
+      },
+      "profile": "HARDENED_WORKER",
+      "chain": "semantic",
+      "result": "pass"
+    },
+    {
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk17-hardened_worker/visual.yaml",
+        "sha256": "595d68b63be593a60a1539abbe3283e170b16a951955c2d99eefba844a84eea6"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk17-hardened_worker/visual-report.json",
+        "sha256": "88bc25cf3c7b8949a42149769d790ed7a55e3270c0d80ded8f8ee9531c10571c"
+      },
+      "profile": "HARDENED_WORKER",
+      "chain": "visual",
+      "result": "pass"
+    },
+    {
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk21-in_process/syntax.yaml",
+        "sha256": "81a635060427c6eb3e3a1fd435e845fc44a7452c17eb5887b66df124f1f88bef"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk21-in_process/syntax-report.json",
+        "sha256": "92719edf7892611ed6aa8d010df4358dcec12871003b394072188cb7203dc7e8"
+      },
+      "profile": "IN_PROCESS",
+      "chain": "syntax",
+      "result": "pass"
+    },
+    {
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk21-in_process/standards.yaml",
+        "sha256": "c88de61ebf719b4ad0795e69117ead97654e3480210c7a88e5c44919c98fbf9b"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk21-in_process/standards-report.json",
+        "sha256": "884dfb01b382a89a6dac82503b5c83f0722b00ea215c0663a9f53865ea086fb1"
+      },
+      "profile": "IN_PROCESS",
+      "chain": "standards",
+      "result": "pass"
+    },
+    {
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk21-in_process/semantic.yaml",
+        "sha256": "8c1fe4fa4f5043333d3d4d6b5e0ccc1887a7c565c63bf4a272eec4d3cc1d5f47"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk21-in_process/semantic-report.json",
+        "sha256": "6240dab615d5cd3bedb09b054f6dceb5c5f03eb0f99601e568b024f2d3ec0951"
+      },
+      "profile": "IN_PROCESS",
+      "chain": "semantic",
+      "result": "pass"
+    },
+    {
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk21-in_process/visual.yaml",
+        "sha256": "c420145464b43065d72871bbdab8f6381741402f4d4cd936e9f6dbd5bf7d5ed1"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk21-in_process/visual-report.json",
+        "sha256": "f39b835057e7945c4074b5802e2e4a42bde35612e8499d9c517d38ddee8548cc"
+      },
+      "profile": "IN_PROCESS",
+      "chain": "visual",
+      "result": "pass"
+    },
+    {
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk21-hardened_worker/syntax.yaml",
+        "sha256": "b2f00f0285bcad5721069fb97552ff10737df39f14bc028e1ad15059c7700e15"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk21-hardened_worker/syntax-report.json",
+        "sha256": "d27e46eb9717871c1350c77f5575ffb437476ffb5cdb91b7ddfffa845565af48"
+      },
+      "profile": "HARDENED_WORKER",
+      "chain": "syntax",
+      "result": "pass"
+    },
+    {
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk21-hardened_worker/standards.yaml",
+        "sha256": "2e27bb00be685622e86a71c121a4adda3ba5f5ef041c50f76c89371491f67541"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk21-hardened_worker/standards-report.json",
+        "sha256": "4226f3eab7dcb315304c7bf3a44ec7f2ec6b8ab647bd59ecf81155a74cdcebcf"
+      },
+      "profile": "HARDENED_WORKER",
+      "chain": "standards",
+      "result": "pass"
+    },
+    {
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk21-hardened_worker/semantic.yaml",
+        "sha256": "4c907b03af88a4d9321efa19cb54ffe4b26e3c70060aaa11c318548dfb84a5e0"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk21-hardened_worker/semantic-report.json",
+        "sha256": "9dd131701860915e4e77f2fe3d6c2df0a5ae5797e818f4a639151696728c577f"
+      },
+      "profile": "HARDENED_WORKER",
+      "chain": "semantic",
+      "result": "pass"
+    },
+    {
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk21-hardened_worker/visual.yaml",
+        "sha256": "9b0c086eb61db9ca6aedf56f8700d24a849e2472a48814d870835163efabdd44"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk21-hardened_worker/visual-report.json",
+        "sha256": "7d143314cab343f38b57d85785e4fbb0430c24429f5710a30a1f0e0b18bdebcf"
+      },
+      "profile": "HARDENED_WORKER",
+      "chain": "visual",
+      "result": "pass"
+    }
+  ],
+  "configuration-bindings": [
+    {
+      "tuple": "jdk8-in_process",
+      "configuration": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk8-in_process/execution.yaml",
+        "sha256": "61e7703ef8167c748b0d0ac002fc21fb3ec34376fffe76db15e607aa7010430c"
+      },
+      "actual-Native-mode": "IN_PROCESS",
+      "actual-Facade-mode": "IN_PROCESS"
+    },
+    {
+      "tuple": "jdk8-hardened_worker",
+      "configuration": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk8-hardened_worker/execution.yaml",
+        "sha256": "0bc1db7719fd76ca32ab30deb3ee65bfe39b558d0669a561aad04ffb812c935d"
+      },
+      "actual-Native-mode": "HARDENED_WORKER",
+      "actual-Facade-mode": "IN_PROCESS"
+    },
+    {
+      "tuple": "jdk11-in_process",
+      "configuration": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk11-in_process/execution.yaml",
+        "sha256": "20e41918d1be7cdca08b0266f23947d0a3782a47e3f77439d951914104ca5331"
+      },
+      "actual-Native-mode": "IN_PROCESS",
+      "actual-Facade-mode": "IN_PROCESS"
+    },
+    {
+      "tuple": "jdk11-hardened_worker",
+      "configuration": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk11-hardened_worker/execution.yaml",
+        "sha256": "abd323d06b56b6356e63e61ffb112c935e99db900f36575cda61f0e9ff167441"
+      },
+      "actual-Native-mode": "HARDENED_WORKER",
+      "actual-Facade-mode": "IN_PROCESS"
+    },
+    {
+      "tuple": "jdk17-in_process",
+      "configuration": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk17-in_process/execution.yaml",
+        "sha256": "a036cc5bcfe9f84c324fa24eea1f4634df0ba3380848754e32e54ddff0ffa882"
+      },
+      "actual-Native-mode": "IN_PROCESS",
+      "actual-Facade-mode": "IN_PROCESS"
+    },
+    {
+      "tuple": "jdk17-hardened_worker",
+      "configuration": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk17-hardened_worker/execution.yaml",
+        "sha256": "93d577ae43b210b9e63e1706135041ef81f36aa2b7ddd8310a43ebfa494d548a"
+      },
+      "actual-Native-mode": "HARDENED_WORKER",
+      "actual-Facade-mode": "IN_PROCESS"
+    },
+    {
+      "tuple": "jdk21-in_process",
+      "configuration": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk21-in_process/execution.yaml",
+        "sha256": "82ee235a103096555ca1829d1305f3b7d7f0efad7de4c48e3009b8e1d4a75f49"
+      },
+      "actual-Native-mode": "IN_PROCESS",
+      "actual-Facade-mode": "IN_PROCESS"
+    },
+    {
+      "tuple": "jdk21-hardened_worker",
+      "configuration": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk21-hardened_worker/execution.yaml",
+        "sha256": "48c7385b2f0ef8be9da0aca42fdd4f39679372c71a2d9b66540ff0a6b5e390fc"
+      },
+      "actual-Native-mode": "HARDENED_WORKER",
+      "actual-Facade-mode": "IN_PROCESS"
+    }
+  ],
+  "observed-environment-bindings": [
+    {
+      "directory": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk8-environment",
+      "raw-file-count": 11,
+      "unchanged-to-complete-raw-review": true,
+      "returned-identity": {
+        "schema-version": 1,
+        "profile": "ubuntu-24.04-linux-x86-64-jdk8",
+        "identity": {
+          "os": "ubuntu",
+          "os-version": "24.04",
+          "architecture": "x86-64",
+          "image": "docker.io/library/eclipse-temurin@sha256:a4da319337cb6504ba4fb663cbd72a75df5515efb31bbdc6fc4ad7ba8d710dee",
+          "os-release-sha256": "01af466feb100306498c86aa6bad1815e33036019aa34d4362c20f374ea5c829",
+          "jdk-major": 8,
+          "jdk-vendor": "Eclipse Adoptium",
+          "jdk-build": "1.8.0_502-b07",
+          "java-sha256": "fa55c40b8accf16501ed11ac41a2b6cf5f411d36ea083f935d4a87cd3a7131a8"
+        },
+        "host": {
+          "kernel": "6.8.0-136-generic",
+          "architecture": "x86-64"
+        },
+        "native-engine": {
+          "name": "harfbuzz",
+          "version": "10.2.0",
+          "helper-sha256": "169389e19e28bc96e3e878a9468671c31ccc6d5e7abbc3d38c4b8470526cdc65",
+          "library-sha256": "8a4c67dc9ead9b0752bcf256fa46c39eb3592e403a282bb341637ed989196e10",
+          "installation-sha256": "b17c12c25135d2aea3708dabcbd436e8ca1f1b88ce5e14d6bc8ebd3f2ad1b178"
+        },
+        "tools": [
+          {
+            "id": "qpdf",
+            "kind": "external-tool",
+            "version": "12.4.0",
+            "chains": [
+              "syntax",
+              "standards",
+              "semantic"
+            ],
+            "sha256": "9ac787a28597e8428289a12ba3fedafd74bdfb4b4da1be814722faf76f14f21b"
+          },
+          {
+            "id": "pdfcpu",
+            "kind": "external-tool",
+            "version": "0.15.0",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d"
+          },
+          {
+            "id": "arlington",
+            "kind": "external-tool",
+            "version": "0.81",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458"
+          },
+          {
+            "id": "arlington-t10-r1",
+            "kind": "external-tool",
+            "version": "0.81-folio-t10-r1",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "35c15bc7d78f70c2a378938623d2c5e604d66019aefe9f485b71cac63a46bee5"
+          },
+          {
+            "id": "arlington-t11-r1",
+            "kind": "external-tool",
+            "version": "0.81-folio-t11-r1",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "2df679442bdedd9d598d6fd50638e673700628e78885fa967561a544ebb2ff8d"
+          },
+          {
+            "id": "arlington-t12-r1",
+            "kind": "external-tool",
+            "version": "0.81-folio-t12-r1",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "ed46e110ac98c8c660ca7e39f4d1496cfab0167a58a721bb599f43769de45036"
+          },
+          {
+            "id": "arlington-t13-r1",
+            "kind": "external-tool",
+            "version": "0.81-folio-t13-r1",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "583f09e428ca76c346e46c98280befcd2cfb7d8ebd55f098f4f8e74ecbeaff03"
+          },
+          {
+            "id": "pdfium-cli",
+            "kind": "external-tool",
+            "version": "v0.11.2-pdfium-chromium-7881",
+            "chains": [
+              "visual"
+            ],
+            "sha256": "3ef3375c429ce665e834f933a028225bf28ac837695aaa69c6fc21facf6780ab"
+          },
+          {
+            "id": "imagemagick",
+            "kind": "external-tool",
+            "version": "7.1.2-30",
+            "chains": [
+              "visual"
+            ],
+            "sha256": "372af8a3fd61ef5f15c6331cde3e21f840eb165d8b533f34ed05d68736dd682e"
+          },
+          {
+            "id": "folio-pdf-t03",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          },
+          {
+            "id": "folio-pdf-t09",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          },
+          {
+            "id": "folio-pdf-t10",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          },
+          {
+            "id": "folio-pdf-t11",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          },
+          {
+            "id": "folio-pdf-t12",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          },
+          {
+            "id": "folio-pdf-t13",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          }
+        ]
+      }
+    },
+    {
+      "directory": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk8-environment-after",
+      "raw-file-count": 10,
+      "unchanged-to-complete-raw-review": true,
+      "returned-identity": {
+        "schema-version": 1,
+        "profile": "ubuntu-24.04-linux-x86-64-jdk8",
+        "identity": {
+          "os": "ubuntu",
+          "os-version": "24.04",
+          "architecture": "x86-64",
+          "image": "docker.io/library/eclipse-temurin@sha256:a4da319337cb6504ba4fb663cbd72a75df5515efb31bbdc6fc4ad7ba8d710dee",
+          "os-release-sha256": "01af466feb100306498c86aa6bad1815e33036019aa34d4362c20f374ea5c829",
+          "jdk-major": 8,
+          "jdk-vendor": "Eclipse Adoptium",
+          "jdk-build": "1.8.0_502-b07",
+          "java-sha256": "fa55c40b8accf16501ed11ac41a2b6cf5f411d36ea083f935d4a87cd3a7131a8"
+        },
+        "host": {
+          "kernel": "6.8.0-136-generic",
+          "architecture": "x86-64"
+        },
+        "native-engine": {
+          "name": "harfbuzz",
+          "version": "10.2.0",
+          "helper-sha256": "169389e19e28bc96e3e878a9468671c31ccc6d5e7abbc3d38c4b8470526cdc65",
+          "library-sha256": "8a4c67dc9ead9b0752bcf256fa46c39eb3592e403a282bb341637ed989196e10",
+          "installation-sha256": "b17c12c25135d2aea3708dabcbd436e8ca1f1b88ce5e14d6bc8ebd3f2ad1b178"
+        },
+        "tools": [
+          {
+            "id": "qpdf",
+            "kind": "external-tool",
+            "version": "12.4.0",
+            "chains": [
+              "syntax",
+              "standards",
+              "semantic"
+            ],
+            "sha256": "9ac787a28597e8428289a12ba3fedafd74bdfb4b4da1be814722faf76f14f21b"
+          },
+          {
+            "id": "pdfcpu",
+            "kind": "external-tool",
+            "version": "0.15.0",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d"
+          },
+          {
+            "id": "arlington",
+            "kind": "external-tool",
+            "version": "0.81",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458"
+          },
+          {
+            "id": "arlington-t10-r1",
+            "kind": "external-tool",
+            "version": "0.81-folio-t10-r1",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "35c15bc7d78f70c2a378938623d2c5e604d66019aefe9f485b71cac63a46bee5"
+          },
+          {
+            "id": "arlington-t11-r1",
+            "kind": "external-tool",
+            "version": "0.81-folio-t11-r1",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "2df679442bdedd9d598d6fd50638e673700628e78885fa967561a544ebb2ff8d"
+          },
+          {
+            "id": "arlington-t12-r1",
+            "kind": "external-tool",
+            "version": "0.81-folio-t12-r1",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "ed46e110ac98c8c660ca7e39f4d1496cfab0167a58a721bb599f43769de45036"
+          },
+          {
+            "id": "arlington-t13-r1",
+            "kind": "external-tool",
+            "version": "0.81-folio-t13-r1",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "583f09e428ca76c346e46c98280befcd2cfb7d8ebd55f098f4f8e74ecbeaff03"
+          },
+          {
+            "id": "pdfium-cli",
+            "kind": "external-tool",
+            "version": "v0.11.2-pdfium-chromium-7881",
+            "chains": [
+              "visual"
+            ],
+            "sha256": "3ef3375c429ce665e834f933a028225bf28ac837695aaa69c6fc21facf6780ab"
+          },
+          {
+            "id": "imagemagick",
+            "kind": "external-tool",
+            "version": "7.1.2-30",
+            "chains": [
+              "visual"
+            ],
+            "sha256": "372af8a3fd61ef5f15c6331cde3e21f840eb165d8b533f34ed05d68736dd682e"
+          },
+          {
+            "id": "folio-pdf-t03",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          },
+          {
+            "id": "folio-pdf-t09",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          },
+          {
+            "id": "folio-pdf-t10",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          },
+          {
+            "id": "folio-pdf-t11",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          },
+          {
+            "id": "folio-pdf-t12",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          },
+          {
+            "id": "folio-pdf-t13",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          }
+        ]
+      }
+    },
+    {
+      "directory": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk11-environment",
+      "raw-file-count": 11,
+      "unchanged-to-complete-raw-review": true,
+      "returned-identity": {
+        "schema-version": 1,
+        "profile": "ubuntu-24.04-linux-x86-64-jdk11",
+        "identity": {
+          "os": "ubuntu",
+          "os-version": "24.04",
+          "architecture": "x86-64",
+          "image": "docker.io/library/eclipse-temurin@sha256:09f6797de424a6a085da4db6ba64381b2a4d51c2100a5e91998b69d7c23e0ecb",
+          "os-release-sha256": "01af466feb100306498c86aa6bad1815e33036019aa34d4362c20f374ea5c829",
+          "jdk-major": 11,
+          "jdk-vendor": "Eclipse Adoptium",
+          "jdk-build": "11.0.32+9",
+          "java-sha256": "4e58bcde757bca39c30453e5fb3ae1495e76ef484f35908c6a5d3d10e1392e53"
+        },
+        "host": {
+          "kernel": "6.8.0-136-generic",
+          "architecture": "x86-64"
+        },
+        "native-engine": {
+          "name": "harfbuzz",
+          "version": "10.2.0",
+          "helper-sha256": "169389e19e28bc96e3e878a9468671c31ccc6d5e7abbc3d38c4b8470526cdc65",
+          "library-sha256": "8a4c67dc9ead9b0752bcf256fa46c39eb3592e403a282bb341637ed989196e10",
+          "installation-sha256": "b17c12c25135d2aea3708dabcbd436e8ca1f1b88ce5e14d6bc8ebd3f2ad1b178"
+        },
+        "tools": [
+          {
+            "id": "qpdf",
+            "kind": "external-tool",
+            "version": "12.4.0",
+            "chains": [
+              "syntax",
+              "standards",
+              "semantic"
+            ],
+            "sha256": "9ac787a28597e8428289a12ba3fedafd74bdfb4b4da1be814722faf76f14f21b"
+          },
+          {
+            "id": "pdfcpu",
+            "kind": "external-tool",
+            "version": "0.15.0",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d"
+          },
+          {
+            "id": "arlington",
+            "kind": "external-tool",
+            "version": "0.81",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458"
+          },
+          {
+            "id": "arlington-t10-r1",
+            "kind": "external-tool",
+            "version": "0.81-folio-t10-r1",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "35c15bc7d78f70c2a378938623d2c5e604d66019aefe9f485b71cac63a46bee5"
+          },
+          {
+            "id": "arlington-t11-r1",
+            "kind": "external-tool",
+            "version": "0.81-folio-t11-r1",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "2df679442bdedd9d598d6fd50638e673700628e78885fa967561a544ebb2ff8d"
+          },
+          {
+            "id": "arlington-t12-r1",
+            "kind": "external-tool",
+            "version": "0.81-folio-t12-r1",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "ed46e110ac98c8c660ca7e39f4d1496cfab0167a58a721bb599f43769de45036"
+          },
+          {
+            "id": "arlington-t13-r1",
+            "kind": "external-tool",
+            "version": "0.81-folio-t13-r1",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "583f09e428ca76c346e46c98280befcd2cfb7d8ebd55f098f4f8e74ecbeaff03"
+          },
+          {
+            "id": "pdfium-cli",
+            "kind": "external-tool",
+            "version": "v0.11.2-pdfium-chromium-7881",
+            "chains": [
+              "visual"
+            ],
+            "sha256": "3ef3375c429ce665e834f933a028225bf28ac837695aaa69c6fc21facf6780ab"
+          },
+          {
+            "id": "imagemagick",
+            "kind": "external-tool",
+            "version": "7.1.2-30",
+            "chains": [
+              "visual"
+            ],
+            "sha256": "372af8a3fd61ef5f15c6331cde3e21f840eb165d8b533f34ed05d68736dd682e"
+          },
+          {
+            "id": "folio-pdf-t03",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          },
+          {
+            "id": "folio-pdf-t09",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          },
+          {
+            "id": "folio-pdf-t10",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          },
+          {
+            "id": "folio-pdf-t11",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          },
+          {
+            "id": "folio-pdf-t12",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          },
+          {
+            "id": "folio-pdf-t13",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          }
+        ]
+      }
+    },
+    {
+      "directory": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk11-environment-after",
+      "raw-file-count": 10,
+      "unchanged-to-complete-raw-review": true,
+      "returned-identity": {
+        "schema-version": 1,
+        "profile": "ubuntu-24.04-linux-x86-64-jdk11",
+        "identity": {
+          "os": "ubuntu",
+          "os-version": "24.04",
+          "architecture": "x86-64",
+          "image": "docker.io/library/eclipse-temurin@sha256:09f6797de424a6a085da4db6ba64381b2a4d51c2100a5e91998b69d7c23e0ecb",
+          "os-release-sha256": "01af466feb100306498c86aa6bad1815e33036019aa34d4362c20f374ea5c829",
+          "jdk-major": 11,
+          "jdk-vendor": "Eclipse Adoptium",
+          "jdk-build": "11.0.32+9",
+          "java-sha256": "4e58bcde757bca39c30453e5fb3ae1495e76ef484f35908c6a5d3d10e1392e53"
+        },
+        "host": {
+          "kernel": "6.8.0-136-generic",
+          "architecture": "x86-64"
+        },
+        "native-engine": {
+          "name": "harfbuzz",
+          "version": "10.2.0",
+          "helper-sha256": "169389e19e28bc96e3e878a9468671c31ccc6d5e7abbc3d38c4b8470526cdc65",
+          "library-sha256": "8a4c67dc9ead9b0752bcf256fa46c39eb3592e403a282bb341637ed989196e10",
+          "installation-sha256": "b17c12c25135d2aea3708dabcbd436e8ca1f1b88ce5e14d6bc8ebd3f2ad1b178"
+        },
+        "tools": [
+          {
+            "id": "qpdf",
+            "kind": "external-tool",
+            "version": "12.4.0",
+            "chains": [
+              "syntax",
+              "standards",
+              "semantic"
+            ],
+            "sha256": "9ac787a28597e8428289a12ba3fedafd74bdfb4b4da1be814722faf76f14f21b"
+          },
+          {
+            "id": "pdfcpu",
+            "kind": "external-tool",
+            "version": "0.15.0",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d"
+          },
+          {
+            "id": "arlington",
+            "kind": "external-tool",
+            "version": "0.81",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458"
+          },
+          {
+            "id": "arlington-t10-r1",
+            "kind": "external-tool",
+            "version": "0.81-folio-t10-r1",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "35c15bc7d78f70c2a378938623d2c5e604d66019aefe9f485b71cac63a46bee5"
+          },
+          {
+            "id": "arlington-t11-r1",
+            "kind": "external-tool",
+            "version": "0.81-folio-t11-r1",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "2df679442bdedd9d598d6fd50638e673700628e78885fa967561a544ebb2ff8d"
+          },
+          {
+            "id": "arlington-t12-r1",
+            "kind": "external-tool",
+            "version": "0.81-folio-t12-r1",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "ed46e110ac98c8c660ca7e39f4d1496cfab0167a58a721bb599f43769de45036"
+          },
+          {
+            "id": "arlington-t13-r1",
+            "kind": "external-tool",
+            "version": "0.81-folio-t13-r1",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "583f09e428ca76c346e46c98280befcd2cfb7d8ebd55f098f4f8e74ecbeaff03"
+          },
+          {
+            "id": "pdfium-cli",
+            "kind": "external-tool",
+            "version": "v0.11.2-pdfium-chromium-7881",
+            "chains": [
+              "visual"
+            ],
+            "sha256": "3ef3375c429ce665e834f933a028225bf28ac837695aaa69c6fc21facf6780ab"
+          },
+          {
+            "id": "imagemagick",
+            "kind": "external-tool",
+            "version": "7.1.2-30",
+            "chains": [
+              "visual"
+            ],
+            "sha256": "372af8a3fd61ef5f15c6331cde3e21f840eb165d8b533f34ed05d68736dd682e"
+          },
+          {
+            "id": "folio-pdf-t03",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          },
+          {
+            "id": "folio-pdf-t09",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          },
+          {
+            "id": "folio-pdf-t10",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          },
+          {
+            "id": "folio-pdf-t11",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          },
+          {
+            "id": "folio-pdf-t12",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          },
+          {
+            "id": "folio-pdf-t13",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          }
+        ]
+      }
+    },
+    {
+      "directory": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk17-environment",
+      "raw-file-count": 11,
+      "unchanged-to-complete-raw-review": true,
+      "returned-identity": {
+        "schema-version": 1,
+        "profile": "ubuntu-24.04-linux-x86-64-jdk17",
+        "identity": {
+          "os": "ubuntu",
+          "os-version": "24.04",
+          "architecture": "x86-64",
+          "image": "docker.io/library/eclipse-temurin@sha256:61a94244559f2e89e4edb02bae37eeb8762ecf5deaf237251fa630e5120a8798",
+          "os-release-sha256": "01af466feb100306498c86aa6bad1815e33036019aa34d4362c20f374ea5c829",
+          "jdk-major": 17,
+          "jdk-vendor": "Eclipse Adoptium",
+          "jdk-build": "17.0.20+8",
+          "java-sha256": "6dce8306ebf735a85decdc801d84431f6e84525b60adc885624df05edeffb481"
+        },
+        "host": {
+          "kernel": "6.8.0-136-generic",
+          "architecture": "x86-64"
+        },
+        "native-engine": {
+          "name": "harfbuzz",
+          "version": "10.2.0",
+          "helper-sha256": "169389e19e28bc96e3e878a9468671c31ccc6d5e7abbc3d38c4b8470526cdc65",
+          "library-sha256": "8a4c67dc9ead9b0752bcf256fa46c39eb3592e403a282bb341637ed989196e10",
+          "installation-sha256": "b17c12c25135d2aea3708dabcbd436e8ca1f1b88ce5e14d6bc8ebd3f2ad1b178"
+        },
+        "tools": [
+          {
+            "id": "qpdf",
+            "kind": "external-tool",
+            "version": "12.4.0",
+            "chains": [
+              "syntax",
+              "standards",
+              "semantic"
+            ],
+            "sha256": "9ac787a28597e8428289a12ba3fedafd74bdfb4b4da1be814722faf76f14f21b"
+          },
+          {
+            "id": "pdfcpu",
+            "kind": "external-tool",
+            "version": "0.15.0",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d"
+          },
+          {
+            "id": "arlington",
+            "kind": "external-tool",
+            "version": "0.81",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458"
+          },
+          {
+            "id": "arlington-t10-r1",
+            "kind": "external-tool",
+            "version": "0.81-folio-t10-r1",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "35c15bc7d78f70c2a378938623d2c5e604d66019aefe9f485b71cac63a46bee5"
+          },
+          {
+            "id": "arlington-t11-r1",
+            "kind": "external-tool",
+            "version": "0.81-folio-t11-r1",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "2df679442bdedd9d598d6fd50638e673700628e78885fa967561a544ebb2ff8d"
+          },
+          {
+            "id": "arlington-t12-r1",
+            "kind": "external-tool",
+            "version": "0.81-folio-t12-r1",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "ed46e110ac98c8c660ca7e39f4d1496cfab0167a58a721bb599f43769de45036"
+          },
+          {
+            "id": "arlington-t13-r1",
+            "kind": "external-tool",
+            "version": "0.81-folio-t13-r1",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "583f09e428ca76c346e46c98280befcd2cfb7d8ebd55f098f4f8e74ecbeaff03"
+          },
+          {
+            "id": "pdfium-cli",
+            "kind": "external-tool",
+            "version": "v0.11.2-pdfium-chromium-7881",
+            "chains": [
+              "visual"
+            ],
+            "sha256": "3ef3375c429ce665e834f933a028225bf28ac837695aaa69c6fc21facf6780ab"
+          },
+          {
+            "id": "imagemagick",
+            "kind": "external-tool",
+            "version": "7.1.2-30",
+            "chains": [
+              "visual"
+            ],
+            "sha256": "372af8a3fd61ef5f15c6331cde3e21f840eb165d8b533f34ed05d68736dd682e"
+          },
+          {
+            "id": "folio-pdf-t03",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          },
+          {
+            "id": "folio-pdf-t09",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          },
+          {
+            "id": "folio-pdf-t10",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          },
+          {
+            "id": "folio-pdf-t11",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          },
+          {
+            "id": "folio-pdf-t12",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          },
+          {
+            "id": "folio-pdf-t13",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          }
+        ]
+      }
+    },
+    {
+      "directory": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk17-environment-after",
+      "raw-file-count": 10,
+      "unchanged-to-complete-raw-review": true,
+      "returned-identity": {
+        "schema-version": 1,
+        "profile": "ubuntu-24.04-linux-x86-64-jdk17",
+        "identity": {
+          "os": "ubuntu",
+          "os-version": "24.04",
+          "architecture": "x86-64",
+          "image": "docker.io/library/eclipse-temurin@sha256:61a94244559f2e89e4edb02bae37eeb8762ecf5deaf237251fa630e5120a8798",
+          "os-release-sha256": "01af466feb100306498c86aa6bad1815e33036019aa34d4362c20f374ea5c829",
+          "jdk-major": 17,
+          "jdk-vendor": "Eclipse Adoptium",
+          "jdk-build": "17.0.20+8",
+          "java-sha256": "6dce8306ebf735a85decdc801d84431f6e84525b60adc885624df05edeffb481"
+        },
+        "host": {
+          "kernel": "6.8.0-136-generic",
+          "architecture": "x86-64"
+        },
+        "native-engine": {
+          "name": "harfbuzz",
+          "version": "10.2.0",
+          "helper-sha256": "169389e19e28bc96e3e878a9468671c31ccc6d5e7abbc3d38c4b8470526cdc65",
+          "library-sha256": "8a4c67dc9ead9b0752bcf256fa46c39eb3592e403a282bb341637ed989196e10",
+          "installation-sha256": "b17c12c25135d2aea3708dabcbd436e8ca1f1b88ce5e14d6bc8ebd3f2ad1b178"
+        },
+        "tools": [
+          {
+            "id": "qpdf",
+            "kind": "external-tool",
+            "version": "12.4.0",
+            "chains": [
+              "syntax",
+              "standards",
+              "semantic"
+            ],
+            "sha256": "9ac787a28597e8428289a12ba3fedafd74bdfb4b4da1be814722faf76f14f21b"
+          },
+          {
+            "id": "pdfcpu",
+            "kind": "external-tool",
+            "version": "0.15.0",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d"
+          },
+          {
+            "id": "arlington",
+            "kind": "external-tool",
+            "version": "0.81",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458"
+          },
+          {
+            "id": "arlington-t10-r1",
+            "kind": "external-tool",
+            "version": "0.81-folio-t10-r1",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "35c15bc7d78f70c2a378938623d2c5e604d66019aefe9f485b71cac63a46bee5"
+          },
+          {
+            "id": "arlington-t11-r1",
+            "kind": "external-tool",
+            "version": "0.81-folio-t11-r1",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "2df679442bdedd9d598d6fd50638e673700628e78885fa967561a544ebb2ff8d"
+          },
+          {
+            "id": "arlington-t12-r1",
+            "kind": "external-tool",
+            "version": "0.81-folio-t12-r1",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "ed46e110ac98c8c660ca7e39f4d1496cfab0167a58a721bb599f43769de45036"
+          },
+          {
+            "id": "arlington-t13-r1",
+            "kind": "external-tool",
+            "version": "0.81-folio-t13-r1",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "583f09e428ca76c346e46c98280befcd2cfb7d8ebd55f098f4f8e74ecbeaff03"
+          },
+          {
+            "id": "pdfium-cli",
+            "kind": "external-tool",
+            "version": "v0.11.2-pdfium-chromium-7881",
+            "chains": [
+              "visual"
+            ],
+            "sha256": "3ef3375c429ce665e834f933a028225bf28ac837695aaa69c6fc21facf6780ab"
+          },
+          {
+            "id": "imagemagick",
+            "kind": "external-tool",
+            "version": "7.1.2-30",
+            "chains": [
+              "visual"
+            ],
+            "sha256": "372af8a3fd61ef5f15c6331cde3e21f840eb165d8b533f34ed05d68736dd682e"
+          },
+          {
+            "id": "folio-pdf-t03",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          },
+          {
+            "id": "folio-pdf-t09",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          },
+          {
+            "id": "folio-pdf-t10",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          },
+          {
+            "id": "folio-pdf-t11",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          },
+          {
+            "id": "folio-pdf-t12",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          },
+          {
+            "id": "folio-pdf-t13",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          }
+        ]
+      }
+    },
+    {
+      "directory": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk21-environment",
+      "raw-file-count": 11,
+      "unchanged-to-complete-raw-review": true,
+      "returned-identity": {
+        "schema-version": 1,
+        "profile": "ubuntu-24.04-linux-x86-64-jdk21",
+        "identity": {
+          "os": "ubuntu",
+          "os-version": "24.04",
+          "architecture": "x86-64",
+          "image": "docker.io/library/eclipse-temurin@sha256:1ca5e470ad60db0d5b4137c1357068fa210051d815ad98ea9964f4bbe7367f8c",
+          "os-release-sha256": "01af466feb100306498c86aa6bad1815e33036019aa34d4362c20f374ea5c829",
+          "jdk-major": 21,
+          "jdk-vendor": "Eclipse Adoptium",
+          "jdk-build": "21.0.12+8-LTS",
+          "java-sha256": "11af352aa2c506c4123a4e4c19c187d59e06cd0dff317d54f5e6806e07c6715d"
+        },
+        "host": {
+          "kernel": "6.8.0-136-generic",
+          "architecture": "x86-64"
+        },
+        "native-engine": {
+          "name": "harfbuzz",
+          "version": "10.2.0",
+          "helper-sha256": "169389e19e28bc96e3e878a9468671c31ccc6d5e7abbc3d38c4b8470526cdc65",
+          "library-sha256": "8a4c67dc9ead9b0752bcf256fa46c39eb3592e403a282bb341637ed989196e10",
+          "installation-sha256": "b17c12c25135d2aea3708dabcbd436e8ca1f1b88ce5e14d6bc8ebd3f2ad1b178"
+        },
+        "tools": [
+          {
+            "id": "qpdf",
+            "kind": "external-tool",
+            "version": "12.4.0",
+            "chains": [
+              "syntax",
+              "standards",
+              "semantic"
+            ],
+            "sha256": "9ac787a28597e8428289a12ba3fedafd74bdfb4b4da1be814722faf76f14f21b"
+          },
+          {
+            "id": "pdfcpu",
+            "kind": "external-tool",
+            "version": "0.15.0",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d"
+          },
+          {
+            "id": "arlington",
+            "kind": "external-tool",
+            "version": "0.81",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458"
+          },
+          {
+            "id": "arlington-t10-r1",
+            "kind": "external-tool",
+            "version": "0.81-folio-t10-r1",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "35c15bc7d78f70c2a378938623d2c5e604d66019aefe9f485b71cac63a46bee5"
+          },
+          {
+            "id": "arlington-t11-r1",
+            "kind": "external-tool",
+            "version": "0.81-folio-t11-r1",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "2df679442bdedd9d598d6fd50638e673700628e78885fa967561a544ebb2ff8d"
+          },
+          {
+            "id": "arlington-t12-r1",
+            "kind": "external-tool",
+            "version": "0.81-folio-t12-r1",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "ed46e110ac98c8c660ca7e39f4d1496cfab0167a58a721bb599f43769de45036"
+          },
+          {
+            "id": "arlington-t13-r1",
+            "kind": "external-tool",
+            "version": "0.81-folio-t13-r1",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "583f09e428ca76c346e46c98280befcd2cfb7d8ebd55f098f4f8e74ecbeaff03"
+          },
+          {
+            "id": "pdfium-cli",
+            "kind": "external-tool",
+            "version": "v0.11.2-pdfium-chromium-7881",
+            "chains": [
+              "visual"
+            ],
+            "sha256": "3ef3375c429ce665e834f933a028225bf28ac837695aaa69c6fc21facf6780ab"
+          },
+          {
+            "id": "imagemagick",
+            "kind": "external-tool",
+            "version": "7.1.2-30",
+            "chains": [
+              "visual"
+            ],
+            "sha256": "372af8a3fd61ef5f15c6331cde3e21f840eb165d8b533f34ed05d68736dd682e"
+          },
+          {
+            "id": "folio-pdf-t03",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          },
+          {
+            "id": "folio-pdf-t09",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          },
+          {
+            "id": "folio-pdf-t10",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          },
+          {
+            "id": "folio-pdf-t11",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          },
+          {
+            "id": "folio-pdf-t12",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          },
+          {
+            "id": "folio-pdf-t13",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          }
+        ]
+      }
+    },
+    {
+      "directory": "capabilities/evidence/T75-foundation-20260914-r4/transactions/jdk21-environment-after",
+      "raw-file-count": 10,
+      "unchanged-to-complete-raw-review": true,
+      "returned-identity": {
+        "schema-version": 1,
+        "profile": "ubuntu-24.04-linux-x86-64-jdk21",
+        "identity": {
+          "os": "ubuntu",
+          "os-version": "24.04",
+          "architecture": "x86-64",
+          "image": "docker.io/library/eclipse-temurin@sha256:1ca5e470ad60db0d5b4137c1357068fa210051d815ad98ea9964f4bbe7367f8c",
+          "os-release-sha256": "01af466feb100306498c86aa6bad1815e33036019aa34d4362c20f374ea5c829",
+          "jdk-major": 21,
+          "jdk-vendor": "Eclipse Adoptium",
+          "jdk-build": "21.0.12+8-LTS",
+          "java-sha256": "11af352aa2c506c4123a4e4c19c187d59e06cd0dff317d54f5e6806e07c6715d"
+        },
+        "host": {
+          "kernel": "6.8.0-136-generic",
+          "architecture": "x86-64"
+        },
+        "native-engine": {
+          "name": "harfbuzz",
+          "version": "10.2.0",
+          "helper-sha256": "169389e19e28bc96e3e878a9468671c31ccc6d5e7abbc3d38c4b8470526cdc65",
+          "library-sha256": "8a4c67dc9ead9b0752bcf256fa46c39eb3592e403a282bb341637ed989196e10",
+          "installation-sha256": "b17c12c25135d2aea3708dabcbd436e8ca1f1b88ce5e14d6bc8ebd3f2ad1b178"
+        },
+        "tools": [
+          {
+            "id": "qpdf",
+            "kind": "external-tool",
+            "version": "12.4.0",
+            "chains": [
+              "syntax",
+              "standards",
+              "semantic"
+            ],
+            "sha256": "9ac787a28597e8428289a12ba3fedafd74bdfb4b4da1be814722faf76f14f21b"
+          },
+          {
+            "id": "pdfcpu",
+            "kind": "external-tool",
+            "version": "0.15.0",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d"
+          },
+          {
+            "id": "arlington",
+            "kind": "external-tool",
+            "version": "0.81",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458"
+          },
+          {
+            "id": "arlington-t10-r1",
+            "kind": "external-tool",
+            "version": "0.81-folio-t10-r1",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "35c15bc7d78f70c2a378938623d2c5e604d66019aefe9f485b71cac63a46bee5"
+          },
+          {
+            "id": "arlington-t11-r1",
+            "kind": "external-tool",
+            "version": "0.81-folio-t11-r1",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "2df679442bdedd9d598d6fd50638e673700628e78885fa967561a544ebb2ff8d"
+          },
+          {
+            "id": "arlington-t12-r1",
+            "kind": "external-tool",
+            "version": "0.81-folio-t12-r1",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "ed46e110ac98c8c660ca7e39f4d1496cfab0167a58a721bb599f43769de45036"
+          },
+          {
+            "id": "arlington-t13-r1",
+            "kind": "external-tool",
+            "version": "0.81-folio-t13-r1",
+            "chains": [
+              "standards"
+            ],
+            "sha256": "583f09e428ca76c346e46c98280befcd2cfb7d8ebd55f098f4f8e74ecbeaff03"
+          },
+          {
+            "id": "pdfium-cli",
+            "kind": "external-tool",
+            "version": "v0.11.2-pdfium-chromium-7881",
+            "chains": [
+              "visual"
+            ],
+            "sha256": "3ef3375c429ce665e834f933a028225bf28ac837695aaa69c6fc21facf6780ab"
+          },
+          {
+            "id": "imagemagick",
+            "kind": "external-tool",
+            "version": "7.1.2-30",
+            "chains": [
+              "visual"
+            ],
+            "sha256": "372af8a3fd61ef5f15c6331cde3e21f840eb165d8b533f34ed05d68736dd682e"
+          },
+          {
+            "id": "folio-pdf-t03",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          },
+          {
+            "id": "folio-pdf-t09",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          },
+          {
+            "id": "folio-pdf-t10",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          },
+          {
+            "id": "folio-pdf-t11",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          },
+          {
+            "id": "folio-pdf-t12",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          },
+          {
+            "id": "folio-pdf-t13",
+            "kind": "project-test",
+            "version": "0.1.0",
+            "chains": [
+              "semantic"
+            ],
+            "sha256": "7c8310eb694bd9d4979521b63854c0b09a129cf2324ae03401a83d304a26f7e5"
+          }
+        ]
+      }
+    }
+  ],
+  "current-staged-input-counts": {
+    "sources": 1933,
+    "contracts": 30,
+    "artifacts": 23,
+    "harness": 24
+  },
+  "actual-Facade-mode": "IN_PROCESS",
+  "closed-raw-review": {
+    "directory": "/tmp/t75-final-spec-r4-transactions-eight-1imjlw_l",
+    "known-original-hashes": {
+      "report.md": "8e5f29d3b378c76ca2298bc2a5e6f07ff23a81d2ad1c45458fbf7e2c868b23ac",
+      "receipt.json": "c955b2dc0e10c15ee24f83c5a468f6a19266383fbcca98ddb77beca80b9d3c4f",
+      "archive-manifest.json": "d23c04b8cf0b3187128abc5aca5571127da42bd87d69d595bc878e8aa1e22ef8",
+      "complete-inspected-input-identities.json": "ce104554989a49d3c3e0ced99c42a479fffa0b081fcb0183fa455c7d25483694"
+    },
+    "archive": "capabilities/evidence/T75-delivery/certification-review-r4/transactions-eight-tuples-spec.tar.xz",
+    "archive-sha256": "08dd20cfd3fa865b54f6383cb9daa9c9ade50053463d0480bb0875e144b4a244",
+    "archive-members": 724,
+    "diagnostics-and-corrections-preserved": true,
+    "raw-details-replayed": false
+  },
+  "raw-qualification-replayed": false,
+  "five-file-source-review-repeated": false,
+  "complete-inspected-input-identities": {
+    "path": "complete-inspected-input-identities.json",
+    "sha256": "e976cfef20c76df326d5342712e25ba2840d9b6e2752ae5ad1916cd80999f621",
+    "paths": 3066
+  },
+  "selected-original-copies": {
+    "count": 96,
+    "total-files-under-originals": 98,
+    "whole-raw-tree-duplicated": false
+  },
+  "completed-components": [
+    {
+      "path": "actual-publication-schema-inspection.json",
+      "sha256": "01da8ccea722f7b72d954d3983ac0f2b5debbcca5998f5d1283fad05b2f9f8d5"
+    },
+    {
+      "path": "actual-publication-inspection.json",
+      "sha256": "e5c828e5f4c3e4d63a6fc2ae9b9ba8fba2384fde6cdbab55123c0b5bbd6acb2d"
+    },
+    {
+      "path": "stdout-routing-diagnostic-closure.json",
+      "sha256": "3f73ac81718c7b850ff09375b34d431554269eba3cfe47f94f7e160c7f834db0"
+    }
+  ],
+  "actual-original-reader-results": [
+    {
+      "path": "inspect-publication-result.json",
+      "sha256": "fc6f37bb0472497161f6dce35bc5180b40112513a3020e78bd2e110757eaeb28",
+      "returncode": 0,
+      "disposition": "completed"
+    },
+    {
+      "path": "audit-publication-result.json",
+      "sha256": "b941dce126561dd80ff77ca23bc94a866eb47a8b82beea5cf939f2c0a575b239",
+      "returncode": 1,
+      "disposition": "Two extra stdout-duplication reader requirements, closed by the separate routing inspection"
+    },
+    {
+      "path": "stdout-routing-closure-result.json",
+      "sha256": "20607766e94114b2f9d2f49a1ec65615eaf79f254cfe7893a93f6abbb96b7ecc",
+      "returncode": 0,
+      "disposition": "completed"
+    }
+  ],
+  "reader-diagnostics": {
+    "original": "actual-publication-inspection.json",
+    "original-result": "audit-publication-result.json",
+    "actual-original-reader-exit": 1,
+    "original-reader-errors": 2,
+    "original-stdout-stderr-retained": true,
+    "closure": "stdout-routing-diagnostic-closure.json",
+    "closure-result": "stdout-routing-closure-result.json",
+    "closed-reader-errors": 2,
+    "nature": "An extra log duplication assumption imposed by the reader, not missing certification output. Actual subprocess output is retained in tuple files; the complete outer log has its thirteen original progress/completion lines.",
+    "certification-exit": 0,
+    "original-overwrites": false
+  },
+  "findings": [],
+  "approvals": {
+    "transactions-actual-outer-exit": true,
+    "transactions-eight-exact-publication": true,
+    "existing-text-eight-preservation": true,
+    "values-or-other-obligations": false,
+    "all48-inventory-index-delivery": false,
+    "completion-criteria-marked": false
+  },
+  "repository-mutations": false,
+  "project-executions": false,
+  "report-sha256": "146ac5ef8bafb7c16dbd01fdaedce0fc9ed9f4ff90f30d750bbb7c41347e856e",
+  "report-words": 255,
+  "retention": "All original reader command/stdout/stderr/results and diagnostics retained. The final archive-manifest.json excludes itself and will include finalization outputs after they close. The earlier raw packet remains unchanged.",
+  "earlier-current-authority-observation": {
+    "original": "/home/ubuntu/IdeaProjects/open-pdf/capabilities/foundation-evidence.yaml",
+    "observed-at-utc": "2026-09-13T20:37:13.593290+00:00",
+    "copy": "originals/authority-current-observation.yaml",
+    "sha256": "1edb38695b69a9bf40bf80c3cf067169d9b7478a8a2093b61e637b74ee860dac",
+    "exact-reviewed-subsets": {
+      "text": 8,
+      "transactions": 8
+    },
+    "other-obligation-records": "Excluded from this audit, whether already present or added later.",
+    "mutable-source-path-not-a-frozen-input": true
+  },
+  "authority-observation-sequence-inspection": {
+    "path": "authority-at-sealing-inspection.json",
+    "sha256": "72ae3c0bf38a8aae1ad99d26e324f47d3075301e9421d348024334890f2bb819"
+  }
+}

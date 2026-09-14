@@ -1,0 +1,50 @@
+{
+  "sealed-utc": "2026-09-14T00:30:22.394408+00:00",
+  "reviewer": "/root/final_standards",
+  "axis": "Standards artifact hygiene",
+  "status": "Conditional exact-path cleanup candidate set; independent parent byte verification required before mutation.",
+  "hard-findings": [],
+  "heuristic-findings": [],
+  "totals": {
+    "directories": 5,
+    "files": 39385,
+    "logical-bytes": 769223783,
+    "allocated-regular-file-bytes": 857767936,
+    "allocated-directory-bytes": 3956736,
+    "estimated-reclaim-bytes": 861724672
+  },
+  "candidate-mapping": {
+    "path": "cleanup-candidates.json",
+    "sha256": "01db54cf9607be0fa29ddf30119ecbe20bd530f06b35cfd3b65027fd8a458f69"
+  },
+  "dependency-confirmations": {
+    "path": "peer-dependency-confirmations.json",
+    "sha256": "6f5880ebb9eaddf183e15dbca81a1f40ffa49cc21c12cd3b8b654abde5e66dff"
+  },
+  "checked": [
+    "Five current compressed archive SHA256s and five identity SHA256s.",
+    "Complete file/directory membership against manifest paths and required parent directories.",
+    "Every current original file size; directory canonical /tmp roots; regular files only.",
+    "No symbolic links, special files or external hard links.",
+    "Explicit dependency clearance from /root/final_spec and /root/values_raw_spec_r4."
+  ],
+  "not-claimed": [
+    "No original-file-content SHA replay by this metadata scope; parent must independently verify every original/member byte before deletion.",
+    "No deletion, Git mutation, current r4 raw/original removal, source-review closure removal or historical annotations packet removal.",
+    "No recovered historical derived summary bytes.",
+    "No final certification, inventory, staged-index, completion-mark or delivery approval."
+  ],
+  "parent-removal-guard": "Only the five exact canonical original paths in cleanup-candidates.json; stop on any byte/membership or identity mismatch, retain pre-removal observations and actual command/result, and verify surviving archives after removal.",
+  "report": {
+    "path": "report.md",
+    "sha256": "69ce50e43fc98266aafbcf1e446ac25561a8fe6a0d5c196ab98e9ff14de25572",
+    "word-count": 253
+  },
+  "manifest-exclusions": [
+    "artifact-manifest.json",
+    "commands/seal-packet.stdout",
+    "commands/seal-packet.stderr",
+    "commands/seal-packet-result.json"
+  ],
+  "manifest-boundary": "The manifest excludes itself and the executing runner\u2019s outputs written after finalization; all four remain in the completed packet for parent archival."
+}

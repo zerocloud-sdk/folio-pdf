@@ -1,0 +1,18 @@
+F
+======================================================================
+FAIL: test_indirect_font_subtype_cannot_hide_an_invalid_encoding (test_t13_program_standards.T13ProgramStandardsTest.test_indirect_font_subtype_cannot_hide_an_invalid_encoding)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 19, in test_indirect_font_subtype_cannot_hide_an_invalid_encoding
+    self.observe(directory, pdf, 'fail', 'cmap-cid-domain')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 27, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : indirect-subtype-negative-cid.pdf: Decoded CMap grammar, character domains and declared inheritance are consistent.
+
+----------------------------------------------------------------------
+Ran 1 test in 0.123s
+
+FAILED (failures=1)

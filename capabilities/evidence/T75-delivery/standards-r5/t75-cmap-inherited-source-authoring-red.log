@@ -1,0 +1,22 @@
+F
+======================================================================
+FAIL: test_program_qualification_authors_direct_font_and_exact_budget_boundaries (test_t13_standards.T13StandardsTest.test_program_qualification_authors_direct_font_and_exact_budget_boundaries)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_standards.py", line 33, in test_program_qualification_authors_direct_font_and_exact_budget_boundaries
+    self.assertEqual(0, result.returncode, result.stderr)
+AssertionError: 0 != 1 : Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/generate-t13-standards.py", line 533, in <module>
+    generate(Path(sys.argv[1]))
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/generate-t13-standards.py", line 486, in generate
+    data = original_font_variant(number, before, after, inherited)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/generate-t13-standards.py", line 48, in original_font_variant
+    raise ValueError('The original embedded-font qualification field changed')
+ValueError: The original embedded-font qualification field changed
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.195s
+
+FAILED (failures=1)

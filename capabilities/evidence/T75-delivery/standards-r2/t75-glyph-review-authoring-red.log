@@ -1,0 +1,20 @@
+E
+======================================================================
+ERROR: test_glyph_profile_keeps_legal_boundaries_separate_from_unobserved_mappings (test_t13_standards.T13StandardsTest.test_glyph_profile_keeps_legal_boundaries_separate_from_unobserved_mappings)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_standards.py", line 25, in test_glyph_profile_keeps_legal_boundaries_separate_from_unobserved_mappings
+    data = (output / ('fixtures/glyph-boundary-' + kind + '.pdf')).read_bytes()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1021, in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpucmr5he_/controls/fixtures/glyph-boundary-delimiter.pdf'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.052s
+
+FAILED (errors=1)

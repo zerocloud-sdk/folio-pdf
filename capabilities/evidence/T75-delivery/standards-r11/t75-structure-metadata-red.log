@@ -1,0 +1,76 @@
+test_structure_language_and_replacement_metadata_are_text_strings (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_language_and_replacement_metadata_are_text_strings) ... 
+  test_structure_language_and_replacement_metadata_are_text_strings (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_language_and_replacement_metadata_are_text_strings) (metadata='catalog-numeric-language') ... FAIL
+  test_structure_language_and_replacement_metadata_are_text_strings (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_language_and_replacement_metadata_are_text_strings) (metadata='element-name-language') ... FAIL
+  test_structure_language_and_replacement_metadata_are_text_strings (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_language_and_replacement_metadata_are_text_strings) (metadata='element-boolean-language') ... FAIL
+  test_structure_language_and_replacement_metadata_are_text_strings (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_language_and_replacement_metadata_are_text_strings) (metadata='element-name-alternate') ... FAIL
+  test_structure_language_and_replacement_metadata_are_text_strings (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_language_and_replacement_metadata_are_text_strings) (metadata='element-boolean-replacement') ... FAIL
+
+======================================================================
+FAIL: test_structure_language_and_replacement_metadata_are_text_strings (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_language_and_replacement_metadata_are_text_strings) (metadata='catalog-numeric-language')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 31, in test_structure_language_and_replacement_metadata_are_text_strings
+    self.observe(directory, name, self.change(original, number, before, after), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 41, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : catalog-numeric-language: The qualified structure hierarchy has valid child kinds and unique matching parent relationships.
+
+======================================================================
+FAIL: test_structure_language_and_replacement_metadata_are_text_strings (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_language_and_replacement_metadata_are_text_strings) (metadata='element-name-language')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 31, in test_structure_language_and_replacement_metadata_are_text_strings
+    self.observe(directory, name, self.change(original, number, before, after), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 41, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : element-name-language: The qualified structure hierarchy has valid child kinds and unique matching parent relationships.
+
+======================================================================
+FAIL: test_structure_language_and_replacement_metadata_are_text_strings (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_language_and_replacement_metadata_are_text_strings) (metadata='element-boolean-language')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 31, in test_structure_language_and_replacement_metadata_are_text_strings
+    self.observe(directory, name, self.change(original, number, before, after), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 41, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : element-boolean-language: The qualified structure hierarchy has valid child kinds and unique matching parent relationships.
+
+======================================================================
+FAIL: test_structure_language_and_replacement_metadata_are_text_strings (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_language_and_replacement_metadata_are_text_strings) (metadata='element-name-alternate')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 31, in test_structure_language_and_replacement_metadata_are_text_strings
+    self.observe(directory, name, self.change(original, number, before, after), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 41, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : element-name-alternate: The qualified structure hierarchy has valid child kinds and unique matching parent relationships.
+
+======================================================================
+FAIL: test_structure_language_and_replacement_metadata_are_text_strings (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_structure_language_and_replacement_metadata_are_text_strings) (metadata='element-boolean-replacement')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 31, in test_structure_language_and_replacement_metadata_are_text_strings
+    self.observe(directory, name, self.change(original, number, before, after), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 41, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : element-boolean-replacement: The qualified structure hierarchy has valid child kinds and unique matching parent relationships.
+
+----------------------------------------------------------------------
+Ran 1 test in 2.069s
+
+FAILED (failures=5)

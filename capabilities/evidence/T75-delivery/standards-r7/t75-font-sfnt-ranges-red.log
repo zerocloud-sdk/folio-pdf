@@ -1,0 +1,61 @@
+FFFF
+======================================================================
+FAIL: test_truetype_tables_have_valid_tags_ranges_alignment_and_zero_padding (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_truetype_tables_have_valid_tags_ranges_alignment_and_zero_padding) (field='invalid-tag')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 35, in test_truetype_tables_have_valid_tags_ranges_alignment_and_zero_padding
+    self.observe(directory, pdf, 'fail', 'font-program-layout', scope='fonts')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 313, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : invalid-tag.pdf: Embedded CFF and TrueType headers, dictionaries and checked font tables are readable.
+
+======================================================================
+FAIL: test_truetype_tables_have_valid_tags_ranges_alignment_and_zero_padding (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_truetype_tables_have_valid_tags_ranges_alignment_and_zero_padding) (field='unaligned-table')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 35, in test_truetype_tables_have_valid_tags_ranges_alignment_and_zero_padding
+    self.observe(directory, pdf, 'fail', 'font-program-layout', scope='fonts')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 321, in observe
+    self.assertEqual(rule, values['rule'])
+AssertionError: 'font-program-layout' != 'font-program-data'
+- font-program-layout
+?              ^ ---
++ font-program-data
+?              ^  +
+
+
+======================================================================
+FAIL: test_truetype_tables_have_valid_tags_ranges_alignment_and_zero_padding (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_truetype_tables_have_valid_tags_ranges_alignment_and_zero_padding) (field='table-outside-file')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 35, in test_truetype_tables_have_valid_tags_ranges_alignment_and_zero_padding
+    self.observe(directory, pdf, 'fail', 'font-program-layout', scope='fonts')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 321, in observe
+    self.assertEqual(rule, values['rule'])
+AssertionError: 'font-program-layout' != 'font-program-data'
+- font-program-layout
+?              ^ ---
++ font-program-data
+?              ^  +
+
+
+======================================================================
+FAIL: test_truetype_tables_have_valid_tags_ranges_alignment_and_zero_padding (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_truetype_tables_have_valid_tags_ranges_alignment_and_zero_padding) (field='nonzero-padding')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 35, in test_truetype_tables_have_valid_tags_ranges_alignment_and_zero_padding
+    self.observe(directory, pdf, 'fail', 'font-program-layout', scope='fonts')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 313, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : nonzero-padding.pdf: Embedded CFF and TrueType headers, dictionaries and checked font tables are readable.
+
+----------------------------------------------------------------------
+Ran 1 test in 2.333s
+
+FAILED (failures=4)

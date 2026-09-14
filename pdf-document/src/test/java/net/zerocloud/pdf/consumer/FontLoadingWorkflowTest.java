@@ -1721,6 +1721,7 @@ public final class FontLoadingWorkflowTest {
     }
 
     private static ExtractionLimits textLimits() {
+        // Includes the two reference fonts' complete Identity-H tables.
         return ExtractionLimits.builder()
                 .maximumPages(4)
                 .maximumPageTreeNodes(16)
@@ -1730,7 +1731,7 @@ public final class FontLoadingWorkflowTest {
                 .maximumTextItems(16)
                 .maximumUnicodeCodePoints(64)
                 .maximumToUnicodeMappings(64)
-                .maximumFontDataEntries(64)
+                .maximumFontDataEntries(2 * 65536 + 64)
                 .maximumMarkedContentSequences(8)
                 .maximumMarkedContentDepth(4)
                 .maximumStructureElements(8)

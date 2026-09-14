@@ -1,0 +1,44 @@
+FFF
+======================================================================
+FAIL: test_hidden_or_view_dependent_appearances_do_not_supply_qualified_invocation_counts (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_hidden_or_view_dependent_appearances_do_not_supply_qualified_invocation_counts) (appearance_visibility='hidden-appearance-only')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 31, in test_hidden_or_view_dependent_appearances_do_not_supply_qualified_invocation_counts
+    self.observe(directory, name, self.pdf(objects), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 699, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'indeterminate' != 'pass'
+- indeterminate
++ pass
+ : hidden-appearance-only: The qualified structure content references have typed fields and matching ParentTree backlinks.
+
+======================================================================
+FAIL: test_hidden_or_view_dependent_appearances_do_not_supply_qualified_invocation_counts (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_hidden_or_view_dependent_appearances_do_not_supply_qualified_invocation_counts) (appearance_visibility='hidden-appearance-and-page')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 31, in test_hidden_or_view_dependent_appearances_do_not_supply_qualified_invocation_counts
+    self.observe(directory, name, self.pdf(objects), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 699, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'indeterminate' != 'fail'
+- indeterminate
++ fail
+ : hidden-appearance-and-page: A Form with structural MCIDs cannot repeat across declared content entry points
+
+======================================================================
+FAIL: test_hidden_or_view_dependent_appearances_do_not_supply_qualified_invocation_counts (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_hidden_or_view_dependent_appearances_do_not_supply_qualified_invocation_counts) (appearance_visibility='no-view-appearance-and-page')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 31, in test_hidden_or_view_dependent_appearances_do_not_supply_qualified_invocation_counts
+    self.observe(directory, name, self.pdf(objects), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 699, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'indeterminate' != 'fail'
+- indeterminate
++ fail
+ : no-view-appearance-and-page: A Form with structural MCIDs cannot repeat across declared content entry points
+
+----------------------------------------------------------------------
+Ran 1 test in 1.201s
+
+FAILED (failures=3)

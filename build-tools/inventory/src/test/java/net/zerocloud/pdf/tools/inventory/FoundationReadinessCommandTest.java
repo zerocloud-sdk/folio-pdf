@@ -74,7 +74,7 @@ public final class FoundationReadinessCommandTest {
         Result generated = command("generate", fixture.root);
         assertEquals(generated.output, 0, generated.exit);
         String document = read(fixture.root.resolve("docs/generated/foundation-readiness.md"));
-        assertTrue(document, document.contains("**READY**"));
+        assertTrue(document, document.contains("Recorded evidence: **COMPLETE**"));
         assertTrue(document, document.contains("Windows x86-64 and macOS x86-64/arm64 are uncertified"));
         assertTrue(document, document.contains("not required release gates for Foundation 0.1.0"));
         for (String environment : fixture.environmentIds) {
@@ -84,6 +84,125 @@ public final class FoundationReadinessCommandTest {
         assertEquals(current.output, 0, current.exit);
         assertEquals(document, read(fixture.root.resolve("docs/generated/foundation-readiness.md")));
         Files.write(fixture.root.resolve("docs/generated/foundation-readiness.md"), bytes("stale\n"));
+        assertFailure(command("check", fixture.root), "generated documentation is stale");
+    }
+
+    @Test
+    public void completeLargeChainRecordRetainsReadinessAndGeneratedScope() throws Exception {
+        Fixture fixture = fixture(false);
+        String original = read(fixture.root.resolve(fixture.firstChain));
+        String control = (String) map(list(fixture.load(fixture.firstChain), "negative-controls")
+                .get(0)).get("path");
+        StringBuilder padding = new StringBuilder(5_400_000);
+        while (padding.length() < 5_400_000) {
+            padding.append("# Synthetic retained record padding before the actual record tokens.\n");
+        }
+        fixture.text(fixture.firstChain, padding.toString() + original);
+        fixture.refreshFirstChainReference();
+
+        Result ready = command("readiness", fixture.root);
+        assertEquals(ready.output, 0, ready.exit);
+        assertTrue(ready.output, ready.output.contains("SATISFIED sample (#70)"));
+        Result generated = command("generate", fixture.root);
+        assertEquals(generated.output, 0, generated.exit);
+        String document = read(fixture.root.resolve("docs/generated/foundation-readiness.md"));
+        assertTrue(document, document.contains("Recorded evidence: **COMPLETE**"));
+
+        String originalControl = read(fixture.root.resolve(control));
+        fixture.text(control, "Changed retained negative-control bytes.\n");
+        assertFailure(command("readiness", fixture.root),
+                "stale or mismatched artifact identity " + control);
+        fixture.text(control, originalControl);
+        assertTrue(original, original.contains("result: pass"));
+        fixture.text(fixture.firstChain, padding.toString() + original.replace("result: pass", "result: fail"));
+        fixture.refreshFirstChainReference();
+        assertFailure(command("readiness", fixture.root), "missing or mismatched result");
+    }
+
+    @Test
+    public void chainRecordAcceptsExactByteBoundAndRejectsFirstExcess() throws Exception {
+        Fixture fixture = fixture(false);
+        byte[] original = Files.readAllBytes(fixture.root.resolve(fixture.firstChain));
+        byte[] record = new byte[16 * 1024 * 1024];
+        int padding = record.length - original.length;
+        Arrays.fill(record, 0, padding, (byte) ' ');
+        for (int index = 0; index < padding; index += 80) {
+            record[index] = '#';
+            record[Math.min(index + 79, padding - 1)] = '\n';
+        }
+        System.arraycopy(original, 0, record, padding, original.length);
+        Files.write(fixture.root.resolve(fixture.firstChain), record);
+        fixture.refreshFirstChainReference();
+        Result exact = command("readiness", fixture.root);
+        assertEquals(exact.output, 0, exact.exit);
+
+        Files.write(fixture.root.resolve(fixture.firstChain), bytes("\n"),
+                java.nio.file.StandardOpenOption.APPEND);
+        fixture.refreshFirstChainReference();
+        assertFailure(command("readiness", fixture.root), "chain record exceeds 16777216 bytes");
+    }
+
+    @Test
+    public void largeChainRecordBudgetDoesNotExpandTheAuthorityBudget() throws Exception {
+        Fixture fixture = fixture(false);
+        String path = "capabilities/evidence.yaml";
+        String original = read(fixture.root.resolve(path));
+        StringBuilder padding = new StringBuilder(3_000_001);
+        while (padding.length() <= 3_000_000) {
+            padding.append("# Ordinary authorities retain their separate finite parser limit.\n");
+        }
+        fixture.text(path, padding.toString() + original);
+        assertFailure(command("readiness", fixture.root), "exceeds the limit: 3000000 code points");
+    }
+
+    @Test
+    public void generatedReportIsPortableWhileReadinessRequiresActualBuildAndToolInputs() throws Exception {
+        Fixture fixture = fixture(false);
+        fixture.text(".build-cache/tool/runtime.bin", "Synthetic independently observed tool bytes.\n");
+        for (Object certification : list(fixture.evidence, "certifications")) {
+            Map<String, Object> entry = map(certification);
+            String path = (String) map(entry.get("configuration")).get("path");
+            Map<String, Object> configuration = fixture.load(path);
+            list(configuration, "inputs").add(fixture.reference(".build-cache/tool/runtime.bin"));
+            fixture.write(path, configuration);
+            Map<String, Object> reference = fixture.reference(path);
+            entry.put("configuration", reference);
+            List<Object> records = list(entry, "records");
+            for (int index = 0; index < records.size(); index++) {
+                String chainPath = (String) map(records.get(index)).get("path");
+                Map<String, Object> chain = fixture.load(chainPath);
+                chain.put("execution-configuration-sha256", reference.get("sha256"));
+                fixture.write(chainPath, chain);
+                records.set(index, fixture.reference(chainPath));
+            }
+        }
+        fixture.saveEvidence();
+        assertEquals(0, command("readiness", fixture.root).exit);
+        assertEquals(0, command("generate", fixture.root).exit);
+        String document = read(fixture.root.resolve("docs/generated/foundation-readiness.md"));
+
+        Files.delete(fixture.root.resolve("output.jar"));
+        Files.delete(fixture.root.resolve(".build-cache/tool/runtime.bin"));
+        Result missing = command("readiness", fixture.root);
+        assertFailure(missing, "missing evidence/artifact file output.jar");
+        assertFailure(missing, "missing evidence/artifact file .build-cache/tool/runtime.bin");
+        Result portable = command("check", fixture.root);
+        assertEquals(portable.output, 0, portable.exit);
+        assertEquals(0, command("generate", fixture.root).exit);
+        assertEquals(document, read(fixture.root.resolve("docs/generated/foundation-readiness.md")));
+        assertTrue(document, document.contains("Recorded evidence"));
+        assertTrue(document, document.contains("Local candidate artifacts and cached execution inputs require live verification"));
+        assertFalse(document, document.contains("**READY**"));
+
+        fixture.text("output.jar", "Changed product.\n");
+        fixture.text(".build-cache/tool/runtime.bin", "Changed tool.\n");
+        Result changed = command("readiness", fixture.root);
+        assertFailure(changed, "stale or mismatched artifact identity output.jar");
+        assertFailure(changed, "stale or mismatched artifact identity .build-cache/tool/runtime.bin");
+        assertEquals(0, command("check", fixture.root).exit);
+
+        fixture.text(fixture.firstReport, "Changed retained observation.\n");
+        assertFailure(command("readiness", fixture.root), "stale or mismatched artifact identity");
         assertFailure(command("check", fixture.root), "generated documentation is stale");
     }
 
@@ -456,6 +575,10 @@ public final class FoundationReadinessCommandTest {
             Map<String, Object> chain = load(firstChain);
             chain.put(field, value);
             write(firstChain, chain);
+            refreshFirstChainReference();
+        }
+
+        void refreshFirstChainReference() throws Exception {
             list(map(list(evidence, "certifications").get(0)), "records").set(0, reference(firstChain));
             saveEvidence();
         }

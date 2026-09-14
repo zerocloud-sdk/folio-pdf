@@ -1,0 +1,9 @@
+CLEAN — r4 annotations/T12 actual publication only; no open findings.
+
+The Goal requires “Refresh invalidated certifications rather than reusing stale hashes” (original attachment, lines 131–133). T12 requires records to bind actual products, candidate, contract and execution identity, while retaining prior obligations (docs/t12-certification.md:139–145). I verified the original command’s actual exit 0, 2026-09-13T22:22:04.576988Z → 2026-09-14T00:11:36.482684Z, and its complete 13-line publication protocol. All 10 retained command members are byte-exact.
+
+The dated and current authorities contain the exact eight annotations certifications from the unchanged observed-index and preserve the prior forty against their reviewed indexes: 48 entries and 192 PASS records observed. This review binds annotations’ 32 records/reports, eight configurations, eight actual 47-test transcripts, and 84 original BEFORE/AFTER environment files to the sealed raw review. Current staged inputs remain 1,933 sources, 30 contracts, 23 artifacts and 24 harness files on candidate ab18cc9c0473730a6aabec5d12e3172f22bea23a0a0f9529052a2bc186cbfc1b / contract 3de508f79fcbef7258feee8abc013d6f02b000840cac1cb263cb0d6f927b8f2b. Facade execution remains actual IN_PROCESS, as required by T12:64–65.
+
+The 1,486-member raw-review archive and 77-member metadata-publication archive match their originals. Raw rules/RGB were not replayed. Two reader schema diagnostics have preserved originals and separate passing closure; auxiliary display truncation left complete captured files intact. The historical r3 loss of two derived annotation summaries remains disclosed; no recovery is claimed.
+
+Only annotations’ actual exit/publication gate is closed. Consolidated final validation, inventory/index/readiness and delivery approval remain outside this review. No completion criteria were marked and no repository or tracker changes were made.

@@ -1,0 +1,11 @@
+Spec phase2 has one open documentation finding; final approval is deferred.
+
+P2 SPEC-DOC-01 — Goal criterion 19 requires: “Capability Matrix, Facade Surface, Foundation authorities, generated/public English contracts, Chinese usage material and clean-room provenance agree.” Frozen `capabilities/evidence/T75-text-semantic.md:24` says 124 formal public cases. `docs/t13-certification.md:512–514` and all eight actual text transcripts require 126: 115 Native, nine Stable and two artifact cases. Correct 124→126 and independently bind that exact documentation change into the final index. This is outside the source/contract freeze and does not require product recertification.
+
+Against BASE `5b1603c435f11c40368f75b7b9a2777c9c5e9761` and frozen tree `b12a83ab82a0e59425c87fecd16bf317e581adaf`, the complete prior source reviews and all subsequent closures remain traceable. The 1,933 source, 30 contract, 23 artifact and 24 harness identities remain unchanged. All six certifiers, their serial queue and inventory generate/validate/check actually exited zero. Publication contains exactly 48 certifications and 192 PASS records; all six requested obligations are explicitly satisfied. Facade remains observed IN_PROCESS.
+
+I independently compared every changed staged file with its actual Git blob: 272,499 files, 84,651 distinct blobs and 782 retained ignored logs. All baseline paths remain. Six scoped attribute rules preserve original data across 91 matched paths, including 59 diagnosed paths; source checks and product validation remain intact.
+
+No implementation defect or unauthorized scope expansion was found. The known historical exception remains: two derived r3 annotations summaries (55,109/79,646 bytes) were lost; retained certification originals and subsequent independent review do not recover them. Current r4 originals remain complete.
+
+The independent 28-criterion map establishes 24 technical criteria; criterion 19 and final review/delivery criteria 25, 26 and 28 remain pending. Final documentation/artifact staging, both-axis closure, authorized commit/push/issue closure and completion marking remain separate. Overall Foundation readiness and uncertified platforms are not approved.

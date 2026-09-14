@@ -1,0 +1,1401 @@
+{
+  "reviewer": "/root/final_spec",
+  "axis": "Spec",
+  "sealed-utc": "2026-09-13T21:50:26.791814+00:00",
+  "scope": "r4 pages actual outer exit/publication only, and exact preservation of prior text8+transactions8+values8",
+  "baseline": "5b1603c435f11c40368f75b7b9a2777c9c5e9761",
+  "candidate": "ab18cc9c0473730a6aabec5d12e3172f22bea23a0a0f9529052a2bc186cbfc1b",
+  "contract": "3de508f79fcbef7258feee8abc013d6f02b000840cac1cb263cb0d6f927b8f2b",
+  "findings": [],
+  "report": {
+    "path": "report.md",
+    "sha256": "9649bda6776162fdab739ff0f4c8c964bc92f4f0c6e3a389ecf629cde0bd279b",
+    "words": 249
+  },
+  "actual-command": {
+    "command": [
+      "/usr/bin/python3",
+      "scripts/t03-foundation.py",
+      "certify",
+      "capabilities/evidence/T75-foundation-20260914-r4/pages",
+      "--obligation",
+      "pages"
+    ],
+    "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+    "started-utc": "2026-09-13T20:40:58.053611+00:00",
+    "wrapper-pid": 445897,
+    "explicit-environment": {
+      "FOLIO_HARFBUZZ_HELPER": "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/harfbuzz/10.2.0-final/bin/folio-harfbuzz"
+    },
+    "original-log": "/tmp/t75-final-pages-certify-r4.log"
+  },
+  "actual-result": {
+    "command": [
+      "/usr/bin/python3",
+      "scripts/t03-foundation.py",
+      "certify",
+      "capabilities/evidence/T75-foundation-20260914-r4/pages",
+      "--obligation",
+      "pages"
+    ],
+    "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+    "started-utc": "2026-09-13T20:40:58.053611+00:00",
+    "wrapper-pid": 445897,
+    "explicit-environment": {
+      "FOLIO_HARFBUZZ_HELPER": "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/harfbuzz/10.2.0-final/bin/folio-harfbuzz"
+    },
+    "original-log": "/tmp/t75-final-pages-certify-r4.log",
+    "command-pid": 445898,
+    "returncode": 0,
+    "completed-utc": "2026-09-13T21:32:39.398376+00:00"
+  },
+  "complete-original-outer-log-sha256": "9b8367fb317a4ba044a6cf1ae1f141e61782d9b76528ae90e6e62c1592b93627",
+  "actual-outer-log-lines": 13,
+  "actual-original-command-retention": {
+    "path": "/home/ubuntu/IdeaProjects/open-pdf/capabilities/evidence/T75-delivery/final-certification-r4/pages-command.tar.xz",
+    "sha256": "dd74ead73708c454705748d98d197e42852b25abb8c149fab33afc1b3204f681",
+    "original-directory": "/tmp/t75-final-pages-certified-r4-v0ub5lwp",
+    "members": 10,
+    "all-original-members-byte-exact": true
+  },
+  "dated-authority": {
+    "path": "/tmp/t75-final-pages-certified-r4-v0ub5lwp/authority-at-retention.yaml",
+    "sha256": "37956ef550d4bd4a3f94f95496e6c94cf907db1cb395a0d3910227b0625aed36",
+    "exact-subsets": {
+      "text": 8,
+      "transactions": 8,
+      "values": 8,
+      "pages": 8
+    }
+  },
+  "prior-authority": {
+    "path": "/tmp/t75-final-values-certified-r4-sihb0x55/authority-at-retention.yaml",
+    "sha256": "63f73cf7483a2b91fd2fb3bef76024f8f5c9e089e61b2f32f3414528d95234c9",
+    "all-prior24-exactly-preserved": true
+  },
+  "earlier-current-authority-observation": {
+    "scope": "Dated current authority observation; approve pages8 publication and preserve prior24, exclude any later additions",
+    "original": "/home/ubuntu/IdeaProjects/open-pdf/capabilities/foundation-evidence.yaml",
+    "mutable-original-is-not-a-frozen-input": true,
+    "started-utc": "2026-09-13T21:44:51.307195+00:00",
+    "completed-utc": "2026-09-13T21:44:51.308601+00:00",
+    "copy": "originals/authority-current-observation.yaml",
+    "sha256": "37956ef550d4bd4a3f94f95496e6c94cf907db1cb395a0d3910227b0625aed36",
+    "bytes": 417683,
+    "exact-reviewed-subsets": {
+      "text": {
+        "certifications": 8,
+        "own-index-sha256": "1c2417c868e977908834f7405d222435a1692297103766758e6316346d87cb61",
+        "exact": true
+      },
+      "transactions": {
+        "certifications": 8,
+        "own-index-sha256": "cb303cebbf6f50de4a7732ba0c8b5d525ca5a4e607b46802c6db3a7269b496fe",
+        "exact": true
+      },
+      "values": {
+        "certifications": 8,
+        "own-index-sha256": "1d255a5bb55fc6dc7e33b1c68445d1bdbf751327005f22ef36b548beb64203bc",
+        "exact": true
+      },
+      "pages": {
+        "certifications": 8,
+        "own-index-sha256": "287d0e623cd5f11d54731e7307e1f55693c8075c046de9b677c925f4e49337d3",
+        "exact": true
+      }
+    },
+    "observed-authority-counts": {
+      "text": 8,
+      "transactions": 8,
+      "values": 8,
+      "pages": 8
+    },
+    "environment-identity-bindings": [
+      {
+        "profile": "ubuntu-24.04-linux-x86-64-jdk8",
+        "pages-record": {
+          "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-environment/environment.yaml",
+          "sha256": "aee398690b081d7cc38e3aa071c171259797c11b09697867280895a9d3b6ab6e"
+        },
+        "current-authority-reference": {
+          "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-environment/environment.yaml",
+          "sha256": "aee398690b081d7cc38e3aa071c171259797c11b09697867280895a9d3b6ab6e"
+        },
+        "identity-equal": true,
+        "later-obligation-raw-reference-followed": false
+      },
+      {
+        "profile": "ubuntu-24.04-linux-x86-64-jdk11",
+        "pages-record": {
+          "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-environment/environment.yaml",
+          "sha256": "4cba36a0f4a4d1f1c555a137f8be66f89f95d56125bd4d3a646fadddf232d264"
+        },
+        "current-authority-reference": {
+          "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-environment/environment.yaml",
+          "sha256": "4cba36a0f4a4d1f1c555a137f8be66f89f95d56125bd4d3a646fadddf232d264"
+        },
+        "identity-equal": true,
+        "later-obligation-raw-reference-followed": false
+      },
+      {
+        "profile": "ubuntu-24.04-linux-x86-64-jdk17",
+        "pages-record": {
+          "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-environment/environment.yaml",
+          "sha256": "74460071faf2ddb3f8bf6d38461add018a2a3973e214e0099f3b152d0a851374"
+        },
+        "current-authority-reference": {
+          "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-environment/environment.yaml",
+          "sha256": "74460071faf2ddb3f8bf6d38461add018a2a3973e214e0099f3b152d0a851374"
+        },
+        "identity-equal": true,
+        "later-obligation-raw-reference-followed": false
+      },
+      {
+        "profile": "ubuntu-24.04-linux-x86-64-jdk21",
+        "pages-record": {
+          "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-environment/environment.yaml",
+          "sha256": "933a11e7cfc3657e1be2831fbebd04ad66e0949159fe587b11a9331e38b49373"
+        },
+        "current-authority-reference": {
+          "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-environment/environment.yaml",
+          "sha256": "933a11e7cfc3657e1be2831fbebd04ad66e0949159fe587b11a9331e38b49373"
+        },
+        "identity-equal": true,
+        "later-obligation-raw-reference-followed": false
+      }
+    ],
+    "other-obligation-names-observed-but-excluded": [],
+    "other-obligation-raw-or-report-reference-read": false,
+    "candidate": "ab18cc9c0473730a6aabec5d12e3172f22bea23a0a0f9529052a2bc186cbfc1b",
+    "contract": "3de508f79fcbef7258feee8abc013d6f02b000840cac1cb263cb0d6f927b8f2b",
+    "metadata-annotations-or-final48-approved": false,
+    "errors": []
+  },
+  "current-final-authority-observation": {
+    "original": "/home/ubuntu/IdeaProjects/open-pdf/capabilities/foundation-evidence.yaml",
+    "started-utc": "2026-09-13T21:50:26.262557+00:00",
+    "completed-utc": "2026-09-13T21:50:26.264301+00:00",
+    "copy": "originals/authority-at-final-seal.yaml",
+    "sha256": "37956ef550d4bd4a3f94f95496e6c94cf907db1cb395a0d3910227b0625aed36",
+    "bytes": 417683,
+    "exact-known-subsets": {
+      "text": 8,
+      "transactions": 8,
+      "values": 8,
+      "pages": 8
+    },
+    "observed-total-certifications": 32,
+    "other-obligations-excluded": [],
+    "later-obligation-raw-references-followed": false,
+    "mutable-original-not-a-frozen-input": true
+  },
+  "own-pages-index-sha256": "287d0e623cd5f11d54731e7307e1f55693c8075c046de9b677c925f4e49337d3",
+  "actual-staged-input-counts": {
+    "sources": 1933,
+    "contracts": 30,
+    "artifacts": 23,
+    "harness": 24
+  },
+  "actual-configurations": [
+    {
+      "tuple": "jdk8-in_process",
+      "configuration": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-in_process/execution.yaml",
+        "sha256": "5debf08056e3af680ea07a86e07453ebc57113f688c5cc72fa8a74488b714e62"
+      },
+      "contract-argv-sha256": "5df1bc6ab1286fc0a0e964244ac48dd9e2c4a1332b6affdead92640e32718e29",
+      "recorder-command-field": "execution.yaml:command",
+      "actual-Native-profile": "IN_PROCESS",
+      "actual-Facade-mode": "IN_PROCESS",
+      "unchanged-complete-command-review": "/tmp/t75-final-spec-r4-pages-eight-85hw4hxz/complete-config-and-index-inspection.json"
+    },
+    {
+      "tuple": "jdk8-hardened_worker",
+      "configuration": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-hardened_worker/execution.yaml",
+        "sha256": "5d74cd788083d765fba2280aab34af531703f4a2aa01b37393ada1a3d7b148ba"
+      },
+      "contract-argv-sha256": "0c22d837ed5589a51f567b6c214e316f0e56d474cc1ad71bb7255c94094b65a3",
+      "recorder-command-field": "execution.yaml:command",
+      "actual-Native-profile": "HARDENED_WORKER",
+      "actual-Facade-mode": "IN_PROCESS",
+      "unchanged-complete-command-review": "/tmp/t75-final-spec-r4-pages-eight-85hw4hxz/complete-config-and-index-inspection.json"
+    },
+    {
+      "tuple": "jdk11-in_process",
+      "configuration": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-in_process/execution.yaml",
+        "sha256": "de95bca04982a4c35d9b9ca50442b54506f5a974a51a2b5e00b47138d4729dfd"
+      },
+      "contract-argv-sha256": "8a58a6e07671a60d747f97b6344f64005f6ba774d2daec0e28d0076cde63154d",
+      "recorder-command-field": "execution.yaml:command",
+      "actual-Native-profile": "IN_PROCESS",
+      "actual-Facade-mode": "IN_PROCESS",
+      "unchanged-complete-command-review": "/tmp/t75-final-spec-r4-pages-eight-85hw4hxz/complete-config-and-index-inspection.json"
+    },
+    {
+      "tuple": "jdk11-hardened_worker",
+      "configuration": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-hardened_worker/execution.yaml",
+        "sha256": "5d1a5530224b1844b2bc521c6ff1ffa1604d6ac7ce4904b13baf51c159b82267"
+      },
+      "contract-argv-sha256": "ccc1a92a1ab707173c2299ddfddb44c2a12b19b34756be1ebe169c6f17e7363b",
+      "recorder-command-field": "execution.yaml:command",
+      "actual-Native-profile": "HARDENED_WORKER",
+      "actual-Facade-mode": "IN_PROCESS",
+      "unchanged-complete-command-review": "/tmp/t75-final-spec-r4-pages-eight-85hw4hxz/complete-config-and-index-inspection.json"
+    },
+    {
+      "tuple": "jdk17-in_process",
+      "configuration": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-in_process/execution.yaml",
+        "sha256": "6cb7852857600e362fd505b1941b58237f36991e0fe61866f87faf842239af3e"
+      },
+      "contract-argv-sha256": "808ffb1ec4267fd6d8873d807f6b447bbf9d0942635400738756243c03fd865e",
+      "recorder-command-field": "execution.yaml:command",
+      "actual-Native-profile": "IN_PROCESS",
+      "actual-Facade-mode": "IN_PROCESS",
+      "unchanged-complete-command-review": "/tmp/t75-final-spec-r4-pages-eight-85hw4hxz/complete-config-and-index-inspection.json"
+    },
+    {
+      "tuple": "jdk17-hardened_worker",
+      "configuration": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-hardened_worker/execution.yaml",
+        "sha256": "3c14305b78d449f602b17b537870156fc7cf1f9e542132ce431ba4658e74011a"
+      },
+      "contract-argv-sha256": "f81aa37a5687a615c69c7e1d3aec5f67e3ff0e390049e9b41ed37ffae29abb63",
+      "recorder-command-field": "execution.yaml:command",
+      "actual-Native-profile": "HARDENED_WORKER",
+      "actual-Facade-mode": "IN_PROCESS",
+      "unchanged-complete-command-review": "/tmp/t75-final-spec-r4-pages-eight-85hw4hxz/complete-config-and-index-inspection.json"
+    },
+    {
+      "tuple": "jdk21-in_process",
+      "configuration": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-in_process/execution.yaml",
+        "sha256": "44a0601da2ba432663d649709bf58c79e9bd652b2f9924da1351121f46462942"
+      },
+      "contract-argv-sha256": "e1b7bb302caa5b83e08202b9e0bda77daad9f961974250c155dbb46414f434c8",
+      "recorder-command-field": "execution.yaml:command",
+      "actual-Native-profile": "IN_PROCESS",
+      "actual-Facade-mode": "IN_PROCESS",
+      "unchanged-complete-command-review": "/tmp/t75-final-spec-r4-pages-eight-85hw4hxz/complete-config-and-index-inspection.json"
+    },
+    {
+      "tuple": "jdk21-hardened_worker",
+      "configuration": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-hardened_worker/execution.yaml",
+        "sha256": "f31befac55bee330b5df30ee37d54789d90e7d75eaa2e447e154be01d26fd79d"
+      },
+      "contract-argv-sha256": "c270750b260c0bd3b85feb5f3a82b193b8242fbdbf90dbc58b88de7586f11d5a",
+      "recorder-command-field": "execution.yaml:command",
+      "actual-Native-profile": "HARDENED_WORKER",
+      "actual-Facade-mode": "IN_PROCESS",
+      "unchanged-complete-command-review": "/tmp/t75-final-spec-r4-pages-eight-85hw4hxz/complete-config-and-index-inspection.json"
+    }
+  ],
+  "actual-records-and-report-bindings": [
+    {
+      "tuple": "jdk8-in_process",
+      "chain": "syntax",
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-in_process/syntax.yaml",
+        "sha256": "7993dc411ff12c30fd53d0a8608a643e8d507ff08b0df65a683473f6ffc9ca14"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-in_process/syntax-report.json",
+        "sha256": "19a1ec2c4d1a01e74934a2d7d7e42b46e016d7b2bde34b391e5f29d3c6e630f8"
+      },
+      "qualified-raw-details-replayed": false
+    },
+    {
+      "tuple": "jdk8-in_process",
+      "chain": "standards",
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-in_process/standards.yaml",
+        "sha256": "2d49cc52a1b007114e1208f776cd39c323d0f2836c0c0f6ccf80c67dc28424c3"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-in_process/standards-report.json",
+        "sha256": "8ce833945d3272c62bd8ea17855f1c2bff7e1002da1ea6a2b42e415a76e7c025"
+      },
+      "qualified-raw-details-replayed": false
+    },
+    {
+      "tuple": "jdk8-in_process",
+      "chain": "semantic",
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-in_process/semantic.yaml",
+        "sha256": "4920e5e4ed9f637b68b19f597762dfd8f464aa40acd07d36b61cd3eaf9127813"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-in_process/semantic-report.json",
+        "sha256": "36856f6ba7d273abe96aa4ef52e2ab92f78abc4bb24c95a7a90110bac2bf93e0"
+      },
+      "qualified-raw-details-replayed": false
+    },
+    {
+      "tuple": "jdk8-in_process",
+      "chain": "visual",
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-in_process/visual.yaml",
+        "sha256": "a588d211990c23d3f0cc8bdd577b48d0928553fb1396bdeccf1b3563eb53bf66"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-in_process/visual-report.json",
+        "sha256": "70eddfc4eff453b81b29d964cc1e60c46c443699f561aba1a1efc6b5a2fa08cb"
+      },
+      "qualified-raw-details-replayed": false
+    },
+    {
+      "tuple": "jdk8-hardened_worker",
+      "chain": "syntax",
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-hardened_worker/syntax.yaml",
+        "sha256": "89fff7ce8cd72186fe984504843482f2fb6fd64dbc98fd0c5b14ecb7df4db448"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-hardened_worker/syntax-report.json",
+        "sha256": "d3c935accb9c39e720795283c4641f00fc6adf3a35b1a5ed770a2d61695ec9b9"
+      },
+      "qualified-raw-details-replayed": false
+    },
+    {
+      "tuple": "jdk8-hardened_worker",
+      "chain": "standards",
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-hardened_worker/standards.yaml",
+        "sha256": "7eccd71d2532db4410d917502f1de7ceea941779f04d080d9cf8b29f83c81013"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-hardened_worker/standards-report.json",
+        "sha256": "82ef72310d5269c8e510898eb4501d2426fb85d5a6e705fde32bf094de82a0bf"
+      },
+      "qualified-raw-details-replayed": false
+    },
+    {
+      "tuple": "jdk8-hardened_worker",
+      "chain": "semantic",
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-hardened_worker/semantic.yaml",
+        "sha256": "4fbea357df1932733524a93ccffbe18058ef13285a44911f62496227b9b4ddb3"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-hardened_worker/semantic-report.json",
+        "sha256": "226816912097bf589ab56bb7a3f011ce954437d5167cc71c8c1e5273bf0bb20d"
+      },
+      "qualified-raw-details-replayed": false
+    },
+    {
+      "tuple": "jdk8-hardened_worker",
+      "chain": "visual",
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-hardened_worker/visual.yaml",
+        "sha256": "1be68f06893dde20718bd4985488b39780e8bcd150b431696c462f58e0d57404"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-hardened_worker/visual-report.json",
+        "sha256": "a73636087f98d9152c1565e74318790c0374d83070d28db305436b95bafb2738"
+      },
+      "qualified-raw-details-replayed": false
+    },
+    {
+      "tuple": "jdk11-in_process",
+      "chain": "syntax",
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-in_process/syntax.yaml",
+        "sha256": "cfca42c5ed6adc94075aa60d224c2c893707f714e54d31b60cc0530e26d7ad5f"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-in_process/syntax-report.json",
+        "sha256": "b1ff5e7839e5c3189305150a8fd66b809a3419b52e97895bdbfe6ad328257e92"
+      },
+      "qualified-raw-details-replayed": false
+    },
+    {
+      "tuple": "jdk11-in_process",
+      "chain": "standards",
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-in_process/standards.yaml",
+        "sha256": "75a2b846b23c3cffeb114a3b4c602f7d23c9c24b1c37aeb9dc1748cd3e13954c"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-in_process/standards-report.json",
+        "sha256": "8045b78353fd5535c882f62c39a595125137976b6011a3d77906824bce2539aa"
+      },
+      "qualified-raw-details-replayed": false
+    },
+    {
+      "tuple": "jdk11-in_process",
+      "chain": "semantic",
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-in_process/semantic.yaml",
+        "sha256": "d50bbd504b1fe23f52273e0f9d07cd3f5cbf734fdf3a7f80f57bcbe96d482a8d"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-in_process/semantic-report.json",
+        "sha256": "a6a1d8481d06473ca7e08ca72f3243467ec4fdab06655cab75b6f760183e452e"
+      },
+      "qualified-raw-details-replayed": false
+    },
+    {
+      "tuple": "jdk11-in_process",
+      "chain": "visual",
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-in_process/visual.yaml",
+        "sha256": "25e7928af8326c5095d84c58051c61bee854aaf0acffc14d026e7ea86a2aa4d5"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-in_process/visual-report.json",
+        "sha256": "17305cfe1d383b02b66016b4b44e34a2977f1dff5ac6249251ddde4c70341adb"
+      },
+      "qualified-raw-details-replayed": false
+    },
+    {
+      "tuple": "jdk11-hardened_worker",
+      "chain": "syntax",
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-hardened_worker/syntax.yaml",
+        "sha256": "30a89dc9cef1cd0d5f996c8bc1b8ea0469b9e04a9fbc01b6ddbe8fb8be64dddd"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-hardened_worker/syntax-report.json",
+        "sha256": "ff3b61a39decffff2104d9c3ac87a9663df7dc0a63f025f79dcea35d77c5aaa4"
+      },
+      "qualified-raw-details-replayed": false
+    },
+    {
+      "tuple": "jdk11-hardened_worker",
+      "chain": "standards",
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-hardened_worker/standards.yaml",
+        "sha256": "3be4b01d2c6e539540089201f5aba7e6bf29a26d839ba2e6117bbd41dd168ad7"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-hardened_worker/standards-report.json",
+        "sha256": "04ca38877870684fc9a999b924d9b71dcfe626ac4214b432cd36f1127588e44c"
+      },
+      "qualified-raw-details-replayed": false
+    },
+    {
+      "tuple": "jdk11-hardened_worker",
+      "chain": "semantic",
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-hardened_worker/semantic.yaml",
+        "sha256": "1b3401a075ead23566f573f73b597cd8350b5d923dae7ab51f989376e156415b"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-hardened_worker/semantic-report.json",
+        "sha256": "e99b4591b94da340bcaccbc6c3a3e71d24271ba4c7b902f37456d8193971cde1"
+      },
+      "qualified-raw-details-replayed": false
+    },
+    {
+      "tuple": "jdk11-hardened_worker",
+      "chain": "visual",
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-hardened_worker/visual.yaml",
+        "sha256": "3b84a5204837859bd4546909dd4481c6448b20dd57c2ba2d702d10e112c5e068"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-hardened_worker/visual-report.json",
+        "sha256": "8156546f8815c9203932e69360344b5be4b2360ddb63e7858f50b9262d26d016"
+      },
+      "qualified-raw-details-replayed": false
+    },
+    {
+      "tuple": "jdk17-in_process",
+      "chain": "syntax",
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-in_process/syntax.yaml",
+        "sha256": "2565c4c5681c7bf5e7aa98e95bf1257bec191b66072f8869ca0c149a9d818146"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-in_process/syntax-report.json",
+        "sha256": "ba6713a5b96e63298c2db6f192be3b4cf567fb32b3d89ebf92d1e62a632e846e"
+      },
+      "qualified-raw-details-replayed": false
+    },
+    {
+      "tuple": "jdk17-in_process",
+      "chain": "standards",
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-in_process/standards.yaml",
+        "sha256": "10911627f379a03500d4dcd09b13b94cf48562cd6d4ed6821301fb4b6edbc9fb"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-in_process/standards-report.json",
+        "sha256": "808b4a176fb18d25fe61fd2b71e8058ea27f6798870f28ad1f2bd635b17f305a"
+      },
+      "qualified-raw-details-replayed": false
+    },
+    {
+      "tuple": "jdk17-in_process",
+      "chain": "semantic",
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-in_process/semantic.yaml",
+        "sha256": "bc1c8f6f1bd30fde5c05a8e37f4649cdc2075244c89dc37800203f4fc58faa4f"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-in_process/semantic-report.json",
+        "sha256": "007349ee62b98236727a89bd64a95178d08e74f7a00453a2d3faec1da2460288"
+      },
+      "qualified-raw-details-replayed": false
+    },
+    {
+      "tuple": "jdk17-in_process",
+      "chain": "visual",
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-in_process/visual.yaml",
+        "sha256": "34d190252ee0b292c9977bc0628e8db6b9cfddfe761eae6398c146a50f4754c7"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-in_process/visual-report.json",
+        "sha256": "66f51e4bbdab1e9ca8743fd576656a530613babc8162cea8538dfaa8dbbd7177"
+      },
+      "qualified-raw-details-replayed": false
+    },
+    {
+      "tuple": "jdk17-hardened_worker",
+      "chain": "syntax",
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-hardened_worker/syntax.yaml",
+        "sha256": "4d19ce1662f3c5e0526736f0feb06d011f3702f31020977c7cab1aef41d7ad66"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-hardened_worker/syntax-report.json",
+        "sha256": "7b050cdb5414f0d4aa958a76069c7a922f092b225309ffb5dd68a061a21d1241"
+      },
+      "qualified-raw-details-replayed": false
+    },
+    {
+      "tuple": "jdk17-hardened_worker",
+      "chain": "standards",
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-hardened_worker/standards.yaml",
+        "sha256": "c5d38245c6e0840d2a080b26148f0b159cb1519d50ecb7fb21de144dc011c03a"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-hardened_worker/standards-report.json",
+        "sha256": "962b6ec0db5f958a6a0b5482bf327c65e8a060f3cccc960d717f7a8950fff2a0"
+      },
+      "qualified-raw-details-replayed": false
+    },
+    {
+      "tuple": "jdk17-hardened_worker",
+      "chain": "semantic",
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-hardened_worker/semantic.yaml",
+        "sha256": "4b35fd4fde875928ecfc0eba455457307fec1b1c48fdfc1e8768cb42a7411db3"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-hardened_worker/semantic-report.json",
+        "sha256": "59e2c3df381d13a67f20fd608100a3b11d55510e9faef98f5774ccb26c3ea218"
+      },
+      "qualified-raw-details-replayed": false
+    },
+    {
+      "tuple": "jdk17-hardened_worker",
+      "chain": "visual",
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-hardened_worker/visual.yaml",
+        "sha256": "304efea49e0344b429ca6d864d4905868bea7639ac7f1a77bba5099751dc7346"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-hardened_worker/visual-report.json",
+        "sha256": "1bd44c4130675b534df192dc21e99dfaf6b8e87c3dd60ed33bc1166ae2cb84bc"
+      },
+      "qualified-raw-details-replayed": false
+    },
+    {
+      "tuple": "jdk21-in_process",
+      "chain": "syntax",
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-in_process/syntax.yaml",
+        "sha256": "d8092c95ab58d76138db0ac753851a34bf3345679ee9c352cc0bd59cada39639"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-in_process/syntax-report.json",
+        "sha256": "e7446343e2fcb25b9593e4bf93bf61c28e5b3791b436dcabd9583611bf3f5660"
+      },
+      "qualified-raw-details-replayed": false
+    },
+    {
+      "tuple": "jdk21-in_process",
+      "chain": "standards",
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-in_process/standards.yaml",
+        "sha256": "cafa333a02c6d4d41c3496e5521cc16386ecba2c366012536d9454565d169134"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-in_process/standards-report.json",
+        "sha256": "809d2458a7b056c8c0f69030492ffe179f5e6f05904ceb0061e353738c0d5fb8"
+      },
+      "qualified-raw-details-replayed": false
+    },
+    {
+      "tuple": "jdk21-in_process",
+      "chain": "semantic",
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-in_process/semantic.yaml",
+        "sha256": "9ff7030dcb232960177770dcc4503ebf447f06f5026202f3aee33a19c4f0472b"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-in_process/semantic-report.json",
+        "sha256": "5f7f245e5840b556374acc6838f64683f58f1b8ca811cf09f32763360fb7ec56"
+      },
+      "qualified-raw-details-replayed": false
+    },
+    {
+      "tuple": "jdk21-in_process",
+      "chain": "visual",
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-in_process/visual.yaml",
+        "sha256": "95992c2e401d0944de3c783d6289f0629057576c24e8422eedd5aac1a69885b7"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-in_process/visual-report.json",
+        "sha256": "5f193ccaa982c9f3bd87f3513f1ef9676bab5df697dc8a1c425b3a0620266cf1"
+      },
+      "qualified-raw-details-replayed": false
+    },
+    {
+      "tuple": "jdk21-hardened_worker",
+      "chain": "syntax",
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-hardened_worker/syntax.yaml",
+        "sha256": "bbc90b527ea9fcf34988cf2abbe8776f296670a2e2c98c2f54d244d27924ea89"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-hardened_worker/syntax-report.json",
+        "sha256": "1fb79c6887775cb40157451e211892cc77addbf62a89497767125eb39fb461b6"
+      },
+      "qualified-raw-details-replayed": false
+    },
+    {
+      "tuple": "jdk21-hardened_worker",
+      "chain": "standards",
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-hardened_worker/standards.yaml",
+        "sha256": "90ce6159901dd047689157bbbf8e06f39adde27280cfe202211caf267d51af9f"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-hardened_worker/standards-report.json",
+        "sha256": "ae10765413ca722b50d991119ae47bbafa98e8a99f6ab6891fb2cfd785e5181e"
+      },
+      "qualified-raw-details-replayed": false
+    },
+    {
+      "tuple": "jdk21-hardened_worker",
+      "chain": "semantic",
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-hardened_worker/semantic.yaml",
+        "sha256": "034033cbd3eb9161338e238b295ee46b116d5cc4500ba0bf3ab9c1322410cfee"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-hardened_worker/semantic-report.json",
+        "sha256": "87f2cb8cec959633af8e92aa20bf176b3157f216ffab882be8bee385405e98fd"
+      },
+      "qualified-raw-details-replayed": false
+    },
+    {
+      "tuple": "jdk21-hardened_worker",
+      "chain": "visual",
+      "record": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-hardened_worker/visual.yaml",
+        "sha256": "373ba0844dd6799fb48880cd58a3c02d1a53304b85205661b750430a44d415a4"
+      },
+      "report": {
+        "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-hardened_worker/visual-report.json",
+        "sha256": "900cbee3b120c1199072505a94a4ab2c9606ed668af7498947a87181b422807b"
+      },
+      "qualified-raw-details-replayed": false
+    }
+  ],
+  "actual-formal-suites": [
+    {
+      "tuple": "jdk8-in_process",
+      "tests": 65,
+      "seconds": 4.419,
+      "sha256": "f36766c0a10c049e971f4cb621a986f5e04f0e272fdae911b576bc897172ade1",
+      "actual-Native-mode": "IN_PROCESS",
+      "actual-Facade-mode": "IN_PROCESS"
+    },
+    {
+      "tuple": "jdk8-hardened_worker",
+      "tests": 65,
+      "seconds": 129.378,
+      "sha256": "0d97b245f60a027e99030aefc0fb2d81823cde81d6dc5258eaee4d7c7ed2b18a",
+      "actual-Native-mode": "HARDENED_WORKER",
+      "actual-Facade-mode": "IN_PROCESS"
+    },
+    {
+      "tuple": "jdk11-in_process",
+      "tests": 65,
+      "seconds": 4.638,
+      "sha256": "b47cfe0f2c79f07765324ceae92ef7220dee8bde01e8a1a34d900f3131670769",
+      "actual-Native-mode": "IN_PROCESS",
+      "actual-Facade-mode": "IN_PROCESS"
+    },
+    {
+      "tuple": "jdk11-hardened_worker",
+      "tests": 65,
+      "seconds": 116.632,
+      "sha256": "169b4959326cc1544e48af8ab546c631bbbec1f6a0f37def9b19417a4a248211",
+      "actual-Native-mode": "HARDENED_WORKER",
+      "actual-Facade-mode": "IN_PROCESS"
+    },
+    {
+      "tuple": "jdk17-in_process",
+      "tests": 65,
+      "seconds": 3.736,
+      "sha256": "97c11c892497f39ef2964056488850497a85618561a44c1960fda21608fecb30",
+      "actual-Native-mode": "IN_PROCESS",
+      "actual-Facade-mode": "IN_PROCESS"
+    },
+    {
+      "tuple": "jdk17-hardened_worker",
+      "tests": 65,
+      "seconds": 105.376,
+      "sha256": "8f432c1a64b531b35942a071a3d4b263c57c9806bd9cfbfc29db8cd25708d2c6",
+      "actual-Native-mode": "HARDENED_WORKER",
+      "actual-Facade-mode": "IN_PROCESS"
+    },
+    {
+      "tuple": "jdk21-in_process",
+      "tests": 65,
+      "seconds": 4.048,
+      "sha256": "51ff97c1038be23ef5e412708bae0a89a1ec30e9c115f7af44c75c8970e335e1",
+      "actual-Native-mode": "IN_PROCESS",
+      "actual-Facade-mode": "IN_PROCESS"
+    },
+    {
+      "tuple": "jdk21-hardened_worker",
+      "tests": 65,
+      "seconds": 112.384,
+      "sha256": "4efe10a45d08447f1c349868ab36110a7487529cfc2a34c142993f740f1fb4a8",
+      "actual-Native-mode": "HARDENED_WORKER",
+      "actual-Facade-mode": "IN_PROCESS"
+    }
+  ],
+  "all84-observed-environment-identities": [
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-environment/architecture.txt",
+      "bytes": 7,
+      "sha256": "aaf631698ae5160ceb04a97681a14887fdcab47cd6e0f163c87485b3b1340b62"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-environment/environment.yaml",
+      "bytes": 4527,
+      "sha256": "aee398690b081d7cc38e3aa071c171259797c11b09697867280895a9d3b6ab6e"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-environment/image-digest.txt",
+      "bytes": 72,
+      "sha256": "392abb88f40d4c3f70046fc7e42cee8977c3484f605408540a1e4698cfac454d"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-environment/invocation.json",
+      "bytes": 1569,
+      "sha256": "1f12a8e95c474c2bd9cad6c5976742f5c8a50f9a02d0c01b3d829beeb662b038"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-environment/java-executable.txt",
+      "bytes": 93,
+      "sha256": "8c8150aa3521a9104c157e3ad79ea5dfac8668ef2e728add0473e69a7d60a400"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-environment/java-version.txt",
+      "bytes": 2501,
+      "sha256": "501edc130c99bc0c793e2912d2acfe3aac70f959bbeba782c534a2518fe38f6c"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-environment/jdk-release.txt",
+      "bytes": 483,
+      "sha256": "250579a790b2abfd0e03eb9672d80d8977366fc5ba48ed6e7fd0573c0bc471a1"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-environment/kernel.txt",
+      "bytes": 18,
+      "sha256": "3f304f8abf0bfb751a91e4aabc5c5bbfe8579da1d36b6e3f485054bfdfeafda9"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-environment/native-observation.json",
+      "bytes": 65134,
+      "sha256": "37bae4b9776f9934dddefb1ad689c371fd06bf0c80bc6ab1698c3ed73ec80f68"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-environment/observer.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-environment/os-release.txt",
+      "bytes": 400,
+      "sha256": "01af466feb100306498c86aa6bad1815e33036019aa34d4362c20f374ea5c829"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-environment-after/architecture.txt",
+      "bytes": 7,
+      "sha256": "aaf631698ae5160ceb04a97681a14887fdcab47cd6e0f163c87485b3b1340b62"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-environment-after/image-digest.txt",
+      "bytes": 72,
+      "sha256": "392abb88f40d4c3f70046fc7e42cee8977c3484f605408540a1e4698cfac454d"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-environment-after/invocation.json",
+      "bytes": 1587,
+      "sha256": "64ca45acadcfeb1555e5671864c026ebfb8acf5adea7737e873bece38df8512d"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-environment-after/java-executable.txt",
+      "bytes": 93,
+      "sha256": "8c8150aa3521a9104c157e3ad79ea5dfac8668ef2e728add0473e69a7d60a400"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-environment-after/java-version.txt",
+      "bytes": 2501,
+      "sha256": "501edc130c99bc0c793e2912d2acfe3aac70f959bbeba782c534a2518fe38f6c"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-environment-after/jdk-release.txt",
+      "bytes": 483,
+      "sha256": "250579a790b2abfd0e03eb9672d80d8977366fc5ba48ed6e7fd0573c0bc471a1"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-environment-after/kernel.txt",
+      "bytes": 18,
+      "sha256": "3f304f8abf0bfb751a91e4aabc5c5bbfe8579da1d36b6e3f485054bfdfeafda9"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-environment-after/native-observation.json",
+      "bytes": 65134,
+      "sha256": "a357efbf8360f8607fde24676a8428ae0c9b260cbeccfb83278acc46e4c5e417"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-environment-after/observer.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk8-environment-after/os-release.txt",
+      "bytes": 400,
+      "sha256": "01af466feb100306498c86aa6bad1815e33036019aa34d4362c20f374ea5c829"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-environment/architecture.txt",
+      "bytes": 7,
+      "sha256": "aaf631698ae5160ceb04a97681a14887fdcab47cd6e0f163c87485b3b1340b62"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-environment/environment.yaml",
+      "bytes": 4525,
+      "sha256": "4cba36a0f4a4d1f1c555a137f8be66f89f95d56125bd4d3a646fadddf232d264"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-environment/image-digest.txt",
+      "bytes": 72,
+      "sha256": "ce093c61f169c0f8c3bfb339203173db75d24dd1d482b9b488f11ebb9ff816db"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-environment/invocation.json",
+      "bytes": 1572,
+      "sha256": "257d0692f28d009302ac65de4a0541b944d3eeb4976eed0bb5bbb718573bb4bb"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-environment/java-executable.txt",
+      "bytes": 93,
+      "sha256": "93f074c858c78fc68d6b0662031c45d74cc70a28983a28216babb84a1969e7fb"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-environment/java-version.txt",
+      "bytes": 2128,
+      "sha256": "daaaed9143f9fe2f97c561b23c6341a9fe1981eec49dc078a0ccb1442f271b74"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-environment/jdk-release.txt",
+      "bytes": 1635,
+      "sha256": "835f68e0d43e3a6a676c461cc57ea76cc36b36c6a036f41408f53593c4f51be0"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-environment/kernel.txt",
+      "bytes": 18,
+      "sha256": "3f304f8abf0bfb751a91e4aabc5c5bbfe8579da1d36b6e3f485054bfdfeafda9"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-environment/native-observation.json",
+      "bytes": 65134,
+      "sha256": "d8f3b892ba2536aa78e357a549435a9347b78993668334e296ac8f65b7fb1727"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-environment/observer.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-environment/os-release.txt",
+      "bytes": 400,
+      "sha256": "01af466feb100306498c86aa6bad1815e33036019aa34d4362c20f374ea5c829"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-environment-after/architecture.txt",
+      "bytes": 7,
+      "sha256": "aaf631698ae5160ceb04a97681a14887fdcab47cd6e0f163c87485b3b1340b62"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-environment-after/image-digest.txt",
+      "bytes": 72,
+      "sha256": "ce093c61f169c0f8c3bfb339203173db75d24dd1d482b9b488f11ebb9ff816db"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-environment-after/invocation.json",
+      "bytes": 1590,
+      "sha256": "d48554bfb69211fcea1b684048a4f714c7a46ab14352f994b48fa2e896389ad2"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-environment-after/java-executable.txt",
+      "bytes": 93,
+      "sha256": "93f074c858c78fc68d6b0662031c45d74cc70a28983a28216babb84a1969e7fb"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-environment-after/java-version.txt",
+      "bytes": 2128,
+      "sha256": "daaaed9143f9fe2f97c561b23c6341a9fe1981eec49dc078a0ccb1442f271b74"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-environment-after/jdk-release.txt",
+      "bytes": 1635,
+      "sha256": "835f68e0d43e3a6a676c461cc57ea76cc36b36c6a036f41408f53593c4f51be0"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-environment-after/kernel.txt",
+      "bytes": 18,
+      "sha256": "3f304f8abf0bfb751a91e4aabc5c5bbfe8579da1d36b6e3f485054bfdfeafda9"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-environment-after/native-observation.json",
+      "bytes": 65134,
+      "sha256": "f487859e4d37fcad6ae22ce216cb475788edc89deda5aabae2f6f7e663bd938d"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-environment-after/observer.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk11-environment-after/os-release.txt",
+      "bytes": 400,
+      "sha256": "01af466feb100306498c86aa6bad1815e33036019aa34d4362c20f374ea5c829"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-environment/architecture.txt",
+      "bytes": 7,
+      "sha256": "aaf631698ae5160ceb04a97681a14887fdcab47cd6e0f163c87485b3b1340b62"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-environment/environment.yaml",
+      "bytes": 4525,
+      "sha256": "74460071faf2ddb3f8bf6d38461add018a2a3973e214e0099f3b152d0a851374"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-environment/image-digest.txt",
+      "bytes": 72,
+      "sha256": "59ec785f601ca19052119e2895dfb6b9b33672619d301dce4c14f293882f8d95"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-environment/invocation.json",
+      "bytes": 1572,
+      "sha256": "74e2fc727988b59c80a74e56a51e26879eb2914ff450d3387898ab3384aeb934"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-environment/java-executable.txt",
+      "bytes": 93,
+      "sha256": "362498da5aeb7e12f764e7b980383204c5ae22870267fb2ceca2e687a28095a7"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-environment/java-version.txt",
+      "bytes": 1933,
+      "sha256": "fce0b46667d018c0c6fa3ab4032d64ac50645144422edcde4ffd5e5a0d84ce42"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-environment/jdk-release.txt",
+      "bytes": 1626,
+      "sha256": "9bba1dfe6fa144a9ed37833b4b3443ab803c41618612b772bdc7330027469346"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-environment/kernel.txt",
+      "bytes": 18,
+      "sha256": "3f304f8abf0bfb751a91e4aabc5c5bbfe8579da1d36b6e3f485054bfdfeafda9"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-environment/native-observation.json",
+      "bytes": 65134,
+      "sha256": "333189b4fd2f70e63462b96a8da25b2ffbd3af58fec110912777d7bdea6b39c1"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-environment/observer.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-environment/os-release.txt",
+      "bytes": 400,
+      "sha256": "01af466feb100306498c86aa6bad1815e33036019aa34d4362c20f374ea5c829"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-environment-after/architecture.txt",
+      "bytes": 7,
+      "sha256": "aaf631698ae5160ceb04a97681a14887fdcab47cd6e0f163c87485b3b1340b62"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-environment-after/image-digest.txt",
+      "bytes": 72,
+      "sha256": "59ec785f601ca19052119e2895dfb6b9b33672619d301dce4c14f293882f8d95"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-environment-after/invocation.json",
+      "bytes": 1590,
+      "sha256": "c52fbb2b308712382534b1402e7f1c526e18397a66ac2d31d4082c78208d9732"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-environment-after/java-executable.txt",
+      "bytes": 93,
+      "sha256": "362498da5aeb7e12f764e7b980383204c5ae22870267fb2ceca2e687a28095a7"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-environment-after/java-version.txt",
+      "bytes": 1933,
+      "sha256": "fce0b46667d018c0c6fa3ab4032d64ac50645144422edcde4ffd5e5a0d84ce42"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-environment-after/jdk-release.txt",
+      "bytes": 1626,
+      "sha256": "9bba1dfe6fa144a9ed37833b4b3443ab803c41618612b772bdc7330027469346"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-environment-after/kernel.txt",
+      "bytes": 18,
+      "sha256": "3f304f8abf0bfb751a91e4aabc5c5bbfe8579da1d36b6e3f485054bfdfeafda9"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-environment-after/native-observation.json",
+      "bytes": 65134,
+      "sha256": "ac3f72a29b3d4e3db1e831002677d06d56c3ad7f311c2639284553eebfdacf44"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-environment-after/observer.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk17-environment-after/os-release.txt",
+      "bytes": 400,
+      "sha256": "01af466feb100306498c86aa6bad1815e33036019aa34d4362c20f374ea5c829"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-environment/architecture.txt",
+      "bytes": 7,
+      "sha256": "aaf631698ae5160ceb04a97681a14887fdcab47cd6e0f163c87485b3b1340b62"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-environment/environment.yaml",
+      "bytes": 4529,
+      "sha256": "933a11e7cfc3657e1be2831fbebd04ad66e0949159fe587b11a9331e38b49373"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-environment/image-digest.txt",
+      "bytes": 72,
+      "sha256": "c10e2e3f11519ac052f4d7926caebd202c3aeae08570bc08d88acf2e4aa02e33"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-environment/invocation.json",
+      "bytes": 1572,
+      "sha256": "ad317d088c0399b110d4a7721b0499728308e4ec0b4f78c25ef4b1566ab15a8b"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-environment/java-executable.txt",
+      "bytes": 93,
+      "sha256": "6c948ae0c724730fa20139c0660678739e153b419b5e9d31db65941d9b930b35"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-environment/java-version.txt",
+      "bytes": 1962,
+      "sha256": "9a78849a90c6987c31d05e4155274e21dd1768b743d6f4de8cb3295e22ccc01d"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-environment/jdk-release.txt",
+      "bytes": 1616,
+      "sha256": "95831ab52b5291e8df70cb96cd3693171d462f2740949f05f5c03a51eb3a92fa"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-environment/kernel.txt",
+      "bytes": 18,
+      "sha256": "3f304f8abf0bfb751a91e4aabc5c5bbfe8579da1d36b6e3f485054bfdfeafda9"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-environment/native-observation.json",
+      "bytes": 65134,
+      "sha256": "652b10121fdf07dbabaecd140612a73f91e31cad1e067d16546e842783c6bfef"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-environment/observer.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-environment/os-release.txt",
+      "bytes": 400,
+      "sha256": "01af466feb100306498c86aa6bad1815e33036019aa34d4362c20f374ea5c829"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-environment-after/architecture.txt",
+      "bytes": 7,
+      "sha256": "aaf631698ae5160ceb04a97681a14887fdcab47cd6e0f163c87485b3b1340b62"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-environment-after/image-digest.txt",
+      "bytes": 72,
+      "sha256": "c10e2e3f11519ac052f4d7926caebd202c3aeae08570bc08d88acf2e4aa02e33"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-environment-after/invocation.json",
+      "bytes": 1590,
+      "sha256": "1b84f3c98e1af6b740691d331b6e74b4bbeffed7aaf0037f3ed206c79336be5f"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-environment-after/java-executable.txt",
+      "bytes": 93,
+      "sha256": "6c948ae0c724730fa20139c0660678739e153b419b5e9d31db65941d9b930b35"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-environment-after/java-version.txt",
+      "bytes": 1962,
+      "sha256": "9a78849a90c6987c31d05e4155274e21dd1768b743d6f4de8cb3295e22ccc01d"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-environment-after/jdk-release.txt",
+      "bytes": 1616,
+      "sha256": "95831ab52b5291e8df70cb96cd3693171d462f2740949f05f5c03a51eb3a92fa"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-environment-after/kernel.txt",
+      "bytes": 18,
+      "sha256": "3f304f8abf0bfb751a91e4aabc5c5bbfe8579da1d36b6e3f485054bfdfeafda9"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-environment-after/native-observation.json",
+      "bytes": 65134,
+      "sha256": "c2bf1a88b6675dd107ffcc5e1d336498de06b1124632cec8236f777b59cb8f4f"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-environment-after/observer.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/pages/jdk21-environment-after/os-release.txt",
+      "bytes": 400,
+      "sha256": "01af466feb100306498c86aa6bad1815e33036019aa34d4362c20f374ea5c829"
+    }
+  ],
+  "all-four-BEFORE-AFTER-equal-and-byte-unchanged": true,
+  "actual-Facade-mode": "IN_PROCESS",
+  "closed-raw-review": {
+    "original": "/tmp/t75-final-spec-r4-pages-eight-85hw4hxz",
+    "report-sha256": "b5b10b3604ebb0f5ccf58249b61ac1dd121c966dac471dad5c2a32a5e3e452bf",
+    "receipt-sha256": "83a4e6db500919570eefa5d19388f25cb90b5c70cd1d096a9f5a5bda7d2bc9cf",
+    "manifest-sha256": "a24ee8db95ee652bb38d49981aba7548d80bd594001440c27d9fbf50338da7ec",
+    "archive": {
+      "path": "/home/ubuntu/IdeaProjects/open-pdf/capabilities/evidence/T75-delivery/certification-review-r4/pages-eight-tuples-spec.tar.xz",
+      "sha256": "fe70a77740b6d7885f9a84eb532472286f938f42de5ab98c2c4274ab4f4ffe2f",
+      "original-directory": "/tmp/t75-final-spec-r4-pages-eight-85hw4hxz",
+      "members": 1149,
+      "all-original-members-byte-exact": true
+    },
+    "raw-rule-or-RGB-replayed": false,
+    "raw-deferred-report-unchanged": true
+  },
+  "closed-prior-publications": [
+    {
+      "obligation": "text",
+      "original-directory": "/tmp/t75-final-spec-r4-text-publication-qr473m_z",
+      "report-sha256": "7c904da466cd5ffa3618fa4f2b28291b3898aba21260c2577d96d94d1d275f08",
+      "receipt-sha256": "78c5e2b5c593bdfac465d3ba192f58ea7d189561d00324870399125d0337ad30",
+      "own-index-sha256": "1c2417c868e977908834f7405d222435a1692297103766758e6316346d87cb61",
+      "closed-prior-approvals": [
+        "text-eight-actual-outer-exit",
+        "text-eight-authority-publication"
+      ],
+      "current-raw-details-replayed": false
+    },
+    {
+      "obligation": "transactions",
+      "original-directory": "/tmp/t75-final-spec-r4-transactions-publication-i1nh1gtr",
+      "report-sha256": "146ac5ef8bafb7c16dbd01fdaedce0fc9ed9f4ff90f30d750bbb7c41347e856e",
+      "receipt-sha256": "6c37100dd56159f0b4e8bcd803ca4d77eb36354e563a6c240db07855058c6122",
+      "own-index-sha256": "cb303cebbf6f50de4a7732ba0c8b5d525ca5a4e607b46802c6db3a7269b496fe",
+      "closed-prior-approvals": [
+        "transactions-actual-outer-exit",
+        "transactions-eight-exact-publication",
+        "existing-text-eight-preservation"
+      ],
+      "current-raw-details-replayed": false
+    },
+    {
+      "obligation": "values",
+      "original-directory": "/tmp/t75-r4-values-publication-spec-fbsksqo5",
+      "report-sha256": "e733e01b73e1134b1601c5e3cd7a66202a7992400b56aecf32b5a4bf85cd57fa",
+      "receipt-sha256": "34b25acd8a8ac5883cfdfbcb48aa83f4a23d67c1bc1f176565037af51a0169cf",
+      "own-index-sha256": "1d255a5bb55fc6dc7e33b1c68445d1bdbf751327005f22ef36b548beb64203bc",
+      "closed-prior-approvals": [
+        "values-actual-outer-exit",
+        "values-eight-exact-publication",
+        "existing-text-eight-and-transactions-eight-preserved"
+      ],
+      "current-raw-details-replayed": false
+    }
+  ],
+  "archive-retention-inspection": {
+    "path": "retained-archive-verification-identities.json",
+    "sha256": "8cbad2ffd51e73a4bb37f3156513f5bc9a69724ddb1d2a4243d4da1cdba4ffae"
+  },
+  "completed-components": [
+    {
+      "path": "actual-publication-schema-v3-inspection.json",
+      "sha256": "7deac5b162c4a366725b0dfe15a0234625dc9b0588a43f12f33bfb0556a6a1d2"
+    },
+    {
+      "path": "pre-execution-reader-preparation.json",
+      "sha256": "2cd7b85b6e1e389666db7f634c9a1e3a539d13c9502edefa68e161fd7dee3c44"
+    },
+    {
+      "path": "publication-root-schema-preparation.json",
+      "sha256": "d0d14c896a9ef701a3eed9517d87a2a431acfdaeaa2697e9e2a3e504fe62075c"
+    },
+    {
+      "path": "actual-publication-inspection.json",
+      "sha256": "7976e9e022949d57a90442ad8e86f119d8b3304609846b980b2ac30944ff9ab2"
+    },
+    {
+      "path": "current-authority-inspection.json",
+      "sha256": "7e7033b664bc0869b4f3c09e738b66cb6e44b4bc3ff3684ad0813a9dbdad7443"
+    }
+  ],
+  "actual-original-reader-results": [
+    {
+      "name": "schema",
+      "actual-exit": 1,
+      "script-sha256": "5ad7788e75771a6a97e271d6734ffb229870f0d1295618e3f72eed4fc4ecaae2",
+      "command-sha256": "377d08d782b6fefe35d866346e484ddf658ea59d740c3afe0e01dab08f1f19f7",
+      "result-sha256": "06058908808476a3b3d2e0898c5ffc422a0124b3c4dba328991a49447ef26fe9",
+      "stdout-sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr-sha256": "d44d14456d04fe9c9fbadf97c3d695cf9fe0c9df84484f7cbe089aed6d10ac2d"
+    },
+    {
+      "name": "schema-v2",
+      "actual-exit": 1,
+      "script-sha256": "a447cbe2e2ee73541171ccad935627e911953419dfe55cb922d19f2e669c76bd",
+      "command-sha256": "bae72619e7e477bfbfbb839f24762691f7a6c3dcec4582b5a87b23daa4830099",
+      "result-sha256": "b322089d39bca21fd223ec0942920e53aaca13e31f97ce0a33031aa2e36ee63f",
+      "stdout-sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr-sha256": "10bec8416290a9743d6b48852ddbe50c8d3106195a5795901e298606b4662f81"
+    },
+    {
+      "name": "schema-v3",
+      "actual-exit": 0,
+      "script-sha256": "ab4650906c2746bc5911a8322bc5e1db4539639105bd1ff4cc8114e1f9d8524b",
+      "command-sha256": "af61f4b57125f9fc22e143629da1b3e43cbd34cd6238c671d24b1daaf099f4e4",
+      "result-sha256": "a850485983d564844a8bf3e60711a2636915544884da7d2acf3fc498d3c3f064",
+      "stdout-sha256": "754ad753f82397ef8926f7b5da2c90da82b3408fc5ae2c584d8d6b90efd2f574",
+      "stderr-sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "prepare-publication-reader",
+      "actual-exit": 0,
+      "script-sha256": "185dd6ea8b80f9ba62e1d3e993b30fee09c4f0e3da57c8916dde5f6450d3a341",
+      "command-sha256": "ddbf67df8691d21bcd86d43ecd6a81fa55e883a2a216e60715a071cb01ae2b85",
+      "result-sha256": "63a057db41f9ecbd36f9f0612027a208b53d066e8730aa3412cee3e2617b1b3b",
+      "stdout-sha256": "7f0115786657adbd7503b54d8c69eeafaf0fbab94a668c72555360a9ade74bc8",
+      "stderr-sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "publication-v2",
+      "actual-exit": 1,
+      "script-sha256": "b1ad1b0449a959e9af1eabe76115182325e2303f6655fdc4e37afcfd5b5c1150",
+      "command-sha256": "9db41287fbda1eeae814da2f8fa819dfb087c8cb9b86003e241fab3687ed37a7",
+      "result-sha256": "e478f46517c0286f925b7c9a9a7b47c731472f5aeac702ef031c72ac20d986d3",
+      "stdout-sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr-sha256": "06b155d61c607a5336446cc83aad1b181d1ba3f368d1f0307184566cf0b99e74"
+    },
+    {
+      "name": "prepare-publication-v3",
+      "actual-exit": 0,
+      "script-sha256": "bd3eb2143333d34f46be30df12e8713ea4640add7ad2d3b3433f5b3471697a72",
+      "command-sha256": "583a5cbd1211fb0ceca27078e053ee4c4f3c5e91e4580e93c456a40e11c68679",
+      "result-sha256": "43de3e01f687213e3ba717036996aa76e6c024aadc35bf080172102d8b76d0d1",
+      "stdout-sha256": "f1429d8e2c8ab5b21274a1ab103b54fc5e2f28bcc6518c8e927be04650c92e10",
+      "stderr-sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "publication-v3",
+      "actual-exit": 0,
+      "script-sha256": "a3ac406de438e9c6dbbbd56d5059d2fa0cd7c894468a5aa6bece71b31b56b89c",
+      "command-sha256": "bb02b45aa4bfb702fd1f92eacc7b642763eb47263aa27d08879488fef78f6013",
+      "result-sha256": "c18aaed9072bfa3bd0725556e627680309f33dfe79b11031300571d204d3aa3e",
+      "stdout-sha256": "a5a7453ecf4365c8f3092cc4f2fae72e29e1893964158448d9f25ac9feffb350",
+      "stderr-sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "current-authority",
+      "actual-exit": 0,
+      "script-sha256": "f2048657a47737ff475cb55ff137a2aaec98cdc0a1989881148652b5f614c4fe",
+      "command-sha256": "b0b024d55d58697242bae0f18a6b107b072a406f9afefba41636b43fb504add2",
+      "result-sha256": "90bc56a5eb692dda50cce1024aaa0d9bd9f085f7a17793e06d936ec7824e9464",
+      "stdout-sha256": "d6c131f4c4c8db860805ecebb1b791c67eadbaa2cae0116c10b6db1471fd3c8c",
+      "stderr-sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "current-finalizer-envelope": "The wrapper retains this finalizer complete command/stdout/stderr/actual result after it exits; the final manifest is created afterward.",
+  "reader-diagnostics": {
+    "original-failed-readers": 3,
+    "closed": 3,
+    "unresolved": [],
+    "closures": [
+      "schema-diagnostic-closure.json",
+      "publication-root-schema-diagnostic-closure.json"
+    ],
+    "pre-execution-draft-adjustment": "pre-execution-reader-preparation.json",
+    "fresh-inspection-not-recovered-original-output": true,
+    "original-scripts-results-stdout-stderr-or-partial-copies-overwritten": false,
+    "certification-original-loss": false,
+    "historical-r3-annotations-derived-summary-loss": "Original historical disclosure remains; no lost bytes are claimed recovered."
+  },
+  "complete-inspected-input-catalog": {
+    "path": "complete-inspected-input-identities.json",
+    "sha256": "a6ed6c26938f2733231b750b36e288cbe8962f38d0cd34c756f631e805766382",
+    "unique-input-observations": 3966,
+    "immutable-inputs-rechecked": 3965,
+    "mutable-authority-observations-are-dated-snapshots": true
+  },
+  "selected-original-copies": {
+    "files": 417,
+    "bytes": 21419819,
+    "whole-live-raw-tree-duplicated": false,
+    "original-failed-reader-partial-copies-preserved": true
+  },
+  "approvals": {
+    "pages-actual-outer-exit": true,
+    "pages-eight-exact-publication": true,
+    "existing-text8-transactions8-values8-preservation": true,
+    "metadata-or-annotations": false,
+    "all48-inventory-index-delivery": false,
+    "completion-criteria-marked": false
+  },
+  "raw-rule-or-RGB-replayed": false,
+  "five-file-inventory-source-review-repeated": false,
+  "repository-mutations": false,
+  "project-executions": false,
+  "retention": "Every output uses exclusive /tmp creation. Archive manifest excludes only itself and includes the completed finalizer command/output/result. Previously sealed raw packets remain unchanged."
+}

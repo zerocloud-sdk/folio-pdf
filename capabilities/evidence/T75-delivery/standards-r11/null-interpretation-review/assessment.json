@@ -1,0 +1,31 @@
+{
+  "scope": "Normative interpretation of optional StructTreeRoot/K and StructElem/K null only; no product changes or conformance completion claim.",
+  "recommendation": "Do not qualify direct /K null as an authoritative negative. For the hierarchy-only predicate, interpret direct or indirect null as absent when K is optional. /K [null] (and array references resolving to null) remain definite negatives.",
+  "general-rule": {
+    "local-source": "/tmp/PDF32000_2008.txt",
+    "sha256": "e8200d8937ccd68e7565bbec3db4f6505df60b721ba5e292be3acc4273f444bf",
+    "clauses": [
+      "7.3.7, lines1492-1494",
+      "7.3.9, lines1674-1677"
+    ],
+    "public-PDF2-confirmation": "https://github.com/pdf-association/pdf-issues/issues/157",
+    "meaning": "Null-valued dictionary entries are semantically equivalent to omission; the rule does not erase array elements."
+  },
+  "specific-rule": {
+    "source": "https://pdf-issues.pdfa.org/32000-2-2020/clause14.html#Table354",
+    "Table354": "K remains optional; its supplied child value or array members may not be null. The added word Values can be read as broader than array membership, creating possible tension with 7.3.7/7.3.9.",
+    "Table355": "K remains optional; actual children may not be null. No explicit exception to dictionary null-as-absence is stated."
+  },
+  "intent-evidence": {
+    "issue": "https://github.com/pdf-association/pdf-issues/issues/308",
+    "status": "Closed; ISO approved",
+    "summary": "The approved issue is framed specifically around null array elements. Its author distinguishes a null inside an array from a null array value, and the July2023 summary scopes the prohibitions to array elements.",
+    "comments": [
+      "https://github.com/pdf-association/pdf-issues/issues/308#issuecomment-1623471613",
+      "https://github.com/pdf-association/pdf-issues/issues/308#issuecomment-1633391489"
+    ]
+  },
+  "uncertainty": "Public sources support preserving the general optional-entry semantics, but no explicit adjudication of the final Table354 wording versus 7.3.9 was found. Therefore the direct-null FAIL oracle is not securely established; the result should not be described as an authoritative ruling on all PDF2 structural conformance.",
+  "tests": "Retain optional K absent/null equivalence as a positive hierarchy-only comparison, add root and element array-null failures, and keep required-entry-null failures because required absence is invalid. Separate rules may make omission invalid in a larger tagged-PDF context.",
+  "implementation-consequence": "No new raw dictionary parser is justified merely to enforce the disputed direct-null negative. qpdf omission is compatible with general dictionary semantics."
+}

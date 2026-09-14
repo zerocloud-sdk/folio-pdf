@@ -2333,3 +2333,420 @@ readiness findings. The repository-only Markdown now uses relative paths. An
 original synthetic relocation test exercises the public generate/check/readiness
 commands and preserves the stale-evidence diagnosis and NOT READY result after
 moving the checkout.
+
+## T75 extraction certification record
+
+OpenAI Codex authored the #75 implementation increments, original synthetic PDF
+fixtures, command-boundary regressions and documentation at the repository
+operator's direction. The fixed baseline is
+`5b1603c435f11c40368f75b7b9a2777c9c5e9761`. Delivery requires the final
+candidate's certification and validation gates; the user's subsequent
+instruction authorizes a DCO commit, push and closure only after those pass.
+Independent Codex reviewers inspected Standards and Spec; their reviews are
+implementation checks, not external acceptance-tool evidence.
+
+Inputs include issues #1, #33, #71 and #75 and their available comments,
+`CONTEXT.md`, the repository contribution/inventory/domain contracts, ADRs 0013,
+0016, 0017, 0020, 0023, 0024, 0025, 0029, 0035 and 0040, the existing project-owned
+T13 implementation and fixtures, and the T03/T09/T10/T11/T12 certification
+patterns. The existing baseline CI failure and local/clean-archive reproductions
+are retained in `capabilities/evidence/T75-delivery/`.
+
+Public standards references are Adobe's authorized
+[ISO 32000-1:2008](https://opensource.adobe.com/dc-acrobat-sdk-docs/pdfstandards/PDF32000_2008.pdf),
+including §§7.9.7, 9, 14.6, 14.7 and 14.9, and the PDF Association's public
+[PDF 2.0 document-interchange errata](https://pdf-issues.pdfa.org/32000-2-2020/clause14.html).
+Namespace dictionary field kinds and indirect-reference requirements were
+cross-checked against the PDF Association's Apache-2.0 Arlington model
+[`Namespace.tsv`](https://github.com/pdf-association/arlington-pdf-model/blob/master/tsv/latest/Namespace.tsv),
+[`RoleMapNS.tsv`](https://github.com/pdf-association/arlington-pdf-model/blob/master/tsv/latest/RoleMapNS.tsv)
+and [`ArrayOf_RoleMapNS.tsv`](https://github.com/pdf-association/arlington-pdf-model/blob/master/tsv/latest/ArrayOf_RoleMapNS.tsv).
+The Association's [Logical Structure Objects](https://pdfa.org/download-area/cheat-sheets/LogicalStructureObjects.pdf)
+and [Standard Structure Elements](https://pdfa.org/download-area/cheat-sheets/StandardStructureElements.pdf)
+cheat sheets supplied cross-checks of object relationships and the two standard
+role sets. These references supplied facts; no model files, example objects or
+cheat-sheet artwork were copied into runtime or fixtures. The public
+[WTPDF 1.0](https://pdfa.org/wp-content/uploads/2024/02/Well-Tagged-PDF-WTPDF-1.0.pdf)
+and [EA-PDF 1.0](https://pdfa.org/download-area/specifications/EA-PDF-v1.pdf)
+were consulted only as corroborating guidance; their additional conformance
+requirements do not define this extraction Query.
+The Association's CC-BY-4.0
+[Deriving HTML from PDF 1.0, §4.3.2](https://pdfa.org/download-area/specifications/Deriving_HTML_from_PDF.pdf)
+corroborates stopping extraction role resolution at a supported explicit
+namespace. [PDF issues discussion 65](https://github.com/pdf-association/pdf-issues/issues/65#issuecomment-820584433)
+clarifies the default-namespace destination. A search-indexed excerpt of
+Adobe's public ISO 32000-2 draft Table 356 was consulted; its direct PDF URL
+returned 404, so this record does not claim the complete draft or final standard
+was read. Final base-standard wording for every transitive namespace return
+remains unverified; the contract records bounded unresolved extraction separately
+from conformance.
+The pinned Apache-2.0 PDFBox/FontBox 3.0.8 source archives already in the local
+dependency cache were inspected for pre-construction safety and metric flow:
+`PDType3Font`, `PDFStreamEngine`, `CMap`, `CMapParser`, `PDFont`, `PDType0Font`,
+`PDFontFactory`, `PDCIDFont`, `COSStream` and `COSString`. The same pinned FontBox archive's `Identity-H`
+and `Identity-V` resources were read to establish exact construction charges;
+their Adobe three-clause BSD notices were inspected in place. The same archive's
+`Adobe-Japan1-UCS2` resource and notice were inspected for the named-parent
+case: 284,124 bytes, 23,058 declared source mappings and one codespace, counted
+from the pinned data independently of the product parser. The four Adobe
+CNS1/GB1/Japan1/Korea1 UCS2 resources remain in their existing licensed dependency.
+No resource was copied into the repository. Independent Spec review also read
+Adobe's published
+[`Adobe-CNS1-7/cid2code.txt`](https://github.com/adobe-type-tools/cmap-resources/blob/master/Adobe-CNS1-7/cid2code.txt),
+[`Adobe-GB1-6/cid2code.txt`](https://github.com/adobe-type-tools/cmap-resources/blob/master/Adobe-GB1-6/cid2code.txt),
+[`Adobe-Japan1-7/cid2code.txt`](https://github.com/adobe-type-tools/cmap-resources/blob/master/Adobe-Japan1-7/cid2code.txt)
+and
+[`Adobe-Korea1-2/cid2code.txt`](https://github.com/adobe-type-tools/cmap-resources/blob/master/Adobe-Korea1-2/cid2code.txt).
+Their explicit Unicode values independently establish full-carry boundary
+mappings in the predefined resources (CIDs 12106, 4918, 21991 and 1238,
+respectively); they are distinct from the inline PDF ToUnicode final-byte rule.
+Only facts and original fixtures were used; no mapping table was copied into
+runtime or the repository. Adobe's public
+[Technical Note 5014, Adobe CMap and CIDFont Files Specification](https://adobe-type-tools.github.io/font-tech-notes/pdfs/5014.CIDFont_Spec.pdf)
+(the inspected PDF is dated June 1993), its
+[CMap resource repository](https://github.com/adobe-type-tools/cmap-resources),
+and the PDF Association's
+[PDF 2.0 text errata](https://pdf-issues.pdfa.org/32000-2-2020/clause09.html#9.10.3)
+supplied inheritance and predefined-resource facts. The fixed 61 Encoding
+names were transcribed from ISO 32000-1 Table 118; every referenced parent is
+also in that set. Original development code independently counted their
+decoded bytes, nodes, codespaces, CID and notdef source cardinalities from the
+pinned archive, with the resulting fact table retained under T75-delivery.
+Specific 83pv-RKSJ and 90ms-RKSJ mappings supply independently specified CID
+metric observations, including the vertical override for source 8141.
+Technical Note 5014 §§5.3, 5.4 and 7.3 supplied codespace-domain, inheritance
+and declaration-order requirements. Original independent reviewer probes
+contrast valid mixed-length mappings with out-of-domain and ambiguous sources;
+they also check shared CID width-table construction against literal entry
+budgets. Their output is retained under `T75-delivery/encoding-independent-review`.
+No resource program was copied into runtime or the repository. ISO §9.7.3
+establishes Registry/Ordering compatibility without Supplement equality, and
+§§9.7.4.2–3 and 9.7.6.2–3 distinguish CID metrics from glyph substitution;
+substitute-renderer equivalence remains outside this declared-metric profile.
+Apache's
+[PDFBOX-6251](https://issues.apache.org/jira/browse/PDFBOX-6251) corroborates a
+CID-range inheritance defect in the pinned dependency; it is not a normative
+standard and no dependency update has been made. This is permitted
+dependency-source review, distinct from the iText API inventory references.
+Public iText Core 7.2.6 API documentation was consulted for inventory/member
+shapes only: `PdfTextExtractor`, `PdfDocument`, `TextRenderInfo`,
+`IStructureNode`, `PdfStructElem`, `PdfStructTreeRoot`, `PdfMcr`, `PdfObjRef`
+and `PdfNamespace`, beneath `https://api.itextpdf.com/iText/java/7.2.6/`.
+The matching Facade contract records its exact member and return adaptations.
+Its six implemented members delegate to the existing public Native Query.
+Facade tests reuse the original T13 deterministic, tagged role/language and
+depth-boundary fixture conventions, with original malformed-page, uncertainty
+and caller-stream controls. Independent Standards review and independent
+Stable/Preview public Spec probes found no Facade implementation defect;
+those reports remain implementation evidence, not tool qualification.
+
+New fixtures use original authored PDF dictionaries, streams and literal
+expectations, including Form/annotation relationships and malformed graph
+controls. They are project contributions under Apache-2.0. No copied or adapted
+iText implementation, source, resources, fixtures, binary-derived behavior,
+non-public material or proprietary add-on material was used or inspected. No
+new product runtime dependency has been introduced; existing runtime pins and
+Java 8 compatibility remain binding. Acceptance additions are identified below.
+
+Historical T13 evidence is preserved with its original bytes and status in
+`T75-delivery/historical-T13-text-logical-structure.md`. The updated profile and
+four chain indices bind the qualified scope; actual candidate and environment
+certification is governed by `capabilities/foundation-evidence.yaml`.
+Implementation and qualification history alone supplies neither final
+eight-environment certification nor global Foundation readiness.
+
+Final source review also reconciled Native appearance handling with the already
+qualified independent structure controls. New original public Workflow cases
+cover omitted/null optional StmOwn, normal AP roots without their own structure
+items, actual nested Do page associations, and whole Form OBJRs reached through
+appearances. A separate cross-page control requires an OBJR for every page
+reached through normal appearances, while same-page repeats and a merely
+declared uninvoked resource retain their distinct behavior.
+ISO 32000-1 Table 324 and §§14.7.4.2–14.7.4.3 define the ownership,
+internal-MCID and whole-object distinctions. Direct annotation ownership stays
+separate from a descendant's page association; no owner identity is fabricated.
+The original failed candidate, compilation attempts and actual public RED/GREEN
+observations are retained as development history, not completed certification.
+
+Full verification also exposed pre-T75 font-data budgets in existing consumer
+tests and acceptance observers. Their bounded observation allowances now include
+the complete Identity-H tables for the selected font dictionaries: two for the
+font/layout fixtures, eight for the four command-local shaping font pairs, and
+one shared Session font for the barcode labels. Existing product FontLimits,
+CompositionLimits, output expectations and unrelated extraction bounds remain
+intact. Original full-build and acceptance failures, the public two-mode probe
+and subsequent regressions are retained as revalidation history. The probe's
+separate zero-bound controls cover ToUnicode mapping entries and decoded bytes.
+
+Actual JDK 8 Worker certification exposed a cumulative test-method deadline:
+one original negative-state test started sixteen independent Workflows under
+one ten-second JUnit guard. The same staged artifacts reproduced that timeout
+three times. Original public-seam timing observations showed fourteen Page
+Workflows finishing near the deadline, while the two isolated Form Workflows
+returned their expected safe failures promptly. The original scenarios are
+now split into three independently guarded text-object, graphics/positioning
+and Form tests. All sixteen Workflows, eight original fixtures, repeated safe
+failure assertions, Source byte checks and ten-second method guards remain.
+The complete text contract therefore requires 115 Native cases plus nine
+Facade and two artifact cases. No product policy, runtime implementation or
+dependency changed. Original failed certification, diagnostic source copies
+and focused RED/GREEN records remain development evidence; the changed test
+and contract identities require fresh candidate certification.
+
+The original `scripts/generate-t13-corpus.py` reuses only the project's T10/T11
+PDF, PNG and properties serializers. Its Type3 rectangle glyph, split source
+token, Form placements, tagged relationships, replacement/language values and
+literal pixel grids are new Apache-2.0 project data. They contain no third-party
+font or renderer-derived expectation. Independent Spec review consulted the
+PDF Association's [Annex L matrix](https://www.pdfa.org/norm-refs/ISO32000-2_AnnexL_matrix-version072024.pdf)
+and the public Table 355 errata when correcting the original positive structure.
+The reviewer's clearly labeled source transcription is retained; direct PDF
+downloads returned HTTP 403 and no original Annex L PDF hash is claimed.
+The original qpdf graph observer and negative controls reuse the project's
+external-process/recording patterns and the already pinned qpdf distribution.
+They import no Folio parser or generator, and the graph expectation is the
+independent original Source. Complete public result expectations are authored
+separately. Qualified development-host visual and semantic observations are
+retained under `T75-delivery`; final-environment certification is a separate
+mandatory gate under the T13 contract.
+
+`scripts/generate-t13-fonts.py` authors the original TrueType, name-keyed CFF and
+CID-keyed CFF resources under `capabilities/profiles/T13-fonts`. They contain
+only an empty `.notdef` and a 400 by 600 unit rectangle, all widths 500. Font
+outlines, naming and character collection are original Apache-2.0 project data.
+The existing MIT-licensed fontTools 4.59.2 authoring tool and reviewed wheel are
+reused; its original license bytes were verified against the checked notice.
+Its FontBuilder/cffLib public implementation and API were consulted from the
+pinned source. No tool or font is added to product runtime. The TrueType `post`
+fixed-pitch definition was checked in Microsoft's public
+[OpenType post specification](https://learn.microsoft.com/en-us/typography/opentype/spec/post);
+font and PDF metadata now explicitly identify these equal-width fonts.
+
+The direct-CMap reference PDF was authored with the project serializer and these
+original font bytes, before the direct-font Folio product observation. Pinned
+PDFium CLI v0.11.2/chromium-7881 renders its frozen reference PNG so font smoothing
+has a defined reference; neither the reference PDF nor its geometry comes from
+Folio. The original mathematical ink rectangles remain separately specified.
+Primary raster comparison remains exact; the new font-only secondary bound is
+the independently calculated one-pixel boundary shell around seven rectangles.
+The inherited-CMap case retains its independent standards/semantic obligations.
+Its earlier renderer failures remain historical INDETERMINATE observations,
+not passing visual evidence or a certified rendering claim.
+
+The T13 acceptance-only Arlington supplement is original project-authored
+Apache-2.0 work against the already reviewed upstream commit
+`fe4a1a8897ec07f674c73160c35d748b29052f8f` and archive. It reuses the existing
+PDFium SDK shim and static Expat setup. Sources for the new font and CMap
+predicates are ISO 32000-1 §§9.7.4.3, 9.8.1 and 9.10.3, Adobe Technical Note
+5014, and the PDF Association's approved
+[PDF 2.0 Table 120 correction](https://pdf-issues.pdfa.org/32000-2-2020/clause09.html#9.8.1).
+That correction makes FontName optional for Type3 and requires it to match
+a supplied owning Name. The original marked corpus now supplies both names;
+its previously unnamed legal form remains a qualification positive. All source
+and observer identities are refreshed when this original fixture changes.
+The new pin is separate from the earlier T03/T09/T10/T11/T12 pins. Tool source,
+patch replay, original controls and actual results are development qualification
+evidence; none introduces a product runtime dependency or global conformance claim.
+
+Subsequent original Arlington changes qualify simple-font Widths cardinality,
+missing/null required fields and the current 334-rule PDF 2.0 declaration union.
+They use the pinned model, ISO 32000-1 font tables and original isolated controls.
+The legacy PDF 1.7 conditional-required findings remain preserved and unqualified.
+
+The separate `scripts/t13-program-standards.py` observer is original Apache-2.0
+acceptance code over the existing pinned qpdf 12.4.0 executable and Python
+standard library for CMaps. It imports no Folio implementation or fixture
+generator. Its CMap rules were authored from ISO 32000-1 §§7.3.10,
+9.7.5, 9.7.6 and 9.10.3, Adobe Technical Note 5014 §§5.1, 5.3, 5.4 and 7.3,
+and the official
+[PostScript Language Reference, third edition](https://www.adobe.com/jp/print/postscript/pdfs/PLRM.pdf)
+§3.2 and Table 5.18. PostScript names and comment termination are distinguished
+from PDF dictionary lexing. Ten project-owned review fixtures retain the
+independent reviewers' original probes, with exact SHA-256 identities and
+Apache-2.0 provenance under `T13-standards/review-fixtures`. Raw initial and
+corrected observations remain in T75 delivery evidence. This initial CMap
+qualification preceded the font, content and structure scopes described below;
+the complete current bounded profile is fixed by the T13 certification contract.
+Final candidate certification remains a separate mandatory gate.
+
+The observer's font scope reuses the existing MIT-licensed fontTools 4.59.2
+wheel as a binary reader, separately from the authoring command. The exact wheel
+SHA-256 is `8bd0f759020e87bb5d323e6283914d9bf4ae35a7307dafb2cbd1e379e720ad37`;
+version, import location, before/after wheel bytes and Python optimization level
+are recorded. Optimized Python execution is unqualified because this reader
+uses assertions for checksums. The pinned cffLib, ttLib and psCharStrings source
+was consulted to identify lazy decoding, INDEX counts and silent unsupported
+operators. A local reader dispatch guard rejects unknown or reserved CFF DICT
+operators without modifying the dependency. Rules come from ISO 32000-1 §9.9,
+[Adobe CFF Technical Note 5176](https://adobe-type-tools.github.io/font-tech-notes/pdfs/5176.CFF.pdf)
+§§4–9, 13–14 and 18, and Microsoft's
+[OpenType font organization specification](https://learn.microsoft.com/en-us/typography/opentype/spec/otff).
+Eight further Apache-2.0 review PDFs preserve the independent reviewers' binary
+font probes, with identities in `review-fixtures/font-sha256.json`. Header,
+declared CFF kind, Top DICT, glyph-count and readable-table checks are an initial
+increment; they do not establish complete font metrics or outline semantics.
+
+The original CIDFontType2 fixture now uses a fourth font resource,
+`FolioT13RectangleCID.ttf`, rather than sharing the simple TrueType program.
+The same licensed authoring tool removes `cmap` while preserving glyph IDs,
+outlines, horizontal tables and name data; OS/2 character-range fields change
+with the removed mapping, while its height metrics remain the authored values.
+The three previous font programs remain byte-identical. This conservative
+split follows the directly read ISO 32000-1 §9.9 CIDFont table rule and a
+search-indexed Adobe PDF 2.0 draft; the 2020 final clause was not directly read.
+Before the change, 369 corpus/control/reference files were archived and every
+member byte-verified. The revised original reference PDF was rendered with the
+same pinned PDFium CLI; its PNG is byte-identical to the earlier reference.
+Source, corpus, control and semantic-observer identities are refreshed together;
+historical qualifications are preserved under their original identities.
+
+The subsequent font-program increment consults Adobe 5176 §14 for declared
+CharstringType, [Adobe Type 2 Technical Note 5177](https://adobe-type-tools.github.io/font-tech-notes/pdfs/5177.Type2.pdf)
+§§3–4 for bounded path execution, OpenType font organization for sfnt layout
+and checksums, and the [OpenType glyf table](https://learn.microsoft.com/en-us/typography/opentype/spec/glyf)
+for bounds over on-curve and off-curve coordinates. The
+[Apple TrueType name table](https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6name.html)
+and [OpenType name table](https://learn.microsoft.com/en-us/typography/opentype/spec/name)
+inform program-name qualification. A ninth independent font review fixture
+preserves conflicting Macintosh/Windows names with recomputed valid checksums.
+Its original mutator and both axes' complete layout/outline/name review probes
+and closure results are archived under `T75-delivery/standards-r7`, with every
+member byte-verified. These are original Apache-2.0 acceptance controls.
+
+FontBBox qualification uses ISO 32000-1 §§7.3.10, 7.9.5, 8.3.2.4 and 9.8.1
+Table 122, Adobe 5014's 1000/em CID FontBBox convention, and OpenType head
+unitsPerEm bounds. The pinned fontTools BoundsPen measures the already checked
+outlines. Independent review exposed indirect-coordinate handling, missing CID
+font dictionary selection and unsound general CFF matrix interpretation. The
+first two have explicit checks; explicit Top DICT/selected FD FontMatrix values
+are outside qualification and return INDETERMINATE. The required original
+corpus uses implicit matrices. Five further original review PDFs and their
+mutators/results are preserved in `standards-r8`; every archived member was
+read back and byte-verified. No proprietary font material is used.
+
+Font-width qualification follows ISO 32000-1 Table 111, §§9.6.6.4 and 9.7.4.3,
+and Adobe 5176 §15 Table 23. Simple WinAnsi ASCII selection uses the pinned
+fontTools Adobe Glyph List data under the already retained Adobe three-clause
+BSD notice in LICENSE.external. The pinned BoundsPen, transform and quadratic
+calculation source was read to identify floating-point conversion boundaries.
+TrueType polygon coordinates and advances retain exact integer ratios;
+curved glyphs and CFF real DICT widths remain outside their respective exact
+qualification scopes. The required original corpus uses polygons and integer
+DICT widths. Independent reviewers' original numeric PDFs, mutators and
+closure reports are Apache-2.0 project material with exact identities retained
+under `T75-delivery/standards-r9`. No dependency or product runtime changes are
+introduced by these acceptance predicates.
+
+The T13 qpdf identity closure reuses the existing official qpdf 12.4.0
+Linux x86-64 distribution and unchanged wrapper/pin. The new acceptance-only
+`scripts/t13-qpdf-runtime.sha256` manifest binds eleven runtime paths to the
+already pinned [official release archive](https://github.com/qpdf/qpdf/releases/tag/v12.4.0).
+The archive SHA-256 remains
+`a3bca240f3bb61efdc3a90be89d1da4ed5e125326c3458c4e62df53ff4f153e3`;
+every library was byte-compared with its ZIP entry, including the libqpdf
+SONAME link. The receipt is retained in `T75-delivery/recorder-r2`.
+Independent original controls alter task-owned wrapper/configuration paths,
+GNU build-id metadata or two qpdf job entry points in a copied library.
+Raw observations, source identities and exact byte-edit reconstruction recipes
+are retained; the external ELF payloads are omitted from review archives.
+These controls and the observer fixes introduce no runtime dependency or
+change to the existing tool pins and license notices.
+
+The independent content predicates reuse the original bounded literal reader
+with explicit PDF name/comment/value rules, keeping PostScript CMap parsing
+separate. Sources are ISO 32000-1 §§7.2–7.3, 7.8.3, 8.2 Figure 9, 8.4.2,
+8.10, 9.3–9.4 and 14.6–14.7. Type3 rectangular glyph-body checks use
+§§8.5.2–8.5.3 and 9.6.5 Tables 112–113; exact rational bounds and the specified
+all-zero FontBBox behavior are original implementation work. Other glyph
+graphics and multi-contour winding analysis remain outside qualification.
+The controls modify only the project's original PDF objects/programs, without
+using Folio parsing or rendering to determine expected outcomes. These are
+Apache-2.0 acceptance-only contributions, with no product runtime changes.
+
+Content review also consulted the approved PDF 2.0 corrections to
+[§§7.2.2, 7.8.2–7.8.3](https://pdf-issues.pdfa.org/32000-2-2020/clause07.html)
+and [Table 93](https://pdf-issues.pdfa.org/32000-2-2020/clause08.html),
+and qpdf's public [JSON v2 name representation](https://qpdf.readthedocs.io/en/12.4/json.html).
+Original byte-preserving resource lookup, PDF brace lexing, paired graphics/
+marked nesting and local Form resource checks were written from these
+specifications. No external implementation was copied. Legacy Form resource
+inheritance remains explicitly outside this acceptance profile; selected
+font-state inheritance is separately observed through legal original inputs.
+
+The original structure hierarchy predicates follow ISO 32000-1 §§14.7.2,
+14.9.2–14.9.4 and Tables 322–323, with PDF 2.0 Tables 354–355 corrections.
+Independent review of optional K null consulted the general §§7.3.7/7.3.9
+dictionary omission rule and the PDF Association's public issues
+[157](https://github.com/pdf-association/pdf-issues/issues/157) and
+[308](https://github.com/pdf-association/pdf-issues/issues/308). The latter
+approved correction concerns null array children. These sources support
+preserving optional dictionary-null equivalence without inventing a raw-byte
+conformance predicate. Exact assessments and the original failing test
+expectations remain in `T75-delivery/standards-r11`.
+
+Original ParentTree predicates use ISO 32000-1 §7.9.7 Table 37 and
+§14.7.4.4 Tables 322/326, including ordered integer keys, descendant ranges,
+indirect structural parent values and optional NextKey. Namespace declaration
+predicates use PDF 2.0 §14.7.4 and Tables 354–355, cross-checked with the pinned
+Arlington Namespace, ArrayOfNamespace and RoleMapNS declarations. Their
+qualification covers declared types and identity edges, without claiming
+complete Tagged PDF role resolution. Independent original malformed PDFs
+exposed stream/dictionary conflation, missing indirect parent identity,
+empty element K arrays and an optional NextKey type bypass. The fixes use
+qpdf's retained object kinds and the normative declarations, including
+[PDF 2.0 Catalog Table 29](https://pdf-issues.pdfa.org/32000-2-2020/clause07.html#H7.7.2).
+ISO 32000-1 does not impose the same indirect-root declaration; its empty
+direct root remains a legal control. Both original review trees are archived
+with every member read back and verified against its original bytes.
+
+The subsequent original structure-content predicates use ISO 32000-1
+§14.7.4.1–14.7.4.4 Tables 324–326 for typed references, MCID definitions,
+ParentTree backlinks, content leaves and Form invocation restrictions.
+Annotation membership and appearance ownership use §12.5.5 Table 168 and
+the annotation page relationship. Unexecuted definition traversal reuses the
+independent acceptance PDF tokenizer; no Folio or fixture-authoring code is
+imported by the observer. Its original small PDF controls use literal
+structure/stream objects with exact byte lengths and xrefs. Independent
+hierarchy/namespace closure archives retain 53 Standards and 116 Spec CLI
+observations, all with stable input and tool identities; the later content
+scope is a separate review increment.
+
+Content review additionally uses Form Table 95 for optional Type and
+annotation Tables 164–165 for page backlinks and visibility flags. Original
+independent controls distinguish actual page calls, normal AP roots,
+alternative appearances, hidden appearances and unknown AP font state.
+Page-selected fonts are not used as an oracle for independent appearance
+validation. Frozen snapshots, literal controls and byte-verified raw review
+archives remain under `T75-delivery/standards-r12`; declaration aggregation
+continues to execute the already qualified pdfcpu/Arlington checks and their
+334 original negative controls through the public recorder CLI.
+
+The Foundation text collector is original repository-only Python code. Its
+protocol tests synthesize reports rather than claiming PDF/tool qualification.
+The four PNG protocol fixtures are byte-for-byte copies of the project-authored
+Java raster controls retained in the R5 evidence tree; their original locations
+and hashes are recorded in `scripts/tests/fixtures/t13-foundation/origins.json`.
+The collector's bounded PNG sample decoder uses Python's existing standard
+library and an original implementation of PNG reconstruction. Review consulted
+the W3C [PNG Third Edition, sections 9 and 11.3.1.1](https://www.w3.org/TR/2025/REC-png-3-20250624/)
+for filter reconstruction and transparent-color semantics. No W3C example code
+was copied. The qualified control format permits only opaque, noninterlaced
+RGB8 IHDR/IDAT/IEND data and verifies the exact project-authored pixel changes.
+It does not add a product image decoder or a runtime dependency. Original
+RED/GREEN observations and independent reviews are retained under
+`T75-delivery/recorder-r6`.
+
+The final inventory pass exposed complete text standards chain records of about
+5.3 MB exceeding the repository reader's existing 3,000,000-code-point limit.
+The original repository-only reader fix gives chain records a separate 16 MiB
+byte budget, checks the first excess byte before parsing, and retains the
+existing strict YAML, identity, producer and negative-control validation.
+Ordinary authority/configuration limits and all product runtime limits remain
+unchanged. Public-command fixtures reproduce the original parser failure,
+exercise exact-byte success and first-excess failure, and verify retained-control
+identity and failed-result rejection. These are project-authored synthetic
+inventory fixtures, not PDF certification observations. The implementation
+uses the existing Java 8 APIs and pinned SnakeYAML dependency; it adds no
+dependency or externally sourced code. Original failed and successful runs
+and independent review are retained in the T75 delivery history. The source
+change requires fresh candidate certification; r3 evidence remains historical.

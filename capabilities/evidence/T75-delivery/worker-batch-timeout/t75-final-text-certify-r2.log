@@ -1,0 +1,13 @@
+T13 environment JDK 8
+T13 certification JDK 8 / IN_PROCESS
+T13 certification JDK 8 / HARDENED_WORKER
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/t03-foundation.py", line 1194, in <module>
+    main()
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/t03-foundation.py", line 1190, in main
+    certify(root, root / args.output, contract, helper, args.obligation)
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/t03-foundation.py", line 1064, in certify
+    run_logged(test_command, scope / 'contract-tests.txt', cwd=root,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/t03-foundation.py", line 806, in run_logged
+    raise RuntimeError('Command failed; see ' + str(path))
+RuntimeError: Command failed; see /home/ubuntu/IdeaProjects/open-pdf/capabilities/evidence/T75-foundation-20260913-r2/text/jdk8-hardened_worker/contract-tests.txt

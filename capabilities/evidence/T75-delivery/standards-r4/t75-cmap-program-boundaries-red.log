@@ -1,0 +1,16 @@
+F
+======================================================================
+FAIL: test_cmap_qualification_distinguishes_legal_variants_from_unsupported_programs (test_t13_program_standards.T13ProgramStandardsTest.test_cmap_qualification_distinguishes_legal_variants_from_unsupported_programs)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 35, in test_cmap_qualification_distinguishes_legal_variants_from_unsupported_programs
+    self.assertEqual(expected, values['standards'], name + ': ' + values['finding'])
+AssertionError: 'indeterminate' != 'fail'
+- indeterminate
++ fail
+ : legacy-type: CMapType does not match the owning Encoding or ToUnicode entry
+
+----------------------------------------------------------------------
+Ran 1 test in 0.480s
+
+FAILED (failures=1)

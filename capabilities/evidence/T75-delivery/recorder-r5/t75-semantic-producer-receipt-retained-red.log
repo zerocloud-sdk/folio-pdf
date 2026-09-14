@@ -1,0 +1,23 @@
+F
+======================================================================
+FAIL: test_cli_exports_the_exact_original_report_receipt (scripts.tests.test_t13_semantics.T13SemanticsTest.test_cli_exports_the_exact_original_report_receipt)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_semantics.py", line 30, in test_cli_exports_the_exact_original_report_receipt
+    self.assertEqual({path.name for path in output.iterdir() if path.is_file()}, set(receipt))
+AssertionError: Items in the first set but not the second:
+'reference-qpdf.json'
+'observed.json'
+'qpdf-version-stderr.txt'
+'reference.json'
+'result.properties'
+'semantic.txt'
+'qpdf-version.txt'
+'qpdf-stderr.txt'
+'reference-qpdf-stderr.txt'
+'qpdf.json'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.230s
+
+FAILED (failures=1)

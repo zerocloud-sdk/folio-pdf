@@ -47,10 +47,11 @@ final class T29ShapingSemanticAssertions {
     }
 
     private static Observation observe(DocumentSession session, List<String[]> rows) throws DocumentFailure {
+        // Four shaping commands each publish Sans and one script font with Identity-H tables.
         List<PageText> pages = session.query(ExtractTextAndStructure.version1(ExtractionLimits.builder()
                 .maximumPages(8).maximumPageTreeNodes(32).maximumContentStreams(4096).maximumContentStreamDepth(8)
                 .maximumDecodedBytes(4 << 20).maximumTextItems(2048).maximumUnicodeCodePoints(4096)
-                .maximumToUnicodeMappings(2048).maximumFontDataEntries(32768).maximumMarkedContentSequences(512)
+                .maximumToUnicodeMappings(2048).maximumFontDataEntries(8 * 65536 + 32768).maximumMarkedContentSequences(512)
                 .maximumMarkedContentDepth(8).maximumStructureElements(8).maximumStructureItems(8)
                 .maximumStructureDepth(8).maximumRoleMappings(8).build())).getPages();
         List<FontResource> fonts = session.query(ExtractImagesAndResources.version1(ResourceExtractionLimits.builder()

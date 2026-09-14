@@ -1,0 +1,80 @@
+{
+  "recorded-utc": "2026-09-14T00:26:01.741638+00:00",
+  "scope": "Final existing inventory generate, validate and check commands plus explicit all-six satisfied observations; independent final review and Git delivery remain separate.",
+  "actual-child-results": [
+    {
+      "command": [
+        "./scripts/inventory",
+        "generate"
+      ],
+      "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+      "started-utc": "2026-09-14T00:25:03.271989+00:00",
+      "wrapper-pid": 873944,
+      "explicit-environment": {},
+      "original-log": "/tmp/t75-final-inventory-generate-r4.log",
+      "command-pid": 873945,
+      "returncode": 0,
+      "completed-utc": "2026-09-14T00:25:30.141602+00:00"
+    },
+    {
+      "command": [
+        "./scripts/inventory",
+        "validate"
+      ],
+      "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+      "started-utc": "2026-09-14T00:25:30.192377+00:00",
+      "wrapper-pid": 874248,
+      "explicit-environment": {},
+      "original-log": "/tmp/t75-final-inventory-validate-r4.log",
+      "command-pid": 874249,
+      "returncode": 0,
+      "completed-utc": "2026-09-14T00:25:33.833683+00:00"
+    },
+    {
+      "command": [
+        "./scripts/inventory",
+        "check"
+      ],
+      "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+      "started-utc": "2026-09-14T00:25:33.883659+00:00",
+      "wrapper-pid": 874429,
+      "explicit-environment": {},
+      "original-log": "/tmp/t75-final-inventory-check-r4.log",
+      "command-pid": 874430,
+      "returncode": 0,
+      "completed-utc": "2026-09-14T00:26:01.049913+00:00"
+    }
+  ],
+  "source-and-contract-inputs-unchanged": true,
+  "all-six-required-rows-satisfied": {
+    "text": "| [`text`](#text) | `document.text-structure.extract` | [#75](https://github.com/zerocloud-sdk/folio-pdf/issues/75) | satisfied |",
+    "transactions": "| [`transactions`](#transactions) | `document.blank.create-publish-reopen` | [#70](https://github.com/zerocloud-sdk/folio-pdf/issues/70) | satisfied |",
+    "values": "| [`values`](#values) | `document.value.inspect-patch` | [#71](https://github.com/zerocloud-sdk/folio-pdf/issues/71) | satisfied |",
+    "pages": "| [`pages`](#pages) | `document.page.manipulate-merge-split` | [#72](https://github.com/zerocloud-sdk/folio-pdf/issues/72) | satisfied |",
+    "metadata": "| [`metadata`](#metadata) | `document.metadata.outlines-destinations-attachments` | [#73](https://github.com/zerocloud-sdk/folio-pdf/issues/73) | satisfied |",
+    "annotations": "| [`annotations`](#annotations) | `document.annotations-actions.manage` | [#74](https://github.com/zerocloud-sdk/folio-pdf/issues/74) | satisfied |"
+  },
+  "authority-tuples": 48,
+  "all-six-authority-subsets-match-own-indexes": true,
+  "copies": [
+    {
+      "original": "/home/ubuntu/IdeaProjects/open-pdf/docs/generated/foundation-readiness.md",
+      "copy": "foundation-readiness.md",
+      "bytes": 390176,
+      "sha256": "e66c622893702330b762b6373296b9480b6ce0810f558d331ce38188be45a0f1"
+    },
+    {
+      "original": "/home/ubuntu/IdeaProjects/open-pdf/capabilities/foundation-evidence.yaml",
+      "copy": "foundation-evidence.yaml",
+      "bytes": 438307,
+      "sha256": "c78fef2dd298de6de9e0e2e83895dcdea1b401bb139538428422855c21cdacc2"
+    },
+    {
+      "original": "/home/ubuntu/IdeaProjects/open-pdf/capabilities/evidence/T75-delivery/final-validation-r4/source-and-contract-inputs.json",
+      "copy": "source-and-contract-inputs.json",
+      "bytes": 360945,
+      "sha256": "50988226c0db8a0eddd622ec3d9656d5ad6eb1e25328f22a067ee0e54add392d"
+    }
+  ],
+  "overall-readiness-boundary": "No claim of global Foundation readiness; unrelated obligations may keep the overall result NOT READY."
+}

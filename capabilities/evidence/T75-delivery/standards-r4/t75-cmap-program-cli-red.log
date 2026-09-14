@@ -1,0 +1,16 @@
+F
+======================================================================
+FAIL: test_original_cmaps_pass_and_an_incorrect_mapping_count_fails (test_t13_program_standards.T13ProgramStandardsTest.test_original_cmaps_pass_and_an_incorrect_mapping_count_fails)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 32, in test_original_cmaps_pass_and_an_incorrect_mapping_count_fails
+    observe(ROOT / 'capabilities/profiles/T13-text/fixtures' / (name + '.pdf'), name, 'pass')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 22, in observe
+    self.assertEqual(0, result.returncode, result.stderr)
+AssertionError: 0 != 2 : /usr/bin/python3: can't open file '/home/ubuntu/IdeaProjects/open-pdf/scripts/t13-program-standards.py': [Errno 2] No such file or directory
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.017s
+
+FAILED (failures=1)

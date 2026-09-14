@@ -1,0 +1,90 @@
+test_content_resource_dictionary_positions_reject_stream_objects (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_resource_dictionary_positions_reject_stream_objects) ... 
+  test_content_resource_dictionary_positions_reject_stream_objects (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_resource_dictionary_positions_reject_stream_objects) (resource='font-map') ... FAIL
+  test_content_resource_dictionary_positions_reject_stream_objects (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_resource_dictionary_positions_reject_stream_objects) (resource='font') ... FAIL
+  test_content_resource_dictionary_positions_reject_stream_objects (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_resource_dictionary_positions_reject_stream_objects) (resource='property-map') ... FAIL
+  test_content_resource_dictionary_positions_reject_stream_objects (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_resource_dictionary_positions_reject_stream_objects) (resource='property-list') ... FAIL
+  test_content_resource_dictionary_positions_reject_stream_objects (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_resource_dictionary_positions_reject_stream_objects) (resource='xobject-map') ... FAIL
+  test_content_resource_dictionary_positions_reject_stream_objects (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_resource_dictionary_positions_reject_stream_objects) (resource='form-resources') ... FAIL
+
+======================================================================
+FAIL: test_content_resource_dictionary_positions_reject_stream_objects (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_resource_dictionary_positions_reject_stream_objects) (resource='font-map')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 55, in test_content_resource_dictionary_positions_reject_stream_objects
+    self.observe(directory, pdf, 'pass' if number is None else 'fail',
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 906, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : font-map.pdf: Qualified content and Type3 rectangles satisfy operand, state, resource, property and ink-bound predicates.
+
+======================================================================
+FAIL: test_content_resource_dictionary_positions_reject_stream_objects (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_resource_dictionary_positions_reject_stream_objects) (resource='font')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 55, in test_content_resource_dictionary_positions_reject_stream_objects
+    self.observe(directory, pdf, 'pass' if number is None else 'fail',
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 906, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : font.pdf: Qualified content and Type3 rectangles satisfy operand, state, resource, property and ink-bound predicates.
+
+======================================================================
+FAIL: test_content_resource_dictionary_positions_reject_stream_objects (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_resource_dictionary_positions_reject_stream_objects) (resource='property-map')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 55, in test_content_resource_dictionary_positions_reject_stream_objects
+    self.observe(directory, pdf, 'pass' if number is None else 'fail',
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 906, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : property-map.pdf: Qualified content and Type3 rectangles satisfy operand, state, resource, property and ink-bound predicates.
+
+======================================================================
+FAIL: test_content_resource_dictionary_positions_reject_stream_objects (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_resource_dictionary_positions_reject_stream_objects) (resource='property-list')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 55, in test_content_resource_dictionary_positions_reject_stream_objects
+    self.observe(directory, pdf, 'pass' if number is None else 'fail',
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 906, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : property-list.pdf: Qualified content and Type3 rectangles satisfy operand, state, resource, property and ink-bound predicates.
+
+======================================================================
+FAIL: test_content_resource_dictionary_positions_reject_stream_objects (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_resource_dictionary_positions_reject_stream_objects) (resource='xobject-map')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 55, in test_content_resource_dictionary_positions_reject_stream_objects
+    self.observe(directory, pdf, 'pass' if number is None else 'fail',
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 906, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : xobject-map.pdf: Qualified content and Type3 rectangles satisfy operand, state, resource, property and ink-bound predicates.
+
+======================================================================
+FAIL: test_content_resource_dictionary_positions_reject_stream_objects (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_resource_dictionary_positions_reject_stream_objects) (resource='form-resources')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 55, in test_content_resource_dictionary_positions_reject_stream_objects
+    self.observe(directory, pdf, 'pass' if number is None else 'fail',
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 906, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : form-resources.pdf: Qualified content and Type3 rectangles satisfy operand, state, resource, property and ink-bound predicates.
+
+----------------------------------------------------------------------
+Ran 1 test in 1.821s
+
+FAILED (failures=6)

@@ -1,0 +1,34 @@
+test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context) ... 
+  test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context) (state='graphics-crosses-marked') ... FAIL
+  test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context) (state='marked-crosses-graphics') ... FAIL
+
+======================================================================
+FAIL: test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context) (state='graphics-crosses-marked')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 175, in test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context
+    self.observe(directory, pdf, expected, 'content-state' if expected == 'fail' else None, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 832, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : graphics-crosses-marked.pdf: Qualified content and Type3 rectangles satisfy operand, state, resource, property and ink-bound predicates.
+
+======================================================================
+FAIL: test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context) (state='marked-crosses-graphics')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 175, in test_content_text_graphics_and_marked_sequences_balance_within_each_execution_context
+    self.observe(directory, pdf, expected, 'content-state' if expected == 'fail' else None, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 832, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : marked-crosses-graphics.pdf: Qualified content and Type3 rectangles satisfy operand, state, resource, property and ink-bound predicates.
+
+----------------------------------------------------------------------
+Ran 1 test in 6.157s
+
+FAILED (failures=2)

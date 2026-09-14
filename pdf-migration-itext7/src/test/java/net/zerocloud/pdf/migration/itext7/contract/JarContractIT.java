@@ -73,6 +73,7 @@ public final class JarContractIT {
                 "net/zerocloud/pdf/itext7/kernel/pdf/PdfIndirectReference.class",
                 "net/zerocloud/pdf/itext7/kernel/pdf/PdfCatalog.class",
                 "net/zerocloud/pdf/itext7/kernel/pdf/PdfDocumentInfo.class",
+                "net/zerocloud/pdf/itext7/kernel/pdf/canvas/parser/PdfTextExtractor.class",
                 "net/zerocloud/pdf/itext7/kernel/utils/PdfMerger.class",
                 "net/zerocloud/pdf/itext7/kernel/utils/PdfSplitter.class",
                 "net/zerocloud/pdf/itext7/layout/Document.class"));
@@ -228,6 +229,9 @@ public final class JarContractIT {
                 "void updateAnnotations(java.util.List,java.util.List)",
                 "net.zerocloud.pdf.DocumentActions getActions(int)",
                 "void flattenAnnotations(java.lang.String[])",
+                "net.zerocloud.pdf.TextStructureExtraction getTextAndStructure(net.zerocloud.pdf.ExtractionLimits)",
+                "java.util.List getStructTreeRoot()",
+                "java.util.List getStructTreeRoot(net.zerocloud.pdf.ExtractionLimits)",
                 "net.zerocloud.pdf.itext7.kernel.utils.PdfMerger getMerger()",
                 "int getNumberOfPages()",
                 "net.zerocloud.pdf.itext7.kernel.pdf.PdfPage getPage(int)",
@@ -242,12 +246,19 @@ public final class JarContractIT {
         assertConstructors(page);
         assertMethods(page,
                 "net.zerocloud.pdf.itext7.kernel.pdf.PdfDictionary getPdfObject()",
+                "net.zerocloud.pdf.PageText getPageText(net.zerocloud.pdf.ExtractionLimits)",
                 "java.util.List getAnnotations(int,long,long)",
                 "net.zerocloud.pdf.itext7.kernel.pdf.PdfPage addAnnotation(net.zerocloud.pdf.Annotation)",
                 "net.zerocloud.pdf.itext7.kernel.pdf.PdfPage removeAnnotation(java.lang.String)",
                 "net.zerocloud.pdf.itext7.kernel.pdf.PdfPage setNormalAppearance(java.lang.String,net.zerocloud.pdf.AnnotationAppearance)",
                 "net.zerocloud.pdf.itext7.kernel.pdf.PdfPage setAdditionalAction(net.zerocloud.pdf.itext7.kernel.pdf.PdfName,net.zerocloud.pdf.GoToAction)",
                 "java.util.Optional getAdditionalActions(int)");
+
+        Class<?> extractor = loader.loadClass("net.zerocloud.pdf.itext7.kernel.pdf.canvas.parser.PdfTextExtractor");
+        assertConstructors(extractor);
+        assertMethods(extractor,
+                "java.lang.String getTextFromPage(net.zerocloud.pdf.itext7.kernel.pdf.PdfPage)",
+                "java.lang.String getTextFromPage(net.zerocloud.pdf.itext7.kernel.pdf.PdfPage,net.zerocloud.pdf.ExtractionLimits)");
 
         assertConstructors(merger,
                 "PdfMerger(net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument)");

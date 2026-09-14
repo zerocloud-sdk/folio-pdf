@@ -1,0 +1,18 @@
+F
+======================================================================
+FAIL: test_empty_mapping_blocks_still_require_a_preceding_codespace (test_t13_program_standards.T13ProgramStandardsTest.test_empty_mapping_blocks_still_require_a_preceding_codespace)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 19, in test_empty_mapping_blocks_still_require_a_preceding_codespace
+    self.observe(directory, pdf, 'fail', 'cmap-codespace')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 78, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : zero-block-before-codespace.pdf: Decoded CMap grammar, character domains and declared inheritance are consistent.
+
+----------------------------------------------------------------------
+Ran 1 test in 0.124s
+
+FAILED (failures=1)

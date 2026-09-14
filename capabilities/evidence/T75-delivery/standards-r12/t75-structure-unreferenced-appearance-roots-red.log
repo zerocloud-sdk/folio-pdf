@@ -1,0 +1,31 @@
+FF
+======================================================================
+FAIL: test_normal_appearance_roots_are_observed_without_their_own_structure_reference (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_normal_appearance_roots_are_observed_without_their_own_structure_reference) (appearance_root='unreferenced-parent-repeated-child')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 36, in test_normal_appearance_roots_are_observed_without_their_own_structure_reference
+    self.observe(directory, name, self.pdf(objects), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 638, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : unreferenced-parent-repeated-child: The qualified structure content references have typed fields and matching ParentTree backlinks.
+
+======================================================================
+FAIL: test_normal_appearance_roots_are_observed_without_their_own_structure_reference (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_normal_appearance_roots_are_observed_without_their_own_structure_reference) (appearance_root='unreferenced-parent-unknown-program')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 36, in test_normal_appearance_roots_are_observed_without_their_own_structure_reference
+    self.observe(directory, name, self.pdf(objects), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 638, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'indeterminate' != 'pass'
+- indeterminate
++ pass
+ : unreferenced-parent-unknown-program: The qualified structure content references have typed fields and matching ParentTree backlinks.
+
+----------------------------------------------------------------------
+Ran 1 test in 0.942s
+
+FAILED (failures=2)

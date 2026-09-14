@@ -8,10 +8,10 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 
 - Schema version: `1`
 - Release train: `0.1.0-SNAPSHOT`
-- Stable entries: `151`
+- Stable entries: `157`
 - Preview additions: `0`
-- Preview artifact entries: `151`
-- Explicit capability exclusions: `18`
+- Preview artifact entries: `157`
+- Explicit capability exclusions: `17`
 
 ## Stable surfaces
 
@@ -764,6 +764,39 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Exception contract: Rejects a closed document with IllegalStateException; the returned view shares the document lifecycle.
 - Behavioral capabilities: [`document.page.manipulate-merge-split`](capability-matrix.md#capability-document_dot_page_dot_manipulate_dash_merge_dash_split)
 
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_struct_dash_tree_dash_root"></a>
+### `itext7.kernel.pdf-document.get-struct-tree-root`
+
+- Availability: `stable`
+- Reference status: `adapted`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocument#getStructTreeRoot()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#getStructTreeRoot()`
+- Generic contract: Adapts the return type to immutable detached List<net.zerocloud.pdf.LogicalStructureElement>; ordered roots are selected only after complete extraction under the fixed finite convenience limits. An absent tree returns an empty list and is never created.
+- Exception contract: Closed documents reject; Native failures retain their stable DocumentFailure code and safe diagnostic through PdfException, with no partial structure result.
+- Behavioral capabilities: [`document.text-structure.extract`](capability-matrix.md#capability-document_dot_text_dash_structure_dot_extract)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_struct_dash_tree_dash_root_dash_limits"></a>
+### `itext7.kernel.pdf-document.get-struct-tree-root-limits`
+
+- Availability: `stable`
+- Reference status: `folio-extension`
+- Reference namespace: `com.itextpdf.kernel.pdf.PdfDocument`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#getStructTreeRoot(net.zerocloud.pdf.ExtractionLimits)`
+- Generic contract: Returns immutable detached List<net.zerocloud.pdf.LogicalStructureElement> in root order after complete extraction under explicit document-wide limits; absence is an empty list, with no mutable tagging wrapper.
+- Exception contract: Null limits and closed documents reject; Native failures retain their stable DocumentFailure code and safe diagnostic through PdfException, with no partial structure result.
+- Behavioral capabilities: [`document.text-structure.extract`](capability-matrix.md#capability-document_dot_text_dash_structure_dot_extract)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_text_dash_and_dash_structure"></a>
+### `itext7.kernel.pdf-document.get-text-and-structure`
+
+- Availability: `stable`
+- Reference status: `folio-extension`
+- Reference namespace: `com.itextpdf.kernel.pdf.PdfDocument`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#getTextAndStructure(net.zerocloud.pdf.ExtractionLimits)`
+- Generic contract: Returns the complete immutable detached TextStructureExtraction, including every Page Text, diagnostic and ordered Logical Structure child kind, observing preceding Session Commands in actual IN_PROCESS mode.
+- Exception contract: Null limits and closed documents reject; Native failures retain their stable DocumentFailure code and safe diagnostic through PdfException. Results remain valid after close and no partial value is returned.
+- Behavioral capabilities: [`document.text-structure.extract`](capability-matrix.md#capability-document_dot_text_dash_structure_dot_extract)
+
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_xmp_dash_metadata"></a>
 ### `itext7.kernel.pdf-document.get-xmp-metadata`
 
@@ -1304,6 +1337,17 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Exception contract: Rejects invalid bounds or a closed owner; malformed graphs, unsupported Actions and exhausted bounds retain the Native DocumentFailure code and safe diagnostic through PdfException.
 - Behavioral capabilities: [`document.annotations-actions.manage`](capability-matrix.md#capability-document_dot_annotations_dash_actions_dot_manage)
 
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_page_dot_get_dash_page_dash_text"></a>
+### `itext7.kernel.pdf-page.get-page-text`
+
+- Availability: `stable`
+- Reference status: `folio-extension`
+- Reference namespace: `com.itextpdf.kernel.pdf.PdfPage`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfPage#getPageText(net.zerocloud.pdf.ExtractionLimits)`
+- Generic contract: Returns immutable detached PageText including glyph geometry, original source bytes, mapping evidence and marked-content occurrences; the complete document Query succeeds before selecting the current page identity.
+- Exception contract: Null limits and expired page handles reject; Native failures preserve DocumentFailure code and safe diagnostic through PdfException, without publishing a partial result or changing Source ownership.
+- Behavioral capabilities: [`document.text-structure.extract`](capability-matrix.md#capability-document_dot_text_dash_structure_dot_extract)
+
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_page_dot_get_dash_pdf_dash_object"></a>
 ### `itext7.kernel.pdf-page.get-pdf-object`
 
@@ -1466,6 +1510,27 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Generic contract: Returns a defensive byte[] copy of the exact PDF string bytes.
 - Exception contract: No checked exception; immutable kind or identity observation remains available after Session close.
 - Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_text_dash_extractor_dot_get_dash_text_dash_from_dash_page"></a>
+### `itext7.kernel.pdf-text-extractor.get-text-from-page`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.canvas.parser.PdfTextExtractor#getTextFromPage(com.itextpdf.kernel.pdf.PdfPage)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.canvas.parser.PdfTextExtractor#getTextFromPage(net.zerocloud.pdf.itext7.kernel.pdf.PdfPage)`
+- Generic contract: Returns detached String Page Text in content execution order after the complete document Query succeeds under the fixed finite convenience limits in docs/t13-certification.md; preserves ActualText precedence and mapping uncertainty without inferred whitespace, reading order or OCR.
+- Exception contract: Null pages and closed or invalid page handles reject; Native Query failures retain their stable DocumentFailure code and safe diagnostic through PdfException without returning a valid-looking prefix.
+- Behavioral capabilities: [`document.text-structure.extract`](capability-matrix.md#capability-document_dot_text_dash_structure_dot_extract)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_text_dash_extractor_dot_get_dash_text_dash_from_dash_page_dash_limits"></a>
+### `itext7.kernel.pdf-text-extractor.get-text-from-page-limits`
+
+- Availability: `stable`
+- Reference status: `folio-extension`
+- Reference namespace: `com.itextpdf.kernel.pdf.canvas.parser.PdfTextExtractor`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.canvas.parser.PdfTextExtractor#getTextFromPage(net.zerocloud.pdf.itext7.kernel.pdf.PdfPage,net.zerocloud.pdf.ExtractionLimits)`
+- Generic contract: Returns detached String Page Text only after the complete document Query succeeds under the supplied immutable document-wide ExtractionLimits; follows the same Native replacement-text and mapping-evidence contract.
+- Exception contract: Null inputs and closed or invalid handles reject; Native failures retain their stable DocumentFailure code and safe diagnostic through PdfException, with no partial extraction result.
+- Behavioral capabilities: [`document.text-structure.extract`](capability-matrix.md#capability-document_dot_text_dash_structure_dot_extract)
 
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_writer_dot_constructor_dash_output_dash_stream"></a>
 ### `itext7.kernel.pdf-writer.constructor-output-stream`
@@ -1676,13 +1741,6 @@ No preview additions (included with all stable surfaces) are declared.
 - Behavioral capability: [`document.incremental-signature.protect`](capability-matrix.md#capability-document_dot_incremental_dash_signature_dot_protect)
 - Deferred ticket: `T32`
 - Reason: Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #77 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
-
-<a id="excluded-capability-document_dot_text_dash_structure_dot_extract"></a>
-### `document.text-structure.extract`
-
-- Behavioral capability: [`document.text-structure.extract`](capability-matrix.md#capability-document_dot_text_dash_structure_dot_extract)
-- Deferred ticket: `T32`
-- Reason: Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #75 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 <a id="excluded-capability-document_dot_version_dash_password_dash_security"></a>
 ### `document.version-password-security`

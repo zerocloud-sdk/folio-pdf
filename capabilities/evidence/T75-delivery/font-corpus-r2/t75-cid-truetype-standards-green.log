@@ -1,0 +1,13 @@
+.....F.............
+======================================================================
+FAIL: test_font_descriptor_and_vertical_width_defects_have_original_reproducible_pdf_controls (scripts.tests.test_t13_standards.T13StandardsTest.test_font_descriptor_and_vertical_width_defects_have_original_reproducible_pdf_controls)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_standards.py", line 375, in test_font_descriptor_and_vertical_width_defects_have_original_reproducible_pdf_controls
+    self.assertEqual(original, (outputs[0] / 'fixtures/positive-direct-fonts.pdf').read_bytes())
+AssertionError: b'%PD[2605 chars]le2 23 0 R >>\nendobj\n16 0 obj\n<< /Type /CMa[6923 chars]OF\n' != b'%PD[2605 chars]le2 25 0 R >>\nendobj\n16 0 obj\n<< /Type /CMa[9331 chars]OF\n'
+
+----------------------------------------------------------------------
+Ran 19 tests in 2.731s
+
+FAILED (failures=1)

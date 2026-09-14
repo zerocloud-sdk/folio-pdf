@@ -1,0 +1,18 @@
+F
+======================================================================
+FAIL: test_discovered_appearance_owners_agree_with_their_page_backlink (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_discovered_appearance_owners_agree_with_their_page_backlink) (discovered_owner='discovered-owner-wrong-page')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 28, in test_discovered_appearance_owners_agree_with_their_page_backlink
+    self.observe(directory, name, self.pdf(objects), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 681, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : discovered-owner-wrong-page: The qualified structure content references have typed fields and matching ParentTree backlinks.
+
+----------------------------------------------------------------------
+Ran 1 test in 0.695s
+
+FAILED (failures=1)

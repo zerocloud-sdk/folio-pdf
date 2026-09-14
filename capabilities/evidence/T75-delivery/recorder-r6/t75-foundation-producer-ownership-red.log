@@ -1,0 +1,27 @@
+F
+======================================================================
+FAIL: test_public_collect_preserves_required_chain_products_and_original_artifact_receipts (scripts.tests.test_t13_foundation.T13FoundationTest.test_public_collect_preserves_required_chain_products_and_original_artifact_receipts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_foundation.py", line 184, in test_public_collect_preserves_required_chain_products_and_original_artifact_receipts
+    self.assertEqual(0, completed.returncode, completed.stderr)
+AssertionError: 0 != 1 : Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/t03-foundation.py", line 1187, in <module>
+    main()
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/t03-foundation.py", line 1145, in main
+    print(json.dumps(collect_reports(root, (root / args.output).resolve(), args.obligation,
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/t03-foundation.py", line 561, in collect_reports
+    return collect_text_reports(root, run, execution_profile)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/t13_foundation_reports.py", line 266, in collect_reports
+    files.manifest(directory, observed)
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/t13_foundation_reports.py", line 130, in manifest
+    raise ValueError('Incomplete T13 original retained receipt: ' + str(directory))
+ValueError: Incomplete T13 original retained receipt: /tmp/tmpvt2xp37v/run/native-nested-split-type3
+
+
+----------------------------------------------------------------------
+Ran 1 test in 4.526s
+
+FAILED (failures=1)

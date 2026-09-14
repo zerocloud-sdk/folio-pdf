@@ -1,0 +1,31 @@
+FF
+======================================================================
+FAIL: test_tounicode_codespaces_match_the_owning_simple_or_composite_font (test_t13_program_standards.T13ProgramStandardsTest.test_tounicode_codespaces_match_the_owning_simple_or_composite_font) (kind='simple-two-byte')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 21, in test_tounicode_codespaces_match_the_owning_simple_or_composite_font
+    self.observe(directory, pdf, 'fail', 'cmap-font-domain')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 119, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : program-binding-simple-two-byte.pdf: Decoded CMap grammar, character domains and declared inheritance are consistent.
+
+======================================================================
+FAIL: test_tounicode_codespaces_match_the_owning_simple_or_composite_font (test_t13_program_standards.T13ProgramStandardsTest.test_tounicode_codespaces_match_the_owning_simple_or_composite_font) (kind='type0-one-byte')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 21, in test_tounicode_codespaces_match_the_owning_simple_or_composite_font
+    self.observe(directory, pdf, 'fail', 'cmap-font-domain')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 119, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : program-binding-type0-one-byte.pdf: Decoded CMap grammar, character domains and declared inheritance are consistent.
+
+----------------------------------------------------------------------
+Ran 1 test in 0.250s
+
+FAILED (failures=2)

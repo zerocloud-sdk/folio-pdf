@@ -1,0 +1,20 @@
+test_curved_truetype_outlines_remain_outside_exact_polygon_bounds_qualification (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_curved_truetype_outlines_remain_outside_exact_polygon_bounds_qualification) ... FAIL
+
+======================================================================
+FAIL: test_curved_truetype_outlines_remain_outside_exact_polygon_bounds_qualification (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_curved_truetype_outlines_remain_outside_exact_polygon_bounds_qualification)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 20, in test_curved_truetype_outlines_remain_outside_exact_polygon_bounds_qualification
+    result = self.observe(Path(temporary), pdf, 'indeterminate', scope='fonts')
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 600, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'indeterminate' != 'pass'
+- indeterminate
++ pass
+ : ttf-offcurve-bbox-legal.pdf: Embedded font programs satisfy the qualified layout, outline, name and bounds predicates.
+
+----------------------------------------------------------------------
+Ran 1 test in 0.651s
+
+FAILED (failures=1)

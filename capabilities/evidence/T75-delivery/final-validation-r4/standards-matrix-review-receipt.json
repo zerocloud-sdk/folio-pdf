@@ -1,0 +1,531 @@
+{
+  "reviewer": "/root/final_standards; independent Standards reviewer, no implementation work in this increment",
+  "review-kind": "bounded completed r4 four-JDK matrix evidence closure",
+  "sealed-utc": "2026-09-13T17:14:20.443868+00:00",
+  "repository": "/home/ubuntu/IdeaProjects/open-pdf",
+  "fixed-baseline": "5b1603c435f11c40368f75b7b9a2777c9c5e9761",
+  "HEAD": "5b1603c435f11c40368f75b7b9a2777c9c5e9761",
+  "commit-list-empty": true,
+  "canonical-three-dot-diff-empty": true,
+  "review-point": "Retained WIP validation artifacts and current frozen r4 inputs; not an empty diff interpreted as no work.",
+  "hard-violations": [],
+  "open-heuristic-findings": [],
+  "normative-sources": [
+    {
+      "source": "sources/standards/CONTRIBUTING.md",
+      "sha256": "0af905ea963c26d9f1a50f47e5acad4517556f61e97c08c3669efbc42d54d3e7",
+      "excerpts": [
+        {
+          "first-line": 41,
+          "last-line": 55,
+          "text": "- Keep shipped code compatible with Java 8 language and runtime APIs.\n- Test behavior through the public `DocumentWorkflow.execute` seam.\n- Do not expose PDFBox or another backend in public or protected signatures.\n- Add or update Capability Matrix evidence with behavior changes.\n- Keep the Facade Surface Manifest separate from behavioral coverage.\n- Run `./mvnw -B -ntp verify` before submitting.\n- Run `./scripts/verify-jdk-matrix.sh` for changes affecting shipped code or\n  build compatibility.\n\nReport vulnerabilities privately as described in [SECURITY.md](SECURITY.md).\nGeneral questions and defects belong in the canonical\n[issue tracker](https://github.com/zerocloud-sdk/folio-pdf/issues)."
+        }
+      ]
+    },
+    {
+      "source": "sources/standards/docs/foundation-readiness.md",
+      "sha256": "400ef2e6fe8834ba358677d09fc5a2b59dd5c053ff4978d32af4cb1e472354f7",
+      "excerpts": [
+        {
+          "first-line": 34,
+          "last-line": 58,
+          "text": "  dependency/member links, assigned #69\u2013#97 slices and limitation classifications.\n- [foundation-requirements.yaml](../capabilities/foundation-requirements.yaml):\n  verbatim numbered #1 user stories, implementation/testing decisions and\n  non-goals, #33 acceptance criteria and the specific approved slice requirements.\n  Every required source maps to an obligation; later scope and historical\n  observations carry reasons and do not erase retained Foundation requirements.\n- [foundation-environments.yaml](../capabilities/foundation-environments.yaml):\n  actual observed Noble image digests, OS-release hashes and Temurin JDK identities.\n  `./scripts/inventory environments` emits `FOUNDATION_ENVIRONMENT JDK IMAGE`\n  records; the JDK matrix consumes these immutable images. No floating tag is an\n  authority. A future image/build needs reviewed profile changes and new evidence.\n- [foundation-evidence.yaml](../capabilities/foundation-evidence.yaml): final\n  candidate inputs/artifacts, actual environment records and certifications.\n  Each completed slice records the same exact candidate and retains only\n  certifications whose candidate, contract, environment, configuration, and\n  recursively referenced report identities still match. Historical T70/T71\n  records remain immutable when later candidates refresh transactions, values,\n  pages, metadata and annotations. The T75 candidate adds text and refreshes\n  all five previously certified obligations under those same identity rules.\n\nWindows x86-64 and macOS x86-64/arm64 are explicitly uncertified and are not\nrequired Foundation 0.1.0 gates under [ADR-0040](adr/0040-certify-only-observed-foundation-environments.md).\nOnly the actual required Ubuntu 24.04/Linux x86-64 JDK 8/11/17/21 profiles may\nsatisfy this release contract; the same architecture cannot certify another OS,\nimage, JDK vendor or build. Other #1/#33 contracts and non-goals remain unchanged."
+        }
+      ]
+    }
+  ],
+  "original-goal": {
+    "copy": "sources/standards/original-goal.txt",
+    "sha256": "794423d41161169ea6a4fee993553f777d6249cb05c5fe4d34f59657ab18f83f"
+  },
+  "fowler-heuristic-baseline": [
+    "Mysterious Name",
+    "Duplicated Code",
+    "Feature Envy",
+    "Data Clumps",
+    "Primitive Obsession",
+    "Repeated Switches",
+    "Shotgun Surgery",
+    "Divergent Change",
+    "Speculative Generality",
+    "Message Chains",
+    "Middle Man",
+    "Refused Bequest"
+  ],
+  "heuristic-application": "Judgement only, repository rules prevail; this increment changes retained validation evidence, while prior full-source and incremental reviews remain identity-bound. No new code hunk or open smell is introduced.",
+  "original-process": {
+    "command": {
+      "command": [
+        "./scripts/verify-jdk-matrix.sh"
+      ],
+      "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+      "started-utc": "2026-09-13T14:42:45.357683+00:00",
+      "wrapper-pid": 3880150,
+      "explicit-environment": {
+        "FOLIO_HARFBUZZ_HELPER": "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/harfbuzz/10.2.0-final/bin/folio-harfbuzz"
+      },
+      "original-log": "/tmp/t75-final-jdk-matrix-r4.log"
+    },
+    "actual-result": {
+      "command": [
+        "./scripts/verify-jdk-matrix.sh"
+      ],
+      "cwd": "/home/ubuntu/IdeaProjects/open-pdf",
+      "started-utc": "2026-09-13T14:42:45.357683+00:00",
+      "wrapper-pid": 3880150,
+      "explicit-environment": {
+        "FOLIO_HARFBUZZ_HELPER": "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/harfbuzz/10.2.0-final/bin/folio-harfbuzz"
+      },
+      "original-log": "/tmp/t75-final-jdk-matrix-r4.log",
+      "command-pid": 3880151,
+      "returncode": 0,
+      "completed-utc": "2026-09-13T17:00:34.619670+00:00"
+    },
+    "actual-returncode": 0,
+    "elapsed-wall-seconds": 8269.261987,
+    "durable-command-result-log-match-archive": true,
+    "configured-helper-path": "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/harfbuzz/10.2.0-final/bin/folio-harfbuzz",
+    "helper-sha256": "169389e19e28bc96e3e878a9468671c31ccc6d5e7abbc3d38c4b8470526cdc65",
+    "helper-scope": "Explicit retained configuration plus read-only file hash; no helper or environment observer was executed."
+  },
+  "archive-byte-audit": {
+    "archive": "capabilities/evidence/T75-delivery/final-validation-r4/jdk-matrix.tar.xz",
+    "archive-sha256": "920b79db90efbc0d19766ec9c03f91ac107c63ef10f4248e569e5004eaa0d87c",
+    "archive-identity-sha256": "e19751729f45e9c5ad3902b95a89521dac721e533dc7939d60de6252dab530f9",
+    "members": 184,
+    "retained-report-files": 177,
+    "original-frozen-directory": "/tmp/t75-final-jdk-matrix-r4-green-xj1_a_w8",
+    "every-member-byte-matches-original-and-manifest": true,
+    "uncompressed-bytes": 1967103
+  },
+  "matrix-runs": [
+    {
+      "jdk-major": 8,
+      "header": "==> Verifying Folio PDF on JDK 8 (docker.io/library/eclipse-temurin@sha256:a4da319337cb6504ba4fb663cbd72a75df5515efb31bbdc6fc4ad7ba8d710dee)",
+      "totals": {
+        "tests": 1507,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 4
+      },
+      "class-result-count": 87,
+      "reactor-success-count": 10,
+      "native-extraction": {
+        "class": "net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest",
+        "tests": 115,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "time-seconds": 5.14
+      },
+      "inventory-results": [
+        {
+          "class": "net.zerocloud.pdf.tools.inventory.FoundationReadinessCommandTest",
+          "tests": 10,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "time-seconds": 142.2
+        },
+        {
+          "class": "net.zerocloud.pdf.tools.inventory.InventoryCommandTest",
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "time-seconds": 35.64
+        }
+      ],
+      "exact-reviewed-host-class-result-multiset-match": true
+    },
+    {
+      "jdk-major": 11,
+      "header": "==> Verifying Folio PDF on JDK 11 (docker.io/library/eclipse-temurin@sha256:09f6797de424a6a085da4db6ba64381b2a4d51c2100a5e91998b69d7c23e0ecb)",
+      "totals": {
+        "tests": 1507,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 4
+      },
+      "class-result-count": 87,
+      "reactor-success-count": 10,
+      "native-extraction": {
+        "class": "net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest",
+        "tests": 115,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "time-seconds": 4.918
+      },
+      "inventory-results": [
+        {
+          "class": "net.zerocloud.pdf.tools.inventory.FoundationReadinessCommandTest",
+          "tests": 10,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "time-seconds": 107.9
+        },
+        {
+          "class": "net.zerocloud.pdf.tools.inventory.InventoryCommandTest",
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "time-seconds": 24.06
+        }
+      ],
+      "exact-reviewed-host-class-result-multiset-match": true
+    },
+    {
+      "jdk-major": 17,
+      "header": "==> Verifying Folio PDF on JDK 17 (docker.io/library/eclipse-temurin@sha256:61a94244559f2e89e4edb02bae37eeb8762ecf5deaf237251fa630e5120a8798)",
+      "totals": {
+        "tests": 1507,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 4
+      },
+      "class-result-count": 87,
+      "reactor-success-count": 10,
+      "native-extraction": {
+        "class": "net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest",
+        "tests": 115,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "time-seconds": 4.693
+      },
+      "inventory-results": [
+        {
+          "class": "net.zerocloud.pdf.tools.inventory.FoundationReadinessCommandTest",
+          "tests": 10,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "time-seconds": 93.14
+        },
+        {
+          "class": "net.zerocloud.pdf.tools.inventory.InventoryCommandTest",
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "time-seconds": 22.02
+        }
+      ],
+      "exact-reviewed-host-class-result-multiset-match": true
+    },
+    {
+      "jdk-major": 21,
+      "header": "==> Verifying Folio PDF on JDK 21 (docker.io/library/eclipse-temurin@sha256:1ca5e470ad60db0d5b4137c1357068fa210051d815ad98ea9964f4bbe7367f8c)",
+      "totals": {
+        "tests": 1507,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 4
+      },
+      "class-result-count": 87,
+      "reactor-success-count": 10,
+      "native-extraction": {
+        "class": "net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest",
+        "tests": 115,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "time-seconds": 4.749
+      },
+      "inventory-results": [
+        {
+          "class": "net.zerocloud.pdf.tools.inventory.FoundationReadinessCommandTest",
+          "tests": 10,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "time-seconds": 108.6
+        },
+        {
+          "class": "net.zerocloud.pdf.tools.inventory.InventoryCommandTest",
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "time-seconds": 22.15
+        }
+      ],
+      "exact-reviewed-host-class-result-multiset-match": true
+    }
+  ],
+  "final-JDK21-reports": {
+    "report-files": 177,
+    "XML-class-results": 87,
+    "runtime-property-counts": {
+      "java.specification.version": {
+        "21": 87
+      },
+      "java.version": {
+        "21.0.12": 87
+      },
+      "java.runtime.version": {
+        "21.0.12+8-LTS": 87
+      },
+      "java.vendor": {
+        "Eclipse Adoptium": 87
+      },
+      "java.vm.version": {
+        "21.0.12+8-LTS": 87
+      }
+    },
+    "exact-log-result-multiset-match": true,
+    "four-skips": [
+      {
+        "report": "pdf-acceptance/target/surefire-reports/TEST-net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest.xml",
+        "class": "net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest",
+        "method": "pinnedRastersDecodeAndMatchEveryDeclaredVariant",
+        "message": "Explicit offline tools are required for this acceptance run"
+      },
+      {
+        "report": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.consumer.HardenedWorkerScaleProfileTest.xml",
+        "class": "net.zerocloud.pdf.consumer.HardenedWorkerScaleProfileTest",
+        "method": "configuredConcurrencyLimitAdmitsLimitAndRejectsFirstExcess",
+        "message": "got: <false>, expected: is <true>"
+      },
+      {
+        "report": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.consumer.HardenedWorkerScaleProfileTest.xml",
+        "class": "net.zerocloud.pdf.consumer.HardenedWorkerScaleProfileTest",
+        "method": "generatedFiveThousandPageWorkloadCompletesAndReopens",
+        "message": "got: <false>, expected: is <true>"
+      },
+      {
+        "report": "pdf-document/target/surefire-reports/TEST-net.zerocloud.pdf.consumer.HardenedWorkerScaleProfileTest.xml",
+        "class": "net.zerocloud.pdf.consumer.HardenedWorkerScaleProfileTest",
+        "method": "generatedExactOneGiBInputCompletesWithinStagingProfile",
+        "message": "got: <false>, expected: is <true>"
+      }
+    ],
+    "three-inventory-regressions": [
+      "chainRecordAcceptsExactByteBoundAndRejectsFirstExcess",
+      "completeLargeChainRecordRetainsReadinessAndGeneratedScope",
+      "largeChainRecordBudgetDoesNotExpandTheAuthorityBudget"
+    ],
+    "earlier-three-JDK-XML-retained-or-inspected": false,
+    "earlier-JDK-boundary": "Complete original per-class log results and frozen test inputs were checked; no claim of retaining earlier XML or observing earlier XML runtime properties."
+  },
+  "review-continuity": {
+    "source-count": 1933,
+    "contract-count": 30,
+    "freeze-sha256": "50988226c0db8a0eddd622ec3d9656d5ad6eb1e25328f22a067ee0e54add392d",
+    "all-current-input-paths-and-bytes-match-frozen-host-and-matrix": true,
+    "source-delta-from-original-full-review": 26,
+    "contract-delta-from-original-full-review": 1,
+    "recomputed-delta": {
+      "inputs": [
+        {
+          "path": "PROVENANCE.md",
+          "before": "25a8e11ba7987d340f200b5cb61fa56730551338ede55831e966f91ee0bc41cc",
+          "after": "99a3d31abac6e8841c126deb3fdce26e72520f762a4158468990e58daf532ced"
+        },
+        {
+          "path": "build-tools/inventory/src/main/java/net/zerocloud/pdf/tools/inventory/FoundationEvidence.java",
+          "before": "449e072ed7f6fd3bd55ec5fc50bc89daff75cea7d830cf3d36ed01a4dca28473",
+          "after": "4a13434d09ef46694f78e4eee4427af29cac31957d07f22689115c4c83022e6a"
+        },
+        {
+          "path": "build-tools/inventory/src/main/java/net/zerocloud/pdf/tools/inventory/InventoryYaml.java",
+          "before": "6f1a04c1dc7fc9074ee78f2525272e922135f8e5db4e4864d8d365f14b47988a",
+          "after": "bb9c98c95b7d0ec8fc7e126e01ecc989edf9e6263c30ee5a60e6f68d7e10fed5"
+        },
+        {
+          "path": "build-tools/inventory/src/test/java/net/zerocloud/pdf/tools/inventory/FoundationReadinessCommandTest.java",
+          "before": "8614f9af45811e6c2d362321f6a4cc39f457627f1caad5ca545cde545e9604c8",
+          "after": "a5918d4350795257383b7386fa4a7437a40300c7b74a8d0152dc8257fb68f246"
+        },
+        {
+          "path": "docs/foundation-readiness.md",
+          "before": "23ac603f00d6789dd20f93b92ee2902f0f481198a63a05b2e23bf4275a4f2882",
+          "after": "400ef2e6fe8834ba358677d09fc5a2b59dd5c053ff4978d32af4cb1e472354f7"
+        },
+        {
+          "path": "docs/t13-certification.md",
+          "before": "34e24204067c7d057379ea3bf10b91aa86092084362b2f63c6aef07bd1ee976f",
+          "after": "fcfe5a526e4ca4320060874e911b26ad9415c04eb445ef693e6e56027f6c0ea5"
+        },
+        {
+          "path": "docs/text-logical-structure.md",
+          "before": "344e8ee6270d36fab649888108feb4f7f218105efdbfd92728702a80c368c717",
+          "after": "26c32f4c461cdc572c7c5af753bbeddd7b05da2db5db589133131a3a10c71330"
+        },
+        {
+          "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T24ParagraphSemanticAssertions.java",
+          "before": "04b2a817efcbd985a9557945216975560f3ca9eb76b2dfd80fb08d75b00a0515",
+          "after": "3246e527efbce90133413855926028d821aa1a2fe74b278e1c9b2a6fa72617e5"
+        },
+        {
+          "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T25ParagraphSemanticAssertions.java",
+          "before": "5c27af67667001b0d7c6557ebd8e697d7129914cd685288419da2e73883fa29f",
+          "after": "188d6c94d3f3d9d4bb295f4fb48244a3fe5b03bf3d1889fab31962b0ec10509d"
+        },
+        {
+          "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T26TableSemanticAssertions.java",
+          "before": "6ebc8aa3410a7cee98708d13aaf757ff119278413146f42026d57a56b6420f13",
+          "after": "587399c662a056ee16d5b039e6607be5918ff9871f6d6ab657178566d38ff669"
+        },
+        {
+          "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T27TableSemanticAssertions.java",
+          "before": "72c0027abcbb5e7e9baa7222aeb21d1ddcbf538337f646da1a0609d41cff787e",
+          "after": "c334486fd0661d97c03124cec393a17f7620b24523f5969022c66633c12f46b5"
+        },
+        {
+          "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T29ShapingSemanticAssertions.java",
+          "before": "67850da03d5af2fb9041082cc3367ebea090d38df4ffd9e9600d028b27f71009",
+          "after": "5bb84d090c813ef37c0bde1074b0a36ff7e45fbde04e9cd7fd5353762a2de44f"
+        },
+        {
+          "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T30BarcodeAssertions.java",
+          "before": "0d16548919eb713c1f8a413da72d990d34028f9bbc3515f7b4ae536098c0bc2f",
+          "after": "740fb54687b935c907468bc0bf6624087b73ffb2abb2df4d5b9577cc256014b9"
+        },
+        {
+          "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxTextStructureExtractionOperations.java",
+          "before": "2b6df259797f35b16ae574461163533a40ca780a27e28e7648de25fe4e5222ba",
+          "after": "0f3af385322175b8ad09004baaadc9a01aee6073b05b4b1d3158b52ef085afc0"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/BarcodeWorkflowTest.java",
+          "before": "8e58fe2e4c1a405cda1461b12aecab5abf8bc39581345c91dc2a3750d5d97596",
+          "after": "e51147a9ee62498a44f8748f08becd789866a1682413b5dfd72db9550cf5765f"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/FontLoadingWorkflowTest.java",
+          "before": "eb83e2d8b4e3069bf510f7cf54b5c3070fcc4b0f3762df0c87a2a2dbe394521d",
+          "after": "dc7ea4d7051fdb734ef654cff23d8abba1bf0c026a64bb6377a0e3747b07ada0"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/LargeTableWorkflowTest.java",
+          "before": "3babcc1f66cb06a0e88f9d6dc5b005503c45596b386b2c1f2314293d49925580",
+          "after": "72edda9f6771666e10f91fa12a3a74a0a7b47aa5515ba783668ddb6a44bd0039"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/ParagraphCompositionWorkflowTest.java",
+          "before": "2a093b9b1152e747e2f2ffcd1997e7aeb2549765a667ea034e2687c7c6f11b3d",
+          "after": "d891415fc3deb160a3abc76440e708649c7b86043bcb6f8ca10c3c9fb6fb9eb4"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/ParagraphPaginationWorkflowTest.java",
+          "before": "a9eccd89c7cf4dbb8438813d9f383c261a94f0b70788ca51b3480cf85c2b761e",
+          "after": "786dbc0bfd5877ad7eceac3ab7d12a2bc2b14c8461391b66e5d285b01167ebee"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/ShapingCompositionWorkflowTest.java",
+          "before": "ccf0cbf02cb051b9b6ef66d9f37c33784cef69b2f97cb632d1525e838efd3a36",
+          "after": "1c7a7d2af3ff8f1281b4b0c5261b1317028424823290b85e1eeaff408e5bccbb"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TableCompositionWorkflowTest.java",
+          "before": "a6a300d4a1da3b33d2ca6bc7c3564d77b3bd53a0bc71fd33a6081bc6d7d842af",
+          "after": "b0b40407147ffd5e4508f480e6d73b1cddc1104aa314476fce4e33c659c08f38"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TablePaginationWorkflowTest.java",
+          "before": "cb688c8ea9fe9de481df2bbc0cf93324cd50103e0a636e278f1e0e2061f5ba9b",
+          "after": "4a4b64e0274fb54bcb3150770feb5f02d5f32625554373d32a9789186d9f8279"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/TextStructureExtractionWorkflowTest.java",
+          "before": "144ec57b7571ea4e11ed5c4821f3c5bad6711486d0a283235e651378824d54fa",
+          "after": "6bd16c2e71ffd6714e879dc5dc38f003025cd5dadbb7f658e4540fe61a3f5ed8"
+        },
+        {
+          "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/UnicodeCompositionWorkflowTest.java",
+          "before": "bf72d8b93b2106013bd89b7a4b9c7ac37a9770da819f44a6c9f312acebfecd7e",
+          "after": "c6606b4267eb8f6d003b0a93947d7f3c5714ac20797e7b30168555532632e4b3"
+        },
+        {
+          "path": "scripts/t03-foundation.py",
+          "before": "989245c140a85582264674281ca190ec57d7619472ab495b6519bf2f1fdb239f",
+          "after": "210aa7c5e149831af7a2fbb776f6534da7f444be9524fb52b8d9772dcd65bf13"
+        },
+        {
+          "path": "scripts/tests/test_t13_foundation.py",
+          "before": "b89f7e6a62dc43a808eb202efb4aa8ab1b74490e9c31de722f2ef4cf11119f8c",
+          "after": "36c80383987d3548c1bc77df0294d33ffcee982946187633844ac745ca8f9345"
+        }
+      ],
+      "contract-inputs": [
+        {
+          "path": "capabilities/evidence/T13-text-logical-structure.md",
+          "before": "175e4303ffe4c7d0998e7c334b9f315ed039a0070b162a677499b9144cd5c0f5",
+          "after": "7cdb3ade494786b6f0978c25e08e1ae07b0ee0966346e5b0695eba8968088de1"
+        }
+      ]
+    },
+    "prior-host-report-sha256": "60e938ec4c240863ad7464abe820ac74f26f40ddbd6a0ed2110fd79d2a6c148f",
+    "prior-host-receipt-sha256": "aad8ba5015f3cdabc49933dee9aecddb8945779b21fab144af50984cd1531322",
+    "prior-host-complete-archive-and-manifest-unchanged": true,
+    "new-five-file-and-earlier-independent-review-identities-unchanged": true
+  },
+  "closing-readonly-check": {
+    "checked-utc": "2026-09-13T17:12:19.986145+00:00",
+    "HEAD": "5b1603c435f11c40368f75b7b9a2777c9c5e9761",
+    "baseline": "5b1603c435f11c40368f75b7b9a2777c9c5e9761",
+    "commit-list-empty": true,
+    "canonical-three-dot-diff-empty": true,
+    "current-source-count": 1933,
+    "current-contract-count": 30,
+    "every-current-source-and-contract-hash-still-matches": true,
+    "freeze-sha256": "50988226c0db8a0eddd622ec3d9656d5ad6eb1e25328f22a067ee0e54add392d",
+    "matrix-archive-sha256": "920b79db90efbc0d19766ec9c03f91ac107c63ef10f4248e569e5004eaa0d87c",
+    "matrix-archive-identity-sha256": "e19751729f45e9c5ad3902b95a89521dac721e533dc7939d60de6252dab530f9",
+    "README-sha256": "93666123288caf2a37ffe74ac18e1c13479accb26cfd2665472fe7e5ba67e5a3",
+    "README-copy-equals-current": true,
+    "copied-source-count": 33,
+    "all-copied-source-identities-still-match": true
+  },
+  "reviewer-diagnostics": [
+    {
+      "original-script": "closing-inspection.py",
+      "original-result": "commands/closing-inspection-result.json",
+      "returncode": 1,
+      "reason": "Reviewer expected literal 1507 and a Z timestamp. The correct README uses 1,507 and UTC. This is a reviewer interpretation error, not a project test or evidence failure.",
+      "literal-inspection": "commands/readme-literal-diagnostic.stdout",
+      "corrected-script": "closing-inspection-v2.py",
+      "corrected-result": "commands/closing-inspection-v2-result.json",
+      "corrected-returncode": 0,
+      "all-originals-preserved": true
+    }
+  ],
+  "latest-README": {
+    "copy": "sources/matrix/README.md",
+    "sha256": "93666123288caf2a37ffe74ac18e1c13479accb26cfd2665472fe7e5ba67e5a3",
+    "scope-accurate": true,
+    "stage-boundary": "README records fresh stage exit 0. Stage artifacts were not reviewed by this matrix-only closure.",
+    "certification-boundary": "All 48 fresh certification tuples and their independent reviews, final inventory and delivery remain separately required."
+  },
+  "scope-limitations": [
+    "No project execution or evidence-authority mutation.",
+    "No live target reports read; all report checks used completed originals or archive bytes.",
+    "Not a fresh candidate, certification, final inventory, index, tracker, or delivery approval.",
+    "Previous full-source closures are retained and identity-verified, not silently represented as a new full source rereview."
+  ],
+  "packet-preservation": {
+    "exclusive-creation": true,
+    "repository-writes": false,
+    "original-process-records": "original-process/",
+    "source-identities": "copied-source-identities.json",
+    "all-archive-member-identities": "archive-member-identities.json",
+    "full-current-input-identities": "closing-v2-current-input-identities.json",
+    "manifest": "artifact-identities.json",
+    "manifest-exclusions": [
+      "artifact-identities.json",
+      "commands/finalization.stdout",
+      "commands/finalization.stderr",
+      "commands/finalization-result.json"
+    ],
+    "exclusion-reason": "The manifest cannot hash itself; its executing wrapper writes the finalization output/error/result afterward. All four excluded files remain in the completed packet for the parent to hash during archival."
+  },
+  "report": {
+    "path": "report.md",
+    "sha256": "223bedddc49ce8509b41e588ff6ab2593fd8e4072d6da1232235f2354d627c8b",
+    "word-count": 281
+  }
+}

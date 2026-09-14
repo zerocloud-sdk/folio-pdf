@@ -78,3 +78,58 @@ The cumulative patch was reapplied to pristine archived sources and all eight
 resulting modified files matched the actual build inputs byte for byte.
 The new header is original project work; inherited code retains its notices.
 The installation, SDK and checker stay outside product runtime and artifacts.
+
+## T13 text qualification supplement
+
+[t13-r1.patch](t13-r1.patch) is a separate cumulative Apache-2.0 patch against
+the same pinned upstream archive. It retains the T10/T11/T12 checks and adds
+the owning-font FontName relationships, including MMType1 shared descriptors
+and PDF 2.0's optional Type3 Name/FontName relationship. It also evaluates a
+wildcard ArrayLength against the current array element, as required for W2
+triples, and follows UseCMap streams through the matching Encoding or
+ToUnicode model. Generic warnings still prevent a passing observation.
+
+The qualification uses original legal and illegal PDFs through
+`StandardsEvidenceCommand`. The initial six-font set exposed unsupported
+FontName predicates and an incorrect W2 array context. A seventh control
+then exposed the missing FontMultipleMaster dispatch. The Type3 extension
+retains both named and unnamed legal descriptors under PDF 2.0 Table 120;
+the pdfcpu rejection of the unnamed legal case is retained as a tool limitation.
+This is an in-progress, case-specific qualification, not a complete text
+standards chain or product certification.
+
+Reproduce under `.build-cache/arlington/t13-r1` using the T12 instructions,
+the same static Expat archive, and the fixed build date `Sep 12 2026`.
+The cumulative patch must replay from pristine archived inputs. Every resulting
+changed or new source/model file must match the actual build input bytes.
+[The T13 pin](../../../scripts/t13-arlington-pin.properties) binds the new
+executable, cumulative patch and changed TSV model separately. Earlier pins
+and historical observations remain unchanged.
+
+The Type3 glyph supplement checks d0/d1 headers and declared widths through
+the independent PDFium SDK graph. It recognizes PDF token delimiters, rejects
+overlapping Differences sequences and requires each observed glyph width to
+be established by explicit Differences. A BaseEncoding or an incomplete mapping
+is unqualified and produces INDETERMINATE. Width agreement uses the pinned
+SDK's FX_FLOAT precision on both operands, as permitted by ISO 32000-1 §7.3.3;
+nonfinite converted values remain unqualified. Wy must still be zero.
+
+The 64 MiB decoded-size observation occurs after the SDK decodes the stream;
+it is not a bound on peak allocation during decoding. This qualification uses
+fixed original small PDFs under the pin's process deadline and output limit.
+It does not establish a hostile-input memory boundary for the independent SDK.
+
+The simple-font supplement applies the required Widths cardinality to MMType1
+and TrueType as well as Type1. Required-field evaluation uses the model's single
+Required condition even when an absent value has no matching type index. A PDF
+null counts as missing; all fifteen required-field null controls now fail.
+The required-field pass skips values already validated as present and nonnull,
+avoiding unsupported conditional warnings for fields such as supplied Length1.
+Independent review confirmed that the pinned model has no per-type Required
+groups. These fixes retain actual type/value checks and generic warning failures.
+
+The 334-rule declaration union includes original CIDFont, descriptor and CMap
+dictionary controls. Its publication positives are PDF 2.0; legacy PDF 1.7
+conditional required-font behavior remains unqualified. Detailed font programs
+and other decoded text/structure relationships are not implied by these model
+declaration checks.

@@ -1,0 +1,142 @@
+{
+  "review_axis": "Standards",
+  "scope": "Only the new five-file chain-record reader increment for #75; not re-approval of r3, the complete task, certification, candidate freeze, or delivery.",
+  "completed_utc": "2026-09-13T14:07:21.038071+00:00",
+  "reviewer": "clean-context child /root/inventory_bound_standards",
+  "repository": "/home/ubuntu/IdeaProjects/open-pdf",
+  "source_mutations_by_reviewer": [],
+  "external_mutations_by_reviewer": [],
+  "maven_runs_started_by_reviewer": [],
+  "fixed_baseline": "5b1603c435f11c40368f75b7b9a2777c9c5e9761",
+  "head_at_baseline_check": "5b1603c435f11c40368f75b7b9a2777c9c5e9761",
+  "canonical_diff": {
+    "command": "git diff 5b1603c435f11c40368f75b7b9a2777c9c5e9761...HEAD",
+    "exit": 0,
+    "stdout_bytes": 0,
+    "retained": "008-canonical-diff.stdout"
+  },
+  "commit_list": {
+    "command": "git log 5b1603c435f11c40368f75b7b9a2777c9c5e9761..HEAD --oneline",
+    "exit": 0,
+    "stdout_bytes": 0,
+    "retained": "009-commit-list.stdout"
+  },
+  "adaptation": "User explicitly requires independent review before commit. Review WIP using retained five-path git diff BASE -- PATHS and exact frozen r3-to-fix diff, while keeping full-task baseline fixed.",
+  "incremental_diff": {
+    "command": "git diff --no-index -- /tmp/t75-inventory-read-bound-review-freeze-j1zhjsip/before /tmp/t75-inventory-read-bound-review-freeze-j1zhjsip/source",
+    "exit": 1,
+    "exit_meaning": "Expected: files differ, not tool failure.",
+    "retained": "010-increment-diff.stdout"
+  },
+  "full_task_five_path_diff": "012-fulltask-five-path-diff.stdout",
+  "working_tree_diff_check": {
+    "exit": 0,
+    "scope": "The five reviewed paths against the fixed baseline.",
+    "retained": "027-bounded-diff-check.stdout"
+  },
+  "closing_source_identities": [
+    {
+      "path": "PROVENANCE.md",
+      "sha256": "99a3d31abac6e8841c126deb3fdce26e72520f762a4158468990e58daf532ced",
+      "bytes": 187118,
+      "matches_reviewed_freeze": true
+    },
+    {
+      "path": "build-tools/inventory/src/main/java/net/zerocloud/pdf/tools/inventory/FoundationEvidence.java",
+      "sha256": "4a13434d09ef46694f78e4eee4427af29cac31957d07f22689115c4c83022e6a",
+      "bytes": 15316,
+      "matches_reviewed_freeze": true
+    },
+    {
+      "path": "build-tools/inventory/src/main/java/net/zerocloud/pdf/tools/inventory/InventoryYaml.java",
+      "sha256": "bb9c98c95b7d0ec8fc7e126e01ecc989edf9e6263c30ee5a60e6f68d7e10fed5",
+      "bytes": 6362,
+      "matches_reviewed_freeze": true
+    },
+    {
+      "path": "build-tools/inventory/src/test/java/net/zerocloud/pdf/tools/inventory/FoundationReadinessCommandTest.java",
+      "sha256": "a5918d4350795257383b7386fa4a7437a40300c7b74a8d0152dc8257fb68f246",
+      "bytes": 42886,
+      "matches_reviewed_freeze": true
+    },
+    {
+      "path": "docs/foundation-readiness.md",
+      "sha256": "400ef2e6fe8834ba358677d09fc5a2b59dd5c053ff4978d32af4cb1e472354f7",
+      "bytes": 14085,
+      "matches_reviewed_freeze": true
+    }
+  ],
+  "before_identity_validation": "All five before SHA-256 values match the independently retained r3 input identity document; see 022-lineage-and-generated-diagnostics.stdout.",
+  "before_retention": "InventoryYaml and test are original pre-edit copies; FoundationEvidence was retained unchanged at the true leading-comment RED. PROVENANCE and readiness guide are exact inverses verified against the retained r3 input hashes. No lost original bytes are claimed restored.",
+  "hard_findings": [],
+  "open_judgement_findings": [],
+  "standards_sources": [
+    "AGENTS.md",
+    "CONTRIBUTING.md",
+    "CONTEXT.md",
+    "docs/agents/domain.md",
+    "docs/agents/issue-tracker.md",
+    "docs/adr/0023-require-independent-acceptance-evidence-chains.md",
+    "docs/adr/0040-certify-only-observed-foundation-environments.md",
+    "docs/foundation-readiness.md",
+    "/home/ubuntu/.codex/skills/code-review/SKILL.md",
+    "/home/ubuntu/.codex/attachments/77353239-0dda-4ee1-b4bb-ce7fb3fa0f9b/pasted-text-1.txt"
+  ],
+  "smell_assessment": {
+    "policy": "Heuristics only; documented repository standards override; tooling-enforced formatting/build rules are not reported as review findings.",
+    "considered": [
+      "Mysterious Name",
+      "Duplicated Code",
+      "Feature Envy",
+      "Data Clumps",
+      "Primitive Obsession",
+      "Repeated Switches",
+      "Shotgun Surgery",
+      "Divergent Change",
+      "Speculative Generality",
+      "Message Chains",
+      "Middle Man",
+      "Refused Bequest"
+    ],
+    "rationale": "No actionable smell in the increment. Named chain-record reader expresses the new bounded operation; shared parse/error paths preserve one strict policy. Fixture reference refresh gathers repeated YAML-shape navigation. Synthetic fixture maps remain consistent with existing command-test construction rather than introducing a product domain API. The five files each have the expected source, call site, public-command tests, guide, or provenance role."
+  },
+  "code_assessment": {
+    "input_bound": "InventoryYaml.java:42-57. Each read uses an 8192-byte scratch buffer. count > MAX_CHAIN_RECORD_BYTES - retained.size() is checked before appending and parsing; retained.size never exceeds 16777216. Subtraction avoids overflow. A file of exactly N bytes is read through EOF; any next byte causes rejection on the next non-empty read, including trailing/comment bytes.",
+    "read_ahead": "The code reads an ordinary chunk before checking its length; a failing read can consume up to 8192 excess bytes. It does not promise to issue a read of exactly the remaining budget plus one. This preserves the documented acceptance boundary and rejects before YAML parsing.",
+    "memory": "ByteArrayOutputStream stores a finite input payload and toByteArray copies it. Its capacity/growth and SnakeYAML's object/character allocations are additional to the 16 MiB payload; this is not a 16 MiB heap/RSS guarantee. No product Workflow Resource Policy or runtime budget is altered.",
+    "resources": "The file InputStream closes on parse completion and all caught failures via try-with-resources. The byte-array stream owns no external resource.",
+    "parser": "InventoryYaml.java:60-67 shares SafeConstructor, duplicate-key=false, recursive-key=false, max collection aliases=0 and depth=30. Only chain records have 16777216 parser code points; load(...) retains 3000000. Environment and execution configuration loaders are unchanged.",
+    "validation": "FoundationEvidence.java:127-258 is unchanged except line 142 loader selection. Paths/hashes, distinct record and report artifacts, schema, obligation/profile/release, candidate/contract/environment/execution-configuration identities, all required chains, result=pass, qualified distinct producers, and control identities remain checked.",
+    "java8": "New IO and Files calls are Java 8-compatible; no post-Java-8 syntax/API added. The parent pins maven.compiler.release=8 and SnakeYAML 2.2. No dependency file is in this increment. Full matrix validation remains a later gate.",
+    "public_test_seam": "FoundationReadinessCommandTest.java:608-627 launches InventoryCommand in an actual Java process. New fixtures assert command exit/output and generated Markdown, not backend identity, reflection, mocks, or private parser calls.",
+    "tdd_scope": "New large-chain acceptance and complete byte-bound read have actual pre-fix failing tests and later passing tests. Additional authority/control/result assertions cover preserved existing behavior, rather than a new implemented validation path.",
+    "documentation": "Guide lines 151-158 states byte versus code-point budgets, retained parser guards and no validation bypass. PROVENANCE append states project authorship, fixture origin, unchanged dependencies/runtime limits, and mandatory fresh certification."
+  },
+  "retained_validation_assessment": {
+    "source": "validation-history/ (83 original retained files, 7864576 bytes; all copied bytes verified in 016-retain-validation-history.stdout and validation-history-copy.json).",
+    "original_generate_validate_check": "Each actual exit 0; these structural/generated checks did not prove required text satisfaction.",
+    "real_required_text_red": "Actual exit 1; original generated report contains eight 3000000-code-point failures for text standards.yaml.",
+    "initial_trailing_comments": "Actual exit 0 and 1 test passing. Explicit non-reproduction; never counted as RED or closure.",
+    "leading_comments": "Same test source bytes before and after scoped parser change. Actual test exit 1, then exit 0; original XML/logs retained.",
+    "byte_bound": "RED used the parser-only reader and failed because N+1 bytes still produced READY. After full read bound, the two new acceptance/bound tests actually passed.",
+    "strict_regressions": "Actual exit 0, three tests, no failures/errors/skips.",
+    "complete_module": "Actual ./mvnw -B -ntp -pl build-tools/inventory verify exit 0 completed 2026-09-13T13:57:43.095353+00:00. 10 FoundationReadinessCommandTest plus 7 InventoryCommandTest; all pass with no skips; generated docs check current.",
+    "real_generate_after_fix": "Actual exit 0. Independently scanned retained output: no YAML-read errors and exactly the five reviewed stale source identities. This is not final candidate certification.",
+    "test_report_retention_limit": "Original logs and real results are retained for every listed run. Maven overwrote some intermediate XML/TXT reports. Existing stage snapshots and the final complete-module reports are retained; absent intermediate reports were not recreated."
+  },
+  "prior_review_lineage": {
+    "r3_readme_sha256": "8f13fada894baa0ae1ede69ad97e13595b4c77c544c820784b6058c75f68c1b1",
+    "worker_final_delta_sha256": "abf0428620302f5025f21e065ecda31b01c68c84841c1313dbcdc8d8973fb871",
+    "r3_input_identity_document_sha256": "f085e683a55626c612a20b41146b7bbea1b4aad4f57ca43efa3d3c41b42edf33",
+    "scope": "Links prior complete source review and subsequent closure lineage; this review does not repeat or approve the earlier scopes."
+  },
+  "remaining_gates": [
+    "Freeze and stage the changed source candidate",
+    "Refresh all invalidated certifications for the changed candidate",
+    "Complete required host and JDK matrix verification",
+    "Final inventory/source/index/review closure",
+    "Authorized DCO commit, push and #75 closure only after technical gates"
+  ],
+  "orchestration_diagnostics": "One initial functions.exec JavaScript body failed to parse before any nested process. Retained in 030-orchestration-diagnostic.txt; not a source or validation failure.",
+  "packet_policy": "Exclusive creation in a fresh /tmp directory. Original executed command argv or scripts, stdout, stderr, result metadata, complete snapshots and review diagnostics retained. No early derived file was overwritten. SHA256SUMS excludes only itself."
+}

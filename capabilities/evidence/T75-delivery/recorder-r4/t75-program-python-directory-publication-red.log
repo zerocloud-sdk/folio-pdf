@@ -1,0 +1,23 @@
+F
+======================================================================
+FAIL: test_public_observer_refuses_output_directory_links_before_resolution (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_public_observer_refuses_output_directory_links_before_resolution)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 36, in test_public_observer_refuses_output_directory_links_before_resolution
+    self.assertEqual([], failures)
+AssertionError: Lists differ: [] != ['directory: outside directory written', '[101 chars]ted']
+
+Second list contains 4 additional elements.
+First extra element 0:
+'directory: outside directory written'
+
+- []
++ ['directory: outside directory written',
++  'directory: output link accepted',
++  'ancestor: outside directory written',
++  'ancestor: output link accepted']
+
+----------------------------------------------------------------------
+Ran 1 test in 0.480s
+
+FAILED (failures=1)

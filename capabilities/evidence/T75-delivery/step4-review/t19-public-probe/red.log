@@ -1,0 +1,9 @@
+Exception in thread "main" net.zerocloud.pdf.DocumentFailure: The text and logical-structure extraction limit was exceeded.
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.failure(PdfBoxWorkflowEngine.java:292)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.executeWithDocument(PdfBoxWorkflowEngine.java:350)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.executeChecked(PdfBoxWorkflowEngine.java:238)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.execute(PdfBoxWorkflowEngine.java:41)
+	at net.zerocloud.pdf.DocumentWorkflow.executeOnce(DocumentWorkflow.java:184)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:103)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:64)
+	at T19ExtractionRepro.main(T19ExtractionRepro.java:12)

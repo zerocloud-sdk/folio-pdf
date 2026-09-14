@@ -1,0 +1,20 @@
+test_truetype_outline_bounds_preserve_exact_units_per_em_ratios (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_truetype_outline_bounds_preserve_exact_units_per_em_ratios) ... 
+  test_truetype_outline_bounds_preserve_exact_units_per_em_ratios (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_truetype_outline_bounds_preserve_exact_units_per_em_ratios) (bounds='ttf-bbox-exact-320.8') ... FAIL
+
+======================================================================
+FAIL: test_truetype_outline_bounds_preserve_exact_units_per_em_ratios (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_truetype_outline_bounds_preserve_exact_units_per_em_ratios) (bounds='ttf-bbox-exact-320.8')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 23, in test_truetype_outline_bounds_preserve_exact_units_per_em_ratios
+    self.observe(directory, fixtures / (name + '.pdf'), 'pass', scope='font-metrics')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 582, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'pass' != 'fail'
+- pass
++ fail
+ : ttf-bbox-exact-320.8.pdf: PDF FontBBox does not enclose the embedded glyph outlines
+
+----------------------------------------------------------------------
+Ran 1 test in 2.027s
+
+FAILED (failures=1)

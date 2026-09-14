@@ -1,0 +1,76 @@
+test_content_fonts_resolve_in_the_active_resources_and_follow_graphics_state (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_fonts_resolve_in_the_active_resources_and_follow_graphics_state) ... 
+  test_content_fonts_resolve_in_the_active_resources_and_follow_graphics_state (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_fonts_resolve_in_the_active_resources_and_follow_graphics_state) (resource='missing-font-resource') ... FAIL
+  test_content_fonts_resolve_in_the_active_resources_and_follow_graphics_state (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_fonts_resolve_in_the_active_resources_and_follow_graphics_state) (resource='form-used-as-font') ... FAIL
+  test_content_fonts_resolve_in_the_active_resources_and_follow_graphics_state (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_fonts_resolve_in_the_active_resources_and_follow_graphics_state) (resource='no-selected-font') ... FAIL
+  test_content_fonts_resolve_in_the_active_resources_and_follow_graphics_state (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_fonts_resolve_in_the_active_resources_and_follow_graphics_state) (resource='font-restored-to-unset') ... FAIL
+  test_content_fonts_resolve_in_the_active_resources_and_follow_graphics_state (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_fonts_resolve_in_the_active_resources_and_follow_graphics_state) (resource='missing-form-resource') ... FAIL
+
+======================================================================
+FAIL: test_content_fonts_resolve_in_the_active_resources_and_follow_graphics_state (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_fonts_resolve_in_the_active_resources_and_follow_graphics_state) (resource='missing-font-resource')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 37, in test_content_fonts_resolve_in_the_active_resources_and_follow_graphics_state
+    self.observe(directory, pdf, expected, 'content-resource' if expected == 'fail' else None, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 717, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : missing-font-resource.pdf: Page and nested Form content satisfy the qualified operand grammar.
+
+======================================================================
+FAIL: test_content_fonts_resolve_in_the_active_resources_and_follow_graphics_state (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_fonts_resolve_in_the_active_resources_and_follow_graphics_state) (resource='form-used-as-font')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 37, in test_content_fonts_resolve_in_the_active_resources_and_follow_graphics_state
+    self.observe(directory, pdf, expected, 'content-resource' if expected == 'fail' else None, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 717, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : form-used-as-font.pdf: Page and nested Form content satisfy the qualified operand grammar.
+
+======================================================================
+FAIL: test_content_fonts_resolve_in_the_active_resources_and_follow_graphics_state (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_fonts_resolve_in_the_active_resources_and_follow_graphics_state) (resource='no-selected-font')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 37, in test_content_fonts_resolve_in_the_active_resources_and_follow_graphics_state
+    self.observe(directory, pdf, expected, 'content-resource' if expected == 'fail' else None, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 717, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : no-selected-font.pdf: Page and nested Form content satisfy the qualified operand grammar.
+
+======================================================================
+FAIL: test_content_fonts_resolve_in_the_active_resources_and_follow_graphics_state (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_fonts_resolve_in_the_active_resources_and_follow_graphics_state) (resource='font-restored-to-unset')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 37, in test_content_fonts_resolve_in_the_active_resources_and_follow_graphics_state
+    self.observe(directory, pdf, expected, 'content-resource' if expected == 'fail' else None, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 717, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : font-restored-to-unset.pdf: Page and nested Form content satisfy the qualified operand grammar.
+
+======================================================================
+FAIL: test_content_fonts_resolve_in_the_active_resources_and_follow_graphics_state (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_fonts_resolve_in_the_active_resources_and_follow_graphics_state) (resource='missing-form-resource')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 37, in test_content_fonts_resolve_in_the_active_resources_and_follow_graphics_state
+    self.observe(directory, pdf, expected, 'content-resource' if expected == 'fail' else None, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 717, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'indeterminate'
+- fail
++ indeterminate
+ : missing-form-resource.pdf: Program stream reference is unavailable
+
+----------------------------------------------------------------------
+Ran 1 test in 1.620s
+
+FAILED (failures=5)

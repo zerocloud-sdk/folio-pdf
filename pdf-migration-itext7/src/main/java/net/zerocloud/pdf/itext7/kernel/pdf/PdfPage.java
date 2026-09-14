@@ -7,8 +7,11 @@ import java.util.Objects;
 import java.util.Optional;
 import net.zerocloud.pdf.Annotation;
 import net.zerocloud.pdf.AnnotationAppearance;
+import net.zerocloud.pdf.ExtractionLimits;
 import net.zerocloud.pdf.GoToAction;
 import net.zerocloud.pdf.PageActions;
+import net.zerocloud.pdf.PageText;
+import net.zerocloud.pdf.TextStructureExtraction;
 import net.zerocloud.pdf.command.UpdateActions;
 
 /**
@@ -48,6 +51,18 @@ public final class PdfPage {
             dictionary = (PdfDictionary) reference.getRefersTo();
         }
         return dictionary;
+    }
+
+    /**
+     * Reads this page's detached text, geometry, mapping and marked-content values.
+     * The complete document extraction must succeed before selecting this page.
+     * The handle follows page identity through preceding page changes.
+     * @param limits non-null document-wide extraction bounds
+     * @return immutable Page Text, usable after the owning document closes
+     */
+    public PageText getPageText(ExtractionLimits limits) {
+        TextStructureExtraction extraction = document.getTextAndStructure(limits);
+        return extraction.getPages().get(pageNumber() - 1);
     }
 
     /**

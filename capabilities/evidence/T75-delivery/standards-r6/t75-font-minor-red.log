@@ -1,0 +1,31 @@
+FF
+======================================================================
+FAIL: test_cff_compatible_minor_versions_remain_readable (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cff_compatible_minor_versions_remain_readable) (font='cff-minor-one')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 23, in test_cff_compatible_minor_versions_remain_readable
+    self.observe(directory, pdf, 'pass', scope='fonts')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 221, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'pass' != 'fail'
+- pass
++ fail
+ : cff-minor-one.pdf: CFF header must declare version 1.0 and valid header/offset sizes
+
+======================================================================
+FAIL: test_cff_compatible_minor_versions_remain_readable (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cff_compatible_minor_versions_remain_readable) (font='cidcff-minor-one')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 23, in test_cff_compatible_minor_versions_remain_readable
+    self.observe(directory, pdf, 'pass', scope='fonts')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 221, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'pass' != 'fail'
+- pass
++ fail
+ : cidcff-minor-one.pdf: CFF header must declare version 1.0 and valid header/offset sizes
+
+----------------------------------------------------------------------
+Ran 1 test in 1.254s
+
+FAILED (failures=2)

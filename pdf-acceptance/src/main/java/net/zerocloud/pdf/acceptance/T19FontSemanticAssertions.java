@@ -263,7 +263,9 @@ final class T19FontSemanticAssertions {
                 .maximumTextItems(16)
                 .maximumUnicodeCodePoints(32)
                 .maximumToUnicodeMappings(32)
-                .maximumFontDataEntries(32)
+                // Each of the two Type0 fonts constructs a complete Identity
+                // CMap domain, in addition to the original bounded metric data.
+                .maximumFontDataEntries(2 * 65536 + 32)
                 .maximumMarkedContentSequences(4)
                 .maximumMarkedContentDepth(2)
                 .maximumStructureElements(4)

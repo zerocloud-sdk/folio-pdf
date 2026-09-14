@@ -1,0 +1,18 @@
+F
+======================================================================
+FAIL: test_cff_charset_cannot_leave_declared_glyphs_unobserved (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cff_charset_cannot_leave_declared_glyphs_unobserved) (glyphs=230)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 37, in test_cff_charset_cannot_leave_declared_glyphs_unobserved
+    self.observe(directory, pdf, expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 270, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : charset-230.pdf: Embedded CFF and TrueType headers, dictionaries and checked font tables are readable.
+
+----------------------------------------------------------------------
+Ran 1 test in 1.032s
+
+FAILED (failures=1)

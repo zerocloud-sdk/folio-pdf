@@ -1,0 +1,132 @@
+test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings) ... 
+  test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings) (name='font-utf8') ... FAIL
+  test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings) (name='font-byte') ... FAIL
+  test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings) (name='font-escaped-utf8') ... FAIL
+  test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings) (name='font-escaped-byte') ... FAIL
+  test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings) (name='font-different-byte') ... FAIL
+  test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings) (name='form-utf8') ... FAIL
+  test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings) (name='property-utf8') ... FAIL
+  test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings) (name='form-byte') ... FAIL
+  test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings) (name='property-byte') ... FAIL
+
+======================================================================
+FAIL: test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings) (name='font-utf8')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 38, in test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings
+    self.observe(directory, pdf, expected, 'content-resource' if expected == 'fail' else None, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 825, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'pass' != 'fail'
+- pass
++ fail
+ : font-utf8.pdf: Tf must select a font in the active resource dictionary
+
+======================================================================
+FAIL: test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings) (name='font-byte')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 38, in test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings
+    self.observe(directory, pdf, expected, 'content-resource' if expected == 'fail' else None, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 825, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'pass' != 'fail'
+- pass
++ fail
+ : font-byte.pdf: Tf must select a font in the active resource dictionary
+
+======================================================================
+FAIL: test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings) (name='font-escaped-utf8')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 38, in test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings
+    self.observe(directory, pdf, expected, 'content-resource' if expected == 'fail' else None, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 825, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'pass' != 'fail'
+- pass
++ fail
+ : font-escaped-utf8.pdf: Tf must select a font in the active resource dictionary
+
+======================================================================
+FAIL: test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings) (name='font-escaped-byte')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 38, in test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings
+    self.observe(directory, pdf, expected, 'content-resource' if expected == 'fail' else None, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 825, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'pass' != 'fail'
+- pass
++ fail
+ : font-escaped-byte.pdf: Tf must select a font in the active resource dictionary
+
+======================================================================
+FAIL: test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings) (name='font-different-byte')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 38, in test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings
+    self.observe(directory, pdf, expected, 'content-resource' if expected == 'fail' else None, scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 825, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : font-different-byte.pdf: Qualified content and Type3 rectangles satisfy operand, state, resource, property and ink-bound predicates.
+
+======================================================================
+FAIL: test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings) (name='form-utf8')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 43, in test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings
+    self.observe(directory, pdf, 'pass', scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 825, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'pass' != 'fail'
+- pass
++ fail
+ : form-utf8.pdf: Do must select an XObject in the active resource dictionary
+
+======================================================================
+FAIL: test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings) (name='property-utf8')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 51, in test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings
+    self.observe(directory, pdf, 'pass', scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 825, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'pass' != 'indeterminate'
+- pass
++ indeterminate
+ : property-utf8.pdf: Pinned qpdf did not complete without findings
+
+======================================================================
+FAIL: test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings) (name='form-byte')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 43, in test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings
+    self.observe(directory, pdf, 'pass', scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 825, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'pass' != 'fail'
+- pass
++ fail
+ : form-byte.pdf: Do must select an XObject in the active resource dictionary
+
+======================================================================
+FAIL: test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings) (name='property-byte')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 51, in test_content_resource_names_keep_original_bytes_across_qpdf_name_encodings
+    self.observe(directory, pdf, 'pass', scope='content')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 825, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'pass' != 'indeterminate'
+- pass
++ indeterminate
+ : property-byte.pdf: Pinned qpdf did not complete without findings
+
+----------------------------------------------------------------------
+Ran 1 test in 2.314s
+
+FAILED (failures=9)

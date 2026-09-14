@@ -1,0 +1,20 @@
+E
+======================================================================
+ERROR: test_font_metric_controls_isolate_simple_and_cid_advance_disagreements (scripts.tests.test_t13_standards.T13StandardsTest.test_font_metric_controls_isolate_simple_and_cid_advance_disagreements)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_standards.py", line 26, in test_font_metric_controls_isolate_simple_and_cid_advance_disagreements
+    controls = json.loads((output / 'font-metric-controls.json').read_text())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1029, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpl7batcz9/controls/font-metric-controls.json'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.157s
+
+FAILED (errors=1)

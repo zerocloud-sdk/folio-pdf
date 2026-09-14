@@ -1,0 +1,35 @@
+................................FF
+======================================================================
+FAIL: test_valid_font_headers_cannot_hide_invalid_checksums_or_missing_cff_dictionaries (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_valid_font_headers_cannot_hide_invalid_checksums_or_missing_cff_dictionaries) (font='FolioT13Rectangle.cff')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 200, in test_valid_font_headers_cannot_hide_invalid_checksums_or_missing_cff_dictionaries
+    self.observe(directory, pdf, 'fail', 'font-program-data', scope='fonts')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 355, in observe
+    self.assertEqual(rule, values['rule'])
+AssertionError: 'font-program-data' != 'font-program-layout'
+- font-program-data
+?              ^  -
++ font-program-layout
+?              ^ +++
+
+
+======================================================================
+FAIL: test_valid_font_headers_cannot_hide_invalid_checksums_or_missing_cff_dictionaries (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_valid_font_headers_cannot_hide_invalid_checksums_or_missing_cff_dictionaries) (font='FolioT13RectangleCID.cff')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 200, in test_valid_font_headers_cannot_hide_invalid_checksums_or_missing_cff_dictionaries
+    self.observe(directory, pdf, 'fail', 'font-program-data', scope='fonts')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 355, in observe
+    self.assertEqual(rule, values['rule'])
+AssertionError: 'font-program-data' != 'font-program-layout'
+- font-program-data
+?              ^  -
++ font-program-layout
+?              ^ +++
+
+
+----------------------------------------------------------------------
+Ran 33 tests in 39.764s
+
+FAILED (failures=2)

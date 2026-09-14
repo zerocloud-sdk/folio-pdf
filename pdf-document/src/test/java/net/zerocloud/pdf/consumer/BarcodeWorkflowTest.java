@@ -910,9 +910,10 @@ public final class BarcodeWorkflowTest {
     }
 
     private static ExtractionLimits textLimits() {
+        // The shared label font includes a complete Identity-H table.
         return ExtractionLimits.builder().maximumPages(64).maximumPageTreeNodes(128).maximumContentStreams(128)
                 .maximumContentStreamDepth(4).maximumDecodedBytes(2 * 1024 * 1024).maximumTextItems(1024)
-                .maximumUnicodeCodePoints(1024).maximumToUnicodeMappings(1024).maximumFontDataEntries(4096)
+                .maximumUnicodeCodePoints(1024).maximumToUnicodeMappings(1024).maximumFontDataEntries(65536 + 4096)
                 .maximumMarkedContentSequences(8).maximumMarkedContentDepth(4).maximumStructureElements(8)
                 .maximumStructureItems(8).maximumStructureDepth(4).maximumRoleMappings(4).build();
     }

@@ -1,0 +1,11 @@
+Hard documented-standard violations: 0. Open judgement findings: 0.
+
+This independent closure covers only the completed r4 host verification, against fixed baseline/unchanged HEAD 5b1603c435f11c40368f75b7b9a2777c9c5e9761. CONTRIBUTING.md requires full Maven verification; the Goal additionally requires fresh evidence after identity-affecting changes. Historical r3 success is not treated as current certification.
+
+The original ./mvnw -B -ntp verify command actually exited 0, from 2026-09-13 14:10:40.767506 UTC to 14:42:42.486856 UTC. The complete log and all 87 XML class results have exactly equal multisets: 1,507 reported tests, zero failures/errors, and four unchanged opt-in skips. All ten reactor modules succeeded. Native extraction passed 115 tests in 4.423 seconds; the inventory module passed 17, including the three new reader regressions. The skipped cases remain the same three unselected Worker scale tests and one offline T30 raster test; they are not execution/certification claims.
+
+Every one of the host archive's 184 members matches its recorded digest and frozen original, including all 177 reports and original command/result/log files. All 87 XML suites identify Java 17.0.9. The explicitly configured HarfBuzz helper matches the retained SHA-256, 169389e19e28bc96e3e878a9468671c31ccc6d5e7abbc3d38c4b8470526cdc65.
+
+Both new independent five-file source reviews were read; their 504 archived members also match original bytes. Independently enumerated current source/contract paths and hashes match the r4 freeze: 1,933 sources and 30 contracts, exactly five source changes from r3 and no contract change. Recomputed continuity to the original full review is 26 changed source inputs plus one contract, each covered by the original and retained incremental reviews.
+
+The completed evidence and current README preserve these limits. Matrix completion, fresh staging, all 48 fresh certifications, inventory and final delivery remain open. No Maven, tests, certifier, environment observer or project code ran during this review; no repository/index/authority changed. Live target reports and historical raw r3 certification trees were not read. Two standalone-reader assumptions were corrected with original diagnostics preserved; they were not project failures.

@@ -1,0 +1,18 @@
+test_a_pin_changed_after_tool_start_cannot_retain_a_passing_result (scripts.tests.test_t13_qpdf_identity.T13QpdfIdentityTest.test_a_pin_changed_after_tool_start_cannot_retain_a_passing_result) ... 
+  test_a_pin_changed_after_tool_start_cannot_retain_a_passing_result (scripts.tests.test_t13_qpdf_identity.T13QpdfIdentityTest.test_a_pin_changed_after_tool_start_cannot_retain_a_passing_result) (observer='t13-semantics.py') ... FAIL
+
+======================================================================
+FAIL: test_a_pin_changed_after_tool_start_cannot_retain_a_passing_result (scripts.tests.test_t13_qpdf_identity.T13QpdfIdentityTest.test_a_pin_changed_after_tool_start_cannot_retain_a_passing_result) (observer='t13-semantics.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_qpdf_identity.py", line 53, in test_a_pin_changed_after_tool_start_cannot_retain_a_passing_result
+    self.assertEqual('indeterminate', values[chain], values['finding'])
+AssertionError: 'indeterminate' != 'pass'
+- indeterminate
++ pass
+ : The complete reachable decoded graph matches the frozen original Source.
+
+----------------------------------------------------------------------
+Ran 1 test in 0.451s
+
+FAILED (failures=1)

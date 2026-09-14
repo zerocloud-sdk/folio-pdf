@@ -1,0 +1,44 @@
+FFF
+======================================================================
+FAIL: test_font_descriptor_rectangle_can_use_either_diagonal_corner_order (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_font_descriptor_rectangle_can_use_either_diagonal_corner_order) (box=b'[400 600 0 0]')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 25, in test_font_descriptor_rectangle_can_use_either_diagonal_corner_order
+    self.observe(directory, pdf, 'pass', scope='fonts')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 459, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'pass' != 'fail'
+- pass
++ fail
+ : diagonal-[400-600-0-0].pdf: PDF FontBBox must be a finite ordered rectangle
+
+======================================================================
+FAIL: test_font_descriptor_rectangle_can_use_either_diagonal_corner_order (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_font_descriptor_rectangle_can_use_either_diagonal_corner_order) (box=b'[0 600 400 0]')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 25, in test_font_descriptor_rectangle_can_use_either_diagonal_corner_order
+    self.observe(directory, pdf, 'pass', scope='fonts')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 459, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'pass' != 'fail'
+- pass
++ fail
+ : diagonal-[0-600-400-0].pdf: PDF FontBBox must be a finite ordered rectangle
+
+======================================================================
+FAIL: test_font_descriptor_rectangle_can_use_either_diagonal_corner_order (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_font_descriptor_rectangle_can_use_either_diagonal_corner_order) (box=b'[400 0 0 600]')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 25, in test_font_descriptor_rectangle_can_use_either_diagonal_corner_order
+    self.observe(directory, pdf, 'pass', scope='fonts')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 459, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'pass' != 'fail'
+- pass
++ fail
+ : diagonal-[400-0-0-600].pdf: PDF FontBBox must be a finite ordered rectangle
+
+----------------------------------------------------------------------
+Ran 1 test in 1.867s
+
+FAILED (failures=3)

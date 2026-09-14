@@ -1,0 +1,158 @@
+Version exit: 0
+[0m
+
+Arlington PDF Model C++ P.o.C. version v0.81-folio-t13-r1 built Sep 12 2026 00:00:00 (GNU-C linux release)
+Choose one of: --pdf, --checkdva or --validate.
+
+Usage:
+	TestGrammar --tsvdir <dir> [--force <ver>|exact] [--out <fname|dir>] [--no-color] [--clobber] [--debug] [--brief] [--extensions <extn1[,extn2]>] [--password <pwd>] [--exclude string | @textfile.txt] [--dryrun] [--allfiles] [--validate | --checkdva <formalrep> | --pdf <fname|dir|@file.txt> ]
+
+Options: 
+-h, --help                   This usage message.
+-b, --brief                  terse output when checking PDFs. The full PDF DOM tree is NOT output.
+-c, --checkdva               Adobe DVA formal-rep PDF file to compare against Arlington PDF model.
+-d, --debug                  output additional debugging information.
+    --clobber                always overwrite PDF output report files (--pdf) rather than append underscores.
+    --no-color               disable colorized text output (useful when redirecting or piping output)
+-m, --batchmode              stop popup error dialog windows and redirect everything to console (Windows only, includes memory leak reports).
+-o, --out                    output file or folder. Default is stdout. See --clobber for overwriting behavior.
+-p, --pdf                    input PDF file, folder, or text file of PDF files/folders.
+-f, --force                  force the PDF version to the specified value (1,0, 1.1, ..., 2.0 or 'exact'). Only applicable to --pdf.
+-t, --tsvdir                 [required] folder containing Arlington PDF model TSV file set.
+-v, --validate               validate the Arlington PDF model.
+-e, --extensions             a comma-separated list of extensions, or '*' for all extensions.
+    --password               password. Only applicable to --pdf.
+    --exclude                PDF exclusion string or filelist (# is a comment). Only applicable to --pdf.
+    --dryrun                 Dry run - don't do any actual processing.
+-a, --allfiles               Process all files regardless of file extension.
+    --explicit-values-only   Ignore wildcards in PossibleValues.
+
+Built using pdfium
+
+Validation exit: 0
+Processing "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T13-text/fixtures/marked-structure.pdf" to stdout BEGIN - TestGrammar v0.81-folio-t13-r1 built Sep 12 2026 00:00:00 (GNU-C linux release) pdfium
+Arlington TSV data: "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/t13-r1/tsv/latest"
+PDF: "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T13-text/fixtures/marked-structure.pdf"
+Info: Traditional trailer dictionary detected.
+Info: Header is version PDF 1.7
+Info: Document Catalog/Version is PDF 2.0
+Info: Command line forced to PDF 2.0
+Info: Processing as PDF 2.0
+       1: Trailer
+       2:   Trailer->ID (as TrailerIDArray)
+       3:   Trailer->Root (as Catalog)
+       4:     Trailer->Root (as Catalog)->MarkInfo
+       5:     Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)
+       6:     Trailer->Root (as Catalog)->StructTreeRoot
+       7:       Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)
+       8:       Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)
+       9:       Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)
+      10:       Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[0]
+      11:       Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[1]
+      12:       Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]
+      13:         Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]
+      14:         Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->K (as ArrayOfStructElemKids)
+      15:         Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->NS (as Namespace)
+      16:         Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->P (as StructTreeRoot)
+      17:         Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->Pg (as PageObject)
+      18:         Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[0 (as Namespace)]
+      19:         Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[1 (as Namespace)]
+      20:         Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[2 (as Namespace)]
+      21:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[0][0 (as StructElem)]
+      22:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[1][0 (as StructElem)]
+      23:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)
+      24:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->NS (as Namespace)
+      25:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->P (as StructElem)
+      26:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->Pg (as PageObject)
+      27:           Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)
+      28:           Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Contents (as Stream)
+      29:           Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Parent (as PageTreeNodeRoot)
+      30:           Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)
+      31:           Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->K (as ArrayOfStructElemKids)[0 (as StructElem)]
+      32:           Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->NS (as Namespace)->RoleMapNS
+      33:           Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[2 (as Namespace)]->RoleMapNS
+      34:           Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]
+      35:           Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[2 (as ObjectReference)]
+      36:           Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[3 (as StructElem)]
+      37:             Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[0 (as AnnotText)]
+      38:             Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)
+      39:             Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)
+      40:             Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->NS (as Namespace)->RoleMapNS->Custom (as ArrayOf_RoleMapNS)
+      41:             Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[2 (as Namespace)]->RoleMapNS->Intermediate (as ArrayOf_RoleMapNS)
+      42:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]->Pg (as PageObject)
+      43:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]->Stm (as XObjectFormType1)
+      44:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[2 (as ObjectReference)]->Obj (as _UniversalDictionary)
+      45:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[2 (as ObjectReference)]->Pg (as PageObject)
+      46:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[3 (as StructElem)]->NS (as Namespace)
+      47:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[3 (as StructElem)]->P (as StructElem)
+      48:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[3 (as StructElem)]->Pg (as PageObject)
+      49:               Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[0 (as AnnotText)]->P (as PageObject)
+      50:               Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)
+      51:               Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)->Fm (as XObjectFormType1)
+      52:               Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->NS (as Namespace)->RoleMapNS->Custom (as ArrayOf_RoleMapNS)[1 (as Namespace)]
+      53:               Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[2 (as Namespace)]->RoleMapNS->Intermediate (as ArrayOf_RoleMapNS)[1 (as Namespace)]
+      54:               Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]->Stm (as XObjectFormType1)->Resources (as Resource)
+      55:                 Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->CharProcs (as CharProcMap)
+      56:                 Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->Encoding
+      57:                 Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->FontDescriptor (as FontDescriptorType3)
+      58:                 Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->Resources (as Resource)
+      59:                 Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->Widths (as ArrayOfNumbersGeneral)
+      60:                 Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]->Stm (as XObjectFormType1)->Resources (as Resource)->Font (as FontMap)
+      61:                   Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->CharProcs (as CharProcMap)->A (as Stream)
+      62:                   Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->Encoding->Differences (as ArrayOfDifferences)
+      63:                   Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]->Stm (as XObjectFormType1)->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)
+Info: Latest Arlington object was PDF 2.0 (StructTreeRoot/Namespaces) compared using forced PDF 2.0
+END
+
+DONE - 1 files processed
+
+Negative control cid0-basefont-name sha256=9e7d6ec4299441fc13e6ea30f87ec64fe29a484d2ecd2e56a8c64861f2a14243 detected=true
+Negative control cid0-basefont-required sha256=622fe88b09bbca9a957debfeccb5a4903b777064147aec00b22df8cdac43679c detected=true
+Negative control cid0-descriptor-dictionary sha256=2a94ab99f71fd84a206b034946184dd54bb439a0f95d202f7e5270bc124b4887 detected=true
+Negative control cid0-descriptor-required sha256=38ebb5aba4bca46f4fb71d2e8dccd9cf98b882639209891971f46c732512618d detected=true
+Negative control cid0-dw-number sha256=2f1956beb0e02d136eb017b2811f1109229114db8ced9cf89fd9607ec7f3d393 detected=true
+Negative control cid0-dw2-array sha256=39334d1de79b69e8fb137f4a617a66e067117b9584b26c021dffa81b59c5837f detected=true
+Negative control cid0-dw2-cardinality sha256=05ab3f996c2c1e5c87a3896c69d605e9c05c6892ffb78314ef788f01052f642c detected=true
+Negative control cid0-dw2-numbers sha256=b76d01a9921c1fcd772b1fe4a2edd2e20b4e65a60a60247d6e1433c853e12003 detected=true
+Negative control cid0-ordering-required sha256=d8c37269b17c4c503c933763290e846f1155c947bf362a93adb88ddecc7e54cf detected=true
+Negative control cid0-ordering-string sha256=4550ab7f25c86e1bad897d2719790b398348572b2223ad373788d670e2797de9 detected=true
+Negative control cid0-registry-required sha256=2e0e36fb19447f727781dbca8723aeafa6c40a8f4965a812273da0696bb98ee4 detected=true
+Negative control cid0-registry-string sha256=de2cc03577e165efed3df17848f2772a4bf16c1e68793f846e2da43302e1b07b detected=true
+Negative control cid0-ros-dictionary sha256=322cad83e042d67c240555c469e5370311d71f59b6d4eb29d21a6a297acf3ce2 detected=true
+Negative control cid0-ros-required sha256=be1170e035f78c084455d6dc5638f354934527fec61d4cbafa59daf77989d6cd detected=true
+Negative control cid0-supplement-integer sha256=7a83ec9d3e2f299d4ac1de99b68f195f44476d6ca7ef5186ef3a4a561d829097 detected=true
+Negative control cid0-supplement-required sha256=a181726a33a997ec5eff5f8466cab20688b7563525f25c08f6dbf0719b618274 detected=true
+Negative control cid0-w-array sha256=3746a3187bef3effcf3dbc264b2ef5c0ea12429f74bd84fca0c133b95f3f9d87 detected=true
+Negative control cid0-w-numbers sha256=9f4c81cf0c0d31d4349f588eeedf391354bbf902c62b9d2e541776b065b660be detected=true
+Negative control cid0-w2-array sha256=aab6f6a667220234eb3433c9429161ff47862c8d7afdae1d2f6327a51347b8db detected=true
+Negative control cid0-w2-numbers sha256=be635281e7e682c3ce8fa3937806c4896b495b0c554940dc0c4a4c66a10d874f detected=true
+Negative control cid2-basefont-name sha256=d3a2ce3949146781dd8534b18ca0e37b8ff48282d528ecbf43e2eb57d98ccd7c detected=true
+Negative control cid2-basefont-required sha256=48a5c81242dc906449412a3dd218b1e7d43ca6293f0a53fac0d21c0ad7fc500c detected=true
+Negative control cid2-descriptor-dictionary sha256=61ec200c41c8337f70a087d15322cb8f267f7b98ed95b16a61b28c583a01bd75 detected=true
+Negative control cid2-descriptor-required sha256=24c09dc51a0cc6a971578b98dfc5d83f9906148b695a18ae92eb27c1099eda03 detected=true
+Negative control cid2-dw-number sha256=efdfa1b0cd89cca70f4dd738f5a42a8b42194622b770f6499027ae77a41d1fc0 detected=true
+Negative control cid2-dw2-array sha256=66b1b8839fc5d044e480c98e00bf55fd282a3f4144e8f606de73d334a34df794 detected=true
+Negative control cid2-dw2-cardinality sha256=b1dcaf64318233e2e6d04b2fb9c91d96b5a28aa83ed704d760682e7bc9b8afa8 detected=true
+Negative control cid2-dw2-numbers sha256=b243184868529f25d102846e01a2a1d8133d13fc1f130a8c946c97a27261408b detected=true
+Negative control cid2-map-name sha256=a0b752335874b24bbadb94edf024e5f28ef4e30fe7d8f974c2aeb6fc7fb02de3 detected=true
+Negative control cid2-map-type sha256=3f8586168141762af4b87eda32ffd75d56881bf8098caa34923e7113ded32d40 detected=true
+Negative control cid2-ordering-required sha256=2142df5ab584c310fba53b61bdba9453e0f1fad7fd57f96d2e74cc5cbbfd316c detected=true
+Negative control cid2-ordering-string sha256=11b2c90dd230828948e392358525d8dcea52d756dd6114e2a7bbff56cc07fb1f detected=true
+Negative control cid2-registry-required sha256=098d334514ef480672566cef76dded18dc363608fca76c7abe83003c5fde0583 detected=true
+Negative control cid2-registry-string sha256=f3687ea42dbea9d9ad567e2b48864bae8e8b486430ad875f6158bab24bcee434 detected=true
+Negative control cid2-ros-dictionary sha256=ccc469297e5d815f61cfd91bb90803e16b1bff64256734e7e1c816e3112b23b6 detected=true
+Negative control cid2-ros-required sha256=56138d9328704201d4846de149e719d05969001b14969b9799a86a42f4554708 detected=true
+Negative control cid2-supplement-integer sha256=2fde94bd4f40c655910a1d157bdc3978cfe641d83d82f0007af42da1b8174700 detected=true
+Negative control cid2-supplement-required sha256=10664b62f0140270a452595fb23d3d75a90826826f0318b3a24eb2ab505594ef detected=true
+Negative control cid2-w-array sha256=a0added58b1c90f6ed6b96e2da704fc049ef5929fa1d095d8c00a367a39665e6 detected=true
+Negative control cid2-w-numbers sha256=c323b61b971119d961416c6a9fbddb9a087249f09c8995ae3f78c379f5a11137 detected=true
+Negative control cid2-w2-array sha256=5d7a9da49883fa513b1b4d6300c0444eed2468f2dc33aa69d984b003e8a970b6 detected=true
+Negative control cid2-w2-numbers sha256=426de2ab7d25ac2c0fd9e4fe48735b3712f4b841928ea7c01b2a9522f2fa80f3 detected=true
+Negative control type0-basefont-name sha256=a5330d0cebe40bbe7ea0ddbf36092c0a019245208abc22c1ca32f60fe2f47872 detected=true
+Negative control type0-basefont-required sha256=46da13996e29458538251610fab710b4a539601205aa52fdfcf6522dac417a7e detected=true
+Negative control type0-descendants-array sha256=9b8eb4c866e543ecf1b984a42b55ad6cbcc0c18d28e0adc22ab285537ab176e5 detected=true
+Negative control type0-descendants-nonempty sha256=3ccdb1d751f9c2a3ceaecdaf8575d8ec24ae0d63cbce28169de0b0b0817cacf3 detected=true
+Negative control type0-descendants-required sha256=c801c7053d9b27fe7ee0587d8e26044d82fef3df2b7f3da4629fc3bc94224653 detected=true
+Negative control type0-encoding-required sha256=b84a8739eb715d2b12d4be021afecf284b92c0b079a1790ec97a14284e168e27 detected=true
+Negative control type0-encoding-type sha256=558210d48f69ef0047b5b901f7f45642724e993770cb3fb16f9697ae9cad856a detected=true
+Negative control type0-tounicode-stream sha256=98fd5cde3c0b84be4f22747cb8084558b21f3345bf6645a4b496564fe7cf2884 detected=true

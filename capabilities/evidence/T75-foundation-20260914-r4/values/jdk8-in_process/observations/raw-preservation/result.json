@@ -1,0 +1,180 @@
+{
+  "result": "pass",
+  "negative-control": "fail",
+  "policy": "Compare final effective raw stream bytes and filter attributes; the old incremental prefix does not qualify.",
+  "observations": {
+    "source": {
+      "retained-stream": {
+        "raw-sha256": "b7f6a2bc7b16c2e9d14d804c987e2be6afeb8902eb565cb27652a94b768358d7",
+        "length": 35,
+        "attributes": {
+          "/DecodeParms": [
+            {
+              "/Predictor": 1
+            }
+          ],
+          "/Filter": [
+            "/FlateDecode"
+          ]
+        }
+      },
+      "page-content": {
+        "raw-sha256": "03d8d7d60d5c570ac2544fd4abeaedc6e00d663b49c7f4b67417db6a8458a7ff",
+        "length": 31,
+        "attributes": {}
+      }
+    },
+    "native-rewrite": {
+      "retained-stream": {
+        "raw-sha256": "b7f6a2bc7b16c2e9d14d804c987e2be6afeb8902eb565cb27652a94b768358d7",
+        "length": 35,
+        "attributes": {
+          "/DecodeParms": [
+            {
+              "/Predictor": 1
+            }
+          ],
+          "/Filter": [
+            "/FlateDecode"
+          ]
+        }
+      },
+      "page-content": {
+        "raw-sha256": "03d8d7d60d5c570ac2544fd4abeaedc6e00d663b49c7f4b67417db6a8458a7ff",
+        "length": 31,
+        "attributes": {}
+      }
+    },
+    "native-incremental": {
+      "retained-stream": {
+        "raw-sha256": "b7f6a2bc7b16c2e9d14d804c987e2be6afeb8902eb565cb27652a94b768358d7",
+        "length": 35,
+        "attributes": {
+          "/DecodeParms": [
+            {
+              "/Predictor": 1
+            }
+          ],
+          "/Filter": [
+            "/FlateDecode"
+          ]
+        }
+      },
+      "page-content": {
+        "raw-sha256": "03d8d7d60d5c570ac2544fd4abeaedc6e00d663b49c7f4b67417db6a8458a7ff",
+        "length": 31,
+        "attributes": {}
+      }
+    },
+    "facade": {
+      "retained-stream": {
+        "raw-sha256": "b7f6a2bc7b16c2e9d14d804c987e2be6afeb8902eb565cb27652a94b768358d7",
+        "length": 35,
+        "attributes": {
+          "/DecodeParms": [
+            {
+              "/Predictor": 1
+            }
+          ],
+          "/Filter": [
+            "/FlateDecode"
+          ]
+        }
+      },
+      "page-content": {
+        "raw-sha256": "03d8d7d60d5c570ac2544fd4abeaedc6e00d663b49c7f4b67417db6a8458a7ff",
+        "length": 31,
+        "attributes": {}
+      }
+    },
+    "negative": {
+      "retained-stream": {
+        "raw-sha256": "265fe619bdf8933d41978d273fca3e6af34a9ac0c2b0d86372d4fee33b4217ba",
+        "length": 40,
+        "attributes": {
+          "/DecodeParms": [
+            {
+              "/Predictor": 1
+            }
+          ],
+          "/Filter": [
+            "/FlateDecode"
+          ]
+        }
+      },
+      "page-content": {
+        "raw-sha256": "03d8d7d60d5c570ac2544fd4abeaedc6e00d663b49c7f4b67417db6a8458a7ff",
+        "length": 31,
+        "attributes": {}
+      }
+    }
+  },
+  "findings": [
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/values/jdk8-in_process/observations/raw-preservation/source.json",
+      "sha256": "364aad3d6c8b526149af189fc9811acfdfa79d9240d2dff90567052f5d38ff6e"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/values/jdk8-in_process/observations/raw-preservation/source-command.json",
+      "sha256": "3a45597f6c6336609a33735ee1593d11ddee6df76391507533e35d3d0fff995e"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/values/jdk8-in_process/observations/raw-preservation/source-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/values/jdk8-in_process/observations/raw-preservation/native-rewrite.json",
+      "sha256": "3ad9ac2d6eb08cc63c4eb24f586c4987977666931393c0806f7ceac0308809fd"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/values/jdk8-in_process/observations/raw-preservation/native-rewrite-command.json",
+      "sha256": "f14a3b70388a564c71b21fba30bd4a8af372315403b02cc085294dd141e58a61"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/values/jdk8-in_process/observations/raw-preservation/native-rewrite-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/values/jdk8-in_process/observations/raw-preservation/native-incremental.json",
+      "sha256": "fe0b2f8e51fef4a5aeb56799765c50b6944b57cc22f9c9cb5bcc7fdce104647c"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/values/jdk8-in_process/observations/raw-preservation/native-incremental-command.json",
+      "sha256": "262450457c10af030530be743ed04145b6b001fd4f7cc1e3a79a20ca6c0a3b5c"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/values/jdk8-in_process/observations/raw-preservation/native-incremental-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/values/jdk8-in_process/observations/raw-preservation/facade.json",
+      "sha256": "2ecc67a1994ef7eed4a57aae5aa624f92ce17c2443b616780194aeba3359621d"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/values/jdk8-in_process/observations/raw-preservation/facade-command.json",
+      "sha256": "e4ed03776c70480655aae153265d36c51a7174732eec4922a94c867cc9b671db"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/values/jdk8-in_process/observations/raw-preservation/facade-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/values/jdk8-in_process/observations/raw-preservation/negative.json",
+      "sha256": "e28fed05c6728d38b836c24cbc591b2187b672cdee4e077ac444c963f1836b1f"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/values/jdk8-in_process/observations/raw-preservation/negative-command.json",
+      "sha256": "6630620f16fb7fdc2d5f109e23815b67f33472b52c98613f5eb74d0b1e6f24ad"
+    },
+    {
+      "path": "capabilities/evidence/T75-foundation-20260914-r4/values/jdk8-in_process/observations/raw-preservation/negative-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "negative-controls": [
+    {
+      "path": "capabilities/profiles/T09-values/fixtures/reencoded-incremental.pdf",
+      "sha256": "5d99ad6b086b6cb5be10af2508be7eee22705b82dc4b50c25488183c8f3d212d"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+F
+======================================================================
+FAIL: test_cff_missing_required_charstrings_produces_a_failure_record (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_cff_missing_required_charstrings_produces_a_failure_record)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 20, in test_cff_missing_required_charstrings_produces_a_failure_record
+    self.observe(Path(temporary), pdf, 'fail', 'font-program-data', scope='fonts')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 224, in observe
+    self.assertEqual(0, result.returncode, result.stderr)
+AssertionError: 0 != 1 : Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/t13-program-standards.py", line 660, in <module>
+    inspect(Path(sys.argv[1]).resolve(), Path(sys.argv[2]).resolve(), sys.argv[3], Path(sys.argv[4]).resolve())
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/t13-program-standards.py", line 636, in inspect
+    result['observed-font-programs'] = check_font_programs(graph, root, result)
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/t13-program-standards.py", line 587, in check_font_programs
+    font_program_data(data, kind)
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/t13-program-standards.py", line 551, in font_program_data
+    if len(top.CharStrings) > 4096:
+           ^^^^^^^^^^^^^^^
+  File "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/t75-fonttools-4.59.2/fonttools-4.59.2-py3-none-any.whl/fontTools/cffLib/__init__.py", line 2507, in __getattr__
+AttributeError: CharStrings
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.713s
+
+FAILED (failures=1)

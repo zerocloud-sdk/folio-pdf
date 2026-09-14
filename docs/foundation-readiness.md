@@ -9,6 +9,23 @@ Use `validate` for structural consistency and `generate` / `check` for the
 [generated public report](generated/foundation-readiness.md). Regular Maven
 `verify` checks a valid, currently incomplete inventory and the checker fixtures.
 
+The generated report describes **recorded evidence**. It validates the current
+source, contracts, retained reports, controls and identity links, including the
+complete candidate artifact list. For declared candidate artifacts and execution
+inputs under `target/foundation-0.1.0/` or `.build-cache/`, it validates canonical
+paths and SHA-256 declarations without depending on a local staging directory or
+tool cache. Source roots always retain full byte validation. This makes the
+checked-in report reproducible in a clean checkout. A recorded `satisfied` status
+does not establish local artifact availability or release readiness.
+
+`readiness` always hashes the actual files, including those staged and cached
+inputs, and rejects missing or changed bytes. It also retains every existing
+source, contract, environment, execution, producer, chain and control check.
+Generating a report never supplies a passing live readiness result. Changes to
+source or retained observations still invalidate their evidence and change the
+portable report. Only the generated readiness result itself is excluded from
+candidate source identity, as described below.
+
 The sources are:
 
 - [foundation-release.yaml](../capabilities/foundation-release.yaml): mandatory
@@ -30,7 +47,9 @@ The sources are:
   Each completed slice records the same exact candidate and retains only
   certifications whose candidate, contract, environment, configuration, and
   recursively referenced report identities still match. Historical T70/T71
-  records remain immutable when T72 refreshes transactions, values, and pages.
+  records remain immutable when later candidates refresh transactions, values,
+  pages, metadata and annotations. The T75 candidate adds text and refreshes
+  all five previously certified obligations under those same identity rules.
 
 Windows x86-64 and macOS x86-64/arm64 are explicitly uncertified and are not
 required Foundation 0.1.0 gates under [ADR-0040](adr/0040-certify-only-observed-foundation-environments.md).
@@ -128,6 +147,15 @@ with the independent standards tool in #70; this checker does not qualify a tool
 by its name. External tools and native installations remain unbundled.
 
 Each chain file contains:
+
+Chain records may contain up to 16 MiB (16,777,216 bytes), including comments
+and trailing bytes, so complete qualified negative-control references can be
+retained. The reader rejects the first excess byte before parsing. Its YAML
+parser permits at most 16,777,216 code points and retains the same rejection of
+duplicate keys, recursive keys and collection aliases, with nesting capped at
+30. Other Foundation authorities and execution configurations retain their
+separate 3,000,000-code-point parser limit. Increasing the chain-record budget
+does not bypass any record, control, producer or identity validation.
 
 ```yaml
 schema-version: 1

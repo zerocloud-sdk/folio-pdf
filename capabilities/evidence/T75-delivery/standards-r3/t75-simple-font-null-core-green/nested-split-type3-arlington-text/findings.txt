@@ -1,0 +1,153 @@
+Version exit: 0
+[0m
+
+Arlington PDF Model C++ P.o.C. version v0.81-folio-t13-r1 built Sep 12 2026 00:00:00 (GNU-C linux release)
+Choose one of: --pdf, --checkdva or --validate.
+
+Usage:
+	TestGrammar --tsvdir <dir> [--force <ver>|exact] [--out <fname|dir>] [--no-color] [--clobber] [--debug] [--brief] [--extensions <extn1[,extn2]>] [--password <pwd>] [--exclude string | @textfile.txt] [--dryrun] [--allfiles] [--validate | --checkdva <formalrep> | --pdf <fname|dir|@file.txt> ]
+
+Options: 
+-h, --help                   This usage message.
+-b, --brief                  terse output when checking PDFs. The full PDF DOM tree is NOT output.
+-c, --checkdva               Adobe DVA formal-rep PDF file to compare against Arlington PDF model.
+-d, --debug                  output additional debugging information.
+    --clobber                always overwrite PDF output report files (--pdf) rather than append underscores.
+    --no-color               disable colorized text output (useful when redirecting or piping output)
+-m, --batchmode              stop popup error dialog windows and redirect everything to console (Windows only, includes memory leak reports).
+-o, --out                    output file or folder. Default is stdout. See --clobber for overwriting behavior.
+-p, --pdf                    input PDF file, folder, or text file of PDF files/folders.
+-f, --force                  force the PDF version to the specified value (1,0, 1.1, ..., 2.0 or 'exact'). Only applicable to --pdf.
+-t, --tsvdir                 [required] folder containing Arlington PDF model TSV file set.
+-v, --validate               validate the Arlington PDF model.
+-e, --extensions             a comma-separated list of extensions, or '*' for all extensions.
+    --password               password. Only applicable to --pdf.
+    --exclude                PDF exclusion string or filelist (# is a comment). Only applicable to --pdf.
+    --dryrun                 Dry run - don't do any actual processing.
+-a, --allfiles               Process all files regardless of file extension.
+    --explicit-values-only   Ignore wildcards in PossibleValues.
+
+Built using pdfium
+
+Validation exit: 0
+Processing "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T13-standards/fixtures/positive-pdf20-nested-split-type3.pdf" to stdout BEGIN - TestGrammar v0.81-folio-t13-r1 built Sep 12 2026 00:00:00 (GNU-C linux release) pdfium
+Arlington TSV data: "/home/ubuntu/IdeaProjects/open-pdf/.build-cache/arlington/t13-r1/tsv/latest"
+PDF: "/home/ubuntu/IdeaProjects/open-pdf/capabilities/profiles/T13-standards/fixtures/positive-pdf20-nested-split-type3.pdf"
+Info: Traditional trailer dictionary detected.
+Info: Header is version PDF 1.7
+Info: Document Catalog/Version is PDF 2.0
+Info: Command line forced to PDF 2.0
+Info: Processing as PDF 2.0
+       1: Trailer
+       2:   Trailer->ID (as TrailerIDArray)
+       3:   Trailer->Root (as Catalog)
+       4:     Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)
+       5:       Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)
+       6:         Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]
+       7:           Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Contents (as ArrayOfStreamsGeneral)
+       8:           Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Parent (as PageTreeNodeRoot)
+       9:           Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)
+      10:             Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Contents (as ArrayOfStreamsGeneral)[0 (as Stream)]
+      11:             Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Contents (as ArrayOfStreamsGeneral)[1 (as Stream)]
+      12:             Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)
+      13:             Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)
+      14:               Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)
+      15:               Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)->Middle (as XObjectFormType1)
+      16:                 Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->CharProcs (as CharProcMap)
+      17:                 Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->Encoding
+      18:                 Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->Resources (as Resource)
+      19:                 Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->Widths (as ArrayOfNumbersGeneral)
+      20:                 Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)->Middle (as XObjectFormType1)->Resources (as Resource)
+      21:                   Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->CharProcs (as CharProcMap)->A (as Stream)
+      22:                   Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->Encoding->Differences (as ArrayOfDifferences)
+      23:                   Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)->Middle (as XObjectFormType1)->Resources (as Resource)->XObject (as XObjectMap)
+      24:                     Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)->Middle (as XObjectFormType1)->Resources (as Resource)->XObject (as XObjectMap)->Leaf (as XObjectFormType1)
+      25:                       Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)->Middle (as XObjectFormType1)->Resources (as Resource)->XObject (as XObjectMap)->Leaf (as XObjectFormType1)->Resources (as Resource)
+      26:                         Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)->Middle (as XObjectFormType1)->Resources (as Resource)->XObject (as XObjectMap)->Leaf (as XObjectFormType1)->Resources (as Resource)->Font (as FontMap)
+      27:                           Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)->Middle (as XObjectFormType1)->Resources (as Resource)->XObject (as XObjectMap)->Leaf (as XObjectFormType1)->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)
+Info: Latest Arlington object was PDF 1.4 (Catalog/Version) compared using forced PDF 2.0
+END
+
+DONE - 1 files processed
+
+Negative control mmtype1-basefont-name sha256=d75493c8419ff0dda169d0d4ad11392a3e6eb07430bd2e1f5f534abcb5450c2c detected=true
+Negative control mmtype1-basefont-null sha256=f63d3d1cd3648701eb22600b7134838bbb660cf714c0d52aa5462c2c7466e4ca detected=true
+Negative control mmtype1-basefont-required sha256=2d1c783de7be11fb20679bd888351ee779acf1683690764d5b241ad7f8ab87e6 detected=true
+Negative control mmtype1-descriptor-dictionary sha256=30322465646a770239114f2ee491c88c824288a5ef73f987484c247af60e15d5 detected=true
+Negative control mmtype1-descriptor-null sha256=a5f1fbaa78f84dd5252498979d93ee295a48d979fa2961b074f8155e9d726bc3 detected=true
+Negative control mmtype1-descriptor-required sha256=2345a6440dd5bce5c5d071733ee8268bc744004cd8be5a9775841186f47bacc5 detected=true
+Negative control mmtype1-encoding-type sha256=7db67730d5f95dc46fc6bab15beac7a3015406ae2b2769ee2fdf93539c97f539 detected=true
+Negative control mmtype1-firstchar-integer sha256=85d399ab7d6f2b16e642b49133574fe52f7665851685b076f4372e6f7a59e569 detected=true
+Negative control mmtype1-firstchar-null sha256=74e49bc8ea5c4187f4371d65e3515caf6b334ca5f9e320c3d628be47694fbc9e detected=true
+Negative control mmtype1-firstchar-required sha256=6294df421dfb2586e6ecd5c300afef9446b0decc2647dd53ebb598fcc1b5703c detected=true
+Negative control mmtype1-lastchar-integer sha256=4bad017313867b0a0bd8aaeeda42c796178b97faf6f9d7091204a8ea425e0102 detected=true
+Negative control mmtype1-lastchar-null sha256=d3ea89385ddb10ee34d8506526d214e5c8fb8130ee3d3893f33471ddcdcaa1f4 detected=true
+Negative control mmtype1-lastchar-required sha256=97768bc891ffe44c5b509aa627884831d534c4cb4ded22c6e808a0fa446a1866 detected=true
+Negative control mmtype1-widths-array sha256=cbecf0a5e5f08b909d8e128fc7edfb581c2e0af2c61bcf85087dacbb2463a326 detected=true
+Negative control mmtype1-widths-cardinality sha256=91becfa6ed2c35fc89815fb6612eab72eb48143007ede60b04a79e83af106eb9 detected=true
+Negative control mmtype1-widths-null sha256=2f7f9fee3aa159a0f84045e2d0e17345b560e87416d00310245bc8bfdfd87bbb detected=true
+Negative control mmtype1-widths-numbers sha256=a456f9d7cec1a154a1f742e73bff007f495694b4ea86174a9b324291f1ae0265 detected=true
+Negative control mmtype1-widths-required sha256=8932c97016ea2565eccc95a3c678999eff4c20463e37422e0cc0a0a64c136b1d detected=true
+Negative control page-userunit-number sha256=ec92724158703737549b461ea5355be31928b2037b15a5d62f0db5821897124f detected=true
+Negative control page-userunit-positive sha256=bbb6d18fda8c455918f7e18e9de77bbf350eadbb896974f82e5937e79440d4ca detected=true
+Negative control truetype-basefont-name sha256=4fe9fcfa5ed10afd5d834db26d389927c507b54a871994a6c04de20bbcbea751 detected=true
+Negative control truetype-basefont-null sha256=a751ca16b3a1b2bc2a183d62ab96862b9a5be5a9426b866b74c03297db050b5e detected=true
+Negative control truetype-basefont-required sha256=6eb204a6516284ec494e4abb0410847e4885600bf69195572f517e5987a9f6d6 detected=true
+Negative control truetype-descriptor-dictionary sha256=77bfcff4e5f2fa5b448cffa21b24b95a61dd55ee06ed27f09df03236585b00d9 detected=true
+Negative control truetype-descriptor-null sha256=5aa582b24c038a76bcdcacc0599d0e0c9b346376f73cf9a7b330f3f4a612be82 detected=true
+Negative control truetype-descriptor-required sha256=d3864bfd2a172fa93bef97bf176d5513d0128d0b38e67b3ca72490af0ef294c4 detected=true
+Negative control truetype-encoding-type sha256=101a8f90af6e74febf6a8eaebdfa6e600bf68213e5b0105c034fd47a225e5d50 detected=true
+Negative control truetype-firstchar-integer sha256=120a3833d0b2bb45f95635e068b5de3fb05d98af1a58da30e724def40895e40b detected=true
+Negative control truetype-firstchar-null sha256=1e2957947ea6b9d711abf1849eb1a081377cfb833ef756e29dc7062b50581f44 detected=true
+Negative control truetype-firstchar-required sha256=9e5d0dcae43577efe8dd71758cae2e2f8538e7dbaa04ba40442ecc5fe6d13bab detected=true
+Negative control truetype-lastchar-integer sha256=9f4639301270f9eeb10cbe68799bccb5258f526e3806fb3b3f46a8106460b963 detected=true
+Negative control truetype-lastchar-null sha256=50110d7211d043fdc1968ba3e247c690e5ad806e51b49ba64d57f8ec38811932 detected=true
+Negative control truetype-lastchar-required sha256=03271d91140c8fa0cc9222085532e5e449794c3ffe1fc9a4887fd69116421928 detected=true
+Negative control truetype-widths-array sha256=89f534854ad53d66d8d40945bf5de0222a623d97c57a4c880f119a7b62170d62 detected=true
+Negative control truetype-widths-cardinality sha256=6b98affcf7cb95fbf2a643b06beb1e36b5bdb033c165c9db9be3529116951e91 detected=true
+Negative control truetype-widths-null sha256=590466fa0982e5bd224803e2fd514ffc78b5207e2cccc6020c29bb4a7bdc00a1 detected=true
+Negative control truetype-widths-numbers sha256=06ec432e8a41fa0687cc78d95ebdc0064cf21ae6e0ca91d6ee9f13f02573aeed detected=true
+Negative control truetype-widths-required sha256=fe7df807a9d71cea18183d7263a91efcf7075c5eaaf31e2956a4496c2a305e53 detected=true
+Negative control type1-basefont-name sha256=32ac9cb206b75fc68cd7a58ca3258f222484c86c5339a96748a591ec68dee295 detected=true
+Negative control type1-basefont-null sha256=2acdf098b2ed97ec45cab6614e9ac97ec8aab5417c51d5061ba3b41b72239eab detected=true
+Negative control type1-basefont-required sha256=75547c6976cb39bf4ec14adf16a2a1d32c56e6dd1768b8c7807ec7479a81ecf5 detected=true
+Negative control type1-descriptor-dictionary sha256=5bc7cfea76a00d48970ad345b357a129b137ef3ac8d8981a0163ba15e84ff57f detected=true
+Negative control type1-descriptor-null sha256=c3b726b7d68b5b9902baf75afa3a4f22c4bf9cc58791cd3f73a22a2a376f6553 detected=true
+Negative control type1-descriptor-required sha256=3e654e1e815484564544d1e3f26cb02150667cdb2fd32525f37cbc2bba82523f detected=true
+Negative control type1-encoding-type sha256=249ba70d802acb8b4d476820c186238805361fcf26bddc316be4e3ab22457ece detected=true
+Negative control type1-firstchar-integer sha256=b33d1d52d5f2d22c46d81cc86981a9b0fe11252f6ff9fb6680581560e4d10c19 detected=true
+Negative control type1-firstchar-null sha256=fee80a22f095946973a3c0d7cdce31375110a46e8859916b98b90293343e801e detected=true
+Negative control type1-firstchar-required sha256=cdabe4d6bd7eba2e00f9051d1799bb702988c77afcc99741164b68ae39a7447c detected=true
+Negative control type1-lastchar-integer sha256=6e1c884ca28ea46b8a833b605572d5cd65b393ac899421a5d654c3a993522a0a detected=true
+Negative control type1-lastchar-null sha256=c73bd0a44679de8a0a077f9065c41e26a4032812dfc63f4a0d2d5397edcd14f9 detected=true
+Negative control type1-lastchar-required sha256=16e63a32ea29d3b9a3f510af854c38ae2549a1c00b42125f656671e47c3c9bc3 detected=true
+Negative control type1-widths-array sha256=b47e24690d71f07530c71665e8612213ce0a950771a69b9d46f059e60d72f19e detected=true
+Negative control type1-widths-cardinality sha256=2e2a669d3ba4f65847c021de8bf5d12841138be24f8fad928fe5b59d786e6c4b detected=true
+Negative control type1-widths-null sha256=e28a9348ded9f81b07a2afdb28acedb359efb18bb00932dbe8581a3ac3b955a2 detected=true
+Negative control type1-widths-numbers sha256=8e29c210e031d1ce9a6f11b6cbf41ca50d4942e42463a836aee763e545d8b9ac detected=true
+Negative control type1-widths-required sha256=c965acdc9c742279af0d71640f74c03fdbfbe327555f18940a3f063e62be3259 detected=true
+Negative control type3-bbox-numbers sha256=fcc59fdbaa7f6a94de17cb758703d1f6e18f189516afaefeca3005dae8e1f9b0 detected=true
+Negative control type3-bbox-required sha256=e2b545707dfcc8ca1bb03f5289af4f23f2c6a32ab1ad2e535d3869d819eecfa0 detected=true
+Negative control type3-charproc-stream sha256=b60ca74f1ed3801963fefecc5beb51e5dc8877a4e429bbf985be3458dc6ef3e1 detected=true
+Negative control type3-charprocs-dictionary sha256=17fee24a24d5331a1ee7ebcf82fa7be2ca1aafc22b3e257fe38451ba0c1b385f detected=true
+Negative control type3-charprocs-required sha256=78b474754e2e6b6861099d2f2c78f3717ff95bf791f970bb0bb000863533f676 detected=true
+Negative control type3-differences-disjoint sha256=672c9133b6a77d9613ca673276e2f46c67fd11768352ed6d2345538fb5a33061 detected=true
+Negative control type3-encoding-dictionary sha256=5247c28636d684164b2b712898a71088074f194839ec74c2221424ca3b9d94f9 detected=true
+Negative control type3-encoding-required sha256=ac59e21550dd3083d01464f723576d710782ec7a5e91be296f8c18c1fe4770c0 detected=true
+Negative control type3-firstchar-integer sha256=5f661ac67847842c5db8b8b536ad1f38d17564d5dd3b679388c3b8df93b52b3f detected=true
+Negative control type3-firstchar-required sha256=3eaa3453e8698e002561c5db8427a84e63b937046bb2b5746bcdc2845b096b3e detected=true
+Negative control type3-glyph-fractional-width-agreement sha256=374dc9e33c7a1ebb5fc0363ad0d2d1d5e9a15ba30233c3526eaa46791cd0ddc8 detected=true
+Negative control type3-glyph-header-operands sha256=09048fcecce448392eccdb1852e73a5e91aa6f62b8624e7ce8b965adb999d40c detected=true
+Negative control type3-glyph-header-operator sha256=09785b87cd5814438085e23c305c42c646150731d133d165974a9ec124cb3830 detected=true
+Negative control type3-glyph-width-agreement sha256=1305470f12e46a19fc53ced1e8791b43b44261e600cbf83f1f01522081d2fb58 detected=true
+Negative control type3-glyph-zero-wy sha256=b23e5374bdc080d953d7f02d65865a73315694b381a7a20fd74ed9a7120f3c87 detected=true
+Negative control type3-lastchar-integer sha256=286a9c58ae989f2cd5a96949b07db072ed01fe44760e19f1ace9db3e4a1c4bf6 detected=true
+Negative control type3-lastchar-required sha256=f73bfa7b33a014e8126ee9d9a8a7a74d859e13134e24611f6ec0fec43d391da8 detected=true
+Negative control type3-matrix-count sha256=7da2c70c69656545acbbe71a02fc86e506d307621e5825166bd54c3c2fc19d3a detected=true
+Negative control type3-matrix-numbers sha256=f5f0410d8b64fb5d21b99b372fe1f349630e38663c95f124e44bef92bb2aced5 detected=true
+Negative control type3-matrix-required sha256=093eadc17a00b39fb8a5fa579f48448ef66deba9a1b8490d5af5b018504618a0 detected=true
+Negative control type3-resources-dictionary sha256=f3cf3c3b6a1aae45f6ca0af3386bd79d327ff912fb992b99f68c4cf49ea23c72 detected=true
+Negative control type3-tagged-descriptor-required sha256=5390c81765dfc6b352e342c23c805fb7fc66443303cf4ab7bb89282c679774d8 detected=true
+Negative control type3-widths-cardinality sha256=e63efa5f203246d04c0dc29fd6d73ef17b82ef0904eed4502921ce4aa7356f50 detected=true
+Negative control type3-widths-numbers sha256=ca8672897f7a95398f454c8941d6df920eb5e4ee0e850395188a384bdd5c48c2 detected=true
+Negative control type3-widths-required sha256=553ee43ac46fce0afb194bbe71d6ae8bc9eab2903e862f4e39e3ae591280e5ea detected=true

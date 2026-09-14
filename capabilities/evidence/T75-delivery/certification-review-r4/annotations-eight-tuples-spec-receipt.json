@@ -1,0 +1,329 @@
+{
+  "schema-version": 1,
+  "review-axis": "Spec",
+  "created-utc": "2026-09-13T23:57:42.835837+00:00",
+  "result": "CLEAN",
+  "findings": [],
+  "unresolved-current-scope-findings": 0,
+  "scope": {
+    "obligation": "annotations",
+    "profile": "T12-annotations-document-actions",
+    "raw-root": "/home/ubuntu/IdeaProjects/open-pdf/capabilities/evidence/T75-foundation-20260914-r4/annotations",
+    "approved": "Eight actual current-candidate raw tuples and exact own observed-index only",
+    "raw-eight-gate-closed": true,
+    "own-index-gate-closed": true,
+    "actual-outer-read": false,
+    "authority-read": false,
+    "actual-publication-gate-closed": false,
+    "other-obligations-reapproved": false,
+    "consolidated48-inventory-index-delivery-approved": false
+  },
+  "fixed-baseline": "5b1603c435f11c40368f75b7b9a2777c9c5e9761",
+  "candidate-sha256": "ab18cc9c0473730a6aabec5d12e3172f22bea23a0a0f9529052a2bc186cbfc1b",
+  "contract-sha256": "3de508f79fcbef7258feee8abc013d6f02b000840cac1cb263cb0d6f927b8f2b",
+  "counts": {
+    "tuples": 8,
+    "formal-tests-per-tuple": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+    ],
+    "chain-records": 32,
+    "physical-tuple-files": 53512,
+    "observation-files": 53416,
+    "total-original-raw-root-files": 53601,
+    "root-files": 5,
+    "unique-environment-files": 84,
+    "unique-before-after-directories": 8,
+    "report-record-reference-occurrences": 101736,
+    "qualified-rules": 174,
+    "rules-per-checker": {
+      "pdfcpu": 69,
+      "arlington-core": 68,
+      "arlington-annotations": 37
+    },
+    "illegal-rule-control-executions": 22272,
+    "public-products": 128,
+    "positive-semantic-graphs": 128,
+    "actual-semantic-mutation-graphs": 144,
+    "positive-page-visual-observations": 416,
+    "actual-PDF-visual-defect-controls": 24,
+    "one-pixel-controls": 8,
+    "full-RGB-input-observations-unique-paths": 1506,
+    "configuration-inputs-per-tuple": 156,
+    "pinned-tools": 15,
+    "current-stage-inputs": {
+      "sources": 1933,
+      "contracts": 30,
+      "artifacts": 23,
+      "harness": 24
+    }
+  },
+  "actual-formal-suite-observations": [
+    {
+      "tuple": "jdk8-in_process",
+      "formal-tests": 47,
+      "formal-time-seconds": 6.746,
+      "Native-mode": "IN_PROCESS",
+      "actual-Facade-mode": "IN_PROCESS",
+      "formal-command-sha256": "40d23eaa77635f816ece1b895007c60e46318f8c2c604081aaa4adf795c6fb29",
+      "execution-configuration-sha256": "0f9e7979a46c14bed1d9a18262b7402a7ac573b946b39fcc4824e35aa953905b"
+    },
+    {
+      "tuple": "jdk8-hardened_worker",
+      "formal-tests": 47,
+      "formal-time-seconds": 83.208,
+      "Native-mode": "HARDENED_WORKER",
+      "actual-Facade-mode": "IN_PROCESS",
+      "formal-command-sha256": "3102b8804f6b1fa4e42565f0462d34ebcae89cb25736a351d560647d075b6938",
+      "execution-configuration-sha256": "735b9f85187e4bbbbce9fcde2edf55ff5efe37d61ad095e88cefebcb01e7193d"
+    },
+    {
+      "tuple": "jdk11-in_process",
+      "formal-tests": 47,
+      "formal-time-seconds": 6.651,
+      "Native-mode": "IN_PROCESS",
+      "actual-Facade-mode": "IN_PROCESS",
+      "formal-command-sha256": "519e1046968093e7c89953beca3bba83ca4a0196a9a2dafb00c004f702874995",
+      "execution-configuration-sha256": "3168f36fbfc427278311bd6fb762c2cb7dbf7db42189be6ec2d4db8a5e870fd4"
+    },
+    {
+      "tuple": "jdk11-hardened_worker",
+      "formal-tests": 47,
+      "formal-time-seconds": 75.181,
+      "Native-mode": "HARDENED_WORKER",
+      "actual-Facade-mode": "IN_PROCESS",
+      "formal-command-sha256": "c41556d6bbf6b1bd3f220e339997e3c72117c913eb08a35f7e4c8d60c9700195",
+      "execution-configuration-sha256": "fcc8f201bb2df0973e1a704d8af4f481de4d93cfcf0d117d273619e21679c16e"
+    },
+    {
+      "tuple": "jdk17-in_process",
+      "formal-tests": 47,
+      "formal-time-seconds": 6.19,
+      "Native-mode": "IN_PROCESS",
+      "actual-Facade-mode": "IN_PROCESS",
+      "formal-command-sha256": "4d4d6c31fa040283062a22b78ea1d7b8182ef1a617983d3624b51330b379561e",
+      "execution-configuration-sha256": "23237c34217f14a46792af56b693955198f1d87bcbcc6227878ac909156dee19"
+    },
+    {
+      "tuple": "jdk17-hardened_worker",
+      "formal-tests": 47,
+      "formal-time-seconds": 68.196,
+      "Native-mode": "HARDENED_WORKER",
+      "actual-Facade-mode": "IN_PROCESS",
+      "formal-command-sha256": "61f68f5be6faa2172506753c1739307cd26cf41a43b8aeaf7005469ed369427f",
+      "execution-configuration-sha256": "e3ec936df83ae591389991fc005d2d3a826a1b2c4e2701d3ddd946bc50394fd5"
+    },
+    {
+      "tuple": "jdk21-in_process",
+      "formal-tests": 47,
+      "formal-time-seconds": 6.169,
+      "Native-mode": "IN_PROCESS",
+      "actual-Facade-mode": "IN_PROCESS",
+      "formal-command-sha256": "4a18e1bda0ebda55ab1cb455b94b26b0111900e30015244a981bb4fc7b83dab4",
+      "execution-configuration-sha256": "c2cca683285ebe4fc89b1af7d2b931fb93d3e36e4a560b874a61a1a347f64b31"
+    },
+    {
+      "tuple": "jdk21-hardened_worker",
+      "formal-tests": 47,
+      "formal-time-seconds": 72.102,
+      "Native-mode": "HARDENED_WORKER",
+      "actual-Facade-mode": "IN_PROCESS",
+      "formal-command-sha256": "ae8c9ae2e0d6efacd5525540395c1da150cfdc3d179b45eedb88ef79e8d63056",
+      "execution-configuration-sha256": "4a29c72aa7437c76baee0a2a67656b59280014999f990a1fa8eb4bc55710e772"
+    }
+  ],
+  "all-native-profiles-selected-as-recorded": true,
+  "actual-Facade-mode": "IN_PROCESS",
+  "source-and-validation-lineage": {
+    "fixed-source-preflight": {
+      "path": "/tmp/t75-final-spec-r4-annotations-eight-2e38t91l/fixed-protocol-source-preflight-inspection.json",
+      "sha256": "6c5b134eced921fbd138d80370639464ef5853f1520ba41578fea57769b58742",
+      "bytes": 47800
+    },
+    "closed-five-file-inventory-correction-and-validation-link": {
+      "path": "/tmp/t75-final-spec-r4-annotations-eight-2e38t91l/closed-source-lineage-inspection.json",
+      "sha256": "b175ee957ddc1ef88c89d79bdf0e8750341306164a0e0a1ab4324057d8041905",
+      "bytes": 4934
+    },
+    "current-r4-stage": {
+      "path": "/home/ubuntu/IdeaProjects/open-pdf/capabilities/evidence/T75-delivery/final-candidate-r4/build-inputs.json",
+      "sha256": "64cb458acef6c0e98aa5b0dbf8023d85fe569fa2269eb6c3c343959779325e02",
+      "bytes": 384848
+    },
+    "T12-dedicated-baseline-identical-files": 134,
+    "source-correction-reopened": false
+  },
+  "requirements": {
+    "path": "/tmp/t75-final-spec-r4-annotations-eight-2e38t91l/fixed-requirements-and-review-coverage-map.json",
+    "sha256": "ab1722b9114770ca541565d01f942ad64649e9cbf957ef063ed53469943ea1cb",
+    "bytes": 17946
+  },
+  "all-eight-inspection": {
+    "path": "/tmp/t75-final-spec-r4-annotations-eight-2e38t91l/all-eight-complete-raw-inspection.json",
+    "sha256": "ac9cbd628e4418f3a2de10c282fd75c189907ab06724035d29120fafedc74b8a",
+    "bytes": 173556
+  },
+  "all-eight-inspection-actual-result": {
+    "path": "/tmp/t75-final-spec-r4-annotations-eight-2e38t91l/all-eight-complete-raw-audit-result.json",
+    "sha256": "8ce25a034e3521d66997209bc49522b84b914071745a251840839d00939bd9c5",
+    "bytes": 1027
+  },
+  "own-index": {
+    "path": "/home/ubuntu/IdeaProjects/open-pdf/capabilities/evidence/T75-foundation-20260914-r4/annotations/observed-index.json",
+    "sha256": "65fd03587b74a6adea0177c9692d6fe50b4368c411e1d53c97b5a94d9b7b330e",
+    "bytes": 387407
+  },
+  "complete-original-raw-root-catalog": {
+    "path": "/tmp/t75-final-spec-r4-annotations-eight-2e38t91l/complete-original-raw-root-identities.json",
+    "sha256": "92375c1b7c2665ab2546187b25e1d2b64dd4793c276c52510071e495b61d19e5",
+    "bytes": 14766226
+  },
+  "complete-original-raw-root-catalog-count": 53601,
+  "complete-inspected-input-catalog": {
+    "path": "/tmp/t75-final-spec-r4-annotations-eight-2e38t91l/complete-inspected-input-identities.json",
+    "sha256": "f22c693a0afdd944b9b168a430f33812da2cfa228133acdee57f7f6c6d7a0161",
+    "bytes": 17398015
+  },
+  "complete-inspected-input-catalog-count": 56881,
+  "complete-record-report-reference-catalog": {
+    "path": "/tmp/t75-final-spec-r4-annotations-eight-2e38t91l/complete-record-report-reference-identities.json",
+    "sha256": "1cf48a5e4c54503603fe5283e9536257be3eb8a2bb7360082390cc66f34a9189",
+    "bytes": 37904415
+  },
+  "complete-rule-control-catalog": {
+    "path": "/tmp/t75-final-spec-r4-annotations-eight-2e38t91l/complete-qualified-rule-control-identities.json",
+    "sha256": "ce9055108d7ed316c9c21807f773925aff73bb7681bc1d975092591be5f32f23",
+    "bytes": 7285859
+  },
+  "original-batches": [
+    {
+      "tuple": "jdk8-in_process",
+      "original-batch": "/tmp/t75-final-spec-r4-annotations-eight-2e38t91l/batches/jdk8-in_process-9i7rufn6",
+      "receipt": "/tmp/t75-final-spec-r4-annotations-eight-2e38t91l/batches/jdk8-in_process-9i7rufn6/completed-tuple-bounded-receipt.json",
+      "receipt-sha256": "867cdd9e8fb2f2f8404bf3c8419482872d43507467d3cfb5cd1029f925094df3",
+      "receipt-actual-result-sha256": "a86266e03af7d0b753a7a91da4dd922a373e8b03a488f9ec69c64ef7788e2c84"
+    },
+    {
+      "tuple": "jdk8-hardened_worker",
+      "original-batch": "/tmp/t75-final-spec-r4-annotations-eight-2e38t91l/batches/jdk8-hardened_worker-7cl2xyfq",
+      "receipt": "/tmp/t75-final-spec-r4-annotations-eight-2e38t91l/batches/jdk8-hardened_worker-7cl2xyfq/completed-tuple-bounded-receipt.json",
+      "receipt-sha256": "2e0385c19bd5376a5a3356d8c5d0d1c2c91e21c881bc8f8ebae48ecc0755fa41",
+      "receipt-actual-result-sha256": "3003f0745c41ad93d1af2686e50a175db82a7d0b54ecc269c161ef00e026b9aa"
+    },
+    {
+      "tuple": "jdk11-in_process",
+      "original-batch": "/tmp/t75-final-spec-r4-annotations-eight-2e38t91l/batches/jdk11-in_process-i3vajwz6",
+      "receipt": "/tmp/t75-final-spec-r4-annotations-eight-2e38t91l/batches/jdk11-in_process-i3vajwz6/completed-tuple-bounded-receipt.json",
+      "receipt-sha256": "133c338a6dc743a4b71a8d33ff4337f4102cd4ab6570cff67d687e73ae53d684",
+      "receipt-actual-result-sha256": "17aae955c9b234d5e95c798daf5195de0b51146e0968d58ecdafdc4031ff2382"
+    },
+    {
+      "tuple": "jdk11-hardened_worker",
+      "original-batch": "/tmp/t75-final-spec-r4-annotations-eight-2e38t91l/batches/jdk11-hardened_worker-zvq4ztlm",
+      "receipt": "/tmp/t75-final-spec-r4-annotations-eight-2e38t91l/batches/jdk11-hardened_worker-zvq4ztlm/completed-tuple-bounded-receipt.json",
+      "receipt-sha256": "be1686fa7aa43a3c45be55aa11240c16c6a7547ed7dd6497907b591de145a799",
+      "receipt-actual-result-sha256": "5b76e93243c38953cf6d7ceb5ce842b30aaa134e36cb1edf41e1055739f497ee"
+    },
+    {
+      "tuple": "jdk17-in_process",
+      "original-batch": "/tmp/t75-final-spec-r4-annotations-eight-2e38t91l/batches/jdk17-in_process-9vzmtkai",
+      "receipt": "/tmp/t75-final-spec-r4-annotations-eight-2e38t91l/batches/jdk17-in_process-9vzmtkai/completed-tuple-bounded-receipt.json",
+      "receipt-sha256": "ae401a088763c1afd65ce947b823ce1df1b73cfa03975cf5bf27123907491485",
+      "receipt-actual-result-sha256": "22e3b7201dc3a4cf78395984f6b497ace42c70bd776e1a65e15bcb86308f4a1d"
+    },
+    {
+      "tuple": "jdk17-hardened_worker",
+      "original-batch": "/tmp/t75-final-spec-r4-annotations-eight-2e38t91l/batches/jdk17-hardened_worker-hk2xx08u",
+      "receipt": "/tmp/t75-final-spec-r4-annotations-eight-2e38t91l/batches/jdk17-hardened_worker-hk2xx08u/completed-tuple-bounded-receipt.json",
+      "receipt-sha256": "9658a36a4f666730ff27417506406894044dcc378bd45ceccd695e18c67a66b8",
+      "receipt-actual-result-sha256": "d097a4f32098a5e35f7a998e7e64743978d15b8b1c4d8d2ca63cc3a5fbf92854"
+    },
+    {
+      "tuple": "jdk21-in_process",
+      "original-batch": "/tmp/t75-final-spec-r4-annotations-eight-2e38t91l/batches/jdk21-in_process-3q7m6fhm",
+      "receipt": "/tmp/t75-final-spec-r4-annotations-eight-2e38t91l/batches/jdk21-in_process-3q7m6fhm/completed-tuple-bounded-receipt.json",
+      "receipt-sha256": "de85b276d40a2cd9bec8c5254e8604038cc782c4fcc8cf7218b82fd77b12e801",
+      "receipt-actual-result-sha256": "f4216cfda37f9ca7e5886b958136f20afd71743a149e3956f6c7810487ea2503"
+    },
+    {
+      "tuple": "jdk21-hardened_worker",
+      "original-batch": "/tmp/t75-final-spec-r4-annotations-eight-2e38t91l/batches/jdk21-hardened_worker-9f4ibh55",
+      "receipt": "/tmp/t75-final-spec-r4-annotations-eight-2e38t91l/batches/jdk21-hardened_worker-9f4ibh55/completed-tuple-bounded-receipt.json",
+      "receipt-sha256": "ed7491391249c2190dc5e0671dce05cb943aee87ab47950c390ccb559f1ed8bb",
+      "receipt-actual-result-sha256": "7bf38767b69f4f08ad416de8c17d9b68a2132489c070facdd0798b43f16ebc81"
+    }
+  ],
+  "all-current-inspected-original-identities-unchanged": true,
+  "exact-four-JDK-BEFORE-AFTER-reconstruction": true,
+  "original-JDK-AFTER-YAML-required": false,
+  "current-r4-output-overwrites": 0,
+  "selected-original-retention": {
+    "current-selected-original-files": 853,
+    "all-copy-bindings": 914,
+    "catalog": {
+      "path": "/tmp/t75-final-spec-r4-annotations-eight-2e38t91l/selected-original-copy-identities-schema-closure.json",
+      "sha256": "aae4ae8f1222be4591ab4511f0453751b4a88dfd8c33c872c190e77347dad3d1",
+      "bytes": 391268
+    },
+    "complete-certification-tree-duplicated": false
+  },
+  "reader-diagnostic-and-separate-closure": {
+    "original-retention-inspection": {
+      "path": "/tmp/t75-final-spec-r4-annotations-eight-2e38t91l/raw-packet-retention-inspection.json",
+      "sha256": "090e43bc83fcbb59a66c4ff31fb14820eae20613e9c9c849e752dd3150c69208",
+      "bytes": 3627
+    },
+    "original-actual-exit1": {
+      "path": "/tmp/t75-final-spec-r4-annotations-eight-2e38t91l/raw-packet-retention-audit-result.json",
+      "sha256": "af39938428dd236e49f97a93eefaed592245e18779e7ef81aa8dbb2b51f8baa5",
+      "bytes": 1021
+    },
+    "exact-four-template-schema-diagnostic": {
+      "path": "/tmp/t75-final-spec-r4-annotations-eight-2e38t91l/retention-copy-schema-diagnostic-inspection.json",
+      "sha256": "7eb4ea7352c713445c30a893a5361d727d418b36ca8df7d5fa798b95f91322de",
+      "bytes": 1575
+    },
+    "separate-closure": {
+      "path": "/tmp/t75-final-spec-r4-annotations-eight-2e38t91l/retention-copy-schema-closure-inspection.json",
+      "sha256": "3979b791d71123caddbbe406d0a72c68b573b33216723583170a882439a3dacf",
+      "bytes": 3372
+    },
+    "separate-actual-exit0": {
+      "path": "/tmp/t75-final-spec-r4-annotations-eight-2e38t91l/retention-copy-schema-closure-result.json",
+      "sha256": "4c20661fc28d4f76865bcceb5145339b9ddee6d8d1eeebc073a0967c988185f2",
+      "bytes": 1030
+    },
+    "original-diagnostic-overwritten": false,
+    "certification-rerun": false
+  },
+  "auxiliary-display-boundary": {
+    "path": "/tmp/t75-final-spec-r4-annotations-eight-2e38t91l/auxiliary-display-boundary.json",
+    "sha256": "3529a1d28fd5cb2d8329b5d16851316b4d4fb70b2fc3c5809ed4fcb281d64db0",
+    "bytes": 1580
+  },
+  "historical-retention-limitation": {
+    "original-incident": {
+      "path": "/tmp/t75-final-spec-r4-annotations-eight-2e38t91l/selected-originals/prior-reader-originals/reader-output-incident-and-closure.json",
+      "sha256": "3927ee99491a3f71fe24f4dc536cf086608b45e441289e6ab14a2033b3007149",
+      "bytes": 2097
+    },
+    "lost-original-derived-summaries-recovered": false,
+    "all-historical-derived-review-artifacts-preserved": false,
+    "current-r4-review-is-fresh-evidence": true
+  },
+  "report": {
+    "path": "/tmp/t75-final-spec-r4-annotations-eight-2e38t91l/report.md",
+    "sha256": "bf727825a8bad25002f340127501df333b70f59ef91c1c4205d0e7318e1973a1",
+    "bytes": 2482
+  },
+  "report-words": 294,
+  "manifest-contract": "manifest.json is generated after these actual reader results exist; it catalogs every retained packet file and explicitly excludes only itself.",
+  "no-project-certifier-observer-renderer-Maven-inventory-execution": true,
+  "no-repository-Git-tracker-mutation": true
+}

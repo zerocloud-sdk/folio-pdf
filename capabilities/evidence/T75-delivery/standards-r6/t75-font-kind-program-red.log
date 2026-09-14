@@ -1,0 +1,18 @@
+F
+======================================================================
+FAIL: test_embedded_font_headers_match_the_declared_binary_format (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_embedded_font_headers_match_the_declared_binary_format)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 65, in test_embedded_font_headers_match_the_declared_binary_format
+    self.observe(directory, profile / control['path'], 'fail', control['rule'], scope='fonts')
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 197, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : program-font-cff-as-cid.pdf: Embedded CFF and TrueType headers, dictionaries and checked font tables are readable.
+
+----------------------------------------------------------------------
+Ran 1 test in 2.450s
+
+FAILED (failures=1)

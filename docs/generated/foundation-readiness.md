@@ -2,7 +2,9 @@
 
 # Foundation 0.1.0 release readiness
 
-**NOT READY**. Run `./scripts/inventory readiness` for every missing obligation and identity diagnostic. Inventory validity is separate from release readiness; regular `verify` checks the current contract without certifying it.
+Recorded evidence: **NOT READY**. Run `./scripts/inventory readiness` for every missing obligation and identity diagnostic. Inventory validity is separate from release readiness; regular `verify` checks the current contract without certifying it.
+
+Local candidate artifacts and cached execution inputs require live verification with `./scripts/inventory readiness`. This portable report validates their recorded paths and hashes, and checks current source, contract and retained evidence files. It does not establish that staged binaries or acceptance-tool installations are present or unchanged in this checkout.
 
 Authorities: [obligations](../../capabilities/foundation-release.yaml), [source requirements](../../capabilities/foundation-requirements.yaml), [environment profiles](../../capabilities/foundation-environments.yaml), [retained evidence](../../capabilities/foundation-evidence.yaml).
 
@@ -62,20 +64,20 @@ Each certification additionally retains the observed host kernel, execution prof
 
 ## Release-wide findings
 
-Candidate and environment evidence identities satisfy the declared integrity checks.
+Retained candidate and environment evidence records satisfy the declared integrity checks; local input bytes remain subject to the live readiness gate.
 
 ## Required obligations
 
 A missing capability, required behavior, compatible dependency, independent evidence chain, exact environment or Stable Facade mapping blocks release. Existing Facade exclusions describe unfinished coverage; they cannot waive these required mappings. Only explicitly reasoned project controls are Native Interface only.
 
-| Obligation | Capability or subcapability | Slice | Status |
+| Obligation | Capability or subcapability | Slice | Recorded evidence status |
 | --- | --- | --- | --- |
 | [`transactions`](#transactions) | `document.blank.create-publish-reopen` | [#70](https://github.com/zerocloud-sdk/folio-pdf/issues/70) | satisfied |
 | [`values`](#values) | `document.value.inspect-patch` | [#71](https://github.com/zerocloud-sdk/folio-pdf/issues/71) | satisfied |
 | [`pages`](#pages) | `document.page.manipulate-merge-split` | [#72](https://github.com/zerocloud-sdk/folio-pdf/issues/72) | satisfied |
 | [`metadata`](#metadata) | `document.metadata.outlines-destinations-attachments` | [#73](https://github.com/zerocloud-sdk/folio-pdf/issues/73) | satisfied |
 | [`annotations`](#annotations) | `document.annotations-actions.manage` | [#74](https://github.com/zerocloud-sdk/folio-pdf/issues/74) | satisfied |
-| [`text`](#text) | `document.text-structure.extract` | [#75](https://github.com/zerocloud-sdk/folio-pdf/issues/75) | blocked |
+| [`text`](#text) | `document.text-structure.extract` | [#75](https://github.com/zerocloud-sdk/folio-pdf/issues/75) | satisfied |
 | [`images`](#images) | `document.images-resources.extract` | [#76](https://github.com/zerocloud-sdk/folio-pdf/issues/76) | blocked |
 | [`incremental`](#incremental) | `document.incremental-signature.protect` | [#77](https://github.com/zerocloud-sdk/folio-pdf/issues/77) | blocked |
 | [`security`](#security) | `document.version-password-security` | [#78](https://github.com/zerocloud-sdk/folio-pdf/issues/78) | blocked |
@@ -202,25 +204,9 @@ Extract bounded deterministic page text, mapping evidence, marked content, and T
 - Mandatory chains: `syntax, standards, semantic, visual`
 - Dependencies: `values`
 - Aggregate members: none
-- Required Facade family: kernel text and logical structure extraction (`com.itextpdf.kernel.pdf.`); mappings: **missing**
+- Required Facade family: kernel text and logical structure extraction (`com.itextpdf.kernel.pdf.`); mappings: `itext7.kernel.pdf-text-extractor.get-text-from-page, itext7.kernel.pdf-text-extractor.get-text-from-page-limits, itext7.kernel.pdf-page.get-page-text, itext7.kernel.pdf-document.get-text-and-structure, itext7.kernel.pdf-document.get-struct-tree-root, itext7.kernel.pdf-document.get-struct-tree-root-limits`
 - Source requirements: [`spec-us-13`](#spec-us-13), [`spec-td-08`](#spec-td-08), [`slice-75-1`](#slice-75-1), [`slice-75-2`](#slice-75-2), [`slice-75-3`](#slice-75-3), [`slice-75-4`](#slice-75-4)
 
-- Blocker: capability document.text-structure.extract is experimental, requires compatible
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on document.text-structure.extract
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on document.text-structure.extract
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on document.text-structure.extract
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk21 on document.text-structure.extract
-- Blocker: missing required Facade mapping set for kernel text and logical structure extraction
-- Blocker: unresolved retained limitation: Required Logical Structure extraction must be reconciled with the restricted MCR/OBJR/PDF 2.0 profiles by #75.
-- Blocker: unresolved retained limitation: Restricted font/CMap/content profiles require #75 coverage of required Foundation extraction cases.
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk8/IN_PROCESS (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk8/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk11/IN_PROCESS (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk11/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/IN_PROCESS (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
 
 <a id="images"></a>
 ### `images`
@@ -467,7 +453,6 @@ Load only explicit TrueType sources, select ordered fallbacks, embed or subset t
 - Source requirements: [`spec-us-08`](#spec-us-08), [`spec-us-58`](#spec-us-58), [`spec-id-19`](#spec-id-19), [`spec-id-20`](#spec-id-20), [`spec-id-37`](#spec-id-37), [`spec-id-39`](#spec-id-39), [`spec-td-12`](#spec-td-12), [`spec-td-15`](#spec-td-15), [`slice-87-1`](#slice-87-1), [`slice-87-2`](#slice-87-2), [`slice-87-3`](#slice-87-3), [`slice-87-4`](#slice-87-4)
 
 - Blocker: capability composition.fonts.load-embed-subset-fallback is experimental, requires compatible
-- Blocker: incompatible Dependency Gate document.text-structure.extract
 - Blocker: incompatible Dependency Gate document.images-resources.extract
 - Blocker: incompatible Dependency Gate composition.canvas.draw-positioned-text
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on composition.fonts.load-embed-subset-fallback
@@ -487,7 +472,6 @@ Load only explicit TrueType sources, select ordered fallbacks, embed or subset t
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: incomplete prerequisite obligation text
 - Blocker: incomplete prerequisite obligation images
 - Blocker: incomplete prerequisite obligation canvas
 
@@ -1165,7 +1149,6 @@ Close every Foundation behavior, aggregate, dependency and Facade obligation; ru
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk11/REPOSITORY (required chains: contract, review)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/REPOSITORY (required chains: contract, review)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/REPOSITORY (required chains: contract, review)
-- Blocker: incomplete prerequisite obligation text
 - Blocker: incomplete prerequisite obligation images
 - Blocker: incomplete prerequisite obligation incremental
 - Blocker: incomplete prerequisite obligation security
@@ -1256,10 +1239,10 @@ Classifications bind the exact Capability Matrix limitation text by SHA-256; cha
   Original limitation: Version 1 returns page-tree and content-stream execution order, including Form invocation order. Contents arrays are parsed as one newline-separated stream and may split tokens across members. Version 1 does not infer visual or semantic reading order, whitespace, line breaks, columns, paragraphs, bidi order, OCR, or layout.
 - `document.text-structure.extract` / `retained-contract` → [`text`](#text): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #75 must prove it without omitting required successful Foundation cases.
   Original limitation: Character evidence uses independently parsed ToUnicode mappings and explicitly declared simple-font Differences entries for exact codes, otherwise falling back only to a recognized Encoding or BaseEncoding, all mapped through the public Adobe Glyph List. An absent or unknown base supplies no unoverridden mapping. Composite fonts without ToUnicode, font programs, substituted or system fonts, renderers, and backend coercions are never promoted to confident Unicode.
-- `document.text-structure.extract` / `release-blocker` → [`text`](#text): Required Logical Structure extraction must be reconciled with the restricted MCR/OBJR/PDF 2.0 profiles by #75.
-  Original limitation: Marked-content ActualText replaces enclosed aggregate Page Text once with outer replacement precedence, while Alt remains separate. Logical structure uses iterative depth-bounded traversal and supports ordered nested elements, direct page MCIDs and explicit page-content MCR dictionaries, optional StructElem Type values, transitive unqualified RoleMap resolution to the PDF 1.7 standard-role vocabulary, and element-ancestor-catalog language inheritance. Unqualified PDF 2.0-only roles remain unresolved. Elements are visited once and must carry the parent backlink implied by K; repeated/shared elements, inconsistent parents, marked content inside Form XObjects, MCRs carrying Stm or StmOwn, OBJR children, and PDF 2.0 structure namespaces fail safely outside version 1.
-- `document.text-structure.extract` / `release-blocker` → [`text`](#text): Restricted font/CMap/content profiles require #75 coverage of required Foundation extraction cases.
-  Original limitation: Every query declares page, page-tree-node, content-stream count and depth, decoded-byte, text-item, Unicode, materialized ToUnicode-mapping, font-data-entry, marked-content count and depth, structure-element, structure-item, structure-depth, and RoleMap bounds; content-stream depth has a version-1 ceiling of 32 because backend Form traversal is recursive. Iterative page-tree traversal validates Kids, Parent, Type, Count, cycles, repeated nodes, inherited Resources/MediaBox/CropBox/Rotate, and direct UserUnit within the node bound, supplies detached leaf views, and checks raw Contents arrays before backend traversal. Decoded page content is syntax-checked in the same combined-stream form the backend consumes, including rejection of unterminated tokens and trailing operands without an operator; supported extraction-operator arity, operand types, finite numeric values, text-object placement, and page/Form-local BT/ET and q/Q balance are checked before a result is published. The gs adapter applies only a validated optional Font setting through a detached one-key ExtGState view and ignores unrelated graphics-state arrays and graphs without backend traversal. Full PDF integers for page Count, Differences codes, FormType, and MCIDs are range-checked before narrowing. Form Type, Subtype, BBox, Matrix, Resources, and FormType values and every marked-content begin or end operator inside Forms are validated before backend processing. ToUnicode range expansion, including decimal count syntax, exact bfchar/bfrange counts and terminators, non-reversed source ranges, the carrying increment used by PDFBox's non-strict embedded-font CMap construction, and the endcmap stop, Differences traversal, decoded embedded font-program data, font-data entry kinds, supported explicit font kinds, simple FirstChar/LastChar/Widths values, and CID DW, W, W2, and DW2 traversal and compact-range materialization are bounded or validated before backend font construction; the text-item bound is charged before source-code mapping evidence is published. ToUnicode usecmap, nested CMap composites, invalid UTF-16BE destinations, Type0 Encoding values other than Identity-H or Identity-V, Type0 descendants other than exactly one CIDFontType0 or CIDFontType2 dictionary, embedded Type0 headers that contradict the descendant subtype, and Type3 fonts are outside version 1. These query limits compose with T20's shared policy and are transported by T21's opt-in Hardened Worker codecs.
+- `document.text-structure.extract` / `retained-contract` → [`text`](#text): Public Workflow successes and independent qualified controls cover page and Form MCRs, annotation-owned appearances, whole-object OBJRs, ParentTree backlinks and PDF 2.0 namespaces/roles. The retained bounds and unsupported relationships are source-traceable in docs/t13-certification.md; final candidate certification remains required.
+  Original limitation: Marked-content ActualText replaces enclosed aggregate Page Text once with outer replacement precedence, while Alt remains separate. Logical structure uses iterative depth-bounded traversal and supports ordered nested elements, page/Form MCIDs and MCR dictionaries, annotation-owned appearance MCRs, and whole-object annotation/XObject OBJRs with detached Session identity. Stream-local MCIDs preserve ordinary repeated Form occurrences; internally structure-linked Forms cannot be invoked repeatedly. ParentTree nodes and content backlinks are bounded and checked. Structural content items remain leaves, including unexecuted appearance MCRs and whole-object invocation relationships. Optional StructElem Type values and element-ancestor-catalog language inheritance remain supported. PDF 2.0 namespace dictionary identity, distinct standard vocabularies, transitive cross-namespace RoleMapNS chains, and bounded unresolved custom associations are exposed. Unqualified names honor document RoleMap semantics separately from explicit namespace targets. Namespace declarations and shared role-map entries have exact query-wide bounds. Root Namespaces arrays also admit direct declarations while element NS and cross-namespace targets retain their required indirect identity. Whole and invoked Forms accept absent or null optional Type values. The source-traceable successful cases and explicit unsupported boundaries are fixed by docs/t13-certification.md; candidate-specific certification remains mandatory.
+- `document.text-structure.extract` / `retained-contract` → [`text`](#text): Public Workflow successes and independent qualified declaration/program controls cover Type3 geometry, embedded font kinds, all 61 standard Encodings, bounded inherited CMaps, four predefined UCS2 parents and exact mapping evidence. The retained bounds are fixed by docs/t13-certification.md; final candidate certification remains required.
+  Original limitation: Every query declares page, page-tree-node, content-stream count and depth, decoded-byte, text-item, Unicode, materialized ToUnicode-mapping, font-data-entry, marked-content count and depth, structure-element, structure-item, structure-depth, and RoleMap bounds; content-stream depth has a version-1 ceiling of 32 because backend Form traversal is recursive. Iterative page-tree traversal validates Kids, Parent, Type, Count, cycles, repeated nodes, inherited Resources/MediaBox/CropBox/Rotate, and direct UserUnit within the node bound, supplies detached leaf views, and checks raw Contents arrays before backend traversal. Decoded page content is syntax-checked in the same combined-stream form the backend consumes, including rejection of unterminated tokens and trailing operands without an operator; supported extraction-operator arity, operand types, finite numeric values, text-object placement, and page/Form-local BT/ET and q/Q balance are checked before a result is published. The gs adapter applies only a validated optional Font setting and ignores unrelated graphics-state arrays and graphs without backend traversal. Full PDF integers for page Count, Differences codes, FormType, and MCIDs are range-checked before narrowing. Form Type, Subtype, BBox, Matrix, Resources, and FormType values and every marked-content begin or end operator inside Forms are validated before backend processing. ToUnicode range expansion, including decimal count syntax, exact bfchar/bfrange counts and terminators, non-reversed source ranges, unsigned one- through four-byte source ranges, separate inline final-byte and predefined full-carry destination rules, and the endcmap stop, Differences traversal, decoded embedded font-program data, font-data entry kinds, supported explicit font kinds, simple FirstChar/LastChar/Widths values, and CID DW, W, W2, and DW2 traversal and compact-range materialization are bounded or validated before backend font construction; the text-item bound is charged before source-code mapping evidence is published. Type3 fonts use declared finite geometry, horizontal transformed widths, and zero widths outside FirstChar-LastChar. CharProcs entries charge per selected font; each distinct glyph stream decodes once across the Query and must begin with finite d0/d1 metrics, zero vertical width, and a width consistent with its declared entry. Glyph painting instructions do not execute as Page Text. Embedded stream-dictionary ToUnicode inheritance uses iterative cycle and node bounds, exact source-byte-and-length keys, and nearest local overrides. Each node and codespace declaration charges font-data entries, and overridden mappings still charge. Detached backend font copies omit ToUnicode; query-owned explicit observations remain separate from code decoding and geometry. Undefined local ToUnicode destinations mask ancestor mappings. Inherited codespace redeclarations reject. Textual usecmap precedes mappings and must match the declared parent; the four pinned Adobe CNS1/GB1/Japan1/Korea1 UCS2 named parents are bounded under the same node, mapping, byte and ownership rules. PDF 2.0 optional ToUnicode Type, CMapName, WMode and CIDSystemInfo headers are validated against every embedded program node. Encoding admits bounded embedded inheritance and the fixed 61 standard predefined names in ISO 32000-1 Table 118. Each node, codespace declaration and CID or notdef source mapping charges per selected font before construction; repeated font selection reuses that construction. Both Encoding and ToUnicode require unambiguous nonoverlapping codespaces, declarations before mappings and all mapping sources within the adopted codespace. Local CID mappings override ancestors, including CID 0; missing normal mappings select notdef then CID 0. Original source codes control word spacing while resolved CIDs select declared horizontal and vertical descendant metrics. A shared descendant charges its validated metric cost for each distinct selected Type0 font construction. A Query-owned constant embedded backend Encoding and detached descendant without ROS prevent auxiliary CMap loading; original dictionaries still control validation and mapping observations. Font and Encoding Registry/Ordering must agree, while Supplement may differ. Unsupported named resources, invalid mapping composites or UTF-16BE destinations, ambiguous or invalid source codes, unsupported Type0 descendant shapes and contradictory embedded font headers fail safely. The required font, CMap and content cases have independent qualified controls under docs/t13-certification.md; final candidate and environment certification remains mandatory. These query limits compose with T20's shared policy and are transported by T21's opt-in Hardened Worker codecs.
 - `document.text-structure.extract` / `retained-contract` → [`text`](#text): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #75 must prove it without omitting required successful Foundation cases.
   Original limitation: T13 is read-only and observes preceding T15-authorized Commands in one Session; target-free signed queries are permitted. Image/resource extraction, encryption, drawing, and later capability slices are not included.
 - `document.images-resources.extract` / `retained-contract` → [`images`](#images): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #76 must prove it without omitting required successful Foundation cases.
@@ -2723,22 +2706,22 @@ Classifications bind the exact Capability Matrix limitation text by SHA-256; cha
 <a id="slice-75-1"></a>
 - `slice-75-1` — https://github.com/zerocloud-sdk/folio-pdf/issues/75 — Acceptance criteria 1
   Certify Page Text content-stream order, glyph geometry, explicit/inferred/uncertain character mappings, Marked Content and the approved read-only Logical Structure profile.
-  Disposition: `required`. Approved certification slice; scope declarations do not assert implementation or certification. Obligations: `text`
+  Disposition: `required`. The frozen successful behavior, six Stable/Preview mappings, 376 independently qualified rules, original corpus and complete negative-control protocols are specified by docs/t13-certification.md; actual final-candidate certification remains required by foundation-evidence.yaml. Obligations: `text`
 
 <a id="slice-75-2"></a>
 - `slice-75-2` — https://github.com/zerocloud-sdk/folio-pdf/issues/75 — Acceptance criteria 2
   Implement the matching extraction Migration Facade subset without inventing reading order, OCR text or confidently mapped Unicode where source evidence is missing.
-  Disposition: `required`. Approved certification slice; scope declarations do not assert implementation or certification. Obligations: `text`
+  Disposition: `required`. The frozen successful behavior, six Stable/Preview mappings, 376 independently qualified rules, original corpus and complete negative-control protocols are specified by docs/t13-certification.md; actual final-candidate certification remains required by foundation-evidence.yaml. Obligations: `text`
 
 <a id="slice-75-3"></a>
 - `slice-75-3` — https://github.com/zerocloud-sdk/folio-pdf/issues/75 — Acceptance criteria 3
   Independent project-owned fixtures cover nested Forms, split content arrays, ActualText/Alt, role/language inheritance and malformed or unsupported structure relationships.
-  Disposition: `required`. Approved certification slice; scope declarations do not assert implementation or certification. Obligations: `text`
+  Disposition: `required`. The frozen successful behavior, six Stable/Preview mappings, 376 independently qualified rules, original corpus and complete negative-control protocols are specified by docs/t13-certification.md; actual final-candidate certification remains required by foundation-evidence.yaml. Obligations: `text`
 
 <a id="slice-75-4"></a>
 - `slice-75-4` — https://github.com/zerocloud-sdk/folio-pdf/issues/75 — Acceptance criteria 4
   Public observers verify detached results, bounded traversal/decompression/font mapping, Session ordering and safe all-or-nothing failure under both execution profiles.
-  Disposition: `required`. Approved certification slice; scope declarations do not assert implementation or certification. Obligations: `text`
+  Disposition: `required`. The frozen successful behavior, six Stable/Preview mappings, 376 independently qualified rules, original corpus and complete negative-control protocols are specified by docs/t13-certification.md; actual final-candidate certification remains required by foundation-evidence.yaml. Obligations: `text`
 
 <a id="slice-76-1"></a>
 - `slice-76-1` — https://github.com/zerocloud-sdk/folio-pdf/issues/76 — Acceptance criteria 1

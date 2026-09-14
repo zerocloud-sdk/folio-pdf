@@ -1,0 +1,20 @@
+test_forms_with_structural_mcids_have_one_invocation_while_unlinked_repetitions_remain_valid (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_forms_with_structural_mcids_have_one_invocation_while_unlinked_repetitions_remain_valid) ... 
+  test_forms_with_structural_mcids_have_one_invocation_while_unlinked_repetitions_remain_valid (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_forms_with_structural_mcids_have_one_invocation_while_unlinked_repetitions_remain_valid) (invocation='repeated-structured-form') ... FAIL
+
+======================================================================
+FAIL: test_forms_with_structural_mcids_have_one_invocation_while_unlinked_repetitions_remain_valid (scripts.tests.test_t13_structure_standards.T13StructureStandardsTest.test_forms_with_structural_mcids_have_one_invocation_while_unlinked_repetitions_remain_valid) (invocation='repeated-structured-form')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 33, in test_forms_with_structural_mcids_have_one_invocation_while_unlinked_repetitions_remain_valid
+    self.observe(directory, name, self.pdf(objects), expected,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_structure_standards.py", line 391, in observe
+    self.assertEqual(expected, result['standards'], name + ': ' + result['finding'])
+AssertionError: 'fail' != 'pass'
+- fail
++ pass
+ : repeated-structured-form: The qualified structure content references have typed fields and matching ParentTree backlinks.
+
+----------------------------------------------------------------------
+Ran 1 test in 0.924s
+
+FAILED (failures=1)

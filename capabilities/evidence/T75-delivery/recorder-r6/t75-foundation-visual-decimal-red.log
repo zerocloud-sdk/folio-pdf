@@ -1,0 +1,27 @@
+F
+======================================================================
+FAIL: test_public_collect_requires_qualified_visual_processes_original_rasters_and_bounded_font_edges (scripts.tests.test_t13_foundation.T13FoundationTest.test_public_collect_requires_qualified_visual_processes_original_rasters_and_bounded_font_edges)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_foundation.py", line 588, in test_public_collect_requires_qualified_visual_processes_original_rasters_and_bounded_font_edges
+    self.assertEqual(0, completed.returncode, completed.stderr)
+AssertionError: 0 != 1 : Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/t03-foundation.py", line 1194, in <module>
+    main()
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/t03-foundation.py", line 1152, in main
+    print(json.dumps(collect_reports(root, (root / args.output).resolve(), args.obligation,
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/t03-foundation.py", line 562, in collect_reports
+    return collect_text_reports(root, run, execution_profile)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/t13_foundation_reports.py", line 536, in collect_reports
+    visual(root, directory / 'visual', files.expected[pdf], product,
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/t13_foundation_reports.py", line 353, in visual
+    raise ValueError('Missing T13 visual comparison metric')
+ValueError: Missing T13 visual comparison metric
+
+
+----------------------------------------------------------------------
+Ran 1 test in 14.007s
+
+FAILED (failures=1)

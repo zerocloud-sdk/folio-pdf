@@ -1,0 +1,26 @@
+test_content_catalog_covers_lexical_state_resource_property_and_type3_body_rules (scripts.tests.test_t13_standards.T13StandardsTest.test_content_catalog_covers_lexical_state_resource_property_and_type3_body_rules) ... FAIL
+
+======================================================================
+FAIL: test_content_catalog_covers_lexical_state_resource_property_and_type3_body_rules (scripts.tests.test_t13_standards.T13StandardsTest.test_content_catalog_covers_lexical_state_resource_property_and_type3_body_rules)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_standards.py", line 24, in test_content_catalog_covers_lexical_state_resource_property_and_type3_body_rules
+    self.assertEqual(expected, dict(Counter(entry['rule'] for entry in controls.values())))
+AssertionError: {'content-operands': 6, 'program-token': 5, 'content-state': 16[83 chars]': 2} != {'content-operands': 6}
+- {'content-operands': 6,
+?                       ^
+
++ {'content-operands': 6}
+?                       ^
+
+-  'content-properties': 8,
+-  'content-resource': 7,
+-  'content-state': 16,
+-  'program-token': 5,
+-  'type3-bounds': 2,
+-  'type3-program': 5}
+
+----------------------------------------------------------------------
+Ran 1 test in 0.164s
+
+FAILED (failures=1)

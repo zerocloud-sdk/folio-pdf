@@ -1,0 +1,19 @@
+F
+======================================================================
+FAIL: test_duplicate_truetype_table_tags_cannot_hide_an_unchecked_table (scripts.tests.test_t13_program_standards.T13ProgramStandardsTest.test_duplicate_truetype_table_tags_cannot_hide_an_unchecked_table)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 20, in test_duplicate_truetype_table_tags_cannot_hide_an_unchecked_table
+    values = self.observe(Path(temporary), pdf, 'indeterminate', scope='fonts')
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/IdeaProjects/open-pdf/scripts/tests/test_t13_program_standards.py", line 241, in observe
+    self.assertEqual(expected, values['standards'], pdf.name + ': ' + values['finding'])
+AssertionError: 'indeterminate' != 'pass'
+- indeterminate
++ pass
+ : ttf-duplicate-hides-bad-checksum.pdf: Embedded CFF and TrueType headers, dictionaries and checked font tables are readable.
+
+----------------------------------------------------------------------
+Ran 1 test in 0.657s
+
+FAILED (failures=1)
