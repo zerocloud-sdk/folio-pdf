@@ -8,10 +8,10 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 
 - Schema version: `1`
 - Release train: `0.1.0-SNAPSHOT`
-- Stable entries: `157`
+- Stable entries: `160`
 - Preview additions: `0`
-- Preview artifact entries: `157`
-- Explicit capability exclusions: `17`
+- Preview artifact entries: `160`
+- Explicit capability exclusions: `16`
 
 ## Stable surfaces
 
@@ -689,6 +689,17 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Exception contract: Malformed specifications, streams, names, checksums, and limit failures retain their Native DocumentFailure cause through PdfException.
 - Behavioral capabilities: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
 
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_images_dash_and_dash_resources"></a>
+### `itext7.kernel.pdf-document.get-images-and-resources`
+
+- Availability: `stable`
+- Reference status: `folio-extension`
+- Reference namespace: `com.itextpdf.kernel.pdf.PdfDocument`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#getImagesAndResources(net.zerocloud.pdf.ResourceExtractionLimits,net.zerocloud.pdf.ImageByteAccess)`
+- Generic contract: Returns complete immutable detached DocumentResourceInventory under explicit document-wide limits and byte selection, observing preceding Commands in actual IN_PROCESS execution. Page Usage means declaration reachability.
+- Exception contract: Null inputs and closed documents reject; Native failures retain their stable DocumentFailure code and safe diagnostic through PdfException. No partial result is returned; detached values and selected defensive bytes survive close.
+- Behavioral capabilities: [`document.images-resources.extract`](capability-matrix.md#capability-document_dot_images_dash_resources_dot_extract)
+
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_merger"></a>
 ### `itext7.kernel.pdf-document.get-merger`
 
@@ -1358,6 +1369,28 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Exception contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; expired Session values reject with IllegalStateException.
 - Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen), [`document.page.manipulate-merge-split`](capability-matrix.md#capability-document_dot_page_dot_manipulate_dash_merge_dash_split)
 
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_page_dot_get_dash_resources"></a>
+### `itext7.kernel.pdf-page.get-resources`
+
+- Availability: `stable`
+- Reference status: `adapted`
+- Reference member: `com.itextpdf.kernel.pdf.PdfPage#getResources()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfPage#getResources()`
+- Generic contract: Adapts the return type to immutable detached List<net.zerocloud.pdf.DocumentResource>. Selects resources whose declaration-reachable Page Usage includes this page after complete document extraction with ImageByteAccess.NONE and the finite limits in docs/t14-certification.md. Records retain complete declarations and Page Usage.
+- Exception contract: Closed or expired page handles reject; any malformed page or exhausted document-wide bound retains Native DocumentFailure identity through PdfException without returning a prefix.
+- Behavioral capabilities: [`document.images-resources.extract`](capability-matrix.md#capability-document_dot_images_dash_resources_dot_extract)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_page_dot_get_dash_resources_dash_limits"></a>
+### `itext7.kernel.pdf-page.get-resources-limits`
+
+- Availability: `stable`
+- Reference status: `folio-extension`
+- Reference namespace: `com.itextpdf.kernel.pdf.PdfPage`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfPage#getResources(net.zerocloud.pdf.ResourceExtractionLimits,net.zerocloud.pdf.ImageByteAccess)`
+- Generic contract: Returns immutable detached List<net.zerocloud.pdf.DocumentResource> selected by current page identity after the complete document Query succeeds under explicit ResourceExtractionLimits and ImageByteAccess. Selection preserves document inventory order and complete shared declarations.
+- Exception contract: Null inputs and closed or expired page handles reject; Native failures retain stable DocumentFailure identity through PdfException, preserving caller ownership and returning no partial inventory.
+- Behavioral capabilities: [`document.images-resources.extract`](capability-matrix.md#capability-document_dot_images_dash_resources_dot_extract)
+
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_page_dot_remove_dash_annotation"></a>
 ### `itext7.kernel.pdf-page.remove-annotation`
 
@@ -1727,13 +1760,6 @@ No preview additions (included with all stable surfaces) are declared.
 - Behavioral capability: [`document.hostile-input-limits`](capability-matrix.md#capability-document_dot_hostile_dash_input_dash_limits)
 - Deferred ticket: `T20`
 - Reason: Workflow Resource Policy and cooperative resource accounting are project-specific controls with no Reference Suite counterpart. PDF outcomes still require four independent chains; underlying document operations retain their own Facade obligations. Certification remains required under #81.
-
-<a id="excluded-capability-document_dot_images_dash_resources_dot_extract"></a>
-### `document.images-resources.extract`
-
-- Behavioral capability: [`document.images-resources.extract`](capability-matrix.md#capability-document_dot_images_dash_resources_dot_extract)
-- Deferred ticket: `T32`
-- Reason: Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #76 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 <a id="excluded-capability-document_dot_incremental_dash_signature_dot_protect"></a>
 ### `document.incremental-signature.protect`

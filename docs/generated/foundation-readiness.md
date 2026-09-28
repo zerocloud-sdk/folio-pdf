@@ -78,7 +78,7 @@ A missing capability, required behavior, compatible dependency, independent evid
 | [`metadata`](#metadata) | `document.metadata.outlines-destinations-attachments` | [#73](https://github.com/zerocloud-sdk/folio-pdf/issues/73) | satisfied |
 | [`annotations`](#annotations) | `document.annotations-actions.manage` | [#74](https://github.com/zerocloud-sdk/folio-pdf/issues/74) | satisfied |
 | [`text`](#text) | `document.text-structure.extract` | [#75](https://github.com/zerocloud-sdk/folio-pdf/issues/75) | satisfied |
-| [`images`](#images) | `document.images-resources.extract` | [#76](https://github.com/zerocloud-sdk/folio-pdf/issues/76) | blocked |
+| [`images`](#images) | `document.images-resources.extract` | [#76](https://github.com/zerocloud-sdk/folio-pdf/issues/76) | satisfied |
 | [`incremental`](#incremental) | `document.incremental-signature.protect` | [#77](https://github.com/zerocloud-sdk/folio-pdf/issues/77) | blocked |
 | [`security`](#security) | `document.version-password-security` | [#78](https://github.com/zerocloud-sdk/folio-pdf/issues/78) | blocked |
 | [`limits`](#limits) | `document.hostile-input-limits` | [#81](https://github.com/zerocloud-sdk/folio-pdf/issues/81) | blocked |
@@ -213,31 +213,16 @@ Extract bounded deterministic page text, mapping evidence, marked content, and T
 
 Extract a bounded deterministic inventory of page and nested-Form resources, including detached image metadata and explicitly selected bytes plus font identity and usage.
 
-- Acceptance Profile: `T14-image-resource-extraction`; [contract](../../capabilities/evidence/T14-image-resource-extraction.md)
+- Acceptance Profile: `T14-image-resource-extraction`; [contract](../../capabilities/evidence/T76-image-resource-certification.md)
 - Kind: `behavior`; owner `document.images-resources.extract`
 - Environments: `ubuntu-24.04-linux-x86-64-jdk8, ubuntu-24.04-linux-x86-64-jdk11, ubuntu-24.04-linux-x86-64-jdk17, ubuntu-24.04-linux-x86-64-jdk21`
 - Execution profiles: `IN_PROCESS, HARDENED_WORKER`
 - Mandatory chains: `syntax, standards, semantic, visual`
 - Dependencies: `values`
 - Aggregate members: none
-- Required Facade family: kernel image and resource extraction (`com.itextpdf.kernel.pdf.`); mappings: **missing**
+- Required Facade family: kernel image and resource extraction (`com.itextpdf.kernel.pdf.`); mappings: `itext7.kernel.pdf-document.get-images-and-resources, itext7.kernel.pdf-page.get-resources, itext7.kernel.pdf-page.get-resources-limits`
 - Source requirements: [`spec-us-13`](#spec-us-13), [`spec-td-08`](#spec-td-08), [`slice-76-1`](#slice-76-1), [`slice-76-2`](#slice-76-2), [`slice-76-3`](#slice-76-3), [`slice-76-4`](#slice-76-4)
 
-- Blocker: capability document.images-resources.extract is experimental, requires compatible
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on document.images-resources.extract
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on document.images-resources.extract
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on document.images-resources.extract
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk21 on document.images-resources.extract
-- Blocker: missing required Facade mapping set for kernel image and resource extraction
-- Blocker: unresolved retained limitation: Inventory visibility and unavailable decoded image formats require #76 proof against the required Foundation extraction scope.
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk8/IN_PROCESS (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk8/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk11/IN_PROCESS (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk11/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/IN_PROCESS (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
 
 <a id="incremental"></a>
 ### `incremental`
@@ -416,7 +401,6 @@ Embed, place, and reuse bounded image resources with explicit Device, calibrated
 - Source requirements: [`spec-id-36`](#spec-id-36), [`spec-id-37`](#spec-id-37), [`slice-86-1`](#slice-86-1), [`slice-86-2`](#slice-86-2), [`slice-86-3`](#slice-86-3), [`slice-86-4`](#slice-86-4)
 
 - Blocker: capability composition.canvas.images-colors-transparency is experimental, requires compatible
-- Blocker: incompatible Dependency Gate document.images-resources.extract
 - Blocker: incompatible Dependency Gate composition.canvas.draw-positioned-text
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on composition.canvas.images-colors-transparency
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on composition.canvas.images-colors-transparency
@@ -434,7 +418,6 @@ Embed, place, and reuse bounded image resources with explicit Device, calibrated
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: incomplete prerequisite obligation images
 - Blocker: incomplete prerequisite obligation canvas
 
 <a id="fonts"></a>
@@ -453,7 +436,6 @@ Load only explicit TrueType sources, select ordered fallbacks, embed or subset t
 - Source requirements: [`spec-us-08`](#spec-us-08), [`spec-us-58`](#spec-us-58), [`spec-id-19`](#spec-id-19), [`spec-id-20`](#spec-id-20), [`spec-id-37`](#spec-id-37), [`spec-id-39`](#spec-id-39), [`spec-td-12`](#spec-td-12), [`spec-td-15`](#spec-td-15), [`slice-87-1`](#slice-87-1), [`slice-87-2`](#slice-87-2), [`slice-87-3`](#slice-87-3), [`slice-87-4`](#slice-87-4)
 
 - Blocker: capability composition.fonts.load-embed-subset-fallback is experimental, requires compatible
-- Blocker: incompatible Dependency Gate document.images-resources.extract
 - Blocker: incompatible Dependency Gate composition.canvas.draw-positioned-text
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on composition.fonts.load-embed-subset-fallback
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on composition.fonts.load-embed-subset-fallback
@@ -472,7 +454,6 @@ Load only explicit TrueType sources, select ordered fallbacks, embed or subset t
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: incomplete prerequisite obligation images
 - Blocker: incomplete prerequisite obligation canvas
 
 <a id="rendering"></a>
@@ -1149,7 +1130,6 @@ Close every Foundation behavior, aggregate, dependency and Facade obligation; ru
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk11/REPOSITORY (required chains: contract, review)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/REPOSITORY (required chains: contract, review)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/REPOSITORY (required chains: contract, review)
-- Blocker: incomplete prerequisite obligation images
 - Blocker: incomplete prerequisite obligation incremental
 - Blocker: incomplete prerequisite obligation security
 - Blocker: incomplete prerequisite obligation limits
@@ -1247,7 +1227,7 @@ Classifications bind the exact Capability Matrix limitation text by SHA-256; cha
   Original limitation: T13 is read-only and observes preceding T15-authorized Commands in one Session; target-free signed queries are permitted. Image/resource extraction, encryption, drawing, and later capability slices are not included.
 - `document.images-resources.extract` / `retained-contract` → [`images`](#images): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #76 must prove it without omitting required successful Foundation cases.
   Original limitation: Version 1 walks effective page Resources in ascending page order, resource-dictionary category and named-entry decoded-name Unicode order, declared ProcSet array order, and nested Form depth-first order. Explicit PDF null categories and named members are omitted without a record or traversal-value charge. Indirect resources are deduplicated by the existing Session Object Reference and accumulate every declaration and ascending declaration-reachable Page Usage; direct page/Form resource declarations remain separate records with no fabricated identity, while a direct mask embedded in a deduplicated image remains the one deterministic target of that owning relationship. Repeated page-tree nodes, Form cycles, image-mask cycles, and conflicting reuse fail atomically.
-- `document.images-resources.extract` / `release-blocker` → [`images`](#images): Inventory visibility and unavailable decoded image formats require #76 proof against the required Foundation extraction scope.
+- `document.images-resources.extract` / `retained-contract` → [`images`](#images): Successful exact encoded extraction of original CCITT, JPEG, JPX, JBIG2 and LZW payloads is independently checked and rendered; supported unfiltered, ASCIIHex, ASCII85, RunLength, Flate and predictor paths return independently expected decoded bytes. Explicit unavailable/external classifications remain separate. The bounded Foundation scope and successful cases are fixed by docs/t14-certification.md; final candidate certification remains mandatory.
   Original limitation: Image metadata includes exact dimensions, declared bit depth where applicable, proven component count, classified declared and resolved color-space information, exact filter order and supported effective predictor parameters, Image Mask state, color-key ranges, and explicit or soft image relationships. Pattern color spaces are malformed on Image XObjects. A bounded in-file ICCBased profile with an exact header length, acsp signature, JDK parser acceptance, and wrapper-compatible Gray/RGB/CMYK components is SUPPORTED and exposes its optional Object Reference, decoded byte length, and SHA-256; invalid, external, unsupported-family, or incompatible profiles remain UNSUPPORTED without unverified identity and their attempted decoding consumes the decompressed-byte bound. Indexed stream lookups and Separation or DeviceN tint functions retain classified metadata but are unsupported because version 1 does not recursively certify auxiliary streams or arbitrary PDF functions. Version-1 bounded decoded access supports only unfiltered, ASCIIHexDecode, ASCII85Decode, RunLengthDecode, and FlateDecode Image XObject streams; an empty filter array is unfiltered, decode-parameter container shape follows filter count, and inline-image-only filter abbreviations are rejected, while recognized LZW, DCT, JPX, CCITT, JBIG2, and Crypt filters remain inventory-visible but decoded bytes are unavailable. Filter-specific one-bit, eight-bit, and predictor geometry constraints are enforced even for unselected or unsupported decoded data. External-file streams are never resolved; null F values remain in-file streams, and non-null F values must have a file-specification shape. Subsidiary soft masks require grayscale images with an explicit bit depth and no nested Mask or SMask entry; Matte shape, owner dimensions, and values in the owning color space's declared or default component ranges are enforced. JPX SMaskInData 0, 1, and 2 are reported as no embedded mask, an embedded soft mask, or a preblended embedded soft mask; nonzero values conflict with a subsidiary SMask, malformed JPX values fail, and the meaningless entry is ignored for non-JPX sequences. Malformed color information is classified without backend coercion; malformed unknown filters, dimensions, masks, fonts, and resource graphs fail safely rather than yielding a partial result.
 - `document.images-resources.extract` / `retained-contract` → [`images`](#images): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #76 must prove it without omitting required successful Foundation cases.
   Original limitation: Encoded and decoded availability and selection are separate. Selected available bytes stream only through aggregate pixel, every filter-stage decompression, and returned-byte bounds; the defensive detached result is published only after all bounds pass and is never exposed on a failed query. Every query also declares exact page, page-tree-node, traversed-resource-value, and resource-depth bounds; version 1 caps resource depth at 64 because Form and image-mask traversal is recursive. These local bounds compose with T20's shared transaction policy and are transported by T21's opt-in Hardened Worker codecs.

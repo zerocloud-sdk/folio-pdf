@@ -1,0 +1,257 @@
+............................F............F.........E....................................................................................................................................................EFEFEEE.EEEE.EEEEEEEFF
+======================================================================
+ERROR: test_t13_fonts (unittest.loader._FailedTest.test_t13_fonts)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_t13_fonts
+Traceback (most recent call last):
+  File "/usr/lib/python3.13/unittest/loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "/usr/lib/python3.13/unittest/loader.py", line 339, in _get_module_from_name
+    __import__(name)
+    ~~~~~~~~~~^^^^^^
+  File "/workspace/folio-pdf/scripts/tests/test_t13_fonts.py", line 11, in <module>
+    from fontTools.ttLib import TTFont
+ModuleNotFoundError: No module named 'fontTools'
+
+
+======================================================================
+ERROR: test_t28_reference_fonts (unittest.loader._FailedTest.test_t28_reference_fonts)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_t28_reference_fonts
+Traceback (most recent call last):
+  File "/usr/lib/python3.13/unittest/loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "/usr/lib/python3.13/unittest/loader.py", line 339, in _get_module_from_name
+    __import__(name)
+    ~~~~~~~~~~^^^^^^
+  File "/workspace/folio-pdf/scripts/tests/test_t28_reference_fonts.py", line 14, in <module>
+    from fontTools.ttLib import TTFont
+ModuleNotFoundError: No module named 'fontTools'
+
+
+======================================================================
+ERROR: test_repository_entry_generates_the_native_and_published_t29_chains (test_t29_acceptance_entry.AcceptanceEntryTest.test_repository_entry_generates_the_native_and_published_t29_chains)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/tests/test_t29_acceptance_entry.py", line 36, in test_repository_entry_generates_the_native_and_published_t29_chains
+    self.assertTrue(Path(os.environ["FOLIO_HARFBUZZ_HELPER"]).is_absolute())
+                         ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen os>", line 717, in __getitem__
+KeyError: 'FOLIO_HARFBUZZ_HELPER'
+
+======================================================================
+ERROR: test_existing_installation_is_not_overwritten (test_t29_native_installation.NativeInstallationTest.test_existing_installation_is_not_overwritten)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/tests/test_t29_native_installation.py", line 40, in test_existing_installation_is_not_overwritten
+    os.environ["T29_HARFBUZZ_ARCHIVE"], str(installation)],
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen os>", line 717, in __getitem__
+KeyError: 'T29_HARFBUZZ_ARCHIVE'
+
+======================================================================
+ERROR: test_explicit_installation_records_its_artifacts_and_shapes_through_the_external_protocol (test_t29_native_installation.NativeInstallationTest.test_explicit_installation_records_its_artifacts_and_shapes_through_the_external_protocol)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/tests/test_t29_native_installation.py", line 51, in test_explicit_installation_records_its_artifacts_and_shapes_through_the_external_protocol
+    os.environ["T29_HARFBUZZ_ARCHIVE"], str(installation)]
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen os>", line 717, in __getitem__
+KeyError: 'T29_HARFBUZZ_ARCHIVE'
+
+======================================================================
+ERROR: test_recorded_tools_are_used_and_effective_compiler_flags_are_retained (test_t29_native_installation.NativeInstallationTest.test_recorded_tools_are_used_and_effective_compiler_flags_are_retained)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/tests/test_t29_native_installation.py", line 113, in test_recorded_tools_are_used_and_effective_compiler_flags_are_retained
+    os.environ["T29_HARFBUZZ_ARCHIVE"], str(installation)],
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen os>", line 717, in __getitem__
+KeyError: 'T29_HARFBUZZ_ARCHIVE'
+
+======================================================================
+ERROR: test_actual_loaded_engine_and_installation_receipt_are_traceable (test_t29_native_observation.NativeObservationTest.test_actual_loaded_engine_and_installation_receipt_are_traceable)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/tests/test_t29_native_observation.py", line 28, in test_actual_loaded_engine_and_installation_receipt_are_traceable
+    helper = Path(os.environ["FOLIO_HARFBUZZ_HELPER"])
+                  ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen os>", line 717, in __getitem__
+KeyError: 'FOLIO_HARFBUZZ_HELPER'
+
+======================================================================
+ERROR: test_changed_helper_cannot_reuse_an_installation_receipt (test_t29_native_observation.NativeObservationTest.test_changed_helper_cannot_reuse_an_installation_receipt)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/tests/test_t29_native_observation.py", line 50, in test_changed_helper_cannot_reuse_an_installation_receipt
+    helper = Path(os.environ["FOLIO_HARFBUZZ_HELPER"])
+                  ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen os>", line 717, in __getitem__
+KeyError: 'FOLIO_HARFBUZZ_HELPER'
+
+======================================================================
+ERROR: test_loader_override_cannot_claim_the_installed_engine_hash (test_t29_native_observation.NativeObservationTest.test_loader_override_cannot_claim_the_installed_engine_hash)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/tests/test_t29_native_observation.py", line 63, in test_loader_override_cannot_claim_the_installed_engine_hash
+    helper = Path(os.environ["FOLIO_HARFBUZZ_HELPER"])
+                  ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen os>", line 717, in __getitem__
+KeyError: 'FOLIO_HARFBUZZ_HELPER'
+
+======================================================================
+ERROR: test_malformed_or_unknown_receipt_schema_is_a_failure_record (test_t29_native_observation.NativeObservationTest.test_malformed_or_unknown_receipt_schema_is_a_failure_record)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/tests/test_t29_native_observation.py", line 98, in test_malformed_or_unknown_receipt_schema_is_a_failure_record
+    helper = Path(os.environ["FOLIO_HARFBUZZ_HELPER"])
+                  ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen os>", line 717, in __getitem__
+KeyError: 'FOLIO_HARFBUZZ_HELPER'
+
+======================================================================
+ERROR: test_preloaded_engine_with_another_soname_cannot_produce_passing_traceability (test_t29_native_observation.NativeObservationTest.test_preloaded_engine_with_another_soname_cannot_produce_passing_traceability)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/tests/test_t29_native_observation.py", line 81, in test_preloaded_engine_with_another_soname_cannot_produce_passing_traceability
+    helper = Path(os.environ["FOLIO_HARFBUZZ_HELPER"])
+                  ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen os>", line 717, in __getitem__
+KeyError: 'FOLIO_HARFBUZZ_HELPER'
+
+======================================================================
+ERROR: test_t29_reference_subsets (unittest.loader._FailedTest.test_t29_reference_subsets)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_t29_reference_subsets
+Traceback (most recent call last):
+  File "/usr/lib/python3.13/unittest/loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "/usr/lib/python3.13/unittest/loader.py", line 339, in _get_module_from_name
+    __import__(name)
+    ~~~~~~~~~~^^^^^^
+  File "/workspace/folio-pdf/scripts/tests/test_t29_reference_subsets.py", line 11, in <module>
+    from fontTools.ttLib import TTFont
+ModuleNotFoundError: No module named 'fontTools'
+
+
+======================================================================
+ERROR: test_fallback_oracle_keeps_a_space_and_script_mark_in_one_script_font (test_t29_shaping_reference.ShapingReferenceTest.test_fallback_oracle_keeps_a_space_and_script_mark_in_one_script_font)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/tests/test_t29_shaping_reference.py", line 49, in test_fallback_oracle_keeps_a_space_and_script_mark_in_one_script_font
+    os.environ["T29_HB_SHAPE"], str(target)], capture_output=True, text=True)
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "<frozen os>", line 717, in __getitem__
+KeyError: 'T29_HB_SHAPE'
+
+======================================================================
+ERROR: test_java_acceptance_inputs_keep_the_frozen_numeric_and_logical_run_values (test_t29_shaping_reference.ShapingReferenceTest.test_java_acceptance_inputs_keep_the_frozen_numeric_and_logical_run_values)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/tests/test_t29_shaping_reference.py", line 26, in test_java_acceptance_inputs_keep_the_frozen_numeric_and_logical_run_values
+    os.environ["T29_HB_SHAPE"], str(target)], capture_output=True, text=True)
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "<frozen os>", line 717, in __getitem__
+KeyError: 'T29_HB_SHAPE'
+
+======================================================================
+ERROR: test_official_tool_reporting_a_mismatched_linked_engine_cannot_publish_a_reference (test_t29_shaping_reference.ShapingReferenceTest.test_official_tool_reporting_a_mismatched_linked_engine_cannot_publish_a_reference)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/tests/test_t29_shaping_reference.py", line 77, in test_official_tool_reporting_a_mismatched_linked_engine_cannot_publish_a_reference
+    os.environ["T29_HB_SHAPE"], str(target)],
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "<frozen os>", line 717, in __getitem__
+KeyError: 'T29_HB_SHAPE'
+
+======================================================================
+ERROR: test_oracle_and_pdf_do_not_depend_on_native_installation_path (test_t29_shaping_reference.ShapingReferenceTest.test_oracle_and_pdf_do_not_depend_on_native_installation_path)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/tests/test_t29_shaping_reference.py", line 87, in test_oracle_and_pdf_do_not_depend_on_native_installation_path
+    shutil.copy2(os.environ["T29_HB_SHAPE"], relocated)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "<frozen os>", line 717, in __getitem__
+KeyError: 'T29_HB_SHAPE'
+
+======================================================================
+ERROR: test_reference_retains_ligatures_clusters_offsets_and_glyph_only_subsets (test_t29_shaping_reference.ShapingReferenceTest.test_reference_retains_ligatures_clusters_offsets_and_glyph_only_subsets)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/tests/test_t29_shaping_reference.py", line 99, in test_reference_retains_ligatures_clusters_offsets_and_glyph_only_subsets
+    os.environ["T29_HB_SHAPE"], str(target)],
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "<frozen os>", line 717, in __getitem__
+KeyError: 'T29_HB_SHAPE'
+
+======================================================================
+FAIL: test_common_environment_catalog_pins_original_and_t10_arlington (test_t10_foundation.PagesCertificationCaseTest.test_common_environment_catalog_pins_original_and_t10_arlington)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/tests/test_t10_foundation.py", line 55, in test_common_environment_catalog_pins_original_and_t10_arlington
+    self.assertEqual({'folio-pdf-t03', 'folio-pdf-t09', 'folio-pdf-t10', 'folio-pdf-t11', 'folio-pdf-t12', 'folio-pdf-t13'},
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                     {item['id'] for item in tools if item['kind'] == 'project-test'})
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the second set but not the first:
+'folio-pdf-t14'
+
+======================================================================
+FAIL: test_quiet_child_and_each_deliberate_external_effect (test_t12_safety_observer.T12SafetyObserverTest.test_quiet_child_and_each_deliberate_external_effect)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/tests/test_t12_safety_observer.py", line 29, in test_quiet_child_and_each_deliberate_external_effect
+    self.assertEqual("pass" if probe == "quiet" else "fail", record["result"], record)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'pass' != 'indeterminate'
+- pass
++ indeterminate
+ : {'command': ['/usr/bin/python3', '-c', 'import os,socket,subprocess; e=os.environ; pass'], 'finding': '[Errno 1] Operation not permitted', 'kernel': '6.12.94+', 'observer_sha256': 'f797318b573812f5b09b4db2d6527c905813b0a3f4712bd0e4570028a0b31aca', 'python_sha256': '889c603f0d17cb54060951bcf4c4f9b8c9ebd9e52b392c70209bbb9755d797d9', 'python_version': '3.13.5 (main, Aug 10 2026, 12:06:59) [GCC 14.2.0]', 'result': 'indeterminate', 'scope': 'Declared Action canary file access, writes, launch access, script file effect and loopback connection; all descendant processes'}
+
+======================================================================
+FAIL: test_reference_uses_manual_lines_and_original_font_metrics (test_t28_unicode_reference.UnicodeReferenceTest.test_reference_uses_manual_lines_and_original_font_metrics)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/tests/test_t28_unicode_reference.py", line 17, in test_reference_uses_manual_lines_and_original_font_metrics
+    self.assertEqual(0, result.returncode, result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1 : Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/t28-unicode-reference.py", line 16, in <module>
+    import fontTools
+ModuleNotFoundError: No module named 'fontTools'
+
+
+======================================================================
+FAIL: test_t29_profile_records_its_platform_scope_without_running_earlier_suites (test_t29_acceptance_entry.AcceptanceEntryTest.test_t29_profile_records_its_platform_scope_without_running_earlier_suites)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/tests/test_t29_acceptance_entry.py", line 26, in test_t29_profile_records_its_platform_scope_without_running_earlier_suites
+    self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1 : mkdir: cannot create directory ‘/home/box/.m2’: Read-only file system
+
+
+======================================================================
+FAIL: test_dedicated_profile_records_both_workflows_and_no_earlier_profiles (test_t30_acceptance_entry.T30AcceptanceEntryTest.test_dedicated_profile_records_both_workflows_and_no_earlier_profiles)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/tests/test_t30_acceptance_entry.py", line 27, in test_dedicated_profile_records_both_workflows_and_no_earlier_profiles
+    self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1 : mkdir: cannot create directory ‘/home/box/.m2’: Read-only file system
+
+
+======================================================================
+FAIL: test_dedicated_profile_records_both_workflows_and_no_earlier_profiles (test_t31_acceptance_entry.T31AcceptanceEntryTest.test_dedicated_profile_records_both_workflows_and_no_earlier_profiles)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/tests/test_t31_acceptance_entry.py", line 27, in test_dedicated_profile_records_both_workflows_and_no_earlier_profiles
+    self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1 : mkdir: cannot create directory ‘/home/box/.m2’: Read-only file system
+
+
+----------------------------------------------------------------------
+Ran 222 tests in 625.363s
+
+FAILED (failures=6, errors=17)

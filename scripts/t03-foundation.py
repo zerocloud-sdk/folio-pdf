@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prepare and bind repository-only T03/T09/T10/T11/T12/T13 observations; never publish a release."""
+"""Prepare and bind repository-only Foundation observations; never publish a release."""
 import copy
 import hashlib
 from pathlib import Path
@@ -50,6 +50,12 @@ def require_staged_build(root, contract, record):
     receipt = json.loads(Path(record).read_text())
     try:
         unchanged = snapshot(root, contract) == receipt['candidate']
+        runtime = python_runtime(root)
+        selected = runtime.relative_to(root).as_posix() if runtime is not None else None
+        unchanged = unchanged and receipt.get('python-runtime') == selected
+        staged = {item['path'] for item in receipt['harness']}
+        unchanged = unchanged and all(path.relative_to(root).as_posix() in staged
+                                      for path in python_runtime_inputs(root))
         for item in receipt['contract-inputs'] + receipt['harness']:
             path = root / item['path']
             path.resolve(strict=True).relative_to(root.resolve())
@@ -74,7 +80,9 @@ def record_staged_build(root, contract, before, harness, record):
     candidate = snapshot(root, contract)
     if capture_build_inputs(root, contract) != before or candidate['inputs'] != before['inputs']:
         raise ValueError('Source or contract inputs changed during build; rebuild before certification')
+    runtime = python_runtime(root)
     write_json(record, {'candidate': candidate, 'contract-inputs': before['contract-inputs'],
+                        'python-runtime': runtime.relative_to(root).as_posix() if runtime is not None else None,
                         'harness': [reference(root, path) for path in sorted(harness)]})
 
 
@@ -132,6 +140,29 @@ ARTIFACT_CONTRACT_TESTS = tuple(
     'net.zerocloud.pdf.migration.itext7.contract.' + name
     for name in ('JarContractIT', 'ClasspathExclusivityIT'))
 CERTIFICATION_CASES = {
+    'images': {
+        'profile': 'T14-image-resource-extraction',
+        'label': 'T14',
+        'test-count': 38,
+        'test-classes': [
+            'net.zerocloud.pdf.consumer.ImageResourceExtractionWorkflowTest',
+            'net.zerocloud.pdf.itext7.consumer.ImageResourceFacadeTest'],
+        'facade-execution-profile': 'IN_PROCESS',
+        'standards-producer': 'pdfcpu',
+        'contract-timeout': 600,
+        'recorder-timeout': 1800,
+        'workflow-policy': 'REWRITE; explicit PDF 2.0 products; declaration-reachable Resource Inventory, indirect sharing and direct occurrence identity; bounded selected encoded/decoded bytes and classified unavailable data; detached values, preceding Commands, ownership, exact limits and atomic safe failures; Native tests select the recorded execution profile; Facade execution remains IN_PROCESS',
+        'fonts': 'original embedded Type3 rectangle and FolioT13Rectangle TrueType with a declared subset variant; extraction metadata only; no system fonts or substitution',
+        'configuration-paths': [
+            'capabilities/profiles/T14-images',
+            'capabilities/profiles/T14-standards',
+            'capabilities/profiles/T13-fonts/FolioT13Rectangle.ttf',
+            'scripts/t14-certification.py',
+            'scripts/t14-observer.py',
+            'scripts/t14-evidence-pin.properties',
+            'scripts/t14_foundation_reports.py',
+            'scripts/t13_foundation_reports.py',
+            'scripts/t13-qpdf-runtime.sha256']},
     'text': {
         'profile': 'T13-text-logical-structure',
         'label': 'T13',
@@ -557,6 +588,9 @@ def append_source_visual(root, run, report):
 
 
 def collect_reports(root, run, obligation='transactions', execution_profile=None):
+    if obligation == 'images':
+        from t14_foundation_reports import collect_reports as collect_image_reports
+        return collect_image_reports(root, run, execution_profile)
     if obligation == 'text':
         from t13_foundation_reports import collect_reports as collect_text_reports
         return collect_text_reports(root, run, execution_profile)
@@ -837,18 +871,51 @@ def stage_harness(root, base):
     comparator_runtime = root / '.build-cache/imagemagick/7.1.2-30/runtime'
     runtime = [comparator_runtime / line.split()[1]
                for line in (root / 'scripts/imagemagick-runtime.sha256').read_text().splitlines()]
-    return sorted(path for path in directory.rglob('*.jar')) + runtime
+    return sorted(path for path in directory.rglob('*.jar')) + runtime + python_runtime_inputs(root)
+
+
+def python_runtime(root):
+    """Select an explicit Ubuntu Python observer installation, or the host default."""
+    import os
+    selected = os.environ.get('FOLIO_FOUNDATION_PYTHON_ROOT')
+    if not selected:
+        return None
+    runtime = Path(selected).resolve(strict=True)
+    runtime.relative_to(Path(root).resolve())
+    for name in ('bin/python3.12', 'lib/python3.12/os.py', 'lib/libexpat.so.1'):
+        path = runtime / name
+        if not path.is_file() or path.is_symlink():
+            raise ValueError('Incomplete explicit Python observer runtime: ' + str(path))
+    return runtime
+
+
+def python_runtime_inputs(root):
+    runtime = python_runtime(root)
+    if runtime is None:
+        return []
+    files = []
+    for path in sorted(runtime.rglob('*')):
+        if path.is_symlink():
+            raise ValueError('Python observer runtime contains a symlink: ' + str(path))
+        if path.is_file():
+            files.append(path)
+    return files
 
 
 def container_command(root, image, helper):
     """Read-only inputs, separate evidence output bind, and no network in certification."""
+    runtime = python_runtime(root)
+    executable = runtime / 'bin/python3.12' if runtime else Path('/usr/bin/python3.12')
+    library = runtime / 'lib/python3.12' if runtime else Path('/usr/lib/python3.12')
+    expat = runtime / 'lib/libexpat.so.1' if runtime else Path('/lib/x86_64-linux-gnu/libexpat.so.1').resolve()
     return ['podman', 'run', '--rm', '--network=none', '--userns=keep-id',
             '--volume', str(root) + ':/workspace:ro',
             '--volume', str(helper.parent.parent) + ':/folio-harfbuzz:ro',
-            '--volume', '/usr/bin/python3.12:/usr/bin/python3.12:ro',
-            '--volume', '/usr/lib/python3.12:/usr/lib/python3.12:ro',
-            '--volume', str(Path('/lib/x86_64-linux-gnu/libexpat.so.1').resolve()) + ':/lib/x86_64-linux-gnu/libexpat.so.1:ro',
+            '--volume', str(executable) + ':/usr/bin/python3.12:ro',
+            '--volume', str(library) + ':/usr/lib/python3.12:ro',
+            '--volume', str(expat) + ':/lib/x86_64-linux-gnu/libexpat.so.1:ro',
             '--workdir', '/workspace', '--env', 'LANG=C.UTF-8', '--env', 'LC_ALL=C.UTF-8', '--env', 'TZ=UTC',
+            '--env', 'PYTHONDONTWRITEBYTECODE=1',
             '--env', 'FOLIO_HARFBUZZ_HELPER=/folio-harfbuzz/bin/folio-harfbuzz', image]
 
 
@@ -898,7 +965,7 @@ def certification_tools():
          'hash-key': 'IMAGEMAGICK_EXECUTABLE_SHA256', 'chains': ['visual']}]
     project = [{'id': 'folio-pdf-' + label, 'kind': 'project-test',
                 'version': '0.1.0', 'chains': ['semantic']}
-               for label in ('t03', 't09', 't10', 't11', 't12', 't13')]
+               for label in ('t03', 't09', 't10', 't11', 't12', 't13', 't14')]
     return external + project
 
 
@@ -1010,6 +1077,7 @@ def certify(root, output, contract, helper, obligation='transactions'):
     import yaml
     root = root.resolve()
     case = certification_case(obligation)
+    profile_contract = next(item['profile-contract'] for item in contract['obligations'] if item['id'] == obligation)
     output = output.resolve()
     output.relative_to(root)
     base = root / 'target/foundation-0.1.0'
@@ -1092,7 +1160,7 @@ def certify(root, output, contract, helper, obligation='transactions'):
                                        'standards': case.get('standards-producer', 'arlington'),
                                        'semantic': 'folio-pdf-' + case['label'].lower(),
                                        'visual': 'pdfium-cli'}[chain],
-                          'configuration': reference(root, root / ('capabilities/evidence/' + case['profile'] + '.md')),
+                          'configuration': reference(root, root / profile_contract),
                           'report': reference(root, report_file), 'negative-controls': report['negative-controls']}
                 path = scope / (chain + '.yaml')
                 write_json(path, record)
@@ -1124,7 +1192,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('action', choices=('stage', 'certify', 'collect', 'preservation', 'plan', 'merge-index'))
     parser.add_argument('output', nargs='?', type=Path)
-    parser.add_argument('--obligation', choices=('transactions', 'values', 'pages', 'metadata', 'annotations', 'text'), default='transactions')
+    parser.add_argument('--obligation', choices=('transactions', 'values', 'pages', 'metadata', 'annotations', 'text', 'images'), default='transactions')
     parser.add_argument('--execution-profile', choices=('IN_PROCESS', 'HARDENED_WORKER'))
     parser.add_argument('--root', type=Path, default=Path(__file__).resolve().parents[1])
     args = parser.parse_args()
@@ -1145,10 +1213,10 @@ def main():
         import json
         if args.output is None:
             parser.error('collect requires an observation directory')
-        if args.obligation in ('metadata', 'annotations', 'text') and args.execution_profile is None:
+        if args.obligation in ('metadata', 'annotations', 'text', 'images') and args.execution_profile is None:
             parser.error(args.obligation + ' collect requires --execution-profile')
-        if args.obligation not in ('metadata', 'annotations', 'text') and args.execution_profile is not None:
-            parser.error('--execution-profile applies only to metadata, annotations and text collect')
+        if args.obligation not in ('metadata', 'annotations', 'text', 'images') and args.execution_profile is not None:
+            parser.error('--execution-profile applies only to metadata, annotations, text and images collect')
         print(json.dumps(collect_reports(root, (root / args.output).resolve(), args.obligation,
                                          args.execution_profile), indent=2))
         return

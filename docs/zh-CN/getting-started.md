@@ -366,6 +366,43 @@ Native 失败码和安全诊断。关闭后页面句柄失效，已经返回的�
 [Foundation 证据权威](../../capabilities/foundation-evidence.yaml)为准。
 Windows 和 macOS 仍未认证；其他未完成义务可使整体 Foundation 保持 NOT READY。
 
+## T14 图片与资源清单提取
+
+在 `DocumentWorkflow.execute` 中查询
+`ExtractImagesAndResources.version1(limits, ImageByteAccess.ENCODED_AND_DECODED)`，
+可获得不可变、脱离 Session 的 `DocumentResourceInventory`。必须显式提供
+`ResourceExtractionLimits` 的全部七项上限：页数、页树节点数、遍历资源值数、
+资源深度、解码像素、各解压阶段累计字节、返回字节总量。任一超限都不会返回部分清单。
+结果和防御性复制的字节在 Session 关闭后仍可使用。
+
+Stable 和 Preview 都提供三个入口：
+
+- `PdfDocument.getImagesAndResources(limits, byteAccess)` 返回完整清单。
+- `PdfPage.getResources()` 返回当前页面的 `List<DocumentResource>`，不选择图片字节。
+- `PdfPage.getResources(limits, byteAccess)` 在整份文档成功提取后选择当前页面。
+
+`getResources()` 是明确适配的不可变返回类型。它的默认上限为 10,000 页、
+100,000 个页树节点、1,000,000 个资源值、32 层深度、0 解码像素、64 MiB
+解压元数据、0 返回图片字节；ICCBased 元数据解码仍消耗解压额度。
+显式重载同样约束整份文档，其他页损坏或超限时不会返回选中页的有效前缀。
+
+Page Usage 表示资源声明可达性，包括继承 Resources 和嵌套 Form，不表示内容实际
+绘制过该资源。共享记录保留完整声明和使用页，直接声明没有伪造的对象身份。
+这不是页面截图或内联图片提取。Facade 实际使用 IN_PROCESS；关闭后句柄失效，
+已返回的值仍可读取。调用方流所有权不变，`PdfException` 保留 Native 失败码和
+安全诊断；查询本身不创建发布目标。
+
+未过滤、ASCIIHex、ASCII85、RunLength、Flate 及受支持预测器可返回解码字节。
+真实 CCITT、JPEG、JPX、JBIG2、LZW 样本已纳入成功编码字节提取及独立渲染验证；
+其解码字节仍明确标记为 `UNSUPPORTED_FILTER`。外部文件流不读取其位置，标记为
+`EXTERNAL_STREAM`。图片 ColorSpace 资源别名的旧输入仍可解析元数据，但在内容流
+外不符合标准；元数据 `SUPPORTED` 不是整个 PDF 合规的断言。
+
+[T14 认证合同](../t14-certification.md)规定四条独立证据链及 Ubuntu 24.04/
+Linux x86-64 上 JDK 8/11/17/21 × Native IN_PROCESS/HARDENED_WORKER 的八个组合。
+具体候选与工具身份以 [Foundation 证据权威](../../capabilities/foundation-evidence.yaml)
+为准。Windows 和 macOS 仍未认证，其他未完成义务仍可使整体 Foundation 为 NOT READY。
+
 ## T23 页面渲染
 
 `Rendering` 通过项目自有 `RenderPage` Query 渲染当前页面，默认使用离线的

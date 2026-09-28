@@ -40,6 +40,7 @@ import net.zerocloud.pdf.ResourceDeclaration;
 import net.zerocloud.pdf.ResourceExtractionLimits;
 import net.zerocloud.pdf.SaveMode;
 import net.zerocloud.pdf.WorkflowOutcome;
+import net.zerocloud.pdf.WorkflowExecutionProfile;
 import net.zerocloud.pdf.WorkflowRequest;
 import net.zerocloud.pdf.query.ExtractImagesAndResources;
 import net.zerocloud.pdf.query.PageObjectReference;
@@ -229,7 +230,7 @@ public final class ImageResourceExtractionWorkflowTest {
                 "rewritten-resources.pdf");
         WorkflowOutcome<DocumentResourceInventory> published =
                 new DocumentWorkflow().execute(
-                        WorkflowRequest.builder()
+                        requestBuilder()
                                 .source("input", DocumentSource.path(source))
                                 .primarySource("input")
                                 .target(
@@ -1332,7 +1333,7 @@ public final class ImageResourceExtractionWorkflowTest {
 
         try {
             new DocumentWorkflow().execute(
-                    WorkflowRequest.builder()
+                    requestBuilder()
                             .source("input", DocumentSource.path(source))
                             .primarySource("input")
                             .target("output", PublicationTarget.path(target))
@@ -2206,6 +2207,35 @@ public final class ImageResourceExtractionWorkflowTest {
         return target;
     }
 
+    @Test
+    public void validIccMetadataConsumesItsExactBoundWithoutSelectingImageBytes()
+            throws Exception {
+        Path profile = java.nio.file.Paths.get(System.getProperty("repositoryRoot", ".."))
+                .resolve("capabilities/profiles/T14-images/color/sRGB2014.icc");
+        byte[] bytes = Files.readAllBytes(profile);
+        assertEquals(3024, bytes.length);
+        Path source = temporaryFolder.getRoot().toPath().resolve("bounded-icc.pdf");
+        writeSingleResourcePdf(source, "XObject", "Image", "4 0 R",
+                streamObject("rgb", "/Type /XObject /Subtype /Image /Width 1 /Height 1 "
+                        + "/BitsPerComponent 8 /ColorSpace [/ICCBased 5 0 R] "),
+                streamObject(hex(bytes) + ">", "/N 3 /Alternate /DeviceRGB /Filter /ASCIIHexDecode "));
+        ResourceExtractionLimits limits = ResourceExtractionLimits.builder().maximumPages(1)
+                .maximumPageTreeNodes(2).maximumTraversedResourceValues(1000).maximumResourceTraversalDepth(8)
+                .maximumDecodedPixels(0).maximumDecompressedBytes(3024).maximumReturnedBytes(0).build();
+        ImageResource image = query(source, limits, ImageByteAccess.NONE).getImages().get(0);
+        assertEquals(ImageResource.ColorStatus.SUPPORTED, image.getColorSpace().getStatus());
+        assertEquals(ImageResource.ColorFamily.ICC_BASED, image.getColorSpace().getFamily());
+        assertEquals(3024, image.getColorSpace().getIccProfile().get().getByteLength());
+        assertEquals("384b832de3412066743b52a75ee906b6fb9fb8d9e09e936fc2c43223815c6e0a",
+                image.getColorSpace().getIccProfile().get().getSha256());
+        assertTrue(image.getColorSpace().getIccProfile().get().getObjectReference().isPresent());
+        assertFalse(image.getEncodedData().getBytes().isPresent());
+        assertFalse(image.getDecodedData().getBytes().isPresent());
+        assertLimit(source, ResourceExtractionLimits.builder().maximumPages(1).maximumPageTreeNodes(2)
+                .maximumTraversedResourceValues(1000).maximumResourceTraversalDepth(8).maximumDecodedPixels(0)
+                .maximumDecompressedBytes(3023).maximumReturnedBytes(0).build(), ImageByteAccess.NONE);
+    }
+
     private static DocumentResourceInventory query(
             Path source,
             ResourceExtractionLimits limits,
@@ -2357,11 +2387,16 @@ public final class ImageResourceExtractionWorkflowTest {
     }
 
     private static WorkflowRequest sourceRequest(Path source) {
-        return WorkflowRequest.builder()
+        return requestBuilder()
                 .source("input", DocumentSource.path(source))
                 .primarySource("input")
                 .saveMode(SaveMode.REWRITE)
                 .build();
+    }
+
+    private static WorkflowRequest.Builder requestBuilder() {
+        return WorkflowRequest.builder().executionProfile(WorkflowExecutionProfile.valueOf(
+                System.getProperty("folio.t14.executionProfile", "IN_PROCESS")));
     }
 
     private static ResourceExtractionLimits generousLimits() {

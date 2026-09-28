@@ -454,6 +454,13 @@ information. See the authoritative
 ordering, identity, byte lifecycle, all mandatory limits, safe failures, and
 the version-1 unsupported cases.
 
+Stable and Preview provide `PdfDocument.getImagesAndResources(limits, byteAccess)`
+and both `PdfPage.getResources` overloads, returning detached Native values.
+The [T14 certification contract](docs/t14-certification.md) defines the original
+corpus, qualified independent controls and eight required Ubuntu JDK/profile
+observations. Actual candidate certification is governed by the
+[Foundation evidence authority](capabilities/foundation-evidence.yaml).
+
 T17 adds the immutable `CanvasProgram` under
 `net.zerocloud.pdf.composition` and the page-targeted `DrawCanvas` command
 under its `command` subpackage for low-level vector paths and explicitly

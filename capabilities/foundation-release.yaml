@@ -400,7 +400,7 @@ obligations:
     metadata and explicitly selected bytes plus font identity and usage.
   capability: document.images-resources.extract
   acceptance-profile: T14-image-resource-extraction
-  profile-contract: capabilities/evidence/T14-image-resource-extraction.md
+  profile-contract: capabilities/evidence/T76-image-resource-certification.md
   kind: behavior
   slice: 76
   environments:
@@ -422,7 +422,10 @@ obligations:
   facade-families:
   - family: kernel image and resource extraction
     reference-prefix: com.itextpdf.kernel.pdf.
-    mappings: []
+    mappings:
+    - itext7.kernel.pdf-document.get-images-and-resources
+    - itext7.kernel.pdf-page.get-resources
+    - itext7.kernel.pdf-page.get-resources-limits
 - id: incremental
   summary: Append validated PDF revisions while preserving the complete primary Source and conservatively enforcing
     Existing Signature permissions.
@@ -1485,9 +1488,8 @@ limitations:
   obligation: images
 - capability: document.images-resources.extract
   sha256: c93ba64e79feb73dfbfeb7d5750931156f040b967eec367830281ac3e9dd9e3b
-  disposition: release-blocker
-  reason: 'Inventory visibility and unavailable decoded image formats require #76 proof against the required Foundation
-    extraction scope.'
+  disposition: retained-contract
+  reason: Successful exact encoded extraction of original CCITT, JPEG, JPX, JBIG2 and LZW payloads is independently checked and rendered; supported unfiltered, ASCIIHex, ASCII85, RunLength, Flate and predictor paths return independently expected decoded bytes. Explicit unavailable/external classifications remain separate. The bounded Foundation scope and successful cases are fixed by docs/t14-certification.md; final candidate certification remains mandatory.
   obligation: images
 - capability: document.images-resources.extract
   sha256: 07360ec22faece8c01b244678a1ea2fe47cda51c5955d1bf386e4f541f308527

@@ -4,6 +4,50 @@ This repository is an independent Apache-2.0 implementation. The accepted
 program specification, context glossaries, ADRs, public standards, public API
 documentation, and project-owned tests are the permitted design inputs.
 
+## T76 image and Resource Inventory certification record
+
+- Authorship: OpenAI Codex generated the three Migration Facade mappings,
+  original acceptance corpus, independent observer/recorder/collector,
+  bounded runtime provisioning and documentation at the operator's direction.
+- Project inputs: the sole approved issue-76 execution contract, AGENTS.md and
+  its guides, CONTEXT.md, contribution rules, the listed ADRs, existing public
+  Native image/resource query and Worker codec, historical T14 tests/receipts,
+  and the existing Foundation certification and inventory machinery. The Native
+  extraction implementation is reused; no backend implementation change is
+  included.
+- Public normative inputs: ISO 32000-1 §§7.4, 7.8, 8.6, 8.9, 8.10 and 9.6–9.8
+  from the public Adobe standard; ITU-T T.88 §§7.2, 7.4.6 and 7.4.8 for original
+  JBIG2 segments; the public iText 7.2.6 PdfPage.getResources API documentation
+  only as member inventory. Links and bounded scope are in
+  [docs/t14-certification.md](docs/t14-certification.md).
+- New PDFs, masks, filters, LZW/JBIG2 syntax, literal extraction expectations and
+  pixel grids are original project-owned fixtures under Apache-2.0. Constant
+  PGM pixels are encoded into JPEG, JPX and Group 4 using pinned ImageMagick;
+  an original TIFF reader selects the compressed strip. The authoring scripts
+  reproduce every byte without Folio output. ImageMagick/qpdf/pdfcpu/PDFium are
+  acceptance-only tools under their existing recorded license treatment.
+- Fonts reuse the original Apache-2.0 T13 rectangle TrueType asset and an
+  original Type3 rectangle; no system font or third-party font is added. The
+  unchanged ICC sRGB2014 profile is copyright International Color Consortium,
+  2015; its public license permits copying and embedding. Original identity,
+  exact hash, source link and license conditions are retained in
+  [the profile notice](capabilities/profiles/T14-images/color/README.md).
+- The explicit observer runtime uses official Ubuntu Noble CPython 3.12.3
+  packages (PSF/Python license) and Expat (MIT), checked by package and binary
+  hashes. PyYAML 6.0.2 (MIT) is a host runner prerequisite only. These are
+  acceptance/build inputs and are not redistributed in product artifacts or
+  runtime dependencies. The existing immutable Temurin images and explicit
+  HarfBuzz installation retain their prior license and ownership treatment.
+- The normalized collector ZIP is regression protocol data derived from the
+  original development receipt; its recorded pass labels are not certification
+  of another candidate. Final evidence requires actual independent observations
+  of all declared environments and execution profiles.
+- No iText source, resource, fixture, output, binary-derived implementation,
+  restricted material or proprietary comparison was used. The independent
+  expectations and predicates do not import Folio or PDFBox implementation.
+  No Forms, Trust signing, conformance, SVG/XML, OCR, sanitization or Office
+  implementation or release publication is included.
+
 ## T32.01 Foundation readiness contract (#69)
 
 - Authorship: OpenAI Codex generated the repository-only checker, obligation and

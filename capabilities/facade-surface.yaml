@@ -1795,13 +1795,40 @@ surfaces:
       exception-contract: Null limits and closed documents reject; Native failures retain their stable DocumentFailure code
         and safe diagnostic through PdfException, with no partial structure result.
       capabilities: [document.text-structure.extract]
+    - id: itext7.kernel.pdf-document.get-images-and-resources
+      reference:
+        status: folio-extension
+        type: com.itextpdf.kernel.pdf.PdfDocument
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: getImagesAndResources(net.zerocloud.pdf.ResourceExtractionLimits,net.zerocloud.pdf.ImageByteAccess)
+      generic-contract: Returns complete immutable detached DocumentResourceInventory under explicit document-wide limits and byte selection, observing preceding Commands in actual IN_PROCESS execution. Page Usage means declaration reachability.
+      exception-contract: Null inputs and closed documents reject; Native failures retain their stable DocumentFailure code and safe diagnostic through PdfException. No partial result is returned; detached values and selected defensive bytes survive close.
+      capabilities: [document.images-resources.extract]
+    - id: itext7.kernel.pdf-page.get-resources
+      reference:
+        status: adapted
+        type: com.itextpdf.kernel.pdf.PdfPage
+        member: getResources()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfPage
+        member: getResources()
+      generic-contract: Adapts the return type to immutable detached List<net.zerocloud.pdf.DocumentResource>. Selects resources whose declaration-reachable Page Usage includes this page after complete document extraction with ImageByteAccess.NONE and the finite limits in docs/t14-certification.md. Records retain complete declarations and Page Usage.
+      exception-contract: Closed or expired page handles reject; any malformed page or exhausted document-wide bound retains Native DocumentFailure identity through PdfException without returning a prefix.
+      capabilities: [document.images-resources.extract]
+    - id: itext7.kernel.pdf-page.get-resources-limits
+      reference:
+        status: folio-extension
+        type: com.itextpdf.kernel.pdf.PdfPage
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfPage
+        member: getResources(net.zerocloud.pdf.ResourceExtractionLimits,net.zerocloud.pdf.ImageByteAccess)
+      generic-contract: Returns immutable detached List<net.zerocloud.pdf.DocumentResource> selected by current page identity after the complete document Query succeeds under explicit ResourceExtractionLimits and ImageByteAccess. Selection preserves document inventory order and complete shared declarations.
+      exception-contract: Null inputs and closed or expired page handles reject; Native failures retain stable DocumentFailure identity through PdfException, preserving caller ownership and returning no partial inventory.
+      capabilities: [document.images-resources.extract]
   preview: []
 
 excluded-capabilities:
-- id: document.images-resources.extract
-  ticket: T32
-  reason: 'Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under
-    #76 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.'
 - id: document.incremental-signature.protect
   ticket: T32
   reason: 'Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under

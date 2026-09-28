@@ -12,6 +12,15 @@ Byte arrays are copied both into and out of the result. The query materializes
 all selected bytes before returning, so it publishes either one complete
 result or a checked failure and never a successful prefix.
 
+Stable and Preview expose the corresponding bounded extraction through
+`PdfDocument.getImagesAndResources(limits, byteAccess)`,
+`PdfPage.getResources()` and `PdfPage.getResources(limits, byteAccess)`.
+The page members return immutable Native `DocumentResource` records after a
+complete document query. They select declaration-reachable Page Usage, retain
+complete shared declarations, and do not expose mutable resource wrappers.
+The [T14 certification contract](t14-certification.md) specifies convenience
+limits, exact mappings, actual execution modes and independent evidence.
+
 ## Inventory scope and ordering
 
 Version 1 starts with pages in one-based page-tree order and uses each page's
@@ -326,7 +335,7 @@ through T21's opt-in process, heap/direct-memory, CPU, network, filesystem, and
 hard-termination boundary within its documented Linux/JDK envelope.
 T14 adds no inline-image
 content extraction, rendering, image embedding, optimization, drawing,
-incremental publication, signature behavior, encryption, or Migration Facade
-surface. T18 consumes this inventory for same-Session existing-image borrowing
+incremental publication, signature behavior or encryption.
+T18 consumes this inventory for same-Session existing-image borrowing
 and adds image creation separately; it does not broaden T14 decoded-image
 filter support.

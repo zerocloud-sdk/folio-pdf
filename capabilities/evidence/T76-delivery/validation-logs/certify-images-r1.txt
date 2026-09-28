@@ -1,0 +1,24 @@
+T14 environment JDK 8
+T14 certification JDK 8 / IN_PROCESS
+T14 certification JDK 8 / HARDENED_WORKER
+T14 environment JDK 11
+T14 certification JDK 11 / IN_PROCESS
+T14 certification JDK 11 / HARDENED_WORKER
+T14 environment JDK 17
+T14 certification JDK 17 / IN_PROCESS
+T14 certification JDK 17 / HARDENED_WORKER
+T14 environment JDK 21
+T14 certification JDK 21 / IN_PROCESS
+T14 certification JDK 21 / HARDENED_WORKER
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1262, in <module>
+    main()
+    ~~~~^^
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1258, in main
+    certify(root, root / args.output, contract, helper, args.obligation)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1182, in certify
+    merged = publish_index(root, output)
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 807, in publish_index
+    raise ValueError('New evidence is incomplete, stale or does not match the observed identities')
+ValueError: New evidence is incomplete, stale or does not match the observed identities

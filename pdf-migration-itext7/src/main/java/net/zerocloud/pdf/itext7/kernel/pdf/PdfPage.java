@@ -7,10 +7,13 @@ import java.util.Objects;
 import java.util.Optional;
 import net.zerocloud.pdf.Annotation;
 import net.zerocloud.pdf.AnnotationAppearance;
+import net.zerocloud.pdf.DocumentResource;
 import net.zerocloud.pdf.ExtractionLimits;
 import net.zerocloud.pdf.GoToAction;
+import net.zerocloud.pdf.ImageByteAccess;
 import net.zerocloud.pdf.PageActions;
 import net.zerocloud.pdf.PageText;
+import net.zerocloud.pdf.ResourceExtractionLimits;
 import net.zerocloud.pdf.TextStructureExtraction;
 import net.zerocloud.pdf.command.UpdateActions;
 
@@ -63,6 +66,44 @@ public final class PdfPage {
     public PageText getPageText(ExtractionLimits limits) {
         TextStructureExtraction extraction = document.getTextAndStructure(limits);
         return extraction.getPages().get(pageNumber() - 1);
+    }
+
+    /**
+     * Reads the detached resources reachable from this page and its nested Forms.
+     * This adapted reference member returns Native immutable resource records.
+     * It selects no image bytes. The complete document is bounded by 10,000 pages,
+     * 100,000 page-tree nodes, 1,000,000 traversed values, depth 32 and 64 MiB
+     * decompressed metadata; decoded pixels and returned image bytes are zero.
+     * @return immutable declaration-ordered resources, usable after document closure
+     */
+    public List<DocumentResource> getResources() {
+        return getResources(ResourceExtractionLimits.builder()
+                .maximumPages(10000).maximumPageTreeNodes(100000)
+                .maximumTraversedResourceValues(1000000)
+                .maximumResourceTraversalDepth(32)
+                .maximumDecodedPixels(0).maximumDecompressedBytes(64L << 20)
+                .maximumReturnedBytes(0).build(), ImageByteAccess.NONE);
+    }
+
+    /**
+     * Reads this page's resources after a complete document inventory succeeds.
+     * This page handle follows its identity through preceding page changes.
+     * Page Usage is declaration reachability, independent of painted content.
+     * Records retain their complete document-wide declarations and Page Usage.
+     * @param limits non-null document-wide extraction bounds
+     * @param byteAccess non-null explicit image-byte selection
+     * @return immutable resources in inventory order, usable after document closure
+     */
+    public List<DocumentResource> getResources(
+            ResourceExtractionLimits limits, ImageByteAccess byteAccess) {
+        int page = pageNumber();
+        List<DocumentResource> selected = new ArrayList<DocumentResource>();
+        for (DocumentResource resource : document.getImagesAndResources(limits, byteAccess).getResources()) {
+            if (resource.getPageUsage().contains(Integer.valueOf(page))) {
+                selected.add(resource);
+            }
+        }
+        return Collections.unmodifiableList(selected);
     }
 
     /**

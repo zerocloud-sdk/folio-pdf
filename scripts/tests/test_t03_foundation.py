@@ -3,6 +3,7 @@ import contextlib
 import importlib.util
 import io
 import json
+import os
 import pathlib
 import tempfile
 import unittest
@@ -15,6 +16,48 @@ SPEC = importlib.util.spec_from_file_location(
 
 
 class FoundationCandidateTest(unittest.TestCase):
+    def test_explicit_python_runtime_is_bounded_to_repo_and_bound_to_staged_inputs(self):
+        module = importlib.util.module_from_spec(SPEC)
+        SPEC.loader.exec_module(module)
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            runtime = root / '.build-cache/python'
+            for name in ('bin/python3.12', 'lib/python3.12/os.py', 'lib/libexpat.so.1'):
+                path = runtime / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text('test runtime ' + name)
+            contract = {'release': '0.1.0', 'source-roots': [], 'source-exclusions': [], 'required-artifacts': []}
+            record = root / 'build-inputs.json'
+            with mock.patch.dict(os.environ, {'FOLIO_FOUNDATION_PYTHON_ROOT': str(runtime)}):
+                record.write_text(json.dumps({'candidate': module.snapshot(root, contract), 'contract-inputs': [],
+                    'python-runtime': '.build-cache/python',
+                    'harness': [module.reference(root, path) for path in module.python_runtime_inputs(root)]}))
+                module.require_staged_build(root, contract, record)
+                command = module.container_command(root, 'immutable-image', root / 'helper/bin/folio-harfbuzz')
+                self.assertIn(str(runtime / 'bin/python3.12') + ':/usr/bin/python3.12:ro', command)
+                self.assertIn('--network=none', command)
+                self.assertIn('PYTHONDONTWRITEBYTECODE=1', command)
+                extra = runtime / 'lib/python3.12/new.py'
+                extra.write_text('new module after stage')
+                with self.assertRaisesRegex(ValueError, 'changed'):
+                    module.require_staged_build(root, contract, record)
+                extra.unlink()
+                original = (runtime / 'lib/python3.12/os.py').read_bytes()
+                (runtime / 'lib/python3.12/os.py').write_bytes(b'changed module')
+                with self.assertRaisesRegex(ValueError, 'changed'):
+                    module.require_staged_build(root, contract, record)
+                (runtime / 'lib/python3.12/os.py').write_bytes(original)
+                extra.symlink_to(runtime / 'lib/python3.12/os.py')
+                with self.assertRaisesRegex(ValueError, 'symlink'):
+                    module.python_runtime_inputs(root)
+                extra.unlink()
+            with mock.patch.dict(os.environ, {'FOLIO_FOUNDATION_PYTHON_ROOT': ''}):
+                with self.assertRaisesRegex(ValueError, 'changed'):
+                    module.require_staged_build(root, contract, record)
+            with mock.patch.dict(os.environ, {'FOLIO_FOUNDATION_PYTHON_ROOT': str(root.parent)}):
+                with self.assertRaises(ValueError):
+                    module.python_runtime(root)
+
     def test_metadata_collect_cli_requires_and_threads_selected_execution_profile(self):
         module = importlib.util.module_from_spec(SPEC)
         SPEC.loader.exec_module(module)

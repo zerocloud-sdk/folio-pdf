@@ -1,0 +1,17 @@
+magick --version
+Version: ImageMagick 7.1.2-30 Q16-HDRI x86_64 7d45ed032:20260823 https://imagemagick.org
+Copyright: (C) 1999 ImageMagick Studio LLC
+License: https://imagemagick.org/license/
+Features: Cipher DPC HDRI OpenMP(4.5) 
+Delegates (built-in): bzlib djvu fontconfig freetype heic jbig jng jp2 jpeg lcms lqr lzma openexr png raqm tiff webp x xml zlib
+Compiler: gcc (11.4)
+
+
+magick compare -metric AE -fuzz 0% -highlight-color #ff0000 -lowlight-color #ffffff -define png:exclude-chunk=time,date original.png original.png positive-difference.png
+exit=0
+
+0 (0)
+magick compare -metric AE -fuzz 0% -highlight-color #ff0000 -lowlight-color #ffffff -define png:exclude-chunk=time,date original.png one-pixel.png difference.png
+exit=1
+
+1 (2.08333e-05)

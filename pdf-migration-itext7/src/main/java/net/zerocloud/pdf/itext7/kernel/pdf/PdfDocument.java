@@ -14,11 +14,13 @@ import net.zerocloud.pdf.DocumentFailure;
 import net.zerocloud.pdf.DocumentActions;
 import net.zerocloud.pdf.DocumentCommand;
 import net.zerocloud.pdf.DocumentQuery;
+import net.zerocloud.pdf.DocumentResourceInventory;
 import net.zerocloud.pdf.DocumentWorkflow;
 import net.zerocloud.pdf.EmbeddedFile;
 import net.zerocloud.pdf.EmbeddedFileData;
 import net.zerocloud.pdf.EmbeddedFileSummary;
 import net.zerocloud.pdf.ExtractionLimits;
+import net.zerocloud.pdf.ImageByteAccess;
 import net.zerocloud.pdf.LogicalStructureElement;
 import net.zerocloud.pdf.ObjectReference;
 import net.zerocloud.pdf.OutlineItem;
@@ -26,6 +28,7 @@ import net.zerocloud.pdf.PageDestination;
 import net.zerocloud.pdf.PageRange;
 import net.zerocloud.pdf.PdfVersion;
 import net.zerocloud.pdf.PublicationReceipt;
+import net.zerocloud.pdf.ResourceExtractionLimits;
 import net.zerocloud.pdf.TextStructureExtraction;
 import net.zerocloud.pdf.WorkflowOutcome;
 import net.zerocloud.pdf.command.AddBlankPage;
@@ -55,6 +58,7 @@ import net.zerocloud.pdf.query.ReadEmbeddedFile;
 import net.zerocloud.pdf.query.Annotations;
 import net.zerocloud.pdf.query.Actions;
 import net.zerocloud.pdf.query.ExtractTextAndStructure;
+import net.zerocloud.pdf.query.ExtractImagesAndResources;
 
 /**
  * Lifecycle mapping of the create, publish, reopen, and inspect workflow.
@@ -481,6 +485,20 @@ public final class PdfDocument implements Closeable {
      */
     public TextStructureExtraction getTextAndStructure(ExtractionLimits limits) {
         return queryDocument(ExtractTextAndStructure.version1(limits));
+    }
+
+    /**
+     * Extracts the complete detached inventory of page and nested Form resources.
+     * Page Usage describes declaration reachability. Image bytes are selected
+     * explicitly and retain the Native encoded/decoded representation contract.
+     * The complete Query must fit every bound before any result is returned.
+     * @param limits non-null document-wide extraction bounds
+     * @param byteAccess non-null explicit image-byte selection
+     * @return immutable inventory and selected bytes, usable after this document closes
+     */
+    public DocumentResourceInventory getImagesAndResources(
+            ResourceExtractionLimits limits, ImageByteAccess byteAccess) {
+        return queryDocument(ExtractImagesAndResources.version1(limits, byteAccess));
     }
 
     /**

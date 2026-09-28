@@ -1,0 +1,24 @@
+F
+======================================================================
+FAIL: test_image_corpus_can_be_bound_by_the_public_evidence_index_without_ambiguous_references (scripts.tests.test_t14_foundation.T14FoundationTest.test_image_corpus_can_be_bound_by_the_public_evidence_index_without_ambiguous_references)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/tests/test_t14_foundation.py", line 187, in test_image_corpus_can_be_bound_by_the_public_evidence_index_without_ambiguous_references
+    self.assertEqual(0, completed.returncode, completed.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1 : Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1262, in <module>
+    main()
+    ~~~~^^
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1203, in main
+    publish_index(root, (root / args.output).resolve())
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 807, in publish_index
+    raise ValueError('New evidence is incomplete, stale or does not match the observed identities')
+ValueError: New evidence is incomplete, stale or does not match the observed identities
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.153s
+
+FAILED (failures=1)
