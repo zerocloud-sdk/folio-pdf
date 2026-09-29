@@ -1,0 +1,51 @@
+--- a/libqpdf/QPDF_encryption.cc
++++ b/libqpdf/QPDF_encryption.cc
+@@ -845,7 +845,8 @@
+     }
+ 
+     int Length = 128; // Just take a guess.
+-    if (V <= 1) {
++    if (V <= 1 || (V == 2 && encryption_dict.getKey("/Length").isNull())) {
++        // ISO 32000-1 Table 20: omitted V=2 Length defaults to 40 bits.
+         Length = 40;
+     } else if (V == 4) {
+         Length = 128;
+--- a/libqpdf/QPDFWriter.cc
++++ b/libqpdf/QPDFWriter.cc
+@@ -1099,7 +1099,8 @@
+         QPDFObjectHandle encrypt = trailer.getKey("/Encrypt");
+         int V = encrypt.getKey("/V").getIntValueAsInt();
+         int key_len = 5;
+-        if (V > 1) {
++        if (V > 1 && !(V == 2 && encrypt.getKey("/Length").isNull())) {
++            // Preserve the same optional V=2 default used during authentication.
+             key_len = encrypt.getKey("/Length").getIntValueAsInt() / 8;
+         }
+         const bool encrypt_metadata =
+--- a/include/qpdf/DLL.h
++++ b/include/qpdf/DLL.h
+@@ -32,7 +32,7 @@
+ #ifdef QPDF_FUTURE
+ # define QPDF_VERSION "12.4.0+future"
+ #else
+-# define QPDF_VERSION "12.4.0"
++# define QPDF_VERSION "12.4.0-folio-t78-r1"
+ #endif
+ 
+ /*
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -377,11 +377,13 @@
+ add_subdirectory(libqpdf)
+ add_subdirectory(compare-for-test)
+ add_subdirectory(qpdf)
++if(NOT FOLIO_QPDF_CLI_ONLY)
+ add_subdirectory(libtests)
+ add_subdirectory(examples)
+ add_subdirectory(zlib-flate)
+ add_subdirectory(manual)
+ add_subdirectory(fuzz)
++endif()
+ 
+ # We don't need to show everything -- just the things that we really
+ # need to be sure are right or that are turned on or off with complex

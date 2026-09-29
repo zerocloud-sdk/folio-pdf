@@ -1,0 +1,180 @@
+{
+  "result": "pass",
+  "negative-control": "fail",
+  "policy": "Compare final effective raw stream bytes and filter attributes; the old incremental prefix does not qualify.",
+  "observations": {
+    "source": {
+      "retained-stream": {
+        "raw-sha256": "b7f6a2bc7b16c2e9d14d804c987e2be6afeb8902eb565cb27652a94b768358d7",
+        "length": 35,
+        "attributes": {
+          "/DecodeParms": [
+            {
+              "/Predictor": 1
+            }
+          ],
+          "/Filter": [
+            "/FlateDecode"
+          ]
+        }
+      },
+      "page-content": {
+        "raw-sha256": "03d8d7d60d5c570ac2544fd4abeaedc6e00d663b49c7f4b67417db6a8458a7ff",
+        "length": 31,
+        "attributes": {}
+      }
+    },
+    "native-rewrite": {
+      "retained-stream": {
+        "raw-sha256": "b7f6a2bc7b16c2e9d14d804c987e2be6afeb8902eb565cb27652a94b768358d7",
+        "length": 35,
+        "attributes": {
+          "/DecodeParms": [
+            {
+              "/Predictor": 1
+            }
+          ],
+          "/Filter": [
+            "/FlateDecode"
+          ]
+        }
+      },
+      "page-content": {
+        "raw-sha256": "03d8d7d60d5c570ac2544fd4abeaedc6e00d663b49c7f4b67417db6a8458a7ff",
+        "length": 31,
+        "attributes": {}
+      }
+    },
+    "native-incremental": {
+      "retained-stream": {
+        "raw-sha256": "b7f6a2bc7b16c2e9d14d804c987e2be6afeb8902eb565cb27652a94b768358d7",
+        "length": 35,
+        "attributes": {
+          "/DecodeParms": [
+            {
+              "/Predictor": 1
+            }
+          ],
+          "/Filter": [
+            "/FlateDecode"
+          ]
+        }
+      },
+      "page-content": {
+        "raw-sha256": "03d8d7d60d5c570ac2544fd4abeaedc6e00d663b49c7f4b67417db6a8458a7ff",
+        "length": 31,
+        "attributes": {}
+      }
+    },
+    "facade": {
+      "retained-stream": {
+        "raw-sha256": "b7f6a2bc7b16c2e9d14d804c987e2be6afeb8902eb565cb27652a94b768358d7",
+        "length": 35,
+        "attributes": {
+          "/DecodeParms": [
+            {
+              "/Predictor": 1
+            }
+          ],
+          "/Filter": [
+            "/FlateDecode"
+          ]
+        }
+      },
+      "page-content": {
+        "raw-sha256": "03d8d7d60d5c570ac2544fd4abeaedc6e00d663b49c7f4b67417db6a8458a7ff",
+        "length": 31,
+        "attributes": {}
+      }
+    },
+    "negative": {
+      "retained-stream": {
+        "raw-sha256": "265fe619bdf8933d41978d273fca3e6af34a9ac0c2b0d86372d4fee33b4217ba",
+        "length": 40,
+        "attributes": {
+          "/DecodeParms": [
+            {
+              "/Predictor": 1
+            }
+          ],
+          "/Filter": [
+            "/FlateDecode"
+          ]
+        }
+      },
+      "page-content": {
+        "raw-sha256": "03d8d7d60d5c570ac2544fd4abeaedc6e00d663b49c7f4b67417db6a8458a7ff",
+        "length": 31,
+        "attributes": {}
+      }
+    }
+  },
+  "findings": [
+    {
+      "path": "capabilities/evidence/foundation/T78-final/values/jdk11-in_process/observations/raw-preservation/source.json",
+      "sha256": "364aad3d6c8b526149af189fc9811acfdfa79d9240d2dff90567052f5d38ff6e"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T78-final/values/jdk11-in_process/observations/raw-preservation/source-command.json",
+      "sha256": "5f0fad250013c5d6579486ac69d5ec4249ac1b7497940117cb1f08e8acff8a3c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T78-final/values/jdk11-in_process/observations/raw-preservation/source-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T78-final/values/jdk11-in_process/observations/raw-preservation/native-rewrite.json",
+      "sha256": "be853a45bb6f9ee66daeea9f3a6d00214a33fdac35401b640e9129ec3d4e7542"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T78-final/values/jdk11-in_process/observations/raw-preservation/native-rewrite-command.json",
+      "sha256": "78c54b7aa3b517478ef9a45ac2f41321a9006fba310b9cfc4e1ba2603996977f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T78-final/values/jdk11-in_process/observations/raw-preservation/native-rewrite-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T78-final/values/jdk11-in_process/observations/raw-preservation/native-incremental.json",
+      "sha256": "e58a56afb63398f884679137ae17cfb5c4aca28ac553aad3419e6c6be6f847fb"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T78-final/values/jdk11-in_process/observations/raw-preservation/native-incremental-command.json",
+      "sha256": "84449605e7ab51a4f0531a7500f2aa31e8765f95b0594a531e12c3fe28603467"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T78-final/values/jdk11-in_process/observations/raw-preservation/native-incremental-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T78-final/values/jdk11-in_process/observations/raw-preservation/facade.json",
+      "sha256": "5cb7da1736d7db14ccd492cc1d0c1d6f5585e399b34187bf70129b777833c89f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T78-final/values/jdk11-in_process/observations/raw-preservation/facade-command.json",
+      "sha256": "3926e97ed52e1ebe3bd58da8dd32666b82ab42e82a3c251fef0b050fddd3783b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T78-final/values/jdk11-in_process/observations/raw-preservation/facade-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T78-final/values/jdk11-in_process/observations/raw-preservation/negative.json",
+      "sha256": "e28fed05c6728d38b836c24cbc591b2187b672cdee4e077ac444c963f1836b1f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T78-final/values/jdk11-in_process/observations/raw-preservation/negative-command.json",
+      "sha256": "6630620f16fb7fdc2d5f109e23815b67f33472b52c98613f5eb74d0b1e6f24ad"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T78-final/values/jdk11-in_process/observations/raw-preservation/negative-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "negative-controls": [
+    {
+      "path": "capabilities/profiles/T09-values/fixtures/reencoded-incremental.pdf",
+      "sha256": "5d99ad6b086b6cb5be10af2508be7eee22705b82dc4b50c25488183c8f3d212d"
+    }
+  ]
+}

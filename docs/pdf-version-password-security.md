@@ -1,9 +1,14 @@
 # PDF version and password security
 
-This guide is the authoritative English contract for T16 version 1. The single
-capability identity is `document.version-password-security`, and every behavior
-is reached through `DocumentWorkflow.execute`. Public values are project-owned
-and detached from PDFBox.
+This guide is the authoritative English contract for baseline password security
+under #78. `document.version-password-security.baseline` is the certifiable
+member of the aggregate `document.version-password-security`. Runtime failures
+retain the aggregate identity. Every Native behavior is reached through
+`DocumentWorkflow.execute`; public values are project-owned and backend-neutral.
+The aggregate remains experimental until #79 (metadata-clear) and #80
+(embedded-files-only) are separately complete. The [profile audit](research/T78-baseline-profile-audit.md)
+and [certification contract](t78-certification.md) freeze the successful cases,
+source-grounded exclusions, migration members and independent evidence.
 
 ## Native Interface
 
@@ -88,29 +93,43 @@ silently downgrade a donor.
 
 ## Password-security profiles
 
-The Standard password-security handler is the only handler in T16. Secure
+The Standard password-security handler is the only baseline handler. Secure
 output defaults to AES-256 whenever a `PasswordSecurityPolicy` is present and
 no algorithm is selected.
 
 | Direction | Supported exact profiles |
 | --- | --- |
 | Secure output | V=5, R=6, 256-bit AESV3, Standard `StdCF`, all strings and streams encrypted, metadata encrypted. PDF 1.7 or PDF 2.0. |
-| Legacy output | V=2/R=3 RC4-128 or V=4/R=4 AESV2-128, PDF 1.7 only, and only with request-scoped Legacy Security Mode. |
-| Legacy input | V=1/R=2 or R=3 RC4-40; V=2/R=3 RC4-128; whole-document V=4/R=4 `StdCF` using V2-128 or AESV2-128, with metadata encrypted or the fixture-proven metadata exception. |
-| Secure input | Whole-document V=5/R=6 AESV3-256 with metadata encrypted. PDF 2.0 also requires permission bit 10; PDF 1.7 requires a supported ADBE Extension Level 8 declaration. |
+| Legacy output | V=1/R=2 or R=3 RC4-40, V=2/R=3 RC4-128 and V=4/R=4 AESV2-128; PDF 1.7 and request-scoped Legacy Security Mode only. R2 requires extended permission bits 9–12 set; otherwise R3 is selected. |
+| Legacy input | V=1/R=2 or R=3 RC4-40; V=2/R=3 fixed 40/128 bits (omitted Length defaults to 40); all-content V=4/R=4 `StdCF` V2-128 or AESV2-128; AESV3 V=5/R=5 with a valid PDF 1.7 ADBE Level 3 declaration. Fixture-proven metadata-clear R4 input is preserved. |
+| Secure input | All-content V=5/R=6 AESV3-256. PDF 1.7 requires ADBE Level 8. PDF 2.0 reader permission bit 10 is ignored for accessibility restrictions while the exact declared word is retained. |
 
-RC4-40 output is always rejected because PDFBox 3.0.8 cannot reliably select
-its required R2/R3 revision. V=4 RC4 output and R=5 output are also excluded.
-R=5 input is not silently treated as R=6. Public-key handlers, unknown
-SubFilters, unknown crypt filters, non-`DocOpen` authorization events,
-noncanonical authentication entries, contradictory RC4-40 revisions, malformed
-permission words, and inconsistent R6 `Perms` values fail closed.
+The admitted crypt-filter arrangement uses `StdCF` for strings and streams,
+optional EFF=`StdCF`, and absent/default or explicit `AuthEvent=DocOpen`.
+Scalar `/Crypt` and first array `/Crypt` selectors with `Name=StdCF` are
+admitted. AESV2 filter Length may be omitted; a present value is 16 bytes.
+AESV3 filter Length is 32 bytes and is required for PDF 2.0. Global encryption
+Length remains a bit count. Wrong types, scope selectors, duplicates, encrypted
+`Perms` contradictions and malformed authentication entries fail closed.
+
+New R3/40 output follows ISO 32000-1 Algorithm 3: hash the full MD5 digest for
+50 rounds, then truncate the owner key. Inputs also admit the established
+first-n-byte round convention. Independent owner checks distinguish these
+constructions; qpdf's convention does not redefine normative output.
+
+R5 and separate V4 RC4 output selectors are not required by the frozen API:
+AES-256 output uses R6 and RC4-128 output uses V2/R3. Arbitrary intermediate
+48–120-bit RC4 keys, public-key handlers, SubFilter, and custom/unknown
+crypt-filter arrangements are outside this fixed baseline. These are explicit
+profile boundaries grounded in the audit, not backend-error waivers. PDF 2.0
+reader acceptance preserves deprecated legacy input representations; new
+PDF 2.0 output remains R6 only.
 
 The minimum effective versions are PDF 1.1 for V=1/R=2, PDF 1.4 for R=3,
 PDF 1.5 for V=4 crypt filters, PDF 1.6 for AESV2, and PDF 1.7 for AESV3.
 
-When protected PDF 1.7 input carrying the exact project-owned ADBE Extension
-Level 8 signal is explicitly rewritten as PDF 2.0 with AES-256, the obsolete
+When protected PDF 1.7 input carrying the exact ADBE Extension Level 3 (R5)
+or Level 8 (R6) signal is explicitly rewritten as PDF 2.0 with AES-256, the obsolete
 PDF 1.7 signal is removed. Unknown or extended ADBE state is not silently
 deleted and instead fails the transition before caller work.
 
@@ -127,23 +146,31 @@ owned array, and makes every later execution fail with `CREDENTIAL_DESTROYED`.
 Each workflow makes and clears its own execution-local character copies; the
 same live caller credential can be used by sequential requests.
 
-Output owner and user credentials must both be non-empty and distinct. To avoid
-silent encoding, SASLprep, and truncation equivalence in the backend, T16 output
-accepts printable ASCII only, up to 127 characters for AES-256 and 32 for the
-legacy profiles. Input retains the backend's profile-specific decoding so
-supported existing documents remain readable. A protected legacy document
-whose user password is empty still requires an explicitly supplied empty
-credential; absence is never treated as authentication.
+Empty, equal and non-ASCII credentials are supported. Legacy input/output
+maps each Java character U+0000–U+00FF to its exact byte and uses the first
+32 bytes; unmappable characters are rejected without replacement aliases.
+This byte bridge does not claim PDFDocEncoding. AES-256 R5/R6 input and R6
+output use RFC 4013 SASLprep with Unicode 3.2 tables and the first 127 UTF-8
+bytes, including a boundary that cuts a multibyte sequence. Stored output
+strings reject prohibited/unassigned characters; input queries admit the
+RFC-defined unassigned query case. Equivalent prepared/truncated credentials
+have the equivalence required by their algorithm.
 
-PDFBox's public loader and protection policy require immutable Java `String`
-passwords. Folio PDF minimizes those conversions, drops the containing
-documents, and clears every array it owns, but Java cannot guarantee erasure of
-backend or JVM string copies. The contract is defensive ownership and bounded
-lifetime, not physical secure erasure.
+An empty prepared owner generates independent random owner authority for each
+request. An empty user is a valid explicit opening credential. An absent
+credential never authenticates a protected document. Equal owner/user values
+report OWNER only because the owner predicate actually succeeds. Legacy and
+R5/R6 credential handling runs before content decryption and authorization.
+
+Backend protection policies require temporary immutable Java `String` values.
+Folio minimizes their lifetime, charges preparation and retained key memory,
+and clears arrays it owns on success or failure, including parser and output
+handler keys. Java cannot guarantee erasure of backend/provider/JVM copies;
+there is no physical secure-erasure claim.
 
 Successful authentication reports one of four authorities. Folio does not use
 `AccessPermission.isOwnerPermission()` as proof because an unrestricted user
-also satisfies it; when that ambiguity exists, Folio separately evaluates the
+also satisfies it. Folio separately evaluates the
 Standard-handler owner predicate against the execution-local credential:
 
 - `NONE` for an unprotected Source;
@@ -153,9 +180,10 @@ Standard-handler owner predicate against the execution-local credential:
   owner proof was not established.
 
 The last state is intentionally not promoted to `OWNER`; security-sensitive
-owner-only publication therefore fails closed. Printable-ASCII owner
-credentials produced by T16 are independently proven even when `/P` is
-unrestricted; an unrestricted user remains `UNRESTRICTED`.
+owner-only publication therefore fails closed. Owner credentials are proven
+independently even when `/P` is unrestricted; an unrestricted user remains
+`UNRESTRICTED`. Preparation cannot turn a noncanonical R5 owner spelling into
+owner authority when the prepared bytes authenticate only the user.
 
 ## Permissions
 
@@ -176,7 +204,7 @@ processor cooperation after decryption, not cryptographic DRM.
 | 12 | faithful/high-quality printing |
 
 PDF 2.0 deprecates restriction through bit 10, so a PDF 2.0 writer policy must
-set it. Printing and form filling have no current Document Command; their bits
+set it; readers retain the declared mask but grant its effective accessibility permission. Printing and form filling have no current Document Command; their bits
 round-trip but T16 makes no execution claim for those operations.
 
 Authentication and authorization are separate. Owner authority receives
@@ -211,9 +239,9 @@ writer supports only `ALL_CONTENT`; either other output choice fails before
 work or publication. Project-authored V=4/R=4 fixtures prove
 `ALL_EXCEPT_METADATA` input after validating the global crypt filters and the
 metadata-exception file-key derivation. Metadata-clear AES-256 input is not in
-the version-1 allowlist because its R6 `Perms` agreement has not been
-fixture-proven. Attachment-only input is likewise unclaimed and fails closed
-because PDFBox 3.0.8 has no proven `EFF`-specific path.
+this baseline. Metadata-clear AES-256 and embedded-files-only input/output
+remain required separate #79 and #80 obligations. Their selectors are not added
+to the Stable baseline surface or counted as baseline completion.
 
 ## Protected publication and signatures
 
@@ -260,13 +288,45 @@ Failures never identify which credential would succeed and never contain
 passwords, secret-derived values, document data, Source paths, backend
 exceptions, or private security state.
 
+## Migration Facade and 0.x migration notes
+
+Stable and inherited Preview expose 61 mappings linked to the baseline:
+Reader/Writer and Document construction/lifecycle; `ReaderProperties` and
+`WriterProperties`; the four `EncryptionConstants` algorithms and eight flags;
+`PdfVersion` values/conversions/comparison; `PdfDocument.getPdfVersion()`;
+and Reader encryption, authority, permission and algorithm observations.
+The exact signatures are authoritative in `capabilities/facade-surface.yaml`.
+All retain the `kernel.pdf` package suffix under `net.zerocloud.pdf.itext7`.
+
+`ReaderProperties.setPassword(byte[])` copies exact legacy bytes or strict
+UTF-8 AES-256 bytes. Null removes the opening credential; an empty array
+supplies an empty credential. `setCredential(PasswordCredential)` is a Folio
+extension and borrows the caller's Native credential. Closing properties never
+destroys that borrowed credential. Writer properties copy user then owner
+bytes, the permission mask and algorithm. Reader/Writer capture their own
+snapshot; closing or modifying the caller's properties cannot change it.
+Caller streams remain open. Close properties/Writers to clear retained arrays.
+
+`setLegacySecurityMode` is an explicit Folio extension required for obsolete
+output. `isOpenedWithFullPermission()` means proven owner or plaintext, not
+an unrestricted user. `getPermissions()` preserves the unsigned declared
+32-bit word, and `getCryptoMode()` returns -1 for plaintext. No permissive
+reader bypass or public plaintext-password String API is introduced. The
+Facade executes IN_PROCESS; only Native workflows select HARDENED_WORKER.
+
+The former T16 ASCII/nonempty/distinct/length rejection policy is replaced by
+standard preparation and truncation. Applications comparing original password
+spellings must account for algorithmic equivalence. RC4-40 output and R5 input
+are now successful supported cases; secure defaults and explicit protection
+requirements remain unchanged. Runtime failure capability IDs stay stable.
+
 ## Scope boundary
 
-T16 does not implement public-key encryption, FIPS validation, signature
-creation or cryptographic trust, or arbitrary encrypted-stream combinations.
-T20's transaction policy composes with T16, and T21 transports credentials and
-the same security contract through the opt-in Hardened Worker; the other gaps
-remain T37 and T38+ work. The exact public
-standards and PDFBox
-sources, unresolved PDF 1.7 Extension Level 8 provenance, and clean-room
-fixture boundary are recorded in the T16 research note and `PROVENANCE.md`.
+Public-key encryption, FIPS validation, signature creation/trust and downstream
+Forms, Conformance, Sanitization or Office work are outside this ticket.
+Password permissions continue to intersect with Existing Signature restrictions.
+The baseline's compatible claim requires all four chains on Ubuntu 24.04 Linux
+x86-64 × JDK 8/11/17/21 × both Native modes, plus the actual IN_PROCESS Facade
+on every JDK. Windows/macOS remain uncertified and are not F0.1.0 blockers.
+Historical T16 evidence retains its original syntax-only meaning. See the
+T78 audit and `PROVENANCE.md` for public sources and original fixture/tool identities.

@@ -8,12 +8,132 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 
 - Schema version: `1`
 - Release train: `0.1.0-SNAPSHOT`
-- Stable entries: `166`
+- Stable entries: `214`
 - Preview additions: `0`
-- Preview artifact entries: `166`
+- Preview artifact entries: `214`
 - Explicit capability exclusions: `15`
 
 ## Stable surfaces
+
+<a id="facade-surface-itext7_dot_kernel_dot_encryption_dash_constants_dot_allow_dash_assembly"></a>
+### `itext7.kernel.encryption-constants.allow-assembly`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.EncryptionConstants#ALLOW_ASSEMBLY`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.EncryptionConstants#ALLOW_ASSEMBLY`
+- Generic contract: Public static final int; matches the Reference Suite baseline algorithm or permission bit.
+- Exception contract: No exception contract for a constant.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_encryption_dash_constants_dot_allow_dash_copy"></a>
+### `itext7.kernel.encryption-constants.allow-copy`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.EncryptionConstants#ALLOW_COPY`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.EncryptionConstants#ALLOW_COPY`
+- Generic contract: Public static final int; matches the Reference Suite baseline algorithm or permission bit.
+- Exception contract: No exception contract for a constant.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_encryption_dash_constants_dot_allow_dash_degraded_dash_printing"></a>
+### `itext7.kernel.encryption-constants.allow-degraded-printing`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.EncryptionConstants#ALLOW_DEGRADED_PRINTING`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.EncryptionConstants#ALLOW_DEGRADED_PRINTING`
+- Generic contract: Public static final int; matches the Reference Suite baseline algorithm or permission bit.
+- Exception contract: No exception contract for a constant.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_encryption_dash_constants_dot_allow_dash_fill_dash_in"></a>
+### `itext7.kernel.encryption-constants.allow-fill-in`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.EncryptionConstants#ALLOW_FILL_IN`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.EncryptionConstants#ALLOW_FILL_IN`
+- Generic contract: Public static final int; matches the Reference Suite baseline algorithm or permission bit.
+- Exception contract: No exception contract for a constant.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_encryption_dash_constants_dot_allow_dash_modify_dash_annotations"></a>
+### `itext7.kernel.encryption-constants.allow-modify-annotations`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.EncryptionConstants#ALLOW_MODIFY_ANNOTATIONS`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.EncryptionConstants#ALLOW_MODIFY_ANNOTATIONS`
+- Generic contract: Public static final int; matches the Reference Suite baseline algorithm or permission bit.
+- Exception contract: No exception contract for a constant.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_encryption_dash_constants_dot_allow_dash_modify_dash_contents"></a>
+### `itext7.kernel.encryption-constants.allow-modify-contents`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.EncryptionConstants#ALLOW_MODIFY_CONTENTS`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.EncryptionConstants#ALLOW_MODIFY_CONTENTS`
+- Generic contract: Public static final int; matches the Reference Suite baseline algorithm or permission bit.
+- Exception contract: No exception contract for a constant.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_encryption_dash_constants_dot_allow_dash_printing"></a>
+### `itext7.kernel.encryption-constants.allow-printing`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.EncryptionConstants#ALLOW_PRINTING`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.EncryptionConstants#ALLOW_PRINTING`
+- Generic contract: Public static final int; matches the Reference Suite baseline algorithm or permission bit.
+- Exception contract: No exception contract for a constant.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_encryption_dash_constants_dot_allow_dash_screenreaders"></a>
+### `itext7.kernel.encryption-constants.allow-screenreaders`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.EncryptionConstants#ALLOW_SCREENREADERS`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.EncryptionConstants#ALLOW_SCREENREADERS`
+- Generic contract: Public static final int; matches the Reference Suite baseline algorithm or permission bit.
+- Exception contract: No exception contract for a constant.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_encryption_dash_constants_dot_encryption_dash_aes_dash_128"></a>
+### `itext7.kernel.encryption-constants.encryption-aes-128`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.EncryptionConstants#ENCRYPTION_AES_128`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.EncryptionConstants#ENCRYPTION_AES_128`
+- Generic contract: Public static final int; matches the Reference Suite baseline algorithm or permission bit.
+- Exception contract: No exception contract for a constant.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_encryption_dash_constants_dot_encryption_dash_aes_dash_256"></a>
+### `itext7.kernel.encryption-constants.encryption-aes-256`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.EncryptionConstants#ENCRYPTION_AES_256`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.EncryptionConstants#ENCRYPTION_AES_256`
+- Generic contract: Public static final int; matches the Reference Suite baseline algorithm or permission bit.
+- Exception contract: No exception contract for a constant.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_encryption_dash_constants_dot_standard_dash_encryption_dash_128"></a>
+### `itext7.kernel.encryption-constants.standard-encryption-128`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.EncryptionConstants#STANDARD_ENCRYPTION_128`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.EncryptionConstants#STANDARD_ENCRYPTION_128`
+- Generic contract: Public static final int; matches the Reference Suite baseline algorithm or permission bit.
+- Exception contract: No exception contract for a constant.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_encryption_dash_constants_dot_standard_dash_encryption_dash_40"></a>
+### `itext7.kernel.encryption-constants.standard-encryption-40`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.EncryptionConstants#STANDARD_ENCRYPTION_40`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.EncryptionConstants#STANDARD_ENCRYPTION_40`
+- Generic contract: Public static final int; matches the Reference Suite baseline algorithm or permission bit.
+- Exception contract: No exception contract for a constant.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
 
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_array_dot_add"></a>
 ### `itext7.kernel.pdf-array.add`
@@ -549,7 +669,7 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#close()`
 - Generic contract: No generic parameters or return value.
 - Exception contract: Maps a publication Document Failure to net.zerocloud.pdf.itext7.kernel.exceptions.PdfException with its stable code and safe diagnostic.
-- Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen)
+- Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen), [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
 
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_constructor_dash_named_dash_sources_dash_targets"></a>
 ### `itext7.kernel.pdf-document.constructor-named-sources-targets`
@@ -560,7 +680,7 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#<init>(java.util.Map,java.lang.String,java.util.Map)`
 - Generic contract: Parameters are Map<String, mapped PdfReader>, String, and Map<String, mapped PdfWriter>; declaration iteration order fixes Source consumption and publication-receipt order.
 - Exception contract: Rejects null, blank, duplicate-instance, unavailable, or inconsistent Source and Target declarations before transferring any Reader ownership.
-- Behavioral capabilities: [`document.page.manipulate-merge-split`](capability-matrix.md#capability-document_dot_page_dot_manipulate_dash_merge_dash_split)
+- Behavioral capabilities: [`document.page.manipulate-merge-split`](capability-matrix.md#capability-document_dot_page_dot_manipulate_dash_merge_dash_split), [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
 
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_constructor_dash_named_dash_sources_dash_targets_dash_version"></a>
 ### `itext7.kernel.pdf-document.constructor-named-sources-targets-version`
@@ -571,7 +691,7 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#<init>(java.util.Map,java.lang.String,java.util.Map,net.zerocloud.pdf.PdfVersion)`
 - Generic contract: Parameters are Map<String, mapped PdfReader>, String, Map<String, mapped PdfWriter>, and project-owned PdfVersion; the version applies to every declared Target.
 - Exception contract: Rejects invalid declarations before Reader transfer; unsupported output policy and Native failures retain their DocumentFailure cause through PdfException when execution starts.
-- Behavioral capabilities: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
+- Behavioral capabilities: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments), [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
 
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_constructor_dash_named_dash_stamping"></a>
 ### `itext7.kernel.pdf-document.constructor-named-stamping`
@@ -582,7 +702,7 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#<init>(java.util.Map,java.lang.String,java.util.Map,net.zerocloud.pdf.PdfVersion,net.zerocloud.pdf.itext7.kernel.pdf.StampingProperties)`
 - Generic contract: Accepts Map<String,PdfReader> Sources and Map<String,PdfWriter> Targets in declaration order; captures the selected mode and exact PdfVersion; existing ownership and Native protection apply in actual IN_PROCESS execution.
 - Exception contract: Null properties reject; declaration validation and Reader ownership failures retain existing contracts. Workflow failures preserve Native identity and ordered receipts through PdfException; no missing Source, split or unsupported signed publication is admitted.
-- Behavioral capabilities: [`document.incremental-signature.protect`](capability-matrix.md#capability-document_dot_incremental_dash_signature_dot_protect)
+- Behavioral capabilities: [`document.incremental-signature.protect`](capability-matrix.md#capability-document_dot_incremental_dash_signature_dot_protect), [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
 
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_constructor_dash_reader"></a>
 ### `itext7.kernel.pdf-document.constructor-reader`
@@ -592,7 +712,7 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#<init>(net.zerocloud.pdf.itext7.kernel.pdf.PdfReader)`
 - Generic contract: No generic parameters.
 - Exception contract: No checked exception; source failures are reported by the PdfReader constructor.
-- Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen)
+- Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen), [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
 
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_constructor_dash_reader_dash_writer"></a>
 ### `itext7.kernel.pdf-document.constructor-reader-writer`
@@ -602,7 +722,7 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#<init>(net.zerocloud.pdf.itext7.kernel.pdf.PdfReader,net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter)`
 - Generic contract: Owns one validated Source snapshot and Native REWRITE workflow through close.
 - Exception contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed or detached mutation targets reject with IllegalStateException.
-- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch), [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
 
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_constructor_dash_stamping"></a>
 ### `itext7.kernel.pdf-document.constructor-stamping`
@@ -612,7 +732,7 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#<init>(net.zerocloud.pdf.itext7.kernel.pdf.PdfReader,net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter,net.zerocloud.pdf.itext7.kernel.pdf.StampingProperties)`
 - Generic contract: Captures append selection at construction and reuses Native Existing Signature protection, ordered publication and caller resource ownership in actual IN_PROCESS execution.
 - Exception contract: Null properties reject. Workflow failures retain stable DocumentFailure code, capability, safe diagnostic and receipts through PdfException; malformed Reader input maps to IOException. Signed rewrite and unsupported append operations remain protected.
-- Behavioral capabilities: [`document.incremental-signature.protect`](capability-matrix.md#capability-document_dot_incremental_dash_signature_dot_protect)
+- Behavioral capabilities: [`document.incremental-signature.protect`](capability-matrix.md#capability-document_dot_incremental_dash_signature_dot_protect), [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
 
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_constructor_dash_writer"></a>
 ### `itext7.kernel.pdf-document.constructor-writer`
@@ -622,7 +742,7 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#<init>(net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter)`
 - Generic contract: No generic parameters.
 - Exception contract: No checked exception; publication failures are reported by close().
-- Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen)
+- Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen), [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
 
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_copy_dash_pages"></a>
 ### `itext7.kernel.pdf-document.copy-pages`
@@ -773,6 +893,16 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Generic contract: Returns a mapped PdfPage handle scoped to the owning Native Session.
 - Exception contract: Rejects a closed document with IllegalStateException and maps invalid page numbers through PdfException with the Native DocumentFailure cause.
 - Behavioral capabilities: [`document.page.manipulate-merge-split`](capability-matrix.md#capability-document_dot_page_dot_manipulate_dash_merge_dash_split)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_pdf_dash_version"></a>
+### `itext7.kernel.pdf-document.get-pdf-version`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocument#getPdfVersion()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#getPdfVersion()`
+- Generic contract: Returns the selected publication version for a rewrite, or the effective authenticated Source version for reading/incremental publication.
+- Exception contract: No checked exception; rejects a closed Document with IllegalStateException.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
 
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_publication_dash_receipts"></a>
 ### `itext7.kernel.pdf-document.get-publication-receipts`
@@ -1463,7 +1593,7 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfReader#close()`
 - Generic contract: No generic parameters or return value.
 - Exception contract: Retains java.io.IOException; releases an unclaimed private snapshot. A Document owns a claimed snapshot until its close; caller streams remain open.
-- Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen)
+- Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen), [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
 
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_reader_dot_constructor_dash_input_dash_stream"></a>
 ### `itext7.kernel.pdf-reader.constructor-input-stream`
@@ -1473,7 +1603,17 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfReader#<init>(java.io.InputStream)`
 - Generic contract: Reads caller input to a bounded privately owned snapshot without closing the caller stream.
 - Exception contract: Declares java.io.IOException with a safe diagnostic; actual Native failures retain their DocumentFailure cause.
-- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch), [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_reader_dot_constructor_dash_input_dash_stream_dash_properties"></a>
+### `itext7.kernel.pdf-reader.constructor-input-stream-properties`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfReader#<init>(java.io.InputStream,com.itextpdf.kernel.pdf.ReaderProperties)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfReader#<init>(java.io.InputStream,net.zerocloud.pdf.itext7.kernel.pdf.ReaderProperties)`
+- Generic contract: Captures an owned properties snapshot; caller streams and the supplied properties remain caller-owned.
+- Exception contract: Declares java.io.IOException; maps Native failures to their stable code and safe diagnostic.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
 
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_reader_dot_constructor_dash_string"></a>
 ### `itext7.kernel.pdf-reader.constructor-string`
@@ -1483,7 +1623,57 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfReader#<init>(java.lang.String)`
 - Generic contract: No generic parameters.
 - Exception contract: Maps a Native Document Failure to java.io.IOException with its stable code and safe diagnostic.
-- Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen)
+- Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen), [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_reader_dot_constructor_dash_string_dash_properties"></a>
+### `itext7.kernel.pdf-reader.constructor-string-properties`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfReader#<init>(java.lang.String,com.itextpdf.kernel.pdf.ReaderProperties)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfReader#<init>(java.lang.String,net.zerocloud.pdf.itext7.kernel.pdf.ReaderProperties)`
+- Generic contract: Captures an owned properties snapshot; caller streams and the supplied properties remain caller-owned.
+- Exception contract: Declares java.io.IOException; maps Native failures to their stable code and safe diagnostic.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_reader_dot_get_dash_crypto_dash_mode"></a>
+### `itext7.kernel.pdf-reader.get-crypto-mode`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfReader#getCryptoMode()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfReader#getCryptoMode()`
+- Generic contract: Returns the baseline algorithm selector (plus bit 8 for the retained metadata-clear legacy input), or -1 for plaintext.
+- Exception contract: No checked exception; rejects a closed Reader with IllegalStateException.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_reader_dot_get_dash_permissions"></a>
+### `itext7.kernel.pdf-reader.get-permissions`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfReader#getPermissions()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfReader#getPermissions()`
+- Generic contract: Returns the unsigned declared 32-bit permission word, or zero for plaintext.
+- Exception contract: No checked exception; rejects a closed Reader with IllegalStateException.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_reader_dot_is_dash_encrypted"></a>
+### `itext7.kernel.pdf-reader.is-encrypted`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfReader#isEncrypted()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfReader#isEncrypted()`
+- Generic contract: Returns whether the authenticated Source is password protected.
+- Exception contract: No checked exception; rejects a closed Reader with IllegalStateException.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_reader_dot_is_dash_opened_dash_with_dash_full_dash_permission"></a>
+### `itext7.kernel.pdf-reader.is-opened-with-full-permission`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfReader#isOpenedWithFullPermission()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfReader#isOpenedWithFullPermission()`
+- Generic contract: Returns true for unprotected input or independently proven owner authority; an unrestricted user remains false.
+- Exception contract: No checked exception; rejects a closed Reader with IllegalStateException.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
 
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_stream_dot_constructor_dash_bytes"></a>
 ### `itext7.kernel.pdf-stream.constructor-bytes`
@@ -1596,6 +1786,186 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Exception contract: Null inputs and closed or invalid handles reject; Native failures retain their stable DocumentFailure code and safe diagnostic through PdfException, with no partial extraction result.
 - Behavioral capabilities: [`document.text-structure.extract`](capability-matrix.md#capability-document_dot_text_dash_structure_dot_extract)
 
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_version_dot_compare_dash_to"></a>
+### `itext7.kernel.pdf-version.compare-to`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfVersion#compareTo(com.itextpdf.kernel.pdf.PdfVersion)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion#compareTo(net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion)`
+- Generic contract: Compares versions in declared order; implements Comparable<PdfVersion>.
+- Exception contract: No checked exception; parsing rejects unsupported spelling and null input.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_version_dot_compare_dash_to_dash_bridge"></a>
+### `itext7.kernel.pdf-version.compare-to-bridge`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfVersion#compareTo(java.lang.Object)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion#compareTo(java.lang.Object)`
+- Generic contract: Compiler-generated erased Comparable bridge to compareTo(PdfVersion).
+- Exception contract: No checked exception; parsing rejects unsupported spelling and null input.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_version_dot_equals"></a>
+### `itext7.kernel.pdf-version.equals`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfVersion#equals(java.lang.Object)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion#equals(java.lang.Object)`
+- Generic contract: Compares exact supported version values.
+- Exception contract: No checked exception; parsing rejects unsupported spelling and null input.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_version_dot_from_dash_pdf_dash_name"></a>
+### `itext7.kernel.pdf-version.from-pdf-name`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfVersion#fromPdfName(com.itextpdf.kernel.pdf.PdfName)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion#fromPdfName(net.zerocloud.pdf.itext7.kernel.pdf.PdfName)`
+- Generic contract: Accepts an exact M.m PdfName and returns a supported PdfVersion.
+- Exception contract: No checked exception; parsing rejects unsupported spelling and null input.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_version_dot_from_dash_string"></a>
+### `itext7.kernel.pdf-version.from-string`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfVersion#fromString(java.lang.String)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion#fromString(java.lang.String)`
+- Generic contract: Accepts the exact PDF-M.m spelling and returns a supported PdfVersion.
+- Exception contract: No checked exception; parsing rejects unsupported spelling and null input.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_version_dot_hash_dash_code"></a>
+### `itext7.kernel.pdf-version.hash-code`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfVersion#hashCode()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion#hashCode()`
+- Generic contract: Returns the value hash code.
+- Exception contract: No checked exception; parsing rejects unsupported spelling and null input.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_version_dot_pdf_dash_1_dash_0"></a>
+### `itext7.kernel.pdf-version.pdf-1-0`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfVersion#PDF_1_0`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion#PDF_1_0`
+- Generic contract: Public static final PdfVersion for the exact named PDF declaration.
+- Exception contract: No exception contract for a constant.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_version_dot_pdf_dash_1_dash_1"></a>
+### `itext7.kernel.pdf-version.pdf-1-1`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfVersion#PDF_1_1`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion#PDF_1_1`
+- Generic contract: Public static final PdfVersion for the exact named PDF declaration.
+- Exception contract: No exception contract for a constant.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_version_dot_pdf_dash_1_dash_2"></a>
+### `itext7.kernel.pdf-version.pdf-1-2`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfVersion#PDF_1_2`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion#PDF_1_2`
+- Generic contract: Public static final PdfVersion for the exact named PDF declaration.
+- Exception contract: No exception contract for a constant.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_version_dot_pdf_dash_1_dash_3"></a>
+### `itext7.kernel.pdf-version.pdf-1-3`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfVersion#PDF_1_3`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion#PDF_1_3`
+- Generic contract: Public static final PdfVersion for the exact named PDF declaration.
+- Exception contract: No exception contract for a constant.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_version_dot_pdf_dash_1_dash_4"></a>
+### `itext7.kernel.pdf-version.pdf-1-4`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfVersion#PDF_1_4`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion#PDF_1_4`
+- Generic contract: Public static final PdfVersion for the exact named PDF declaration.
+- Exception contract: No exception contract for a constant.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_version_dot_pdf_dash_1_dash_5"></a>
+### `itext7.kernel.pdf-version.pdf-1-5`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfVersion#PDF_1_5`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion#PDF_1_5`
+- Generic contract: Public static final PdfVersion for the exact named PDF declaration.
+- Exception contract: No exception contract for a constant.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_version_dot_pdf_dash_1_dash_6"></a>
+### `itext7.kernel.pdf-version.pdf-1-6`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfVersion#PDF_1_6`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion#PDF_1_6`
+- Generic contract: Public static final PdfVersion for the exact named PDF declaration.
+- Exception contract: No exception contract for a constant.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_version_dot_pdf_dash_1_dash_7"></a>
+### `itext7.kernel.pdf-version.pdf-1-7`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfVersion#PDF_1_7`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion#PDF_1_7`
+- Generic contract: Public static final PdfVersion for the exact named PDF declaration.
+- Exception contract: No exception contract for a constant.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_version_dot_pdf_dash_2_dash_0"></a>
+### `itext7.kernel.pdf-version.pdf-2-0`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfVersion#PDF_2_0`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion#PDF_2_0`
+- Generic contract: Public static final PdfVersion for the exact named PDF declaration.
+- Exception contract: No exception contract for a constant.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_version_dot_to_dash_pdf_dash_name"></a>
+### `itext7.kernel.pdf-version.to-pdf-name`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfVersion#toPdfName()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion#toPdfName()`
+- Generic contract: Returns the exact M.m PdfName.
+- Exception contract: No checked exception; parsing rejects unsupported spelling and null input.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_version_dot_to_dash_string"></a>
+### `itext7.kernel.pdf-version.to-string`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfVersion#toString()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion#toString()`
+- Generic contract: Returns PDF-M.m.
+- Exception contract: No checked exception; parsing rejects unsupported spelling and null input.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_writer_dot_close"></a>
+### `itext7.kernel.pdf-writer.close`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfWriter#close()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter#close()`
+- Generic contract: Clears the Writer-owned output-property snapshot; leaves a caller OutputStream open.
+- Exception contract: No checked exception; idempotent.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_writer_dot_constructor_dash_output_dash_stream"></a>
 ### `itext7.kernel.pdf-writer.constructor-output-stream`
 
@@ -1604,7 +1974,17 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter#<init>(java.io.OutputStream)`
 - Generic contract: Borrows caller output; publication flushes but never closes it. No generic parameters.
 - Exception contract: No checked exception; publication errors are reported at PdfDocument.close with actual Native receipts.
-- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+- Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch), [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_writer_dot_constructor_dash_output_dash_stream_dash_properties"></a>
+### `itext7.kernel.pdf-writer.constructor-output-stream-properties`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfWriter#<init>(java.io.OutputStream,com.itextpdf.kernel.pdf.WriterProperties)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter#<init>(java.io.OutputStream,net.zerocloud.pdf.itext7.kernel.pdf.WriterProperties)`
+- Generic contract: Captures an owned properties snapshot; caller streams and the supplied properties remain caller-owned.
+- Exception contract: No checked exception; rejects invalid or closed declarations before ownership transfer.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
 
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_writer_dot_constructor_dash_string"></a>
 ### `itext7.kernel.pdf-writer.constructor-string`
@@ -1614,7 +1994,59 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter#<init>(java.lang.String)`
 - Generic contract: No generic parameters.
 - Exception contract: Declares java.io.FileNotFoundException for a target that cannot name a file in an existing directory.
-- Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen)
+- Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen), [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_writer_dot_constructor_dash_string_dash_properties"></a>
+### `itext7.kernel.pdf-writer.constructor-string-properties`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfWriter#<init>(java.lang.String,com.itextpdf.kernel.pdf.WriterProperties)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter#<init>(java.lang.String,net.zerocloud.pdf.itext7.kernel.pdf.WriterProperties)`
+- Generic contract: Captures an owned properties snapshot; caller streams and the supplied properties remain caller-owned.
+- Exception contract: Declares java.io.FileNotFoundException for an invalid Path target.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_reader_dash_properties_dot_close"></a>
+### `itext7.kernel.reader-properties.close`
+
+- Availability: `stable`
+- Reference status: `folio-extension`
+- Reference namespace: `com.itextpdf.kernel.pdf.ReaderProperties`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.ReaderProperties#close()`
+- Generic contract: Clears the owned credential copy; idempotent. Borrowed Native credentials remain caller-owned.
+- Exception contract: No checked exception; malformed choices fail with IllegalArgumentException and closed properties with IllegalStateException.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_reader_dash_properties_dot_constructor"></a>
+### `itext7.kernel.reader-properties.constructor`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.ReaderProperties#<init>()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.ReaderProperties#<init>()`
+- Generic contract: Creates caller-owned mutable properties with no credential retained.
+- Exception contract: No checked exception; malformed choices fail with IllegalArgumentException and closed properties with IllegalStateException.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_reader_dash_properties_dot_set_dash_credential"></a>
+### `itext7.kernel.reader-properties.set-credential`
+
+- Availability: `stable`
+- Reference status: `folio-extension`
+- Reference namespace: `com.itextpdf.kernel.pdf.ReaderProperties`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.ReaderProperties#setCredential(net.zerocloud.pdf.PasswordCredential)`
+- Generic contract: Returns these properties and borrows the destroyable Native credential.
+- Exception contract: No checked exception; malformed choices fail with IllegalArgumentException and closed properties with IllegalStateException.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_reader_dash_properties_dot_set_dash_password"></a>
+### `itext7.kernel.reader-properties.set-password`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.ReaderProperties#setPassword(byte[])`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.ReaderProperties#setPassword(byte[])`
+- Generic contract: Returns these properties after copying bytes. Null removes the credential; empty bytes explicitly supply an empty password.
+- Exception contract: No checked exception; malformed choices fail with IllegalArgumentException and closed properties with IllegalStateException.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
 
 <a id="facade-surface-itext7_dot_kernel_dot_stamping_dash_properties_dot_constructor"></a>
 ### `itext7.kernel.stamping-properties.constructor`
@@ -1697,6 +2129,58 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Generic contract: Parallel arrays bind each named predeclared Target exactly once to one one-based inclusive Native PageRange; success is terminal for later Document Commands.
 - Exception contract: Rejects unequal array lengths with IllegalArgumentException and maps missing, extra, duplicate, invalid, or unsafe selections through PdfException with the Native DocumentFailure cause before publication.
 - Behavioral capabilities: [`document.page.manipulate-merge-split`](capability-matrix.md#capability-document_dot_page_dot_manipulate_dash_merge_dash_split)
+
+<a id="facade-surface-itext7_dot_kernel_dot_writer_dash_properties_dot_close"></a>
+### `itext7.kernel.writer-properties.close`
+
+- Availability: `stable`
+- Reference status: `folio-extension`
+- Reference namespace: `com.itextpdf.kernel.pdf.WriterProperties`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.WriterProperties#close()`
+- Generic contract: Clears the owned credential copy; idempotent. Borrowed Native credentials remain caller-owned.
+- Exception contract: No checked exception; malformed choices fail with IllegalArgumentException and closed properties with IllegalStateException.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_writer_dash_properties_dot_constructor"></a>
+### `itext7.kernel.writer-properties.constructor`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.WriterProperties#<init>()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.WriterProperties#<init>()`
+- Generic contract: Creates caller-owned mutable properties with no credential retained.
+- Exception contract: No checked exception; malformed choices fail with IllegalArgumentException and closed properties with IllegalStateException.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_writer_dash_properties_dot_set_dash_legacy_dash_security_dash_mode"></a>
+### `itext7.kernel.writer-properties.set-legacy-security-mode`
+
+- Availability: `stable`
+- Reference status: `folio-extension`
+- Reference namespace: `com.itextpdf.kernel.pdf.WriterProperties`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.WriterProperties#setLegacySecurityMode(net.zerocloud.pdf.LegacySecurityMode)`
+- Generic contract: Returns these properties with explicit request-scoped obsolete-output opt-in; secure defaults remain unchanged.
+- Exception contract: No checked exception; malformed choices fail with IllegalArgumentException and closed properties with IllegalStateException.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_writer_dash_properties_dot_set_dash_pdf_dash_version"></a>
+### `itext7.kernel.writer-properties.set-pdf-version`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.WriterProperties#setPdfVersion(com.itextpdf.kernel.pdf.PdfVersion)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.WriterProperties#setPdfVersion(net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion)`
+- Generic contract: Returns these properties; output accepts PDF 1.7 or 2.0 at execution.
+- Exception contract: No checked exception; malformed choices fail with IllegalArgumentException and closed properties with IllegalStateException.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
+
+<a id="facade-surface-itext7_dot_kernel_dot_writer_dash_properties_dot_set_dash_standard_dash_encryption"></a>
+### `itext7.kernel.writer-properties.set-standard-encryption`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.WriterProperties#setStandardEncryption(byte[],byte[],int,int)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.WriterProperties#setStandardEncryption(byte[],byte[],int,int)`
+- Generic contract: Returns these properties after copying user then owner bytes, permission bits and one of four algorithms; empty owner generates independent random authority.
+- Exception contract: No checked exception; malformed choices fail with IllegalArgumentException and closed properties with IllegalStateException.
+- Behavioral capabilities: [`document.version-password-security.baseline`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security_dot_baseline)
 
 <a id="facade-surface-itext7_dot_layout_dot_document_dot_close"></a>
 ### `itext7.layout.document.close`
@@ -1827,4 +2311,4 @@ No preview additions (included with all stable surfaces) are declared.
 
 - Behavioral capability: [`document.version-password-security`](capability-matrix.md#capability-document_dot_version_dash_password_dash_security)
 - Deferred ticket: `T32`
-- Reason: Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #78, #79, #80 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
+- Reason: The baseline child has its own certified mappings. The aggregate remains incomplete: required metadata-clear and embedded-files-only mappings remain #79 and #80 obligations; this is not a release-scope waiver.

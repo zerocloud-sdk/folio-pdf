@@ -103,7 +103,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
             byte[] fixture = minimalPdf(expected, null);
 
             PdfVersionInfo actual = new DocumentWorkflow().execute(
-                    WorkflowRequest.builder()
+                    builder()
                             .source(
                                     "primary",
                                     DocumentSource.bytes(
@@ -195,7 +195,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
             throws Exception {
         Path created = temporaryFolder.newFile().toPath();
         new DocumentWorkflow().execute(
-                WorkflowRequest.create(created, SaveMode.REWRITE),
+                builder().target("target", PublicationTarget.path(created)).saveMode(SaveMode.REWRITE).build(),
                 session -> {
                     session.execute(AddBlankPage.INSTANCE);
                     return null;
@@ -205,7 +205,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
         byte[] pdf10 = minimalPdf(PdfVersion.PDF_1_0, null);
         Path rewritten = temporaryFolder.newFile().toPath();
         new DocumentWorkflow().execute(
-                WorkflowRequest.builder()
+                builder()
                         .source("source", DocumentSource.bytes(pdf10, pdf10.length))
                         .primarySource("source")
                         .target("target", PublicationTarget.path(rewritten))
@@ -219,7 +219,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
                 PdfVersion.PDF_2_0}) {
             Path target = temporaryFolder.newFile().toPath();
             WorkflowOutcome<Void> outcome = new DocumentWorkflow().execute(
-                    WorkflowRequest.builder()
+                    builder()
                             .target("target", PublicationTarget.path(target))
                             .saveMode(SaveMode.REWRITE)
                             .outputPolicy(PdfOutputPolicy.version(explicit))
@@ -243,7 +243,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
         AtomicBoolean workRan = new AtomicBoolean();
         try {
             new DocumentWorkflow().execute(
-                    WorkflowRequest.builder()
+                    builder()
                             .target("target", PublicationTarget.path(target))
                             .saveMode(SaveMode.REWRITE)
                             .outputPolicy(PdfOutputPolicy.version(
@@ -272,7 +272,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
         AtomicBoolean downgradeWork = new AtomicBoolean();
         try {
             new DocumentWorkflow().execute(
-                    WorkflowRequest.builder()
+                    builder()
                             .source(
                                     "source",
                                     DocumentSource.bytes(pdf20, pdf20.length))
@@ -322,7 +322,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
             Path target = temporaryFolder.newFile().toPath();
 
             new DocumentWorkflow().execute(
-                    WorkflowRequest.builder()
+                    builder()
                             .target("target", PublicationTarget.path(target))
                             .saveMode(SaveMode.REWRITE)
                             .outputPolicy(PdfOutputPolicy
@@ -398,7 +398,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
 
             Path rewritten = temporaryFolder.newFile().toPath();
             new DocumentWorkflow().execute(
-                    WorkflowRequest.builder()
+                    builder()
                             .source(
                                     "source",
                                     DocumentSource.path(protectedSource)
@@ -475,7 +475,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
             try {
                 Path target = temporaryFolder.newFile().toPath();
                 new DocumentWorkflow().execute(
-                        WorkflowRequest.builder()
+                        builder()
                                 .source(
                                         "source",
                                         DocumentSource.path(source.path)
@@ -588,7 +588,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
             };
             for (DocumentSource source : sources) {
                 PasswordSecurityInfo info = new DocumentWorkflow().execute(
-                        WorkflowRequest.builder()
+                        builder()
                                 .source("source", source)
                                 .primarySource("source")
                                 .saveMode(SaveMode.REWRITE)
@@ -644,22 +644,20 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
             }
         }
 
-        PasswordCredential rc4Owner = PasswordCredential.of(
-                "rc4-40-owner-t16".toCharArray());
-        PasswordCredential rc4User = PasswordCredential.of(
-                "rc4-40-user-t16".toCharArray());
-        try {
-            assertOutputSecurityFailure(
-                    PasswordSecurityPolicy.builder(rc4Owner, rc4User)
-                            .algorithm(PasswordEncryptionAlgorithm.RC4_40)
-                            .build(),
-                    LegacySecurityMode
-                            .ALLOW_OBSOLETE_PASSWORD_ENCRYPTION,
-                    PdfVersion.PDF_1_7,
-                    DocumentFailureCode.PASSWORD_SECURITY_UNSUPPORTED);
-        } finally {
-            rc4Owner.close();
-            rc4User.close();
+        for (DocumentPermissions permissions : new DocumentPermissions[] {
+                DocumentPermissions.unrestricted(), DocumentPermissions.builder().build()}) {
+            try (PasswordCredential owner = PasswordCredential.of("rc4-owner".toCharArray());
+                    PasswordCredential user = PasswordCredential.of("rc4-user".toCharArray())) {
+                Path product = publishProtected(PasswordSecurityPolicy.builder(owner, user)
+                        .algorithm(PasswordEncryptionAlgorithm.RC4_40).permissions(permissions).build(),
+                        PdfVersion.PDF_1_7, LegacySecurityMode.ALLOW_OBSOLETE_PASSWORD_ENCRYPTION);
+                PasswordSecurityInfo info = securityOf(product, user);
+                assertEquals(PasswordEncryptionAlgorithm.RC4_40, info.getAlgorithm().get());
+                assertEquals(permissions, info.getDeclaredUserPermissions());
+                assertEquals(permissions.equals(DocumentPermissions.unrestricted()) ? 2 : 3,
+                        info.getSecurityHandlerRevision());
+                assertEquals(CredentialAuthority.OWNER, securityOf(product, owner).getCredentialAuthority());
+            }
         }
 
         try (ProtectedFixture secureDefault = protectedFixture(
@@ -825,7 +823,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
             AtomicBoolean workRan = new AtomicBoolean();
             try {
                 new DocumentWorkflow().execute(
-                        WorkflowRequest.builder()
+                        builder()
                                 .source(
                                         "source",
                                         DocumentSource.bytes(
@@ -888,27 +886,8 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
             user.close();
         }
 
-        PasswordCredential same = PasswordCredential.of(
-                "same-password-t16".toCharArray());
-        try {
-            assertOutputSecurityFailure(
-                    PasswordSecurityPolicy.builder(same, same).build(),
-                    null,
-                    PdfVersion.PDF_1_7,
-                    DocumentFailureCode.PASSWORD_SECURITY_UNSUPPORTED);
-        } finally {
-            same.close();
-        }
-
-        assertInvalidOutputCredentials(new char[0], "nonempty-user-t16".toCharArray());
-        assertInvalidOutputCredentials(
-                "ascii-owner-t16".toCharArray(),
-                "non-ascii-\u00e9-t16".toCharArray());
-        char[] overlong = new char[128];
-        Arrays.fill(overlong, 'a');
-        assertInvalidOutputCredentials(
-                overlong,
-                "bounded-user-t16".toCharArray());
+        assertInvalidOutputCredentials("ascii-owner".toCharArray(), new char[] {'x', '\u0007'});
+        assertInvalidOutputCredentials("ascii-owner".toCharArray(), new char[] {'x', '\ud800'});
 
         PasswordCredential destroyed = PasswordCredential.of(
                 "destroyed-output-t16".toCharArray());
@@ -924,6 +903,163 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
         } finally {
             live.close();
         }
+    }
+
+    @Test
+    public void baselineCredentialsIncludeEmptyEqualUnicodeAndTruncation() throws Exception {
+        String[] passwords = {"", "same", "caf\u00e9", "I\u00adX", "\u2168", "\u00a0space",
+                repeat('a', 126), repeat('a', 127), repeat('a', 128), repeat('a', 126) + "\u00e9"};
+        for (String password : passwords) {
+            try (PasswordCredential owner = PasswordCredential.of(("owner-" + password).toCharArray());
+                    PasswordCredential user = PasswordCredential.of(password.toCharArray())) {
+                Path product = publishProtected(PasswordSecurityPolicy.builder(owner, user)
+                        .permissions(DocumentPermissions.unrestricted()).build(), PdfVersion.PDF_1_7, null);
+                assertEquals(CredentialAuthority.OWNER, securityOf(product, owner).getCredentialAuthority());
+                assertEquals(CredentialAuthority.UNRESTRICTED, securityOf(product, user).getCredentialAuthority());
+                assertOpeningFailure(DocumentSource.path(product), DocumentFailureCode.CREDENTIAL_REQUIRED);
+            }
+        }
+        try (PasswordCredential same = PasswordCredential.of("same-password".toCharArray())) {
+            Path product = publishProtected(PasswordSecurityPolicy.builder(same, same).build(), PdfVersion.PDF_1_7, null);
+            assertEquals(CredentialAuthority.OWNER, securityOf(product, same).getCredentialAuthority());
+        }
+        try (PasswordCredential empty = PasswordCredential.of(new char[0]);
+                PasswordCredential user = PasswordCredential.of("user-only".toCharArray())) {
+            Path product = publishProtected(PasswordSecurityPolicy.builder(empty, user).build(), PdfVersion.PDF_1_7, null);
+            assertEquals(CredentialAuthority.USER, securityOf(product, user).getCredentialAuthority());
+            assertOpeningFailure(DocumentSource.path(product).withCredential(empty), DocumentFailureCode.CREDENTIAL_REJECTED);
+        }
+        for (PasswordEncryptionAlgorithm algorithm : new PasswordEncryptionAlgorithm[] {
+                PasswordEncryptionAlgorithm.RC4_40, PasswordEncryptionAlgorithm.RC4_128, PasswordEncryptionAlgorithm.AES_128}) {
+            for (int length : new int[] {0, 31, 32, 33}) {
+                try (PasswordCredential owner = PasswordCredential.of(("owner-" + repeat('o', 32)).toCharArray());
+                        PasswordCredential user = PasswordCredential.of(repeat('\u00e9', length).toCharArray())) {
+                    Path product = publishProtected(PasswordSecurityPolicy.builder(owner, user).algorithm(algorithm).build(),
+                            PdfVersion.PDF_1_7, LegacySecurityMode.ALLOW_OBSOLETE_PASSWORD_ENCRYPTION);
+                    assertEquals(CredentialAuthority.OWNER, securityOf(product, owner).getCredentialAuthority());
+                    assertEquals(CredentialAuthority.USER, securityOf(product, user).getCredentialAuthority());
+                }
+            }
+        }
+    }
+
+    @Test
+    public void independentlyAuthoredBaselineFixturesAuthenticateAndDecryptStrings() throws Exception {
+        for (String name : new String[] {"rc4-40-r2", "rc4-40-r3", "rc4-40-r3-interop", "rc4-40-v2", "rc4-128", "rc4-cf", "aes-128",
+                "aes-256-r5", "aes-256-r6", "aes-256-pdf20", "aes-128-default-event-eff", "aes-128-metadata-clear",
+                "aes-128-stream-crypt", "rc4-40-r2-pdf20", "rc4-40-r3-pdf20", "rc4-128-pdf20", "rc4-cf-pdf20",
+                "aes-128-pdf20", "aes-256-r5-pdf20", "aes-256-r6-pdf20", "aes-256-pdf20-bit10-clear",
+                "rc4-40-r2-default-length", "rc4-40-v2-default-length", "aes-128-stream-crypt-array",
+                "aes-256-r5-empty-user", "aes-256-r5-equal", "aes-256-r5-boundary-split", "aes-256-r5-empty-owner",
+                "aes-256-r6-bidi", "rc4-40-r3-byte-boundary", "rc4-128-byte-boundary", "aes-128-byte-boundary"}) {
+            Path source = baselineCorpus().resolve(name + ".pdf");
+            try (PasswordCredential owner = PasswordCredential.of(originalCredential(name, true).toCharArray());
+                    PasswordCredential user = PasswordCredential.of(originalCredential(name, false).toCharArray())) {
+                PasswordSecurityInfo opening = new DocumentWorkflow().execute(builder()
+                        .source("source", DocumentSource.path(source).withCredential(owner)).primarySource("source")
+                        .saveMode(SaveMode.REWRITE).build(), session -> {
+                            assertEquals(Integer.valueOf(1), session.query(PageCount.INSTANCE));
+                            PdfValue title = session.query(DocumentInfo.INSTANCE).get(PdfName.of("Title"));
+                            assertEquals(PdfString.of("Folio baseline proof".getBytes(StandardCharsets.US_ASCII)), title);
+                            return session.query(DocumentSecurity.INSTANCE);
+                        }).getResult();
+                assertEquals(CredentialAuthority.OWNER, opening.getCredentialAuthority());
+                assertEquals(name.endsWith("-equal"), securityOf(source, user).getCredentialAuthority() == CredentialAuthority.OWNER);
+                assertOpeningFailure(DocumentSource.path(source), DocumentFailureCode.CREDENTIAL_REQUIRED);
+            }
+        }
+    }
+
+    @Test
+    public void independentlyAuthoredR5AndR6RequireTheSameUnicodePreparation() throws Exception {
+        for (String name : new String[] {"aes-256-r5-prepared", "aes-256-r6-prepared"}) {
+            Path source = baselineCorpus().resolve(name + ".pdf");
+            try (PasswordCredential owner = PasswordCredential.of("owner-\u2168".toCharArray());
+                    PasswordCredential user = PasswordCredential.of("I\u00adX".toCharArray())) {
+                assertEquals(CredentialAuthority.OWNER, securityOf(source, owner).getCredentialAuthority());
+                assertEquals(CredentialAuthority.UNRESTRICTED, securityOf(source, user).getCredentialAuthority());
+            }
+        }
+        try (PasswordCredential user = PasswordCredential.of("baseline-user".toCharArray())) {
+            for (String name : new String[] {"aes-256-perms-invalid", "aes-256-r5-perms-invalid", "aes-128-efopen"}) {
+                assertOpeningFailure(DocumentSource.path(baselineCorpus().resolve(name + ".pdf")).withCredential(user),
+                        DocumentFailureCode.PASSWORD_SECURITY_UNSUPPORTED);
+            }
+        }
+    }
+
+    @Test
+    public void credentialPreparationCannotAliasAnOwnerOrAnUnmappableLegacyPassword() throws Exception {
+        try (PasswordCredential preparedUser = PasswordCredential.of("I\u00adX".toCharArray())) {
+            Path source = baselineCorpus().resolve("aes-256-r5-noncanonical-owner.pdf");
+            PasswordSecurityInfo info = securityOf(source, preparedUser);
+            assertEquals(CredentialAuthority.USER, info.getCredentialAuthority());
+            assertEquals(info.getDeclaredUserPermissions(), info.getEffectivePermissions());
+            assertFalse(info.getEffectivePermissions().canModify());
+            assertOpeningFailure(DocumentSource.path(baselineCorpus().resolve("legacy-literal-question.pdf"))
+                    .withCredential(preparedUser), DocumentFailureCode.CREDENTIAL_REJECTED);
+        }
+        try (PasswordCredential unmappable = PasswordCredential.of(new char[] {'\u0100'});
+                PasswordCredential literal = PasswordCredential.of(new char[] {'?'})) {
+            Path source = baselineCorpus().resolve("legacy-literal-question.pdf");
+            assertOpeningFailure(DocumentSource.path(source).withCredential(unmappable), DocumentFailureCode.CREDENTIAL_REJECTED);
+            assertEquals(CredentialAuthority.UNRESTRICTED, securityOf(source, literal).getCredentialAuthority());
+        }
+        try (PasswordCredential user = PasswordCredential.of("baseline-user".toCharArray())) {
+            PasswordSecurityInfo info = securityOf(baselineCorpus().resolve("aes-256-pdf20-bit10-clear.pdf"), user);
+            assertFalse(info.getDeclaredUserPermissions().canExtractForAccessibility());
+            assertTrue(info.getEffectivePermissions().canExtractForAccessibility());
+        }
+    }
+
+    @Test
+    public void independentlyAuthoredR5DonorCanMergeIntoProtectedOutput() throws Exception {
+        Path output = temporaryFolder.newFile().toPath();
+        try (PasswordCredential user = PasswordCredential.of("baseline-user".toCharArray());
+                PasswordCredential owner = PasswordCredential.of("baseline-owner".toCharArray())) {
+            WorkflowOutcome<Integer> outcome = new DocumentWorkflow().execute(builder()
+                    .source("primary", DocumentSource.path(baselineCorpus().resolve("version-1-7.pdf")))
+                    .source("donor", DocumentSource.path(baselineCorpus().resolve("aes-256-r5.pdf")).withCredential(user))
+                    .primarySource("primary").target("target", PublicationTarget.path(output))
+                    .saveMode(SaveMode.REWRITE).outputPolicy(PdfOutputPolicy.version(PdfVersion.PDF_1_7)
+                            .withPasswordSecurity(PasswordSecurityPolicy.builder(owner, user).build())).build(),
+                    session -> {
+                        session.execute(MergeDocuments.version1("donor"));
+                        return session.query(PageCount.INSTANCE);
+                    });
+            assertEquals(Integer.valueOf(2), outcome.getResult());
+            assertEquals(Integer.valueOf(2), new DocumentWorkflow().execute(builder()
+                    .source("source", DocumentSource.path(output).withCredential(owner)).primarySource("source")
+                    .saveMode(SaveMode.REWRITE).build(), session -> session.query(PageCount.INSTANCE)).getResult());
+        }
+    }
+
+    private static String originalCredential(String name, boolean owner) {
+        if (name.endsWith("-equal")) { return "equal-baseline"; }
+        if (owner) { return name.endsWith("-empty-owner") ? "" : "baseline-owner"; }
+        if (name.endsWith("-empty-user")) { return ""; }
+        if (name.endsWith("-boundary-split")) { return repeat('a', 126) + "\u00e9"; }
+        if (name.endsWith("-bidi")) { return "\u05d0\u05d1"; }
+        if (name.endsWith("-byte-boundary")) { return "\u0080" + repeat('\u00e9', 32); }
+        return "baseline-user";
+    }
+
+    private static Path baselineCorpus() {
+        Path root = Paths.get("").toAbsolutePath();
+        while (root != null && !Files.isDirectory(root.resolve("capabilities/profiles/T78-password"))) { root = root.getParent(); }
+        if (root == null) { throw new IllegalStateException("The original baseline corpus is missing."); }
+        return root.resolve("capabilities/profiles/T78-password");
+    }
+
+    private static WorkflowRequest.Builder builder() {
+        return WorkflowRequest.builder().executionProfile(net.zerocloud.pdf.WorkflowExecutionProfile.valueOf(
+                System.getProperty("folio.t78.executionProfile", "IN_PROCESS")));
+    }
+
+    private static String repeat(char character, int length) {
+        char[] value = new char[length];
+        Arrays.fill(value, character);
+        return new String(value);
     }
 
     @Test
@@ -976,7 +1112,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
                 denied,
                 false)) {
             Integer pageCount = new DocumentWorkflow().execute(
-                    WorkflowRequest.builder()
+                    builder()
                             .source(
                                     "source",
                                     DocumentSource.path(fixture.path)
@@ -1023,7 +1159,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
                 selected,
                 false)) {
             Integer count = new DocumentWorkflow().execute(
-                    WorkflowRequest.builder()
+                    builder()
                             .source(
                                     "source",
                                     DocumentSource.path(fixture.path)
@@ -1053,7 +1189,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
                 annotationOnly,
                 false)) {
             new DocumentWorkflow().execute(
-                    WorkflowRequest.builder()
+                    builder()
                             .source(
                                     "source",
                                     DocumentSource.path(fixture.path)
@@ -1078,7 +1214,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
                 modificationAndAnnotation,
                 false)) {
             new DocumentWorkflow().execute(
-                    WorkflowRequest.builder()
+                    builder()
                             .source(
                                     "source",
                                     DocumentSource.path(fixture.path)
@@ -1106,7 +1242,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
             throws Exception {
         byte[] source = minimalPdf(PdfVersion.PDF_1_7, null);
         new DocumentWorkflow().execute(
-                WorkflowRequest.builder()
+                builder()
                         .source(
                                 "source",
                                 DocumentSource.bytes(source, source.length))
@@ -1142,7 +1278,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
                 DocumentPermissions.builder().build(),
                 false)) {
             new DocumentWorkflow().execute(
-                    WorkflowRequest.builder()
+                    builder()
                             .source(
                                     "source",
                                     DocumentSource.path(fixture.path)
@@ -1199,7 +1335,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
                 "legacy-owner-t16".toCharArray());
         try {
             new DocumentWorkflow().execute(
-                    WorkflowRequest.builder()
+                    builder()
                             .source(
                                     "source",
                                     DocumentSource.bytes(
@@ -1264,7 +1400,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
         byte[] primary = minimalPdf(PdfVersion.PDF_1_7, null);
 
         new DocumentWorkflow().execute(
-                WorkflowRequest.builder()
+                builder()
                         .source(
                                 "primary",
                                 DocumentSource.bytes(primary, primary.length))
@@ -1319,7 +1455,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
                     donorPermissions,
                     false)) {
             Integer pageCount = new DocumentWorkflow().execute(
-                    WorkflowRequest.builder()
+                    builder()
                             .source(
                                     "primary",
                                     DocumentSource.path(primary.path)
@@ -1354,7 +1490,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
             AtomicBoolean workRan = new AtomicBoolean();
             try {
                 new DocumentWorkflow().execute(
-                        WorkflowRequest.builder()
+                        builder()
                                 .source(
                                         "primary",
                                         DocumentSource.bytes(
@@ -1392,7 +1528,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
         AtomicBoolean versionWork = new AtomicBoolean();
         try {
             new DocumentWorkflow().execute(
-                    WorkflowRequest.builder()
+                    builder()
                             .source(
                                     "primary",
                                     DocumentSource.bytes(
@@ -1439,7 +1575,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
             AtomicBoolean plaintextWork = new AtomicBoolean();
             try {
                 new DocumentWorkflow().execute(
-                        WorkflowRequest.builder()
+                        builder()
                                 .source(
                                         "primary",
                                         DocumentSource.bytes(
@@ -1482,7 +1618,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
                 Path protectedTarget = temporaryFolder.newFile().toPath();
                 WorkflowOutcome<Integer> outcome =
                         new DocumentWorkflow().execute(
-                                WorkflowRequest.builder()
+                                builder()
                                         .source(
                                                 "primary",
                                                 DocumentSource.bytes(
@@ -1518,7 +1654,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
                 assertEquals(
                         Integer.valueOf(2),
                         new DocumentWorkflow().execute(
-                                WorkflowRequest.builder()
+                                builder()
                                         .source(
                                                 "source",
                                                 DocumentSource.path(
@@ -1552,7 +1688,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
         try {
             Path protectedSource = temporaryFolder.newFile().toPath();
             new DocumentWorkflow().execute(
-                    WorkflowRequest.builder()
+                    builder()
                             .source(
                                     "source",
                                     DocumentSource.bytes(
@@ -1581,7 +1717,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
 
             try {
                 new DocumentWorkflow().execute(
-                        WorkflowRequest.builder()
+                        builder()
                                 .source(
                                         "source",
                                         DocumentSource.path(protectedSource)
@@ -1624,7 +1760,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
                     .build();
             Path encrypted = temporaryFolder.newFile().toPath();
             new DocumentWorkflow().execute(
-                    WorkflowRequest.builder()
+                    builder()
                             .source(
                                     "source",
                                     DocumentSource.bytes(
@@ -1643,7 +1779,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
 
             Path encryptedSigned = temporaryFolder.newFile().toPath();
             new DocumentWorkflow().execute(
-                    WorkflowRequest.builder()
+                    builder()
                             .source(
                                     "source",
                                     DocumentSource.path(encrypted)
@@ -1705,7 +1841,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
             AtomicBoolean workRan = new AtomicBoolean();
             try {
                 new DocumentWorkflow().execute(
-                        WorkflowRequest.builder()
+                        builder()
                                 .source(
                                         "source",
                                         DocumentSource.path(encryptedSigned)
@@ -1754,7 +1890,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
             AtomicBoolean rewriteWork = new AtomicBoolean();
             try {
                 new DocumentWorkflow().execute(
-                        WorkflowRequest.builder()
+                        builder()
                                 .source(
                                         "source",
                                         DocumentSource.path(fixture.path)
@@ -1791,7 +1927,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
                 AtomicBoolean userWork = new AtomicBoolean();
                 try {
                     new DocumentWorkflow().execute(
-                            WorkflowRequest.builder()
+                            builder()
                                     .source(
                                             "source",
                                             DocumentSource.path(fixture.path)
@@ -1820,7 +1956,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
 
                 Path protectedRewrite = temporaryFolder.newFile().toPath();
                 new DocumentWorkflow().execute(
-                        WorkflowRequest.builder()
+                        builder()
                                 .source(
                                         "source",
                                         DocumentSource.path(fixture.path)
@@ -1849,7 +1985,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
 
             Path incremental = temporaryFolder.newFile().toPath();
             new DocumentWorkflow().execute(
-                    WorkflowRequest.builder()
+                    builder()
                             .source(
                                     "source",
                                     DocumentSource.path(fixture.path)
@@ -1881,7 +2017,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
                 "legacy-user-t16".toCharArray());
         try {
             PasswordSecurityInfo security = new DocumentWorkflow().execute(
-                    WorkflowRequest.builder()
+                    builder()
                             .source(
                                     "source",
                                     DocumentSource.bytes(
@@ -2255,7 +2391,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
             PdfVersion version,
             LegacySecurityMode legacyMode) throws Exception {
         Path target = temporaryFolder.newFile().toPath();
-        WorkflowRequest.Builder request = WorkflowRequest.builder()
+        WorkflowRequest.Builder request = builder()
                 .target("target", PublicationTarget.path(target))
                 .saveMode(SaveMode.REWRITE)
                 .outputPolicy(PdfOutputPolicy.version(version)
@@ -2285,7 +2421,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
             AtomicBoolean workRan = new AtomicBoolean();
             try {
                 new DocumentWorkflow().execute(
-                        WorkflowRequest.builder()
+                        builder()
                                 .source("source", source)
                                 .primarySource("source")
                                 .target("target", PublicationTarget.path(target))
@@ -2326,7 +2462,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
         Path target = temporaryFolder.newFile().toPath();
         Files.write(target, new byte[] {41, 42, 43});
         AtomicBoolean workRan = new AtomicBoolean();
-        WorkflowRequest.Builder request = WorkflowRequest.builder()
+        WorkflowRequest.Builder request = builder()
                 .target("target", PublicationTarget.path(target))
                 .saveMode(SaveMode.REWRITE)
                 .outputPolicy(PdfOutputPolicy.version(version)
@@ -2409,7 +2545,9 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
                     "/StdCF\\s*<<(.*?)>>",
                     Pattern.DOTALL).matcher(serialized);
             assertTrue(standardFilter.find());
-            assertFalse(standardFilter.group(1).contains("/Length"));
+            if (algorithm == PasswordEncryptionAlgorithm.AES_256) {
+                assertTrue(standardFilter.group(1).contains("/Length 32"));
+            } else { assertFalse(standardFilter.group(1).contains("/Length")); }
         }
     }
 
@@ -2417,7 +2555,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
             Path path,
             PasswordCredential credential) throws Exception {
         return new DocumentWorkflow().execute(
-                WorkflowRequest.builder()
+                builder()
                         .source(
                                 "source",
                                 DocumentSource.path(path)
@@ -2436,7 +2574,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
                 "%PDF-" + expected,
                 new String(bytes, 0, 8, StandardCharsets.US_ASCII));
         PdfVersionInfo reopened = new DocumentWorkflow().execute(
-                WorkflowRequest.open(path, SaveMode.REWRITE),
+                builder().source("source", DocumentSource.path(path)).primarySource("source").saveMode(SaveMode.REWRITE).build(),
                 session -> session.query(DocumentVersion.INSTANCE))
                 .getResult();
         assertEquals(expected, reopened.getHeaderVersion());
@@ -2446,7 +2584,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
 
     private PdfVersionInfo versionOf(byte[] fixture) throws Exception {
         return new DocumentWorkflow().execute(
-                WorkflowRequest.builder()
+                builder()
                         .source(
                                 "primary",
                                 DocumentSource.bytes(fixture, fixture.length))
@@ -2461,7 +2599,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
             Path path,
             PasswordCredential credential) throws Exception {
         return new DocumentWorkflow().execute(
-                WorkflowRequest.builder()
+                builder()
                         .source(
                                 "source",
                                 DocumentSource.path(path)
@@ -2523,7 +2661,7 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
         AtomicBoolean workRan = new AtomicBoolean();
         try {
             new DocumentWorkflow().execute(
-                    WorkflowRequest.builder()
+                    builder()
                             .source(
                                     "primary",
                                     DocumentSource.bytes(

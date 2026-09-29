@@ -1,0 +1,161 @@
+[
+  {
+    "name": "native-focused",
+    "command": "./mvnw -B -ntp -pl pdf-document -am -Dtest=PdfVersionPasswordSecurityWorkflowTest -Dsurefire.failIfNoSpecifiedTests=false test",
+    "result": "pass",
+    "report": "capabilities/evidence/T78-delivery/validation/native-focused.txt",
+    "sha256": "1d5f82e46e9204bcbb18cd48ade7a69bed12cc6463996dd0d33d01301b10ed2a"
+  },
+  {
+    "name": "public-products",
+    "command": "./mvnw -B -ntp -pl pdf-acceptance -am -Dtest=PdfVersionPasswordSecurityWorkflowTest,PasswordSecurityFacadeTest,T78PasswordProductsTest -Dsurefire.failIfNoSpecifiedTests=false test",
+    "result": "pass",
+    "report": "capabilities/evidence/T78-delivery/validation/public-products.txt",
+    "sha256": "b747400f3ea224f68b445a9797d7b01467e1ce0a35d81a4d466f65f859b1ca0b"
+  },
+  {
+    "name": "worker-signature",
+    "command": "./mvnw -B -ntp -pl pdf-migration-itext7 -am -Dfolio.t78.executionProfile=HARDENED_WORKER -Dtest=PdfVersionPasswordSecurityWorkflowTest,HardenedWorkerWorkflowTest,IncrementalSignatureWorkflowTest,IncrementalSignatureMatrixTest,IncrementalSignatureFacadeTest,PasswordSecurityFacadeTest -Dsurefire.failIfNoSpecifiedTests=false test",
+    "result": "pass",
+    "report": "capabilities/evidence/T78-delivery/validation/worker-signature.txt",
+    "sha256": "9fe5ccd936bc3a55f37f15f0c7aadfe100011fc70a22959c26d0cdc0e233dc3f"
+  },
+  {
+    "name": "qpdf-reproduction",
+    "command": "python3 scripts/provision-t78-qpdf.py",
+    "result": "pass",
+    "report": "capabilities/evidence/T78-delivery/validation/qpdf-reproduction.txt",
+    "sha256": "34bb1b70bff95287349c31a378b33626d924112e737002e748f95b92abe76551"
+  },
+  {
+    "name": "foundation-collector-tests",
+    "command": "PYTHONPATH=.build-cache/foundation-host-python python3 -B -m unittest discover -s scripts/tests -p 'test_*foundation.py'",
+    "result": "pass",
+    "tests": 70,
+    "report": "capabilities/evidence/T78-delivery/validation/foundation-collector-tests.txt",
+    "sha256": "9c3a902b9bbc131a6ff8d085e5600c9263e3e741c3c0e1add568f93c367ce663"
+  },
+  {
+    "name": "verify-before-regeneration",
+    "command": "./mvnw -B -ntp verify",
+    "environment": {
+      "MAVEN_OPTS": "-Dmaven.repo.local=/workspace/folio-pdf/.build-cache/maven/repository",
+      "FOLIO_HARFBUZZ_HELPER": "/workspace/folio-pdf/.build-cache/t78-provision/folio-harfbuzz/bin/folio-harfbuzz",
+      "PATH-prefix": "/workspace/folio-pdf/scripts/container-bin"
+    },
+    "result": "fail",
+    "finding": "Generated foundation-readiness.md was stale after final documentation edits; all preceding modules passed. Regenerate and rerun.",
+    "report": "capabilities/evidence/T78-delivery/validation/verify-before-regeneration.txt",
+    "sha256": "0c7385db2f2e46e061b05c7c4073b8eed52ed2fcd46b4a342757321166ca3d1c"
+  },
+  {
+    "name": "inventory-before-stage",
+    "commands": [
+      "./scripts/inventory validate",
+      "./scripts/inventory generate",
+      "./scripts/inventory check"
+    ],
+    "result": "pass",
+    "report": "capabilities/evidence/T78-delivery/validation/inventory-before-stage.txt",
+    "sha256": "744a911b966ca33e638944273148684df999541ae10ed411a15b57c7accc1335"
+  },
+  {
+    "name": "coordinator-java",
+    "command": "./mvnw -B -ntp -pl pdf-acceptance -am -Dtest=T78PasswordProductsTest -Dsurefire.failIfNoSpecifiedTests=false test",
+    "result": "pass",
+    "tests": 5,
+    "report": "capabilities/evidence/T78-delivery/validation/coordinator-java.txt",
+    "sha256": "2b60ceed5254d8349e9e38355ba53a0285c4ba663048e8a594164e69b0923df3"
+  },
+  {
+    "name": "coordinator-python",
+    "command": "PYTHONPATH=.build-cache/foundation-host-python python3 -B -m unittest discover -s scripts/tests -p test_t78_foundation.py",
+    "result": "pass",
+    "tests": 11,
+    "report": "capabilities/evidence/T78-delivery/validation/coordinator-python.txt",
+    "sha256": "2a2db9adcd1a15f159962d48a7031b6ca5adee6c0c105184eb76aa010ce518c4"
+  },
+  {
+    "name": "independent-profile-before-cleanup",
+    "command": "podman invocation in independent-profile-command.json",
+    "result": "pass",
+    "tests": 4,
+    "report": "capabilities/evidence/T78-delivery/validation/independent-profile-before-cleanup.txt",
+    "sha256": "aed8844d7a3143d1d20158881928119f9b1059ae732bf7c17462e0271f9eb296"
+  },
+  {
+    "name": "inventory-and-release-sandbox",
+    "commands": [
+      "./scripts/inventory validate",
+      "./scripts/inventory generate",
+      "./scripts/inventory check",
+      "./mvnw -B -ntp -pl build-tools/inventory,build-tools/release test"
+    ],
+    "result": "partial",
+    "finding": "Inventory validation, generated-file check and 17 inventory tests passed. Four release-tool tests could not start local GPG-agent sockets inside the sandbox; the exact release module rerun passed with local socket access.",
+    "report": "capabilities/evidence/T78-delivery/validation/inventory-and-release-sandbox.txt",
+    "sha256": "878d9599e3191fb150080d6026a105dc5487927b1a59cbd3ed0fbc1764569787"
+  },
+  {
+    "name": "release-regression",
+    "commands": [
+      "./mvnw -B -ntp -pl build-tools/release test"
+    ],
+    "result": "pass",
+    "finding": "All 11 tests passed with temporary test-only GPG keys and sockets; no release was signed or published.",
+    "report": "capabilities/evidence/T78-delivery/validation/release-regression.txt",
+    "sha256": "2531e40b03cfc5724820178704bf37b1f11a99caa586bc164b40f9afff426223"
+  },
+  {
+    "name": "independent-profile-before-group-supervision",
+    "command": "podman invocation in independent-profile-command.json",
+    "result": "pass",
+    "finding": "Six Java tests passed before final group supervision; final rerun follows.",
+    "report": "capabilities/evidence/T78-delivery/validation/independent-profile-before-group-supervision.txt",
+    "sha256": "d2c45e0d5b13fafae5b5a4f76f49a83467b024005ae4335f628a1a2ac2bcdc3f"
+  },
+  {
+    "name": "descendant-regression-before-fix",
+    "command": "PYTHONPATH=.build-cache/foundation-host-python python3 -B -m unittest scripts.tests.test_t78_foundation.PasswordFoundationTest.test_forced_coordinator_death_stops_active_tool",
+    "result": "expected-fail",
+    "finding": "The descendant survived the old direct-child parent-death signal. The regression cleans up and reaps its fixture processes.",
+    "report": "capabilities/evidence/T78-delivery/validation/descendant-regression-before-fix.txt",
+    "sha256": "14d9a2e0061eb880c368cbbb0bbeb9ff49b92f5c119c355b5d380daeceec2eec"
+  },
+  {
+    "name": "supervisor-python",
+    "command": "PYTHONPATH=.build-cache/foundation-host-python python3 -B -m unittest discover -s scripts/tests -p test_t78_foundation.py",
+    "result": "pass",
+    "finding": "All 12 tests passed, including direct and descendant termination, private cleanup, exact binary channels and missing-tool rejection.",
+    "report": "capabilities/evidence/T78-delivery/validation/supervisor-python.txt",
+    "sha256": "d1741f0289a4adbdedfb871a1942b4a1bfa267b70e3b9452d6478c4ade823e40"
+  },
+  {
+    "name": "inventory-frozen",
+    "commands": [
+      "./scripts/inventory validate",
+      "./scripts/inventory generate",
+      "./scripts/inventory check"
+    ],
+    "result": "pass",
+    "report": "capabilities/evidence/T78-delivery/validation/inventory-frozen.txt",
+    "sha256": "6234b45fa4a1f83bd9e83587e97e91c05be4042c15a639c81bbe9d10f1545fa5"
+  },
+  {
+    "name": "independent-profile-final",
+    "command-file": "capabilities/evidence/T78-delivery/validation/independent-profile-command.json",
+    "result": "pass",
+    "tests": 6,
+    "frozen-inputs-sha256": "8a9d6255a312f44d28aa91c6614fa2218948e16e42e8059173f9d30dd3b0b17c",
+    "report": "capabilities/evidence/T78-delivery/validation/independent-profile-final.txt",
+    "sha256": "7d917a821a6c6ec87c51aff6b1a3e0562fbde5c6e4d28c2f690be8c12863e44e"
+  },
+  {
+    "name": "foundation-collector-frozen",
+    "command": "PYTHONPATH=.build-cache/foundation-host-python python3 -B -m unittest discover -s scripts/tests -p 'test_*foundation.py'",
+    "result": "pass",
+    "tests": 73,
+    "report": "capabilities/evidence/T78-delivery/validation/foundation-collector-frozen.txt",
+    "sha256": "2f1d9dd0f0fdcbd07f9baa02ae72914682d645437eb279e7adbd62e5fe52d68b"
+  }
+]

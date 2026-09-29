@@ -1,0 +1,340 @@
+{
+  "schema-version": 1,
+  "conclusion": "completed",
+  "issue": 78,
+  "repository": "zerocloud-sdk/folio-pdf",
+  "spec-source": {
+    "path": "/workspace/contracts/issue-78-contract.md",
+    "sha256": "864e2c12dde0b6f2a3977d23b8f3fe367fd16c244fd62fd17d8b26a1ddad33ef"
+  },
+  "recorded-at": "2026-09-29T22:35:29.709189+00:00",
+  "review-fixed-point": "861c4ba81c7aecf9fba15052859f8cc80fd0259d",
+  "branch": "main",
+  "commit": null,
+  "candidate-sha256": "7e22418b8fa557d1128131bea5ae6c0893b9846aefe82315a83572d42d98e36a",
+  "contract-sha256": "7c93911015a20b6bfc15a98a59001ba003ed6eb4269ae03e97c816c995b7e964",
+  "owned-capability": "document.version-password-security",
+  "delivered-capability": "document.version-password-security.baseline",
+  "acceptance-profile": "T32-password-baseline",
+  "facade-mappings": 61,
+  "added-facade-mappings": 48,
+  "baseline-native-tuples": 8,
+  "baseline-facade-execution-profile": "IN_PROCESS",
+  "baseline-product-artifacts": 544,
+  "baseline-independent-chain-records": 32,
+  "refreshed-prior-obligations": [
+    "transactions",
+    "values",
+    "pages",
+    "metadata",
+    "annotations",
+    "text",
+    "images",
+    "incremental"
+  ],
+  "total-current-certifications": 72,
+  "total-independent-chain-records": 288,
+  "acceptance-criteria": [
+    {
+      "criterion": 1,
+      "summary": "Auditable source/profile/member table",
+      "contract-text": "Freeze an auditable baseline table linking each required input/output version, algorithm, revision, key length, crypt-filter arrangement, credential case, permission rule, and corresponding Facade member to its source requirement and positive/negative evidence. Explicitly audit excluded legacy output profiles, revisions including R5, restricted crypt-filter inputs, and nonempty/distinct/ASCII/length credential restrictions. Implement required successful cases; backend limitations or safe unsupported failures cannot replace required success. Any retained exclusion has a source-grounded reason consistent with the unchanged Foundation obligations.",
+      "evidence": [
+        "docs/research/T78-baseline-profile-audit.md",
+        "docs/t78-certification.md",
+        "capabilities/facade-surface.yaml"
+      ],
+      "result": "pass"
+    },
+    {
+      "criterion": 2,
+      "summary": "Version declarations, precedence, outputs and transitions",
+      "contract-text": "Certify PDF 1.0\u20131.7 and 2.0 input declarations, header/catalog precedence, malformed and unsupported declarations, default PDF 1.7 and explicit PDF 1.7/2.0 output, and protected version transitions. Preserve incremental version rules and protection against silently downgrading a PDF 2.0 primary or named Source.",
+      "evidence": [
+        "docs/t78-certification.md",
+        "capabilities/evidence/foundation/T78-final/password-baseline/observed-index.json"
+      ],
+      "result": "pass"
+    },
+    {
+      "criterion": 3,
+      "summary": "Secure defaults and admitted legacy profiles",
+      "contract-text": "Certify all-content AES-256 secure defaults and every admitted baseline legacy profile against independently authored encrypted fixtures. Obsolete output requires request-scoped Legacy Security Mode; enabling it neither changes the default nor leaks between requests. Independently verify actual encryption dictionaries and version consistency. Preserve the qualified PDF 1.7 ADBE Extension Level 8 claim and the normative PDF 2.0 R6 distinction; a draft or interoperability convention cannot be mislabeled normative standards proof.",
+      "evidence": [
+        "capabilities/profiles/T78-password/cases.json",
+        "capabilities/profiles/T78-password/products.json",
+        "capabilities/evidence/foundation/T78-final/password-baseline/observed-index.json"
+      ],
+      "result": "pass"
+    },
+    {
+      "criterion": 4,
+      "summary": "Credentials, authority and permission observations",
+      "contract-text": "Independent observations verify missing, incorrect, destroyed, user, owner, and applicable empty/encoding/boundary credentials; independently proven owner authority versus unrestricted user permissions; all eight permission flags and current operation authorization; malformed dictionaries and tampering rejection; and PDF 2.0 permission requirements. Password permissions continue to intersect with Existing Signature restrictions.",
+      "evidence": [
+        "capabilities/profiles/T78-controls/rules.json",
+        "capabilities/evidence/foundation/T78-final/password-baseline/observed-index.json"
+      ],
+      "result": "pass"
+    },
+    {
+      "criterion": 5,
+      "summary": "Protected Sources, publication and signature intersection",
+      "contract-text": "Protected primary and named Sources authenticate before caller work. Verify donor permissions and anti-downgrade behavior, protected rewrite with explicit protection and proven authority, encrypted incremental preservation, and publication failure behavior. Reopen every successful product. Rejected pre-publication operations leave existing destinations unchanged with ordered NOT_ATTEMPTED receipts and stable safe failures; existing partial-publication contracts remain intact.",
+      "evidence": [
+        "capabilities/evidence/T78-delivery/validation/worker-signature.txt",
+        "capabilities/evidence/foundation/T78-final/password-baseline/observed-index.json"
+      ],
+      "result": "pass"
+    },
+    {
+      "criterion": 6,
+      "summary": "Complete matching Facade and compiled surface",
+      "contract-text": "Implement and freeze the complete required Foundation reader/writer version, password-security, and permission Facade member set under `net.zerocloud.pdf.itext7.*`, preserving the Reference Suite package suffixes. Link every member to the baseline capability and obligation. Public Facade tests prove matching observable behavior, safe exception mapping, resource ownership, credential lifetime, and prevention of accidental plaintext output. Compiled signatures agree with the Facade Surface Manifest; Stable contains only certified mappings, Preview inherits the declared Stable surface, and classpath exclusivity remains enforced. No backend types, public plaintext-password String contract, permission bypass, or unsupported Stable stub is introduced.",
+      "evidence": [
+        "capabilities/facade-surface.yaml",
+        "capabilities/evidence/T78-delivery/validation/final-evidence-audit.json",
+        "capabilities/evidence/T78-delivery/validation/jdk-matrix.txt"
+      ],
+      "result": "pass"
+    },
+    {
+      "criterion": 7,
+      "summary": "Baseline child, inherited gates and separate downstream members",
+      "contract-text": "Add `document.version-password-security.baseline` with parent `document.version-password-security`, Acceptance Profile `T32-password-baseline`, and inherited external Dependency Gates, including compatible `document.value.inspect-patch`. The aggregate itself is not a prerequisite for the child. Preserve `password-clear-metadata` / `document.version-password-security.clear-metadata` for #79 and `password-attachments` / `document.version-password-security.attachments` for #80. Mark only the fully evidenced baseline compatible. Aggregate security remains incomplete until every required member is complete. Preserve existing fixture-proven metadata-clear legacy input behavior without implementing downstream scope expansion.",
+      "evidence": [
+        "capabilities/capability-matrix.yaml",
+        "capabilities/foundation-release.yaml",
+        "capabilities/evidence/T78-delivery/validation/final-evidence-audit.json"
+      ],
+      "result": "pass"
+    },
+    {
+      "criterion": 8,
+      "summary": "Eight Native tuples and actual Facade execution modes",
+      "contract-text": "Retain separate passing syntax, standards, semantic, and visual evidence, raw reports, and detected negative controls for each of the eight required Native combinations: Ubuntu 24.04 / Linux x86-64 \u00d7 JDK 8/11/17/21 \u00d7 IN_PROCESS/HARDENED_WORKER. Exercise the matching Facade on each required JDK and record its actual execution mode accurately; the current Facade\u2019s IN_PROCESS results cannot be relabeled Worker evidence.",
+      "evidence": [
+        "capabilities/evidence/foundation/T78-final/password-baseline/observed-index.json",
+        "capabilities/evidence/T78-delivery/validation/final-evidence-audit.json"
+      ],
+      "result": "pass"
+    },
+    {
+      "criterion": 9,
+      "summary": "Candidate, source, contract, environment, product and tool identities",
+      "contract-text": "Bind certification to actual candidate binaries, source and contract identities, fixture/product bytes, immutable OS image, observed JDK vendor/build, Java executable, execution settings, native/tool identities, commands, and raw observations. Pin rules and visual expectations before comparison. Use qpdf for syntax, separately qualified external standards checks with explicit required-rule coverage, independent project semantic observations, and pinned PDFium/ImageMagick visual evidence. Randomized encrypted products retain their actual artifact hashes; a repeatable non-secret observation hash alone is insufficient.",
+      "evidence": [
+        "capabilities/evidence/T78-delivery/source-freeze.json",
+        "capabilities/evidence/T78-delivery/validation/staged-candidate.json",
+        "capabilities/evidence/T78-delivery/validation/final-evidence-audit.json"
+      ],
+      "result": "pass"
+    },
+    {
+      "criterion": 10,
+      "summary": "Qualification and collector fail-closed behavior",
+      "contract-text": "Qualification and collector tests reject missing tools, uncovered required rules, invalid credentials, undetected controls, changed/resealed findings, mismatched identities, and falsely declared execution modes. FAIL or INDETERMINATE cannot become PASS through renamed producers, changed labels, weakened thresholds, or reused implementation output as the oracle. Evidence and logs do not disclose credentials, secret-derived authentication material, source paths, document content, or raw backend exceptions.",
+      "evidence": [
+        "capabilities/evidence/T78-delivery/validation/foundation-collector-frozen.txt",
+        "capabilities/evidence/T78-delivery/validation/live-qualification.json",
+        "capabilities/evidence/T78-delivery/review.md"
+      ],
+      "result": "pass"
+    },
+    {
+      "criterion": 11,
+      "summary": "Coordinated authorities, generated docs, provenance and migration notes",
+      "contract-text": "Update the Capability Matrix, Facade Surface Manifest, applicable Foundation authorities and evidence index, generated views, authoritative English security and certification contracts, Javadoc/README where applicable, `docs/zh-CN/getting-started.md`, and `PROVENANCE.md` together. Record source/fixture/tool provenance and any required 0.x migration notes. Correct current claims without rewriting historical evidence as a new run.",
+      "evidence": [
+        "docs/pdf-version-password-security.md",
+        "docs/t78-certification.md",
+        "PROVENANCE.md",
+        "docs/zh-CN/getting-started.md",
+        "capabilities/evidence/T78-delivery/validation/inventory-final.json"
+      ],
+      "result": "pass"
+    },
+    {
+      "criterion": 12,
+      "summary": "Same-candidate previous obligations and live readiness",
+      "contract-text": "The final evidence index satisfies `password-baseline` and preserves valid certification for previously completed obligations on the same candidate. Refresh invalidated records using fresh evidence directories. Inventory validation and generated-file checks pass. Run live readiness and explain remaining blockers: #79/#80 and other unfinished Foundation obligations may keep global readiness nonzero; missing #78 evidence or regressions in retained certification may not be dismissed as unrelated blockers.",
+      "evidence": [
+        "capabilities/foundation-evidence.yaml",
+        "capabilities/evidence/T78-delivery/validation/final-evidence-audit.json",
+        "capabilities/evidence/T78-delivery/validation/inventory-readiness-final.txt"
+      ],
+      "result": "pass"
+    },
+    {
+      "criterion": 13,
+      "summary": "Smallest public validation and affected tests",
+      "contract-text": "Ran the smallest applicable validation: `./mvnw -B -ntp -pl pdf-document -am -Dtest=PdfVersionPasswordSecurityWorkflowTest -Dsurefire.failIfNoSpecifiedTests=false test`. Also run affected public Worker/signature tests, the new Facade and acceptance tests, compiled-surface/artifact checks, and collector/inventory tests. Record exact commands, results, and evidence paths.",
+      "evidence": [
+        "capabilities/evidence/T78-delivery/validation/commands.json",
+        "capabilities/evidence/T78-delivery/validation/native-focused.txt"
+      ],
+      "result": "pass"
+    },
+    {
+      "criterion": 14,
+      "summary": "Full Maven, JDK matrix, real-tool profile and certification route",
+      "contract-text": "With the documented pinned tools and explicit HarfBuzz installation available, pass `./mvnw -B -ntp verify` and `./scripts/verify-jdk-matrix.sh` for JDK 8, 11, 17, and 21. Run applicable real-tool tests through the repository\u2019s `independent-certification` profile and the completed baseline certification route. Ordinary Maven success is insufficient to certify independent chains or environments.",
+      "evidence": [
+        "capabilities/evidence/T78-delivery/validation/full-validation.json",
+        "capabilities/evidence/T78-delivery/validation/independent-profile-final.txt",
+        "capabilities/evidence/T78-delivery/validation/certification-validation.json"
+      ],
+      "result": "pass"
+    },
+    {
+      "criterion": 15,
+      "summary": "Java 8, clean-room license, ownership, isolation and non-goals",
+      "contract-text": "Preserve Java 8 language/runtime/API compatibility, Apache-2.0 clean-room licensing, explicit resource ownership, backend-neutral public types, and acceptance-only dependency isolation. No downstream Forms, Trust signing, Conformance, SVG/XML, OCR, Sanitization, or Office work is implemented.",
+      "evidence": [
+        "PROVENANCE.md",
+        "capabilities/evidence/T78-delivery/review.md",
+        "capabilities/evidence/T78-delivery/validation/jdk-matrix.txt"
+      ],
+      "result": "pass"
+    },
+    {
+      "criterion": 16,
+      "summary": "Final diff review against the fixed baseline",
+      "contract-text": "Reviewed the final diff against the source criteria and recorded baseline.",
+      "evidence": [
+        "capabilities/evidence/T78-delivery/review.md"
+      ],
+      "result": "pass"
+    },
+    {
+      "criterion": 17,
+      "summary": "Standards/Spec findings resolved and verified",
+      "contract-text": "Resolved applicable Standards/Spec review findings and recorded verification of the resulting final state.",
+      "evidence": [
+        "capabilities/evidence/T78-delivery/review.md",
+        "capabilities/evidence/T78-delivery/validation/full-validation.json"
+      ],
+      "result": "pass"
+    },
+    {
+      "criterion": 18,
+      "summary": "Optional commit boundary respected",
+      "contract-text": "Commit only after all selected criteria pass and the source context or user authorizes a commit.",
+      "evidence": [
+        "capabilities/evidence/T78-delivery/receipt.json"
+      ],
+      "result": "pass",
+      "note": "The authorized optional local commit was omitted. No commit, push, PR, tracker mutation or release publication occurred."
+    },
+    {
+      "criterion": 19,
+      "summary": "Only ticket changes in the worktree",
+      "contract-text": "Workspace is clean except for this ticket's changes (unrelated dirty or untracked files untouched).",
+      "evidence": [
+        "capabilities/evidence/T78-delivery/validation/final-worktree-status.txt"
+      ],
+      "result": "pass"
+    },
+    {
+      "criterion": 20,
+      "summary": "Delivery receipt with identities, results, blockers and review",
+      "contract-text": "Return a receipt identifying the baseline, changed behavior, completed profile/member set, commands and results, candidate/evidence identities, remaining aggregate blockers, review resolution, and optional local commit hash.",
+      "evidence": [
+        "capabilities/evidence/T78-delivery/receipt.json",
+        "capabilities/evidence/T78-delivery/README.md"
+      ],
+      "result": "pass"
+    }
+  ],
+  "final-audit": {
+    "path": "capabilities/evidence/T78-delivery/validation/final-evidence-audit.json",
+    "sha256": "f48592787af3e5f48c3e6cb4aeaa2efbe667cc71c53a04232a0d5ea2132c7809"
+  },
+  "source-freeze": {
+    "path": "capabilities/evidence/T78-delivery/source-freeze.json",
+    "sha256": "aa1c07863da6263d9a4e3221ce6d203e1a9dddccf35529c62f4dcfd7be828c52"
+  },
+  "review": {
+    "path": "capabilities/evidence/T78-delivery/review.md",
+    "sha256": "b1eeb3ab057f7cec8cb1a0b248ceb850c365627811e3c771d0fd3d7b11ed646e"
+  },
+  "worktree": {
+    "path": "capabilities/evidence/T78-delivery/validation/final-worktree-check.json",
+    "sha256": "f7499bef253b10f913390feda91ea941a8906b95e93060d5f7cde63a6b77edd6"
+  },
+  "validation-records": [
+    {
+      "path": "capabilities/evidence/T78-delivery/validation/commands.json",
+      "sha256": "9a5083c068416210df4176f62bd6ff59de7f6ab1c143f9178947e92787bfe3a4"
+    },
+    {
+      "path": "capabilities/evidence/T78-delivery/validation/full-validation.json",
+      "sha256": "55d96559890b8439ea27be5b26b7c76ce18d5a8d2a038c5f9285757b86083d1d"
+    },
+    {
+      "path": "capabilities/evidence/T78-delivery/validation/certification-validation.json",
+      "sha256": "6a3e08803b78871ed5484bab9f598c1a6f686fa7a695d2fb402d262503fac990"
+    },
+    {
+      "path": "capabilities/evidence/T78-delivery/validation/live-qualification.json",
+      "sha256": "47751d32a9bb7e488e379611f4e1976b59027a37d3ff5e709a2ff51b6709bbe5"
+    },
+    {
+      "path": "capabilities/evidence/T78-delivery/validation/inventory-final.json",
+      "sha256": "bcf88fa403a3b420c5fe4f8ca9526b7498939696e6e9bb50c7ae359ae391e6e6"
+    }
+  ],
+  "remaining-aggregate-blockers": {
+    "result": "not-ready-outside-selected-scope",
+    "report": {
+      "path": "capabilities/evidence/T78-delivery/validation/inventory-readiness-final.txt",
+      "sha256": "36ced95c92462a64846febe2416e7476f0460c6d605b73b468bafa61e7e4ac40"
+    },
+    "blocker-count": 387,
+    "remaining-obligations": [
+      "acceptance",
+      "barcodes-1d",
+      "barcodes-2d",
+      "candidate",
+      "canvas",
+      "docs",
+      "environments",
+      "facade-artifacts",
+      "fonts",
+      "graphics",
+      "integration",
+      "java-artifacts",
+      "limits",
+      "pagination",
+      "paragraphs",
+      "password-attachments",
+      "password-clear-metadata",
+      "provenance",
+      "providers",
+      "publication-controls",
+      "recovery",
+      "rendering",
+      "reproducibility",
+      "security",
+      "shaping",
+      "supply-chain",
+      "tables",
+      "tables-base",
+      "tables-pagination",
+      "worker"
+    ]
+  },
+  "uncertified-nonblocking-platforms": [
+    "Windows x86-64",
+    "macOS x86-64",
+    "macOS arm64"
+  ],
+  "not-executed": [
+    "Optional local commit",
+    "Push, PR creation/merge, tracker mutation, release signing/publication",
+    "Downstream #79/#80 or parent #33 end-to-end implementation"
+  ],
+  "existing-optional-test-skips": "Successful final full verify runs retained three opt-in HardenedWorkerScaleProfileTest skips and one opt-in T30 barcode raster skip. No #78 test was skipped; the independent-certification profile passed all six T78 tests, including its real-tool case.",
+  "planning-thread-decision-needed": "None to complete the selected scope; review/publication remains with the orchestrator.",
+  "external-effects": "No remote mutations or messages. Only local implementation, tool provisioning, validation, unsigned staging and evidence recording."
+}

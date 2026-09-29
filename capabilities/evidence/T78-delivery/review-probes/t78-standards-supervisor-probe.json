@@ -1,0 +1,37 @@
+{
+  "actual-pinned-appimage-on-parent-sigkill": [
+    {
+      "executable": "/usr/bin/dash",
+      "state-after-parent-sigkill": "Z"
+    },
+    {
+      "executable": "@repository/.build-cache/imagemagick/7.1.2-30/bin/imagemagick.AppImage",
+      "state-after-parent-sigkill": "Z"
+    },
+    {
+      "executable": "@private/appimage_extracted_6ee1b744aec2b20239c4e76adeb7a244/usr/bin/magick",
+      "state-after-parent-sigkill": "Z"
+    }
+  ],
+  "binary-streams": {
+    "binary-stdin-stdout-exact": true,
+    "exit-code": 7,
+    "stderr-exact": true
+  },
+  "cleanup": "All probe groups terminated, children reaped, and private directories removed.",
+  "controlled-setup-race": [
+    {
+      "sigterm-handler-reset": false,
+      "tool-started-after-parent-death": true
+    },
+    {
+      "sigterm-handler-reset": true,
+      "tool-started-after-parent-death": false
+    }
+  ],
+  "frozen-inputs-sha256": "8a9d6255a312f44d28aa91c6614fa2218948e16e42e8059173f9d30dd3b0b17c",
+  "kind": "development-standards-review-probes-not-certification",
+  "observer-sha256": "0ecbc539c77dc2798277f6fadeb14f34fb7e128bbc5aba57c4ada0ebec513428",
+  "shell": "/usr/bin/dash",
+  "supervisor": "trap 'kill -KILL \"-$$\"' TERM INT HUP; exec 3<&0; \"$@\" <&3 3<&- & child=$!; exec 3<&- 0<&-; wait \"$child\"; result=$?; exit \"$result\""
+}

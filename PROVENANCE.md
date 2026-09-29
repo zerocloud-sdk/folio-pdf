@@ -2844,3 +2844,75 @@ change requires fresh candidate certification; r3 evidence remains historical.
   record remains syntax-only. T09 is compatible; its former experimental gate
   description is historical. Current certification does not publish #33 or
   satisfy downstream security, Forms or Trust obligations.
+
+## T78 baseline password security certification record
+
+- Authorship: AI-assisted original implementation, tests, fixtures and
+  documentation by OpenAI Codex, executed for maintainer mabaiqiu under the
+  approved #78 contract. Public third-party standards/APIs and acceptance-tool
+  patches are separately identified below; no iText implementation was used.
+- Scope and review baseline: issue #78 and its sole execution contract;
+  `861c4ba81c7aecf9fba15052859f8cc80fd0259d`. The aggregate stays experimental;
+  #79 and #80 remain required separate obligations. No remote mutation or
+  release-publication authority is granted by this work.
+- Public sources: the source/hash/link inventory in
+  `docs/research/T78-baseline-profile-audit.md` covers ISO 32000-1:2008,
+  public ISO 32000-2:2020 EC3 clause 7 corrections and Arlington models,
+  Adobe Supplement/extension specifications, RFC 3454/4013, Unicode/ICU APIs,
+  and iText Core 7.2.6 public reader/writer/version/permission API pages.
+  The complete licensed PDF 2.0 standard was unavailable; no draft is labeled
+  normative and PDF 1.7 R6/EL8 remains qualified interoperability.
+- Clean-room boundary: no iText source, resources, binaries, copied fixtures
+  or black-box output were used. Public PDFBox 3.0.8 Apache-2.0 source/API and
+  bytecode were inspected for password representation, parser/security-handler
+  extension points, R3 owner rounds, R5/R6 preparation and key ownership.
+  Product code delegates public byte-level algorithms where correct and
+  supplies original standards-derived R3/40 owner handling and credential
+  preparation. ICU4J 77.1 is already a pinned runtime dependency; this ticket
+  adds no product dependency. Public interfaces remain backend-neutral/Java 8.
+- Original Apache-2.0 fixtures: `scripts/generate-t78-corpus.py` authors exact
+  headers/dictionaries, RC4/MD5 and R5/R6 protection from public algorithms;
+  `cryptography` 43.0.0 supplies only AES after a NIST known-answer check.
+  Unicode preparation uses the independent Python Unicode 3.2 tables.
+  `scripts/generate-t78-controls.py` creates original single-defect PDFs and
+  paint/pixel controls. Profile manifests freeze all original bytes. No parser
+  or product output is the authoring oracle. Visual grids require no font.
+- Independent checkers: unchanged Arlington 0.81/fe4a1a8 with distinct input
+  and output model patches; pdfcpu 0.15.0 plus separately named
+  0.15.0-folio-t78-r1 Standard crypt-filter correction; qpdf 12.4.0 plus
+  separately named 12.4.0-folio-t78-r1 optional V2 Length correction; pinned
+  PDFium v0.11.2/chromium-7881 and ImageMagick 7.1.2-30. Original tools and
+  historical evidence remain unchanged. `build-tools/acceptance` records
+  patches, upstream commit/archive hashes, compiler/build recipes and licenses.
+  The qpdf combined patch also adds its version suffix and CLI-only CMake
+  configuration; its full identity is `scripts/t78-qpdf-pin.properties`,
+  distinct from the two-condition research patch hash.
+- Independent cryptographic proof: pypdf 6.1.1 (BSD-3-Clause) with PyCryptodome
+  3.23.0 (BSD/public-domain licensing), isolated acceptance-only wheel files.
+  Published archive hashes and all 413 runtime-file hashes are frozen in
+  `provision-t78-security-checkers.py` and `t78-checkers-runtime.sha256`.
+  The adapter uses exact prepared bytes, disables site loading, captures
+  encrypted-Perms verification failures and never retains authentication
+  material. qpdf's first-n R3/40 owner convention is not used as normative
+  output proof; pypdf and pdfcpu independently verify ISO owner authority.
+- Tool qualification: 30 original pdfcpu probes and 20 original qpdf probes
+  passed the separately built derivatives; unmodified qpdf reproduced exactly
+  four omitted/null V2 Length failures. The final profile re-executes 95
+  required security controls and nineteen core standards controls in every
+  tuple, plus syntax, credential, semantic, changed-paint and exact one-pixel
+  negatives. Rules/models and grids are pinned before comparison; no generic
+  pass label, altered threshold or implementation-produced oracle qualifies.
+- Evidence: `scripts/t78-certification.py` records separate chains and actual
+  randomized ciphertext hashes; `scripts/t78_foundation_reports.py` checks
+  retained identities and independently replays the observations. Private
+  password files and decrypted intermediates are removed; safe reports never
+  retain credentials, authentication-entry values/hashes or backend exceptions.
+  Synthetic visual grids are retained as the required comparison artifacts.
+- Current candidate certification is exclusively the fresh Foundation index,
+  with source/contract/artifact/corpus/tool identities and actual Ubuntu 24.04
+  Linux x86-64 JDK 8/11/17/21 observations in both Native modes. Facade records
+  its actual IN_PROCESS mode on every JDK. Prior completed obligations must be
+  refreshed in dependency order on that same candidate. Windows/macOS remain
+  explicitly uncertified and are not F0.1.0 blockers. Historical T16 prose
+  remains historical; `docs/pdf-version-password-security.md` and the T78
+  profile supersede its current behavior claims without relabeling old runs.

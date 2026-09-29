@@ -1,0 +1,17 @@
+F
+======================================================================
+FAIL: test_forced_coordinator_death_stops_active_tool (scripts.tests.test_t78_foundation.PasswordFoundationTest.test_forced_coordinator_death_stops_active_tool)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/tests/test_t78_foundation.py", line 142, in test_forced_coordinator_death_stops_active_tool
+    self.check_coordinator_termination(signal.SIGKILL)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/workspace/folio-pdf/scripts/tests/test_t78_foundation.py", line 193, in check_coordinator_termination
+    self.assertFalse(any(running(pid) for pid in pids), 'Tool or descendant survived its coordinator')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : Tool or descendant survived its coordinator
+
+----------------------------------------------------------------------
+Ran 1 test in 5.087s
+
+FAILED (failures=1)

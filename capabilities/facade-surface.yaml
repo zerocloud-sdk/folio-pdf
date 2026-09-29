@@ -15,6 +15,7 @@ surfaces:
       exception-contract: Declares java.io.FileNotFoundException for a target that cannot name a file in an existing directory.
       capabilities:
         - document.blank.create-publish-reopen
+        - document.version-password-security.baseline
     - id: itext7.kernel.pdf-reader.constructor-string
       reference:
         type: com.itextpdf.kernel.pdf.PdfReader
@@ -26,6 +27,7 @@ surfaces:
       exception-contract: Maps a Native Document Failure to java.io.IOException with its stable code and safe diagnostic.
       capabilities:
         - document.blank.create-publish-reopen
+        - document.version-password-security.baseline
     - id: itext7.kernel.pdf-reader.close
       reference:
         type: com.itextpdf.kernel.pdf.PdfReader
@@ -37,6 +39,7 @@ surfaces:
       exception-contract: Retains java.io.IOException; releases an unclaimed private snapshot. A Document owns a claimed snapshot until its close; caller streams remain open.
       capabilities:
         - document.blank.create-publish-reopen
+        - document.version-password-security.baseline
     - id: itext7.kernel.pdf-document.constructor-writer
       reference:
         type: com.itextpdf.kernel.pdf.PdfDocument
@@ -48,6 +51,7 @@ surfaces:
       exception-contract: No checked exception; publication failures are reported by close().
       capabilities:
         - document.blank.create-publish-reopen
+        - document.version-password-security.baseline
     - id: itext7.kernel.pdf-document.constructor-reader
       reference:
         type: com.itextpdf.kernel.pdf.PdfDocument
@@ -59,6 +63,7 @@ surfaces:
       exception-contract: No checked exception; source failures are reported by the PdfReader constructor.
       capabilities:
         - document.blank.create-publish-reopen
+        - document.version-password-security.baseline
     - id: itext7.kernel.pdf-document.add-new-page
       reference:
         type: com.itextpdf.kernel.pdf.PdfDocument
@@ -92,6 +97,7 @@ surfaces:
       exception-contract: Maps a publication Document Failure to net.zerocloud.pdf.itext7.kernel.exceptions.PdfException with its stable code and safe diagnostic.
       capabilities:
         - document.blank.create-publish-reopen
+        - document.version-password-security.baseline
     - id: itext7.kernel.pdf-document.constructor-named-sources-targets
       reference:
         status: folio-extension
@@ -103,6 +109,7 @@ surfaces:
       exception-contract: Rejects null, blank, duplicate-instance, unavailable, or inconsistent Source and Target declarations before transferring any Reader ownership.
       capabilities:
         - document.page.manipulate-merge-split
+        - document.version-password-security.baseline
     - id: itext7.kernel.pdf-document.add-new-page-at-index
       reference:
         type: com.itextpdf.kernel.pdf.PdfDocument
@@ -330,6 +337,7 @@ surfaces:
       exception-contract: No checked exception; publication errors are reported at PdfDocument.close with actual Native receipts.
       capabilities:
       - document.value.inspect-patch
+      - document.version-password-security.baseline
     - id: itext7.kernel.pdf-reader.constructor-input-stream
       reference:
         type: com.itextpdf.kernel.pdf.PdfReader
@@ -342,6 +350,7 @@ surfaces:
         cause.
       capabilities:
       - document.value.inspect-patch
+      - document.version-password-security.baseline
     - id: itext7.kernel.pdf-document.constructor-reader-writer
       reference:
         type: com.itextpdf.kernel.pdf.PdfDocument
@@ -354,6 +363,7 @@ surfaces:
         or detached mutation targets reject with IllegalStateException.
       capabilities:
       - document.value.inspect-patch
+      - document.version-password-security.baseline
     - id: itext7.kernel.pdf-document.get-catalog
       reference:
         type: com.itextpdf.kernel.pdf.PdfDocument
@@ -1207,6 +1217,7 @@ surfaces:
       exception-contract: Rejects invalid declarations before Reader transfer; unsupported output policy and Native failures retain their DocumentFailure cause through PdfException when execution starts.
       capabilities:
       - document.metadata.outlines-destinations-attachments
+      - document.version-password-security.baseline
     - id: itext7.kernel.pdf-document.get-document-info
       reference:
         type: com.itextpdf.kernel.pdf.PdfDocument
@@ -1874,6 +1885,7 @@ surfaces:
         append operations remain protected.
       capabilities:
       - document.incremental-signature.protect
+      - document.version-password-security.baseline
     - id: itext7.kernel.pdf-document.constructor-named-stamping
       reference:
         status: folio-extension
@@ -1888,6 +1900,7 @@ surfaces:
         unsupported signed publication is admitted.
       capabilities:
       - document.incremental-signature.protect
+      - document.version-password-security.baseline
     - id: itext7.kernel.pdf-document.is-append-mode
       reference:
         type: com.itextpdf.kernel.pdf.PdfDocument
@@ -1899,13 +1912,554 @@ surfaces:
       exception-contract: Closed Documents reject with IllegalStateException.
       capabilities:
       - document.incremental-signature.protect
+    - id: itext7.kernel.reader-properties.constructor
+      reference:
+        type: com.itextpdf.kernel.pdf.ReaderProperties
+        member: <init>()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.ReaderProperties
+        member: <init>()
+      generic-contract: Creates caller-owned mutable properties with no credential retained.
+      exception-contract: No checked exception; malformed choices fail with IllegalArgumentException and closed properties with
+        IllegalStateException.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.reader-properties.close
+      reference:
+        status: folio-extension
+        type: com.itextpdf.kernel.pdf.ReaderProperties
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.ReaderProperties
+        member: close()
+      generic-contract: Clears the owned credential copy; idempotent. Borrowed Native credentials remain caller-owned.
+      exception-contract: No checked exception; malformed choices fail with IllegalArgumentException and closed properties with
+        IllegalStateException.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.writer-properties.constructor
+      reference:
+        type: com.itextpdf.kernel.pdf.WriterProperties
+        member: <init>()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.WriterProperties
+        member: <init>()
+      generic-contract: Creates caller-owned mutable properties with no credential retained.
+      exception-contract: No checked exception; malformed choices fail with IllegalArgumentException and closed properties with
+        IllegalStateException.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.writer-properties.close
+      reference:
+        status: folio-extension
+        type: com.itextpdf.kernel.pdf.WriterProperties
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.WriterProperties
+        member: close()
+      generic-contract: Clears the owned credential copy; idempotent. Borrowed Native credentials remain caller-owned.
+      exception-contract: No checked exception; malformed choices fail with IllegalArgumentException and closed properties with
+        IllegalStateException.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.reader-properties.set-password
+      reference:
+        type: com.itextpdf.kernel.pdf.ReaderProperties
+        member: setPassword(byte[])
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.ReaderProperties
+        member: setPassword(byte[])
+      generic-contract: Returns these properties after copying bytes. Null removes the credential; empty bytes explicitly supply
+        an empty password.
+      exception-contract: No checked exception; malformed choices fail with IllegalArgumentException and closed properties with
+        IllegalStateException.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.reader-properties.set-credential
+      reference:
+        status: folio-extension
+        type: com.itextpdf.kernel.pdf.ReaderProperties
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.ReaderProperties
+        member: setCredential(net.zerocloud.pdf.PasswordCredential)
+      generic-contract: Returns these properties and borrows the destroyable Native credential.
+      exception-contract: No checked exception; malformed choices fail with IllegalArgumentException and closed properties with
+        IllegalStateException.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.writer-properties.set-pdf-version
+      reference:
+        type: com.itextpdf.kernel.pdf.WriterProperties
+        member: setPdfVersion(com.itextpdf.kernel.pdf.PdfVersion)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.WriterProperties
+        member: setPdfVersion(net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion)
+      generic-contract: Returns these properties; output accepts PDF 1.7 or 2.0 at execution.
+      exception-contract: No checked exception; malformed choices fail with IllegalArgumentException and closed properties with
+        IllegalStateException.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.writer-properties.set-standard-encryption
+      reference:
+        type: com.itextpdf.kernel.pdf.WriterProperties
+        member: setStandardEncryption(byte[],byte[],int,int)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.WriterProperties
+        member: setStandardEncryption(byte[],byte[],int,int)
+      generic-contract: Returns these properties after copying user then owner bytes, permission bits and one of four algorithms;
+        empty owner generates independent random authority.
+      exception-contract: No checked exception; malformed choices fail with IllegalArgumentException and closed properties with
+        IllegalStateException.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.writer-properties.set-legacy-security-mode
+      reference:
+        status: folio-extension
+        type: com.itextpdf.kernel.pdf.WriterProperties
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.WriterProperties
+        member: setLegacySecurityMode(net.zerocloud.pdf.LegacySecurityMode)
+      generic-contract: Returns these properties with explicit request-scoped obsolete-output opt-in; secure defaults remain unchanged.
+      exception-contract: No checked exception; malformed choices fail with IllegalArgumentException and closed properties with
+        IllegalStateException.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.pdf-reader.constructor-string-properties
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfReader
+        member: <init>(java.lang.String,com.itextpdf.kernel.pdf.ReaderProperties)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfReader
+        member: <init>(java.lang.String,net.zerocloud.pdf.itext7.kernel.pdf.ReaderProperties)
+      generic-contract: Captures an owned properties snapshot; caller streams and the supplied properties remain caller-owned.
+      exception-contract: Declares java.io.IOException; maps Native failures to their stable code and safe diagnostic.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.pdf-reader.constructor-input-stream-properties
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfReader
+        member: <init>(java.io.InputStream,com.itextpdf.kernel.pdf.ReaderProperties)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfReader
+        member: <init>(java.io.InputStream,net.zerocloud.pdf.itext7.kernel.pdf.ReaderProperties)
+      generic-contract: Captures an owned properties snapshot; caller streams and the supplied properties remain caller-owned.
+      exception-contract: Declares java.io.IOException; maps Native failures to their stable code and safe diagnostic.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.pdf-writer.constructor-string-properties
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfWriter
+        member: <init>(java.lang.String,com.itextpdf.kernel.pdf.WriterProperties)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter
+        member: <init>(java.lang.String,net.zerocloud.pdf.itext7.kernel.pdf.WriterProperties)
+      generic-contract: Captures an owned properties snapshot; caller streams and the supplied properties remain caller-owned.
+      exception-contract: Declares java.io.FileNotFoundException for an invalid Path target.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.pdf-writer.constructor-output-stream-properties
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfWriter
+        member: <init>(java.io.OutputStream,com.itextpdf.kernel.pdf.WriterProperties)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter
+        member: <init>(java.io.OutputStream,net.zerocloud.pdf.itext7.kernel.pdf.WriterProperties)
+      generic-contract: Captures an owned properties snapshot; caller streams and the supplied properties remain caller-owned.
+      exception-contract: No checked exception; rejects invalid or closed declarations before ownership transfer.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.pdf-reader.is-encrypted
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfReader
+        member: isEncrypted()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfReader
+        member: isEncrypted()
+      generic-contract: Returns whether the authenticated Source is password protected.
+      exception-contract: No checked exception; rejects a closed Reader with IllegalStateException.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.pdf-reader.is-opened-with-full-permission
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfReader
+        member: isOpenedWithFullPermission()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfReader
+        member: isOpenedWithFullPermission()
+      generic-contract: Returns true for unprotected input or independently proven owner authority; an unrestricted user remains
+        false.
+      exception-contract: No checked exception; rejects a closed Reader with IllegalStateException.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.pdf-reader.get-permissions
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfReader
+        member: getPermissions()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfReader
+        member: getPermissions()
+      generic-contract: Returns the unsigned declared 32-bit permission word, or zero for plaintext.
+      exception-contract: No checked exception; rejects a closed Reader with IllegalStateException.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.pdf-reader.get-crypto-mode
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfReader
+        member: getCryptoMode()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfReader
+        member: getCryptoMode()
+      generic-contract: Returns the baseline algorithm selector (plus bit 8 for the retained metadata-clear legacy input), or
+        -1 for plaintext.
+      exception-contract: No checked exception; rejects a closed Reader with IllegalStateException.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.pdf-writer.close
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfWriter
+        member: close()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter
+        member: close()
+      generic-contract: Clears the Writer-owned output-property snapshot; leaves a caller OutputStream open.
+      exception-contract: No checked exception; idempotent.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.pdf-document.get-pdf-version
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDocument
+        member: getPdfVersion()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: getPdfVersion()
+      generic-contract: Returns the selected publication version for a rewrite, or the effective authenticated Source version
+        for reading/incremental publication.
+      exception-contract: No checked exception; rejects a closed Document with IllegalStateException.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.encryption-constants.standard-encryption-40
+      reference:
+        type: com.itextpdf.kernel.pdf.EncryptionConstants
+        member: STANDARD_ENCRYPTION_40
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.EncryptionConstants
+        member: STANDARD_ENCRYPTION_40
+      generic-contract: Public static final int; matches the Reference Suite baseline algorithm or permission bit.
+      exception-contract: No exception contract for a constant.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.encryption-constants.standard-encryption-128
+      reference:
+        type: com.itextpdf.kernel.pdf.EncryptionConstants
+        member: STANDARD_ENCRYPTION_128
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.EncryptionConstants
+        member: STANDARD_ENCRYPTION_128
+      generic-contract: Public static final int; matches the Reference Suite baseline algorithm or permission bit.
+      exception-contract: No exception contract for a constant.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.encryption-constants.encryption-aes-128
+      reference:
+        type: com.itextpdf.kernel.pdf.EncryptionConstants
+        member: ENCRYPTION_AES_128
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.EncryptionConstants
+        member: ENCRYPTION_AES_128
+      generic-contract: Public static final int; matches the Reference Suite baseline algorithm or permission bit.
+      exception-contract: No exception contract for a constant.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.encryption-constants.encryption-aes-256
+      reference:
+        type: com.itextpdf.kernel.pdf.EncryptionConstants
+        member: ENCRYPTION_AES_256
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.EncryptionConstants
+        member: ENCRYPTION_AES_256
+      generic-contract: Public static final int; matches the Reference Suite baseline algorithm or permission bit.
+      exception-contract: No exception contract for a constant.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.encryption-constants.allow-degraded-printing
+      reference:
+        type: com.itextpdf.kernel.pdf.EncryptionConstants
+        member: ALLOW_DEGRADED_PRINTING
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.EncryptionConstants
+        member: ALLOW_DEGRADED_PRINTING
+      generic-contract: Public static final int; matches the Reference Suite baseline algorithm or permission bit.
+      exception-contract: No exception contract for a constant.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.encryption-constants.allow-printing
+      reference:
+        type: com.itextpdf.kernel.pdf.EncryptionConstants
+        member: ALLOW_PRINTING
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.EncryptionConstants
+        member: ALLOW_PRINTING
+      generic-contract: Public static final int; matches the Reference Suite baseline algorithm or permission bit.
+      exception-contract: No exception contract for a constant.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.encryption-constants.allow-modify-contents
+      reference:
+        type: com.itextpdf.kernel.pdf.EncryptionConstants
+        member: ALLOW_MODIFY_CONTENTS
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.EncryptionConstants
+        member: ALLOW_MODIFY_CONTENTS
+      generic-contract: Public static final int; matches the Reference Suite baseline algorithm or permission bit.
+      exception-contract: No exception contract for a constant.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.encryption-constants.allow-copy
+      reference:
+        type: com.itextpdf.kernel.pdf.EncryptionConstants
+        member: ALLOW_COPY
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.EncryptionConstants
+        member: ALLOW_COPY
+      generic-contract: Public static final int; matches the Reference Suite baseline algorithm or permission bit.
+      exception-contract: No exception contract for a constant.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.encryption-constants.allow-modify-annotations
+      reference:
+        type: com.itextpdf.kernel.pdf.EncryptionConstants
+        member: ALLOW_MODIFY_ANNOTATIONS
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.EncryptionConstants
+        member: ALLOW_MODIFY_ANNOTATIONS
+      generic-contract: Public static final int; matches the Reference Suite baseline algorithm or permission bit.
+      exception-contract: No exception contract for a constant.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.encryption-constants.allow-fill-in
+      reference:
+        type: com.itextpdf.kernel.pdf.EncryptionConstants
+        member: ALLOW_FILL_IN
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.EncryptionConstants
+        member: ALLOW_FILL_IN
+      generic-contract: Public static final int; matches the Reference Suite baseline algorithm or permission bit.
+      exception-contract: No exception contract for a constant.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.encryption-constants.allow-screenreaders
+      reference:
+        type: com.itextpdf.kernel.pdf.EncryptionConstants
+        member: ALLOW_SCREENREADERS
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.EncryptionConstants
+        member: ALLOW_SCREENREADERS
+      generic-contract: Public static final int; matches the Reference Suite baseline algorithm or permission bit.
+      exception-contract: No exception contract for a constant.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.encryption-constants.allow-assembly
+      reference:
+        type: com.itextpdf.kernel.pdf.EncryptionConstants
+        member: ALLOW_ASSEMBLY
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.EncryptionConstants
+        member: ALLOW_ASSEMBLY
+      generic-contract: Public static final int; matches the Reference Suite baseline algorithm or permission bit.
+      exception-contract: No exception contract for a constant.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.pdf-version.pdf-1-0
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfVersion
+        member: PDF_1_0
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion
+        member: PDF_1_0
+      generic-contract: Public static final PdfVersion for the exact named PDF declaration.
+      exception-contract: No exception contract for a constant.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.pdf-version.pdf-1-1
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfVersion
+        member: PDF_1_1
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion
+        member: PDF_1_1
+      generic-contract: Public static final PdfVersion for the exact named PDF declaration.
+      exception-contract: No exception contract for a constant.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.pdf-version.pdf-1-2
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfVersion
+        member: PDF_1_2
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion
+        member: PDF_1_2
+      generic-contract: Public static final PdfVersion for the exact named PDF declaration.
+      exception-contract: No exception contract for a constant.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.pdf-version.pdf-1-3
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfVersion
+        member: PDF_1_3
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion
+        member: PDF_1_3
+      generic-contract: Public static final PdfVersion for the exact named PDF declaration.
+      exception-contract: No exception contract for a constant.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.pdf-version.pdf-1-4
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfVersion
+        member: PDF_1_4
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion
+        member: PDF_1_4
+      generic-contract: Public static final PdfVersion for the exact named PDF declaration.
+      exception-contract: No exception contract for a constant.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.pdf-version.pdf-1-5
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfVersion
+        member: PDF_1_5
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion
+        member: PDF_1_5
+      generic-contract: Public static final PdfVersion for the exact named PDF declaration.
+      exception-contract: No exception contract for a constant.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.pdf-version.pdf-1-6
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfVersion
+        member: PDF_1_6
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion
+        member: PDF_1_6
+      generic-contract: Public static final PdfVersion for the exact named PDF declaration.
+      exception-contract: No exception contract for a constant.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.pdf-version.pdf-1-7
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfVersion
+        member: PDF_1_7
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion
+        member: PDF_1_7
+      generic-contract: Public static final PdfVersion for the exact named PDF declaration.
+      exception-contract: No exception contract for a constant.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.pdf-version.pdf-2-0
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfVersion
+        member: PDF_2_0
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion
+        member: PDF_2_0
+      generic-contract: Public static final PdfVersion for the exact named PDF declaration.
+      exception-contract: No exception contract for a constant.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.pdf-version.from-string
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfVersion
+        member: fromString(java.lang.String)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion
+        member: fromString(java.lang.String)
+      generic-contract: Accepts the exact PDF-M.m spelling and returns a supported PdfVersion.
+      exception-contract: No checked exception; parsing rejects unsupported spelling and null input.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.pdf-version.from-pdf-name
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfVersion
+        member: fromPdfName(com.itextpdf.kernel.pdf.PdfName)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion
+        member: fromPdfName(net.zerocloud.pdf.itext7.kernel.pdf.PdfName)
+      generic-contract: Accepts an exact M.m PdfName and returns a supported PdfVersion.
+      exception-contract: No checked exception; parsing rejects unsupported spelling and null input.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.pdf-version.to-pdf-name
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfVersion
+        member: toPdfName()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion
+        member: toPdfName()
+      generic-contract: Returns the exact M.m PdfName.
+      exception-contract: No checked exception; parsing rejects unsupported spelling and null input.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.pdf-version.to-string
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfVersion
+        member: toString()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion
+        member: toString()
+      generic-contract: Returns PDF-M.m.
+      exception-contract: No checked exception; parsing rejects unsupported spelling and null input.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.pdf-version.compare-to
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfVersion
+        member: compareTo(com.itextpdf.kernel.pdf.PdfVersion)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion
+        member: compareTo(net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion)
+      generic-contract: Compares versions in declared order; implements Comparable<PdfVersion>.
+      exception-contract: No checked exception; parsing rejects unsupported spelling and null input.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.pdf-version.compare-to-bridge
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfVersion
+        member: compareTo(java.lang.Object)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion
+        member: compareTo(java.lang.Object)
+      generic-contract: Compiler-generated erased Comparable bridge to compareTo(PdfVersion).
+      exception-contract: No checked exception; parsing rejects unsupported spelling and null input.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.pdf-version.equals
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfVersion
+        member: equals(java.lang.Object)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion
+        member: equals(java.lang.Object)
+      generic-contract: Compares exact supported version values.
+      exception-contract: No checked exception; parsing rejects unsupported spelling and null input.
+      capabilities:
+      - document.version-password-security.baseline
+    - id: itext7.kernel.pdf-version.hash-code
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfVersion
+        member: hashCode()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion
+        member: hashCode()
+      generic-contract: Returns the value hash code.
+      exception-contract: No checked exception; parsing rejects unsupported spelling and null input.
+      capabilities:
+      - document.version-password-security.baseline
   preview: []
 
 excluded-capabilities:
 - id: document.version-password-security
   ticket: T32
-  reason: 'Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under
-    #78, #79, #80 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.'
+  reason: 'The baseline child has its own certified mappings. The aggregate remains incomplete: required metadata-clear and embedded-files-only mappings remain #79 and #80 obligations; this is not a release-scope waiver.'
 - id: composition.canvas.draw-positioned-text
   ticket: T32
   reason: 'Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under

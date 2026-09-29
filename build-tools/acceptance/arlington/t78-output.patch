@@ -1,0 +1,76 @@
+--- base/ArrayOfFilterNames.tsv
++++ output/ArrayOfFilterNames.tsv
+@@ -1,2 +1,3 @@
+ Key	Type	SinceVersion	DeprecatedIn	Required	IndirectReference	Inheritable	DefaultValue	PossibleValues	SpecialCase	Link	Note
+-*	name	1.0		FALSE	FALSE	FALSE		[ASCIIHexDecode,ASCII85Decode,LZWDecode,fn:SinceVersion(1.2,FlateDecode),RunLengthDecode,CCITTFaxDecode,fn:SinceVersion(1.4,JBIG2Decode),DCTDecode,fn:SinceVersion(1.5,JPXDecode),fn:SinceVersion(1.5,Crypt)]			
++0	name	1.0		FALSE	FALSE	FALSE		[ASCIIHexDecode,ASCII85Decode,LZWDecode,fn:SinceVersion(1.2,FlateDecode),RunLengthDecode,CCITTFaxDecode,fn:SinceVersion(1.4,JBIG2Decode),DCTDecode,fn:SinceVersion(1.5,JPXDecode),fn:SinceVersion(1.5,Crypt)]			
++1*	name	1.0		FALSE	FALSE	FALSE		[ASCIIHexDecode,ASCII85Decode,LZWDecode,fn:SinceVersion(1.2,FlateDecode),RunLengthDecode,CCITTFaxDecode,fn:SinceVersion(1.4,JBIG2Decode),DCTDecode,fn:SinceVersion(1.5,JPXDecode)]			
+--- base/CryptFilter.tsv
++++ output/CryptFilter.tsv
+@@ -1,5 +1,5 @@
+ Key	Type	SinceVersion	DeprecatedIn	Required	IndirectReference	Inheritable	DefaultValue	PossibleValues	SpecialCase	Link	Note
+ Type	name	1.5		FALSE	FALSE	FALSE		[CryptFilter]			Table 25 
+-CFM	name	1.5		FALSE	FALSE	FALSE	None	[None,fn:Deprecated(2.0,V2),fn:Deprecated(2.0,fn:SinceVersion(1.6,AESV2)),fn:Deprecated(2.0,fn:IsPDFVersion(1.7,fn:Extension(ADBE_Extn3,AESV3))),fn:SinceVersion(2.0,AESV3),fn:SinceVersion(2.0,fn:Extension(ISO_TS_32003,AESV4))]			
+-AuthEvent	name	1.5		FALSE	FALSE	FALSE	DocOpen	[DocOpen,EFOpen]			
+-Length	integer	1.5	2.0	TRUE	FALSE	FALSE		[fn:RequiredValue(@CFM==AESV2,16),fn:RequiredValue(@CFM==AESV3,32),fn:Eval((@Length>=5) && (@Length<=16))]			Expressed in BYTES. https://github.com/pdf-association/pdf-issues/issues/184
++CFM	name	1.5		TRUE	FALSE	FALSE	None	[fn:Eval(((trailer::Encrypt::@V==4) && ((@CFM==V2) || (@CFM==AESV2))) || ((trailer::Encrypt::@V==5) && (@CFM==AESV3)))]	[fn:Eval(((@CFM!=AESV2) || fn:SinceVersion(1.6)) && ((@CFM!=AESV3) || fn:IsPresent(Length)))]		
++AuthEvent	name	1.5		FALSE	FALSE	FALSE	DocOpen	[DocOpen]			
++Length	integer	1.5	2.0	FALSE	FALSE	FALSE		[fn:Eval(((@CFM==V2) && (@Length==16)) || ((@CFM==AESV2) && (@Length==16)) || ((@CFM==AESV3) && (@Length==32)))]			Expressed in BYTES. https://github.com/pdf-association/pdf-issues/issues/184
+--- base/CryptFilterMap.tsv
++++ output/CryptFilterMap.tsv
+@@ -1,4 +1,2 @@
+ Key	Type	SinceVersion	DeprecatedIn	Required	IndirectReference	Inheritable	DefaultValue	PossibleValues	SpecialCase	Link	Note
+-Identity	dictionary	1.5		FALSE	FALSE	FALSE				[CryptFilter]	Table 26 explicitly defines Identity
+-StdCF	dictionary	1.5		FALSE	FALSE	FALSE			[fn:Eval(StdCF::@AuthEvent==DocOpen)]	[CryptFilter]	Clause 7.6.4
+-*	dictionary	1.5		FALSE	FALSE	FALSE				[CryptFilter]	
++StdCF	dictionary	1.5		TRUE	FALSE	FALSE				[CryptFilter]	Clause 7.6.4
+--- base/EncryptionStandard.tsv
++++ output/EncryptionStandard.tsv
+@@ -1,18 +1,18 @@
+ Key	Type	SinceVersion	DeprecatedIn	Required	IndirectReference	Inheritable	DefaultValue	PossibleValues	SpecialCase	Link	Note
+-Filter	name	1.1		TRUE	FALSE	FALSE	Standard	[Standard]			Table 20 and Table 21
++Filter	name	1.1		TRUE	FALSE	FALSE	Standard	[Standard]	[fn:Eval(fn:Not(fn:IsPresent(SubFilter)) && ((@V<4) || (fn:IsPresent(CF) && fn:IsPresent(StmF) && fn:IsPresent(StrF))) && ((@R<5) || (fn:IsPresent(OE) && fn:IsPresent(UE) && fn:IsPresent(Perms))))]		Table 20 and Table 21
+ SubFilter	name	1.3		FALSE	FALSE	FALSE					
+-V	integer	1.1		TRUE	FALSE	FALSE		[fn:Deprecated(1.1,0),fn:Deprecated(2.0,1),fn:Deprecated(2.0,fn:SinceVersion(1.4,2)),fn:Deprecated(2.0,fn:SinceVersion(1.4,3)),fn:Deprecated(2.0,fn:SinceVersion(1.5,4)),fn:IsPDFVersion(1.7,fn:Extension(ADBE_Extn3,5)),fn:SinceVersion(2.0,5),fn:SinceVersion(2.0,fn:Extension(ISO_TS_32003,6))]			
+-Length	integer	1.4	2.0	FALSE	FALSE	FALSE	40	[fn:Eval((@Length>=40) && ((@Length<=128) || fn:Extension(ADBE_Extn3,(@Length<=256))) && ((@Length mod 8)==0))]	[fn:IsMeaningful((@V==2) || (@V==3))]		
+-CF	dictionary	1.5		FALSE	FALSE	FALSE			[fn:IsMeaningful((@V==4) || ((@V==5) && fn:SinceVersion(2.0)))]	[CryptFilterMap]	
+-StmF	name	1.5		FALSE	FALSE	FALSE	Identity		[fn:IsMeaningful((@V==4) || ((@V==5) && (fn:Extension(ADBE_Extn3) || fn:SinceVersion(2.0))))]		
+-StrF	name	1.5		FALSE	FALSE	FALSE	Identity		[fn:IsMeaningful((@V==4) || ((@V==5) && (fn:Extension(ADBE_Extn3) || fn:SinceVersion(2.0))))]		
+-EFF	name	1.1		FALSE	FALSE	FALSE			[fn:IsMeaningful(((@V==4) && fn:SinceVersion(1.5)) || ((@V==5) && (fn:Extension(ADBE_Extn3) || fn:SinceVersion(2.0))))]		
+-R	integer	1.1		TRUE	FALSE	FALSE		[fn:Deprecated(2.0,fn:RequiredValue(@V<2,2)),fn:Deprecated(2.0,fn:RequiredValue((@V==2) || (@V==3),3)),fn:Deprecated(2.0,fn:RequiredValue(@V==4,4)),fn:Deprecated(2.0,fn:IsPDFVersion(1.7,fn:Extension(ADBE_Extn3,5))),fn:Deprecated(2.0,fn:SinceVersion(2.0,5)),fn:SinceVersion(2.0,fn:RequiredValue(@V==5,6)),fn:SinceVersion(2.0,fn:Extension(ISO_TS_32003,7))]			
++V	integer	1.1		TRUE	FALSE	FALSE		[1,2,4,5]	[fn:Eval(((@V==1) && ((@R==2) || fn:SinceVersion(1.4))) || ((@V==2) && fn:SinceVersion(1.4)) || ((@V==4) && fn:SinceVersion(1.5)) || ((@V==5) && (fn:SinceVersion(2.0) || (fn:IsPDFVersion(1.7) && (fn:IsPresent(trailer::Catalog::Extensions::ADBE::BaseVersion) && fn:IsPresent(trailer::Catalog::Extensions::ADBE::ExtensionLevel) && (trailer::Catalog::Extensions::ADBE::@BaseVersion==1.7)) && (((@R==5) && (trailer::Catalog::Extensions::ADBE::@ExtensionLevel>=3)) || ((@R==6) && (trailer::Catalog::Extensions::ADBE::@ExtensionLevel>=8)))))))]		
++Length	integer	1.4	2.0	TRUE	FALSE	FALSE		[fn:Eval(((@V==1) && (@Length==40)) || ((@V==2) && ((@Length==40) || (@Length==128))) || ((@V==4) && (@Length==128)) || ((@V==5) && (@Length==256)))]			
++CF	dictionary	1.5		fn:IsRequired(@V>=4)	FALSE	FALSE				[CryptFilterMap]	
++StmF	name	1.5		fn:IsRequired(@V>=4)	FALSE	FALSE	Identity	[StdCF]			
++StrF	name	1.5		fn:IsRequired(@V>=4)	FALSE	FALSE	Identity	[StdCF]			
++EFF	name	1.1		FALSE	FALSE	FALSE		[StdCF]			
++R	integer	1.1		TRUE	FALSE	FALSE		[fn:Eval(((@V==1) && ((@R==2) || (@R==3))) || ((@V==2) && (@R==3)) || ((@V==4) && (@R==4)) || ((@V==5) && ((@R==5) || (@R==6))))]			
+ O	string-byte	1.1		TRUE	FALSE	FALSE			[fn:Eval(fn:AlwaysUnencrypted() && (((@R<=4) && (fn:StringLength(O)==32)) || (((@R==5) || (@R==6)) && (fn:StringLength(O)==48))))]		32 bytes long if the value of R is 4 or less and 48 bytes long if the value of R is 6
+ U	string-byte	1.1		TRUE	FALSE	FALSE			[fn:Eval(fn:AlwaysUnencrypted() && (((@R<=4) && (fn:StringLength(U)==32)) || (((@R==5) || (@R==6)) && (fn:StringLength(U)==48))))]		32 bytes long if the value of R is 4 or less and 48 bytes long if the value of R is 6
+ OE	string-byte	1.1		fn:IsRequired((@R==5) || (@R==6))	FALSE	FALSE			[fn:Eval(fn:AlwaysUnencrypted() && (fn:StringLength(OE)==32))]		32 byte string
+-UE	string-byte	1.1		fn:IsRequired((@R==5) || (@R==6))	FALSE	FALSE			[fn:Eval(fn:AlwaysUnencrypted())]		
+-P	bitmask	1.1		TRUE	FALSE	FALSE			[fn:Eval(fn:BitsClear(1,2) && fn:BitsSet(7,8) && fn:SinceVersion(2.0,fn:BitSet(10)) && (fn:SinceVersion(2.0,fn:Extension(ISO_TS_32004,fn:BitsSet(14,32))) || fn:BitsSet(13,32)))]		Table 22
+-Perms	string-byte	1.1		fn:IsRequired((@R==5) || (@R==6))	FALSE	FALSE			[fn:Eval(fn:AlwaysUnencrypted())]		
+-EncryptMetadata	boolean	1.5		FALSE	FALSE	FALSE	true		[fn:IsMeaningful((@V==4) || ((@V==5) && fn:SinceVersion(2.0)))]		
++UE	string-byte	1.1		fn:IsRequired((@R==5) || (@R==6))	FALSE	FALSE			[fn:Eval(fn:AlwaysUnencrypted() && (fn:StringLength(UE)==32))]		
++P	bitmask	1.1		TRUE	FALSE	FALSE			[fn:Eval(fn:BitsClear(1,2) && fn:BitsSet(7,8) && fn:BitsSet(13,32) && ((@R!=2) || fn:BitsSet(9,12)) && (fn:BeforeVersion(2.0) || fn:BitSet(10)))]		Table 22
++Perms	string-byte	1.1		fn:IsRequired((@R==5) || (@R==6))	FALSE	FALSE			[fn:Eval(fn:AlwaysUnencrypted() && (fn:StringLength(Perms)==16))]		
++EncryptMetadata	boolean	1.5		FALSE	FALSE	FALSE	true		[fn:Eval(@EncryptMetadata==true)]		
+ KDFSalt	string-byte	fn:Extension(ISO_TS_32004,2.0)		FALSE	fn:MustBeDirect()	FALSE			[fn:Eval(fn:AlwaysUnencrypted())]		ISO/TS 32004 integrity protection
+--- base/FilterCrypt.tsv
++++ output/FilterCrypt.tsv
+@@ -1,3 +1,3 @@
+ Key	Type	SinceVersion	DeprecatedIn	Required	IndirectReference	Inheritable	DefaultValue	PossibleValues	SpecialCase	Link	Note
+ Type	name	1.5		FALSE	FALSE	FALSE		[CryptFilterDecodeParms]			Table 14
+-Name	name	1.5		FALSE	FALSE	FALSE	Identity		[fn:Eval(fn:InKeyMap(trailer::Encrypt::CF) || (@Name==Identity))]		
++Name	name	1.5		TRUE	FALSE	FALSE		[StdCF]			
+--- base/Stream.tsv
++++ output/Stream.tsv
+@@ -1,6 +1,6 @@
+ Key	Type	SinceVersion	DeprecatedIn	Required	IndirectReference	Inheritable	DefaultValue	PossibleValues	SpecialCase	Link	Note
+ Length	integer	1.0		TRUE	FALSE	FALSE					Table 5
+-Filter	array;name	1.0		FALSE	FALSE	FALSE		[];[ASCIIHexDecode,ASCII85Decode,LZWDecode,fn:SinceVersion(1.2,FlateDecode),RunLengthDecode,CCITTFaxDecode,fn:SinceVersion(1.4,JBIG2Decode),DCTDecode,fn:SinceVersion(1.5,JPXDecode),fn:SinceVersion(1.5,Crypt)]	[fn:Eval(fn:ArrayLength(DecodeParms)==fn:ArrayLength(Filter))];[]	[ArrayOfFilterNames];[]	Table 6
++Filter	array;name	1.0		FALSE	FALSE	FALSE		[];[ASCIIHexDecode,ASCII85Decode,LZWDecode,fn:SinceVersion(1.2,FlateDecode),RunLengthDecode,CCITTFaxDecode,fn:SinceVersion(1.4,JBIG2Decode),DCTDecode,fn:SinceVersion(1.5,JPXDecode),fn:SinceVersion(1.5,Crypt)]	[fn:Eval((fn:ArrayLength(DecodeParms)==fn:ArrayLength(Filter)) && ((Filter::@0!=Crypt) || fn:IsPresent(DecodeParms::0::@Name==StdCF)))];[fn:Eval((@Filter!=Crypt) || (fn:IsPresent(DecodeParms::Name) && (DecodeParms::@Name==StdCF)))]	[ArrayOfFilterNames];[]	Table 6
+ DecodeParms	array;dictionary	1.0		FALSE	FALSE	FALSE			[fn:Eval(fn:ArrayLength(DecodeParms)==fn:ArrayLength(Filter))];[]	[ArrayOfDecodeParams];[FilterLZWDecode,fn:SinceVersion(1.2,FilterFlateDecode),FilterCCITTFaxDecode,fn:SinceVersion(1.4,FilterJBIG2Decode),FilterDCTDecode,fn:SinceVersion(1.5,FilterCrypt)]	
+ F	dictionary;string	1.2		FALSE	FALSE	FALSE				[FileSpecification];[]	
+ FFilter	array;name	1.2		FALSE	FALSE	FALSE		[];[ASCIIHexDecode,ASCII85Decode,LZWDecode,FlateDecode,RunLengthDecode,CCITTFaxDecode,fn:SinceVersion(1.4,JBIG2Decode),DCTDecode,fn:SinceVersion(1.5,JPXDecode),fn:SinceVersion(1.5,Crypt)]	[fn:Eval(fn:ArrayLength(FDecodeParms)==fn:ArrayLength(FFilter))];[]	[ArrayOfFilterNames];[]	

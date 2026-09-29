@@ -150,6 +150,16 @@ reopens each with user and owner credentials before qpdf runs `--check` plus
 `--show-encryption`. qpdf receives the user credential through a temporary
 password file that is deleted after inspection; the recorded invocation hides
 its path and password-valued tool output is replaced with `<redacted>`.
+
+The separately certified [T78 baseline profile](../docs/t78-certification.md)
+extends that historical T16 probe with 45 independently authored successful
+inputs, 68 Native/Facade products, and qualified syntax, standards, semantic
+and visual chains in all eight required Ubuntu/JDK/Native-mode tuples.
+It retains actual randomized ciphertext hashes, exact credentials through
+private tool channels, 95 security controls, and collector replay. Its input
+hashes are not ID-neutral. The Facade's actual IN_PROCESS mode is explicit;
+metadata-clear and embedded-files-only certification remain #79 and #80.
+
 The T17 producer appends two Canvas Programs to a project-authored page and
 retains the unchanged result as one artifact covering lines, a cubic curve,
 stroke, both fill and clip winding rules, an affine transform, nested graphics

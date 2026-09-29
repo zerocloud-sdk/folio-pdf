@@ -20,7 +20,6 @@ import java.util.Map;
 import java.util.Objects;
 import net.zerocloud.pdf.composition.FontSource;
 import net.zerocloud.pdf.provider.ProviderSelection;
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
 
@@ -137,7 +136,7 @@ final class PdfBoxWorkflowEngine {
                     document,
                     primaryCredential,
                     context.resources);
-            PdfBoxPasswordSecurity.requireCompatibleInput(
+            securityInfo = PdfBoxPasswordSecurity.requireCompatibleInput(
                     document,
                     versionInfo,
                     securityInfo);
@@ -1096,17 +1095,12 @@ final class PdfBoxWorkflowEngine {
         try {
             Path path = source.toAbsolutePath().normalize();
             if (characters == null) {
-                return Loader.loadPDF(
-                        path.toFile(),
-                        resources.streamCacheFactory());
+                return PdfBoxPasswordParser.load(path, null, resources);
             }
             passwordMemory = resources.reserveOwnedMemory(
                     2L * characters.length);
             resources.checkpoint();
-            PDDocument loaded = Loader.loadPDF(
-                    path.toFile(),
-                    new String(characters),
-                    resources.streamCacheFactory());
+            PDDocument loaded = PdfBoxPasswordParser.load(path, characters, resources);
             try {
                 resources.checkpoint();
                 return loaded;
@@ -1136,7 +1130,7 @@ final class PdfBoxWorkflowEngine {
                 : WorkflowCredentialCharacters.copyOf(credential, resources);
     }
 
-    private static DocumentFailure credentialFailure(boolean missing) {
+    static DocumentFailure credentialFailure(boolean missing) {
         return versionFailure(
                 missing
                         ? DocumentFailureCode.CREDENTIAL_REQUIRED
@@ -1188,10 +1182,10 @@ final class PdfBoxWorkflowEngine {
         PdfBoxPasswordSecurity.PreparedPassword ownerPassword = null;
         try {
             validationPassword = outputSecurity.validationPassword(resources);
-            validationDocument = Loader.loadPDF(
-                    staged.toFile(),
+            validationDocument = PdfBoxPasswordParser.load(
+                    staged,
                     validationPassword.get(),
-                    resources.streamCacheFactory());
+                    resources);
             if (validationDocument.getNumberOfPages() == 0) {
                 throw failure(
                         DocumentFailureCode.DOCUMENT_VALIDATION_FAILED,
@@ -1239,10 +1233,10 @@ final class PdfBoxWorkflowEngine {
             if (outputSecurity.isPresent()) {
                 ownerPassword = outputSecurity.ownerValidationPassword(
                         resources);
-                validationDocument = Loader.loadPDF(
-                        staged.toFile(),
+                validationDocument = PdfBoxPasswordParser.load(
+                        staged,
                         ownerPassword.get(),
-                        resources.streamCacheFactory());
+                        resources);
                 if (validationDocument.getNumberOfPages() == 0) {
                     throw failure(
                             DocumentFailureCode.DOCUMENT_VALIDATION_FAILED,
@@ -1841,7 +1835,7 @@ final class PdfBoxWorkflowEngine {
                                 credentialCharacters == null
                                         ? null : credentialCharacters.get(),
                                 resources);
-                PdfBoxPasswordSecurity.requireCompatibleInput(
+                securityInfo = PdfBoxPasswordSecurity.requireCompatibleInput(
                         document,
                         versionInfo,
                         securityInfo);

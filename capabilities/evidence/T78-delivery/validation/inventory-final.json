@@ -1,0 +1,66 @@
+[
+  {
+    "name": "inventory-validate",
+    "command": [
+      "./scripts/inventory",
+      "validate"
+    ],
+    "started": "2026-09-29T22:27:00.352887+00:00",
+    "finished": "2026-09-29T22:27:12.507127+00:00",
+    "environment": {
+      "MAVEN_OPTS": "-Dmaven.repo.local=/workspace/folio-pdf/.build-cache/maven/repository"
+    },
+    "exit-code": 0,
+    "result": "pass",
+    "report": "capabilities/evidence/T78-delivery/validation/inventory-validate-final.txt",
+    "sha256": "16c882a764e9fded692bbe5218ac2e79a1cb236e161bd2628f10ba50ee78b37f"
+  },
+  {
+    "name": "inventory-generate",
+    "command": [
+      "./scripts/inventory",
+      "generate"
+    ],
+    "started": "2026-09-29T22:27:12.507689+00:00",
+    "finished": "2026-09-29T22:28:09.514369+00:00",
+    "environment": {
+      "MAVEN_OPTS": "-Dmaven.repo.local=/workspace/folio-pdf/.build-cache/maven/repository"
+    },
+    "exit-code": 0,
+    "result": "pass",
+    "report": "capabilities/evidence/T78-delivery/validation/inventory-generate-final.txt",
+    "sha256": "f5a6bf4bdb5a5852d4ecc4bb6c3a0a9ee633f86eb640bccc4a6fc1e27acd37c8"
+  },
+  {
+    "name": "inventory-check",
+    "command": [
+      "./scripts/inventory",
+      "check"
+    ],
+    "started": "2026-09-29T22:28:09.515217+00:00",
+    "finished": "2026-09-29T22:28:28.564425+00:00",
+    "environment": {
+      "MAVEN_OPTS": "-Dmaven.repo.local=/workspace/folio-pdf/.build-cache/maven/repository"
+    },
+    "exit-code": 0,
+    "result": "pass",
+    "report": "capabilities/evidence/T78-delivery/validation/inventory-check-final.txt",
+    "sha256": "ea850c5b1ffbde0a7b476ed4df0eef3f5542a819d83661b4eed25aa9eb352d4c"
+  },
+  {
+    "name": "inventory-readiness",
+    "command": [
+      "./scripts/inventory",
+      "readiness"
+    ],
+    "started": "2026-09-29T22:28:28.564901+00:00",
+    "finished": "2026-09-29T22:29:29.052482+00:00",
+    "environment": {
+      "MAVEN_OPTS": "-Dmaven.repo.local=/workspace/folio-pdf/.build-cache/maven/repository"
+    },
+    "exit-code": 1,
+    "result": "not-ready",
+    "report": "capabilities/evidence/T78-delivery/validation/inventory-readiness-final.txt",
+    "sha256": "36ced95c92462a64846febe2416e7476f0460c6d605b73b468bafa61e7e4ac40"
+  }
+]

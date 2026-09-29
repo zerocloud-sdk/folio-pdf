@@ -1,0 +1,20 @@
+--- a/pkg/pdfcpu/crypto.go
++++ b/pkg/pdfcpu/crypto.go
+@@ -1250,12 +1250,15 @@
+ 	}
+ 
+ 	length := d.IntEntry("Length")
++	if d.HasEntry("Length") && length == nil {
++		return false, fmt.Errorf("%w: crypt filter entry \"Length\" must be an integer", ErrMalformedEncryption)
++	}
+ 	pdf20 := ctx.PDF20()
+-	if length == nil && !pdf20 && v != 5 {
++	if length == nil && !pdf20 && v != 5 && pubKeySecHandler {
+ 		return false, fmt.Errorf("%w: crypt filter missing entry \"Length\"", ErrMalformedEncryption)
+ 	}
+ 	if v == 4 {
+-		specViolation, err := validateCFLength(length, cfm, pdf20, relaxed)
++		specViolation, err := validateCFLength(length, cfm, pdf20 || !pubKeySecHandler, relaxed)
+ 		if err != nil {
+ 			return false, err
+ 		}

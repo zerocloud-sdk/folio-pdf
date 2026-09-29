@@ -1,0 +1,45 @@
+{
+  "command": [
+    "python3",
+    "-B",
+    "scripts/tests/test_t78_foundation.py",
+    "--qualify-run",
+    "target/t78-live-collector-final"
+  ],
+  "environment": {
+    "PYTHONPATH": "/workspace/folio-pdf/.build-cache/foundation-host-python",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "started": "2026-09-29T22:19:29.979914+00:00",
+  "finished": "2026-09-29T22:26:13.325264+00:00",
+  "exit-code": 0,
+  "result": "pass",
+  "replay-result": "pass",
+  "source-observations": "capabilities/evidence/foundation/T78-final/password-baseline/jdk8-in_process/observations",
+  "copy": "target/t78-live-collector-final",
+  "report": "capabilities/evidence/T78-delivery/validation/live-qualification-final.txt",
+  "sha256": "e9dc94a4bfd67d44f8a38736c7a44aa667be7d3d26155553ecd7a758838f7b2e",
+  "isolated-mode-controls": [
+    {
+      "name": "native-publication-mode",
+      "result": "detected",
+      "mutation": "Only the named execution-mode value changed; all other fields retained.",
+      "expected-rejection": "Actual public product identity or mode mismatch"
+    },
+    {
+      "name": "facade-declared-mode",
+      "result": "detected",
+      "mutation": "Only the named execution-mode value changed; all other fields retained.",
+      "expected-rejection": "Wrong or incomplete baseline evidence declaration"
+    }
+  ],
+  "certified-source-unchanged": true,
+  "source-binding": {
+    "result.properties": "405f7534fce28a72012b5237cf0b301bad2176e88c01e2cc981f17d07b84434b",
+    "retained-files.sha256": "650838bfdeaa8ecfb4a29968d6cdef83d9e91405dedc9e9f9d58f498d707e6c7"
+  },
+  "qualification-driver": {
+    "path": "capabilities/evidence/T78-delivery/validation/live-qualification.py",
+    "sha256": "7d7e71dde5040b4ce1031883f569d3e401e95919832d5ec7f40c0f508d107714"
+  }
+}

@@ -1,0 +1,862 @@
+{
+  "profile": "T32-password-baseline",
+  "required-rules": [
+    "aes128-version15",
+    "cf-absent",
+    "cf-event",
+    "cf-event-type",
+    "cf-extra",
+    "cf-length-absent",
+    "cf-length-bits",
+    "cf-length-type",
+    "cf-method",
+    "cf-method-absent",
+    "cf-stdcf-absent",
+    "cf-type",
+    "crypt-array-duplicate",
+    "crypt-array-identity",
+    "crypt-array-name-missing",
+    "crypt-array-params-missing",
+    "crypt-array-params-null",
+    "crypt-array-second",
+    "crypt-name-identity",
+    "crypt-name-missing",
+    "eff-identity",
+    "eff-type",
+    "encryptmetadata-type",
+    "extension-base",
+    "extension-level",
+    "extension-missing",
+    "filter-absent",
+    "filter-handler",
+    "filter-type",
+    "global-length-bits",
+    "length-absent",
+    "length-type",
+    "metadata-clear-output",
+    "normative-r3-output-owner",
+    "o-absent",
+    "o-long",
+    "o-short",
+    "o-type",
+    "oe-absent",
+    "oe-long",
+    "oe-short",
+    "oe-type",
+    "p-absent",
+    "p-bit10-output",
+    "p-range",
+    "p-range-aes128",
+    "p-range-r2",
+    "p-range-r3-128",
+    "p-range-r3-40",
+    "p-range-r5",
+    "p-range-r6-17",
+    "p-range-v4-rc4",
+    "p-reserved-1",
+    "p-reserved-13",
+    "p-reserved-2",
+    "p-reserved-32",
+    "p-reserved-7",
+    "p-reserved-8",
+    "p-type",
+    "perms-absent",
+    "perms-long",
+    "perms-plaintext-0",
+    "perms-plaintext-4",
+    "perms-plaintext-5",
+    "perms-plaintext-6",
+    "perms-plaintext-7",
+    "perms-plaintext-8",
+    "perms-plaintext-9",
+    "perms-short",
+    "perms-type",
+    "r-absent",
+    "r-type",
+    "r2-reserved9",
+    "rc4-r3-version13",
+    "stmf-absent",
+    "stmf-identity",
+    "stmf-type",
+    "strf-absent",
+    "strf-identity",
+    "strf-type",
+    "subfilter-present",
+    "tuple-v2-r6",
+    "tuple-v5-r4",
+    "tuple-v9",
+    "u-absent",
+    "u-long",
+    "u-short",
+    "u-type",
+    "ue-absent",
+    "ue-long",
+    "ue-short",
+    "ue-type",
+    "v-absent",
+    "v-type",
+    "v5-aesv2-consistent"
+  ],
+  "rules": {
+    "aes128-version15": {
+      "file": "aes128-version15.pdf",
+      "finding": "CFM (CryptFilter)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "c71f3e71579308ad952b45b96f304a37894c80f191b547cae9d48f552fe232c5",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "cf-absent": {
+      "file": "cf-absent.pdf",
+      "finding": "Filter (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "1a545d202c37e224ec6df58e2d9b2bb1372bc44c6f5fce047bf16ec497df5176",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "cf-event": {
+      "file": "cf-event.pdf",
+      "finding": "AuthEvent (CryptFilter)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "bf498dfb990182e42ef4477a7cb82e92176e908e284fd2ec2ef8751c337aa83e",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "cf-event-type": {
+      "file": "cf-event-type.pdf",
+      "finding": "AuthEvent (CryptFilter)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "ebe83ad200ec1c84b8c72f2b89cbd7b67e2b453d4391e67de64a1ed6190a2367",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "cf-extra": {
+      "file": "cf-extra.pdf",
+      "finding": "unknown key 'Custom' is not defined in Arlington for CryptFilterMap",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "d6391f56b9e95b3a167e6ddbc208ac6effefec3ea93e575f5e795941b3c89946",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "cf-length-absent": {
+      "file": "cf-length-absent.pdf",
+      "finding": "CFM (CryptFilter)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "35f24e0e2551d819c5a59d44c4256eb4d59cfd30831766e63276549162d592cf",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "cf-length-bits": {
+      "file": "cf-length-bits.pdf",
+      "finding": "Length (CryptFilter)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "2e8c954a644476a0f1386273f748a96549a98eb834bfefa1f6d767c9034ee34a",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "cf-length-type": {
+      "file": "cf-length-type.pdf",
+      "finding": "Length (CryptFilter)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "5ad13e41f0785acfc58a64ea7c2c67ec4d2ba9b7bd69db4fb3cf4f0a8099ef6f",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "cf-method": {
+      "file": "cf-method.pdf",
+      "finding": "CFM (CryptFilter)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "50e28e18f71bdfd34570b741104632dca2e3d608c25cda497c8940f8fe91bb2b",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "cf-method-absent": {
+      "file": "cf-method-absent.pdf",
+      "finding": "CFM (CryptFilter)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "4ca2b4c9bb9f1d8f18e0387cd51172c57ff689c85692494f7d5d022b5c292a2f",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "cf-stdcf-absent": {
+      "file": "cf-stdcf-absent.pdf",
+      "finding": "StdCF (CryptFilterMap)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "7b9231ad325b10d8cc675006e883391c4fffa883eb7df458c218c5ca16e48e81",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "cf-type": {
+      "file": "cf-type.pdf",
+      "finding": "CF (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "6e0a708ea0085be38a8fcb28d52e63f7ca94543c4695dedd3effd116700ecaa5",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "crypt-array-duplicate": {
+      "file": "crypt-array-duplicate.pdf",
+      "finding": "1* (ArrayOfFilterNames)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "ab77930d6c1bdd13f7148b2dfd4c581a91a67b185c51eb2c68cfc1fac2a9f540",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "crypt-array-identity": {
+      "file": "crypt-array-identity.pdf",
+      "finding": "Filter (Stream)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "78af447858ed9ae7e47d30d95953e6b83f1b3e1d9008622f9662b8c4d84de469",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "crypt-array-name-missing": {
+      "file": "crypt-array-name-missing.pdf",
+      "finding": "Filter (Stream)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "a37a1f67a07606df89d108bf3cbc627aa12b99cb116293aa4f0accd0df0d75cc",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "crypt-array-params-missing": {
+      "file": "crypt-array-params-missing.pdf",
+      "finding": "Filter (Stream)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "8ee5cd2729a92422d0b6dfb8529ef0c0928cf0716a647b0aff010dbedce9392e",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "crypt-array-params-null": {
+      "file": "crypt-array-params-null.pdf",
+      "finding": "Filter (Stream)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "d0e1335e82de07a83992c11704ab7f1a9fb52ee2a14d682b7355e0d14c3dda62",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "crypt-array-second": {
+      "file": "crypt-array-second.pdf",
+      "finding": "1* (ArrayOfFilterNames)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "b86983523c6750e7005c055ce4ae573f12de89f71c05b20408c640975cb60241",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "crypt-name-identity": {
+      "file": "crypt-name-identity.pdf",
+      "finding": "Filter (Stream)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "91202e715b510929897e6a67b7be8240957076ac86aa0565289c27af3f47ba3b",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "crypt-name-missing": {
+      "file": "crypt-name-missing.pdf",
+      "finding": "Filter (Stream)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "47ed8869d1ae459aca44d9c1e07318545f2fff426958cb887a0c449f15550e59",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "eff-identity": {
+      "file": "eff-identity.pdf",
+      "finding": "EFF (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "c78a985d91f7f606828123e783fe2a5ad104ea06d86e6ca493f2823a4cda6784",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "eff-type": {
+      "file": "eff-type.pdf",
+      "finding": "EFF (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "8fca9857cd2353a605c432ced1a055b7d1ae7e25a62bab985201eefd864910ba",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "encryptmetadata-type": {
+      "file": "encryptmetadata-type.pdf",
+      "finding": "EncryptMetadata (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "2d449cf26c656ccd53171304c83616bd5c5ee44fc99ad36be5bf9418d7319a3a",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "extension-base": {
+      "file": "extension-base.pdf",
+      "finding": "V (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "df94a7686839365a02cdb69bcedff4cede8c32210885b6b1ae219f1f7624ad1e",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "extension-level": {
+      "file": "extension-level.pdf",
+      "finding": "V (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "84059dbecdab876cf57889def809364aecb387388b8879ee3d3d51933ecdb2b7",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "extension-missing": {
+      "file": "extension-missing.pdf",
+      "finding": "V (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "efff0a1f1155862c064ec5d4171b1bce798254ab620cdad4603c0f23959badbc",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "filter-absent": {
+      "file": "filter-absent.pdf",
+      "finding": "Filter (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "791908ef094fa3da10cdc57743631596b408e5b0b9a666d76aefa2dc06574e52",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "filter-handler": {
+      "file": "filter-handler.pdf",
+      "finding": "Filter (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "87cc8f8a9d8a27da023cf6b737d96f2c7ccc07c10789d5b88e7a926f24d4dd00",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "filter-type": {
+      "file": "filter-type.pdf",
+      "finding": "Filter (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "0ba290aa2cf28c5de61a7ef582c3fe0093b5a7a93fdc1bf2fcf18c0e8300e345",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "global-length-bits": {
+      "file": "global-length-bits.pdf",
+      "finding": "Length (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "6bd6c37550c0a46b493ec0a1efcd1662a290ba51d66963b24b1c02ed2c893479",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "length-absent": {
+      "file": "length-absent.pdf",
+      "finding": "Length (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "b79008b3fe9e58136ed6deb4cbfbe778c1008678c9c4d273005b02e43220c009",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "length-type": {
+      "file": "length-type.pdf",
+      "finding": "Length (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "1c7cf3c1d0a954f67acfa5f3509211382289bc02985abf04baa75ea6f8a45169",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "metadata-clear-output": {
+      "file": "metadata-clear-output.pdf",
+      "finding": "EncryptMetadata (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "af3d08adab81b16e9ffc89ec0840ef5be8799e943b1be25b3ed95202ad5fd02b",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "normative-r3-output-owner": {
+      "file": "normative-r3-output-owner.pdf",
+      "finding": "owner-authentication-failed",
+      "model": "output",
+      "producer": "pypdf-owner",
+      "sha256": "a625cbd5be92755a3e4e6290eb54140a8e44a2a6d40c68b9fb4c299751f908ee",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "o-absent": {
+      "file": "o-absent.pdf",
+      "finding": "O (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "a2c6b54fbaeb97cc1c89607d8217cbc73270863447834063222d3bfdad0ac446",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "o-long": {
+      "file": "o-long.pdf",
+      "finding": "O (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "2c60711f5248dd7121059d6d1b1ec8723c3b7188ef6ff17783096ffefa08f5ac",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "o-short": {
+      "file": "o-short.pdf",
+      "finding": "O (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "d856a4b0c40c308c61989c4874854aaa64f8d8737253fe08eb0d09d31b0c624e",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "o-type": {
+      "file": "o-type.pdf",
+      "finding": "O (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "2c054018851d975a9ab0ed60e01a65b564a0ec742088f2e7ad8316e6df4821b8",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "oe-absent": {
+      "file": "oe-absent.pdf",
+      "finding": "Filter (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "058067fb7e06965addfc080b13d62ecb5f21aa9557b41325b7bc68134a2a0dba",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "oe-long": {
+      "file": "oe-long.pdf",
+      "finding": "OE (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "f98155af6647c51da1b2695cf5bb0bcfd3fbb1bcea6093caf728584dd93672a3",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "oe-short": {
+      "file": "oe-short.pdf",
+      "finding": "OE (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "17a1bda5391c0aa96382be49f9fbf5b56d446e3575203604c8270b738f4a8082",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "oe-type": {
+      "file": "oe-type.pdf",
+      "finding": "OE (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "b71a1936b010849ab2dccdc3be7f39b97eae47bde0a856f7e9c21b55abd336fd",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "p-absent": {
+      "file": "p-absent.pdf",
+      "finding": "P (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "d3ee9b8eede7abdc867ee3963385c8e32242c48ee6bd6fc11df3fbb6799b7c5e",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "p-bit10-output": {
+      "file": "p-bit10-output.pdf",
+      "finding": "P (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "56269fc03afae06d193da8c8f095a3e03b0e879df8485743429726ce4718c2d7",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "p-range": {
+      "file": "p-range.pdf",
+      "finding": "out of signed 32-bit range",
+      "model": "output",
+      "producer": "pdfcpu",
+      "sha256": "9ab09c3d9897e76e44367c5ddceda66815a0e84970ae9388b7d74f358a8b93d0",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "p-range-aes128": {
+      "file": "p-range-aes128.pdf",
+      "finding": "out of signed 32-bit range",
+      "model": "output",
+      "producer": "pdfcpu",
+      "sha256": "2842ebe5f81af9af8974e17f0e07d18cc5a6e4e456c288668d1b4d3557e2f7a9",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "p-range-r2": {
+      "file": "p-range-r2.pdf",
+      "finding": "out of signed 32-bit range",
+      "model": "output",
+      "producer": "pdfcpu",
+      "sha256": "ec15de52eda3d8117fe95df05dedef5c8b90561e830ca0498b9ba73878777694",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "p-range-r3-128": {
+      "file": "p-range-r3-128.pdf",
+      "finding": "out of signed 32-bit range",
+      "model": "output",
+      "producer": "pdfcpu",
+      "sha256": "35b2da5a985c512ce6164a752387b2f6d638659b8aea6bea8a4b2a68bd66e3b8",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "p-range-r3-40": {
+      "file": "p-range-r3-40.pdf",
+      "finding": "out of signed 32-bit range",
+      "model": "output",
+      "producer": "pdfcpu",
+      "sha256": "e246f36a24843e11fde170c4f5ef6a036ce92dac08c0571cfc9a40568858a911",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "p-range-r5": {
+      "file": "p-range-r5.pdf",
+      "finding": "out of signed 32-bit range",
+      "model": "output",
+      "producer": "pdfcpu",
+      "sha256": "b419864f000d3334c62a87fd43b2f72aba5ace0fa4f46edc63d0cea3c193ca50",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "p-range-r6-17": {
+      "file": "p-range-r6-17.pdf",
+      "finding": "out of signed 32-bit range",
+      "model": "output",
+      "producer": "pdfcpu",
+      "sha256": "4db0076d0030f506787160a22f657c979fe23bcbef4960955b442d47e62c2a38",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "p-range-v4-rc4": {
+      "file": "p-range-v4-rc4.pdf",
+      "finding": "out of signed 32-bit range",
+      "model": "output",
+      "producer": "pdfcpu",
+      "sha256": "09b587d6ae03871f0aa8beff5f16d3762815c69ce6b71ca7d0b5f90dde0f9241",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "p-reserved-1": {
+      "file": "p-reserved-1.pdf",
+      "finding": "P (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "b1110336bf09b474cdad34c25ff761018e243ae0676bbdec6cb2771cc6f62c34",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "p-reserved-13": {
+      "file": "p-reserved-13.pdf",
+      "finding": "P (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "ec8a10e7c05e8d636f36014647d4364719732e97f4d41e0831eb8beec6197036",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "p-reserved-2": {
+      "file": "p-reserved-2.pdf",
+      "finding": "P (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "93960ed9382c6215256deb7d727a35c6ea762484850899177b323e77ed755e7d",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "p-reserved-32": {
+      "file": "p-reserved-32.pdf",
+      "finding": "P (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "f123393e336e48cde1e1151eff8d674bc8943362d1d372d157b62725f3387431",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "p-reserved-7": {
+      "file": "p-reserved-7.pdf",
+      "finding": "P (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "9bcc0c8716fd94bd456c807943f45b145c1a2845f84da09a75a5bf17cc3b3a32",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "p-reserved-8": {
+      "file": "p-reserved-8.pdf",
+      "finding": "P (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "b2d5883537d70dfc6d39951e4f2c533f52daefd231fbdee72592d0d742dc961d",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "p-type": {
+      "file": "p-type.pdf",
+      "finding": "P (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "58218e61786cff455aceaa4905304258d7e9f95c84a9d6a093c768e37a180e1d",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "perms-absent": {
+      "file": "perms-absent.pdf",
+      "finding": "Filter (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "4f6e65110b90cde7bfed620847fe77855e6b946416c592033373f4cf20bcabdf",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "perms-long": {
+      "file": "perms-long.pdf",
+      "finding": "Perms (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "b57fa186940148168efc7d06e3a4f0321887b887d25d9184fcce98b9aebaa3d3",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "perms-plaintext-0": {
+      "file": "perms-plaintext-0.pdf",
+      "finding": "perms-verification-failed",
+      "model": "output",
+      "producer": "pypdf",
+      "sha256": "3b7ae1bd633d45837830e47904a07051ffa481a7f953a1825c2d625a132b4266",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "perms-plaintext-4": {
+      "file": "perms-plaintext-4.pdf",
+      "finding": "perms-verification-failed",
+      "model": "output",
+      "producer": "pypdf",
+      "sha256": "d3a291d01b23e08867c9c1833a7f79647335bd43e7dfc887a683cf03deb92f40",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "perms-plaintext-5": {
+      "file": "perms-plaintext-5.pdf",
+      "finding": "perms-verification-failed",
+      "model": "output",
+      "producer": "pypdf",
+      "sha256": "39ff20bdb8a5f74c90f69753981a46ade22ecb5f26eb4113bd9dcc81476d5602",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "perms-plaintext-6": {
+      "file": "perms-plaintext-6.pdf",
+      "finding": "perms-verification-failed",
+      "model": "output",
+      "producer": "pypdf",
+      "sha256": "033713e38cc2f89fce5569e577173ac44b6b8525d08eb5dc1ee78fb8b7ad3c17",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "perms-plaintext-7": {
+      "file": "perms-plaintext-7.pdf",
+      "finding": "perms-verification-failed",
+      "model": "output",
+      "producer": "pypdf",
+      "sha256": "ef626b76eabb1f213c68c29f39d9c441dd0d928cd7d7341d4723a63e130295be",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "perms-plaintext-8": {
+      "file": "perms-plaintext-8.pdf",
+      "finding": "perms-verification-failed",
+      "model": "output",
+      "producer": "pypdf",
+      "sha256": "6c6d710022d9975f9990d79d2062c875b13888ca9cd2195b89ad092bba7b9741",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "perms-plaintext-9": {
+      "file": "perms-plaintext-9.pdf",
+      "finding": "perms-verification-failed",
+      "model": "output",
+      "producer": "pypdf",
+      "sha256": "a0a283a9d347a3a51c4c60ffe8791ad253177fe1f45e4a15b220091252f712c6",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "perms-short": {
+      "file": "perms-short.pdf",
+      "finding": "Perms (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "8e9397b68d96bfc8282565b0d79b3c34356e1584bd8ce1bd55730dd8d115754c",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "perms-type": {
+      "file": "perms-type.pdf",
+      "finding": "Perms (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "7aab53a05a07bdd94a6d6e461c05d0f5489702dc6ba924065c2736d9a2fc42b5",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "r-absent": {
+      "file": "r-absent.pdf",
+      "finding": "R (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "84c1a22860f084fc130123ac452cbcdf014038929571d0c0633e1666b68c767a",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "r-type": {
+      "file": "r-type.pdf",
+      "finding": "R (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "c036a3c9b19fb33eb3d2f0b9f9ea10e9a0a4e30e6e3004372bfd3ccf7ae1251c",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "r2-reserved9": {
+      "file": "r2-reserved9.pdf",
+      "finding": "P (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "317c4293567ae512015be309e0307c3db78a1937cf5fad0a2f616e5ff5f9da7e",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "rc4-r3-version13": {
+      "file": "rc4-r3-version13.pdf",
+      "finding": "V (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "34b58b59ecbd38ab885b2c110fc827414eb8bac88dac431bdfa91017243ea278",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "stmf-absent": {
+      "file": "stmf-absent.pdf",
+      "finding": "Filter (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "99932e35303afd4bcf9bd7c59f3404be8f7e8fb5b8d459d48efaac8d55eaeaf7",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "stmf-identity": {
+      "file": "stmf-identity.pdf",
+      "finding": "StmF (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "c5006d166cf0b48bb0323d5c00d441917c19ddd6216afe1bd8f6f2782dd72282",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "stmf-type": {
+      "file": "stmf-type.pdf",
+      "finding": "StmF (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "7a37a086b3771b365eea745e955247b9a842f01e6b21087e478fafed3cdc6733",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "strf-absent": {
+      "file": "strf-absent.pdf",
+      "finding": "Filter (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "195a086483eb6a27f4bc37619e31ea51e83ab3c58bde4572dab1ef9720f52814",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "strf-identity": {
+      "file": "strf-identity.pdf",
+      "finding": "StrF (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "3a2b110e6f04823ab6619ba104271c9ab83ae8e2132aed7c9d71003c63158f79",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "strf-type": {
+      "file": "strf-type.pdf",
+      "finding": "StrF (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "100fec6c0667715a4e13ca502b82376e983f762bca0e602bfe34863730c2fa69",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "subfilter-present": {
+      "file": "subfilter-present.pdf",
+      "finding": "Filter (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "362abb294f0a7e0125adf25b7d62f83262e8a292b5e5c276452f96d02f6a3941",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "tuple-v2-r6": {
+      "file": "tuple-v2-r6.pdf",
+      "finding": "R (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "586cc20cf89f74e8dd0b3a01e7a8450194f9cd2e8c33686f558d9d8c963b3799",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "tuple-v5-r4": {
+      "file": "tuple-v5-r4.pdf",
+      "finding": "R (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "e7eb553ccde5164896295d7b42075c2351c4722151cb1d3c21f8e20e9f911a7a",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "tuple-v9": {
+      "file": "tuple-v9.pdf",
+      "finding": "V (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "72378416b352fa67f7f68453d2060d8147c40a58e1301161e83a5fa433df759b",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "u-absent": {
+      "file": "u-absent.pdf",
+      "finding": "U (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "fceb5bb2aa22df6c6de90ba23543c4061ebef808619b329388a6279fb8a92a9f",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "u-long": {
+      "file": "u-long.pdf",
+      "finding": "U (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "33802c7fd4ccf87c72f2916dbb5de0745cdeadb051abd453deb77131c0fdd320",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "u-short": {
+      "file": "u-short.pdf",
+      "finding": "U (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "ca92a6282695ca7430013a8df30f6f6b8505788d8b3f52753554aa26b2f44e61",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "u-type": {
+      "file": "u-type.pdf",
+      "finding": "U (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "670afc4a33c1d82c13e08056846d61ca5c10302ecc1cc3380ff03a3bafd9ce5b",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "ue-absent": {
+      "file": "ue-absent.pdf",
+      "finding": "Filter (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "1b603134247fe3cdbde297cf265b4e4b19ba3e273764c10551baec5fcb8c64e4",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "ue-long": {
+      "file": "ue-long.pdf",
+      "finding": "UE (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "4e03b1813d9ab82e187595d99aecadd1ef3f83578ed2b055df65354d0edacc79",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "ue-short": {
+      "file": "ue-short.pdf",
+      "finding": "UE (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "81b5658ffec089448a552f796144f059cb2f7ecdc9cb82f1c9f778eac635a8f4",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "ue-type": {
+      "file": "ue-type.pdf",
+      "finding": "UE (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "ef70dd7228f561a16b4f8c149bd38846c0fe860c02115c6eaef337dc3209d764",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "v-absent": {
+      "file": "v-absent.pdf",
+      "finding": "V (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "a8d3848ef553c0cab0e2dc6b544357b49cb666f616d8a268f61200cbdbaface0",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "v-type": {
+      "file": "v-type.pdf",
+      "finding": "V (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "7ab692dfe2f0bfc9c8c079d4cc5b1bf18d7e8ca1e379e83ef57776ba7a692232",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    },
+    "v5-aesv2-consistent": {
+      "file": "v5-aesv2-consistent.pdf",
+      "finding": "CFM (CryptFilter)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "d7cd4bd57c55b3b56a41bd9e562b81efa21e28e6587769dcbefbe1cd93d550a7",
+      "source": "ISO 32000-1:2008 7.6 / ISO 32000-2:2020 EC3 7.6; T78 closed profile audit"
+    }
+  }
+}

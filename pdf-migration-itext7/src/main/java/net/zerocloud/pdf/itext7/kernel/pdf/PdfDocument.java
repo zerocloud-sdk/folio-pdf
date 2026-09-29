@@ -142,7 +142,8 @@ public final class PdfDocument implements Closeable {
      */
     public PdfDocument(Map<String, PdfReader> sources, String primarySource,
             Map<String, PdfWriter> targets) {
-        this(sources, primarySource, targets, PdfVersion.PDF_1_7);
+        declarations = new FacadeDeclarations(sources, primarySource, targets, null, SaveMode.REWRITE);
+        pageCount = declarations.sourcePageCount;
     }
 
     /**
@@ -187,6 +188,15 @@ public final class PdfDocument implements Closeable {
     public boolean isAppendMode() {
         requireOpen();
         return declarations.saveMode == SaveMode.INCREMENTAL;
+    }
+
+    /** @return the exact effective version of the current document */
+    public net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion getPdfVersion() {
+        PdfVersion input = queryDocument(net.zerocloud.pdf.query.DocumentVersion.INSTANCE).getEffectiveVersion();
+        PdfVersion selected = declarations.hasTargets() && declarations.saveMode == SaveMode.REWRITE
+                ? declarations.outputVersion() : input;
+        return net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion.fromString("PDF-"
+                + selected);
     }
 
     /**

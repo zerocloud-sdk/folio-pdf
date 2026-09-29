@@ -61,6 +61,10 @@ public final class JarContractIT {
                 "net/zerocloud/pdf/itext7/kernel/pdf/PdfPage.class",
                 "net/zerocloud/pdf/itext7/kernel/pdf/PdfReader.class",
                 "net/zerocloud/pdf/itext7/kernel/pdf/PdfWriter.class",
+                "net/zerocloud/pdf/itext7/kernel/pdf/EncryptionConstants.class",
+                "net/zerocloud/pdf/itext7/kernel/pdf/PdfVersion.class",
+                "net/zerocloud/pdf/itext7/kernel/pdf/ReaderProperties.class",
+                "net/zerocloud/pdf/itext7/kernel/pdf/WriterProperties.class",
                 "net/zerocloud/pdf/itext7/kernel/pdf/StampingProperties.class",
                 "net/zerocloud/pdf/itext7/kernel/pdf/PdfObject.class",
                 "net/zerocloud/pdf/itext7/kernel/pdf/PdfNull.class",
@@ -195,13 +199,19 @@ public final class JarContractIT {
         Class<?> exception = loader.loadClass(PdfException.class.getName());
         assertConstructors(writer,
                 "PdfWriter(java.lang.String) throws java.io.FileNotFoundException",
-                "PdfWriter(java.io.OutputStream)");
-        assertMethods(writer);
+                "PdfWriter(java.io.OutputStream)",
+                "PdfWriter(java.lang.String,net.zerocloud.pdf.itext7.kernel.pdf.WriterProperties) throws java.io.FileNotFoundException",
+                "PdfWriter(java.io.OutputStream,net.zerocloud.pdf.itext7.kernel.pdf.WriterProperties)");
+        assertMethods(writer, "void close()");
 
         assertConstructors(reader,
                 "PdfReader(java.lang.String) throws java.io.IOException",
-                "PdfReader(java.io.InputStream) throws java.io.IOException");
-        assertMethods(reader, "void close() throws java.io.IOException");
+                "PdfReader(java.io.InputStream) throws java.io.IOException",
+                "PdfReader(java.lang.String,net.zerocloud.pdf.itext7.kernel.pdf.ReaderProperties) throws java.io.IOException",
+                "PdfReader(java.io.InputStream,net.zerocloud.pdf.itext7.kernel.pdf.ReaderProperties) throws java.io.IOException");
+        assertMethods(reader, "void close() throws java.io.IOException", "boolean isEncrypted()",
+                "boolean isOpenedWithFullPermission()", "long getPermissions()", "int getCryptoMode()");
+        assertPasswordSurface(loader);
 
         Class<?> stamping = loader.loadClass("net.zerocloud.pdf.itext7.kernel.pdf.StampingProperties");
         assertConstructors(stamping, "StampingProperties()",
@@ -218,6 +228,7 @@ public final class JarContractIT {
                 "PdfDocument(java.util.Map,java.lang.String,java.util.Map,net.zerocloud.pdf.PdfVersion,net.zerocloud.pdf.itext7.kernel.pdf.StampingProperties)");
         assertMethods(document,
                 "boolean isAppendMode()",
+                "net.zerocloud.pdf.itext7.kernel.pdf.PdfVersion getPdfVersion()",
                 "net.zerocloud.pdf.itext7.kernel.pdf.PdfPage addNewPage()",
                 "net.zerocloud.pdf.itext7.kernel.pdf.PdfPage addNewPage(int)",
                 "java.util.List copyPages(int,int,int)",
@@ -385,6 +396,38 @@ public final class JarContractIT {
         assertMethods(catalog, prefix + "PdfDictionary getPdfObject()",
                 prefix + "PdfCatalog setOpenAction(net.zerocloud.pdf.GoToAction)",
                 "java.util.Optional getOpenAction(int)");
+    }
+
+    private static void assertPasswordSurface(ClassLoader loader) throws Exception {
+        String prefix = "net.zerocloud.pdf.itext7.kernel.pdf.";
+        Class<?> reader = loader.loadClass(prefix + "ReaderProperties");
+        assertConstructors(reader, "ReaderProperties()");
+        assertMethods(reader, "void close()", prefix + "ReaderProperties setPassword(byte[])",
+                prefix + "ReaderProperties setCredential(net.zerocloud.pdf.PasswordCredential)");
+        Class<?> writer = loader.loadClass(prefix + "WriterProperties");
+        assertConstructors(writer, "WriterProperties()");
+        assertMethods(writer, "void close()", prefix + "WriterProperties setPdfVersion(" + prefix + "PdfVersion)",
+                prefix + "WriterProperties setStandardEncryption(byte[],byte[],int,int)",
+                prefix + "WriterProperties setLegacySecurityMode(net.zerocloud.pdf.LegacySecurityMode)");
+        Class<?> version = loader.loadClass(prefix + "PdfVersion");
+        assertConstructors(version);
+        assertMethods(version, prefix + "PdfVersion fromString(java.lang.String)",
+                prefix + "PdfVersion fromPdfName(" + prefix + "PdfName)", prefix + "PdfName toPdfName()",
+                "java.lang.String toString()", "int compareTo(" + prefix + "PdfVersion)",
+                "int compareTo(java.lang.Object)", "boolean equals(java.lang.Object)", "int hashCode()");
+        assertEquals("java.lang.Comparable<" + prefix + "PdfVersion>", version.getGenericInterfaces()[0].getTypeName());
+        Class<?> constants = loader.loadClass(prefix + "EncryptionConstants");
+        assertConstructors(constants); assertMethods(constants);
+        String[] names = {"STANDARD_ENCRYPTION_40", "STANDARD_ENCRYPTION_128", "ENCRYPTION_AES_128", "ENCRYPTION_AES_256",
+                "ALLOW_DEGRADED_PRINTING", "ALLOW_PRINTING", "ALLOW_MODIFY_CONTENTS", "ALLOW_COPY",
+                "ALLOW_MODIFY_ANNOTATIONS", "ALLOW_FILL_IN", "ALLOW_SCREENREADERS", "ALLOW_ASSEMBLY"};
+        int[] values = {0, 1, 2, 3, 4, 2052, 8, 16, 32, 256, 512, 1024};
+        assertEquals(names.length, constants.getFields().length);
+        for (int index = 0; index < names.length; index++) {
+            Field field = constants.getField(names[index]);
+            assertTrue(Modifier.isStatic(field.getModifiers()) && Modifier.isFinal(field.getModifiers()));
+            assertEquals(values[index], field.getInt(null));
+        }
     }
 
     private static void assertConstructors(Class<?> type, String... expected) {

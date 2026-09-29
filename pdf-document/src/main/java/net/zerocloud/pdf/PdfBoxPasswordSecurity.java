@@ -1,7 +1,10 @@
 package net.zerocloud.pdf;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
+import java.security.MessageDigest;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -94,7 +97,7 @@ final class PdfBoxPasswordSecurity {
                 throw unsupported(
                         "Only the Standard password-security handler is supported.");
             }
-            validateStandardStructure(encryption, resources);
+            validateStandardStructure(encryption, resources, true);
             PasswordEncryptionAlgorithm algorithm = algorithm(encryption);
             PasswordEncryptionScope scope = scope(encryption);
             DocumentPermissions declared =
@@ -102,23 +105,27 @@ final class PdfBoxPasswordSecurity {
                             encryption.getPermissions());
             AccessPermission current = document.getCurrentAccessPermission();
             CredentialAuthority authority;
-            if (!current.isOwnerPermission()) {
+            if (credentialCharacters != null) {
+                boolean owner = authenticates(document, encryption, credentialCharacters, resources, true);
+                if (owner) {
+                    authority = CredentialAuthority.OWNER;
+                } else if (authenticates(document, encryption, credentialCharacters, resources, false)) {
+                    authority = declared.equals(DocumentPermissions.unrestricted())
+                            ? CredentialAuthority.UNRESTRICTED : CredentialAuthority.USER;
+                } else {
+                    throw PdfBoxWorkflowEngine.versionFailure(DocumentFailureCode.CREDENTIAL_REJECTED,
+                            "The supplied Source credential was not accepted.");
+                }
+            } else if (!current.isOwnerPermission()) {
                 authority = CredentialAuthority.USER;
             } else if (declared.equals(DocumentPermissions.unrestricted())) {
-                authority = authenticatesOwner(
-                        document,
-                        encryption,
-                        credentialCharacters,
-                        resources)
-                                ? CredentialAuthority.OWNER
-                                : CredentialAuthority.UNRESTRICTED;
+                authority = CredentialAuthority.UNRESTRICTED;
             } else {
                 authority = CredentialAuthority.OWNER;
             }
-            DocumentPermissions effective = current.isOwnerPermission()
+            DocumentPermissions effective = authority == CredentialAuthority.OWNER
                     ? DocumentPermissions.unrestricted()
-                    : DocumentPermissions.fromStandardMask(
-                            current.getPermissionBytes());
+                    : declared;
             return new PasswordSecurityInfo(
                     algorithm,
                     encryption.getRevision(),
@@ -138,11 +145,12 @@ final class PdfBoxPasswordSecurity {
         }
     }
 
-    private static boolean authenticatesOwner(
+    private static boolean authenticates(
             PDDocument document,
             PDEncryption encryption,
             char[] credentialCharacters,
-            WorkflowResourceContext resources)
+            WorkflowResourceContext resources,
+            boolean ownerPassword)
             throws IOException, DocumentFailure {
         if (credentialCharacters == null) {
             return false;
@@ -157,59 +165,124 @@ final class PdfBoxPasswordSecurity {
         COSString rawOwner = stringEntry(encryption, COSName.O);
         int keyLengthBytes = encryption.getVersion() == 1
                 ? 5 : encryption.getLength() / 8;
-        if (resources == null) {
-            byte[] identifier = rawIdentifier == null
-                    ? new byte[0] : rawIdentifier.getBytes();
-            return new StandardSecurityHandler().isOwnerPassword(
-                    new String(credentialCharacters),
-                    rawUser.getBytes(),
-                    rawOwner.getBytes(),
-                    encryption.getPermissions(),
-                    identifier,
-                    encryption.getRevision(),
-                    keyLengthBytes,
-                    encryption.isEncryptMetaData());
-        }
-        try (WorkflowResourceContext.OwnedBytes identifier =
-                        workingBytes(rawIdentifier, resources);
-                WorkflowResourceContext.OwnedBytes user =
-                        workingBytes(rawUser, resources);
-                WorkflowResourceContext.OwnedBytes owner =
-                        workingBytes(rawOwner, resources);
-                WorkflowResourceContext.MemoryReservation passwordMemory =
-                        resources.reserveOwnedMemory(
-                                2L * credentialCharacters.length)) {
-            // PDFBox's public predicate exactly mirrors its owner branch for
-            // the supported printable-ASCII output contract. A false result
-            // remains fail-closed as UNRESTRICTED for other input forms.
-            resources.checkpoint();
-            boolean authenticated =
-                    new StandardSecurityHandler().isOwnerPassword(
-                            new String(credentialCharacters),
-                            user.getBytes(),
-                            owner.getBytes(),
-                            encryption.getPermissions(),
-                            identifier.getBytes(),
-                            encryption.getRevision(),
-                            keyLengthBytes,
+        try (WorkflowResourceContext.MemoryReservation memory =
+                reserve(resources, 96L * credentialCharacters.length + 512L)) {
+            if (encryption.getRevision() < 5) {
+                for (char character : credentialCharacters) { if (character > 0xff) { return false; } }
+            }
+            byte[] passwordBytes = (encryption.getRevision() >= 5
+                    ? PdfPasswordPreparation.saslPrepQuery(new String(credentialCharacters))
+                    : new String(credentialCharacters)).getBytes(encryption.getRevision() >= 5
+                            ? StandardCharsets.UTF_8 : StandardCharsets.ISO_8859_1);
+            try {
+                if (resources == null) {
+                    return authenticatesBytes(ownerPassword, passwordBytes, rawUser.getBytes(), rawOwner.getBytes(),
+                            encryption.getPermissions(), rawIdentifier == null ? new byte[0] : rawIdentifier.getBytes(),
+                            encryption.getRevision(), keyLengthBytes, encryption.isEncryptMetaData());
+                }
+                try (WorkflowResourceContext.OwnedBytes identifier = workingBytes(rawIdentifier, resources);
+                        WorkflowResourceContext.OwnedBytes user = workingBytes(rawUser, resources);
+                        WorkflowResourceContext.OwnedBytes owner = workingBytes(rawOwner, resources)) {
+                    resources.checkpoint();
+                    boolean authenticated = authenticatesBytes(ownerPassword, passwordBytes, user.getBytes(), owner.getBytes(),
+                            encryption.getPermissions(), identifier.getBytes(), encryption.getRevision(), keyLengthBytes,
                             encryption.isEncryptMetaData());
-            resources.checkpoint();
-            return authenticated;
+                    resources.checkpoint();
+                    return authenticated;
+                }
+            } finally { Arrays.fill(passwordBytes, (byte) 0); }
         }
     }
 
-    private static void validateStandardStructure(
+    private static boolean authenticatesBytes(boolean ownerPassword, byte[] password,
+            byte[] user, byte[] owner, int permissions, byte[] identifier, int revision,
+            int keyLength, boolean metadata) throws IOException {
+        StandardSecurityHandler handler = new StandardSecurityHandler();
+        if (!ownerPassword) {
+            return handler.isUserPassword(password, user, owner, permissions, identifier, revision, keyLength, metadata);
+        }
+        if (handler.isOwnerPassword(password, user, owner, permissions, identifier, revision, keyLength, metadata)) { return true; }
+        if (revision != 3 || keyLength != 5) { return false; }
+        byte[] recovered = literalOwnerUser(password, owner);
+        try { return handler.isUserPassword(recovered, user, owner, permissions, identifier, revision, keyLength, metadata); }
+        finally { Arrays.fill(recovered, (byte) 0); }
+    }
+
+    /** ISO 32000-1 Algorithm 3 hashes the complete digest before its final truncation. */
+    static byte[] literalOwnerUser(byte[] password, byte[] owner) throws IOException {
+        return transformFortyBitOwner(password, owner, false);
+    }
+
+    private static byte[] padLegacyPassword(byte[] password) {
+        byte[] padding = {(byte) 0x28, (byte) 0xbf, (byte) 0x4e, (byte) 0x5e, (byte) 0x4e, (byte) 0x75,
+                (byte) 0x8a, (byte) 0x41, (byte) 0x64, 0, (byte) 0x4e, (byte) 0x56, (byte) 0xff, (byte) 0xfa,
+                1, 8, (byte) 0x2e, (byte) 0x2e, 0, (byte) 0xb6, (byte) 0xd0, (byte) 0x68, (byte) 0x3e,
+                (byte) 0x80, (byte) 0x2f, (byte) 0x0c, (byte) 0xa9, (byte) 0xfe, (byte) 0x64, (byte) 0x53,
+                (byte) 0x69, (byte) 0x7a};
+        byte[] padded = new byte[32];
+        int length = Math.min(password.length, 32);
+        System.arraycopy(password, 0, padded, 0, length);
+        System.arraycopy(padding, 0, padded, length, 32 - length);
+        return padded;
+    }
+
+    private static byte[] transformFortyBitOwner(byte[] password, byte[] value,
+            boolean encrypt) throws IOException {
+        byte[] padded = padLegacyPassword(password), digest = null,
+                roundKey = new byte[5], recovered = value.clone();
+        try {
+            MessageDigest md5 = MessageDigest.getInstance("MD5");
+            digest = md5.digest(padded);
+            for (int round = 0; round < 50; round++) {
+                byte[] next = md5.digest(digest);
+                Arrays.fill(digest, (byte) 0);
+                digest = next;
+            }
+            Cipher rc4 = Cipher.getInstance("RC4");
+            for (int step = 0; step < 20; step++) {
+                int round = encrypt ? step : 19 - step;
+                for (int index = 0; index < 5; index++) { roundKey[index] = (byte) (digest[index] ^ round); }
+                rc4.init(encrypt ? Cipher.ENCRYPT_MODE : Cipher.DECRYPT_MODE,
+                        new SecretKeySpec(roundKey, "RC4"));
+                byte[] next = rc4.doFinal(recovered);
+                Arrays.fill(recovered, (byte) 0);
+                recovered = next;
+            }
+            byte[] result = recovered;
+            recovered = null;
+            return result;
+        } catch (GeneralSecurityException failure) {
+            throw new IOException("The legacy credential could not be processed.");
+        } finally {
+            Arrays.fill(padded, (byte) 0); Arrays.fill(roundKey, (byte) 0);
+            if (digest != null) { Arrays.fill(digest, (byte) 0); }
+            if (recovered != null) { Arrays.fill(recovered, (byte) 0); }
+        }
+    }
+
+    static void validateStandardStructure(
             PDEncryption encryption,
-            WorkflowResourceContext resources)
+            WorkflowResourceContext resources, boolean checkKey)
             throws IOException, GeneralSecurityException, DocumentFailure {
         checkpoint(resources);
+        if (!COSName.getPDFName("Standard").equals(encryption.getCOSObject().getDictionaryObject(COSName.FILTER))) {
+            throw unsupported("Only the Standard password-security handler is supported.");
+        }
+        for (COSName key : new COSName[] {COSName.V, COSName.R, COSName.LENGTH}) {
+            COSBase value = encryption.getCOSObject().getDictionaryObject(key);
+            if ((value == null && !COSName.LENGTH.equals(key)) || (value != null && (!(value instanceof COSInteger)
+                    || ((COSInteger) value).longValue() != ((COSInteger) value).intValue()))) {
+                throw unsupported("A password-security algorithm declaration is malformed.");
+            }
+        }
         if (encryption.getSubFilter() != null) {
             throw unsupported(
                     "Standard password security does not support a SubFilter.");
         }
         COSBase rawPermissions = encryption.getCOSObject()
                 .getDictionaryObject(COSName.P);
-        if (!(rawPermissions instanceof COSInteger)) {
+        if (!(rawPermissions instanceof COSInteger)
+                || ((COSInteger) rawPermissions).longValue() != ((COSInteger) rawPermissions).intValue()) {
             throw unsupported(
                     "The password-security permission word is malformed.");
         }
@@ -224,9 +297,9 @@ final class PdfBoxPasswordSecurity {
         int length = encryption.getLength();
         if (!((version == 1 && (revision == 2 || revision == 3)
                         && (length == 0 || length == 40))
-                || (version == 2 && revision == 3 && length == 128)
+                || (version == 2 && revision == 3 && (length == 40 || length == 128))
                 || (version == 4 && revision == 4 && length == 128)
-                || (version == 5 && revision == 6 && length == 256))) {
+                || (version == 5 && (revision == 5 || revision == 6) && length == 256))) {
             throw unsupported(
                     "The Standard password-security revision is not supported.");
         }
@@ -251,7 +324,7 @@ final class PdfBoxPasswordSecurity {
         if (version >= 4) {
             validateCryptFilters(encryption, version);
         }
-        if (revision == 6) {
+        if (revision >= 5 && checkKey) {
             validateRevisionSixPermissions(encryption, resources);
         }
     }
@@ -270,7 +343,7 @@ final class PdfBoxPasswordSecurity {
         return value instanceof COSString ? (COSString) value : null;
     }
 
-    private static WorkflowResourceContext.OwnedBytes workingBytes(
+    static WorkflowResourceContext.OwnedBytes workingBytes(
             COSString source,
             WorkflowResourceContext resources) throws DocumentFailure {
         if (source == null) {
@@ -332,7 +405,7 @@ final class PdfBoxPasswordSecurity {
             throw unsupported(
                     "The Standard crypt-filter method is unsupported.");
         }
-        COSName authEvent = filter.getCOSObject().getCOSName(
+        COSBase authEvent = filter.getCOSObject().getDictionaryObject(
                 COSName.getPDFName("AuthEvent"));
         if (authEvent != null
                 && !COSName.getPDFName("DocOpen").equals(authEvent)) {
@@ -348,6 +421,10 @@ final class PdfBoxPasswordSecurity {
                                 != expectedBytes)) {
             throw unsupported(
                     "The Standard crypt-filter Length is malformed.");
+        }
+        COSBase metadata = encryption.getCOSObject().getDictionaryObject(COSName.ENCRYPT_META_DATA);
+        if (metadata != null && !(metadata instanceof org.apache.pdfbox.cos.COSBoolean)) {
+            throw unsupported("The metadata encryption declaration is malformed.");
         }
     }
 
@@ -438,12 +515,12 @@ final class PdfBoxPasswordSecurity {
         }
     }
 
-    static void requireCompatibleInput(
+    static PasswordSecurityInfo requireCompatibleInput(
             PDDocument document,
             PdfVersionInfo version,
             PasswordSecurityInfo security) throws DocumentFailure {
         if (!security.isPasswordProtected()) {
-            return;
+            return security;
         }
         PasswordEncryptionAlgorithm algorithm = security.getAlgorithm().get();
         PdfVersion effective = version.getEffectiveVersion();
@@ -473,7 +550,7 @@ final class PdfBoxPasswordSecurity {
                     "The password-security revision is incompatible with the effective PDF version.");
         }
 
-        if (algorithm == PasswordEncryptionAlgorithm.RC4_40) {
+        if (algorithm == PasswordEncryptionAlgorithm.RC4_40 && encryptionVersion == 1) {
             int count = extendedPermissionCount(
                     security.getDeclaredUserPermissions());
             if ((revision == 2 && count != 4)
@@ -482,17 +559,18 @@ final class PdfBoxPasswordSecurity {
                         "The RC4-40 revision and permission mask are inconsistent.");
             }
         }
-        if (effective == PdfVersion.PDF_2_0
-                && (revision != 6
-                        || !security.getDeclaredUserPermissions()
-                                .canExtractForAccessibility())) {
-            throw unsupported(
-                    "PDF 2.0 requires revision 6 and accessibility permission bit 10.");
-        }
         if (algorithm == PasswordEncryptionAlgorithm.AES_256
                 && effective == PdfVersion.PDF_1_7) {
-            requireAdobeExtension(document, 8);
+            requireAdobeExtension(document, revision == 5 ? 3 : 8);
         }
+        if (effective == PdfVersion.PDF_2_0 && security.getCredentialAuthority() != CredentialAuthority.OWNER) {
+            DocumentPermissions permissions = DocumentPermissions.fromStandardMask(
+                    security.getDeclaredUserPermissions().getStandardMask() | 512);
+            return new PasswordSecurityInfo(algorithm, revision, security.getEncryptionScope(),
+                    security.getDeclaredUserPermissions(), permissions,
+                    permissions.equals(DocumentPermissions.unrestricted()) ? CredentialAuthority.UNRESTRICTED : CredentialAuthority.USER);
+        }
+        return security;
     }
 
     private static void requireAdobeExtension(
@@ -535,22 +613,21 @@ final class PdfBoxPasswordSecurity {
         if (!(rawAdobe instanceof COSDictionary)) {
             return false;
         }
-        COSDictionary adobe = (COSDictionary) rawAdobe;
+        return isPreservableAdobeSecurityExtension(document, (COSDictionary) rawAdobe);
+    }
+
+    private static boolean isPreservableAdobeSecurityExtension(PDDocument document, COSDictionary adobe) {
         COSBase baseVersion = adobe.getItem(COSName.BASE_VERSION);
         COSBase extensionLevel = adobe.getItem(
                 COSName.EXTENSION_LEVEL);
         return adobe.keySet().size() == 2
-                && isExactAdobeSecurityExtension(
+                && (isExactAdobeSecurityExtension(
                         baseVersion,
-                        extensionLevel);
-    }
-
-    private static boolean isExactAdobeSecurityExtension(
-            COSDictionary adobe) {
-        return adobe.keySet().size() == 2
-                && isExactAdobeSecurityExtension(
-                        adobe.getItem(COSName.BASE_VERSION),
-                        adobe.getItem(COSName.EXTENSION_LEVEL));
+                        extensionLevel)
+                    || (document.isEncrypted() && document.getEncryption().getRevision() == 5
+                        && COSName.getPDFName("1.7").equals(baseVersion)
+                        && extensionLevel instanceof COSInteger
+                        && ((COSInteger) extensionLevel).longValue() == 3));
     }
 
     private static boolean isExactAdobeSecurityExtension(
@@ -604,27 +681,6 @@ final class PdfBoxPasswordSecurity {
             throw unsupported(
                     "PDF 2.0 password security requires accessibility permission bit 10.");
         }
-        if (policy.getAlgorithm() == PasswordEncryptionAlgorithm.RC4_40) {
-            throw unsupported(
-                    "RC4-40 output is unsupported because its security-handler revision cannot be selected reliably.");
-        }
-
-        int maximumCharacters = policy.getAlgorithm()
-                == PasswordEncryptionAlgorithm.AES_256 ? 127 : 32;
-        int ownerLength = WorkflowCredentialCharacters.lengthOf(
-                policy.getOwnerCredential());
-        int userLength = WorkflowCredentialCharacters.lengthOf(
-                policy.getUserCredential());
-        if (ownerLength == 0 || userLength == 0) {
-            throw unsupported(
-                    "Owner and user credentials must both be non-empty.");
-        }
-        if (ownerLength > maximumCharacters
-                || userLength > maximumCharacters) {
-            throw unsupported(
-                    "A password credential exceeds the supported output length.");
-        }
-
         WorkflowCredentialCharacters owner =
                 WorkflowCredentialCharacters.copyOf(
                         policy.getOwnerCredential(), resources);
@@ -632,13 +688,11 @@ final class PdfBoxPasswordSecurity {
         try {
             user = WorkflowCredentialCharacters.copyOf(
                     policy.getUserCredential(), resources);
-            requireCanonicalOutputCredential(
-                    owner.get(), maximumCharacters);
-            requireCanonicalOutputCredential(
-                    user.get(), maximumCharacters);
-            if (Arrays.equals(owner.get(), user.get())) {
-                throw unsupported(
-                        "Owner and user credentials must be distinct.");
+            boolean emptyOwner = requireOutputCredential(owner.get(), policy.getAlgorithm(), resources);
+            requireOutputCredential(user.get(), policy.getAlgorithm(), resources);
+            if (emptyOwner) {
+                owner.close();
+                owner = WorkflowCredentialCharacters.randomOwner(resources);
             }
             return new PreparedOutput(
                     policy.getAlgorithm(),
@@ -655,18 +709,24 @@ final class PdfBoxPasswordSecurity {
         }
     }
 
-    private static void requireCanonicalOutputCredential(
+    private static boolean requireOutputCredential(
             char[] credential,
-            int maximumCharacters) throws DocumentFailure {
-        if (credential.length > maximumCharacters) {
-            throw unsupported(
-                    "A password credential exceeds the supported output length.");
-        }
-        for (char character : credential) {
-            if (character < 0x20 || character > 0x7e) {
-                throw unsupported(
-                        "Output password credentials must use printable ASCII characters.");
+            PasswordEncryptionAlgorithm algorithm,
+            WorkflowResourceContext resources) throws DocumentFailure {
+        if (algorithm == PasswordEncryptionAlgorithm.AES_256) {
+            try (WorkflowResourceContext.MemoryReservation memory =
+                    resources.reserveOwnedMemory(96L * credential.length + 512L)) {
+                return PdfPasswordPreparation.saslPrepStored(new String(credential)).isEmpty();
+            } catch (IllegalArgumentException invalid) {
+                throw unsupported("The output credential cannot be prepared for password security.");
             }
+        } else {
+            for (char character : credential) {
+                if (character > 0xff) {
+                    throw unsupported("A legacy credential must contain byte-valued characters.");
+                }
+            }
+            return credential.length == 0;
         }
     }
 
@@ -691,7 +751,7 @@ final class PdfBoxPasswordSecurity {
         int length = encryption.getLength();
         COSName method = cryptFilterMethod(encryption);
 
-        if (version == 5 && revision == 6 && length == 256
+        if (version == 5 && (revision == 5 || revision == 6) && length == 256
                 && COSName.AESV3.equals(method)) {
             return PasswordEncryptionAlgorithm.AES_256;
         }
@@ -706,8 +766,8 @@ final class PdfBoxPasswordSecurity {
         if (version == 2 && revision == 3 && length == 128) {
             return PasswordEncryptionAlgorithm.RC4_128;
         }
-        if (version == 1 && (revision == 2 || revision == 3)
-                && (length == 40 || length == 0)) {
+        if ((version == 1 && (revision == 2 || revision == 3) && (length == 40 || length == 0))
+                || (version == 2 && revision == 3 && length == 40)) {
             return PasswordEncryptionAlgorithm.RC4_40;
         }
         throw unsupported(
@@ -768,18 +828,18 @@ final class PdfBoxPasswordSecurity {
 
     static final class PreparedPassword implements AutoCloseable {
 
-        private String password;
+        private char[] password;
         private WorkflowResourceContext.MemoryReservation reservation;
 
         private PreparedPassword(
-                String password,
+                char[] password,
                 WorkflowResourceContext.MemoryReservation reservation) {
             this.password = password;
             this.reservation = reservation;
         }
 
         private static PreparedPassword empty() {
-            return new PreparedPassword("", null);
+            return new PreparedPassword(new char[0], null);
         }
 
         private static PreparedPassword from(
@@ -791,18 +851,20 @@ final class PdfBoxPasswordSecurity {
             char[] characters = credential.get();
             WorkflowResourceContext.MemoryReservation reservation =
                     resources.reserveOwnedMemory(2L * characters.length);
+            char[] password = null;
             try {
                 resources.checkpoint();
-                String password = new String(characters);
+                password = characters.clone();
                 resources.checkpoint();
                 return new PreparedPassword(password, reservation);
             } catch (DocumentFailure | RuntimeException | Error failure) {
+                if (password != null) { Arrays.fill(password, '\0'); }
                 reservation.close();
                 throw failure;
             }
         }
 
-        String get() {
+        char[] get() {
             if (password == null) {
                 throw new IllegalStateException(
                         "The prepared password is no longer available.");
@@ -812,6 +874,7 @@ final class PdfBoxPasswordSecurity {
 
         @Override
         public void close() {
+            if (password != null) { Arrays.fill(password, '\0'); }
             password = null;
             if (reservation != null) {
                 reservation.close();
@@ -828,6 +891,8 @@ final class PdfBoxPasswordSecurity {
         private WorkflowCredentialCharacters owner;
         private WorkflowCredentialCharacters user;
         private WorkflowCredentialCharacters validation;
+        private final java.util.List<CanonicalStandardSecurityHandler> outputHandlers =
+                new java.util.ArrayList<CanonicalStandardSecurityHandler>();
         private final List<WorkflowResourceContext.MemoryReservation>
                 backendPasswordMemory =
                         new ArrayList<
@@ -904,7 +969,7 @@ final class PdfBoxPasswordSecurity {
             if (!isPresent()) {
                 return;
             }
-            if (version == PdfVersion.PDF_1_7) {
+            if (version == PdfVersion.PDF_1_7 && algorithm == PasswordEncryptionAlgorithm.AES_256) {
                 declareAdobeExtensionLevelEight(document);
             } else if (version == PdfVersion.PDF_2_0) {
                 removeAdobeExtensionLevelEight(document);
@@ -912,13 +977,18 @@ final class PdfBoxPasswordSecurity {
             AccessPermission accessPermission =
                     new AccessPermission(permissions.getStandardMask());
             WorkflowResourceContext.MemoryReservation backendMemory =
-                    resources.reserveOwnedMemory(2L
-                            * (owner.get().length + user.get().length));
+                    resources.reserveOwnedMemory(96L
+                            * (owner.get().length + user.get().length) + 1024L);
             boolean retained = false;
+            CanonicalStandardSecurityHandler handler = null;
             try {
                 resources.checkpoint();
                 String ownerPassword = new String(owner.get());
                 String userPassword = new String(user.get());
+                if (algorithm == PasswordEncryptionAlgorithm.AES_256) {
+                    ownerPassword = PdfPasswordPreparation.saslPrepStored(ownerPassword);
+                    userPassword = PdfPasswordPreparation.saslPrepStored(userPassword);
+                }
                 StandardProtectionPolicy protection =
                         new StandardProtectionPolicy(
                                 ownerPassword,
@@ -939,13 +1009,15 @@ final class PdfBoxPasswordSecurity {
                     protection.setPreferAES(false);
                 }
                 document.protect(protection);
-                document.getEncryption().setSecurityHandler(
-                        new CanonicalStandardSecurityHandler(protection));
+                handler = new CanonicalStandardSecurityHandler(protection);
+                document.getEncryption().setSecurityHandler(handler);
                 resources.checkpoint();
+                outputHandlers.add(handler);
                 backendPasswordMemory.add(backendMemory);
                 retained = true;
             } finally {
                 if (!retained) {
+                    if (handler != null) { handler.close(); }
                     backendMemory.close();
                 }
             }
@@ -992,7 +1064,7 @@ final class PdfBoxPasswordSecurity {
                 expectedLength = 128;
             } else {
                 expectedVersion = 1;
-                expectedRevision = 3;
+                expectedRevision = extendedPermissionCount(permissions) == 4 ? 2 : 3;
                 expectedLength = 40;
             }
             if (actual.getAlgorithm().orElse(null) != algorithm
@@ -1033,8 +1105,8 @@ final class PdfBoxPasswordSecurity {
                 PDEncryption encryption) {
             PDCryptFilterDictionary filter =
                     encryption.getStdCryptFilterDictionary();
-            return filter != null
-                    && filter.getCOSObject().containsKey(COSName.LENGTH);
+            return filter != null && (COSName.AESV3.equals(filter.getCryptFilterMethod())
+                    ? filter.getLength() != 32 : filter.getCOSObject().containsKey(COSName.LENGTH));
         }
 
         @Override
@@ -1051,6 +1123,8 @@ final class PdfBoxPasswordSecurity {
                 validation.close();
                 validation = null;
             }
+            for (CanonicalStandardSecurityHandler handler : outputHandlers) { handler.close(); }
+            outputHandlers.clear();
             for (WorkflowResourceContext.MemoryReservation reservation
                     : backendPasswordMemory) {
                 reservation.close();
@@ -1107,7 +1181,7 @@ final class PdfBoxPasswordSecurity {
                     .getDictionaryObject(COSName.ADBE);
             if (rawAdobe != null
                     && (!(rawAdobe instanceof COSDictionary)
-                            || !isExactAdobeSecurityExtension(
+                            || !isPreservableAdobeSecurityExtension(document,
                                     (COSDictionary) rawAdobe))) {
                 throw unsupported(
                         "The catalog ADBE extension entry is not safely removable.");
@@ -1130,7 +1204,7 @@ final class PdfBoxPasswordSecurity {
             COSBase rawAdobe = extensions.getDictionaryObject(COSName.ADBE);
             if (rawAdobe != null) {
                 if (!(rawAdobe instanceof COSDictionary)
-                        || !isExactAdobeSecurityExtension(
+                        || !isPreservableAdobeSecurityExtension(document,
                                 (COSDictionary) rawAdobe)) {
                     throw unsupported(
                             "The catalog ADBE extension entry is not safely removable.");
@@ -1144,27 +1218,87 @@ final class PdfBoxPasswordSecurity {
     }
 
     private static final class CanonicalStandardSecurityHandler
-            extends SecurityHandler<ProtectionPolicy> {
+            extends SecurityHandler<ProtectionPolicy> implements AutoCloseable {
 
         private final StandardSecurityHandler delegate;
+        private final StandardProtectionPolicy policy;
 
         private CanonicalStandardSecurityHandler(
                 StandardProtectionPolicy policy) {
             super(policy);
+            this.policy = policy;
             delegate = new StandardSecurityHandler(policy);
         }
 
         @Override
         public void prepareDocumentForEncryption(PDDocument document)
                 throws IOException {
-            delegate.prepareDocumentForEncryption(document);
-            copyState();
+            if (policy.getEncryptionKeyLength() == 40) {
+                prepareFortyBit(document);
+            } else {
+                delegate.prepareDocumentForEncryption(document);
+                copyState();
+            }
             PDCryptFilterDictionary filter = document.getEncryption()
                     .getStdCryptFilterDictionary();
             if (filter != null) {
-                // The crypt-filter method fixes the key size; omission avoids
-                // PDFBox's noncanonical bits-vs-bytes Length value.
-                filter.getCOSObject().removeItem(COSName.LENGTH);
+                // PDF 2.0 requires the AESV3 byte count. ISO 32000-1 permits
+                // omission for AESV2; the backend emits noncanonical bit counts.
+                if (COSName.AESV3.equals(filter.getCryptFilterMethod())) { filter.setLength(32); }
+                else { filter.getCOSObject().removeItem(COSName.LENGTH); }
+            }
+        }
+
+        private void prepareFortyBit(PDDocument document) throws IOException {
+            // ISO 32000-1 table 21 selects R2 when the extended permission
+            // bits are all granted, and R3 when any of them are restricted.
+            int permissions = policy.getPermissions().getPermissionBytes();
+            int revision = (permissions & 0xf00) == 0xf00 ? 2 : 3;
+            PDEncryption encryption = document.getEncryption();
+            encryption.removeV45filters();
+            encryption.setFilter("Standard");
+            encryption.setVersion(1);
+            encryption.setRevision(revision);
+            encryption.setLength(40);
+            encryption.setPermissions(permissions);
+            COSArray identifiers = document.getDocument().getDocumentID();
+            if (identifiers == null || identifiers.size() < 2) {
+                byte[] identifier = new byte[16];
+                new SecureRandom().nextBytes(identifier);
+                identifiers = new COSArray();
+                identifiers.add(new COSString(identifier));
+                identifiers.add(new COSString(identifier));
+                document.getDocument().setDocumentID(identifiers);
+                Arrays.fill(identifier, (byte) 0);
+            }
+            byte[] owner = policy.getOwnerPassword().getBytes(StandardCharsets.ISO_8859_1);
+            byte[] user = policy.getUserPassword().getBytes(StandardCharsets.ISO_8859_1);
+            byte[] ownerEntry = null;
+            byte[] userEntry = null;
+            try {
+                byte[] identifier = ((COSString) identifiers.getObject(0)).getBytes();
+                if (revision == 3) {
+                    byte[] paddedUser = padLegacyPassword(user);
+                    try { ownerEntry = transformFortyBitOwner(owner, paddedUser, true); }
+                    finally { Arrays.fill(paddedUser, (byte) 0); }
+                } else {
+                    ownerEntry = delegate.computeOwnerPassword(owner, user, revision, 5);
+                }
+                userEntry = delegate.computeUserPassword(user, ownerEntry, permissions, identifier, revision, 5, true);
+                setEncryptionKey(delegate.computeEncryptedKey(user, ownerEntry, userEntry,
+                        null, null, permissions, identifier, revision, 5, true, false));
+                encryption.setOwnerKey(ownerEntry);
+                encryption.setUserKey(userEntry);
+                setKeyLength(40);
+                setAES(false);
+                setCurrentAccessPermission(policy.getPermissions());
+                document.setEncryptionDictionary(encryption);
+                document.getDocument().setEncryptionDictionary(encryption.getCOSObject());
+            } finally {
+                Arrays.fill(owner, (byte) 0);
+                Arrays.fill(user, (byte) 0);
+                if (ownerEntry != null) { Arrays.fill(ownerEntry, (byte) 0); }
+                if (userEntry != null) { Arrays.fill(userEntry, (byte) 0); }
             }
         }
 
@@ -1185,6 +1319,13 @@ final class PdfBoxPasswordSecurity {
             setAES(delegate.isAES());
             setEncryptionKey(delegate.getEncryptionKey());
             setCurrentAccessPermission(delegate.getCurrentAccessPermission());
+        }
+
+        @Override public void close() {
+            if (getEncryptionKey() != null) { Arrays.fill(getEncryptionKey(), (byte) 0); }
+            if (delegate.getEncryptionKey() != null) { Arrays.fill(delegate.getEncryptionKey(), (byte) 0); }
+            setEncryptionKey(null);
+            delegate.setEncryptionKey(null);
         }
     }
 }

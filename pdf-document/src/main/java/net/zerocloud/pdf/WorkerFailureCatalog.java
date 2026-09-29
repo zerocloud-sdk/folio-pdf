@@ -817,7 +817,17 @@ final class WorkerFailureCatalog {
         descriptor(DocumentFailureCode.COMMAND_REJECTED,
                 "The Document Patch would invalidate the document structure."),
         descriptor(DocumentFailureCode.PATCH_VALUE_REJECTED,
-                "An indirect object replacement must contain a direct PDF value.")
+                "An indirect object replacement must contain a direct PDF value."),
+        descriptor(DocumentFailureCode.PASSWORD_SECURITY_UNSUPPORTED,
+                "A password-security algorithm declaration is malformed."),
+        descriptor(DocumentFailureCode.PASSWORD_SECURITY_UNSUPPORTED,
+                "The metadata encryption declaration is malformed."),
+        descriptor(DocumentFailureCode.PASSWORD_SECURITY_UNSUPPORTED,
+                "The output credential cannot be prepared for password security."),
+        descriptor(DocumentFailureCode.PASSWORD_SECURITY_UNSUPPORTED,
+                "A legacy credential must contain byte-valued characters."),
+        descriptor(DocumentFailureCode.PASSWORD_SECURITY_UNSUPPORTED,
+                "PDF 1.7 AES-256 requires a supported ADBE extension declaration.")
     };
 
     private WorkerFailureCatalog() {

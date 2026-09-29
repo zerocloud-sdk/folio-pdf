@@ -1,0 +1,43 @@
+[
+  {
+    "name": "full-verify",
+    "command": [
+      "./mvnw",
+      "-B",
+      "-ntp",
+      "verify"
+    ],
+    "started": "2026-09-29T11:36:00.410887+00:00",
+    "environment": {
+      "MAVEN_OPTS": "-Dmaven.repo.local=/workspace/folio-pdf/.build-cache/maven/repository",
+      "FOLIO_HARFBUZZ_HELPER": "/workspace/folio-pdf/.build-cache/t78-provision/folio-harfbuzz/bin/folio-harfbuzz",
+      "FOLIO_FOUNDATION_PYTHON_ROOT": "/workspace/folio-pdf/.build-cache/foundation-python",
+      "PYTHONPATH": "/workspace/folio-pdf/.build-cache/foundation-host-python"
+    },
+    "PATH-prefix": "/workspace/folio-pdf/scripts/container-bin",
+    "finished": "2026-09-29T11:58:11.949360+00:00",
+    "exit-code": 0,
+    "result": "pass",
+    "report": "capabilities/evidence/T78-delivery/validation/full-verify.txt",
+    "sha256": "98b08034ea49f1efb84072d471ceb4a14a48356ccd0038906c1a29d7f51e03ff"
+  },
+  {
+    "name": "jdk-matrix",
+    "command": [
+      "./scripts/verify-jdk-matrix.sh"
+    ],
+    "started": "2026-09-29T11:58:11.950326+00:00",
+    "environment": {
+      "MAVEN_OPTS": "-Dmaven.repo.local=/workspace/folio-pdf/.build-cache/maven/repository",
+      "FOLIO_HARFBUZZ_HELPER": "/workspace/folio-pdf/.build-cache/t78-provision/folio-harfbuzz/bin/folio-harfbuzz",
+      "FOLIO_FOUNDATION_PYTHON_ROOT": "/workspace/folio-pdf/.build-cache/foundation-python",
+      "PYTHONPATH": "/workspace/folio-pdf/.build-cache/foundation-host-python"
+    },
+    "PATH-prefix": "/workspace/folio-pdf/scripts/container-bin",
+    "finished": "2026-09-29T13:43:39.806219+00:00",
+    "exit-code": 0,
+    "result": "pass",
+    "report": "capabilities/evidence/T78-delivery/validation/jdk-matrix.txt",
+    "sha256": "f584813dc0393be156093ae65c06c2f8555a4f71b4285e715fdd1b177a9a9802"
+  }
+]

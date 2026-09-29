@@ -550,6 +550,27 @@ Callers moving from the T01 request factories should follow the
 [0.x T03 migration note](docs/migrations/0.x-t03-document-workflow.md): every
 factory call now receives an explicit `SaveMode`.
 
+## PDF versions and baseline password security
+
+The [security contract](docs/pdf-version-password-security.md) supports exact
+PDF 1.0–1.7/2.0 input declarations, PDF 1.7/2.0 output, AES-256 secure defaults,
+R5/R6 input and request-scoped RC4-40/128 or AES-128 legacy output. Credentials
+follow each algorithm's byte encoding, preparation and truncation rules;
+empty/equal values are supported without treating an unrestricted user as owner.
+Protected rewrite requires explicit protection and proven owner authority.
+
+Stable and inherited Preview add `kernel.pdf.ReaderProperties`,
+`WriterProperties`, `PdfVersion`, `EncryptionConstants` and matching
+reader/writer/security observations under `net.zerocloud.pdf.itext7`.
+Properties copy encoded password arrays and should be closed; caller streams
+remain caller-owned. `setLegacySecurityMode` is the explicit Folio output opt-in.
+The [T78 certification profile](docs/t78-certification.md) and
+[source audit](docs/research/T78-baseline-profile-audit.md) define the 61 mappings,
+independent controls and Ubuntu 24.04 x86-64 × JDK 8/11/17/21 evidence.
+Facade execution is IN_PROCESS; Native additionally certifies HARDENED_WORKER.
+Windows/macOS remain uncertified and nonblocking for F0.1.0. The parent security
+aggregate remains incomplete pending #79 metadata-clear and #80 attachments-only.
+
 ## Project information
 
 - Repository: <https://github.com/zerocloud-sdk/folio-pdf>

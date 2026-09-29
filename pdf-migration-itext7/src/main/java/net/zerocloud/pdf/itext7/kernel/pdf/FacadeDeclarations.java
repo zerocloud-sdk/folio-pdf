@@ -25,6 +25,7 @@ final class FacadeDeclarations implements AutoCloseable {
     final int sourcePageCount;
     private final Map<String, FacadeSource> sources;
     private final Map<String, PdfWriter> targets;
+    private final WriterProperties.Output output;
 
     FacadeDeclarations(Map<String, PdfReader> sourceReaders, String primarySource,
             Map<String, PdfWriter> targetWriters, PdfOutputPolicy outputPolicy, SaveMode saveMode) {
@@ -37,9 +38,6 @@ final class FacadeDeclarations implements AutoCloseable {
         IdentityHashMap<PdfReader, Boolean> uniqueReaders = new IdentityHashMap<PdfReader, Boolean>();
         WorkflowRequest.Builder builder = WorkflowRequest.builder().saveMode(this.saveMode)
                 .cancellationToken(cancellation);
-        if (outputPolicy != null) {
-            builder.outputPolicy(outputPolicy);
-        }
         long reserved = 0;
         long maximum = WorkflowResourcePolicy.safeDefaults().getMaximumTemporaryStorageBytes();
         for (Map.Entry<String, PdfReader> entry : readers.entrySet()) {
@@ -53,7 +51,7 @@ final class FacadeDeclarations implements AutoCloseable {
             }
             reserved += snapshot.bytes;
             snapshots.put(entry.getKey(), snapshot);
-            builder.source(entry.getKey(), DocumentSource.path(snapshot.path));
+            builder.source(entry.getKey(), snapshot.documentSource());
         }
         if (primarySource != null) {
             if (readers.isEmpty()) {
@@ -61,16 +59,33 @@ final class FacadeDeclarations implements AutoCloseable {
             }
             builder.primarySource(primarySource);
         }
+        WriterProperties selected = null;
+        IdentityHashMap<PdfWriter, Boolean> uniqueWriters = new IdentityHashMap<PdfWriter, Boolean>();
         for (Map.Entry<String, PdfWriter> entry : targets.entrySet()) {
-            builder.target(entry.getKey(), Objects.requireNonNull(entry.getValue(), "writer").getTarget());
+            PdfWriter writer = Objects.requireNonNull(entry.getValue(), "writer");
+            if (uniqueWriters.put(writer, Boolean.TRUE) != null) {
+                throw new IllegalArgumentException("A facade writer may be declared only once.");
+            }
+            WriterProperties choices = writer.availableProperties();
+            if (selected != null && !selected.sameChoices(choices)) {
+                throw new IllegalArgumentException("Every target must declare the same version and protection choices.");
+            }
+            selected = choices;
+            builder.target(entry.getKey(), writer.getTarget());
         }
-        request = builder.resourcePolicy(FacadeSource.policyWithSnapshot(reserved)).build();
+        output = selected == null ? new WriterProperties.Output(outputPolicy, null, null) : selected.output(outputPolicy);
+        try {
+            if (output.policy != null) { builder.outputPolicy(output.policy); }
+            if (selected != null && selected.legacy() != null) { builder.legacySecurityMode(selected.legacy()); }
+            request = builder.resourcePolicy(FacadeSource.policyWithSnapshot(reserved)).build();
+        } catch (RuntimeException | Error failure) { output.close(); throw failure; }
         sources = Collections.unmodifiableMap(snapshots);
         sourcePageCount = snapshots.isEmpty() ? 0 : snapshots.get(primarySource).pageCount;
         // All declarations and ownership states have passed before any transfer.
         for (PdfReader reader : readers.values()) {
             reader.takeSource();
         }
+        for (PdfWriter writer : targets.values()) { writer.take(); }
     }
 
     boolean hasSources() {
@@ -79,6 +94,10 @@ final class FacadeDeclarations implements AutoCloseable {
 
     boolean hasTargets() {
         return !targets.isEmpty();
+    }
+
+    net.zerocloud.pdf.PdfVersion outputVersion() {
+        return output.policy == null ? net.zerocloud.pdf.PdfVersion.PDF_1_7 : output.policy.getVersion();
     }
 
     void requireCommittedReceipts(List<PublicationReceipt> receipts) {
@@ -99,6 +118,7 @@ final class FacadeDeclarations implements AutoCloseable {
 
     @Override
     public void close() throws IOException {
+        output.close();
         IOException first = null;
         for (FacadeSource source : sources.values()) {
             try {

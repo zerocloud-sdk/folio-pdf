@@ -29,9 +29,16 @@ public final class PdfReader implements Closeable {
      * @throws IOException if the Native Interface cannot open the source
      */
     public PdfReader(String filename) throws IOException {
+        this(filename, new ReaderProperties());
+    }
+
+    /** Captures an authenticated Source and opening properties.
+     * @param filename input filename @param properties caller-owned properties
+     * @throws IOException if opening or authentication fails */
+    public PdfReader(String filename, ReaderProperties properties) throws IOException {
         source = FacadeSource.capture(Paths.get(Objects.requireNonNull(filename, "filename"))
                 .toAbsolutePath()
-                .normalize());
+                .normalize(), Objects.requireNonNull(properties, "properties"));
     }
 
     /**
@@ -40,7 +47,49 @@ public final class PdfReader implements Closeable {
      * @throws IOException if the Source cannot be opened
      */
     public PdfReader(InputStream input) throws IOException {
-        source = FacadeSource.capture(Objects.requireNonNull(input, "input"));
+        this(input, new ReaderProperties());
+    }
+
+    /** Authenticates a caller-owned stream without closing it.
+     * @param input PDF bytes @param properties caller-owned opening properties
+     * @throws IOException if opening or authentication fails */
+    public PdfReader(InputStream input, ReaderProperties properties) throws IOException {
+        source = FacadeSource.capture(Objects.requireNonNull(input, "input"), Objects.requireNonNull(properties, "properties"));
+    }
+
+    /** @return whether the Source has password protection */
+    public boolean isEncrypted() { requireOpen(); return source.security.isPasswordProtected(); }
+
+    /** @return true only for an unencrypted Source or proven owner authority */
+    public boolean isOpenedWithFullPermission() {
+        requireOpen();
+        return !source.security.isPasswordProtected()
+                || source.security.getCredentialAuthority() == net.zerocloud.pdf.CredentialAuthority.OWNER;
+    }
+
+    /** @return the unsigned 32-bit declared permission word, or zero when unencrypted */
+    public long getPermissions() {
+        requireOpen();
+        return source.security.isPasswordProtected()
+                ? source.security.getDeclaredUserPermissions().getStandardMask() & 0xffffffffL : 0L;
+    }
+
+    /** @return the encryption selector and retained metadata flag, or -1 when unencrypted */
+    public int getCryptoMode() {
+        requireOpen();
+        if (!source.security.isPasswordProtected()) { return -1; }
+        int mode;
+        switch (source.security.getAlgorithm().get()) {
+            case RC4_40: mode = EncryptionConstants.STANDARD_ENCRYPTION_40; break;
+            case RC4_128: mode = EncryptionConstants.STANDARD_ENCRYPTION_128; break;
+            case AES_128: mode = EncryptionConstants.ENCRYPTION_AES_128; break;
+            default: mode = EncryptionConstants.ENCRYPTION_AES_256;
+        }
+        return mode | (source.security.getEncryptionScope() == net.zerocloud.pdf.PasswordEncryptionScope.ALL_EXCEPT_METADATA ? 8 : 0);
+    }
+
+    private void requireOpen() {
+        if (closed) { throw new IllegalStateException("The facade reader is closed."); }
     }
 
     int getPageCount() {

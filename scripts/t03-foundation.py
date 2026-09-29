@@ -140,6 +140,22 @@ ARTIFACT_CONTRACT_TESTS = tuple(
     'net.zerocloud.pdf.migration.itext7.contract.' + name
     for name in ('JarContractIT', 'ClasspathExclusivityIT'))
 CERTIFICATION_CASES = {
+    'password-baseline': {
+        'profile': 'T32-password-baseline', 'label': 'T78', 'test-count': 44,
+        'test-classes': ['net.zerocloud.pdf.consumer.PdfVersionPasswordSecurityWorkflowTest',
+                         'net.zerocloud.pdf.itext7.consumer.PasswordSecurityFacadeTest'],
+        'facade-execution-profile': 'IN_PROCESS', 'syntax-producer': 'qpdf-t78-r1',
+        'standards-producer': 'arlington', 'contract-timeout': 600, 'recorder-timeout': 1800,
+        'workflow-policy': 'Exact versions, baseline all-content Standard password security, destroyable credentials, owner-first authority and eight permissions; authenticated primary and named Sources, explicit protected rewrite and preserved encrypted incremental publication; Native executes the selected profile; Facade executes IN_PROCESS',
+        'fonts': 'none; original resource-free rectangle and blank page grids',
+        'configuration-paths': ['capabilities/profiles/T78-password', 'capabilities/profiles/T78-controls',
+            'capabilities/profiles/T03-standards', 'build-tools/acceptance/arlington/t78-input.patch',
+            'build-tools/acceptance/arlington/t78-output.patch', 'build-tools/acceptance/pdfcpu',
+            'build-tools/acceptance/qpdf', 'scripts/t78-certification.py', 'scripts/t78-observer.py',
+            'scripts/t78-pypdf-check.py', 'scripts/t78-evidence-pin.properties',
+            'scripts/t78_foundation_reports.py', 'scripts/t13_foundation_reports.py',
+            'scripts/t78-qpdf-runtime.sha256', 'scripts/t78-arlington-runtime.sha256',
+            'scripts/t78-checkers-runtime.sha256', 'scripts/container-bin/t78-qpdf']},
     'incremental': {
         'profile': 'T15-incremental-signature-protection',
         'label': 'T15',
@@ -611,6 +627,9 @@ def append_source_visual(root, run, report):
 
 
 def collect_reports(root, run, obligation='transactions', execution_profile=None):
+    if obligation == 'password-baseline':
+        from t78_foundation_reports import collect_reports as collect_password_reports
+        return collect_password_reports(root, run, execution_profile)
     if obligation == 'incremental':
         from t15_foundation_reports import collect_reports as collect_incremental_reports
         return collect_incremental_reports(root, run, execution_profile)
@@ -948,6 +967,19 @@ def container_command(root, image, helper):
 def certification_tools():
     """Return the common, pinned tool catalog recorded for every certification."""
     external = [
+        {'id': 'qpdf-t78-r1', 'kind': 'external-tool', 'version': '12.4.0-folio-t78-r1',
+         'path': '.build-cache/qpdf/t78-r1/runtime/qpdf',
+         'pin': 'scripts/t78-qpdf-pin.properties', 'hash-key': 'sha256',
+         'chains': ['syntax', 'standards', 'semantic']},
+        {'id': 'pdfcpu-t78-r1', 'kind': 'external-tool', 'version': '0.15.0-folio-t78-r1',
+         'path': '.build-cache/pdfcpu/t78-r1/pdfcpu',
+         'pin': 'scripts/t78-pdfcpu-pin.properties', 'hash-key': 'sha256', 'chains': ['standards']},
+        {'id': 'pypdf', 'kind': 'external-tool', 'version': '6.1.1',
+         'path': '.build-cache/t78-security-checkers/pypdf/_encryption.py',
+         'pin': 'scripts/t78-checkers-pin.properties', 'hash-key': 'pypdf-sha256', 'chains': ['standards']},
+        {'id': 'pycryptodome', 'kind': 'external-tool', 'version': '3.23.0',
+         'path': '.build-cache/t78-security-checkers/Crypto/Cipher/_raw_aes.abi3.so',
+         'pin': 'scripts/t78-checkers-pin.properties', 'hash-key': 'pycryptodome-sha256', 'chains': ['standards']},
         {'id': 'qpdf', 'kind': 'external-tool', 'version': '12.4.0',
          'path': '.build-cache/qpdf/12.4.0/bin/qpdf',
          'pin': 'scripts/qpdf-pin.properties', 'hash-key': 'QPDF_BINARY_SHA256',
@@ -991,7 +1023,7 @@ def certification_tools():
          'hash-key': 'IMAGEMAGICK_EXECUTABLE_SHA256', 'chains': ['visual']}]
     project = [{'id': 'folio-pdf-' + label, 'kind': 'project-test',
                 'version': '0.1.0', 'chains': ['semantic']}
-               for label in ('t03', 't09', 't10', 't11', 't12', 't13', 't14', 't15')]
+               for label in ('t03', 't09', 't10', 't11', 't12', 't13', 't14', 't15', 't78')]
     return external + project
 
 
@@ -1182,7 +1214,7 @@ def certify(root, output, contract, helper, obligation='transactions'):
                           'release': '0.1.0', 'candidate-sha256': identities['Candidate'], 'contract-sha256': identities['Contract'],
                           'environment-sha256': environment_ref['sha256'], 'execution-configuration-sha256': sha256(configuration),
                           'execution-profile': execution, 'chain': chain, 'result': 'pass',
-                          'producer': {'syntax': 'qpdf',
+                          'producer': {'syntax': case.get('syntax-producer', 'qpdf'),
                                        'standards': case.get('standards-producer', 'arlington'),
                                        'semantic': 'folio-pdf-' + case['label'].lower(),
                                        'visual': 'pdfium-cli'}[chain],
@@ -1218,7 +1250,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('action', choices=('stage', 'certify', 'collect', 'preservation', 'plan', 'merge-index'))
     parser.add_argument('output', nargs='?', type=Path)
-    parser.add_argument('--obligation', choices=('transactions', 'values', 'pages', 'metadata', 'annotations', 'text', 'images', 'incremental'), default='transactions')
+    parser.add_argument('--obligation', choices=('transactions', 'values', 'pages', 'metadata', 'annotations', 'text', 'images', 'incremental', 'password-baseline'), default='transactions')
     parser.add_argument('--execution-profile', choices=('IN_PROCESS', 'HARDENED_WORKER'))
     parser.add_argument('--root', type=Path, default=Path(__file__).resolve().parents[1])
     args = parser.parse_args()
@@ -1239,10 +1271,10 @@ def main():
         import json
         if args.output is None:
             parser.error('collect requires an observation directory')
-        if args.obligation in ('metadata', 'annotations', 'text', 'images', 'incremental') and args.execution_profile is None:
+        if args.obligation in ('metadata', 'annotations', 'text', 'images', 'incremental', 'password-baseline') and args.execution_profile is None:
             parser.error(args.obligation + ' collect requires --execution-profile')
-        if args.obligation not in ('metadata', 'annotations', 'text', 'images', 'incremental') and args.execution_profile is not None:
-            parser.error('--execution-profile applies only to metadata, annotations, text, images and incremental collect')
+        if args.obligation not in ('metadata', 'annotations', 'text', 'images', 'incremental', 'password-baseline') and args.execution_profile is not None:
+            parser.error('--execution-profile applies only to metadata, annotations, text, images, incremental and password-baseline collect')
         print(json.dumps(collect_reports(root, (root / args.output).resolve(), args.obligation,
                                          args.execution_profile), indent=2))
         return

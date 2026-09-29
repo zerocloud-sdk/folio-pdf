@@ -1,0 +1,55 @@
+{
+  "schema-version": 1,
+  "result": "pass",
+  "recorded-at": "2026-09-29T22:35:17.294993+00:00",
+  "comparison-baseline": "861c4ba81c7aecf9fba15052859f8cc80fd0259d",
+  "head": "861c4ba81c7aecf9fba15052859f8cc80fd0259d",
+  "branch": "main",
+  "staged-diff": "empty",
+  "diff-check": "pass",
+  "status": {
+    "path": "capabilities/evidence/T78-delivery/validation/final-worktree-status.txt",
+    "sha256": "c53949991ff3a652810534ed5207da4537c3a8424b3ab4d63b4f3e47a2190797"
+  },
+  "reported-change-entries": 78,
+  "scope-review": "Primary agent reviewed all reported paths against the #78 implementation, acceptance profiles/tools, authorities, documentation and fresh evidence. Only ticket changes are present; no unrelated dirty work was found or modified.",
+  "source-and-contract-audit": {
+    "path": "capabilities/evidence/T78-delivery/validation/final-evidence-audit.json",
+    "sha256": "f48592787af3e5f48c3e6cb4aeaa2efbe667cc71c53a04232a0d5ea2132c7809"
+  },
+  "review": {
+    "path": "capabilities/evidence/T78-delivery/review.md",
+    "sha256": "b1eeb3ab057f7cec8cb1a0b248ceb850c365627811e3c771d0fd3d7b11ed646e"
+  },
+  "commands": [
+    [
+      "git",
+      "rev-parse",
+      "HEAD"
+    ],
+    [
+      "git",
+      "branch",
+      "--show-current"
+    ],
+    [
+      "git",
+      "diff",
+      "--cached",
+      "--exit-code"
+    ],
+    [
+      "git",
+      "diff",
+      "--check"
+    ],
+    [
+      "git",
+      "status",
+      "--short",
+      "--branch"
+    ]
+  ],
+  "optional-local-commit": null,
+  "remote-mutations": "none"
+}

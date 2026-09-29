@@ -16,7 +16,7 @@ import net.zerocloud.pdf.PublicationTarget;
  *
  * @since 0.1.0
  */
-public final class PdfWriter {
+public final class PdfWriter implements AutoCloseable {
 
     static {
         FacadeClasspathGuard.requireSingleEdition();
@@ -24,6 +24,9 @@ public final class PdfWriter {
 
     private final Path path;
     private final PublicationTarget target;
+    private final WriterProperties properties;
+    private boolean claimed;
+    private boolean closed;
 
     /**
      * Creates a writer for a filesystem target.
@@ -33,6 +36,13 @@ public final class PdfWriter {
      *         existing directory
      */
     public PdfWriter(String filename) throws FileNotFoundException {
+        this(filename, new WriterProperties());
+    }
+
+    /** Captures output settings without opening or truncating the destination.
+     * @param filename output filename @param properties caller-owned choices
+     * @throws FileNotFoundException if the destination declaration is invalid */
+    public PdfWriter(String filename, WriterProperties properties) throws FileNotFoundException {
         Path requested = Paths.get(Objects.requireNonNull(filename, "filename"));
         Path normalized = requested.toAbsolutePath().normalize();
         Path parent = normalized.getParent();
@@ -41,6 +51,7 @@ public final class PdfWriter {
         }
         this.path = normalized;
         this.target = PublicationTarget.path(normalized);
+        this.properties = Objects.requireNonNull(properties, "properties").copy();
     }
 
     /**
@@ -48,9 +59,26 @@ public final class PdfWriter {
      * @param output the destination stream
      */
     public PdfWriter(OutputStream output) {
+        this(output, new WriterProperties());
+    }
+
+    /** Captures output settings for a caller-owned stream.
+     * @param output destination stream @param properties caller-owned choices */
+    public PdfWriter(OutputStream output, WriterProperties properties) {
         path = null;
         target = PublicationTarget.stream(Objects.requireNonNull(output, "output"));
+        this.properties = Objects.requireNonNull(properties, "properties").copy();
     }
+
+    WriterProperties availableProperties() {
+        if (closed || claimed) { throw new IllegalStateException("The facade writer is closed or already owned by a document."); }
+        return properties;
+    }
+
+    void take() { availableProperties(); claimed = true; properties.close(); }
+
+    /** Clears unclaimed password copies; never closes the caller's stream. */
+    @Override public void close() { closed = true; properties.close(); }
 
     PublicationTarget getTarget() {
         return target;

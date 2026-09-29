@@ -133,3 +133,17 @@ dictionary controls. Its publication positives are PDF 2.0; legacy PDF 1.7
 conditional required-font behavior remains unqualified. Detailed font programs
 and other decoded text/structure relationships are not implied by these model
 declaration checks.
+
+## T78 password-security models
+
+T78 uses the unchanged upstream `fe4a1a8` TestGrammar binary with separate
+`t78-input.patch` and `t78-output.patch` overlays on the frozen latest TSV
+model. `scripts/provision-t78-arlington-model.py` applies both with zero fuzz
+and checks the complete `scripts/t78-arlington-runtime.sha256` manifest.
+The input model admits legacy/default representations; the output model
+requires the closed all-content profile and PDF 2.0 writer permissions.
+Neither changes the engine or previous profile models. Exact public clauses,
+qualified rule/control findings, engine coverage gaps and the independent
+pdfcpu/pypdf supplements are documented in `docs/research/T78-baseline-profile-audit.md`
+and `docs/t78-certification.md`. Every model finding, including unknown crypt
+filter keys, is interpreted under the frozen closed-profile policy.

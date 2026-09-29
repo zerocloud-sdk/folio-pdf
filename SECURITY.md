@@ -128,21 +128,27 @@ budget, so the stable cause is not silently replaced by connection loss. Fixed
 the ledger to prevent recursive accounting; their length and message bound are
 checked before allocation.
 
-Apache PDFBox's public password loader and protection policy require temporary
-immutable Java `String` values. Folio PDF minimizes their lifetime and closes
-the containing document, but cannot erase backend or JVM String copies and
-makes no physical secure-erasure claim. Output rejects empty, equal,
-non-printable-ASCII, or over-limit credentials rather than relying on backend
-fallback, normalization, or truncation. A missing credential is never treated
-as an empty password.
+Backend output protection policies require temporary immutable Java `String`
+values. Folio minimizes their lifetime and clears owned character, byte and
+file-key arrays on success or failure, but cannot erase backend/provider/JVM
+copies and makes no physical secure-erasure claim. Baseline credentials support
+empty/equal values, exact legacy bytes with the first-32-byte rule, and AES-256
+RFC 4013 Unicode 3.2 preparation followed by the first-127-UTF-8-byte rule.
+An empty prepared owner generates independent random authority. Unmappable
+legacy characters and prohibited stored strings fail safely. A missing
+credential is never treated as an empty password; unrestricted user permissions
+never substitute for separately proven owner authentication.
 
 Default diagnostics omit document content, names, metadata, credentials,
 private keys, secret-derived values, and raw backend failures. Acceptance
 evidence supplies encrypted products to qpdf through a temporary password file,
 redacts password-valued tool output and the temporary path, and deletes the
-file before the command returns. Evidence hashes exclude randomized
-credential-derived entries and ciphertext and do not expose private security
-state.
+file before the command returns. T78 retains actual synthetic ciphertext
+products and their artifact hashes for candidate binding. Its safe observation
+reports omit credentials, authentication-entry values and secret-derived hashes;
+plaintext derivatives are private and deleted. Earlier T16 repeatable summary
+hashes exclude randomized material and remain historical syntax-only evidence.
+See the [baseline certification contract](docs/t78-certification.md).
 
 ## Vulnerability handling
 

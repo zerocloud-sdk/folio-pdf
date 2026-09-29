@@ -902,7 +902,7 @@ obligations:
   capability: document.version-password-security.baseline
   parent-capability: document.version-password-security
   acceptance-profile: T32-password-baseline
-  profile-contract: capabilities/profiles/foundation-release.md
+  profile-contract: docs/t78-certification.md
   kind: behavior
   slice: 78
   environments:
@@ -924,7 +924,68 @@ obligations:
   facade-families:
   - family: kernel reader/writer password security, permissions and scopes
     reference-prefix: com.itextpdf.kernel.pdf.
-    mappings: []
+    mappings:
+    - itext7.kernel.pdf-writer.constructor-string
+    - itext7.kernel.pdf-reader.constructor-string
+    - itext7.kernel.pdf-reader.close
+    - itext7.kernel.pdf-document.constructor-writer
+    - itext7.kernel.pdf-document.constructor-reader
+    - itext7.kernel.pdf-document.close
+    - itext7.kernel.pdf-document.constructor-named-sources-targets
+    - itext7.kernel.pdf-writer.constructor-output-stream
+    - itext7.kernel.pdf-reader.constructor-input-stream
+    - itext7.kernel.pdf-document.constructor-reader-writer
+    - itext7.kernel.pdf-document.constructor-named-sources-targets-version
+    - itext7.kernel.pdf-document.constructor-stamping
+    - itext7.kernel.pdf-document.constructor-named-stamping
+    - itext7.kernel.reader-properties.constructor
+    - itext7.kernel.reader-properties.close
+    - itext7.kernel.writer-properties.constructor
+    - itext7.kernel.writer-properties.close
+    - itext7.kernel.reader-properties.set-password
+    - itext7.kernel.reader-properties.set-credential
+    - itext7.kernel.writer-properties.set-pdf-version
+    - itext7.kernel.writer-properties.set-standard-encryption
+    - itext7.kernel.writer-properties.set-legacy-security-mode
+    - itext7.kernel.pdf-reader.constructor-string-properties
+    - itext7.kernel.pdf-reader.constructor-input-stream-properties
+    - itext7.kernel.pdf-writer.constructor-string-properties
+    - itext7.kernel.pdf-writer.constructor-output-stream-properties
+    - itext7.kernel.pdf-reader.is-encrypted
+    - itext7.kernel.pdf-reader.is-opened-with-full-permission
+    - itext7.kernel.pdf-reader.get-permissions
+    - itext7.kernel.pdf-reader.get-crypto-mode
+    - itext7.kernel.pdf-writer.close
+    - itext7.kernel.pdf-document.get-pdf-version
+    - itext7.kernel.encryption-constants.standard-encryption-40
+    - itext7.kernel.encryption-constants.standard-encryption-128
+    - itext7.kernel.encryption-constants.encryption-aes-128
+    - itext7.kernel.encryption-constants.encryption-aes-256
+    - itext7.kernel.encryption-constants.allow-degraded-printing
+    - itext7.kernel.encryption-constants.allow-printing
+    - itext7.kernel.encryption-constants.allow-modify-contents
+    - itext7.kernel.encryption-constants.allow-copy
+    - itext7.kernel.encryption-constants.allow-modify-annotations
+    - itext7.kernel.encryption-constants.allow-fill-in
+    - itext7.kernel.encryption-constants.allow-screenreaders
+    - itext7.kernel.encryption-constants.allow-assembly
+    - itext7.kernel.pdf-version.pdf-1-0
+    - itext7.kernel.pdf-version.pdf-1-1
+    - itext7.kernel.pdf-version.pdf-1-2
+    - itext7.kernel.pdf-version.pdf-1-3
+    - itext7.kernel.pdf-version.pdf-1-4
+    - itext7.kernel.pdf-version.pdf-1-5
+    - itext7.kernel.pdf-version.pdf-1-6
+    - itext7.kernel.pdf-version.pdf-1-7
+    - itext7.kernel.pdf-version.pdf-2-0
+    - itext7.kernel.pdf-version.from-string
+    - itext7.kernel.pdf-version.from-pdf-name
+    - itext7.kernel.pdf-version.to-pdf-name
+    - itext7.kernel.pdf-version.to-string
+    - itext7.kernel.pdf-version.compare-to
+    - itext7.kernel.pdf-version.compare-to-bridge
+    - itext7.kernel.pdf-version.equals
+    - itext7.kernel.pdf-version.hash-code
 - id: password-clear-metadata
   summary: Support and certify metadata-clear input/output including AES-256, while other protected content requires
     valid credentials and secure defaults stay intact.
@@ -1571,21 +1632,24 @@ limitations:
   obligation: password-baseline
 - capability: document.version-password-security
   sha256: 0c30122d23e1ae62af09c677496af26d97dde5bac62df52dfee0c14ad82fa536
-  disposition: release-blocker
-  reason: 'The qualified PDF 1.7 AES-256 extension and normative PDF 2.0 profiles require independent standards
-    coverage under #78.'
+  disposition: retained-contract
+  reason: 'The source-traceable T78 profile implements required successful versions, legacy algorithms, revisions,
+    crypt-filter defaults and credential forms. Separate qualified standards and original-product evidence are mandatory
+    for the current candidate; #79/#80 scopes remain independently required.'
   obligation: password-baseline
 - capability: document.version-password-security
-  sha256: 80164b7c9d3bfb905e33c29778d641af51bb8a16b9dc5858b688d2f2fbf35c64
-  disposition: release-blocker
-  reason: 'The excluded legacy output algorithms must be audited against the unchanged Foundation baseline under
-    #78.'
+  sha256: 360646d25bf4f105cb2f14fa6b41c00001367fa2f4d86fe157d1f135ee87ceab
+  disposition: retained-contract
+  reason: 'The source-traceable T78 profile implements required successful versions, legacy algorithms, revisions,
+    crypt-filter defaults and credential forms. Separate qualified standards and original-product evidence are mandatory
+    for the current candidate; #79/#80 scopes remain independently required.'
   obligation: password-baseline
 - capability: document.version-password-security
-  sha256: bacf6e2c2a8fb6391560be89ac46c54b8dcc043ab68c5f9b963df5173ec5b377
-  disposition: release-blocker
-  reason: 'The excluded password revisions and crypt-filter inputs require #78 baseline audit; metadata and attachment
-    scopes remain #79/#80 blockers.'
+  sha256: 95d4bcfda52be4ace5454c80879243b1835e2d549d1a28dc7f0febc864f75424
+  disposition: retained-contract
+  reason: 'The source-traceable T78 profile implements required successful versions, legacy algorithms, revisions,
+    crypt-filter defaults and credential forms. Separate qualified standards and original-product evidence are mandatory
+    for the current candidate; #79/#80 scopes remain independently required.'
   obligation: password-baseline
 - capability: document.version-password-security
   sha256: 9101b578477815a4ae35417bd9a7cff0ab4b68643ca9a5d825be1bd0cd9bcd9c
@@ -1594,10 +1658,11 @@ limitations:
     and #80 must complete them.'
   obligation: password-clear-metadata
 - capability: document.version-password-security
-  sha256: 3f58a47994626bd820baa1e4d30837bd19441b7f8edbcfb9afd9f12d434d4140
-  disposition: release-blocker
-  reason: 'Nonempty distinct printable-ASCII credential restrictions require #78 audit against all required credential
-    cases; safe rejection cannot replace required success.'
+  sha256: 296df264b0addb513109880cc2536e02ff760c8b8eecbbe290c7ce11556cfa7d
+  disposition: retained-contract
+  reason: 'The source-traceable T78 profile implements required successful versions, legacy algorithms, revisions,
+    crypt-filter defaults and credential forms. Separate qualified standards and original-product evidence are mandatory
+    for the current candidate; #79/#80 scopes remain independently required.'
   obligation: password-baseline
 - capability: document.version-password-security
   sha256: 6cce8df704863ba3ee98368166677f92a1cf04251abdde00e0a02020f1e36702
@@ -1630,7 +1695,7 @@ limitations:
     #78 must prove it without omitting required successful Foundation cases.'
   obligation: password-baseline
 - capability: document.version-password-security
-  sha256: 06cd6b2e6103ef02d04d8d71918ac8005668129db920e8c02b0205feda2142c5
+  sha256: 9ad3ebc91fd0f56122f71e3ee7d5000df32dff29c8b57a34548acab81d7c24e4
   disposition: retained-contract
   reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
     #78 must prove it without omitting required successful Foundation cases.'

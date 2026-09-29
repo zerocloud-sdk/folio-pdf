@@ -4,7 +4,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -22,8 +26,40 @@ final class ExternalProcess {
 
     static ProcessResult run(Path executable, Path directory, long timeoutMillis, int maxOutputBytes,
             String... arguments) throws IOException, InterruptedException {
-        if (timeoutMillis < 1 || timeoutMillis > 300000) {
-            throw new IOException("External tool timeout must be between 1 and 300000 ms");
+        return runBounded(executable, directory, timeoutMillis, 300000, maxOutputBytes, null, arguments);
+    }
+
+    /** Runs a repository-owned suite coordinator whose individual checks retain their own bounds. */
+    static ProcessResult runCoordinator(Path executable, Path directory, long timeoutMillis, int maxOutputBytes,
+            String... arguments) throws IOException, InterruptedException {
+        Path privateDirectory = Files.createTempDirectory("folio-acceptance-private-");
+        try {
+            return runBounded(executable, directory, timeoutMillis, 900000, maxOutputBytes,
+                    privateDirectory, arguments);
+        } finally {
+            // The Java owner also removes files when the coordinator cannot unwind.
+            Files.walkFileTree(privateDirectory, new SimpleFileVisitor<Path>() {
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attributes) throws IOException {
+                    Files.delete(file);
+                    return FileVisitResult.CONTINUE;
+                }
+
+                @Override
+                public FileVisitResult postVisitDirectory(Path folder, IOException failure) throws IOException {
+                    if (failure != null) { throw failure; }
+                    Files.delete(folder);
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        }
+    }
+
+    private static ProcessResult runBounded(Path executable, Path directory, long timeoutMillis,
+            long maximumTimeoutMillis, int maxOutputBytes, Path privateDirectory, String... arguments)
+            throws IOException, InterruptedException {
+        if (timeoutMillis < 1 || timeoutMillis > maximumTimeoutMillis) {
+            throw new IOException("External tool timeout must be between 1 and " + maximumTimeoutMillis + " ms");
         }
         if (maxOutputBytes < 1 || maxOutputBytes > 16 * 1024 * 1024) {
             throw new IOException("External tool output limit must be between 1 and 16777216 bytes");
@@ -32,15 +68,16 @@ final class ExternalProcess {
         String[] command = new String[arguments.length + 1];
         command[0] = executable.toString();
         System.arraycopy(arguments, 0, command, 1, arguments.length);
-        Process process = new ProcessBuilder(command)
-                .directory(directory.toFile())
-                .start();
+        ProcessBuilder builder = new ProcessBuilder(command).directory(directory.toFile());
+        boolean coordinator = privateDirectory != null;
+        if (coordinator) { builder.environment().put("TMPDIR", privateDirectory.toString()); }
+        Process process = builder.start();
         AtomicInteger remainingBytes = new AtomicInteger(maxOutputBytes);
         AtomicBoolean overflow = new AtomicBoolean();
         StreamCapture standardOutput = new StreamCapture(
-                process.getInputStream(), process, remainingBytes, overflow);
+                process.getInputStream(), process, remainingBytes, overflow, coordinator);
         StreamCapture standardError = new StreamCapture(
-                process.getErrorStream(), process, remainingBytes, overflow);
+                process.getErrorStream(), process, remainingBytes, overflow, coordinator);
         Thread outputThread = new Thread(
                 standardOutput,
                 "acceptance-tool-standard-output");
@@ -53,8 +90,11 @@ final class ExternalProcess {
         errorThread.start();
         try {
             process.getOutputStream().close();
-            if (!process.waitFor(timeoutMillis, TimeUnit.MILLISECONDS)) {
-                throw new LimitExceededException("External tool time limit exceeded");
+            while (!process.waitFor(Math.min(100, timeoutMillis), TimeUnit.MILLISECONDS)) {
+                if (overflow.get()) { throw new LimitExceededException("External tool output limit exceeded"); }
+                if (System.nanoTime() >= deadline) {
+                    throw new LimitExceededException("External tool time limit exceeded");
+                }
             }
             joinBefore(outputThread, deadline);
             joinBefore(errorThread, deadline);
@@ -67,7 +107,26 @@ final class ExternalProcess {
             throw new LimitExceededException(limit.getMessage(),
                     standardOutput.snapshot() + "\n" + standardError.snapshot());
         } finally {
-            process.destroyForcibly();
+            if (coordinator) { stopCoordinator(process); }
+            else { process.destroyForcibly(); }
+        }
+    }
+
+    private static void stopCoordinator(Process process) throws IOException {
+        boolean interrupted = Thread.interrupted();
+        try {
+            process.destroy();
+            for (int phase = 0; phase < 2 && process.isAlive(); phase++) {
+                if (phase == 1) { process.destroyForcibly(); }
+                long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(5);
+                while (process.isAlive() && System.nanoTime() < deadline) {
+                    try { process.waitFor(100, TimeUnit.MILLISECONDS); }
+                    catch (InterruptedException cancellation) { interrupted = true; }
+                }
+            }
+            if (process.isAlive()) { throw new IOException("Acceptance coordinator did not terminate"); }
+        } finally {
+            if (interrupted) { Thread.currentThread().interrupt(); }
         }
     }
 
@@ -105,15 +164,17 @@ final class ExternalProcess {
         private final Process process;
         private final AtomicInteger remaining;
         private final AtomicBoolean overflow;
+        private final boolean coordinator;
         private final ByteArrayOutputStream output = new ByteArrayOutputStream();
         private IOException failure;
 
         StreamCapture(InputStream input, Process process, AtomicInteger remaining,
-                AtomicBoolean overflow) {
+                AtomicBoolean overflow, boolean coordinator) {
             this.input = input;
             this.process = process;
             this.remaining = remaining;
             this.overflow = overflow;
+            this.coordinator = coordinator;
         }
 
         @Override
@@ -131,7 +192,8 @@ final class ExternalProcess {
                     output.write(buffer, 0, reserved);
                     if (reserved < count) {
                         overflow.set(true);
-                        process.destroyForcibly();
+                        if (coordinator) { process.destroy(); }
+                        else { process.destroyForcibly(); }
                         break;
                     }
                 }

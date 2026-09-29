@@ -868,3 +868,31 @@ PDF417 行高至少为模块宽的 3 倍。改变一个尺寸不会自动改变�
 保存均遵守既有 Workflow 契约。详见[英文契约](../two-dimensional-barcodes.md)和
 [T31 固定验收 profile](../../capabilities/profiles/T31-two-dimensional-barcodes.md)。
 独立标准认证及 compatible 依赖门槛仍未完成，本能力保持 experimental。
+
+## PDF 版本与基线密码安全
+
+基线子能力 `document.version-password-security.baseline` 支持 PDF 1.0–1.7、2.0
+输入以及 PDF 1.7、2.0 输出。显式启用密码保护后默认使用 AES-256/R6；PDF 1.7 的
+ADBE Level 8 是经过限定的互操作约定，PDF 2.0 R6 才是对应的规范输出。
+旧式 RC4-40、RC4-128、AES-128 输出必须为本次请求显式启用 `LegacySecurityMode`；
+启用它不会改变默认算法。R5 加密输入可读，并可由已证明的 owner 显式重写为 R6。
+
+Native `PasswordCredential.of(char[])` 复制调用方数组；使用后关闭凭据，并由调用方
+清除原数组。旧式算法按 U+0000–U+00FF 的原始字节解释并截取前 32 字节；AES-256
+按 Unicode 3.2 的 RFC 4013 规则处理，再截取前 127 个 UTF-8 字节。支持空密码和相同
+密码；空 owner 会生成独立的随机 owner。权限全开的 user 仍不等同于已验证的 owner。
+
+迁移 Facade 在 `net.zerocloud.pdf.itext7.kernel.pdf` 下提供 `ReaderProperties`、
+`WriterProperties`、`PdfVersion` 和 `EncryptionConstants`。
+`setPassword(byte[])` 接收旧式原始字节或 AES-256 的严格 UTF-8 字节；`null` 表示未提供
+凭据，空数组表示显式空凭据。`setStandardEncryption(user, owner, permissions, algorithm)`
+复制两个数组；Reader/Writer 再保存自己的快照。属性和 Writer 应及时关闭；调用方传入的
+输入输出流仍由调用方关闭。`setCredential` 借用 Native 凭据，属性关闭不会销毁它。
+
+保护的源文件不能意外输出为明文；重写必须提供明确的保护策略并验证 owner。
+增量保存保留原加密，并继续与已有签名限制取交集。Facade 实际执行模式为 IN_PROCESS；
+Native 另有 HARDENED_WORKER。认证矩阵限定为 Ubuntu 24.04 Linux x86-64 ×
+JDK 8/11/17/21；Windows/macOS 未认证且不是 F0.1.0 阻塞条件。
+父级安全能力仍未完成：#79 元数据保持明文和 #80 仅附件加密是独立的必需工作。
+详细范围、0.x 行为变更及精确映射以[英文安全契约](../pdf-version-password-security.md)、
+[来源审计](../research/T78-baseline-profile-audit.md)和[认证契约](../t78-certification.md)为准。

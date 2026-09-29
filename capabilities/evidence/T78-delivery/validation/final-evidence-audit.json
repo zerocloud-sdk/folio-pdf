@@ -1,0 +1,3593 @@
+{
+  "schema-version": 1,
+  "result": "pass",
+  "recorded-at": "2026-09-29T22:31:37.807475+00:00",
+  "comparison-baseline": "861c4ba81c7aecf9fba15052859f8cc80fd0259d",
+  "candidate-sha256": "7e22418b8fa557d1128131bea5ae6c0893b9846aefe82315a83572d42d98e36a",
+  "contract-sha256": "7c93911015a20b6bfc15a98a59001ba003ed6eb4269ae03e97c816c995b7e964",
+  "source-freeze": {
+    "path": "capabilities/evidence/T78-delivery/source-freeze.json",
+    "sha256": "aa1c07863da6263d9a4e3221ce6d203e1a9dddccf35529c62f4dcfd7be828c52"
+  },
+  "source-input-count": 2356,
+  "contract-input-count": 31,
+  "evidence-index": {
+    "path": "capabilities/foundation-evidence.yaml",
+    "sha256": "5d592650c843297503f7b8e69bc543a5fda38c4dfdb53304d3f66d2dccc4a0b7"
+  },
+  "certifications": 72,
+  "independent-chain-records": 288,
+  "baseline-product-artifacts": 544,
+  "facade-mappings": 61,
+  "aggregate-status": "experimental",
+  "baseline-status": "compatible",
+  "environments": {
+    "ubuntu-24.04-linux-x86-64-jdk8": {
+      "schema-version": 1,
+      "profile": "ubuntu-24.04-linux-x86-64-jdk8",
+      "identity": {
+        "os": "ubuntu",
+        "os-version": "24.04",
+        "architecture": "x86-64",
+        "image": "docker.io/library/eclipse-temurin@sha256:a4da319337cb6504ba4fb663cbd72a75df5515efb31bbdc6fc4ad7ba8d710dee",
+        "os-release-sha256": "01af466feb100306498c86aa6bad1815e33036019aa34d4362c20f374ea5c829",
+        "jdk-major": 8,
+        "jdk-vendor": "Eclipse Adoptium",
+        "jdk-build": "1.8.0_502-b07",
+        "java-sha256": "fa55c40b8accf16501ed11ac41a2b6cf5f411d36ea083f935d4a87cd3a7131a8"
+      },
+      "host": {
+        "kernel": "6.12.94+",
+        "architecture": "x86-64"
+      },
+      "native-engine": {
+        "name": "harfbuzz",
+        "version": "10.2.0",
+        "helper-sha256": "eb00c4e3a28d5d448e41fa51146dfa4a3421d0925f355739f2d4a68493c0f6db",
+        "library-sha256": "8a4c67dc9ead9b0752bcf256fa46c39eb3592e403a282bb341637ed989196e10",
+        "installation-sha256": "8374e24131dacbe1a34aae5aa40ddafe0f4b08d3911c02cb58f5504332ddd15c"
+      },
+      "tools": [
+        {
+          "id": "qpdf-t78-r1",
+          "kind": "external-tool",
+          "version": "12.4.0-folio-t78-r1",
+          "chains": [
+            "syntax",
+            "standards",
+            "semantic"
+          ],
+          "sha256": "7c79e288b259f28f3f81b1a2a8c1b355a44b428110300d31f1a0fe4a31bc536c"
+        },
+        {
+          "id": "pdfcpu-t78-r1",
+          "kind": "external-tool",
+          "version": "0.15.0-folio-t78-r1",
+          "chains": [
+            "standards"
+          ],
+          "sha256": "949f6e661857019276a2ef67d9fe5db23df523b69f35d449e581b9ce596c18e2"
+        },
+        {
+          "id": "pypdf",
+          "kind": "external-tool",
+          "version": "6.1.1",
+          "chains": [
+            "standards"
+          ],
+          "sha256": "f8bc0510a7e12f7075d1a7e4728e9f5f1f84aad8e85dfebba405201f65417c3c"
+        },
+        {
+          "id": "pycryptodome",
+          "kind": "external-tool",
+          "version": "3.23.0",
+          "chains": [
+            "standards"
+          ],
+          "sha256": "f4265907fce6174d7e043039af0f244d650861a8b1c50d135b738602dde37578"
+        },
+        {
+          "id": "qpdf",
+          "kind": "external-tool",
+          "version": "12.4.0",
+          "chains": [
+            "syntax",
+            "standards",
+            "semantic"
+          ],
+          "sha256": "9ac787a28597e8428289a12ba3fedafd74bdfb4b4da1be814722faf76f14f21b"
+        },
+        {
+          "id": "pdfcpu",
+          "kind": "external-tool",
+          "version": "0.15.0",
+          "chains": [
+            "standards"
+          ],
+          "sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d"
+        },
+        {
+          "id": "arlington",
+          "kind": "external-tool",
+          "version": "0.81",
+          "chains": [
+            "standards"
+          ],
+          "sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458"
+        },
+        {
+          "id": "arlington-t10-r1",
+          "kind": "external-tool",
+          "version": "0.81-folio-t10-r1",
+          "chains": [
+            "standards"
+          ],
+          "sha256": "35c15bc7d78f70c2a378938623d2c5e604d66019aefe9f485b71cac63a46bee5"
+        },
+        {
+          "id": "arlington-t11-r1",
+          "kind": "external-tool",
+          "version": "0.81-folio-t11-r1",
+          "chains": [
+            "standards"
+          ],
+          "sha256": "2df679442bdedd9d598d6fd50638e673700628e78885fa967561a544ebb2ff8d"
+        },
+        {
+          "id": "arlington-t12-r1",
+          "kind": "external-tool",
+          "version": "0.81-folio-t12-r1",
+          "chains": [
+            "standards"
+          ],
+          "sha256": "ed46e110ac98c8c660ca7e39f4d1496cfab0167a58a721bb599f43769de45036"
+        },
+        {
+          "id": "arlington-t13-r1",
+          "kind": "external-tool",
+          "version": "0.81-folio-t13-r1",
+          "chains": [
+            "standards"
+          ],
+          "sha256": "583f09e428ca76c346e46c98280befcd2cfb7d8ebd55f098f4f8e74ecbeaff03"
+        },
+        {
+          "id": "pdfium-cli",
+          "kind": "external-tool",
+          "version": "v0.11.2-pdfium-chromium-7881",
+          "chains": [
+            "visual"
+          ],
+          "sha256": "3ef3375c429ce665e834f933a028225bf28ac837695aaa69c6fc21facf6780ab"
+        },
+        {
+          "id": "imagemagick",
+          "kind": "external-tool",
+          "version": "7.1.2-30",
+          "chains": [
+            "visual"
+          ],
+          "sha256": "372af8a3fd61ef5f15c6331cde3e21f840eb165d8b533f34ed05d68736dd682e"
+        },
+        {
+          "id": "folio-pdf-t03",
+          "kind": "project-test",
+          "version": "0.1.0",
+          "chains": [
+            "semantic"
+          ],
+          "sha256": "795005efbbca22e08cdb7fd5da166ba9e3c9764c9ba3ef1b15895e40e641c7c0"
+        },
+        {
+          "id": "folio-pdf-t09",
+          "kind": "project-test",
+          "version": "0.1.0",
+          "chains": [
+            "semantic"
+          ],
+          "sha256": "795005efbbca22e08cdb7fd5da166ba9e3c9764c9ba3ef1b15895e40e641c7c0"
+        },
+        {
+          "id": "folio-pdf-t10",
+          "kind": "project-test",
+          "version": "0.1.0",
+          "chains": [
+            "semantic"
+          ],
+          "sha256": "795005efbbca22e08cdb7fd5da166ba9e3c9764c9ba3ef1b15895e40e641c7c0"
+        },
+        {
+          "id": "folio-pdf-t11",
+          "kind": "project-test",
+          "version": "0.1.0",
+          "chains": [
+            "semantic"
+          ],
+          "sha256": "795005efbbca22e08cdb7fd5da166ba9e3c9764c9ba3ef1b15895e40e641c7c0"
+        },
+        {
+          "id": "folio-pdf-t12",
+          "kind": "project-test",
+          "version": "0.1.0",
+          "chains": [
+            "semantic"
+          ],
+          "sha256": "795005efbbca22e08cdb7fd5da166ba9e3c9764c9ba3ef1b15895e40e641c7c0"
+        },
+        {
+          "id": "folio-pdf-t13",
+          "kind": "project-test",
+          "version": "0.1.0",
+          "chains": [
+            "semantic"
+          ],
+          "sha256": "795005efbbca22e08cdb7fd5da166ba9e3c9764c9ba3ef1b15895e40e641c7c0"
+        },
+        {
+          "id": "folio-pdf-t14",
+          "kind": "project-test",
+          "version": "0.1.0",
+          "chains": [
+            "semantic"
+          ],
+          "sha256": "795005efbbca22e08cdb7fd5da166ba9e3c9764c9ba3ef1b15895e40e641c7c0"
+        },
+        {
+          "id": "folio-pdf-t15",
+          "kind": "project-test",
+          "version": "0.1.0",
+          "chains": [
+            "semantic"
+          ],
+          "sha256": "795005efbbca22e08cdb7fd5da166ba9e3c9764c9ba3ef1b15895e40e641c7c0"
+        },
+        {
+          "id": "folio-pdf-t78",
+          "kind": "project-test",
+          "version": "0.1.0",
+          "chains": [
+            "semantic"
+          ],
+          "sha256": "795005efbbca22e08cdb7fd5da166ba9e3c9764c9ba3ef1b15895e40e641c7c0"
+        }
+      ]
+    },
+    "ubuntu-24.04-linux-x86-64-jdk11": {
+      "schema-version": 1,
+      "profile": "ubuntu-24.04-linux-x86-64-jdk11",
+      "identity": {
+        "os": "ubuntu",
+        "os-version": "24.04",
+        "architecture": "x86-64",
+        "image": "docker.io/library/eclipse-temurin@sha256:09f6797de424a6a085da4db6ba64381b2a4d51c2100a5e91998b69d7c23e0ecb",
+        "os-release-sha256": "01af466feb100306498c86aa6bad1815e33036019aa34d4362c20f374ea5c829",
+        "jdk-major": 11,
+        "jdk-vendor": "Eclipse Adoptium",
+        "jdk-build": "11.0.32+9",
+        "java-sha256": "4e58bcde757bca39c30453e5fb3ae1495e76ef484f35908c6a5d3d10e1392e53"
+      },
+      "host": {
+        "kernel": "6.12.94+",
+        "architecture": "x86-64"
+      },
+      "native-engine": {
+        "name": "harfbuzz",
+        "version": "10.2.0",
+        "helper-sha256": "eb00c4e3a28d5d448e41fa51146dfa4a3421d0925f355739f2d4a68493c0f6db",
+        "library-sha256": "8a4c67dc9ead9b0752bcf256fa46c39eb3592e403a282bb341637ed989196e10",
+        "installation-sha256": "8374e24131dacbe1a34aae5aa40ddafe0f4b08d3911c02cb58f5504332ddd15c"
+      },
+      "tools": [
+        {
+          "id": "qpdf-t78-r1",
+          "kind": "external-tool",
+          "version": "12.4.0-folio-t78-r1",
+          "chains": [
+            "syntax",
+            "standards",
+            "semantic"
+          ],
+          "sha256": "7c79e288b259f28f3f81b1a2a8c1b355a44b428110300d31f1a0fe4a31bc536c"
+        },
+        {
+          "id": "pdfcpu-t78-r1",
+          "kind": "external-tool",
+          "version": "0.15.0-folio-t78-r1",
+          "chains": [
+            "standards"
+          ],
+          "sha256": "949f6e661857019276a2ef67d9fe5db23df523b69f35d449e581b9ce596c18e2"
+        },
+        {
+          "id": "pypdf",
+          "kind": "external-tool",
+          "version": "6.1.1",
+          "chains": [
+            "standards"
+          ],
+          "sha256": "f8bc0510a7e12f7075d1a7e4728e9f5f1f84aad8e85dfebba405201f65417c3c"
+        },
+        {
+          "id": "pycryptodome",
+          "kind": "external-tool",
+          "version": "3.23.0",
+          "chains": [
+            "standards"
+          ],
+          "sha256": "f4265907fce6174d7e043039af0f244d650861a8b1c50d135b738602dde37578"
+        },
+        {
+          "id": "qpdf",
+          "kind": "external-tool",
+          "version": "12.4.0",
+          "chains": [
+            "syntax",
+            "standards",
+            "semantic"
+          ],
+          "sha256": "9ac787a28597e8428289a12ba3fedafd74bdfb4b4da1be814722faf76f14f21b"
+        },
+        {
+          "id": "pdfcpu",
+          "kind": "external-tool",
+          "version": "0.15.0",
+          "chains": [
+            "standards"
+          ],
+          "sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d"
+        },
+        {
+          "id": "arlington",
+          "kind": "external-tool",
+          "version": "0.81",
+          "chains": [
+            "standards"
+          ],
+          "sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458"
+        },
+        {
+          "id": "arlington-t10-r1",
+          "kind": "external-tool",
+          "version": "0.81-folio-t10-r1",
+          "chains": [
+            "standards"
+          ],
+          "sha256": "35c15bc7d78f70c2a378938623d2c5e604d66019aefe9f485b71cac63a46bee5"
+        },
+        {
+          "id": "arlington-t11-r1",
+          "kind": "external-tool",
+          "version": "0.81-folio-t11-r1",
+          "chains": [
+            "standards"
+          ],
+          "sha256": "2df679442bdedd9d598d6fd50638e673700628e78885fa967561a544ebb2ff8d"
+        },
+        {
+          "id": "arlington-t12-r1",
+          "kind": "external-tool",
+          "version": "0.81-folio-t12-r1",
+          "chains": [
+            "standards"
+          ],
+          "sha256": "ed46e110ac98c8c660ca7e39f4d1496cfab0167a58a721bb599f43769de45036"
+        },
+        {
+          "id": "arlington-t13-r1",
+          "kind": "external-tool",
+          "version": "0.81-folio-t13-r1",
+          "chains": [
+            "standards"
+          ],
+          "sha256": "583f09e428ca76c346e46c98280befcd2cfb7d8ebd55f098f4f8e74ecbeaff03"
+        },
+        {
+          "id": "pdfium-cli",
+          "kind": "external-tool",
+          "version": "v0.11.2-pdfium-chromium-7881",
+          "chains": [
+            "visual"
+          ],
+          "sha256": "3ef3375c429ce665e834f933a028225bf28ac837695aaa69c6fc21facf6780ab"
+        },
+        {
+          "id": "imagemagick",
+          "kind": "external-tool",
+          "version": "7.1.2-30",
+          "chains": [
+            "visual"
+          ],
+          "sha256": "372af8a3fd61ef5f15c6331cde3e21f840eb165d8b533f34ed05d68736dd682e"
+        },
+        {
+          "id": "folio-pdf-t03",
+          "kind": "project-test",
+          "version": "0.1.0",
+          "chains": [
+            "semantic"
+          ],
+          "sha256": "795005efbbca22e08cdb7fd5da166ba9e3c9764c9ba3ef1b15895e40e641c7c0"
+        },
+        {
+          "id": "folio-pdf-t09",
+          "kind": "project-test",
+          "version": "0.1.0",
+          "chains": [
+            "semantic"
+          ],
+          "sha256": "795005efbbca22e08cdb7fd5da166ba9e3c9764c9ba3ef1b15895e40e641c7c0"
+        },
+        {
+          "id": "folio-pdf-t10",
+          "kind": "project-test",
+          "version": "0.1.0",
+          "chains": [
+            "semantic"
+          ],
+          "sha256": "795005efbbca22e08cdb7fd5da166ba9e3c9764c9ba3ef1b15895e40e641c7c0"
+        },
+        {
+          "id": "folio-pdf-t11",
+          "kind": "project-test",
+          "version": "0.1.0",
+          "chains": [
+            "semantic"
+          ],
+          "sha256": "795005efbbca22e08cdb7fd5da166ba9e3c9764c9ba3ef1b15895e40e641c7c0"
+        },
+        {
+          "id": "folio-pdf-t12",
+          "kind": "project-test",
+          "version": "0.1.0",
+          "chains": [
+            "semantic"
+          ],
+          "sha256": "795005efbbca22e08cdb7fd5da166ba9e3c9764c9ba3ef1b15895e40e641c7c0"
+        },
+        {
+          "id": "folio-pdf-t13",
+          "kind": "project-test",
+          "version": "0.1.0",
+          "chains": [
+            "semantic"
+          ],
+          "sha256": "795005efbbca22e08cdb7fd5da166ba9e3c9764c9ba3ef1b15895e40e641c7c0"
+        },
+        {
+          "id": "folio-pdf-t14",
+          "kind": "project-test",
+          "version": "0.1.0",
+          "chains": [
+            "semantic"
+          ],
+          "sha256": "795005efbbca22e08cdb7fd5da166ba9e3c9764c9ba3ef1b15895e40e641c7c0"
+        },
+        {
+          "id": "folio-pdf-t15",
+          "kind": "project-test",
+          "version": "0.1.0",
+          "chains": [
+            "semantic"
+          ],
+          "sha256": "795005efbbca22e08cdb7fd5da166ba9e3c9764c9ba3ef1b15895e40e641c7c0"
+        },
+        {
+          "id": "folio-pdf-t78",
+          "kind": "project-test",
+          "version": "0.1.0",
+          "chains": [
+            "semantic"
+          ],
+          "sha256": "795005efbbca22e08cdb7fd5da166ba9e3c9764c9ba3ef1b15895e40e641c7c0"
+        }
+      ]
+    },
+    "ubuntu-24.04-linux-x86-64-jdk17": {
+      "schema-version": 1,
+      "profile": "ubuntu-24.04-linux-x86-64-jdk17",
+      "identity": {
+        "os": "ubuntu",
+        "os-version": "24.04",
+        "architecture": "x86-64",
+        "image": "docker.io/library/eclipse-temurin@sha256:61a94244559f2e89e4edb02bae37eeb8762ecf5deaf237251fa630e5120a8798",
+        "os-release-sha256": "01af466feb100306498c86aa6bad1815e33036019aa34d4362c20f374ea5c829",
+        "jdk-major": 17,
+        "jdk-vendor": "Eclipse Adoptium",
+        "jdk-build": "17.0.20+8",
+        "java-sha256": "6dce8306ebf735a85decdc801d84431f6e84525b60adc885624df05edeffb481"
+      },
+      "host": {
+        "kernel": "6.12.94+",
+        "architecture": "x86-64"
+      },
+      "native-engine": {
+        "name": "harfbuzz",
+        "version": "10.2.0",
+        "helper-sha256": "eb00c4e3a28d5d448e41fa51146dfa4a3421d0925f355739f2d4a68493c0f6db",
+        "library-sha256": "8a4c67dc9ead9b0752bcf256fa46c39eb3592e403a282bb341637ed989196e10",
+        "installation-sha256": "8374e24131dacbe1a34aae5aa40ddafe0f4b08d3911c02cb58f5504332ddd15c"
+      },
+      "tools": [
+        {
+          "id": "qpdf-t78-r1",
+          "kind": "external-tool",
+          "version": "12.4.0-folio-t78-r1",
+          "chains": [
+            "syntax",
+            "standards",
+            "semantic"
+          ],
+          "sha256": "7c79e288b259f28f3f81b1a2a8c1b355a44b428110300d31f1a0fe4a31bc536c"
+        },
+        {
+          "id": "pdfcpu-t78-r1",
+          "kind": "external-tool",
+          "version": "0.15.0-folio-t78-r1",
+          "chains": [
+            "standards"
+          ],
+          "sha256": "949f6e661857019276a2ef67d9fe5db23df523b69f35d449e581b9ce596c18e2"
+        },
+        {
+          "id": "pypdf",
+          "kind": "external-tool",
+          "version": "6.1.1",
+          "chains": [
+            "standards"
+          ],
+          "sha256": "f8bc0510a7e12f7075d1a7e4728e9f5f1f84aad8e85dfebba405201f65417c3c"
+        },
+        {
+          "id": "pycryptodome",
+          "kind": "external-tool",
+          "version": "3.23.0",
+          "chains": [
+            "standards"
+          ],
+          "sha256": "f4265907fce6174d7e043039af0f244d650861a8b1c50d135b738602dde37578"
+        },
+        {
+          "id": "qpdf",
+          "kind": "external-tool",
+          "version": "12.4.0",
+          "chains": [
+            "syntax",
+            "standards",
+            "semantic"
+          ],
+          "sha256": "9ac787a28597e8428289a12ba3fedafd74bdfb4b4da1be814722faf76f14f21b"
+        },
+        {
+          "id": "pdfcpu",
+          "kind": "external-tool",
+          "version": "0.15.0",
+          "chains": [
+            "standards"
+          ],
+          "sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d"
+        },
+        {
+          "id": "arlington",
+          "kind": "external-tool",
+          "version": "0.81",
+          "chains": [
+            "standards"
+          ],
+          "sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458"
+        },
+        {
+          "id": "arlington-t10-r1",
+          "kind": "external-tool",
+          "version": "0.81-folio-t10-r1",
+          "chains": [
+            "standards"
+          ],
+          "sha256": "35c15bc7d78f70c2a378938623d2c5e604d66019aefe9f485b71cac63a46bee5"
+        },
+        {
+          "id": "arlington-t11-r1",
+          "kind": "external-tool",
+          "version": "0.81-folio-t11-r1",
+          "chains": [
+            "standards"
+          ],
+          "sha256": "2df679442bdedd9d598d6fd50638e673700628e78885fa967561a544ebb2ff8d"
+        },
+        {
+          "id": "arlington-t12-r1",
+          "kind": "external-tool",
+          "version": "0.81-folio-t12-r1",
+          "chains": [
+            "standards"
+          ],
+          "sha256": "ed46e110ac98c8c660ca7e39f4d1496cfab0167a58a721bb599f43769de45036"
+        },
+        {
+          "id": "arlington-t13-r1",
+          "kind": "external-tool",
+          "version": "0.81-folio-t13-r1",
+          "chains": [
+            "standards"
+          ],
+          "sha256": "583f09e428ca76c346e46c98280befcd2cfb7d8ebd55f098f4f8e74ecbeaff03"
+        },
+        {
+          "id": "pdfium-cli",
+          "kind": "external-tool",
+          "version": "v0.11.2-pdfium-chromium-7881",
+          "chains": [
+            "visual"
+          ],
+          "sha256": "3ef3375c429ce665e834f933a028225bf28ac837695aaa69c6fc21facf6780ab"
+        },
+        {
+          "id": "imagemagick",
+          "kind": "external-tool",
+          "version": "7.1.2-30",
+          "chains": [
+            "visual"
+          ],
+          "sha256": "372af8a3fd61ef5f15c6331cde3e21f840eb165d8b533f34ed05d68736dd682e"
+        },
+        {
+          "id": "folio-pdf-t03",
+          "kind": "project-test",
+          "version": "0.1.0",
+          "chains": [
+            "semantic"
+          ],
+          "sha256": "795005efbbca22e08cdb7fd5da166ba9e3c9764c9ba3ef1b15895e40e641c7c0"
+        },
+        {
+          "id": "folio-pdf-t09",
+          "kind": "project-test",
+          "version": "0.1.0",
+          "chains": [
+            "semantic"
+          ],
+          "sha256": "795005efbbca22e08cdb7fd5da166ba9e3c9764c9ba3ef1b15895e40e641c7c0"
+        },
+        {
+          "id": "folio-pdf-t10",
+          "kind": "project-test",
+          "version": "0.1.0",
+          "chains": [
+            "semantic"
+          ],
+          "sha256": "795005efbbca22e08cdb7fd5da166ba9e3c9764c9ba3ef1b15895e40e641c7c0"
+        },
+        {
+          "id": "folio-pdf-t11",
+          "kind": "project-test",
+          "version": "0.1.0",
+          "chains": [
+            "semantic"
+          ],
+          "sha256": "795005efbbca22e08cdb7fd5da166ba9e3c9764c9ba3ef1b15895e40e641c7c0"
+        },
+        {
+          "id": "folio-pdf-t12",
+          "kind": "project-test",
+          "version": "0.1.0",
+          "chains": [
+            "semantic"
+          ],
+          "sha256": "795005efbbca22e08cdb7fd5da166ba9e3c9764c9ba3ef1b15895e40e641c7c0"
+        },
+        {
+          "id": "folio-pdf-t13",
+          "kind": "project-test",
+          "version": "0.1.0",
+          "chains": [
+            "semantic"
+          ],
+          "sha256": "795005efbbca22e08cdb7fd5da166ba9e3c9764c9ba3ef1b15895e40e641c7c0"
+        },
+        {
+          "id": "folio-pdf-t14",
+          "kind": "project-test",
+          "version": "0.1.0",
+          "chains": [
+            "semantic"
+          ],
+          "sha256": "795005efbbca22e08cdb7fd5da166ba9e3c9764c9ba3ef1b15895e40e641c7c0"
+        },
+        {
+          "id": "folio-pdf-t15",
+          "kind": "project-test",
+          "version": "0.1.0",
+          "chains": [
+            "semantic"
+          ],
+          "sha256": "795005efbbca22e08cdb7fd5da166ba9e3c9764c9ba3ef1b15895e40e641c7c0"
+        },
+        {
+          "id": "folio-pdf-t78",
+          "kind": "project-test",
+          "version": "0.1.0",
+          "chains": [
+            "semantic"
+          ],
+          "sha256": "795005efbbca22e08cdb7fd5da166ba9e3c9764c9ba3ef1b15895e40e641c7c0"
+        }
+      ]
+    },
+    "ubuntu-24.04-linux-x86-64-jdk21": {
+      "schema-version": 1,
+      "profile": "ubuntu-24.04-linux-x86-64-jdk21",
+      "identity": {
+        "os": "ubuntu",
+        "os-version": "24.04",
+        "architecture": "x86-64",
+        "image": "docker.io/library/eclipse-temurin@sha256:1ca5e470ad60db0d5b4137c1357068fa210051d815ad98ea9964f4bbe7367f8c",
+        "os-release-sha256": "01af466feb100306498c86aa6bad1815e33036019aa34d4362c20f374ea5c829",
+        "jdk-major": 21,
+        "jdk-vendor": "Eclipse Adoptium",
+        "jdk-build": "21.0.12+8-LTS",
+        "java-sha256": "11af352aa2c506c4123a4e4c19c187d59e06cd0dff317d54f5e6806e07c6715d"
+      },
+      "host": {
+        "kernel": "6.12.94+",
+        "architecture": "x86-64"
+      },
+      "native-engine": {
+        "name": "harfbuzz",
+        "version": "10.2.0",
+        "helper-sha256": "eb00c4e3a28d5d448e41fa51146dfa4a3421d0925f355739f2d4a68493c0f6db",
+        "library-sha256": "8a4c67dc9ead9b0752bcf256fa46c39eb3592e403a282bb341637ed989196e10",
+        "installation-sha256": "8374e24131dacbe1a34aae5aa40ddafe0f4b08d3911c02cb58f5504332ddd15c"
+      },
+      "tools": [
+        {
+          "id": "qpdf-t78-r1",
+          "kind": "external-tool",
+          "version": "12.4.0-folio-t78-r1",
+          "chains": [
+            "syntax",
+            "standards",
+            "semantic"
+          ],
+          "sha256": "7c79e288b259f28f3f81b1a2a8c1b355a44b428110300d31f1a0fe4a31bc536c"
+        },
+        {
+          "id": "pdfcpu-t78-r1",
+          "kind": "external-tool",
+          "version": "0.15.0-folio-t78-r1",
+          "chains": [
+            "standards"
+          ],
+          "sha256": "949f6e661857019276a2ef67d9fe5db23df523b69f35d449e581b9ce596c18e2"
+        },
+        {
+          "id": "pypdf",
+          "kind": "external-tool",
+          "version": "6.1.1",
+          "chains": [
+            "standards"
+          ],
+          "sha256": "f8bc0510a7e12f7075d1a7e4728e9f5f1f84aad8e85dfebba405201f65417c3c"
+        },
+        {
+          "id": "pycryptodome",
+          "kind": "external-tool",
+          "version": "3.23.0",
+          "chains": [
+            "standards"
+          ],
+          "sha256": "f4265907fce6174d7e043039af0f244d650861a8b1c50d135b738602dde37578"
+        },
+        {
+          "id": "qpdf",
+          "kind": "external-tool",
+          "version": "12.4.0",
+          "chains": [
+            "syntax",
+            "standards",
+            "semantic"
+          ],
+          "sha256": "9ac787a28597e8428289a12ba3fedafd74bdfb4b4da1be814722faf76f14f21b"
+        },
+        {
+          "id": "pdfcpu",
+          "kind": "external-tool",
+          "version": "0.15.0",
+          "chains": [
+            "standards"
+          ],
+          "sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d"
+        },
+        {
+          "id": "arlington",
+          "kind": "external-tool",
+          "version": "0.81",
+          "chains": [
+            "standards"
+          ],
+          "sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458"
+        },
+        {
+          "id": "arlington-t10-r1",
+          "kind": "external-tool",
+          "version": "0.81-folio-t10-r1",
+          "chains": [
+            "standards"
+          ],
+          "sha256": "35c15bc7d78f70c2a378938623d2c5e604d66019aefe9f485b71cac63a46bee5"
+        },
+        {
+          "id": "arlington-t11-r1",
+          "kind": "external-tool",
+          "version": "0.81-folio-t11-r1",
+          "chains": [
+            "standards"
+          ],
+          "sha256": "2df679442bdedd9d598d6fd50638e673700628e78885fa967561a544ebb2ff8d"
+        },
+        {
+          "id": "arlington-t12-r1",
+          "kind": "external-tool",
+          "version": "0.81-folio-t12-r1",
+          "chains": [
+            "standards"
+          ],
+          "sha256": "ed46e110ac98c8c660ca7e39f4d1496cfab0167a58a721bb599f43769de45036"
+        },
+        {
+          "id": "arlington-t13-r1",
+          "kind": "external-tool",
+          "version": "0.81-folio-t13-r1",
+          "chains": [
+            "standards"
+          ],
+          "sha256": "583f09e428ca76c346e46c98280befcd2cfb7d8ebd55f098f4f8e74ecbeaff03"
+        },
+        {
+          "id": "pdfium-cli",
+          "kind": "external-tool",
+          "version": "v0.11.2-pdfium-chromium-7881",
+          "chains": [
+            "visual"
+          ],
+          "sha256": "3ef3375c429ce665e834f933a028225bf28ac837695aaa69c6fc21facf6780ab"
+        },
+        {
+          "id": "imagemagick",
+          "kind": "external-tool",
+          "version": "7.1.2-30",
+          "chains": [
+            "visual"
+          ],
+          "sha256": "372af8a3fd61ef5f15c6331cde3e21f840eb165d8b533f34ed05d68736dd682e"
+        },
+        {
+          "id": "folio-pdf-t03",
+          "kind": "project-test",
+          "version": "0.1.0",
+          "chains": [
+            "semantic"
+          ],
+          "sha256": "795005efbbca22e08cdb7fd5da166ba9e3c9764c9ba3ef1b15895e40e641c7c0"
+        },
+        {
+          "id": "folio-pdf-t09",
+          "kind": "project-test",
+          "version": "0.1.0",
+          "chains": [
+            "semantic"
+          ],
+          "sha256": "795005efbbca22e08cdb7fd5da166ba9e3c9764c9ba3ef1b15895e40e641c7c0"
+        },
+        {
+          "id": "folio-pdf-t10",
+          "kind": "project-test",
+          "version": "0.1.0",
+          "chains": [
+            "semantic"
+          ],
+          "sha256": "795005efbbca22e08cdb7fd5da166ba9e3c9764c9ba3ef1b15895e40e641c7c0"
+        },
+        {
+          "id": "folio-pdf-t11",
+          "kind": "project-test",
+          "version": "0.1.0",
+          "chains": [
+            "semantic"
+          ],
+          "sha256": "795005efbbca22e08cdb7fd5da166ba9e3c9764c9ba3ef1b15895e40e641c7c0"
+        },
+        {
+          "id": "folio-pdf-t12",
+          "kind": "project-test",
+          "version": "0.1.0",
+          "chains": [
+            "semantic"
+          ],
+          "sha256": "795005efbbca22e08cdb7fd5da166ba9e3c9764c9ba3ef1b15895e40e641c7c0"
+        },
+        {
+          "id": "folio-pdf-t13",
+          "kind": "project-test",
+          "version": "0.1.0",
+          "chains": [
+            "semantic"
+          ],
+          "sha256": "795005efbbca22e08cdb7fd5da166ba9e3c9764c9ba3ef1b15895e40e641c7c0"
+        },
+        {
+          "id": "folio-pdf-t14",
+          "kind": "project-test",
+          "version": "0.1.0",
+          "chains": [
+            "semantic"
+          ],
+          "sha256": "795005efbbca22e08cdb7fd5da166ba9e3c9764c9ba3ef1b15895e40e641c7c0"
+        },
+        {
+          "id": "folio-pdf-t15",
+          "kind": "project-test",
+          "version": "0.1.0",
+          "chains": [
+            "semantic"
+          ],
+          "sha256": "795005efbbca22e08cdb7fd5da166ba9e3c9764c9ba3ef1b15895e40e641c7c0"
+        },
+        {
+          "id": "folio-pdf-t78",
+          "kind": "project-test",
+          "version": "0.1.0",
+          "chains": [
+            "semantic"
+          ],
+          "sha256": "795005efbbca22e08cdb7fd5da166ba9e3c9764c9ba3ef1b15895e40e641c7c0"
+        }
+      ]
+    }
+  },
+  "obligations": [
+    {
+      "obligation": "transactions",
+      "result": "pass",
+      "certification-count": 8,
+      "independent-chain-count": 32,
+      "identity-record": {
+        "path": "capabilities/evidence/foundation/T78-final/transactions/identities.json",
+        "sha256": "5b9c9ef02c895b1286c18d7b2492d83a1be7e1d3a20453ac3bd8923173765937"
+      },
+      "observed-index": {
+        "path": "capabilities/evidence/foundation/T78-final/transactions/observed-index.json",
+        "sha256": "d145af0b67ec49a4d87ce2c8f63d9c9c2da7f1628cf2a9223d351a30673b9c8f"
+      },
+      "tuples": [
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk8",
+          "native-execution-profile": "IN_PROCESS",
+          "contract-test-count": 34,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/transactions/jdk8-in_process/execution.yaml",
+            "sha256": "9744a3c0b138daecf397fe5300e5f644098f980afff2f39d26b6942ca7e66eaf"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/transactions/jdk8-in_process/syntax.yaml",
+              "sha256": "6e79ff1e31c11d505b0d0104be1d4bbaa0322271525d3a84075666faeb783a75"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/transactions/jdk8-in_process/standards.yaml",
+              "sha256": "28c636e9bcb99dc03c75f872428449975b3185c452837a265f99f85079aa668f"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/transactions/jdk8-in_process/semantic.yaml",
+              "sha256": "c5d028a04aa4bb7ad27a6abf3e53366fc56f6b1a68c18de605d5b0cc0fccfd25"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/transactions/jdk8-in_process/visual.yaml",
+              "sha256": "7d8a80eb076de2ae30f6799c4428963f16cca5745d99110357470878b12cb85e"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk8",
+          "native-execution-profile": "HARDENED_WORKER",
+          "contract-test-count": 34,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/transactions/jdk8-hardened_worker/execution.yaml",
+            "sha256": "f99ddd97c093753270c7e3b5b820a00d0537409a441c09ae8e73a0ab9f5f47ec"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/transactions/jdk8-hardened_worker/syntax.yaml",
+              "sha256": "fcb31e8e84166c8709bdbfd17acb2860488672a941672f0a7e03b192333bef4a"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/transactions/jdk8-hardened_worker/standards.yaml",
+              "sha256": "b2c93f8b7ad9849c823422b3adb8b5423d4c1389e11c128313fc0b001eaca5fd"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/transactions/jdk8-hardened_worker/semantic.yaml",
+              "sha256": "ec61e904b8e230af05ce5fb10abfa7bb9d3bf889e5e3a49d97914b5c12f6f018"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/transactions/jdk8-hardened_worker/visual.yaml",
+              "sha256": "46a59ac0d4a416c6f68be6753eabd3fd6682c97321a5f2a4b899e15638c78aa9"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk11",
+          "native-execution-profile": "IN_PROCESS",
+          "contract-test-count": 34,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/transactions/jdk11-in_process/execution.yaml",
+            "sha256": "48d24a04685db226a79f97963ff137bf2362786bc44ac3d25c90d7bda1a5b4aa"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/transactions/jdk11-in_process/syntax.yaml",
+              "sha256": "7589821972f6edb8c3d082375a6609e26d274f126d448f078e2501947686b5f8"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/transactions/jdk11-in_process/standards.yaml",
+              "sha256": "83364150bfda3d8b155091ea44f49a38d557a419e648eacea97907060966ec8d"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/transactions/jdk11-in_process/semantic.yaml",
+              "sha256": "9aa619c44bb74263e6233cd067dd948432ac922c825979b26078e99dea652807"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/transactions/jdk11-in_process/visual.yaml",
+              "sha256": "1247c3239c1efc2796c080807786317acd2ebd1f95b1260255ced020fabf60fb"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk11",
+          "native-execution-profile": "HARDENED_WORKER",
+          "contract-test-count": 34,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/transactions/jdk11-hardened_worker/execution.yaml",
+            "sha256": "44ad0ee28e543566346a903048b87a93c4ce94843d1fbee0c4bcf3f6e313c1b3"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/transactions/jdk11-hardened_worker/syntax.yaml",
+              "sha256": "46fd92903ff594e210ceda829f3fd99f019e6dbd7cef1ff183a21be0c7a80ce9"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/transactions/jdk11-hardened_worker/standards.yaml",
+              "sha256": "2566f95f5240842bdc639d73a1be0fb9b26f6f31aa6bf709b33d40950c5427cf"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/transactions/jdk11-hardened_worker/semantic.yaml",
+              "sha256": "026502931fe5fad2142adf16b0f5946a5ad1753f508862c1a116299122857441"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/transactions/jdk11-hardened_worker/visual.yaml",
+              "sha256": "f2cba236b3409deb41712be2190b613142a5ae102412caa85190ae090d839f26"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk17",
+          "native-execution-profile": "IN_PROCESS",
+          "contract-test-count": 34,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/transactions/jdk17-in_process/execution.yaml",
+            "sha256": "12ed0f7c0de80a6b70ca8b66210a1e564595fb12fa2b2f3ea5197b415650f074"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/transactions/jdk17-in_process/syntax.yaml",
+              "sha256": "f746ec4cf3ffd290884df163ff3b399ea9dbcf88224f2ec3555cec700ebd4345"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/transactions/jdk17-in_process/standards.yaml",
+              "sha256": "13d6adc1f4c4b503b5c75e559a1a3262a7b35e4f33c89a68c7eb98da4397bab7"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/transactions/jdk17-in_process/semantic.yaml",
+              "sha256": "a5ca83402ccecc4f60d1c0986ab612ac40a613b1705b70f28714e1744802d863"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/transactions/jdk17-in_process/visual.yaml",
+              "sha256": "66c9e3b395b84c1b1c51682735aeaae65a049304a10cafec406db6adde9d2769"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk17",
+          "native-execution-profile": "HARDENED_WORKER",
+          "contract-test-count": 34,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/transactions/jdk17-hardened_worker/execution.yaml",
+            "sha256": "c3b1985714f041e59f000dea853bcd3b2f469173387c0afbe1fcdbbcb0c061d5"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/transactions/jdk17-hardened_worker/syntax.yaml",
+              "sha256": "ff486e3d5050e17e73df9db35a3e89590143873956e75c46c2f062667132c4ff"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/transactions/jdk17-hardened_worker/standards.yaml",
+              "sha256": "7836b2181f6c55a789b766414519e0f7e9a9d008acb84f6eb37e40347fcab548"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/transactions/jdk17-hardened_worker/semantic.yaml",
+              "sha256": "25d9a8bba51d5db493724d91a603a8c2a8a37c6181d46d4ce2e048d21da41c26"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/transactions/jdk17-hardened_worker/visual.yaml",
+              "sha256": "ea7ccc63f3e6562e1636b8d639af8448e194e1c7145c2c316d832e1c8619faff"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk21",
+          "native-execution-profile": "IN_PROCESS",
+          "contract-test-count": 34,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/transactions/jdk21-in_process/execution.yaml",
+            "sha256": "3f201782564794d5307ded05fd32b7213032f2fbcf55cfcb6246cfc47dd876af"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/transactions/jdk21-in_process/syntax.yaml",
+              "sha256": "5375d2188c22a3d2d481bd4d4f40cc2f9210d30087f85b9cca27039d5c6c3c77"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/transactions/jdk21-in_process/standards.yaml",
+              "sha256": "27daf01991543fba5dfca825a3506b0994fa8f0f7bc42e1da5e0c96eb48497aa"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/transactions/jdk21-in_process/semantic.yaml",
+              "sha256": "d53b7f200f80d6f58b501c8750ba0493fc5ca032281eee608b1a80c8395542f9"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/transactions/jdk21-in_process/visual.yaml",
+              "sha256": "bf4e7ad502fd94b54b30c61c14405551afec3342f7a47c561685354900266683"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk21",
+          "native-execution-profile": "HARDENED_WORKER",
+          "contract-test-count": 34,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/transactions/jdk21-hardened_worker/execution.yaml",
+            "sha256": "80fbacfc5d8e04a2923971637d10fc66ef0ee993609ad73faa61c1ed3ce81097"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/transactions/jdk21-hardened_worker/syntax.yaml",
+              "sha256": "72c193cb657ad076d1188ce014ff6da3ce3388205c2e577f074ec8e11c1faa27"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/transactions/jdk21-hardened_worker/standards.yaml",
+              "sha256": "876c1ff2a2c31417eb5403fbfcd2db4780cfc398fc35c45a56cad06caa571c8d"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/transactions/jdk21-hardened_worker/semantic.yaml",
+              "sha256": "cf982e12c464a2c417767569e48edef0225858d34a26ae56ef449b929bd2f4d1"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/transactions/jdk21-hardened_worker/visual.yaml",
+              "sha256": "32871eb34a1487bb9fcfee7e570e26530517033aef21f2c151a2d9da49e89228"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "obligation": "values",
+      "result": "pass",
+      "certification-count": 8,
+      "independent-chain-count": 32,
+      "identity-record": {
+        "path": "capabilities/evidence/foundation/T78-final/values/identities.json",
+        "sha256": "5b9c9ef02c895b1286c18d7b2492d83a1be7e1d3a20453ac3bd8923173765937"
+      },
+      "observed-index": {
+        "path": "capabilities/evidence/foundation/T78-final/values/observed-index.json",
+        "sha256": "8f667ab1429383580a9b857eb3573b302802c30a4f0ebf746a388dd95607cc15"
+      },
+      "tuples": [
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk8",
+          "native-execution-profile": "IN_PROCESS",
+          "contract-test-count": 83,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/values/jdk8-in_process/execution.yaml",
+            "sha256": "489bc5ae566dad706ae8199967e88779a72355265cbc7637c12d97b02cb14e9d"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/values/jdk8-in_process/syntax.yaml",
+              "sha256": "1f03b20c6b6f88d71682937482692e401c06f99f1e336376316087fb0158e705"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/values/jdk8-in_process/standards.yaml",
+              "sha256": "cf62f6460f504807f48a8aba83c49fc60b77c11bee18b8b8c592ffca2992e249"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/values/jdk8-in_process/semantic.yaml",
+              "sha256": "0e4f5edaa67e20354e8a97d5590d9274b9e14344fe6f45d7e21118c82870c38f"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/values/jdk8-in_process/visual.yaml",
+              "sha256": "f497edbffe777f1b0badb22c37ff3cf2edb9676230b23d591706e610f4a0eb3e"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk8",
+          "native-execution-profile": "HARDENED_WORKER",
+          "contract-test-count": 83,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/values/jdk8-hardened_worker/execution.yaml",
+            "sha256": "970f53c45f140ed2310a64bc0b2e51b32bfaad98503ddfbe63578e730d1e8901"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/values/jdk8-hardened_worker/syntax.yaml",
+              "sha256": "32b2d8d0765360c7c52cc23dd28f801e59c258d1b16ce2c7f464af5cdc5a7928"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/values/jdk8-hardened_worker/standards.yaml",
+              "sha256": "f2c90ac5888844dbf2bf94fc335893c3b6514a4287e77a4b6d9d52f9c551565c"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/values/jdk8-hardened_worker/semantic.yaml",
+              "sha256": "73bfc1d193acd60f3e7eb924e845a8d1b22203f3af11b267fafaa26c9443c2ee"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/values/jdk8-hardened_worker/visual.yaml",
+              "sha256": "fb475a6576bd5b0042c1be16656c5df93e1085949f75857393189cd51e66f5e4"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk11",
+          "native-execution-profile": "IN_PROCESS",
+          "contract-test-count": 83,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/values/jdk11-in_process/execution.yaml",
+            "sha256": "a8f1fc013cf184bf7f6c0a86adc9ce3a29d5292e91b7da4a48dee4489b1ce719"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/values/jdk11-in_process/syntax.yaml",
+              "sha256": "ac7cf17d9307147b8933f28186112bced7a8580088c54c1633fb60044b90557f"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/values/jdk11-in_process/standards.yaml",
+              "sha256": "fe47da60c6ce748bdde06cd97f264febc41762c9bb35b78bd21e360eb59d4dd1"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/values/jdk11-in_process/semantic.yaml",
+              "sha256": "39fdd80bffa6fa03efb5869e493800df6112313e2eda97f39f43d5712c466d25"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/values/jdk11-in_process/visual.yaml",
+              "sha256": "f66fc8226df0d13fcb67912d2f8b546ff3d10a27dac0e3902176523655dc5c76"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk11",
+          "native-execution-profile": "HARDENED_WORKER",
+          "contract-test-count": 83,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/values/jdk11-hardened_worker/execution.yaml",
+            "sha256": "0b3f1c3f2da18f100ec39101708ab6c2fd75db0e658f85e9072194df0956b429"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/values/jdk11-hardened_worker/syntax.yaml",
+              "sha256": "8ccedd17126aef15bf1d25831487cdab18f7f417b81ed700ccb1b73ba47e1b28"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/values/jdk11-hardened_worker/standards.yaml",
+              "sha256": "6e79c3e0f6572f440ce406d71f49d2d97739d5e08bd87543c3c581d1824d6b29"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/values/jdk11-hardened_worker/semantic.yaml",
+              "sha256": "4a006874e8f28da5ac6ef25f74c07cc651cccfd2a25b3b7b6fac6e702fd404c7"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/values/jdk11-hardened_worker/visual.yaml",
+              "sha256": "62e2bad2dae560a39de26a3fc0766e1e0b93909d2736d675a430887ea8388a86"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk17",
+          "native-execution-profile": "IN_PROCESS",
+          "contract-test-count": 83,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/values/jdk17-in_process/execution.yaml",
+            "sha256": "1360fa4d225491d4b2bd3a8d82ed830f7a77c0d51e47c35c430a6915ebf90181"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/values/jdk17-in_process/syntax.yaml",
+              "sha256": "c1fe403a5935fc9c49ef1015e6e3093c7a4c952e71f8a5bc05493253d85a8150"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/values/jdk17-in_process/standards.yaml",
+              "sha256": "eaa05b970a1525143d446366ea380aeb81bcbca22504b62cd7f7acbe828eeeb5"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/values/jdk17-in_process/semantic.yaml",
+              "sha256": "921e1532cfcc7ded1b14aee457756671ee9195c371de8ef6c8f3664b5ca0a365"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/values/jdk17-in_process/visual.yaml",
+              "sha256": "cfbd2177612181f0bca1943111f9f4259d9276712f8cc104b441166933991145"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk17",
+          "native-execution-profile": "HARDENED_WORKER",
+          "contract-test-count": 83,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/values/jdk17-hardened_worker/execution.yaml",
+            "sha256": "d43798f729d2eb4bf500735197ba88b315d68832be7db551dfabb590bd129601"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/values/jdk17-hardened_worker/syntax.yaml",
+              "sha256": "a25fd3fefafed1e478e0121c534a69be3eaf99fdd0735b90803cabd3505c4247"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/values/jdk17-hardened_worker/standards.yaml",
+              "sha256": "b80bea7f34901b92b7ffad33fca6fbe1062ab1c860635b2cf95fdc9ab9aff77b"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/values/jdk17-hardened_worker/semantic.yaml",
+              "sha256": "dcbf70e2166ed76d296b27c99b66dc8608d7141f8585816908ba94bf5ef9e231"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/values/jdk17-hardened_worker/visual.yaml",
+              "sha256": "7b2fe0c3faca2b6784d18f4ab4ac04533d16013f0817c6870f92bbf9fbd4296f"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk21",
+          "native-execution-profile": "IN_PROCESS",
+          "contract-test-count": 83,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/values/jdk21-in_process/execution.yaml",
+            "sha256": "ed6549149f94306943f698eb72a4874b2182b88ac8471c91d44727a7cc4b9293"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/values/jdk21-in_process/syntax.yaml",
+              "sha256": "aa2be028fe2a235ec43824ff9f319c66eb5c865e344268d68f2d4f531ef3a84c"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/values/jdk21-in_process/standards.yaml",
+              "sha256": "cdd038626d03707e459abd0202660a634218abc0b17ca41c043e1feadca83686"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/values/jdk21-in_process/semantic.yaml",
+              "sha256": "2c10a70952dcc731fb2fbc5102d972041bf78ba1712cc8b99fc93b6c66606f88"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/values/jdk21-in_process/visual.yaml",
+              "sha256": "e0316b62adc76709d9e8b72592b58910c454d10070e3f79a4c87b34234edd76d"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk21",
+          "native-execution-profile": "HARDENED_WORKER",
+          "contract-test-count": 83,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/values/jdk21-hardened_worker/execution.yaml",
+            "sha256": "6673e84cb39b13fc5bf56b867a1d3b7334520a92ecdc9c98514a14868a8d8d92"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/values/jdk21-hardened_worker/syntax.yaml",
+              "sha256": "92ea7035613d42185be5e1baddb0442d602af81a06cfd62a7bdcb5f8e6b9f26d"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/values/jdk21-hardened_worker/standards.yaml",
+              "sha256": "ce82eedc9511141bbb2d21af4098c352bc810135be843ef5a7a9c3774acad915"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/values/jdk21-hardened_worker/semantic.yaml",
+              "sha256": "f9987f9c8da29b46ef24c55c44a073cb7041a6c663aa3a4976b239267dddbe0f"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/values/jdk21-hardened_worker/visual.yaml",
+              "sha256": "1006bab3472465e2049061cceadd275d3986736cf5295e63a18ce2f39dbd078e"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "obligation": "pages",
+      "result": "pass",
+      "certification-count": 8,
+      "independent-chain-count": 32,
+      "identity-record": {
+        "path": "capabilities/evidence/foundation/T78-final/pages/identities.json",
+        "sha256": "5b9c9ef02c895b1286c18d7b2492d83a1be7e1d3a20453ac3bd8923173765937"
+      },
+      "observed-index": {
+        "path": "capabilities/evidence/foundation/T78-final/pages/observed-index.json",
+        "sha256": "4f10446e1985b70707ee98f413a1f2d31e1decc6c862445045e9f2a667c549db"
+      },
+      "tuples": [
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk8",
+          "native-execution-profile": "IN_PROCESS",
+          "contract-test-count": 65,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/pages/jdk8-in_process/execution.yaml",
+            "sha256": "5d4b28f6ad3973c21f5c4dbe94728f17dc1db25047346a507ce4489c526d7d44"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/pages/jdk8-in_process/syntax.yaml",
+              "sha256": "296d7dc79e63a3649d62fbad65015ad4ec98418e763075317699207b56c654aa"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/pages/jdk8-in_process/standards.yaml",
+              "sha256": "562fb3742610ceda6571bb256c816691bc65613495761ed9ad420d0cecdc40c4"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/pages/jdk8-in_process/semantic.yaml",
+              "sha256": "b7e489bb8ed62a10a93d4128924da9c2534432acd1b63eda34f9c173f4d928d7"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/pages/jdk8-in_process/visual.yaml",
+              "sha256": "f10a5e33e59f78b5a4bd5b2e18a809ed210911931d392060a68c633df75cc9ff"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk8",
+          "native-execution-profile": "HARDENED_WORKER",
+          "contract-test-count": 65,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/pages/jdk8-hardened_worker/execution.yaml",
+            "sha256": "2964d0d905d2b1ce276a47f046589788b5440acc8a23a936f30ea04b9c21a73d"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/pages/jdk8-hardened_worker/syntax.yaml",
+              "sha256": "164dedf41120115a91f6f8041e38e256ceec52d473e71ce3e02168e5312b4853"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/pages/jdk8-hardened_worker/standards.yaml",
+              "sha256": "8bba47d7060f760236fc26767b381d78f3e6a1eafba030aed9527b08f9478379"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/pages/jdk8-hardened_worker/semantic.yaml",
+              "sha256": "8b6ed15369af5ab4d006646e0eba682a923d0b205b44f7cbe85a69bdbda49b74"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/pages/jdk8-hardened_worker/visual.yaml",
+              "sha256": "27192212eb6f82f1b7be8955b8ff024937f5286c55c3a52c20d46bcc94d37f92"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk11",
+          "native-execution-profile": "IN_PROCESS",
+          "contract-test-count": 65,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/pages/jdk11-in_process/execution.yaml",
+            "sha256": "fb0246c7f075ead5a36441a20afa9cbe67d636d61d13e33d9d3c4ab2cded0150"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/pages/jdk11-in_process/syntax.yaml",
+              "sha256": "a116ea53db89ce4d0f7353bb07a53ef1e6d41e947cb1c05089f9f0f482d45ab2"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/pages/jdk11-in_process/standards.yaml",
+              "sha256": "37b4d802776a732824c128d8eacdb14d08bd40a69333d4c52660f2cb53e008f8"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/pages/jdk11-in_process/semantic.yaml",
+              "sha256": "09c8ee0d4de55ace8a5d5d63ce1f63fb3e7905bba77721c73132ec3d3d362131"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/pages/jdk11-in_process/visual.yaml",
+              "sha256": "e84d75bb3c9436205104feb7806f4b14010b2a3f4ac36c6e9d7fc57df1754a04"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk11",
+          "native-execution-profile": "HARDENED_WORKER",
+          "contract-test-count": 65,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/pages/jdk11-hardened_worker/execution.yaml",
+            "sha256": "82d3f342e7547f0ecf0fd2a093d009cb2400df8ec0740829b551e2f79178ee40"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/pages/jdk11-hardened_worker/syntax.yaml",
+              "sha256": "51d6eb50efd07abf810b267243f3233dbbf8a8570bec033115d5e2863e0dede2"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/pages/jdk11-hardened_worker/standards.yaml",
+              "sha256": "c96d753d08162d418f3d92a9e0a855d3e993fac32349d8024374eb7f97028cd2"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/pages/jdk11-hardened_worker/semantic.yaml",
+              "sha256": "a05f4a64fcd351612ef03be2192295a11bdbbe62df1d477f3790525e1f5e060b"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/pages/jdk11-hardened_worker/visual.yaml",
+              "sha256": "6f542e81505db7329021457c3b214005a851724958e6466200736b09ce66d4b6"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk17",
+          "native-execution-profile": "IN_PROCESS",
+          "contract-test-count": 65,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/pages/jdk17-in_process/execution.yaml",
+            "sha256": "d792b090a766ebafa460d03994e3a5e4e627d5c83bf89b3f1c0173eaf84a1714"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/pages/jdk17-in_process/syntax.yaml",
+              "sha256": "d30d92395bdf0ac4e0d5a3486d1861022309d89009952db39808ee6a4246b4b1"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/pages/jdk17-in_process/standards.yaml",
+              "sha256": "ae28276591e8114d41ca5b7713be6778f238e1027f3c280c8b870e3f2ac67018"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/pages/jdk17-in_process/semantic.yaml",
+              "sha256": "62650ce41327d1fc47ec04e41502566c34ca8936188cc3504146972bdcb2e143"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/pages/jdk17-in_process/visual.yaml",
+              "sha256": "290304edf899db402cb7d83eb00906fa7942d2570eef1f798d12a16a6ec7d157"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk17",
+          "native-execution-profile": "HARDENED_WORKER",
+          "contract-test-count": 65,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/pages/jdk17-hardened_worker/execution.yaml",
+            "sha256": "40abd5e9c677dc041218636ccf21f1530d69c17563edff1eb44d645782f9ba34"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/pages/jdk17-hardened_worker/syntax.yaml",
+              "sha256": "6b028c46086f970635c044932d2a16a07d8e344583743eb925712a90bf615e27"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/pages/jdk17-hardened_worker/standards.yaml",
+              "sha256": "b51c4245a18dc6dbe31d26ab20ec20675042955c669c1d7dbaa1725c0db3b4f9"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/pages/jdk17-hardened_worker/semantic.yaml",
+              "sha256": "1d5dfa590b33bb5359394da8dd664d7dbc45ae024e4f11c335e64842fea6f1b6"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/pages/jdk17-hardened_worker/visual.yaml",
+              "sha256": "d425feae5b583bbd5e3f43e4531be891aa9b289c1c9c7bbecd7806b38507f9d4"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk21",
+          "native-execution-profile": "IN_PROCESS",
+          "contract-test-count": 65,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/pages/jdk21-in_process/execution.yaml",
+            "sha256": "9e288e58f464b885cc9e7ed383e2ee2d322a2f2b545cc7dbf19fc627dc7aef02"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/pages/jdk21-in_process/syntax.yaml",
+              "sha256": "0181eac42bca4ef4bb836d119549fb943abc7e34f2a9dc7c461473d47da27023"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/pages/jdk21-in_process/standards.yaml",
+              "sha256": "872ceaf68cdfc8f706d99ef64197b304812890e5f6dc773ddbae2d6dddd476fe"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/pages/jdk21-in_process/semantic.yaml",
+              "sha256": "06594518087bd17316f2094aa8d0ca440927ab27be46f6c1972307724e9b1a50"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/pages/jdk21-in_process/visual.yaml",
+              "sha256": "d7f0042605f447d7d5ae46cc2cc9f8fb1998d3252eb9d15ad0553c240f1138a4"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk21",
+          "native-execution-profile": "HARDENED_WORKER",
+          "contract-test-count": 65,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/pages/jdk21-hardened_worker/execution.yaml",
+            "sha256": "ee4b78fe7dbd2ef20e07990fbdb1c2708ca27aaf64076f18f9f94ce8d934a677"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/pages/jdk21-hardened_worker/syntax.yaml",
+              "sha256": "5f89309dd9eae7c2aa6e42ad1aff55375fb774b0e797a9fcf3b4d60c1e98d1ae"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/pages/jdk21-hardened_worker/standards.yaml",
+              "sha256": "08061fa3da259d422e92ad35d385e3853d842209c830cf048ac4394f8bbefb2c"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/pages/jdk21-hardened_worker/semantic.yaml",
+              "sha256": "da2dcae8a1c4358b32d3c77493136c4ca36d89e45cfeeddfef6f14da5ee72a32"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/pages/jdk21-hardened_worker/visual.yaml",
+              "sha256": "e8ccc0f86d8fdc4b43ac34e2c1b8a64f5c31f85d835463b3cf302b3c165c84fb"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "obligation": "metadata",
+      "result": "pass",
+      "certification-count": 8,
+      "independent-chain-count": 32,
+      "identity-record": {
+        "path": "capabilities/evidence/foundation/T78-final/metadata/identities.json",
+        "sha256": "5b9c9ef02c895b1286c18d7b2492d83a1be7e1d3a20453ac3bd8923173765937"
+      },
+      "observed-index": {
+        "path": "capabilities/evidence/foundation/T78-final/metadata/observed-index.json",
+        "sha256": "0fb9dd2a38f1cd09fd186be06de96a760f100440bb6251da56a751b54b8240d5"
+      },
+      "tuples": [
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk8",
+          "native-execution-profile": "IN_PROCESS",
+          "contract-test-count": 73,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/metadata/jdk8-in_process/execution.yaml",
+            "sha256": "52d65c2edd175964d3dd0c71cfc838dd37bbd7faaaea70a450d322a7643a7eae"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/metadata/jdk8-in_process/syntax.yaml",
+              "sha256": "2f372a8041d1636784875311e9bb4587a5835947c9a025f4960185e15754051a"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/metadata/jdk8-in_process/standards.yaml",
+              "sha256": "da0100e60b965df982ff750124cb25794165c318684af9b2669c7dae81da0045"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/metadata/jdk8-in_process/semantic.yaml",
+              "sha256": "435674a52b8fc660f81a78909a5a8e468ca4ecb71abb2d9f9e6ddc9557f1073d"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/metadata/jdk8-in_process/visual.yaml",
+              "sha256": "eca8d852015e8473a276df112979b325d5237053ebff4dc3ab2c56d89f730ce2"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk8",
+          "native-execution-profile": "HARDENED_WORKER",
+          "contract-test-count": 73,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/metadata/jdk8-hardened_worker/execution.yaml",
+            "sha256": "bc64c272c57def822f05e1dffe934f724b1267cc9020f211e168a42910a010cc"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/metadata/jdk8-hardened_worker/syntax.yaml",
+              "sha256": "b5b93225b0bed702fbceb5c8d039d439939266b9c7e650f25ac0d0b0bbea7796"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/metadata/jdk8-hardened_worker/standards.yaml",
+              "sha256": "377d9cdaaf12982e6995160ed73d04222e14db48bff485c204bd308c2f68afcf"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/metadata/jdk8-hardened_worker/semantic.yaml",
+              "sha256": "93731b0090350ffd5a1c788fedaac543aa35f2cfcf6619f2788ad6f9d35738ed"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/metadata/jdk8-hardened_worker/visual.yaml",
+              "sha256": "e2ef82d8f0d356a822ea6f29b965e94e84029cdc92050c66a930477396b17a53"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk11",
+          "native-execution-profile": "IN_PROCESS",
+          "contract-test-count": 73,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/metadata/jdk11-in_process/execution.yaml",
+            "sha256": "55c3ccda83a45c7b5719d35b0278d0c366ceb8660f2cc2ed2ef41ee5eb7262ca"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/metadata/jdk11-in_process/syntax.yaml",
+              "sha256": "e2a7c97fa14b56bc5981776cd0ecfb3308ac841a6a02310613e671fc22d4cbf1"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/metadata/jdk11-in_process/standards.yaml",
+              "sha256": "339ba92b227aa0f947f6492d3278c3632cc268737b1f0666d97bbfaf8440a7d2"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/metadata/jdk11-in_process/semantic.yaml",
+              "sha256": "a5b9b282afec9886c06e494ff433b8239021dd4979d6e3b05b4ba3d8a112d532"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/metadata/jdk11-in_process/visual.yaml",
+              "sha256": "d6cfe506649faf1cc5aa9b6219ed00ddd7a001a446897cb478c759e4106a0c4a"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk11",
+          "native-execution-profile": "HARDENED_WORKER",
+          "contract-test-count": 73,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/metadata/jdk11-hardened_worker/execution.yaml",
+            "sha256": "a3fe4a1f3cefee515fea469c9212b48eb1c2ab2ba147425d6ec51e9ad788567c"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/metadata/jdk11-hardened_worker/syntax.yaml",
+              "sha256": "4e85547588a7103a9575bd3c2302653ff815217ff1ce4be78fc10b564b1c5b68"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/metadata/jdk11-hardened_worker/standards.yaml",
+              "sha256": "70e59ab814745276acb5b4ec703f6289def7b36e80cf72c950812f0b22ab2dca"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/metadata/jdk11-hardened_worker/semantic.yaml",
+              "sha256": "07c1154be1c7615d932788cf14330a9520b6847c9df99fdb09dc64f457cb3fde"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/metadata/jdk11-hardened_worker/visual.yaml",
+              "sha256": "b48ce74ee10f9bd9f717eeba8f0009f3bdf56281cb4f27d1c0bb917b3798809b"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk17",
+          "native-execution-profile": "IN_PROCESS",
+          "contract-test-count": 73,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/metadata/jdk17-in_process/execution.yaml",
+            "sha256": "218d36fb3dec75917724d298fe27f3cd5f9cda222286537353fbdd7f335f1130"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/metadata/jdk17-in_process/syntax.yaml",
+              "sha256": "9af1d57132e48ff1e36bd3c6160b2ddbabb6adeb91d7b192ca697d0e91a47dc8"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/metadata/jdk17-in_process/standards.yaml",
+              "sha256": "051008c373f9de4ff41d0fdd4cc09ac2e3774dbb13bc665fcd9a86d55a619f10"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/metadata/jdk17-in_process/semantic.yaml",
+              "sha256": "065b06d392989b107f07c8930db0dcf00174e3dcb5f84c71181ec4ce6e752044"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/metadata/jdk17-in_process/visual.yaml",
+              "sha256": "170124811159ad589d260f841aff7fd8b34a760efd625340d3a082cc1f84ae72"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk17",
+          "native-execution-profile": "HARDENED_WORKER",
+          "contract-test-count": 73,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/metadata/jdk17-hardened_worker/execution.yaml",
+            "sha256": "b316c09112e4cb81b4d3801c040594c68cb8de7a8dc848254a229d71a572b2e2"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/metadata/jdk17-hardened_worker/syntax.yaml",
+              "sha256": "b45e1f9947b1d7093aad2fa233595798590ff0c23e618a281edc2c210638c032"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/metadata/jdk17-hardened_worker/standards.yaml",
+              "sha256": "7006601ef4dfe81d5ce21703371030ba8e075ba5095855913c4a133a6629851b"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/metadata/jdk17-hardened_worker/semantic.yaml",
+              "sha256": "490d53539650fd55b22b557675b0eb08a655a6959a765447308a4349fad1f1a7"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/metadata/jdk17-hardened_worker/visual.yaml",
+              "sha256": "98a8fac0e435911c520e74373bf76378a6990767fa27f4426c9e7fc59dea40e1"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk21",
+          "native-execution-profile": "IN_PROCESS",
+          "contract-test-count": 73,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/metadata/jdk21-in_process/execution.yaml",
+            "sha256": "d76a16e9951e59d3d5df2a80e204d910b3600769a9c2ea5c11b5ddf079c9683b"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/metadata/jdk21-in_process/syntax.yaml",
+              "sha256": "93897b0fb4b905515bf9b95cd22b3afc0d2fc9693a6335c5d167bb7adcf5c056"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/metadata/jdk21-in_process/standards.yaml",
+              "sha256": "47c621aa75a0605491594585e6891ca1aec3627f36b859fce579a80cb4b57784"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/metadata/jdk21-in_process/semantic.yaml",
+              "sha256": "33d1a2fc220980b92586e971a18229b474487f81cdc4a910d8add69c72681c7b"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/metadata/jdk21-in_process/visual.yaml",
+              "sha256": "7c6ad769bf6237bca65a9091181a1f1b1de4aab348ffe69d6e0e0cd8c66b61cc"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk21",
+          "native-execution-profile": "HARDENED_WORKER",
+          "contract-test-count": 73,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/metadata/jdk21-hardened_worker/execution.yaml",
+            "sha256": "1118e7b783769037c70b722c72c178c9becb041a0784fdae63f4dbc6afe9f824"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/metadata/jdk21-hardened_worker/syntax.yaml",
+              "sha256": "a106c6918b8aa4f8a26b247e2c02d302ddbf38f516ea88423237543d39e178f4"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/metadata/jdk21-hardened_worker/standards.yaml",
+              "sha256": "c3ebe83c100c26cecb13cafd1af03ca3b3c5c53f4196164a9f61622e60d28367"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/metadata/jdk21-hardened_worker/semantic.yaml",
+              "sha256": "d353e12315df702ac82a577e8097866c221718f8e83d9b14b0a396de1822c11e"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/metadata/jdk21-hardened_worker/visual.yaml",
+              "sha256": "190891bee2565bf70ae5252fe1fd7421d881f908f0226f9584c9a3283e3c6b3a"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "obligation": "annotations",
+      "result": "pass",
+      "certification-count": 8,
+      "independent-chain-count": 32,
+      "identity-record": {
+        "path": "capabilities/evidence/foundation/T78-final/annotations/identities.json",
+        "sha256": "5b9c9ef02c895b1286c18d7b2492d83a1be7e1d3a20453ac3bd8923173765937"
+      },
+      "observed-index": {
+        "path": "capabilities/evidence/foundation/T78-final/annotations/observed-index.json",
+        "sha256": "585b95335d5bb52b64df577fa2ba71199a952593ce64e2896ff62ff8bb6c6318"
+      },
+      "tuples": [
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk8",
+          "native-execution-profile": "IN_PROCESS",
+          "contract-test-count": 47,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/annotations/jdk8-in_process/execution.yaml",
+            "sha256": "612444fbc738c18be744a25c108ae20169822a7f70adc0785079f3563870d112"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/annotations/jdk8-in_process/syntax.yaml",
+              "sha256": "5a6f7de6c6b9d84d094f93cd016cfa8c67b3116e5fb55bcc56b6a1d3039fa734"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/annotations/jdk8-in_process/standards.yaml",
+              "sha256": "c78fb88ac5ee1d9488097e1d015142c6183fdc5a7d66d20e74537b840b1b282e"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/annotations/jdk8-in_process/semantic.yaml",
+              "sha256": "953cc4a5bf9f6231cba63b2ff474806f1836b1af0c904e7e6a015bbe8939d516"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/annotations/jdk8-in_process/visual.yaml",
+              "sha256": "b730dc08ea4a22c96829ce9e9261a87e05727bdbff41fcf74f2fe6a69401c2ef"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk8",
+          "native-execution-profile": "HARDENED_WORKER",
+          "contract-test-count": 47,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/annotations/jdk8-hardened_worker/execution.yaml",
+            "sha256": "b0ab927117d0b56c31d4dd792e63e14e3e8267bf83bd18f3a086cfb965893397"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/annotations/jdk8-hardened_worker/syntax.yaml",
+              "sha256": "c790581eaa19bc7aaebc892bdf2f7a8452e275a8f35126fa76f82e6a3ac42b54"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/annotations/jdk8-hardened_worker/standards.yaml",
+              "sha256": "72f4dcbbc1b9877e014b3c4050dbefab8ac2437313fa36467a261dd8c436f03e"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/annotations/jdk8-hardened_worker/semantic.yaml",
+              "sha256": "d98f7d70f6df2ec038e65d043be4eaa29bf68e5f350c8aad23e5f0cd90ff9160"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/annotations/jdk8-hardened_worker/visual.yaml",
+              "sha256": "587381e383c84210705cb6a281dc3f0e4f9ac797288a3077289aa4acb9776c6e"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk11",
+          "native-execution-profile": "IN_PROCESS",
+          "contract-test-count": 47,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/annotations/jdk11-in_process/execution.yaml",
+            "sha256": "62ba740595a92619205c5cb0ba0d0c9b372456bb51e175cc18ab5f99209d5d09"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/annotations/jdk11-in_process/syntax.yaml",
+              "sha256": "4f90e3857102aab244a15e3e93db1863eb1093f092846ac5bfc800cdf8b7e21b"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/annotations/jdk11-in_process/standards.yaml",
+              "sha256": "27c93c0ea3c8a1265d28d70aab6f1677143681326adedc0704f79bd454ca88c2"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/annotations/jdk11-in_process/semantic.yaml",
+              "sha256": "597e01acf51a4f452dd3a796ead099c8da759eeefe4a919539c2147b6c5ba62c"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/annotations/jdk11-in_process/visual.yaml",
+              "sha256": "31e53b54d0dca217d613047a8dd51a422b91171f18e2e575d987e2180bb11200"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk11",
+          "native-execution-profile": "HARDENED_WORKER",
+          "contract-test-count": 47,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/annotations/jdk11-hardened_worker/execution.yaml",
+            "sha256": "204797f6c08bf3963dfb976639fe3b40cf55b21b63437675f4d9f7d117f4a63a"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/annotations/jdk11-hardened_worker/syntax.yaml",
+              "sha256": "9cce030f7663c1f0012dfa8f5159e8770a4b8e6b51f62682a84a1de0d1bd1ace"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/annotations/jdk11-hardened_worker/standards.yaml",
+              "sha256": "12b2069a73d88185dcace281f75798cdf286e3a40be68a5f346a5e2485b30ea2"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/annotations/jdk11-hardened_worker/semantic.yaml",
+              "sha256": "b7f956e7edee4b754ebfd4358c3cf3ca5d3f9fc9b8d850e72c97d9997f8268a8"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/annotations/jdk11-hardened_worker/visual.yaml",
+              "sha256": "0a51c178f3de13a58db9c5e7294c67c3bb579767dd165fc192e704c38b8ef6bb"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk17",
+          "native-execution-profile": "IN_PROCESS",
+          "contract-test-count": 47,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/annotations/jdk17-in_process/execution.yaml",
+            "sha256": "ce9585d7acfbaad50fd068031e27a2408cc63b50b22cdb2d6b7dcd384fe9a32b"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/annotations/jdk17-in_process/syntax.yaml",
+              "sha256": "7d5dddf7e28a439485a06160b249aa10da8da06fe6dafb6b9e3a69e6dbe2b130"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/annotations/jdk17-in_process/standards.yaml",
+              "sha256": "fe206f01831ecc747d7c24523de31134e1343785aa431b5750b1c0e0f3e7a01d"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/annotations/jdk17-in_process/semantic.yaml",
+              "sha256": "03e33e174a15b1c3174b4654598a1c9d7f6978796fb838cb21485b12a265bb1c"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/annotations/jdk17-in_process/visual.yaml",
+              "sha256": "071d10a0a29dc0423dbb9648d2d2812b7a84efd3e47f00271ed1d850a72a4cbc"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk17",
+          "native-execution-profile": "HARDENED_WORKER",
+          "contract-test-count": 47,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/annotations/jdk17-hardened_worker/execution.yaml",
+            "sha256": "6a453fd92ca7ec1bd4ef191f986688e14e357c13350438ca617f69fe5e530aed"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/annotations/jdk17-hardened_worker/syntax.yaml",
+              "sha256": "419a9085cd7eab2bc435382853aa99cdd4eb74cdaedd10a57d1d4fb43933ab0d"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/annotations/jdk17-hardened_worker/standards.yaml",
+              "sha256": "d740defa4da8c5ac1c5f0957c018193e3a58ee4a83542fdde54e3fa0f3934aac"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/annotations/jdk17-hardened_worker/semantic.yaml",
+              "sha256": "a43fdda310c77f20e933b81f24f6bc6fdbb73a3a76023932a345e9f145f362ad"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/annotations/jdk17-hardened_worker/visual.yaml",
+              "sha256": "0873f9585ffe12f0006d52860c050923af5e103cde9dca87cab55206191df6f9"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk21",
+          "native-execution-profile": "IN_PROCESS",
+          "contract-test-count": 47,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/annotations/jdk21-in_process/execution.yaml",
+            "sha256": "c3b9e263e56e09e5494bb5eb2775c50c8ac6b6cde02991504e4462bf2ac9afca"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/annotations/jdk21-in_process/syntax.yaml",
+              "sha256": "ce812bba43467675e3630f4ae40edccf8af3857292c5827c59099dbbc3c5e9c4"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/annotations/jdk21-in_process/standards.yaml",
+              "sha256": "1cf11122cd9d638743de0f8f163c7117031f5e02908d112f5fe1713a670e76b5"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/annotations/jdk21-in_process/semantic.yaml",
+              "sha256": "ef044211c62e28351f3e17195a5401a7519634e7743a822eaa42c625980a42e1"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/annotations/jdk21-in_process/visual.yaml",
+              "sha256": "48740beda204006a3a42dc9c3ee3e4e15f3558a868b0d757664810f9ef20e8da"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk21",
+          "native-execution-profile": "HARDENED_WORKER",
+          "contract-test-count": 47,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/annotations/jdk21-hardened_worker/execution.yaml",
+            "sha256": "f258c945fde47034bae2f3cf345c784fc071a2e174a49e0ade198dfc632f11b2"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/annotations/jdk21-hardened_worker/syntax.yaml",
+              "sha256": "5200b7fce2e9127ed522b5860e452ab553c61d4411df6a4c33025716d4c219cf"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/annotations/jdk21-hardened_worker/standards.yaml",
+              "sha256": "f16c6e0595e4beb0f49c5162a1d77fda64b680c164c0ed9f93ffe97d0b6f96d0"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/annotations/jdk21-hardened_worker/semantic.yaml",
+              "sha256": "4c571ccc7c4c20ff10baa0d87db8705517807bae377ea27218e5be8f293082b8"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/annotations/jdk21-hardened_worker/visual.yaml",
+              "sha256": "dce9ca10b6e6a317262b3943fa51b621751899504fbd6526cbf16b7320876d95"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "obligation": "text",
+      "result": "pass",
+      "certification-count": 8,
+      "independent-chain-count": 32,
+      "identity-record": {
+        "path": "capabilities/evidence/foundation/T78-final/text/identities.json",
+        "sha256": "5b9c9ef02c895b1286c18d7b2492d83a1be7e1d3a20453ac3bd8923173765937"
+      },
+      "observed-index": {
+        "path": "capabilities/evidence/foundation/T78-final/text/observed-index.json",
+        "sha256": "c3642d69df40ad1f62e063dc93a3ee643b1e4b9fa564de81f08b6f9152f39f7b"
+      },
+      "tuples": [
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk8",
+          "native-execution-profile": "IN_PROCESS",
+          "contract-test-count": 126,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/text/jdk8-in_process/execution.yaml",
+            "sha256": "edafec69951b2cde97e21d009aa888cf3db44a0a15d524814a21a63f85102e14"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/text/jdk8-in_process/syntax.yaml",
+              "sha256": "6309146cc3e89ea9a6e3eec32f14911b98fe3a80e79cab9c1313da3c1e388744"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/text/jdk8-in_process/standards.yaml",
+              "sha256": "190c4e2f670830ca7c45b02186567e6cbb4910fc0a04abee0b9e9ef1124a09cb"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/text/jdk8-in_process/semantic.yaml",
+              "sha256": "718e9bf3d23be936a0b8d65836cbcc8fa3881753983a288f5b67a8eaa318f13f"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/text/jdk8-in_process/visual.yaml",
+              "sha256": "648f26fccb70340c145eb17e9800e48422a6d48872f962c4803c73a9c8e88d66"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk8",
+          "native-execution-profile": "HARDENED_WORKER",
+          "contract-test-count": 126,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/text/jdk8-hardened_worker/execution.yaml",
+            "sha256": "be899bd5c3590e7b33ca2274b34269b5167440a411a85af48a287821f9525f20"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/text/jdk8-hardened_worker/syntax.yaml",
+              "sha256": "07364e5a114505fcce04d0cf66d12381bfee5388557b6f78dc2a7883e62f24b8"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/text/jdk8-hardened_worker/standards.yaml",
+              "sha256": "d327a6193e3eeb7bd80e7258989339da1f1328873a2ad2c4974de6848689d7ca"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/text/jdk8-hardened_worker/semantic.yaml",
+              "sha256": "814a54b13fd02940d37e7aaad13c0f40aca2c74d1b70b340d4735745a3e561ac"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/text/jdk8-hardened_worker/visual.yaml",
+              "sha256": "2e58255aa1ba015c6a60d638cc60e7d9948c5a9e987efd1d98d78affa22f7f54"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk11",
+          "native-execution-profile": "IN_PROCESS",
+          "contract-test-count": 126,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/text/jdk11-in_process/execution.yaml",
+            "sha256": "1efdd295e8663208fd586e77ba750da4263ccc270a59e5135fb860a9762942c4"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/text/jdk11-in_process/syntax.yaml",
+              "sha256": "dedee067b27e35d3202e3d74e8cf144a1782e63704ad650ebfcab8471813168a"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/text/jdk11-in_process/standards.yaml",
+              "sha256": "9f6f14224d9aa26d95d482a88eea86f499bdd9abeba0e97bcdb99444167c0b08"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/text/jdk11-in_process/semantic.yaml",
+              "sha256": "c73afa00a2b9dbd48ec5d63e26ecf69844d1aa9f46943741c781fa8a0a6f11a2"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/text/jdk11-in_process/visual.yaml",
+              "sha256": "1742aad7e36947cb7280f708e9bf35707d672e053995386b64250326fdb222fd"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk11",
+          "native-execution-profile": "HARDENED_WORKER",
+          "contract-test-count": 126,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/text/jdk11-hardened_worker/execution.yaml",
+            "sha256": "b301a74cf71ea0d0abcc2daf4412e50ac43e5cf685edf8c73859f59828e8080a"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/text/jdk11-hardened_worker/syntax.yaml",
+              "sha256": "4ccadb25a644d37753ff3d67cb6ea8b399eb10765cfcd4a4c93ac997eae67fb3"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/text/jdk11-hardened_worker/standards.yaml",
+              "sha256": "0dd7f72dc4afee0118258a91bc320dc00f6ddd93fd5a7067f5b8abff852ccf77"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/text/jdk11-hardened_worker/semantic.yaml",
+              "sha256": "373f965fadfd1541faa0b1cb45f486d9a9621c71a7ffda5138ed74024f93fc40"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/text/jdk11-hardened_worker/visual.yaml",
+              "sha256": "e5ab8f36860d74882b6aa5899d0892bed1488d8cc5cf3036c86f0f4b7b611283"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk17",
+          "native-execution-profile": "IN_PROCESS",
+          "contract-test-count": 126,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/text/jdk17-in_process/execution.yaml",
+            "sha256": "3939f371b1a266a2dcb512dea2372bdb9ad66c6b3fedbbad5460af6a3a833bad"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/text/jdk17-in_process/syntax.yaml",
+              "sha256": "84fd288ad3b8171dc13145a80636d9c520d0bfe4e74836f891f7f53fdd8a6f6c"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/text/jdk17-in_process/standards.yaml",
+              "sha256": "87ac5481675eca4242c832e7fad7b4d9b493606768d49ca1fc71373d7bf1c807"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/text/jdk17-in_process/semantic.yaml",
+              "sha256": "1eff56646ae1d18066bc2fca2869ea7234bcae6c0dbbac35d8c60f1e7f1220cb"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/text/jdk17-in_process/visual.yaml",
+              "sha256": "5606e4a8581d9f2f08c0578f6f9d0bd600aa9683bfd7c7b1a80ae9011a3a74a9"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk17",
+          "native-execution-profile": "HARDENED_WORKER",
+          "contract-test-count": 126,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/text/jdk17-hardened_worker/execution.yaml",
+            "sha256": "e9fb29370843d946f52ce5a53be267acfca38727828346be7ad49250ae8d4d19"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/text/jdk17-hardened_worker/syntax.yaml",
+              "sha256": "84b14baa89a3e1fafbb74db18eeeecf232e14813ab9a59a3c4f823278a2c6ad5"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/text/jdk17-hardened_worker/standards.yaml",
+              "sha256": "291212b1cb76dddd3413c3f6520f7b3624f34a82b562774b0c0214b04776005a"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/text/jdk17-hardened_worker/semantic.yaml",
+              "sha256": "bb0f3a19448682a83fb4c47760e732c6fef82fd4e255f0b6d630c8ad79535c71"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/text/jdk17-hardened_worker/visual.yaml",
+              "sha256": "4a70bcb413e51e038896baac242b4506f351164227ba8cfc8cfad743ec30ecdd"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk21",
+          "native-execution-profile": "IN_PROCESS",
+          "contract-test-count": 126,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/text/jdk21-in_process/execution.yaml",
+            "sha256": "fc86d473b5f4d25d79613d3c81a54e95491ccdb572d465616b929eeb9d716cf5"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/text/jdk21-in_process/syntax.yaml",
+              "sha256": "63f614e13b45baae1454db74188780317ce8c0a04fec0c0e3af27eba0c9948e2"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/text/jdk21-in_process/standards.yaml",
+              "sha256": "651aeb7eef317d6e1d4ecb329a7fe10874bdeb8bb3bb6e461755e4ed68f958a1"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/text/jdk21-in_process/semantic.yaml",
+              "sha256": "c105381cce025bf99642e47c6afecfafab72e57cdcb27aa579ee9651c205b6e4"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/text/jdk21-in_process/visual.yaml",
+              "sha256": "4a6993725fc495c6e54ef7021cbe45c902ee1ce0cb28c43d9301579c742fea0b"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk21",
+          "native-execution-profile": "HARDENED_WORKER",
+          "contract-test-count": 126,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/text/jdk21-hardened_worker/execution.yaml",
+            "sha256": "fd430a65977df0316a7b3d4b3fdc1940a257ec831a11c812357aaf10a8cbfdb3"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/text/jdk21-hardened_worker/syntax.yaml",
+              "sha256": "9e76086338e05561d70e2d56b8c30e04d6c7f686031a679455f333ba60af88ea"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/text/jdk21-hardened_worker/standards.yaml",
+              "sha256": "2b6f05eed34cbc5f1689e43c26b25c1cda16370605f532ad93f325d76a28d330"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/text/jdk21-hardened_worker/semantic.yaml",
+              "sha256": "302cece40e4e0d5cc24bdd39497c93abf91fecd212a0da6dbbc34947a4aa6a1f"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/text/jdk21-hardened_worker/visual.yaml",
+              "sha256": "9f61d9fa8a351dc3b1501c5dcea43700c23a8027ebc6eac126a78273068e5f25"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "obligation": "images",
+      "result": "pass",
+      "certification-count": 8,
+      "independent-chain-count": 32,
+      "identity-record": {
+        "path": "capabilities/evidence/foundation/T78-final/images/identities.json",
+        "sha256": "5b9c9ef02c895b1286c18d7b2492d83a1be7e1d3a20453ac3bd8923173765937"
+      },
+      "observed-index": {
+        "path": "capabilities/evidence/foundation/T78-final/images/observed-index.json",
+        "sha256": "4123e6e0b44650a4a246a7b47feb06aa8ef35afcd807e50b96cf4291c93485e7"
+      },
+      "tuples": [
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk8",
+          "native-execution-profile": "IN_PROCESS",
+          "contract-test-count": 38,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/images/jdk8-in_process/execution.yaml",
+            "sha256": "fa58ae4ec6e42c4650121e260ee77ec2f6024a033ade7344c3cab28790b9ee67"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/images/jdk8-in_process/syntax.yaml",
+              "sha256": "0098dd89ba22d4c1ded8da9eea4adeefd38d9f7146342a38b6c29ab0686d2b57"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/images/jdk8-in_process/standards.yaml",
+              "sha256": "1b5dc2ac521eb76c592ee888908c1309b5e030eb46ddddf7c7d2ed529876ab85"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/images/jdk8-in_process/semantic.yaml",
+              "sha256": "2fb372f2a6aa08bce568995c04fb2602fb9dd81e45baa1aa9eeeeef62cfbcff3"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/images/jdk8-in_process/visual.yaml",
+              "sha256": "88144b1b93dd4a45e5e303a53ce00ec4a682a2a42581e43cf50846dc3137ac68"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk8",
+          "native-execution-profile": "HARDENED_WORKER",
+          "contract-test-count": 38,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/images/jdk8-hardened_worker/execution.yaml",
+            "sha256": "e417c351a17172de64320488567697107c3ffceb066205ad9ab9aeaaf9c47610"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/images/jdk8-hardened_worker/syntax.yaml",
+              "sha256": "bc12fb573fce3ae4bf7d181ac19e98a862e23a89878d17432a6e996b2a4c0678"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/images/jdk8-hardened_worker/standards.yaml",
+              "sha256": "a4eba18f69bc5e338033d5a29e7d237f80d2c51cb0999b19bbaf6555cc38eadf"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/images/jdk8-hardened_worker/semantic.yaml",
+              "sha256": "b91a332f99f6e0c5a8463d9df5e3c8a15a15e9063a5d1bc12e826da5b78131b5"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/images/jdk8-hardened_worker/visual.yaml",
+              "sha256": "02ab5b95399946aa3e97abbc42af721de651221fd56fdb61e1c575dfaedbc815"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk11",
+          "native-execution-profile": "IN_PROCESS",
+          "contract-test-count": 38,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/images/jdk11-in_process/execution.yaml",
+            "sha256": "da8e290dacde22472aa1ff9af961b1278714e524bc95fabf1f50ac4fdadb95a2"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/images/jdk11-in_process/syntax.yaml",
+              "sha256": "8428b1cc837b17667e36613939de87608b812643b611c6b3ec1008b6946ee699"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/images/jdk11-in_process/standards.yaml",
+              "sha256": "23952e797af0d541202d0659c99a9d0925473072d66d182f26b06ad5d7b9de35"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/images/jdk11-in_process/semantic.yaml",
+              "sha256": "d21958929977458a327db77af8512565c3e58df1b1039cc9fe30300f2845d2a9"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/images/jdk11-in_process/visual.yaml",
+              "sha256": "c45220dca647742d6883b1b8ed13b3f0834ea2e4c3b203799f4945a541f288fd"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk11",
+          "native-execution-profile": "HARDENED_WORKER",
+          "contract-test-count": 38,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/images/jdk11-hardened_worker/execution.yaml",
+            "sha256": "54c5012c69f1a276d29d4c96ff445f93e7f1d13bbf0a184a571c29f8ab399b59"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/images/jdk11-hardened_worker/syntax.yaml",
+              "sha256": "571a88cb915141b639d072b7b1270e5a5e2531714da79afe6b1b44a5481bfbd0"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/images/jdk11-hardened_worker/standards.yaml",
+              "sha256": "f0ef2adc4b4bb678c8773c6569db0addcc4e3cf395130e2993aa8669a8e56b3f"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/images/jdk11-hardened_worker/semantic.yaml",
+              "sha256": "a66c905c617462ce4107c6b593f187ac91e93e8599d1038a5cc91b880937a0f7"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/images/jdk11-hardened_worker/visual.yaml",
+              "sha256": "38acda1ecc851bdec4c0105233e5040b43b425c8d349a0db4b499b12874d2366"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk17",
+          "native-execution-profile": "IN_PROCESS",
+          "contract-test-count": 38,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/images/jdk17-in_process/execution.yaml",
+            "sha256": "46e38da4c660bf5b5c28ff3242a8def631826fcf30f6fd1e80c81bda8c433225"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/images/jdk17-in_process/syntax.yaml",
+              "sha256": "3ec0924ced9a41087fa12151e6fa7997eec82697f32dba083a79fe70091c5a47"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/images/jdk17-in_process/standards.yaml",
+              "sha256": "6d2dd22a0e6d9cb38915232ef6feab369b46f5e702b07e0f6815e8eb0f4df025"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/images/jdk17-in_process/semantic.yaml",
+              "sha256": "607056065cb74719030c95982f6757dae2a813fb01cde33c9bf8a4853b5bbaaf"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/images/jdk17-in_process/visual.yaml",
+              "sha256": "5dce7135ecf308ba535c6aa1ad268ec6927efa9dd58d8e3068e331def98d7874"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk17",
+          "native-execution-profile": "HARDENED_WORKER",
+          "contract-test-count": 38,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/images/jdk17-hardened_worker/execution.yaml",
+            "sha256": "e00e5ab5d92f88886abac00196c9c659f2fa38d1cb5eeea63bd0f7e6d8a93b90"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/images/jdk17-hardened_worker/syntax.yaml",
+              "sha256": "f4dc63f329ab3395539049db32159dc1412fbf1514859d3952d476738696704d"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/images/jdk17-hardened_worker/standards.yaml",
+              "sha256": "7f618bbf4bbd6e4785bf812478564fb8df1d6d5fca3216d53396d412ee2902d9"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/images/jdk17-hardened_worker/semantic.yaml",
+              "sha256": "144b1caefcffbef08a4a22473d15c5fa50c93c6b115d6a22cf9f8ab5d34e3cf2"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/images/jdk17-hardened_worker/visual.yaml",
+              "sha256": "bdbaf15bb550917eda646ae2bfbdb7171cdeb92b2aff1689b1af9c5da85374d2"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk21",
+          "native-execution-profile": "IN_PROCESS",
+          "contract-test-count": 38,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/images/jdk21-in_process/execution.yaml",
+            "sha256": "a018ee89821f8554689400f90205d86c00b1d7dba6be7005a235758bff738520"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/images/jdk21-in_process/syntax.yaml",
+              "sha256": "8cc58ef2c124b611bbf5e4490df8d13be848d2eead7a646b0500ee4149b57b16"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/images/jdk21-in_process/standards.yaml",
+              "sha256": "248e86bc82dd7a26c8d475004db0250c5a309513083ca7e99b1fb55a45dc97b8"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/images/jdk21-in_process/semantic.yaml",
+              "sha256": "8447e861eec004f0a3d091b811921b97da0c6dc2d47a4705819de73e0484f58c"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/images/jdk21-in_process/visual.yaml",
+              "sha256": "06558564d240a4303e252e489e047163beca1a3430341a29a12b98aa0e69c1a6"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk21",
+          "native-execution-profile": "HARDENED_WORKER",
+          "contract-test-count": 38,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/images/jdk21-hardened_worker/execution.yaml",
+            "sha256": "11316e3a2d61881f49dca999671bb3743932d456701b9076301b423cbc908119"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/images/jdk21-hardened_worker/syntax.yaml",
+              "sha256": "e7aeb5fc5d3e1561c512a952dafa6f423f1ebd1a3f93b43c1c00b489a3e95407"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/images/jdk21-hardened_worker/standards.yaml",
+              "sha256": "e46ec5b282fd5d597f57b83095cce51c3f493a7fa92455c38b8d81e4f6f14a19"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/images/jdk21-hardened_worker/semantic.yaml",
+              "sha256": "6f5ef6333c0eec8b3ef88ce4a4da33420d97038522805edd242117f1ddf5fcfd"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/images/jdk21-hardened_worker/visual.yaml",
+              "sha256": "f45f2992fd66a1710724b6b1b4e855e22e2b18c3e4a610c9c4a334ba1e07cc05"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "obligation": "incremental",
+      "result": "pass",
+      "certification-count": 8,
+      "independent-chain-count": 32,
+      "identity-record": {
+        "path": "capabilities/evidence/foundation/T78-final/incremental/identities.json",
+        "sha256": "5b9c9ef02c895b1286c18d7b2492d83a1be7e1d3a20453ac3bd8923173765937"
+      },
+      "observed-index": {
+        "path": "capabilities/evidence/foundation/T78-final/incremental/observed-index.json",
+        "sha256": "9ff8adb69cadae22753d1d4addbbfc325bde573da03f6ce689f8e8173e45816b"
+      },
+      "tuples": [
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk8",
+          "native-execution-profile": "IN_PROCESS",
+          "contract-test-count": 36,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/incremental/jdk8-in_process/execution.yaml",
+            "sha256": "1290eab5a28ab8ced7bdbb753ef4b46ddf9c96bca6ee43cdbe681524abd1313e"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/incremental/jdk8-in_process/syntax.yaml",
+              "sha256": "f77a70d8e81a38ca8a15662b74571abea0ec64e8b00b0c5052142b8950514d24"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/incremental/jdk8-in_process/standards.yaml",
+              "sha256": "59af198bc6ec3f4550369a2487bbd0195f2863588cd6d7083b1705c8e4222f1a"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/incremental/jdk8-in_process/semantic.yaml",
+              "sha256": "e9ecc38db8c44c110bcec752965c1d8cb6477bb7103186fd48fd2d57432d99cf"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/incremental/jdk8-in_process/visual.yaml",
+              "sha256": "7a8fc1485b3bbbafb966ba4493d44ded80b6c8dc010810d4f8c618fb5fe2772e"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk8",
+          "native-execution-profile": "HARDENED_WORKER",
+          "contract-test-count": 36,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/incremental/jdk8-hardened_worker/execution.yaml",
+            "sha256": "bd5a077c79157255ac2a6f5fc4b3dcde57e811d96ed258669b33967304b37367"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/incremental/jdk8-hardened_worker/syntax.yaml",
+              "sha256": "40e6cdcfd7c48dfef87b9d99f4b7215fdb633b8b1e095badb08ba0291dc4eca9"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/incremental/jdk8-hardened_worker/standards.yaml",
+              "sha256": "415aba532e48e9dcc18d8e3542faa7aa5556dd19baa395c880bab1ce30aeb2ed"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/incremental/jdk8-hardened_worker/semantic.yaml",
+              "sha256": "fdf00b99741e6b28d16092bf5029956fc5c77bcea940c5cb0c7301e6a0ad45ce"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/incremental/jdk8-hardened_worker/visual.yaml",
+              "sha256": "a810101dd435070a1b5a98e7dad51e57395b5a241cf42355d29ffffe2c9741be"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk11",
+          "native-execution-profile": "IN_PROCESS",
+          "contract-test-count": 36,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/incremental/jdk11-in_process/execution.yaml",
+            "sha256": "f5ce0a1c920e624b5628e83dfd6b63f54b28464566f8f19a44557b33e39a0572"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/incremental/jdk11-in_process/syntax.yaml",
+              "sha256": "93e8ef4dded558bfccea841fb7f22f1a73cbc496415a003bc53372239668396d"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/incremental/jdk11-in_process/standards.yaml",
+              "sha256": "d7a4424c276c4979db92b85617adf40dc4618d949314deddacfa8b5c3aa8718a"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/incremental/jdk11-in_process/semantic.yaml",
+              "sha256": "e1ccce8f7fdd6f9c33a26ef0eb61a5a485f135820915ef63e7f2fbb451b05ce6"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/incremental/jdk11-in_process/visual.yaml",
+              "sha256": "4ed6ec895ee3099f5d331e9316b5a1e9499cb9d95894d6662f6fd8001693f8e5"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk11",
+          "native-execution-profile": "HARDENED_WORKER",
+          "contract-test-count": 36,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/incremental/jdk11-hardened_worker/execution.yaml",
+            "sha256": "248cd277fa115cdfcc6148f2f50db7d4cb37e8f2fbfc3a4dff26e491ba2cc4bc"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/incremental/jdk11-hardened_worker/syntax.yaml",
+              "sha256": "b260025b347b5965352fc39ab02ad4d1e0566bd286846b43a026063d5862ad64"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/incremental/jdk11-hardened_worker/standards.yaml",
+              "sha256": "6b10549043ef28d8963e93b592c99533441deb99beb87ee9c34f043604a4d756"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/incremental/jdk11-hardened_worker/semantic.yaml",
+              "sha256": "36efff0860cac5c554bc9026a3c793880178864016182322b27bd69d5e05f609"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/incremental/jdk11-hardened_worker/visual.yaml",
+              "sha256": "7e2ac57e5a578d22bc4af9c9da72effdb1416ad9254b470ac4bb7da559b56c8d"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk17",
+          "native-execution-profile": "IN_PROCESS",
+          "contract-test-count": 36,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/incremental/jdk17-in_process/execution.yaml",
+            "sha256": "d82f1d4d59a41e8134640d558952ca0e67d17275f363e3c47baf76e28e358c15"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/incremental/jdk17-in_process/syntax.yaml",
+              "sha256": "8d29859ec972eddf50dadcf57782777944d6557feedecfe9b45c5d88471a2586"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/incremental/jdk17-in_process/standards.yaml",
+              "sha256": "4c2b0185b94f1a06118751798e1cfb93803ad7b4be559fba2710042aa8a3cd5f"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/incremental/jdk17-in_process/semantic.yaml",
+              "sha256": "a95d90e15ba8b9ec0ce48d692354b89be1cb0d052a32d2446d6e9c68348c6ed5"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/incremental/jdk17-in_process/visual.yaml",
+              "sha256": "8cc8726201bc12ceb5d5228b67cab7dc9da351110c1139d0f89503f32f3e9964"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk17",
+          "native-execution-profile": "HARDENED_WORKER",
+          "contract-test-count": 36,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/incremental/jdk17-hardened_worker/execution.yaml",
+            "sha256": "6f695b70a103d975d896c3c924ef21b4ca4300b0b196f7477faac542490b7325"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/incremental/jdk17-hardened_worker/syntax.yaml",
+              "sha256": "fdc1db50e87ca89273b89a59ccdfcd64635350c56c3fdfea58080aea93a0bb67"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/incremental/jdk17-hardened_worker/standards.yaml",
+              "sha256": "2491c5bd5444c1eec7eba6421ffab192ad403d01352c5814a28c5fda01b080cf"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/incremental/jdk17-hardened_worker/semantic.yaml",
+              "sha256": "335cff23e568aff5599050a0c3e2058410f474ae93e9bbabb1091b3052ddc48b"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/incremental/jdk17-hardened_worker/visual.yaml",
+              "sha256": "e2810d9a91f94440c787af9e214e884fd7c412b9dce85f5fd9b104b14d2b001a"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk21",
+          "native-execution-profile": "IN_PROCESS",
+          "contract-test-count": 36,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/incremental/jdk21-in_process/execution.yaml",
+            "sha256": "4a5f04db02ef0bef0b7b71878201d2fba7a911762ab6b0af5fbbcb5a6848fd1f"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/incremental/jdk21-in_process/syntax.yaml",
+              "sha256": "d4dc455df6e779fd2d05ad8757dca57f60de232de87e0c37edb5f4ec10e5b255"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/incremental/jdk21-in_process/standards.yaml",
+              "sha256": "5eea0f4efd2fb4a608510f83433af3bfb3e3e5e97514b7628c133053317c6a20"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/incremental/jdk21-in_process/semantic.yaml",
+              "sha256": "7abea685f599210a373f94ffc642e17e04164b62cdcdd075ee37c78655007ae4"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/incremental/jdk21-in_process/visual.yaml",
+              "sha256": "186b39e2c6881685968f0e893f6a51f98a1f333d47f714fff56a922b27f531a5"
+            }
+          ]
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk21",
+          "native-execution-profile": "HARDENED_WORKER",
+          "contract-test-count": 36,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/incremental/jdk21-hardened_worker/execution.yaml",
+            "sha256": "2bd69206019798f25dfbe26772b12f8b3cb307745cc9f710c282ad6cf97eef40"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/incremental/jdk21-hardened_worker/syntax.yaml",
+              "sha256": "9411ede2d7b69b390729d874ed90c3543940d001394ccb28077998611df3e55a"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/incremental/jdk21-hardened_worker/standards.yaml",
+              "sha256": "28b012c51c22b368778ea32eae298ec12315d1e1548d7f1710aa231f6c0215b4"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/incremental/jdk21-hardened_worker/semantic.yaml",
+              "sha256": "766906aab85d06a0eb494c8114e3f5b23bae8e59bc9f5fa36fc6e580610bbba5"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/incremental/jdk21-hardened_worker/visual.yaml",
+              "sha256": "1107f2d119c0bb0b0e8a46a14fd7c92cf74449b864c0f6ddff89a3d2cc0cbd5c"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "obligation": "password-baseline",
+      "result": "pass",
+      "certification-count": 8,
+      "independent-chain-count": 32,
+      "identity-record": {
+        "path": "capabilities/evidence/foundation/T78-final/password-baseline/identities.json",
+        "sha256": "5b9c9ef02c895b1286c18d7b2492d83a1be7e1d3a20453ac3bd8923173765937"
+      },
+      "observed-index": {
+        "path": "capabilities/evidence/foundation/T78-final/password-baseline/observed-index.json",
+        "sha256": "3fae1836fae5f1ffb5424a090f3abb022ab6d65469cbcf38f049324073ac5a27"
+      },
+      "tuples": [
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk8",
+          "native-execution-profile": "IN_PROCESS",
+          "contract-test-count": 44,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk8-in_process/execution.yaml",
+            "sha256": "9372787d2e685b4244948e01c61477b147b32425e2786477de9f5d4f9ad2dda1"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk8-in_process/syntax.yaml",
+              "sha256": "ab66599d1138855eab6811db85db95d4c722c782178e5aadd24e3ed9b2075a64"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk8-in_process/standards.yaml",
+              "sha256": "5a96d2d44fe69a6dcd24e3f27a56a0bc83ae3f06f5746ffa20c8f5fd018d4e9f"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk8-in_process/semantic.yaml",
+              "sha256": "d07e7c6bdedac8f2231a898ad20e8b2f7e850043b288aa901bb24c926ecc8784"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk8-in_process/visual.yaml",
+              "sha256": "4266cd93a9c1f6e78800449c424cd843859d907042f90c6960c3aa574f63533f"
+            }
+          ],
+          "facade-execution-profile": "IN_PROCESS",
+          "products": 68,
+          "observations": {
+            "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk8-in_process/observations/result.properties",
+            "sha256": "405f7534fce28a72012b5237cf0b301bad2176e88c01e2cc981f17d07b84434b"
+          },
+          "coverage": {
+            "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk8-in_process/observations/coverage.json",
+            "sha256": "e08f8211bb79ce0eccbbc3f48719d52d81708a6ff8d0e59244f3c66c40444210"
+          }
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk8",
+          "native-execution-profile": "HARDENED_WORKER",
+          "contract-test-count": 44,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk8-hardened_worker/execution.yaml",
+            "sha256": "169d6d3aecf4f2be8fe6fe2e995f1fbe2f26a2c51b03a88c6d6efd88fe3d221f"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk8-hardened_worker/syntax.yaml",
+              "sha256": "aa8c48a428f220ca4b775aa8e46d19e4c59f44c055d2a79cc697243fa7913571"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk8-hardened_worker/standards.yaml",
+              "sha256": "c34048975533efcab2feaf6e90b4643d60538e558d61c92e09ddddacaf9556d3"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk8-hardened_worker/semantic.yaml",
+              "sha256": "ed1f80cb127bc8118c8d5b92f9a3744b772559e60bda38620457f8bedbffe125"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk8-hardened_worker/visual.yaml",
+              "sha256": "bb6afb9cc05634e4b1e0a3745452cdecf53fb09e264058eb0a5416741feb1a8f"
+            }
+          ],
+          "facade-execution-profile": "IN_PROCESS",
+          "products": 68,
+          "observations": {
+            "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk8-hardened_worker/observations/result.properties",
+            "sha256": "d7d0eb1436cce8f5b86d54307153db29f59a6f40a6c7e403f01da460ecc1615d"
+          },
+          "coverage": {
+            "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk8-hardened_worker/observations/coverage.json",
+            "sha256": "ad01636de4428b02c735eda6836a2dddf4838e97c05a5b9b0954ed3603da2beb"
+          }
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk11",
+          "native-execution-profile": "IN_PROCESS",
+          "contract-test-count": 44,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk11-in_process/execution.yaml",
+            "sha256": "900bb77db832936e3eeedb7c903b0f8c2d0f5618c01dc7df3ed8df07f83d152c"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk11-in_process/syntax.yaml",
+              "sha256": "311f56318f5674b16ff6420ae517a6dac4bbbeddc7ad226ccc43e99dd4492558"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk11-in_process/standards.yaml",
+              "sha256": "bd432852b994d8a2d4271e8644646912b346918f838fb704ad197153610f446b"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk11-in_process/semantic.yaml",
+              "sha256": "8bdc7f510d077646925356154a06131a94688bad7ebb3a655c2a9eac52428c4e"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk11-in_process/visual.yaml",
+              "sha256": "08f95603da88f4c6295e85a952e27b71e1ef57de88b97a51de8aac81c37a9519"
+            }
+          ],
+          "facade-execution-profile": "IN_PROCESS",
+          "products": 68,
+          "observations": {
+            "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk11-in_process/observations/result.properties",
+            "sha256": "3046af243c1d86a42db45eaa9bcbe9ca5f7f0a20b0c2ba2ebc32ab92530c68cc"
+          },
+          "coverage": {
+            "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk11-in_process/observations/coverage.json",
+            "sha256": "e08f8211bb79ce0eccbbc3f48719d52d81708a6ff8d0e59244f3c66c40444210"
+          }
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk11",
+          "native-execution-profile": "HARDENED_WORKER",
+          "contract-test-count": 44,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk11-hardened_worker/execution.yaml",
+            "sha256": "0dd12019006fa2fffbad8b3a57d2688f54faeaf6ed3dca825ef8dc3f9749fbfe"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk11-hardened_worker/syntax.yaml",
+              "sha256": "fe075d2e704c755bf343d9b750b0fda064fe4474c81da8e4908224e5d8d07c91"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk11-hardened_worker/standards.yaml",
+              "sha256": "c085e31da0484234c0031b2a1cb6f313cc213a3339651d6619d2e9a884adbd52"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk11-hardened_worker/semantic.yaml",
+              "sha256": "093c31e9c8b8fe9ce87796a373aa91abe41a7077b303252177d93ee937741a1e"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk11-hardened_worker/visual.yaml",
+              "sha256": "d7bdc87aa5d6469b52bc1686410364346e305ec655246e5e509fb8998d2f305f"
+            }
+          ],
+          "facade-execution-profile": "IN_PROCESS",
+          "products": 68,
+          "observations": {
+            "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk11-hardened_worker/observations/result.properties",
+            "sha256": "94f21466652d53ecb55daa7917ce6d524c111995718e424e1f62085bb77b79e2"
+          },
+          "coverage": {
+            "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk11-hardened_worker/observations/coverage.json",
+            "sha256": "ad01636de4428b02c735eda6836a2dddf4838e97c05a5b9b0954ed3603da2beb"
+          }
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk17",
+          "native-execution-profile": "IN_PROCESS",
+          "contract-test-count": 44,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk17-in_process/execution.yaml",
+            "sha256": "9b19d6ec2cd07247575d507c657073a59ca6cd6f976327b65457a7da986dae86"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk17-in_process/syntax.yaml",
+              "sha256": "de066d9487f23262886b26a914d4282fd28a8895ec3c08e1ebc5aecdba29cd77"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk17-in_process/standards.yaml",
+              "sha256": "cb32fc58cf12ee722ebf08496ad989bafceed4baf0ce01838b825e0206d20c43"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk17-in_process/semantic.yaml",
+              "sha256": "21cae14a36cf9385839a269e0780037c54d11a5859678c7f5f0d2c43aae76cc1"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk17-in_process/visual.yaml",
+              "sha256": "a1cd0cba2b916f64959caa4177af8016a7641c2d3e652c4b410e9c724328c555"
+            }
+          ],
+          "facade-execution-profile": "IN_PROCESS",
+          "products": 68,
+          "observations": {
+            "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk17-in_process/observations/result.properties",
+            "sha256": "b1030532689f2c588f670ecaacdf79c67a61b85fc45a30846e185b4ab6ae3811"
+          },
+          "coverage": {
+            "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk17-in_process/observations/coverage.json",
+            "sha256": "e08f8211bb79ce0eccbbc3f48719d52d81708a6ff8d0e59244f3c66c40444210"
+          }
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk17",
+          "native-execution-profile": "HARDENED_WORKER",
+          "contract-test-count": 44,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk17-hardened_worker/execution.yaml",
+            "sha256": "78d8ab09259cfd0f23a66dc98d408c48b9b1e8bad83787d49acc53e16d6e603c"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk17-hardened_worker/syntax.yaml",
+              "sha256": "7e363efc3f7e0f39c4cfb1b5d84006c6f259dccb9f12f35392ac8b94d1531913"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk17-hardened_worker/standards.yaml",
+              "sha256": "1ce8dd78f723a066dbb23b062f04b04835dd160a5f932ca8847d1a6c9bec1684"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk17-hardened_worker/semantic.yaml",
+              "sha256": "fa0ffab79151f4129ba7cdd0a67fea4c93c2749a1cbf81c745cae4aa056e269b"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk17-hardened_worker/visual.yaml",
+              "sha256": "32004a6ec2217ab2b7085efe93b4bc7e892fd6bf244cc4c2a98f843ce1d99b6c"
+            }
+          ],
+          "facade-execution-profile": "IN_PROCESS",
+          "products": 68,
+          "observations": {
+            "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk17-hardened_worker/observations/result.properties",
+            "sha256": "494ebaad51ca7f9eab7f782a36fb383669a7eb7ab422bb67f2104d45ef8f4490"
+          },
+          "coverage": {
+            "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk17-hardened_worker/observations/coverage.json",
+            "sha256": "ad01636de4428b02c735eda6836a2dddf4838e97c05a5b9b0954ed3603da2beb"
+          }
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk21",
+          "native-execution-profile": "IN_PROCESS",
+          "contract-test-count": 44,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk21-in_process/execution.yaml",
+            "sha256": "4fcab1edc105728d9cda60a29ccee807696e7c47ee5233f0c97990f2425ce548"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk21-in_process/syntax.yaml",
+              "sha256": "eda8d85e6ea8942c3a7875f816ee28325c5f3dae38f77cfcfbc5715fa0563d9a"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk21-in_process/standards.yaml",
+              "sha256": "8b42ae22359b32189a4634697975287af8a69565d1b2efd662886c6d90f64605"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk21-in_process/semantic.yaml",
+              "sha256": "a6532c03766db9cee77c35775fa59e7056eee805e77565980066f0c0b8cd08e3"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk21-in_process/visual.yaml",
+              "sha256": "69983947b902e8b95681ff92e8ae06148bc2ca4204afa1b4a71ce96ca260895e"
+            }
+          ],
+          "facade-execution-profile": "IN_PROCESS",
+          "products": 68,
+          "observations": {
+            "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk21-in_process/observations/result.properties",
+            "sha256": "6020e6bb73338781d8976d19414f216cda242ec985da375e4a28540a3df9032c"
+          },
+          "coverage": {
+            "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk21-in_process/observations/coverage.json",
+            "sha256": "e08f8211bb79ce0eccbbc3f48719d52d81708a6ff8d0e59244f3c66c40444210"
+          }
+        },
+        {
+          "environment": "ubuntu-24.04-linux-x86-64-jdk21",
+          "native-execution-profile": "HARDENED_WORKER",
+          "contract-test-count": 44,
+          "chains": {
+            "syntax": "pass",
+            "standards": "pass",
+            "semantic": "pass",
+            "visual": "pass"
+          },
+          "configuration": {
+            "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk21-hardened_worker/execution.yaml",
+            "sha256": "f9132e5cafb58f7f25e2b1e0c73c8f73d849c056be386711d5d064460d55cadb"
+          },
+          "records": [
+            {
+              "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk21-hardened_worker/syntax.yaml",
+              "sha256": "a9fff1020608aa3692ecd4c16c75784879067cd7c25d48a29acc84ef90368ad5"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk21-hardened_worker/standards.yaml",
+              "sha256": "7e99672a82253141420dd35639082a2bf2300ee48a77f089366f637ab71b6ab3"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk21-hardened_worker/semantic.yaml",
+              "sha256": "d74eeafffc90d800da31068b7bada6f73c85f8e0949eeb2a44760be53932c256"
+            },
+            {
+              "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk21-hardened_worker/visual.yaml",
+              "sha256": "83fc4d8ce6c69005568fb8c77dad649a26209812acb281edc853e75c875268a4"
+            }
+          ],
+          "facade-execution-profile": "IN_PROCESS",
+          "products": 68,
+          "observations": {
+            "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk21-hardened_worker/observations/result.properties",
+            "sha256": "aec54d7f606ef11f4ccddbe45bca0b398ba579d5cea0252ef9cd15980198a356"
+          },
+          "coverage": {
+            "path": "capabilities/evidence/foundation/T78-final/password-baseline/jdk21-hardened_worker/observations/coverage.json",
+            "sha256": "ad01636de4428b02c735eda6836a2dddf4838e97c05a5b9b0954ed3603da2beb"
+          }
+        }
+      ]
+    }
+  ],
+  "readiness": {
+    "result": "not-ready-outside-selected-scope",
+    "report": {
+      "path": "capabilities/evidence/T78-delivery/validation/inventory-readiness-final.txt",
+      "sha256": "36ced95c92462a64846febe2416e7476f0460c6d605b73b468bafa61e7e4ac40"
+    },
+    "blocker-count": 387,
+    "remaining-obligations": [
+      "acceptance",
+      "barcodes-1d",
+      "barcodes-2d",
+      "candidate",
+      "canvas",
+      "docs",
+      "environments",
+      "facade-artifacts",
+      "fonts",
+      "graphics",
+      "integration",
+      "java-artifacts",
+      "limits",
+      "pagination",
+      "paragraphs",
+      "password-attachments",
+      "password-clear-metadata",
+      "provenance",
+      "providers",
+      "publication-controls",
+      "recovery",
+      "rendering",
+      "reproducibility",
+      "security",
+      "shaping",
+      "supply-chain",
+      "tables",
+      "tables-base",
+      "tables-pagination",
+      "worker"
+    ]
+  },
+  "live-qualification": {
+    "path": "capabilities/evidence/T78-delivery/validation/live-qualification.json",
+    "sha256": "47751d32a9bb7e488e379611f4e1976b59027a37d3ff5e709a2ff51b6709bbe5"
+  },
+  "optional-local-commit": null
+}

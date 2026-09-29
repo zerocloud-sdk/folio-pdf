@@ -1,0 +1,239 @@
+[
+  {
+    "name": "stage",
+    "command": [
+      "python3",
+      "scripts/t03-foundation.py",
+      "stage"
+    ],
+    "started": "2026-09-29T13:45:05.013615+00:00",
+    "environment": {
+      "MAVEN_OPTS": "-Dmaven.repo.local=/workspace/folio-pdf/.build-cache/maven/repository",
+      "FOLIO_HARFBUZZ_HELPER": "/workspace/folio-pdf/.build-cache/t78-provision/folio-harfbuzz/bin/folio-harfbuzz",
+      "FOLIO_FOUNDATION_PYTHON_ROOT": "/workspace/folio-pdf/.build-cache/foundation-python",
+      "PYTHONPATH": "/workspace/folio-pdf/.build-cache/foundation-host-python"
+    },
+    "PATH-prefix": "/workspace/folio-pdf/scripts/container-bin",
+    "finished": "2026-09-29T13:45:33.181401+00:00",
+    "exit-code": 0,
+    "result": "pass",
+    "report": "capabilities/evidence/T78-delivery/validation/certification-stage.txt",
+    "sha256": "546522f71b3c3a82edf449f7fe8e38e11d2338aaa2af8ed612b8cf6b442ad2f7"
+  },
+  {
+    "name": "transactions",
+    "command": [
+      "python3",
+      "scripts/t03-foundation.py",
+      "certify",
+      "capabilities/evidence/foundation/T78-final/transactions",
+      "--obligation",
+      "transactions"
+    ],
+    "started": "2026-09-29T13:45:33.181855+00:00",
+    "environment": {
+      "MAVEN_OPTS": "-Dmaven.repo.local=/workspace/folio-pdf/.build-cache/maven/repository",
+      "FOLIO_HARFBUZZ_HELPER": "/workspace/folio-pdf/.build-cache/t78-provision/folio-harfbuzz/bin/folio-harfbuzz",
+      "FOLIO_FOUNDATION_PYTHON_ROOT": "/workspace/folio-pdf/.build-cache/foundation-python",
+      "PYTHONPATH": "/workspace/folio-pdf/.build-cache/foundation-host-python"
+    },
+    "PATH-prefix": "/workspace/folio-pdf/scripts/container-bin",
+    "finished": "2026-09-29T13:50:55.292742+00:00",
+    "exit-code": 0,
+    "result": "pass",
+    "report": "capabilities/evidence/T78-delivery/validation/certification-transactions.txt",
+    "sha256": "8892490791defe78f0e7de08a9cbdafa08188f3db4ebd1a9d9283a9dceff3a92"
+  },
+  {
+    "name": "values",
+    "command": [
+      "python3",
+      "scripts/t03-foundation.py",
+      "certify",
+      "capabilities/evidence/foundation/T78-final/values",
+      "--obligation",
+      "values"
+    ],
+    "started": "2026-09-29T13:50:55.293218+00:00",
+    "environment": {
+      "MAVEN_OPTS": "-Dmaven.repo.local=/workspace/folio-pdf/.build-cache/maven/repository",
+      "FOLIO_HARFBUZZ_HELPER": "/workspace/folio-pdf/.build-cache/t78-provision/folio-harfbuzz/bin/folio-harfbuzz",
+      "FOLIO_FOUNDATION_PYTHON_ROOT": "/workspace/folio-pdf/.build-cache/foundation-python",
+      "PYTHONPATH": "/workspace/folio-pdf/.build-cache/foundation-host-python"
+    },
+    "PATH-prefix": "/workspace/folio-pdf/scripts/container-bin",
+    "finished": "2026-09-29T14:01:21.552495+00:00",
+    "exit-code": 0,
+    "result": "pass",
+    "report": "capabilities/evidence/T78-delivery/validation/certification-values.txt",
+    "sha256": "0cca9aee91f849344e333e14d4bd1dfba39aeb24edb3221452f7b04956d09074"
+  },
+  {
+    "name": "pages",
+    "command": [
+      "python3",
+      "scripts/t03-foundation.py",
+      "certify",
+      "capabilities/evidence/foundation/T78-final/pages",
+      "--obligation",
+      "pages"
+    ],
+    "started": "2026-09-29T14:01:21.552988+00:00",
+    "environment": {
+      "MAVEN_OPTS": "-Dmaven.repo.local=/workspace/folio-pdf/.build-cache/maven/repository",
+      "FOLIO_HARFBUZZ_HELPER": "/workspace/folio-pdf/.build-cache/t78-provision/folio-harfbuzz/bin/folio-harfbuzz",
+      "FOLIO_FOUNDATION_PYTHON_ROOT": "/workspace/folio-pdf/.build-cache/foundation-python",
+      "PYTHONPATH": "/workspace/folio-pdf/.build-cache/foundation-host-python"
+    },
+    "PATH-prefix": "/workspace/folio-pdf/scripts/container-bin",
+    "finished": "2026-09-29T14:26:13.426518+00:00",
+    "exit-code": 0,
+    "result": "pass",
+    "report": "capabilities/evidence/T78-delivery/validation/certification-pages.txt",
+    "sha256": "6ca27c69ebf90fbc5b4d237ba83e6645612a862c9d9a06712d5b810acb80b2e6"
+  },
+  {
+    "name": "metadata",
+    "command": [
+      "python3",
+      "scripts/t03-foundation.py",
+      "certify",
+      "capabilities/evidence/foundation/T78-final/metadata",
+      "--obligation",
+      "metadata"
+    ],
+    "started": "2026-09-29T14:26:13.427066+00:00",
+    "environment": {
+      "MAVEN_OPTS": "-Dmaven.repo.local=/workspace/folio-pdf/.build-cache/maven/repository",
+      "FOLIO_HARFBUZZ_HELPER": "/workspace/folio-pdf/.build-cache/t78-provision/folio-harfbuzz/bin/folio-harfbuzz",
+      "FOLIO_FOUNDATION_PYTHON_ROOT": "/workspace/folio-pdf/.build-cache/foundation-python",
+      "PYTHONPATH": "/workspace/folio-pdf/.build-cache/foundation-host-python"
+    },
+    "PATH-prefix": "/workspace/folio-pdf/scripts/container-bin",
+    "finished": "2026-09-29T14:49:09.485783+00:00",
+    "exit-code": 0,
+    "result": "pass",
+    "report": "capabilities/evidence/T78-delivery/validation/certification-metadata.txt",
+    "sha256": "b08489a099d6d26c313567e4736fec5ddee72fb56df8161465283d5b2c6f93b2"
+  },
+  {
+    "name": "annotations",
+    "command": [
+      "python3",
+      "scripts/t03-foundation.py",
+      "certify",
+      "capabilities/evidence/foundation/T78-final/annotations",
+      "--obligation",
+      "annotations"
+    ],
+    "started": "2026-09-29T14:49:09.486292+00:00",
+    "environment": {
+      "MAVEN_OPTS": "-Dmaven.repo.local=/workspace/folio-pdf/.build-cache/maven/repository",
+      "FOLIO_HARFBUZZ_HELPER": "/workspace/folio-pdf/.build-cache/t78-provision/folio-harfbuzz/bin/folio-harfbuzz",
+      "FOLIO_FOUNDATION_PYTHON_ROOT": "/workspace/folio-pdf/.build-cache/foundation-python",
+      "PYTHONPATH": "/workspace/folio-pdf/.build-cache/foundation-host-python"
+    },
+    "PATH-prefix": "/workspace/folio-pdf/scripts/container-bin",
+    "finished": "2026-09-29T15:57:26.164556+00:00",
+    "exit-code": 0,
+    "result": "pass",
+    "report": "capabilities/evidence/T78-delivery/validation/certification-annotations.txt",
+    "sha256": "ddef57d1037b382ac91d7a63874100f95fd81d7b03744f5cb2950482f6b33f98"
+  },
+  {
+    "name": "text",
+    "command": [
+      "python3",
+      "scripts/t03-foundation.py",
+      "certify",
+      "capabilities/evidence/foundation/T78-final/text",
+      "--obligation",
+      "text"
+    ],
+    "started": "2026-09-29T15:57:26.165116+00:00",
+    "environment": {
+      "MAVEN_OPTS": "-Dmaven.repo.local=/workspace/folio-pdf/.build-cache/maven/repository",
+      "FOLIO_HARFBUZZ_HELPER": "/workspace/folio-pdf/.build-cache/t78-provision/folio-harfbuzz/bin/folio-harfbuzz",
+      "FOLIO_FOUNDATION_PYTHON_ROOT": "/workspace/folio-pdf/.build-cache/foundation-python",
+      "PYTHONPATH": "/workspace/folio-pdf/.build-cache/foundation-host-python"
+    },
+    "PATH-prefix": "/workspace/folio-pdf/scripts/container-bin",
+    "finished": "2026-09-29T18:33:41.008379+00:00",
+    "exit-code": 0,
+    "result": "pass",
+    "report": "capabilities/evidence/T78-delivery/validation/certification-text.txt",
+    "sha256": "c86478732188a3c3c7e0438b5ca082eeb6c0b135c9e33efe458c358a23d91b03"
+  },
+  {
+    "name": "images",
+    "command": [
+      "python3",
+      "scripts/t03-foundation.py",
+      "certify",
+      "capabilities/evidence/foundation/T78-final/images",
+      "--obligation",
+      "images"
+    ],
+    "started": "2026-09-29T18:33:41.009059+00:00",
+    "environment": {
+      "MAVEN_OPTS": "-Dmaven.repo.local=/workspace/folio-pdf/.build-cache/maven/repository",
+      "FOLIO_HARFBUZZ_HELPER": "/workspace/folio-pdf/.build-cache/t78-provision/folio-harfbuzz/bin/folio-harfbuzz",
+      "FOLIO_FOUNDATION_PYTHON_ROOT": "/workspace/folio-pdf/.build-cache/foundation-python",
+      "PYTHONPATH": "/workspace/folio-pdf/.build-cache/foundation-host-python"
+    },
+    "PATH-prefix": "/workspace/folio-pdf/scripts/container-bin",
+    "finished": "2026-09-29T18:58:36.160189+00:00",
+    "exit-code": 0,
+    "result": "pass",
+    "report": "capabilities/evidence/T78-delivery/validation/certification-images.txt",
+    "sha256": "ac78df1851102a9f3981967a08229c09839d297b40e2cb10693e4b2037bc33b3"
+  },
+  {
+    "name": "incremental",
+    "command": [
+      "python3",
+      "scripts/t03-foundation.py",
+      "certify",
+      "capabilities/evidence/foundation/T78-final/incremental",
+      "--obligation",
+      "incremental"
+    ],
+    "started": "2026-09-29T18:58:36.160729+00:00",
+    "environment": {
+      "MAVEN_OPTS": "-Dmaven.repo.local=/workspace/folio-pdf/.build-cache/maven/repository",
+      "FOLIO_HARFBUZZ_HELPER": "/workspace/folio-pdf/.build-cache/t78-provision/folio-harfbuzz/bin/folio-harfbuzz",
+      "FOLIO_FOUNDATION_PYTHON_ROOT": "/workspace/folio-pdf/.build-cache/foundation-python",
+      "PYTHONPATH": "/workspace/folio-pdf/.build-cache/foundation-host-python"
+    },
+    "PATH-prefix": "/workspace/folio-pdf/scripts/container-bin",
+    "finished": "2026-09-29T19:32:01.241336+00:00",
+    "exit-code": 0,
+    "result": "pass",
+    "report": "capabilities/evidence/T78-delivery/validation/certification-incremental.txt",
+    "sha256": "b2c45e5bbad3624b83cbc3a631080ee964f766c208d8a2c60c90cf4dea8afc7a"
+  },
+  {
+    "name": "password-baseline",
+    "command": [
+      "python3",
+      "scripts/t03-foundation.py",
+      "certify",
+      "capabilities/evidence/foundation/T78-final/password-baseline",
+      "--obligation",
+      "password-baseline"
+    ],
+    "started": "2026-09-29T19:32:01.241976+00:00",
+    "environment": {
+      "MAVEN_OPTS": "-Dmaven.repo.local=/workspace/folio-pdf/.build-cache/maven/repository",
+      "FOLIO_HARFBUZZ_HELPER": "/workspace/folio-pdf/.build-cache/t78-provision/folio-harfbuzz/bin/folio-harfbuzz",
+      "FOLIO_FOUNDATION_PYTHON_ROOT": "/workspace/folio-pdf/.build-cache/foundation-python",
+      "PYTHONPATH": "/workspace/folio-pdf/.build-cache/foundation-host-python"
+    },
+    "PATH-prefix": "/workspace/folio-pdf/scripts/container-bin",
+    "finished": "2026-09-29T22:18:24.046270+00:00",
+    "exit-code": 0,
+    "result": "pass",
+    "report": "capabilities/evidence/T78-delivery/validation/certification-password-baseline.txt",
+    "sha256": "c03d0e304b69c5cd1d259c5cf1969cb7d0169a286d42d24eeb3411c66737d556"
+  }
+]
