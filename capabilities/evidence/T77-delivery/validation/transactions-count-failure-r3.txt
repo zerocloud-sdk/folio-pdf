@@ -1,0 +1,12 @@
+T03 environment JDK 8
+T03 certification JDK 8 / IN_PROCESS
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1288, in <module>
+    main()
+    ~~~~^^
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1284, in main
+    certify(root, root / args.output, contract, helper, args.obligation)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1161, in certify
+    raise ValueError('The complete ' + case['label'] + ' consumer/artifact contract suite did not execute')
+ValueError: The complete T03 consumer/artifact contract suite did not execute

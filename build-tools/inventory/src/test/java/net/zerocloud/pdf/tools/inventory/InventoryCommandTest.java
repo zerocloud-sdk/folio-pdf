@@ -36,7 +36,7 @@ public final class InventoryCommandTest {
         assertEquals(result.output, 0, result.exitCode);
         assertTrue(result.output, result.output.matches(
                 "(?s).*Inventory validation passed: [0-9]+ capabilities, "
-                        + "160 facade surfaces, [0-9]+ exclusions\\..*"));
+                        + "166 facade surfaces, [0-9]+ exclusions\\..*"));
 
         ValidationResult validation = new InventoryValidator().validate(
                 repositoryRoot,
@@ -46,6 +46,7 @@ public final class InventoryCommandTest {
         InventoryModel.Capability mappedCapability = null;
         InventoryModel.Capability pagesCapability = null;
         InventoryModel.Capability metadataCapability = null;
+        InventoryModel.Capability incrementalCapability = null;
         for (InventoryModel.Capability capability : validation.model().capabilities) {
             if ("document.blank.create-publish-reopen".equals(capability.id)) {
                 mappedCapability = capability;
@@ -53,11 +54,14 @@ public final class InventoryCommandTest {
                 pagesCapability = capability;
             } else if ("document.metadata.outlines-destinations-attachments".equals(capability.id)) {
                 metadataCapability = capability;
+            } else if ("document.incremental-signature.protect".equals(capability.id)) {
+                incrementalCapability = capability;
             }
         }
         assertNotNull(mappedCapability);
         assertNotNull(pagesCapability);
         assertNotNull(metadataCapability);
+        assertNotNull(incrementalCapability);
         assertEquals(12, mappedCapability.stableFacadeIds.size());
         assertEquals(0, mappedCapability.previewFacadeIds.size());
         assertEquals(CapabilityState.COMPATIBLE, pagesCapability.status);
@@ -66,6 +70,9 @@ public final class InventoryCommandTest {
         assertEquals(CapabilityState.COMPATIBLE, metadataCapability.status);
         assertEquals(34, metadataCapability.stableFacadeIds.size());
         assertEquals(0, metadataCapability.previewFacadeIds.size());
+        assertEquals(CapabilityState.COMPATIBLE, incrementalCapability.status);
+        assertEquals(6, incrementalCapability.stableFacadeIds.size());
+        assertEquals(0, incrementalCapability.previewFacadeIds.size());
         for (InventoryModel.Exclusion exclusion : validation.model().exclusions) {
             assertFalse("T04 capability remains explicitly excluded",
                     mappedCapability.id.equals(exclusion.capability));
@@ -73,6 +80,8 @@ public final class InventoryCommandTest {
                     pagesCapability.id.equals(exclusion.capability));
             assertFalse("T11 capability remains explicitly excluded",
                     metadataCapability.id.equals(exclusion.capability));
+            assertFalse("T15 capability remains explicitly excluded",
+                    incrementalCapability.id.equals(exclusion.capability));
         }
 
         String capabilities = read(repositoryRoot.resolve(MarkdownGenerator.CAPABILITY_OUTPUT));
@@ -84,10 +93,10 @@ public final class InventoryCommandTest {
                 "`document.blank.create-publish-reopen`"));
         assertTrue(capabilities.contains(
                 "`document.hardened-worker.recovery-scale`"));
-        assertTrue(facades.contains("- Stable entries: `160`"));
+        assertTrue(facades.contains("- Stable entries: `166`"));
         assertTrue(facades.contains("- Preview additions: `0`"));
-        assertTrue(facades.contains("- Preview artifact entries: `160`"));
-        assertTrue(facades.contains("- Explicit capability exclusions: `16`"));
+        assertTrue(facades.contains("- Preview artifact entries: `166`"));
+        assertTrue(facades.contains("- Explicit capability exclusions: `15`"));
         assertTrue(capabilities.contains("`composition.barcodes.one-dimensional`"));
         assertTrue(facades.contains("`composition.barcodes.one-dimensional`"));
         assertTrue(capabilities.contains("`composition.barcodes.two-dimensional`"));

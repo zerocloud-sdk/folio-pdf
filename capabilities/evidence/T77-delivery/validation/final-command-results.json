@@ -1,0 +1,43 @@
+[
+  {
+    "command": [
+      "/workspace/folio-pdf/.build-cache/T77-preflight/python/bin/python",
+      "/workspace/folio-pdf/.build-cache/T77-preflight/verify-delivery-r4.py"
+    ],
+    "exit": 0,
+    "log": "final-certification-audit.txt"
+  },
+  {
+    "command": [
+      "./scripts/inventory",
+      "validate"
+    ],
+    "exit": 0,
+    "log": "inventory-validate-final.txt"
+  },
+  {
+    "command": [
+      "./scripts/inventory",
+      "check"
+    ],
+    "exit": 0,
+    "log": "inventory-check-final.txt"
+  },
+  {
+    "command": [
+      "./scripts/inventory",
+      "readiness"
+    ],
+    "exit": 1,
+    "log": "readiness-final.txt"
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit": 0,
+    "log": "diff-check-final.txt"
+  }
+]

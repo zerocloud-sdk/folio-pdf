@@ -79,7 +79,7 @@ A missing capability, required behavior, compatible dependency, independent evid
 | [`annotations`](#annotations) | `document.annotations-actions.manage` | [#74](https://github.com/zerocloud-sdk/folio-pdf/issues/74) | satisfied |
 | [`text`](#text) | `document.text-structure.extract` | [#75](https://github.com/zerocloud-sdk/folio-pdf/issues/75) | satisfied |
 | [`images`](#images) | `document.images-resources.extract` | [#76](https://github.com/zerocloud-sdk/folio-pdf/issues/76) | satisfied |
-| [`incremental`](#incremental) | `document.incremental-signature.protect` | [#77](https://github.com/zerocloud-sdk/folio-pdf/issues/77) | blocked |
+| [`incremental`](#incremental) | `document.incremental-signature.protect` | [#77](https://github.com/zerocloud-sdk/folio-pdf/issues/77) | satisfied |
 | [`security`](#security) | `document.version-password-security` | [#78](https://github.com/zerocloud-sdk/folio-pdf/issues/78) | blocked |
 | [`limits`](#limits) | `document.hostile-input-limits` | [#81](https://github.com/zerocloud-sdk/folio-pdf/issues/81) | blocked |
 | [`worker`](#worker) | `document.hardened-worker` | [#82](https://github.com/zerocloud-sdk/folio-pdf/issues/82) | blocked |
@@ -229,30 +229,16 @@ Extract a bounded deterministic inventory of page and nested-Form resources, inc
 
 Append validated PDF revisions while preserving the complete primary Source and conservatively enforcing Existing Signature permissions.
 
-- Acceptance Profile: `T15-incremental-signature-protection`; [contract](../../capabilities/evidence/T15-incremental-signature-protection.md)
+- Acceptance Profile: `T15-incremental-signature-protection`; [contract](../../docs/t15-certification.md)
 - Kind: `behavior`; owner `document.incremental-signature.protect`
 - Environments: `ubuntu-24.04-linux-x86-64-jdk8, ubuntu-24.04-linux-x86-64-jdk11, ubuntu-24.04-linux-x86-64-jdk17, ubuntu-24.04-linux-x86-64-jdk21`
 - Execution profiles: `IN_PROCESS, HARDENED_WORKER`
 - Mandatory chains: `syntax, standards, semantic, visual`
 - Dependencies: `values`
 - Aggregate members: none
-- Required Facade family: kernel append mode and Existing Signature protection (`com.itextpdf.kernel.pdf.`); mappings: **missing**
+- Required Facade family: kernel append mode and Existing Signature protection (`com.itextpdf.kernel.pdf.`); mappings: `itext7.kernel.stamping-properties.constructor, itext7.kernel.stamping-properties.constructor-copy, itext7.kernel.stamping-properties.use-append-mode, itext7.kernel.pdf-document.constructor-stamping, itext7.kernel.pdf-document.constructor-named-stamping, itext7.kernel.pdf-document.is-append-mode`
 - Source requirements: [`spec-us-18`](#spec-us-18), [`spec-us-19`](#spec-us-19), [`spec-us-20`](#spec-us-20), [`spec-id-24`](#spec-id-24), [`spec-id-25`](#spec-id-25), [`spec-id-42`](#spec-id-42), [`spec-td-18`](#spec-td-18), [`spec-td-19`](#spec-td-19), [`slice-77-1`](#slice-77-1), [`slice-77-2`](#slice-77-2), [`slice-77-3`](#slice-77-3), [`slice-77-4`](#slice-77-4)
 
-- Blocker: capability document.incremental-signature.protect is experimental, requires compatible
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on document.incremental-signature.protect
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on document.incremental-signature.protect
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on document.incremental-signature.protect
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk21 on document.incremental-signature.protect
-- Blocker: missing required Facade mapping set for kernel append mode and Existing Signature protection
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk8/IN_PROCESS (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk8/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk11/IN_PROCESS (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk11/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/IN_PROCESS (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
 
 <a id="security"></a>
 ### `security`
@@ -1130,7 +1116,6 @@ Close every Foundation behavior, aggregate, dependency and Facade obligation; ru
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk11/REPOSITORY (required chains: contract, review)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/REPOSITORY (required chains: contract, review)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/REPOSITORY (required chains: contract, review)
-- Blocker: incomplete prerequisite obligation incremental
 - Blocker: incomplete prerequisite obligation security
 - Blocker: incomplete prerequisite obligation limits
 - Blocker: incomplete prerequisite obligation worker

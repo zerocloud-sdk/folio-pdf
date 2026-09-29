@@ -97,6 +97,24 @@ Source 的全部字节作为不变前缀，并按版本 1 命令策略追加非�
 `UpdateAnnotations` 命令。普通签名以及 DocMDP P=1/P=2 不授权当前修改。完整规则
 见英文权威文档 [增量发布与已有签名策略](../incremental-signature-policy.md)。
 
+Stable Migration Facade 通过 `StampingProperties` 显式选择同一增量策略：
+
+```java
+try (PdfDocument document = new PdfDocument(new PdfReader("source.pdf"),
+        new PdfWriter("appended.pdf"), new StampingProperties().useAppendMode())) {
+    document.addNewPage(); // 示例 Source 未签名；已签名文件遵循上面的限制。
+}
+```
+
+这些类位于 `net.zerocloud.pdf.itext7.kernel.pdf`。属性默认使用 REWRITE；
+Document 在构造时复制所选模式，`isAppendMode()` 返回该选择。具名 Source/Target
+构造函数也接受 `PdfVersion, StampingProperties`，保留顺序发布回执、调用方流所有权
+和失败前目标保护。`PdfException` 保留 Native 错误码与安全诊断；Reader 检查失败
+映射为 `IOException`。Facade 实际执行模式始终为 IN_PROCESS；Native 则分别验证
+IN_PROCESS 和 HARDENED_WORKER。无已授权修改的签名文件不能通过关闭操作制造新修订。
+公开接口不创建签名，也不校验签名真伪、证书或信任链。独立证据、原始夹具、负向控制和
+四个 Ubuntu/JDK 环境要求见 [T15 认证合同](../t15-certification.md)。
+
 英文 README、Javadoc、ADR、Capability Matrix 和 API 契约是权威规范；本页
 提供中文使用说明。如有安全问题，请按 [SECURITY.md](../../SECURITY.md) 中的
 临时私密报告方式联系维护者。

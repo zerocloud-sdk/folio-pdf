@@ -1,0 +1,31 @@
+Starting ./scripts/inventory validate
+Finished exit 0: final-inventory-validate-r4.log
+Starting ./scripts/inventory generate
+Finished exit 0: final-inventory-generate-r4.log
+Starting ./scripts/inventory check
+Finished exit 0: final-inventory-check-before-stage-r4.log
+Starting git diff --check
+Finished exit 0: final-diff-check-before-stage-r4.log
+Starting /workspace/folio-pdf/.build-cache/T77-preflight/python/bin/python scripts/t03-foundation.py stage
+Finished exit 0: final-stage-r4.log
+Starting /workspace/folio-pdf/.build-cache/T77-preflight/python/bin/python scripts/t03-foundation.py certify capabilities/evidence/T77-incremental-r4 --obligation incremental
+Finished exit 0: final-certify-incremental-r4.log
+Starting /workspace/folio-pdf/.build-cache/T77-preflight/python/bin/python scripts/t03-foundation.py certify capabilities/evidence/T77-transactions-r4 --obligation transactions
+Finished exit 0: final-certify-transactions-r4.log
+Starting /workspace/folio-pdf/.build-cache/T77-preflight/python/bin/python scripts/t03-foundation.py certify capabilities/evidence/T77-values-r4 --obligation values
+Finished exit 0: final-certify-values-r4.log
+Starting /workspace/folio-pdf/.build-cache/T77-preflight/python/bin/python scripts/t03-foundation.py certify capabilities/evidence/T77-pages-r4 --obligation pages
+Finished exit 0: final-certify-pages-r4.log
+Starting /workspace/folio-pdf/.build-cache/T77-preflight/python/bin/python scripts/t03-foundation.py certify capabilities/evidence/T77-metadata-r4 --obligation metadata
+Finished exit 0: final-certify-metadata-r4.log
+Starting /workspace/folio-pdf/.build-cache/T77-preflight/python/bin/python scripts/t03-foundation.py certify capabilities/evidence/T77-annotations-r4 --obligation annotations
+Finished exit 0: final-certify-annotations-r4.log
+Starting /workspace/folio-pdf/.build-cache/T77-preflight/python/bin/python scripts/t03-foundation.py certify capabilities/evidence/T77-text-r4 --obligation text
+Finished exit 0: final-certify-text-r4.log
+Starting /workspace/folio-pdf/.build-cache/T77-preflight/python/bin/python scripts/t03-foundation.py certify capabilities/evidence/T77-images-r4 --obligation images
+Finished exit 0: final-certify-images-r4.log
+Starting ./scripts/inventory generate
+Finished exit 0: final-inventory-generate-after-cert-r4.log
+Starting ./scripts/inventory check
+Finished exit 0: final-inventory-check-after-cert-r4.log
+All selected validations and candidate certifications completed

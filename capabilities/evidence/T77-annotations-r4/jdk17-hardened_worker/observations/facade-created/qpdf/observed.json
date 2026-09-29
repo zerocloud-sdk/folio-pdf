@@ -1,0 +1,487 @@
+{
+  "actions": {
+    "document-open": {
+      "kind": "NAMED",
+      "named": "shared"
+    },
+    "pages": [
+      {
+        "close": null,
+        "open": {
+          "kind": "PAGE",
+          "page": 2,
+          "parameters": [],
+          "style": "FIT"
+        },
+        "page": 1
+      },
+      {
+        "close": {
+          "kind": "NAMED",
+          "named": "shared"
+        },
+        "open": null,
+        "page": 2
+      },
+      {
+        "close": null,
+        "open": {
+          "kind": "PAGE",
+          "page": 1,
+          "parameters": [
+            5,
+            10,
+            100,
+            90
+          ],
+          "style": "FIT_R"
+        },
+        "page": 3
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "appearance": {
+        "box": [
+          2,
+          3,
+          12,
+          13
+        ],
+        "color": [
+          0,
+          0,
+          1
+        ],
+        "matrix": [
+          1,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        "program": "q 0 0 1 rg 2 3 10 10 re f Q\n",
+        "resources": "empty"
+      },
+      "contents": "note original",
+      "flags": [
+        "PRINT"
+      ],
+      "icon": "NOTE",
+      "id": "note",
+      "open": false,
+      "page": 1,
+      "rectangle": [
+        5,
+        65,
+        20,
+        80
+      ],
+      "type": "TEXT"
+    },
+    {
+      "appearance": {
+        "box": [
+          2,
+          3,
+          12,
+          13
+        ],
+        "color": [
+          0,
+          1,
+          0
+        ],
+        "matrix": [
+          1,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        "program": "q 0 1 0 rg 2 3 10 10 re f Q\n",
+        "resources": "empty"
+      },
+      "contents": "stamp original",
+      "flags": [
+        "PRINT"
+      ],
+      "id": "stamp",
+      "page": 1,
+      "rectangle": [
+        25,
+        65,
+        45,
+        80
+      ],
+      "stamp": "Approved",
+      "type": "STAMP"
+    },
+    {
+      "appearance": {
+        "box": [
+          2,
+          3,
+          12,
+          13
+        ],
+        "color": [
+          1,
+          1,
+          0
+        ],
+        "matrix": [
+          1,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        "program": "q 1 1 0 rg 2 3 10 10 re f Q\n",
+        "resources": "empty"
+      },
+      "color": [
+        1,
+        1,
+        0
+      ],
+      "contents": "highlight original",
+      "flags": [
+        "PRINT"
+      ],
+      "id": "highlight",
+      "page": 1,
+      "quads": [
+        [
+          50,
+          80,
+          75,
+          80,
+          50,
+          65,
+          75,
+          65
+        ]
+      ],
+      "rectangle": [
+        50,
+        65,
+        75,
+        80
+      ],
+      "type": "HIGHLIGHT"
+    },
+    {
+      "appearance": {
+        "box": [
+          2,
+          3,
+          12,
+          13
+        ],
+        "color": [
+          1,
+          0,
+          1
+        ],
+        "matrix": [
+          1,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        "program": "q 1 0 1 rg 2 3 10 10 re f Q\n",
+        "resources": "empty"
+      },
+      "attachment": {
+        "description": "Original payload",
+        "hex": "616263",
+        "md5": "900150983cd24fb0d6963f7d28e17f72",
+        "mime": "text/plain",
+        "name": "payload.txt",
+        "relationship": "Data",
+        "sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+        "size": 3
+      },
+      "contents": "file original",
+      "flags": [
+        "PRINT"
+      ],
+      "icon": "PAPERCLIP",
+      "id": "file",
+      "page": 1,
+      "rectangle": [
+        80,
+        65,
+        95,
+        80
+      ],
+      "type": "FILE_ATTACHMENT"
+    },
+    {
+      "appearance": {
+        "box": [
+          2,
+          3,
+          12,
+          13
+        ],
+        "color": [
+          0,
+          1,
+          1
+        ],
+        "matrix": [
+          1,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        "program": "q 0 1 1 rg 2 3 10 10 re f Q\n",
+        "resources": "empty"
+      },
+      "contents": "widget original",
+      "flags": [
+        "PRINT"
+      ],
+      "id": "widget",
+      "page": 1,
+      "rectangle": [
+        100,
+        65,
+        115,
+        80
+      ],
+      "type": "WIDGET"
+    },
+    {
+      "activation": "DESTINATION",
+      "appearance": {
+        "box": [
+          2,
+          3,
+          12,
+          13
+        ],
+        "color": [
+          1,
+          0,
+          0
+        ],
+        "matrix": [
+          1,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        "program": "q 1 0 0 rg 2 3 10 10 re f Q\n",
+        "resources": "empty"
+      },
+      "contents": "direct original",
+      "flags": [
+        "PRINT"
+      ],
+      "id": "direct",
+      "page": 2,
+      "rectangle": [
+        5,
+        65,
+        30,
+        80
+      ],
+      "target": {
+        "kind": "PAGE",
+        "page": 1,
+        "parameters": [
+          5,
+          10,
+          100,
+          90
+        ],
+        "style": "FIT_R"
+      },
+      "type": "LINK"
+    },
+    {
+      "activation": "DESTINATION",
+      "appearance": {
+        "box": [
+          2,
+          3,
+          12,
+          13
+        ],
+        "color": [
+          0,
+          1,
+          0
+        ],
+        "matrix": [
+          1,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        "program": "q 0 1 0 rg 2 3 10 10 re f Q\n",
+        "resources": "empty"
+      },
+      "contents": "named original",
+      "flags": [
+        "PRINT"
+      ],
+      "id": "named",
+      "page": 2,
+      "rectangle": [
+        35,
+        65,
+        60,
+        80
+      ],
+      "target": {
+        "kind": "NAMED",
+        "named": "shared"
+      },
+      "type": "LINK"
+    },
+    {
+      "activation": "ACTION",
+      "appearance": {
+        "box": [
+          2,
+          3,
+          12,
+          13
+        ],
+        "color": [
+          0,
+          0,
+          1
+        ],
+        "matrix": [
+          1,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        "program": "q 0 0 1 rg 2 3 10 10 re f Q\n",
+        "resources": "empty"
+      },
+      "contents": "action original",
+      "flags": [
+        "PRINT"
+      ],
+      "id": "action",
+      "page": 2,
+      "rectangle": [
+        65,
+        65,
+        90,
+        80
+      ],
+      "target": {
+        "kind": "PAGE",
+        "page": 2,
+        "parameters": [
+          null,
+          90,
+          1.25
+        ],
+        "style": "XYZ"
+      },
+      "type": "LINK"
+    },
+    {
+      "activation": "ACTION",
+      "appearance": {
+        "box": [
+          2,
+          3,
+          12,
+          13
+        ],
+        "color": [
+          0,
+          0,
+          0
+        ],
+        "matrix": [
+          1,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        "program": "q 0 0 0 rg 2 3 10 10 re f Q\n",
+        "resources": "empty"
+      },
+      "contents": "action-named original",
+      "flags": [
+        "PRINT"
+      ],
+      "id": "action-named",
+      "page": 2,
+      "rectangle": [
+        95,
+        65,
+        115,
+        80
+      ],
+      "target": {
+        "kind": "NAMED",
+        "named": "shared"
+      },
+      "type": "LINK"
+    }
+  ],
+  "destinations": {
+    "shared": {
+      "kind": "PAGE",
+      "page": 3,
+      "parameters": [],
+      "style": "FIT"
+    }
+  },
+  "page-observations": [
+    {
+      "contents": [
+        "q 1 0 0 rg 10 20 40 30 re f Q\n2 0 0 2 13 17 cm\n0 0 1 1 re W n\n"
+      ],
+      "flattened": [],
+      "marker": "A"
+    },
+    {
+      "contents": [
+        "q 0 1 0 rg 10 20 40 30 re f Q\n"
+      ],
+      "flattened": [],
+      "marker": "B"
+    },
+    {
+      "contents": [
+        "q 0 0 1 rg 10 20 40 30 re f Q\n"
+      ],
+      "flattened": [],
+      "marker": "C"
+    }
+  ],
+  "pages": [
+    "A",
+    "B",
+    "C"
+  ]
+}

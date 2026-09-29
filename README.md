@@ -403,6 +403,24 @@ non-Widget `UpdateAnnotations` command. Ordinary signatures and DocMDP P=1 or
 P=2 permit no current mutation. See the authoritative
 [incremental publication and Existing Signature guide](docs/incremental-signature-policy.md).
 
+The Stable Migration Facade selects the same append policy explicitly:
+
+```java
+try (PdfDocument document = new PdfDocument(new PdfReader("source.pdf"),
+        new PdfWriter("appended.pdf"), new StampingProperties().useAppendMode())) {
+    document.addNewPage(); // An unsigned Source; signed edits follow the policy above.
+}
+```
+
+These types are in `net.zerocloud.pdf.itext7.kernel.pdf`. Existing constructors
+retain REWRITE defaults; `isAppendMode()` reports the captured selection.
+Named Source/Target construction also accepts `PdfVersion, StampingProperties`
+and preserves declaration-ordered receipts and caller stream ownership.
+Facade failures retain Native codes and safe diagnostics through `PdfException`;
+Reader inspection failures use `IOException`. The Facade executes IN_PROCESS.
+The [T15 certification profile](docs/t15-certification.md) defines the twelve
+public products, independent controls and required Ubuntu/JDK/Native-mode tuples.
+
 The Document Engine also exposes backend-neutral PDF Values and validated
 Document Patches (T09), page manipulation/merge/split (T10), document
 metadata/outlines/destinations/attachments (T11), and supported annotations

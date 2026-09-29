@@ -1,0 +1,44 @@
+{
+  "schema-version": 1,
+  "obligation": "images",
+  "acceptance-profile": "T14-image-resource-extraction",
+  "release": "0.1.0",
+  "candidate-sha256": "2d8ef578da6599357ba0a1f47e7a42e8f9b2f641de1e23f21e43eb1e981ab556",
+  "contract-sha256": "3ee6319a39c8c66d3833a1d07bddb7d099a18cbdfaba803364637eb052014713",
+  "environment-sha256": "7652947858ebb316bbbc1ff0d0c5efe24e8282c8c48717cadb5cedd53cf84a9a",
+  "execution-configuration-sha256": "a8ab05ff7a7e76e9a5e41668adc25a6a5b40082abc6c3f9ed49b5e4c4170bc60",
+  "execution-profile": "IN_PROCESS",
+  "chain": "syntax",
+  "result": "pass",
+  "producer": "qpdf",
+  "configuration": {
+    "path": "capabilities/evidence/T76-image-resource-certification.md",
+    "sha256": "1f000b6c849fddc907d339962076c829c803f13cfe3e56f6556ed5ca87b38ab4"
+  },
+  "report": {
+    "path": "capabilities/evidence/T77-images-r4/jdk17-in_process/syntax-report.json",
+    "sha256": "b9c8a6fa9456193aa2838ed9ed4e6c97f295e2f1f406eefcc12cf4567d525236"
+  },
+  "negative-controls": [
+    {
+      "path": "capabilities/evidence/T77-images-r4/jdk17-in_process/observations/negative/syntax/invalid.pdf",
+      "sha256": "3df4691c8b8b17f9fd9c39d7747465ebc34b35d78453504212b06d7558cae9d7"
+    },
+    {
+      "path": "capabilities/evidence/T77-images-r4/jdk17-in_process/observations/negative/syntax/qpdf.command.json",
+      "sha256": "9c73e7b849ff4027c541c00eecc8af83e826d815bce9c42efd048c5b2489e986"
+    },
+    {
+      "path": "capabilities/evidence/T77-images-r4/jdk17-in_process/observations/negative/syntax/qpdf.stderr",
+      "sha256": "6b974822529971b0683bb4580cf506c6e8a1f89ff5c22f0e8d48fba33cf204e1"
+    },
+    {
+      "path": "capabilities/evidence/T77-images-r4/jdk17-in_process/observations/negative/syntax/qpdf.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/T77-images-r4/jdk17-in_process/observations/negative/syntax/result.json",
+      "sha256": "b46914e26b99f0d61707d9429c67c8a7118b39075c859ac94d76b21930b1b434"
+    }
+  ]
+}

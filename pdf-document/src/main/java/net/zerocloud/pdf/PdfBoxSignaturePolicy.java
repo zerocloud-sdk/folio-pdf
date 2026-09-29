@@ -343,9 +343,13 @@ final class PdfBoxSignaturePolicy {
             info.unsupportedRestriction = true;
             return;
         }
+        // Critical indirection is structurally invalid even when the resolved
+        // dictionary would otherwise grant permission. Only a direct value of
+        // an unsupported kind belongs to the conservative no-authority case.
+        COSBase directParameters = direct(rawParameters);
         COSDictionary parameters;
         try {
-            parameters = dictionary(direct(rawParameters));
+            parameters = dictionary(directParameters);
         } catch (DocumentFailure wrongType) {
             info.unsupportedRestriction = true;
             return;

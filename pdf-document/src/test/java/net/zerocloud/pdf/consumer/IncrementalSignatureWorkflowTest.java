@@ -27,6 +27,7 @@ import net.zerocloud.pdf.PublicationStatus;
 import net.zerocloud.pdf.PublicationTarget;
 import net.zerocloud.pdf.SaveMode;
 import net.zerocloud.pdf.WorkflowOutcome;
+import net.zerocloud.pdf.WorkflowExecutionProfile;
 import net.zerocloud.pdf.WorkflowRequest;
 import net.zerocloud.pdf.command.AddBlankPage;
 import net.zerocloud.pdf.command.SplitDocument;
@@ -55,7 +56,7 @@ public final class IncrementalSignatureWorkflowTest {
         byte[] originalRevision = Files.readAllBytes(source);
 
         WorkflowOutcome<Integer> outcome = new DocumentWorkflow().execute(
-                WorkflowRequest.builder()
+                requestBuilder()
                         .source("primary", DocumentSource.path(source))
                         .primarySource("primary")
                         .target("path", PublicationTarget.path(pathTarget))
@@ -88,7 +89,7 @@ public final class IncrementalSignatureWorkflowTest {
         assertArrayEquals(incremental, streamTarget.toByteArray());
 
         WorkflowOutcome<Integer> reopened = new DocumentWorkflow().execute(
-                WorkflowRequest.open(pathTarget, SaveMode.REWRITE),
+                readRequest(pathTarget),
                 session -> session.query(PageCount.INSTANCE));
         assertEquals(Integer.valueOf(2), reopened.getResult());
     }
@@ -106,7 +107,7 @@ public final class IncrementalSignatureWorkflowTest {
 
         try {
             new DocumentWorkflow().execute(
-                    WorkflowRequest.builder()
+                    requestBuilder()
                             .source("primary", DocumentSource.path(source))
                             .primarySource("primary")
                             .target("front", PublicationTarget.path(front))
@@ -151,14 +152,14 @@ public final class IncrementalSignatureWorkflowTest {
         Files.write(target, existingTarget);
 
         WorkflowOutcome<Integer> query = new DocumentWorkflow().execute(
-                WorkflowRequest.open(source, SaveMode.REWRITE),
+                readRequest(source),
                 session -> session.query(PageCount.INSTANCE));
         assertEquals(Integer.valueOf(1), query.getResult());
 
         AtomicBoolean callerWorkRan = new AtomicBoolean();
         try {
             new DocumentWorkflow().execute(
-                    WorkflowRequest.builder()
+                    requestBuilder()
                             .source("signed", DocumentSource.path(source))
                             .primarySource("signed")
                             .target("preserved", PublicationTarget.path(target))
@@ -277,7 +278,7 @@ public final class IncrementalSignatureWorkflowTest {
                 Arrays.copyOf(published, signedRevision.length));
         assertTrue(
                 new DocumentWorkflow().execute(
-                        WorkflowRequest.open(target, SaveMode.REWRITE),
+                        readRequest(target),
                         session -> session.query(Annotations.version1(
                                 8,
                                 4096L,
@@ -298,7 +299,7 @@ public final class IncrementalSignatureWorkflowTest {
 
         try {
             new DocumentWorkflow().execute(
-                    WorkflowRequest.builder()
+                    requestBuilder()
                             .source("primary", DocumentSource.path(source))
                             .primarySource("primary")
                             .target("path", PublicationTarget.path(target))
@@ -412,7 +413,9 @@ public final class IncrementalSignatureWorkflowTest {
         assertSignedMutationRejected(
                 "multiple-signatures",
                 ProjectOwnedSignatureFixtures.docMdpP3WithOrdinaryApproval(),
-                AddBlankPage.INSTANCE);
+                UpdateAnnotations.version1().put(Annotation.text(AnnotationProperties.version1(
+                        "intersection-note", 1, AnnotationRectangle.of(10, 20, 30, 40)).build(),
+                        Annotation.TextIcon.NOTE, false)).build());
         assertSignedMutationRejected(
                 "unsupported-transform",
                 ProjectOwnedSignatureFixtures.unsupportedTransform(),
@@ -529,7 +532,7 @@ public final class IncrementalSignatureWorkflowTest {
             byte[] sourceBytes) throws Exception {
         Path target = path(stem + "-incremental.pdf");
         new DocumentWorkflow().execute(
-                WorkflowRequest.builder()
+                requestBuilder()
                         .source("primary", source)
                         .primarySource("primary")
                         .target("target", PublicationTarget.path(target))
@@ -551,12 +554,16 @@ public final class IncrementalSignatureWorkflowTest {
         Path source = path(stem + ".pdf");
         Path target = path(stem + "-target.pdf");
         byte[] sentinel = new byte[] {71, 72, 73};
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
         Files.write(source, sourceBytes);
         Files.write(target, sentinel);
         AtomicBoolean callerWorkRan = new AtomicBoolean();
         try {
             new DocumentWorkflow().execute(
-                    incrementalRequest(source, target),
+                    requestBuilder().source("source", DocumentSource.path(source)).primarySource("source")
+                            .target("path", PublicationTarget.path(target))
+                            .target("stream", PublicationTarget.stream(stream))
+                            .saveMode(SaveMode.INCREMENTAL).build(),
                     session -> {
                         callerWorkRan.set(true);
                         return null;
@@ -565,13 +572,19 @@ public final class IncrementalSignatureWorkflowTest {
         } catch (DocumentFailure failure) {
             assertEquals("SIGNATURE_STRUCTURE_INVALID", failure.getCode().name());
             assertEquals(CAPABILITY, failure.getCapabilityId());
-            assertEquals(
-                    PublicationStatus.NOT_ATTEMPTED,
-                    failure.getPublicationReceipts().get(0).getStatus());
+            assertEquals("The Existing Signature policy could not be determined safely.", failure.getDiagnostic());
+            assertEquals(2, failure.getPublicationReceipts().size());
+            assertEquals("path", failure.getPublicationReceipts().get(0).getTargetName());
+            assertEquals("stream", failure.getPublicationReceipts().get(1).getTargetName());
+            for (int index = 0; index < 2; index++) {
+                assertEquals(PublicationStatus.NOT_ATTEMPTED, failure.getPublicationReceipts().get(index).getStatus());
+                assertTrue(!failure.getPublicationReceipts().get(index).isPartialOutputPossible());
+            }
         }
         assertTrue(!callerWorkRan.get());
         assertArrayEquals(sourceBytes, Files.readAllBytes(source));
         assertArrayEquals(sentinel, Files.readAllBytes(target));
+        assertEquals(0, stream.size());
     }
 
     private void assertSignatureStructureReadable(String stem, byte[] sourceBytes)
@@ -581,7 +594,7 @@ public final class IncrementalSignatureWorkflowTest {
         assertEquals(
                 Integer.valueOf(1),
                 new DocumentWorkflow().execute(
-                        WorkflowRequest.open(source, SaveMode.REWRITE),
+                        readRequest(source),
                         session -> session.query(PageCount.INSTANCE))
                         .getResult());
         assertArrayEquals(sourceBytes, Files.readAllBytes(source));
@@ -625,7 +638,7 @@ public final class IncrementalSignatureWorkflowTest {
             DocumentCommand command) throws Exception {
         try {
             new DocumentWorkflow().execute(
-                    WorkflowRequest.open(source, SaveMode.REWRITE),
+                    readRequest(source),
                     session -> {
                         session.execute(command);
                         return null;
@@ -641,8 +654,18 @@ public final class IncrementalSignatureWorkflowTest {
         }
     }
 
+    private static WorkflowRequest.Builder requestBuilder() {
+        return WorkflowRequest.builder().executionProfile(WorkflowExecutionProfile.valueOf(
+                System.getProperty("folio.t15.executionProfile", "IN_PROCESS")));
+    }
+
+    private static WorkflowRequest readRequest(Path source) {
+        return requestBuilder().source("source", DocumentSource.path(source)).primarySource("source")
+                .saveMode(SaveMode.REWRITE).build();
+    }
+
     private static WorkflowRequest incrementalRequest(Path source, Path target) {
-        return WorkflowRequest.builder()
+        return requestBuilder()
                 .source("primary", DocumentSource.path(source))
                 .primarySource("primary")
                 .target("target", PublicationTarget.path(target))
@@ -657,7 +680,7 @@ public final class IncrementalSignatureWorkflowTest {
     private static void createDocument(Path target, int pageCount)
             throws Exception {
         new DocumentWorkflow().execute(
-                WorkflowRequest.create(target, SaveMode.REWRITE),
+                requestBuilder().target("target", PublicationTarget.path(target)).saveMode(SaveMode.REWRITE).build(),
                 session -> {
                     for (int page = 0; page < pageCount; page++) {
                         session.execute(AddBlankPage.INSTANCE);

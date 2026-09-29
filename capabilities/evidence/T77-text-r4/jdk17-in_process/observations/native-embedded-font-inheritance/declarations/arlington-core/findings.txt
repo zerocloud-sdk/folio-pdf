@@ -1,0 +1,133 @@
+Version exit: 0
+[0m
+
+Arlington PDF Model C++ P.o.C. version v0.81-folio-t13-r1 built Sep 12 2026 00:00:00 (GNU-C linux release)
+Choose one of: --pdf, --checkdva or --validate.
+
+Usage:
+	TestGrammar --tsvdir <dir> [--force <ver>|exact] [--out <fname|dir>] [--no-color] [--clobber] [--debug] [--brief] [--extensions <extn1[,extn2]>] [--password <pwd>] [--exclude string | @textfile.txt] [--dryrun] [--allfiles] [--validate | --checkdva <formalrep> | --pdf <fname|dir|@file.txt> ]
+
+Options: 
+-h, --help                   This usage message.
+-b, --brief                  terse output when checking PDFs. The full PDF DOM tree is NOT output.
+-c, --checkdva               Adobe DVA formal-rep PDF file to compare against Arlington PDF model.
+-d, --debug                  output additional debugging information.
+    --clobber                always overwrite PDF output report files (--pdf) rather than append underscores.
+    --no-color               disable colorized text output (useful when redirecting or piping output)
+-m, --batchmode              stop popup error dialog windows and redirect everything to console (Windows only, includes memory leak reports).
+-o, --out                    output file or folder. Default is stdout. See --clobber for overwriting behavior.
+-p, --pdf                    input PDF file, folder, or text file of PDF files/folders.
+-f, --force                  force the PDF version to the specified value (1,0, 1.1, ..., 2.0 or 'exact'). Only applicable to --pdf.
+-t, --tsvdir                 [required] folder containing Arlington PDF model TSV file set.
+-v, --validate               validate the Arlington PDF model.
+-e, --extensions             a comma-separated list of extensions, or '*' for all extensions.
+    --password               password. Only applicable to --pdf.
+    --exclude                PDF exclusion string or filelist (# is a comment). Only applicable to --pdf.
+    --dryrun                 Dry run - don't do any actual processing.
+-a, --allfiles               Process all files regardless of file extension.
+    --explicit-values-only   Ignore wildcards in PossibleValues.
+
+Built using pdfium
+
+Validation exit: 0
+Processing "/workspace/capabilities/evidence/T77-text-r4/jdk17-in_process/observations/native-embedded-font-inheritance/declarations/extraction.pdf" to stdout BEGIN - TestGrammar v0.81-folio-t13-r1 built Sep 12 2026 00:00:00 (GNU-C linux release) pdfium
+Arlington TSV data: "/workspace/.build-cache/arlington/t13-r1/tsv/latest"
+PDF: "/workspace/capabilities/evidence/T77-text-r4/jdk17-in_process/observations/native-embedded-font-inheritance/declarations/extraction.pdf"
+Info: XRefStream detected.
+Info: Header is version PDF 2.0
+Info: Command line forced to PDF 2.0
+Info: Processing as PDF 2.0
+       1: Trailer (as XRefStream)
+       2:   Trailer (as XRefStream)->ID (as TrailerIDArray)
+       3:   Trailer (as XRefStream)->Index (as ArrayOfXRefIndexIntegers)
+       4:   Trailer (as XRefStream)->Root (as Catalog)
+       5:   Trailer (as XRefStream)->W (as ArrayOfXRefWIntegers)
+       6:     Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)
+       7:       Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)
+       8:         Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]
+       9:           Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Contents (as Stream)
+      10:           Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Parent (as PageTreeNodeRoot)
+      11:           Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)
+      12:             Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)
+      13:               Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType1)
+      14:               Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F2 (as FontMultipleMaster)
+      15:               Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F3 (as FontTrueType)
+      16:               Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F4 (as FontType0)
+      17:               Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F5 (as FontType0)
+      18:               Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F6 (as FontType0)
+      19:               Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F7 (as FontType0)
+      20:                 Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType1)->FontDescriptor (as FontDescriptorType1)
+      21:                 Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType1)->Widths (as ArrayOfNumbersGeneral)
+      22:                 Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F2 (as FontMultipleMaster)->FontDescriptor (as FontDescriptorType1)
+      23:                 Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F2 (as FontMultipleMaster)->Widths (as ArrayOfNumbersGeneral)
+      24:                 Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F3 (as FontTrueType)->FontDescriptor (as FontDescriptorTrueType)
+      25:                 Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F3 (as FontTrueType)->Widths (as ArrayOfNumbersGeneral)
+      26:                 Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F4 (as FontType0)->DescendantFonts (as ArrayOfDescendantFonts)
+      27:                 Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F4 (as FontType0)->Encoding (as CMapStream)
+      28:                 Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F4 (as FontType0)->ToUnicode (as ToUnicodeCMapStream)
+      29:                 Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F5 (as FontType0)->DescendantFonts (as ArrayOfDescendantFonts)
+      30:                 Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F5 (as FontType0)->Encoding (as CMapStream)
+      31:                 Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F5 (as FontType0)->ToUnicode (as ToUnicodeCMapStream)
+      32:                 Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F6 (as FontType0)->DescendantFonts (as ArrayOfDescendantFonts)
+      33:                 Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F6 (as FontType0)->Encoding (as CMapStream)
+      34:                 Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F6 (as FontType0)->ToUnicode (as ToUnicodeCMapStream)
+      35:                 Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F7 (as FontType0)->DescendantFonts (as ArrayOfDescendantFonts)
+      36:                 Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F7 (as FontType0)->Encoding (as CMapStream)
+      37:                 Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F7 (as FontType0)->ToUnicode (as ToUnicodeCMapStream)
+      38:                   Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType1)->FontDescriptor (as FontDescriptorType1)->FontFile3 (as FontFile3Type1)
+      39:                   Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F3 (as FontTrueType)->FontDescriptor (as FontDescriptorTrueType)->FontFile2
+      40:                   Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F4 (as FontType0)->DescendantFonts (as ArrayOfDescendantFonts)[0 (as FontCIDType0)]
+      41:                   Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F4 (as FontType0)->Encoding (as CMapStream)->CIDSystemInfo
+      42:                   Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F4 (as FontType0)->ToUnicode (as ToUnicodeCMapStream)->CIDSystemInfo
+      43:                   Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F4 (as FontType0)->ToUnicode (as ToUnicodeCMapStream)->UseCMap (as ToUnicodeCMapStream)
+      44:                   Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F5 (as FontType0)->DescendantFonts (as ArrayOfDescendantFonts)[0 (as FontCIDType0)]
+      45:                   Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F5 (as FontType0)->Encoding (as CMapStream)->CIDSystemInfo
+      46:                   Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F5 (as FontType0)->Encoding (as CMapStream)->UseCMap (as CMapStream)
+      47:                   Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F5 (as FontType0)->ToUnicode (as ToUnicodeCMapStream)->CIDSystemInfo
+      48:                   Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F6 (as FontType0)->DescendantFonts (as ArrayOfDescendantFonts)[0 (as FontCIDType2)]
+      49:                   Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F7 (as FontType0)->DescendantFonts (as ArrayOfDescendantFonts)[0 (as FontCIDType2)]
+      50:                     Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F4 (as FontType0)->DescendantFonts (as ArrayOfDescendantFonts)[0 (as FontCIDType0)]->CIDSystemInfo
+      51:                     Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F4 (as FontType0)->DescendantFonts (as ArrayOfDescendantFonts)[0 (as FontCIDType0)]->DW2 (as ArrayOf_2Numbers)
+      52:                     Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F4 (as FontType0)->DescendantFonts (as ArrayOfDescendantFonts)[0 (as FontCIDType0)]->FontDescriptor (as FontDescriptorCIDType0)
+      53:                     Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F4 (as FontType0)->DescendantFonts (as ArrayOfDescendantFonts)[0 (as FontCIDType0)]->W (as ArrayOfCIDGlyphMetricsW)
+      54:                     Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F4 (as FontType0)->DescendantFonts (as ArrayOfDescendantFonts)[0 (as FontCIDType0)]->W2 (as ArrayOfCIDGlyphMetricsW2)
+      55:                     Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F6 (as FontType0)->DescendantFonts (as ArrayOfDescendantFonts)[0 (as FontCIDType2)]->CIDSystemInfo
+      56:                     Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F6 (as FontType0)->DescendantFonts (as ArrayOfDescendantFonts)[0 (as FontCIDType2)]->DW2 (as ArrayOf_2Numbers)
+      57:                     Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F6 (as FontType0)->DescendantFonts (as ArrayOfDescendantFonts)[0 (as FontCIDType2)]->FontDescriptor (as FontDescriptorCIDType2)
+      58:                     Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F6 (as FontType0)->DescendantFonts (as ArrayOfDescendantFonts)[0 (as FontCIDType2)]->W (as ArrayOfCIDGlyphMetricsW)
+      59:                     Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F6 (as FontType0)->DescendantFonts (as ArrayOfDescendantFonts)[0 (as FontCIDType2)]->W2 (as ArrayOfCIDGlyphMetricsW2)
+      60:                       Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F4 (as FontType0)->DescendantFonts (as ArrayOfDescendantFonts)[0 (as FontCIDType0)]->FontDescriptor (as FontDescriptorCIDType0)->FontFile3 (as FontFile3CIDType0)
+      61:                       Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F4 (as FontType0)->DescendantFonts (as ArrayOfDescendantFonts)[0 (as FontCIDType0)]->W (as ArrayOfCIDGlyphMetricsW)[1 (as ArrayOfNumbersGeneral)]
+      62:                       Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F4 (as FontType0)->DescendantFonts (as ArrayOfDescendantFonts)[0 (as FontCIDType0)]->W2 (as ArrayOfCIDGlyphMetricsW2)[1 (as ArrayOfNumbersGeneral)]
+      63:                       Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F6 (as FontType0)->DescendantFonts (as ArrayOfDescendantFonts)[0 (as FontCIDType2)]->FontDescriptor (as FontDescriptorCIDType2)->FontFile2
+      64:                       Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F6 (as FontType0)->DescendantFonts (as ArrayOfDescendantFonts)[0 (as FontCIDType2)]->W (as ArrayOfCIDGlyphMetricsW)[1 (as ArrayOfNumbersGeneral)]
+      65:                       Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F6 (as FontType0)->DescendantFonts (as ArrayOfDescendantFonts)[0 (as FontCIDType2)]->W2 (as ArrayOfCIDGlyphMetricsW2)[1 (as ArrayOfNumbersGeneral)]
+Info: Latest Arlington object was PDF 1.5 (XRefStream/Filter) compared using forced PDF 2.0
+END
+
+DONE - 1 files processed
+
+Negative control annotation-ap-dictionary sha256=92d5861d23f84c9987f8f73338d7a4e6c8d4053a729bd650b23947a40c59c1bd detected=true
+Negative control annotation-flags-reserved sha256=2703c5897695884ba5838b30ec1f62d85004158e56a4f567a9dd07e984ecaa73 detected=true
+Negative control annotation-id-unique sha256=9c56f0fcac89b7eeb4257010949a25532cfc52aee323742cf552e55c370dc203 detected=true
+Negative control annotation-page-owner sha256=16af8a1c43ab5d41370d13da641debd15dc6c2c36d33057ce2e76ffaaad79740 detected=true
+Negative control page-contents-array-member sha256=ef72af9bee510e1cf20047c0bc87b32676965a904d019c5a6f16a709f87fa07d detected=true
+Negative control page-contents-type sha256=bb4e80a1c8b9b25d2448fb019d27176efc9cd544f2905e7a2a23df8d484ec6c9 detected=true
+Negative control page-resources-required sha256=057453de6d8fe0490a10b2a44d06c824d0306c64bca64b3444b37ed4b3188dd3 detected=true
+Negative control pages-type sha256=6fe72868d9f01b1fb929450a8f504f6b12fdc8508ae8e325d49009e6b43bbe1a detected=true
+Negative control pages-type-value sha256=46e9d3271b38bad3579ec1bff9388f580efd1990534924c2508f2b1fc6a88cfc detected=true
+Negative control stream-decodeparams-array-member sha256=7bf9e014418ec771fcbb76f46b7927dbbfc843efc3fa09b40d275bf40e43f1d3 detected=true
+Negative control stream-decodeparams-count sha256=973af11f633cebf99d633125e876ddc7248624f782ce19a2e2e6d963b133201f detected=true
+Negative control stream-decodeparams-position sha256=b736ea2ea2de2bd2dd1747606638787dcb8237b0b9ada9223554ea076c5ab057 detected=true
+Negative control stream-decodeparams-type sha256=f5b29bddaa3a77933b86c985caa8ab3a2bbc433bb15c12e3670cfa79a19bd427 detected=true
+Negative control stream-filter-array-name-type sha256=fac2d18c3f760a9d6eaa2182f452b68c3d2512951a5cb96a5cb3dba02fffe29c detected=true
+Negative control stream-filter-array-name-value sha256=ef18d21245a44471a7346b15ee658251a9a005ebf190396ac1d7d4f1a732a188 detected=true
+Negative control stream-filter-name-value sha256=4224e00fdd257d3842799b59c0a1522f84f93d5dd0e66ba417b621be4df56fa4 detected=true
+Negative control stream-filter-type sha256=dc284a9e3ef213f5b10133af6b65fd8ba11a5af043dbb00359b23373b68a8eda detected=true
+Negative control stream-flate-predictor-type sha256=e372ccb9ba52dc549bf100f795f138eb3a1dea9c61886358f6d46546ed5e5d55 detected=true
+Negative control stream-flate-predictor-value sha256=4b37462527d107755a11350d286c98c3650fb18254f0610f08808e28cc83f27d detected=true
+Negative control text-appearance-required sha256=535b4cd12504a45c2a56e162ea50c902699ece4e7ef6e5afec9786f09f6cb65a detected=true
+Negative control text-name-name sha256=7ac4bd3f191d1765407f497e52ead22dc828ea3a5c24abf45200dd2924a27aac detected=true
+Negative control text-open-boolean sha256=a80300e6b696495814551f6171286e191158dd128a4ef978673a01dda8d014b0 detected=true
+Negative control trailer-info-indirect sha256=9e99abaa6ca013f826cc325130c0496765e92716fb320fa9bd13592214d84fb2 detected=true
+Negative control trailer-info-required sha256=b872d21e15c25ba2d038bfb54ccdec6158715fa492905fc26161bf22ea01bc89 detected=true

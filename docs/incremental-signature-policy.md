@@ -2,6 +2,21 @@
 
 This guide is the authoritative English contract for T15 version 1. It defines how the Document Workflow interprets `SaveMode.INCREMENTAL`, recognizes Existing Signatures, authorizes Document Commands, and fails safely. It does not create signatures or establish cryptographic validity.
 
+The Stable Migration Facade exposes this policy through
+`new StampingProperties().useAppendMode()` and
+`PdfDocument(PdfReader, PdfWriter, StampingProperties)`, plus the named
+Source/Target constructor ending in `PdfVersion, StampingProperties`.
+Existing constructors default to REWRITE. The reader/writer append overload
+inherits the Source version; the named overload retains its explicit version. A Document captures the mode at
+construction; later property changes do not affect it. `isAppendMode()` is
+available while the Document is open. Both Stable and inherited Preview use
+the existing Native workflow and execute IN_PROCESS. Operational errors keep
+Native failure identity and Publication Receipts through `PdfException`;
+Reader inspection errors retain `IOException`. A caught command refusal leaves
+the session usable, as in Native callbacks, but cannot authorize a rejected
+change or a signed no-op publication. The [certification profile](t15-certification.md)
+defines the independently observed products, rule controls and mode matrix.
+
 ## Publication contract
 
 `INCREMENTAL` requires a declared existing primary Source. A create request, or any other request without such a Source, fails before caller work and publication. A successful incremental publication writes the complete Source bytes unchanged as the output prefix and appends a non-empty revision. The staged result is reopened before any Target is attempted, then follows the same declaration-ordered Path and stream publication and Publication Receipt rules as `REWRITE`.
@@ -54,7 +69,7 @@ For signed `INCREMENTAL` workflows, version 1 applies this matrix.
 
 P=3 does not authorize `FlattenAnnotations`, because flattening changes page content in addition to deleting an annotation. It does not authorize `UpdateActions`, because that command can change catalogue and page Actions. Widget changes are excluded so T15 does not implement Forms or signature-field mutation.
 
-A signature-policy refusal uses `SIGNATURE_POLICY_REJECTED`, the T15 capability identity, and the fixed diagnostic `The Existing Signature policy does not permit this workflow.` It occurs before the rejected command changes the live document. A signed incremental workflow that lacks both proven permission and at least one admitted mutation also fails before staging; a no-command signed publication is not used to manufacture an empty revision. Every such pre-publication failure leaves Path Targets unchanged and reports every declared Target as `NOT_ATTEMPTED`.
+A signature-policy refusal uses `SIGNATURE_POLICY_REJECTED`, the T15 capability identity, and the fixed diagnostic `The Existing Signature policy does not permit this workflow.` It occurs before the rejected command changes the live document. A signed incremental workflow that lacks both proven permission and at least one admitted mutation also fails before staging; a no-command signed publication is not used to manufacture an empty revision. An empty `UpdateAnnotations` selection is rejected by the signed admission check and cannot count as a mutation. Every such pre-publication failure leaves Path Targets unchanged and reports every declared Target as `NOT_ATTEMPTED`.
 
 ## Standards boundary
 

@@ -11,7 +11,6 @@ import java.util.Optional;
 import net.zerocloud.pdf.CancellationToken;
 import net.zerocloud.pdf.DocumentSource;
 import net.zerocloud.pdf.PdfOutputPolicy;
-import net.zerocloud.pdf.PdfVersion;
 import net.zerocloud.pdf.PublicationReceipt;
 import net.zerocloud.pdf.PublicationStatus;
 import net.zerocloud.pdf.SaveMode;
@@ -21,22 +20,26 @@ import net.zerocloud.pdf.WorkflowResourcePolicy;
 /** Owns validated declarations and their transferred Reader snapshots. */
 final class FacadeDeclarations implements AutoCloseable {
     final WorkflowRequest request;
+    final SaveMode saveMode;
     final CancellationToken cancellation = CancellationToken.create();
     final int sourcePageCount;
     private final Map<String, FacadeSource> sources;
     private final Map<String, PdfWriter> targets;
 
     FacadeDeclarations(Map<String, PdfReader> sourceReaders, String primarySource,
-            Map<String, PdfWriter> targetWriters, PdfVersion outputVersion) {
+            Map<String, PdfWriter> targetWriters, PdfOutputPolicy outputPolicy, SaveMode saveMode) {
+        this.saveMode = Objects.requireNonNull(saveMode, "saveMode");
         Map<String, PdfReader> readers = new LinkedHashMap<String, PdfReader>(
                 Objects.requireNonNull(sourceReaders, "sources"));
         targets = Collections.unmodifiableMap(new LinkedHashMap<String, PdfWriter>(
                 Objects.requireNonNull(targetWriters, "targets")));
         Map<String, FacadeSource> snapshots = new LinkedHashMap<String, FacadeSource>();
         IdentityHashMap<PdfReader, Boolean> uniqueReaders = new IdentityHashMap<PdfReader, Boolean>();
-        WorkflowRequest.Builder builder = WorkflowRequest.builder().saveMode(SaveMode.REWRITE)
-                .outputPolicy(PdfOutputPolicy.version(Objects.requireNonNull(outputVersion, "outputVersion")))
+        WorkflowRequest.Builder builder = WorkflowRequest.builder().saveMode(this.saveMode)
                 .cancellationToken(cancellation);
+        if (outputPolicy != null) {
+            builder.outputPolicy(outputPolicy);
+        }
         long reserved = 0;
         long maximum = WorkflowResourcePolicy.safeDefaults().getMaximumTemporaryStorageBytes();
         for (Map.Entry<String, PdfReader> entry : readers.entrySet()) {

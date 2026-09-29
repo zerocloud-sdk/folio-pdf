@@ -431,7 +431,7 @@ obligations:
     Existing Signature permissions.
   capability: document.incremental-signature.protect
   acceptance-profile: T15-incremental-signature-protection
-  profile-contract: capabilities/evidence/T15-incremental-signature-protection.md
+  profile-contract: docs/t15-certification.md
   kind: behavior
   slice: 77
   environments:
@@ -453,7 +453,13 @@ obligations:
   facade-families:
   - family: kernel append mode and Existing Signature protection
     reference-prefix: com.itextpdf.kernel.pdf.
-    mappings: []
+    mappings:
+    - itext7.kernel.stamping-properties.constructor
+    - itext7.kernel.stamping-properties.constructor-copy
+    - itext7.kernel.stamping-properties.use-append-mode
+    - itext7.kernel.pdf-document.constructor-stamping
+    - itext7.kernel.pdf-document.constructor-named-stamping
+    - itext7.kernel.pdf-document.is-append-mode
 - id: security
   summary: Inspect exact effective PDF versions, publish PDF 1.7 or 2.0, and authenticate and enforce bounded Standard-handler
     password security with AES-256 defaults.

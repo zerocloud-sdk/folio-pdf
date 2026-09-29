@@ -127,11 +127,8 @@ final class PdfBoxAnnotationOperations {
             boolean containsWidget,
             Set<String> selected) throws DocumentFailure {
         resources.checkpoint();
-        if (containsWidget) {
+        if (containsWidget || selected.isEmpty()) {
             throw PdfBoxWorkflowEngine.signaturePolicyFailure();
-        }
-        if (selected.isEmpty()) {
-            return;
         }
         try {
             for (COSBase rawPage : pageReferencesForCommand()) {

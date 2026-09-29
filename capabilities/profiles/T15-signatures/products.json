@@ -1,0 +1,333 @@
+{
+  "content-sha256": "2900698b7866c90b430caba8ce86a9485da70cc71a8a40e65c80200c0fdffddf",
+  "controls": {
+    "changed-paint": {
+      "file": "control-changed-paint.pdf",
+      "sha256": "8d82e20bad935ae87ab0d1de90d0d98486916071fd9656c3943bb32a7c462f45"
+    },
+    "prefix-changed": {
+      "file": "control-prefix-changed.pdf",
+      "sha256": "b5688f20651a258dedc1c103820edce79cd47db4223192624f30885e2f277ddd"
+    },
+    "previous-xref-wrong": {
+      "file": "control-previous-xref-wrong.pdf",
+      "sha256": "f86cd7a0564f943f71164aba3424d45cf05ff981576598c06a668444b1a64478"
+    },
+    "revision-missing": {
+      "file": "control-revision-missing.pdf",
+      "sha256": "6f46dfa34ba5fe49fda4da662032441f245ea4d7786cf3ff0d97802baa4eb9bd"
+    },
+    "revision-positive": {
+      "file": "control-revision-positive.pdf",
+      "sha256": "2d5602acd5a2fd90945622829ed5ab0fd2a9389b1e5757f6ea64913c8e0ae6fd"
+    },
+    "syntax-truncated": {
+      "file": "control-syntax-truncated.pdf",
+      "sha256": "f5117edb193052414d3b7496857953fd5c40d289c84ce675aa0bd361d40ffd76"
+    }
+  },
+  "products": {
+    "create": {
+      "annotations": {
+        "added": {
+          "appearance-sha256": "6daa7f720867d3fdc42cbf866cba31fcf0187990d91cbfbd17e39e5df61480de",
+          "contents": "Added",
+          "page": 1,
+          "rect": "65,10,85,30",
+          "subtype": "Stamp"
+        },
+        "existing": {
+          "appearance-sha256": "24c97e5d4f38fdbe9c33e8bb2c126d6718d1a49dc3690bf1061421ab80273e60",
+          "contents": "Original",
+          "page": 1,
+          "rect": "40,40,60,60",
+          "subtype": "Stamp"
+        }
+      },
+      "expected": {
+        "annotation.added.contents": "Added",
+        "annotation.added.page": "1",
+        "annotation.added.rect": "65,10,85,30",
+        "annotation.added.subtype": "Stamp",
+        "annotation.existing.contents": "Original",
+        "annotation.existing.page": "1",
+        "annotation.existing.rect": "40,40,60,60",
+        "annotation.existing.subtype": "Stamp",
+        "annotations.count": "2",
+        "keep.token": "Unrelated",
+        "page.1.box": "0,0,100,100",
+        "page.2.box": "0,0,100,100",
+        "pages.count": "2",
+        "revision.marker": ""
+      },
+      "source": "p3",
+      "visual": [
+        {
+          "height": 200,
+          "path": "create-page-1.png",
+          "sha256": "75fcbcf892bb6e505308c6d2c2c8353b034b1d86ad5f14cf1ff91633dbeb2916",
+          "width": 200
+        },
+        {
+          "height": 200,
+          "path": "create-page-2.png",
+          "sha256": "78b3134197b93080b6ac1a34e7cca3d5fc1276d490ab18be10f63fc498410595",
+          "width": 200
+        }
+      ]
+    },
+    "move": {
+      "annotations": {
+        "existing": {
+          "appearance-sha256": "24c97e5d4f38fdbe9c33e8bb2c126d6718d1a49dc3690bf1061421ab80273e60",
+          "contents": "Original",
+          "page": 2,
+          "rect": "40,40,60,60",
+          "subtype": "Stamp"
+        }
+      },
+      "expected": {
+        "annotation.existing.contents": "Original",
+        "annotation.existing.page": "2",
+        "annotation.existing.rect": "40,40,60,60",
+        "annotation.existing.subtype": "Stamp",
+        "annotations.count": "1",
+        "keep.token": "Unrelated",
+        "page.1.box": "0,0,100,100",
+        "page.2.box": "0,0,100,100",
+        "pages.count": "2",
+        "revision.marker": ""
+      },
+      "source": "p3",
+      "visual": [
+        {
+          "height": 200,
+          "path": "move-page-1.png",
+          "sha256": "78b3134197b93080b6ac1a34e7cca3d5fc1276d490ab18be10f63fc498410595",
+          "width": 200
+        },
+        {
+          "height": 200,
+          "path": "move-page-2.png",
+          "sha256": "3596081acf0a5b26932185db7d8f5a686aaede924c329fcae366bbccc0d8b8f9",
+          "width": 200
+        }
+      ]
+    },
+    "remove": {
+      "annotations": {},
+      "expected": {
+        "annotations.count": "0",
+        "keep.token": "Unrelated",
+        "page.1.box": "0,0,100,100",
+        "page.2.box": "0,0,100,100",
+        "pages.count": "2",
+        "revision.marker": ""
+      },
+      "source": "p3",
+      "visual": [
+        {
+          "height": 200,
+          "path": "remove-page-1.png",
+          "sha256": "78b3134197b93080b6ac1a34e7cca3d5fc1276d490ab18be10f63fc498410595",
+          "width": 200
+        },
+        {
+          "height": 200,
+          "path": "remove-page-2.png",
+          "sha256": "78b3134197b93080b6ac1a34e7cca3d5fc1276d490ab18be10f63fc498410595",
+          "width": 200
+        }
+      ]
+    },
+    "replace": {
+      "annotations": {
+        "existing": {
+          "appearance-sha256": "6daa7f720867d3fdc42cbf866cba31fcf0187990d91cbfbd17e39e5df61480de",
+          "contents": "Replacement",
+          "page": 1,
+          "rect": "40,40,60,60",
+          "subtype": "Stamp"
+        }
+      },
+      "expected": {
+        "annotation.existing.contents": "Replacement",
+        "annotation.existing.page": "1",
+        "annotation.existing.rect": "40,40,60,60",
+        "annotation.existing.subtype": "Stamp",
+        "annotations.count": "1",
+        "keep.token": "Unrelated",
+        "page.1.box": "0,0,100,100",
+        "page.2.box": "0,0,100,100",
+        "pages.count": "2",
+        "revision.marker": ""
+      },
+      "source": "p3",
+      "visual": [
+        {
+          "height": 200,
+          "path": "replace-page-1.png",
+          "sha256": "dd7d6ddd4798fdbc3caa04488d7efa35b5f1bab7fee124b54c0b22b4fc76df43",
+          "width": 200
+        },
+        {
+          "height": 200,
+          "path": "replace-page-2.png",
+          "sha256": "78b3134197b93080b6ac1a34e7cca3d5fc1276d490ab18be10f63fc498410595",
+          "width": 200
+        }
+      ]
+    },
+    "unsigned-first": {
+      "annotations": {
+        "existing": {
+          "appearance-sha256": "24c97e5d4f38fdbe9c33e8bb2c126d6718d1a49dc3690bf1061421ab80273e60",
+          "contents": "Original",
+          "page": 1,
+          "rect": "40,40,60,60",
+          "subtype": "Stamp"
+        }
+      },
+      "expected": {
+        "annotation.existing.contents": "Original",
+        "annotation.existing.page": "1",
+        "annotation.existing.rect": "40,40,60,60",
+        "annotation.existing.subtype": "Stamp",
+        "annotations.count": "1",
+        "keep.token": "Unrelated",
+        "page.1.box": "0,0,100,100",
+        "page.2.box": "0,0,100,100",
+        "page.3.box": "0,0,612,792",
+        "pages.count": "3",
+        "revision.marker": "first"
+      },
+      "source": "unsigned",
+      "visual": [
+        {
+          "height": 200,
+          "path": "unsigned-first-page-1.png",
+          "sha256": "3596081acf0a5b26932185db7d8f5a686aaede924c329fcae366bbccc0d8b8f9",
+          "width": 200
+        },
+        {
+          "height": 200,
+          "path": "unsigned-first-page-2.png",
+          "sha256": "78b3134197b93080b6ac1a34e7cca3d5fc1276d490ab18be10f63fc498410595",
+          "width": 200
+        },
+        {
+          "height": 1584,
+          "path": "unsigned-first-page-3.png",
+          "sha256": "d51b77e9e89793a844f5472019e11fb9c2c84f7407d322a1b42abfc64c496c01",
+          "width": 1224
+        }
+      ]
+    },
+    "unsigned-second": {
+      "annotations": {
+        "existing": {
+          "appearance-sha256": "24c97e5d4f38fdbe9c33e8bb2c126d6718d1a49dc3690bf1061421ab80273e60",
+          "contents": "Original",
+          "page": 1,
+          "rect": "40,40,60,60",
+          "subtype": "Stamp"
+        }
+      },
+      "expected": {
+        "annotation.existing.contents": "Original",
+        "annotation.existing.page": "1",
+        "annotation.existing.rect": "40,40,60,60",
+        "annotation.existing.subtype": "Stamp",
+        "annotations.count": "1",
+        "keep.token": "Unrelated",
+        "page.1.box": "0,0,100,100",
+        "page.2.box": "0,0,100,100",
+        "page.3.box": "0,0,612,792",
+        "page.4.box": "0,0,612,792",
+        "pages.count": "4",
+        "revision.marker": "first"
+      },
+      "source": "unsigned-first",
+      "visual": [
+        {
+          "height": 200,
+          "path": "unsigned-second-page-1.png",
+          "sha256": "3596081acf0a5b26932185db7d8f5a686aaede924c329fcae366bbccc0d8b8f9",
+          "width": 200
+        },
+        {
+          "height": 200,
+          "path": "unsigned-second-page-2.png",
+          "sha256": "78b3134197b93080b6ac1a34e7cca3d5fc1276d490ab18be10f63fc498410595",
+          "width": 200
+        },
+        {
+          "height": 1584,
+          "path": "unsigned-second-page-3.png",
+          "sha256": "d51b77e9e89793a844f5472019e11fb9c2c84f7407d322a1b42abfc64c496c01",
+          "width": 1224
+        },
+        {
+          "height": 1584,
+          "path": "unsigned-second-page-4.png",
+          "sha256": "d51b77e9e89793a844f5472019e11fb9c2c84f7407d322a1b42abfc64c496c01",
+          "width": 1224
+        }
+      ]
+    }
+  },
+  "profile": "T15-incremental-signature-protection",
+  "rules": {
+    "byte-range": {
+      "clause": "ISO 32000-1 12.8.1, Table 252",
+      "fixture": "range-overlap"
+    },
+    "catalog-permissions": {
+      "clause": "ISO 32000-1 12.8.4, Table 258",
+      "fixture": "perms-type-name"
+    },
+    "certification-link": {
+      "clause": "ISO 32000-1 12.8.2.2 and 12.8.4",
+      "fixture": "conflicting-docmdp"
+    },
+    "direct-values": {
+      "clause": "ISO 32000-1 12.8.1, Table 252",
+      "fixture": "indirect-parameters"
+    },
+    "docmdp-parameters": {
+      "clause": "ISO 32000-1 12.8.2.2, Table 254",
+      "fixture": "permission-four"
+    },
+    "field-tree": {
+      "clause": "ISO 32000-1 12.7.3.1, Table 220",
+      "fixture": "repeated-field"
+    },
+    "incremental-prefix": {
+      "clause": "ISO 32000-1 7.5.6",
+      "control": "prefix-changed"
+    },
+    "incremental-prev": {
+      "clause": "ISO 32000-1 7.5.6",
+      "control": "previous-xref-wrong"
+    },
+    "incremental-revision": {
+      "clause": "ISO 32000-1 7.5.6",
+      "control": "revision-missing"
+    },
+    "signature-dictionary": {
+      "clause": "ISO 32000-1 12.8.1, Table 252",
+      "fixture": "contents-type"
+    },
+    "signature-reference": {
+      "clause": "ISO 32000-1 12.8.2.1, Table 253",
+      "fixture": "method-type"
+    }
+  },
+  "visual": {
+    "dpi": 144,
+    "fuzz": 0,
+    "metric": "AE",
+    "render-annotations": true,
+    "threshold": 0
+  }
+}

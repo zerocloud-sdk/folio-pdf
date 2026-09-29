@@ -61,6 +61,7 @@ public final class JarContractIT {
                 "net/zerocloud/pdf/itext7/kernel/pdf/PdfPage.class",
                 "net/zerocloud/pdf/itext7/kernel/pdf/PdfReader.class",
                 "net/zerocloud/pdf/itext7/kernel/pdf/PdfWriter.class",
+                "net/zerocloud/pdf/itext7/kernel/pdf/StampingProperties.class",
                 "net/zerocloud/pdf/itext7/kernel/pdf/PdfObject.class",
                 "net/zerocloud/pdf/itext7/kernel/pdf/PdfNull.class",
                 "net/zerocloud/pdf/itext7/kernel/pdf/PdfBoolean.class",
@@ -202,13 +203,21 @@ public final class JarContractIT {
                 "PdfReader(java.io.InputStream) throws java.io.IOException");
         assertMethods(reader, "void close() throws java.io.IOException");
 
+        Class<?> stamping = loader.loadClass("net.zerocloud.pdf.itext7.kernel.pdf.StampingProperties");
+        assertConstructors(stamping, "StampingProperties()",
+                "StampingProperties(net.zerocloud.pdf.itext7.kernel.pdf.StampingProperties)");
+        assertMethods(stamping, "net.zerocloud.pdf.itext7.kernel.pdf.StampingProperties useAppendMode()");
+
         assertConstructors(document,
                 "PdfDocument(net.zerocloud.pdf.itext7.kernel.pdf.PdfReader)",
                 "PdfDocument(net.zerocloud.pdf.itext7.kernel.pdf.PdfReader,net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter)",
+                "PdfDocument(net.zerocloud.pdf.itext7.kernel.pdf.PdfReader,net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter,net.zerocloud.pdf.itext7.kernel.pdf.StampingProperties)",
                 "PdfDocument(net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter)",
                 "PdfDocument(java.util.Map,java.lang.String,java.util.Map)",
-                "PdfDocument(java.util.Map,java.lang.String,java.util.Map,net.zerocloud.pdf.PdfVersion)");
+                "PdfDocument(java.util.Map,java.lang.String,java.util.Map,net.zerocloud.pdf.PdfVersion)",
+                "PdfDocument(java.util.Map,java.lang.String,java.util.Map,net.zerocloud.pdf.PdfVersion,net.zerocloud.pdf.itext7.kernel.pdf.StampingProperties)");
         assertMethods(document,
+                "boolean isAppendMode()",
                 "net.zerocloud.pdf.itext7.kernel.pdf.PdfPage addNewPage()",
                 "net.zerocloud.pdf.itext7.kernel.pdf.PdfPage addNewPage(int)",
                 "java.util.List copyPages(int,int,int)",

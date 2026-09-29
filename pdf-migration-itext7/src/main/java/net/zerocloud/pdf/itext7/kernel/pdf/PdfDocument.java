@@ -29,6 +29,8 @@ import net.zerocloud.pdf.PageRange;
 import net.zerocloud.pdf.PdfVersion;
 import net.zerocloud.pdf.PublicationReceipt;
 import net.zerocloud.pdf.ResourceExtractionLimits;
+import net.zerocloud.pdf.SaveMode;
+import net.zerocloud.pdf.PdfOutputPolicy;
 import net.zerocloud.pdf.TextStructureExtraction;
 import net.zerocloud.pdf.WorkflowOutcome;
 import net.zerocloud.pdf.command.AddBlankPage;
@@ -113,6 +115,24 @@ public final class PdfDocument implements Closeable {
     }
 
     /**
+     * Opens an existing document with an explicit publication selection.
+     * Properties are copied at construction. Execution uses the Native
+     * IN_PROCESS profile and retains its Existing Signature protection policy.
+     * Caller streams remain caller-owned; operational failures retain their
+     * stable Native code, safe diagnostic and Publication Receipts.
+     * Append mode inherits the Source version; REWRITE retains the PDF 1.7 default.
+     * @param reader the validated source reader
+     * @param writer the destination declaration
+     * @param properties rewrite or explicit append-mode selection
+     */
+    public PdfDocument(PdfReader reader, PdfWriter writer, StampingProperties properties) {
+        declarations = new FacadeDeclarations(Collections.singletonMap("source", Objects.requireNonNull(reader, "reader")), "source",
+                Collections.singletonMap("target", Objects.requireNonNull(writer, "writer")),
+                null, Objects.requireNonNull(properties, "properties").saveMode());
+        pageCount = declarations.sourcePageCount;
+    }
+
+    /**
      * Declares all Sources and Targets before starting one Native Workflow.
      * The maps are copied in iteration order and each Reader snapshot is
      * transferred exactly once after all declarations pass validation.
@@ -137,8 +157,36 @@ public final class PdfDocument implements Closeable {
      */
     public PdfDocument(Map<String, PdfReader> sources, String primarySource,
             Map<String, PdfWriter> targets, PdfVersion outputVersion) {
-        declarations = new FacadeDeclarations(sources, primarySource, targets, outputVersion);
+        this(sources, primarySource, targets, outputVersion, new StampingProperties());
+    }
+
+    /**
+     * Declares ordered Sources and Targets with explicit version and publication
+     * choices. This Folio extension selects the same Native append behavior as
+     * the reader/writer constructor, including rejection of a missing primary
+     * Source, split products and unsafe signed changes. Properties are copied
+     * before any Reader ownership is transferred.
+     * @param sources named Reader snapshots, with no repeated Reader instance
+     * @param primarySource the declared primary name, or null for no Sources
+     * @param targets named destinations in receipt order
+     * @param outputVersion explicit version for every published product
+     * @param properties rewrite or explicit append-mode selection
+     */
+    public PdfDocument(Map<String, PdfReader> sources, String primarySource,
+            Map<String, PdfWriter> targets, PdfVersion outputVersion, StampingProperties properties) {
+        declarations = new FacadeDeclarations(sources, primarySource, targets,
+                PdfOutputPolicy.version(Objects.requireNonNull(outputVersion, "outputVersion")),
+                Objects.requireNonNull(properties, "properties").saveMode());
         pageCount = declarations.sourcePageCount;
+    }
+
+    /**
+     * Reports the publication selection captured at construction.
+     * @return true for explicit incremental publication
+     */
+    public boolean isAppendMode() {
+        requireOpen();
+        return declarations.saveMode == SaveMode.INCREMENTAL;
     }
 
     /**

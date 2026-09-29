@@ -1,0 +1,44 @@
+{
+  "schema-version": 1,
+  "obligation": "incremental",
+  "acceptance-profile": "T15-incremental-signature-protection",
+  "release": "0.1.0",
+  "candidate-sha256": "d79c1c0fb695c7a1b3947596ced91bced9c786ae09b8de9a93b10c6a6223e87c",
+  "contract-sha256": "3ee6319a39c8c66d3833a1d07bddb7d099a18cbdfaba803364637eb052014713",
+  "environment-sha256": "2d503e11e7daaa9ec7335dfb55b4f54b81b9b367ac85e2a87ae26211e325de6c",
+  "execution-configuration-sha256": "66a8822a6e3768a9dbfc0eea52fbedd39bef2ce6dbbc827bb6a1eccab0ec66fb",
+  "execution-profile": "HARDENED_WORKER",
+  "chain": "syntax",
+  "result": "pass",
+  "producer": "qpdf",
+  "configuration": {
+    "path": "docs/t15-certification.md",
+    "sha256": "2f4a2b363478c9d2dba8df72c525bc00366003ecc7842d86be1fc1e2af331171"
+  },
+  "report": {
+    "path": "capabilities/evidence/T77-incremental-r2/jdk11-hardened_worker/syntax-report.json",
+    "sha256": "15548cda183ca056db3a83865a3b938d2b51df41c8bb1d191bb1ec101aa769ce"
+  },
+  "negative-controls": [
+    {
+      "path": "capabilities/evidence/T77-incremental-r2/jdk11-hardened_worker/observations/negative/syntax/invalid.pdf",
+      "sha256": "f5117edb193052414d3b7496857953fd5c40d289c84ce675aa0bd361d40ffd76"
+    },
+    {
+      "path": "capabilities/evidence/T77-incremental-r2/jdk11-hardened_worker/observations/negative/syntax/qpdf.command.json",
+      "sha256": "d7dba91a4239f8b2dc81681dc52d1fcfca2df6be1fe79c54934c0bd0c2c46a38"
+    },
+    {
+      "path": "capabilities/evidence/T77-incremental-r2/jdk11-hardened_worker/observations/negative/syntax/qpdf.stderr",
+      "sha256": "19331cc134798929fdb74b29fe886df0b74f065d8ad3fe7028d67fb30fca704d"
+    },
+    {
+      "path": "capabilities/evidence/T77-incremental-r2/jdk11-hardened_worker/observations/negative/syntax/qpdf.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/T77-incremental-r2/jdk11-hardened_worker/observations/negative/syntax/result.json",
+      "sha256": "40bee4c175a2140cffee08167b2a051ee3082b1d8f4cf2d681475080091db58b"
+    }
+  ]
+}

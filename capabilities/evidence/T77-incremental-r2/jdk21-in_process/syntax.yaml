@@ -1,0 +1,44 @@
+{
+  "schema-version": 1,
+  "obligation": "incremental",
+  "acceptance-profile": "T15-incremental-signature-protection",
+  "release": "0.1.0",
+  "candidate-sha256": "d79c1c0fb695c7a1b3947596ced91bced9c786ae09b8de9a93b10c6a6223e87c",
+  "contract-sha256": "3ee6319a39c8c66d3833a1d07bddb7d099a18cbdfaba803364637eb052014713",
+  "environment-sha256": "e4e762affc13d9d6345412550e56dbaab0564370aa1d285a225019221259c584",
+  "execution-configuration-sha256": "180deefaee1efff6317495e6f9e81dd405407ae45b5573d00d4367115bdf1fd8",
+  "execution-profile": "IN_PROCESS",
+  "chain": "syntax",
+  "result": "pass",
+  "producer": "qpdf",
+  "configuration": {
+    "path": "docs/t15-certification.md",
+    "sha256": "2f4a2b363478c9d2dba8df72c525bc00366003ecc7842d86be1fc1e2af331171"
+  },
+  "report": {
+    "path": "capabilities/evidence/T77-incremental-r2/jdk21-in_process/syntax-report.json",
+    "sha256": "30f6d9daecba3be073f9b6d4fe22ff531d222389651ee2ebdd4ccbc9f29509bc"
+  },
+  "negative-controls": [
+    {
+      "path": "capabilities/evidence/T77-incremental-r2/jdk21-in_process/observations/negative/syntax/invalid.pdf",
+      "sha256": "f5117edb193052414d3b7496857953fd5c40d289c84ce675aa0bd361d40ffd76"
+    },
+    {
+      "path": "capabilities/evidence/T77-incremental-r2/jdk21-in_process/observations/negative/syntax/qpdf.command.json",
+      "sha256": "32941765b2a4c9ee4f5a7747ec6a3b51a3c1683ebe609705cbaa594e1e9e7dab"
+    },
+    {
+      "path": "capabilities/evidence/T77-incremental-r2/jdk21-in_process/observations/negative/syntax/qpdf.stderr",
+      "sha256": "90ba5e966724958c5d3ba6c2a5e92710a5b5189fcca5058e1fcac646b5775d80"
+    },
+    {
+      "path": "capabilities/evidence/T77-incremental-r2/jdk21-in_process/observations/negative/syntax/qpdf.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/T77-incremental-r2/jdk21-in_process/observations/negative/syntax/result.json",
+      "sha256": "40bee4c175a2140cffee08167b2a051ee3082b1d8f4cf2d681475080091db58b"
+    }
+  ]
+}

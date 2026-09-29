@@ -683,11 +683,11 @@ documentation, and project-owned tests are the permitted design inputs.
   comprehensive raw hostile-input enforcement (T20), Worker isolation (T21),
   Forms or signature creation (T34+), or cryptographic signature and trust
   validation (T38+).
-- Compatibility Curator evidence: T15 has a passing qpdf syntax record only.
-  Mandatory standards, semantic, and visual chains remain absent, its T09
-  Dependency Gate remains open while T09 is `experimental`, and T06 remains a
-  promotion gate. T15 therefore remains `experimental` with no compatible or
-  certified-platform claim.
+- Historical Compatibility Curator evidence: the original T15 delivery had
+  only a passing qpdf syntax record. Its original status and receipts remain
+  unchanged. T09 is now compatible; the former T09-experimental dependency
+  statement is superseded. Current T15 coverage and candidate-bound four-chain
+  observations are governed by the T77 record below and the Foundation index.
 
 ## T16 pdf-version-password-security record
 
@@ -2794,3 +2794,53 @@ uses the existing Java 8 APIs and pinned SnakeYAML dependency; it adds no
 dependency or externally sourced code. Original failed and successful runs
 and independent review are retained in the T75 delivery history. The source
 change requires fresh candidate certification; r3 evidence remains historical.
+
+## T77 incremental publication and Existing Signature certification record
+
+- Authorship: OpenAI Codex implemented the bounded #77 execution contract under
+  MaBaiqiu's direction. Existing Native incremental staging, prefix validation,
+  signature recognition, conservative permissions and publication machinery
+  are reused. The Native change distinguishes critical indirect DocMDP
+  parameters from a well-formed unsupported restriction and rejects empty signed
+  Annotation updates before they can count as admitted mutations. No Provider seam or
+  downstream Forms, signing, Trust or release-publication feature was added.
+- Project inputs: `/workspace/contracts/issue-77-contract.md`, issue #77,
+  `CONTEXT.md`, ADR-0037/0040, the authoritative signature policy, the accepted
+  T03/T09/T12/T15/T21 behavior and the existing Foundation runner/collectors.
+  No historical receipt was relabeled or replaced.
+- Public API input: official iText 7.2.6 API declarations for
+  [StampingProperties](https://api.itextpdf.com/iText/java/7.2.6/com/itextpdf/kernel/pdf/StampingProperties.html)
+  and [PdfDocument](https://api.itextpdf.com/iText/java/7.2.6/com/itextpdf/kernel/pdf/PdfDocument.html)
+  supplied public names and parameter shapes only. Accessed 2026-09-28.
+  No iText implementation, dependency, test asset or generated output was
+  consulted, copied or used as an oracle. The six frozen mappings and the
+  Folio named Source/Target extension are listed in `facade-surface.yaml`.
+- Standards input: the already inventoried ISO 32000-1:2008 document and its
+  T15 primary-source record supply clauses 7.5.6, 12.7.3.1, 12.8.1,
+  12.8.2.1/2 and 12.8.4, Tables 220/252/253/254/258. The independent closed
+  rule groups and their effective defects are recorded in `products.json`
+  and `docs/t15-certification.md`. This is no cryptographic validation claim.
+- Original assets: both T15 generators use only Python's standard library to
+  author 88 structural PDFs, a restriction matrix, literal public values,
+  raw incremental controls and original PNG grids. Fixed placeholder signature
+  Contents carry no third-party signature, certificate or identity. Rectangle
+  paint and Stamp appearances require no fonts. All new source, fixtures and
+  expectations use the repository's Apache-2.0 license.
+- Validation-only tools: existing pinned qpdf 12.4.0, pdfcpu 0.15.0, PDFium CLI
+  v0.11.2/chromium-7881, ImageMagick 7.1.2-30 and Python 3.12 are reused under
+  their existing dependency/provenance records. Original observer predicates
+  import neither Folio nor fixture-authoring programs. The collector retains
+  original process findings and rejects altered modes, tools, rules, controls,
+  products and aggregate verdicts. No new shipped dependency is introduced.
+- Development protocol data: `scripts/tests/fixtures/t15-collector.zip` has
+  normalized path prefixes and recomputed protocol hashes only; its adjacent
+  origin note distinguishes it from actual certification. It supplies collector
+  tamper/reseal tests and has no environment/candidate certification authority.
+- Current evidence authority: `capabilities/foundation-evidence.yaml` binds
+  final candidate source/artifacts/contract, corpus, exact OS/JDK/image/native
+  and tool identities, execution configuration and separate four-chain records.
+  Only Ubuntu 24.04 Linux x86-64 on JDK 8/11/17/21 is eligible; each tuple runs
+  both Native modes and records Facade IN_PROCESS. The historical T15 syntax
+  record remains syntax-only. T09 is compatible; its former experimental gate
+  description is historical. Current certification does not publish #33 or
+  satisfy downstream security, Forms or Trust obligations.

@@ -8,10 +8,10 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 
 - Schema version: `1`
 - Release train: `0.1.0-SNAPSHOT`
-- Stable entries: `160`
+- Stable entries: `166`
 - Preview additions: `0`
-- Preview artifact entries: `160`
-- Explicit capability exclusions: `16`
+- Preview artifact entries: `166`
+- Explicit capability exclusions: `15`
 
 ## Stable surfaces
 
@@ -573,6 +573,17 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Exception contract: Rejects invalid declarations before Reader transfer; unsupported output policy and Native failures retain their DocumentFailure cause through PdfException when execution starts.
 - Behavioral capabilities: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
 
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_constructor_dash_named_dash_stamping"></a>
+### `itext7.kernel.pdf-document.constructor-named-stamping`
+
+- Availability: `stable`
+- Reference status: `folio-extension`
+- Reference namespace: `com.itextpdf.kernel.pdf.PdfDocument`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#<init>(java.util.Map,java.lang.String,java.util.Map,net.zerocloud.pdf.PdfVersion,net.zerocloud.pdf.itext7.kernel.pdf.StampingProperties)`
+- Generic contract: Accepts Map<String,PdfReader> Sources and Map<String,PdfWriter> Targets in declaration order; captures the selected mode and exact PdfVersion; existing ownership and Native protection apply in actual IN_PROCESS execution.
+- Exception contract: Null properties reject; declaration validation and Reader ownership failures retain existing contracts. Workflow failures preserve Native identity and ordered receipts through PdfException; no missing Source, split or unsupported signed publication is admitted.
+- Behavioral capabilities: [`document.incremental-signature.protect`](capability-matrix.md#capability-document_dot_incremental_dash_signature_dot_protect)
+
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_constructor_dash_reader"></a>
 ### `itext7.kernel.pdf-document.constructor-reader`
 
@@ -592,6 +603,16 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Generic contract: Owns one validated Source snapshot and Native REWRITE workflow through close.
 - Exception contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed or detached mutation targets reject with IllegalStateException.
 - Behavioral capabilities: [`document.value.inspect-patch`](capability-matrix.md#capability-document_dot_value_dot_inspect_dash_patch)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_constructor_dash_stamping"></a>
+### `itext7.kernel.pdf-document.constructor-stamping`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocument#<init>(com.itextpdf.kernel.pdf.PdfReader,com.itextpdf.kernel.pdf.PdfWriter,com.itextpdf.kernel.pdf.StampingProperties)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#<init>(net.zerocloud.pdf.itext7.kernel.pdf.PdfReader,net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter,net.zerocloud.pdf.itext7.kernel.pdf.StampingProperties)`
+- Generic contract: Captures append selection at construction and reuses Native Existing Signature protection, ordered publication and caller resource ownership in actual IN_PROCESS execution.
+- Exception contract: Null properties reject. Workflow failures retain stable DocumentFailure code, capability, safe diagnostic and receipts through PdfException; malformed Reader input maps to IOException. Signed rewrite and unsupported append operations remain protected.
+- Behavioral capabilities: [`document.incremental-signature.protect`](capability-matrix.md#capability-document_dot_incremental_dash_signature_dot_protect)
 
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_constructor_dash_writer"></a>
 ### `itext7.kernel.pdf-document.constructor-writer`
@@ -828,6 +849,16 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Generic contract: Returns a detached defensive byte[] or null and adds an explicit nonnegative decoded-byte bound.
 - Exception contract: Invalid bounds reject before access; limit and structural failures retain their Native DocumentFailure cause through PdfException.
 - Behavioral capabilities: [`document.metadata.outlines-destinations-attachments`](capability-matrix.md#capability-document_dot_metadata_dot_outlines_dash_destinations_dash_attachments)
+
+<a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_is_dash_append_dash_mode"></a>
+### `itext7.kernel.pdf-document.is-append-mode`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.PdfDocument#isAppendMode()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument#isAppendMode()`
+- Generic contract: Returns the captured explicit append selection for an open Document; no generic parameters.
+- Exception contract: Closed Documents reject with IllegalStateException.
+- Behavioral capabilities: [`document.incremental-signature.protect`](capability-matrix.md#capability-document_dot_incremental_dash_signature_dot_protect)
 
 <a id="facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_move_dash_page"></a>
 ### `itext7.kernel.pdf-document.move-page`
@@ -1585,6 +1616,36 @@ Source-surface authority: [`../../capabilities/facade-surface.yaml`](../../capab
 - Exception contract: Declares java.io.FileNotFoundException for a target that cannot name a file in an existing directory.
 - Behavioral capabilities: [`document.blank.create-publish-reopen`](capability-matrix.md#capability-document_dot_blank_dot_create_dash_publish_dash_reopen)
 
+<a id="facade-surface-itext7_dot_kernel_dot_stamping_dash_properties_dot_constructor"></a>
+### `itext7.kernel.stamping-properties.constructor`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.StampingProperties#<init>()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.StampingProperties#<init>()`
+- Generic contract: Selects REWRITE by default; no generic parameters.
+- Exception contract: No checked exceptions.
+- Behavioral capabilities: [`document.incremental-signature.protect`](capability-matrix.md#capability-document_dot_incremental_dash_signature_dot_protect)
+
+<a id="facade-surface-itext7_dot_kernel_dot_stamping_dash_properties_dot_constructor_dash_copy"></a>
+### `itext7.kernel.stamping-properties.constructor-copy`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.StampingProperties#<init>(com.itextpdf.kernel.pdf.StampingProperties)`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.StampingProperties#<init>(net.zerocloud.pdf.itext7.kernel.pdf.StampingProperties)`
+- Generic contract: Copies the current mode without retaining a mutable relationship; no generic parameters.
+- Exception contract: Null original properties reject with NullPointerException.
+- Behavioral capabilities: [`document.incremental-signature.protect`](capability-matrix.md#capability-document_dot_incremental_dash_signature_dot_protect)
+
+<a id="facade-surface-itext7_dot_kernel_dot_stamping_dash_properties_dot_use_dash_append_dash_mode"></a>
+### `itext7.kernel.stamping-properties.use-append-mode`
+
+- Availability: `stable`
+- Reference member: `com.itextpdf.kernel.pdf.StampingProperties#useAppendMode()`
+- Folio PDF mapping: `net.zerocloud.pdf.itext7.kernel.pdf.StampingProperties#useAppendMode()`
+- Generic contract: Selects explicit INCREMENTAL and returns the same StampingProperties; no encryption or trust option is implied.
+- Exception contract: No checked exceptions.
+- Behavioral capabilities: [`document.incremental-signature.protect`](capability-matrix.md#capability-document_dot_incremental_dash_signature_dot_protect)
+
 <a id="facade-surface-itext7_dot_kernel_dot_utils_dot_pdf_dash_merger_dot_close"></a>
 ### `itext7.kernel.utils.pdf-merger.close`
 
@@ -1760,13 +1821,6 @@ No preview additions (included with all stable surfaces) are declared.
 - Behavioral capability: [`document.hostile-input-limits`](capability-matrix.md#capability-document_dot_hostile_dash_input_dash_limits)
 - Deferred ticket: `T20`
 - Reason: Workflow Resource Policy and cooperative resource accounting are project-specific controls with no Reference Suite counterpart. PDF outcomes still require four independent chains; underlying document operations retain their own Facade obligations. Certification remains required under #81.
-
-<a id="excluded-capability-document_dot_incremental_dash_signature_dot_protect"></a>
-### `document.incremental-signature.protect`
-
-- Behavioral capability: [`document.incremental-signature.protect`](capability-matrix.md#capability-document_dot_incremental_dash_signature_dot_protect)
-- Deferred ticket: `T32`
-- Reason: Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under #77 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.
 
 <a id="excluded-capability-document_dot_version_dash_password_dash_security"></a>
 ### `document.version-password-security`

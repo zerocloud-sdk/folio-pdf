@@ -1826,13 +1826,82 @@ surfaces:
       generic-contract: Returns immutable detached List<net.zerocloud.pdf.DocumentResource> selected by current page identity after the complete document Query succeeds under explicit ResourceExtractionLimits and ImageByteAccess. Selection preserves document inventory order and complete shared declarations.
       exception-contract: Null inputs and closed or expired page handles reject; Native failures retain stable DocumentFailure identity through PdfException, preserving caller ownership and returning no partial inventory.
       capabilities: [document.images-resources.extract]
+    - id: itext7.kernel.stamping-properties.constructor
+      reference:
+        type: com.itextpdf.kernel.pdf.StampingProperties
+        member: <init>()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.StampingProperties
+        member: <init>()
+      generic-contract: Selects REWRITE by default; no generic parameters.
+      exception-contract: No checked exceptions.
+      capabilities:
+      - document.incremental-signature.protect
+    - id: itext7.kernel.stamping-properties.constructor-copy
+      reference:
+        type: com.itextpdf.kernel.pdf.StampingProperties
+        member: <init>(com.itextpdf.kernel.pdf.StampingProperties)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.StampingProperties
+        member: <init>(net.zerocloud.pdf.itext7.kernel.pdf.StampingProperties)
+      generic-contract: Copies the current mode without retaining a mutable relationship; no generic parameters.
+      exception-contract: Null original properties reject with NullPointerException.
+      capabilities:
+      - document.incremental-signature.protect
+    - id: itext7.kernel.stamping-properties.use-append-mode
+      reference:
+        type: com.itextpdf.kernel.pdf.StampingProperties
+        member: useAppendMode()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.StampingProperties
+        member: useAppendMode()
+      generic-contract: Selects explicit INCREMENTAL and returns the same StampingProperties; no encryption or trust option
+        is implied.
+      exception-contract: No checked exceptions.
+      capabilities:
+      - document.incremental-signature.protect
+    - id: itext7.kernel.pdf-document.constructor-stamping
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDocument
+        member: <init>(com.itextpdf.kernel.pdf.PdfReader,com.itextpdf.kernel.pdf.PdfWriter,com.itextpdf.kernel.pdf.StampingProperties)
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: <init>(net.zerocloud.pdf.itext7.kernel.pdf.PdfReader,net.zerocloud.pdf.itext7.kernel.pdf.PdfWriter,net.zerocloud.pdf.itext7.kernel.pdf.StampingProperties)
+      generic-contract: Captures append selection at construction and reuses Native Existing Signature protection, ordered
+        publication and caller resource ownership in actual IN_PROCESS execution.
+      exception-contract: Null properties reject. Workflow failures retain stable DocumentFailure code, capability, safe
+        diagnostic and receipts through PdfException; malformed Reader input maps to IOException. Signed rewrite and unsupported
+        append operations remain protected.
+      capabilities:
+      - document.incremental-signature.protect
+    - id: itext7.kernel.pdf-document.constructor-named-stamping
+      reference:
+        status: folio-extension
+        type: com.itextpdf.kernel.pdf.PdfDocument
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: <init>(java.util.Map,java.lang.String,java.util.Map,net.zerocloud.pdf.PdfVersion,net.zerocloud.pdf.itext7.kernel.pdf.StampingProperties)
+      generic-contract: Accepts Map<String,PdfReader> Sources and Map<String,PdfWriter> Targets in declaration order; captures
+        the selected mode and exact PdfVersion; existing ownership and Native protection apply in actual IN_PROCESS execution.
+      exception-contract: Null properties reject; declaration validation and Reader ownership failures retain existing contracts.
+        Workflow failures preserve Native identity and ordered receipts through PdfException; no missing Source, split or
+        unsupported signed publication is admitted.
+      capabilities:
+      - document.incremental-signature.protect
+    - id: itext7.kernel.pdf-document.is-append-mode
+      reference:
+        type: com.itextpdf.kernel.pdf.PdfDocument
+        member: isAppendMode()
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.PdfDocument
+        member: isAppendMode()
+      generic-contract: Returns the captured explicit append selection for an open Document; no generic parameters.
+      exception-contract: Closed Documents reject with IllegalStateException.
+      capabilities:
+      - document.incremental-signature.protect
   preview: []
 
 excluded-capabilities:
-- id: document.incremental-signature.protect
-  ticket: T32
-  reason: 'Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under
-    #77 and capabilities/foundation-release.yaml; this exclusion is not a release-scope waiver.'
 - id: document.version-password-security
   ticket: T32
   reason: 'Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under

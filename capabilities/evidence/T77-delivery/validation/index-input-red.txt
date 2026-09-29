@@ -1,0 +1,24 @@
+F
+======================================================================
+FAIL: test_public_index_binds_manifest_inputs_and_transitive_t15_observations (scripts.tests.test_t15_foundation.T15FoundationTest.test_public_index_binds_manifest_inputs_and_transitive_t15_observations)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/tests/test_t15_foundation.py", line 205, in test_public_index_binds_manifest_inputs_and_transitive_t15_observations
+    self.assertEqual(0, published.returncode, published.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1 : Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1288, in <module>
+    main()
+    ~~~~^^
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1229, in main
+    publish_index(root, (root / args.output).resolve())
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 833, in publish_index
+    raise ValueError('New evidence is incomplete, stale or does not match the observed identities')
+ValueError: New evidence is incomplete, stale or does not match the observed identities
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.477s
+
+FAILED (failures=1)

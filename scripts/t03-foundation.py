@@ -140,6 +140,29 @@ ARTIFACT_CONTRACT_TESTS = tuple(
     'net.zerocloud.pdf.migration.itext7.contract.' + name
     for name in ('JarContractIT', 'ClasspathExclusivityIT'))
 CERTIFICATION_CASES = {
+    'incremental': {
+        'profile': 'T15-incremental-signature-protection',
+        'label': 'T15',
+        'test-count': 36,
+        'test-classes': [
+            'net.zerocloud.pdf.consumer.IncrementalSignatureWorkflowTest',
+            'net.zerocloud.pdf.consumer.IncrementalSignatureMatrixTest',
+            'net.zerocloud.pdf.itext7.consumer.IncrementalSignatureFacadeTest'],
+        'facade-execution-profile': 'IN_PROCESS',
+        'standards-producer': 'pdfcpu',
+        'contract-timeout': 600,
+        'recorder-timeout': 1800,
+        'workflow-policy': 'Explicit INCREMENTAL; complete Source prefix and successive revisions; conservative Existing Signature permission intersection; sole coherent P=3 permits four non-Widget Annotation updates; malformed structures and every bounded first excess fail before publication; ordered Receipts, ownership and closed-session failures; Native tests select the recorded profile; Facade execution remains IN_PROCESS',
+        'fonts': 'none; authored resource-free page and Annotation appearance rectangles',
+        'configuration-paths': [
+            'capabilities/profiles/T15-signatures',
+            'capabilities/profiles/T03-standards',
+            'scripts/t15-certification.py',
+            'scripts/t15-observer.py',
+            'scripts/t15-evidence-pin.properties',
+            'scripts/t15_foundation_reports.py',
+            'scripts/t13_foundation_reports.py',
+            'scripts/t13-qpdf-runtime.sha256']},
     'images': {
         'profile': 'T14-image-resource-extraction',
         'label': 'T14',
@@ -588,6 +611,9 @@ def append_source_visual(root, run, report):
 
 
 def collect_reports(root, run, obligation='transactions', execution_profile=None):
+    if obligation == 'incremental':
+        from t15_foundation_reports import collect_reports as collect_incremental_reports
+        return collect_incremental_reports(root, run, execution_profile)
     if obligation == 'images':
         from t14_foundation_reports import collect_reports as collect_image_reports
         return collect_image_reports(root, run, execution_profile)
@@ -965,7 +991,7 @@ def certification_tools():
          'hash-key': 'IMAGEMAGICK_EXECUTABLE_SHA256', 'chains': ['visual']}]
     project = [{'id': 'folio-pdf-' + label, 'kind': 'project-test',
                 'version': '0.1.0', 'chains': ['semantic']}
-               for label in ('t03', 't09', 't10', 't11', 't12', 't13', 't14')]
+               for label in ('t03', 't09', 't10', 't11', 't12', 't13', 't14', 't15')]
     return external + project
 
 
@@ -1192,7 +1218,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('action', choices=('stage', 'certify', 'collect', 'preservation', 'plan', 'merge-index'))
     parser.add_argument('output', nargs='?', type=Path)
-    parser.add_argument('--obligation', choices=('transactions', 'values', 'pages', 'metadata', 'annotations', 'text', 'images'), default='transactions')
+    parser.add_argument('--obligation', choices=('transactions', 'values', 'pages', 'metadata', 'annotations', 'text', 'images', 'incremental'), default='transactions')
     parser.add_argument('--execution-profile', choices=('IN_PROCESS', 'HARDENED_WORKER'))
     parser.add_argument('--root', type=Path, default=Path(__file__).resolve().parents[1])
     args = parser.parse_args()
@@ -1213,10 +1239,10 @@ def main():
         import json
         if args.output is None:
             parser.error('collect requires an observation directory')
-        if args.obligation in ('metadata', 'annotations', 'text', 'images') and args.execution_profile is None:
+        if args.obligation in ('metadata', 'annotations', 'text', 'images', 'incremental') and args.execution_profile is None:
             parser.error(args.obligation + ' collect requires --execution-profile')
-        if args.obligation not in ('metadata', 'annotations', 'text', 'images') and args.execution_profile is not None:
-            parser.error('--execution-profile applies only to metadata, annotations, text and images collect')
+        if args.obligation not in ('metadata', 'annotations', 'text', 'images', 'incremental') and args.execution_profile is not None:
+            parser.error('--execution-profile applies only to metadata, annotations, text, images and incremental collect')
         print(json.dumps(collect_reports(root, (root / args.output).resolve(), args.obligation,
                                          args.execution_profile), indent=2))
         return
