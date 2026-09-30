@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "/workspace/.build-cache/t79-provision/probe.py", line 8, in <module>
+    print(m.qualify(o), flush=True)
+          ^^^^^^^^^^^^
+  File "/workspace/scripts/t79-certification.py", line 78, in qualify
+    require(findings and any(rule['finding'] in finding for finding in findings), 'Undetected clear-metadata control: ' + name)
+  File "/workspace/scripts/t78-observer.py", line 84, in require
+    raise ValueError(message)
+ValueError: Undetected clear-metadata control: extension-absent

@@ -893,6 +893,35 @@ Native `PasswordCredential.of(char[])` 复制调用方数组；使用后关闭�
 增量保存保留原加密，并继续与已有签名限制取交集。Facade 实际执行模式为 IN_PROCESS；
 Native 另有 HARDENED_WORKER。认证矩阵限定为 Ubuntu 24.04 Linux x86-64 ×
 JDK 8/11/17/21；Windows/macOS 未认证且不是 F0.1.0 阻塞条件。
-父级安全能力仍未完成：#79 元数据保持明文和 #80 仅附件加密是独立的必需工作。
+#79 子能力 `document.version-password-security.clear-metadata` 支持显式保留文档级
+XMP 明文。Native 在 `PasswordSecurityPolicy.builder(owner, user)` 后设置
+`.encryptionScope(PasswordEncryptionScope.ALL_EXCEPT_METADATA)`；默认仍为全内容加密。
+只有 Catalog 引用的 Metadata 流字节明文，Info 字符串、元数据字典内字符串、组件
+元数据、正文和附件仍受密码保护。读取受保护 Source 仍必须提供有效凭据。
+
+Facade 可组合 `EncryptionConstants.ENCRYPTION_AES_256 |
+EncryptionConstants.DO_NOT_ENCRYPT_METADATA`（值 11），例如：
+
+```java
+try (WriterProperties properties = new WriterProperties()
+        .setPdfVersion(PdfVersion.PDF_2_0)
+        .setStandardEncryption(userBytes, ownerBytes,
+                EncryptionConstants.ALLOW_COPY,
+                EncryptionConstants.ENCRYPTION_AES_256
+                        | EncryptionConstants.DO_NOT_ENCRYPT_METADATA)) {
+    try (PdfDocument document = new PdfDocument(new PdfWriter("clear-xmp.pdf", properties))) {
+        document.addNewPage();
+        document.setXmpMetadata(xmpBytes);
+    }
+}
+```
+
+RC4-128 和 AES-128 对应选择器 9、10，仅允许 PDF 1.7 输出且必须显式启用本次请求的
+Legacy Security Mode。AES-256 支持 R5/R6 输入，新输出为 R6；PDF 1.7 Level 8 仍是
+限定互操作约定。RC4-40 与明文元数据的组合会明确失败，不会静默忽略范围选择。
+重写须证明 owner；权限全开的 user 不等同于 owner。增量保存不提供隐式更改范围的路径。
+父级安全能力仍未完成：#80 仅附件加密保持独立、未完成。#79 的
+[来源审计](../research/T79-clear-metadata-profile-audit.md)和
+[认证契约](../t79-certification.md)记录原始字节证明及四条独立检查链。
 详细范围、0.x 行为变更及精确映射以[英文安全契约](../pdf-version-password-security.md)、
 [来源审计](../research/T78-baseline-profile-audit.md)和[认证契约](../t78-certification.md)为准。

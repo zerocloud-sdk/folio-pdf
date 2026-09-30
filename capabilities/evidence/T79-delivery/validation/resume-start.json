@@ -1,0 +1,1325 @@
+{
+  "recorded-at": "2026-09-30T04:10:07.575870+00:00",
+  "head": "7420a656d27d17b82c7632be7c6214f8a657a22f",
+  "contract-sha256": "cd60f23252a7aa9533ea0e3825816839a664d57929276978c3b4a3dbb3b20461",
+  "status": " M PROVENANCE.md\n M README.md\n M capabilities/capability-matrix.yaml\n M capabilities/evidence/T78-password-baseline.md\n M capabilities/facade-surface.yaml\n M capabilities/foundation-release.yaml\n M capabilities/profiles/foundation-release.md\n M docs/generated/capability-matrix.md\n M docs/generated/facade-surface.md\n M docs/generated/foundation-readiness.md\n M docs/pdf-version-password-security.md\n M docs/zh-CN/getting-started.md\n M pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T78PasswordProducts.java\n M pdf-document/src/main/java/net/zerocloud/pdf/HardenedWorkerEngine.java\n M pdf-document/src/main/java/net/zerocloud/pdf/PasswordEncryptionScope.java\n M pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxPasswordParser.java\n M pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxPasswordSecurity.java\n M pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxWorkflowEngine.java\n M pdf-document/src/main/java/net/zerocloud/pdf/WorkerFailureCatalog.java\n M pdf-document/src/main/resources/META-INF/folio-pdf/document-worker-classes\n M pdf-document/src/test/java/net/zerocloud/pdf/consumer/PdfVersionPasswordSecurityWorkflowTest.java\n M pdf-migration-itext7/src/main/java/net/zerocloud/pdf/itext7/kernel/pdf/EncryptionConstants.java\n M pdf-migration-itext7/src/main/java/net/zerocloud/pdf/itext7/kernel/pdf/PdfReader.java\n M pdf-migration-itext7/src/main/java/net/zerocloud/pdf/itext7/kernel/pdf/WriterProperties.java\n M pdf-migration-itext7/src/test/java/net/zerocloud/pdf/migration/itext7/contract/JarContractIT.java\n M scripts/t03-foundation.py\n M scripts/tests/test_t10_foundation.py\n?? build-tools/acceptance/arlington/t79-all-content-input.patch\n?? build-tools/acceptance/arlington/t79-all-content-output.patch\n?? build-tools/acceptance/arlington/t79-input.patch\n?? build-tools/acceptance/arlington/t79-output.patch\n?? capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/classification.json\n?? capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/standards/authentication/owner-proof/qpdf.command.json\n?? capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/standards/authentication/owner-proof/qpdf.stderr\n?? capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/standards/authentication/owner-proof/qpdf.stdout\n?? capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/standards/authentication/owner-proof/result.json\n?? capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/standards/authentication/user-proof/qpdf.command.json\n?? capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/standards/authentication/user-proof/qpdf.stderr\n?? capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/standards/authentication/user-proof/qpdf.stdout\n?? capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/standards/authentication/user-proof/result.json\n?? capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/standards/authentication/user/pypdf.command.json\n?? capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/standards/authentication/user/pypdf.stderr\n?? capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/standards/authentication/user/pypdf.stdout\n?? capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/standards/dictionary/arlington-findings.json\n?? capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/standards/dictionary/arlington.command.json\n?? capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/standards/dictionary/arlington.stderr\n?? capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/standards/dictionary/arlington.stdout\n?? capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/standards/encrypted-core/pdfcpu.command.json\n?? capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/standards/encrypted-core/pdfcpu.stderr\n?? capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/standards/encrypted-core/pdfcpu.stdout\n?? capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/standards/encrypted-core/result.json\n?? capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/syntax/qpdf.command.json\n?? capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/syntax/qpdf.stderr\n?? capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/syntax/qpdf.stdout\n?? capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/syntax/result.json\n?? capabilities/evidence/T79-delivery/reviews/spec-final.md\n?? capabilities/evidence/T79-delivery/reviews/spec-initial.md\n?? capabilities/evidence/T79-delivery/reviews/standards-final.md\n?? capabilities/evidence/T79-delivery/reviews/standards-initial.md\n?? capabilities/evidence/T79-delivery/validation/artifact-regression.txt\n?? capabilities/evidence/T79-delivery/validation/collector-all-1.txt\n?? capabilities/evidence/T79-delivery/validation/collector-all-final.txt\n?? capabilities/evidence/T79-delivery/validation/collector-development-1.txt\n?? capabilities/evidence/T79-delivery/validation/collector-focused-final-r2.txt\n?? capabilities/evidence/T79-delivery/validation/collector-focused-final.txt\n?? capabilities/evidence/T79-delivery/validation/commands.jsonl\n?? capabilities/evidence/T79-delivery/validation/final-evidence-audit.py\n?? capabilities/evidence/T79-delivery/validation/finish-certification.py\n?? capabilities/evidence/T79-delivery/validation/finish-validation-r2.py\n?? capabilities/evidence/T79-delivery/validation/finish-validation.py\n?? capabilities/evidence/T79-delivery/validation/full-verify-final.txt\n?? capabilities/evidence/T79-delivery/validation/full-verify-resumed.txt\n?? capabilities/evidence/T79-delivery/validation/full-verify.txt\n?? capabilities/evidence/T79-delivery/validation/independent-container.py\n?? capabilities/evidence/T79-delivery/validation/independent-development-1.txt\n?? capabilities/evidence/T79-delivery/validation/independent-development-2.txt\n?? capabilities/evidence/T79-delivery/validation/independent-profile-final.txt\n?? capabilities/evidence/T79-delivery/validation/inputs-development-4.txt\n?? capabilities/evidence/T79-delivery/validation/inventory-development-1.txt\n?? capabilities/evidence/T79-delivery/validation/inventory-development-2.txt\n?? capabilities/evidence/T79-delivery/validation/inventory-development-3.txt\n?? capabilities/evidence/T79-delivery/validation/inventory-frozen-check.txt\n?? capabilities/evidence/T79-delivery/validation/inventory-frozen-generate.txt\n?? capabilities/evidence/T79-delivery/validation/inventory-frozen-validate.txt\n?? capabilities/evidence/T79-delivery/validation/live-qualification-source.json\n?? capabilities/evidence/T79-delivery/validation/live-qualification.txt\n?? capabilities/evidence/T79-delivery/validation/native-baseline.txt\n?? capabilities/evidence/T79-delivery/validation/native-boundaries-1.txt\n?? capabilities/evidence/T79-delivery/validation/native-boundaries-2.txt\n?? capabilities/evidence/T79-delivery/validation/native-boundaries-3.txt\n?? capabilities/evidence/T79-delivery/validation/native-clear-development.txt\n?? capabilities/evidence/T79-delivery/validation/native-clear-initial.txt\n?? capabilities/evidence/T79-delivery/validation/native-facade-boundaries-4.txt\n?? capabilities/evidence/T79-delivery/validation/native-facade-boundaries-5.txt\n?? capabilities/evidence/T79-delivery/validation/native-facade-boundaries-6.txt\n?? capabilities/evidence/T79-delivery/validation/qualification-defaults-6.txt\n?? capabilities/evidence/T79-delivery/validation/qualification-development-1.txt\n?? capabilities/evidence/T79-delivery/validation/qualification-development-2.txt\n?? capabilities/evidence/T79-delivery/validation/qualification-development-3.txt\n?? capabilities/evidence/T79-delivery/validation/qualification-review-5.txt\n?? capabilities/evidence/T79-delivery/validation/qualified-input-check.json\n?? capabilities/evidence/T79-delivery/validation/review-regressions-1.txt\n?? capabilities/evidence/T79-delivery/validation/review-worker-regressions-1.txt\n?? capabilities/evidence/T79-delivery/validation/run-logged.py\n?? capabilities/evidence/T79-delivery/validation/ticket-paths.json\n?? capabilities/evidence/T79-delivery/validation/worker-facade-development-r2.txt\n?? capabilities/evidence/T79-delivery/validation/worker-facade-development.txt\n?? capabilities/evidence/T79-delivery/validation/worker-facade-host-r2.txt\n?? capabilities/evidence/T79-delivery/validation/worker-facade-host-r3.txt\n?? capabilities/evidence/T79-delivery/validation/worker-facade-host.txt\n?? capabilities/evidence/T79-delivery/validation/write-receipt.py\n?? capabilities/evidence/T79-password-clear-metadata.md\n?? capabilities/evidence/T79-password-semantic.md\n?? capabilities/evidence/T79-password-standards.md\n?? capabilities/evidence/T79-password-syntax.md\n?? capabilities/evidence/T79-password-visual.md\n?? capabilities/profiles/T79-clear-metadata/aes-128-assembly.pdf\n?? capabilities/profiles/T79-clear-metadata/aes-128-boundary.pdf\n?? capabilities/profiles/T79-clear-metadata/aes-128-crypt-array.pdf\n?? capabilities/profiles/T79-clear-metadata/aes-128-crypt-scalar.pdf\n?? capabilities/profiles/T79-clear-metadata/aes-128-defaults.pdf\n?? capabilities/profiles/T79-clear-metadata/aes-128-pdf20.pdf\n?? capabilities/profiles/T79-clear-metadata/aes-128.pdf\n?? capabilities/profiles/T79-clear-metadata/aes-256-equal.pdf\n?? capabilities/profiles/T79-clear-metadata/aes-256-pdf20.pdf\n?? capabilities/profiles/T79-clear-metadata/aes-256-r5-assembly.pdf\n?? capabilities/profiles/T79-clear-metadata/aes-256-r5-empty.pdf\n?? capabilities/profiles/T79-clear-metadata/aes-256-r5-long.pdf\n?? capabilities/profiles/T79-clear-metadata/aes-256-r5-pdf20.pdf\n?? capabilities/profiles/T79-clear-metadata/aes-256-r5-split.pdf\n?? capabilities/profiles/T79-clear-metadata/aes-256-r5-unicode.pdf\n?? capabilities/profiles/T79-clear-metadata/aes-256-r5.pdf\n?? capabilities/profiles/T79-clear-metadata/aes-256-r6-assembly.pdf\n?? capabilities/profiles/T79-clear-metadata/aes-256-r6-empty.pdf\n?? capabilities/profiles/T79-clear-metadata/aes-256-r6-long.pdf\n?? capabilities/profiles/T79-clear-metadata/aes-256-r6-pdf20.pdf\n?? capabilities/profiles/T79-clear-metadata/aes-256-r6-split.pdf\n?? capabilities/profiles/T79-clear-metadata/aes-256-r6-unicode.pdf\n?? capabilities/profiles/T79-clear-metadata/aes-256-r6.pdf\n?? capabilities/profiles/T79-clear-metadata/aes-256-unrestricted.pdf\n?? capabilities/profiles/T79-clear-metadata/aes128-wrong-metadata-key.pdf\n?? capabilities/profiles/T79-clear-metadata/all-content-metadata-stdcf.pdf\n?? capabilities/profiles/T79-clear-metadata/attachment.txt\n?? capabilities/profiles/T79-clear-metadata/cases.json\n?? capabilities/profiles/T79-clear-metadata/cases.properties\n?? capabilities/profiles/T79-clear-metadata/catalog-metadata-nonstream.pdf\n?? capabilities/profiles/T79-clear-metadata/catalog-metadata-subtype.pdf\n?? capabilities/profiles/T79-clear-metadata/catalog-metadata-type.pdf\n?? capabilities/profiles/T79-clear-metadata/component-crypt.pdf\n?? capabilities/profiles/T79-clear-metadata/embedded-clear.pdf\n?? capabilities/profiles/T79-clear-metadata/manifest.sha256\n?? capabilities/profiles/T79-clear-metadata/merge-donor.pdf\n?? capabilities/profiles/T79-clear-metadata/metadata-crypt-array-default.pdf\n?? capabilities/profiles/T79-clear-metadata/metadata-crypt-array-null.pdf\n?? capabilities/profiles/T79-clear-metadata/metadata-crypt-array-omitted.pdf\n?? capabilities/profiles/T79-clear-metadata/metadata-crypt-array.pdf\n?? capabilities/profiles/T79-clear-metadata/metadata-crypt-default.pdf\n?? capabilities/profiles/T79-clear-metadata/metadata-crypt-duplicate.pdf\n?? capabilities/profiles/T79-clear-metadata/metadata-crypt-omitted.pdf\n?? capabilities/profiles/T79-clear-metadata/metadata-crypt-parameters.pdf\n?? capabilities/profiles/T79-clear-metadata/metadata-crypt-scalar.pdf\n?? capabilities/profiles/T79-clear-metadata/metadata-crypt-stdcf.pdf\n?? capabilities/profiles/T79-clear-metadata/metadata-type.pdf\n?? capabilities/profiles/T79-clear-metadata/metadata.xmp\n?? capabilities/profiles/T79-clear-metadata/perms-0.pdf\n?? capabilities/profiles/T79-clear-metadata/perms-1.pdf\n?? capabilities/profiles/T79-clear-metadata/perms-10.pdf\n?? capabilities/profiles/T79-clear-metadata/perms-11.pdf\n?? capabilities/profiles/T79-clear-metadata/perms-2.pdf\n?? capabilities/profiles/T79-clear-metadata/perms-3.pdf\n?? capabilities/profiles/T79-clear-metadata/perms-4.pdf\n?? capabilities/profiles/T79-clear-metadata/perms-5.pdf\n?? capabilities/profiles/T79-clear-metadata/perms-6.pdf\n?? capabilities/profiles/T79-clear-metadata/perms-7.pdf\n?? capabilities/profiles/T79-clear-metadata/perms-8.pdf\n?? capabilities/profiles/T79-clear-metadata/perms-9.pdf\n?? capabilities/profiles/T79-clear-metadata/plain-identity.pdf\n?? capabilities/profiles/T79-clear-metadata/plain-malformed-crypt.pdf\n?? capabilities/profiles/T79-clear-metadata/plain.pdf\n?? capabilities/profiles/T79-clear-metadata/products.json\n?? capabilities/profiles/T79-clear-metadata/products.properties\n?? capabilities/profiles/T79-clear-metadata/rc4-cf-assembly.pdf\n?? capabilities/profiles/T79-clear-metadata/rc4-cf-boundary.pdf\n?? capabilities/profiles/T79-clear-metadata/rc4-cf-defaults.pdf\n?? capabilities/profiles/T79-clear-metadata/rc4-cf-pdf20.pdf\n?? capabilities/profiles/T79-clear-metadata/rc4-cf.pdf\n?? capabilities/profiles/T79-clear-metadata/rc4-wrong-metadata-key.pdf\n?? capabilities/profiles/T79-clear-metadata/streams-clear.pdf\n?? capabilities/profiles/T79-clear-metadata/strings-clear.pdf\n?? capabilities/profiles/T79-controls/aes128-before16.pdf\n?? capabilities/profiles/T79-controls/aes128-length-bits.pdf\n?? capabilities/profiles/T79-controls/aes128-metadata-key.pdf\n?? capabilities/profiles/T79-controls/aes256-before17.pdf\n?? capabilities/profiles/T79-controls/cf-absent.pdf\n?? capabilities/profiles/T79-controls/cf-event-type.pdf\n?? capabilities/profiles/T79-controls/cf-event.pdf\n?? capabilities/profiles/T79-controls/cf-extra.pdf\n?? capabilities/profiles/T79-controls/cf-length-absent.pdf\n?? capabilities/profiles/T79-controls/cf-length-bits.pdf\n?? capabilities/profiles/T79-controls/cf-length-type.pdf\n?? capabilities/profiles/T79-controls/cf-method-absent.pdf\n?? capabilities/profiles/T79-controls/cf-method.pdf\n?? capabilities/profiles/T79-controls/cf-stdcf-absent.pdf\n?? capabilities/profiles/T79-controls/cf-type.pdf\n?? capabilities/profiles/T79-controls/clear-scope-changed-paint.pdf\n?? capabilities/profiles/T79-controls/component-crypt-identity.pdf\n?? capabilities/profiles/T79-controls/component-crypt-name-missing.pdf\n?? capabilities/profiles/T79-controls/component-metadata-clear.pdf\n?? capabilities/profiles/T79-controls/eff-identity.pdf\n?? capabilities/profiles/T79-controls/eff-type.pdf\n?? capabilities/profiles/T79-controls/encryptmetadata-absent.pdf\n?? capabilities/profiles/T79-controls/encryptmetadata-type.pdf\n?? capabilities/profiles/T79-controls/extension-absent.pdf\n?? capabilities/profiles/T79-controls/extension-base.pdf\n?? capabilities/profiles/T79-controls/extension-level.pdf\n?? capabilities/profiles/T79-controls/filter-absent.pdf\n?? capabilities/profiles/T79-controls/filter-handler.pdf\n?? capabilities/profiles/T79-controls/filter-type.pdf\n?? capabilities/profiles/T79-controls/global-length-bits.pdf\n?? capabilities/profiles/T79-controls/length-absent.pdf\n?? capabilities/profiles/T79-controls/length-type.pdf\n?? capabilities/profiles/T79-controls/manifest.sha256\n?? capabilities/profiles/T79-controls/metadata-bytes-changed.pdf\n?? capabilities/profiles/T79-controls/metadata-bytes-encrypted.pdf\n?? capabilities/profiles/T79-controls/metadata-crypt-duplicate.pdf\n?? capabilities/profiles/T79-controls/metadata-crypt-name-stdcf.pdf\n?? capabilities/profiles/T79-controls/metadata-crypt-name-unknown.pdf\n?? capabilities/profiles/T79-controls/metadata-crypt-parameters.pdf\n?? capabilities/profiles/T79-controls/metadata-crypt-second.pdf\n?? capabilities/profiles/T79-controls/metadata-dictionary-string-clear.pdf\n?? capabilities/profiles/T79-controls/metadata-encrypted.pdf\n?? capabilities/profiles/T79-controls/metadata-subtype.pdf\n?? capabilities/profiles/T79-controls/metadata-type.pdf\n?? capabilities/profiles/T79-controls/o-absent.pdf\n?? capabilities/profiles/T79-controls/o-long.pdf\n?? capabilities/profiles/T79-controls/o-short.pdf\n?? capabilities/profiles/T79-controls/o-type.pdf\n?? capabilities/profiles/T79-controls/oe-absent.pdf\n?? capabilities/profiles/T79-controls/oe-long.pdf\n?? capabilities/profiles/T79-controls/oe-short.pdf\n?? capabilities/profiles/T79-controls/oe-type.pdf\n?? capabilities/profiles/T79-controls/ordinary-stream-clear.pdf\n?? capabilities/profiles/T79-controls/p-absent.pdf\n?? capabilities/profiles/T79-controls/p-bit10-output.pdf\n?? capabilities/profiles/T79-controls/p-range-r4.pdf\n?? capabilities/profiles/T79-controls/p-range-r5.pdf\n?? capabilities/profiles/T79-controls/p-range-r6.pdf\n?? capabilities/profiles/T79-controls/p-reserved-1.pdf\n?? capabilities/profiles/T79-controls/p-reserved-13.pdf\n?? capabilities/profiles/T79-controls/p-reserved-2.pdf\n?? capabilities/profiles/T79-controls/p-reserved-32.pdf\n?? capabilities/profiles/T79-controls/p-reserved-7.pdf\n?? capabilities/profiles/T79-controls/p-reserved-8.pdf\n?? capabilities/profiles/T79-controls/p-type.pdf\n?? capabilities/profiles/T79-controls/perms-absent.pdf\n?? capabilities/profiles/T79-controls/perms-long.pdf\n?? capabilities/profiles/T79-controls/perms-short.pdf\n?? capabilities/profiles/T79-controls/perms-type.pdf\n?? capabilities/profiles/T79-controls/r-absent.pdf\n?? capabilities/profiles/T79-controls/r-type.pdf\n?? capabilities/profiles/T79-controls/r5-output.pdf\n?? capabilities/profiles/T79-controls/r5-perms-0.pdf\n?? capabilities/profiles/T79-controls/r5-perms-1.pdf\n?? capabilities/profiles/T79-controls/r5-perms-10.pdf\n?? capabilities/profiles/T79-controls/r5-perms-11.pdf\n?? capabilities/profiles/T79-controls/r5-perms-2.pdf\n?? capabilities/profiles/T79-controls/r5-perms-3.pdf\n?? capabilities/profiles/T79-controls/r5-perms-4.pdf\n?? capabilities/profiles/T79-controls/r5-perms-5.pdf\n?? capabilities/profiles/T79-controls/r5-perms-6.pdf\n?? capabilities/profiles/T79-controls/r5-perms-7.pdf\n?? capabilities/profiles/T79-controls/r5-perms-8.pdf\n?? capabilities/profiles/T79-controls/r5-perms-9.pdf\n?? capabilities/profiles/T79-controls/r6-perms-0.pdf\n?? capabilities/profiles/T79-controls/r6-perms-1.pdf\n?? capabilities/profiles/T79-controls/r6-perms-10.pdf\n?? capabilities/profiles/T79-controls/r6-perms-11.pdf\n?? capabilities/profiles/T79-controls/r6-perms-2.pdf\n?? capabilities/profiles/T79-controls/r6-perms-3.pdf\n?? capabilities/profiles/T79-controls/r6-perms-4.pdf\n?? capabilities/profiles/T79-controls/r6-perms-5.pdf\n?? capabilities/profiles/T79-controls/r6-perms-6.pdf\n?? capabilities/profiles/T79-controls/r6-perms-7.pdf\n?? capabilities/profiles/T79-controls/r6-perms-8.pdf\n?? capabilities/profiles/T79-controls/r6-perms-9.pdf\n?? capabilities/profiles/T79-controls/rc4-before15.pdf\n?? capabilities/profiles/T79-controls/rc4-length-bits.pdf\n?? capabilities/profiles/T79-controls/rc4-metadata-key.pdf\n?? capabilities/profiles/T79-controls/rules.json\n?? capabilities/profiles/T79-controls/stmf-absent.pdf\n?? capabilities/profiles/T79-controls/stmf-identity.pdf\n?? capabilities/profiles/T79-controls/stmf-type.pdf\n?? capabilities/profiles/T79-controls/strf-absent.pdf\n?? capabilities/profiles/T79-controls/strf-identity.pdf\n?? capabilities/profiles/T79-controls/strf-type.pdf\n?? capabilities/profiles/T79-controls/subfilter-present.pdf\n?? capabilities/profiles/T79-controls/tuple-v2.pdf\n?? capabilities/profiles/T79-controls/tuple-v5-r4.pdf\n?? capabilities/profiles/T79-controls/u-absent.pdf\n?? capabilities/profiles/T79-controls/u-long.pdf\n?? capabilities/profiles/T79-controls/u-short.pdf\n?? capabilities/profiles/T79-controls/u-type.pdf\n?? capabilities/profiles/T79-controls/ue-absent.pdf\n?? capabilities/profiles/T79-controls/ue-long.pdf\n?? capabilities/profiles/T79-controls/ue-short.pdf\n?? capabilities/profiles/T79-controls/ue-type.pdf\n?? capabilities/profiles/T79-controls/v-absent.pdf\n?? capabilities/profiles/T79-controls/v-type.pdf\n?? docs/research/T79-clear-metadata-profile-audit.md\n?? docs/t79-certification.md\n?? pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/PasswordProducts.java\n?? pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T79EvidenceCommand.java\n?? pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T79PasswordProducts.java\n?? pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T79PasswordProductsTest.java\n?? pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxMetadataEncryption.java\n?? pdf-document/src/test/java/net/zerocloud/pdf/consumer/ClearMetadataPasswordWorkflowTest.java\n?? pdf-migration-itext7/src/test/java/net/zerocloud/pdf/itext7/consumer/ClearMetadataPasswordFacadeTest.java\n?? scripts/freeze-t79-inputs.py\n?? scripts/generate-t79-controls.py\n?? scripts/generate-t79-corpus.py\n?? scripts/provision-t79-arlington-model.py\n?? scripts/t79-arlington-runtime.sha256\n?? scripts/t79-byte-check.py\n?? scripts/t79-certification.py\n?? scripts/t79-evidence-pin.properties\n?? scripts/t79-observer.py\n?? scripts/t79_foundation_reports.py\n?? scripts/tests/test_t79_foundation.py\n",
+  "files": [
+    {
+      "path": "PROVENANCE.md",
+      "sha256": "57ccaa5ea5066a3cea1c4c6c93a67dd6acd5ed833767af27893ebb1a3878a8bd"
+    },
+    {
+      "path": "README.md",
+      "sha256": "7d50e7042ca91bd00b4f18a2ac2cc923dc293c2bda2807f50bde4e8febf6aea1"
+    },
+    {
+      "path": "capabilities/capability-matrix.yaml",
+      "sha256": "81c335e3b6d9fe053088cbbbc98492e4b1b3a28b68c293000b68a47e9e7cee09"
+    },
+    {
+      "path": "capabilities/evidence/T78-password-baseline.md",
+      "sha256": "c33d266e4bb19f171ddccd5a217a94e54b60ca99a9daf56162223bd4c4283a6a"
+    },
+    {
+      "path": "capabilities/facade-surface.yaml",
+      "sha256": "6c4e04286bb72f18186add5da7d5ba8b10dffc230af4b299b40c4844395be9d8"
+    },
+    {
+      "path": "capabilities/foundation-release.yaml",
+      "sha256": "66873b6b6faa907a7edd6a4efd3d95c763adeb469ed0a6689cff37da17f0e522"
+    },
+    {
+      "path": "capabilities/profiles/foundation-release.md",
+      "sha256": "74ec9325db0ef49184917208941479e82cbc3fe7b1fc39b6dbe24536f57abf3d"
+    },
+    {
+      "path": "docs/generated/capability-matrix.md",
+      "sha256": "f207de25b34b5f6fa8cd57f2a8e555ae9762a1fa33e7fa0dc674e003b6480bd1"
+    },
+    {
+      "path": "docs/generated/facade-surface.md",
+      "sha256": "dddfe359b11663e5e5cc766eb90cef4e5c088886f95eda679222a633e5481801"
+    },
+    {
+      "path": "docs/generated/foundation-readiness.md",
+      "sha256": "71a1a07afeb119438d601c834a9daf1f7dbe5fb5b70e0bad5a57cd20f17efa05"
+    },
+    {
+      "path": "docs/pdf-version-password-security.md",
+      "sha256": "e84b5139651cfe9c00c4a89e6ac0c559a78ec4ec91f872e134cc46a7e185030b"
+    },
+    {
+      "path": "docs/zh-CN/getting-started.md",
+      "sha256": "7f239b743de8dc9fcdf6ad018607127ff9dbac4f6c90f1114d2a1bc90381a30c"
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T78PasswordProducts.java",
+      "sha256": "5a85c2469a88a943bf4a80198b052caedab8f15767c7162435fdc8d595707d3e"
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/HardenedWorkerEngine.java",
+      "sha256": "3f8adff249cc828515fffed69a1593e020b8cb525ca302ce714e06b8dfe4840b"
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PasswordEncryptionScope.java",
+      "sha256": "50304413fb09b462b16c8b6ce9405838b92ef36bd18cdbcbda5dcce73ef661ad"
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxPasswordParser.java",
+      "sha256": "f239db5ae3643d0213ffb52e182bcf520c1b6387cc453a4ecb8dfa158df60297"
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxPasswordSecurity.java",
+      "sha256": "6e954065f96b7ab04dcee2f874422d6e63e606c339accb24c4fb00b478639ab3"
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxWorkflowEngine.java",
+      "sha256": "bfe59210be841aedd7b4c2176eb4d37118382393515e6e4db9d5cb6964089b2a"
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/WorkerFailureCatalog.java",
+      "sha256": "0a594a38ec4826c2b9a6740ed9fed7dd64cef440fb1dce49fd9e27d957024705"
+    },
+    {
+      "path": "pdf-document/src/main/resources/META-INF/folio-pdf/document-worker-classes",
+      "sha256": "9c86d17110079867b1845658c86264e33157703a044f6f38e25d59b35b83e6a1"
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/PdfVersionPasswordSecurityWorkflowTest.java",
+      "sha256": "71d87bf93d4a2916bf0c5d5ad270bf557f42910fffa0bc49cc50669f8e04ff12"
+    },
+    {
+      "path": "pdf-migration-itext7/src/main/java/net/zerocloud/pdf/itext7/kernel/pdf/EncryptionConstants.java",
+      "sha256": "4d44ddd436658ae325783408cebbee41f9465a8525c0156c6d592f43555e5c9e"
+    },
+    {
+      "path": "pdf-migration-itext7/src/main/java/net/zerocloud/pdf/itext7/kernel/pdf/PdfReader.java",
+      "sha256": "150744841bec22723c45ceaea37a1790c4594ba45685560a74092c390b9ed2c2"
+    },
+    {
+      "path": "pdf-migration-itext7/src/main/java/net/zerocloud/pdf/itext7/kernel/pdf/WriterProperties.java",
+      "sha256": "6c43bc75741ace634e354ff950f5a179d43f5c19e7b47850cfdedb515dcb981b"
+    },
+    {
+      "path": "pdf-migration-itext7/src/test/java/net/zerocloud/pdf/migration/itext7/contract/JarContractIT.java",
+      "sha256": "22d31465df1380e8c3591efef6c18200455f5cbb7216a1694f8684a13750d095"
+    },
+    {
+      "path": "scripts/t03-foundation.py",
+      "sha256": "f25f1240b90dc3dba8fd944b6d35fd026fa171a2e90cdbc71991bfdbacc61ef4"
+    },
+    {
+      "path": "scripts/tests/test_t10_foundation.py",
+      "sha256": "3be932742c7ca04e6eeb96aee113500b8f323951c5e5b5a7a887fa882efbacf1"
+    },
+    {
+      "path": "build-tools/acceptance/arlington/t79-all-content-input.patch",
+      "sha256": "fc53c94dc11e42449274f42861af86ba146182e365f5d57184e38e87f65ab5f8"
+    },
+    {
+      "path": "build-tools/acceptance/arlington/t79-all-content-output.patch",
+      "sha256": "478d51681f0794460db94790e6ee65230d2fd57354cc87018ccf0931d6c6c1e7"
+    },
+    {
+      "path": "build-tools/acceptance/arlington/t79-input.patch",
+      "sha256": "c9a60197437d0c2a425e241dcc56f94f41daa6c89649fd7d4d67c3ebcefe69b4"
+    },
+    {
+      "path": "build-tools/acceptance/arlington/t79-output.patch",
+      "sha256": "37ae8732b857aaa27e43c414ad2503752a47b71eda9a5f91eed5862282af2b55"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/classification.json",
+      "sha256": "9e61e344eaf5dfb2ed5f7e6a8f21a79222466a398c02e8ad21a06a4d6e8bbe8c"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/standards/authentication/owner-proof/qpdf.command.json",
+      "sha256": "443e9fd594b78902abc3e5f268ff01e2eb07a277f8e3b80035cf6da7d002f038"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/standards/authentication/owner-proof/qpdf.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/standards/authentication/owner-proof/qpdf.stdout",
+      "sha256": "092c8b2c7f88ccbbdf195babea71564af4dbd474a73a2e692c5385d7d8dde919"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/standards/authentication/owner-proof/result.json",
+      "sha256": "e5ebdbfe4404bc3eaa1517c9224be85442a729c5c5c7113d107a6c6aad7ca25d"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/standards/authentication/user-proof/qpdf.command.json",
+      "sha256": "83c01d6855e21018ffe3607a82f0b076a6b205279ee1246288446d8f9e406666"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/standards/authentication/user-proof/qpdf.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/standards/authentication/user-proof/qpdf.stdout",
+      "sha256": "def74079d80a9b4ea4de2c820eb1f59b86981e71ff6da3830629a86281d74bb3"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/standards/authentication/user-proof/result.json",
+      "sha256": "856996b5ef8598d3a014ff70670c605c35ca50e53cd4dabd224331cb7ad804f0"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/standards/authentication/user/pypdf.command.json",
+      "sha256": "9f8b03492e2a824c584237a146a7483769f8045b4791e92907af85e3f42bb877"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/standards/authentication/user/pypdf.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/standards/authentication/user/pypdf.stdout",
+      "sha256": "b393e367f98ccc9ae920ee9c2144ce17f98376a0be1a85bdff6365bce40134ec"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/standards/dictionary/arlington-findings.json",
+      "sha256": "de58ac9eb64966dc8e455613ae1df0cd5d3e77bbeebc2f7bbb02ab08df06e32b"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/standards/dictionary/arlington.command.json",
+      "sha256": "97d538df6d9c76841646cb846403b84184c6b751e763db81cb53da16a31985ed"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/standards/dictionary/arlington.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/standards/dictionary/arlington.stdout",
+      "sha256": "9b916ecd7fe8f0dc2e8dc4c5e062d6d68efbc6dfa13071f30910779832de52f1"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/standards/encrypted-core/pdfcpu.command.json",
+      "sha256": "9854c69cd06f656e3aede081d500dc249449df6aa6c1b523ecc0baba4675c617"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/standards/encrypted-core/pdfcpu.stderr",
+      "sha256": "aca8c988f9910cf4b95be7af843d98880d73fec179f6e311fdf4a3bbe2ca9895"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/standards/encrypted-core/pdfcpu.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/standards/encrypted-core/result.json",
+      "sha256": "6261e01f09d48dabda37087d4e46d8059fa8115185b81ba18116baac395711dd"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/syntax/qpdf.command.json",
+      "sha256": "40a4dbd98fc21207fe8079f629d8b42b5d03e2b9eda9dac0612a0418908f8dc2"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/syntax/qpdf.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/syntax/qpdf.stdout",
+      "sha256": "bb9bc25357b41160481405145498798a0fc39da735e49e644a2f6e5749e20cb9"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/qualification-limitations/all-content-metadata-stdcf/syntax/result.json",
+      "sha256": "51954f49b6ee1e4b94ee107a8d7be4e2487cb4f0d822e5e82327c2023d0bf72b"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/reviews/spec-final.md",
+      "sha256": "115e8df1b5f1c2e8ff57694216028cdd1754507ddd2031e8f426234fc9afc502"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/reviews/spec-initial.md",
+      "sha256": "c9e9b2be46183dd5d5f4ae0805e13a32e314c4a3967c45565b2c036311219580"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/reviews/standards-final.md",
+      "sha256": "75f21ab973c41c0feb526459f8189c5e0d35403627b37acccd7b8271aa771781"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/reviews/standards-initial.md",
+      "sha256": "2fdfd04ce0bf596b1c025e0d8da6c59fff2f1467dd95b74927ec03d0e0948f68"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/artifact-regression.txt",
+      "sha256": "05001af1945c371134209a61f7673d3dd650efa2383d8e82a5964f2a85a20b70"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/collector-all-1.txt",
+      "sha256": "937b22176da540d26517dff5054d93e175d9e0a19fde328486b0ef9ad1124cd7"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/collector-all-final.txt",
+      "sha256": "1f14b0775b0e49193cfc886c6a513192566a9e561392c8c2e37574ce026b1aac"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/collector-development-1.txt",
+      "sha256": "e64c39eb84297ad5826704736ab9a3477f92fa631de1d2cce86a8fd13ac2f6ac"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/collector-focused-final-r2.txt",
+      "sha256": "8e295e2075b5a91f6c4459dd4362fbc6c0384fb3749f7dca39b8c42e0e6654f9"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/collector-focused-final.txt",
+      "sha256": "e4820c16768fb8fdfef5e32e653b2a5365d59a62a3410afed372201952d676ae"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/commands.jsonl",
+      "sha256": "7e500a635dc049b64a9cbe13469ea19144b254a89ea5226c8e503c214ba25258"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/final-evidence-audit.py",
+      "sha256": "4b6129be69f0926e180c0d0b723e0ad66609abce8c686a252c72e282f6f82b6a"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/finish-certification.py",
+      "sha256": "50674bcd70cc022aaf7b358f481b7ebe1f5651d23759c983aa2e5dbbf569f897"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/finish-validation-r2.py",
+      "sha256": "2d1e86fd139c84672f9fbbb496dc9f8192e2e25b7a4b70db9214ef0f9f0bf18d"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/finish-validation.py",
+      "sha256": "da01c231e4c107f463af049cc78e3d922195450e74487d4eeee0a62dab659d55"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/full-verify-final.txt",
+      "sha256": "77d55855150c448c4e62f141d8d2d5774cf8fad49eff1116d8bbcf759eaae9b8"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/full-verify-resumed.txt",
+      "sha256": "69415e1a7cb13c0b8877a38fa8537ba860cd8165fb80c2ec9c6d8a2bce840802"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/full-verify.txt",
+      "sha256": "8c4eee2cffc97f4fc231f5681cbbeb12b313c958a26bbe1dab297a937fabd874"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/independent-container.py",
+      "sha256": "e2f14cdb552fc25c59f5ab0527baf9387a233a7183fdd753c4045bcf2b3c64d8"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/independent-development-1.txt",
+      "sha256": "70054ba4dc393d4fb1dd89fb6c43524a2935b8055a9ad4b516e2e2fd477e24e4"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/independent-development-2.txt",
+      "sha256": "abdd460cfb98e935486e4d7e33d68f74e1e76249adbf25823b1b57590e056e18"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/independent-profile-final.txt",
+      "sha256": "642af48ca10703bdbc2a62f39138df521f8aab672e59c30df2002ee56e97f3dc"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/inputs-development-4.txt",
+      "sha256": "ffafe4abc5222a0e1e36c0e77af8dacfa54b90d44de17b0d28ef6c3a1292b154"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/inventory-development-1.txt",
+      "sha256": "800a23b5f08808ac5a312bcc3200542f7c1e500776136ca42a05b1e17e967317"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/inventory-development-2.txt",
+      "sha256": "dd6695f67f30bb18159e9e37cf5c3f1743fcc8b75503cd5bfd56241ba945abac"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/inventory-development-3.txt",
+      "sha256": "6ffe6b8aff982ce8795bea0e582f0b3e188b6d1363e2f4005b9b562af5a01df5"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/inventory-frozen-check.txt",
+      "sha256": "21642ee547758fb3e6a7cf4ed2b4aea3f1c90af2057ceaa799dfb95c24e59d74"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/inventory-frozen-generate.txt",
+      "sha256": "bffd5df2f50e4f9ba094626023d2808a2854f32b2785b3a9c2259bf0a9878528"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/inventory-frozen-validate.txt",
+      "sha256": "eeb2fd03d892535a44c7beea3611407d8623686e8c2ce50ad07e61f4c7fbc620"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/live-qualification-source.json",
+      "sha256": "d100982f58dc3507c9b070eb82a39801700230195406e0dd39330c81962cdff8"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/live-qualification.txt",
+      "sha256": "4a00aea233f0bee0b40fe8e1f631ad158ac7c60106634922a2cc2f05c9aa322c"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/native-baseline.txt",
+      "sha256": "7de6aaaac9090e6e90e8fb13778e68acd066ff836055fed0d4e4696a6f025a85"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/native-boundaries-1.txt",
+      "sha256": "416c355008da64b4b170cda9f90d5d6b351c8c43daae12ffbd4671decad4a61e"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/native-boundaries-2.txt",
+      "sha256": "cdc4642109a3758dd97f5df0a546d6813ba9c28df6fb0be5c5f75cceb0eca6a1"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/native-boundaries-3.txt",
+      "sha256": "a885b03604119aec446db8ec40fe4ae49c6997970c353c704a3631cdbdfef31b"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/native-clear-development.txt",
+      "sha256": "4920b9c517e925aa966400ee88735fb73e6c2fd403d6fbc1cc27d6deb3c0d88e"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/native-clear-initial.txt",
+      "sha256": "0f23d6cbb162949b639dc34d743565f27299488d1e10bcf89ed60d36063d6769"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/native-facade-boundaries-4.txt",
+      "sha256": "96cf91300a26ca2eba63087c0f0a7a4cb7f2a2f3cdc78d005f8ede5bdae91cac"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/native-facade-boundaries-5.txt",
+      "sha256": "59f0e2c31754ae16c9d6ea20a86e3309890e28728abd778f56b1af385f3633e6"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/native-facade-boundaries-6.txt",
+      "sha256": "9abc0b613f52c2495ce98d0c4c8d4c2be9c68d9344966c797b0fb1afc271d2c0"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/qualification-defaults-6.txt",
+      "sha256": "58086944d03704133bca1f9cadc2851c2273a50100801d13f0ca2ac54ffbe998"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/qualification-development-1.txt",
+      "sha256": "a22cd795a1237584e674d3f8f08057a97e9ff0dba02b5df98f95e891e3682285"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/qualification-development-2.txt",
+      "sha256": "57fa5d065dabd7a9473b1d56dd2ecf595a2c0fc85eaa0cfb9ca834d64cfb2ef1"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/qualification-development-3.txt",
+      "sha256": "a2b5118c6140e8d0fa6c93ad69a789df8827e9ea4452ad50eca15a6f6b97573a"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/qualification-review-5.txt",
+      "sha256": "ce3e4009dd032c761be7c941c5277c3dfdc6491330364f40099c63494cadac6f"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/qualified-input-check.json",
+      "sha256": "fa8efd01c68be8c3cde3835a62fdef9232289fb7cb39c206797eb83feedb763e"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/review-regressions-1.txt",
+      "sha256": "872ae6aa423b11e1c2f0a890a1aeb4b9787b75c24e7c27042a28df64a953ddcb"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/review-worker-regressions-1.txt",
+      "sha256": "a5a905a21a60a81f336dafa00686b46fe6d7952fb4316e39f5f1a3508e851c2d"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/run-logged.py",
+      "sha256": "5cb48db5b85838c6285c3bcd3c0c32effed9f665050ddf8bbcb8aad82b58be73"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/ticket-paths.json",
+      "sha256": "9dbfa2202cd93462561c0a170bf3b69a120c3e4c60b3dca0cb206936785446c3"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/worker-facade-development-r2.txt",
+      "sha256": "8a155718a4e5ba8db37ab95f45045d0d9faff38e12379e205a56e722c69852d2"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/worker-facade-development.txt",
+      "sha256": "af379de39fbfac5aeac038880d9f98e53f3959a91626acb6105dae08ac5fd757"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/worker-facade-host-r2.txt",
+      "sha256": "1b7e932a4b7a59c981e8b6a54fe7316d98928b125ef3fe7dc499f5229a20c544"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/worker-facade-host-r3.txt",
+      "sha256": "b2c6713c12a896a0a8f109332884693d9acad2c5ef82c15d496e6b0859461a0e"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/worker-facade-host.txt",
+      "sha256": "55d61e5e17275007fb4200c3de2492d26601414c2d55e5a86dbe7db3c03162cd"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/write-receipt.py",
+      "sha256": "b60f02cc078372daf62783a05f71e924cfb6514deb4f7684f4f3f9e3981a9902"
+    },
+    {
+      "path": "capabilities/evidence/T79-password-clear-metadata.md",
+      "sha256": "4462de93d6fdffb2eaefb40e5bfe3f719875dc658b2bfa0695fd997ade9572b4"
+    },
+    {
+      "path": "capabilities/evidence/T79-password-semantic.md",
+      "sha256": "6a732d95b5c2d55cc51f6bbd4bfeedd29c5ce3a7edec7fc814a2f4b5801b88d6"
+    },
+    {
+      "path": "capabilities/evidence/T79-password-standards.md",
+      "sha256": "c5657a4c52c7de24c664d253b27fc7d20b7f6956db844e873b8cf368016da882"
+    },
+    {
+      "path": "capabilities/evidence/T79-password-syntax.md",
+      "sha256": "1db013c19b0a4afceed92ae699b29cb038881c20294bd74b24c38d8dff380084"
+    },
+    {
+      "path": "capabilities/evidence/T79-password-visual.md",
+      "sha256": "d932287264c2e4502532060c312b7da8d5d4b4f5d6f89aa06ef9cb47fbc339a3"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/aes-128-assembly.pdf",
+      "sha256": "2baebd60c793314a314a2f27db0834979f7b7cffc4a60e7c69d8507eef9bf64a"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/aes-128-boundary.pdf",
+      "sha256": "bc6819dcbf87e17f6a877cbb5e7062b8242c3452e59c37ff6280c9f737c050bf"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/aes-128-crypt-array.pdf",
+      "sha256": "c3f0dac1a096607cb74697da2156169c651e7357a1c27b158c38e571ec54828c"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/aes-128-crypt-scalar.pdf",
+      "sha256": "c464854198854f3675b86637a2514758ff612c417a45fa85569cf45c2c3f2e79"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/aes-128-defaults.pdf",
+      "sha256": "9aee5efc13d8d758fde54b6d2f9c349b3f167e9419cfcbc9e7dea119a6f8ba3c"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/aes-128-pdf20.pdf",
+      "sha256": "2cf5be8f8964d5467eadb43f2e42062d33e4ba754ffaf067c857a52971203adb"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/aes-128.pdf",
+      "sha256": "5697c71a1eebd3541690f6304b85d06b0fdcbd36c4c5d2578b3ba065da09baa8"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/aes-256-equal.pdf",
+      "sha256": "c0e0b4d37a29535faf25022e65ceba366b6ebf336d5d959d3326130fcc9558ce"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/aes-256-pdf20.pdf",
+      "sha256": "5a8a08617d4c274e0c50a8f4a27f23c16d68e714b990748fc41cc50003ad4984"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/aes-256-r5-assembly.pdf",
+      "sha256": "16a3538c1061e353bda06e618c248c2f5fbcf7dcf658633da2e7f57b793a0902"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/aes-256-r5-empty.pdf",
+      "sha256": "abcadfa24735d041f47c353e98d35ce56b17fc8834956174a945a9cd7c674312"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/aes-256-r5-long.pdf",
+      "sha256": "4861c7309c979dfca051e7a3e9b9615be488cdd9ec78482658c63f6cc384308e"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/aes-256-r5-pdf20.pdf",
+      "sha256": "68ea6483bdc3c3d4246f6088433c07612fb0904356f1eddb1972f4c2682cf048"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/aes-256-r5-split.pdf",
+      "sha256": "f55242cc5502c6899baa80b0ad20ab0ff63b7ad8a027cd4a8e92e7cee2ec6a60"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/aes-256-r5-unicode.pdf",
+      "sha256": "5d014679b3a2b029a49ecef776c3926a52e8a7fa393b60190393ae0fc558eb55"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/aes-256-r5.pdf",
+      "sha256": "cb3b00670b6999af6a2fcef0a3716082dff9aea8c0957c65e5ba1c6cd574cbeb"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/aes-256-r6-assembly.pdf",
+      "sha256": "134635f9857d8e3c9f062836b1c0ce3e1ca3efe4815fac76f2d6525efe4342a9"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/aes-256-r6-empty.pdf",
+      "sha256": "a1993227dad457268fc316b2a34bc2fd77eac3a0e26d8a3c6f81a04ba09fea91"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/aes-256-r6-long.pdf",
+      "sha256": "2e3f75c68cd0511001fa3f2b3ceaae5b102678f1bd0bcc596ad3998e91f90b2f"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/aes-256-r6-pdf20.pdf",
+      "sha256": "7c69cf7ff2a78cfc0f8975e4e18c19fbd8c9f058f6893a5dbf94a743fdb070e8"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/aes-256-r6-split.pdf",
+      "sha256": "c2211349153ff4db6a8aadbb68f28f0215ffce488eb7d1d1f398f0dd0365e49f"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/aes-256-r6-unicode.pdf",
+      "sha256": "0505c9b51a3dad7a2be938a7ea01cc1e0a6c28dc27d3861e3f852bbdaf5f28bf"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/aes-256-r6.pdf",
+      "sha256": "9a111b390e8316d0d8af275362b3d1c025148b8bb0d1fdb0f897a3117d051d41"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/aes-256-unrestricted.pdf",
+      "sha256": "5450665d9c09329a38dfc942ce7e68ff3955bad31c1247f10ddf105bb09eaf22"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/aes128-wrong-metadata-key.pdf",
+      "sha256": "d19fed43e7d836dde6b4959f1cc544258232c81afa8030f825c16ff0e27d6820"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/all-content-metadata-stdcf.pdf",
+      "sha256": "9c6c55833ad4910f4aec1e9734f9f4b63fefdf2a61c54d3d7f6cc95c14706a7a"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/attachment.txt",
+      "sha256": "3d6d3ce3f2a78bad0ae2f3e3dd8250118cbdf6029c31e38052dafbe89a691faa"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/cases.json",
+      "sha256": "ee75cfa6ec86d6ab1b8faca29457dfcad0787807342f98d8ff144fb8ace78196"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/cases.properties",
+      "sha256": "f706449c2303b0a20e2783b7181e44b0642342528e0c34f0fe42e1c840f59dba"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/catalog-metadata-nonstream.pdf",
+      "sha256": "d4d2cccb0fbfe67caf292201f955c65bc0af68fa241f726f49157dba3a237cb5"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/catalog-metadata-subtype.pdf",
+      "sha256": "c1dc3edef8487b1340689595135e3fe6845b7bf1de311861f30d2a91ebd6468a"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/catalog-metadata-type.pdf",
+      "sha256": "cf4cc1ca7d5d6b9dced4b363b285d8c552a23152bc70e1b28dbfff94ab0c5f58"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/component-crypt.pdf",
+      "sha256": "25f5f553af613a7ac9339e31707397ce870732ca1c1ca9c48d85e6d67af315a4"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/embedded-clear.pdf",
+      "sha256": "f187de6ffbfa9463383333caff4780832189ca2d53e5abb4108e86663fe6d964"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/manifest.sha256",
+      "sha256": "fcfe764aaa123f4f8da1db33367e7f2c3881ea8dbf65942f9dc156a5d29e5cbc"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/merge-donor.pdf",
+      "sha256": "cf7061e7ea010e15b41ae3192f343d703fef8e50d1ea211e8bd5dffe84ba4ac5"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/metadata-crypt-array-default.pdf",
+      "sha256": "699a0e7e4a6b393e32dacb7a1f00d5477f2fcc8f234c12947d94f49a863783f9"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/metadata-crypt-array-null.pdf",
+      "sha256": "6390ac252674f48b7886dfe57c6be7f3bafaedc915ed560d3e0091d741f045ff"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/metadata-crypt-array-omitted.pdf",
+      "sha256": "02ff774e8b387196b2c1144995ba65199d22558939079aa0f024d6f3897d156b"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/metadata-crypt-array.pdf",
+      "sha256": "0b8bff9b51df496a62f3d846e91ab6bb712de5b9d371f4fd9a1f9d84999bf93f"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/metadata-crypt-default.pdf",
+      "sha256": "ea7c1911448d36f4a9c3e21cb135655fcd0a64f4ae3781319b28b376c0901e58"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/metadata-crypt-duplicate.pdf",
+      "sha256": "1828fd6dc57c44d79d5974ef48c2115c1f6bd95d720b8be7381aa0c1499e7cc7"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/metadata-crypt-omitted.pdf",
+      "sha256": "2dbaa7ebb549b3773eb6792c4958507e5b1480284359f9408c8a8ae9f852c683"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/metadata-crypt-parameters.pdf",
+      "sha256": "86b92c9a9f6760f2f347ff1a9b4e3cb1ddd1c1afde79323e425d6f2d546229cc"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/metadata-crypt-scalar.pdf",
+      "sha256": "7f30f1c44f4b7d415fc57b14736157e4ac047633bba68f5567e36c80c0d02d36"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/metadata-crypt-stdcf.pdf",
+      "sha256": "8a212bce3bea468ee6df8cb01f8c1bba3ed61fee0d625f2255ccba109efdbaac"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/metadata-type.pdf",
+      "sha256": "7e11a7df5b2fdfb9553e601d5142d597d14bbb643dfd9d7557f1929996747498"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/metadata.xmp",
+      "sha256": "562ef7bf8ff2f2ac40cca057b91d967b2051278281b2c2052904689ce805cbc4"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/perms-0.pdf",
+      "sha256": "b90f74e9274c90223faf8c37212f50e68f1a50ff6c85057f45f54fb55f61c73e"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/perms-1.pdf",
+      "sha256": "da23bbc3146578da7330e7e7bf3e1468277bc7dedcb71e4ecf047bd96a2899b5"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/perms-10.pdf",
+      "sha256": "e5bd49c67ca5d1b9b4a6a106b192790b069edbc16ba2b8a9bd93abf85b16d233"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/perms-11.pdf",
+      "sha256": "2325aac4f3e424a18ebf9d49f76a91f33b3d9d71255029f608974fa1dc68d9d2"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/perms-2.pdf",
+      "sha256": "720161cf2a08ecfc067eee4667ec453ab6c8b915cf419c42a2da84611e52aea1"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/perms-3.pdf",
+      "sha256": "60581d2ff9b2a1d28dd0baee210e345d07f7b8d6bbc189836bdda2da2343d543"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/perms-4.pdf",
+      "sha256": "73581ef1b1f2d472dc51818ab35e19a68d0b4774939d620427ff2211cf91b0f0"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/perms-5.pdf",
+      "sha256": "637b78bcae81388c1ed377136af257992aa961022db828fc424237c4c9e071c9"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/perms-6.pdf",
+      "sha256": "10c2e121f870d8a11241a1bec6b483782183f0a7b1e3cc16a6688d942c44239f"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/perms-7.pdf",
+      "sha256": "ac4f2264f7afb67626513a466fbf4f49752deb853276f3df6497858f19820834"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/perms-8.pdf",
+      "sha256": "67475a19498c2ff3b5c3dfa813453039f578ac6cdf2678546f558135a9992c1f"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/perms-9.pdf",
+      "sha256": "f5cddebd9e4fa718d638fb33beb727fca91ff67d28b1fecef1806c606a6996c5"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/plain-identity.pdf",
+      "sha256": "cdece26e609ce26bdcb324ea322b9e6283d32fc9accd52cbdbdb258b22f579e3"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/plain-malformed-crypt.pdf",
+      "sha256": "837725f028c3ab981b5cb2b11cec870d6ab7501e5a08143fbcf96e8cae57ef2f"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/plain.pdf",
+      "sha256": "15c17d71fe5ce2c94640c7ab25d249d68e28a95e316c9f256b3ac3055669f1a7"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/products.json",
+      "sha256": "1a552e080441faadd9492f59d840a9015b921b24da30dcd1e4bda6ddee999fca"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/products.properties",
+      "sha256": "8a7783fe83a5ccdc3fb0d4fc152ca038898204d9e9dbc82aa0acb3d0b2fa4e45"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/rc4-cf-assembly.pdf",
+      "sha256": "b82ec9685112efe31ccd7a9b5a496163963de9beb6d839c99d1bf998f66f7d43"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/rc4-cf-boundary.pdf",
+      "sha256": "7163292307f10477f336d89c37c01fcd32cf0ea76bd8b0f4ac25ab32a3a731ce"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/rc4-cf-defaults.pdf",
+      "sha256": "ef6cd62e8f4b5a8386e7647645aa49805416a64f25178f4d45a4a156fcc9c1ab"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/rc4-cf-pdf20.pdf",
+      "sha256": "66f6331e4d2274879943c23501308a3fb60fb09d4fc7953c07eba8e3017b846c"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/rc4-cf.pdf",
+      "sha256": "9eb1fe0376077e92497d253a0b6ba9de534d322f4c8d827b12ec4a0a1fca80c5"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/rc4-wrong-metadata-key.pdf",
+      "sha256": "56272e98aa4955bee51c94532feda6f80f1eabadb82075504b4e436d395ee0dd"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/streams-clear.pdf",
+      "sha256": "fd007214ad26f03b7c2b9b813ae4245fdca2a8b8544539b7d70e21fed1a5b68f"
+    },
+    {
+      "path": "capabilities/profiles/T79-clear-metadata/strings-clear.pdf",
+      "sha256": "413ff0f1636b24e17b5466c9bd588ee9bf154da73721d85bdbce2e824dd3efea"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/aes128-before16.pdf",
+      "sha256": "1577bdfb74d429e110a1fab00b24d8f78f8697b7d87423bf32347f447bd50d1e"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/aes128-length-bits.pdf",
+      "sha256": "1b45e6b3f64ff825153b235a12f42cd84af669bdad316a9935816747d502d6dc"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/aes128-metadata-key.pdf",
+      "sha256": "810c1c212ae2cb07668696e0898fb988a7c76085fe24c52097b2ad3b4d7dbc6d"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/aes256-before17.pdf",
+      "sha256": "bf342640423c54bcfa52ef8688b2c0e3d36a72845cd900d6c501272673c1d146"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/cf-absent.pdf",
+      "sha256": "54d2f58a1f930191ab89011c965914027cbc141393bc9b39f790453dcd88177b"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/cf-event-type.pdf",
+      "sha256": "5c82d99fe409e67f4209eec4453114db83364d70db584e31c8469aa264f4dda4"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/cf-event.pdf",
+      "sha256": "28d048653d065d83cd033ea91d726bad278eea1232e086726baa3271dc174edc"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/cf-extra.pdf",
+      "sha256": "31b4c56dc058208a8ba6fc6590e3be753f308c00d626490fccb13dccd360d7cb"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/cf-length-absent.pdf",
+      "sha256": "30e06054182329b2bd0fe6a1bb776866804a8fd6e9e2fbfe1faa372bad16417d"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/cf-length-bits.pdf",
+      "sha256": "6ccf7951c72a99b8010c5843e0e83837fdeb2ed91f960987e549d206519d0ffc"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/cf-length-type.pdf",
+      "sha256": "16c4b92c7a9cd4c391a31d8aaf984ed63a399bd470a3094dc638a2b21db3363d"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/cf-method-absent.pdf",
+      "sha256": "cfacff31205200b5ad6787830797b97e3f8c5e0037f9fab8361be766e699e248"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/cf-method.pdf",
+      "sha256": "d2d5a7b919bac7fe920135477f5d03383c50c3c8ed263e843da2d5ee90f504b7"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/cf-stdcf-absent.pdf",
+      "sha256": "54c32363f5364da43d1346f968d72ff39278354f5e9fc9759c8f141d437a057f"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/cf-type.pdf",
+      "sha256": "81a0e6dbdc51ebd559cfa91c0628b34e7001c77c4f5d73635f5699c7ffb2aa86"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/clear-scope-changed-paint.pdf",
+      "sha256": "925b4cc37bd04ce6bede818ca1be10e120e5aa236386a09152e169cefd900d96"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/component-crypt-identity.pdf",
+      "sha256": "9cf1fc85457fdf4dd6b60ca44e7e58cee82c312eff364c4c0cf5458b7a8f3804"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/component-crypt-name-missing.pdf",
+      "sha256": "6146d0b681f145c92d5b996eadf40adc539c53e59b8215c72f1a98b5cb0ffa79"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/component-metadata-clear.pdf",
+      "sha256": "c4479630c82fed00a6b5d38141573fb576b44ed37f05bafebe3c2dd726a04d97"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/eff-identity.pdf",
+      "sha256": "247194b9c2256e6a8deecd7302f665ed63ff8a97347f21e977666763a8499d11"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/eff-type.pdf",
+      "sha256": "b8e1476710f7af1a1272af2a5ea5c8edf3b0007f53fde6240f330f12761b96f6"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/encryptmetadata-absent.pdf",
+      "sha256": "5d90b59b926fdd417c29636f80b2631e469719960b5127783d54129b29a7b154"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/encryptmetadata-type.pdf",
+      "sha256": "d6982e45b286f0140d41fb08c2a34306f21b7fd19fcdbc081b01c49c0e12e59c"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/extension-absent.pdf",
+      "sha256": "9e5520427364f926ec064fe59eec97bfce8c7af7bc913870e3ca408de4c9621d"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/extension-base.pdf",
+      "sha256": "ec78eaf87faf173f6e2178a8ce4d26370fd7fe5fea7ae622d64d05668c5489c9"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/extension-level.pdf",
+      "sha256": "f7d67cc6cc093da064f43b4792669b1c5475999380a97b23724cb5f226c62475"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/filter-absent.pdf",
+      "sha256": "cdcbf40a8df2e7dba13439242f031ffd3cc7a20c643e37d61d274987229dbb38"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/filter-handler.pdf",
+      "sha256": "db75f7609e0669f906efd7e7aa7fe26192dcded5f4d43f20eff88e7cf1cf6363"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/filter-type.pdf",
+      "sha256": "2e0900a8d2714703beef22825f84d8f7f5e8d5cdc6e413f89f6585c5ff5c7ac2"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/global-length-bits.pdf",
+      "sha256": "d92f616bb43e3dcf2b25eaadf2e9270c736b65000313c1b0b2f12e9c8a831c35"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/length-absent.pdf",
+      "sha256": "18ead950d7ce61f24f188c5527348cb1f5b5f1c46f21d7c6c28485333b29aefc"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/length-type.pdf",
+      "sha256": "e29fcd4246186fb42fe57d2d0961998d98d50676522576aa0341bb0d40efac66"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/manifest.sha256",
+      "sha256": "6059856102c6c7bfb0c392e7d64d1329435aeb00cff5ea4af64732d4e76b6ce3"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/metadata-bytes-changed.pdf",
+      "sha256": "b4563972026b9f7546361700f8c06e4e1dc7249f7a7e77b672f22f0421c7dd4c"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/metadata-bytes-encrypted.pdf",
+      "sha256": "480c9f5dfcd4c96692502cc39102abc6d075dcc9314a62340e7cf9d68527c58c"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/metadata-crypt-duplicate.pdf",
+      "sha256": "33c348e64c4877d0894c363a390acd0f564645009986c580e0ea41cf70b8daf1"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/metadata-crypt-name-stdcf.pdf",
+      "sha256": "cf08a51fe5aa6f0642e1ee986d91af24a2a43a1a0d53796215631a44c0f79dfb"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/metadata-crypt-name-unknown.pdf",
+      "sha256": "2f177f16ba6d164bc58bf9c0a8c553d37e66b7d3fdea31f50c71da7dd540736f"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/metadata-crypt-parameters.pdf",
+      "sha256": "48881ccacf62abcfeb1608fe2b45f197e07ab2b816e0d286fffc17cbe7b3a81a"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/metadata-crypt-second.pdf",
+      "sha256": "3f2549bd3a6039481ab1a024504bb42a81ea187701edb575bacb3fd558510005"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/metadata-dictionary-string-clear.pdf",
+      "sha256": "e8990c39385c9f38655b439e733d444eb883302f1686f4c6151d84eab31107b9"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/metadata-encrypted.pdf",
+      "sha256": "1baa945061af2568d2b0ce999c658dcfbc3a57c15d48b81a32954d32a2e67d09"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/metadata-subtype.pdf",
+      "sha256": "6a0cd89ab56afce9f2082eab7f0af811f855f466e6b3b15ff9865ea36426ec36"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/metadata-type.pdf",
+      "sha256": "4504dbd07da9fd887fd2ad397e32c25e532e108d479ec3550134f4924972e3dd"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/o-absent.pdf",
+      "sha256": "16aa439d471ab714d776df595356a64eed4b1f86557eedf75978905c5c5d228e"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/o-long.pdf",
+      "sha256": "55861c58e795090766a200062506f356e2de78a5182a6ee43b0a4cdfb3887811"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/o-short.pdf",
+      "sha256": "36d82f0c810b52455a97a960bb02ea3c43a3dd2156fe2c5e5e62842f72d6731b"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/o-type.pdf",
+      "sha256": "34c28160a2b54538c29841b182a4d1368be66ba2ab2c2080e0ad8f4977d96c05"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/oe-absent.pdf",
+      "sha256": "2952881e32a14b2cf8fe485695d945c44a4d7f0db372321df7685ea2a7244390"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/oe-long.pdf",
+      "sha256": "97e99ea4f91417f10bc3304d56e330b8622799cd4ebd7a48f8e2009dd126cd23"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/oe-short.pdf",
+      "sha256": "4708032871c80e8c5880f6f294272043ee1b17222ff115f6edb80f3db041d1fe"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/oe-type.pdf",
+      "sha256": "4f97af3bf28abb1c77b762507095fbd6b3fce1b8959ea44981a2fb84e0ff17d9"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/ordinary-stream-clear.pdf",
+      "sha256": "5fe46b6b4a2c644de5c2c9dfd11e4db4892f2aa1f5e66c09cc9ba37c0c56d489"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/p-absent.pdf",
+      "sha256": "f89e1226a3a19faea7e6fb4b8cf960212e38648dc78c1d7c0b79f1385073fb9f"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/p-bit10-output.pdf",
+      "sha256": "b7244b476b6e981ec8b43d58256d296035e118023a50af991306fab9cdf23364"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/p-range-r4.pdf",
+      "sha256": "f3ffdf5b9dce2abae8eef880ab84d6089dad24b9959ff01e72a5bf1ed8ac4567"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/p-range-r5.pdf",
+      "sha256": "2972577e29898faf440dacf9aa527b142cae5e506984b38825fcc416c813f990"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/p-range-r6.pdf",
+      "sha256": "3c6f50704bcf3451ee44427dff94d3308295765a37f2f9ba7377122c596cda75"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/p-reserved-1.pdf",
+      "sha256": "c14d5d11f727dff81d7d8e3230cc1e51e0cd7100927a46d88fc1e0702c10b395"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/p-reserved-13.pdf",
+      "sha256": "99870dec29780647001eeda3e73ee5ca84e71d0a65e8456fcded67162fa4d042"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/p-reserved-2.pdf",
+      "sha256": "3f3e1b9a50d056afc9d20a667277642e9a468a7a13e6ddef65afb461c108b145"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/p-reserved-32.pdf",
+      "sha256": "f560678c1442df47a5646103722572e5b60edf3e4f7f831da55b6e3cef7d1b33"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/p-reserved-7.pdf",
+      "sha256": "3ef5d375a3a260dc3293c9a0c6e6486aa6e997752945b0da9b53db3e80703d4e"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/p-reserved-8.pdf",
+      "sha256": "3b9aff814b6b6e5b827a1216f90dc5d5f7909f0f6f371560100d063a7ccf8718"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/p-type.pdf",
+      "sha256": "fac6124b7adbd82227c7df3bb337c046369a1a5823293ad6110b26ebe5b64ca4"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/perms-absent.pdf",
+      "sha256": "3f2ebf9e5d4953b3e378c4687ad35e602619400b267af81eb024c1b014d81409"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/perms-long.pdf",
+      "sha256": "b5e97a6e25c9b9c2c0ed042d63e4a17ef7d38ca14f32af7fc9e0522f0cb4e91e"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/perms-short.pdf",
+      "sha256": "702a29f375f7ef6e16a73e261fca6daa467666505b746d93b5bcde859dbbf3c6"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/perms-type.pdf",
+      "sha256": "9bc7e2fe45db55db3065dcf7d44cbfa307b7ec561ece684bc9839f62c503b6bc"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/r-absent.pdf",
+      "sha256": "3348279b5d28767723a5f6866cbec2cd7b4c4614327e2bc2b9cacb072206e625"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/r-type.pdf",
+      "sha256": "d19ade15f9bc122dffe273d431b664854f37fe338814c3f10d12969272a1d672"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/r5-output.pdf",
+      "sha256": "1d9deb5a69dde8f8fa91b7918583c19f745cc582a3bde10ba1d1e6e9f2e743f3"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/r5-perms-0.pdf",
+      "sha256": "dc844876124211e59fa5f3da9ff652e942ee2f0bed08f171978beed1db71c3b8"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/r5-perms-1.pdf",
+      "sha256": "1912cb7cdc1fff4d3f4b2af36f917f835446d0d14cec4b8b1bc1cae257abca9c"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/r5-perms-10.pdf",
+      "sha256": "f05f85af50eeae3686253b8bc46571043ebb4a8262fe904e58ae1c3b89669e82"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/r5-perms-11.pdf",
+      "sha256": "2f8622aac1aa1193067da7cd45be422ee933d38e3e6ad06134b90acaf25521bd"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/r5-perms-2.pdf",
+      "sha256": "bacbfe584b636b9b96743902d98c59a74570d6c1aefdf588231013fec343e9f3"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/r5-perms-3.pdf",
+      "sha256": "62a6ae4f183b057e6a3d457e0d8d6d41618f322ac934dba243636d5f980b9918"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/r5-perms-4.pdf",
+      "sha256": "fda29a28d6d57f6617f389df2d5e8b2f6b2335461db98f23b46343a4a7063f08"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/r5-perms-5.pdf",
+      "sha256": "4c6d1193b418c3685399553cfc21c544b302d7b4e82238d5c0d43bebc8539b36"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/r5-perms-6.pdf",
+      "sha256": "36450a47c247343ddd3c4ed35021347100fe3ffb61bbe813e61dea04cf6a0d43"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/r5-perms-7.pdf",
+      "sha256": "5e6cf21fa065f6ad6b87ffae4bd9591f684aeaf1e16aebe7701de313b6cbe97f"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/r5-perms-8.pdf",
+      "sha256": "1fd5cf45c722fadc89795a12936954c5a79c09cb8f6f6dcd8c58495e9cdba681"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/r5-perms-9.pdf",
+      "sha256": "6e97c9b8a4ad1f99fba39d513c662e4eab2fc2635ee840aaa48fcaee2029e735"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/r6-perms-0.pdf",
+      "sha256": "5c5d23a347681740854e6fb480f67061ec9528e0b72373a540a7b6ac3bd36967"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/r6-perms-1.pdf",
+      "sha256": "e789e3b7d7ea7e1b874a1825c6e96f7f1e692820717e1af86df79c6b5f42e3a7"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/r6-perms-10.pdf",
+      "sha256": "8a0c702e332efac5c01de38d94ad79b644d707bbe185e418d16e5f70ed14e4e2"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/r6-perms-11.pdf",
+      "sha256": "78b9a7750ecc01ed9f19c8b1533f568e7e563d57bfc865cdc92d498b39282eaa"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/r6-perms-2.pdf",
+      "sha256": "e62d0908e96e79b1d2cee2dbd74c1c73f0e068ab811b940bec165c91309a499c"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/r6-perms-3.pdf",
+      "sha256": "a419ce1fd04c430da2affc3f6284c3e39efcea7c5dd55c1533ccb23ced8cdfaa"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/r6-perms-4.pdf",
+      "sha256": "4fab25449ebeaff11e28e5eb877311183b477bf4edf15c78a77ecf99a0a4c4bd"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/r6-perms-5.pdf",
+      "sha256": "bd889ca8adf7a82f7053433c3ece1c67d6e36e7c9658165728099b7a82f457cb"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/r6-perms-6.pdf",
+      "sha256": "ecc1f74e214f9f8dce7cb9a193380f199cbc6970cf0bd1191bf3b7f3a7f863c9"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/r6-perms-7.pdf",
+      "sha256": "bd272427afa837d1f68300d2461e2860a0170b3a361757929c08a79572c02116"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/r6-perms-8.pdf",
+      "sha256": "22545ca3e202d68615aa5703f8b85b9ae169ea75b90b75b100f9be684bfbb7ad"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/r6-perms-9.pdf",
+      "sha256": "2b2ff00d03e6ace8f8e02c7dec9cbf14b46e6ee5533ef4b13d94765f8468aed9"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/rc4-before15.pdf",
+      "sha256": "67ca2c2fcd4ac0259ff9267efd9cd5d9ac2ece3f9b013a70d591e17d848d732b"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/rc4-length-bits.pdf",
+      "sha256": "18867b503ad6a0cad03e4374557278f65abb728843ee95c1205780be378696bb"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/rc4-metadata-key.pdf",
+      "sha256": "5f323a702ab1175ba3fb8e0072e4eaabe10ef5484f27cf4a47ad982f81ae3347"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/rules.json",
+      "sha256": "537c14f7b569a6b0096f59be6f794437f148a7f8f52b84e37f3f95191873c734"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/stmf-absent.pdf",
+      "sha256": "1a16bfd5c3ea967ac66562636b610206c1fb6ddc175570a4526f002d4ef26c66"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/stmf-identity.pdf",
+      "sha256": "cb78a103696e9751d22b01d3c78a346bdc72d8863fa1989b96277626058486cc"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/stmf-type.pdf",
+      "sha256": "ec07be198243efbfe7ea1b4a6fdfc458683b86ae10e67e207b325b1ac9365462"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/strf-absent.pdf",
+      "sha256": "c9f2b27856f12ad3d3512bd6a2513cc3dcdb0bca9f671e9635d62e2dbe987933"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/strf-identity.pdf",
+      "sha256": "5c5bf1f8fb90f5908120fb619381b6945b60caf5cc6b1cdb971cf1c62b66dbbc"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/strf-type.pdf",
+      "sha256": "315670c67f69ec9e3f4f433672be3f2a509ecb317b2acd7a8c556fb9fb152de8"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/subfilter-present.pdf",
+      "sha256": "adcd26c0a3f09d72bc145c1a9c7696f69944e65bcbf1513fb472ce0fb91c56c2"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/tuple-v2.pdf",
+      "sha256": "13cb837ebdf4aaefd78676c5e5393f5a25b59a8db5fd013f48295b247bd4c529"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/tuple-v5-r4.pdf",
+      "sha256": "acface2a67bc6eaf66c06cfe768c27b694d531c729c0196c206b4558f67ffdc6"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/u-absent.pdf",
+      "sha256": "67668c2a48906268bac1702c3f5daa6e96ca8b25069a9feeec7399e6f7b9132e"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/u-long.pdf",
+      "sha256": "dc9c37ddfd67b8286be458caf24855831e1eb4e3dbf063a17e4b11e2b9d1d335"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/u-short.pdf",
+      "sha256": "24f0a57f09b3ef57c2bb63533a35582e61636685975e7966f3b98bcd43e49acb"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/u-type.pdf",
+      "sha256": "d94054a13d6a554ce7a59db2979b1c764d80515b6147b41b2d5b38193fa540d6"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/ue-absent.pdf",
+      "sha256": "ffa2d15f9029d9c717023cf1e98b7ebd4b0e06a94d212f2432c1866c7754bbe4"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/ue-long.pdf",
+      "sha256": "5d28d79be359d4a280a30f91da634f5297c3e76b90caa50700ff96044f233f19"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/ue-short.pdf",
+      "sha256": "29e3dd4516e3889c7a40ea5838c2d52a7f3d8e18113ef52f5d9ec22484140004"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/ue-type.pdf",
+      "sha256": "dbf560f925d6515aa41cff787a37d93c117d0787bd90a253b0a43df3adfb40d9"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/v-absent.pdf",
+      "sha256": "c467c6d9e747154e64100e669e5ae7db92887df67ca7e8f9dcae8dcb5e5e7d66"
+    },
+    {
+      "path": "capabilities/profiles/T79-controls/v-type.pdf",
+      "sha256": "3bb8453f2057dcdbef393b7fc14ad4335ee35cc199058a7673b3786aace130cd"
+    },
+    {
+      "path": "docs/research/T79-clear-metadata-profile-audit.md",
+      "sha256": "c762ce4fd9fe1888e3b5c13ff65955adbb872b8c2b7c7ae9f7a8226073913e05"
+    },
+    {
+      "path": "docs/t79-certification.md",
+      "sha256": "002e98bed763e79dae3e887835d852646a7553073dfaf751da2cadacd8346744"
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/PasswordProducts.java",
+      "sha256": "ae64830ddcb3d6630560b547737463b9314bc390725a0befa62c25247e9cfc92"
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T79EvidenceCommand.java",
+      "sha256": "6e4f31ca8b102af65c4603511b64dd9cb81128b35052da07a59169baffd2b02f"
+    },
+    {
+      "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T79PasswordProducts.java",
+      "sha256": "c74ff1ed12d6a46575e04d676a74484cda7f2275bcb2e759de51938bbcddef27"
+    },
+    {
+      "path": "pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T79PasswordProductsTest.java",
+      "sha256": "3f1f7f58a79d04db8704c2e4d3dea6eb7da67816470f19a33ce3b14f64d88525"
+    },
+    {
+      "path": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxMetadataEncryption.java",
+      "sha256": "8fac1c9686799a38dce5b2472a1614b9115206f4150bd3cceedc0684427a630f"
+    },
+    {
+      "path": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/ClearMetadataPasswordWorkflowTest.java",
+      "sha256": "35edcf9d31d28d6066b27bab8c341a1bfb2f06f58f070d07ed0729e59d50f0de"
+    },
+    {
+      "path": "pdf-migration-itext7/src/test/java/net/zerocloud/pdf/itext7/consumer/ClearMetadataPasswordFacadeTest.java",
+      "sha256": "bc5ea0cb7f2917cfeff148d4f8775e229b0a21ad7892b514b99a99c2c4cd8d3b"
+    },
+    {
+      "path": "scripts/freeze-t79-inputs.py",
+      "sha256": "02b92c0aaaba5f324e8b7b5f8250c56ddfdf5641fef0ce52615ef775ae2be023"
+    },
+    {
+      "path": "scripts/generate-t79-controls.py",
+      "sha256": "4f0485b738fce4da777478ee8c9e78e56c92cddb0680f5ebd4fe131007cdd73d"
+    },
+    {
+      "path": "scripts/generate-t79-corpus.py",
+      "sha256": "5a339ea683cadb886ae206aedb099ec4cadd888795321e6b26b3d5e03af5c280"
+    },
+    {
+      "path": "scripts/provision-t79-arlington-model.py",
+      "sha256": "ab7f03ad25d1805387c33b3d5a3b62a644714f7ea980ad17bd27c2562e666ae8"
+    },
+    {
+      "path": "scripts/t79-arlington-runtime.sha256",
+      "sha256": "0c6ef2e13b80cf67aa5b7737d4991b274fb25e1b16804dd897c668dccbfd4edf"
+    },
+    {
+      "path": "scripts/t79-byte-check.py",
+      "sha256": "4a19e9cd1bffabdfaa3b8d7b12445cf1517b0a53ac824643f08bcf556ff9df3b"
+    },
+    {
+      "path": "scripts/t79-certification.py",
+      "sha256": "ccbda823d437daf24bbf8f5a0640a42817d4138ed28090414400f932aca8f096"
+    },
+    {
+      "path": "scripts/t79-evidence-pin.properties",
+      "sha256": "17972914c80e47081f03f69dc2312e01136e4f7cf90b176bbe8e0f9c9d41a297"
+    },
+    {
+      "path": "scripts/t79-observer.py",
+      "sha256": "16798b0c218db678f19fdb0c95f95c902d828632a89cd45c93ade190b9a5f10b"
+    },
+    {
+      "path": "scripts/t79_foundation_reports.py",
+      "sha256": "9aa77a38d2299fff031bf3ef8873da2b8ed97c8ba94a2f192ed7e2b0baec79dd"
+    },
+    {
+      "path": "scripts/tests/test_t79_foundation.py",
+      "sha256": "1991fa3f056c646f4b72cf3c1c07550115bfee64896f41e88696830567c9215b"
+    }
+  ],
+  "interrupted-verification": {
+    "path": "capabilities/evidence/T79-delivery/validation/full-verify-final.txt",
+    "sha256": "77d55855150c448c4e62f141d8d2d5774cf8fad49eff1116d8bbcf759eaae9b8",
+    "status": "INTERRUPTED; no completed command record; retained unchanged"
+  }
+}

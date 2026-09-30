@@ -55,7 +55,7 @@ final class HardenedWorkerEngine {
     private static final String DOCUMENT_CLASS_INVENTORY =
             "META-INF/folio-pdf/document-worker-classes";
     private static final String DOCUMENT_CLASS_INVENTORY_SHA256 =
-            "658729de78cae6be248358918c845bd45010d97db0a1c00965ae01498c860e96";
+            "9c86d17110079867b1845658c86264e33157703a044f6f38e25d59b35b83e6a1";
     private static final String PROVIDER_CLASS_INVENTORY =
             "META-INF/folio-pdf/provider-contract-worker-classes";
     private static final String PROVIDER_CLASS_INVENTORY_SHA256 =

@@ -26,6 +26,9 @@ review remain INDETERMINATE and cannot satisfy a mandatory chain.
 - `T32-password-clear-metadata` adds the complete metadata-clear input/output
   scope, including AES-256, with independently observed clear metadata and
   encrypted protected content, secure defaults and unchanged authority (#79).
+  The [T79 source table](../../docs/research/T79-clear-metadata-profile-audit.md)
+  and [certification contract](../../docs/t79-certification.md) distinguish catalog
+  XMP bytes from protected Info, dictionary strings and component metadata.
 - `T32-password-embedded-files-only` adds embedded-file crypt filters and
   authentication events, ordinary-content accessibility, protected attachment
   creation/read/extraction, mixed Sources and tampering controls (#80).

@@ -2916,3 +2916,47 @@ change requires fresh candidate certification; r3 evidence remains historical.
   explicitly uncertified and are not F0.1.0 blockers. Historical T16 prose
   remains historical; `docs/pdf-version-password-security.md` and the T78
   profile supersede its current behavior claims without relabeling old runs.
+
+## T79 clear document metadata password security record
+
+- Scope: original Apache-2.0 implementation of explicit clear document XMP in
+  Native and Migration Facade. Secure all-content defaults and #78 remain intact;
+  #80, aggregate security and release publication remain separate. No new product
+  dependency, acceptance fixture, tool or font is added to the runtime artifacts.
+- Sources: `docs/research/T79-clear-metadata-profile-audit.md` records the approved
+  Foundation contract, ISO 32000-1:2008, public ISO 32000-2:2020 corrections, Adobe
+  extensions, RFC credential rules and exact Reference Suite 7.2.6 public API.
+  The complete licensed current PDF 2.0 standard remains unavailable; PDF 1.7
+  R6/EL8 remains a qualified interoperability convention. Public documents are
+  cited, not redistributed. Incidental implementation snippets in broad search
+  results were ignored; no iText source page, implementation, resource, fixture,
+  binary or output oracle was opened or adopted.
+- Integration: the audit pins inspected Apache PDFBox 3.0.8 Apache-2.0 source
+  files. Original adapter code delegates existing public byte algorithms, derives
+  R4 metadata-sensitive keys and changes the R6 Perms metadata byte using JCE.
+  Only catalog metadata stream bytes receive an exemption. Info, dictionary
+  strings and component metadata remain protected. Identity overrides are
+  normalized when selecting a new policy, including strengthening to all-content.
+- Fixtures: `generate-t79-corpus.py` and `generate-t79-controls.py` independently
+  author original PDFs, XMP, component metadata, protected strings/attachment and
+  resource-free paint grids. They reuse the project-owned T78 author and pinned
+  cryptography AES primitive. Deterministic passwords/keys are synthetic fixture
+  data. `FolioProof` is an original optional stream-dictionary extension for the
+  protected-string probe; model overlays explicitly identify it. Product output
+  is randomized and is never an authoring oracle.
+- Independent tools retain the T78 origins/licenses recorded above: Arlington,
+  qpdf, pdfcpu, PDFium, ImageMagick, pypdf and PyCryptodome. Separate T79 model
+  overlays require clear metadata; all-content overlays retain T78 security
+  predicates and add only the original fixture extension. Original upstreams,
+  baseline models and historical evidence are unchanged. All overlays and runtime
+  files are hash-bound. `docs/t79-certification.md` records qualification and the
+  bounded pypdf named-filter/catalog-XMP limitations rather than hiding them.
+- Evidence: seventy-eight original-byte Native/Facade products, original inputs,
+  scope-specific controls and unchanged baseline controls are observed through
+  separate syntax, standards, semantic and visual chains. The collector replays
+  original randomized ciphertext and refuses changed/resealed findings. Private
+  credentials and plaintext derivatives are cleaned; raw safe findings, visual
+  artifacts and source/contract/candidate/runtime hashes remain reviewable.
+  The fresh Foundation index exclusively establishes actual Ubuntu 24.04
+  Linux x86-64 JDK 8/11/17/21 certification in both Native modes, with Facade
+  IN_PROCESS. Windows/macOS remain uncertified and nonblocking for Foundation.

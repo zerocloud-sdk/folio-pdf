@@ -1,0 +1,101 @@
+{
+  "recorded-at": "2026-09-30T04:42:02.444334+00:00",
+  "checks": [
+    {
+      "profile": "ubuntu-24.04-linux-x86-64-jdk8",
+      "command": [
+        "/workspace/folio-pdf/capabilities/evidence/T79-delivery/validation/container-bin/podman",
+        "run",
+        "--rm",
+        "--network=none",
+        "--userns=keep-id",
+        "--volume",
+        "/workspace/folio-pdf:/workspace:ro",
+        "--workdir",
+        "/workspace",
+        "docker.io/library/eclipse-temurin@sha256:a4da319337cb6504ba4fb663cbd72a75df5515efb31bbdc6fc4ad7ba8d710dee",
+        "java",
+        "-cp",
+        "/workspace/build-tools/inventory/target/classes:/workspace/.build-cache/maven/repository/org/yaml/snakeyaml/2.2/snakeyaml-2.2.jar",
+        "net.zerocloud.pdf.tools.inventory.InventoryCommand",
+        "check",
+        "/workspace"
+      ],
+      "exit-code": 0,
+      "stdout": "Inventory validation passed: 25 capabilities, 215 facade surfaces, 15 exclusions.\nGenerated inventory documentation is current.\n",
+      "stderr": ""
+    },
+    {
+      "profile": "ubuntu-24.04-linux-x86-64-jdk11",
+      "command": [
+        "/workspace/folio-pdf/capabilities/evidence/T79-delivery/validation/container-bin/podman",
+        "run",
+        "--rm",
+        "--network=none",
+        "--userns=keep-id",
+        "--volume",
+        "/workspace/folio-pdf:/workspace:ro",
+        "--workdir",
+        "/workspace",
+        "docker.io/library/eclipse-temurin@sha256:09f6797de424a6a085da4db6ba64381b2a4d51c2100a5e91998b69d7c23e0ecb",
+        "java",
+        "-cp",
+        "/workspace/build-tools/inventory/target/classes:/workspace/.build-cache/maven/repository/org/yaml/snakeyaml/2.2/snakeyaml-2.2.jar",
+        "net.zerocloud.pdf.tools.inventory.InventoryCommand",
+        "check",
+        "/workspace"
+      ],
+      "exit-code": 0,
+      "stdout": "Inventory validation passed: 25 capabilities, 215 facade surfaces, 15 exclusions.\nGenerated inventory documentation is current.\n",
+      "stderr": ""
+    },
+    {
+      "profile": "ubuntu-24.04-linux-x86-64-jdk17",
+      "command": [
+        "/workspace/folio-pdf/capabilities/evidence/T79-delivery/validation/container-bin/podman",
+        "run",
+        "--rm",
+        "--network=none",
+        "--userns=keep-id",
+        "--volume",
+        "/workspace/folio-pdf:/workspace:ro",
+        "--workdir",
+        "/workspace",
+        "docker.io/library/eclipse-temurin@sha256:61a94244559f2e89e4edb02bae37eeb8762ecf5deaf237251fa630e5120a8798",
+        "java",
+        "-cp",
+        "/workspace/build-tools/inventory/target/classes:/workspace/.build-cache/maven/repository/org/yaml/snakeyaml/2.2/snakeyaml-2.2.jar",
+        "net.zerocloud.pdf.tools.inventory.InventoryCommand",
+        "check",
+        "/workspace"
+      ],
+      "exit-code": 0,
+      "stdout": "Inventory validation passed: 25 capabilities, 215 facade surfaces, 15 exclusions.\nGenerated inventory documentation is current.\n",
+      "stderr": ""
+    },
+    {
+      "profile": "ubuntu-24.04-linux-x86-64-jdk21",
+      "command": [
+        "/workspace/folio-pdf/capabilities/evidence/T79-delivery/validation/container-bin/podman",
+        "run",
+        "--rm",
+        "--network=none",
+        "--userns=keep-id",
+        "--volume",
+        "/workspace/folio-pdf:/workspace:ro",
+        "--workdir",
+        "/workspace",
+        "docker.io/library/eclipse-temurin@sha256:1ca5e470ad60db0d5b4137c1357068fa210051d815ad98ea9964f4bbe7367f8c",
+        "java",
+        "-cp",
+        "/workspace/build-tools/inventory/target/classes:/workspace/.build-cache/maven/repository/org/yaml/snakeyaml/2.2/snakeyaml-2.2.jar",
+        "net.zerocloud.pdf.tools.inventory.InventoryCommand",
+        "check",
+        "/workspace"
+      ],
+      "exit-code": 0,
+      "stdout": "Inventory validation passed: 25 capabilities, 215 facade surfaces, 15 exclusions.\nGenerated inventory documentation is current.\n",
+      "stderr": ""
+    }
+  ]
+}

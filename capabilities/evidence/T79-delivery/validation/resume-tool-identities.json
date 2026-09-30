@@ -1,0 +1,2194 @@
+{
+  "recorded-at": "2026-09-30T04:22:36.101037+00:00",
+  "purpose": "restore prerequisite check; not acceptance certification",
+  "tools": [
+    {
+      "id": "qpdf-t78-r1",
+      "path": ".build-cache/qpdf/t78-r1/runtime/qpdf",
+      "sha256": "7c79e288b259f28f3f81b1a2a8c1b355a44b428110300d31f1a0fe4a31bc536c"
+    },
+    {
+      "id": "pdfcpu-t78-r1",
+      "path": ".build-cache/pdfcpu/t78-r1/pdfcpu",
+      "sha256": "949f6e661857019276a2ef67d9fe5db23df523b69f35d449e581b9ce596c18e2"
+    },
+    {
+      "id": "pypdf",
+      "path": ".build-cache/t78-security-checkers/pypdf/_encryption.py",
+      "sha256": "f8bc0510a7e12f7075d1a7e4728e9f5f1f84aad8e85dfebba405201f65417c3c"
+    },
+    {
+      "id": "pycryptodome",
+      "path": ".build-cache/t78-security-checkers/Crypto/Cipher/_raw_aes.abi3.so",
+      "sha256": "f4265907fce6174d7e043039af0f244d650861a8b1c50d135b738602dde37578"
+    },
+    {
+      "id": "qpdf",
+      "path": ".build-cache/qpdf/12.4.0/bin/qpdf",
+      "sha256": "9ac787a28597e8428289a12ba3fedafd74bdfb4b4da1be814722faf76f14f21b"
+    },
+    {
+      "id": "pdfcpu",
+      "path": ".build-cache/pdfcpu/0.15.0/pdfcpu",
+      "sha256": "5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d"
+    },
+    {
+      "id": "arlington",
+      "path": ".build-cache/arlington/fe4a1a8/TestGrammar/bin/linux/TestGrammar",
+      "sha256": "45de36669a3aad3087346335acdfbe716a27beb27f3a39202d3f8f4997ba7458"
+    },
+    {
+      "id": "arlington-t10-r1",
+      "path": ".build-cache/arlington/t10-r1/TestGrammar/bin/linux/TestGrammar",
+      "sha256": "35c15bc7d78f70c2a378938623d2c5e604d66019aefe9f485b71cac63a46bee5"
+    },
+    {
+      "id": "arlington-t11-r1",
+      "path": ".build-cache/arlington/t11-r1/TestGrammar/bin/linux/TestGrammar",
+      "sha256": "2df679442bdedd9d598d6fd50638e673700628e78885fa967561a544ebb2ff8d"
+    },
+    {
+      "id": "arlington-t12-r1",
+      "path": ".build-cache/arlington/t12-r1/TestGrammar/bin/linux/TestGrammar",
+      "sha256": "ed46e110ac98c8c660ca7e39f4d1496cfab0167a58a721bb599f43769de45036"
+    },
+    {
+      "id": "arlington-t13-r1",
+      "path": ".build-cache/arlington/t13-r1/TestGrammar/bin/linux/TestGrammar",
+      "sha256": "583f09e428ca76c346e46c98280befcd2cfb7d8ebd55f098f4f8e74ecbeaff03"
+    },
+    {
+      "id": "pdfium-cli",
+      "path": ".build-cache/pdfium/v0.11.2-chromium-7881/bin/pdfium",
+      "sha256": "3ef3375c429ce665e834f933a028225bf28ac837695aaa69c6fc21facf6780ab"
+    },
+    {
+      "id": "imagemagick",
+      "path": ".build-cache/imagemagick/7.1.2-30/bin/imagemagick.AppImage",
+      "sha256": "372af8a3fd61ef5f15c6331cde3e21f840eb165d8b533f34ed05d68736dd682e"
+    }
+  ],
+  "native-command": [
+    "/workspace/folio-pdf/capabilities/evidence/T79-delivery/validation/container-bin/podman",
+    "run",
+    "--rm",
+    "--network=none",
+    "--userns=keep-id",
+    "--volume",
+    "/workspace/folio-pdf:/workspace:ro",
+    "--volume",
+    "/workspace/folio-pdf/.build-cache/t79-provision/folio-harfbuzz:/folio-harfbuzz:ro",
+    "--volume",
+    "/workspace/folio-pdf/.build-cache/foundation-python/bin/python3.12:/usr/bin/python3.12:ro",
+    "--volume",
+    "/workspace/folio-pdf/.build-cache/foundation-python/lib/python3.12:/usr/lib/python3.12:ro",
+    "--volume",
+    "/workspace/folio-pdf/.build-cache/foundation-python/lib/libexpat.so.1:/lib/x86_64-linux-gnu/libexpat.so.1:ro",
+    "--workdir",
+    "/workspace",
+    "--env",
+    "LANG=C.UTF-8",
+    "--env",
+    "LC_ALL=C.UTF-8",
+    "--env",
+    "TZ=UTC",
+    "--env",
+    "PYTHONDONTWRITEBYTECODE=1",
+    "--env",
+    "FOLIO_HARFBUZZ_HELPER=/folio-harfbuzz/bin/folio-harfbuzz",
+    "docker.io/library/eclipse-temurin@sha256:a4da319337cb6504ba4fb663cbd72a75df5515efb31bbdc6fc4ad7ba8d710dee",
+    "/usr/bin/python3.12",
+    "scripts/t29-native-observation.py",
+    "/folio-harfbuzz/bin/folio-harfbuzz"
+  ],
+  "native-observation": {
+    "schema_version": 1,
+    "created_utc": "2026-09-30T04:22:36.005398+00:00",
+    "platform": {
+      "system": "Linux",
+      "release": "6.12.94+",
+      "machine": "x86_64"
+    },
+    "observer": {
+      "path": "/workspace/scripts/t29-native-observation.py",
+      "sha256": "51130d9e80f258de2ce23f0ca2c26f30ad616c4fe21c3674ef98ac3a2e53217a"
+    },
+    "python": {
+      "path": "/usr/bin/python3.12",
+      "sha256": "1643dacd9feaedc58f3cc581e4d22577dfe25c09b10282936186ccf0f2e61118",
+      "version": "3.12.3 (main, Jun 19 2026, 12:46:00) [GCC 13.3.0]"
+    },
+    "loader_environment": {},
+    "installation": {
+      "path": "/folio-harfbuzz/installation.json",
+      "sha256": "84c105ee966f2839d15392966a3d60c8c2a2c8ef136f20d9f0028e3569613030",
+      "receipt": {
+        "schema_version": 1,
+        "status": "installed",
+        "engine_version": "10.2.0",
+        "created_utc": "2026-09-30T00:36:02.526217+00:00",
+        "platform": {
+          "system": "Linux",
+          "release": "6.12.94+",
+          "machine": "x86_64"
+        },
+        "source": {
+          "url": "https://github.com/harfbuzz/harfbuzz/releases/download/10.2.0/harfbuzz-10.2.0.tar.xz",
+          "sha256": "620e3468faec2ea8685d32c46a58469b850ef63040b3565cde05959825b48227"
+        },
+        "helper": {
+          "path": "bin/folio-harfbuzz",
+          "sha256": "88f8a2c17ee31320608acfa0cfb4a8482e820af0f9829d3868dc7706f47c2537"
+        },
+        "engine_libraries": [
+          {
+            "path": "lib/libharfbuzz-subset.so.0.61020.0",
+            "sha256": "a7bb969eb5e2e8bcc80b086680a276542b2deb8954f14460fc0654749960aa36"
+          },
+          {
+            "path": "lib/libharfbuzz.so.0.61020.0",
+            "sha256": "8a4c67dc9ead9b0752bcf256fa46c39eb3592e403a282bb341637ed989196e10"
+          }
+        ],
+        "adapter_source": {
+          "path": "pdf-conversion/src/main/native/folio-harfbuzz.c",
+          "sha256": "aa5fee1936316050ca764bcd32ba811aaeefd05239631f8b92a2df9416186d1d"
+        },
+        "adapter_build": {
+          "path": "pdf-conversion/src/main/native/meson.build",
+          "sha256": "9baa7df666e880d575777152f9c617a38f9a8325ac01b9fccaa2478a62d0bc49"
+        },
+        "installer": {
+          "path": "scripts/install-harfbuzz.py",
+          "sha256": "896cbd5f2f9f59ffaff6956baa6b74d281dbcb3f41aabce955f4b887348d828c"
+        },
+        "pin": {
+          "path": "scripts/harfbuzz-pin.properties",
+          "sha256": "20ec016fe6728f485c9bf86f28555da14730f56ff025a35ee484ce8a7fbf2207"
+        },
+        "build_tools": {
+          "python": {
+            "path": "/usr/bin/python3.12",
+            "sha256": "e50d468e8b0adfb05733f5b87b3cff34829c4a8c1aea50c865aa8bdfe4bb150f",
+            "version": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]"
+          },
+          "meson": {
+            "path": "/usr/bin/meson",
+            "sha256": "86ce39b460ec729602cd68281c44fce77779aaf7fe0bca39a840d73fe63033e0",
+            "version": "1.3.2"
+          },
+          "ninja": {
+            "path": "/usr/bin/ninja",
+            "sha256": "5965527e09fe2b3787772aa4f711d6a36b393e7f2fcaa744a7a96c5a4ddf59cb",
+            "version": "1.11.1"
+          },
+          "pkg-config": {
+            "path": "/usr/bin/pkgconf",
+            "sha256": "7e8152db1b0c7e49d47b4b82a70dc9997b557951c5d4d938b0e7f208ce9eb10b",
+            "version": "1.8.1"
+          },
+          "cc": {
+            "path": "/usr/bin/x86_64-linux-gnu-gcc-13",
+            "sha256": "1b99826121ae6682a634e5efe09bd3e3df58ce58e0b28f849114ab5b89139c26"
+          },
+          "c++": {
+            "path": "/usr/bin/x86_64-linux-gnu-g++-13",
+            "sha256": "1353e9bdd29a7295c7226bf6c63abccce056d8cac31f112e5cdbecc3f28c2769"
+          }
+        },
+        "compilers": {
+          "host": {
+            "c": {
+              "id": "gcc",
+              "exelist": [
+                "cc"
+              ],
+              "linker_exelist": [
+                "cc"
+              ],
+              "file_suffixes": [
+                "c"
+              ],
+              "default_suffix": "c",
+              "version": "13.3.0",
+              "full_version": "cc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+              "linker_id": "ld.bfd"
+            },
+            "cpp": {
+              "id": "gcc",
+              "exelist": [
+                "c++"
+              ],
+              "linker_exelist": [
+                "c++"
+              ],
+              "file_suffixes": [
+                "cpp",
+                "cc",
+                "cxx",
+                "c++",
+                "hh",
+                "hpp",
+                "ipp",
+                "hxx",
+                "ino",
+                "ixx",
+                "C"
+              ],
+              "default_suffix": "cpp",
+              "version": "13.3.0",
+              "full_version": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+              "linker_id": "ld.bfd"
+            }
+          },
+          "build": {
+            "c": {
+              "id": "gcc",
+              "exelist": [
+                "cc"
+              ],
+              "linker_exelist": [
+                "cc"
+              ],
+              "file_suffixes": [
+                "c"
+              ],
+              "default_suffix": "c",
+              "version": "13.3.0",
+              "full_version": "cc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+              "linker_id": "ld.bfd"
+            },
+            "cpp": {
+              "id": "gcc",
+              "exelist": [
+                "c++"
+              ],
+              "linker_exelist": [
+                "c++"
+              ],
+              "file_suffixes": [
+                "cpp",
+                "cc",
+                "cxx",
+                "c++",
+                "hh",
+                "hpp",
+                "ipp",
+                "hxx",
+                "ino",
+                "ixx",
+                "C"
+              ],
+              "default_suffix": "cpp",
+              "version": "13.3.0",
+              "full_version": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+              "linker_id": "ld.bfd"
+            }
+          }
+        },
+        "adapter_compilers": {
+          "host": {
+            "c": {
+              "id": "gcc",
+              "exelist": [
+                "cc"
+              ],
+              "linker_exelist": [
+                "cc"
+              ],
+              "file_suffixes": [
+                "c"
+              ],
+              "default_suffix": "c",
+              "version": "13.3.0",
+              "full_version": "cc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+              "linker_id": "ld.bfd"
+            }
+          },
+          "build": {
+            "c": {
+              "id": "gcc",
+              "exelist": [
+                "cc"
+              ],
+              "linker_exelist": [
+                "cc"
+              ],
+              "file_suffixes": [
+                "c"
+              ],
+              "default_suffix": "c",
+              "version": "13.3.0",
+              "full_version": "cc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+              "linker_id": "ld.bfd"
+            }
+          }
+        },
+        "build_commands": [
+          [
+            "/usr/bin/meson",
+            "setup",
+            "/tmp/folio-harfbuzz-4tebss0q/engine-build",
+            "/tmp/folio-harfbuzz-4tebss0q/harfbuzz-10.2.0",
+            "--prefix=/workspace/.build-cache/t79-provision/folio-harfbuzz",
+            "--libdir=lib",
+            "--buildtype=release",
+            "--wrap-mode=nodownload",
+            "-Dauto_features=disabled",
+            "-Ddefault_library=shared",
+            "-Dglib=disabled",
+            "-Dgobject=disabled",
+            "-Dcairo=disabled",
+            "-Dchafa=disabled",
+            "-Dicu=disabled",
+            "-Dgraphite2=disabled",
+            "-Dfreetype=disabled",
+            "-Dgdi=disabled",
+            "-Ddirectwrite=disabled",
+            "-Dcoretext=disabled",
+            "-Dwasm=disabled",
+            "-Dtests=disabled",
+            "-Dintrospection=disabled",
+            "-Ddocs=disabled",
+            "-Dutilities=disabled",
+            "-Dbenchmark=disabled"
+          ],
+          [
+            "/usr/bin/meson",
+            "compile",
+            "-C",
+            "/tmp/folio-harfbuzz-4tebss0q/engine-build",
+            "-j",
+            "4",
+            "--verbose"
+          ],
+          [
+            "/usr/bin/meson",
+            "install",
+            "-C",
+            "/tmp/folio-harfbuzz-4tebss0q/engine-build",
+            "--no-rebuild"
+          ],
+          [
+            "/usr/bin/meson",
+            "setup",
+            "/tmp/folio-harfbuzz-4tebss0q/adapter-build",
+            "/workspace/pdf-conversion/src/main/native",
+            "--prefix=/workspace/.build-cache/t79-provision/folio-harfbuzz",
+            "--libdir=lib",
+            "--buildtype=release",
+            "--wrap-mode=nodownload",
+            "-Dauto_features=disabled",
+            "-Ddefault_library=shared"
+          ],
+          [
+            "/usr/bin/meson",
+            "compile",
+            "-C",
+            "/tmp/folio-harfbuzz-4tebss0q/adapter-build",
+            "-j",
+            "4",
+            "--verbose"
+          ],
+          [
+            "/usr/bin/meson",
+            "install",
+            "-C",
+            "/tmp/folio-harfbuzz-4tebss0q/adapter-build",
+            "--no-rebuild"
+          ]
+        ],
+        "build_options": {
+          "engine": [
+            {
+              "name": "build.cmake_prefix_path",
+              "value": [],
+              "section": "core",
+              "machine": "any",
+              "type": "array",
+              "description": "List of additional prefixes for cmake to search"
+            },
+            {
+              "name": "build.pkg_config_path",
+              "value": [
+                "/tmp/folio-harfbuzz-4tebss0q/empty-pkgconfig"
+              ],
+              "section": "core",
+              "machine": "any",
+              "type": "array",
+              "description": "List of additional paths for pkg-config to search"
+            },
+            {
+              "name": "auto_features",
+              "value": "disabled",
+              "section": "core",
+              "machine": "any",
+              "choices": [
+                "enabled",
+                "disabled",
+                "auto"
+              ],
+              "type": "combo",
+              "description": "Override value of all 'auto' features"
+            },
+            {
+              "name": "backend",
+              "value": "ninja",
+              "section": "core",
+              "machine": "any",
+              "choices": [
+                "ninja",
+                "vs",
+                "vs2010",
+                "vs2012",
+                "vs2013",
+                "vs2015",
+                "vs2017",
+                "vs2019",
+                "vs2022",
+                "xcode",
+                "none"
+              ],
+              "type": "combo",
+              "description": "Backend to use"
+            },
+            {
+              "name": "buildtype",
+              "value": "release",
+              "section": "core",
+              "machine": "any",
+              "choices": [
+                "plain",
+                "debug",
+                "debugoptimized",
+                "release",
+                "minsize",
+                "custom"
+              ],
+              "type": "combo",
+              "description": "Build type to use"
+            },
+            {
+              "name": "cmake_prefix_path",
+              "value": [],
+              "section": "core",
+              "machine": "any",
+              "type": "array",
+              "description": "List of additional prefixes for cmake to search"
+            },
+            {
+              "name": "debug",
+              "value": false,
+              "section": "core",
+              "machine": "any",
+              "type": "boolean",
+              "description": "Enable debug symbols and other information"
+            },
+            {
+              "name": "default_library",
+              "value": "shared",
+              "section": "core",
+              "machine": "any",
+              "choices": [
+                "shared",
+                "static",
+                "both"
+              ],
+              "type": "combo",
+              "description": "Default library type"
+            },
+            {
+              "name": "force_fallback_for",
+              "value": [],
+              "section": "core",
+              "machine": "any",
+              "type": "array",
+              "description": "Force fallback for those subprojects"
+            },
+            {
+              "name": "genvslite",
+              "value": "vs2022",
+              "section": "core",
+              "machine": "any",
+              "choices": [
+                "vs2022"
+              ],
+              "type": "combo",
+              "description": "Setup multiple buildtype-suffixed ninja-backend build directories, and a [builddir]_vs containing a Visual Studio meta-backend with multiple configurations that calls into them"
+            },
+            {
+              "name": "install_umask",
+              "value": 18,
+              "section": "core",
+              "machine": "any",
+              "type": "integer",
+              "description": "Default umask to apply on permissions of installed files"
+            },
+            {
+              "name": "layout",
+              "value": "mirror",
+              "section": "core",
+              "machine": "any",
+              "choices": [
+                "mirror",
+                "flat"
+              ],
+              "type": "combo",
+              "description": "Build directory layout"
+            },
+            {
+              "name": "optimization",
+              "value": "3",
+              "section": "core",
+              "machine": "any",
+              "choices": [
+                "plain",
+                "0",
+                "g",
+                "1",
+                "2",
+                "3",
+                "s"
+              ],
+              "type": "combo",
+              "description": "Optimization level"
+            },
+            {
+              "name": "pkg_config_path",
+              "value": [
+                "/tmp/folio-harfbuzz-4tebss0q/empty-pkgconfig"
+              ],
+              "section": "core",
+              "machine": "any",
+              "type": "array",
+              "description": "List of additional paths for pkg-config to search"
+            },
+            {
+              "name": "prefer_static",
+              "value": false,
+              "section": "core",
+              "machine": "any",
+              "type": "boolean",
+              "description": "Whether to try static linking before shared linking"
+            },
+            {
+              "name": "strip",
+              "value": false,
+              "section": "core",
+              "machine": "any",
+              "type": "boolean",
+              "description": "Strip targets on install"
+            },
+            {
+              "name": "unity",
+              "value": "off",
+              "section": "core",
+              "machine": "any",
+              "choices": [
+                "on",
+                "off",
+                "subprojects"
+              ],
+              "type": "combo",
+              "description": "Unity build"
+            },
+            {
+              "name": "unity_size",
+              "value": 4,
+              "section": "core",
+              "machine": "any",
+              "type": "integer",
+              "description": "Unity block size"
+            },
+            {
+              "name": "vsenv",
+              "value": false,
+              "section": "core",
+              "machine": "any",
+              "type": "boolean",
+              "description": "Activate Visual Studio environment"
+            },
+            {
+              "name": "warning_level",
+              "value": "1",
+              "section": "core",
+              "machine": "any",
+              "choices": [
+                "0",
+                "1",
+                "2",
+                "3",
+                "everything"
+              ],
+              "type": "combo",
+              "description": "Compiler warning level to use"
+            },
+            {
+              "name": "werror",
+              "value": false,
+              "section": "core",
+              "machine": "any",
+              "type": "boolean",
+              "description": "Treat warnings as errors"
+            },
+            {
+              "name": "wrap_mode",
+              "value": "nodownload",
+              "section": "core",
+              "machine": "any",
+              "choices": [
+                "default",
+                "nofallback",
+                "nodownload",
+                "forcefallback",
+                "nopromote"
+              ],
+              "type": "combo",
+              "description": "Wrap mode"
+            },
+            {
+              "name": "pkgconfig.relocatable",
+              "value": false,
+              "section": "core",
+              "machine": "any",
+              "type": "boolean",
+              "description": "Generate pkgconfig files as relocatable"
+            },
+            {
+              "name": "python.allow_limited_api",
+              "value": true,
+              "section": "core",
+              "machine": "any",
+              "type": "boolean",
+              "description": "Whether to allow use of the Python Limited API"
+            },
+            {
+              "name": "python.bytecompile",
+              "value": 0,
+              "section": "core",
+              "machine": "any",
+              "type": "integer",
+              "description": "Whether to compile bytecode"
+            },
+            {
+              "name": "python.install_env",
+              "value": "prefix",
+              "section": "core",
+              "machine": "any",
+              "choices": [
+                "auto",
+                "prefix",
+                "system",
+                "venv"
+              ],
+              "type": "combo",
+              "description": "Which python environment to install to"
+            },
+            {
+              "name": "python.platlibdir",
+              "value": "",
+              "section": "core",
+              "machine": "any",
+              "type": "string",
+              "description": "Directory for site-specific, platform-specific files."
+            },
+            {
+              "name": "python.purelibdir",
+              "value": "",
+              "section": "core",
+              "machine": "any",
+              "type": "string",
+              "description": "Directory for site-specific, non-platform-specific files."
+            },
+            {
+              "name": "backend_max_links",
+              "value": 0,
+              "section": "backend",
+              "machine": "any",
+              "type": "integer",
+              "description": "Maximum number of linker processes to run or 0 for no limit"
+            },
+            {
+              "name": "b_asneeded",
+              "value": true,
+              "section": "base",
+              "machine": "any",
+              "type": "boolean",
+              "description": "Use -Wl,--as-needed when linking"
+            },
+            {
+              "name": "b_colorout",
+              "value": "always",
+              "section": "base",
+              "machine": "any",
+              "choices": [
+                "auto",
+                "always",
+                "never"
+              ],
+              "type": "combo",
+              "description": "Use colored output"
+            },
+            {
+              "name": "b_coverage",
+              "value": false,
+              "section": "base",
+              "machine": "any",
+              "type": "boolean",
+              "description": "Enable coverage tracking."
+            },
+            {
+              "name": "b_lto",
+              "value": false,
+              "section": "base",
+              "machine": "any",
+              "type": "boolean",
+              "description": "Use link time optimization"
+            },
+            {
+              "name": "b_lto_threads",
+              "value": 0,
+              "section": "base",
+              "machine": "any",
+              "type": "integer",
+              "description": "Use multiple threads for Link Time Optimization"
+            },
+            {
+              "name": "b_lundef",
+              "value": true,
+              "section": "base",
+              "machine": "any",
+              "type": "boolean",
+              "description": "Use -Wl,--no-undefined when linking"
+            },
+            {
+              "name": "b_ndebug",
+              "value": "false",
+              "section": "base",
+              "machine": "any",
+              "choices": [
+                "true",
+                "false",
+                "if-release"
+              ],
+              "type": "combo",
+              "description": "Disable asserts"
+            },
+            {
+              "name": "b_pch",
+              "value": true,
+              "section": "base",
+              "machine": "any",
+              "type": "boolean",
+              "description": "Use precompiled headers"
+            },
+            {
+              "name": "b_pgo",
+              "value": "off",
+              "section": "base",
+              "machine": "any",
+              "choices": [
+                "off",
+                "generate",
+                "use"
+              ],
+              "type": "combo",
+              "description": "Use profile guided optimization"
+            },
+            {
+              "name": "b_pie",
+              "value": false,
+              "section": "base",
+              "machine": "any",
+              "type": "boolean",
+              "description": "Build executables as position independent"
+            },
+            {
+              "name": "b_sanitize",
+              "value": "none",
+              "section": "base",
+              "machine": "any",
+              "choices": [
+                "none",
+                "address",
+                "thread",
+                "undefined",
+                "memory",
+                "leak",
+                "address,undefined"
+              ],
+              "type": "combo",
+              "description": "Code sanitizer to use"
+            },
+            {
+              "name": "b_staticpic",
+              "value": true,
+              "section": "base",
+              "machine": "any",
+              "type": "boolean",
+              "description": "Build static libraries as position independent"
+            },
+            {
+              "name": "build.c_args",
+              "value": [],
+              "section": "compiler",
+              "machine": "build",
+              "type": "array",
+              "description": "Extra arguments passed to the c compiler"
+            },
+            {
+              "name": "build.c_link_args",
+              "value": [],
+              "section": "compiler",
+              "machine": "build",
+              "type": "array",
+              "description": "Extra arguments passed to the c linker"
+            },
+            {
+              "name": "build.c_std",
+              "value": "none",
+              "section": "compiler",
+              "machine": "build",
+              "choices": [
+                "none",
+                "c89",
+                "c99",
+                "c11",
+                "c17",
+                "c18",
+                "c2x",
+                "gnu89",
+                "gnu99",
+                "gnu11",
+                "gnu17",
+                "gnu18",
+                "gnu2x"
+              ],
+              "type": "combo",
+              "description": "C language standard to use"
+            },
+            {
+              "name": "c_args",
+              "value": [],
+              "section": "compiler",
+              "machine": "host",
+              "type": "array",
+              "description": "Extra arguments passed to the c compiler"
+            },
+            {
+              "name": "c_link_args",
+              "value": [],
+              "section": "compiler",
+              "machine": "host",
+              "type": "array",
+              "description": "Extra arguments passed to the c linker"
+            },
+            {
+              "name": "c_std",
+              "value": "none",
+              "section": "compiler",
+              "machine": "host",
+              "choices": [
+                "none",
+                "c89",
+                "c99",
+                "c11",
+                "c17",
+                "c18",
+                "c2x",
+                "gnu89",
+                "gnu99",
+                "gnu11",
+                "gnu17",
+                "gnu18",
+                "gnu2x"
+              ],
+              "type": "combo",
+              "description": "C language standard to use"
+            },
+            {
+              "name": "build.cpp_args",
+              "value": [],
+              "section": "compiler",
+              "machine": "build",
+              "type": "array",
+              "description": "Extra arguments passed to the cpp compiler"
+            },
+            {
+              "name": "build.cpp_debugstl",
+              "value": false,
+              "section": "compiler",
+              "machine": "build",
+              "type": "boolean",
+              "description": "STL debug mode"
+            },
+            {
+              "name": "build.cpp_eh",
+              "value": "none",
+              "section": "compiler",
+              "machine": "build",
+              "choices": [
+                "none",
+                "default",
+                "a",
+                "s",
+                "sc"
+              ],
+              "type": "combo",
+              "description": "C++ exception handling type."
+            },
+            {
+              "name": "build.cpp_link_args",
+              "value": [],
+              "section": "compiler",
+              "machine": "build",
+              "type": "array",
+              "description": "Extra arguments passed to the cpp linker"
+            },
+            {
+              "name": "build.cpp_rtti",
+              "value": true,
+              "section": "compiler",
+              "machine": "build",
+              "type": "boolean",
+              "description": "Enable RTTI"
+            },
+            {
+              "name": "build.cpp_std",
+              "value": "c++11",
+              "section": "compiler",
+              "machine": "build",
+              "choices": [
+                "none",
+                "c++98",
+                "c++03",
+                "c++11",
+                "c++14",
+                "c++17",
+                "c++1z",
+                "c++2a",
+                "c++20",
+                "c++23",
+                "gnu++98",
+                "gnu++03",
+                "gnu++11",
+                "gnu++14",
+                "gnu++17",
+                "gnu++1z",
+                "gnu++2a",
+                "gnu++20",
+                "gnu++23"
+              ],
+              "type": "combo",
+              "description": "C++ language standard to use"
+            },
+            {
+              "name": "cpp_args",
+              "value": [],
+              "section": "compiler",
+              "machine": "host",
+              "type": "array",
+              "description": "Extra arguments passed to the cpp compiler"
+            },
+            {
+              "name": "cpp_debugstl",
+              "value": false,
+              "section": "compiler",
+              "machine": "host",
+              "type": "boolean",
+              "description": "STL debug mode"
+            },
+            {
+              "name": "cpp_eh",
+              "value": "none",
+              "section": "compiler",
+              "machine": "host",
+              "choices": [
+                "none",
+                "default",
+                "a",
+                "s",
+                "sc"
+              ],
+              "type": "combo",
+              "description": "C++ exception handling type."
+            },
+            {
+              "name": "cpp_link_args",
+              "value": [],
+              "section": "compiler",
+              "machine": "host",
+              "type": "array",
+              "description": "Extra arguments passed to the cpp linker"
+            },
+            {
+              "name": "cpp_rtti",
+              "value": true,
+              "section": "compiler",
+              "machine": "host",
+              "type": "boolean",
+              "description": "Enable RTTI"
+            },
+            {
+              "name": "cpp_std",
+              "value": "c++11",
+              "section": "compiler",
+              "machine": "host",
+              "choices": [
+                "none",
+                "c++98",
+                "c++03",
+                "c++11",
+                "c++14",
+                "c++17",
+                "c++1z",
+                "c++2a",
+                "c++20",
+                "c++23",
+                "gnu++98",
+                "gnu++03",
+                "gnu++11",
+                "gnu++14",
+                "gnu++17",
+                "gnu++1z",
+                "gnu++2a",
+                "gnu++20",
+                "gnu++23"
+              ],
+              "type": "combo",
+              "description": "C++ language standard to use"
+            },
+            {
+              "name": "bindir",
+              "value": "bin",
+              "section": "directory",
+              "machine": "any",
+              "type": "string",
+              "description": "Executable directory"
+            },
+            {
+              "name": "datadir",
+              "value": "share",
+              "section": "directory",
+              "machine": "any",
+              "type": "string",
+              "description": "Data file directory"
+            },
+            {
+              "name": "includedir",
+              "value": "include",
+              "section": "directory",
+              "machine": "any",
+              "type": "string",
+              "description": "Header file directory"
+            },
+            {
+              "name": "infodir",
+              "value": "share/info",
+              "section": "directory",
+              "machine": "any",
+              "type": "string",
+              "description": "Info page directory"
+            },
+            {
+              "name": "libdir",
+              "value": "lib",
+              "section": "directory",
+              "machine": "any",
+              "type": "string",
+              "description": "Library directory"
+            },
+            {
+              "name": "libexecdir",
+              "value": "libexec",
+              "section": "directory",
+              "machine": "any",
+              "type": "string",
+              "description": "Library executable directory"
+            },
+            {
+              "name": "licensedir",
+              "value": "",
+              "section": "directory",
+              "machine": "any",
+              "type": "string",
+              "description": "Licenses directory"
+            },
+            {
+              "name": "localedir",
+              "value": "share/locale",
+              "section": "directory",
+              "machine": "any",
+              "type": "string",
+              "description": "Locale data directory"
+            },
+            {
+              "name": "localstatedir",
+              "value": "var",
+              "section": "directory",
+              "machine": "any",
+              "type": "string",
+              "description": "Localstate data directory"
+            },
+            {
+              "name": "mandir",
+              "value": "share/man",
+              "section": "directory",
+              "machine": "any",
+              "type": "string",
+              "description": "Manual page directory"
+            },
+            {
+              "name": "prefix",
+              "value": "/workspace/.build-cache/t79-provision/folio-harfbuzz",
+              "section": "directory",
+              "machine": "any",
+              "type": "string",
+              "description": "Installation prefix"
+            },
+            {
+              "name": "sbindir",
+              "value": "sbin",
+              "section": "directory",
+              "machine": "any",
+              "type": "string",
+              "description": "System executable directory"
+            },
+            {
+              "name": "sharedstatedir",
+              "value": "com",
+              "section": "directory",
+              "machine": "any",
+              "type": "string",
+              "description": "Architecture-independent data directory"
+            },
+            {
+              "name": "sysconfdir",
+              "value": "etc",
+              "section": "directory",
+              "machine": "any",
+              "type": "string",
+              "description": "Sysconf data directory"
+            },
+            {
+              "name": "benchmark",
+              "value": "disabled",
+              "section": "user",
+              "machine": "any",
+              "choices": [
+                "enabled",
+                "disabled",
+                "auto"
+              ],
+              "type": "combo",
+              "description": "Enable benchmark tests"
+            },
+            {
+              "name": "cairo",
+              "value": "disabled",
+              "section": "user",
+              "machine": "any",
+              "choices": [
+                "enabled",
+                "disabled",
+                "auto"
+              ],
+              "type": "combo",
+              "description": "Use Cairo graphics library"
+            },
+            {
+              "name": "chafa",
+              "value": "disabled",
+              "section": "user",
+              "machine": "any",
+              "choices": [
+                "enabled",
+                "disabled",
+                "auto"
+              ],
+              "type": "combo",
+              "description": "Use Chafa terminal graphics library"
+            },
+            {
+              "name": "cmakepackagedir",
+              "value": "",
+              "section": "user",
+              "machine": "any",
+              "type": "string",
+              "description": "CMake package configuration install directory"
+            },
+            {
+              "name": "coretext",
+              "value": "disabled",
+              "section": "user",
+              "machine": "any",
+              "choices": [
+                "enabled",
+                "disabled",
+                "auto"
+              ],
+              "type": "combo",
+              "description": "Enable CoreText shaper backend on macOS"
+            },
+            {
+              "name": "directwrite",
+              "value": "disabled",
+              "section": "user",
+              "machine": "any",
+              "choices": [
+                "enabled",
+                "disabled",
+                "auto"
+              ],
+              "type": "combo",
+              "description": "Enable DirectWrite shaper backend on Windows (experimental)"
+            },
+            {
+              "name": "doc_tests",
+              "value": false,
+              "section": "user",
+              "machine": "any",
+              "type": "boolean",
+              "description": "Run gtkdoc-check tests"
+            },
+            {
+              "name": "docs",
+              "value": "disabled",
+              "section": "user",
+              "machine": "any",
+              "choices": [
+                "enabled",
+                "disabled",
+                "auto"
+              ],
+              "type": "combo",
+              "description": "Generate documentation with gtk-doc"
+            },
+            {
+              "name": "experimental_api",
+              "value": false,
+              "section": "user",
+              "machine": "any",
+              "type": "boolean",
+              "description": "Enable experimental APIs"
+            },
+            {
+              "name": "freetype",
+              "value": "disabled",
+              "section": "user",
+              "machine": "any",
+              "choices": [
+                "enabled",
+                "disabled",
+                "auto"
+              ],
+              "type": "combo",
+              "description": "Enable freetype interop helpers"
+            },
+            {
+              "name": "fuzzer_ldflags",
+              "value": "",
+              "section": "user",
+              "machine": "any",
+              "type": "string",
+              "description": "Extra LDFLAGS used during linking of fuzzing binaries"
+            },
+            {
+              "name": "gdi",
+              "value": "disabled",
+              "section": "user",
+              "machine": "any",
+              "choices": [
+                "enabled",
+                "disabled",
+                "auto"
+              ],
+              "type": "combo",
+              "description": "Enable GDI helpers and Uniscribe shaper backend (Windows only)"
+            },
+            {
+              "name": "glib",
+              "value": "disabled",
+              "section": "user",
+              "machine": "any",
+              "choices": [
+                "enabled",
+                "disabled",
+                "auto"
+              ],
+              "type": "combo",
+              "description": "Enable GLib unicode functions"
+            },
+            {
+              "name": "gobject",
+              "value": "disabled",
+              "section": "user",
+              "machine": "any",
+              "choices": [
+                "enabled",
+                "disabled",
+                "auto"
+              ],
+              "type": "combo",
+              "description": "Enable GObject bindings"
+            },
+            {
+              "name": "graphite",
+              "value": "disabled",
+              "section": "user",
+              "machine": "any",
+              "choices": [
+                "enabled",
+                "disabled",
+                "auto"
+              ],
+              "type": "combo",
+              "description": "Deprecated use graphite2 option instead"
+            },
+            {
+              "name": "graphite2",
+              "value": "disabled",
+              "section": "user",
+              "machine": "any",
+              "choices": [
+                "enabled",
+                "disabled",
+                "auto"
+              ],
+              "type": "combo",
+              "description": "Enable Graphite2 complementary shaper"
+            },
+            {
+              "name": "icu",
+              "value": "disabled",
+              "section": "user",
+              "machine": "any",
+              "choices": [
+                "enabled",
+                "disabled",
+                "auto"
+              ],
+              "type": "combo",
+              "description": "Enable ICU library unicode functions"
+            },
+            {
+              "name": "icu_builtin",
+              "value": false,
+              "section": "user",
+              "machine": "any",
+              "type": "boolean",
+              "description": "Don't separate ICU support as harfbuzz-icu module"
+            },
+            {
+              "name": "introspection",
+              "value": "disabled",
+              "section": "user",
+              "machine": "any",
+              "choices": [
+                "enabled",
+                "disabled",
+                "auto"
+              ],
+              "type": "combo",
+              "description": "Generate gobject-introspection bindings (.gir/.typelib files)"
+            },
+            {
+              "name": "ragel_subproject",
+              "value": false,
+              "section": "user",
+              "machine": "any",
+              "type": "boolean",
+              "description": "Build Ragel subproject if no suitable version is found"
+            },
+            {
+              "name": "tests",
+              "value": "disabled",
+              "section": "user",
+              "machine": "any",
+              "choices": [
+                "enabled",
+                "disabled",
+                "auto"
+              ],
+              "type": "combo",
+              "description": "Enable or disable unit tests"
+            },
+            {
+              "name": "utilities",
+              "value": "disabled",
+              "section": "user",
+              "machine": "any",
+              "choices": [
+                "enabled",
+                "disabled",
+                "auto"
+              ],
+              "type": "combo",
+              "description": "Build harfbuzz utils"
+            },
+            {
+              "name": "wasm",
+              "value": "disabled",
+              "section": "user",
+              "machine": "any",
+              "choices": [
+                "enabled",
+                "disabled",
+                "auto"
+              ],
+              "type": "combo",
+              "description": "Enable WebAssembly shaper backend (experimental)"
+            },
+            {
+              "name": "with_libstdcxx",
+              "value": false,
+              "section": "user",
+              "machine": "any",
+              "type": "boolean",
+              "description": "Allow linking with libstdc++"
+            },
+            {
+              "name": "errorlogs",
+              "value": true,
+              "section": "test",
+              "machine": "any",
+              "type": "boolean",
+              "description": "Whether to print the logs from failing tests"
+            },
+            {
+              "name": "stdsplit",
+              "value": true,
+              "section": "test",
+              "machine": "any",
+              "type": "boolean",
+              "description": "Split stdout and stderr in test logs"
+            }
+          ],
+          "adapter": [
+            {
+              "name": "build.cmake_prefix_path",
+              "value": [],
+              "section": "core",
+              "machine": "any",
+              "type": "array",
+              "description": "List of additional prefixes for cmake to search"
+            },
+            {
+              "name": "build.pkg_config_path",
+              "value": [
+                "/workspace/.build-cache/t79-provision/folio-harfbuzz/lib/pkgconfig"
+              ],
+              "section": "core",
+              "machine": "any",
+              "type": "array",
+              "description": "List of additional paths for pkg-config to search"
+            },
+            {
+              "name": "auto_features",
+              "value": "disabled",
+              "section": "core",
+              "machine": "any",
+              "choices": [
+                "enabled",
+                "disabled",
+                "auto"
+              ],
+              "type": "combo",
+              "description": "Override value of all 'auto' features"
+            },
+            {
+              "name": "backend",
+              "value": "ninja",
+              "section": "core",
+              "machine": "any",
+              "choices": [
+                "ninja",
+                "vs",
+                "vs2010",
+                "vs2012",
+                "vs2013",
+                "vs2015",
+                "vs2017",
+                "vs2019",
+                "vs2022",
+                "xcode",
+                "none"
+              ],
+              "type": "combo",
+              "description": "Backend to use"
+            },
+            {
+              "name": "buildtype",
+              "value": "release",
+              "section": "core",
+              "machine": "any",
+              "choices": [
+                "plain",
+                "debug",
+                "debugoptimized",
+                "release",
+                "minsize",
+                "custom"
+              ],
+              "type": "combo",
+              "description": "Build type to use"
+            },
+            {
+              "name": "cmake_prefix_path",
+              "value": [],
+              "section": "core",
+              "machine": "any",
+              "type": "array",
+              "description": "List of additional prefixes for cmake to search"
+            },
+            {
+              "name": "debug",
+              "value": false,
+              "section": "core",
+              "machine": "any",
+              "type": "boolean",
+              "description": "Enable debug symbols and other information"
+            },
+            {
+              "name": "default_library",
+              "value": "shared",
+              "section": "core",
+              "machine": "any",
+              "choices": [
+                "shared",
+                "static",
+                "both"
+              ],
+              "type": "combo",
+              "description": "Default library type"
+            },
+            {
+              "name": "force_fallback_for",
+              "value": [],
+              "section": "core",
+              "machine": "any",
+              "type": "array",
+              "description": "Force fallback for those subprojects"
+            },
+            {
+              "name": "genvslite",
+              "value": "vs2022",
+              "section": "core",
+              "machine": "any",
+              "choices": [
+                "vs2022"
+              ],
+              "type": "combo",
+              "description": "Setup multiple buildtype-suffixed ninja-backend build directories, and a [builddir]_vs containing a Visual Studio meta-backend with multiple configurations that calls into them"
+            },
+            {
+              "name": "install_umask",
+              "value": 18,
+              "section": "core",
+              "machine": "any",
+              "type": "integer",
+              "description": "Default umask to apply on permissions of installed files"
+            },
+            {
+              "name": "layout",
+              "value": "mirror",
+              "section": "core",
+              "machine": "any",
+              "choices": [
+                "mirror",
+                "flat"
+              ],
+              "type": "combo",
+              "description": "Build directory layout"
+            },
+            {
+              "name": "optimization",
+              "value": "3",
+              "section": "core",
+              "machine": "any",
+              "choices": [
+                "plain",
+                "0",
+                "g",
+                "1",
+                "2",
+                "3",
+                "s"
+              ],
+              "type": "combo",
+              "description": "Optimization level"
+            },
+            {
+              "name": "pkg_config_path",
+              "value": [
+                "/workspace/.build-cache/t79-provision/folio-harfbuzz/lib/pkgconfig"
+              ],
+              "section": "core",
+              "machine": "any",
+              "type": "array",
+              "description": "List of additional paths for pkg-config to search"
+            },
+            {
+              "name": "prefer_static",
+              "value": false,
+              "section": "core",
+              "machine": "any",
+              "type": "boolean",
+              "description": "Whether to try static linking before shared linking"
+            },
+            {
+              "name": "strip",
+              "value": false,
+              "section": "core",
+              "machine": "any",
+              "type": "boolean",
+              "description": "Strip targets on install"
+            },
+            {
+              "name": "unity",
+              "value": "off",
+              "section": "core",
+              "machine": "any",
+              "choices": [
+                "on",
+                "off",
+                "subprojects"
+              ],
+              "type": "combo",
+              "description": "Unity build"
+            },
+            {
+              "name": "unity_size",
+              "value": 4,
+              "section": "core",
+              "machine": "any",
+              "type": "integer",
+              "description": "Unity block size"
+            },
+            {
+              "name": "vsenv",
+              "value": false,
+              "section": "core",
+              "machine": "any",
+              "type": "boolean",
+              "description": "Activate Visual Studio environment"
+            },
+            {
+              "name": "warning_level",
+              "value": "3",
+              "section": "core",
+              "machine": "any",
+              "choices": [
+                "0",
+                "1",
+                "2",
+                "3",
+                "everything"
+              ],
+              "type": "combo",
+              "description": "Compiler warning level to use"
+            },
+            {
+              "name": "werror",
+              "value": true,
+              "section": "core",
+              "machine": "any",
+              "type": "boolean",
+              "description": "Treat warnings as errors"
+            },
+            {
+              "name": "wrap_mode",
+              "value": "nodownload",
+              "section": "core",
+              "machine": "any",
+              "choices": [
+                "default",
+                "nofallback",
+                "nodownload",
+                "forcefallback",
+                "nopromote"
+              ],
+              "type": "combo",
+              "description": "Wrap mode"
+            },
+            {
+              "name": "pkgconfig.relocatable",
+              "value": false,
+              "section": "core",
+              "machine": "any",
+              "type": "boolean",
+              "description": "Generate pkgconfig files as relocatable"
+            },
+            {
+              "name": "python.allow_limited_api",
+              "value": true,
+              "section": "core",
+              "machine": "any",
+              "type": "boolean",
+              "description": "Whether to allow use of the Python Limited API"
+            },
+            {
+              "name": "python.bytecompile",
+              "value": 0,
+              "section": "core",
+              "machine": "any",
+              "type": "integer",
+              "description": "Whether to compile bytecode"
+            },
+            {
+              "name": "python.install_env",
+              "value": "prefix",
+              "section": "core",
+              "machine": "any",
+              "choices": [
+                "auto",
+                "prefix",
+                "system",
+                "venv"
+              ],
+              "type": "combo",
+              "description": "Which python environment to install to"
+            },
+            {
+              "name": "python.platlibdir",
+              "value": "",
+              "section": "core",
+              "machine": "any",
+              "type": "string",
+              "description": "Directory for site-specific, platform-specific files."
+            },
+            {
+              "name": "python.purelibdir",
+              "value": "",
+              "section": "core",
+              "machine": "any",
+              "type": "string",
+              "description": "Directory for site-specific, non-platform-specific files."
+            },
+            {
+              "name": "backend_max_links",
+              "value": 0,
+              "section": "backend",
+              "machine": "any",
+              "type": "integer",
+              "description": "Maximum number of linker processes to run or 0 for no limit"
+            },
+            {
+              "name": "b_asneeded",
+              "value": true,
+              "section": "base",
+              "machine": "any",
+              "type": "boolean",
+              "description": "Use -Wl,--as-needed when linking"
+            },
+            {
+              "name": "b_colorout",
+              "value": "always",
+              "section": "base",
+              "machine": "any",
+              "choices": [
+                "auto",
+                "always",
+                "never"
+              ],
+              "type": "combo",
+              "description": "Use colored output"
+            },
+            {
+              "name": "b_coverage",
+              "value": false,
+              "section": "base",
+              "machine": "any",
+              "type": "boolean",
+              "description": "Enable coverage tracking."
+            },
+            {
+              "name": "b_lto",
+              "value": false,
+              "section": "base",
+              "machine": "any",
+              "type": "boolean",
+              "description": "Use link time optimization"
+            },
+            {
+              "name": "b_lto_threads",
+              "value": 0,
+              "section": "base",
+              "machine": "any",
+              "type": "integer",
+              "description": "Use multiple threads for Link Time Optimization"
+            },
+            {
+              "name": "b_lundef",
+              "value": true,
+              "section": "base",
+              "machine": "any",
+              "type": "boolean",
+              "description": "Use -Wl,--no-undefined when linking"
+            },
+            {
+              "name": "b_ndebug",
+              "value": "false",
+              "section": "base",
+              "machine": "any",
+              "choices": [
+                "true",
+                "false",
+                "if-release"
+              ],
+              "type": "combo",
+              "description": "Disable asserts"
+            },
+            {
+              "name": "b_pch",
+              "value": true,
+              "section": "base",
+              "machine": "any",
+              "type": "boolean",
+              "description": "Use precompiled headers"
+            },
+            {
+              "name": "b_pgo",
+              "value": "off",
+              "section": "base",
+              "machine": "any",
+              "choices": [
+                "off",
+                "generate",
+                "use"
+              ],
+              "type": "combo",
+              "description": "Use profile guided optimization"
+            },
+            {
+              "name": "b_pie",
+              "value": false,
+              "section": "base",
+              "machine": "any",
+              "type": "boolean",
+              "description": "Build executables as position independent"
+            },
+            {
+              "name": "b_sanitize",
+              "value": "none",
+              "section": "base",
+              "machine": "any",
+              "choices": [
+                "none",
+                "address",
+                "thread",
+                "undefined",
+                "memory",
+                "leak",
+                "address,undefined"
+              ],
+              "type": "combo",
+              "description": "Code sanitizer to use"
+            },
+            {
+              "name": "b_staticpic",
+              "value": true,
+              "section": "base",
+              "machine": "any",
+              "type": "boolean",
+              "description": "Build static libraries as position independent"
+            },
+            {
+              "name": "build.c_args",
+              "value": [],
+              "section": "compiler",
+              "machine": "build",
+              "type": "array",
+              "description": "Extra arguments passed to the c compiler"
+            },
+            {
+              "name": "build.c_link_args",
+              "value": [],
+              "section": "compiler",
+              "machine": "build",
+              "type": "array",
+              "description": "Extra arguments passed to the c linker"
+            },
+            {
+              "name": "build.c_std",
+              "value": "c11",
+              "section": "compiler",
+              "machine": "build",
+              "choices": [
+                "none",
+                "c89",
+                "c99",
+                "c11",
+                "c17",
+                "c18",
+                "c2x",
+                "gnu89",
+                "gnu99",
+                "gnu11",
+                "gnu17",
+                "gnu18",
+                "gnu2x"
+              ],
+              "type": "combo",
+              "description": "C language standard to use"
+            },
+            {
+              "name": "c_args",
+              "value": [],
+              "section": "compiler",
+              "machine": "host",
+              "type": "array",
+              "description": "Extra arguments passed to the c compiler"
+            },
+            {
+              "name": "c_link_args",
+              "value": [],
+              "section": "compiler",
+              "machine": "host",
+              "type": "array",
+              "description": "Extra arguments passed to the c linker"
+            },
+            {
+              "name": "c_std",
+              "value": "c11",
+              "section": "compiler",
+              "machine": "host",
+              "choices": [
+                "none",
+                "c89",
+                "c99",
+                "c11",
+                "c17",
+                "c18",
+                "c2x",
+                "gnu89",
+                "gnu99",
+                "gnu11",
+                "gnu17",
+                "gnu18",
+                "gnu2x"
+              ],
+              "type": "combo",
+              "description": "C language standard to use"
+            },
+            {
+              "name": "bindir",
+              "value": "bin",
+              "section": "directory",
+              "machine": "any",
+              "type": "string",
+              "description": "Executable directory"
+            },
+            {
+              "name": "datadir",
+              "value": "share",
+              "section": "directory",
+              "machine": "any",
+              "type": "string",
+              "description": "Data file directory"
+            },
+            {
+              "name": "includedir",
+              "value": "include",
+              "section": "directory",
+              "machine": "any",
+              "type": "string",
+              "description": "Header file directory"
+            },
+            {
+              "name": "infodir",
+              "value": "share/info",
+              "section": "directory",
+              "machine": "any",
+              "type": "string",
+              "description": "Info page directory"
+            },
+            {
+              "name": "libdir",
+              "value": "lib",
+              "section": "directory",
+              "machine": "any",
+              "type": "string",
+              "description": "Library directory"
+            },
+            {
+              "name": "libexecdir",
+              "value": "libexec",
+              "section": "directory",
+              "machine": "any",
+              "type": "string",
+              "description": "Library executable directory"
+            },
+            {
+              "name": "licensedir",
+              "value": "",
+              "section": "directory",
+              "machine": "any",
+              "type": "string",
+              "description": "Licenses directory"
+            },
+            {
+              "name": "localedir",
+              "value": "share/locale",
+              "section": "directory",
+              "machine": "any",
+              "type": "string",
+              "description": "Locale data directory"
+            },
+            {
+              "name": "localstatedir",
+              "value": "var",
+              "section": "directory",
+              "machine": "any",
+              "type": "string",
+              "description": "Localstate data directory"
+            },
+            {
+              "name": "mandir",
+              "value": "share/man",
+              "section": "directory",
+              "machine": "any",
+              "type": "string",
+              "description": "Manual page directory"
+            },
+            {
+              "name": "prefix",
+              "value": "/workspace/.build-cache/t79-provision/folio-harfbuzz",
+              "section": "directory",
+              "machine": "any",
+              "type": "string",
+              "description": "Installation prefix"
+            },
+            {
+              "name": "sbindir",
+              "value": "sbin",
+              "section": "directory",
+              "machine": "any",
+              "type": "string",
+              "description": "System executable directory"
+            },
+            {
+              "name": "sharedstatedir",
+              "value": "com",
+              "section": "directory",
+              "machine": "any",
+              "type": "string",
+              "description": "Architecture-independent data directory"
+            },
+            {
+              "name": "sysconfdir",
+              "value": "etc",
+              "section": "directory",
+              "machine": "any",
+              "type": "string",
+              "description": "Sysconf data directory"
+            },
+            {
+              "name": "errorlogs",
+              "value": true,
+              "section": "test",
+              "machine": "any",
+              "type": "boolean",
+              "description": "Whether to print the logs from failing tests"
+            },
+            {
+              "name": "stdsplit",
+              "value": true,
+              "section": "test",
+              "machine": "any",
+              "type": "boolean",
+              "description": "Split stdout and stderr in test logs"
+            }
+          ]
+        },
+        "compile_commands": {
+          "engine": {
+            "path": "engine-compile-commands.json",
+            "sha256": "10fa120c8c144bdcaa4389536a462a0d4f8715e6f3eb3e5c890ae8cbba20f062"
+          },
+          "adapter": {
+            "path": "adapter-compile-commands.json",
+            "sha256": "7d9f0ffa5a0281065ce8823d6a74dd770b74f2e1ce4cecca5969a80ba1dbd6e3"
+          }
+        },
+        "linkers": {
+          "c": {
+            "path": "/usr/bin/x86_64-linux-gnu-ld.bfd",
+            "sha256": "e9ceb054c12207970f2726dfc07e9a66b411602748628baf27399f02a9bbb31b",
+            "id": "ld.bfd",
+            "version": "GNU ld (GNU Binutils for Ubuntu) 2.42\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis program is free software; you may redistribute it under the terms of\nthe GNU General Public License version 3 or (at your option) a later version.\nThis program has absolutely no warranty.",
+            "lookup_command": [
+              "cc",
+              "-print-prog-name=ld"
+            ]
+          },
+          "cpp": {
+            "path": "/usr/bin/x86_64-linux-gnu-ld.bfd",
+            "sha256": "e9ceb054c12207970f2726dfc07e9a66b411602748628baf27399f02a9bbb31b",
+            "id": "ld.bfd",
+            "version": "GNU ld (GNU Binutils for Ubuntu) 2.42\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis program is free software; you may redistribute it under the terms of\nthe GNU General Public License version 3 or (at your option) a later version.\nThis program has absolutely no warranty.",
+            "lookup_command": [
+              "c++",
+              "-print-prog-name=ld"
+            ]
+          }
+        },
+        "adapter_linkers": {
+          "c": {
+            "path": "/usr/bin/x86_64-linux-gnu-ld.bfd",
+            "sha256": "e9ceb054c12207970f2726dfc07e9a66b411602748628baf27399f02a9bbb31b",
+            "id": "ld.bfd",
+            "version": "GNU ld (GNU Binutils for Ubuntu) 2.42\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis program is free software; you may redistribute it under the terms of\nthe GNU General Public License version 3 or (at your option) a later version.\nThis program has absolutely no warranty.",
+            "lookup_command": [
+              "cc",
+              "-print-prog-name=ld"
+            ]
+          }
+        },
+        "compiler_environment": {},
+        "dependency_search": "isolated pkg-config directory; explicit installed engine for the adapter",
+        "build_log": {
+          "path": "build.log",
+          "sha256": "83ada696cc57f3f099a0b14ebbe1d68b522a23e7e6e8f0c21170fb2571a8f048"
+        },
+        "license": {
+          "path": "share/licenses/harfbuzz/COPYING",
+          "sha256": "ba8f810f2455c2f08e2d56bb49b72f37fcf68f1f4fade38977cfd7372050ad64"
+        }
+      }
+    },
+    "helper": {
+      "path": "/folio-harfbuzz/bin/folio-harfbuzz",
+      "sha256": "88f8a2c17ee31320608acfa0cfb4a8482e820af0f9829d3868dc7706f47c2537"
+    },
+    "process_maps": "556648808000-55664880a000 r--p 00000000 00:27 2550637                    /folio-harfbuzz/bin/folio-harfbuzz\n55664880a000-55664880b000 r-xp 00002000 00:27 2550637                    /folio-harfbuzz/bin/folio-harfbuzz\n55664880b000-55664880c000 r--p 00003000 00:27 2550637                    /folio-harfbuzz/bin/folio-harfbuzz\n55664880c000-55664880d000 r--p 00003000 00:27 2550637                    /folio-harfbuzz/bin/folio-harfbuzz\n55664880d000-55664880e000 rw-p 00004000 00:27 2550637                    /folio-harfbuzz/bin/folio-harfbuzz\n5566542bb000-5566542dc000 rw-p 00000000 00:00 0                          [heap]\n7f8763800000-7f8763828000 r--p 00000000 00:2c 2886140                    /usr/lib/x86_64-linux-gnu/libc.so.6\n7f8763828000-7f87639b0000 r-xp 00028000 00:2c 2886140                    /usr/lib/x86_64-linux-gnu/libc.so.6\n7f87639b0000-7f87639ff000 r--p 001b0000 00:2c 2886140                    /usr/lib/x86_64-linux-gnu/libc.so.6\n7f87639ff000-7f8763a03000 r--p 001fe000 00:2c 2886140                    /usr/lib/x86_64-linux-gnu/libc.so.6\n7f8763a03000-7f8763a05000 rw-p 00202000 00:2c 2886140                    /usr/lib/x86_64-linux-gnu/libc.so.6\n7f8763a05000-7f8763a12000 rw-p 00000000 00:00 0 \n7f8763abe000-7f8763ac0000 rw-p 00000000 00:00 0 \n7f8763ac0000-7f8763ad0000 r--p 00000000 00:2c 2886182                    /usr/lib/x86_64-linux-gnu/libm.so.6\n7f8763ad0000-7f8763b4f000 r-xp 00010000 00:2c 2886182                    /usr/lib/x86_64-linux-gnu/libm.so.6\n7f8763b4f000-7f8763ba7000 r--p 0008f000 00:2c 2886182                    /usr/lib/x86_64-linux-gnu/libm.so.6\n7f8763ba7000-7f8763ba8000 r--p 000e7000 00:2c 2886182                    /usr/lib/x86_64-linux-gnu/libm.so.6\n7f8763ba8000-7f8763ba9000 rw-p 000e8000 00:2c 2886182                    /usr/lib/x86_64-linux-gnu/libm.so.6\n7f8763bab000-7f8763bb6000 r--p 00000000 00:27 2550648                    /folio-harfbuzz/lib/libharfbuzz.so.0.61020.0\n7f8763bb6000-7f8763ce6000 r-xp 0000b000 00:27 2550648                    /folio-harfbuzz/lib/libharfbuzz.so.0.61020.0\n7f8763ce6000-7f8763d21000 r--p 0013b000 00:27 2550648                    /folio-harfbuzz/lib/libharfbuzz.so.0.61020.0\n7f8763d21000-7f8763d22000 r--p 00175000 00:27 2550648                    /folio-harfbuzz/lib/libharfbuzz.so.0.61020.0\n7f8763d22000-7f8763d23000 rw-p 00176000 00:27 2550648                    /folio-harfbuzz/lib/libharfbuzz.so.0.61020.0\n7f8763d23000-7f8763d26000 rw-p 00000000 00:00 0 \n7f8763d26000-7f8763d2a000 r--p 00000000 00:00 0                          [vvar]\n7f8763d2a000-7f8763d2c000 r-xp 00000000 00:00 0                          [vdso]\n7f8763d2c000-7f8763d2d000 r--p 00000000 00:2c 2886120                    /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2\n7f8763d2d000-7f8763d58000 r-xp 00001000 00:2c 2886120                    /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2\n7f8763d58000-7f8763d62000 r--p 0002c000 00:2c 2886120                    /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2\n7f8763d62000-7f8763d64000 r--p 00036000 00:2c 2886120                    /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2\n7f8763d64000-7f8763d66000 rw-p 00038000 00:2c 2886120                    /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2\n7ffe2e5e9000-7ffe2e60a000 rw-p 00000000 00:00 0                          [stack]\nffffffffff600000-ffffffffff601000 --xp 00000000 00:00 0                  [vsyscall]\n",
+    "loaded_files": [
+      {
+        "path": "/folio-harfbuzz/bin/folio-harfbuzz",
+        "sha256": "88f8a2c17ee31320608acfa0cfb4a8482e820af0f9829d3868dc7706f47c2537"
+      },
+      {
+        "path": "/folio-harfbuzz/lib/libharfbuzz.so.0.61020.0",
+        "sha256": "8a4c67dc9ead9b0752bcf256fa46c39eb3592e403a282bb341637ed989196e10"
+      },
+      {
+        "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+        "sha256": "cd4df4f3c7b83673d61189bf2eaebd33ca4f2853ab9772b8a25e025ef99b1e81"
+      },
+      {
+        "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+        "sha256": "8db37cf3f2169f59a0f07ef1fea308c35656668c64c8ff294e1860f4121eb161"
+      },
+      {
+        "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+        "sha256": "e9c4b28d340e415b8137480ec442662f981e1399386c5931dae0e886e3639e91"
+      }
+    ],
+    "loaded_engine": {
+      "path": "/folio-harfbuzz/lib/libharfbuzz.so.0.61020.0",
+      "sha256": "8a4c67dc9ead9b0752bcf256fa46c39eb3592e403a282bb341637ed989196e10"
+    },
+    "result": "pass",
+    "finding": "The live startup engine matches the explicit installation receipt"
+  }
+}

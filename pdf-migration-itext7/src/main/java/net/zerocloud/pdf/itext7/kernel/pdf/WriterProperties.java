@@ -6,6 +6,7 @@ import net.zerocloud.pdf.DocumentPermissions;
 import net.zerocloud.pdf.LegacySecurityMode;
 import net.zerocloud.pdf.PasswordCredential;
 import net.zerocloud.pdf.PasswordEncryptionAlgorithm;
+import net.zerocloud.pdf.PasswordEncryptionScope;
 import net.zerocloud.pdf.PasswordSecurityPolicy;
 import net.zerocloud.pdf.PdfOutputPolicy;
 
@@ -34,17 +35,20 @@ public final class WriterProperties implements AutoCloseable {
      * opening password; null/empty owner generates an independent random owner
      * for each Native request. Legacy bytes are preserved exactly; AES-256 uses
      * strict UTF-8 and RFC 4013 preparation. The caller arrays remain caller-owned.
+     * RC4-40 cannot represent clear metadata; combining it with bit 8 is
+     * rejected instead of silently discarding the explicit scope choice.
      * @param userPassword encoded user password
      * @param ownerPassword encoded owner password
      * @param permissions permitted operations, combined with bitwise OR
-     * @param encryptionAlgorithm one of the four baseline algorithm constants
+     * @param encryptionAlgorithm an algorithm constant, optionally combined
+     *     with {@link EncryptionConstants#DO_NOT_ENCRYPT_METADATA}
      * @return these properties
      */
     public WriterProperties setStandardEncryption(byte[] userPassword, byte[] ownerPassword,
             int permissions, int encryptionAlgorithm) {
         requireOpen();
-        if (encryptionAlgorithm < 0 || encryptionAlgorithm > 3) {
-            throw new IllegalArgumentException("The baseline encryption selector is unsupported.");
+        if ((encryptionAlgorithm & ~11) != 0 || encryptionAlgorithm == EncryptionConstants.DO_NOT_ENCRYPT_METADATA) {
+            throw new IllegalArgumentException("The encryption selector is unsupported.");
         }
         clear();
         user = userPassword == null ? new byte[0] : userPassword.clone();
@@ -87,10 +91,11 @@ public final class WriterProperties implements AutoCloseable {
         PdfOutputPolicy selected = explicit != null ? explicit : version != null
                 ? PdfOutputPolicy.version(version.nativeVersion) : null;
         if (!encrypted) { return new Output(selected, null, null); }
-        PasswordCredential ownerCredential = FacadePasswords.credential(owner, algorithm == 3);
+        int selectedAlgorithm = algorithm & 3;
+        PasswordCredential ownerCredential = FacadePasswords.credential(owner, selectedAlgorithm == 3);
         PasswordCredential userCredential = null;
         try {
-            userCredential = FacadePasswords.credential(user, algorithm == 3);
+            userCredential = FacadePasswords.credential(user, selectedAlgorithm == 3);
             DocumentPermissions mask = DocumentPermissions.builder()
                     .allowPrinting((permissions & 4) != 0).allowModification((permissions & 8) != 0)
                     .allowContentExtraction((permissions & 16) != 0).allowAnnotationModification((permissions & 32) != 0)
@@ -99,7 +104,9 @@ public final class WriterProperties implements AutoCloseable {
             PasswordEncryptionAlgorithm[] choices = {PasswordEncryptionAlgorithm.RC4_40,
                 PasswordEncryptionAlgorithm.RC4_128, PasswordEncryptionAlgorithm.AES_128, PasswordEncryptionAlgorithm.AES_256};
             PasswordSecurityPolicy security = PasswordSecurityPolicy.builder(ownerCredential, userCredential)
-                    .algorithm(choices[algorithm]).permissions(mask).build();
+                    .algorithm(choices[selectedAlgorithm]).permissions(mask)
+                    .encryptionScope((algorithm & EncryptionConstants.DO_NOT_ENCRYPT_METADATA) != 0
+                            ? PasswordEncryptionScope.ALL_EXCEPT_METADATA : PasswordEncryptionScope.ALL_CONTENT).build();
             if (selected == null) { selected = PdfOutputPolicy.version(net.zerocloud.pdf.PdfVersion.PDF_1_7); }
             return new Output(selected.withPasswordSecurity(security), ownerCredential, userCredential);
         } catch (RuntimeException | Error failure) {

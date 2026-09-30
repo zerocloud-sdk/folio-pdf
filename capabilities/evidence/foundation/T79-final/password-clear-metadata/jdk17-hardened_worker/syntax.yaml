@@ -1,0 +1,40 @@
+{
+  "schema-version": 1,
+  "obligation": "password-clear-metadata",
+  "acceptance-profile": "T32-password-clear-metadata",
+  "release": "0.1.0",
+  "candidate-sha256": "b9b31a8df2a137446b49da766cb97ed124c6a29efb637faec7e542029d371197",
+  "contract-sha256": "5b8bc8bc32eb8a0ece2c320ba16f1a395afd107f7b1d7eb35a6d75a5448ce68f",
+  "environment-sha256": "f677465e4d6bcad8a37504c41e33261b651def8e68394072e1ceb00cb5f5ed24",
+  "execution-configuration-sha256": "eb8e8895354810cbc40f7659cbd2f913c6c564e68b90da11deea7250d596c2ca",
+  "execution-profile": "HARDENED_WORKER",
+  "chain": "syntax",
+  "result": "pass",
+  "producer": "qpdf-t78-r1",
+  "configuration": {
+    "path": "capabilities/profiles/foundation-release.md",
+    "sha256": "74ec9325db0ef49184917208941479e82cbc3fe7b1fc39b6dbe24536f57abf3d"
+  },
+  "report": {
+    "path": "capabilities/evidence/foundation/T79-final/password-clear-metadata/jdk17-hardened_worker/syntax-report.json",
+    "sha256": "178bdf1f6810166d456a32457bd5737c9914b64135ea371b15c702dc649ef08a"
+  },
+  "negative-controls": [
+    {
+      "path": "capabilities/evidence/foundation/T79-final/password-clear-metadata/jdk17-hardened_worker/observations/negative/syntax/qpdf.command.json",
+      "sha256": "6d526dedcff6b5015de5e1613aefd499c2129fe15b35db3b932a038b1701f8ee"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T79-final/password-clear-metadata/jdk17-hardened_worker/observations/negative/syntax/qpdf.stderr",
+      "sha256": "cd2014284d6e7657d854c0e46052f3049a243dd388cfb4be320014e2565151b3"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T79-final/password-clear-metadata/jdk17-hardened_worker/observations/negative/syntax/qpdf.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T79-final/password-clear-metadata/jdk17-hardened_worker/observations/negative/syntax/result.json",
+      "sha256": "243b10389ac4411c24ebbc46e6d707f0f91ada9dd949456b7247b3942ffd5305"
+    }
+  ]
+}

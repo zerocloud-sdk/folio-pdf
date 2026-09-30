@@ -140,6 +140,27 @@ ARTIFACT_CONTRACT_TESTS = tuple(
     'net.zerocloud.pdf.migration.itext7.contract.' + name
     for name in ('JarContractIT', 'ClasspathExclusivityIT'))
 CERTIFICATION_CASES = {
+    'password-clear-metadata': {
+        'profile': 'T32-password-clear-metadata', 'label': 'T79', 'test-count': 23,
+        'test-classes': ['net.zerocloud.pdf.consumer.ClearMetadataPasswordWorkflowTest',
+                         'net.zerocloud.pdf.itext7.consumer.ClearMetadataPasswordFacadeTest'],
+        'facade-execution-profile': 'IN_PROCESS', 'syntax-producer': 'qpdf-t78-r1',
+        'standards-producer': 'arlington', 'contract-timeout': 600, 'recorder-timeout': 1800,
+        'workflow-policy': 'Explicit clear document XMP with ordinary strings, component metadata and embedded data protected; R4 RC4-128/AES-128 and R5/R6 AES-256 input, R6 output, metadata-sensitive keys and Perms; secure all-content defaults, destroyable credentials, owner-first authority and eight permissions; authenticated primary and named Sources, explicit protected rewrite and preserved encrypted incremental publication; Native executes the selected profile; Facade executes IN_PROCESS',
+        'fonts': 'none; original resource-free rectangle and blank page grids',
+        'configuration-paths': ['capabilities/profiles/T79-clear-metadata', 'capabilities/profiles/T79-controls',
+            'build-tools/acceptance/arlington/t79-input.patch', 'build-tools/acceptance/arlington/t79-output.patch',
+            'build-tools/acceptance/arlington/t79-all-content-input.patch', 'build-tools/acceptance/arlington/t79-all-content-output.patch',
+            'scripts/t79-certification.py', 'scripts/t79-observer.py', 'scripts/t79-byte-check.py',
+            'scripts/t79-evidence-pin.properties', 'scripts/t79_foundation_reports.py', 'scripts/t79-arlington-runtime.sha256',
+            'capabilities/profiles/T78-password', 'capabilities/profiles/T78-controls',
+            'capabilities/profiles/T03-standards', 'build-tools/acceptance/arlington/t78-input.patch',
+            'build-tools/acceptance/arlington/t78-output.patch', 'build-tools/acceptance/pdfcpu',
+            'build-tools/acceptance/qpdf', 'scripts/t78-certification.py', 'scripts/t78-observer.py',
+            'scripts/t78-pypdf-check.py', 'scripts/t78-evidence-pin.properties',
+            'scripts/t78_foundation_reports.py', 'scripts/t13_foundation_reports.py',
+            'scripts/t78-qpdf-runtime.sha256', 'scripts/t78-arlington-runtime.sha256',
+            'scripts/t78-checkers-runtime.sha256', 'scripts/container-bin/t78-qpdf']},
     'password-baseline': {
         'profile': 'T32-password-baseline', 'label': 'T78', 'test-count': 44,
         'test-classes': ['net.zerocloud.pdf.consumer.PdfVersionPasswordSecurityWorkflowTest',
@@ -627,6 +648,9 @@ def append_source_visual(root, run, report):
 
 
 def collect_reports(root, run, obligation='transactions', execution_profile=None):
+    if obligation == 'password-clear-metadata':
+        from t79_foundation_reports import collect_reports as collect_clear_metadata_reports
+        return collect_clear_metadata_reports(root, run, execution_profile)
     if obligation == 'password-baseline':
         from t78_foundation_reports import collect_reports as collect_password_reports
         return collect_password_reports(root, run, execution_profile)
@@ -1023,7 +1047,7 @@ def certification_tools():
          'hash-key': 'IMAGEMAGICK_EXECUTABLE_SHA256', 'chains': ['visual']}]
     project = [{'id': 'folio-pdf-' + label, 'kind': 'project-test',
                 'version': '0.1.0', 'chains': ['semantic']}
-               for label in ('t03', 't09', 't10', 't11', 't12', 't13', 't14', 't15', 't78')]
+               for label in ('t03', 't09', 't10', 't11', 't12', 't13', 't14', 't15', 't78', 't79')]
     return external + project
 
 
@@ -1250,7 +1274,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('action', choices=('stage', 'certify', 'collect', 'preservation', 'plan', 'merge-index'))
     parser.add_argument('output', nargs='?', type=Path)
-    parser.add_argument('--obligation', choices=('transactions', 'values', 'pages', 'metadata', 'annotations', 'text', 'images', 'incremental', 'password-baseline'), default='transactions')
+    parser.add_argument('--obligation', choices=('transactions', 'values', 'pages', 'metadata', 'annotations', 'text', 'images', 'incremental', 'password-baseline', 'password-clear-metadata'), default='transactions')
     parser.add_argument('--execution-profile', choices=('IN_PROCESS', 'HARDENED_WORKER'))
     parser.add_argument('--root', type=Path, default=Path(__file__).resolve().parents[1])
     args = parser.parse_args()
@@ -1271,10 +1295,10 @@ def main():
         import json
         if args.output is None:
             parser.error('collect requires an observation directory')
-        if args.obligation in ('metadata', 'annotations', 'text', 'images', 'incremental', 'password-baseline') and args.execution_profile is None:
+        if args.obligation in ('metadata', 'annotations', 'text', 'images', 'incremental', 'password-baseline', 'password-clear-metadata') and args.execution_profile is None:
             parser.error(args.obligation + ' collect requires --execution-profile')
-        if args.obligation not in ('metadata', 'annotations', 'text', 'images', 'incremental', 'password-baseline') and args.execution_profile is not None:
-            parser.error('--execution-profile applies only to metadata, annotations, text, images, incremental and password-baseline collect')
+        if args.obligation not in ('metadata', 'annotations', 'text', 'images', 'incremental', 'password-baseline', 'password-clear-metadata') and args.execution_profile is not None:
+            parser.error('--execution-profile applies only to metadata, annotations, text, images, incremental password-baseline and password-clear-metadata collect')
         print(json.dumps(collect_reports(root, (root / args.output).resolve(), args.obligation,
                                          args.execution_profile), indent=2))
         return

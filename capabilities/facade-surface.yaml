@@ -16,6 +16,7 @@ surfaces:
       capabilities:
         - document.blank.create-publish-reopen
         - document.version-password-security.baseline
+        - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-reader.constructor-string
       reference:
         type: com.itextpdf.kernel.pdf.PdfReader
@@ -28,6 +29,7 @@ surfaces:
       capabilities:
         - document.blank.create-publish-reopen
         - document.version-password-security.baseline
+        - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-reader.close
       reference:
         type: com.itextpdf.kernel.pdf.PdfReader
@@ -40,6 +42,7 @@ surfaces:
       capabilities:
         - document.blank.create-publish-reopen
         - document.version-password-security.baseline
+        - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-document.constructor-writer
       reference:
         type: com.itextpdf.kernel.pdf.PdfDocument
@@ -52,6 +55,7 @@ surfaces:
       capabilities:
         - document.blank.create-publish-reopen
         - document.version-password-security.baseline
+        - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-document.constructor-reader
       reference:
         type: com.itextpdf.kernel.pdf.PdfDocument
@@ -64,6 +68,7 @@ surfaces:
       capabilities:
         - document.blank.create-publish-reopen
         - document.version-password-security.baseline
+        - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-document.add-new-page
       reference:
         type: com.itextpdf.kernel.pdf.PdfDocument
@@ -98,6 +103,7 @@ surfaces:
       capabilities:
         - document.blank.create-publish-reopen
         - document.version-password-security.baseline
+        - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-document.constructor-named-sources-targets
       reference:
         status: folio-extension
@@ -110,6 +116,7 @@ surfaces:
       capabilities:
         - document.page.manipulate-merge-split
         - document.version-password-security.baseline
+        - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-document.add-new-page-at-index
       reference:
         type: com.itextpdf.kernel.pdf.PdfDocument
@@ -338,6 +345,7 @@ surfaces:
       capabilities:
       - document.value.inspect-patch
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-reader.constructor-input-stream
       reference:
         type: com.itextpdf.kernel.pdf.PdfReader
@@ -351,6 +359,7 @@ surfaces:
       capabilities:
       - document.value.inspect-patch
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-document.constructor-reader-writer
       reference:
         type: com.itextpdf.kernel.pdf.PdfDocument
@@ -364,6 +373,7 @@ surfaces:
       capabilities:
       - document.value.inspect-patch
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-document.get-catalog
       reference:
         type: com.itextpdf.kernel.pdf.PdfDocument
@@ -1218,6 +1228,7 @@ surfaces:
       capabilities:
       - document.metadata.outlines-destinations-attachments
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-document.get-document-info
       reference:
         type: com.itextpdf.kernel.pdf.PdfDocument
@@ -1886,6 +1897,7 @@ surfaces:
       capabilities:
       - document.incremental-signature.protect
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-document.constructor-named-stamping
       reference:
         status: folio-extension
@@ -1901,6 +1913,7 @@ surfaces:
       capabilities:
       - document.incremental-signature.protect
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-document.is-append-mode
       reference:
         type: com.itextpdf.kernel.pdf.PdfDocument
@@ -1924,6 +1937,7 @@ surfaces:
         IllegalStateException.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.reader-properties.close
       reference:
         status: folio-extension
@@ -1936,6 +1950,7 @@ surfaces:
         IllegalStateException.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.writer-properties.constructor
       reference:
         type: com.itextpdf.kernel.pdf.WriterProperties
@@ -1948,6 +1963,7 @@ surfaces:
         IllegalStateException.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.writer-properties.close
       reference:
         status: folio-extension
@@ -1960,6 +1976,7 @@ surfaces:
         IllegalStateException.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.reader-properties.set-password
       reference:
         type: com.itextpdf.kernel.pdf.ReaderProperties
@@ -1973,6 +1990,7 @@ surfaces:
         IllegalStateException.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.reader-properties.set-credential
       reference:
         status: folio-extension
@@ -1985,6 +2003,7 @@ surfaces:
         IllegalStateException.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.writer-properties.set-pdf-version
       reference:
         type: com.itextpdf.kernel.pdf.WriterProperties
@@ -1997,6 +2016,7 @@ surfaces:
         IllegalStateException.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.writer-properties.set-standard-encryption
       reference:
         type: com.itextpdf.kernel.pdf.WriterProperties
@@ -2004,12 +2024,13 @@ surfaces:
       folio-pdf:
         type: net.zerocloud.pdf.itext7.kernel.pdf.WriterProperties
         member: setStandardEncryption(byte[],byte[],int,int)
-      generic-contract: Returns these properties after copying user then owner bytes, permission bits and one of four algorithms;
-        empty owner generates independent random authority.
+      generic-contract: Returns these properties after copying user then owner bytes, permissions and selector 0-3 or explicit clear-metadata selector 9-11;
+        empty owner generates independent random authority. RC4-40 with bit 8 and unknown scope bits are rejected.
       exception-contract: No checked exception; malformed choices fail with IllegalArgumentException and closed properties with
         IllegalStateException.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.writer-properties.set-legacy-security-mode
       reference:
         status: folio-extension
@@ -2022,6 +2043,7 @@ surfaces:
         IllegalStateException.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-reader.constructor-string-properties
       reference:
         type: com.itextpdf.kernel.pdf.PdfReader
@@ -2033,6 +2055,7 @@ surfaces:
       exception-contract: Declares java.io.IOException; maps Native failures to their stable code and safe diagnostic.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-reader.constructor-input-stream-properties
       reference:
         type: com.itextpdf.kernel.pdf.PdfReader
@@ -2044,6 +2067,7 @@ surfaces:
       exception-contract: Declares java.io.IOException; maps Native failures to their stable code and safe diagnostic.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-writer.constructor-string-properties
       reference:
         type: com.itextpdf.kernel.pdf.PdfWriter
@@ -2055,6 +2079,7 @@ surfaces:
       exception-contract: Declares java.io.FileNotFoundException for an invalid Path target.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-writer.constructor-output-stream-properties
       reference:
         type: com.itextpdf.kernel.pdf.PdfWriter
@@ -2066,6 +2091,7 @@ surfaces:
       exception-contract: No checked exception; rejects invalid or closed declarations before ownership transfer.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-reader.is-encrypted
       reference:
         type: com.itextpdf.kernel.pdf.PdfReader
@@ -2077,6 +2103,7 @@ surfaces:
       exception-contract: No checked exception; rejects a closed Reader with IllegalStateException.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-reader.is-opened-with-full-permission
       reference:
         type: com.itextpdf.kernel.pdf.PdfReader
@@ -2089,6 +2116,7 @@ surfaces:
       exception-contract: No checked exception; rejects a closed Reader with IllegalStateException.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-reader.get-permissions
       reference:
         type: com.itextpdf.kernel.pdf.PdfReader
@@ -2100,6 +2128,7 @@ surfaces:
       exception-contract: No checked exception; rejects a closed Reader with IllegalStateException.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-reader.get-crypto-mode
       reference:
         type: com.itextpdf.kernel.pdf.PdfReader
@@ -2112,6 +2141,7 @@ surfaces:
       exception-contract: No checked exception; rejects a closed Reader with IllegalStateException.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-writer.close
       reference:
         type: com.itextpdf.kernel.pdf.PdfWriter
@@ -2123,6 +2153,7 @@ surfaces:
       exception-contract: No checked exception; idempotent.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-document.get-pdf-version
       reference:
         type: com.itextpdf.kernel.pdf.PdfDocument
@@ -2135,6 +2166,19 @@ surfaces:
       exception-contract: No checked exception; rejects a closed Document with IllegalStateException.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
+    - id: itext7.kernel.encryption-constants.do-not-encrypt-metadata
+      reference:
+        type: com.itextpdf.kernel.pdf.EncryptionConstants
+        member: DO_NOT_ENCRYPT_METADATA
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.EncryptionConstants
+        member: DO_NOT_ENCRYPT_METADATA
+      generic-contract: Public static final int 8. Combine with 1, 2 or 3 for clear document metadata; RC4-40 plus bit 8 fails
+        safely instead of silently dropping the explicit scope. Other protected data remains encrypted.
+      exception-contract: No exception contract for a constant.
+      capabilities:
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.encryption-constants.standard-encryption-40
       reference:
         type: com.itextpdf.kernel.pdf.EncryptionConstants
@@ -2146,6 +2190,7 @@ surfaces:
       exception-contract: No exception contract for a constant.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.encryption-constants.standard-encryption-128
       reference:
         type: com.itextpdf.kernel.pdf.EncryptionConstants
@@ -2157,6 +2202,7 @@ surfaces:
       exception-contract: No exception contract for a constant.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.encryption-constants.encryption-aes-128
       reference:
         type: com.itextpdf.kernel.pdf.EncryptionConstants
@@ -2168,6 +2214,7 @@ surfaces:
       exception-contract: No exception contract for a constant.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.encryption-constants.encryption-aes-256
       reference:
         type: com.itextpdf.kernel.pdf.EncryptionConstants
@@ -2179,6 +2226,7 @@ surfaces:
       exception-contract: No exception contract for a constant.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.encryption-constants.allow-degraded-printing
       reference:
         type: com.itextpdf.kernel.pdf.EncryptionConstants
@@ -2190,6 +2238,7 @@ surfaces:
       exception-contract: No exception contract for a constant.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.encryption-constants.allow-printing
       reference:
         type: com.itextpdf.kernel.pdf.EncryptionConstants
@@ -2201,6 +2250,7 @@ surfaces:
       exception-contract: No exception contract for a constant.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.encryption-constants.allow-modify-contents
       reference:
         type: com.itextpdf.kernel.pdf.EncryptionConstants
@@ -2212,6 +2262,7 @@ surfaces:
       exception-contract: No exception contract for a constant.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.encryption-constants.allow-copy
       reference:
         type: com.itextpdf.kernel.pdf.EncryptionConstants
@@ -2223,6 +2274,7 @@ surfaces:
       exception-contract: No exception contract for a constant.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.encryption-constants.allow-modify-annotations
       reference:
         type: com.itextpdf.kernel.pdf.EncryptionConstants
@@ -2234,6 +2286,7 @@ surfaces:
       exception-contract: No exception contract for a constant.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.encryption-constants.allow-fill-in
       reference:
         type: com.itextpdf.kernel.pdf.EncryptionConstants
@@ -2245,6 +2298,7 @@ surfaces:
       exception-contract: No exception contract for a constant.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.encryption-constants.allow-screenreaders
       reference:
         type: com.itextpdf.kernel.pdf.EncryptionConstants
@@ -2256,6 +2310,7 @@ surfaces:
       exception-contract: No exception contract for a constant.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.encryption-constants.allow-assembly
       reference:
         type: com.itextpdf.kernel.pdf.EncryptionConstants
@@ -2267,6 +2322,7 @@ surfaces:
       exception-contract: No exception contract for a constant.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-version.pdf-1-0
       reference:
         type: com.itextpdf.kernel.pdf.PdfVersion
@@ -2278,6 +2334,7 @@ surfaces:
       exception-contract: No exception contract for a constant.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-version.pdf-1-1
       reference:
         type: com.itextpdf.kernel.pdf.PdfVersion
@@ -2289,6 +2346,7 @@ surfaces:
       exception-contract: No exception contract for a constant.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-version.pdf-1-2
       reference:
         type: com.itextpdf.kernel.pdf.PdfVersion
@@ -2300,6 +2358,7 @@ surfaces:
       exception-contract: No exception contract for a constant.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-version.pdf-1-3
       reference:
         type: com.itextpdf.kernel.pdf.PdfVersion
@@ -2311,6 +2370,7 @@ surfaces:
       exception-contract: No exception contract for a constant.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-version.pdf-1-4
       reference:
         type: com.itextpdf.kernel.pdf.PdfVersion
@@ -2322,6 +2382,7 @@ surfaces:
       exception-contract: No exception contract for a constant.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-version.pdf-1-5
       reference:
         type: com.itextpdf.kernel.pdf.PdfVersion
@@ -2333,6 +2394,7 @@ surfaces:
       exception-contract: No exception contract for a constant.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-version.pdf-1-6
       reference:
         type: com.itextpdf.kernel.pdf.PdfVersion
@@ -2344,6 +2406,7 @@ surfaces:
       exception-contract: No exception contract for a constant.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-version.pdf-1-7
       reference:
         type: com.itextpdf.kernel.pdf.PdfVersion
@@ -2355,6 +2418,7 @@ surfaces:
       exception-contract: No exception contract for a constant.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-version.pdf-2-0
       reference:
         type: com.itextpdf.kernel.pdf.PdfVersion
@@ -2366,6 +2430,7 @@ surfaces:
       exception-contract: No exception contract for a constant.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-version.from-string
       reference:
         type: com.itextpdf.kernel.pdf.PdfVersion
@@ -2377,6 +2442,7 @@ surfaces:
       exception-contract: No checked exception; parsing rejects unsupported spelling and null input.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-version.from-pdf-name
       reference:
         type: com.itextpdf.kernel.pdf.PdfVersion
@@ -2388,6 +2454,7 @@ surfaces:
       exception-contract: No checked exception; parsing rejects unsupported spelling and null input.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-version.to-pdf-name
       reference:
         type: com.itextpdf.kernel.pdf.PdfVersion
@@ -2399,6 +2466,7 @@ surfaces:
       exception-contract: No checked exception; parsing rejects unsupported spelling and null input.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-version.to-string
       reference:
         type: com.itextpdf.kernel.pdf.PdfVersion
@@ -2410,6 +2478,7 @@ surfaces:
       exception-contract: No checked exception; parsing rejects unsupported spelling and null input.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-version.compare-to
       reference:
         type: com.itextpdf.kernel.pdf.PdfVersion
@@ -2421,6 +2490,7 @@ surfaces:
       exception-contract: No checked exception; parsing rejects unsupported spelling and null input.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-version.compare-to-bridge
       reference:
         type: com.itextpdf.kernel.pdf.PdfVersion
@@ -2432,6 +2502,7 @@ surfaces:
       exception-contract: No checked exception; parsing rejects unsupported spelling and null input.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-version.equals
       reference:
         type: com.itextpdf.kernel.pdf.PdfVersion
@@ -2443,6 +2514,7 @@ surfaces:
       exception-contract: No checked exception; parsing rejects unsupported spelling and null input.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-version.hash-code
       reference:
         type: com.itextpdf.kernel.pdf.PdfVersion
@@ -2454,6 +2526,7 @@ surfaces:
       exception-contract: No checked exception; parsing rejects unsupported spelling and null input.
       capabilities:
       - document.version-password-security.baseline
+      - document.version-password-security.clear-metadata
   preview: []
 
 excluded-capabilities:

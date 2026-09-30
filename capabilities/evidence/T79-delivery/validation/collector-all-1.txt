@@ -1,0 +1,17 @@
+.......................F...........................................................
+======================================================================
+FAIL: test_common_environment_catalog_pins_original_and_t10_arlington (test_t10_foundation.PagesCertificationCaseTest.test_common_environment_catalog_pins_original_and_t10_arlington)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/tests/test_t10_foundation.py", line 55, in test_common_environment_catalog_pins_original_and_t10_arlington
+    self.assertEqual({'folio-pdf-t03', 'folio-pdf-t09', 'folio-pdf-t10', 'folio-pdf-t11', 'folio-pdf-t12', 'folio-pdf-t13', 'folio-pdf-t14', 'folio-pdf-t15', 'folio-pdf-t78'},
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                     {item['id'] for item in tools if item['kind'] == 'project-test'})
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the second set but not the first:
+'folio-pdf-t79'
+
+----------------------------------------------------------------------
+Ran 83 tests in 493.046s
+
+FAILED (failures=1)

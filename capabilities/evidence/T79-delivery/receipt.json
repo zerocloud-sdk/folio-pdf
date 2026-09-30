@@ -1,0 +1,520 @@
+{
+  "schema-version": 1,
+  "issue": 79,
+  "result": "complete-local-delivery",
+  "sole-contract": "/workspace/contracts/issue-79-contract.md",
+  "sole-contract-sha256": "cd60f23252a7aa9533ea0e3825816839a664d57929276978c3b4a3dbb3b20461",
+  "comparison-baseline": "7420a656d27d17b82c7632be7c6214f8a657a22f",
+  "execution-starting-head": "7420a656d27d17b82c7632be7c6214f8a657a22f",
+  "candidate-sha256": "b9b31a8df2a137446b49da766cb97ed124c6a29efb637faec7e542029d371197",
+  "contract-sha256": "5b8bc8bc32eb8a0ece2c320ba16f1a395afd107f7b1d7eb35a6d75a5448ce68f",
+  "capability": "document.version-password-security.clear-metadata",
+  "foundation-member": "password-clear-metadata",
+  "acceptance-profile": "T32-password-clear-metadata",
+  "branch": "main",
+  "optional-local-commit": null,
+  "workspace": "Resumed the preserved dirty issue-79 worktree at the recorded baseline; no git reset, git clean, or git stash, and no unrelated changes discarded.",
+  "external-effects": "No push, PR, tracker mutation, message to others, or release publication.",
+  "certification": {
+    "path": "capabilities/evidence/T79-delivery/validation/final-evidence-audit.json",
+    "sha256": "8caa13216c588f0311158695e7a5baebbd37fee7c031d66b42af75a996e642ce"
+  },
+  "remaining-foundation-blockers": [
+    "acceptance",
+    "barcodes-1d",
+    "barcodes-2d",
+    "candidate",
+    "canvas",
+    "docs",
+    "environments",
+    "facade-artifacts",
+    "fonts",
+    "graphics",
+    "integration",
+    "java-artifacts",
+    "limits",
+    "pagination",
+    "paragraphs",
+    "password-attachments",
+    "provenance",
+    "providers",
+    "publication-controls",
+    "recovery",
+    "rendering",
+    "reproducibility",
+    "security",
+    "shaping",
+    "supply-chain",
+    "tables",
+    "tables-base",
+    "tables-pagination",
+    "worker"
+  ],
+  "verification-summary": {
+    "path": "capabilities/evidence/T79-delivery/validation/verification-summary.json",
+    "sha256": "1d271a6c3615f27b4bce4e30db2b72de1986f85dfac58fc239e7e2775f7e0605"
+  },
+  "selected-certification-runs": {
+    "path": "capabilities/evidence/T79-delivery/validation/certification-selection.json",
+    "sha256": "48344c41b2ee2dd7441de0756afea0d5333278c9d4685cf476a59b7678f1d03d"
+  },
+  "resumed-execution": {
+    "start": {
+      "path": "capabilities/evidence/T79-delivery/validation/resume-start.json",
+      "sha256": "834e523edfb96625bea044b07eed6f397005cd201ba739a7ac09f5d273b49016"
+    },
+    "environment-restoration": {
+      "path": "capabilities/evidence/T79-delivery/validation/resume-environment-restoration.json",
+      "sha256": "2eb735697c342f0e080d219ede0a4669d339422b7c5061175038e17b7dc04f8e"
+    },
+    "text-timeout-replays": {
+      "path": "capabilities/evidence/T79-delivery/validation/diagnosis-text-timeouts/disposition.json",
+      "sha256": "ff5e15ea95189e63259e3d22276ffc6a71d233cb6457a326b7ff45a25b2224e9"
+    },
+    "resolved-findings": [
+      {
+        "finding": "Generated readiness had not been refreshed after the prior JarContractIT change.",
+        "resolution": "Regenerated from the existing authorities; retained the former view and failure.",
+        "evidence": {
+          "path": "capabilities/evidence/T79-delivery/validation/readiness-refresh-analysis.json",
+          "sha256": "a182b3d0189ea8fb7f49583a2520bf8fa7ab7a29df8e88561d1ab13bf43dd934"
+        }
+      },
+      {
+        "finding": "InventoryCommandTest still expected 214 Facade surfaces after adding the metadata selector.",
+        "resolution": "Updated exact counts to 215 and asserted the compatible child has 62 Stable mappings, zero Preview additions, and no exclusion.",
+        "evidence": {
+          "path": "capabilities/evidence/T79-delivery/validation/inventory-resumed-regression-r2.txt",
+          "sha256": "9bfdac840aab8af3d7ac758c3b24b30d52706878cb54cc878a9db692b3145c3a"
+        }
+      }
+    ]
+  },
+  "uncertified-nonblocking-platforms": [
+    "Windows x86-64",
+    "macOS x86-64",
+    "macOS arm64"
+  ],
+  "criteria": [
+    {
+      "criterion": 1,
+      "text": "A checked-in profile/coverage table traces every required #79 case to the approved Foundation contract and permitted standards/API sources. It distinguishes the applicable V4/R4 RC4 and AES-128 profiles, AES-256 R5/R6 input, R6 output, PDF-version constraints, and any source-grounded nonrepresentable combinations. Required successful cases are implemented; backend limitations are not converted into accepted unsupported results. Existing exclusions, including no new R5 output, remain intact.",
+      "result": "pass",
+      "evidence": [
+        {
+          "path": "docs/research/T79-clear-metadata-profile-audit.md",
+          "sha256": "c762ce4fd9fe1888e3b5c13ff65955adbb872b8c2b7c7ae9f7a8226073913e05"
+        },
+        {
+          "path": "docs/t79-certification.md",
+          "sha256": "002e98bed763e79dae3e887835d852646a7553073dfaf751da2cadacd8346744"
+        },
+        {
+          "path": "capabilities/evidence/T79-delivery/source-freeze.json",
+          "sha256": "0fd26b06e6c1591bf2e60ee3aaa7ef838abbaf3e099d2a8e7e9dd95650055a19"
+        }
+      ]
+    },
+    {
+      "criterion": 2,
+      "text": "Native `ALL_EXCEPT_METADATA` input and output work for every required profile, including AES-256. Public creation, reopening, and authorized protected rewrite return the declared scope, algorithm/revision, permissions, and credential authority. PDF 1.7\u2019s qualified extension convention and PDF 2.0\u2019s normative profile remain accurately distinguished.",
+      "result": "pass",
+      "evidence": [
+        {
+          "path": "docs/pdf-version-password-security.md",
+          "sha256": "e84b5139651cfe9c00c4a89e6ac0c559a78ec4ec91f872e134cc46a7e185030b"
+        },
+        {
+          "path": "capabilities/evidence/T79-delivery/validation/final-evidence-audit.json",
+          "sha256": "8caa13216c588f0311158695e7a5baebbd37fee7c031d66b42af75a996e642ce"
+        },
+        {
+          "path": "capabilities/foundation-evidence.yaml",
+          "sha256": "5dd9f27a369ef5dca106d327cc923c828f8fc692275de91dcbb32afc6790fbee"
+        }
+      ]
+    },
+    {
+      "criterion": 3,
+      "text": "Independent fixtures contain actual document-level XMP metadata and protected content. Observations prove the declared metadata bytes can be recovered without a document credential while protected strings, ordinary content streams, and other protected data require valid authentication. Document Info strings and other metadata-like values are not accidentally exempted. Merely observing `/EncryptMetadata false` is insufficient.",
+      "result": "pass",
+      "evidence": [
+        {
+          "path": "docs/research/T79-clear-metadata-profile-audit.md",
+          "sha256": "c762ce4fd9fe1888e3b5c13ff65955adbb872b8c2b7c7ae9f7a8226073913e05"
+        },
+        {
+          "path": "docs/t79-certification.md",
+          "sha256": "002e98bed763e79dae3e887835d852646a7553073dfaf751da2cadacd8346744"
+        },
+        {
+          "path": "capabilities/evidence/T79-delivery/validation/final-evidence-audit.json",
+          "sha256": "8caa13216c588f0311158695e7a5baebbd37fee7c031d66b42af75a996e642ce"
+        }
+      ]
+    },
+    {
+      "criterion": 4,
+      "text": "Actual original and emitted encryption dictionaries, crypt-filter selections, lengths/units, metadata-sensitive key derivation, credential authentication, and permission agreement match the frozen profile. AES-256 encrypted `Perms` agrees with `/P`, the metadata flag, reserved bytes, and required marker. Positive and single-defect negative controls demonstrate each required rule.",
+      "result": "pass",
+      "evidence": [
+        {
+          "path": "docs/research/T79-clear-metadata-profile-audit.md",
+          "sha256": "c762ce4fd9fe1888e3b5c13ff65955adbb872b8c2b7c7ae9f7a8226073913e05"
+        },
+        {
+          "path": "capabilities/evidence/T79-delivery/validation/final-evidence-audit.json",
+          "sha256": "8caa13216c588f0311158695e7a5baebbd37fee7c031d66b42af75a996e642ce"
+        },
+        {
+          "path": "capabilities/evidence/T79-delivery/validation/collector-all-final.txt",
+          "sha256": "1f14b0775b0e49193cfc886c6a513192566a9e561392c8c2e37574ce026b1aac"
+        }
+      ]
+    },
+    {
+      "criterion": 5,
+      "text": "All-content AES-256 remains the secure default. Clear metadata requires explicit selection; obsolete output still requires request-scoped Legacy Security Mode. Missing, incorrect, destroyed, or invalid credentials and malformed/inconsistent scope declarations fail safely. Invalid preflight requests fail before caller work or publication, preserve existing destinations, and return declaration-ordered `NOT_ATTEMPTED` receipts.",
+      "result": "pass",
+      "evidence": [
+        {
+          "path": "docs/pdf-version-password-security.md",
+          "sha256": "e84b5139651cfe9c00c4a89e6ac0c559a78ec4ec91f872e134cc46a7e185030b"
+        },
+        {
+          "path": "capabilities/evidence/T79-delivery/validation/review-regressions-1.txt",
+          "sha256": "872ae6aa423b11e1c2f0a890a1aeb4b9787b75c24e7c27042a28df64a953ddcb"
+        },
+        {
+          "path": "capabilities/evidence/T79-delivery/validation/review-worker-regressions-1.txt",
+          "sha256": "a5a905a21a60a81f336dafa00686b46fe6d7952fb4316e39f5f1a3508e851c2d"
+        },
+        {
+          "path": "capabilities/evidence/T79-delivery/validation/final-evidence-audit.json",
+          "sha256": "8caa13216c588f0311158695e7a5baebbd37fee7c031d66b42af75a996e642ce"
+        }
+      ]
+    },
+    {
+      "criterion": 6,
+      "text": "Scope-specific behavior preserves independent owner proof, restricted-user permissions, existing credential preparation/boundary behavior, explicit owner-authorized protected rewrite, and named-Source anti-downgrade rules. Encrypted incremental publication preserves existing protection; it does not acquire an implicit scope-change path. Password authority continues to intersect with Existing Signature restrictions.",
+      "result": "pass",
+      "evidence": [
+        {
+          "path": "docs/pdf-version-password-security.md",
+          "sha256": "e84b5139651cfe9c00c4a89e6ac0c559a78ec4ec91f872e134cc46a7e185030b"
+        },
+        {
+          "path": "capabilities/evidence/T79-delivery/validation/review-regressions-1.txt",
+          "sha256": "872ae6aa423b11e1c2f0a890a1aeb4b9787b75c24e7c27042a28df64a953ddcb"
+        },
+        {
+          "path": "capabilities/evidence/T79-delivery/validation/review-worker-regressions-1.txt",
+          "sha256": "a5a905a21a60a81f336dafa00686b46fe6d7952fb4316e39f5f1a3508e851c2d"
+        },
+        {
+          "path": "capabilities/evidence/T79-delivery/validation/final-evidence-audit.json",
+          "sha256": "8caa13216c588f0311158695e7a5baebbd37fee7c031d66b42af75a996e642ce"
+        }
+      ]
+    },
+    {
+      "criterion": 7,
+      "text": "Native IN_PROCESS and HARDENED_WORKER execute the same applicable public contract successfully. Tests prove caller-owned streams/channels/credentials remain caller-owned, workflow-owned resources and temporary material are released on success and failure, outcomes are detached, and diagnostics expose no credentials, secret-derived values, content, paths, or backend exceptions. Publication failures retain the established receipt and destination guarantees.",
+      "result": "pass",
+      "evidence": [
+        {
+          "path": "capabilities/evidence/T79-delivery/validation/review-regressions-1.txt",
+          "sha256": "872ae6aa423b11e1c2f0a890a1aeb4b9787b75c24e7c27042a28df64a953ddcb"
+        },
+        {
+          "path": "capabilities/evidence/T79-delivery/validation/review-worker-regressions-1.txt",
+          "sha256": "a5a905a21a60a81f336dafa00686b46fe6d7952fb4316e39f5f1a3508e851c2d"
+        },
+        {
+          "path": "capabilities/evidence/T79-delivery/validation/final-evidence-audit.json",
+          "sha256": "8caa13216c588f0311158695e7a5baebbd37fee7c031d66b42af75a996e642ce"
+        }
+      ]
+    },
+    {
+      "criterion": 8,
+      "text": "The Migration Facade exposes the supported `DO_NOT_ENCRYPT_METADATA=8` selector and corresponding reader/writer behavior through real public calls, including combinations with admitted algorithms, copied properties, credential encoding, lifecycle, permissions, reopened files, and safe failures. Stable/Preview compiled surface and artifact contracts agree with the manifest; no unsupported Stable stub or #80 selector is added. Facade execution is recorded as its actual IN_PROCESS mode.",
+      "result": "pass",
+      "evidence": [
+        {
+          "path": "capabilities/facade-surface.yaml",
+          "sha256": "6c4e04286bb72f18186add5da7d5ba8b10dffc230af4b299b40c4844395be9d8"
+        },
+        {
+          "path": "capabilities/evidence/T79-delivery/validation/review-regressions-1.txt",
+          "sha256": "872ae6aa423b11e1c2f0a890a1aeb4b9787b75c24e7c27042a28df64a953ddcb"
+        },
+        {
+          "path": "capabilities/evidence/T79-delivery/validation/final-evidence-audit.json",
+          "sha256": "8caa13216c588f0311158695e7a5baebbd37fee7c031d66b42af75a996e642ce"
+        }
+      ]
+    },
+    {
+      "criterion": 9,
+      "text": "Separate mandatory syntax, standards, semantic, and visual chains pass for the new scope. Reuse the qualified infrastructure where applicable: qpdf syntax, independently qualified external standards checks, independent structural/content observations, and pinned PDFium/ImageMagick visual comparisons. Scope-specific models and controls preserve T78\u2019s all-content checks. A tool\u2019s exit status or producer label alone is not standards proof.",
+      "result": "pass",
+      "evidence": [
+        {
+          "path": "docs/t79-certification.md",
+          "sha256": "002e98bed763e79dae3e887835d852646a7553073dfaf751da2cadacd8346744"
+        },
+        {
+          "path": "capabilities/evidence/T79-delivery/validation/final-evidence-audit.json",
+          "sha256": "8caa13216c588f0311158695e7a5baebbd37fee7c031d66b42af75a996e642ce"
+        },
+        {
+          "path": "capabilities/foundation-evidence.yaml",
+          "sha256": "5dd9f27a369ef5dca106d327cc923c828f8fc692275de91dcbb32afc6790fbee"
+        }
+      ]
+    },
+    {
+      "criterion": 10,
+      "text": "Acceptance recording and collection reject missing tools, uncovered required rules, undetected negative controls, invalid credentials, false execution modes, missing chains, changed/resealed findings, and mismatched identities. Retain exact original/randomized ciphertext hashes, raw safe findings, visual artifacts, configuration, source/contract/candidate identities, and producer/runtime hashes. Private credential files and temporary plaintext derivatives are cleaned up.",
+      "result": "pass",
+      "evidence": [
+        {
+          "path": "capabilities/evidence/T79-delivery/validation/collector-all-final.txt",
+          "sha256": "1f14b0775b0e49193cfc886c6a513192566a9e561392c8c2e37574ce026b1aac"
+        },
+        {
+          "path": "capabilities/evidence/T79-delivery/validation/live-qualification.txt",
+          "sha256": "4a00aea233f0bee0b40fe8e1f631ad158ac7c60106634922a2cc2f05c9aa322c"
+        },
+        {
+          "path": "capabilities/evidence/T79-delivery/validation/final-evidence-audit.json",
+          "sha256": "8caa13216c588f0311158695e7a5baebbd37fee7c031d66b42af75a996e642ce"
+        },
+        {
+          "path": "capabilities/evidence/T79-delivery/validation/commands.jsonl",
+          "sha256": "47c23a9f48f858f26b89349eb7450244b4431ec2dd1afa4bb9b90d3b1b038172"
+        }
+      ]
+    },
+    {
+      "criterion": 11,
+      "text": "Certification covers exactly the actual Ubuntu 24.04 / Linux x86-64 environments for JDK 8, 11, 17, and 21: eight Native JDK/profile tuples, plus matching Facade IN_PROCESS behavior on every JDK. Evidence identifies the actual vendor/build, immutable image, Java executable, execution settings, and native/tool identities. Windows x86-64 and macOS x86-64/arm64 remain explicitly uncertified and nonblocking for Foundation 0.1.0.",
+      "result": "pass",
+      "evidence": [
+        {
+          "path": "capabilities/evidence/T79-delivery/validation/final-evidence-audit.json",
+          "sha256": "8caa13216c588f0311158695e7a5baebbd37fee7c031d66b42af75a996e642ce"
+        },
+        {
+          "path": "capabilities/foundation-evidence.yaml",
+          "sha256": "5dd9f27a369ef5dca106d327cc923c828f8fc692275de91dcbb32afc6790fbee"
+        }
+      ]
+    },
+    {
+      "criterion": 12,
+      "text": "The new child is compatible only after its evidence and dependencies pass. It retains parent `document.version-password-security`, Foundation dependency `password-baseline`, and inherited external gate `document.value.inspect-patch`; the incomplete aggregate is not made a prerequisite for independent child certification. `password-attachments`, aggregate `security`, and parent #33 remain incomplete.",
+      "result": "pass",
+      "evidence": [
+        {
+          "path": "capabilities/capability-matrix.yaml",
+          "sha256": "81c335e3b6d9fe053088cbbbc98492e4b1b3a28b68c293000b68a47e9e7cee09"
+        },
+        {
+          "path": "capabilities/evidence/T79-delivery/validation/final-evidence-audit.json",
+          "sha256": "8caa13216c588f0311158695e7a5baebbd37fee7c031d66b42af75a996e642ce"
+        }
+      ]
+    },
+    {
+      "criterion": 13,
+      "text": "Capability Matrix, Facade Surface Manifest, Foundation obligations/evidence, generated public views, authoritative English contracts/Javadoc, Chinese usage material, and `PROVENANCE.md` agree with the delivered behavior. New source/fixture/tool origins and licenses are recorded. Java 8 runtime/API compatibility, backend-neutral public signatures, and exclusion of acceptance-only tools/fonts/fixtures from product runtime remain verified.",
+      "result": "pass",
+      "evidence": [
+        {
+          "path": "capabilities/evidence/T79-delivery/source-freeze.json",
+          "sha256": "0fd26b06e6c1591bf2e60ee3aaa7ef838abbaf3e099d2a8e7e9dd95650055a19"
+        },
+        {
+          "path": "capabilities/facade-surface.yaml",
+          "sha256": "6c4e04286bb72f18186add5da7d5ba8b10dffc230af4b299b40c4844395be9d8"
+        },
+        {
+          "path": "capabilities/capability-matrix.yaml",
+          "sha256": "81c335e3b6d9fe053088cbbbc98492e4b1b3a28b68c293000b68a47e9e7cee09"
+        },
+        {
+          "path": "PROVENANCE.md",
+          "sha256": "57ccaa5ea5066a3cea1c4c6c93a67dd6acd5ed833767af27893ebb1a3878a8bd"
+        },
+        {
+          "path": "capabilities/evidence/T79-delivery/validation/commands.jsonl",
+          "sha256": "47c23a9f48f858f26b89349eb7450244b4431ec2dd1afa4bb9b90d3b1b038172"
+        }
+      ]
+    },
+    {
+      "criterion": 14,
+      "text": "The final candidate has fresh, valid same-candidate evidence for previously certified transactions, values, pages, metadata, annotations, text, images, incremental, and password-baseline obligations, followed by clear metadata. Historical records remain historical. Live readiness shows this member and its dependencies satisfied without regression of those retained obligations; unrelated Foundation blockers remain visible and may keep overall readiness NOT READY.",
+      "result": "pass",
+      "evidence": [
+        {
+          "path": "capabilities/evidence/T79-delivery/validation/final-evidence-audit.json",
+          "sha256": "8caa13216c588f0311158695e7a5baebbd37fee7c031d66b42af75a996e642ce"
+        },
+        {
+          "path": "capabilities/foundation-evidence.yaml",
+          "sha256": "5dd9f27a369ef5dca106d327cc923c828f8fc692275de91dcbb32afc6790fbee"
+        }
+      ]
+    },
+    {
+      "criterion": 15,
+      "text": "Ran the smallest applicable validation: `./mvnw -B -ntp -pl pdf-document -am -Dtest=PdfVersionPasswordSecurityWorkflowTest -Dsurefire.failIfNoSpecifiedTests=false test`. Include the actual new #79 tests whenever they live in separate suites, and exercise both Native profiles plus matching Facade behavior.",
+      "result": "pass",
+      "evidence": [
+        {
+          "path": "capabilities/evidence/T79-delivery/validation/native-baseline-resumed.txt",
+          "sha256": "6f9145a27093605a45676dd033e31a469c0b5d4698a093afe187ce5851f87325"
+        },
+        {
+          "path": "capabilities/evidence/T79-delivery/validation/review-regressions-1.txt",
+          "sha256": "872ae6aa423b11e1c2f0a890a1aeb4b9787b75c24e7c27042a28df64a953ddcb"
+        },
+        {
+          "path": "capabilities/evidence/T79-delivery/validation/review-worker-regressions-1.txt",
+          "sha256": "a5a905a21a60a81f336dafa00686b46fe6d7952fb4316e39f5f1a3508e851c2d"
+        }
+      ]
+    },
+    {
+      "criterion": 16,
+      "text": "Passed repository-mandated `./mvnw -B -ntp verify`, `./scripts/verify-jdk-matrix.sh`, affected independent-certification tests with real tools, collector/negative-control tests, and the complete #79 certification route. Ordinary Maven verification does not substitute for independent certification. Record commands, environments, exit results, and any unrelated opt-in skips; no required #79 test or chain may be skipped.",
+      "result": "pass",
+      "evidence": [
+        {
+          "path": "capabilities/evidence/T79-delivery/validation/commands.jsonl",
+          "sha256": "47c23a9f48f858f26b89349eb7450244b4431ec2dd1afa4bb9b90d3b1b038172"
+        },
+        {
+          "path": "capabilities/evidence/T79-delivery/validation/final-evidence-audit.json",
+          "sha256": "8caa13216c588f0311158695e7a5baebbd37fee7c031d66b42af75a996e642ce"
+        },
+        {
+          "path": "capabilities/evidence/T79-delivery/validation/collector-all-final.txt",
+          "sha256": "1f14b0775b0e49193cfc886c6a513192566a9e561392c8c2e37574ce026b1aac"
+        },
+        {
+          "path": "capabilities/evidence/T79-delivery/validation/live-qualification.txt",
+          "sha256": "4a00aea233f0bee0b40fe8e1f631ad158ac7c60106634922a2cc2f05c9aa322c"
+        }
+      ]
+    },
+    {
+      "criterion": 17,
+      "text": "Reviewed the final diff against the source criteria and recorded baseline.",
+      "result": "pass",
+      "evidence": [
+        {
+          "path": "capabilities/evidence/T79-delivery/reviews/standards-resume.md",
+          "sha256": "8c42686fdcc2487910a32cccd98cf9faf037325621cfa07ff6e7bfc115e41490"
+        },
+        {
+          "path": "capabilities/evidence/T79-delivery/reviews/spec-resume.md",
+          "sha256": "cab535bbe21184bfb188dc4ee31235c8a5217aa69f3dd5126c2eb166cdeadce5"
+        },
+        {
+          "path": "capabilities/evidence/T79-delivery/source-freeze.json",
+          "sha256": "0fd26b06e6c1591bf2e60ee3aaa7ef838abbaf3e099d2a8e7e9dd95650055a19"
+        },
+        {
+          "path": "capabilities/evidence/T79-delivery/validation/final-worktree-status.txt",
+          "sha256": "b44bd649bc9e7cc9b03ac2aee52333f4b577711e7073898fe767e5d1dff05c05"
+        }
+      ]
+    },
+    {
+      "criterion": 18,
+      "text": "Completed applicable Standards and Spec reviews, resolved in-scope findings, and recorded their regression evidence.",
+      "result": "pass",
+      "evidence": [
+        {
+          "path": "capabilities/evidence/T79-delivery/reviews/standards-resume.md",
+          "sha256": "8c42686fdcc2487910a32cccd98cf9faf037325621cfa07ff6e7bfc115e41490"
+        },
+        {
+          "path": "capabilities/evidence/T79-delivery/reviews/spec-resume.md",
+          "sha256": "cab535bbe21184bfb188dc4ee31235c8a5217aa69f3dd5126c2eb166cdeadce5"
+        },
+        {
+          "path": "capabilities/evidence/T79-delivery/validation/review-regressions-1.txt",
+          "sha256": "872ae6aa423b11e1c2f0a890a1aeb4b9787b75c24e7c27042a28df64a953ddcb"
+        },
+        {
+          "path": "capabilities/evidence/T79-delivery/validation/review-worker-regressions-1.txt",
+          "sha256": "a5a905a21a60a81f336dafa00686b46fe6d7952fb4316e39f5f1a3508e851c2d"
+        },
+        {
+          "path": "capabilities/evidence/T79-delivery/validation/final-evidence-audit.json",
+          "sha256": "8caa13216c588f0311158695e7a5baebbd37fee7c031d66b42af75a996e642ce"
+        }
+      ]
+    },
+    {
+      "criterion": 19,
+      "text": "Commit only after all selected criteria pass and the source context or user authorizes a commit.",
+      "result": "pass",
+      "evidence": [
+        {
+          "path": "capabilities/evidence/T79-delivery/validation/final-worktree-status.txt",
+          "sha256": "b44bd649bc9e7cc9b03ac2aee52333f4b577711e7073898fe767e5d1dff05c05"
+        },
+        {
+          "path": "capabilities/evidence/T79-delivery/validation/final-evidence-audit.json",
+          "sha256": "8caa13216c588f0311158695e7a5baebbd37fee7c031d66b42af75a996e642ce"
+        }
+      ]
+    },
+    {
+      "criterion": 20,
+      "text": "Workspace is clean except for this ticket's changes (unrelated dirty or untracked files untouched).",
+      "result": "pass",
+      "evidence": [
+        {
+          "path": "capabilities/evidence/T79-delivery/validation/final-worktree-status.txt",
+          "sha256": "b44bd649bc9e7cc9b03ac2aee52333f4b577711e7073898fe767e5d1dff05c05"
+        },
+        {
+          "path": "capabilities/evidence/T79-delivery/source-freeze.json",
+          "sha256": "0fd26b06e6c1591bf2e60ee3aaa7ef838abbaf3e099d2a8e7e9dd95650055a19"
+        }
+      ]
+    },
+    {
+      "criterion": 21,
+      "text": "Returned a completion receipt mapping every criterion to evidence, identifying the execution baseline, candidate/environment identities, validation and review results, remaining Foundation blockers, final worktree state, and optional local commit.",
+      "result": "pass",
+      "evidence": [
+        {
+          "path": "capabilities/evidence/T79-delivery/validation/final-evidence-audit.json",
+          "sha256": "8caa13216c588f0311158695e7a5baebbd37fee7c031d66b42af75a996e642ce"
+        },
+        {
+          "path": "capabilities/evidence/T79-delivery/source-freeze.json",
+          "sha256": "0fd26b06e6c1591bf2e60ee3aaa7ef838abbaf3e099d2a8e7e9dd95650055a19"
+        },
+        {
+          "path": "capabilities/evidence/T79-delivery/validation/commands.jsonl",
+          "sha256": "47c23a9f48f858f26b89349eb7450244b4431ec2dd1afa4bb9b90d3b1b038172"
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Closed source-traceable profile; PDF 1.7 R6/ADBE Level 8 is qualified interoperability, PDF 2.0 R6 is normative.",
+    "Supplemental all-content metadata-StdCF original retains its known pdfcpu limitation; all required clear inputs and emitted products pass all four chains.",
+    "Password-attachments/#80, aggregate security and parent #33 remain incomplete."
+  ]
+}

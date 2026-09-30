@@ -16,6 +16,7 @@ import org.apache.pdfbox.cos.COSDictionary;
 import org.apache.pdfbox.cos.COSInteger;
 import org.apache.pdfbox.cos.COSName;
 import org.apache.pdfbox.cos.COSString;
+import org.apache.pdfbox.cos.COSStream;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.encryption.AccessPermission;
 import org.apache.pdfbox.pdmodel.encryption.DecryptionMaterial;
@@ -295,6 +296,11 @@ final class PdfBoxPasswordSecurity {
         int version = encryption.getVersion();
         int revision = encryption.getRevision();
         int length = encryption.getLength();
+        COSBase metadata = encryption.getCOSObject().getDictionaryObject(COSName.ENCRYPT_META_DATA);
+        if (metadata != null && (!(metadata instanceof org.apache.pdfbox.cos.COSBoolean)
+                || (version < 4 && !encryption.isEncryptMetaData()))) {
+            throw unsupported("The metadata encryption declaration is malformed.");
+        }
         if (!((version == 1 && (revision == 2 || revision == 3)
                         && (length == 0 || length == 40))
                 || (version == 2 && revision == 3 && (length == 40 || length == 128))
@@ -518,7 +524,7 @@ final class PdfBoxPasswordSecurity {
     static PasswordSecurityInfo requireCompatibleInput(
             PDDocument document,
             PdfVersionInfo version,
-            PasswordSecurityInfo security) throws DocumentFailure {
+            PasswordSecurityInfo security, WorkflowResourceContext resources) throws DocumentFailure {
         if (!security.isPasswordProtected()) {
             return security;
         }
@@ -527,11 +533,8 @@ final class PdfBoxPasswordSecurity {
         PDEncryption encryption = document.getEncryption();
         int encryptionVersion = encryption.getVersion();
         int revision = encryption.getRevision();
-        if (security.getEncryptionScope()
-                        == PasswordEncryptionScope.ALL_EXCEPT_METADATA
-                && revision != 4) {
-            throw unsupported(
-                    "Metadata-clear input is supported only for revision 4 password security.");
+        if (security.getEncryptionScope() == PasswordEncryptionScope.ALL_EXCEPT_METADATA) {
+            PdfBoxMetadataEncryption.requireClearScope(document, resources);
         }
         PdfVersion minimum;
         if (algorithm == PasswordEncryptionAlgorithm.RC4_40) {
@@ -652,10 +655,13 @@ final class PdfBoxPasswordSecurity {
             throw unsupported(
                     "Changing password security is supported only for REWRITE publication.");
         }
-        if (policy.getEncryptionScope()
-                != PasswordEncryptionScope.ALL_CONTENT) {
+        if (policy.getEncryptionScope() == PasswordEncryptionScope.EMBEDDED_FILES_ONLY) {
             throw unsupported(
-                    "Only encryption of all document content is supported for output.");
+                    "Attachment-only password encryption is unsupported.");
+        }
+        if (policy.getEncryptionScope() == PasswordEncryptionScope.ALL_EXCEPT_METADATA
+                && policy.getAlgorithm() == PasswordEncryptionAlgorithm.RC4_40) {
+            throw unsupported("RC4-40 output cannot leave document metadata clear.");
         }
         if (policy.getAlgorithm() != PasswordEncryptionAlgorithm.AES_256
                 && legacySecurityMode
@@ -696,6 +702,7 @@ final class PdfBoxPasswordSecurity {
             }
             return new PreparedOutput(
                     policy.getAlgorithm(),
+                    policy.getEncryptionScope(),
                     policy.getPermissions(),
                     outputVersion,
                     owner,
@@ -736,6 +743,7 @@ final class PdfBoxPasswordSecurity {
         WorkflowCredentialCharacters validation =
                 WorkflowCredentialCharacters.copyOf(credential, resources);
         return new PreparedOutput(
+                null,
                 null,
                 null,
                 null,
@@ -886,6 +894,7 @@ final class PdfBoxPasswordSecurity {
     static final class PreparedOutput implements AutoCloseable {
 
         private final PasswordEncryptionAlgorithm algorithm;
+        private final PasswordEncryptionScope scope;
         private final DocumentPermissions permissions;
         private final PdfVersion version;
         private WorkflowCredentialCharacters owner;
@@ -900,21 +909,24 @@ final class PdfBoxPasswordSecurity {
 
         private PreparedOutput(
                 PasswordEncryptionAlgorithm algorithm,
+                PasswordEncryptionScope scope,
                 DocumentPermissions permissions,
                 PdfVersion version,
                 WorkflowCredentialCharacters owner,
                 WorkflowCredentialCharacters user) {
-            this(algorithm, permissions, version, owner, user, null);
+            this(algorithm, scope, permissions, version, owner, user, null);
         }
 
         private PreparedOutput(
                 PasswordEncryptionAlgorithm algorithm,
+                PasswordEncryptionScope scope,
                 DocumentPermissions permissions,
                 PdfVersion version,
                 WorkflowCredentialCharacters owner,
                 WorkflowCredentialCharacters user,
                 WorkflowCredentialCharacters validation) {
             this.algorithm = algorithm;
+            this.scope = scope;
             this.permissions = permissions;
             this.version = version;
             this.owner = owner;
@@ -923,7 +935,7 @@ final class PdfBoxPasswordSecurity {
         }
 
         private static PreparedOutput none() {
-            return new PreparedOutput(null, null, null, null, null, null);
+            return new PreparedOutput(null, null, null, null, null, null, null);
         }
 
         boolean isPresent() {
@@ -934,7 +946,11 @@ final class PdfBoxPasswordSecurity {
             return validation != null;
         }
 
-        void preflight(PDDocument document) throws DocumentFailure {
+        void preflight(PDDocument document, WorkflowResourceContext resources) throws DocumentFailure {
+            if (isPresent()) { PdfBoxMetadataEncryption.requireOutputFilters(document, resources); }
+            if (isPresent() && scope == PasswordEncryptionScope.ALL_EXCEPT_METADATA) {
+                PdfBoxMetadataEncryption.requireDocumentMetadata(document);
+            }
             if (!isPresent()
                     || algorithm != PasswordEncryptionAlgorithm.AES_256) {
                 return;
@@ -1009,7 +1025,8 @@ final class PdfBoxPasswordSecurity {
                     protection.setPreferAES(false);
                 }
                 document.protect(protection);
-                handler = new CanonicalStandardSecurityHandler(protection);
+                handler = new CanonicalStandardSecurityHandler(protection,
+                        scope == PasswordEncryptionScope.ALL_EXCEPT_METADATA);
                 document.getEncryption().setSecurityHandler(handler);
                 resources.checkpoint();
                 outputHandlers.add(handler);
@@ -1059,8 +1076,8 @@ final class PdfBoxPasswordSecurity {
                 expectedRevision = 4;
                 expectedLength = 128;
             } else if (algorithm == PasswordEncryptionAlgorithm.RC4_128) {
-                expectedVersion = 2;
-                expectedRevision = 3;
+                expectedVersion = scope == PasswordEncryptionScope.ALL_EXCEPT_METADATA ? 4 : 2;
+                expectedRevision = scope == PasswordEncryptionScope.ALL_EXCEPT_METADATA ? 4 : 3;
                 expectedLength = 128;
             } else {
                 expectedVersion = 1;
@@ -1069,7 +1086,7 @@ final class PdfBoxPasswordSecurity {
             }
             if (actual.getAlgorithm().orElse(null) != algorithm
                     || actual.getEncryptionScope()
-                            != PasswordEncryptionScope.ALL_CONTENT
+                            != scope
                     || !actual.getDeclaredUserPermissions()
                             .equals(permissions)
                     || encryption == null
@@ -1222,11 +1239,14 @@ final class PdfBoxPasswordSecurity {
 
         private final StandardSecurityHandler delegate;
         private final StandardProtectionPolicy policy;
+        private final boolean clearMetadata;
+        private COSStream documentMetadata;
 
         private CanonicalStandardSecurityHandler(
-                StandardProtectionPolicy policy) {
+                StandardProtectionPolicy policy, boolean clearMetadata) {
             super(policy);
             this.policy = policy;
+            this.clearMetadata = clearMetadata;
             delegate = new StandardSecurityHandler(policy);
         }
 
@@ -1239,6 +1259,21 @@ final class PdfBoxPasswordSecurity {
                 delegate.prepareDocumentForEncryption(document);
                 copyState();
             }
+            if (clearMetadata) {
+                try {
+                    documentMetadata = PdfBoxMetadataEncryption.requireDocumentMetadata(document);
+                    if (policy.getEncryptionKeyLength() == 256) {
+                        prepareClearMetadataPermissions(document.getEncryption());
+                    } else {
+                        prepareClearMetadataLegacy(document);
+                    }
+                    document.getEncryption().getCOSObject().setBoolean(COSName.ENCRYPT_META_DATA, false);
+                } catch (DocumentFailure failure) {
+                    throw new IOException("The document metadata declaration is malformed.");
+                }
+            } else {
+                document.getEncryption().getCOSObject().setBoolean(COSName.ENCRYPT_META_DATA, true);
+            }
             PDCryptFilterDictionary filter = document.getEncryption()
                     .getStdCryptFilterDictionary();
             if (filter != null) {
@@ -1246,6 +1281,67 @@ final class PdfBoxPasswordSecurity {
                 // omission for AESV2; the backend emits noncanonical bit counts.
                 if (COSName.AESV3.equals(filter.getCryptFilterMethod())) { filter.setLength(32); }
                 else { filter.getCOSObject().removeItem(COSName.LENGTH); }
+            }
+        }
+
+        @Override
+        public void encryptStream(COSStream stream, long objectNumber, int generation) throws IOException {
+            try { PdfBoxMetadataEncryption.normalizeForNewEncryption(stream); }
+            catch (DocumentFailure failure) { throw new IOException("The stream crypt-filter declaration is unsupported."); }
+            if (clearMetadata && stream == documentMetadata) { return; }
+            super.encryptStream(stream, objectNumber, generation);
+        }
+
+        private void prepareClearMetadataPermissions(PDEncryption encryption) throws IOException {
+            byte[] encrypted = encryption.getPerms();
+            byte[] block = null;
+            byte[] replacement = null;
+            try {
+                Cipher cipher = Cipher.getInstance("AES/ECB/NoPadding");
+                SecretKeySpec key = new SecretKeySpec(getEncryptionKey(), "AES");
+                cipher.init(Cipher.DECRYPT_MODE, key);
+                block = cipher.doFinal(encrypted);
+                block[8] = 'F';
+                cipher.init(Cipher.ENCRYPT_MODE, key);
+                replacement = cipher.doFinal(block);
+                encryption.setPerms(replacement);
+            } catch (GeneralSecurityException failure) {
+                throw new IOException("The metadata permission value could not be prepared.");
+            } finally {
+                Arrays.fill(encrypted, (byte) 0);
+                if (block != null) { Arrays.fill(block, (byte) 0); }
+                if (replacement != null) { Arrays.fill(replacement, (byte) 0); }
+            }
+        }
+
+        private void prepareClearMetadataLegacy(PDDocument document) throws IOException {
+            PDEncryption encryption = document.getEncryption();
+            byte[] user = policy.getUserPassword().getBytes(StandardCharsets.ISO_8859_1);
+            byte[] owner = policy.getOwnerPassword().getBytes(StandardCharsets.ISO_8859_1);
+            byte[] ownerEntry = null, userEntry = null, key = null;
+            try {
+                byte[] identifier = ((COSString) document.getDocument().getDocumentID().getObject(0)).getBytes();
+                ownerEntry = delegate.computeOwnerPassword(owner, user, 4, 16);
+                userEntry = delegate.computeUserPassword(user, ownerEntry, encryption.getPermissions(), identifier, 4, 16, false);
+                key = delegate.computeEncryptedKey(user, ownerEntry, userEntry, null, null,
+                        encryption.getPermissions(), identifier, 4, 16, false, false);
+                Arrays.fill(getEncryptionKey(), (byte) 0);
+                setEncryptionKey(key);
+                key = null;
+                encryption.setVersion(4);
+                encryption.setRevision(4);
+                encryption.setOwnerKey(ownerEntry);
+                encryption.setUserKey(userEntry);
+                PDCryptFilterDictionary filter = new PDCryptFilterDictionary();
+                filter.setCryptFilterMethod(policy.isPreferAES() ? COSName.AESV2 : RC4_CRYPT_FILTER);
+                encryption.setStdCryptFilterDictionary(filter);
+                encryption.setStreamFilterName(COSName.STD_CF);
+                encryption.setStringFilterName(COSName.STD_CF);
+            } finally {
+                Arrays.fill(user, (byte) 0); Arrays.fill(owner, (byte) 0);
+                if (ownerEntry != null) { Arrays.fill(ownerEntry, (byte) 0); }
+                if (userEntry != null) { Arrays.fill(userEntry, (byte) 0); }
+                if (key != null) { Arrays.fill(key, (byte) 0); }
             }
         }
 

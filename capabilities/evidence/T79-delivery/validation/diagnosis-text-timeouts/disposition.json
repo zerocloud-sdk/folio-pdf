@@ -1,0 +1,80 @@
+{
+  "result": "unchanged-replays-pass",
+  "original-failure": {
+    "path": "capabilities/evidence/foundation/T79-final/text/jdk8-hardened_worker/contract-tests.txt",
+    "sha256": "0c92145e5eb4a6dcfc85c8b063f161873a8c3f58d029ab0d9e44f7fdf327e854"
+  },
+  "passing-replays": [
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/diagnosis-text-timeouts/focused-1-result.json",
+      "sha256": "e00780b56aa2684fcf8842a417ab1e2adf4f551b36a6787106e6f6302eff366c"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/diagnosis-text-timeouts/full-1-result.json",
+      "sha256": "bd8d7ea6021884dfbf39179aa7a6010f185e36d1dfc7d5637ecab2bdab3fe9e0"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/diagnosis-text-timeouts/focused-10-result.json",
+      "sha256": "c3b2def04ed3ab7fce960e599e3c27a421cee319201313a4149aa91c5c92aff9"
+    }
+  ],
+  "replay-evidence": [
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/diagnosis-text-timeouts/focused-1.txt",
+      "sha256": "988ae128bc62f7e03e9f0f606549fab693ac3f645473dffecc22b2e4c46dd997"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/diagnosis-text-timeouts/focused-1-command.json",
+      "sha256": "0feae8eecdb479b1394bb7f68ea4ef474cf358aef154ccb2b468d70bffc6d9b3"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/diagnosis-text-timeouts/full-1.txt",
+      "sha256": "17635045b47759c3b1ed7921e1a93d359ca763214859ccff889019dc350a176e"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/diagnosis-text-timeouts/full-1-command.json",
+      "sha256": "2fe770aa756eaa3768499e02bed5bee721e98d342728bc1ff7f30f845539f9eb"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/diagnosis-text-timeouts/focused-10.txt",
+      "sha256": "da9ca694b845cd94048f9499a64d47af6f8996c5ef38f94f024f94aa5de70f04"
+    },
+    {
+      "path": "capabilities/evidence/T79-delivery/validation/diagnosis-text-timeouts/focused-10-command.json",
+      "sha256": "91ee60ebd6b1d10593d32ee300392633dfd6590fed3f45025ccaa551c0f63c0f"
+    }
+  ],
+  "identity-check": {
+    "path": "capabilities/evidence/T79-delivery/validation/diagnosis-text-timeouts/identity-check.json",
+    "sha256": "fd78e68a43ce378751ef23fd375b3143586db16ec68ddbb5864b61b4b606beb6"
+  },
+  "environment-check": {
+    "path": "capabilities/evidence/T79-delivery/validation/diagnosis-text-timeouts/environment-check.json",
+    "sha256": "c3a682342f56820d124b8f9882eebabeab981f057e20acc0c05213a20fa44665"
+  },
+  "observations": {
+    "original-failed-tests": 3,
+    "failure-kind": "elapsed-time limits / JUnit timeouts",
+    "focused-methods-passed": 3,
+    "complete-suite-passed": 126,
+    "short-method-repeat-runs-passed": 20,
+    "full-command-timeout-seconds": 600
+  },
+  "hypotheses": [
+    {
+      "hypothesis": "Transient runtime delay",
+      "disposition": "Consistent with unchanged replays; exact cause not established."
+    },
+    {
+      "hypothesis": "Suite-order effect",
+      "disposition": "Not reproduced in the unchanged complete 126-test suite."
+    },
+    {
+      "hypothesis": "Artifact or environment drift",
+      "disposition": "No source, staged artifact, harness, Java executable, OS identity, or immutable image drift observed."
+    }
+  ],
+  "changes": "No product or test source change; no time limit or certification gate changed. Diagnostic runners remain in this explicitly named diagnosis directory.",
+  "next-step": "Run the entire text certification route in fresh T79-final/text-r2, then continue images, incremental, password-baseline, and password-clear-metadata in contract order.",
+  "limits": "These replays do not certify text or prove a root cause. Final delivery requires the complete fresh route to pass."
+}

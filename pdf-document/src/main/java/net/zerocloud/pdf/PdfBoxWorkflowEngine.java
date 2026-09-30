@@ -139,7 +139,7 @@ final class PdfBoxWorkflowEngine {
             securityInfo = PdfBoxPasswordSecurity.requireCompatibleInput(
                     document,
                     versionInfo,
-                    securityInfo);
+                    securityInfo, context.resources);
             if (securityInfo.isPasswordProtected()
                     && primaryCredential == null) {
                 throw credentialFailure(true);
@@ -187,7 +187,7 @@ final class PdfBoxWorkflowEngine {
                         request.getLegacySecurityMode(),
                         context.resources);
             }
-            outputSecurity.preflight(document);
+            outputSecurity.preflight(document, context.resources);
         } catch (DocumentFailure policyFailure) {
             if (outputSecurity != null) {
                 outputSecurity.close();
@@ -1838,7 +1838,7 @@ final class PdfBoxWorkflowEngine {
                 securityInfo = PdfBoxPasswordSecurity.requireCompatibleInput(
                         document,
                         versionInfo,
-                        securityInfo);
+                        securityInfo, resources);
                 PreparedNamedSource prepared = new PreparedNamedSource(
                         snapshot,
                         versionInfo,

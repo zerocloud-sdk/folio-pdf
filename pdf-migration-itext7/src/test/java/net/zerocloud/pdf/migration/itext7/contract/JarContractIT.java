@@ -419,9 +419,10 @@ public final class JarContractIT {
         Class<?> constants = loader.loadClass(prefix + "EncryptionConstants");
         assertConstructors(constants); assertMethods(constants);
         String[] names = {"STANDARD_ENCRYPTION_40", "STANDARD_ENCRYPTION_128", "ENCRYPTION_AES_128", "ENCRYPTION_AES_256",
+                "DO_NOT_ENCRYPT_METADATA",
                 "ALLOW_DEGRADED_PRINTING", "ALLOW_PRINTING", "ALLOW_MODIFY_CONTENTS", "ALLOW_COPY",
                 "ALLOW_MODIFY_ANNOTATIONS", "ALLOW_FILL_IN", "ALLOW_SCREENREADERS", "ALLOW_ASSEMBLY"};
-        int[] values = {0, 1, 2, 3, 4, 2052, 8, 16, 32, 256, 512, 1024};
+        int[] values = {0, 1, 2, 3, 8, 4, 2052, 8, 16, 32, 256, 512, 1024};
         assertEquals(names.length, constants.getFields().length);
         for (int index = 0; index < names.length; index++) {
             Field field = constants.getField(names[index]);

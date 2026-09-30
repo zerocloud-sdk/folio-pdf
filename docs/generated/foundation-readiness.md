@@ -96,7 +96,7 @@ A missing capability, required behavior, compatible dependency, independent evid
 | [`barcodes-1d`](#barcodes-1d) | `composition.barcodes.one-dimensional` | [#94](https://github.com/zerocloud-sdk/folio-pdf/issues/94) | blocked |
 | [`barcodes-2d`](#barcodes-2d) | `composition.barcodes.two-dimensional` | [#95](https://github.com/zerocloud-sdk/folio-pdf/issues/95) | blocked |
 | [`password-baseline`](#password-baseline) | `document.version-password-security.baseline` | [#78](https://github.com/zerocloud-sdk/folio-pdf/issues/78) | satisfied |
-| [`password-clear-metadata`](#password-clear-metadata) | `document.version-password-security.clear-metadata` | [#79](https://github.com/zerocloud-sdk/folio-pdf/issues/79) | blocked |
+| [`password-clear-metadata`](#password-clear-metadata) | `document.version-password-security.clear-metadata` | [#79](https://github.com/zerocloud-sdk/folio-pdf/issues/79) | satisfied |
 | [`password-attachments`](#password-attachments) | `document.version-password-security.attachments` | [#80](https://github.com/zerocloud-sdk/folio-pdf/issues/80) | blocked |
 | [`tables-base`](#tables-base) | `composition.layout.tables.base` | [#91](https://github.com/zerocloud-sdk/folio-pdf/issues/91) | blocked |
 | [`tables-pagination`](#tables-pagination) | `composition.layout.tables.pagination` | [#92](https://github.com/zerocloud-sdk/folio-pdf/issues/92) | blocked |
@@ -255,7 +255,6 @@ Inspect exact effective PDF versions, publish PDF 1.7 or 2.0, and authenticate a
 - Source requirements: [`slice-78-1`](#slice-78-1), [`slice-78-2`](#slice-78-2), [`slice-78-3`](#slice-78-3), [`slice-78-4`](#slice-78-4), [`slice-78-5`](#slice-78-5)
 
 - Blocker: capability document.version-password-security is experimental, requires compatible
-- Blocker: incomplete prerequisite obligation password-clear-metadata
 - Blocker: incomplete prerequisite obligation password-attachments
 
 <a id="limits"></a>
@@ -793,20 +792,9 @@ Support and certify metadata-clear input/output including AES-256, while other p
 - Mandatory chains: `syntax, standards, semantic, visual`
 - Dependencies: `password-baseline`
 - Aggregate members: none
-- Required Facade family: kernel reader/writer password security, permissions and scopes (`com.itextpdf.kernel.pdf.`); mappings: **missing**
+- Required Facade family: kernel reader/writer password security, permissions and scopes (`com.itextpdf.kernel.pdf.`); mappings: `itext7.kernel.pdf-writer.constructor-string, itext7.kernel.pdf-reader.constructor-string, itext7.kernel.pdf-reader.close, itext7.kernel.pdf-document.constructor-writer, itext7.kernel.pdf-document.constructor-reader, itext7.kernel.pdf-document.close, itext7.kernel.pdf-document.constructor-named-sources-targets, itext7.kernel.pdf-writer.constructor-output-stream, itext7.kernel.pdf-reader.constructor-input-stream, itext7.kernel.pdf-document.constructor-reader-writer, itext7.kernel.pdf-document.constructor-named-sources-targets-version, itext7.kernel.pdf-document.constructor-stamping, itext7.kernel.pdf-document.constructor-named-stamping, itext7.kernel.reader-properties.constructor, itext7.kernel.reader-properties.close, itext7.kernel.writer-properties.constructor, itext7.kernel.writer-properties.close, itext7.kernel.reader-properties.set-password, itext7.kernel.reader-properties.set-credential, itext7.kernel.writer-properties.set-pdf-version, itext7.kernel.writer-properties.set-standard-encryption, itext7.kernel.writer-properties.set-legacy-security-mode, itext7.kernel.pdf-reader.constructor-string-properties, itext7.kernel.pdf-reader.constructor-input-stream-properties, itext7.kernel.pdf-writer.constructor-string-properties, itext7.kernel.pdf-writer.constructor-output-stream-properties, itext7.kernel.pdf-reader.is-encrypted, itext7.kernel.pdf-reader.is-opened-with-full-permission, itext7.kernel.pdf-reader.get-permissions, itext7.kernel.pdf-reader.get-crypto-mode, itext7.kernel.pdf-writer.close, itext7.kernel.pdf-document.get-pdf-version, itext7.kernel.encryption-constants.standard-encryption-40, itext7.kernel.encryption-constants.standard-encryption-128, itext7.kernel.encryption-constants.encryption-aes-128, itext7.kernel.encryption-constants.encryption-aes-256, itext7.kernel.encryption-constants.allow-degraded-printing, itext7.kernel.encryption-constants.allow-printing, itext7.kernel.encryption-constants.allow-modify-contents, itext7.kernel.encryption-constants.allow-copy, itext7.kernel.encryption-constants.allow-modify-annotations, itext7.kernel.encryption-constants.allow-fill-in, itext7.kernel.encryption-constants.allow-screenreaders, itext7.kernel.encryption-constants.allow-assembly, itext7.kernel.pdf-version.pdf-1-0, itext7.kernel.pdf-version.pdf-1-1, itext7.kernel.pdf-version.pdf-1-2, itext7.kernel.pdf-version.pdf-1-3, itext7.kernel.pdf-version.pdf-1-4, itext7.kernel.pdf-version.pdf-1-5, itext7.kernel.pdf-version.pdf-1-6, itext7.kernel.pdf-version.pdf-1-7, itext7.kernel.pdf-version.pdf-2-0, itext7.kernel.pdf-version.from-string, itext7.kernel.pdf-version.from-pdf-name, itext7.kernel.pdf-version.to-pdf-name, itext7.kernel.pdf-version.to-string, itext7.kernel.pdf-version.compare-to, itext7.kernel.pdf-version.compare-to-bridge, itext7.kernel.pdf-version.equals, itext7.kernel.pdf-version.hash-code, itext7.kernel.encryption-constants.do-not-encrypt-metadata`
 - Source requirements: [`spec-td-17`](#spec-td-17), [`slice-79-1`](#slice-79-1), [`slice-79-2`](#slice-79-2), [`slice-79-3`](#slice-79-3), [`slice-79-4`](#slice-79-4)
 
-- Blocker: missing independently certifiable subcapability document.version-password-security.clear-metadata (aggregate document.version-password-security)
-- Blocker: missing required Facade mapping set for kernel reader/writer password security, permissions and scopes
-- Blocker: unresolved retained limitation: Required metadata-clear AES-256 and embedded-files-only input/output are not implemented/certified; #79 and #80 must complete them.
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk8/IN_PROCESS (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk8/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk11/IN_PROCESS (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk11/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/IN_PROCESS (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
 
 <a id="password-attachments"></a>
 ### `password-attachments`
@@ -826,6 +814,7 @@ Support and certify embedded-files-only input/output, crypt filters, authenticat
 
 - Blocker: missing independently certifiable subcapability document.version-password-security.attachments (aggregate document.version-password-security)
 - Blocker: missing required Facade mapping set for kernel reader/writer password security, permissions and scopes
+- Blocker: unresolved retained limitation: The baseline and clear-metadata children have separate required certification. Embedded-files-only input/output remains unimplemented and uncertified; #80 must complete the password-attachments obligation.
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk8/IN_PROCESS (required chains: syntax, standards, semantic, visual)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk8/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk11/IN_PROCESS (required chains: syntax, standards, semantic, visual)
@@ -1114,7 +1103,6 @@ Close every Foundation behavior, aggregate, dependency and Facade obligation; ru
 - Blocker: incomplete prerequisite obligation shaping
 - Blocker: incomplete prerequisite obligation barcodes-1d
 - Blocker: incomplete prerequisite obligation barcodes-2d
-- Blocker: incomplete prerequisite obligation password-clear-metadata
 - Blocker: incomplete prerequisite obligation password-attachments
 - Blocker: incomplete prerequisite obligation tables-base
 - Blocker: incomplete prerequisite obligation tables-pagination
@@ -1226,8 +1214,8 @@ Classifications bind the exact Capability Matrix limitation text by SHA-256; cha
   Original limitation: Legacy Security Mode is request-scoped. It permits RC4-40 V=1/R=2 or R=3, RC4-128 V=2/R=3 and AES-128 V=4/R=4 output on PDF 1.7. New R3/40 output follows ISO Algorithm 3 full-digest owner rounds. Separate V4 RC4 and R5 output selectors are not part of this baseline; AES-256 output remains R6.
 - `document.version-password-security` / `retained-contract` → [`password-baseline`](#password-baseline): The source-traceable T78 profile implements required successful versions, legacy algorithms, revisions, crypt-filter defaults and credential forms. Separate qualified standards and original-product evidence are mandatory for the current candidate; #79/#80 scopes remain independently required.
   Original limitation: Baseline input includes fixed 40/128-bit RC4 (V1/R2 or R3, V2/R3 and V4/R4), AES-128 V4/R4, and AES-256 V5/R5 or R6. Standard StdCF selectors, optional DocOpen/EFF defaults, valid scalar/array Crypt selectors and applicable omitted key lengths are admitted. R5 PDF 1.7 requires ADBE Extension Level 3; R6 requires Level 8. Public-key handlers, arbitrary 48–120-bit RC4 keys and custom/unknown crypt-filter arrangements are outside the audited fixed profile; malformed entries and inconsistent encrypted Perms fail closed.
-- `document.version-password-security` / `release-blocker` → [`password-clear-metadata`](#password-clear-metadata): Required metadata-clear AES-256 and embedded-files-only input/output are not implemented/certified; #79 and #80 must complete them.
-  Original limitation: Output models all-content, metadata-clear, and attachment-only scopes but the current backend supports only all-content output. Fixture-proven metadata-clear V=4/R=4 input may be read; metadata-clear AES-256 and attachment-only input are not claimed.
+- `document.version-password-security` / `release-blocker` → [`password-attachments`](#password-attachments): The baseline and clear-metadata children have separate required certification. Embedded-files-only input/output remains unimplemented and uncertified; #80 must complete the password-attachments obligation.
+  Original limitation: All-content and explicit clear document metadata scopes support the independently certified baseline and clear-metadata profiles. Clear metadata admits V4/R4 RC4-128 and AES-128 plus V5/R5 or R6 AES-256 input, with R4 legacy or R6 output. Embedded-files-only input/output remains unimplemented and uncertified under the separate password-attachments obligation.
 - `document.version-password-security` / `retained-contract` → [`password-baseline`](#password-baseline): The source-traceable T78 profile implements required successful versions, legacy algorithms, revisions, crypt-filter defaults and credential forms. Separate qualified standards and original-product evidence are mandatory for the current candidate; #79/#80 scopes remain independently required.
   Original limitation: Credentials admit empty/equal values and standard truncation: legacy profiles preserve byte-valued characters and use the first 32 bytes; AES-256 uses RFC 4013 Unicode 3.2 preparation and the first 127 UTF-8 bytes. An empty prepared owner generates independent random owner authority. Unmappable legacy characters and prohibited stored strings fail safely; see the source-traceable T78 audit.
 - `document.version-password-security` / `retained-contract` → [`password-baseline`](#password-baseline): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #78 must prove it without omitting required successful Foundation cases.

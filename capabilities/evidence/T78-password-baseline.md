@@ -24,7 +24,7 @@ binds current candidate receipts for Ubuntu 24.04 Linux x86-64 × JDK 8/11/17/21
 its results are never relabeled Worker. This contract does not certify a
 changed candidate. Windows/macOS remain uncertified and nonblocking for F0.1.0.
 
-The parent aggregate remains experimental; #79 metadata-clear and #80
-embedded-files-only remain required separate obligations. The historical T16
+The parent aggregate remains experimental. Metadata-clear is separately covered
+by the T79 child; #80 embedded-files-only remains incomplete. The historical T16
 syntax-only evidence is unchanged. Compatible `document.value.inspect-patch`
 is inherited as an external gate, and the aggregate is not a child prerequisite.

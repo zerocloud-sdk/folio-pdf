@@ -85,7 +85,8 @@ public final class PdfReader implements Closeable {
             case AES_128: mode = EncryptionConstants.ENCRYPTION_AES_128; break;
             default: mode = EncryptionConstants.ENCRYPTION_AES_256;
         }
-        return mode | (source.security.getEncryptionScope() == net.zerocloud.pdf.PasswordEncryptionScope.ALL_EXCEPT_METADATA ? 8 : 0);
+        return mode | (source.security.getEncryptionScope() == net.zerocloud.pdf.PasswordEncryptionScope.ALL_EXCEPT_METADATA
+                ? EncryptionConstants.DO_NOT_ENCRYPT_METADATA : 0);
     }
 
     private void requireOpen() {

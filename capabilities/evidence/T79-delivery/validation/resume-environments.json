@@ -1,0 +1,79 @@
+{
+  "recorded-at": "2026-09-30T04:17:28.997271+00:00",
+  "purpose": "prerequisite identity check; not acceptance certification",
+  "podman-wrapper-sha256": "e27a6f8914e2e13597eb2710dec30cdde2b72789d9c8b9b1096a370bb48abc76",
+  "environments": [
+    {
+      "profile": "ubuntu-24.04-linux-x86-64-jdk8",
+      "image-digest": "sha256:a4da319337cb6504ba4fb663cbd72a75df5515efb31bbdc6fc4ad7ba8d710dee",
+      "command": [
+        "/workspace/folio-pdf/capabilities/evidence/T79-delivery/validation/container-bin/podman",
+        "run",
+        "--rm",
+        "--network=none",
+        "--userns=keep-id",
+        "docker.io/library/eclipse-temurin@sha256:a4da319337cb6504ba4fb663cbd72a75df5515efb31bbdc6fc4ad7ba8d710dee",
+        "sh",
+        "-c",
+        "cat /etc/os-release; uname -m; cat \"$JAVA_HOME/release\"; sha256sum /etc/os-release \"$JAVA_HOME/bin/java\"; java -version"
+      ],
+      "exit-code": 0,
+      "stdout": "PRETTY_NAME=\"Ubuntu 24.04.4 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.4 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\nx86_64\nJAVA_VERSION=\"1.8.0_502\"\nOS_NAME=\"Linux\"\nOS_VERSION=\"2.6\"\nOS_ARCH=\"amd64\"\nSOURCE=\".:git:d9b9e48a2186+\"\nIMPLEMENTOR=\"Eclipse Adoptium\"\nBUILD_SOURCE=\"git:e6ba7dec3d07654074559310376a3ae89da5f4ac\"\nBUILD_SOURCE_REPO=\"https://github.com/adoptium/temurin-build.git\"\nSOURCE_REPO=\"https://github.com/adoptium/jdk8u.git\"\nFULL_VERSION=\"1.8.0_502-b07\"\nSEMANTIC_VERSION=\"8.0.502+7\"\nBUILD_INFO=\"OS: Linux Version: 6.8.0-1062-azure\"\nJVM_VARIANT=\"Hotspot\"\nJVM_VERSION=\"25.502-b07\"\nIMAGE_TYPE=\"JDK\"\n01af466feb100306498c86aa6bad1815e33036019aa34d4362c20f374ea5c829  /etc/os-release\nfa55c40b8accf16501ed11ac41a2b6cf5f411d36ea083f935d4a87cd3a7131a8  /opt/java/openjdk/bin/java\n",
+      "stderr": "openjdk version \"1.8.0_502\"\nOpenJDK Runtime Environment (Temurin)(build 1.8.0_502-b07)\nOpenJDK 64-Bit Server VM (Temurin)(build 25.502-b07, mixed mode)\n"
+    },
+    {
+      "profile": "ubuntu-24.04-linux-x86-64-jdk11",
+      "image-digest": "sha256:09f6797de424a6a085da4db6ba64381b2a4d51c2100a5e91998b69d7c23e0ecb",
+      "command": [
+        "/workspace/folio-pdf/capabilities/evidence/T79-delivery/validation/container-bin/podman",
+        "run",
+        "--rm",
+        "--network=none",
+        "--userns=keep-id",
+        "docker.io/library/eclipse-temurin@sha256:09f6797de424a6a085da4db6ba64381b2a4d51c2100a5e91998b69d7c23e0ecb",
+        "sh",
+        "-c",
+        "cat /etc/os-release; uname -m; cat \"$JAVA_HOME/release\"; sha256sum /etc/os-release \"$JAVA_HOME/bin/java\"; java -version"
+      ],
+      "exit-code": 0,
+      "stdout": "PRETTY_NAME=\"Ubuntu 24.04.4 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.4 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\nx86_64\nIMPLEMENTOR=\"Eclipse Adoptium\"\nIMPLEMENTOR_VERSION=\"Temurin-11.0.32+9\"\nJAVA_RUNTIME_VERSION=\"11.0.32+9\"\nJAVA_VERSION=\"11.0.32\"\nJAVA_VERSION_DATE=\"2026-07-21\"\nLIBC=\"gnu\"\nMODULES=\"java.base java.compiler java.datatransfer java.xml java.prefs java.desktop java.instrument java.logging java.management java.security.sasl java.naming java.rmi java.management.rmi java.net.http java.scripting java.security.jgss java.transaction.xa java.sql java.sql.rowset java.xml.crypto java.se java.smartcardio jdk.accessibility jdk.internal.vm.ci jdk.management jdk.unsupported jdk.internal.vm.compiler jdk.aot jdk.internal.jvmstat jdk.attach jdk.charsets jdk.compiler jdk.crypto.ec jdk.crypto.cryptoki jdk.dynalink jdk.internal.ed jdk.editpad jdk.hotspot.agent jdk.httpserver jdk.internal.le jdk.internal.opt jdk.internal.vm.compiler.management jdk.jartool jdk.javadoc jdk.jcmd jdk.management.agent jdk.jconsole jdk.jdeps jdk.jdwp.agent jdk.jdi jdk.jfr jdk.jlink jdk.jshell jdk.jsobject jdk.jstatd jdk.localedata jdk.management.jfr jdk.naming.dns jdk.naming.ldap jdk.naming.rmi jdk.net jdk.pack jdk.rmic jdk.scripting.nashorn jdk.scripting.nashorn.shell jdk.sctp jdk.security.auth jdk.security.jgss jdk.unsupported.desktop jdk.xml.dom jdk.zipfs\"\nOS_ARCH=\"x86_64\"\nOS_NAME=\"Linux\"\nSOURCE=\".:git:4d1fde6f79d5\"\nBUILD_SOURCE=\"git:e6ba7dec3d07654074559310376a3ae89da5f4ac\"\nBUILD_SOURCE_REPO=\"https://github.com/adoptium/temurin-build.git\"\nSOURCE_REPO=\"https://github.com/adoptium/jdk11u.git\"\nFULL_VERSION=\"11.0.32+9\"\nSEMANTIC_VERSION=\"11.0.32+9\"\nBUILD_INFO=\"OS: Linux Version: 6.8.0-1062-azure\"\nJVM_VARIANT=\"Hotspot\"\nJVM_VERSION=\"11.0.32+9\"\nIMAGE_TYPE=\"JDK\"\n01af466feb100306498c86aa6bad1815e33036019aa34d4362c20f374ea5c829  /etc/os-release\n4e58bcde757bca39c30453e5fb3ae1495e76ef484f35908c6a5d3d10e1392e53  /opt/java/openjdk/bin/java\n",
+      "stderr": "openjdk version \"11.0.32\" 2026-07-21\nOpenJDK Runtime Environment Temurin-11.0.32+9 (build 11.0.32+9)\nOpenJDK 64-Bit Server VM Temurin-11.0.32+9 (build 11.0.32+9, mixed mode, sharing)\n"
+    },
+    {
+      "profile": "ubuntu-24.04-linux-x86-64-jdk17",
+      "image-digest": "sha256:61a94244559f2e89e4edb02bae37eeb8762ecf5deaf237251fa630e5120a8798",
+      "command": [
+        "/workspace/folio-pdf/capabilities/evidence/T79-delivery/validation/container-bin/podman",
+        "run",
+        "--rm",
+        "--network=none",
+        "--userns=keep-id",
+        "docker.io/library/eclipse-temurin@sha256:61a94244559f2e89e4edb02bae37eeb8762ecf5deaf237251fa630e5120a8798",
+        "sh",
+        "-c",
+        "cat /etc/os-release; uname -m; cat \"$JAVA_HOME/release\"; sha256sum /etc/os-release \"$JAVA_HOME/bin/java\"; java -version"
+      ],
+      "exit-code": 0,
+      "stdout": "PRETTY_NAME=\"Ubuntu 24.04.4 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.4 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\nx86_64\nIMPLEMENTOR=\"Eclipse Adoptium\"\nIMPLEMENTOR_VERSION=\"Temurin-17.0.20+8\"\nJAVA_RUNTIME_VERSION=\"17.0.20+8\"\nJAVA_VERSION=\"17.0.20\"\nJAVA_VERSION_DATE=\"2026-07-21\"\nLIBC=\"gnu\"\nMODULES=\"java.base java.compiler java.datatransfer java.xml java.prefs java.desktop java.instrument java.logging java.management java.security.sasl java.naming java.rmi java.management.rmi java.net.http java.scripting java.security.jgss java.transaction.xa java.sql java.sql.rowset java.xml.crypto java.se java.smartcardio jdk.accessibility jdk.internal.jvmstat jdk.attach jdk.charsets jdk.compiler jdk.crypto.ec jdk.crypto.cryptoki jdk.dynalink jdk.internal.ed jdk.editpad jdk.hotspot.agent jdk.httpserver jdk.incubator.foreign jdk.incubator.vector jdk.internal.le jdk.internal.opt jdk.internal.vm.ci jdk.internal.vm.compiler jdk.internal.vm.compiler.management jdk.jartool jdk.javadoc jdk.jcmd jdk.management jdk.management.agent jdk.jconsole jdk.jdeps jdk.jdwp.agent jdk.jdi jdk.jfr jdk.jlink jdk.jpackage jdk.jshell jdk.jsobject jdk.jstatd jdk.localedata jdk.management.jfr jdk.naming.dns jdk.naming.rmi jdk.net jdk.nio.mapmode jdk.random jdk.sctp jdk.security.auth jdk.security.jgss jdk.unsupported jdk.unsupported.desktop jdk.xml.dom jdk.zipfs\"\nOS_ARCH=\"x86_64\"\nOS_NAME=\"Linux\"\nSOURCE=\".:git:34e8d43603b8\"\nBUILD_SOURCE=\"git:e6ba7dec3d07654074559310376a3ae89da5f4ac\"\nBUILD_SOURCE_REPO=\"https://github.com/adoptium/temurin-build.git\"\nSOURCE_REPO=\"https://github.com/adoptium/jdk17u.git\"\nFULL_VERSION=\"17.0.20+8\"\nSEMANTIC_VERSION=\"17.0.20+8\"\nBUILD_INFO=\"OS: Linux Version: 6.8.0-1062-azure\"\nJVM_VARIANT=\"Hotspot\"\nJVM_VERSION=\"17.0.20+8\"\nIMAGE_TYPE=\"JDK\"\n01af466feb100306498c86aa6bad1815e33036019aa34d4362c20f374ea5c829  /etc/os-release\n6dce8306ebf735a85decdc801d84431f6e84525b60adc885624df05edeffb481  /opt/java/openjdk/bin/java\n",
+      "stderr": "openjdk version \"17.0.20\" 2026-07-21\nOpenJDK Runtime Environment Temurin-17.0.20+8 (build 17.0.20+8)\nOpenJDK 64-Bit Server VM Temurin-17.0.20+8 (build 17.0.20+8, mixed mode, sharing)\n"
+    },
+    {
+      "profile": "ubuntu-24.04-linux-x86-64-jdk21",
+      "image-digest": "sha256:1ca5e470ad60db0d5b4137c1357068fa210051d815ad98ea9964f4bbe7367f8c",
+      "command": [
+        "/workspace/folio-pdf/capabilities/evidence/T79-delivery/validation/container-bin/podman",
+        "run",
+        "--rm",
+        "--network=none",
+        "--userns=keep-id",
+        "docker.io/library/eclipse-temurin@sha256:1ca5e470ad60db0d5b4137c1357068fa210051d815ad98ea9964f4bbe7367f8c",
+        "sh",
+        "-c",
+        "cat /etc/os-release; uname -m; cat \"$JAVA_HOME/release\"; sha256sum /etc/os-release \"$JAVA_HOME/bin/java\"; java -version"
+      ],
+      "exit-code": 0,
+      "stdout": "PRETTY_NAME=\"Ubuntu 24.04.4 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.4 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\nx86_64\nIMPLEMENTOR=\"Eclipse Adoptium\"\nIMPLEMENTOR_VERSION=\"Temurin-21.0.12+8\"\nJAVA_RUNTIME_VERSION=\"21.0.12+8-LTS\"\nJAVA_VERSION=\"21.0.12\"\nJAVA_VERSION_DATE=\"2026-07-21\"\nLIBC=\"gnu\"\nMODULES=\"java.base java.compiler java.datatransfer java.xml java.prefs java.desktop java.instrument java.logging java.management java.security.sasl java.naming java.rmi java.management.rmi java.net.http java.scripting java.security.jgss java.transaction.xa java.sql java.sql.rowset java.xml.crypto java.se java.smartcardio jdk.accessibility jdk.internal.jvmstat jdk.attach jdk.charsets jdk.internal.opt jdk.zipfs jdk.compiler jdk.crypto.ec jdk.crypto.cryptoki jdk.dynalink jdk.internal.ed jdk.editpad jdk.hotspot.agent jdk.httpserver jdk.incubator.vector jdk.internal.le jdk.internal.vm.ci jdk.internal.vm.compiler jdk.internal.vm.compiler.management jdk.jartool jdk.javadoc jdk.jcmd jdk.management jdk.management.agent jdk.jconsole jdk.jdeps jdk.jdwp.agent jdk.jdi jdk.jfr jdk.jlink jdk.jpackage jdk.jshell jdk.jsobject jdk.jstatd jdk.localedata jdk.management.jfr jdk.naming.dns jdk.naming.rmi jdk.net jdk.nio.mapmode jdk.random jdk.sctp jdk.security.auth jdk.security.jgss jdk.unsupported jdk.unsupported.desktop jdk.xml.dom\"\nOS_ARCH=\"x86_64\"\nOS_NAME=\"Linux\"\nSOURCE=\".:git:04806bcb1d50\"\nBUILD_SOURCE=\"git:e6ba7dec3d07654074559310376a3ae89da5f4ac\"\nBUILD_SOURCE_REPO=\"https://github.com/adoptium/temurin-build.git\"\nSOURCE_REPO=\"https://github.com/adoptium/jdk21u.git\"\nFULL_VERSION=\"21.0.12+8-LTS\"\nSEMANTIC_VERSION=\"21.0.12+8\"\nBUILD_INFO=\"OS: Linux Version: 6.8.0-1062-azure\"\nJVM_VARIANT=\"Hotspot\"\nJVM_VERSION=\"21.0.12+8-LTS\"\nIMAGE_TYPE=\"JDK\"\n01af466feb100306498c86aa6bad1815e33036019aa34d4362c20f374ea5c829  /etc/os-release\n11af352aa2c506c4123a4e4c19c187d59e06cd0dff317d54f5e6806e07c6715d  /opt/java/openjdk/bin/java\n",
+      "stderr": "openjdk version \"21.0.12\" 2026-07-21 LTS\nOpenJDK Runtime Environment Temurin-21.0.12+8 (build 21.0.12+8-LTS)\nOpenJDK 64-Bit Server VM Temurin-21.0.12+8 (build 21.0.12+8-LTS, mixed mode, sharing)\n"
+    }
+  ]
+}

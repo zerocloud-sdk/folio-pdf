@@ -1,0 +1,28 @@
+{
+  "classification": "supplemental-baseline-original; not an owned clear-metadata input and not a four-chain original PASS",
+  "original": "capabilities/profiles/T79-clear-metadata/all-content-metadata-stdcf.pdf",
+  "original-sha256": "9c6c55833ad4910f4aec1e9734f9f4b63fefdf2a61c54d3d7f6cc95c14706a7a",
+  "observed-passing-original-predicates": [
+    "qpdf syntax",
+    "Arlington encryption/model",
+    "pypdf user/Perms",
+    "qpdf user/owner"
+  ],
+  "pdfcpu-direct-encrypted-validation": "fail; sole named Crypt incorrectly treated as Identity in saveDecodedStreamContent",
+  "pdfcpu-source-commit": "f2686555086a2e76dc19f602ea1897f6e3baae4d",
+  "read.go-sha256": "a8a8b641896c1c4e78c56bec8e26c9bdd18ccb1960c3e06333cbfbad5c225702",
+  "source-location": "pkg/pdfcpu/read.go:2934",
+  "runtime-regression": "ClearMetadataPasswordWorkflowTest.explicitCryptSourcesCanRewriteUnderEitherSelectedScope",
+  "required-products": [
+    "native-rewrite-stdcf-all-content",
+    "native-rewrite-stdcf-clear",
+    "facade-rewrite-stdcf-all-content",
+    "facade-rewrite-stdcf-clear"
+  ],
+  "required-product-chains": [
+    "syntax",
+    "standards",
+    "semantic",
+    "visual"
+  ]
+}

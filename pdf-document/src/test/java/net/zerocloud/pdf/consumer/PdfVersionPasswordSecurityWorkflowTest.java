@@ -858,7 +858,6 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
         try {
             for (PasswordEncryptionScope scope
                     : new PasswordEncryptionScope[] {
-                        PasswordEncryptionScope.ALL_EXCEPT_METADATA,
                         PasswordEncryptionScope.EMBEDDED_FILES_ONLY}) {
                 assertOutputSecurityFailure(
                         PasswordSecurityPolicy.builder(owner, user)

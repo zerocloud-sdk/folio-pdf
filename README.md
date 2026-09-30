@@ -569,7 +569,14 @@ The [T78 certification profile](docs/t78-certification.md) and
 independent controls and Ubuntu 24.04 x86-64 × JDK 8/11/17/21 evidence.
 Facade execution is IN_PROCESS; Native additionally certifies HARDENED_WORKER.
 Windows/macOS remain uncertified and nonblocking for F0.1.0. The parent security
-aggregate remains incomplete pending #79 metadata-clear and #80 attachments-only.
+aggregate remains incomplete pending #80 attachments-only.
+
+The clear-metadata child (#79) adds explicit Native `ALL_EXCEPT_METADATA` and
+Facade `DO_NOT_ENCRYPT_METADATA=8` (selectors 9/10/11). Only catalog XMP bytes
+are clear; Info, dictionary strings, component metadata, content and attachments
+stay protected. RC4-40 plus this scope is rejected. Legacy output still requires
+request-scoped opt-in. See the [T79 profile](docs/t79-certification.md) and
+[source audit](docs/research/T79-clear-metadata-profile-audit.md).
 
 ## Project information
 

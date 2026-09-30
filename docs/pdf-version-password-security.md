@@ -1,14 +1,16 @@
 # PDF version and password security
 
 This guide is the authoritative English contract for baseline password security
-under #78. `document.version-password-security.baseline` is the certifiable
-member of the aggregate `document.version-password-security`. Runtime failures
-retain the aggregate identity. Every Native behavior is reached through
-`DocumentWorkflow.execute`; public values are project-owned and backend-neutral.
-The aggregate remains experimental until #79 (metadata-clear) and #80
-(embedded-files-only) are separately complete. The [profile audit](research/T78-baseline-profile-audit.md)
-and [certification contract](t78-certification.md) freeze the successful cases,
-source-grounded exclusions, migration members and independent evidence.
+(#78) and explicit clear document metadata (#79). The compatible children are
+`document.version-password-security.baseline` and
+`document.version-password-security.clear-metadata`. Runtime failures retain the
+aggregate identity. Public values remain backend-neutral and Java 8 compatible.
+The aggregate stays experimental because #80 embedded-files-only is incomplete.
+The [T78 audit](research/T78-baseline-profile-audit.md) and
+[T79 audit](research/T79-clear-metadata-profile-audit.md) distinguish standards,
+qualified conventions, required successes and nonrepresentable combinations.
+Actual certification is bound by the Foundation evidence index; the
+[T79 certification contract](t79-certification.md) defines the separate chains.
 
 ## Native Interface
 
@@ -101,7 +103,7 @@ no algorithm is selected.
 | --- | --- |
 | Secure output | V=5, R=6, 256-bit AESV3, Standard `StdCF`, all strings and streams encrypted, metadata encrypted. PDF 1.7 or PDF 2.0. |
 | Legacy output | V=1/R=2 or R=3 RC4-40, V=2/R=3 RC4-128 and V=4/R=4 AESV2-128; PDF 1.7 and request-scoped Legacy Security Mode only. R2 requires extended permission bits 9–12 set; otherwise R3 is selected. |
-| Legacy input | V=1/R=2 or R=3 RC4-40; V=2/R=3 fixed 40/128 bits (omitted Length defaults to 40); all-content V=4/R=4 `StdCF` V2-128 or AESV2-128; AESV3 V=5/R=5 with a valid PDF 1.7 ADBE Level 3 declaration. Fixture-proven metadata-clear R4 input is preserved. |
+| Legacy input | V=1/R=2 or R=3 RC4-40; V=2/R=3 fixed 40/128 bits (omitted Length defaults to 40); all-content V=4/R=4 `StdCF` V2-128 or AESV2-128; AESV3 V=5/R=5 with a valid PDF 1.7 ADBE Level 3 declaration. The clear-metadata child additionally admits R4 and AES-256 R5/R6 input. |
 | Secure input | All-content V=5/R=6 AESV3-256. PDF 1.7 requires ADBE Level 8. PDF 2.0 reader permission bit 10 is ignored for accessibility restrictions while the exact declared word is retained. |
 
 The admitted crypt-filter arrangement uses `StdCF` for strings and streams,
@@ -233,15 +235,43 @@ identity, regardless of owner authority.
 
 ## Encryption scope
 
-`PasswordEncryptionScope` distinguishes all-content encryption, all content
-except document-level metadata, and embedded-files-only encryption. The current
-writer supports only `ALL_CONTENT`; either other output choice fails before
-work or publication. Project-authored V=4/R=4 fixtures prove
-`ALL_EXCEPT_METADATA` input after validating the global crypt filters and the
-metadata-exception file-key derivation. Metadata-clear AES-256 input is not in
-this baseline. Metadata-clear AES-256 and embedded-files-only input/output
-remain required separate #79 and #80 obligations. Their selectors are not added
-to the Stable baseline surface or counted as baseline completion.
+`PasswordEncryptionScope.ALL_CONTENT` remains the default for a password
+policy. `ALL_EXCEPT_METADATA` is an explicit choice: only the catalog's document
+metadata stream bytes are clear. Document Info strings, metadata stream dictionary
+strings, component metadata, ordinary content and embedded files stay encrypted.
+No unauthenticated Workflow session is introduced. The exemption does not depend
+merely on a suggestive object name or `/Type /Metadata`.
+
+| Algorithm | Input | New or explicit rewrite output |
+| --- | --- | --- |
+| RC4-128 | V4/R4, PDF 1.5 or later | V4/R4, PDF 1.7 with Legacy Security Mode |
+| AES-128 | V4/R4, PDF 1.6 or later | V4/R4, PDF 1.7 with Legacy Security Mode |
+| AES-256 R5 | V5/R5, PDF 1.7 with ADBE Level 3; admitted legacy PDF 2.0 input | No new R5 output; explicit rewrite selects R6 |
+| AES-256 R6 | V5/R6, qualified PDF 1.7 ADBE Level 8 or PDF 2.0 | R6, qualified PDF 1.7 Level 8 or normative PDF 2.0 |
+
+Valid deprecated R4/R5 inputs under PDF 2.0 retain the baseline reader contract.
+New PDF 2.0 output requires R6 and sets accessibility bit 10. RC4-40 cannot
+represent this fixed-profile metadata exception; the contradictory request fails
+safely. `EMBEDDED_FILES_ONLY` remains unsupported and is owned by #80.
+
+```java
+PasswordSecurityPolicy security = PasswordSecurityPolicy.builder(owner, user)
+        .encryptionScope(PasswordEncryptionScope.ALL_EXCEPT_METADATA)
+        .build();
+WorkflowRequest request = WorkflowRequest.builder()
+        .target("target", PublicationTarget.path(output))
+        .saveMode(SaveMode.REWRITE)
+        .outputPolicy(PdfOutputPolicy.version(PdfVersion.PDF_2_0)
+                .withPasswordSecurity(security))
+        .build();
+```
+
+The request uses caller-owned `PasswordCredential` values. Existing credential
+preparation, owner proof, resource policy, ownership and publication guarantees
+apply unchanged. A malformed catalog Metadata declaration or a Crypt override
+that leaves protected ordinary data clear is rejected before caller work.
+An explicit metadata `Crypt/Identity` is admitted; rewriting removes that override
+so a newly selected all-content policy also encrypts the metadata.
 
 ## Protected publication and signatures
 
@@ -295,6 +325,11 @@ Reader/Writer and Document construction/lifecycle; `ReaderProperties` and
 `WriterProperties`; the four `EncryptionConstants` algorithms and eight flags;
 `PdfVersion` values/conversions/comparison; `PdfDocument.getPdfVersion()`;
 and Reader encryption, authority, permission and algorithm observations.
+The clear-metadata child adds `DO_NOT_ENCRYPT_METADATA=8`. Selectors 9, 10
+and 11 combine it with RC4-128, AES-128 and AES-256 respectively; reader crypto
+mode reports the same bit. Selector 8 (RC4-40 plus clear metadata) is rejected,
+a documented Folio boundary: the reference API instead discards that bit for
+RC4-40. Other unknown bits and the #80 selector are not admitted.
 The exact signatures are authoritative in `capabilities/facade-surface.yaml`.
 All retain the `kernel.pdf` package suffix under `net.zerocloud.pdf.itext7`.
 
@@ -329,4 +364,4 @@ The baseline's compatible claim requires all four chains on Ubuntu 24.04 Linux
 x86-64 × JDK 8/11/17/21 × both Native modes, plus the actual IN_PROCESS Facade
 on every JDK. Windows/macOS remain uncertified and are not F0.1.0 blockers.
 Historical T16 evidence retains its original syntax-only meaning. See the
-T78 audit and `PROVENANCE.md` for public sources and original fixture/tool identities.
+T78/T79 audits and `PROVENANCE.md` for public sources and original fixture/tool identities.

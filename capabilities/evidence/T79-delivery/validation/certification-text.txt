@@ -1,0 +1,18 @@
+T13 environment JDK 8
+T13 certification JDK 8 / IN_PROCESS
+T13 certification JDK 8 / HARDENED_WORKER
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1344, in <module>
+    main()
+    ~~~~^^
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1340, in main
+    certify(root, root / args.output, contract, helper, args.obligation)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1214, in certify
+    run_logged(test_command, scope / 'contract-tests.txt', cwd=root,
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               timeout=case.get('contract-timeout', 300))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 909, in run_logged
+    raise RuntimeError('Command failed; see ' + str(path))
+RuntimeError: Command failed; see /workspace/folio-pdf/capabilities/evidence/foundation/T79-final/text/jdk8-hardened_worker/contract-tests.txt

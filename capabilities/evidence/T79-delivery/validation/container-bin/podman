@@ -1,0 +1,5 @@
+#!/bin/sh
+# Isolate resumed certification from the incomplete restored image cache.
+exec /usr/bin/podman \
+  --root /workspace/folio-pdf/.build-cache/t79-resume-containers/storage \
+  --runroot /tmp/t79-podman-run-1000 "$@"

@@ -1,0 +1,30 @@
+{
+  "command": [
+    "@repository/.build-cache/arlington/fe4a1a8/TestGrammar/bin/linux/TestGrammar",
+    "--tsvdir",
+    "@repository/.build-cache/t79-arlington-model/output",
+    "--force",
+    "exact",
+    "--brief",
+    "--no-color",
+    "--password",
+    "@credential",
+    "--pdf",
+    "@repository/capabilities/profiles/T79-controls/cf-event.pdf"
+  ],
+  "exit-code": 0,
+  "limit": null,
+  "maximum-output-bytes": 16777216,
+  "privacy-projection": "tool-text-v1",
+  "stderr-sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdin": "none",
+  "stdout-sha256": "cd71757e86cfa2159a149b15c66e73ab930350f39a56009cee79fc316b53454b",
+  "supervisor": [
+    "/bin/sh",
+    "-c",
+    "trap 'kill -KILL \"-$$\"' TERM INT HUP; exec 3<&0; \"$@\" <&3 3<&- & child=$!; exec 3<&- 0<&-; wait \"$child\"; result=$?; exit \"$result\"",
+    "folio-t78-tool",
+    "@tool-command"
+  ],
+  "timeout-seconds": 30
+}

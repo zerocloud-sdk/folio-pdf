@@ -10,6 +10,8 @@ import org.apache.pdfbox.cos.COSDictionary;
 import org.apache.pdfbox.cos.COSDocument;
 import org.apache.pdfbox.cos.COSName;
 import org.apache.pdfbox.cos.COSString;
+import org.apache.pdfbox.cos.COSStream;
+import org.apache.pdfbox.cos.COSBase;
 import org.apache.pdfbox.io.RandomAccessReadBufferedFile;
 import org.apache.pdfbox.io.RandomAccessRead;
 import org.apache.pdfbox.pdfparser.PDFParser;
@@ -73,7 +75,7 @@ final class PdfBoxPasswordParser extends PDFParser {
         try {
             sourceEncryption = new PDEncryption(dictionary);
             PdfBoxPasswordSecurity.validateStandardStructure(sourceEncryption, resources, false);
-            sourceHandler = new SourceHandler();
+            sourceHandler = new SourceHandler(document);
             sourceHandler.open(sourceEncryption, document.getDocumentID(), credential, resources);
             sourceEncryption.setSecurityHandler(sourceHandler);
             securityHandler = sourceHandler;
@@ -123,7 +125,10 @@ final class PdfBoxPasswordParser extends PDFParser {
     }
 
     private static final class SourceHandler extends SecurityHandler<ProtectionPolicy> implements AutoCloseable {
+        private final COSDocument document;
+        private boolean clearMetadata;
         private WorkflowResourceContext.MemoryReservation keyMemory;
+        SourceHandler(COSDocument document) { this.document = document; }
         void open(PDEncryption encryption, COSArray identifiers, char[] characters,
                 WorkflowResourceContext resources) throws IOException, DocumentFailure {
             int revision = encryption.getRevision();
@@ -179,7 +184,8 @@ final class PdfBoxPasswordParser extends PDFParser {
                     setKeyLength(length * 8);
                     setAES(encryption.getVersion() >= 4 && !COSName.getPDFName("V2").equals(
                             encryption.getStdCryptFilterDictionary().getCryptFilterMethod()));
-                    setDecryptMetadata(encryption.isEncryptMetaData());
+                    clearMetadata = !encryption.isEncryptMetaData();
+                    setDecryptMetadata(true);
                     if (encryption.getVersion() >= 4) {
                         setStreamFilterName(encryption.getStreamFilterName());
                         setStringFilterName(encryption.getStringFilterName());
@@ -191,6 +197,32 @@ final class PdfBoxPasswordParser extends PDFParser {
                     wipe(encoded); wipe(user); wipe(owner); wipe(recovered); wipe(key); wipe(oe); wipe(ue);
                 }
             }
+        }
+
+        @Override
+        public void decryptStream(COSStream stream, long number, long generation) throws IOException {
+            if (clearMetadata && PdfBoxMetadataEncryption.isDocumentMetadata(document, stream, number, generation)) {
+                // Only the stream bytes are clear. Its dictionary strings still
+                // follow StrF, so decrypt them through the ordinary dictionary path.
+                COSDictionary dictionary = new COSDictionary(stream);
+                super.decrypt(dictionary, number, generation);
+                stream.addAll(dictionary);
+            } else if (clearMetadata && COSName.METADATA.equals(stream.getCOSName(COSName.TYPE))) {
+                // Component metadata remains encrypted. Avoid the backend's
+                // permissive Metadata/XMP plaintext fallback for these streams.
+                COSBase type = stream.getItem(COSName.TYPE);
+                stream.removeItem(COSName.TYPE);
+                try { super.decryptStream(stream, number, generation); }
+                finally { stream.setItem(COSName.TYPE, type); }
+            } else {
+                super.decryptStream(stream, number, generation);
+            }
+        }
+
+        @Override
+        public void encryptStream(COSStream stream, long number, int generation) throws IOException {
+            if (clearMetadata && PdfBoxMetadataEncryption.isDocumentMetadata(document, stream, number, generation)) { return; }
+            super.encryptStream(stream, number, generation);
         }
 
         private static void wipe(byte[] value) { if (value != null) { Arrays.fill(value, (byte) 0); } }

@@ -36,7 +36,7 @@ public final class InventoryCommandTest {
         assertEquals(result.output, 0, result.exitCode);
         assertTrue(result.output, result.output.matches(
                 "(?s).*Inventory validation passed: [0-9]+ capabilities, "
-                        + "214 facade surfaces, [0-9]+ exclusions\\..*"));
+                        + "215 facade surfaces, [0-9]+ exclusions\\..*"));
 
         ValidationResult validation = new InventoryValidator().validate(
                 repositoryRoot,
@@ -48,6 +48,7 @@ public final class InventoryCommandTest {
         InventoryModel.Capability metadataCapability = null;
         InventoryModel.Capability incrementalCapability = null;
         InventoryModel.Capability passwordCapability = null;
+        InventoryModel.Capability clearMetadataCapability = null;
         for (InventoryModel.Capability capability : validation.model().capabilities) {
             if ("document.blank.create-publish-reopen".equals(capability.id)) {
                 mappedCapability = capability;
@@ -59,6 +60,8 @@ public final class InventoryCommandTest {
                 incrementalCapability = capability;
             } else if ("document.version-password-security.baseline".equals(capability.id)) {
                 passwordCapability = capability;
+            } else if ("document.version-password-security.clear-metadata".equals(capability.id)) {
+                clearMetadataCapability = capability;
             }
         }
         assertNotNull(mappedCapability);
@@ -66,6 +69,7 @@ public final class InventoryCommandTest {
         assertNotNull(metadataCapability);
         assertNotNull(incrementalCapability);
         assertNotNull(passwordCapability);
+        assertNotNull(clearMetadataCapability);
         assertEquals(12, mappedCapability.stableFacadeIds.size());
         assertEquals(0, mappedCapability.previewFacadeIds.size());
         assertEquals(CapabilityState.COMPATIBLE, pagesCapability.status);
@@ -80,6 +84,9 @@ public final class InventoryCommandTest {
         assertEquals(CapabilityState.COMPATIBLE, passwordCapability.status);
         assertEquals(61, passwordCapability.stableFacadeIds.size());
         assertEquals(0, passwordCapability.previewFacadeIds.size());
+        assertEquals(CapabilityState.COMPATIBLE, clearMetadataCapability.status);
+        assertEquals(62, clearMetadataCapability.stableFacadeIds.size());
+        assertEquals(0, clearMetadataCapability.previewFacadeIds.size());
         for (InventoryModel.Exclusion exclusion : validation.model().exclusions) {
             assertFalse("T04 capability remains explicitly excluded",
                     mappedCapability.id.equals(exclusion.capability));
@@ -91,6 +98,8 @@ public final class InventoryCommandTest {
                     incrementalCapability.id.equals(exclusion.capability));
             assertFalse("T78 baseline remains explicitly excluded",
                     passwordCapability.id.equals(exclusion.capability));
+            assertFalse("T79 clear metadata remains explicitly excluded",
+                    clearMetadataCapability.id.equals(exclusion.capability));
         }
 
         String capabilities = read(repositoryRoot.resolve(MarkdownGenerator.CAPABILITY_OUTPUT));
@@ -102,9 +111,9 @@ public final class InventoryCommandTest {
                 "`document.blank.create-publish-reopen`"));
         assertTrue(capabilities.contains(
                 "`document.hardened-worker.recovery-scale`"));
-        assertTrue(facades.contains("- Stable entries: `214`"));
+        assertTrue(facades.contains("- Stable entries: `215`"));
         assertTrue(facades.contains("- Preview additions: `0`"));
-        assertTrue(facades.contains("- Preview artifact entries: `214`"));
+        assertTrue(facades.contains("- Preview artifact entries: `215`"));
         assertTrue(facades.contains("- Explicit capability exclusions: `15`"));
         assertTrue(capabilities.contains("`composition.barcodes.one-dimensional`"));
         assertTrue(facades.contains("`composition.barcodes.one-dimensional`"));

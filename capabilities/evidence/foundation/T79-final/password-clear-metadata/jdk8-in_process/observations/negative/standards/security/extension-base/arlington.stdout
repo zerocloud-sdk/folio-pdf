@@ -1,0 +1,15 @@
+Processing "@repository/capabilities/profiles/T78-controls/extension-base.pdf" to stdout BEGIN - TestGrammar v0.81 built Sep  8 2026 00:00:00 (GNU-C linux release) pdfium
+Arlington TSV data: "@repository/.build-cache/t78-arlington-model/output"
+PDF: "@repository/capabilities/profiles/T78-controls/extension-base.pdf"
+Info: Traditional trailer dictionary detected.
+Info: Encrypted PDF
+Info: Header is version PDF 1.7
+Info: Processing as PDF 1.7
+       2:     Trailer->Encrypt (as EncryptionStandard)
+Error: special case not correct: V (EncryptionStandard) in PDF 1.7 should be: integer [fn:Eval(((@V==1) && ((@R==2) || fn:SinceVersion(1.4))) || ((@V==2) && fn:SinceVersion(1.4)) || ((@V==4) && fn:SinceVersion(1.5)) || ((@V==5) && (fn:SinceVersion(2.0) || (fn:IsPDFVersion(1.7) && (fn:IsPresent(trailer::Catalog::Extensions::ADBE::BaseVersion) && fn:IsPresent(trailer::Catalog::Extensions::ADBE::ExtensionLevel) && (trailer::Catalog::Extensions::ADBE::@BaseVersion==1.7)) && (((@R==5) && (trailer::Catalog::Extensions::ADBE::@ExtensionLevel>=3)) || ((@R==6) && (trailer::Catalog::Extensions::ADBE::@ExtensionLevel>=8)))))))] and is integer==5
+      10:         Trailer->Root (as Catalog)->Extensions->ADBE (as DevExtensions)
+Error: wrong value for possible values: BaseVersion (DevExtensions) should be: name [1.7,2.0] in PDF 1.7 and is name==1.6
+Info: Latest Arlington object was PDF 1.7 (Catalog/Extensions) compared using PDF 1.7
+END
+
+DONE - 1 files processed

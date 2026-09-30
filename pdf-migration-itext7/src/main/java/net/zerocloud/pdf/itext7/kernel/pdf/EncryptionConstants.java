@@ -8,6 +8,8 @@ public final class EncryptionConstants {
     public static final int STANDARD_ENCRYPTION_128 = 1;
     public static final int ENCRYPTION_AES_128 = 2;
     public static final int ENCRYPTION_AES_256 = 3;
+    /** Explicitly leaves document-level XMP clear with RC4-128, AES-128 or AES-256. */
+    public static final int DO_NOT_ENCRYPT_METADATA = 8;
     public static final int ALLOW_DEGRADED_PRINTING = 4;
     public static final int ALLOW_PRINTING = 2052;
     public static final int ALLOW_MODIFY_CONTENTS = 8;

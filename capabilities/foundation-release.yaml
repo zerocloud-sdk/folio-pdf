@@ -1014,7 +1014,69 @@ obligations:
   facade-families:
   - family: kernel reader/writer password security, permissions and scopes
     reference-prefix: com.itextpdf.kernel.pdf.
-    mappings: []
+    mappings:
+    - itext7.kernel.pdf-writer.constructor-string
+    - itext7.kernel.pdf-reader.constructor-string
+    - itext7.kernel.pdf-reader.close
+    - itext7.kernel.pdf-document.constructor-writer
+    - itext7.kernel.pdf-document.constructor-reader
+    - itext7.kernel.pdf-document.close
+    - itext7.kernel.pdf-document.constructor-named-sources-targets
+    - itext7.kernel.pdf-writer.constructor-output-stream
+    - itext7.kernel.pdf-reader.constructor-input-stream
+    - itext7.kernel.pdf-document.constructor-reader-writer
+    - itext7.kernel.pdf-document.constructor-named-sources-targets-version
+    - itext7.kernel.pdf-document.constructor-stamping
+    - itext7.kernel.pdf-document.constructor-named-stamping
+    - itext7.kernel.reader-properties.constructor
+    - itext7.kernel.reader-properties.close
+    - itext7.kernel.writer-properties.constructor
+    - itext7.kernel.writer-properties.close
+    - itext7.kernel.reader-properties.set-password
+    - itext7.kernel.reader-properties.set-credential
+    - itext7.kernel.writer-properties.set-pdf-version
+    - itext7.kernel.writer-properties.set-standard-encryption
+    - itext7.kernel.writer-properties.set-legacy-security-mode
+    - itext7.kernel.pdf-reader.constructor-string-properties
+    - itext7.kernel.pdf-reader.constructor-input-stream-properties
+    - itext7.kernel.pdf-writer.constructor-string-properties
+    - itext7.kernel.pdf-writer.constructor-output-stream-properties
+    - itext7.kernel.pdf-reader.is-encrypted
+    - itext7.kernel.pdf-reader.is-opened-with-full-permission
+    - itext7.kernel.pdf-reader.get-permissions
+    - itext7.kernel.pdf-reader.get-crypto-mode
+    - itext7.kernel.pdf-writer.close
+    - itext7.kernel.pdf-document.get-pdf-version
+    - itext7.kernel.encryption-constants.standard-encryption-40
+    - itext7.kernel.encryption-constants.standard-encryption-128
+    - itext7.kernel.encryption-constants.encryption-aes-128
+    - itext7.kernel.encryption-constants.encryption-aes-256
+    - itext7.kernel.encryption-constants.allow-degraded-printing
+    - itext7.kernel.encryption-constants.allow-printing
+    - itext7.kernel.encryption-constants.allow-modify-contents
+    - itext7.kernel.encryption-constants.allow-copy
+    - itext7.kernel.encryption-constants.allow-modify-annotations
+    - itext7.kernel.encryption-constants.allow-fill-in
+    - itext7.kernel.encryption-constants.allow-screenreaders
+    - itext7.kernel.encryption-constants.allow-assembly
+    - itext7.kernel.pdf-version.pdf-1-0
+    - itext7.kernel.pdf-version.pdf-1-1
+    - itext7.kernel.pdf-version.pdf-1-2
+    - itext7.kernel.pdf-version.pdf-1-3
+    - itext7.kernel.pdf-version.pdf-1-4
+    - itext7.kernel.pdf-version.pdf-1-5
+    - itext7.kernel.pdf-version.pdf-1-6
+    - itext7.kernel.pdf-version.pdf-1-7
+    - itext7.kernel.pdf-version.pdf-2-0
+    - itext7.kernel.pdf-version.from-string
+    - itext7.kernel.pdf-version.from-pdf-name
+    - itext7.kernel.pdf-version.to-pdf-name
+    - itext7.kernel.pdf-version.to-string
+    - itext7.kernel.pdf-version.compare-to
+    - itext7.kernel.pdf-version.compare-to-bridge
+    - itext7.kernel.pdf-version.equals
+    - itext7.kernel.pdf-version.hash-code
+    - itext7.kernel.encryption-constants.do-not-encrypt-metadata
 - id: password-attachments
   summary: Support and certify embedded-files-only input/output, crypt filters, authentication events and protected
     attachment creation/reopen/extraction with ordinary content accessible.
@@ -1652,11 +1714,11 @@ limitations:
     for the current candidate; #79/#80 scopes remain independently required.'
   obligation: password-baseline
 - capability: document.version-password-security
-  sha256: 9101b578477815a4ae35417bd9a7cff0ab4b68643ca9a5d825be1bd0cd9bcd9c
+  sha256: 8d735eba4cde7ad6a6c2eaf9f43512d7d33a8d157058b46d1cb05006abc56f13
   disposition: release-blocker
-  reason: 'Required metadata-clear AES-256 and embedded-files-only input/output are not implemented/certified; #79
-    and #80 must complete them.'
-  obligation: password-clear-metadata
+  reason: 'The baseline and clear-metadata children have separate required certification. Embedded-files-only input/output
+    remains unimplemented and uncertified; #80 must complete the password-attachments obligation.'
+  obligation: password-attachments
 - capability: document.version-password-security
   sha256: 296df264b0addb513109880cc2536e02ff760c8b8eecbbe290c7ce11556cfa7d
   disposition: retained-contract
