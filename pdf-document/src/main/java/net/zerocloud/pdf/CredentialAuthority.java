@@ -2,7 +2,7 @@ package net.zerocloud.pdf;
 
 /** Effective authority established while opening a document. */
 public enum CredentialAuthority {
-    /** The document was not opened through password security. */
+    /** No credential authority; the Source is clear or only its unopened attachments are protected. */
     NONE,
     /** The supplied credential is restricted by the declared user permissions. */
     USER,

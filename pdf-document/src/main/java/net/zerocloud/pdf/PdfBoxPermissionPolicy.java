@@ -27,19 +27,27 @@ final class PdfBoxPermissionPolicy {
 
     static void requireExtraction(PasswordSecurityInfo security)
             throws DocumentFailure {
+        if (security.getEncryptionScope() == PasswordEncryptionScope.EMBEDDED_FILES_ONLY) { return; }
         require(
                 security,
                 security.getEffectivePermissions().canExtractContent());
     }
 
+    static void requireAttachmentExtraction(PasswordSecurityInfo security) throws DocumentFailure {
+        require(security, security.getEffectivePermissions().canExtractContent());
+    }
+
     static void requireMergeSource(PasswordSecurityInfo security)
             throws DocumentFailure {
-        requireExtraction(security);
+        requireAttachmentExtraction(security);
     }
 
     private static void require(
             PasswordSecurityInfo security,
             boolean permitted) throws DocumentFailure {
+        if (security.isPasswordProtected() && security.getCredentialAuthority() == CredentialAuthority.NONE) {
+            throw PdfBoxWorkflowEngine.credentialFailure(true);
+        }
         if (security.isPasswordProtected() && !permitted) {
             throw PdfBoxWorkflowEngine.versionFailure(
                     DocumentFailureCode.DOCUMENT_PERMISSION_DENIED,

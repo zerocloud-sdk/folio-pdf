@@ -1,0 +1,227 @@
+{
+  "baseline": "08928c8d08de677a99f092c4ebd6bbdaa64ef6ba",
+  "contract-sha256": "2d57acbb1f84f7d83d2dfa2d6512f84e15dcc82151d456d9db06fdd273c2d871",
+  "criteria": [
+    {
+      "contract-text": "The source-traceable profile covers the declared Foundation attachment-only input/output behavior. It distinguishes applicable legacy input/output, secure AES-256/R6 output, PDF 1.7 qualified extension behavior and normative PDF 2.0 behavior. Exclusions have source-grounded reasons and do not convert required successes into accepted unsupported failures.",
+      "id": 1,
+      "result": "pass",
+      "evidence-references": [
+        "docs/research/T80-embedded-files-only-profile-audit.md",
+        "docs/pdf-version-password-security.md"
+      ]
+    },
+    {
+      "contract-text": "EMBEDDED_FILES_ONLY functions through Native requests. Independent original-byte evidence proves ordinary strings/streams remain clear and actual embedded-file payloads are encrypted. Prove EFF processing and admitted explicit /Crypt selections, StmF/StrF Identity selections and EFOpen authentication-event consistency. A suggestive stream type or globally treating every stream alike is insufficient.",
+      "id": 2,
+      "result": "pass",
+      "evidence-references": [
+        "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxEmbeddedFileEncryption.java",
+        "scripts/t80-byte-check.py",
+        "scripts/t80-dictionary-check.py",
+        "capabilities/evidence/T80-delivery/identity-summary.json"
+      ]
+    },
+    {
+      "contract-text": "Native and corresponding Stable/inherited Preview Facade consumers create, reopen, list and extract attachments with exact expected payload bytes/hashes. Correct user/owner, missing and incorrect credentials produce the profile\u2019s declared results. Ordinary page/document content remains accessible as declared without protected-attachment credentials; missing or incorrect credentials never disclose protected attachment bytes.",
+      "id": 3,
+      "result": "pass",
+      "evidence-references": [
+        "pdf-document/src/test/java/net/zerocloud/pdf/consumer/EmbeddedFilesPasswordWorkflowTest.java",
+        "pdf-migration-itext7/src/test/java/net/zerocloud/pdf/itext7/consumer/EmbeddedFilesPasswordFacadeTest.java"
+      ]
+    },
+    {
+      "contract-text": "Matching Facade scope constants, WriterProperties selection and PdfReader scope/crypto-mode observations are implemented and inventoried. Verify selector combinations against public API documentation, copied properties, borrowed credentials and caller stream ownership. No unsupported Stable stub is added.",
+      "id": 4,
+      "result": "pass",
+      "evidence-references": [
+        "capabilities/facade-surface.yaml",
+        "pdf-migration-itext7/src/test/java/net/zerocloud/pdf/migration/itext7/contract/JarContractIT.java"
+      ]
+    },
+    {
+      "contract-text": "Independently authored fixtures and single-defect controls cover encryption coverage, unencrypted page/document data, filter defaults/selections, dictionary types and lengths, algorithm/revision/version agreement, authentication events, credential preparation, declared permissions, owner proof, applicable encrypted Perms agreement and tampering rejection. Preserve empty/equal/Unicode and truncation behavior where applicable.",
+      "id": 5,
+      "result": "pass",
+      "evidence-references": [
+        "capabilities/profiles/T80-embedded-files-only/cases.json",
+        "capabilities/profiles/T80-controls/rules.json",
+        "capabilities/evidence/T80-delivery/validation/scope-control-qualification-r1.txt"
+      ]
+    },
+    {
+      "contract-text": "Protected attachments cannot bypass authentication or authorization through another public extraction, PDF Value, resource, copy or publication path. Mixed primary/named Sources, attachment operations and page operations preserve safe behavior. Retain protected rewrite, donor-strength, version, incremental and Existing Signature restrictions wherever applicable; reject unproven preservation or unauthorized weakening.",
+      "id": 6,
+      "result": "pass",
+      "evidence-references": [
+        "pdf-document/src/test/java/net/zerocloud/pdf/consumer/EmbeddedFilesPasswordWorkflowTest.java",
+        "capabilities/evidence/T80-delivery/validation/public-regressions-r10.txt"
+      ]
+    },
+    {
+      "contract-text": "IN_PROCESS and HARDENED_WORKER exercise the same applicable public contract. Bound attachment input, decoding, owned memory, temporary storage and elapsed work through existing resource policies; verify applicable excess-limit failures and cleanup. Caller resources remain caller-owned, execution-local credentials/keys are cleared, and returned data is detached as declared.",
+      "id": 7,
+      "result": "pass",
+      "evidence-references": [
+        "capabilities/evidence/T80-delivery/validation/worker-regressions-r6.txt",
+        "capabilities/evidence/foundation/T80-final/password-attachments/observed-index.json",
+        "capabilities/evidence/T80-delivery/identity-summary.json"
+      ]
+    },
+    {
+      "contract-text": "Public tests assert DocumentWorkflow outcomes, reopened files, attachment contents, Publication Receipts, stable failures and ownership/lifecycle behavior. Pre-publication failures preserve existing Targets and declaration-ordered NOT_ATTEMPTED receipts. Preserve existing partial-publication contracts. Avoid backend identity/private-call assertions; test an external Provider seam only where one actually applies.",
+      "id": 8,
+      "result": "pass",
+      "evidence-references": [
+        "pdf-document/src/test/java/net/zerocloud/pdf/consumer/EmbeddedFilesPasswordWorkflowTest.java"
+      ]
+    },
+    {
+      "contract-text": "Each required positive input and actual emitted product has separate qualified syntax, standards, semantic and visual evidence with negative controls. Ordinary clear-content observations are made without first supplying an attachment credential. Retain original encrypted artifacts, applicable independent security predicates and pinned visual expectations; syntax success or a decrypted derivative alone cannot prove encryption correctness.",
+      "id": 9,
+      "result": "pass",
+      "evidence-references": [
+        "capabilities/evidence/foundation/T80-final/password-attachments/observed-index.json",
+        "docs/t80-certification.md",
+        "capabilities/evidence/T80-delivery/identity-summary.json"
+      ]
+    },
+    {
+      "contract-text": "The recorder and collector reject missing tools/chains, uncovered required rules, undetected controls, invalid credentials, altered Native/Facade modes, changed/resealed findings and mismatched identities. Changing producer names, labels or aggregate results cannot manufacture PASS. Reports omit credentials, keys, authentication-entry values/secret-derived hashes, private paths, document contents and raw backend exceptions; private intermediate files are cleaned up.",
+      "id": 10,
+      "result": "pass",
+      "evidence-references": [
+        "capabilities/evidence/T80-delivery/validation/collector-all-r4.txt",
+        "capabilities/evidence/T80-delivery/validation/live-collector-r1.txt"
+      ]
+    },
+    {
+      "contract-text": "Certify T32-password-embedded-files-only on actual Ubuntu 24.04 / Linux x86-64 \u00d7 JDK 8/11/17/21, in both Native profiles: eight Native tuples, with matching actual Facade IN_PROCESS behavior on every JDK. Bind exact JDK vendor/build, immutable image, Java executable, execution settings, native/tool identities, corpus, source, contract, harness and artifact hashes. Windows x86-64 and macOS x86-64/arm64 remain explicitly uncertified and are not Foundation 0.1.0 blockers.",
+      "id": 11,
+      "result": "pass",
+      "evidence-references": [
+        "capabilities/evidence/foundation/T80-final/password-attachments/observed-index.json",
+        "capabilities/evidence/T80-delivery/identity-summary.json",
+        "capabilities/evidence/T80-delivery/staged-build-inputs.json"
+      ]
+    },
+    {
+      "contract-text": "All evidence claimed for the final candidate is current. Refresh invalidated retained obligations in this order: transactions, values, pages, metadata, annotations, text, images, incremental, password-baseline, password-clear-metadata, then password-attachments. This renews existing certification evidence without implementing those completed tickets again. Never relabel historical observations as belonging to new artifacts.",
+      "id": 12,
+      "result": "pass",
+      "evidence-references": [
+        "capabilities/evidence/T80-delivery/identity-summary.json",
+        "capabilities/foundation-evidence.yaml"
+      ]
+    },
+    {
+      "contract-text": "Capability Matrix, Facade Surface, Foundation obligation/mapping records and evidence index agree with the implementation. Add document.version-password-security.attachments with its inherited external gates and required password-baseline/metadata dependencies. Promote only completed, dependency-satisfied behavior.",
+      "id": 13,
+      "result": "pass",
+      "evidence-references": [
+        "capabilities/capability-matrix.yaml",
+        "capabilities/facade-surface.yaml",
+        "capabilities/foundation-release.yaml",
+        "capabilities/foundation-evidence.yaml"
+      ]
+    },
+    {
+      "contract-text": "Reconcile aggregate document.version-password-security / security against its existing three required members and gates. Complete it when all are satisfied with current evidence. If it remains incomplete, identify the concrete remaining required gap in the existing inventories. Do not invent another security slice or retain obsolete #79/#80 blocker statements. Unrelated Foundation obligations may still keep release-wide readiness incomplete.",
+      "id": 14,
+      "result": "pass",
+      "evidence-references": [
+        "capabilities/foundation-release.yaml",
+        "docs/generated/foundation-readiness.md",
+        "capabilities/evidence/T80-delivery/foundation-disposition.json",
+        "capabilities/evidence/T80-delivery/validation/foundation-readiness-final-r1.json"
+      ]
+    },
+    {
+      "contract-text": "Update authoritative English contracts/Javadoc, README and applicable 0.x migration notes, Chinese usage material, generated inventories and clean-room provenance together. Record origins/licenses for new fixtures, tools, models, dependencies and references. Preserve historical evidence\u2019s original meaning.",
+      "id": 15,
+      "result": "pass",
+      "evidence-references": [
+        "docs/pdf-version-password-security.md",
+        "README.md",
+        "docs/zh-CN/getting-started.md",
+        "docs/migrations/0.x-t03-document-workflow.md",
+        "PROVENANCE.md",
+        "docs/generated"
+      ]
+    },
+    {
+      "contract-text": "Preserve secure all-content AES-256 defaults, explicit scope selection and request-scoped Legacy Security Mode. Existing #78 and #79 behavior and controls pass their applicable regressions. Keep Java 8 runtime/API compatibility, backend-neutral public signatures, explicit ownership and Apache-2.0 clean-room licensing. Acceptance tools, fonts and fixtures remain outside product runtime.",
+      "id": 16,
+      "result": "pass",
+      "evidence-references": [
+        "capabilities/evidence/foundation/T80-final/password-baseline",
+        "capabilities/evidence/foundation/T80-final/password-clear-metadata",
+        "capabilities/evidence/T80-delivery/validation/public-regressions-r10.txt"
+      ]
+    },
+    {
+      "contract-text": "Ran the smallest applicable validation during development, starting with:\n  `./mvnw -B -ntp -pl pdf-document -am -Dtest=PdfVersionPasswordSecurityWorkflowTest -Dsurefire.failIfNoSpecifiedTests=false test`\n  Run the new scope tests as soon as they exist, plus affected Native/Facade and Worker regressions. Record actual test selections and execution modes.",
+      "id": 17,
+      "result": "pass",
+      "evidence-references": [
+        "capabilities/evidence/T80-delivery/validation/baseline-native.txt",
+        "capabilities/evidence/T80-delivery/validation/scope-public-r3.txt"
+      ]
+    },
+    {
+      "contract-text": "Passed `./mvnw -B -ntp verify`, `./scripts/verify-jdk-matrix.sh`, affected real-tool independent-certification tests, collector/negative-control tests, the complete attachment certification route and `./scripts/inventory check`. Record commands, environments, results and unrelated opt-in skips. No mandatory #80 behavior test, tuple, rule or evidence chain may be skipped.",
+      "id": 18,
+      "result": "pass",
+      "evidence-references": [
+        "capabilities/evidence/T80-delivery/validation/retained-gate-audit-r1.json",
+        "capabilities/evidence/T80-delivery/validation/full-verify-r3.txt",
+        "capabilities/evidence/T80-delivery/validation/jdk-matrix-r1.json",
+        "capabilities/evidence/T80-delivery/identity-summary.json",
+        "capabilities/evidence/T80-delivery/validation/unrelated-opt-in-skips.json"
+      ]
+    },
+    {
+      "contract-text": "Reviewed the final diff against the source criteria and recorded baseline. Completed applicable Standards and Spec reviews, resolved in-scope findings and recorded regression evidence.",
+      "id": 19,
+      "result": "pass",
+      "evidence-references": [
+        "capabilities/evidence/T80-delivery/reviews/standards-delivery-final.md",
+        "capabilities/evidence/T80-delivery/reviews/spec-delivery-final.md",
+        "capabilities/evidence/T80-delivery/worktree-audit.json"
+      ]
+    },
+    {
+      "contract-text": "Commit only after all selected criteria pass and the source context or user authorizes a commit. The user already authorizes at most one local Signed-off-by commit containing this ticket\u2019s changes; use `git commit -s` with configured mabaiqiu <mabaiqiu@gmail.com>. A commit is optional.",
+      "id": 20,
+      "result": "pass",
+      "evidence-references": [
+        "capabilities/evidence/T80-delivery/worktree-audit.json"
+      ]
+    },
+    {
+      "contract-text": "Workspace is clean except for this ticket's changes (unrelated dirty or untracked files untouched).",
+      "id": 21,
+      "result": "pass",
+      "evidence-references": [
+        "capabilities/evidence/T80-delivery/worktree-audit.json"
+      ]
+    },
+    {
+      "contract-text": "Return a completion receipt mapping every criterion to observable evidence, including the baseline, candidate/environment identities, validation/review results, aggregate-security disposition, remaining Foundation blockers, final worktree state and optional local commit. Make no release-publication claim.",
+      "id": 22,
+      "result": "pass",
+      "evidence-references": [
+        "capabilities/evidence/T80-delivery/receipt.md",
+        "capabilities/evidence/T80-delivery/criteria-authority.json",
+        "capabilities/evidence/T80-delivery/evidence-map.json",
+        "capabilities/evidence/T80-delivery/identity-summary.json",
+        "capabilities/evidence/T80-delivery/foundation-disposition.json",
+        "capabilities/evidence/T80-delivery/worktree-audit.json"
+      ]
+    }
+  ],
+  "status": "complete",
+  "completed-at-utc": "2026-10-02T22:11:28+00:00",
+  "receipt": "capabilities/evidence/T80-delivery/receipt.md"
+}

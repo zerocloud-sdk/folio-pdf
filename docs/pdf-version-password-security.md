@@ -1,16 +1,19 @@
 # PDF version and password security
 
-This guide is the authoritative English contract for baseline password security
-(#78) and explicit clear document metadata (#79). The compatible children are
-`document.version-password-security.baseline` and
-`document.version-password-security.clear-metadata`. Runtime failures retain the
-aggregate identity. Public values remain backend-neutral and Java 8 compatible.
-The aggregate stays experimental because #80 embedded-files-only is incomplete.
-The [T78 audit](research/T78-baseline-profile-audit.md) and
-[T79 audit](research/T79-clear-metadata-profile-audit.md) distinguish standards,
-qualified conventions, required successes and nonrepresentable combinations.
-Actual certification is bound by the Foundation evidence index; the
-[T79 certification contract](t79-certification.md) defines the separate chains.
+This guide is the authoritative English contract for the three password-security
+members: baseline (#78), clear document metadata (#79), and embedded files only
+(#80). Their compatible capability identities end in `.baseline`, `.clear-metadata`
+and `.attachments`. Runtime failures retain `document.version-password-security`.
+Public values remain backend-neutral and Java 8 compatible. Aggregate Foundation
+`security` completeness derives from those existing members and their dependencies
+with current receipts for the same candidate.
+
+The [T78](research/T78-baseline-profile-audit.md),
+[T79](research/T79-clear-metadata-profile-audit.md), and
+[T80 audits](research/T80-embedded-files-only-profile-audit.md) distinguish standards,
+qualified interoperability, required successes and nonrepresentable combinations.
+Actual certification is bound exclusively by the Foundation evidence index;
+[T80 certification](t80-certification.md) defines the attachment-only chains.
 
 ## Native Interface
 
@@ -25,8 +28,11 @@ Every Path, bounded stream, bounded channel, or bounded byte `DocumentSource`
 may be copied with `withCredential(PasswordCredential)`. The credential belongs
 to the caller; the workflow neither exposes nor closes it.
 
-Every declared non-primary Source is read, authenticated, strictly classified,
-and copied into a workflow-owned temporary snapshot before caller work starts.
+Every declared non-primary Source is read, strictly classified, and copied into
+a workflow-owned temporary snapshot before caller work starts. Credentials are
+authenticated when supplied or required by the selected profile. Qualified
+EFOpen attachment inputs permit clear document access without a credential;
+using them as protected donors requires authentication and extraction permission.
 This makes one-shot streams and channels safe to use later as merge donors while
 preserving caller ownership. Snapshot files and their execution-local credential
 copies are removed on every exit.
@@ -239,7 +245,7 @@ identity, regardless of owner authority.
 policy. `ALL_EXCEPT_METADATA` is an explicit choice: only the catalog's document
 metadata stream bytes are clear. Document Info strings, metadata stream dictionary
 strings, component metadata, ordinary content and embedded files stay encrypted.
-No unauthenticated Workflow session is introduced. The exemption does not depend
+This metadata-clear scope requires authentication at document opening. Its exemption does not depend
 merely on a suggestive object name or `/Type /Metadata`.
 
 | Algorithm | Input | New or explicit rewrite output |
@@ -252,7 +258,7 @@ merely on a suggestive object name or `/Type /Metadata`.
 Valid deprecated R4/R5 inputs under PDF 2.0 retain the baseline reader contract.
 New PDF 2.0 output requires R6 and sets accessibility bit 10. RC4-40 cannot
 represent this fixed-profile metadata exception; the contradictory request fails
-safely. `EMBEDDED_FILES_ONLY` remains unsupported and is owned by #80.
+safely. The independently qualified attachment-only scope is described below.
 
 ```java
 PasswordSecurityPolicy security = PasswordSecurityPolicy.builder(owner, user)
@@ -329,7 +335,12 @@ The clear-metadata child adds `DO_NOT_ENCRYPT_METADATA=8`. Selectors 9, 10
 and 11 combine it with RC4-128, AES-128 and AES-256 respectively; reader crypto
 mode reports the same bit. Selector 8 (RC4-40 plus clear metadata) is rejected,
 a documented Folio boundary: the reference API instead discards that bit for
-RC4-40. Other unknown bits and the #80 selector are not admitted.
+RC4-40. The attachment-only child adds canonical `EMBEDDED_FILES_ONLY=24`,
+including bit 8, and the Folio alias `ONLY_EMBEDDED_FILES=24`. Selectors 26/27
+create AES-128/AES-256 attachment-only output. Contradictory RC4 selectors 24/25
+are rejected instead of silently discarding the requested scope. Admitted Native
+RC4-128 attachment input reports mode 25. Other unknown/incomplete selector bits
+remain invalid.
 The exact signatures are authoritative in `capabilities/facade-surface.yaml`.
 All retain the `kernel.pdf` package suffix under `net.zerocloud.pdf.itext7`.
 
@@ -365,3 +376,58 @@ x86-64 × JDK 8/11/17/21 × both Native modes, plus the actual IN_PROCESS Facade
 on every JDK. Windows/macOS remain uncertified and are not F0.1.0 blockers.
 Historical T16 evidence retains its original syntax-only meaning. See the
 T78/T79 audits and `PROVENANCE.md` for public sources and original fixture/tool identities.
+
+## Embedded files only
+
+`PasswordEncryptionScope.EMBEDDED_FILES_ONLY` explicitly encrypts actual file
+specification `/EF` payloads. Ordinary page streams, strings, attachment names,
+Info and XMP remain clear. A suggestive `/Type /EmbeddedFile` on an unrelated
+stream cannot select encryption or grant access. Actual untyped EF payloads are
+supported; aliases through page, image, metadata or other ordinary stream paths
+are rejected. Explicit first `/Crypt /StdCF` selections are admitted; duplicate,
+late, unknown or contradictory selections fail before caller work.
+
+Input covers RC4-128 V4/R4, AES-128 V4/R4 and AES-256 V5/R5 or R6, including
+Identity filter defaults and explicit stream overrides. PDF 1.5 RC4 uses explicit
+Crypt without EFF; EFF is admitted from PDF 1.6. Output declares Identity StmF/StrF,
+StdCF EFF, EncryptMetadata=false and EFOpen. New AES-256 output is R6, under the
+qualified PDF 1.7 ADBE Level 8 convention or the PDF 2.0 R6 algorithm path.
+Legacy R4 output requires request-scoped opt-in and PDF 1.7. RC4-40 cannot
+represent this scope. R5 is read or preserved incrementally, and owner rewrites
+select R6.
+
+The [source audit](research/T80-embedded-files-only-profile-audit.md) explicitly
+qualifies Standard-handler StdCF/EFOpen and distinct user/owner passwords as
+interoperability. They are not blanket normative Standard-handler conformance.
+Equal-password DocOpen input is separately tested. Missing/default AuthEvent
+means DocOpen and requires an opening credential. EFOpen permits clear ordinary
+queries without a credential; security observation reports protected state and
+`CredentialAuthority.NONE`, without a file key or owner privilege. Missing
+attachment credentials yield `CREDENTIAL_REQUIRED`; explicitly incorrect ones
+fail preflight with `CREDENTIAL_REJECTED`.
+
+```java
+PasswordSecurityPolicy security = PasswordSecurityPolicy.builder(owner, user)
+        .encryptionScope(PasswordEncryptionScope.EMBEDDED_FILES_ONLY)
+        .permissions(DocumentPermissions.builder().allowContentExtraction(true).build())
+        .build();
+```
+
+`EmbeddedFiles` lists detached summaries without reading protected bytes.
+`ReadEmbeddedFile`, PDF Value stream access, resource/copy operations and
+publication retain authentication and permission boundaries. Correct user
+credentials still need content-extraction permission; proven owner authority
+bypasses the permission word. Protected rewrite requires a proven owner and
+an explicit output policy. Incremental attachment creation/replacement refreshes
+actual EF routes and encrypts the new payload under the preserved file key,
+including an explicit Crypt when EFF is Identity. Version, donor-strength and
+Existing Signature restrictions, declaration-ordered receipts, partial publication,
+resource limits and caller ownership remain in force.
+
+All-content AES-256 remains the secure password-policy default. Returned
+attachment content is detached; caller credentials and streams remain caller-owned.
+Execution-local key material and private intermediates are cleared or removed;
+there is no physical erasure promise for JVM/backend immutable copies. The actual
+certification matrix is Ubuntu 24.04 Linux x86-64 with JDK 8/11/17/21, Native
+IN_PROCESS/HARDENED_WORKER and actual Facade IN_PROCESS. Windows/macOS remain
+uncertified and are not Foundation 0.1.0 blockers.

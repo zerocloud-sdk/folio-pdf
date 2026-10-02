@@ -920,8 +920,46 @@ RC4-128 和 AES-128 对应选择器 9、10，仅允许 PDF 1.7 输出且必须�
 Legacy Security Mode。AES-256 支持 R5/R6 输入，新输出为 R6；PDF 1.7 Level 8 仍是
 限定互操作约定。RC4-40 与明文元数据的组合会明确失败，不会静默忽略范围选择。
 重写须证明 owner；权限全开的 user 不等同于 owner。增量保存不提供隐式更改范围的路径。
-父级安全能力仍未完成：#80 仅附件加密保持独立、未完成。#79 的
+父级安全能力由现有的全内容、元数据明文、仅附件三个成员及其当前候选证据共同判定。#79 的
 [来源审计](../research/T79-clear-metadata-profile-audit.md)和
 [认证契约](../t79-certification.md)记录原始字节证明及四条独立检查链。
 详细范围、0.x 行为变更及精确映射以[英文安全契约](../pdf-version-password-security.md)、
 [来源审计](../research/T78-baseline-profile-audit.md)和[认证契约](../t78-certification.md)为准。
+
+
+## 仅附件密码加密（#80）
+
+Native 显式选择 `PasswordEncryptionScope.EMBEDDED_FILES_ONLY`。真正由文件说明
+`/EF` 引用的附件流加密；正文流、普通字符串、Info、XMP 和附件名称保持明文。
+仅有 `/Type /EmbeddedFile` 名称不代表受保护附件。安全密码策略的默认仍为全内容
+AES-256；只有显式范围选择才开启仅附件模式。
+
+Facade 使用 `EMBEDDED_FILES_ONLY=24`；`ONLY_EMBEDDED_FILES` 是 Folio 同值别名。
+选择器 26、27 分别对应 AES-128、AES-256。24 已包含元数据明文位 8。
+
+```java
+try (WriterProperties properties = new WriterProperties()
+        .setStandardEncryption(userBytes, ownerBytes, EncryptionConstants.ALLOW_COPY,
+                EncryptionConstants.ENCRYPTION_AES_256 | EncryptionConstants.EMBEDDED_FILES_ONLY)) {
+    try (PdfDocument document = new PdfDocument(new PdfWriter("attachments-only.pdf", properties))) {
+        document.addNewPage();
+        document.addFileAttachment(EmbeddedFile.version1("proof.txt", attachmentBytes));
+    }
+}
+```
+
+EFOpen 文件可不带凭据读取普通正文、元数据和附件列表；这不产生 owner 权限。
+读取附件字节需要显式有效凭据及提取权限，缺少凭据报 `CREDENTIAL_REQUIRED`，
+错误凭据在执行前报 `CREDENTIAL_REJECTED`。DocOpen（含默认事件）输入仍要求打开凭据。
+保护重写需要独立证明 owner 并声明输出保护策略。增量新增或替换附件沿用原文件密钥、
+权限与范围，保留原始字节前缀及已有签名限制。返回内容独立于 Session，调用方流和凭据
+仍由调用方持有；资源上限、清理和部分发布回执保持原有契约。
+
+AES-128 和 Native RC4-128 新输出仅允许 PDF 1.7，并显式启用本次请求的 Legacy Security Mode。
+Facade 的 RC4 组合 24/25 会失败，不会静默丢弃范围标志。AES-256 新输出始终 R6；
+PDF 1.7 Level 8、StdCF/EFOpen 和不同 user/owner 属于明确限定的互操作范围，
+不能宣称无条件的完整标准合规。PDF 2.0 提供 R6 算法路径。
+[来源审计](../research/T80-embedded-files-only-profile-audit.md)和
+[认证契约](../t80-certification.md)解释原始加密字节、无需凭据的明文观察以及四条独立检查链。
+认证限定 Ubuntu 24.04 Linux x86-64 × JDK 8/11/17/21；Native 两种执行模式，
+Facade 实际 IN_PROCESS。Windows/macOS 保持未认证且不是 F0.1.0 阻塞条件。

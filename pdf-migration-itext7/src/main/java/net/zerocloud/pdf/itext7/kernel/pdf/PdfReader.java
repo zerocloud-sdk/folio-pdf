@@ -74,7 +74,8 @@ public final class PdfReader implements Closeable {
                 ? source.security.getDeclaredUserPermissions().getStandardMask() & 0xffffffffL : 0L;
     }
 
-    /** @return the encryption selector and retained metadata flag, or -1 when unencrypted */
+    /** @return the algorithm selector plus the metadata or attachment scope selector,
+     *     including attachment mode 25 for admitted RC4 input, or -1 when unencrypted */
     public int getCryptoMode() {
         requireOpen();
         if (!source.security.isPasswordProtected()) { return -1; }
@@ -85,8 +86,10 @@ public final class PdfReader implements Closeable {
             case AES_128: mode = EncryptionConstants.ENCRYPTION_AES_128; break;
             default: mode = EncryptionConstants.ENCRYPTION_AES_256;
         }
-        return mode | (source.security.getEncryptionScope() == net.zerocloud.pdf.PasswordEncryptionScope.ALL_EXCEPT_METADATA
-                ? EncryptionConstants.DO_NOT_ENCRYPT_METADATA : 0);
+        return mode | (source.security.getEncryptionScope() == net.zerocloud.pdf.PasswordEncryptionScope.EMBEDDED_FILES_ONLY
+                ? EncryptionConstants.EMBEDDED_FILES_ONLY
+                : source.security.getEncryptionScope() == net.zerocloud.pdf.PasswordEncryptionScope.ALL_EXCEPT_METADATA
+                        ? EncryptionConstants.DO_NOT_ENCRYPT_METADATA : 0);
     }
 
     private void requireOpen() {

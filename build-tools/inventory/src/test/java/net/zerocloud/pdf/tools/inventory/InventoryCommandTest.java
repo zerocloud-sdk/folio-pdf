@@ -36,7 +36,7 @@ public final class InventoryCommandTest {
         assertEquals(result.output, 0, result.exitCode);
         assertTrue(result.output, result.output.matches(
                 "(?s).*Inventory validation passed: [0-9]+ capabilities, "
-                        + "215 facade surfaces, [0-9]+ exclusions\\..*"));
+                        + "217 facade surfaces, [0-9]+ exclusions\\..*"));
 
         ValidationResult validation = new InventoryValidator().validate(
                 repositoryRoot,
@@ -49,6 +49,8 @@ public final class InventoryCommandTest {
         InventoryModel.Capability incrementalCapability = null;
         InventoryModel.Capability passwordCapability = null;
         InventoryModel.Capability clearMetadataCapability = null;
+        InventoryModel.Capability attachmentsCapability = null;
+        InventoryModel.Capability securityCapability = null;
         for (InventoryModel.Capability capability : validation.model().capabilities) {
             if ("document.blank.create-publish-reopen".equals(capability.id)) {
                 mappedCapability = capability;
@@ -62,6 +64,10 @@ public final class InventoryCommandTest {
                 passwordCapability = capability;
             } else if ("document.version-password-security.clear-metadata".equals(capability.id)) {
                 clearMetadataCapability = capability;
+            } else if ("document.version-password-security.attachments".equals(capability.id)) {
+                attachmentsCapability = capability;
+            } else if ("document.version-password-security".equals(capability.id)) {
+                securityCapability = capability;
             }
         }
         assertNotNull(mappedCapability);
@@ -70,6 +76,11 @@ public final class InventoryCommandTest {
         assertNotNull(incrementalCapability);
         assertNotNull(passwordCapability);
         assertNotNull(clearMetadataCapability);
+        assertNotNull(attachmentsCapability);
+        assertNotNull(securityCapability);
+        assertEquals(CapabilityState.COMPATIBLE, attachmentsCapability.status);
+        assertEquals(CapabilityState.COMPATIBLE, securityCapability.status);
+        assertTrue(attachmentsCapability.stableFacadeIds.contains("itext7.kernel.encryption-constants.embedded-files-only"));
         assertEquals(12, mappedCapability.stableFacadeIds.size());
         assertEquals(0, mappedCapability.previewFacadeIds.size());
         assertEquals(CapabilityState.COMPATIBLE, pagesCapability.status);
@@ -100,6 +111,8 @@ public final class InventoryCommandTest {
                     passwordCapability.id.equals(exclusion.capability));
             assertFalse("T79 clear metadata remains explicitly excluded",
                     clearMetadataCapability.id.equals(exclusion.capability));
+            assertFalse("T80 attachments remain explicitly excluded", attachmentsCapability.id.equals(exclusion.capability));
+            assertFalse("Completed security members remain explicitly excluded", securityCapability.id.equals(exclusion.capability));
         }
 
         String capabilities = read(repositoryRoot.resolve(MarkdownGenerator.CAPABILITY_OUTPUT));
@@ -111,10 +124,10 @@ public final class InventoryCommandTest {
                 "`document.blank.create-publish-reopen`"));
         assertTrue(capabilities.contains(
                 "`document.hardened-worker.recovery-scale`"));
-        assertTrue(facades.contains("- Stable entries: `215`"));
+        assertTrue(facades.contains("- Stable entries: `217`"));
         assertTrue(facades.contains("- Preview additions: `0`"));
-        assertTrue(facades.contains("- Preview artifact entries: `215`"));
-        assertTrue(facades.contains("- Explicit capability exclusions: `15`"));
+        assertTrue(facades.contains("- Preview artifact entries: `217`"));
+        assertTrue(facades.contains("- Explicit capability exclusions: `14`"));
         assertTrue(capabilities.contains("`composition.barcodes.one-dimensional`"));
         assertTrue(facades.contains("`composition.barcodes.one-dimensional`"));
         assertTrue(capabilities.contains("`composition.barcodes.two-dimensional`"));

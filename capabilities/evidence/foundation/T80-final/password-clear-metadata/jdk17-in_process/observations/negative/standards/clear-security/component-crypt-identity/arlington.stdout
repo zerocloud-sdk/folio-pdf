@@ -1,0 +1,15 @@
+Processing "@repository/capabilities/profiles/T79-controls/component-crypt-identity.pdf" to stdout BEGIN - TestGrammar v0.81 built Sep  8 2026 00:00:00 (GNU-C linux release) pdfium
+Arlington TSV data: "@repository/.build-cache/t79-arlington-model/output"
+PDF: "@repository/capabilities/profiles/T79-controls/component-crypt-identity.pdf"
+Info: Traditional trailer dictionary detected.
+Info: Encrypted PDF
+Info: Header is version PDF 1.7
+Info: Processing as PDF 1.7
+      19:             Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Metadata
+Error: special case not correct: Filter (Metadata) in PDF 1.7 should be: array;name [fn:Eval((fn:ArrayLength(DecodeParms)==fn:ArrayLength(Filter)) && ((Filter::@0!=Crypt) || fn:IsPresent(DecodeParms::0::@Name==StdCF)))];[fn:Eval((@Filter!=Crypt) || (fn:IsPresent(DecodeParms::Name) && (DecodeParms::@Name==StdCF)))] and is name==Crypt
+      22:               Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Metadata->DecodeParms (as FilterLZWDecode)
+Info: unknown key 'Name' is not defined in Arlington for FilterLZWDecode in PDF 1.7
+Info: Latest Arlington object was PDF 1.7 (Catalog/Extensions) compared using PDF 1.7
+END
+
+DONE - 1 files processed

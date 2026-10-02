@@ -1,0 +1,242 @@
+[
+  {
+    "criterion": 1,
+    "evidence": "docs/research/T80-embedded-files-only-profile-audit.md; docs/pdf-version-password-security.md",
+    "label": "Source-traceable profile",
+    "result": "pass",
+    "evidence-references": [
+      "docs/research/T80-embedded-files-only-profile-audit.md",
+      "docs/pdf-version-password-security.md"
+    ]
+  },
+  {
+    "criterion": 2,
+    "evidence": "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxEmbeddedFileEncryption.java; scripts/t80-byte-check.py; scripts/t80-dictionary-check.py; capabilities/evidence/T80-delivery/identity-summary.json",
+    "label": "Actual EFF and explicit Crypt routing",
+    "result": "pass",
+    "evidence-references": [
+      "pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxEmbeddedFileEncryption.java",
+      "scripts/t80-byte-check.py",
+      "scripts/t80-dictionary-check.py",
+      "capabilities/evidence/T80-delivery/identity-summary.json"
+    ]
+  },
+  {
+    "criterion": 3,
+    "evidence": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/EmbeddedFilesPasswordWorkflowTest.java; pdf-migration-itext7/src/test/java/net/zerocloud/pdf/itext7/consumer/EmbeddedFilesPasswordFacadeTest.java",
+    "label": "Native and Stable/inherited Preview payload and credential behavior",
+    "result": "pass",
+    "evidence-references": [
+      "pdf-document/src/test/java/net/zerocloud/pdf/consumer/EmbeddedFilesPasswordWorkflowTest.java",
+      "pdf-migration-itext7/src/test/java/net/zerocloud/pdf/itext7/consumer/EmbeddedFilesPasswordFacadeTest.java"
+    ]
+  },
+  {
+    "criterion": 4,
+    "evidence": "capabilities/facade-surface.yaml; pdf-migration-itext7/src/test/java/net/zerocloud/pdf/migration/itext7/contract/JarContractIT.java",
+    "label": "Facade constants, selectors, observations and ownership",
+    "result": "pass",
+    "evidence-references": [
+      "capabilities/facade-surface.yaml",
+      "pdf-migration-itext7/src/test/java/net/zerocloud/pdf/migration/itext7/contract/JarContractIT.java"
+    ]
+  },
+  {
+    "criterion": 5,
+    "evidence": "capabilities/profiles/T80-embedded-files-only/cases.json; capabilities/profiles/T80-controls/rules.json; capabilities/evidence/T80-delivery/validation/scope-control-qualification-r1.txt",
+    "label": "Original fixtures and single-defect controls",
+    "result": "pass",
+    "evidence-references": [
+      "capabilities/profiles/T80-embedded-files-only/cases.json",
+      "capabilities/profiles/T80-controls/rules.json",
+      "capabilities/evidence/T80-delivery/validation/scope-control-qualification-r1.txt"
+    ]
+  },
+  {
+    "criterion": 6,
+    "evidence": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/EmbeddedFilesPasswordWorkflowTest.java; capabilities/evidence/T80-delivery/validation/public-regressions-r10.txt",
+    "label": "Extraction/access and protected preservation",
+    "result": "pass",
+    "evidence-references": [
+      "pdf-document/src/test/java/net/zerocloud/pdf/consumer/EmbeddedFilesPasswordWorkflowTest.java",
+      "capabilities/evidence/T80-delivery/validation/public-regressions-r10.txt"
+    ]
+  },
+  {
+    "criterion": 7,
+    "evidence": "capabilities/evidence/T80-delivery/validation/worker-regressions-r6.txt; capabilities/evidence/foundation/T80-final/password-attachments/observed-index.json; capabilities/evidence/T80-delivery/identity-summary.json",
+    "label": "Both Native profiles, resource bounds and lifecycle",
+    "result": "pass",
+    "evidence-references": [
+      "capabilities/evidence/T80-delivery/validation/worker-regressions-r6.txt",
+      "capabilities/evidence/foundation/T80-final/password-attachments/observed-index.json",
+      "capabilities/evidence/T80-delivery/identity-summary.json"
+    ]
+  },
+  {
+    "criterion": 8,
+    "evidence": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/EmbeddedFilesPasswordWorkflowTest.java",
+    "label": "Public outcomes, receipts, ordered failures and partial publication",
+    "result": "pass",
+    "evidence-references": [
+      "pdf-document/src/test/java/net/zerocloud/pdf/consumer/EmbeddedFilesPasswordWorkflowTest.java"
+    ]
+  },
+  {
+    "criterion": 9,
+    "evidence": "capabilities/evidence/foundation/T80-final/password-attachments/observed-index.json; docs/t80-certification.md; capabilities/evidence/T80-delivery/identity-summary.json",
+    "label": "Four original-byte chains for every positive/product",
+    "result": "pass",
+    "evidence-references": [
+      "capabilities/evidence/foundation/T80-final/password-attachments/observed-index.json",
+      "docs/t80-certification.md",
+      "capabilities/evidence/T80-delivery/identity-summary.json"
+    ]
+  },
+  {
+    "criterion": 10,
+    "evidence": "capabilities/evidence/T80-delivery/validation/collector-all-r4.txt; capabilities/evidence/T80-delivery/validation/live-collector-r1.txt",
+    "label": "Recorder/collector fail-closed qualification and privacy",
+    "result": "pass",
+    "evidence-references": [
+      "capabilities/evidence/T80-delivery/validation/collector-all-r4.txt",
+      "capabilities/evidence/T80-delivery/validation/live-collector-r1.txt"
+    ]
+  },
+  {
+    "criterion": 11,
+    "evidence": "capabilities/evidence/foundation/T80-final/password-attachments/observed-index.json; capabilities/evidence/T80-delivery/identity-summary.json; capabilities/evidence/T80-delivery/staged-build-inputs.json",
+    "label": "Actual Ubuntu/JDK eight-tuple certification",
+    "result": "pass",
+    "evidence-references": [
+      "capabilities/evidence/foundation/T80-final/password-attachments/observed-index.json",
+      "capabilities/evidence/T80-delivery/identity-summary.json",
+      "capabilities/evidence/T80-delivery/staged-build-inputs.json"
+    ]
+  },
+  {
+    "criterion": 12,
+    "evidence": "capabilities/evidence/T80-delivery/identity-summary.json; capabilities/foundation-evidence.yaml",
+    "label": "Same-candidate ordered predecessor refresh",
+    "result": "pass",
+    "evidence-references": [
+      "capabilities/evidence/T80-delivery/identity-summary.json",
+      "capabilities/foundation-evidence.yaml"
+    ]
+  },
+  {
+    "criterion": 13,
+    "evidence": "capabilities/capability-matrix.yaml; capabilities/facade-surface.yaml; capabilities/foundation-release.yaml; capabilities/foundation-evidence.yaml",
+    "label": "Authorities, mappings and index agree",
+    "result": "pass",
+    "evidence-references": [
+      "capabilities/capability-matrix.yaml",
+      "capabilities/facade-surface.yaml",
+      "capabilities/foundation-release.yaml",
+      "capabilities/foundation-evidence.yaml"
+    ]
+  },
+  {
+    "criterion": 14,
+    "evidence": "capabilities/foundation-release.yaml; docs/generated/foundation-readiness.md; capabilities/evidence/T80-delivery/foundation-disposition.json; capabilities/evidence/T80-delivery/validation/foundation-readiness-final-r1.json",
+    "label": "Existing three-member aggregate security disposition",
+    "result": "pass",
+    "evidence-references": [
+      "capabilities/foundation-release.yaml",
+      "docs/generated/foundation-readiness.md",
+      "capabilities/evidence/T80-delivery/foundation-disposition.json",
+      "capabilities/evidence/T80-delivery/validation/foundation-readiness-final-r1.json"
+    ]
+  },
+  {
+    "criterion": 15,
+    "evidence": "docs/pdf-version-password-security.md; README.md; docs/zh-CN/getting-started.md; docs/migrations/0.x-t03-document-workflow.md; PROVENANCE.md; docs/generated",
+    "label": "English/Javadoc/Chinese/migration/generated/provenance",
+    "result": "pass",
+    "evidence-references": [
+      "docs/pdf-version-password-security.md",
+      "README.md",
+      "docs/zh-CN/getting-started.md",
+      "docs/migrations/0.x-t03-document-workflow.md",
+      "PROVENANCE.md",
+      "docs/generated"
+    ]
+  },
+  {
+    "criterion": 16,
+    "evidence": "capabilities/evidence/foundation/T80-final/password-baseline; capabilities/evidence/foundation/T80-final/password-clear-metadata; capabilities/evidence/T80-delivery/validation/public-regressions-r10.txt",
+    "label": "Defaults, predecessors, Java8/API/licensing boundaries",
+    "result": "pass",
+    "evidence-references": [
+      "capabilities/evidence/foundation/T80-final/password-baseline",
+      "capabilities/evidence/foundation/T80-final/password-clear-metadata",
+      "capabilities/evidence/T80-delivery/validation/public-regressions-r10.txt"
+    ]
+  },
+  {
+    "criterion": 17,
+    "evidence": "capabilities/evidence/T80-delivery/validation/baseline-native.txt; capabilities/evidence/T80-delivery/validation/scope-public-r3.txt",
+    "label": "Smallest-first focused development validation",
+    "result": "pass",
+    "evidence-references": [
+      "capabilities/evidence/T80-delivery/validation/baseline-native.txt",
+      "capabilities/evidence/T80-delivery/validation/scope-public-r3.txt"
+    ]
+  },
+  {
+    "criterion": 18,
+    "evidence": "capabilities/evidence/T80-delivery/validation/retained-gate-audit-r1.json; capabilities/evidence/T80-delivery/validation/full-verify-r3.txt; capabilities/evidence/T80-delivery/validation/jdk-matrix-r1.json; capabilities/evidence/T80-delivery/identity-summary.json; capabilities/evidence/T80-delivery/validation/unrelated-opt-in-skips.json",
+    "label": "All mandatory validation and explicit unrelated opt-ins",
+    "result": "pass",
+    "evidence-references": [
+      "capabilities/evidence/T80-delivery/validation/retained-gate-audit-r1.json",
+      "capabilities/evidence/T80-delivery/validation/full-verify-r3.txt",
+      "capabilities/evidence/T80-delivery/validation/jdk-matrix-r1.json",
+      "capabilities/evidence/T80-delivery/identity-summary.json",
+      "capabilities/evidence/T80-delivery/validation/unrelated-opt-in-skips.json"
+    ]
+  },
+  {
+    "criterion": 19,
+    "evidence": "capabilities/evidence/T80-delivery/reviews/standards-delivery-final.md; capabilities/evidence/T80-delivery/reviews/spec-delivery-final.md; capabilities/evidence/T80-delivery/worktree-audit.json",
+    "label": "Final Standards and Spec review against fixed baseline",
+    "result": "pass",
+    "evidence-references": [
+      "capabilities/evidence/T80-delivery/reviews/standards-delivery-final.md",
+      "capabilities/evidence/T80-delivery/reviews/spec-delivery-final.md",
+      "capabilities/evidence/T80-delivery/worktree-audit.json"
+    ]
+  },
+  {
+    "criterion": 20,
+    "evidence": "capabilities/evidence/T80-delivery/worktree-audit.json",
+    "label": "Optional authorized local commit",
+    "result": "pass",
+    "evidence-references": [
+      "capabilities/evidence/T80-delivery/worktree-audit.json"
+    ]
+  },
+  {
+    "criterion": 21,
+    "evidence": "capabilities/evidence/T80-delivery/worktree-audit.json",
+    "label": "Only ticket changes in worktree",
+    "result": "pass",
+    "evidence-references": [
+      "capabilities/evidence/T80-delivery/worktree-audit.json"
+    ]
+  },
+  {
+    "criterion": 22,
+    "evidence": "capabilities/evidence/T80-delivery/receipt.md; capabilities/evidence/T80-delivery/criteria-authority.json; capabilities/evidence/T80-delivery/evidence-map.json; capabilities/evidence/T80-delivery/identity-summary.json; capabilities/evidence/T80-delivery/foundation-disposition.json; capabilities/evidence/T80-delivery/worktree-audit.json",
+    "label": "Criterion-mapped delivery receipt",
+    "result": "pass",
+    "evidence-references": [
+      "capabilities/evidence/T80-delivery/receipt.md",
+      "capabilities/evidence/T80-delivery/criteria-authority.json",
+      "capabilities/evidence/T80-delivery/evidence-map.json",
+      "capabilities/evidence/T80-delivery/identity-summary.json",
+      "capabilities/evidence/T80-delivery/foundation-disposition.json",
+      "capabilities/evidence/T80-delivery/worktree-audit.json"
+    ]
+  }
+]

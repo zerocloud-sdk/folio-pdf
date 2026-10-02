@@ -179,6 +179,7 @@ final class PdfBoxHostileInputPreflight {
             WorkflowResourceContext resources)
             throws DocumentFailure, PreflightResourceIOException {
         resources.checkpoint();
+        if (resources.isProtectedStreamDenied(stream)) { return; }
         if (!resources.markStreamPreflighted(stream)) {
             return;
         }

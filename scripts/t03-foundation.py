@@ -140,6 +140,29 @@ ARTIFACT_CONTRACT_TESTS = tuple(
     'net.zerocloud.pdf.migration.itext7.contract.' + name
     for name in ('JarContractIT', 'ClasspathExclusivityIT'))
 CERTIFICATION_CASES = {
+    'password-attachments': {
+        'profile': 'T32-password-embedded-files-only', 'label': 'T80', 'test-count': 24,
+        'test-classes': ['net.zerocloud.pdf.consumer.EmbeddedFilesPasswordWorkflowTest',
+                         'net.zerocloud.pdf.itext7.consumer.EmbeddedFilesPasswordFacadeTest'],
+        'facade-execution-profile': 'IN_PROCESS', 'syntax-producer': 'qpdf-t80-r1',
+        'standards-producer': 'arlington', 'contract-timeout': 600, 'recorder-timeout': 3600,
+        'workflow-policy': 'Explicit embedded-file payload protection with ordinary document strings, page content and XMP clear without a credential; actual EF relationships, EFF and explicit Crypt routing, Identity StmF/StrF and qualified EFOpen; R4 RC4-128/AES-128 and R5/R6 AES-256 input, R6 output, metadata-sensitive keys and Perms; secure all-content defaults, destroyable credentials, owner-first authority and eight permissions; authenticated primary and named Sources, explicit protected rewrite and preserved encrypted incremental publication; Native executes the selected profile; Facade executes IN_PROCESS',
+        'fonts': 'none; original resource-free rectangle and blank page grids',
+        'configuration-paths': ['capabilities/profiles/T80-embedded-files-only', 'capabilities/profiles/T80-controls',
+            'build-tools/acceptance/arlington/t80-input.patch', 'build-tools/acceptance/arlington/t80-output.patch',
+            'scripts/t80-certification.py', 'scripts/t80-observer.py', 'scripts/t80-byte-check.py', 'scripts/t80-dictionary-check.py',
+            'scripts/t80-evidence-pin.properties', 'scripts/t80_foundation_reports.py', 'scripts/t80-arlington-runtime.sha256',
+            'scripts/t80-qpdf-pin.properties', 'scripts/t80-qpdf-runtime.sha256', 'scripts/container-bin/t80-qpdf',
+            'scripts/provision-t80-qpdf.py', 'build-tools/acceptance/qpdf/t80-r1.patch',
+            'build-tools/acceptance/qpdf/t80-build-packages.txt',
+            'capabilities/profiles/T78-password', 'capabilities/profiles/T78-controls',
+            'capabilities/profiles/T03-standards', 'build-tools/acceptance/arlington/t78-input.patch',
+            'build-tools/acceptance/arlington/t78-output.patch', 'build-tools/acceptance/pdfcpu',
+            'build-tools/acceptance/qpdf', 'scripts/t78-certification.py', 'scripts/t78-observer.py',
+            'scripts/t78-pypdf-check.py', 'scripts/t78-evidence-pin.properties',
+            'scripts/t78_foundation_reports.py', 'scripts/t13_foundation_reports.py',
+            'scripts/t78-qpdf-runtime.sha256', 'scripts/t78-arlington-runtime.sha256',
+            'scripts/t78-checkers-runtime.sha256', 'scripts/container-bin/t78-qpdf']},
     'password-clear-metadata': {
         'profile': 'T32-password-clear-metadata', 'label': 'T79', 'test-count': 23,
         'test-classes': ['net.zerocloud.pdf.consumer.ClearMetadataPasswordWorkflowTest',
@@ -648,6 +671,9 @@ def append_source_visual(root, run, report):
 
 
 def collect_reports(root, run, obligation='transactions', execution_profile=None):
+    if obligation == 'password-attachments':
+        from t80_foundation_reports import collect_reports as collect_attachment_reports
+        return collect_attachment_reports(root, run, execution_profile)
     if obligation == 'password-clear-metadata':
         from t79_foundation_reports import collect_reports as collect_clear_metadata_reports
         return collect_clear_metadata_reports(root, run, execution_profile)
@@ -991,6 +1017,10 @@ def container_command(root, image, helper):
 def certification_tools():
     """Return the common, pinned tool catalog recorded for every certification."""
     external = [
+        {'id': 'qpdf-t80-r1', 'kind': 'external-tool', 'version': '12.4.0-folio-t80-r1',
+         'path': '.build-cache/qpdf/t80-r1/runtime/qpdf',
+         'pin': 'scripts/t80-qpdf-pin.properties', 'hash-key': 'sha256',
+         'chains': ['syntax', 'standards', 'semantic']},
         {'id': 'qpdf-t78-r1', 'kind': 'external-tool', 'version': '12.4.0-folio-t78-r1',
          'path': '.build-cache/qpdf/t78-r1/runtime/qpdf',
          'pin': 'scripts/t78-qpdf-pin.properties', 'hash-key': 'sha256',
@@ -1047,7 +1077,7 @@ def certification_tools():
          'hash-key': 'IMAGEMAGICK_EXECUTABLE_SHA256', 'chains': ['visual']}]
     project = [{'id': 'folio-pdf-' + label, 'kind': 'project-test',
                 'version': '0.1.0', 'chains': ['semantic']}
-               for label in ('t03', 't09', 't10', 't11', 't12', 't13', 't14', 't15', 't78', 't79')]
+               for label in ('t03', 't09', 't10', 't11', 't12', 't13', 't14', 't15', 't78', 't79', 't80')]
     return external + project
 
 
@@ -1274,7 +1304,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('action', choices=('stage', 'certify', 'collect', 'preservation', 'plan', 'merge-index'))
     parser.add_argument('output', nargs='?', type=Path)
-    parser.add_argument('--obligation', choices=('transactions', 'values', 'pages', 'metadata', 'annotations', 'text', 'images', 'incremental', 'password-baseline', 'password-clear-metadata'), default='transactions')
+    parser.add_argument('--obligation', choices=('transactions', 'values', 'pages', 'metadata', 'annotations', 'text', 'images', 'incremental', 'password-baseline', 'password-clear-metadata', 'password-attachments'), default='transactions')
     parser.add_argument('--execution-profile', choices=('IN_PROCESS', 'HARDENED_WORKER'))
     parser.add_argument('--root', type=Path, default=Path(__file__).resolve().parents[1])
     args = parser.parse_args()
@@ -1295,10 +1325,10 @@ def main():
         import json
         if args.output is None:
             parser.error('collect requires an observation directory')
-        if args.obligation in ('metadata', 'annotations', 'text', 'images', 'incremental', 'password-baseline', 'password-clear-metadata') and args.execution_profile is None:
+        if args.obligation in ('metadata', 'annotations', 'text', 'images', 'incremental', 'password-baseline', 'password-clear-metadata', 'password-attachments') and args.execution_profile is None:
             parser.error(args.obligation + ' collect requires --execution-profile')
-        if args.obligation not in ('metadata', 'annotations', 'text', 'images', 'incremental', 'password-baseline', 'password-clear-metadata') and args.execution_profile is not None:
-            parser.error('--execution-profile applies only to metadata, annotations, text, images, incremental password-baseline and password-clear-metadata collect')
+        if args.obligation not in ('metadata', 'annotations', 'text', 'images', 'incremental', 'password-baseline', 'password-clear-metadata', 'password-attachments') and args.execution_profile is not None:
+            parser.error('--execution-profile applies only to metadata, annotations, text, images, incremental password-baseline, password-clear-metadata and password-attachments collect')
         print(json.dumps(collect_reports(root, (root / args.output).resolve(), args.obligation,
                                          args.execution_profile), indent=2))
         return

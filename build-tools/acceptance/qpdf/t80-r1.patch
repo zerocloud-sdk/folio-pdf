@@ -1,0 +1,53 @@
+--- a/libqpdf/QPDF_encryption.cc
++++ b/libqpdf/QPDF_encryption.cc
+@@ -1049,7 +1049,8 @@
+ 
+         if (stream_dict.getKey("/Filter").isOrHasName("/Crypt")) {
+             if (Dictionary decode_parms = stream_dict["/DecodeParms"]) {
+-                if (Name(decode_parms["/Type"]) == "/CryptFilterDecodeParms") {
++                if (decode_parms["/Type"].isNull() ||
++                    Name(decode_parms["/Type"]) == "/CryptFilterDecodeParms") {
+                     method = encp->interpretCF(decode_parms["/Name"]);
+                     method_source = "stream's Crypt decode parameters";
+                 }
+@@ -1076,7 +1077,28 @@
+             if (!encp->encrypt_metadata && is_root_metadata) {
+                 method = e_none;
+             } else {
+-                method = encp->cf_stream;
++                // Select EFF by actual EF references, including untyped streams.
++                // Object streams are ordinary document data; avoid recursive
++                // object-cache resolution while their dictionaries are loading.
++                bool embedded = false;
++                if (encp->cf_file != encp->cf_stream &&
++                    Name(stream_dict["/Type"]) != "/ObjStm") {
++                    for (auto const& object: qpdf_for_warning.getAllObjects()) {
++                        if (!object.isDictionary()) {
++                            continue;
++                        }
++                        auto ef = object.getKey("/EF");
++                        if (!ef.isDictionary()) {
++                            continue;
++                        }
++                        for (auto const& entry: ef.getDictAsMap()) {
++                            if (entry.second.isStream() && entry.second.getObjGen() == og) {
++                                embedded = true;
++                            }
++                        }
++                    }
++                }
++                method = embedded ? encp->cf_file : encp->cf_stream;
+             }
+         }
+         use_aes = false;
+--- a/include/qpdf/DLL.h
++++ b/include/qpdf/DLL.h
+@@ -32,7 +32,7 @@
+ #ifdef QPDF_FUTURE
+ # define QPDF_VERSION "12.4.0+future"
+ #else
+-# define QPDF_VERSION "12.4.0-folio-t78-r1"
++# define QPDF_VERSION "12.4.0-folio-t80-r1"
+ #endif
+ 
+ /*

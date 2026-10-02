@@ -141,7 +141,12 @@ final class PdfBoxWorkflowEngine {
                     versionInfo,
                     securityInfo, context.resources);
             if (securityInfo.isPasswordProtected()
-                    && primaryCredential == null) {
+                    && primaryCredential == null
+                    && securityInfo.getEncryptionScope() != PasswordEncryptionScope.EMBEDDED_FILES_ONLY) {
+                throw credentialFailure(true);
+            }
+            if (securityInfo.isPasswordProtected() && !request.getPublicationTargets().isEmpty()
+                    && securityInfo.getCredentialAuthority() == CredentialAuthority.NONE) {
                 throw credentialFailure(true);
             }
             outputVersion = outputVersion(request, versionInfo);
@@ -544,6 +549,7 @@ final class PdfBoxWorkflowEngine {
             throws IOException, DocumentFailure {
         try (OutputStream output = resources.openTemporaryOutput(staged)) {
             if (saveMode == SaveMode.INCREMENTAL) {
+                PdfBoxPasswordParser.prepareIncremental(document, resources);
                 document.saveIncremental(output);
             } else {
                 document.save(output);
@@ -1935,7 +1941,9 @@ final class PdfBoxWorkflowEngine {
                 PasswordEncryptionScope publicationScope,
                 PasswordEncryptionScope sourceScope) {
             return publicationScope == PasswordEncryptionScope.ALL_CONTENT
-                    || publicationScope == sourceScope;
+                    || publicationScope == sourceScope
+                    || (publicationScope == PasswordEncryptionScope.ALL_EXCEPT_METADATA
+                            && sourceScope == PasswordEncryptionScope.EMBEDDED_FILES_ONLY);
         }
 
         @Override

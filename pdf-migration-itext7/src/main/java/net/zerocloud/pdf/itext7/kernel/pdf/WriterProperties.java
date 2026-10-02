@@ -37,17 +37,22 @@ public final class WriterProperties implements AutoCloseable {
      * strict UTF-8 and RFC 4013 preparation. The caller arrays remain caller-owned.
      * RC4-40 cannot represent clear metadata; combining it with bit 8 is
      * rejected instead of silently discarding the explicit scope choice.
+     * Attachment selectors 26/27 protect AES payloads with ordinary data clear;
+     * contradictory RC4 selectors 24/25 and incomplete bit 16 are rejected.
      * @param userPassword encoded user password
      * @param ownerPassword encoded owner password
      * @param permissions permitted operations, combined with bitwise OR
      * @param encryptionAlgorithm an algorithm constant, optionally combined
-     *     with {@link EncryptionConstants#DO_NOT_ENCRYPT_METADATA}
+     *     with {@link EncryptionConstants#DO_NOT_ENCRYPT_METADATA} or
+     *     {@link EncryptionConstants#EMBEDDED_FILES_ONLY}
      * @return these properties
      */
     public WriterProperties setStandardEncryption(byte[] userPassword, byte[] ownerPassword,
             int permissions, int encryptionAlgorithm) {
         requireOpen();
-        if ((encryptionAlgorithm & ~11) != 0 || encryptionAlgorithm == EncryptionConstants.DO_NOT_ENCRYPT_METADATA) {
+        boolean attachments = (encryptionAlgorithm & 24) == 24;
+        if ((encryptionAlgorithm & ~27) != 0 || encryptionAlgorithm == EncryptionConstants.DO_NOT_ENCRYPT_METADATA
+                || ((encryptionAlgorithm & 16) != 0 && (!attachments || (encryptionAlgorithm & 3) < 2))) {
             throw new IllegalArgumentException("The encryption selector is unsupported.");
         }
         clear();
@@ -105,7 +110,8 @@ public final class WriterProperties implements AutoCloseable {
                 PasswordEncryptionAlgorithm.RC4_128, PasswordEncryptionAlgorithm.AES_128, PasswordEncryptionAlgorithm.AES_256};
             PasswordSecurityPolicy security = PasswordSecurityPolicy.builder(ownerCredential, userCredential)
                     .algorithm(choices[selectedAlgorithm]).permissions(mask)
-                    .encryptionScope((algorithm & EncryptionConstants.DO_NOT_ENCRYPT_METADATA) != 0
+                    .encryptionScope((algorithm & EncryptionConstants.EMBEDDED_FILES_ONLY) == EncryptionConstants.EMBEDDED_FILES_ONLY
+                            ? PasswordEncryptionScope.EMBEDDED_FILES_ONLY : (algorithm & EncryptionConstants.DO_NOT_ENCRYPT_METADATA) != 0
                             ? PasswordEncryptionScope.ALL_EXCEPT_METADATA : PasswordEncryptionScope.ALL_CONTENT).build();
             if (selected == null) { selected = PdfOutputPolicy.version(net.zerocloud.pdf.PdfVersion.PDF_1_7); }
             return new Output(selected.withPasswordSecurity(security), ownerCredential, userCredential);

@@ -1,0 +1,44 @@
+{
+  "schema-version": 1,
+  "obligation": "images",
+  "acceptance-profile": "T14-image-resource-extraction",
+  "release": "0.1.0",
+  "candidate-sha256": "58efc286fa1b4134024d452a1ecfed78111a81a41c5c117b4837d90ffb353231",
+  "contract-sha256": "4dff6a8ccc1e6923bbe5142b8da5eca0f2f779e4ccf2b18b504b9bd79282ee8d",
+  "environment-sha256": "c820faed32e3a1bb1e5ea5ac2aea46a23747c9fc21aac0cbadecb1916c1b26a2",
+  "execution-configuration-sha256": "e6814b3b98873a8482e04e3446845269a943203654d4f84287cc3f3b4da1ef20",
+  "execution-profile": "HARDENED_WORKER",
+  "chain": "syntax",
+  "result": "pass",
+  "producer": "qpdf",
+  "configuration": {
+    "path": "capabilities/evidence/T76-image-resource-certification.md",
+    "sha256": "1f000b6c849fddc907d339962076c829c803f13cfe3e56f6556ed5ca87b38ab4"
+  },
+  "report": {
+    "path": "capabilities/evidence/foundation/T80-final/images/jdk21-hardened_worker/syntax-report.json",
+    "sha256": "b03006c2a766e738a007194ffe7dea471405c121053897e9d55f3968bff524bf"
+  },
+  "negative-controls": [
+    {
+      "path": "capabilities/evidence/foundation/T80-final/images/jdk21-hardened_worker/observations/negative/syntax/invalid.pdf",
+      "sha256": "3df4691c8b8b17f9fd9c39d7747465ebc34b35d78453504212b06d7558cae9d7"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T80-final/images/jdk21-hardened_worker/observations/negative/syntax/qpdf.command.json",
+      "sha256": "8e6469a0675290dc37ec02d244379e1963baa62601c89fa9b97569971cf695bc"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T80-final/images/jdk21-hardened_worker/observations/negative/syntax/qpdf.stderr",
+      "sha256": "c2b02105a11ac9584b32cb425880918619bedfc7d3855c19ceb024c6697bc72a"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T80-final/images/jdk21-hardened_worker/observations/negative/syntax/qpdf.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T80-final/images/jdk21-hardened_worker/observations/negative/syntax/result.json",
+      "sha256": "b46914e26b99f0d61707d9429c67c8a7118b39075c859ac94d76b21930b1b434"
+    }
+  ]
+}

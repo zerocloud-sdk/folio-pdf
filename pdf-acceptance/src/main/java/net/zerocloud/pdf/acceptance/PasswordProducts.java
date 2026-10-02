@@ -45,13 +45,19 @@ final class PasswordProducts {
     private PasswordProducts() { }
 
     static RetainedEvidence create(Path root, Path output, WorkflowExecutionProfile execution, boolean includeScope) throws Exception {
-        Path corpus = root.resolve("capabilities/profiles/" + (includeScope ? "T79-clear-metadata" : "T78-password"));
+        return create(root, output, execution, includeScope ? "T79-clear-metadata" : "T78-password", includeScope);
+    }
+
+    static RetainedEvidence create(Path root, Path output, WorkflowExecutionProfile execution, String profile, boolean includeScope) throws Exception {
+        Path corpus = root.resolve("capabilities/profiles/" + profile);
         Properties definitions = new Properties();
         try (InputStream input = Files.newInputStream(corpus.resolve("products.properties"))) { definitions.load(input); }
         RetainedEvidence retained = new RetainedEvidence(output);
         for (String api : new String[] {"native", "facade"}) {
             for (String name : definitions.getProperty("cases").split(",")) {
+                if ("facade".equals(api) && "native".equals(definitions.getProperty(name + ".apis"))) { continue; }
                 Product product = new Product(definitions, name, includeScope);
+                byte[] attachment = product.replaceAttachment ? Files.readAllBytes(corpus.resolve("attachment.txt")) : null;
                 Path source = corpus.resolve(product.source);
                 String sourceHash = EvidenceFiles.sha256(source);
                 Path directory = Files.createDirectory(output.resolve(api + "-" + name));
@@ -79,6 +85,7 @@ final class PasswordProducts {
                         }
                         WorkflowOutcome<Void> result = new DocumentWorkflow().execute(request.build(), session -> {
                             if (product.incremental) { session.execute(AddBlankPage.INSTANCE); }
+                            if (product.replaceAttachment) { session.execute(net.zerocloud.pdf.command.EmbedFile.version1(net.zerocloud.pdf.EmbeddedFile.version1("proof.txt", attachment))); }
                             return null;
                         });
                         actual = result.getExecutionProfile();
@@ -112,6 +119,7 @@ final class PasswordProducts {
                                     product.incremental ? new StampingProperties().useAppendMode() : new StampingProperties());
                             try (PdfDocument opened = document) {
                                 if (product.incremental) { opened.addNewPage(); }
+                                if (product.replaceAttachment) { opened.addFileAttachment(net.zerocloud.pdf.EmbeddedFile.version1("proof.txt", attachment)); }
                             }
                         }
                     }
@@ -131,7 +139,8 @@ final class PasswordProducts {
                                 int mode = reader.getCryptoMode();
                                 reopened.setProperty("algorithm", PasswordEncryptionAlgorithm.values()[3 - (mode & 3)].name());
                                 reopened.setProperty("crypto-mode", Integer.toString(mode));
-                                reopened.setProperty("scope", (mode & 8) == 0 ? "ALL_CONTENT" : "ALL_EXCEPT_METADATA");
+                                reopened.setProperty("scope", (mode & 24) == 24 ? "EMBEDDED_FILES_ONLY"
+                                        : (mode & 8) == 0 ? "ALL_CONTENT" : "ALL_EXCEPT_METADATA");
                                 reopened.setProperty("revision", "not-exposed");
                             }
                         }
@@ -144,7 +153,7 @@ final class PasswordProducts {
                     }
                 }
                 Properties expected = product.expected("native".equals(api));
-                require(reopened.equals(expected), "A reopened public product differs from the frozen expectation.");
+                require(reopened.equals(expected), "A reopened public product differs from the frozen expectation: " + api + "-" + name + " " + reopened + " expected " + expected);
                 require(sourceHash.equals(EvidenceFiles.sha256(source)), "An original Source changed.");
                 if (product.incremental) {
                     byte[] before = Files.readAllBytes(source), after = Files.readAllBytes(pdf);
@@ -167,6 +176,47 @@ final class PasswordProducts {
                 retained.retain(pdf, publication.getProperty("output-sha256"));
                 retained.write(directory.resolve("publication.properties"), publication);
                 retained.write(directory.resolve("reopened.properties"), reopened);
+                if (product.scope() == PasswordEncryptionScope.EMBEDDED_FILES_ONLY) {
+                    Properties clear = new Properties();
+                    byte[] payload = Files.readAllBytes(corpus.resolve("attachment.txt"));
+                    if ("native".equals(api)) {
+                        new DocumentWorkflow().execute(WorkflowRequest.builder().executionProfile(execution)
+                                .source("source", DocumentSource.path(pdf)).primarySource("source").saveMode(SaveMode.REWRITE).build(), session -> {
+                            requireClear(session.query(DocumentSecurity.INSTANCE).getCredentialAuthority() == CredentialAuthority.NONE);
+                            requireClear(session.query(PageCount.INSTANCE) == product.pages);
+                            requireClear(session.query(net.zerocloud.pdf.query.EmbeddedFiles.version1(8)).size() == 1);
+                            try { session.query(net.zerocloud.pdf.query.ReadEmbeddedFile.version1("proof.txt", 4096)); requireClear(false); }
+                            catch (DocumentFailure denied) { requireClear(denied.getCode() == net.zerocloud.pdf.DocumentFailureCode.CREDENTIAL_REQUIRED); }
+                            return null;
+                        });
+                        try (PasswordCredential opening = PasswordCredential.of(product.owner().toCharArray())) {
+                            byte[] observed = new DocumentWorkflow().execute(WorkflowRequest.builder().executionProfile(execution)
+                                    .source("source", DocumentSource.path(pdf).withCredential(opening)).primarySource("source").saveMode(SaveMode.REWRITE).build(),
+                                    session -> session.query(net.zerocloud.pdf.query.ReadEmbeddedFile.version1("proof.txt", 4096)).get().getContent()).getResult();
+                            require(Arrays.equals(payload, observed), "The Native attachment payload changed.");
+                        }
+                    } else {
+                        try (PdfReader reader = new PdfReader(pdf.toString()); PdfDocument opened = new PdfDocument(reader)) {
+                            require(!reader.isOpenedWithFullPermission() && opened.getNumberOfPages() == product.pages
+                                    && opened.getFileAttachments(8).size() == 1, "Clear Facade document access changed.");
+                            try { opened.getFileAttachment("proof.txt", 4096); require(false, "Missing attachment credential disclosed bytes."); }
+                            catch (net.zerocloud.pdf.itext7.kernel.exceptions.PdfException denied) {
+                                require(denied.getCause() instanceof DocumentFailure && ((DocumentFailure) denied.getCause()).getCode()
+                                        == net.zerocloud.pdf.DocumentFailureCode.CREDENTIAL_REQUIRED, "Wrong attachment failure.");
+                            }
+                        }
+                        try (ReaderProperties reading = new ReaderProperties().setPassword(product.bytes(true));
+                                PdfReader reader = new PdfReader(pdf.toString(), reading); PdfDocument opened = new PdfDocument(reader)) {
+                            require(Arrays.equals(payload, opened.getFileAttachment("proof.txt", 4096).get().getContent()), "The Facade attachment payload changed.");
+                        }
+                    }
+                    clear.setProperty("execution-profile", actual.name());
+                    clear.setProperty("credential", "absent");
+                    clear.setProperty("clear-document", "pass");
+                    clear.setProperty("attachment-access", "CREDENTIAL_REQUIRED");
+                    clear.setProperty("owner-attachment-bytes", "pass");
+                    retained.write(directory.resolve("clear-observation.properties"), clear);
+                }
             }
         }
         Properties phase = new Properties();
@@ -191,7 +241,8 @@ final class PasswordProducts {
             values.setProperty("scope", security.getEncryptionScope().name());
             values.setProperty("revision", Integer.toString(security.getSecurityHandlerRevision()));
             values.setProperty("crypto-mode", Integer.toString(3 - security.getAlgorithm().get().ordinal()
-                    | (security.getEncryptionScope() == PasswordEncryptionScope.ALL_EXCEPT_METADATA ? 8 : 0)));
+                    | (security.getEncryptionScope() == PasswordEncryptionScope.EMBEDDED_FILES_ONLY ? 24
+                            : security.getEncryptionScope() == PasswordEncryptionScope.ALL_EXCEPT_METADATA ? 8 : 0)));
         }
         return values;
     }
@@ -204,13 +255,17 @@ final class PasswordProducts {
     }
 
     private static void require(boolean condition, String message) throws IOException { if (!condition) { throw new IOException(message); } }
+    private static void requireClear(boolean condition) {
+        if (!condition) { throw new IllegalStateException("The clear attachment-scope observation failed."); }
+    }
 
     private static final class Product {
-        final String algorithmName, version, credential, source;
+        final String algorithmName, version, credential, source, scopeName;
         final int mask, pages, revision;
-        final boolean incremental, explicit, metadata, includeScope;
+        final boolean incremental, explicit, metadata, includeScope, replaceAttachment;
         Product(Properties definitions, String name, boolean includeScope) {
             this.includeScope = includeScope;
+            replaceAttachment = Boolean.parseBoolean(definitions.getProperty(name + ".replaceAttachment", "false"));
             algorithmName = definitions.getProperty(name + ".algorithm");
             version = definitions.getProperty(name + ".version");
             credential = definitions.getProperty(name + ".credential");
@@ -220,14 +275,16 @@ final class PasswordProducts {
             incremental = "INCREMENTAL".equals(definitions.getProperty(name + ".mode"));
             explicit = Boolean.parseBoolean(definitions.getProperty(name + ".explicit"));
             metadata = Boolean.parseBoolean(definitions.getProperty(name + ".metadata", "true"));
+            scopeName = definitions.getProperty(name + ".scope");
             revision = Integer.parseInt(definitions.getProperty(name + ".revision"));
         }
         boolean protectedOutput() { return !"NONE".equals(algorithmName); }
         boolean protectedSource() { return !source.startsWith("version-") && !source.startsWith("plain"); }
         boolean legacy() { return protectedOutput() && !"AES_256".equals(algorithmName); }
         PasswordEncryptionAlgorithm algorithm() { return PasswordEncryptionAlgorithm.valueOf(algorithmName); }
-        int selector() { return 3 - algorithm().ordinal() | (metadata ? 0 : 8); }
-        PasswordEncryptionScope scope() { return metadata ? PasswordEncryptionScope.ALL_CONTENT : PasswordEncryptionScope.ALL_EXCEPT_METADATA; }
+        int selector() { return 3 - algorithm().ordinal() | (scope() == PasswordEncryptionScope.EMBEDDED_FILES_ONLY ? 24 : metadata ? 0 : 8); }
+        PasswordEncryptionScope scope() { return scopeName == null ? metadata ? PasswordEncryptionScope.ALL_CONTENT : PasswordEncryptionScope.ALL_EXCEPT_METADATA
+                : PasswordEncryptionScope.valueOf(scopeName); }
         PdfVersion version() { return "2.0".equals(version) ? PdfVersion.PDF_2_0 : PdfVersion.PDF_1_7; }
         SaveMode mode() { return incremental ? SaveMode.INCREMENTAL : SaveMode.REWRITE; }
         String owner() { return "empty-owner".equals(credential) ? "" : "equal".equals(credential) ? user() : "baseline-owner"; }

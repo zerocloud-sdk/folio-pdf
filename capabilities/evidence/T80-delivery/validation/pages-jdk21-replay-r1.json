@@ -1,0 +1,26 @@
+{
+  "failed-attempt": "capabilities/evidence/foundation/T80-final/pages",
+  "failed-attempt-authority": "Not indexed; not accepted as certification",
+  "environment": "Ubuntu 24.04 Linux x86-64 / pinned Temurin21, Native HARDENED_WORKER",
+  "failed-test": "PageManipulationWorkflowTest.splitProductsPreserveSemanticsAndRemainRewriteIsolated",
+  "observed-failure": "Workflow elapsed-time limit exceeded; 1 failure among 65 tests",
+  "failed-log-sha256": "f93ff950a4e0163d08472fb1c287d82a1d9cad3c3d2006890abf1e7b850c1fe2",
+  "isolated-replay": "Same staged JARs, exact public test, same pinned image and settings; JUnit Request.method runner",
+  "isolated-replay-result": "3 consecutive PASS",
+  "isolated-replay-observations": [
+    "iteration=1 tests=1 result=PASS elapsed-ms=4167",
+    "iteration=2 tests=1 result=PASS elapsed-ms=3313",
+    "iteration=3 tests=1 result=PASS elapsed-ms=3101"
+  ],
+  "isolated-replay-log-sha256": "dd13bcf9f920482e130060e0fcbf954723dfed1df5ee04761328fb0f68ebe908",
+  "root-cause": "Not established; exact isolated failure not reproduced",
+  "diagnosis-disposition": "No product fix or limit relaxation justified; phases requiring a reproducible product failure deferred; retry the complete original public contract through fresh certification",
+  "source-and-settings-changed": false,
+  "fresh-retry": "capabilities/evidence/foundation/T80-final/pages-r3",
+  "fresh-retry-status": "pass; complete eight fresh Native tuples, four chains each",
+  "fresh-retry-index": {
+    "path": "capabilities/evidence/foundation/T80-final/pages-r3/observed-index.json",
+    "sha256": "b99c32f2fabf138a46378596624418d51e9a19260755aa4829cbe53403572118"
+  },
+  "full-original-contract-replay": "PASS all 65 tests on every tuple, including JDK21 HARDENED_WORKER"
+}

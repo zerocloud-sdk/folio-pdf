@@ -2960,3 +2960,74 @@ change requires fresh candidate certification; r3 evidence remains historical.
   The fresh Foundation index exclusively establishes actual Ubuntu 24.04
   Linux x86-64 JDK 8/11/17/21 certification in both Native modes, with Facade
   IN_PROCESS. Windows/macOS remain uncertified and nonblocking for Foundation.
+
+## T80 embedded files only password security record
+
+- Authorship: OpenAI Codex authored the T80 implementation, public tests,
+  original fixtures and controls, model overlays, observers, collector and
+  documentation under the direction of repository operator mabaiqiu.
+- Owned scope: issue #80 only, `document.version-password-security.attachments`,
+  Foundation member `password-attachments`, profile `T32-password-embedded-files-only`.
+  The [T80 audit](docs/research/T80-embedded-files-only-profile-audit.md) records
+  the public ISO/Adobe/RFC and fixed Reference Suite 7.2.6 API origins, exact
+  downloaded reference identities and licensing boundaries. StdCF/EFOpen and
+  distinct user/owner passwords are explicitly qualified interoperability;
+  PDF 1.7 extension conventions and PDF 2.0's R6 algorithm path remain distinct.
+- Product implementation is project-owned Apache-2.0 Java 8 code against the
+  existing Apache-2.0 PDFBox API. Actual EF graph relationships select encryption;
+  Identity ordinary data remains clear. Existing key/credential preparation,
+  permission enforcement, publication, incremental and signature contracts are
+  preserved. No runtime dependency, tool, font, fixture or proprietary code is
+  introduced. No iText source/resource/fixture/binary/output or closed-product
+  reverse engineering supplied implementation material.
+- `scripts/generate-t80-corpus.py` and `generate-t80-controls.py` are original
+  Apache-2.0 fixture authors. They reuse only project-owned T78 public-algorithm
+  primitives and Python cryptography 43.0.0 (Apache-2.0/BSD) in acceptance tooling.
+  Credentials, deterministic fixture keys, payload, XMP, geometry and paint are
+  synthetic project-authored material. Actual emitted products are randomized
+  public Native/Facade artifacts, never Reference outputs. The controls are
+  single-defect originals, with public source/rule annotations and hashes.
+- New observers/collector are original Apache-2.0 adapters over pinned qpdf,
+  pypdf 6.1.1 (BSD-3-Clause), PyCryptodome 3.23.0 (BSD/public-domain portions),
+  Arlington 0.81 (Apache-2.0), pdfcpu 0.15.0 (Apache-2.0), PDFium and ImageMagick;
+  their existing source/license receipts and frozen runtime hashes remain
+  authoritative. The clear parser disables even pypdf's implicit empty-password
+  authentication. Actual object-specific cryptors come from PyCryptodome,
+  without copying producer or Folio cryptography into an observer. Reports
+  contain categorical findings and permitted public artifact identities,
+  never authentication entries, secret-derived hashes or raw exceptions.
+- The separately identified acceptance-only qpdf `12.4.0-folio-t80-r1` derives
+  from public Apache-2.0 commit `babad179ce5db9a21635c8d1ac17baa59637eada`
+  ([upstream source](https://github.com/qpdf/qpdf/tree/babad179ce5db9a21635c8d1ac17baa59637eada)).
+  `scripts/t80-qpdf-pin.properties` pins the archive, unchanged T78 correction,
+  additive T80 patch, executable and complete build-package manifest. The T80
+  patch selects the existing EFF method through actual EF stream references
+  and accepts an absent optional scalar Crypt decode-parameter Type; it does
+  not substitute Folio output or suppress syntax warnings. The source change
+  fixes upstream's unused `cf_file` selection and optional-Type handling,
+  which otherwise reject required independently authored compressed/explicit
+  Crypt inputs. `scripts/provision-t80-qpdf.py` rebuilds the closed runtime in
+  the immutable Ubuntu JDK 21 image; `scripts/t80-qpdf-runtime.sha256` binds
+  every executable/runtime file. Its OpenSSL 3 (Apache-2.0), libjpeg-turbo
+  (BSD/IJG/zlib), zlib (Zlib) and glibc/loader (LGPL-2.1-or-later) components
+  are acceptance-only Ubuntu packages recorded with exact versions. The
+  scope's original positives and malformed-file control qualify this build;
+  historical T78/T79 tools and their original identities remain unchanged.
+- T80 Arlington TSV overlays are original public-standard predicates applied
+  without fuzz to the pinned upstream Apache-2.0 model; complete input/output
+  trees have closed hashes. The unchanged Arlington/PDFium engine's R4 explicit
+  byte-Length and malformed selective-dictionary limits are qualified by the
+  separately controlled raw pypdf adapter. pdfcpu's Identity object-stream
+  limitation restricts its role to strict unauthenticated clear-core validation.
+  Every required positive still receives all four qualified chains. Tool limits
+  do not waive public behavior. Scope-specific controls and the unchanged T78
+  qualification execute during recording and live replay.
+- The new certification entry point and unsigned local staging route retain
+  exact source, contract, harness, artifact, JDK, immutable Ubuntu image,
+  execution-mode, native/tool/model/corpus and runtime identities. Every required
+  predecessor obligation is refreshed on the same candidate; historical records
+  keep their original artifacts and meaning. Actual Facade execution is
+  IN_PROCESS. Only Ubuntu 24.04 Linux x86-64 with JDK 8/11/17/21 is certified;
+  Windows/macOS remain uncertified and nonblocking under the amendment.
+  Aggregate security is derived from the existing three members and current
+  evidence, without another slice or a release-publication claim.

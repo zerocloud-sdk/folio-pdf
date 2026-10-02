@@ -39,6 +39,25 @@ final class PdfBoxPasswordParser extends PDFParser {
         this.resources = resources;
     }
 
+    static void prepareIncremental(PDDocument document, WorkflowResourceContext resources) throws DocumentFailure {
+        if (document instanceof OpenedDocument) {
+            SourceHandler handler = ((OpenedDocument) document).owner;
+            if (handler != null && handler.attachmentsOnly) {
+                handler.attachments = PdfBoxEmbeddedFileEncryption.attachments(document, resources);
+                for (COSStream stream : handler.attachments) {
+                    resources.checkpoint();
+                    // Decryption has removed an original named Crypt. New EF
+                    // streams must receive the same effective protected filter.
+                    PdfBoxEmbeddedFileEncryption.encrypted(stream, true, COSName.STD_CF, resources);
+                    PdfBoxMetadataEncryption.normalizeForNewEncryption(stream);
+                    if (!COSName.STD_CF.equals(handler.embeddedFilter)) {
+                        PdfBoxEmbeddedFileEncryption.selectStdCF(stream, resources);
+                    }
+                }
+            }
+        }
+    }
+
     static PDDocument load(Path path, char[] credential, WorkflowResourceContext resources)
             throws IOException, DocumentFailure {
         RandomAccessReadBufferedFile input = new RandomAccessReadBufferedFile(path.toFile());
@@ -49,6 +68,7 @@ final class PdfBoxPasswordParser extends PDFParser {
             try {
                 PDDocument result = parser.parse();
                 if (parser.preparationFailure != null) { throw parser.preparationFailure; }
+                if (parser.sourceHandler != null) { parser.sourceHandler.finishAttachments(result, resources); }
                 transferred = true;
                 return result;
             } catch (IOException failure) {
@@ -79,7 +99,8 @@ final class PdfBoxPasswordParser extends PDFParser {
             sourceHandler.open(sourceEncryption, document.getDocumentID(), credential, resources);
             sourceEncryption.setSecurityHandler(sourceHandler);
             securityHandler = sourceHandler;
-            PdfBoxPasswordSecurity.validateStandardStructure(sourceEncryption, resources, true);
+            PdfBoxPasswordSecurity.validateStandardStructure(sourceEncryption, resources,
+                    sourceHandler.getEncryptionKey() != null);
             decryptionPrepared = true;
         } catch (DocumentFailure failure) {
             preparationFailure = failure;
@@ -127,11 +148,33 @@ final class PdfBoxPasswordParser extends PDFParser {
     private static final class SourceHandler extends SecurityHandler<ProtectionPolicy> implements AutoCloseable {
         private final COSDocument document;
         private boolean clearMetadata;
+        private boolean attachmentsOnly;
+        private boolean attachmentAccess;
+        private COSName embeddedFilter;
+        private java.util.Set<COSStream> attachments;
+        private final java.util.Map<COSStream, long[]> deferred = new java.util.IdentityHashMap<COSStream, long[]>();
+        private WorkflowResourceContext.OwnedMemoryScope deferredMemory;
         private WorkflowResourceContext.MemoryReservation keyMemory;
         SourceHandler(COSDocument document) { this.document = document; }
         void open(PDEncryption encryption, COSArray identifiers, char[] characters,
                 WorkflowResourceContext resources) throws IOException, DocumentFailure {
             int revision = encryption.getRevision();
+            attachmentsOnly = PdfBoxEmbeddedFileEncryption.isAttachmentScope(encryption);
+            if (attachmentsOnly) {
+                embeddedFilter = PdfBoxEmbeddedFileEncryption.defaultFilter(encryption);
+                deferredMemory = resources.ownedMemoryScope();
+                setStreamFilterName(COSName.IDENTITY);
+                setStringFilterName(COSName.IDENTITY);
+                setCurrentAccessPermission(new AccessPermission(encryption.getPermissions()));
+                if (characters == null) {
+                    COSBase event = encryption.getStdCryptFilterDictionary().getCOSObject()
+                            .getDictionaryObject(COSName.getPDFName("AuthEvent"));
+                    if (event == null || COSName.getPDFName("DocOpen").equals(event)) {
+                        throw PdfBoxWorkflowEngine.credentialFailure(true);
+                    }
+                    return;
+                }
+            }
             int length = encryption.getVersion() == 1 ? 5 : encryption.getLength() / 8;
             char[] selected = characters == null ? new char[0] : characters;
             COSString identifier = identifiers != null && identifiers.size() > 0
@@ -181,6 +224,7 @@ final class PdfBoxPasswordParser extends PDFParser {
                             encryption.isEncryptMetaData(), ownerProof);
                     setCurrentAccessPermission(ownerProof ? AccessPermission.getOwnerAccessPermission()
                             : new AccessPermission(encryption.getPermissions()));
+                    attachmentAccess = ownerProof || getCurrentAccessPermission().canExtractContent();
                     setKeyLength(length * 8);
                     setAES(encryption.getVersion() >= 4 && !COSName.getPDFName("V2").equals(
                             encryption.getStdCryptFilterDictionary().getCryptFilterMethod()));
@@ -201,7 +245,10 @@ final class PdfBoxPasswordParser extends PDFParser {
 
         @Override
         public void decryptStream(COSStream stream, long number, long generation) throws IOException {
-            if (clearMetadata && PdfBoxMetadataEncryption.isDocumentMetadata(document, stream, number, generation)) {
+            if (attachmentsOnly) {
+                deferredMemory.retainAsIOException(96);
+                deferred.put(stream, new long[] {number, generation});
+            } else if (clearMetadata && PdfBoxMetadataEncryption.isDocumentMetadata(document, stream, number, generation)) {
                 // Only the stream bytes are clear. Its dictionary strings still
                 // follow StrF, so decrypt them through the ordinary dictionary path.
                 COSDictionary dictionary = new COSDictionary(stream);
@@ -221,8 +268,35 @@ final class PdfBoxPasswordParser extends PDFParser {
 
         @Override
         public void encryptStream(COSStream stream, long number, int generation) throws IOException {
+            if (attachmentsOnly && !attachments.contains(stream)) { return; }
             if (clearMetadata && PdfBoxMetadataEncryption.isDocumentMetadata(document, stream, number, generation)) { return; }
             super.encryptStream(stream, number, generation);
+        }
+
+        @Override
+        public void encryptString(COSString string, long number, int generation) throws IOException {
+            if (!attachmentsOnly) { super.encryptString(string, number, generation); }
+        }
+
+        void finishAttachments(PDDocument opened, WorkflowResourceContext resources) throws IOException, DocumentFailure {
+            if (!attachmentsOnly) { return; }
+            attachments = PdfBoxEmbeddedFileEncryption.attachments(opened, resources);
+            for (java.util.Map.Entry<COSStream, long[]> entry : deferred.entrySet()) {
+                resources.checkpoint();
+                COSStream stream = entry.getKey();
+                if (!PdfBoxEmbeddedFileEncryption.encrypted(stream, attachments.contains(stream), embeddedFilter, resources)) { continue; }
+                if (getEncryptionKey() == null) {
+                    resources.denyProtectedStream(stream, DocumentFailureCode.CREDENTIAL_REQUIRED);
+                } else {
+                    setStreamFilterName(COSName.STD_CF);
+                    try { super.decryptStream(stream, entry.getValue()[0], entry.getValue()[1]); }
+                    finally { setStreamFilterName(COSName.IDENTITY); }
+                    if (!attachmentAccess) { resources.denyProtectedStream(stream, DocumentFailureCode.DOCUMENT_PERMISSION_DENIED); }
+                }
+            }
+            deferred.clear();
+            deferredMemory.close();
+            deferredMemory = null;
         }
 
         private static void wipe(byte[] value) { if (value != null) { Arrays.fill(value, (byte) 0); } }
@@ -231,6 +305,8 @@ final class PdfBoxPasswordParser extends PDFParser {
             wipe(getEncryptionKey());
             setEncryptionKey(null);
             if (keyMemory != null) { keyMemory.close(); keyMemory = null; }
+            deferred.clear();
+            if (deferredMemory != null) { deferredMemory.close(); deferredMemory = null; }
         }
 
         @Override

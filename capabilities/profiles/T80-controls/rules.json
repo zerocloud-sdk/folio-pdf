@@ -1,0 +1,1006 @@
+{
+  "profile": "T32-password-embedded-files-only",
+  "required-rules": [
+    "adobe-extension-name-type",
+    "adobe-extension-stream",
+    "adobe-extension-type",
+    "aes128-metadata-key",
+    "aliased-content",
+    "attachment-identity",
+    "catalog-pdf20-cf-length-missing",
+    "catalog-version-type",
+    "cf-event",
+    "cf-event-type",
+    "cf-length-bits",
+    "cf-length-overflow",
+    "cf-length-type",
+    "cf-map-extra",
+    "cf-method",
+    "cf-method-missing",
+    "cf-method-type",
+    "cf-stdcf-missing",
+    "cf-stdcf-stream",
+    "cf-type",
+    "changed-clear-paint",
+    "clear-attachment",
+    "crypt-name-type",
+    "crypt-parameter-name-type",
+    "crypt-parameter-stream",
+    "crypt-parameter-type",
+    "duplicate-crypt",
+    "eff-12",
+    "eff-13",
+    "eff-inherited-identity",
+    "embedded-name-type",
+    "encrypted-page",
+    "encrypted-title",
+    "encryptmetadata-9",
+    "extension-base-string",
+    "extension-level-real",
+    "extension-level-string",
+    "extensions-name-type",
+    "extensions-stream",
+    "extensions-type",
+    "filespec-name-type",
+    "filter-0",
+    "late-crypt",
+    "length-6",
+    "length-7",
+    "o-long",
+    "o-short",
+    "o-type",
+    "oe-long",
+    "oe-short",
+    "oe-type",
+    "ordinary-stdcf",
+    "output-eff-identity",
+    "output-eff-missing",
+    "output-encryptmetadata-missing",
+    "output-event-docopen",
+    "output-metadata-true",
+    "output-stmf-missing",
+    "output-strf-missing",
+    "p-8",
+    "p-reserved-1",
+    "p-reserved-13",
+    "p-reserved-2",
+    "p-reserved-32",
+    "p-reserved-7",
+    "p-reserved-8",
+    "pdf20-cf-length-missing",
+    "pdf20-output-bit10",
+    "perms-long",
+    "perms-short",
+    "perms-type",
+    "r-4",
+    "r-5",
+    "r5-perms-0",
+    "r5-perms-1",
+    "r5-perms-10",
+    "r5-perms-11",
+    "r5-perms-2",
+    "r5-perms-3",
+    "r5-perms-4",
+    "r5-perms-5",
+    "r5-perms-6",
+    "r5-perms-7",
+    "r5-perms-8",
+    "r5-perms-9",
+    "r6-perms-0",
+    "r6-perms-1",
+    "r6-perms-10",
+    "r6-perms-11",
+    "r6-perms-2",
+    "r6-perms-3",
+    "r6-perms-4",
+    "r6-perms-5",
+    "r6-perms-6",
+    "r6-perms-7",
+    "r6-perms-8",
+    "r6-perms-9",
+    "rc4-metadata-key",
+    "stmf-10",
+    "strf-11",
+    "subfilter-1",
+    "truncated-encrypted-file",
+    "u-long",
+    "u-short",
+    "u-type",
+    "ue-long",
+    "ue-short",
+    "ue-type",
+    "v-2",
+    "v-3",
+    "wrong-crypt-shape"
+  ],
+  "rules": {
+    "adobe-extension-name-type": {
+      "file": "adobe-extension-name-type.pdf",
+      "finding": "Type (DeveloperExtensions)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "3a0898f9bb9ff4e77aeb2cf6ef2fa519b6eaf28f2180369a9873e251f57c5451",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "adobe-extension-stream": {
+      "file": "adobe-extension-stream.pdf",
+      "finding": "ADBE (Extensions)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "8be804b8ec41196cd0c00231a747361f663cd981b74304676bddcdfd4b303a39",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "adobe-extension-type": {
+      "file": "adobe-extension-type.pdf",
+      "finding": "Type (DeveloperExtensions)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "2dd0facf5467adcc63d9aa6221b7a01d6b6d6836170c0b4c043a6df37798344c",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "aes128-metadata-key": {
+      "file": "aes128-metadata-key.pdf",
+      "finding": "authentication-rejected",
+      "model": "input",
+      "producer": "pypdf-authentication",
+      "sha256": "e37500851637f985ff7361e7edea66884c2ef59979a88a2f91dcd616c9b015c3",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "aliased-content": {
+      "file": "aliased-content.pdf",
+      "finding": "routes-consistent",
+      "model": "input",
+      "producer": "bytes",
+      "sha256": "df9390bb6323599cc121d835fd9c7bf2c1ce6d7be0ccba797727d7b4db860c3f",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "attachment-identity": {
+      "file": "attachment-identity.pdf",
+      "finding": "routes-consistent",
+      "model": "input",
+      "producer": "bytes",
+      "sha256": "62a2e4026bf2b5f30668ad65e176cea8727aa5488e080633c1d7a22982fc6e0b",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "catalog-pdf20-cf-length-missing": {
+      "file": "catalog-pdf20-cf-length-missing.pdf",
+      "finding": "Length (CryptFilter)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "3718b3cdc2b0de0863375fa436a1e73b4eaeaf1ffcdbe7926d4607db9a6d5e9e",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "catalog-version-type": {
+      "file": "catalog-version-type.pdf",
+      "finding": "Version (Catalog)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "dc1b50a821fdbbb1148be5b39e2148ea015f65d5eed8b380c85faa71f8a036af",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "cf-event": {
+      "file": "cf-event.pdf",
+      "finding": "AuthEvent (CryptFilter)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "02f7adc440d7c99ac0d1c5cdabcee90dfd9fbc2c1df2b7575e82810fa6f7997d",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "cf-event-type": {
+      "file": "cf-event-type.pdf",
+      "finding": "AuthEvent (CryptFilter)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "a054367139463f8c7d7cc1ebbd1d315478592c95b7772a9f06f3bb7a4a4017dc",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "cf-length-bits": {
+      "file": "cf-length-bits.pdf",
+      "finding": "Length (CryptFilter)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "ca82e4d0125a8913484ab07f173f2b71bbd1f283e0cd65081e09cf102ca01a09",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "cf-length-overflow": {
+      "file": "cf-length-overflow.pdf",
+      "finding": "Length (CryptFilter)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "596bb22b4c1076bf6628aa1e19716f1fdba794816aa9264f419fda3ae0679900",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "cf-length-type": {
+      "file": "cf-length-type.pdf",
+      "finding": "Length (CryptFilter)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "58e218c061274c38f8c3150247b92bbdfdd97e1ef3f432525d2bee5001a0bc82",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "cf-map-extra": {
+      "file": "cf-map-extra.pdf",
+      "finding": "StdCF (CryptFilterMap)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "422d6d8e712ab9f8925d8ed1658d3c030e0420cec0a4a9831930ab026e938c71",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "cf-method": {
+      "file": "cf-method.pdf",
+      "finding": "CFM (CryptFilter)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "0d4ad412baf3d1febd31a601e4063c90095216e384a2cb04af52cb2d398cdea4",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "cf-method-missing": {
+      "file": "cf-method-missing.pdf",
+      "finding": "CFM (CryptFilter)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "c2cacd2979cda4b7abf83b81dd15e541ac85f7bd8b89c4abc72350e9fce3485a",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "cf-method-type": {
+      "file": "cf-method-type.pdf",
+      "finding": "CFM (CryptFilter)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "19a20337af857814fbb84150bb3395e71553c4096d3fb5fa77783978eb8db4b9",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "cf-stdcf-missing": {
+      "file": "cf-stdcf-missing.pdf",
+      "finding": "StdCF (CryptFilterMap)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "7904524d4307cb5855f7ebe369be142b08421a9f4a255d9906d0900d2f746064",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "cf-stdcf-stream": {
+      "file": "cf-stdcf-stream.pdf",
+      "finding": "StdCF (CryptFilterMap)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "320758f662e3e8ae5007b8c037d274befe680508f06c45475adbd5c5e67c9fc4",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "cf-type": {
+      "file": "cf-type.pdf",
+      "finding": "Type (CryptFilter)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "4ed849d2a7396d60f523c5b1635c645eaa045aa1be5882946e29e9163d832116",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "changed-clear-paint": {
+      "file": "changed-clear-paint.pdf",
+      "finding": "nonzero-absolute-error",
+      "model": "input",
+      "producer": "visual",
+      "sha256": "974015072d6740c69766188394feecb40dc46d11950b3210ffee93f2e02dafd2",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "clear-attachment": {
+      "file": "clear-attachment.pdf",
+      "finding": "attachment-ciphertext-differs",
+      "model": "input",
+      "producer": "bytes",
+      "sha256": "8b8315d64238e37b5db99f35d5c1c35dd5fffce480dcb19c6ba58771a1652189",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "crypt-name-type": {
+      "file": "crypt-name-type.pdf",
+      "finding": "routes-consistent",
+      "model": "input",
+      "producer": "bytes",
+      "sha256": "36e9c28e1af3e41e62e1cef74d362acc514f0e1497d25673acfa85f8cc7f2e9c",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "crypt-parameter-name-type": {
+      "file": "crypt-parameter-name-type.pdf",
+      "finding": "routes-consistent",
+      "model": "input",
+      "producer": "bytes",
+      "sha256": "0c927a6026067d55327cdeeec87428f710ed5efc9a5fab049ff3497b59effc71",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "crypt-parameter-stream": {
+      "file": "crypt-parameter-stream.pdf",
+      "finding": "routes-consistent",
+      "model": "input",
+      "producer": "bytes",
+      "sha256": "edc8e49d170aaa6ef7ad4eef9667f988008bb0ff302219b4e18c69fef8d203b8",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "crypt-parameter-type": {
+      "file": "crypt-parameter-type.pdf",
+      "finding": "routes-consistent",
+      "model": "input",
+      "producer": "bytes",
+      "sha256": "0b274c740fd6cb0b1cce68f57bf7036a09f949176e7601c4c04631e377c2d117",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "duplicate-crypt": {
+      "file": "duplicate-crypt.pdf",
+      "finding": "routes-consistent",
+      "model": "input",
+      "producer": "bytes",
+      "sha256": "20fb433affdf676dfadae75fa5ac049363e138c4c78922f1b62d58974dad49d1",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "eff-12": {
+      "file": "eff-12.pdf",
+      "finding": "EFF (EncryptionStandard)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "bea8e67dad9576f306beb26cc878b684d4513a61a3d50aa6a723ad638d4afe84",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "eff-13": {
+      "file": "eff-13.pdf",
+      "finding": "EFF (EncryptionStandard)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "87f31b82e311426a2638a5b34429713db035027d6cbe44e6bbaa9ed8733c9e1e",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "eff-inherited-identity": {
+      "file": "eff-inherited-identity.pdf",
+      "finding": "routes-consistent",
+      "model": "input",
+      "producer": "bytes",
+      "sha256": "3a0a41878daea03f4ca327d7c98d2531577586e00f82b3c4b57ca2087ee4eb73",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "embedded-name-type": {
+      "file": "embedded-name-type.pdf",
+      "finding": "routes-consistent",
+      "model": "input",
+      "producer": "bytes",
+      "sha256": "1fb5fa1a9df2b9ab1caea7e93a6201139c7d1690e72c4724ae0b398ac782e967",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "encrypted-page": {
+      "file": "encrypted-page.pdf",
+      "finding": "unauthenticated-page-matches",
+      "model": "input",
+      "producer": "bytes",
+      "sha256": "4495e005eebaba2eb0b9e084948d6af86111fb8e88a30c15a96735f4650582b1",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "encrypted-title": {
+      "file": "encrypted-title.pdf",
+      "finding": "unauthenticated-title-matches",
+      "model": "input",
+      "producer": "bytes",
+      "sha256": "6302ea00e0b642d998ce5adf4bc42a8139cd05b91f71a869e94e2121a590cbff",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "encryptmetadata-9": {
+      "file": "encryptmetadata-9.pdf",
+      "finding": "EncryptMetadata (EncryptionStandard)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "23703d84df1e165d54f1ca82b2e0081856d6161bab96acfcb1e3f92cbc296992",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "extension-base-string": {
+      "file": "extension-base-string.pdf",
+      "finding": "BaseVersion (DeveloperExtensions)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "1060acbc799d9efee75be49424615d2ec7ea2d44a5d493d0a4de7a3de2a36d8d",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "extension-level-real": {
+      "file": "extension-level-real.pdf",
+      "finding": "ExtensionLevel (DeveloperExtensions)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "028721289d1294850e2648126d9f9cca83a183bf837d28331fedc4ba3bd80f7b",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "extension-level-string": {
+      "file": "extension-level-string.pdf",
+      "finding": "ExtensionLevel (DeveloperExtensions)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "7abe5ed695551387067c720aebc782c09f2d400880729622a1a76ebb218a400b",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "extensions-name-type": {
+      "file": "extensions-name-type.pdf",
+      "finding": "Type (Extensions)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "4da8617edb8eaabce0329c1cc2d3784468ed6b1e3fd2adfa9b0ad030c8a20f16",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "extensions-stream": {
+      "file": "extensions-stream.pdf",
+      "finding": "Extensions (Catalog)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "dd5bfd13d2e016e4fa0ab4970bf54e3ffae098872aef8182bdce222be65c57d8",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "extensions-type": {
+      "file": "extensions-type.pdf",
+      "finding": "Type (Extensions)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "7e289e53d22530c280916ea0f0eb2b42f5c25ae1e01e9cea6d9269e2ba375739",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "filespec-name-type": {
+      "file": "filespec-name-type.pdf",
+      "finding": "routes-consistent",
+      "model": "input",
+      "producer": "bytes",
+      "sha256": "6cc40e3808e8c89286e3b6078d26a23f193f585cba827093fb59d711b31b4709",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "filter-0": {
+      "file": "filter-0.pdf",
+      "finding": "Filter (EncryptionStandard)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "d3b92bb3b9720005d3a74d4024aa6f22d45e2c895fab3af702606cbae31655d9",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "late-crypt": {
+      "file": "late-crypt.pdf",
+      "finding": "routes-consistent",
+      "model": "input",
+      "producer": "bytes",
+      "sha256": "6763b3fb55a5754b069c444b7029d36428ed35bfa075965230e06e95e5789c58",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "length-6": {
+      "file": "length-6.pdf",
+      "finding": "Length (EncryptionStandard)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "e802513893b28d91c2b8a0b3e8d2266f4ca12de1cbfd32af96bcd7de81c2f44d",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "length-7": {
+      "file": "length-7.pdf",
+      "finding": "Length (EncryptionStandard)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "1eadf04ae7193d3792576291a1ff8dcc3da0f1ea94c64b5aa072e6d062568d61",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "o-long": {
+      "file": "o-long.pdf",
+      "finding": "O (EncryptionStandard)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "46c27ab157a88b0fa068dd89bf7b38d37fc63dfe67f9496a9738de10c483a320",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "o-short": {
+      "file": "o-short.pdf",
+      "finding": "O (EncryptionStandard)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "d9128681eaff9dd64a15bb80ec138dd5dd49bc3660781ab1a2853626c15b9ef9",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "o-type": {
+      "file": "o-type.pdf",
+      "finding": "O (EncryptionStandard)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "5e07e5aa8ce66721eb3a7e43f0d7e5db5e1765a16de182b5cd26ce0d857e33ba",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "oe-long": {
+      "file": "oe-long.pdf",
+      "finding": "OE (EncryptionStandard)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "b6a00159b4577a385e23d1817972852269ff4e7531b500c8a00eb932020d6163",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "oe-short": {
+      "file": "oe-short.pdf",
+      "finding": "OE (EncryptionStandard)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "4c2bb9b63b2b23fdc1c8f62869450e86109c5a64df23227d029d4d1341735923",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "oe-type": {
+      "file": "oe-type.pdf",
+      "finding": "OE (EncryptionStandard)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "d3239c397f4231594780cb0d5d458ab3cf8b429fd5c2d8e22708ce299e635bb2",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "ordinary-stdcf": {
+      "file": "ordinary-stdcf.pdf",
+      "finding": "routes-consistent",
+      "model": "input",
+      "producer": "bytes",
+      "sha256": "91ffeb7e91f2781d04416f6f68690e6886114256d0f7127a07be01059b1c61ee",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "output-eff-identity": {
+      "file": "output-eff-identity.pdf",
+      "finding": "EFF (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "1bbdbafb61cf9999b63b0d9311fa6ef8598532348261b146b4900458ac15b81b",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "output-eff-missing": {
+      "file": "output-eff-missing.pdf",
+      "finding": "EFF (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "e60f2b3d8468497ae3b59e1d97047a401a678221f0f7ff205a01de6a85c0da83",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "output-encryptmetadata-missing": {
+      "file": "output-encryptmetadata-missing.pdf",
+      "finding": "EncryptMetadata (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "b35faf380ed09a29662b10895eccc4e56a100ce3276eacaaeebc2eafdeeb20f7",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "output-event-docopen": {
+      "file": "output-event-docopen.pdf",
+      "finding": "AuthEvent (CryptFilter)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "45b21788139d6f55fb5a7b521d60dc4fbd96a1c03a4cb8af9d628fe38c7e5450",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "output-metadata-true": {
+      "file": "output-metadata-true.pdf",
+      "finding": "EncryptMetadata (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "5bc874c91295190fd660d62261b055ca59288b4a8dfc7f04bb97bbf75feaa122",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "output-stmf-missing": {
+      "file": "output-stmf-missing.pdf",
+      "finding": "StmF (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "6e5264d5f4eca2b6238c76e1621374e1b59c9a620505aac4f62b2167c77ad273",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "output-strf-missing": {
+      "file": "output-strf-missing.pdf",
+      "finding": "StrF (EncryptionStandard)",
+      "model": "output",
+      "producer": "arlington",
+      "sha256": "68f8d0d2dea71ee1c7ca693e17a9b0fe4d0dde4996788b0f4cd4b4adadbe8272",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "p-8": {
+      "file": "p-8.pdf",
+      "finding": "P (EncryptionStandard)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "9225fed18109c3c0ef02de8bca745665bcf5181d0220601f5290c9185af08570",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "p-reserved-1": {
+      "file": "p-reserved-1.pdf",
+      "finding": "P (EncryptionStandard)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "37ee3667765875be5dea248f0ab8b6b52cbf0a60d46f35f5108fca1a4b6d70c3",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "p-reserved-13": {
+      "file": "p-reserved-13.pdf",
+      "finding": "P (EncryptionStandard)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "427021faba75a5f3d6a794fab6fd5e47fc923ab691ed1b097a52535470331189",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "p-reserved-2": {
+      "file": "p-reserved-2.pdf",
+      "finding": "P (EncryptionStandard)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "7758c06880c2af8361c8c46bf08d763283d54a2ca3797d3381b4d173abea2791",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "p-reserved-32": {
+      "file": "p-reserved-32.pdf",
+      "finding": "P (EncryptionStandard)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "f7530d4c511a2130585da262f48dd9fc7764b17485ebbc5cfc8ae244153bb1b6",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "p-reserved-7": {
+      "file": "p-reserved-7.pdf",
+      "finding": "P (EncryptionStandard)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "87a39c542bcf9207db4cfea65b7800d380ed10e800f3e9e7cbe0997f29b4649d",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "p-reserved-8": {
+      "file": "p-reserved-8.pdf",
+      "finding": "P (EncryptionStandard)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "b2c49eaf696ba2158657dfc7acb5bc734e9fac5ef971658f7050e19e054fe925",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "pdf20-cf-length-missing": {
+      "file": "pdf20-cf-length-missing.pdf",
+      "finding": "Length (CryptFilter)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "3db61aec4f61f1946ccded62d4ca1d6e62ccb464c78bda7ba705fadea4323b76",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "pdf20-output-bit10": {
+      "file": "pdf20-output-bit10.pdf",
+      "finding": "P (EncryptionStandard)",
+      "model": "output",
+      "producer": "pypdf-dictionary",
+      "sha256": "057e441e82e9fcbb4cf14ce923da0db42ad6d2380db66d8a770ac0c833ff7ed9",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "perms-long": {
+      "file": "perms-long.pdf",
+      "finding": "Perms (EncryptionStandard)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "92708c005e367f9a93233de8943c3b0a0569f0b72623c09b72f4f73405fde94d",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "perms-short": {
+      "file": "perms-short.pdf",
+      "finding": "Perms (EncryptionStandard)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "30b2704c993367a0c68d1f6c4610063180d3a1d7e424b03ea95f7fcb65831be1",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "perms-type": {
+      "file": "perms-type.pdf",
+      "finding": "Perms (EncryptionStandard)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "b343cd8f9c74e5255da3496e74a13c827b29064e9db32915fb3e1bbd27f4e1e1",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "r-4": {
+      "file": "r-4.pdf",
+      "finding": "R (EncryptionStandard)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "351e9e6d266d06cf0ff72ebf46faf3180abffdd260df747732db1301e12c14f6",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "r-5": {
+      "file": "r-5.pdf",
+      "finding": "R (EncryptionStandard)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "6ba079b054ecd9607a6a11ead2b09ef39eb35979df1e269c1eb36dd5d7f5e0ed",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "r5-perms-0": {
+      "file": "r5-perms-0.pdf",
+      "finding": "perms-verification-failed",
+      "model": "input",
+      "producer": "pypdf",
+      "sha256": "c432a319123bb01548e763361fe653fbb32ae2cbe0ff33c12cecaabc93bd2b6d",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "r5-perms-1": {
+      "file": "r5-perms-1.pdf",
+      "finding": "perms-verification-failed",
+      "model": "input",
+      "producer": "pypdf",
+      "sha256": "d0be19304586ad7db4e58ebb0a26349c114fcb64db65c77d949df0bef3d80730",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "r5-perms-10": {
+      "file": "r5-perms-10.pdf",
+      "finding": "perms-verification-failed",
+      "model": "input",
+      "producer": "pypdf",
+      "sha256": "946bc9d8233369b94e8b338fc40806fb5259b1c009912d989b190e2a8459f3ef",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "r5-perms-11": {
+      "file": "r5-perms-11.pdf",
+      "finding": "perms-verification-failed",
+      "model": "input",
+      "producer": "pypdf",
+      "sha256": "42964cc552398632b43136833eccd8107336e27b8c27e07d29923b9553fe06c4",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "r5-perms-2": {
+      "file": "r5-perms-2.pdf",
+      "finding": "perms-verification-failed",
+      "model": "input",
+      "producer": "pypdf",
+      "sha256": "8b0eeeb8302f886402d32a5d6f60ca8163a5a23508e3789102d1bf2035e93921",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "r5-perms-3": {
+      "file": "r5-perms-3.pdf",
+      "finding": "perms-verification-failed",
+      "model": "input",
+      "producer": "pypdf",
+      "sha256": "9eabd04b224e452e85e5341606c6463a2487bbabd35bc487bfcce95c6c31b97e",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "r5-perms-4": {
+      "file": "r5-perms-4.pdf",
+      "finding": "perms-verification-failed",
+      "model": "input",
+      "producer": "pypdf",
+      "sha256": "924b828607a279137120f063c48a83851ffce3f73463fce776a430c48664e930",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "r5-perms-5": {
+      "file": "r5-perms-5.pdf",
+      "finding": "perms-verification-failed",
+      "model": "input",
+      "producer": "pypdf",
+      "sha256": "0a2b1e2783cafabf7e03b212133bab130ba49a73a9c671cab850cf8e7eea763c",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "r5-perms-6": {
+      "file": "r5-perms-6.pdf",
+      "finding": "perms-verification-failed",
+      "model": "input",
+      "producer": "pypdf",
+      "sha256": "b6808c4199bf194991d63e9bb7eda838d3ac5596e0aa369b76f824f75f52af4d",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "r5-perms-7": {
+      "file": "r5-perms-7.pdf",
+      "finding": "perms-verification-failed",
+      "model": "input",
+      "producer": "pypdf",
+      "sha256": "8eb2a3e33c146482dbde91bbaf5d87e31356d060c3654dd2580902506e36ad3a",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "r5-perms-8": {
+      "file": "r5-perms-8.pdf",
+      "finding": "perms-verification-failed",
+      "model": "input",
+      "producer": "pypdf",
+      "sha256": "e1a4116ff0a42a7f157936293388925d128fb07e4126bf2b5df0f79e5f816c81",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "r5-perms-9": {
+      "file": "r5-perms-9.pdf",
+      "finding": "perms-verification-failed",
+      "model": "input",
+      "producer": "pypdf",
+      "sha256": "670fad136358dc2c669bd121099a867002a69bd0e0417406e003429aa849b5f5",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "r6-perms-0": {
+      "file": "r6-perms-0.pdf",
+      "finding": "perms-verification-failed",
+      "model": "input",
+      "producer": "pypdf",
+      "sha256": "e159703ac5e687f970912097d73be9e156c95d59d68fbd849ece29a3a0ea3b3e",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "r6-perms-1": {
+      "file": "r6-perms-1.pdf",
+      "finding": "perms-verification-failed",
+      "model": "input",
+      "producer": "pypdf",
+      "sha256": "e30f8a4c4d63b8a3024ff0122103f65b0d268d4d66baec7e30d16f69060fb12d",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "r6-perms-10": {
+      "file": "r6-perms-10.pdf",
+      "finding": "perms-verification-failed",
+      "model": "input",
+      "producer": "pypdf",
+      "sha256": "aaea8c360299916e715e1c102acdede23176f4ffdcb4e51c2b026f57b92a46e0",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "r6-perms-11": {
+      "file": "r6-perms-11.pdf",
+      "finding": "perms-verification-failed",
+      "model": "input",
+      "producer": "pypdf",
+      "sha256": "5e549066e5c955488eab930e2178285214c50e49100e1bb20600192998f759e8",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "r6-perms-2": {
+      "file": "r6-perms-2.pdf",
+      "finding": "perms-verification-failed",
+      "model": "input",
+      "producer": "pypdf",
+      "sha256": "7a64a427dd66b3a6289d097363ff181f6e0017f53ce9f49e64f6990c6aa11422",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "r6-perms-3": {
+      "file": "r6-perms-3.pdf",
+      "finding": "perms-verification-failed",
+      "model": "input",
+      "producer": "pypdf",
+      "sha256": "eb38fb8ebb8ae5c6572c5b30272e9b80342cdb35a9caa7578cf587513bfe79f6",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "r6-perms-4": {
+      "file": "r6-perms-4.pdf",
+      "finding": "perms-verification-failed",
+      "model": "input",
+      "producer": "pypdf",
+      "sha256": "7afb0f79303911834c0804040de8ef961151ea2421d593ebc6b33c648e5f929d",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "r6-perms-5": {
+      "file": "r6-perms-5.pdf",
+      "finding": "perms-verification-failed",
+      "model": "input",
+      "producer": "pypdf",
+      "sha256": "4eedf2a9045bf916c8e63b2959f4e49709a1ed33d4498f9ae5826cf13aa756b7",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "r6-perms-6": {
+      "file": "r6-perms-6.pdf",
+      "finding": "perms-verification-failed",
+      "model": "input",
+      "producer": "pypdf",
+      "sha256": "788d8c93d387c90abb69f80f757a31b1059f06e189eb9010b9aee485400bfab7",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "r6-perms-7": {
+      "file": "r6-perms-7.pdf",
+      "finding": "perms-verification-failed",
+      "model": "input",
+      "producer": "pypdf",
+      "sha256": "da479284dd111324c5481c318498bb98c4edf5623c2c2bcecf8f3ec597d3e3e7",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "r6-perms-8": {
+      "file": "r6-perms-8.pdf",
+      "finding": "perms-verification-failed",
+      "model": "input",
+      "producer": "pypdf",
+      "sha256": "664558155cdcea689a1206b6f7f2d0fa22d1b2ddfe3ca91504fa35dae69e80a1",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "r6-perms-9": {
+      "file": "r6-perms-9.pdf",
+      "finding": "perms-verification-failed",
+      "model": "input",
+      "producer": "pypdf",
+      "sha256": "160d386bf8b6f12cb8eedb1f0d6828cdef396db78a3c784131b768cb2332b0df",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "rc4-metadata-key": {
+      "file": "rc4-metadata-key.pdf",
+      "finding": "authentication-rejected",
+      "model": "input",
+      "producer": "pypdf-authentication",
+      "sha256": "5c184920f93b7c9d2c71596adb202a465a9250b64c3336e2eba65017acdb19cb",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "stmf-10": {
+      "file": "stmf-10.pdf",
+      "finding": "StmF (EncryptionStandard)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "4fa4beffda1a0a9dba19936614d01ff119c171948f3896896c3583fa68cea5bf",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "strf-11": {
+      "file": "strf-11.pdf",
+      "finding": "StrF (EncryptionStandard)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "a19446bd080dc4adf339eae850ea6edc4ded6bb15596926a8e57712150dcd2fc",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "subfilter-1": {
+      "file": "subfilter-1.pdf",
+      "finding": "SubFilter (EncryptionStandard)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "957117a76bd20c9d4db95f044c73012df23509fbd480c6398e533ed7c414829a",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "truncated-encrypted-file": {
+      "file": "truncated-encrypted-file.pdf",
+      "finding": "syntax-rejected",
+      "model": "input",
+      "producer": "qpdf",
+      "sha256": "6417b192b54603d10db2075a4fbfd35ec1159fae55d9e5be7ab2d1d60941dc43",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "u-long": {
+      "file": "u-long.pdf",
+      "finding": "U (EncryptionStandard)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "9d05b6bc94cda7e3aecc9d5abdc8e4cd8fa58973f1a47091df7e2e0d5915c07a",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "u-short": {
+      "file": "u-short.pdf",
+      "finding": "U (EncryptionStandard)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "9e281466c2340b26b0b697e9d6472f9aab98276a3ae72d1697072283e8021ccf",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "u-type": {
+      "file": "u-type.pdf",
+      "finding": "U (EncryptionStandard)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "a151534c483885f23fc686bcfd64e3a42f1108306a1beb21f8aa48eb694928e8",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "ue-long": {
+      "file": "ue-long.pdf",
+      "finding": "UE (EncryptionStandard)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "05266da090baf423044e0184fc6061dc037292d72d1cea414057eb3b2291caf4",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "ue-short": {
+      "file": "ue-short.pdf",
+      "finding": "UE (EncryptionStandard)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "657f378fbcd2ee4792c5cd3f2049f7786c2e326d57430fc54a3e797889837f78",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "ue-type": {
+      "file": "ue-type.pdf",
+      "finding": "UE (EncryptionStandard)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "8f64d93db15a54ef4bdda5f3a52f86541c3a872e79fdc2c31849b0ff53b647a9",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "v-2": {
+      "file": "v-2.pdf",
+      "finding": "V (EncryptionStandard)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "3fbfa1468b699118d562a37870e95a8920abdd167265b67c78db2abb465046dc",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "v-3": {
+      "file": "v-3.pdf",
+      "finding": "V (EncryptionStandard)",
+      "model": "input",
+      "producer": "pypdf-dictionary",
+      "sha256": "c95c6ced042ff94f58747b505ac16667da5a3a8a2331688e24352fed69554eea",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    },
+    "wrong-crypt-shape": {
+      "file": "wrong-crypt-shape.pdf",
+      "finding": "routes-consistent",
+      "model": "input",
+      "producer": "bytes",
+      "sha256": "fa115e9789a6684fce83c63dabc34f2d15178550ce67962282a78e34d67d9313",
+      "source": "T80 profile audit; ISO 32000-1 7.6.3-7.6.5, Tables 20-26, 43-44; ISO 32000-2 EC3 7.6"
+    }
+  }
+}

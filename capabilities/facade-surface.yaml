@@ -14,6 +14,8 @@ surfaces:
       generic-contract: No generic parameters.
       exception-contract: Declares java.io.FileNotFoundException for a target that cannot name a file in an existing directory.
       capabilities:
+        - document.version-password-security.attachments
+        - document.version-password-security
         - document.blank.create-publish-reopen
         - document.version-password-security.baseline
         - document.version-password-security.clear-metadata
@@ -27,6 +29,8 @@ surfaces:
       generic-contract: No generic parameters.
       exception-contract: Maps a Native Document Failure to java.io.IOException with its stable code and safe diagnostic.
       capabilities:
+        - document.version-password-security.attachments
+        - document.version-password-security
         - document.blank.create-publish-reopen
         - document.version-password-security.baseline
         - document.version-password-security.clear-metadata
@@ -40,6 +44,8 @@ surfaces:
       generic-contract: No generic parameters or return value.
       exception-contract: Retains java.io.IOException; releases an unclaimed private snapshot. A Document owns a claimed snapshot until its close; caller streams remain open.
       capabilities:
+        - document.version-password-security.attachments
+        - document.version-password-security
         - document.blank.create-publish-reopen
         - document.version-password-security.baseline
         - document.version-password-security.clear-metadata
@@ -53,6 +59,8 @@ surfaces:
       generic-contract: No generic parameters.
       exception-contract: No checked exception; publication failures are reported by close().
       capabilities:
+        - document.version-password-security.attachments
+        - document.version-password-security
         - document.blank.create-publish-reopen
         - document.version-password-security.baseline
         - document.version-password-security.clear-metadata
@@ -66,6 +74,8 @@ surfaces:
       generic-contract: No generic parameters.
       exception-contract: No checked exception; source failures are reported by the PdfReader constructor.
       capabilities:
+        - document.version-password-security.attachments
+        - document.version-password-security
         - document.blank.create-publish-reopen
         - document.version-password-security.baseline
         - document.version-password-security.clear-metadata
@@ -101,6 +111,8 @@ surfaces:
       generic-contract: No generic parameters or return value.
       exception-contract: Maps a publication Document Failure to net.zerocloud.pdf.itext7.kernel.exceptions.PdfException with its stable code and safe diagnostic.
       capabilities:
+        - document.version-password-security.attachments
+        - document.version-password-security
         - document.blank.create-publish-reopen
         - document.version-password-security.baseline
         - document.version-password-security.clear-metadata
@@ -114,6 +126,8 @@ surfaces:
       generic-contract: Parameters are Map<String, mapped PdfReader>, String, and Map<String, mapped PdfWriter>; declaration iteration order fixes Source consumption and publication-receipt order.
       exception-contract: Rejects null, blank, duplicate-instance, unavailable, or inconsistent Source and Target declarations before transferring any Reader ownership.
       capabilities:
+        - document.version-password-security.attachments
+        - document.version-password-security
         - document.page.manipulate-merge-split
         - document.version-password-security.baseline
         - document.version-password-security.clear-metadata
@@ -343,6 +357,8 @@ surfaces:
       generic-contract: Borrows caller output; publication flushes but never closes it. No generic parameters.
       exception-contract: No checked exception; publication errors are reported at PdfDocument.close with actual Native receipts.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.value.inspect-patch
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
@@ -357,6 +373,8 @@ surfaces:
       exception-contract: Declares java.io.IOException with a safe diagnostic; actual Native failures retain their DocumentFailure
         cause.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.value.inspect-patch
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
@@ -371,6 +389,8 @@ surfaces:
       exception-contract: No checked exception. Native failures map to PdfException with the actual DocumentFailure cause; closed
         or detached mutation targets reject with IllegalStateException.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.value.inspect-patch
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
@@ -1226,6 +1246,8 @@ surfaces:
       generic-contract: Parameters are Map<String, mapped PdfReader>, String, Map<String, mapped PdfWriter>, and project-owned PdfVersion; the version applies to every declared Target.
       exception-contract: Rejects invalid declarations before Reader transfer; unsupported output policy and Native failures retain their DocumentFailure cause through PdfException when execution starts.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.metadata.outlines-destinations-attachments
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
@@ -1239,6 +1261,8 @@ surfaces:
       generic-contract: Returns one document-owned mapped PdfDocumentInfo view; repeated calls return the same view.
       exception-contract: Rejects a closed document or non-owner thread with IllegalStateException; Native query failures retain their DocumentFailure cause through PdfException.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.metadata.outlines-destinations-attachments
     - id: itext7.kernel.pdf-document.get-xmp-metadata
       reference:
@@ -1262,6 +1286,8 @@ surfaces:
       generic-contract: Returns a detached defensive byte[] or null and adds an explicit nonnegative decoded-byte bound.
       exception-contract: Invalid bounds reject before access; limit and structural failures retain their Native DocumentFailure cause through PdfException.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.metadata.outlines-destinations-attachments
     - id: itext7.kernel.pdf-document.set-xmp-metadata
       reference:
@@ -1344,6 +1370,8 @@ surfaces:
       generic-contract: Returns void; copies one project-owned EmbeddedFile and creates or replaces its exact name-tree entry.
       exception-contract: Invalid names, MIME, relationship metadata, unsafe existing structures, lifecycle, or resource bounds reject before mutation with the Native cause retained through PdfException.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.metadata.outlines-destinations-attachments
     - id: itext7.kernel.pdf-document.get-file-attachments
       reference:
@@ -1356,6 +1384,8 @@ surfaces:
       generic-contract: Returns immutable List<project-owned EmbeddedFileSummary> in unsigned encoded-key order under an explicit entry bound.
       exception-contract: Malformed specifications, streams, names, checksums, and limit failures retain their Native DocumentFailure cause through PdfException.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.metadata.outlines-destinations-attachments
     - id: itext7.kernel.pdf-document.get-file-attachment
       reference:
@@ -1367,6 +1397,8 @@ surfaces:
       generic-contract: Returns Optional<project-owned EmbeddedFileData> with detached exact bytes, declared MD5 when present, computed SHA-256, and an explicit decoded-byte bound.
       exception-contract: Invalid bounds, malformed structures, and payload-limit failures retain their Native DocumentFailure cause through PdfException; absence returns Optional.empty().
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.metadata.outlines-destinations-attachments
     - id: itext7.kernel.pdf-document-info.get-title
       reference:
@@ -1895,6 +1927,8 @@ surfaces:
         diagnostic and receipts through PdfException; malformed Reader input maps to IOException. Signed rewrite and unsupported
         append operations remain protected.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.incremental-signature.protect
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
@@ -1911,6 +1945,8 @@ surfaces:
         Workflow failures preserve Native identity and ordered receipts through PdfException; no missing Source, split or
         unsupported signed publication is admitted.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.incremental-signature.protect
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
@@ -1936,6 +1972,8 @@ surfaces:
       exception-contract: No checked exception; malformed choices fail with IllegalArgumentException and closed properties with
         IllegalStateException.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.reader-properties.close
@@ -1949,6 +1987,8 @@ surfaces:
       exception-contract: No checked exception; malformed choices fail with IllegalArgumentException and closed properties with
         IllegalStateException.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.writer-properties.constructor
@@ -1962,6 +2002,8 @@ surfaces:
       exception-contract: No checked exception; malformed choices fail with IllegalArgumentException and closed properties with
         IllegalStateException.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.writer-properties.close
@@ -1975,6 +2017,8 @@ surfaces:
       exception-contract: No checked exception; malformed choices fail with IllegalArgumentException and closed properties with
         IllegalStateException.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.reader-properties.set-password
@@ -1989,6 +2033,8 @@ surfaces:
       exception-contract: No checked exception; malformed choices fail with IllegalArgumentException and closed properties with
         IllegalStateException.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.reader-properties.set-credential
@@ -2002,6 +2048,8 @@ surfaces:
       exception-contract: No checked exception; malformed choices fail with IllegalArgumentException and closed properties with
         IllegalStateException.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.writer-properties.set-pdf-version
@@ -2015,6 +2063,8 @@ surfaces:
       exception-contract: No checked exception; malformed choices fail with IllegalArgumentException and closed properties with
         IllegalStateException.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.writer-properties.set-standard-encryption
@@ -2029,6 +2079,8 @@ surfaces:
       exception-contract: No checked exception; malformed choices fail with IllegalArgumentException and closed properties with
         IllegalStateException.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.writer-properties.set-legacy-security-mode
@@ -2042,6 +2094,8 @@ surfaces:
       exception-contract: No checked exception; malformed choices fail with IllegalArgumentException and closed properties with
         IllegalStateException.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-reader.constructor-string-properties
@@ -2054,6 +2108,8 @@ surfaces:
       generic-contract: Captures an owned properties snapshot; caller streams and the supplied properties remain caller-owned.
       exception-contract: Declares java.io.IOException; maps Native failures to their stable code and safe diagnostic.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-reader.constructor-input-stream-properties
@@ -2066,6 +2122,8 @@ surfaces:
       generic-contract: Captures an owned properties snapshot; caller streams and the supplied properties remain caller-owned.
       exception-contract: Declares java.io.IOException; maps Native failures to their stable code and safe diagnostic.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-writer.constructor-string-properties
@@ -2078,6 +2136,8 @@ surfaces:
       generic-contract: Captures an owned properties snapshot; caller streams and the supplied properties remain caller-owned.
       exception-contract: Declares java.io.FileNotFoundException for an invalid Path target.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-writer.constructor-output-stream-properties
@@ -2090,6 +2150,8 @@ surfaces:
       generic-contract: Captures an owned properties snapshot; caller streams and the supplied properties remain caller-owned.
       exception-contract: No checked exception; rejects invalid or closed declarations before ownership transfer.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-reader.is-encrypted
@@ -2102,6 +2164,8 @@ surfaces:
       generic-contract: Returns whether the authenticated Source is password protected.
       exception-contract: No checked exception; rejects a closed Reader with IllegalStateException.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-reader.is-opened-with-full-permission
@@ -2115,6 +2179,8 @@ surfaces:
         false.
       exception-contract: No checked exception; rejects a closed Reader with IllegalStateException.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-reader.get-permissions
@@ -2127,6 +2193,8 @@ surfaces:
       generic-contract: Returns the unsigned declared 32-bit permission word, or zero for plaintext.
       exception-contract: No checked exception; rejects a closed Reader with IllegalStateException.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-reader.get-crypto-mode
@@ -2136,10 +2204,11 @@ surfaces:
       folio-pdf:
         type: net.zerocloud.pdf.itext7.kernel.pdf.PdfReader
         member: getCryptoMode()
-      generic-contract: Returns the baseline algorithm selector (plus bit 8 for the retained metadata-clear legacy input), or
-        -1 for plaintext.
+      generic-contract: Returns the algorithm selector plus bit 8 for clear metadata or selector 24 for embedded-file protection; returns -1 for plaintext.
       exception-contract: No checked exception; rejects a closed Reader with IllegalStateException.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-writer.close
@@ -2152,6 +2221,8 @@ surfaces:
       generic-contract: Clears the Writer-owned output-property snapshot; leaves a caller OutputStream open.
       exception-contract: No checked exception; idempotent.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-document.get-pdf-version
@@ -2165,6 +2236,8 @@ surfaces:
         for reading/incremental publication.
       exception-contract: No checked exception; rejects a closed Document with IllegalStateException.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.encryption-constants.do-not-encrypt-metadata
@@ -2178,7 +2251,36 @@ surfaces:
         safely instead of silently dropping the explicit scope. Other protected data remains encrypted.
       exception-contract: No exception contract for a constant.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.clear-metadata
+    - id: itext7.kernel.encryption-constants.embedded-files-only
+      reference:
+        type: com.itextpdf.kernel.pdf.EncryptionConstants
+        member: EMBEDDED_FILES_ONLY
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.EncryptionConstants
+        member: EMBEDDED_FILES_ONLY
+      generic-contract: Public static final int 24; explicit AES attachment-only scope, including metadata-clear bit 8. Matches the fixed Reference
+        Suite 7.2.6 public constant.
+      exception-contract: No exception contract for a constant.
+      capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
+    - id: itext7.kernel.encryption-constants.only-embedded-files
+      reference:
+        status: folio-extension
+        type: com.itextpdf.kernel.pdf.EncryptionConstants
+      folio-pdf:
+        type: net.zerocloud.pdf.itext7.kernel.pdf.EncryptionConstants
+        member: ONLY_EMBEDDED_FILES
+      generic-contract: Public static final int 24; explicit AES attachment-only scope, including metadata-clear bit 8. Folio alias of EMBEDDED_FILES_ONLY;
+        this spelling is not a Reference Suite field.
+      exception-contract: No exception contract for a constant.
+      capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
+
     - id: itext7.kernel.encryption-constants.standard-encryption-40
       reference:
         type: com.itextpdf.kernel.pdf.EncryptionConstants
@@ -2189,6 +2291,8 @@ surfaces:
       generic-contract: Public static final int; matches the Reference Suite baseline algorithm or permission bit.
       exception-contract: No exception contract for a constant.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.encryption-constants.standard-encryption-128
@@ -2201,6 +2305,8 @@ surfaces:
       generic-contract: Public static final int; matches the Reference Suite baseline algorithm or permission bit.
       exception-contract: No exception contract for a constant.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.encryption-constants.encryption-aes-128
@@ -2213,6 +2319,8 @@ surfaces:
       generic-contract: Public static final int; matches the Reference Suite baseline algorithm or permission bit.
       exception-contract: No exception contract for a constant.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.encryption-constants.encryption-aes-256
@@ -2225,6 +2333,8 @@ surfaces:
       generic-contract: Public static final int; matches the Reference Suite baseline algorithm or permission bit.
       exception-contract: No exception contract for a constant.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.encryption-constants.allow-degraded-printing
@@ -2237,6 +2347,8 @@ surfaces:
       generic-contract: Public static final int; matches the Reference Suite baseline algorithm or permission bit.
       exception-contract: No exception contract for a constant.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.encryption-constants.allow-printing
@@ -2249,6 +2361,8 @@ surfaces:
       generic-contract: Public static final int; matches the Reference Suite baseline algorithm or permission bit.
       exception-contract: No exception contract for a constant.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.encryption-constants.allow-modify-contents
@@ -2261,6 +2375,8 @@ surfaces:
       generic-contract: Public static final int; matches the Reference Suite baseline algorithm or permission bit.
       exception-contract: No exception contract for a constant.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.encryption-constants.allow-copy
@@ -2273,6 +2389,8 @@ surfaces:
       generic-contract: Public static final int; matches the Reference Suite baseline algorithm or permission bit.
       exception-contract: No exception contract for a constant.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.encryption-constants.allow-modify-annotations
@@ -2285,6 +2403,8 @@ surfaces:
       generic-contract: Public static final int; matches the Reference Suite baseline algorithm or permission bit.
       exception-contract: No exception contract for a constant.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.encryption-constants.allow-fill-in
@@ -2297,6 +2417,8 @@ surfaces:
       generic-contract: Public static final int; matches the Reference Suite baseline algorithm or permission bit.
       exception-contract: No exception contract for a constant.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.encryption-constants.allow-screenreaders
@@ -2309,6 +2431,8 @@ surfaces:
       generic-contract: Public static final int; matches the Reference Suite baseline algorithm or permission bit.
       exception-contract: No exception contract for a constant.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.encryption-constants.allow-assembly
@@ -2321,6 +2445,8 @@ surfaces:
       generic-contract: Public static final int; matches the Reference Suite baseline algorithm or permission bit.
       exception-contract: No exception contract for a constant.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-version.pdf-1-0
@@ -2333,6 +2459,8 @@ surfaces:
       generic-contract: Public static final PdfVersion for the exact named PDF declaration.
       exception-contract: No exception contract for a constant.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-version.pdf-1-1
@@ -2345,6 +2473,8 @@ surfaces:
       generic-contract: Public static final PdfVersion for the exact named PDF declaration.
       exception-contract: No exception contract for a constant.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-version.pdf-1-2
@@ -2357,6 +2487,8 @@ surfaces:
       generic-contract: Public static final PdfVersion for the exact named PDF declaration.
       exception-contract: No exception contract for a constant.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-version.pdf-1-3
@@ -2369,6 +2501,8 @@ surfaces:
       generic-contract: Public static final PdfVersion for the exact named PDF declaration.
       exception-contract: No exception contract for a constant.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-version.pdf-1-4
@@ -2381,6 +2515,8 @@ surfaces:
       generic-contract: Public static final PdfVersion for the exact named PDF declaration.
       exception-contract: No exception contract for a constant.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-version.pdf-1-5
@@ -2393,6 +2529,8 @@ surfaces:
       generic-contract: Public static final PdfVersion for the exact named PDF declaration.
       exception-contract: No exception contract for a constant.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-version.pdf-1-6
@@ -2405,6 +2543,8 @@ surfaces:
       generic-contract: Public static final PdfVersion for the exact named PDF declaration.
       exception-contract: No exception contract for a constant.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-version.pdf-1-7
@@ -2417,6 +2557,8 @@ surfaces:
       generic-contract: Public static final PdfVersion for the exact named PDF declaration.
       exception-contract: No exception contract for a constant.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-version.pdf-2-0
@@ -2429,6 +2571,8 @@ surfaces:
       generic-contract: Public static final PdfVersion for the exact named PDF declaration.
       exception-contract: No exception contract for a constant.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-version.from-string
@@ -2441,6 +2585,8 @@ surfaces:
       generic-contract: Accepts the exact PDF-M.m spelling and returns a supported PdfVersion.
       exception-contract: No checked exception; parsing rejects unsupported spelling and null input.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-version.from-pdf-name
@@ -2453,6 +2599,8 @@ surfaces:
       generic-contract: Accepts an exact M.m PdfName and returns a supported PdfVersion.
       exception-contract: No checked exception; parsing rejects unsupported spelling and null input.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-version.to-pdf-name
@@ -2465,6 +2613,8 @@ surfaces:
       generic-contract: Returns the exact M.m PdfName.
       exception-contract: No checked exception; parsing rejects unsupported spelling and null input.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-version.to-string
@@ -2477,6 +2627,8 @@ surfaces:
       generic-contract: Returns PDF-M.m.
       exception-contract: No checked exception; parsing rejects unsupported spelling and null input.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-version.compare-to
@@ -2489,6 +2641,8 @@ surfaces:
       generic-contract: Compares versions in declared order; implements Comparable<PdfVersion>.
       exception-contract: No checked exception; parsing rejects unsupported spelling and null input.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-version.compare-to-bridge
@@ -2501,6 +2655,8 @@ surfaces:
       generic-contract: Compiler-generated erased Comparable bridge to compareTo(PdfVersion).
       exception-contract: No checked exception; parsing rejects unsupported spelling and null input.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-version.equals
@@ -2513,6 +2669,8 @@ surfaces:
       generic-contract: Compares exact supported version values.
       exception-contract: No checked exception; parsing rejects unsupported spelling and null input.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
     - id: itext7.kernel.pdf-version.hash-code
@@ -2525,14 +2683,13 @@ surfaces:
       generic-contract: Returns the value hash code.
       exception-contract: No checked exception; parsing rejects unsupported spelling and null input.
       capabilities:
+      - document.version-password-security.attachments
+      - document.version-password-security
       - document.version-password-security.baseline
       - document.version-password-security.clear-metadata
   preview: []
 
 excluded-capabilities:
-- id: document.version-password-security
-  ticket: T32
-  reason: 'The baseline child has its own certified mappings. The aggregate remains incomplete: required metadata-clear and embedded-files-only mappings remain #79 and #80 obligations; this is not a release-scope waiver.'
 - id: composition.canvas.draw-positioned-text
   ticket: T32
   reason: 'Current migration coverage is absent. Matching Foundation Stable Facade mappings remain mandatory under

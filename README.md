@@ -568,8 +568,9 @@ The [T78 certification profile](docs/t78-certification.md) and
 [source audit](docs/research/T78-baseline-profile-audit.md) define the 61 mappings,
 independent controls and Ubuntu 24.04 x86-64 × JDK 8/11/17/21 evidence.
 Facade execution is IN_PROCESS; Native additionally certifies HARDENED_WORKER.
-Windows/macOS remain uncertified and nonblocking for F0.1.0. The parent security
-aggregate remains incomplete pending #80 attachments-only.
+Windows/macOS remain uncertified and nonblocking for F0.1.0. Aggregate security
+requires current, dependency-satisfied baseline, clear-metadata and attachment-only
+certifications for the same candidate.
 
 The clear-metadata child (#79) adds explicit Native `ALL_EXCEPT_METADATA` and
 Facade `DO_NOT_ENCRYPT_METADATA=8` (selectors 9/10/11). Only catalog XMP bytes
@@ -577,6 +578,17 @@ are clear; Info, dictionary strings, component metadata, content and attachments
 stay protected. RC4-40 plus this scope is rejected. Legacy output still requires
 request-scoped opt-in. See the [T79 profile](docs/t79-certification.md) and
 [source audit](docs/research/T79-clear-metadata-profile-audit.md).
+
+The attachment-only child (#80) adds explicit Native `EMBEDDED_FILES_ONLY` and
+Facade `EMBEDDED_FILES_ONLY=24` (`ONLY_EMBEDDED_FILES` is a Folio alias).
+AES selectors 26/27 protect actual embedded payloads while ordinary pages,
+Info and XMP remain clear. EFOpen permits ordinary queries without a credential;
+attachment extraction still requires credentials and permission. DocOpen input
+requires an opening credential. Contradictory Facade RC4 selectors 24/25 are
+rejected; Native RC4-128 V4 output remains available with legacy opt-in.
+Protected rewrites and incremental attachment updates retain the existing
+publication and signature restrictions. See the [T80 contract](docs/t80-certification.md)
+and [qualified source profile](docs/research/T80-embedded-files-only-profile-audit.md).
 
 ## Project information
 

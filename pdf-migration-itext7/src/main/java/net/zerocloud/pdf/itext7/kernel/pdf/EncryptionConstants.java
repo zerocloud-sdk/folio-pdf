@@ -10,6 +10,10 @@ public final class EncryptionConstants {
     public static final int ENCRYPTION_AES_256 = 3;
     /** Explicitly leaves document-level XMP clear with RC4-128, AES-128 or AES-256. */
     public static final int DO_NOT_ENCRYPT_METADATA = 8;
+    /** Protects embedded-file payloads with AES while ordinary document data stays clear. */
+    public static final int EMBEDDED_FILES_ONLY = 24;
+    /** Folio spelling for the attachment-only scope; equals the Reference Suite selector. */
+    public static final int ONLY_EMBEDDED_FILES = EMBEDDED_FILES_ONLY;
     public static final int ALLOW_DEGRADED_PRINTING = 4;
     public static final int ALLOW_PRINTING = 2052;
     public static final int ALLOW_MODIFY_CONTENTS = 8;

@@ -994,6 +994,7 @@ final class PdfBoxValueAdapter {
             return new PdfArray(new ArrayView((COSArray) value, budget));
         }
         if (value instanceof COSStream) {
+            resources.requireStreamAccess((COSStream) value);
             ObjectReference reference = owningReference == null
                     ? referenceFor(value)
                     : owningReference;

@@ -862,8 +862,9 @@ public final class PdfVersionPasswordSecurityWorkflowTest {
                 assertOutputSecurityFailure(
                         PasswordSecurityPolicy.builder(owner, user)
                                 .encryptionScope(scope)
+                                .algorithm(PasswordEncryptionAlgorithm.RC4_40)
                                 .build(),
-                        null,
+                        LegacySecurityMode.ALLOW_OBSOLETE_PASSWORD_ENCRYPTION,
                         PdfVersion.PDF_1_7,
                         DocumentFailureCode.PASSWORD_SECURITY_UNSUPPORTED);
             }

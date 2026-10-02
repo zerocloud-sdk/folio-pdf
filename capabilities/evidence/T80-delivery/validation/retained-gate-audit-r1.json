@@ -1,0 +1,68 @@
+{
+  "result": "pass",
+  "baseline": "08928c8d08de677a99f092c4ebd6bbdaa64ef6ba",
+  "validation-record-checks": [
+    {
+      "validation": "./mvnw -B -ntp verify",
+      "retained": "full-verify-r3.txt",
+      "full-log-sha256": "b922c67bf856c1609201e8512acdf11f4c47327ea56d38852bd655722b589655",
+      "retained-matches-full-log": true,
+      "result": "pass"
+    },
+    {
+      "validation": "./scripts/verify-jdk-matrix.sh",
+      "retained": "jdk-matrix-r1.json",
+      "full-log-sha256": "8466771b9913e2667c01a6f544a89c1e3168b4732fe9e82154b769d7179f9df8",
+      "retained-matches-full-log": true,
+      "result": "pass"
+    },
+    {
+      "validation": "focused Native/Stable Facade regressions",
+      "retained": "public-regressions-r10.txt",
+      "full-log-sha256": "e9f3b062461ab0e21b0f66c9a15fd80070555b112bbfc0a52432dbc5f7ee7155",
+      "retained-matches-full-log": true,
+      "result": "pass"
+    },
+    {
+      "validation": "Native T78/T79/T80 HARDENED_WORKER regressions",
+      "retained": "worker-regressions-r6.txt",
+      "full-log-sha256": "7da60593132865ff985c0c96ef0e0b40d28d8aca9b31896686b4434240718c64",
+      "retained-matches-full-log": true,
+      "result": "pass"
+    },
+    {
+      "validation": "Foundation collector/negative-control unittest discovery",
+      "retained": "collector-all-r4.txt",
+      "full-log-sha256": "205075cd34bb25b21afd8c3457039ffe87ad477792a7f49d171f1d5c054bb48a",
+      "retained-matches-full-log": true,
+      "result": "pass"
+    },
+    {
+      "validation": "pinned scope/control qualification",
+      "retained": "scope-control-qualification-r1.txt",
+      "full-log-sha256": "ae8d5f5da9d48737110e9f6c2a8cb1dfb9cc254206bceb68433873039a1f52fa",
+      "retained-matches-full-log": true,
+      "result": "pass"
+    },
+    {
+      "validation": "actual Ubuntu independent-certification profile",
+      "retained": "independent-t80-ubuntu-r2.txt",
+      "full-log-sha256": "edcaa8f43f37e62a96891ebe7d848f678e774ec80f5e06b71ecf564c9874b3ad",
+      "retained-matches-full-log": true,
+      "result": "pass"
+    },
+    {
+      "validation": "live original-product collector replay and isolated resealed controls",
+      "retained": "live-collector-r1.txt",
+      "full-log-sha256": "35f95a46830bc9888676108b74439db2afff3940cecd0cd1a4fb1eb3ccb0bdf6",
+      "retained-matches-full-log": true,
+      "result": "pass"
+    }
+  ],
+  "final-source-precedes-full-verification": true,
+  "final-source-precedes-four-jdk-matrix": true,
+  "mandatory-T80-skip-count": 0,
+  "note": "This verifies retained validation records; final security certification and inventory are audited separately.",
+  "jdk8-matrix-start-utc": "2026-10-01T22:02:34+00:00",
+  "jdk8-matrix-start-derived-from": "First JDK full verification end minus its logged elapsed duration"
+}

@@ -1,0 +1,23 @@
+Traceback (most recent call last):
+  File "/workspace/scripts/t78-certification.py", line 262, in <module>
+    record(Path(sys.argv[1]).resolve(), Path(sys.argv[2]).resolve(), sys.argv[3])
+  File "/workspace/scripts/t78-certification.py", line 247, in record
+    observe(root, output, execution)
+  File "/workspace/scripts/t78-certification.py", line 183, in observe
+    return observe_bounded(root, output, execution, replay)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scripts/t78-certification.py", line 214, in observe_bounded
+    observe_one(observer, pdf, case, directory, public, True)
+  File "/workspace/scripts/t78-certification.py", line 110, in observe_one
+    require(observer.visual(pdf, decoded, case['pages'], directory + '/visual') == 'pass', 'Authored pixel grid differs')
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scripts/t78-observer.py", line 444, in visual
+    code, _, err = self.process([self.pdfium, 'render', decrypted, raster, '--dpi', '144', '--file-type', 'png',
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scripts/t78-observer.py", line 220, in process
+    require(limited is None, 'External observation exceeded its bound')
+  File "/workspace/scripts/t78-observer.py", line 84, in require
+    raise ValueError(message)
+ValueError: External observation exceeded its bound
+Exception in thread "main" java.io.IOException: T78 independent certification failed.
+	at net.zerocloud.pdf.acceptance.T78EvidenceCommand.main(T78EvidenceCommand.java:45)

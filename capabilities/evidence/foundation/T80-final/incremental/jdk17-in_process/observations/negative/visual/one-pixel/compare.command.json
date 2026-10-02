@@ -1,0 +1,19 @@
+{
+  "command": [
+    "/workspace/scripts/container-bin/imagemagick",
+    "compare",
+    "-metric",
+    "AE",
+    "-fuzz",
+    "0%",
+    "/workspace/capabilities/profiles/T15-signatures/unsigned-first-page-1.png",
+    "/workspace/capabilities/evidence/foundation/T80-final/incremental/jdk17-in_process/observations/negative/visual/one-pixel/changed.png",
+    "/workspace/capabilities/evidence/foundation/T80-final/incremental/jdk17-in_process/observations/negative/visual/one-pixel/compare-difference.png"
+  ],
+  "exit-code": 1,
+  "limit": null,
+  "maximum-output-bytes": 16777216,
+  "stderr-sha256": "bd5d027c1386dcae39e7c338b81dd5b5d1a3d08ccc45028b618345a600a7b539",
+  "stdout-sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "timeout-seconds": 30
+}

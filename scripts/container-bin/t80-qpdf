@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+set -eu
+script_directory=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+repository_root=$(CDPATH= cd -- "${script_directory}/../.." && pwd)
+runtime="${repository_root}/.build-cache/qpdf/t80-r1/runtime"
+(cd "${runtime}" && sha256sum --check --status "${repository_root}/scripts/t80-qpdf-runtime.sha256")
+exec "${runtime}/ld-linux-x86-64.so.2" --library-path "${runtime}" "${runtime}/qpdf" "$@"

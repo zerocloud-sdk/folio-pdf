@@ -1,0 +1,35 @@
+{
+  "result": "failed-attempt-retained-unindexed",
+  "native-mode": "HARDENED_WORKER",
+  "jdk-major": 21,
+  "public-tests": {
+    "result": "pass",
+    "count": 44,
+    "log": {
+      "path": "capabilities/evidence/foundation/T80-final/password-baseline/jdk21-hardened_worker/contract-tests.txt",
+      "sha256": "30b548585013ec4a7e2a7aa3959a0b102866db7026e100aebbb52f60fe536bb7"
+    }
+  },
+  "recorder-log": {
+    "path": "capabilities/evidence/foundation/T80-final/password-baseline/jdk21-hardened_worker/recorder.txt",
+    "sha256": "623458154ac561bd5103410a4310f7a972c4e55cfc24f4dd58a1725d01e96b61"
+  },
+  "failure": "Independent PDFium visual subprocess exceeded existing 30-second observation bound",
+  "original-product": {
+    "path": "capabilities/evidence/foundation/T80-final/password-baseline/jdk21-hardened_worker/observations/native-credential-unicode-split/product.pdf",
+    "sha256": "2c1811c02417bf9e94265c2c052d0de344cda72929bf8554a166a891a1c39526"
+  },
+  "exact-pinned-replay": {
+    "path": "capabilities/evidence/T80-delivery/validation/t78-visual-replay-r1/summary.json",
+    "sha256": "0e8310e61af3e1f358af04a61f52ea22d265def47b899b5894b1dedb29d97e4d"
+  },
+  "replay-command": {
+    "path": "capabilities/evidence/T80-delivery/validation/t78-visual-replay-r1/command.json",
+    "sha256": "2bf71cdfd214383eef35b3f7b6339cf81549fa91a8f44d37997f97cd5052480e"
+  },
+  "root-cause": "not established; exact replay did not reproduce the limit",
+  "source-or-settings-change": false,
+  "new-required-complete-attempt": "password-baseline/jdk21-hardened_worker-r7",
+  "old-observations-overwritten": false,
+  "original-recovery-proposal": "R6 cached-collection proposal was reviewed and never executed; R7 reruns all original collectors"
+}

@@ -98,7 +98,9 @@ final class PdfBoxPasswordSecurity {
                 throw unsupported(
                         "Only the Standard password-security handler is supported.");
             }
-            validateStandardStructure(encryption, resources, true);
+            boolean unopenedAttachments = PdfBoxEmbeddedFileEncryption.isAttachmentScope(encryption)
+                    && credentialCharacters == null && encryption.getSecurityHandler().getEncryptionKey() == null;
+            validateStandardStructure(encryption, resources, !unopenedAttachments);
             PasswordEncryptionAlgorithm algorithm = algorithm(encryption);
             PasswordEncryptionScope scope = scope(encryption);
             DocumentPermissions declared =
@@ -106,7 +108,9 @@ final class PdfBoxPasswordSecurity {
                             encryption.getPermissions());
             AccessPermission current = document.getCurrentAccessPermission();
             CredentialAuthority authority;
-            if (credentialCharacters != null) {
+            if (unopenedAttachments) {
+                authority = CredentialAuthority.NONE;
+            } else if (credentialCharacters != null) {
                 boolean owner = authenticates(document, encryption, credentialCharacters, resources, true);
                 if (owner) {
                     authority = CredentialAuthority.OWNER;
@@ -266,6 +270,7 @@ final class PdfBoxPasswordSecurity {
             WorkflowResourceContext resources, boolean checkKey)
             throws IOException, GeneralSecurityException, DocumentFailure {
         checkpoint(resources);
+        if (encryption.getCOSObject() instanceof COSStream) { throw unsupportedStructure(); }
         if (!COSName.getPDFName("Standard").equals(encryption.getCOSObject().getDictionaryObject(COSName.FILTER))) {
             throw unsupported("Only the Standard password-security handler is supported.");
         }
@@ -383,16 +388,25 @@ final class PdfBoxPasswordSecurity {
     private static void validateCryptFilters(
             PDEncryption encryption,
             int version) throws DocumentFailure {
-        if (!COSName.STD_CF.equals(encryption.getStreamFilterName())
-                || !COSName.STD_CF.equals(encryption.getStringFilterName())) {
+        boolean attachments = PdfBoxEmbeddedFileEncryption.isAttachmentScope(encryption);
+        if (attachments) {
+            COSBase filters = encryption.getCOSObject().getDictionaryObject(COSName.CF);
+            if (!(filters instanceof COSDictionary) || filters instanceof COSStream
+                    || ((COSDictionary) filters).size() != 1 || !((COSDictionary) filters).containsKey(COSName.STD_CF)) {
+                throw unsupportedStructure();
+            }
+        }
+        if (!attachments && (!COSName.STD_CF.equals(encryption.getStreamFilterName())
+                || !COSName.STD_CF.equals(encryption.getStringFilterName()))) {
             throw unsupported(
                     "Only whole-document Standard crypt filters are supported.");
         }
         COSBase embedded = encryption.getCOSObject()
                 .getDictionaryObject(EFFECTIVE_FILE_FILTER);
-        if (embedded != null && !COSName.STD_CF.equals(embedded)) {
+        if (embedded != null && !COSName.STD_CF.equals(embedded)
+                && !(attachments && COSName.IDENTITY.equals(embedded))) {
             throw unsupported(
-                    "Attachment-only password encryption is unsupported.");
+                    "The embedded-file encryption routes are inconsistent.");
         }
         PDCryptFilterDictionary filter =
                 encryption.getStdCryptFilterDictionary();
@@ -400,7 +414,10 @@ final class PdfBoxPasswordSecurity {
             throw unsupported(
                     "The Standard crypt-filter dictionary is missing.");
         }
+        if (filter.getCOSObject() instanceof COSStream) { throw unsupportedStructure(); }
         COSName method = filter.getCryptFilterMethod();
+        COSBase type = filter.getCOSObject().getDictionaryObject(COSName.TYPE);
+        if (type != null && !COSName.getPDFName("CryptFilter").equals(type)) { throw unsupportedStructure(); }
         if (version == 4
                 && !COSName.AESV2.equals(method)
                 && !RC4_CRYPT_FILTER.equals(method)) {
@@ -414,7 +431,8 @@ final class PdfBoxPasswordSecurity {
         COSBase authEvent = filter.getCOSObject().getDictionaryObject(
                 COSName.getPDFName("AuthEvent"));
         if (authEvent != null
-                && !COSName.getPDFName("DocOpen").equals(authEvent)) {
+                && !COSName.getPDFName("DocOpen").equals(authEvent)
+                && !(attachments && COSName.getPDFName("EFOpen").equals(authEvent))) {
             throw unsupported(
                     "The Standard crypt-filter AuthEvent is unsupported.");
         }
@@ -423,7 +441,7 @@ final class PdfBoxPasswordSecurity {
         int expectedBytes = version == 5 ? 32 : 16;
         if (rawLength != null
                 && (!(rawLength instanceof COSInteger)
-                        || ((COSInteger) rawLength).intValue()
+                        || ((COSInteger) rawLength).longValue()
                                 != expectedBytes)) {
             throw unsupported(
                     "The Standard crypt-filter Length is malformed.");
@@ -552,6 +570,16 @@ final class PdfBoxPasswordSecurity {
             throw unsupported(
                     "The password-security revision is incompatible with the effective PDF version.");
         }
+        if (security.getEncryptionScope() == PasswordEncryptionScope.EMBEDDED_FILES_ONLY
+                && encryption.getCOSObject().containsKey(EFFECTIVE_FILE_FILTER)
+                && effective.ordinal() < PdfVersion.PDF_1_6.ordinal()) {
+            throw unsupported("The password-security revision is incompatible with the effective PDF version.");
+        }
+        if (security.getEncryptionScope() == PasswordEncryptionScope.EMBEDDED_FILES_ONLY
+                && algorithm == PasswordEncryptionAlgorithm.AES_256 && effective == PdfVersion.PDF_2_0
+                && !encryption.getStdCryptFilterDictionary().getCOSObject().containsKey(COSName.LENGTH)) {
+            throw unsupported("The Standard crypt-filter Length is malformed.");
+        }
 
         if (algorithm == PasswordEncryptionAlgorithm.RC4_40 && encryptionVersion == 1) {
             int count = extendedPermissionCount(
@@ -571,7 +599,8 @@ final class PdfBoxPasswordSecurity {
                     security.getDeclaredUserPermissions().getStandardMask() | 512);
             return new PasswordSecurityInfo(algorithm, revision, security.getEncryptionScope(),
                     security.getDeclaredUserPermissions(), permissions,
-                    permissions.equals(DocumentPermissions.unrestricted()) ? CredentialAuthority.UNRESTRICTED : CredentialAuthority.USER);
+                    security.getCredentialAuthority() == CredentialAuthority.NONE ? CredentialAuthority.NONE
+                            : permissions.equals(DocumentPermissions.unrestricted()) ? CredentialAuthority.UNRESTRICTED : CredentialAuthority.USER);
         }
         return security;
     }
@@ -581,20 +610,30 @@ final class PdfBoxPasswordSecurity {
             int requiredLevel) throws DocumentFailure {
         COSBase rawExtensions = document.getDocumentCatalog().getCOSObject()
                 .getDictionaryObject(COSName.EXTENSIONS);
-        if (!(rawExtensions instanceof COSDictionary)) {
+        if (!(rawExtensions instanceof COSDictionary) || rawExtensions instanceof COSStream) {
+            throw unsupported(
+                    "PDF 1.7 AES-256 requires a supported ADBE extension declaration.");
+        }
+        COSBase extensionsType = ((COSDictionary) rawExtensions).getDictionaryObject(COSName.TYPE);
+        if (extensionsType != null && !COSName.EXTENSIONS.equals(extensionsType)) {
             throw unsupported(
                     "PDF 1.7 AES-256 requires a supported ADBE extension declaration.");
         }
         COSBase rawAdobe = ((COSDictionary) rawExtensions)
                 .getDictionaryObject(COSName.ADBE);
-        if (!(rawAdobe instanceof COSDictionary)) {
+        if (!(rawAdobe instanceof COSDictionary) || rawAdobe instanceof COSStream) {
             throw unsupported(
                     "PDF 1.7 AES-256 requires a supported ADBE extension declaration.");
         }
         COSDictionary adobe = (COSDictionary) rawAdobe;
-        if (!"1.7".equals(adobe.getNameAsString(COSName.BASE_VERSION))
-                || adobe.getInt(COSName.EXTENSION_LEVEL, 0)
-                        < requiredLevel) {
+        COSBase adobeType = adobe.getDictionaryObject(COSName.TYPE);
+        COSBase baseVersion = adobe.getDictionaryObject(COSName.BASE_VERSION);
+        COSBase extensionLevel = adobe.getDictionaryObject(COSName.EXTENSION_LEVEL);
+        if ((adobeType != null && !COSName.getPDFName("DeveloperExtensions").equals(adobeType))
+                || !COSName.getPDFName("1.7").equals(baseVersion)
+                || !(extensionLevel instanceof COSInteger)
+                || ((COSInteger) extensionLevel).longValue() < requiredLevel
+                || ((COSInteger) extensionLevel).longValue() > Integer.MAX_VALUE) {
             throw unsupported(
                     "PDF 1.7 AES-256 requires a supported ADBE extension declaration.");
         }
@@ -655,13 +694,9 @@ final class PdfBoxPasswordSecurity {
             throw unsupported(
                     "Changing password security is supported only for REWRITE publication.");
         }
-        if (policy.getEncryptionScope() == PasswordEncryptionScope.EMBEDDED_FILES_ONLY) {
-            throw unsupported(
-                    "Attachment-only password encryption is unsupported.");
-        }
-        if (policy.getEncryptionScope() == PasswordEncryptionScope.ALL_EXCEPT_METADATA
+        if (policy.getEncryptionScope() != PasswordEncryptionScope.ALL_CONTENT
                 && policy.getAlgorithm() == PasswordEncryptionAlgorithm.RC4_40) {
-            throw unsupported("RC4-40 output cannot leave document metadata clear.");
+            throw unsupported("RC4-40 output cannot represent the selected encryption scope.");
         }
         if (policy.getAlgorithm() != PasswordEncryptionAlgorithm.AES_256
                 && legacySecurityMode
@@ -808,12 +843,8 @@ final class PdfBoxPasswordSecurity {
         }
         COSName streamFilter = encryption.getStreamFilterName();
         COSName stringFilter = encryption.getStringFilterName();
-        COSBase embeddedFilter = encryption.getCOSObject()
-                .getDictionaryObject(EFFECTIVE_FILE_FILTER);
         if (COSName.IDENTITY.equals(streamFilter)
-                && COSName.IDENTITY.equals(stringFilter)
-                && embeddedFilter instanceof COSName
-                && !COSName.IDENTITY.equals(embeddedFilter)) {
+                && COSName.IDENTITY.equals(stringFilter)) {
             return PasswordEncryptionScope.EMBEDDED_FILES_ONLY;
         }
         if (!encryption.isEncryptMetaData()) {
@@ -948,6 +979,9 @@ final class PdfBoxPasswordSecurity {
 
         void preflight(PDDocument document, WorkflowResourceContext resources) throws DocumentFailure {
             if (isPresent()) { PdfBoxMetadataEncryption.requireOutputFilters(document, resources); }
+            if (isPresent() && scope == PasswordEncryptionScope.EMBEDDED_FILES_ONLY) {
+                PdfBoxEmbeddedFileEncryption.attachments(document, resources);
+            }
             if (isPresent() && scope == PasswordEncryptionScope.ALL_EXCEPT_METADATA) {
                 PdfBoxMetadataEncryption.requireDocumentMetadata(document);
             }
@@ -1025,8 +1059,9 @@ final class PdfBoxPasswordSecurity {
                     protection.setPreferAES(false);
                 }
                 document.protect(protection);
-                handler = new CanonicalStandardSecurityHandler(protection,
-                        scope == PasswordEncryptionScope.ALL_EXCEPT_METADATA);
+                handler = new CanonicalStandardSecurityHandler(protection, scope,
+                        scope == PasswordEncryptionScope.EMBEDDED_FILES_ONLY
+                                ? PdfBoxEmbeddedFileEncryption.attachments(document, resources) : null);
                 document.getEncryption().setSecurityHandler(handler);
                 resources.checkpoint();
                 outputHandlers.add(handler);
@@ -1076,8 +1111,8 @@ final class PdfBoxPasswordSecurity {
                 expectedRevision = 4;
                 expectedLength = 128;
             } else if (algorithm == PasswordEncryptionAlgorithm.RC4_128) {
-                expectedVersion = scope == PasswordEncryptionScope.ALL_EXCEPT_METADATA ? 4 : 2;
-                expectedRevision = scope == PasswordEncryptionScope.ALL_EXCEPT_METADATA ? 4 : 3;
+                expectedVersion = scope != PasswordEncryptionScope.ALL_CONTENT ? 4 : 2;
+                expectedRevision = scope != PasswordEncryptionScope.ALL_CONTENT ? 4 : 3;
                 expectedLength = 128;
             } else {
                 expectedVersion = 1;
@@ -1240,13 +1275,15 @@ final class PdfBoxPasswordSecurity {
         private final StandardSecurityHandler delegate;
         private final StandardProtectionPolicy policy;
         private final boolean clearMetadata;
+        private final java.util.Set<COSStream> attachments;
         private COSStream documentMetadata;
 
         private CanonicalStandardSecurityHandler(
-                StandardProtectionPolicy policy, boolean clearMetadata) {
+                StandardProtectionPolicy policy, PasswordEncryptionScope scope, java.util.Set<COSStream> attachments) {
             super(policy);
             this.policy = policy;
-            this.clearMetadata = clearMetadata;
+            this.clearMetadata = scope != PasswordEncryptionScope.ALL_CONTENT;
+            this.attachments = attachments;
             delegate = new StandardSecurityHandler(policy);
         }
 
@@ -1276,6 +1313,13 @@ final class PdfBoxPasswordSecurity {
             }
             PDCryptFilterDictionary filter = document.getEncryption()
                     .getStdCryptFilterDictionary();
+            if (attachments != null) {
+                PDEncryption encryption = document.getEncryption();
+                encryption.setStreamFilterName(COSName.IDENTITY);
+                encryption.setStringFilterName(COSName.IDENTITY);
+                encryption.getCOSObject().setItem(EFFECTIVE_FILE_FILTER, COSName.STD_CF);
+                filter.getCOSObject().setItem(COSName.getPDFName("AuthEvent"), COSName.getPDFName("EFOpen"));
+            }
             if (filter != null) {
                 // PDF 2.0 requires the AESV3 byte count. ISO 32000-1 permits
                 // omission for AESV2; the backend emits noncanonical bit counts.
@@ -1288,8 +1332,14 @@ final class PdfBoxPasswordSecurity {
         public void encryptStream(COSStream stream, long objectNumber, int generation) throws IOException {
             try { PdfBoxMetadataEncryption.normalizeForNewEncryption(stream); }
             catch (DocumentFailure failure) { throw new IOException("The stream crypt-filter declaration is unsupported."); }
+            if (attachments != null && !attachments.contains(stream)) { return; }
             if (clearMetadata && stream == documentMetadata) { return; }
             super.encryptStream(stream, objectNumber, generation);
+        }
+
+        @Override
+        public void encryptString(COSString string, long objectNumber, int generation) throws IOException {
+            if (attachments == null) { super.encryptString(string, objectNumber, generation); }
         }
 
         private void prepareClearMetadataPermissions(PDEncryption encryption) throws IOException {

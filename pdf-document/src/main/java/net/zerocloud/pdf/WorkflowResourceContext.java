@@ -64,6 +64,8 @@ final class WorkflowResourceContext implements AutoCloseable {
     private final Set<COSStream> streamsPreflighted =
             Collections.newSetFromMap(
                     new IdentityHashMap<COSStream, Boolean>());
+    private final Map<COSStream, DocumentFailureCode> protectedStreams =
+            new IdentityHashMap<COSStream, DocumentFailureCode>();
     private final Map<COSStream, Long> materializableImageLengths =
             new IdentityHashMap<COSStream, Long>();
     private final Map<COSStream, Long> imagePixelsAccounted =
@@ -449,6 +451,7 @@ final class WorkflowResourceContext implements AutoCloseable {
             COSStream stream,
             OutputStream output) throws IOException {
         try {
+            requireStreamAccess(stream);
             PdfBoxHostileInputPreflight.decodeStream(stream, this, output);
         } catch (DocumentFailure failure) {
             throw new WorkflowResourceIOException(failure);
@@ -612,6 +615,23 @@ final class WorkflowResourceContext implements AutoCloseable {
 
     boolean markStreamPreflighted(COSStream stream) {
         return streamsPreflighted.add(stream);
+    }
+
+    void denyProtectedStream(COSStream stream, DocumentFailureCode code) throws DocumentFailure {
+        if (!protectedStreams.containsKey(stream)) { retainOwnedMemory(64); }
+        protectedStreams.put(stream, code);
+    }
+
+    boolean isProtectedStreamDenied(COSStream stream) { return protectedStreams.containsKey(stream); }
+
+    void requireStreamAccess(COSStream stream) throws DocumentFailure {
+        DocumentFailureCode code = protectedStreams.get(stream);
+        if (code != null) {
+            throw PdfBoxWorkflowEngine.versionFailure(code,
+                    code == DocumentFailureCode.CREDENTIAL_REQUIRED
+                            ? "An explicit credential is required to access the protected attachment."
+                            : "The established authority does not permit attachment extraction.");
+        }
     }
 
     void recordMaterializableImageLength(COSStream stream, long length) {

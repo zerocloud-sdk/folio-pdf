@@ -1078,12 +1078,12 @@ obligations:
     - itext7.kernel.pdf-version.hash-code
     - itext7.kernel.encryption-constants.do-not-encrypt-metadata
 - id: password-attachments
-  summary: Support and certify embedded-files-only input/output, crypt filters, authentication events and protected
-    attachment creation/reopen/extraction with ordinary content accessible.
+  summary: Support and certify embedded-files-only input/output, crypt filters, authentication events and protected attachment
+    creation/reopen/extraction with ordinary content accessible.
   capability: document.version-password-security.attachments
   parent-capability: document.version-password-security
   acceptance-profile: T32-password-embedded-files-only
-  profile-contract: capabilities/profiles/foundation-release.md
+  profile-contract: capabilities/evidence/T80-password-attachments.md
   kind: behavior
   slice: 80
   environments:
@@ -1106,7 +1106,77 @@ obligations:
   facade-families:
   - family: kernel reader/writer password security, permissions and scopes
     reference-prefix: com.itextpdf.kernel.pdf.
-    mappings: []
+    mappings:
+    - itext7.kernel.pdf-writer.constructor-string
+    - itext7.kernel.pdf-reader.constructor-string
+    - itext7.kernel.pdf-reader.close
+    - itext7.kernel.pdf-document.constructor-writer
+    - itext7.kernel.pdf-document.constructor-reader
+    - itext7.kernel.pdf-document.close
+    - itext7.kernel.pdf-document.constructor-named-sources-targets
+    - itext7.kernel.pdf-writer.constructor-output-stream
+    - itext7.kernel.pdf-reader.constructor-input-stream
+    - itext7.kernel.pdf-document.constructor-reader-writer
+    - itext7.kernel.pdf-document.constructor-named-sources-targets-version
+    - itext7.kernel.pdf-document.constructor-stamping
+    - itext7.kernel.pdf-document.constructor-named-stamping
+    - itext7.kernel.reader-properties.constructor
+    - itext7.kernel.reader-properties.close
+    - itext7.kernel.writer-properties.constructor
+    - itext7.kernel.writer-properties.close
+    - itext7.kernel.reader-properties.set-password
+    - itext7.kernel.reader-properties.set-credential
+    - itext7.kernel.writer-properties.set-pdf-version
+    - itext7.kernel.writer-properties.set-standard-encryption
+    - itext7.kernel.writer-properties.set-legacy-security-mode
+    - itext7.kernel.pdf-reader.constructor-string-properties
+    - itext7.kernel.pdf-reader.constructor-input-stream-properties
+    - itext7.kernel.pdf-writer.constructor-string-properties
+    - itext7.kernel.pdf-writer.constructor-output-stream-properties
+    - itext7.kernel.pdf-reader.is-encrypted
+    - itext7.kernel.pdf-reader.is-opened-with-full-permission
+    - itext7.kernel.pdf-reader.get-permissions
+    - itext7.kernel.pdf-reader.get-crypto-mode
+    - itext7.kernel.pdf-writer.close
+    - itext7.kernel.pdf-document.get-pdf-version
+    - itext7.kernel.encryption-constants.standard-encryption-40
+    - itext7.kernel.encryption-constants.standard-encryption-128
+    - itext7.kernel.encryption-constants.encryption-aes-128
+    - itext7.kernel.encryption-constants.encryption-aes-256
+    - itext7.kernel.encryption-constants.allow-degraded-printing
+    - itext7.kernel.encryption-constants.allow-printing
+    - itext7.kernel.encryption-constants.allow-modify-contents
+    - itext7.kernel.encryption-constants.allow-copy
+    - itext7.kernel.encryption-constants.allow-modify-annotations
+    - itext7.kernel.encryption-constants.allow-fill-in
+    - itext7.kernel.encryption-constants.allow-screenreaders
+    - itext7.kernel.encryption-constants.allow-assembly
+    - itext7.kernel.pdf-version.pdf-1-0
+    - itext7.kernel.pdf-version.pdf-1-1
+    - itext7.kernel.pdf-version.pdf-1-2
+    - itext7.kernel.pdf-version.pdf-1-3
+    - itext7.kernel.pdf-version.pdf-1-4
+    - itext7.kernel.pdf-version.pdf-1-5
+    - itext7.kernel.pdf-version.pdf-1-6
+    - itext7.kernel.pdf-version.pdf-1-7
+    - itext7.kernel.pdf-version.pdf-2-0
+    - itext7.kernel.pdf-version.from-string
+    - itext7.kernel.pdf-version.from-pdf-name
+    - itext7.kernel.pdf-version.to-pdf-name
+    - itext7.kernel.pdf-version.to-string
+    - itext7.kernel.pdf-version.compare-to
+    - itext7.kernel.pdf-version.compare-to-bridge
+    - itext7.kernel.pdf-version.equals
+    - itext7.kernel.pdf-version.hash-code
+    - itext7.kernel.encryption-constants.do-not-encrypt-metadata
+    - itext7.kernel.encryption-constants.embedded-files-only
+    - itext7.kernel.encryption-constants.only-embedded-files
+    - itext7.kernel.pdf-document.add-file-attachment
+    - itext7.kernel.pdf-document.get-file-attachments
+    - itext7.kernel.pdf-document.get-file-attachment
+    - itext7.kernel.pdf-document.get-document-info
+    - itext7.kernel.pdf-document.get-xmp-metadata-bounded
+
 - id: tables-base
   summary: Certify complete FIXED/AUTO single-area table layout, point/percentage/AUTO widths, row/column spans,
     minima, padding, borders and cell-content order.
@@ -1439,6 +1509,132 @@ obligations:
   native-only-reason: Repository integration control has no Reference Suite API counterpart; this control grants
     no exemption from any behavioral Facade obligation.
 limitations:
+- capability: document.version-password-security
+  sha256: fc32c89fcf8a7ca2147b15664475a2d25b6df928bdf238682c8b330a5cb4f745
+  disposition: retained-contract
+  reason: T80 preserves this bounded ownership, security or qualified interoperability contract; required successful cases
+    remain mandatory and are independently observed.
+  obligation: security
+- capability: document.version-password-security
+  sha256: 47f8942c4145f17e18eef6a94f1ed652b9bfcdd021b7193adb507a5e6b65a25d
+  disposition: retained-contract
+  reason: T80 preserves this bounded ownership, security or qualified interoperability contract; required successful cases
+    remain mandatory and are independently observed.
+  obligation: security
+- capability: document.version-password-security
+  sha256: 0c30122d23e1ae62af09c677496af26d97dde5bac62df52dfee0c14ad82fa536
+  disposition: retained-contract
+  reason: T80 preserves this bounded ownership, security or qualified interoperability contract; required successful cases
+    remain mandatory and are independently observed.
+  obligation: security
+- capability: document.version-password-security
+  sha256: 360646d25bf4f105cb2f14fa6b41c00001367fa2f4d86fe157d1f135ee87ceab
+  disposition: retained-contract
+  reason: T80 preserves this bounded ownership, security or qualified interoperability contract; required successful cases
+    remain mandatory and are independently observed.
+  obligation: security
+- capability: document.version-password-security
+  sha256: 95d4bcfda52be4ace5454c80879243b1835e2d549d1a28dc7f0febc864f75424
+  disposition: retained-contract
+  reason: T80 preserves this bounded ownership, security or qualified interoperability contract; required successful cases
+    remain mandatory and are independently observed.
+  obligation: security
+- capability: document.version-password-security
+  sha256: 296df264b0addb513109880cc2536e02ff760c8b8eecbbe290c7ce11556cfa7d
+  disposition: retained-contract
+  reason: T80 preserves this bounded ownership, security or qualified interoperability contract; required successful cases
+    remain mandatory and are independently observed.
+  obligation: security
+- capability: document.version-password-security
+  sha256: 6cce8df704863ba3ee98368166677f92a1cf04251abdde00e0a02020f1e36702
+  disposition: retained-contract
+  reason: T80 preserves this bounded ownership, security or qualified interoperability contract; required successful cases
+    remain mandatory and are independently observed.
+  obligation: security
+- capability: document.version-password-security
+  sha256: 1e688f8c48f55fc93f3d0c66827a4a2e9911824584c642a3262a2e3d03cfb100
+  disposition: retained-contract
+  reason: T80 preserves this bounded ownership, security or qualified interoperability contract; required successful cases
+    remain mandatory and are independently observed.
+  obligation: security
+- capability: document.version-password-security
+  sha256: 924bd76635e133f0338b598207e7a06e36c0058ce19e0a7c5eaa996333845a0e
+  disposition: retained-contract
+  reason: T80 preserves this bounded ownership, security or qualified interoperability contract; required successful cases
+    remain mandatory and are independently observed.
+  obligation: security
+- capability: document.version-password-security
+  sha256: a08d807422d2c3b17bcb7dd89c34696f7237fe312d805906e2fa6d0a23e61336
+  disposition: retained-contract
+  reason: T80 preserves this bounded ownership, security or qualified interoperability contract; required successful cases
+    remain mandatory and are independently observed.
+  obligation: security
+- capability: document.version-password-security
+  sha256: 575c33ed6495827667e55faf2d958938897c09b990f970482c18014103c475cb
+  disposition: retained-contract
+  reason: T80 preserves this bounded ownership, security or qualified interoperability contract; required successful cases
+    remain mandatory and are independently observed.
+  obligation: security
+- capability: document.version-password-security
+  sha256: 9ad3ebc91fd0f56122f71e3ee7d5000df32dff29c8b57a34548acab81d7c24e4
+  disposition: retained-contract
+  reason: T80 preserves this bounded ownership, security or qualified interoperability contract; required successful cases
+    remain mandatory and are independently observed.
+  obligation: security
+- capability: document.version-password-security
+  sha256: 2c66fcf223449aa87c0685e37d4c717ba301384f1122ac4b257f7f301f49fe95
+  disposition: retained-contract
+  reason: T80 preserves this bounded ownership, security or qualified interoperability contract; required successful cases
+    remain mandatory and are independently observed.
+  obligation: security
+- capability: document.version-password-security
+  sha256: 469ba99c7cbb73ddeb46f35cfd9fca6e05cb4d5f5e0406a4121d85f1ddc92223
+  disposition: retained-contract
+  reason: T80 preserves this bounded ownership, security or qualified interoperability contract; required successful cases
+    remain mandatory and are independently observed.
+  obligation: security
+- capability: document.version-password-security.attachments
+  sha256: 19b538649afbb9e44c47f6024a7ce29c6d6fb1846a801edf6145a0ecc4dc194e
+  disposition: retained-contract
+  reason: T80 preserves this bounded ownership, security or qualified interoperability contract; required successful cases
+    remain mandatory and are independently observed.
+  obligation: password-attachments
+- capability: document.version-password-security.attachments
+  sha256: e770b31e4b4350942952a0569b1c9d4af752e9554c01f590a76c6e304cfa70fb
+  disposition: retained-contract
+  reason: T80 preserves this bounded ownership, security or qualified interoperability contract; required successful cases
+    remain mandatory and are independently observed.
+  obligation: password-attachments
+- capability: document.version-password-security.attachments
+  sha256: 07673d296bb9451183ee12ffaea6cbca8a5e83be4c4e1f0f7336dc6c3f355f89
+  disposition: retained-contract
+  reason: T80 preserves this bounded ownership, security or qualified interoperability contract; required successful cases
+    remain mandatory and are independently observed.
+  obligation: password-attachments
+- capability: document.version-password-security.attachments
+  sha256: a5a73fe9af3e3e412897b21c1b7f42e282b0788682298a26a4fb993aae0e30fa
+  disposition: retained-contract
+  reason: T80 preserves this bounded ownership, security or qualified interoperability contract; required successful cases
+    remain mandatory and are independently observed.
+  obligation: password-attachments
+- capability: document.version-password-security.attachments
+  sha256: 80cba69936abff1ecd272c1b0ea73db75484c7118ad6f4f1a35dd131bee6b024
+  disposition: retained-contract
+  reason: T80 preserves this bounded ownership, security or qualified interoperability contract; required successful cases
+    remain mandatory and are independently observed.
+  obligation: password-attachments
+- capability: document.version-password-security.attachments
+  sha256: 66280078d1f0e3864133d14c04bdd82ad917d3b4201c555b1d9100f59f5784eb
+  disposition: retained-contract
+  reason: T80 preserves this bounded ownership, security or qualified interoperability contract; required successful cases
+    remain mandatory and are independently observed.
+  obligation: password-attachments
+- capability: document.version-password-security.attachments
+  sha256: b7e5615899603ae5d017e9a4e829c44ba73f7e7a9bcee0b394978301ff1be27d
+  disposition: retained-contract
+  reason: T80 preserves this bounded ownership, security or qualified interoperability contract; required successful cases
+    remain mandatory and are independently observed.
+  obligation: password-attachments
 - capability: document.blank.create-publish-reopen
   sha256: c74d5f619e07148a13af802a53d913d91aa478d5b3112e8ca703ab2691407344
   disposition: retained-contract
@@ -1680,94 +1876,6 @@ limitations:
   reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
     #77 must prove it without omitting required successful Foundation cases.'
   obligation: incremental
-- capability: document.version-password-security
-  sha256: fc32c89fcf8a7ca2147b15664475a2d25b6df928bdf238682c8b330a5cb4f745
-  disposition: retained-contract
-  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
-    #78 must prove it without omitting required successful Foundation cases.'
-  obligation: password-baseline
-- capability: document.version-password-security
-  sha256: 47f8942c4145f17e18eef6a94f1ed652b9bfcdd021b7193adb507a5e6b65a25d
-  disposition: retained-contract
-  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
-    #78 must prove it without omitting required successful Foundation cases.'
-  obligation: password-baseline
-- capability: document.version-password-security
-  sha256: 0c30122d23e1ae62af09c677496af26d97dde5bac62df52dfee0c14ad82fa536
-  disposition: retained-contract
-  reason: 'The source-traceable T78 profile implements required successful versions, legacy algorithms, revisions,
-    crypt-filter defaults and credential forms. Separate qualified standards and original-product evidence are mandatory
-    for the current candidate; #79/#80 scopes remain independently required.'
-  obligation: password-baseline
-- capability: document.version-password-security
-  sha256: 360646d25bf4f105cb2f14fa6b41c00001367fa2f4d86fe157d1f135ee87ceab
-  disposition: retained-contract
-  reason: 'The source-traceable T78 profile implements required successful versions, legacy algorithms, revisions,
-    crypt-filter defaults and credential forms. Separate qualified standards and original-product evidence are mandatory
-    for the current candidate; #79/#80 scopes remain independently required.'
-  obligation: password-baseline
-- capability: document.version-password-security
-  sha256: 95d4bcfda52be4ace5454c80879243b1835e2d549d1a28dc7f0febc864f75424
-  disposition: retained-contract
-  reason: 'The source-traceable T78 profile implements required successful versions, legacy algorithms, revisions,
-    crypt-filter defaults and credential forms. Separate qualified standards and original-product evidence are mandatory
-    for the current candidate; #79/#80 scopes remain independently required.'
-  obligation: password-baseline
-- capability: document.version-password-security
-  sha256: 8d735eba4cde7ad6a6c2eaf9f43512d7d33a8d157058b46d1cb05006abc56f13
-  disposition: release-blocker
-  reason: 'The baseline and clear-metadata children have separate required certification. Embedded-files-only input/output
-    remains unimplemented and uncertified; #80 must complete the password-attachments obligation.'
-  obligation: password-attachments
-- capability: document.version-password-security
-  sha256: 296df264b0addb513109880cc2536e02ff760c8b8eecbbe290c7ce11556cfa7d
-  disposition: retained-contract
-  reason: 'The source-traceable T78 profile implements required successful versions, legacy algorithms, revisions,
-    crypt-filter defaults and credential forms. Separate qualified standards and original-product evidence are mandatory
-    for the current candidate; #79/#80 scopes remain independently required.'
-  obligation: password-baseline
-- capability: document.version-password-security
-  sha256: 6cce8df704863ba3ee98368166677f92a1cf04251abdde00e0a02020f1e36702
-  disposition: retained-contract
-  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
-    #78 must prove it without omitting required successful Foundation cases.'
-  obligation: password-baseline
-- capability: document.version-password-security
-  sha256: 1e688f8c48f55fc93f3d0c66827a4a2e9911824584c642a3262a2e3d03cfb100
-  disposition: retained-contract
-  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
-    #78 must prove it without omitting required successful Foundation cases.'
-  obligation: password-baseline
-- capability: document.version-password-security
-  sha256: 924bd76635e133f0338b598207e7a06e36c0058ce19e0a7c5eaa996333845a0e
-  disposition: retained-contract
-  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
-    #78 must prove it without omitting required successful Foundation cases.'
-  obligation: password-baseline
-- capability: document.version-password-security
-  sha256: a08d807422d2c3b17bcb7dd89c34696f7237fe312d805906e2fa6d0a23e61336
-  disposition: retained-contract
-  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
-    #78 must prove it without omitting required successful Foundation cases.'
-  obligation: password-baseline
-- capability: document.version-password-security
-  sha256: 575c33ed6495827667e55faf2d958938897c09b990f970482c18014103c475cb
-  disposition: retained-contract
-  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
-    #78 must prove it without omitting required successful Foundation cases.'
-  obligation: password-baseline
-- capability: document.version-password-security
-  sha256: 9ad3ebc91fd0f56122f71e3ee7d5000df32dff29c8b57a34548acab81d7c24e4
-  disposition: retained-contract
-  reason: 'This preserves the explicit ownership, bounded execution, representation or safe-preservation contract;
-    #78 must prove it without omitting required successful Foundation cases.'
-  obligation: password-baseline
-- capability: document.version-password-security
-  sha256: 2c66fcf223449aa87c0685e37d4c717ba301384f1122ac4b257f7f301f49fe95
-  disposition: later-release
-  reason: Public-key encryption, FIPS and signature creation/validation are explicitly outside Foundation; password
-    security and both execution profiles remain required.
-  obligation: password-baseline
 - capability: document.hostile-input-limits
   sha256: ef12e8aa72339db4f0a095a3c7ef98947b8d9674f2e139ddc1b9fdb1e0c5e09c
   disposition: retained-contract

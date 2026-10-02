@@ -795,7 +795,9 @@ final class PdfBoxDocumentSession implements DocumentSession {
         }
 
         if (metadataOperations.supportsQuery(query)) {
-            PdfBoxPermissionPolicy.requireExtraction(securityInfo);
+            if (query instanceof net.zerocloud.pdf.query.ReadEmbeddedFile) {
+                PdfBoxPermissionPolicy.requireAttachmentExtraction(securityInfo);
+            } else { PdfBoxPermissionPolicy.requireExtraction(securityInfo); }
             outcomeCapabilityId = PdfBoxMetadataOperations.CAPABILITY_ID;
             return queryResult(metadataOperations.evaluate(query));
         }

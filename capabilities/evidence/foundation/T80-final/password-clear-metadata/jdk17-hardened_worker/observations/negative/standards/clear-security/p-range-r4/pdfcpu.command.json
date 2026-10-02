@@ -1,0 +1,29 @@
+{
+  "command": [
+    "@repository/.build-cache/pdfcpu/t78-r1/pdfcpu",
+    "validate",
+    "--mode",
+    "strict",
+    "--conf",
+    "disable",
+    "--offline",
+    "--opw",
+    "@credential",
+    "@repository/capabilities/profiles/T79-controls/p-range-r4.pdf"
+  ],
+  "exit-code": 1,
+  "limit": null,
+  "maximum-output-bytes": 16777216,
+  "privacy-projection": "tool-text-v1",
+  "stderr-sha256": "7768c58392a6ae019bb775f3518bb2ed5fc565f868de9f30949ee301f4c53469",
+  "stdin": "none",
+  "stdout-sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "supervisor": [
+    "/bin/sh",
+    "-c",
+    "trap 'kill -KILL \"-$$\"' TERM INT HUP; exec 3<&0; \"$@\" <&3 3<&- & child=$!; exec 3<&- 0<&-; wait \"$child\"; result=$?; exit \"$result\"",
+    "folio-t78-tool",
+    "@tool-command"
+  ],
+  "timeout-seconds": 30
+}

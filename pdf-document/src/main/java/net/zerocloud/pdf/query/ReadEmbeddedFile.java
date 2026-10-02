@@ -9,6 +9,9 @@ import net.zerocloud.pdf.EmbeddedFileData;
  * Reads one embedded file as a detached immutable value after all preceding
  * session commands.
  *
+ * <p>For embedded-files-only encryption, clear document access does not grant
+ * attachment access. This query requires an explicit valid credential and
+ * effective content-extraction permission.</p>
  * <p>The caller declares the maximum decoded byte count; larger content
  * fails with
  * {@link net.zerocloud.pdf.DocumentFailureCode#METADATA_LIMIT_EXCEEDED}.
