@@ -990,5 +990,34 @@ Linux x86-64、JDK 8/11/17/21、Native `IN_PROCESS` 及对应 Facade `IN_PROCESS
 和 Publication Receipt 映射，不增设 Reference Suite 没有的策略接口。
 
 保证仍是可信进程内的协作式检查。计量值不代表 JVM 堆、进程 RSS、任意回调或
-后端/原生代码的强制终止，也不代表沙箱。Worker 隔离、恢复及规模认证属于后续
-独立义务。详细默认值、稳定错误码和边界见[资源策略指南](../hostile-input-policy.md)。
+后端/原生代码的强制终止，也不代表沙箱。Worker 边界有独立的 T21 认证；恢复及规模
+仍属于 #83 的独立义务。详细默认值、稳定错误码和边界见[资源策略指南](../hostile-input-policy.md)。
+
+## T21 Hardened Worker 边界认证
+
+#82 认证基础 `document.hardened-worker`，范围严格限定证据索引中的 Ubuntu 24.04 /
+Linux x86-64、Eclipse Adoptium JDK 8/11/17/21 精确构建与不可变镜像。请求显式选择
+`WorkflowExecutionProfile.HARDENED_WORKER`；默认仍是 `IN_PROCESS`。回调、进度监听、
+Provider、调用方流及最终 Target 发布仍在父进程，Worker 只处理封闭 Command/Query
+和项目数据。现有 Facade 实际运行 IN_PROCESS，不增加 Reference Suite 没有的 Worker
+控制映射，也不能把 Native Worker 认证归于 Facade。
+
+运行前需要可执行的绝对 Java 路径、Linux `/usr/bin/prlimit`、POSIX 所有者权限、
+可安装 Worker Security Manager 的运行时，以及未混入应用/验收代码的精确产品
+JAR、类清单和依赖哈希。JDK 17/21 由启动器加入 `-Djava.security.manager=allow`。
+认证把 JDK 放在 `/opt/java/openjdk`、产品依赖放在 `/workspace/target/foundation-0.1.0`，
+均在事务临时目录父路径之外。前提不满足时应处理 `WORKER_UNAVAILABLE`，不能静默
+回退为可信进程内执行。
+
+五条独立记录分别覆盖 syntax、standards、semantic、visual 和边界 contract。
+认证保留精确测试清单、认证帧负例、真实子进程、启动参数、清空的环境、有效
+CPU/文件描述符上限、内存与临时存储的聚合准入、强制耗时终止、收据及清理。
+JDK 8/11 没有 Java Unix-domain 传输 API，证据明确记录该限制；JDK 17/21 才记录
+Worker 的实际 Unix-domain 连接/监听拒绝。独立策略验收 JVM 与允许操作的控制用于
+确认链接和 Unix 权限策略，不进入产品 Worker 的运行类路径。
+
+计量内存不等于 JVM 堆或进程 RSS，堆/direct-memory 上限也不覆盖全部原生分配。
+这不认证内核沙箱、容器、任意字节码或物理安全擦除。Windows/macOS 未认证，
+且不是 Foundation 0.1.0 的发布阻断项。T22 恢复/规模继续保持 experimental。
+复现命令、所有权和清理边界见[T21 认证契约](../t21-certification.md)及
+[英文 Worker 指南](../hardened-worker.md)。

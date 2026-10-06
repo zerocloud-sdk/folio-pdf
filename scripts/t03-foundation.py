@@ -146,6 +146,22 @@ ARTIFACT_CONTRACT_TESTS = tuple(
     'net.zerocloud.pdf.migration.itext7.contract.' + name
     for name in ('JarContractIT', 'ClasspathExclusivityIT'))
 CERTIFICATION_CASES = {
+    'worker': {
+        'profile': 'T21-hardened-worker', 'label': 'T21', 'test-count': 137,
+        'test-main': 'net.zerocloud.pdf.acceptance.T21ContractTestCommand',
+        'test-classes': ['net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest',
+            'net.zerocloud.pdf.consumer.HardenedWorkerWorkflowTest',
+            'net.zerocloud.pdf.HardenedWorkerIsolationTest', 'net.zerocloud.pdf.WorkerProtocolBoundaryTest',
+            'net.zerocloud.pdf.HardenedWorkerRecoveryFaultTest', 'net.zerocloud.pdf.T21BoundaryObservationCases',
+            'net.zerocloud.pdf.itext7.consumer.BlankDocumentFacadeTest'],
+        'execution-profiles': ('HARDENED_WORKER',), 'chains': CHAINS + ('contract',),
+        'facade-execution-profile': 'IN_PROCESS', 'standards-producer': 'arlington',
+        'contract-timeout': 600, 'recorder-timeout': 900,
+        'workflow-policy': 'Exact shared IN_PROCESS/HARDENED_WORKER public case inventory; real authenticated framed endpoint, actual child launch and resource controls; permitted host controls; ordered safe failure, ownership, publication and cleanup; separate qualified product Security Manager controls; Facade executes IN_PROCESS; no recovery/scale or OS sandbox certification',
+        'fonts': 'none; independently inspected published outcomes are resource-free one-page PDFs',
+        'configuration-paths': ['capabilities/profiles/T21-hardened-worker', 'scripts/t21-evidence-pin.properties',
+            'capabilities/profiles/T03-standards', 'capabilities/profiles/T03-document-blank-visual.properties',
+            'capabilities/expected/T03-document-blank-144dpi-srgb.png']},
     'limits': {
         'profile': 'T20-hostile-input-limits', 'label': 'T20', 'test-count': 133,
         'test-main': 'net.zerocloud.pdf.acceptance.T20ContractTestCommand',
@@ -702,6 +718,9 @@ def append_source_visual(root, run, report):
 
 
 def collect_reports(root, run, obligation='transactions', execution_profile=None):
+    if obligation == 'worker':
+        from t21_foundation_reports import collect_reports as collect_worker_reports
+        return collect_worker_reports(root, run, execution_profile)
     if obligation == 'limits':
         from t20_foundation_reports import collect_reports as collect_limit_reports
         return collect_limit_reports(root, run, execution_profile)
@@ -901,13 +920,13 @@ def merge_evidence(root, previous, fresh, identities):
             case = certification_case(certification['obligation'])
             if chains != set(case.get('chains', CHAINS)):
                 raise ValueError('Incomplete retained certification')
-            if certification['obligation'] == 'limits':
-                if certification['execution-profile'] != 'IN_PROCESS':
-                    raise ValueError('T20 certifies only actual IN_PROCESS execution')
+            if certification['obligation'] in ('limits', 'worker'):
+                if certification['execution-profile'] not in case['execution-profiles']:
+                    raise ValueError('Certification execution profile changed')
                 for item in certification['records']:
                     record = verified(item, kind='certification')
                     if record.get('producer') != certification_producers(case)[record['chain']]:
-                        raise ValueError('T20 producer label changed')
+                        raise ValueError('Certification producer label changed')
             retained.append(copy.deepcopy(certification))
             if certification['environment'] not in environments:
                 environments[certification['environment']] = old_environment
@@ -1124,8 +1143,8 @@ def certification_tools():
          'pin': 'scripts/imagemagick-pin.properties',
          'hash-key': 'IMAGEMAGICK_EXECUTABLE_SHA256', 'chains': ['visual']}]
     project = [{'id': 'folio-pdf-' + label, 'kind': 'project-test',
-                'version': '0.1.0', 'chains': ['semantic', 'contract'] if label == 't20' else ['semantic']}
-               for label in ('t03', 't09', 't10', 't11', 't12', 't13', 't14', 't15', 't20', 't78', 't79', 't80')]
+                'version': '0.1.0', 'chains': ['semantic', 'contract'] if label in ('t20', 't21') else ['semantic']}
+               for label in ('t03', 't09', 't10', 't11', 't12', 't13', 't14', 't15', 't20', 't21', 't78', 't79', 't80')]
     return external + project
 
 
@@ -1142,6 +1161,8 @@ cat /etc/os-release > "$out/os-release.txt"
 cat "$JAVA_HOME/release" > "$out/jdk-release.txt"
 java -XshowSettings:properties -version > "$out/java-version.txt" 2>&1
 sha256sum "$JAVA_HOME/bin/java" > "$out/java-executable.txt"
+/usr/bin/prlimit --version > "$out/prlimit-version.txt"
+sha256sum /usr/bin/prlimit > "$out/prlimit-executable.txt"
 uname -r > "$out/kernel.txt"
 uname -m > "$out/architecture.txt"
 /usr/bin/python3.12 scripts/t29-native-observation.py /folio-harfbuzz/bin/folio-harfbuzz > "$out/native-observation.json"
@@ -1153,9 +1174,9 @@ uname -m > "$out/architecture.txt"
     (directory / 'image-digest.txt').write_text(digest + '\n')
     os_release = {key: value.strip('"') for key, value in properties(directory / 'os-release.txt').items()}
     jdk = {key: value.strip('"') for key, value in properties(directory / 'jdk-release.txt').items()}
-    runtime = next(line.split('=', 1)[1].strip()
-                   for line in (directory / 'java-version.txt').read_text().splitlines()
-                   if line.strip().startswith('java.runtime.version ='))
+    java_properties = {key.strip(): value.strip()
+                       for key, value in properties(directory / 'java-version.txt').items()}
+    runtime = java_properties['java.runtime.version']
     major = int(runtime.split('.')[1] if runtime.startswith('1.') else runtime.split('.')[0])
     architecture = (directory / 'architecture.txt').read_text().strip()
     actual = {'os': os_release['ID'], 'os-version': os_release['VERSION_ID'],
@@ -1186,6 +1207,10 @@ uname -m > "$out/architecture.txt"
             observed.pop(internal, None)
         tools.append(observed)
     return {'schema-version': 1, 'profile': profile['id'], 'identity': identity,
+            'java-runtime': {'vendor': java_properties['java.vendor'], 'build': runtime},
+            'worker-launcher': {'path': '/usr/bin/prlimit',
+                'sha256': (directory / 'prlimit-executable.txt').read_text().split()[0],
+                'version': (directory / 'prlimit-version.txt').read_text().strip()},
             'host': {'kernel': (directory / 'kernel.txt').read_text().strip(), 'architecture': identity['architecture']},
             'native-engine': engine, 'tools': tools}
 
@@ -1211,11 +1236,21 @@ def execution_plan(root, scope, image, helper, cp, case, execution):
         '-DtestClassesPath=/workspace/target/foundation-0.1.0/harness/facade-tests.jar']
     test_main = case.get('test-main', 'org.junit.runner.JUnitCore')
     test_args = [str(case['test-count'])] if case['label'] == 'T20' else []
+    support = []
+    if case['label'] == 'T21':
+        test_args = ['/workspace/capabilities/profiles/T21-hardened-worker/mandatory-tests.txt']
+        test_options += ['-Dfolio.t21.observationOutput=' + inside + '/boundary-observations']
+        prerequisite = command.copy()
+        prerequisite[-1:-1] = ['--volume', str(root / 'capabilities/profiles/T21-hardened-worker/disabled-prlimit')
+                              + ':/usr/bin/prlimit:ro']
+        support = [prerequisite + ['java'] + options + ['-cp', cp,
+            'net.zerocloud.pdf.acceptance.T21UnavailableLaunchCommand', inside + '/prerequisite-control']]
     test_command = command + ['java'] + options + test_options + ['-cp', cp, test_main] + test_args + case['test-classes']
     return {'recorder-command': evidence_command, 'contract-tests-command': test_command,
             'preservation-command': command + ['/usr/bin/python3.12', '/workspace/scripts/t03-foundation.py',
                 'preservation', inside + '/observations', '--root', '/workspace'] if case['label'] == 'T09' else [],
             'required-test-count': case['test-count'], 'java-options': options,
+            **({'support-commands': support} if support else {}),
             'settings': {'workflow-policy': case['workflow-policy'], 'fonts': case['fonts'],
                          'providers': 'none; Stable Facade execution is ' + case['facade-execution-profile']}}
 
@@ -1300,6 +1335,7 @@ def certify(root, output, contract, helper, obligation='transactions'):
                       'execution-profile': execution, 'command': evidence_command, 'java-options': options,
                       'locale': 'en_US / C.UTF-8', 'timezone': 'UTC',
                       'settings': plan['settings'],
+                      **({'support-commands': plan['support-commands']} if 'support-commands' in plan else {}),
                       'inputs': configuration_inputs}
             configuration = scope / 'execution.yaml'
             write_json(configuration, config)
@@ -1308,6 +1344,8 @@ def certify(root, output, contract, helper, obligation='transactions'):
                        timeout=case.get('contract-timeout', 300))
             if 'OK (' + str(case['test-count']) + ' tests)' not in (scope / 'contract-tests.txt').read_text():
                 raise ValueError('The complete ' + case['label'] + ' consumer/artifact contract suite did not execute')
+            for index, support in enumerate(plan.get('support-commands', [])):
+                run_logged(support, scope / ('support-' + str(index) + '.txt'), cwd=root, timeout=60)
             run_logged(evidence_command, scope / 'recorder.txt', cwd=root,
                        timeout=case.get('recorder-timeout', 300))
             reports = collect_reports(root, scope / 'observations', obligation, execution)
@@ -1386,10 +1424,10 @@ def main():
         import json
         if args.output is None:
             parser.error('collect requires an observation directory')
-        if args.obligation in ('metadata', 'annotations', 'text', 'images', 'incremental', 'limits', 'password-baseline', 'password-clear-metadata', 'password-attachments') and args.execution_profile is None:
+        if args.obligation in ('metadata', 'annotations', 'text', 'images', 'incremental', 'limits', 'worker', 'password-baseline', 'password-clear-metadata', 'password-attachments') and args.execution_profile is None:
             parser.error(args.obligation + ' collect requires --execution-profile')
-        if args.obligation not in ('metadata', 'annotations', 'text', 'images', 'incremental', 'limits', 'password-baseline', 'password-clear-metadata', 'password-attachments') and args.execution_profile is not None:
-            parser.error('--execution-profile applies only to metadata, annotations, text, images, incremental password-baseline, password-clear-metadata and password-attachments collect')
+        if args.obligation not in ('metadata', 'annotations', 'text', 'images', 'incremental', 'limits', 'worker', 'password-baseline', 'password-clear-metadata', 'password-attachments') and args.execution_profile is not None:
+            parser.error('--execution-profile applies only to metadata, annotations, text, images, incremental, limits, worker and password collect')
         print(json.dumps(collect_reports(root, (root / args.output).resolve(), args.obligation,
                                          args.execution_profile), indent=2))
         return

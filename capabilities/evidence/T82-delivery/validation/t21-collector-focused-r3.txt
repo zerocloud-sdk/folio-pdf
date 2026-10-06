@@ -1,0 +1,14 @@
+.....F...
+======================================================================
+FAIL: test_public_coverage_receipts_safe_failures_and_facade_identity_are_closed (test_t21_foundation.T21FoundationTest.test_public_coverage_receipts_safe_failures_and_facade_identity_are_closed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/tests/test_t21_foundation.py", line 82, in test_public_coverage_receipts_safe_failures_and_facade_identity_are_closed
+    self.assertIn(before, original); path.write_text(original.replace(before, after)); seal(run)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+AssertionError: 'ordered-publication.receipts=COMMITTED:false,FAILED:true,NOT_ATTEMPTED:false' not found in 'execution-profile=HARDENED_WORKER\ncase-count=8\nordered-prefix.result=pass\nordered-prefix.cleanup=pass\nordered-prefix.code=PAGE_POSITION_INVALID\nordered-prefix.diagnostic=A fixed content-free diagnostic.\nordered-prefix.pages=1\nordered-prefix.barrier-pages=2\nordered-prefix.receipts=result:COMMITTED:false\nordered-prefix.progress=STARTED,WORK_STARTED,WORK_COMPLETED,STAGED,VALIDATED,PUBLICATION_STARTED,TARGET_COMMITTED,COMPLETED\nordered-prefix.expired-view=pass\ncaller-ownership.result=pass\ncaller-ownership.cleanup=pass\ncaller-ownership.input-open=true\ncaller-ownership.output-open=true\ncaller-ownership.pages=1\ncaller-ownership.receipts=result:COMMITTED:false\nchecked-failure.result=pass\nchecked-failure.cleanup=pass\nchecked-failure.code=PAGE_POSITION_INVALID\nchecked-failure.diagnostic=A fixed content-free diagnostic.\nchecked-failure.receipts=result:NOT_ATTEMPTED:false\nchecked-failure.sentinel=unchanged\ncancelled.result=pass\ncancelled.cleanup=pass\ncancelled.code=WORKFLOW_CANCELLED\ncancelled.diagnostic=A fixed content-free diagnostic.\ncancelled.receipts=result:NOT_ATTEMPTED:false\ncancelled.sentinel=unchanged\ndeadline.result=pass\ndeadline.cleanup=pass\ndeadline.code=DEADLINE_EXCEEDED\ndeadline.diagnostic=A fixed content-free diagnostic.\ndeadline.receipts=result:NOT_ATTEMPTED:false\ndeadline.sentinel=unchanged\ncaller-failure.result=pass\ncaller-failure.cleanup=pass\ncaller-failure.same-exception=true\ncaller-failure.sentinel=unchanged\nordered-publication.result=pass\nordered-publication.cleanup=pass\nordered-publication.code=PUBLICATION_FAILED\nordered-publication.diagnostic=A fixed content-free diagnostic.\nordered-publication.receipts=first:COMMITTED:false,current:FAILED:true,later:NOT_ATTEMPTED:false\nordered-publication.output-open=true\nordered-publication.sentinel=unchanged\nowned-cleanup.result=pass\nowned-cleanup.cleanup=pass\nowned-cleanup.empty=true\n'
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.134s
+
+FAILED (failures=1)

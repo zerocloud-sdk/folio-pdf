@@ -1,0 +1,42 @@
+{
+  "command": [
+    "python3",
+    "-B",
+    "scripts/t03-foundation.py",
+    "collect",
+    "capabilities/evidence/foundation/T82-development-r2/jdk17-hardened_worker/observations",
+    "--obligation",
+    "worker",
+    "--execution-profile",
+    "HARDENED_WORKER"
+  ],
+  "repository-command": [
+    "python3",
+    "-B",
+    "scripts/t03-foundation.py",
+    "collect",
+    "capabilities/evidence/foundation/T82-development-r2/jdk17-hardened_worker/observations",
+    "--obligation",
+    "worker",
+    "--execution-profile",
+    "HARDENED_WORKER"
+  ],
+  "cwd": "/workspace/folio-pdf",
+  "actual-declared-image": null,
+  "started": "2026-10-06T07:10:29.188579+00:00",
+  "environment": {
+    "JAVA_HOME": "/workspace/folio-pdf/.build-cache/t82-jdk17",
+    "MAVEN_USER_HOME": "/workspace/folio-pdf/.build-cache/maven",
+    "MAVEN_OPTS": "-Dmaven.repo.local=/workspace/folio-pdf/.build-cache/maven/repository",
+    "PYTHONPATH": "/workspace/folio-pdf/.build-cache/foundation-host-python",
+    "FOLIO_FOUNDATION_PYTHON_ROOT": "/workspace/folio-pdf/.build-cache/foundation-python",
+    "FOLIO_HARFBUZZ_HELPER": "/workspace/folio-pdf/.build-cache/t81-provision/folio-harfbuzz/bin/folio-harfbuzz",
+    "CONTAINERS_STORAGE_CONF": "/workspace/folio-pdf/.build-cache/t82-storage.conf"
+  },
+  "finished": "2026-10-06T07:12:59.515943+00:00",
+  "exit-code": 0,
+  "log": {
+    "path": "capabilities/evidence/T82-delivery/validation/t21-development-cli-collect-r1.txt",
+    "sha256": "a6e7d2b1e6317c05279b1da5cf79dd4707d765467dd791eb040df529c398b781"
+  }
+}

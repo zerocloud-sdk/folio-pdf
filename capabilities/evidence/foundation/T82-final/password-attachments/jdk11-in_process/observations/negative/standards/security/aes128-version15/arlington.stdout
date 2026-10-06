@@ -1,0 +1,13 @@
+Processing "@repository/capabilities/profiles/T78-controls/aes128-version15.pdf" to stdout BEGIN - TestGrammar v0.81 built Sep  8 2026 00:00:00 (GNU-C linux release) pdfium
+Arlington TSV data: "@repository/.build-cache/t78-arlington-model/output"
+PDF: "@repository/capabilities/profiles/T78-controls/aes128-version15.pdf"
+Info: Traditional trailer dictionary detected.
+Info: Encrypted PDF
+Info: Header is version PDF 1.5
+Info: Processing as PDF 1.5
+       8:         Trailer->Encrypt (as EncryptionStandard)->CF (as CryptFilterMap)->StdCF (as CryptFilter)
+Error: special case not correct: CFM (CryptFilter) in PDF 1.5 should be: name [fn:Eval(((@CFM!=AESV2) || fn:SinceVersion(1.6)) && ((@CFM!=AESV3) || fn:IsPresent(Length)))] and is name==AESV2
+Info: Latest Arlington object was PDF 1.5 (EncryptionStandard/CF) compared using PDF 1.5
+END
+
+DONE - 1 files processed

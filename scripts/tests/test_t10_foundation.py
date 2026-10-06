@@ -52,8 +52,9 @@ class PagesCertificationCaseTest(unittest.TestCase):
         self.assertEqual('0.81-folio-t10-r1', by_id['arlington-t10-r1']['version'])
         self.assertIn('.build-cache/arlington/t10-r1/',
                       by_id['arlington-t10-r1']['path'])
-        self.assertEqual({'folio-pdf-t03', 'folio-pdf-t09', 'folio-pdf-t10', 'folio-pdf-t11', 'folio-pdf-t12', 'folio-pdf-t13', 'folio-pdf-t14', 'folio-pdf-t15', 'folio-pdf-t20', 'folio-pdf-t78', 'folio-pdf-t79', 'folio-pdf-t80'},
+        self.assertEqual({'folio-pdf-t03', 'folio-pdf-t09', 'folio-pdf-t10', 'folio-pdf-t11', 'folio-pdf-t12', 'folio-pdf-t13', 'folio-pdf-t14', 'folio-pdf-t15', 'folio-pdf-t20', 'folio-pdf-t21', 'folio-pdf-t78', 'folio-pdf-t79', 'folio-pdf-t80'},
                          {item['id'] for item in tools if item['kind'] == 'project-test'})
+        self.assertEqual(['semantic', 'contract'], by_id['folio-pdf-t21']['chains'])
 
     def test_pages_plan_has_eight_native_runs_and_fixed_facade_mode(self):
         import json

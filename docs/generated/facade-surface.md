@@ -2321,7 +2321,7 @@ No preview additions (included with all stable surfaces) are declared.
 
 - Behavioral capability: [`document.hardened-worker`](capability-matrix.md#capability-document_dot_hardened_dash_worker)
 - Deferred ticket: `T21`
-- Reason: Authenticated local Worker transport, launcher policy and command/query barriers are project-specific execution controls with no Reference Suite counterpart. The same document behavior remains required through its matching Facade. Certification remains required under #82.
+- Reason: Authenticated local Worker transport, launcher policy and command/query barriers are project-specific execution controls with no Reference Suite counterpart. The same document behavior remains required through its matching Facade. Issue #82 retains actual IN_PROCESS public Facade outcomes on all four declared Ubuntu/JDK tuples alongside the Native HARDENED_WORKER boundary; current candidate identities and all five Foundation chains remain mandatory.
 
 <a id="excluded-capability-document_dot_hardened_dash_worker_dot_recovery_dash_scale"></a>
 ### `document.hardened-worker.recovery-scale`

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="54.207" tests="64" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="17"/>
+    <property name="folio.harfBuzzHelper" value="/folio-harfbuzz/bin/folio-harfbuzz"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="/workspace/pdf-document/target/test-classes:/workspace/pdf-document/target/classes:/workspace/pdf-provider-contract/target/pdf-provider-contract-0.1.0-SNAPSHOT.jar:/workspace/.build-cache/maven/repository/org/apache/pdfbox/pdfbox/3.0.8/pdfbox-3.0.8.jar:/workspace/.build-cache/maven/repository/org/apache/pdfbox/pdfbox-io/3.0.8/pdfbox-io-3.0.8.jar:/workspace/.build-cache/maven/repository/org/apache/pdfbox/fontbox/3.0.8/fontbox-3.0.8.jar:/workspace/.build-cache/maven/repository/commons-logging/commons-logging/1.4.0/commons-logging-1.4.0.jar:/workspace/.build-cache/maven/repository/com/ibm/icu/icu4j/77.1/icu4j-77.1.jar:/workspace/.build-cache/maven/repository/uk/org/okapibarcode/okapibarcode/0.5.6/okapibarcode-0.5.6.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/imageio/imageio-tiff/3.14.0/imageio-tiff-3.14.0.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/imageio/imageio-core/3.14.0/imageio-core-3.14.0.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/imageio/imageio-metadata/3.14.0/imageio-metadata-3.14.0.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/common/common-lang/3.14.0/common-lang-3.14.0.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/common/common-io/3.14.0/common-io-3.14.0.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/common/common-image/3.14.0/common-image-3.14.0.jar:/workspace/.build-cache/maven/repository/junit/junit/4.13.2/junit-4.13.2.jar:/workspace/.build-cache/maven/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/workspace/.build-cache/maven/repository/com/google/zxing/core/3.5.3/core-3.5.3.jar:/workspace/pdf-conversion/target/pdf-conversion-0.1.0-SNAPSHOT.jar:"/>
+    <property name="java.vm.vendor" value="Eclipse Adoptium"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="sun.font.fontmanager" value="sun.awt.X11FontManager"/>
+    <property name="java.vendor.url" value="https://adoptium.net/"/>
+    <property name="user.timezone" value="UTC"/>
+    <property name="os.name" value="Linux"/>
+    <property name="java.vm.specification.version" value="17"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="sun.boot.library.path" value="/opt/java/openjdk/lib"/>
+    <property name="sun.java.command" value="/workspace/pdf-document/target/surefire/surefirebooter-20261006213320515_9.jar /workspace/pdf-document/target/surefire 2026-10-06T21-33-13_267-jvmRun1 surefire-20261006213320515_7tmp surefire_2-20261006213320515_8tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="/workspace/pdf-document/target/test-classes:/workspace/pdf-document/target/classes:/workspace/pdf-provider-contract/target/pdf-provider-contract-0.1.0-SNAPSHOT.jar:/workspace/.build-cache/maven/repository/org/apache/pdfbox/pdfbox/3.0.8/pdfbox-3.0.8.jar:/workspace/.build-cache/maven/repository/org/apache/pdfbox/pdfbox-io/3.0.8/pdfbox-io-3.0.8.jar:/workspace/.build-cache/maven/repository/org/apache/pdfbox/fontbox/3.0.8/fontbox-3.0.8.jar:/workspace/.build-cache/maven/repository/commons-logging/commons-logging/1.4.0/commons-logging-1.4.0.jar:/workspace/.build-cache/maven/repository/com/ibm/icu/icu4j/77.1/icu4j-77.1.jar:/workspace/.build-cache/maven/repository/uk/org/okapibarcode/okapibarcode/0.5.6/okapibarcode-0.5.6.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/imageio/imageio-tiff/3.14.0/imageio-tiff-3.14.0.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/imageio/imageio-core/3.14.0/imageio-core-3.14.0.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/imageio/imageio-metadata/3.14.0/imageio-metadata-3.14.0.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/common/common-lang/3.14.0/common-lang-3.14.0.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/common/common-io/3.14.0/common-io-3.14.0.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/common/common-image/3.14.0/common-image-3.14.0.jar:/workspace/.build-cache/maven/repository/junit/junit/4.13.2/junit-4.13.2.jar:/workspace/.build-cache/maven/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/workspace/.build-cache/maven/repository/com/google/zxing/core/3.5.3/core-3.5.3.jar:/workspace/pdf-conversion/target/pdf-conversion-0.1.0-SNAPSHOT.jar:"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="/home/ubuntu"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2026-07-21"/>
+    <property name="java.home" value="/opt/java/openjdk"/>
+    <property name="revision" value="0.1.0-SNAPSHOT"/>
+    <property name="file.separator" value="/"/>
+    <property name="basedir" value="/workspace/pdf-document"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="surefire.real.class.path" value="/workspace/pdf-document/target/surefire/surefirebooter-20261006213320515_9.jar"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="17.0.20+8"/>
+    <property name="user.name" value="ubuntu"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="6.12.94+"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="java.vendor.version" value="Temurin-17.0.20+8"/>
+    <property name="localRepository" value="/workspace/.build-cache/maven/repository"/>
+    <property name="java.vendor.url.bug" value="https://github.com/adoptium/adoptium-support/issues"/>
+    <property name="java.io.tmpdir" value="/tmp"/>
+    <property name="java.version" value="17.0.20"/>
+    <property name="user.dir" value="/workspace/pdf-document"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="native.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib"/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="java.vendor" value="Eclipse Adoptium"/>
+    <property name="java.vm.version" value="17.0.20+8"/>
+    <property name="java.specification.maintenance.version" value="1"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="java.class.version" value="61.0"/>
+  </properties>
+  <testcase name="wrapAndVisibleOverflowPreserveEveryCharacterAcrossPages[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="0.025"/>
+  <testcase name="indentsAndWidthCapContinueAcrossColumnsAndPages[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="0.012"/>
+  <testcase name="keepTogetherMovesAnEntireParagraphToTheNextPage[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="0.011"/>
+  <testcase name="failedRelayoutStopsBatchBeforeReadingLaterCallerFonts[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="0.01"/>
+  <testcase name="explicitTabsRemainFixedAcrossColumnsAndPages[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="0.011"/>
+  <testcase name="laterMutationSealsRelayoutAndNewCompositionEstablishesANewBuffer[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="0.011"/>
+  <testcase name="relayoutCanShrinkAndGrowTheTailWithoutChangingEarlierPages[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="0.017"/>
+  <testcase name="invalidAdvancedDeclarationsFailBeforePublication[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="0.005"/>
+  <testcase name="unsignedIncrementalRelayoutPreservesTheOriginalRevisionAndEarlierPages[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="0.019"/>
+  <testcase name="publicationExpiresSessionAndReopenedPdfHasNoRelayoutState[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="0.011"/>
+  <testcase name="keepWithNextMovesTheHeadingWithTheFollowingFragment[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="0.015"/>
+  <testcase name="hangingFirstLineDoesNotRepeatOnTheNextPage[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="0.011"/>
+  <testcase name="immediateAndExplicitFlushSealTheFlowWithoutEarlyPublication[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="0.019"/>
+  <testcase name="existingSignaturesRejectCompositionBeforeReadingCallerFonts[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="0.002"/>
+  <testcase name="consecutiveTabsSkipStopsThatWouldMoveThePenBackwards[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="0.01"/>
+  <testcase name="rejectOverflowUsesAWiderPageAndExhaustionNeverTruncates[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="0.011"/>
+  <testcase name="tabFieldMovesIntactToAWiderArea[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="0.009"/>
+  <testcase name="finiteSearchAndLineBoundsReportStableFailures[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="0.011"/>
+  <testcase name="exactAttemptBoundSucceedsAndTheFirstExcessFails[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="0.01"/>
+  <testcase name="incomingAndOutgoingFragmentMinimaApplyToEveryPage[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="0.009"/>
+  <testcase name="relayoutUsesTheOriginalFontSnapshotAndKeepsCallerStreamOpen[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="0.016"/>
+  <testcase name="eachTabAlignmentAndDefaultGridCrossesPages[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="0.058"/>
+  <testcase name="failedRelayoutPreservesLayoutAndConsumesItsAttempt[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="0.014"/>
+  <testcase name="keepChainAndFollowingKeepTogetherAreSolvedJointly[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="0.014"/>
+  <testcase name="impossibleKeepsAndFragmentMinimaFailWithoutPublishing[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="0.005"/>
+  <testcase name="keepTogetherIncludesGraphicHeightAndRelayoutRetainsTheGraphic[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="0.129"/>
+  <testcase name="widowMinimumMovesOneEarlierLineAcrossThePageBoundary[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="0.011"/>
+  <testcase name="widowAndOrphanCountsRecomputeForDifferentPageWidths[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="0.01"/>
+  <testcase name="passwordUserRequiresBothModificationAndAssemblyPermission[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="0.113"/>
+  <testcase name="orphanMinimumMovesAParagraphPastAnInsufficientRemainder[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="0.015"/>
+  <testcase name="shortUnsplitParagraphIgnoresFragmentMinimaAndFinalKeepIsVacuous[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="0.009"/>
+  <testcase name="excessiveRelayoutDeclarationsPreserveContentAndConsumeTheAttempt[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="0.014"/>
+  <testcase name="wrapAndVisibleOverflowPreserveEveryCharacterAcrossPages[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="2.174"/>
+  <testcase name="indentsAndWidthCapContinueAcrossColumnsAndPages[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="1.08"/>
+  <testcase name="keepTogetherMovesAnEntireParagraphToTheNextPage[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="1.225"/>
+  <testcase name="failedRelayoutStopsBatchBeforeReadingLaterCallerFonts[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="1.236"/>
+  <testcase name="explicitTabsRemainFixedAcrossColumnsAndPages[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="1.107"/>
+  <testcase name="laterMutationSealsRelayoutAndNewCompositionEstablishesANewBuffer[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="1.161"/>
+  <testcase name="relayoutCanShrinkAndGrowTheTailWithoutChangingEarlierPages[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="1.285"/>
+  <testcase name="invalidAdvancedDeclarationsFailBeforePublication[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="2.079"/>
+  <testcase name="unsignedIncrementalRelayoutPreservesTheOriginalRevisionAndEarlierPages[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="1.703"/>
+  <testcase name="publicationExpiresSessionAndReopenedPdfHasNoRelayoutState[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="1.548"/>
+  <testcase name="keepWithNextMovesTheHeadingWithTheFollowingFragment[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="1.145"/>
+  <testcase name="hangingFirstLineDoesNotRepeatOnTheNextPage[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="1.141"/>
+  <testcase name="immediateAndExplicitFlushSealTheFlowWithoutEarlyPublication[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="2.254"/>
+  <testcase name="existingSignaturesRejectCompositionBeforeReadingCallerFonts[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="0.614"/>
+  <testcase name="consecutiveTabsSkipStopsThatWouldMoveThePenBackwards[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="1.1"/>
+  <testcase name="rejectOverflowUsesAWiderPageAndExhaustionNeverTruncates[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="1.935"/>
+  <testcase name="tabFieldMovesIntactToAWiderArea[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="1.085"/>
+  <testcase name="finiteSearchAndLineBoundsReportStableFailures[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="2.327"/>
+  <testcase name="exactAttemptBoundSucceedsAndTheFirstExcessFails[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="1.525"/>
+  <testcase name="incomingAndOutgoingFragmentMinimaApplyToEveryPage[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="1.159"/>
+  <testcase name="relayoutUsesTheOriginalFontSnapshotAndKeepsCallerStreamOpen[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="1.204"/>
+  <testcase name="eachTabAlignmentAndDefaultGridCrossesPages[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="6.684"/>
+  <testcase name="failedRelayoutPreservesLayoutAndConsumesItsAttempt[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="1.202"/>
+  <testcase name="keepChainAndFollowingKeepTogetherAreSolvedJointly[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="1.174"/>
+  <testcase name="impossibleKeepsAndFragmentMinimaFailWithoutPublishing[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="1.707"/>
+  <testcase name="keepTogetherIncludesGraphicHeightAndRelayoutRetainsTheGraphic[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="1.755"/>
+  <testcase name="widowMinimumMovesOneEarlierLineAcrossThePageBoundary[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="1.039"/>
+  <testcase name="widowAndOrphanCountsRecomputeForDifferentPageWidths[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="1.157"/>
+  <testcase name="passwordUserRequiresBothModificationAndAssemblyPermission[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="5.214"/>
+  <testcase name="orphanMinimumMovesAParagraphPastAnInsufficientRemainder[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="1.15"/>
+  <testcase name="shortUnsplitParagraphIgnoresFragmentMinimaAndFinalKeepIsVacuous[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="1.083"/>
+  <testcase name="excessiveRelayoutDeclarationsPreserveContentAndConsumeTheAttempt[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest" time="1.305"/>
+</testsuite>

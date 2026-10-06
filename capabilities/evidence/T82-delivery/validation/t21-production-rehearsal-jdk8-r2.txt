@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/capabilities/evidence/T82-delivery/run-worker-slice.py", line 26, in <module>
+    environment = driver.observe_environment(root, profile['identity']['image'], helper, directory, profile,
+                                             root / 'target/foundation-0.1.0/harness')
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1177, in observe_environment
+    java_properties = dict(line.strip().split(' = ', 1) for line in (directory / 'java-version.txt').read_text().splitlines()
+                           if ' = ' in line)
+ValueError: dictionary update sequence element #39 has length 1; 2 is required

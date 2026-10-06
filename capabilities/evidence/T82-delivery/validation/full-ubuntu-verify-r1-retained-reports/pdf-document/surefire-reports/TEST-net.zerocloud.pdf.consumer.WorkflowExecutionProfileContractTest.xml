@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="14.513" tests="82" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="17"/>
+    <property name="folio.harfBuzzHelper" value="/folio-harfbuzz/bin/folio-harfbuzz"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="/workspace/pdf-document/target/test-classes:/workspace/pdf-document/target/classes:/workspace/pdf-provider-contract/target/pdf-provider-contract-0.1.0-SNAPSHOT.jar:/workspace/.build-cache/maven/repository/org/apache/pdfbox/pdfbox/3.0.8/pdfbox-3.0.8.jar:/workspace/.build-cache/maven/repository/org/apache/pdfbox/pdfbox-io/3.0.8/pdfbox-io-3.0.8.jar:/workspace/.build-cache/maven/repository/org/apache/pdfbox/fontbox/3.0.8/fontbox-3.0.8.jar:/workspace/.build-cache/maven/repository/commons-logging/commons-logging/1.4.0/commons-logging-1.4.0.jar:/workspace/.build-cache/maven/repository/com/ibm/icu/icu4j/77.1/icu4j-77.1.jar:/workspace/.build-cache/maven/repository/uk/org/okapibarcode/okapibarcode/0.5.6/okapibarcode-0.5.6.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/imageio/imageio-tiff/3.14.0/imageio-tiff-3.14.0.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/imageio/imageio-core/3.14.0/imageio-core-3.14.0.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/imageio/imageio-metadata/3.14.0/imageio-metadata-3.14.0.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/common/common-lang/3.14.0/common-lang-3.14.0.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/common/common-io/3.14.0/common-io-3.14.0.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/common/common-image/3.14.0/common-image-3.14.0.jar:/workspace/.build-cache/maven/repository/junit/junit/4.13.2/junit-4.13.2.jar:/workspace/.build-cache/maven/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/workspace/.build-cache/maven/repository/com/google/zxing/core/3.5.3/core-3.5.3.jar:/workspace/pdf-conversion/target/pdf-conversion-0.1.0-SNAPSHOT.jar:"/>
+    <property name="java.vm.vendor" value="Eclipse Adoptium"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="sun.font.fontmanager" value="sun.awt.X11FontManager"/>
+    <property name="java.vendor.url" value="https://adoptium.net/"/>
+    <property name="user.timezone" value="UTC"/>
+    <property name="os.name" value="Linux"/>
+    <property name="java.vm.specification.version" value="17"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="sun.boot.library.path" value="/opt/java/openjdk/lib"/>
+    <property name="sun.java.command" value="/workspace/pdf-document/target/surefire/surefirebooter-20261006072325938_9.jar /workspace/pdf-document/target/surefire 2026-10-06T07-23-19_936-jvmRun1 surefire-20261006072325938_7tmp surefire_2-20261006072325938_8tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="/workspace/pdf-document/target/test-classes:/workspace/pdf-document/target/classes:/workspace/pdf-provider-contract/target/pdf-provider-contract-0.1.0-SNAPSHOT.jar:/workspace/.build-cache/maven/repository/org/apache/pdfbox/pdfbox/3.0.8/pdfbox-3.0.8.jar:/workspace/.build-cache/maven/repository/org/apache/pdfbox/pdfbox-io/3.0.8/pdfbox-io-3.0.8.jar:/workspace/.build-cache/maven/repository/org/apache/pdfbox/fontbox/3.0.8/fontbox-3.0.8.jar:/workspace/.build-cache/maven/repository/commons-logging/commons-logging/1.4.0/commons-logging-1.4.0.jar:/workspace/.build-cache/maven/repository/com/ibm/icu/icu4j/77.1/icu4j-77.1.jar:/workspace/.build-cache/maven/repository/uk/org/okapibarcode/okapibarcode/0.5.6/okapibarcode-0.5.6.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/imageio/imageio-tiff/3.14.0/imageio-tiff-3.14.0.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/imageio/imageio-core/3.14.0/imageio-core-3.14.0.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/imageio/imageio-metadata/3.14.0/imageio-metadata-3.14.0.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/common/common-lang/3.14.0/common-lang-3.14.0.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/common/common-io/3.14.0/common-io-3.14.0.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/common/common-image/3.14.0/common-image-3.14.0.jar:/workspace/.build-cache/maven/repository/junit/junit/4.13.2/junit-4.13.2.jar:/workspace/.build-cache/maven/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/workspace/.build-cache/maven/repository/com/google/zxing/core/3.5.3/core-3.5.3.jar:/workspace/pdf-conversion/target/pdf-conversion-0.1.0-SNAPSHOT.jar:"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="/home/ubuntu"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2026-07-21"/>
+    <property name="java.home" value="/opt/java/openjdk"/>
+    <property name="revision" value="0.1.0-SNAPSHOT"/>
+    <property name="file.separator" value="/"/>
+    <property name="basedir" value="/workspace/pdf-document"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="surefire.real.class.path" value="/workspace/pdf-document/target/surefire/surefirebooter-20261006072325938_9.jar"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="17.0.20+8"/>
+    <property name="user.name" value="ubuntu"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="6.12.94+"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="java.vendor.version" value="Temurin-17.0.20+8"/>
+    <property name="localRepository" value="/workspace/.build-cache/maven/repository"/>
+    <property name="java.vendor.url.bug" value="https://github.com/adoptium/adoptium-support/issues"/>
+    <property name="java.io.tmpdir" value="/tmp"/>
+    <property name="java.version" value="17.0.20"/>
+    <property name="user.dir" value="/workspace/pdf-document"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="native.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib"/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="java.vendor" value="Eclipse Adoptium"/>
+    <property name="java.vm.version" value="17.0.20+8"/>
+    <property name="java.specification.maintenance.version" value="1"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="java.class.version" value="61.0"/>
+  </properties>
+  <testcase name="aFixedEnvironmentClockDoesNotBecomeAWallClockDeadline[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.205"/>
+  <testcase name="invalidPositionedTextPageDoesNotConsumeItsFont[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.001"/>
+  <testcase name="cleanupFailureDoesNotMutateACallerRuntimeException[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.004"/>
+  <testcase name="unpairedTextSurrogateKeepsTheStablePositionedTextFailure[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.0"/>
+  <testcase name="firstBackendFailurePrecedesLaterTerminalEncodingFailure[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.001"/>
+  <testcase name="canvasPreservationContentIsDecodedOnlyOncePerCommand[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.012"/>
+  <testcase name="stagingProgressPrecedesTheNextDeadlineCheck[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.003"/>
+  <testcase name="progressFailurePropagatesUnchangedBeforeCallerWork[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.001"/>
+  <testcase name="nestedTransparencyHonorsLoweredWorkflowNestingLimit[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.002"/>
+  <testcase name="terminalResourceFailurePrecedesCaughtCallbackException[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.002"/>
+  <testcase name="callbackResultOrderingQueryBarrierAndProgressArePreserved[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.001"/>
+  <testcase name="cleanupFailureIsSuppressedOnTheCheckedPrimaryFailure[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.001"/>
+  <testcase name="incrementalSaveModeAndMultiTargetReceiptsArePreserved[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.005"/>
+  <testcase name="workerCodecHonorsALoweredWorkflowNestingLimit[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.001"/>
+  <testcase name="aLaterRejectedBatchCommandPreservesEarlierEffects[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.002"/>
+  <testcase name="canvasVersionShapeFailurePrecedesPageSelection[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.001"/>
+  <testcase name="closedCommandAndQuerySurfaceUsesStableSafeFailures[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.002"/>
+  <testcase name="callerFailurePropagatesUnchangedAndAbortsPublication[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.0"/>
+  <testcase name="sessionLifecycleAndThreadConfinementArePreserved[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.003"/>
+  <testcase name="environmentClockIsObservedOnlyOnTheCallerThread[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.103"/>
+  <testcase name="protectedDocumentPermissionPrecedesOversizedCommandAndQuery[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.032"/>
+  <testcase name="multiTargetFailureReceiptsKeepDeclarationOrder[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.002"/>
+  <testcase name="invalidLazyViewIndexesDoNotTerminateTheSession[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.003"/>
+  <testcase name="anUnusedReferenceFontPathIsNotOpenedBeforeItsCommand[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.001"/>
+  <testcase name="fontSourceCountFailsBeforeOpeningAnySource[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.001"/>
+  <testcase name="fontSourceByteLimitKeepsTheStableFailure[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.001"/>
+  <testcase name="canvasPreservationFailurePrecedesOversizedImageTransport[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.002"/>
+  <testcase name="aggregateFontLimitStopsAtTheFirstExcessByte[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.002"/>
+  <testcase name="canvasSemanticFailurePrecedesOversizedImageTransport[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.001"/>
+  <testcase name="advancingTheEnvironmentClockExpiresAnActiveDeadline[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.0"/>
+  <testcase name="cancellationAndDeadlineFailBeforeCallerWork[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.0"/>
+  <testcase name="lazyValuesCanBeUsedByALaterCommand[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.003"/>
+  <testcase name="callerOwnedSourceAndTargetRemainOpen[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.003"/>
+  <testcase name="caughtFontTransportFailureLeavesTheSessionUsable[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.001"/>
+  <testcase name="hugeScaleDecimalFailsMemoryPolicyBeforeLexicalAllocation[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.001"/>
+  <testcase name="invalidPrimaryWinsBeforeDeferredSourcesAndCredentials[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.001"/>
+  <testcase name="activeCancellationStopsAtTheNextSessionBoundary[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.001"/>
+  <testcase name="resourceFailureIsStableAndDoesNotPublish[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.001"/>
+  <testcase name="cleanupFailureAfterPublicationPreservesCommittedReceipts[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.002"/>
+  <testcase name="signedWidgetFailurePrecedesLaterOversizedIdentifiers[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.002"/>
+  <testcase name="aFailedCommandDoesNotConsumeALaterOneShotFont[IN_PROCESS]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.0"/>
+  <testcase name="aFixedEnvironmentClockDoesNotBecomeAWallClockDeadline[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.54"/>
+  <testcase name="invalidPositionedTextPageDoesNotConsumeItsFont[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.248"/>
+  <testcase name="cleanupFailureDoesNotMutateACallerRuntimeException[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.228"/>
+  <testcase name="unpairedTextSurrogateKeepsTheStablePositionedTextFailure[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.249"/>
+  <testcase name="firstBackendFailurePrecedesLaterTerminalEncodingFailure[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.238"/>
+  <testcase name="canvasPreservationContentIsDecodedOnlyOncePerCommand[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.725"/>
+  <testcase name="stagingProgressPrecedesTheNextDeadlineCheck[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.293"/>
+  <testcase name="progressFailurePropagatesUnchangedBeforeCallerWork[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.224"/>
+  <testcase name="nestedTransparencyHonorsLoweredWorkflowNestingLimit[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.24"/>
+  <testcase name="terminalResourceFailurePrecedesCaughtCallbackException[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.315"/>
+  <testcase name="callbackResultOrderingQueryBarrierAndProgressArePreserved[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.343"/>
+  <testcase name="cleanupFailureIsSuppressedOnTheCheckedPrimaryFailure[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.341"/>
+  <testcase name="incrementalSaveModeAndMultiTargetReceiptsArePreserved[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.383"/>
+  <testcase name="workerCodecHonorsALoweredWorkflowNestingLimit[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.241"/>
+  <testcase name="aLaterRejectedBatchCommandPreservesEarlierEffects[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.351"/>
+  <testcase name="canvasVersionShapeFailurePrecedesPageSelection[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.259"/>
+  <testcase name="closedCommandAndQuerySurfaceUsesStableSafeFailures[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.577"/>
+  <testcase name="callerFailurePropagatesUnchangedAndAbortsPublication[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.266"/>
+  <testcase name="sessionLifecycleAndThreadConfinementArePreserved[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.36"/>
+  <testcase name="environmentClockIsObservedOnlyOnTheCallerThread[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.443"/>
+  <testcase name="protectedDocumentPermissionPrecedesOversizedCommandAndQuery[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="1.221"/>
+  <testcase name="multiTargetFailureReceiptsKeepDeclarationOrder[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.418"/>
+  <testcase name="invalidLazyViewIndexesDoNotTerminateTheSession[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.329"/>
+  <testcase name="anUnusedReferenceFontPathIsNotOpenedBeforeItsCommand[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.334"/>
+  <testcase name="fontSourceCountFailsBeforeOpeningAnySource[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.249"/>
+  <testcase name="fontSourceByteLimitKeepsTheStableFailure[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.253"/>
+  <testcase name="canvasPreservationFailurePrecedesOversizedImageTransport[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.251"/>
+  <testcase name="aggregateFontLimitStopsAtTheFirstExcessByte[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.284"/>
+  <testcase name="canvasSemanticFailurePrecedesOversizedImageTransport[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.243"/>
+  <testcase name="advancingTheEnvironmentClockExpiresAnActiveDeadline[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.242"/>
+  <testcase name="cancellationAndDeadlineFailBeforeCallerWork[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.0"/>
+  <testcase name="lazyValuesCanBeUsedByALaterCommand[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.352"/>
+  <testcase name="callerOwnedSourceAndTargetRemainOpen[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.427"/>
+  <testcase name="caughtFontTransportFailureLeavesTheSessionUsable[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.414"/>
+  <testcase name="hugeScaleDecimalFailsMemoryPolicyBeforeLexicalAllocation[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.311"/>
+  <testcase name="invalidPrimaryWinsBeforeDeferredSourcesAndCredentials[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.604"/>
+  <testcase name="activeCancellationStopsAtTheNextSessionBoundary[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.235"/>
+  <testcase name="resourceFailureIsStableAndDoesNotPublish[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.243"/>
+  <testcase name="cleanupFailureAfterPublicationPreservesCommittedReceipts[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.327"/>
+  <testcase name="signedWidgetFailurePrecedesLaterOversizedIdentifiers[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.256"/>
+  <testcase name="aFailedCommandDoesNotConsumeALaterOneShotFont[HARDENED_WORKER]" classname="net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest" time="0.236"/>
+</testsuite>

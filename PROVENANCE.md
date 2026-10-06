@@ -3072,3 +3072,45 @@ change requires fresh candidate certification; r3 evidence remains historical.
   excluded context implementation or release/publication control is promoted.
   Current compatibility is established by the current Foundation evidence
   authority, with historical records preserved separately.
+
+## T82 Hardened Worker boundary certification record
+
+- Authorship: OpenAI Codex authored and integrated the bounded #82 acceptance
+  contribution under MaBaiqiu's approved `/workspace/contracts/issue-82-contract.md`,
+  against baseline `df2df726a2695267bf63a7c9df49a4a7481f0169`.
+- References: live #82/#1/#33 and the closed #81 blocker, repository public
+  Workflow/Worker/ownership/resource contracts, applicable ADRs, existing
+  project-authored real-process and framed-protocol tests, Java SE process,
+  Security Manager, permissions, cryptography, file/socket and ownership
+  contracts, Linux `prlimit` controls, and the qualified T03 PDF profile.
+  No iText source, fixtures, binaries, restricted implementation material or
+  Compatibility Curator output was inspected, copied or adapted.
+- New material: the repository-only T21 recorder/collector, exact named-case
+  inventory, launcher/prerequisite/fault observations, Linux permitted controls,
+  and an explicitly separate shipped-policy qualification JVM are independently
+  authored Apache-2.0 project work. Sentinels, controlled non-executable launcher
+  text and blank PDF outcomes are project-authored; no new font, fixture source,
+  dependency or runtime product module is introduced.
+- Reused acceptance: original qualified T03 rule-specific standards negatives,
+  one-page graph semantics, authored white raster, two-page/one-pixel controls
+  and hash-pinned qpdf/pdfcpu/Arlington/PDFium/ImageMagick/Python installations.
+  Their existing licenses/notices remain authoritative. HarfBuzz is explicitly
+  supplied and observed, with no native engine or acceptance code bundled into
+  product runtime. ICU4J/OkapiBarcode and optional TIFF closure retain the exact
+  existing dependency authority.
+- Scope and identities: original bytes/findings and fresh replay bind the final
+  candidate, contracts, full staged harness/configuration, immutable OS image,
+  exact JDK build/executable, actual `prlimit`, runtime inventories/dependencies
+  and transitive products/controls. All 137 mandatory cases must execute without
+  failures, ignored tests or assumptions. A passing summary or resealed record
+  cannot replace missing or altered observations. Predecessor certifications
+  are refreshed without rewriting historical identities.
+- Only the actual declared Ubuntu 24.04/Linux x86-64 JDK 8/11/17/21 base Worker
+  tuples are certified. Facade observations remain IN_PROCESS, and the justified
+  Native-only Worker-control decision stays intact. Windows/macOS remain
+  uncertified; Java Unix-domain API absence on JDK 8/11 is classified explicitly.
+  The separate policy JVM does not enter or impersonate the production Worker.
+  This makes no whole-process RSS/native-memory, kernel/container sandbox,
+  arbitrary-bytecode or physical secure-erasure claim. #83 recovery/scale and
+  later capabilities are not promoted, and no release/publication authority is
+  exercised. Current compatibility is defined by the live Foundation index.

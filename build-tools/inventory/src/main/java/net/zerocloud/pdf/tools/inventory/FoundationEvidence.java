@@ -36,7 +36,7 @@ final class FoundationEvidence {
                 continue;
             }
             InventoryYaml record = InventoryYaml.load(file, readiness.global);
-            record.keys("schema-version", "profile", "identity", "host", "native-engine", "tools");
+            record.keys("schema-version", "profile", "identity", "host", "native-engine", "tools", "java-runtime", "worker-launcher");
             if (record.integer("schema-version") != 1 || !profile.equals(record.string("profile"))) {
                 record.error("environment profile metadata mismatch");
             }
@@ -59,6 +59,24 @@ final class FoundationEvidence {
                 FoundationHashes.requireHash(nativeEngine.string(key), nativeEngine.location + "." + key, readiness.global);
             }
             ObservedEnvironment environment = new ObservedEnvironment(reference.string("sha256"));
+            if (record.values.containsKey("java-runtime")) {
+                InventoryYaml runtime = record.object("java-runtime");
+                runtime.keys("vendor", "build");
+                runtime.string("vendor");
+                if (!expected.identity.get("jdk-build").equals(runtime.string("build"))) {
+                    runtime.error("actual runtime build must match the declared executable environment");
+                }
+            }
+            if (record.values.containsKey("worker-launcher")) {
+                InventoryYaml launcher = record.object("worker-launcher");
+                launcher.keys("path", "sha256", "version");
+                if (!"/usr/bin/prlimit".equals(launcher.string("path"))) {
+                    launcher.error("Worker launcher must be /usr/bin/prlimit");
+                }
+                FoundationHashes.requireHash(launcher.string("sha256"), launcher.location, readiness.global);
+                launcher.string("version");
+            }
+            environment.workerWitnesses = record.values.containsKey("java-runtime") && record.values.containsKey("worker-launcher");
             for (InventoryYaml tool : record.objects("tools")) {
                 tool.keys("id", "kind", "version", "sha256", "chains");
                 String id = tool.string("id");
@@ -201,12 +219,15 @@ final class FoundationEvidence {
         }
         InventoryYaml configuration = InventoryYaml.load(file, errors);
         configuration.keys("schema-version", "candidate-sha256", "environment-sha256", "acceptance-profile",
-                "execution-profile", "command", "java-options", "locale", "timezone", "settings", "inputs");
+                "execution-profile", "command", "java-options", "locale", "timezone", "settings", "inputs", "support-commands");
         if (configuration.integer("schema-version") != 1) {
             configuration.error("unsupported execution configuration schema-version");
         }
         match(configuration, "candidate-sha256", readiness.candidateIdentity);
         ObservedEnvironment observed = environments.get(environment);
+        if ("worker".equals(obligation.id) && (observed == null || !observed.workerWitnesses)) {
+            configuration.error("Worker certification requires actual JVM runtime and launcher witnesses");
+        }
         match(configuration, "environment-sha256", observed == null ? "" : observed.sha256);
         match(configuration, "acceptance-profile", obligation.profile);
         match(configuration, "execution-profile", execution);
@@ -215,6 +236,22 @@ final class FoundationEvidence {
             configuration.error("actual execution command must be recorded");
         }
         configuration.arguments("java-options");
+        if (configuration.values.containsKey("support-commands")) {
+            List<Object> controls = configuration.list("support-commands");
+            if (!"worker".equals(obligation.id) || controls.size() != 1) {
+                configuration.error("Worker configuration requires exactly one prerequisite control command");
+            }
+            for (int index = 0; index < controls.size(); index++) {
+                InventoryYaml control = InventoryYaml.object(java.util.Collections.singletonMap("command", controls.get(index)),
+                        configuration.location + ".support-commands[" + index + "]", errors);
+                List<String> arguments = control.arguments("command");
+                if (arguments.isEmpty() || arguments.get(0).trim().isEmpty()) {
+                    control.error("actual prerequisite control command must be recorded");
+                }
+            }
+        } else if ("worker".equals(obligation.id)) {
+            configuration.error("Worker configuration requires exactly one prerequisite control command");
+        }
         configuration.string("locale");
         configuration.string("timezone");
         InventoryYaml settings = configuration.object("settings");
@@ -268,6 +305,7 @@ final class FoundationEvidence {
     }
 
     private static final class ObservedEnvironment {
+        boolean workerWitnesses;
         final String sha256;
         final Map<String, InventoryYaml> tools = new LinkedHashMap<String, InventoryYaml>();
 

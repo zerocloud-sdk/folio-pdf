@@ -1,0 +1,747 @@
+Input exact SHA-256: e1727b91513498e83e73daf3a7d32480fa116b7698d2b784a5e5434cbf226821
+pdfcpu
+result=fail
+profile=T13-text-logical-structure
+covered-rules=
+executable-sha256=5d1a9ff691ae1d720ba822fdc93d48ffc306aadd9497a858bf270b780e7d7c7d
+model-sha256=none
+patch-sha256=none
+input-sha256=e1727b91513498e83e73daf3a7d32480fa116b7698d2b784a5e5434cbf226821
+pin-sha256=21c58822196a4123561cac927e1f8ba487e6581ba8f488d5b7f40ba949429fc8
+profile-sha256=dcf92c9e8ab6a48fea9d581c99cfed86dc993d74e3a8de5cb6e9ae1da919f707
+Version exit: 0
+version: 0.15.0
+ config: 
+ commit: f2686555
+   date: 2026-08-11 20:50:54 UTC
+     go: go1.26.5
+
+Validation exit: 1
+
+validating(mode=strict) /workspace/capabilities/evidence/foundation/T82-final/text/jdk21-in_process/observations/negative/standards/extraction.pdf ...
+
+***************************** Disclaimer ****************************
+* PDF 2.0 features are supported on a need basis.                   *
+* (See ISO 32000:2 6.3.2 Conformance of PDF processors)             *
+* At the moment pdfcpu ships with basic PDF 2.0 support.            *
+* Please let us know which feature you would like to see supported, *
+* provide a sample PDF file and create an issue:                    *
+* https://github.com/pdfcpu/pdfcpu/issues/new/choose                *
+* Thank you for using pdfcpu <3                                     *
+*********************************************************************
+validate /workspace/capabilities/evidence/foundation/T82-final/text/jdk21-in_process/observations/negative/standards/extraction.pdf: validation error (obj#:1) (try --mode=relaxed): document catalog: dict=rootDict entry=Type invalid dict entry: Bogus
+arlington-core
+result=fail
+profile=T13-text-logical-structure
+covered-rules=
+executable-sha256=583f09e428ca76c346e46c98280befcd2cfb7d8ebd55f098f4f8e74ecbeaff03
+model-sha256=dd1ff85a9f63029f86620ba776cf53489cd645e4b1f1134a0d17140bd8566706
+patch-sha256=b6e0ae70e1c5efa9cbe901a8d56a69ee7f331385523d8d5646e1e2f0d32e8a23
+input-sha256=e1727b91513498e83e73daf3a7d32480fa116b7698d2b784a5e5434cbf226821
+pin-sha256=e00f7b42bd5712f45b346bba68061fc89ac64888bc35c6b4a32f043784900c8b
+profile-sha256=178df803628eb17a0e6a87e9c9faac441373edbc60db115cba8e71dbb0d6d586
+Version exit: 0
+[0m
+
+Arlington PDF Model C++ P.o.C. version v0.81-folio-t13-r1 built Sep 12 2026 00:00:00 (GNU-C linux release)
+Choose one of: --pdf, --checkdva or --validate.
+
+Usage:
+	TestGrammar --tsvdir <dir> [--force <ver>|exact] [--out <fname|dir>] [--no-color] [--clobber] [--debug] [--brief] [--extensions <extn1[,extn2]>] [--password <pwd>] [--exclude string | @textfile.txt] [--dryrun] [--allfiles] [--validate | --checkdva <formalrep> | --pdf <fname|dir|@file.txt> ]
+
+Options: 
+-h, --help                   This usage message.
+-b, --brief                  terse output when checking PDFs. The full PDF DOM tree is NOT output.
+-c, --checkdva               Adobe DVA formal-rep PDF file to compare against Arlington PDF model.
+-d, --debug                  output additional debugging information.
+    --clobber                always overwrite PDF output report files (--pdf) rather than append underscores.
+    --no-color               disable colorized text output (useful when redirecting or piping output)
+-m, --batchmode              stop popup error dialog windows and redirect everything to console (Windows only, includes memory leak reports).
+-o, --out                    output file or folder. Default is stdout. See --clobber for overwriting behavior.
+-p, --pdf                    input PDF file, folder, or text file of PDF files/folders.
+-f, --force                  force the PDF version to the specified value (1,0, 1.1, ..., 2.0 or 'exact'). Only applicable to --pdf.
+-t, --tsvdir                 [required] folder containing Arlington PDF model TSV file set.
+-v, --validate               validate the Arlington PDF model.
+-e, --extensions             a comma-separated list of extensions, or '*' for all extensions.
+    --password               password. Only applicable to --pdf.
+    --exclude                PDF exclusion string or filelist (# is a comment). Only applicable to --pdf.
+    --dryrun                 Dry run - don't do any actual processing.
+-a, --allfiles               Process all files regardless of file extension.
+    --explicit-values-only   Ignore wildcards in PossibleValues.
+
+Built using pdfium
+
+Validation exit: 0
+Processing "/workspace/capabilities/evidence/foundation/T82-final/text/jdk21-in_process/observations/negative/standards/extraction.pdf" to stdout BEGIN - TestGrammar v0.81-folio-t13-r1 built Sep 12 2026 00:00:00 (GNU-C linux release) pdfium
+Arlington TSV data: "/workspace/.build-cache/arlington/t13-r1/tsv/latest"
+PDF: "/workspace/capabilities/evidence/foundation/T82-final/text/jdk21-in_process/observations/negative/standards/extraction.pdf"
+Info: Traditional trailer dictionary detected.
+Info: Header is version PDF 1.7
+Info: Document Catalog/Version is PDF 2.0
+Info: Command line forced to PDF 2.0
+Info: Processing as PDF 2.0
+       1: Trailer
+       2:   Trailer->ID (as TrailerIDArray)
+       3:   Trailer->Root (as Catalog)
+Error: wrong value for possible values: Type (Catalog) should be: name [Catalog] in PDF 2.0 and is name==Bogus
+       4:     Trailer->Root (as Catalog)->MarkInfo
+       5:     Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)
+       6:     Trailer->Root (as Catalog)->StructTreeRoot
+       7:       Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)
+       8:       Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)
+       9:       Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)
+      10:       Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[0]
+      11:       Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[1]
+      12:       Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]
+      13:         Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]
+      14:         Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->K (as ArrayOfStructElemKids)
+      15:         Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->NS (as Namespace)
+      16:         Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->P (as StructTreeRoot)
+      17:         Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->Pg (as PageObject)
+      18:         Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[0 (as Namespace)]
+      19:         Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[1 (as Namespace)]
+      20:         Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[2 (as Namespace)]
+      21:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[0][0 (as StructElem)]
+      22:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[1][0 (as StructElem)]
+      23:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)
+      24:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->NS (as Namespace)
+      25:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->P (as StructElem)
+      26:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->Pg (as PageObject)
+      27:           Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)
+      28:           Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Contents (as Stream)
+      29:           Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Parent (as PageTreeNodeRoot)
+      30:           Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)
+      31:           Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->K (as ArrayOfStructElemKids)[0 (as StructElem)]
+      32:           Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->NS (as Namespace)->RoleMapNS
+      33:           Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[2 (as Namespace)]->RoleMapNS
+      34:           Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]
+      35:           Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[2 (as ObjectReference)]
+      36:           Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[3 (as StructElem)]
+      37:             Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[0 (as AnnotText)]
+      38:             Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)
+      39:             Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)
+      40:             Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->NS (as Namespace)->RoleMapNS->Custom (as ArrayOf_RoleMapNS)
+      41:             Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[2 (as Namespace)]->RoleMapNS->Intermediate (as ArrayOf_RoleMapNS)
+      42:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]->Pg (as PageObject)
+      43:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]->Stm (as XObjectFormType1)
+      44:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[2 (as ObjectReference)]->Obj (as _UniversalDictionary)
+      45:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[2 (as ObjectReference)]->Pg (as PageObject)
+      46:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[3 (as StructElem)]->NS (as Namespace)
+      47:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[3 (as StructElem)]->P (as StructElem)
+      48:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[3 (as StructElem)]->Pg (as PageObject)
+      49:               Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[0 (as AnnotText)]->P (as PageObject)
+      50:               Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)
+      51:               Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)->Fm (as XObjectFormType1)
+      52:               Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->NS (as Namespace)->RoleMapNS->Custom (as ArrayOf_RoleMapNS)[1 (as Namespace)]
+      53:               Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[2 (as Namespace)]->RoleMapNS->Intermediate (as ArrayOf_RoleMapNS)[1 (as Namespace)]
+      54:               Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]->Stm (as XObjectFormType1)->Resources (as Resource)
+      55:                 Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->CharProcs (as CharProcMap)
+      56:                 Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->Encoding
+      57:                 Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->FontDescriptor (as FontDescriptorType3)
+      58:                 Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->Resources (as Resource)
+      59:                 Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->Widths (as ArrayOfNumbersGeneral)
+      60:                 Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]->Stm (as XObjectFormType1)->Resources (as Resource)->Font (as FontMap)
+      61:                   Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->CharProcs (as CharProcMap)->A (as Stream)
+      62:                   Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->Encoding->Differences (as ArrayOfDifferences)
+      63:                   Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]->Stm (as XObjectFormType1)->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)
+Info: Latest Arlington object was PDF 2.0 (StructTreeRoot/Namespaces) compared using forced PDF 2.0
+END
+
+DONE - 1 files processed
+
+arlington-fonts
+result=fail
+profile=T13-text-logical-structure
+covered-rules=
+executable-sha256=583f09e428ca76c346e46c98280befcd2cfb7d8ebd55f098f4f8e74ecbeaff03
+model-sha256=dd1ff85a9f63029f86620ba776cf53489cd645e4b1f1134a0d17140bd8566706
+patch-sha256=b6e0ae70e1c5efa9cbe901a8d56a69ee7f331385523d8d5646e1e2f0d32e8a23
+input-sha256=e1727b91513498e83e73daf3a7d32480fa116b7698d2b784a5e5434cbf226821
+pin-sha256=e00f7b42bd5712f45b346bba68061fc89ac64888bc35c6b4a32f043784900c8b
+profile-sha256=7c4889c2f294cc4094bacc9dfd8af59642e183b3153de6c1b31f30429f253852
+Version exit: 0
+[0m
+
+Arlington PDF Model C++ P.o.C. version v0.81-folio-t13-r1 built Sep 12 2026 00:00:00 (GNU-C linux release)
+Choose one of: --pdf, --checkdva or --validate.
+
+Usage:
+	TestGrammar --tsvdir <dir> [--force <ver>|exact] [--out <fname|dir>] [--no-color] [--clobber] [--debug] [--brief] [--extensions <extn1[,extn2]>] [--password <pwd>] [--exclude string | @textfile.txt] [--dryrun] [--allfiles] [--validate | --checkdva <formalrep> | --pdf <fname|dir|@file.txt> ]
+
+Options: 
+-h, --help                   This usage message.
+-b, --brief                  terse output when checking PDFs. The full PDF DOM tree is NOT output.
+-c, --checkdva               Adobe DVA formal-rep PDF file to compare against Arlington PDF model.
+-d, --debug                  output additional debugging information.
+    --clobber                always overwrite PDF output report files (--pdf) rather than append underscores.
+    --no-color               disable colorized text output (useful when redirecting or piping output)
+-m, --batchmode              stop popup error dialog windows and redirect everything to console (Windows only, includes memory leak reports).
+-o, --out                    output file or folder. Default is stdout. See --clobber for overwriting behavior.
+-p, --pdf                    input PDF file, folder, or text file of PDF files/folders.
+-f, --force                  force the PDF version to the specified value (1,0, 1.1, ..., 2.0 or 'exact'). Only applicable to --pdf.
+-t, --tsvdir                 [required] folder containing Arlington PDF model TSV file set.
+-v, --validate               validate the Arlington PDF model.
+-e, --extensions             a comma-separated list of extensions, or '*' for all extensions.
+    --password               password. Only applicable to --pdf.
+    --exclude                PDF exclusion string or filelist (# is a comment). Only applicable to --pdf.
+    --dryrun                 Dry run - don't do any actual processing.
+-a, --allfiles               Process all files regardless of file extension.
+    --explicit-values-only   Ignore wildcards in PossibleValues.
+
+Built using pdfium
+
+Validation exit: 0
+Processing "/workspace/capabilities/evidence/foundation/T82-final/text/jdk21-in_process/observations/negative/standards/extraction.pdf" to stdout BEGIN - TestGrammar v0.81-folio-t13-r1 built Sep 12 2026 00:00:00 (GNU-C linux release) pdfium
+Arlington TSV data: "/workspace/.build-cache/arlington/t13-r1/tsv/latest"
+PDF: "/workspace/capabilities/evidence/foundation/T82-final/text/jdk21-in_process/observations/negative/standards/extraction.pdf"
+Info: Traditional trailer dictionary detected.
+Info: Header is version PDF 1.7
+Info: Document Catalog/Version is PDF 2.0
+Info: Command line forced to PDF 2.0
+Info: Processing as PDF 2.0
+       1: Trailer
+       2:   Trailer->ID (as TrailerIDArray)
+       3:   Trailer->Root (as Catalog)
+Error: wrong value for possible values: Type (Catalog) should be: name [Catalog] in PDF 2.0 and is name==Bogus
+       4:     Trailer->Root (as Catalog)->MarkInfo
+       5:     Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)
+       6:     Trailer->Root (as Catalog)->StructTreeRoot
+       7:       Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)
+       8:       Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)
+       9:       Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)
+      10:       Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[0]
+      11:       Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[1]
+      12:       Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]
+      13:         Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]
+      14:         Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->K (as ArrayOfStructElemKids)
+      15:         Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->NS (as Namespace)
+      16:         Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->P (as StructTreeRoot)
+      17:         Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->Pg (as PageObject)
+      18:         Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[0 (as Namespace)]
+      19:         Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[1 (as Namespace)]
+      20:         Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[2 (as Namespace)]
+      21:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[0][0 (as StructElem)]
+      22:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[1][0 (as StructElem)]
+      23:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)
+      24:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->NS (as Namespace)
+      25:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->P (as StructElem)
+      26:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->Pg (as PageObject)
+      27:           Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)
+      28:           Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Contents (as Stream)
+      29:           Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Parent (as PageTreeNodeRoot)
+      30:           Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)
+      31:           Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->K (as ArrayOfStructElemKids)[0 (as StructElem)]
+      32:           Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->NS (as Namespace)->RoleMapNS
+      33:           Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[2 (as Namespace)]->RoleMapNS
+      34:           Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]
+      35:           Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[2 (as ObjectReference)]
+      36:           Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[3 (as StructElem)]
+      37:             Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[0 (as AnnotText)]
+      38:             Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)
+      39:             Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)
+      40:             Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->NS (as Namespace)->RoleMapNS->Custom (as ArrayOf_RoleMapNS)
+      41:             Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[2 (as Namespace)]->RoleMapNS->Intermediate (as ArrayOf_RoleMapNS)
+      42:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]->Pg (as PageObject)
+      43:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]->Stm (as XObjectFormType1)
+      44:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[2 (as ObjectReference)]->Obj (as _UniversalDictionary)
+      45:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[2 (as ObjectReference)]->Pg (as PageObject)
+      46:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[3 (as StructElem)]->NS (as Namespace)
+      47:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[3 (as StructElem)]->P (as StructElem)
+      48:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[3 (as StructElem)]->Pg (as PageObject)
+      49:               Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[0 (as AnnotText)]->P (as PageObject)
+      50:               Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)
+      51:               Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)->Fm (as XObjectFormType1)
+      52:               Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->NS (as Namespace)->RoleMapNS->Custom (as ArrayOf_RoleMapNS)[1 (as Namespace)]
+      53:               Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[2 (as Namespace)]->RoleMapNS->Intermediate (as ArrayOf_RoleMapNS)[1 (as Namespace)]
+      54:               Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]->Stm (as XObjectFormType1)->Resources (as Resource)
+      55:                 Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->CharProcs (as CharProcMap)
+      56:                 Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->Encoding
+      57:                 Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->FontDescriptor (as FontDescriptorType3)
+      58:                 Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->Resources (as Resource)
+      59:                 Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->Widths (as ArrayOfNumbersGeneral)
+      60:                 Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]->Stm (as XObjectFormType1)->Resources (as Resource)->Font (as FontMap)
+      61:                   Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->CharProcs (as CharProcMap)->A (as Stream)
+      62:                   Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->Encoding->Differences (as ArrayOfDifferences)
+      63:                   Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]->Stm (as XObjectFormType1)->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)
+Info: Latest Arlington object was PDF 2.0 (StructTreeRoot/Namespaces) compared using forced PDF 2.0
+END
+
+DONE - 1 files processed
+
+arlington-text
+result=fail
+profile=T13-text-logical-structure
+covered-rules=
+executable-sha256=583f09e428ca76c346e46c98280befcd2cfb7d8ebd55f098f4f8e74ecbeaff03
+model-sha256=dd1ff85a9f63029f86620ba776cf53489cd645e4b1f1134a0d17140bd8566706
+patch-sha256=b6e0ae70e1c5efa9cbe901a8d56a69ee7f331385523d8d5646e1e2f0d32e8a23
+input-sha256=e1727b91513498e83e73daf3a7d32480fa116b7698d2b784a5e5434cbf226821
+pin-sha256=e00f7b42bd5712f45b346bba68061fc89ac64888bc35c6b4a32f043784900c8b
+profile-sha256=41e5d9fd856574038ac59ce7e26c4a96f6a28ab78599b7d5f6c9afca723555bf
+Version exit: 0
+[0m
+
+Arlington PDF Model C++ P.o.C. version v0.81-folio-t13-r1 built Sep 12 2026 00:00:00 (GNU-C linux release)
+Choose one of: --pdf, --checkdva or --validate.
+
+Usage:
+	TestGrammar --tsvdir <dir> [--force <ver>|exact] [--out <fname|dir>] [--no-color] [--clobber] [--debug] [--brief] [--extensions <extn1[,extn2]>] [--password <pwd>] [--exclude string | @textfile.txt] [--dryrun] [--allfiles] [--validate | --checkdva <formalrep> | --pdf <fname|dir|@file.txt> ]
+
+Options: 
+-h, --help                   This usage message.
+-b, --brief                  terse output when checking PDFs. The full PDF DOM tree is NOT output.
+-c, --checkdva               Adobe DVA formal-rep PDF file to compare against Arlington PDF model.
+-d, --debug                  output additional debugging information.
+    --clobber                always overwrite PDF output report files (--pdf) rather than append underscores.
+    --no-color               disable colorized text output (useful when redirecting or piping output)
+-m, --batchmode              stop popup error dialog windows and redirect everything to console (Windows only, includes memory leak reports).
+-o, --out                    output file or folder. Default is stdout. See --clobber for overwriting behavior.
+-p, --pdf                    input PDF file, folder, or text file of PDF files/folders.
+-f, --force                  force the PDF version to the specified value (1,0, 1.1, ..., 2.0 or 'exact'). Only applicable to --pdf.
+-t, --tsvdir                 [required] folder containing Arlington PDF model TSV file set.
+-v, --validate               validate the Arlington PDF model.
+-e, --extensions             a comma-separated list of extensions, or '*' for all extensions.
+    --password               password. Only applicable to --pdf.
+    --exclude                PDF exclusion string or filelist (# is a comment). Only applicable to --pdf.
+    --dryrun                 Dry run - don't do any actual processing.
+-a, --allfiles               Process all files regardless of file extension.
+    --explicit-values-only   Ignore wildcards in PossibleValues.
+
+Built using pdfium
+
+Validation exit: 0
+Processing "/workspace/capabilities/evidence/foundation/T82-final/text/jdk21-in_process/observations/negative/standards/extraction.pdf" to stdout BEGIN - TestGrammar v0.81-folio-t13-r1 built Sep 12 2026 00:00:00 (GNU-C linux release) pdfium
+Arlington TSV data: "/workspace/.build-cache/arlington/t13-r1/tsv/latest"
+PDF: "/workspace/capabilities/evidence/foundation/T82-final/text/jdk21-in_process/observations/negative/standards/extraction.pdf"
+Info: Traditional trailer dictionary detected.
+Info: Header is version PDF 1.7
+Info: Document Catalog/Version is PDF 2.0
+Info: Command line forced to PDF 2.0
+Info: Processing as PDF 2.0
+       1: Trailer
+       2:   Trailer->ID (as TrailerIDArray)
+       3:   Trailer->Root (as Catalog)
+Error: wrong value for possible values: Type (Catalog) should be: name [Catalog] in PDF 2.0 and is name==Bogus
+       4:     Trailer->Root (as Catalog)->MarkInfo
+       5:     Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)
+       6:     Trailer->Root (as Catalog)->StructTreeRoot
+       7:       Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)
+       8:       Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)
+       9:       Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)
+      10:       Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[0]
+      11:       Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[1]
+      12:       Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]
+      13:         Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]
+      14:         Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->K (as ArrayOfStructElemKids)
+      15:         Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->NS (as Namespace)
+      16:         Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->P (as StructTreeRoot)
+      17:         Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->Pg (as PageObject)
+      18:         Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[0 (as Namespace)]
+      19:         Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[1 (as Namespace)]
+      20:         Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[2 (as Namespace)]
+      21:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[0][0 (as StructElem)]
+      22:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[1][0 (as StructElem)]
+      23:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)
+      24:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->NS (as Namespace)
+      25:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->P (as StructElem)
+      26:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->Pg (as PageObject)
+      27:           Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)
+      28:           Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Contents (as Stream)
+      29:           Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Parent (as PageTreeNodeRoot)
+      30:           Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)
+      31:           Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->K (as ArrayOfStructElemKids)[0 (as StructElem)]
+      32:           Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->NS (as Namespace)->RoleMapNS
+      33:           Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[2 (as Namespace)]->RoleMapNS
+      34:           Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]
+      35:           Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[2 (as ObjectReference)]
+      36:           Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[3 (as StructElem)]
+      37:             Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[0 (as AnnotText)]
+      38:             Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)
+      39:             Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)
+      40:             Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->NS (as Namespace)->RoleMapNS->Custom (as ArrayOf_RoleMapNS)
+      41:             Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[2 (as Namespace)]->RoleMapNS->Intermediate (as ArrayOf_RoleMapNS)
+      42:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]->Pg (as PageObject)
+      43:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]->Stm (as XObjectFormType1)
+      44:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[2 (as ObjectReference)]->Obj (as _UniversalDictionary)
+      45:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[2 (as ObjectReference)]->Pg (as PageObject)
+      46:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[3 (as StructElem)]->NS (as Namespace)
+      47:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[3 (as StructElem)]->P (as StructElem)
+      48:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[3 (as StructElem)]->Pg (as PageObject)
+      49:               Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[0 (as AnnotText)]->P (as PageObject)
+      50:               Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)
+      51:               Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)->Fm (as XObjectFormType1)
+      52:               Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->NS (as Namespace)->RoleMapNS->Custom (as ArrayOf_RoleMapNS)[1 (as Namespace)]
+      53:               Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[2 (as Namespace)]->RoleMapNS->Intermediate (as ArrayOf_RoleMapNS)[1 (as Namespace)]
+      54:               Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]->Stm (as XObjectFormType1)->Resources (as Resource)
+      55:                 Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->CharProcs (as CharProcMap)
+      56:                 Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->Encoding
+      57:                 Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->FontDescriptor (as FontDescriptorType3)
+      58:                 Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->Resources (as Resource)
+      59:                 Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->Widths (as ArrayOfNumbersGeneral)
+      60:                 Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]->Stm (as XObjectFormType1)->Resources (as Resource)->Font (as FontMap)
+      61:                   Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->CharProcs (as CharProcMap)->A (as Stream)
+      62:                   Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->Encoding->Differences (as ArrayOfDifferences)
+      63:                   Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]->Stm (as XObjectFormType1)->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)
+Info: Latest Arlington object was PDF 2.0 (StructTreeRoot/Namespaces) compared using forced PDF 2.0
+END
+
+DONE - 1 files processed
+
+arlington-cid
+result=fail
+profile=T13-text-logical-structure
+covered-rules=
+executable-sha256=583f09e428ca76c346e46c98280befcd2cfb7d8ebd55f098f4f8e74ecbeaff03
+model-sha256=dd1ff85a9f63029f86620ba776cf53489cd645e4b1f1134a0d17140bd8566706
+patch-sha256=b6e0ae70e1c5efa9cbe901a8d56a69ee7f331385523d8d5646e1e2f0d32e8a23
+input-sha256=e1727b91513498e83e73daf3a7d32480fa116b7698d2b784a5e5434cbf226821
+pin-sha256=e00f7b42bd5712f45b346bba68061fc89ac64888bc35c6b4a32f043784900c8b
+profile-sha256=d358219f7da9c26bb85e0a211c88c6f7ae9e00eac2423eda763f6321418181dd
+Version exit: 0
+[0m
+
+Arlington PDF Model C++ P.o.C. version v0.81-folio-t13-r1 built Sep 12 2026 00:00:00 (GNU-C linux release)
+Choose one of: --pdf, --checkdva or --validate.
+
+Usage:
+	TestGrammar --tsvdir <dir> [--force <ver>|exact] [--out <fname|dir>] [--no-color] [--clobber] [--debug] [--brief] [--extensions <extn1[,extn2]>] [--password <pwd>] [--exclude string | @textfile.txt] [--dryrun] [--allfiles] [--validate | --checkdva <formalrep> | --pdf <fname|dir|@file.txt> ]
+
+Options: 
+-h, --help                   This usage message.
+-b, --brief                  terse output when checking PDFs. The full PDF DOM tree is NOT output.
+-c, --checkdva               Adobe DVA formal-rep PDF file to compare against Arlington PDF model.
+-d, --debug                  output additional debugging information.
+    --clobber                always overwrite PDF output report files (--pdf) rather than append underscores.
+    --no-color               disable colorized text output (useful when redirecting or piping output)
+-m, --batchmode              stop popup error dialog windows and redirect everything to console (Windows only, includes memory leak reports).
+-o, --out                    output file or folder. Default is stdout. See --clobber for overwriting behavior.
+-p, --pdf                    input PDF file, folder, or text file of PDF files/folders.
+-f, --force                  force the PDF version to the specified value (1,0, 1.1, ..., 2.0 or 'exact'). Only applicable to --pdf.
+-t, --tsvdir                 [required] folder containing Arlington PDF model TSV file set.
+-v, --validate               validate the Arlington PDF model.
+-e, --extensions             a comma-separated list of extensions, or '*' for all extensions.
+    --password               password. Only applicable to --pdf.
+    --exclude                PDF exclusion string or filelist (# is a comment). Only applicable to --pdf.
+    --dryrun                 Dry run - don't do any actual processing.
+-a, --allfiles               Process all files regardless of file extension.
+    --explicit-values-only   Ignore wildcards in PossibleValues.
+
+Built using pdfium
+
+Validation exit: 0
+Processing "/workspace/capabilities/evidence/foundation/T82-final/text/jdk21-in_process/observations/negative/standards/extraction.pdf" to stdout BEGIN - TestGrammar v0.81-folio-t13-r1 built Sep 12 2026 00:00:00 (GNU-C linux release) pdfium
+Arlington TSV data: "/workspace/.build-cache/arlington/t13-r1/tsv/latest"
+PDF: "/workspace/capabilities/evidence/foundation/T82-final/text/jdk21-in_process/observations/negative/standards/extraction.pdf"
+Info: Traditional trailer dictionary detected.
+Info: Header is version PDF 1.7
+Info: Document Catalog/Version is PDF 2.0
+Info: Command line forced to PDF 2.0
+Info: Processing as PDF 2.0
+       1: Trailer
+       2:   Trailer->ID (as TrailerIDArray)
+       3:   Trailer->Root (as Catalog)
+Error: wrong value for possible values: Type (Catalog) should be: name [Catalog] in PDF 2.0 and is name==Bogus
+       4:     Trailer->Root (as Catalog)->MarkInfo
+       5:     Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)
+       6:     Trailer->Root (as Catalog)->StructTreeRoot
+       7:       Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)
+       8:       Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)
+       9:       Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)
+      10:       Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[0]
+      11:       Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[1]
+      12:       Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]
+      13:         Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]
+      14:         Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->K (as ArrayOfStructElemKids)
+      15:         Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->NS (as Namespace)
+      16:         Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->P (as StructTreeRoot)
+      17:         Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->Pg (as PageObject)
+      18:         Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[0 (as Namespace)]
+      19:         Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[1 (as Namespace)]
+      20:         Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[2 (as Namespace)]
+      21:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[0][0 (as StructElem)]
+      22:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[1][0 (as StructElem)]
+      23:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)
+      24:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->NS (as Namespace)
+      25:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->P (as StructElem)
+      26:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->Pg (as PageObject)
+      27:           Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)
+      28:           Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Contents (as Stream)
+      29:           Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Parent (as PageTreeNodeRoot)
+      30:           Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)
+      31:           Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->K (as ArrayOfStructElemKids)[0 (as StructElem)]
+      32:           Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->NS (as Namespace)->RoleMapNS
+      33:           Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[2 (as Namespace)]->RoleMapNS
+      34:           Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]
+      35:           Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[2 (as ObjectReference)]
+      36:           Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[3 (as StructElem)]
+      37:             Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[0 (as AnnotText)]
+      38:             Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)
+      39:             Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)
+      40:             Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->NS (as Namespace)->RoleMapNS->Custom (as ArrayOf_RoleMapNS)
+      41:             Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[2 (as Namespace)]->RoleMapNS->Intermediate (as ArrayOf_RoleMapNS)
+      42:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]->Pg (as PageObject)
+      43:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]->Stm (as XObjectFormType1)
+      44:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[2 (as ObjectReference)]->Obj (as _UniversalDictionary)
+      45:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[2 (as ObjectReference)]->Pg (as PageObject)
+      46:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[3 (as StructElem)]->NS (as Namespace)
+      47:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[3 (as StructElem)]->P (as StructElem)
+      48:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[3 (as StructElem)]->Pg (as PageObject)
+      49:               Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[0 (as AnnotText)]->P (as PageObject)
+      50:               Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)
+      51:               Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)->Fm (as XObjectFormType1)
+      52:               Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->NS (as Namespace)->RoleMapNS->Custom (as ArrayOf_RoleMapNS)[1 (as Namespace)]
+      53:               Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[2 (as Namespace)]->RoleMapNS->Intermediate (as ArrayOf_RoleMapNS)[1 (as Namespace)]
+      54:               Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]->Stm (as XObjectFormType1)->Resources (as Resource)
+      55:                 Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->CharProcs (as CharProcMap)
+      56:                 Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->Encoding
+      57:                 Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->FontDescriptor (as FontDescriptorType3)
+      58:                 Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->Resources (as Resource)
+      59:                 Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->Widths (as ArrayOfNumbersGeneral)
+      60:                 Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]->Stm (as XObjectFormType1)->Resources (as Resource)->Font (as FontMap)
+      61:                   Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->CharProcs (as CharProcMap)->A (as Stream)
+      62:                   Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->Encoding->Differences (as ArrayOfDifferences)
+      63:                   Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]->Stm (as XObjectFormType1)->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)
+Info: Latest Arlington object was PDF 2.0 (StructTreeRoot/Namespaces) compared using forced PDF 2.0
+END
+
+DONE - 1 files processed
+
+arlington-descriptors
+result=fail
+profile=T13-text-logical-structure
+covered-rules=
+executable-sha256=583f09e428ca76c346e46c98280befcd2cfb7d8ebd55f098f4f8e74ecbeaff03
+model-sha256=dd1ff85a9f63029f86620ba776cf53489cd645e4b1f1134a0d17140bd8566706
+patch-sha256=b6e0ae70e1c5efa9cbe901a8d56a69ee7f331385523d8d5646e1e2f0d32e8a23
+input-sha256=e1727b91513498e83e73daf3a7d32480fa116b7698d2b784a5e5434cbf226821
+pin-sha256=e00f7b42bd5712f45b346bba68061fc89ac64888bc35c6b4a32f043784900c8b
+profile-sha256=92e09969447f8384d0a0c9b693f9fc8f17261e02582b93b6bccd361503224a95
+Version exit: 0
+[0m
+
+Arlington PDF Model C++ P.o.C. version v0.81-folio-t13-r1 built Sep 12 2026 00:00:00 (GNU-C linux release)
+Choose one of: --pdf, --checkdva or --validate.
+
+Usage:
+	TestGrammar --tsvdir <dir> [--force <ver>|exact] [--out <fname|dir>] [--no-color] [--clobber] [--debug] [--brief] [--extensions <extn1[,extn2]>] [--password <pwd>] [--exclude string | @textfile.txt] [--dryrun] [--allfiles] [--validate | --checkdva <formalrep> | --pdf <fname|dir|@file.txt> ]
+
+Options: 
+-h, --help                   This usage message.
+-b, --brief                  terse output when checking PDFs. The full PDF DOM tree is NOT output.
+-c, --checkdva               Adobe DVA formal-rep PDF file to compare against Arlington PDF model.
+-d, --debug                  output additional debugging information.
+    --clobber                always overwrite PDF output report files (--pdf) rather than append underscores.
+    --no-color               disable colorized text output (useful when redirecting or piping output)
+-m, --batchmode              stop popup error dialog windows and redirect everything to console (Windows only, includes memory leak reports).
+-o, --out                    output file or folder. Default is stdout. See --clobber for overwriting behavior.
+-p, --pdf                    input PDF file, folder, or text file of PDF files/folders.
+-f, --force                  force the PDF version to the specified value (1,0, 1.1, ..., 2.0 or 'exact'). Only applicable to --pdf.
+-t, --tsvdir                 [required] folder containing Arlington PDF model TSV file set.
+-v, --validate               validate the Arlington PDF model.
+-e, --extensions             a comma-separated list of extensions, or '*' for all extensions.
+    --password               password. Only applicable to --pdf.
+    --exclude                PDF exclusion string or filelist (# is a comment). Only applicable to --pdf.
+    --dryrun                 Dry run - don't do any actual processing.
+-a, --allfiles               Process all files regardless of file extension.
+    --explicit-values-only   Ignore wildcards in PossibleValues.
+
+Built using pdfium
+
+Validation exit: 0
+Processing "/workspace/capabilities/evidence/foundation/T82-final/text/jdk21-in_process/observations/negative/standards/extraction.pdf" to stdout BEGIN - TestGrammar v0.81-folio-t13-r1 built Sep 12 2026 00:00:00 (GNU-C linux release) pdfium
+Arlington TSV data: "/workspace/.build-cache/arlington/t13-r1/tsv/latest"
+PDF: "/workspace/capabilities/evidence/foundation/T82-final/text/jdk21-in_process/observations/negative/standards/extraction.pdf"
+Info: Traditional trailer dictionary detected.
+Info: Header is version PDF 1.7
+Info: Document Catalog/Version is PDF 2.0
+Info: Command line forced to PDF 2.0
+Info: Processing as PDF 2.0
+       1: Trailer
+       2:   Trailer->ID (as TrailerIDArray)
+       3:   Trailer->Root (as Catalog)
+Error: wrong value for possible values: Type (Catalog) should be: name [Catalog] in PDF 2.0 and is name==Bogus
+       4:     Trailer->Root (as Catalog)->MarkInfo
+       5:     Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)
+       6:     Trailer->Root (as Catalog)->StructTreeRoot
+       7:       Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)
+       8:       Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)
+       9:       Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)
+      10:       Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[0]
+      11:       Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[1]
+      12:       Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]
+      13:         Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]
+      14:         Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->K (as ArrayOfStructElemKids)
+      15:         Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->NS (as Namespace)
+      16:         Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->P (as StructTreeRoot)
+      17:         Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->Pg (as PageObject)
+      18:         Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[0 (as Namespace)]
+      19:         Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[1 (as Namespace)]
+      20:         Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[2 (as Namespace)]
+      21:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[0][0 (as StructElem)]
+      22:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[1][0 (as StructElem)]
+      23:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)
+      24:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->NS (as Namespace)
+      25:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->P (as StructElem)
+      26:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->Pg (as PageObject)
+      27:           Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)
+      28:           Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Contents (as Stream)
+      29:           Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Parent (as PageTreeNodeRoot)
+      30:           Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)
+      31:           Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->K (as ArrayOfStructElemKids)[0 (as StructElem)]
+      32:           Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->NS (as Namespace)->RoleMapNS
+      33:           Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[2 (as Namespace)]->RoleMapNS
+      34:           Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]
+      35:           Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[2 (as ObjectReference)]
+      36:           Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[3 (as StructElem)]
+      37:             Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[0 (as AnnotText)]
+      38:             Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)
+      39:             Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)
+      40:             Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->NS (as Namespace)->RoleMapNS->Custom (as ArrayOf_RoleMapNS)
+      41:             Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[2 (as Namespace)]->RoleMapNS->Intermediate (as ArrayOf_RoleMapNS)
+      42:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]->Pg (as PageObject)
+      43:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]->Stm (as XObjectFormType1)
+      44:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[2 (as ObjectReference)]->Obj (as _UniversalDictionary)
+      45:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[2 (as ObjectReference)]->Pg (as PageObject)
+      46:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[3 (as StructElem)]->NS (as Namespace)
+      47:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[3 (as StructElem)]->P (as StructElem)
+      48:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[3 (as StructElem)]->Pg (as PageObject)
+      49:               Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[0 (as AnnotText)]->P (as PageObject)
+      50:               Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)
+      51:               Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)->Fm (as XObjectFormType1)
+      52:               Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->NS (as Namespace)->RoleMapNS->Custom (as ArrayOf_RoleMapNS)[1 (as Namespace)]
+      53:               Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[2 (as Namespace)]->RoleMapNS->Intermediate (as ArrayOf_RoleMapNS)[1 (as Namespace)]
+      54:               Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]->Stm (as XObjectFormType1)->Resources (as Resource)
+      55:                 Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->CharProcs (as CharProcMap)
+      56:                 Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->Encoding
+      57:                 Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->FontDescriptor (as FontDescriptorType3)
+      58:                 Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->Resources (as Resource)
+      59:                 Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->Widths (as ArrayOfNumbersGeneral)
+      60:                 Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]->Stm (as XObjectFormType1)->Resources (as Resource)->Font (as FontMap)
+      61:                   Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->CharProcs (as CharProcMap)->A (as Stream)
+      62:                   Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->Encoding->Differences (as ArrayOfDifferences)
+      63:                   Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]->Stm (as XObjectFormType1)->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)
+Info: Latest Arlington object was PDF 2.0 (StructTreeRoot/Namespaces) compared using forced PDF 2.0
+END
+
+DONE - 1 files processed
+
+arlington-cmaps
+result=fail
+profile=T13-text-logical-structure
+covered-rules=
+executable-sha256=583f09e428ca76c346e46c98280befcd2cfb7d8ebd55f098f4f8e74ecbeaff03
+model-sha256=dd1ff85a9f63029f86620ba776cf53489cd645e4b1f1134a0d17140bd8566706
+patch-sha256=b6e0ae70e1c5efa9cbe901a8d56a69ee7f331385523d8d5646e1e2f0d32e8a23
+input-sha256=e1727b91513498e83e73daf3a7d32480fa116b7698d2b784a5e5434cbf226821
+pin-sha256=e00f7b42bd5712f45b346bba68061fc89ac64888bc35c6b4a32f043784900c8b
+profile-sha256=3382bf1a8b36dd513873a17b7d9c460384c1a9e34250af3b8465245a19b5a369
+Version exit: 0
+[0m
+
+Arlington PDF Model C++ P.o.C. version v0.81-folio-t13-r1 built Sep 12 2026 00:00:00 (GNU-C linux release)
+Choose one of: --pdf, --checkdva or --validate.
+
+Usage:
+	TestGrammar --tsvdir <dir> [--force <ver>|exact] [--out <fname|dir>] [--no-color] [--clobber] [--debug] [--brief] [--extensions <extn1[,extn2]>] [--password <pwd>] [--exclude string | @textfile.txt] [--dryrun] [--allfiles] [--validate | --checkdva <formalrep> | --pdf <fname|dir|@file.txt> ]
+
+Options: 
+-h, --help                   This usage message.
+-b, --brief                  terse output when checking PDFs. The full PDF DOM tree is NOT output.
+-c, --checkdva               Adobe DVA formal-rep PDF file to compare against Arlington PDF model.
+-d, --debug                  output additional debugging information.
+    --clobber                always overwrite PDF output report files (--pdf) rather than append underscores.
+    --no-color               disable colorized text output (useful when redirecting or piping output)
+-m, --batchmode              stop popup error dialog windows and redirect everything to console (Windows only, includes memory leak reports).
+-o, --out                    output file or folder. Default is stdout. See --clobber for overwriting behavior.
+-p, --pdf                    input PDF file, folder, or text file of PDF files/folders.
+-f, --force                  force the PDF version to the specified value (1,0, 1.1, ..., 2.0 or 'exact'). Only applicable to --pdf.
+-t, --tsvdir                 [required] folder containing Arlington PDF model TSV file set.
+-v, --validate               validate the Arlington PDF model.
+-e, --extensions             a comma-separated list of extensions, or '*' for all extensions.
+    --password               password. Only applicable to --pdf.
+    --exclude                PDF exclusion string or filelist (# is a comment). Only applicable to --pdf.
+    --dryrun                 Dry run - don't do any actual processing.
+-a, --allfiles               Process all files regardless of file extension.
+    --explicit-values-only   Ignore wildcards in PossibleValues.
+
+Built using pdfium
+
+Validation exit: 0
+Processing "/workspace/capabilities/evidence/foundation/T82-final/text/jdk21-in_process/observations/negative/standards/extraction.pdf" to stdout BEGIN - TestGrammar v0.81-folio-t13-r1 built Sep 12 2026 00:00:00 (GNU-C linux release) pdfium
+Arlington TSV data: "/workspace/.build-cache/arlington/t13-r1/tsv/latest"
+PDF: "/workspace/capabilities/evidence/foundation/T82-final/text/jdk21-in_process/observations/negative/standards/extraction.pdf"
+Info: Traditional trailer dictionary detected.
+Info: Header is version PDF 1.7
+Info: Document Catalog/Version is PDF 2.0
+Info: Command line forced to PDF 2.0
+Info: Processing as PDF 2.0
+       1: Trailer
+       2:   Trailer->ID (as TrailerIDArray)
+       3:   Trailer->Root (as Catalog)
+Error: wrong value for possible values: Type (Catalog) should be: name [Catalog] in PDF 2.0 and is name==Bogus
+       4:     Trailer->Root (as Catalog)->MarkInfo
+       5:     Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)
+       6:     Trailer->Root (as Catalog)->StructTreeRoot
+       7:       Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)
+       8:       Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)
+       9:       Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)
+      10:       Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[0]
+      11:       Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[1]
+      12:       Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]
+      13:         Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]
+      14:         Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->K (as ArrayOfStructElemKids)
+      15:         Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->NS (as Namespace)
+      16:         Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->P (as StructTreeRoot)
+      17:         Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->Pg (as PageObject)
+      18:         Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[0 (as Namespace)]
+      19:         Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[1 (as Namespace)]
+      20:         Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[2 (as Namespace)]
+      21:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[0][0 (as StructElem)]
+      22:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[1][0 (as StructElem)]
+      23:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)
+      24:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->NS (as Namespace)
+      25:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->P (as StructElem)
+      26:         Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->Pg (as PageObject)
+      27:           Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)
+      28:           Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Contents (as Stream)
+      29:           Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Parent (as PageTreeNodeRoot)
+      30:           Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)
+      31:           Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->K (as ArrayOfStructElemKids)[0 (as StructElem)]
+      32:           Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->NS (as Namespace)->RoleMapNS
+      33:           Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[2 (as Namespace)]->RoleMapNS
+      34:           Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]
+      35:           Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[2 (as ObjectReference)]
+      36:           Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[3 (as StructElem)]
+      37:             Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[0 (as AnnotText)]
+      38:             Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)
+      39:             Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)
+      40:             Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->NS (as Namespace)->RoleMapNS->Custom (as ArrayOf_RoleMapNS)
+      41:             Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[2 (as Namespace)]->RoleMapNS->Intermediate (as ArrayOf_RoleMapNS)
+      42:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]->Pg (as PageObject)
+      43:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]->Stm (as XObjectFormType1)
+      44:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[2 (as ObjectReference)]->Obj (as _UniversalDictionary)
+      45:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[2 (as ObjectReference)]->Pg (as PageObject)
+      46:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[3 (as StructElem)]->NS (as Namespace)
+      47:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[3 (as StructElem)]->P (as StructElem)
+      48:             Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[3 (as StructElem)]->Pg (as PageObject)
+      49:               Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Annots (as ArrayOfAnnots)[0 (as AnnotText)]->P (as PageObject)
+      50:               Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)
+      51:               Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)->Fm (as XObjectFormType1)
+      52:               Trailer->Root (as Catalog)->StructTreeRoot->K (as StructElem)->NS (as Namespace)->RoleMapNS->Custom (as ArrayOf_RoleMapNS)[1 (as Namespace)]
+      53:               Trailer->Root (as Catalog)->StructTreeRoot->Namespaces (as ArrayOfNamespace)[2 (as Namespace)]->RoleMapNS->Intermediate (as ArrayOf_RoleMapNS)[1 (as Namespace)]
+      54:               Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]->Stm (as XObjectFormType1)->Resources (as Resource)
+      55:                 Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->CharProcs (as CharProcMap)
+      56:                 Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->Encoding
+      57:                 Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->FontDescriptor (as FontDescriptorType3)
+      58:                 Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->Resources (as Resource)
+      59:                 Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->Widths (as ArrayOfNumbersGeneral)
+      60:                 Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]->Stm (as XObjectFormType1)->Resources (as Resource)->Font (as FontMap)
+      61:                   Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->CharProcs (as CharProcMap)->A (as Stream)
+      62:                   Trailer->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->Encoding->Differences (as ArrayOfDifferences)
+      63:                   Trailer->Root (as Catalog)->StructTreeRoot->ParentTree (as number-tree)->[2]->K (as ArrayOfStructElemKids)[1 (as MarkedContentReference)]->Stm (as XObjectFormType1)->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)
+Info: Latest Arlington object was PDF 2.0 (StructTreeRoot/Namespaces) compared using forced PDF 2.0
+END
+
+DONE - 1 files processed
+
+The exact required declaration rule union was not qualified.

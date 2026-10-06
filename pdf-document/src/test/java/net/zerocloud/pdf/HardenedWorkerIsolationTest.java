@@ -671,13 +671,34 @@ public final class HardenedWorkerIsolationTest {
         Path root = Paths.get(codeSource(HardenedWorkerMain.class));
         Path result = temporaryFolder.newFile(name).toPath();
         try (JarOutputStream archive = new JarOutputStream(
-                Files.newOutputStream(result));
-                java.util.stream.Stream<Path> paths = Files.walk(root)) {
-            java.util.Iterator<Path> entries = paths.iterator();
-            while (entries.hasNext()) {
-                Path entry = entries.next();
-                if (Files.isRegularFile(entry)) {
-                    addArchiveEntry(archive, root, entry);
+                Files.newOutputStream(result))) {
+            if (Files.isDirectory(root)) {
+                try (java.util.stream.Stream<Path> paths = Files.walk(root)) {
+                    java.util.Iterator<Path> entries = paths.iterator();
+                    while (entries.hasNext()) {
+                        Path entry = entries.next();
+                        if (Files.isRegularFile(entry)) {
+                            addArchiveEntry(archive, root, entry);
+                        }
+                    }
+                }
+            } else {
+                try (java.util.jar.JarFile original = new java.util.jar.JarFile(root.toFile())) {
+                    java.util.Enumeration<JarEntry> entries = original.entries();
+                    while (entries.hasMoreElements()) {
+                        JarEntry entry = entries.nextElement();
+                        if (!entry.isDirectory()) {
+                            archive.putNextEntry(new JarEntry(entry.getName()));
+                            try (java.io.InputStream input = original.getInputStream(entry)) {
+                                byte[] buffer = new byte[8192];
+                                int count;
+                                while ((count = input.read(buffer)) != -1) {
+                                    archive.write(buffer, 0, count);
+                                }
+                            }
+                            archive.closeEntry();
+                        }
+                    }
                 }
             }
             if (additionalClass != null) {

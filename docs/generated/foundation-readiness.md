@@ -82,7 +82,7 @@ A missing capability, required behavior, compatible dependency, independent evid
 | [`incremental`](#incremental) | `document.incremental-signature.protect` | [#77](https://github.com/zerocloud-sdk/folio-pdf/issues/77) | satisfied |
 | [`security`](#security) | `document.version-password-security` | [#78](https://github.com/zerocloud-sdk/folio-pdf/issues/78) | satisfied |
 | [`limits`](#limits) | `document.hostile-input-limits` | [#81](https://github.com/zerocloud-sdk/folio-pdf/issues/81) | satisfied |
-| [`worker`](#worker) | `document.hardened-worker` | [#82](https://github.com/zerocloud-sdk/folio-pdf/issues/82) | blocked |
+| [`worker`](#worker) | `document.hardened-worker` | [#82](https://github.com/zerocloud-sdk/folio-pdf/issues/82) | satisfied |
 | [`recovery`](#recovery) | `document.hardened-worker.recovery-scale` | [#83](https://github.com/zerocloud-sdk/folio-pdf/issues/83) | blocked |
 | [`canvas`](#canvas) | `composition.canvas.draw-positioned-text` | [#85](https://github.com/zerocloud-sdk/folio-pdf/issues/85) | blocked |
 | [`graphics`](#graphics) | `composition.canvas.images-colors-transparency` | [#86](https://github.com/zerocloud-sdk/folio-pdf/issues/86) | blocked |
@@ -286,15 +286,6 @@ Execute the fixed-point Document Workflow contract through an authenticated, bou
 - Native Interface only: Authenticated local Worker transport, launcher policy and command/query barriers are project-specific execution controls with no Reference Suite counterpart. The same document behavior remains required through its matching Facade.
 - Source requirements: [`spec-us-40`](#spec-us-40), [`spec-us-41`](#spec-us-41), [`spec-us-42`](#spec-us-42), [`spec-us-43`](#spec-us-43), [`spec-us-44`](#spec-us-44), [`spec-us-74`](#spec-us-74), [`spec-id-15`](#spec-id-15), [`spec-id-16`](#spec-id-16), [`spec-id-17`](#spec-id-17), [`spec-id-19`](#spec-id-19), [`spec-id-30`](#spec-id-30), [`spec-id-31`](#spec-id-31), [`spec-id-32`](#spec-id-32), [`spec-td-02`](#spec-td-02), [`spec-td-20`](#spec-td-20), [`spec-td-22`](#spec-td-22), [`slice-82-1`](#slice-82-1), [`slice-82-2`](#slice-82-2), [`slice-82-3`](#slice-82-3), [`slice-82-4`](#slice-82-4)
 
-- Blocker: capability document.hardened-worker is experimental, requires compatible
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on document.hardened-worker
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on document.hardened-worker
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on document.hardened-worker
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk21 on document.hardened-worker
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk8/HARDENED_WORKER (required chains: syntax, standards, semantic, visual, contract)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk11/HARDENED_WORKER (required chains: syntax, standards, semantic, visual, contract)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual, contract)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual, contract)
 
 <a id="recovery"></a>
 ### `recovery`
@@ -312,7 +303,6 @@ Recover safely retryable Hardened Worker failures, resolve uncertain publication
 - Source requirements: [`spec-us-45`](#spec-us-45), [`spec-us-50`](#spec-us-50), [`spec-us-73`](#spec-us-73), [`spec-id-31`](#spec-id-31), [`spec-td-02`](#spec-td-02), [`spec-td-21`](#spec-td-21), [`slice-83-1`](#slice-83-1), [`slice-83-2`](#slice-83-2), [`slice-83-3`](#slice-83-3), [`slice-83-4`](#slice-83-4)
 
 - Blocker: capability document.hardened-worker.recovery-scale is experimental, requires compatible
-- Blocker: incompatible Dependency Gate document.hardened-worker
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on document.hardened-worker.recovery-scale
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on document.hardened-worker.recovery-scale
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on document.hardened-worker.recovery-scale
@@ -322,7 +312,6 @@ Recover safely retryable Hardened Worker failures, resolve uncertain publication
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk11/HARDENED_WORKER (required chains: syntax, standards, semantic, visual, contract)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual, contract)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual, contract)
-- Blocker: incomplete prerequisite obligation worker
 
 <a id="canvas"></a>
 ### `canvas`
@@ -446,7 +435,6 @@ Render selected current pages to bounded, session-scoped PNGs through a replacea
 - Blocker: incompatible Dependency Gate conversion.capability-provider.select-execute
 - Blocker: incompatible Dependency Gate composition.canvas.images-colors-transparency
 - Blocker: incompatible Dependency Gate composition.fonts.load-embed-subset-fallback
-- Blocker: incompatible Dependency Gate document.hardened-worker
 - Blocker: incompatible Dependency Gate document.hardened-worker.recovery-scale
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on conversion.rendering
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on conversion.rendering
@@ -467,7 +455,6 @@ Render selected current pages to bounded, session-scoped PNGs through a replacea
 - Blocker: incomplete prerequisite obligation providers
 - Blocker: incomplete prerequisite obligation graphics
 - Blocker: incomplete prerequisite obligation fonts
-- Blocker: incomplete prerequisite obligation worker
 - Blocker: incomplete prerequisite obligation recovery
 
 <a id="providers"></a>
@@ -518,7 +505,6 @@ Compose mixed semantic paragraphs across finite explicit new-page areas with mar
 - Blocker: incompatible Dependency Gate composition.canvas.draw-positioned-text
 - Blocker: incompatible Dependency Gate composition.canvas.images-colors-transparency
 - Blocker: incompatible Dependency Gate composition.fonts.load-embed-subset-fallback
-- Blocker: incompatible Dependency Gate document.hardened-worker
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on composition.layout.paragraph-areas
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on composition.layout.paragraph-areas
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on composition.layout.paragraph-areas
@@ -538,7 +524,6 @@ Compose mixed semantic paragraphs across finite explicit new-page areas with mar
 - Blocker: incomplete prerequisite obligation canvas
 - Blocker: incomplete prerequisite obligation graphics
 - Blocker: incomplete prerequisite obligation fonts
-- Blocker: incomplete prerequisite obligation worker
 
 <a id="pagination"></a>
 ### `pagination`
@@ -559,7 +544,6 @@ Apply indentation, aligned tabs, hard keep and widow/orphan rules, horizontal ov
 - Blocker: incompatible Dependency Gate composition.layout.paragraph-areas
 - Blocker: incompatible Dependency Gate composition.fonts.load-embed-subset-fallback
 - Blocker: incompatible Dependency Gate composition.canvas.images-colors-transparency
-- Blocker: incompatible Dependency Gate document.hardened-worker
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on composition.layout.paragraph-pagination
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on composition.layout.paragraph-pagination
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on composition.layout.paragraph-pagination
@@ -579,7 +563,6 @@ Apply indentation, aligned tabs, hard keep and widow/orphan rules, horizontal ov
 - Blocker: incomplete prerequisite obligation paragraphs
 - Blocker: incomplete prerequisite obligation fonts
 - Blocker: incomplete prerequisite obligation graphics
-- Blocker: incomplete prerequisite obligation worker
 
 <a id="tables"></a>
 ### `tables`
@@ -600,12 +583,10 @@ Compose bounded FIXED/AUTO tables across finite areas and pages with split rows 
 - Blocker: incompatible Dependency Gate composition.layout.paragraph-pagination
 - Blocker: incompatible Dependency Gate composition.fonts.load-embed-subset-fallback
 - Blocker: incompatible Dependency Gate composition.canvas.images-colors-transparency
-- Blocker: incompatible Dependency Gate document.hardened-worker
 - Blocker: incomplete prerequisite obligation paragraphs
 - Blocker: incomplete prerequisite obligation pagination
 - Blocker: incomplete prerequisite obligation fonts
 - Blocker: incomplete prerequisite obligation graphics
-- Blocker: incomplete prerequisite obligation worker
 - Blocker: incomplete prerequisite obligation tables-base
 - Blocker: incomplete prerequisite obligation tables-pagination
 
@@ -630,7 +611,6 @@ Shape explicitly selected fonts through the project-owned HarfBuzz Provider and 
 - Blocker: incompatible Dependency Gate composition.layout.paragraph-areas
 - Blocker: incompatible Dependency Gate composition.layout.paragraph-pagination
 - Blocker: incompatible Dependency Gate composition.layout.tables
-- Blocker: incompatible Dependency Gate document.hardened-worker
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on composition.shaping.harf-buzz
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on composition.shaping.harf-buzz
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on composition.shaping.harf-buzz
@@ -653,7 +633,6 @@ Shape explicitly selected fonts through the project-owned HarfBuzz Provider and 
 - Blocker: incomplete prerequisite obligation paragraphs
 - Blocker: incomplete prerequisite obligation pagination
 - Blocker: incomplete prerequisite obligation tables
-- Blocker: incomplete prerequisite obligation worker
 
 <a id="barcodes-1d"></a>
 ### `barcodes-1d`
@@ -674,7 +653,6 @@ Draw all Reference Suite one-dimensional barcode families as PDF vectors with ex
 - Blocker: incompatible Dependency Gate composition.canvas.draw-positioned-text
 - Blocker: incompatible Dependency Gate composition.canvas.images-colors-transparency
 - Blocker: incompatible Dependency Gate composition.fonts.load-embed-subset-fallback
-- Blocker: incompatible Dependency Gate document.hardened-worker
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on composition.barcodes.one-dimensional
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on composition.barcodes.one-dimensional
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on composition.barcodes.one-dimensional
@@ -693,7 +671,6 @@ Draw all Reference Suite one-dimensional barcode families as PDF vectors with ex
 - Blocker: incomplete prerequisite obligation canvas
 - Blocker: incomplete prerequisite obligation graphics
 - Blocker: incomplete prerequisite obligation fonts
-- Blocker: incomplete prerequisite obligation worker
 
 <a id="barcodes-2d"></a>
 ### `barcodes-2d`
@@ -713,7 +690,6 @@ Generate QR, DataMatrix ECC200 and PDF417 as reusable vector Forms with strict e
 - Blocker: capability composition.barcodes.two-dimensional is experimental, requires compatible
 - Blocker: incompatible Dependency Gate composition.canvas.draw-positioned-text
 - Blocker: incompatible Dependency Gate composition.canvas.images-colors-transparency
-- Blocker: incompatible Dependency Gate document.hardened-worker
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on composition.barcodes.two-dimensional
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on composition.barcodes.two-dimensional
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on composition.barcodes.two-dimensional
@@ -733,7 +709,6 @@ Generate QR, DataMatrix ECC200 and PDF417 as reusable vector Forms with strict e
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
 - Blocker: incomplete prerequisite obligation canvas
 - Blocker: incomplete prerequisite obligation graphics
-- Blocker: incomplete prerequisite obligation worker
 
 <a id="password-baseline"></a>
 ### `password-baseline`
@@ -1050,7 +1025,6 @@ Close every Foundation behavior, aggregate, dependency and Facade obligation; ru
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk11/REPOSITORY (required chains: contract, review)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/REPOSITORY (required chains: contract, review)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/REPOSITORY (required chains: contract, review)
-- Blocker: incomplete prerequisite obligation worker
 - Blocker: incomplete prerequisite obligation recovery
 - Blocker: incomplete prerequisite obligation canvas
 - Blocker: incomplete prerequisite obligation graphics
@@ -1228,7 +1202,7 @@ Classifications bind the exact Capability Matrix limitation text by SHA-256; cha
 - `document.hardened-worker` / `retained-contract` → [`worker`](#worker): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #82 must prove it without omitting required successful Foundation cases.
   Original limitation: The parent snapshots the primary Source before launch under an owner-restricted random transaction root. During Worker initialization, every other named Source is requested, snapshotted, and classified one at a time in declaration order, so an earlier failure does not open a later one-shot Source. The Worker receives only random local handles; the parent retains actual Targets and caller-owned streams or channels and publishes only after a valid finished response and confirmed Worker exit. Reference Font Set entries and explicit Font Sources remain parent-owned and unopened until selected. The selecting Command applies declaration and source-count checks and carries opaque identifiers; the Worker requests each program in declaration order, and the parent applies the aggregate-byte, first-excess, and one-shot reuse rules before returning it in a separate bounded frame. Committed Worker products remain cumulatively charged to the shared temporary-storage ceiling. Existing Save Mode, receipt, partial-stream, replacement, and Provider-selection contracts remain authoritative.
 - `document.hardened-worker` / `retained-contract` → [`worker`](#worker): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #82 must prove it without omitting required successful Foundation cases.
-  Original limitation: The supported launcher is Linux with executable /usr/bin/prlimit, separate unshaded Folio PDF production artifacts or project-only exploded production class directories, and a JDK 8, 11, 17, or 21 runtime capable of installing SecurityManager. It clears the child environment; requires digest-pinned exact first-party class-name inventories and complete-byte SHA-256 matches for every dependency JAR, including an installed optional TIFF closure; rejects mixed, incomplete, extra, multi-release, manifest-extended, delimiter-bearing, or wildcard-bearing classpath entries; fixes heap and direct-memory maxima, stack size, CPU time and open-file count; and denies Worker INET and Unix-domain network, descendant process, link, and filesystem access outside the transaction/runtime roots. Caller-thread checkpoints retain the original environment Clock and deadline authority, while a monotonic watchdog supplies an independent hard Worker-lifetime ceiling and RLIMIT_CPU supplies an independent CPU ceiling. Heap/direct-memory ceilings are not a complete RSS, native-allocation, kernel, or container limit, and no certified-platform or complete OS-sandbox claim is made.
+  Original limitation: The supported launcher is Linux with executable /usr/bin/prlimit, separate unshaded Folio PDF production artifacts or project-only exploded production class directories, and a JDK 8, 11, 17, or 21 runtime capable of installing SecurityManager. It clears the child environment; requires digest-pinned exact first-party class-name inventories and complete-byte SHA-256 matches for every dependency JAR, including an installed optional TIFF closure; rejects mixed, incomplete, extra, multi-release, manifest-extended, delimiter-bearing, or wildcard-bearing classpath entries; fixes heap and direct-memory maxima, stack size, CPU time and open-file count; and denies Worker INET and Unix-domain network, descendant process, link, and filesystem access outside the transaction/runtime roots. Caller-thread checkpoints retain the original environment Clock and deadline authority, while a monotonic watchdog supplies an independent hard Worker-lifetime ceiling and RLIMIT_CPU supplies an independent CPU ceiling. Heap/direct-memory ceilings are not a complete RSS, native-allocation, kernel, or container limit, and no complete OS-sandbox claim is made. Certification covers only the four actually exercised Ubuntu 24.04/Linux x86-64 JDK 8, 11, 17 and 21 profiles; Windows and macOS remain uncertified. Java Unix-domain transport APIs are absent on JDK 8/11, while JDK 17/21 socket denial is observed; the same installed policy is separately qualified to deny links and Unix permissions.
 - `document.hardened-worker` / `retained-contract` → [`worker`](#worker): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #82 must prove it without omitting required successful Foundation cases.
   Original limitation: Authenticated child STAGED and VALIDATED frames preserve progress boundaries while listener invocation and environment-Clock/deadline checks remain parent-owned and caller-thread-confined. One synchronized parent ledger accounts parent-live allocations and all reported child allocations without a static split. Before every nonempty parent-to-child application frame, the parent reserves and grants its exact payload allocation; the child reserves and releases other decoded or retained allocations through authenticated memory controls; and each quiescent response is followed by an acknowledged empty memory synchronization before the next parent allocation. Atomic-batch eligibility includes the larger of the parent's growable encoder plus retained-payload peak and simultaneous parent/child payload ownership plus the retained/received completion control. Active-context application payloads, decoded String/byte copies, conservatively charged collection capacity, credentials, and normal failure envelopes are cleared or released at their actual lifetime boundaries without sampling the caller Clock on the reader thread. Fixed 12-byte authenticated memory reserve, release, and grant payloads are the sole active control-plane exception and remain outside the ledger to prevent recursive accounting while retaining pre-allocation message-bound checks. Pre-context and post-context failures use a fixed eight-byte allowlisted descriptor, and the fixed eight-byte post-context FINISHED control contains only a version and allowlisted capability token, because no transaction ledger is live. Counts are checked against remaining wire bytes and charged before capacity-bearing allocation. The bootstrap decoder applies the parent-supplied memory ceiling before the child context exists, and decoded initialization collection capacity remains charged for the active transaction after READY; the fixed failure codec remains available as an emergency only when the primary failure has already poisoned or exhausted an active context.
 - `document.hardened-worker` / `retained-contract` → [`worker`](#worker): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #82 must prove it without omitting required successful Foundation cases.

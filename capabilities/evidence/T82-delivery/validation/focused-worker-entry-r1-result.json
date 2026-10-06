@@ -1,0 +1,19 @@
+{
+  "exit-code": 1,
+  "command": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "-pl",
+    "pdf-document",
+    "-am",
+    "-Dtest=WorkflowExecutionProfileContractTest,HardenedWorkerWorkflowTest,HardenedWorkerIsolationTest,WorkerProtocolBoundaryTest,HardenedWorkerRecoveryFaultTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "test"
+  ],
+  "environment": "extracted declared JDK17 on host; not a certified Ubuntu tuple",
+  "log": {
+    "path": "capabilities/evidence/T82-delivery/validation/focused-worker-entry-r1.txt",
+    "sha256": "aecafc33d20cd6ac2e8b7d2cf24fa609ac8bdefa9a475d45014c11157b91d9d4"
+  }
+}

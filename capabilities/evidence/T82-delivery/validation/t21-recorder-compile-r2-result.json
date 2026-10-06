@@ -1,0 +1,42 @@
+{
+  "command": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "-pl",
+    "pdf-acceptance",
+    "-am",
+    "-Dtest=T21ContractTestCommandTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "test"
+  ],
+  "repository-command": [
+    "./mvnw",
+    "-B",
+    "-ntp",
+    "-pl",
+    "pdf-acceptance",
+    "-am",
+    "-Dtest=T21ContractTestCommandTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "test"
+  ],
+  "cwd": "/workspace/folio-pdf",
+  "actual-declared-image": null,
+  "started": "2026-10-06T06:49:23.221700+00:00",
+  "environment": {
+    "JAVA_HOME": "/workspace/folio-pdf/.build-cache/t82-jdk17",
+    "MAVEN_USER_HOME": "/workspace/folio-pdf/.build-cache/maven",
+    "MAVEN_OPTS": "-Dmaven.repo.local=/workspace/folio-pdf/.build-cache/maven/repository",
+    "PYTHONPATH": "/workspace/folio-pdf/.build-cache/foundation-host-python",
+    "FOLIO_FOUNDATION_PYTHON_ROOT": "/workspace/folio-pdf/.build-cache/foundation-python",
+    "FOLIO_HARFBUZZ_HELPER": "/workspace/folio-pdf/.build-cache/t81-provision/folio-harfbuzz/bin/folio-harfbuzz",
+    "CONTAINERS_STORAGE_CONF": "/workspace/folio-pdf/.build-cache/t82-storage.conf"
+  },
+  "finished": "2026-10-06T06:49:27.647656+00:00",
+  "exit-code": 1,
+  "log": {
+    "path": "capabilities/evidence/T82-delivery/validation/t21-recorder-compile-r2.txt",
+    "sha256": "ed378db4b1a0f8d55fac159c29ea817d742b419b38905dbd42022d05c7c3a80a"
+  }
+}

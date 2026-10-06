@@ -64,7 +64,7 @@ public final class FoundationReadinessCommandTest {
         }
         // Local staged artifacts and tool caches determine these retained-evidence statuses.
         for (String obligation : Arrays.asList("password-clear-metadata (#79)",
-                "password-attachments (#80)", "limits (#81)")) {
+                "password-attachments (#80)", "limits (#81)", "worker (#82)")) {
             String blockedPrefix = "BLOCKED " + obligation + ": ";
             assertTrue("Missing readiness diagnostic for " + obligation + "\n" + result.output,
                     Arrays.stream(result.output.split("\\r?\\n")).anyMatch(line ->
@@ -94,6 +94,65 @@ public final class FoundationReadinessCommandTest {
         assertEquals(document, read(fixture.root.resolve("docs/generated/foundation-readiness.md")));
         Files.write(fixture.root.resolve("docs/generated/foundation-readiness.md"), bytes("stale\n"));
         assertFailure(command("check", fixture.root), "generated documentation is stale");
+    }
+
+    @Test
+    public void workerRuntimeLauncherAndPrerequisiteCommandsAreRequired() throws Exception {
+        Fixture fixture = new Fixture(temporary.newFolder().toPath());
+        fixture.prepare(false);
+        fixture.obligation.put("id", "worker");
+        Map<String, Object> requirements = fixture.load("capabilities/requirements.yaml");
+        map(list(requirements, "requirements").get(0)).put("obligations", strings("worker"));
+        fixture.write("capabilities/requirements.yaml", requirements);
+        fixture.saveFoundation();
+        for (Object item : list(fixture.evidence, "environments")) {
+            Map<String, Object> observed = map(item);
+            String path = (String) map(observed.get("record")).get("path");
+            Map<String, Object> environment = fixture.load(path);
+            environment.put("java-runtime", object("vendor", "Synthetic runtime brand",
+                    "build", map(environment.get("identity")).get("jdk-build")));
+            environment.put("worker-launcher", object("path", "/usr/bin/prlimit", "version", "Synthetic fixture",
+                    "sha256", hash(bytes("synthetic launcher bytes"))));
+            fixture.write(path, environment);
+            observed.put("record", fixture.reference(path));
+        }
+        fixture.saveEvidence();
+        fixture.certify();
+        Result valid = command("readiness", fixture.root);
+        assertEquals(valid.output, 0, valid.exit);
+
+        Map<String, Object> scope = map(list(fixture.evidence, "certifications").get(0));
+        String configPath = (String) map(scope.get("configuration")).get("path");
+        Map<String, Object> config = fixture.load(configPath);
+        config.put("support-commands", objects());
+        fixture.write(configPath, config);
+        scope.put("configuration", fixture.reference(configPath));
+        fixture.saveEvidence();
+        assertFailure(command("readiness", fixture.root), "exactly one prerequisite control command");
+        config.put("support-commands", objects(strings("")));
+        fixture.write(configPath, config);
+        scope.put("configuration", fixture.reference(configPath));
+        fixture.saveEvidence();
+        assertFailure(command("readiness", fixture.root), "actual prerequisite control command must be recorded");
+
+        Map<String, Object> observed = map(list(fixture.evidence, "environments").get(0));
+        String envPath = (String) map(observed.get("record")).get("path");
+        Map<String, Object> environment = fixture.load(envPath);
+        environment.remove("worker-launcher");
+        fixture.write(envPath, environment);
+        observed.put("record", fixture.reference(envPath));
+        fixture.saveEvidence();
+        assertFailure(command("readiness", fixture.root), "actual JVM runtime and launcher witnesses");
+        environment.put("worker-launcher", object("path", "/unapproved/launcher", "version", "Synthetic fixture",
+                "sha256", "forged"));
+        map(environment.get("java-runtime")).put("build", "forged runtime");
+        fixture.write(envPath, environment);
+        observed.put("record", fixture.reference(envPath));
+        fixture.saveEvidence();
+        Result altered = command("readiness", fixture.root);
+        assertFailure(altered, "Worker launcher must be /usr/bin/prlimit");
+        assertTrue(altered.output, altered.output.contains("actual runtime build must match"));
+        assertTrue(altered.output, altered.output.contains("expected a SHA-256 identity"));
     }
 
     @Test
@@ -537,19 +596,23 @@ public final class FoundationReadinessCommandTest {
                 for (String execution : strings("IN_PROCESS", "HARDENED_WORKER")) {
                     List<Object> records = objects();
                     String configurationPath = "evidence/" + environment + "-" + execution + "-configuration.yaml";
-                    write(configurationPath, object("schema-version", 1, "candidate-sha256", candidate,
+                    Map<String, Object> configuration = object("schema-version", 1, "candidate-sha256", candidate,
                             "environment-sha256", environmentHash, "acceptance-profile", "sample-compatible-profile",
                             "execution-profile", execution, "command", strings("fixture-observer",
                                     "--input", "input.txt", "--input", "contracts/reference.properties", "--label", ""),
                             "java-options", strings("-Xmx128m", "-ea", "-ea"), "locale", "ROOT", "timezone", "UTC",
                             "settings", object("workflow-policy", "bounded fixture policy", "fonts", "no text in synthetic corpus",
-                                    "providers", "explicit synthetic observers"), "inputs", objects(reference("profile.md"))));
+                                    "providers", "explicit synthetic observers"), "inputs", objects(reference("profile.md")));
+                    if ("worker".equals(obligation.get("id"))) {
+                        configuration.put("support-commands", objects(strings("synthetic-control", "fixture-only")));
+                    }
+                    write(configurationPath, configuration);
                     Map<String, Object> configurationReference = reference(configurationPath);
                     for (String chain : strings("syntax", "standards", "semantic", "visual")) {
                         String base = "evidence/" + environment + "-" + execution + "-" + chain;
                         text(base + ".txt", "Synthetic passing " + base + " observation.\n");
                         text(base + "-negative.txt", "Synthetic known-invalid " + base + " rejected.\n");
-                        write(base + ".yaml", object("schema-version", 1, "obligation", "sample",
+                        write(base + ".yaml", object("schema-version", 1, "obligation", obligation.get("id"),
                                 "acceptance-profile", "sample-compatible-profile", "release", "0.1.0",
                                 "candidate-sha256", candidate, "contract-sha256", contract, "environment-sha256", environmentHash,
                                 "execution-configuration-sha256", configurationReference.get("sha256"),
@@ -562,7 +625,7 @@ public final class FoundationReadinessCommandTest {
                             firstReport = base + ".txt";
                         }
                     }
-                    certifications.add(object("obligation", "sample", "environment", environment,
+                    certifications.add(object("obligation", obligation.get("id"), "environment", environment,
                             "execution-profile", execution, "configuration", configurationReference, "records", records));
                 }
             }

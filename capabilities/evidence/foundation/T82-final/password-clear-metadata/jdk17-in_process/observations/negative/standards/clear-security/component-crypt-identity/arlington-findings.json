@@ -1,0 +1,7 @@
+{
+  "findings": [
+    "Error: special case not correct: Filter (Metadata) in PDF 1.7 should be: array;name [fn:Eval((fn:ArrayLength(DecodeParms)==fn:ArrayLength(Filter)) && ((Filter::@0!=Crypt) || fn:IsPresent(DecodeParms::0::@Name==StdCF)))];[fn:Eval((@Filter!=Crypt) || (fn:IsPresent(DecodeParms::Name) && (DecodeParms::@Name==StdCF)))] [observed value redacted]",
+    "Info: unknown key 'Name' is not defined in Arlington for FilterLZWDecode in PDF 1.7"
+  ],
+  "result": "fail"
+}

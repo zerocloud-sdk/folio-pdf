@@ -1,6 +1,6 @@
-# T21 Hardened Worker implementation evidence
+# T21 Hardened Worker boundary evidence
 
-Status: `experimental`
+Status: `compatible`
 
 Capability: `document.hardened-worker`
 
@@ -143,7 +143,7 @@ Targets, progress callbacks, and final publication authority.
   project-owned public signatures, module identity, notices, and an unshaded
   private backend. The Worker class path requires the two digest-pinned exact
   first-party class-name inventories and complete-byte SHA-256 matches for the
-  four required dependency JARs plus any installed six-JAR TIFF closure; the
+  six required dependency JARs plus any installed six-JAR TIFF closure; the
   authorities are recorded in `docs/hardened-worker.md` and
   `DEPENDENCIES.md`. It excludes application and test entries and rejects
   ambiguous classpath syntax before launch. The repository JDK matrix exercises
@@ -151,12 +151,35 @@ Targets, progress callbacks, and final publication authority.
 
 ## Evidence and status boundary
 
-This record contains implementation evidence, not independent Acceptance
-Evidence. The syntax, standards, semantic, and visual chains are absent. The
-T03 and T20 compatible-status Dependency Gates remain open while both
-capabilities are `experimental`, and T06 remains the promotion gate. T21
-therefore remains `experimental`, with no compatible or certified-platform
-claim.
+Issue #82 adds the [qualified certification contract](../../docs/t21-certification.md),
+[closed coverage inventory](../profiles/T21-hardened-worker/coverage.json) and
+[137 mandatory named cases](../profiles/T21-hardened-worker/mandatory-tests.txt).
+All four actually exercised Ubuntu 24.04/Linux x86-64 JDK 8, 11, 17 and 21
+HARDENED_WORKER tuples require separate passing syntax, standards, semantic,
+visual and contract records. The current candidate and all transitive report
+identities are defined by the [Foundation evidence index](../foundation-evidence.yaml).
+The T03 and T20 compatible-status Dependency Gates are satisfied; T06 promotion
+requires the current five-chain evidence rather than implementation tests alone.
+
+The retained chains are [syntax](T82-worker-syntax.md),
+[standards](T82-worker-standards.md), [semantic](T82-worker-semantic.md),
+[visual](T82-worker-visual.md) and [contract](T82-worker-contract.md).
+Seven actual resource-free one-page PDF outcomes reuse the qualified T03 rules
+and detected negative controls. Existing public Facade outcomes execute
+IN_PROCESS. Worker launch, authenticated transport and barriers remain Native
+controls with no invented Reference Suite mapping.
+
+Actual launcher witnesses retain production-only dependency/class inventories,
+absolute Java and prlimit hashes, arguments, cleared environment, CPU and
+file-descriptor limits, private roots and confirmed child termination before
+cleanup. Public fault and elapsed observations preserve safe failures, ordered
+receipts and unchanged Targets. Unsupported OS, missing Java and non-executable
+prlimit controls require WORKER_UNAVAILABLE and empty owned storage. Permitted
+Linux controls qualify filesystem, descendant, INET and AF_UNIX availability.
+JDK 8/11 lack Java Unix-domain APIs; JDK 17/21 actual Worker socket denial is
+observed. Link and Unix permission denial are separately qualified using the
+shipped Security Manager in an acceptance-only JVM, never added to the Worker.
+Windows x86-64 and macOS x86-64/arm64 remain explicitly uncertified.
 
 The documented implementation envelope is Linux plus `/usr/bin/prlimit` and
 JDK 8, 11, 17, or 21. Java permissions and process resource ceilings do not

@@ -1,0 +1,25 @@
+{
+  "command": [
+    "@repository/scripts/container-bin/t80-qpdf",
+    "--suppress-password-recovery",
+    "--password-mode=hex-bytes",
+    "--password-file=@private-0",
+    "--show-encryption",
+    "@evidence/native-credential-legacy-32/product.pdf"
+  ],
+  "exit-code": 0,
+  "limit": null,
+  "maximum-output-bytes": 16777216,
+  "privacy-projection": "tool-text-v1",
+  "stderr-sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdin": "none",
+  "stdout-sha256": "3516a1c1658e752b6b6e516fc0841fc5c9a0cba0265a38cabe26786c6b9c58c4",
+  "supervisor": [
+    "/bin/sh",
+    "-c",
+    "trap 'kill -KILL \"-$$\"' TERM INT HUP; exec 3<&0; \"$@\" <&3 3<&- & child=$!; exec 3<&- 0<&-; wait \"$child\"; result=$?; exit \"$result\"",
+    "folio-t78-tool",
+    "@tool-command"
+  ],
+  "timeout-seconds": 30
+}

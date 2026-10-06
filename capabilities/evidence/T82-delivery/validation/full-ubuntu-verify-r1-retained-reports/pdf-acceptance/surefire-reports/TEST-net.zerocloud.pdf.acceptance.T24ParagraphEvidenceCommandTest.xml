@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="net.zerocloud.pdf.acceptance.T24ParagraphEvidenceCommandTest" time="0.127" tests="2" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="17"/>
+    <property name="folio.harfBuzzHelper" value="/folio-harfbuzz/bin/folio-harfbuzz"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="/workspace/pdf-acceptance/target/test-classes:/workspace/pdf-acceptance/target/classes:/workspace/.build-cache/maven/repository/com/google/zxing/core/3.5.3/core-3.5.3.jar:/workspace/pdf-document/target/pdf-document-0.1.0-SNAPSHOT.jar:/workspace/pdf-provider-contract/target/pdf-provider-contract-0.1.0-SNAPSHOT.jar:/workspace/.build-cache/maven/repository/com/ibm/icu/icu4j/77.1/icu4j-77.1.jar:/workspace/.build-cache/maven/repository/uk/org/okapibarcode/okapibarcode/0.5.6/okapibarcode-0.5.6.jar:/workspace/pdf-migration-itext7/target/pdf-migration-itext7-0.1.0-SNAPSHOT.jar:/workspace/.build-cache/maven/repository/org/apache/pdfbox/pdfbox/3.0.8/pdfbox-3.0.8.jar:/workspace/.build-cache/maven/repository/org/apache/pdfbox/pdfbox-io/3.0.8/pdfbox-io-3.0.8.jar:/workspace/.build-cache/maven/repository/org/apache/pdfbox/fontbox/3.0.8/fontbox-3.0.8.jar:/workspace/.build-cache/maven/repository/commons-logging/commons-logging/1.4.0/commons-logging-1.4.0.jar:/workspace/pdf-conversion/target/pdf-conversion-0.1.0-SNAPSHOT.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/imageio/imageio-tiff/3.14.0/imageio-tiff-3.14.0.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/imageio/imageio-core/3.14.0/imageio-core-3.14.0.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/imageio/imageio-metadata/3.14.0/imageio-metadata-3.14.0.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/common/common-lang/3.14.0/common-lang-3.14.0.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/common/common-io/3.14.0/common-io-3.14.0.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/common/common-image/3.14.0/common-image-3.14.0.jar:/workspace/.build-cache/maven/repository/junit/junit/4.13.2/junit-4.13.2.jar:/workspace/.build-cache/maven/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:"/>
+    <property name="java.vm.vendor" value="Eclipse Adoptium"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="sun.font.fontmanager" value="sun.awt.X11FontManager"/>
+    <property name="java.vendor.url" value="https://adoptium.net/"/>
+    <property name="user.timezone" value="UTC"/>
+    <property name="os.name" value="Linux"/>
+    <property name="java.vm.specification.version" value="17"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="sun.boot.library.path" value="/opt/java/openjdk/lib"/>
+    <property name="sun.java.command" value="/workspace/pdf-acceptance/target/surefire/surefirebooter-20261006073515412_93.jar /workspace/pdf-acceptance/target/surefire 2026-10-06T07-23-19_936-jvmRun1 surefire-20261006073515412_91tmp surefire_4-20261006073515412_92tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="/workspace/pdf-acceptance/target/test-classes:/workspace/pdf-acceptance/target/classes:/workspace/.build-cache/maven/repository/com/google/zxing/core/3.5.3/core-3.5.3.jar:/workspace/pdf-document/target/pdf-document-0.1.0-SNAPSHOT.jar:/workspace/pdf-provider-contract/target/pdf-provider-contract-0.1.0-SNAPSHOT.jar:/workspace/.build-cache/maven/repository/com/ibm/icu/icu4j/77.1/icu4j-77.1.jar:/workspace/.build-cache/maven/repository/uk/org/okapibarcode/okapibarcode/0.5.6/okapibarcode-0.5.6.jar:/workspace/pdf-migration-itext7/target/pdf-migration-itext7-0.1.0-SNAPSHOT.jar:/workspace/.build-cache/maven/repository/org/apache/pdfbox/pdfbox/3.0.8/pdfbox-3.0.8.jar:/workspace/.build-cache/maven/repository/org/apache/pdfbox/pdfbox-io/3.0.8/pdfbox-io-3.0.8.jar:/workspace/.build-cache/maven/repository/org/apache/pdfbox/fontbox/3.0.8/fontbox-3.0.8.jar:/workspace/.build-cache/maven/repository/commons-logging/commons-logging/1.4.0/commons-logging-1.4.0.jar:/workspace/pdf-conversion/target/pdf-conversion-0.1.0-SNAPSHOT.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/imageio/imageio-tiff/3.14.0/imageio-tiff-3.14.0.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/imageio/imageio-core/3.14.0/imageio-core-3.14.0.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/imageio/imageio-metadata/3.14.0/imageio-metadata-3.14.0.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/common/common-lang/3.14.0/common-lang-3.14.0.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/common/common-io/3.14.0/common-io-3.14.0.jar:/workspace/.build-cache/maven/repository/com/twelvemonkeys/common/common-image/3.14.0/common-image-3.14.0.jar:/workspace/.build-cache/maven/repository/junit/junit/4.13.2/junit-4.13.2.jar:/workspace/.build-cache/maven/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="/home/ubuntu"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2026-07-21"/>
+    <property name="java.home" value="/opt/java/openjdk"/>
+    <property name="revision" value="0.1.0-SNAPSHOT"/>
+    <property name="file.separator" value="/"/>
+    <property name="basedir" value="/workspace/pdf-acceptance"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="surefire.real.class.path" value="/workspace/pdf-acceptance/target/surefire/surefirebooter-20261006073515412_93.jar"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="17.0.20+8"/>
+    <property name="user.name" value="ubuntu"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="6.12.94+"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="repositoryRoot" value="/workspace"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="java.vendor.version" value="Temurin-17.0.20+8"/>
+    <property name="localRepository" value="/workspace/.build-cache/maven/repository"/>
+    <property name="java.vendor.url.bug" value="https://github.com/adoptium/adoptium-support/issues"/>
+    <property name="java.io.tmpdir" value="/tmp"/>
+    <property name="java.version" value="17.0.20"/>
+    <property name="user.dir" value="/workspace/pdf-acceptance"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="native.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib"/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="java.vendor" value="Eclipse Adoptium"/>
+    <property name="java.vm.version" value="17.0.20+8"/>
+    <property name="java.specification.maintenance.version" value="1"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="java.class.version" value="61.0"/>
+  </properties>
+  <testcase name="handSpecifiedOracleRejectsMovedContentAndMissingText" classname="net.zerocloud.pdf.acceptance.T24ParagraphEvidenceCommandTest" time="0.043"/>
+  <testcase name="repeatedRunsRetainBothPageProfilesAndMarkMissingToolsIndeterminate" classname="net.zerocloud.pdf.acceptance.T24ParagraphEvidenceCommandTest" time="0.084">
+    <system-out><![CDATA[T24: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE; standards and compatibility remain indeterminate.
+T24: syntax=INDETERMINATE, semantic=PASS, visual=INDETERMINATE; standards and compatibility remain indeterminate.
+]]></system-out>
+  </testcase>
+</testsuite>

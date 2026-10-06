@@ -16,6 +16,48 @@ SPEC = importlib.util.spec_from_file_location(
 
 
 class FoundationCandidateTest(unittest.TestCase):
+    def test_environment_preserves_runtime_brand_and_empty_jvm_properties(self):
+        import hashlib
+        module = importlib.util.module_from_spec(SPEC)
+        SPEC.loader.exec_module(module)
+        with tempfile.TemporaryDirectory() as temporary:
+            root = pathlib.Path(temporary)
+            helper = root / 'helper/bin/folio-harfbuzz'
+            helper.parent.mkdir(parents=True)
+            helper.write_bytes(b'Synthetic native observer fixture; not certification')
+            (helper.parent.parent / 'installation.json').write_text('{}\n')
+            directory = root / 'observed'
+            os_release = b'ID=ubuntu\nVERSION_ID="24.04"\n'
+            image = 'example.invalid/synthetic-image@sha256:' + 'a' * 64
+            profile = {'id': 'synthetic-jdk8', 'identity': {
+                'os': 'ubuntu', 'os-version': '24.04', 'architecture': 'x86-64', 'image': image,
+                'os-release-sha256': hashlib.sha256(os_release).hexdigest(), 'jdk-major': 8,
+                'jdk-vendor': 'Eclipse Adoptium', 'jdk-build': '1.8.0_502-b07', 'java-sha256': 'e' * 64}}
+            payloads = {
+                'os-release.txt': os_release,
+                'jdk-release.txt': b'IMPLEMENTOR="Eclipse Adoptium"\n',
+                'java-version.txt': b'Property settings:\n    java.vendor = Temurin\n'
+                    b'    java.runtime.version = 1.8.0_502-b07\n    sun.cpu.isalist = \n'
+                    b'    user.timezone = \n    java.library.path = /first\n        /second\n',
+                'java-executable.txt': ('e' * 64 + '  /opt/java/openjdk/bin/java\n').encode(),
+                'prlimit-executable.txt': ('f' * 64 + '  /usr/bin/prlimit\n').encode(),
+                'prlimit-version.txt': b'prlimit from util-linux 2.39.3\n',
+                'kernel.txt': b'synthetic-kernel\n', 'architecture.txt': b'x86_64\n',
+                'native-observation.json': json.dumps({'result': 'pass', 'loaded_engine': {'sha256': 'd' * 64}}).encode()}
+            def observe(command, log, **options):
+                for name, value in payloads.items():
+                    (directory / name).write_bytes(value)
+                log.write_text('Synthetic observer payloads only\n')
+            with mock.patch.object(module, 'container_command', return_value=['synthetic-observer']), \
+                    mock.patch.object(module, 'run_logged', side_effect=observe), \
+                    mock.patch.object(module, 'certification_tools', return_value=[]), \
+                    mock.patch('subprocess.check_output', return_value='sha256:' + 'a' * 64 + '\n'):
+                result = module.observe_environment(root, image, helper, directory, profile, root / 'harness')
+            self.assertEqual(profile['identity'], result['identity'])
+            self.assertEqual({'vendor': 'Temurin', 'build': '1.8.0_502-b07'}, result['java-runtime'])
+            self.assertEqual({'path': '/usr/bin/prlimit', 'sha256': 'f' * 64,
+                              'version': 'prlimit from util-linux 2.39.3'}, result['worker-launcher'])
+
     def test_explicit_python_runtime_is_bounded_to_repo_and_bound_to_staged_inputs(self):
         module = importlib.util.module_from_spec(SPEC)
         SPEC.loader.exec_module(module)

@@ -42,6 +42,9 @@ Thumbs.db
 # T81 hostile-input certification and refreshed predecessor logs are retained evidence.
 !/capabilities/evidence/foundation/T81-*/**/*.log
 !/capabilities/evidence/T81-*/**/*.log
+# T82 Worker certification and current predecessor observer logs are retained evidence.
+!/capabilities/evidence/foundation/T82-*/**/*.log
+!/capabilities/evidence/T82-*/**/*.log
 # T81 publishes only the final-r2 certification and curated delivery records; superseded attempts and candidate payloads stay local.
 /capabilities/evidence/foundation/T81-initial/
 /capabilities/evidence/foundation/T81-final/
@@ -50,5 +53,19 @@ Thumbs.db
 /capabilities/evidence/T81-delivery/initial-candidate-r7/*.zip
 /capabilities/evidence/T81-delivery/final-candidate/originals/
 /capabilities/evidence/T81-delivery/final-candidate/*.zip
+# T82 publishes only the indexed final certification (+ T82-final-r2 password-attachments continuation) and curated delivery; superseded development trees and obsolete candidate payloads stay local.
+/capabilities/evidence/foundation/T82-development-r1/
+/capabilities/evidence/foundation/T82-development-r2/
+/capabilities/evidence/foundation/T82-development-jdk8-r1/
+/capabilities/evidence/foundation/T82-development-jdk8-r2/
+/capabilities/evidence/foundation/T82-development-jdk8-r3/
+/capabilities/evidence/T82-delivery/candidate-final-r1/*.zip
+/capabilities/evidence/T82-delivery/candidate-final-r1/*.zip.part*
+/capabilities/evidence/T82-delivery/candidate-source-freeze-r1/*.zip
+/capabilities/evidence/T82-delivery/candidate-source-freeze-r1/*.zip.part*
+/capabilities/evidence/T82-delivery/development-candidate-r2/*.zip
+/capabilities/evidence/T82-delivery/development-candidate-r2/*.zip.part*
+/capabilities/evidence/T82-delivery/development-candidate-r3/*.zip
+/capabilities/evidence/T82-delivery/development-candidate-r3/*.zip.part*
 hs_err_pid*
 replay_pid*

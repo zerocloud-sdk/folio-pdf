@@ -1,0 +1,8 @@
+Running exact mandatory cases for JDK 17
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/capabilities/evidence/T82-delivery/run-worker-slice.py", line 42, in <module>
+    driver.run_logged(plan['contract-tests-command'], scope / 'contract-tests.txt', cwd=root, timeout=case['contract-timeout'])
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1001, in run_logged
+    raise RuntimeError('Command failed; see ' + str(path))
+RuntimeError: Command failed; see /workspace/folio-pdf/capabilities/evidence/foundation/T82-development-r1/jdk17-hardened_worker/contract-tests.txt

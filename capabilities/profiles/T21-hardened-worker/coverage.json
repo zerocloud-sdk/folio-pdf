@@ -1,0 +1,100 @@
+{
+  "profile": "T21-hardened-worker",
+  "native-execution-profile": "HARDENED_WORKER",
+  "facade-execution-profile": "IN_PROCESS",
+  "mandatory-test-count": 137,
+  "test-classes": [
+    "net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest",
+    "net.zerocloud.pdf.consumer.HardenedWorkerWorkflowTest",
+    "net.zerocloud.pdf.HardenedWorkerIsolationTest",
+    "net.zerocloud.pdf.WorkerProtocolBoundaryTest",
+    "net.zerocloud.pdf.HardenedWorkerRecoveryFaultTest",
+    "net.zerocloud.pdf.T21BoundaryObservationCases",
+    "net.zerocloud.pdf.itext7.consumer.BlankDocumentFacadeTest",
+    "net.zerocloud.pdf.migration.itext7.contract.JarContractIT",
+    "net.zerocloud.pdf.migration.itext7.contract.ClasspathExclusivityIT"
+  ],
+  "cases": {
+    "ordered-prefix": {
+      "code": "PAGE_POSITION_INVALID",
+      "observations": {
+        "pages": "1",
+        "barrier-pages": "2",
+        "receipts": "result:COMMITTED:false",
+        "progress": "STARTED,WORK_STARTED,WORK_COMPLETED,STAGED,VALIDATED,PUBLICATION_STARTED,TARGET_COMMITTED,COMPLETED",
+        "expired-view": "pass"
+      }
+    },
+    "caller-ownership": {
+      "observations": {
+        "input-open": "true",
+        "output-open": "true",
+        "pages": "1",
+        "receipts": "result:COMMITTED:false"
+      }
+    },
+    "checked-failure": {
+      "code": "PAGE_POSITION_INVALID",
+      "observations": {
+        "receipts": "result:NOT_ATTEMPTED:false",
+        "sentinel": "unchanged"
+      }
+    },
+    "cancelled": {
+      "code": "WORKFLOW_CANCELLED",
+      "observations": {
+        "receipts": "result:NOT_ATTEMPTED:false",
+        "sentinel": "unchanged"
+      }
+    },
+    "deadline": {
+      "code": "DEADLINE_EXCEEDED",
+      "observations": {
+        "receipts": "result:NOT_ATTEMPTED:false",
+        "sentinel": "unchanged"
+      }
+    },
+    "caller-failure": {
+      "observations": {
+        "same-exception": "true",
+        "sentinel": "unchanged"
+      }
+    },
+    "ordered-publication": {
+      "code": "PUBLICATION_FAILED",
+      "observations": {
+        "receipts": "first:COMMITTED:false,current:FAILED:true,later:NOT_ATTEMPTED:false",
+        "output-open": "true",
+        "sentinel": "unchanged"
+      }
+    },
+    "owned-cleanup": {
+      "observations": {
+        "empty": "true"
+      }
+    }
+  },
+  "facade-observations": {
+    "stream-ownership.result": "pass",
+    "reopened.result": "pass",
+    "closed-views.result": "pass",
+    "partial-publication.result": "pass",
+    "partial-publication.code": "PUBLICATION_FAILED",
+    "partial-publication.receipts": "first:COMMITTED:false,current:FAILED:true,later:NOT_ATTEMPTED:false",
+    "execution-profile": "IN_PROCESS",
+    "stream-ownership.receipts": "target:COMMITTED:false"
+  },
+  "boundary-records": [
+    "launcher",
+    "policy",
+    "prerequisites",
+    "faults",
+    "elapsed"
+  ],
+  "qualifications": {
+    "pdf-products": "Resource-free one-page outcomes reuse the original qualified T03 rules and pixel controls; they do not certify unrelated document capabilities.",
+    "unix-jdk8-jdk11": "Java Unix-domain transport API is absent. The actual Worker rejects descendant/native escapes; the same product policy is separately qualified to deny the Unix permission. Linux AF_UNIX is exercised by a permitted Python control.",
+    "policy-jvm": "Acceptance-only qualification of the shipped Security Manager; never represented as a production Worker or added to its runtime classpath.",
+    "recovery": "Existing fault tests execute as crash/cleanup regressions, without certifying T22 identity, retry or scale."
+  }
+}

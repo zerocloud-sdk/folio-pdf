@@ -18,8 +18,10 @@ public interface. T20 makes that profile finite by default with one shared
 request/environment policy for input, page, object, nesting, decompression,
 pixel, accounted owned-memory, temporary-storage, elapsed-time, and concurrency
 limits. The policy is cooperative; hostile multi-tenant input still requires
-the opt-in T21 Hardened Worker Profile, which is implemented for the documented
-Linux/JDK support envelope. T22 adds optional environment-local transaction
+the opt-in T21 Hardened Worker Profile. Issue #82 certifies its base boundary
+on the four declared Ubuntu 24.04/Linux x86-64 Temurin JDK 8/11/17/21 environments,
+with current candidate, launcher and independent evidence identities in the
+[T21 certification contract](docs/t21-certification.md). T22 adds optional environment-local transaction
 identity and status lookup, bounded authenticated multi-frame values, public
 modeled resource high-water marks, and generated 5,000-page, exact 1-GiB, and
 configured-concurrency scale profiles. Recovery is finite and in-memory, not
@@ -380,7 +382,10 @@ and Target adapters, exact classpath authority, INET and Unix-domain network
 denial, filesystem/process controls, cleanup, stable Worker failures,
 count- and per-record-bounded transaction retention and retry rules, target-specific uncertainty, bounded
 multi-frame transport, controlled scale profiles, configuration, supported
-Linux/JDK envelope, and explicit non-certification boundaries. Selecting the
+Linux/JDK envelope, and explicit limits on the certification claim. The base
+Worker has separate syntax, standards, semantic, visual and contract records;
+the Facade observations remain IN_PROCESS. Recovery/scale remains experimental,
+and Windows/macOS remain uncertified. Selecting the
 profile never silently falls back to in-process execution. Remote Capability
 Providers remain parent-brokered and separately require Remote Disclosure
 Authorization.

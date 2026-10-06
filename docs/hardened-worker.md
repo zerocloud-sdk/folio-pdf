@@ -9,6 +9,14 @@ progress listener, caller result, caller-owned streams and channels, Capability
 Provider selection, and final publication all remain in the caller JVM. Only
 library-owned Commands, Queries, and closed project values cross the boundary.
 
+Issue #82 certifies the base T21 boundary only on the exact Ubuntu 24.04 /
+Linux x86-64 Temurin JDK 8, 11, 17 and 21 images in the
+[T21 certification contract](t21-certification.md). The current Foundation
+index binds the five separate chains to the production artifacts, exact
+launcher, class inventories, tools and execution configuration. Windows x86-64
+and macOS x86-64/arm64 remain uncertified. The implemented T22 extensions below
+retain their separate experimental recovery/scale status.
+
 ```java
 WorkflowEnvironment environment = WorkflowEnvironment.builder().build();
 WorkflowRequest request = WorkflowRequest.builder()
@@ -297,8 +305,8 @@ JDK compilers while rejecting any missing or additional class entry.
 
 | Artifact | Inventory resource | Entries | Inventory SHA-256 |
 | --- | --- | ---: | --- |
-| `pdf-document` | `META-INF/folio-pdf/document-worker-classes` | 722 | `741f1b0900f0b94dbba0caa603309f64a69d94caa4951f24643118f5799d026f` |
-| `pdf-provider-contract` | `META-INF/folio-pdf/provider-contract-worker-classes` | 20 | `c7a7bb193dcfa656ba13af311ce2d7654a5aaac962b8804481a77d14013a25b6` |
+| `pdf-document` | `META-INF/folio-pdf/document-worker-classes` | 754 | `99cba401304fe7d1bbc279f8afd1cbac30bf6dc0609e2747966c276b51933297` |
+| `pdf-provider-contract` | `META-INF/folio-pdf/provider-contract-worker-classes` | 25 | `56340dc06714414d32db2af86d87db696cbe05de93b4ece4571bb3b412a76f16` |
 
 Every third-party entry must be a regular JAR whose complete bytes have the
 listed digest. The optional TIFF closure is accepted only as the complete exact
@@ -309,6 +317,8 @@ set discovered at runtime.
 | `org.apache.pdfbox:pdfbox:3.0.8` | `97647cfbde61ebcfc06b4cf8c9b0ffcaaee073396eceb4a7f6836a9b9128903c` |
 | `org.apache.pdfbox:pdfbox-io:3.0.8` | `36a0e04001010b4c764857817412b96339930b19755e728959805cc0352061b2` |
 | `org.apache.pdfbox:fontbox:3.0.8` | `a1915c24e3edbe0ecec93896dfbf6d41427810b663ade97bd4e8bae86ec3fdab` |
+| `com.ibm.icu:icu4j:77.1` | `b3640b9f416a4411fd33c59abbeea8fd57d024c23e1819bf9673220a97499fe3` |
+| `uk.org.okapibarcode:okapibarcode:0.5.6` | `fc07c5e28f200a53b980e36719901e095e06d1432d7ae959a22456f838765f2a` |
 | `commons-logging:commons-logging:1.4.0` | `d175dbd751dd782a63bde28c7a039520e971f25e84b79c19b8435edc3603e0dc` |
 | `com.twelvemonkeys.imageio:imageio-tiff:3.14.0` | `68aa1b4a176d1242b9e49334df188ebfbb7c9201f6071dfe42500d63486224b6` |
 | `com.twelvemonkeys.imageio:imageio-core:3.14.0` | `a1b832b5090bd4677696f999b5ccb8954e987eb9674632a6286a6de2bb1c3c78` |
@@ -320,6 +330,23 @@ set discovered at runtime.
 These values are also part of the repository's dependency authority in
 [`DEPENDENCIES.md`](../DEPENDENCIES.md). Repacked dependency JARs and
 dependency directories are intentionally unsupported by this profile.
+
+The certified configuration places the JDK at `/opt/java/openjdk` and the
+production artifacts/dependency JARs under `/workspace/target/foundation-0.1.0`,
+outside the transaction parent. The launcher is the absolute Java executable
+from that JDK plus executable `/usr/bin/prlimit`; Linux POSIX owner permissions
+and a runtime that can install the Worker Security Manager are required.
+JDK 17/21 require the launcher's `-Djava.security.manager=allow` option.
+Recorded process arguments, cleared environment, effective CPU/descriptor
+limits and executable hashes are part of each T21 contract record.
+
+Java Unix-domain transport APIs are absent on JDK 8/11. Those records explicitly
+classify that absence; they do not relabel it as an attempted socket denial.
+On JDK 17/21 the actual Worker attempts both Unix-domain connect and listen and
+receives security denials. Linux AF_UNIX, INET, filesystem, descendant and link
+permitted controls run outside the Worker. A separate acceptance JVM qualifies
+the shipped Security Manager's link and Unix permission controls without
+entering or expanding the production Worker classpath.
 
 These controls are defense in depth around a closed data protocol; they are
 not a general-purpose sandbox for arbitrary bytecode or native libraries. The

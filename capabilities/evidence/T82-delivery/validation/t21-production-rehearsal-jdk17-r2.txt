@@ -1,0 +1,9 @@
+Running exact mandatory cases for JDK 17
+Recording actual public products and independent findings
+Collecting and reproducing original observations
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/capabilities/evidence/T82-delivery/run-worker-slice.py", line 48, in <module>
+    reports = driver.collect_reports(root, scope / 'observations', 'worker', 'HARDENED_WORKER')
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 722, in collect_reports
+    from t21_foundation_reports import collect_reports as collect_worker_reports
+ModuleNotFoundError: No module named 't21_foundation_reports'

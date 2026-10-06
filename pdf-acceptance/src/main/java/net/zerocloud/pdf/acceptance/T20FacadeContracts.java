@@ -32,7 +32,7 @@ final class T20FacadeContracts {
         PdfDocument created = new PdfDocument(new PdfWriter(stream));
         created.addNewPage(); created.close(); created.close();
         check(!stream.closed, "caller output closed");
-        receipts(created.getPublicationReceipts(), PublicationStatus.COMMITTED);
+        observed.setProperty("stream-ownership.receipts", receipts(created.getPublicationReceipts(), PublicationStatus.COMMITTED));
         closed(created);
         Path success = Files.createDirectory(output.resolve("facade-stream")).resolve("blank.pdf");
         retained.write(success, stream.toByteArray());
@@ -62,10 +62,10 @@ final class T20FacadeContracts {
             DocumentFailure failure = (DocumentFailure) wrapped.getCause();
             check(failure.getCode() == DocumentFailureCode.PUBLICATION_FAILED && failure.getCause() == null
                     && "The validated document could not be written to its stream target.".equals(failure.getDiagnostic()), "Facade unsafe publication failure");
-            receipts(failure.getPublicationReceipts(), PublicationStatus.COMMITTED, PublicationStatus.FAILED, PublicationStatus.NOT_ATTEMPTED);
+            observed.setProperty("partial-publication.receipts", receipts(failure.getPublicationReceipts(),
+                    PublicationStatus.COMMITTED, PublicationStatus.FAILED, PublicationStatus.NOT_ATTEMPTED));
             check(failure.getPublicationReceipts().get(1).isPartialOutputPossible(), "Facade partial receipt");
             observed.setProperty("partial-publication.code", failure.getCode().name());
-            observed.setProperty("partial-publication.receipts", "COMMITTED:false,FAILED:true,NOT_ATTEMPTED:false");
         }
         check(broken.count == 1 && !broken.closed && Arrays.equals(Files.readAllBytes(later), new byte[] {1, 2, 3}), "Facade ownership or later Target");
         closed(multiple);
@@ -77,9 +77,19 @@ final class T20FacadeContracts {
         return retained;
     }
 
-    private static void receipts(List<PublicationReceipt> actual, PublicationStatus... expected) {
+    private static String receipts(List<PublicationReceipt> actual, PublicationStatus... expected) {
         check(actual.size() == expected.length, "Facade receipt cardinality");
-        for (int index = 0; index < expected.length; index++) { check(actual.get(index).getStatus() == expected[index], "Facade receipt order"); }
+        String[] names = expected.length == 1 ? new String[] {"target"} : new String[] {"first", "current", "later"};
+        StringBuilder observed = new StringBuilder();
+        for (int index = 0; index < expected.length; index++) {
+            PublicationReceipt receipt = actual.get(index);
+            check(names[index].equals(receipt.getTargetName()) && receipt.getStatus() == expected[index], "Facade receipt target/order");
+            check(receipt.isPartialOutputPossible() == (expected[index] == PublicationStatus.FAILED), "Facade receipt partial-output flag");
+            if (index > 0) { observed.append(','); }
+            observed.append(receipt.getTargetName()).append(':').append(receipt.getStatus().name())
+                    .append(':').append(receipt.isPartialOutputPossible());
+        }
+        return observed.toString();
     }
     private static void closed(PdfDocument document) {
         try { document.getNumberOfPages(); throw new AssertionError("Facade view remained open"); }
