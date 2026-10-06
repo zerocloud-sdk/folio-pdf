@@ -56,12 +56,21 @@ public final class FoundationReadinessCommandTest {
         Result result = command("readiness", root);
         assertTrue(result.output, result.exit != 0);
         for (String finding : Arrays.asList("Foundation 0.1.0: NOT READY",
-                "BLOCKED password-clear-metadata (#79)", "BLOCKED password-attachments (#80)",
                 "BLOCKED tables-base (#91)", "BLOCKED tables-pagination (#92)",
                 "incompatible Dependency Gate",
                 "ubuntu-24.04-linux-x86-64-jdk8", "ubuntu-24.04-linux-x86-64-jdk11",
                 "ubuntu-24.04-linux-x86-64-jdk17", "ubuntu-24.04-linux-x86-64-jdk21")) {
             assertTrue("Missing " + finding + "\n" + result.output, result.output.contains(finding));
+        }
+        // Local staged artifacts and tool caches determine these retained-evidence statuses.
+        for (String obligation : Arrays.asList("password-clear-metadata (#79)",
+                "password-attachments (#80)", "limits (#81)")) {
+            String blockedPrefix = "BLOCKED " + obligation + ": ";
+            assertTrue("Missing readiness diagnostic for " + obligation + "\n" + result.output,
+                    Arrays.stream(result.output.split("\\r?\\n")).anyMatch(line ->
+                            line.equals("SATISFIED " + obligation)
+                                    || (line.startsWith(blockedPrefix)
+                                            && !line.substring(blockedPrefix.length()).trim().isEmpty())));
         }
     }
 

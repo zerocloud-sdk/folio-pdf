@@ -1,0 +1,728 @@
+{
+  "profile": "T20-hostile-input-limits",
+  "authority": [
+    "/workspace/contracts/issue-81-contract.md",
+    "docs/hostile-input-policy.md",
+    "pdf-document/src/main/java/net/zerocloud/pdf/WorkflowResourcePolicy.java",
+    "pdf-document/src/main/java/net/zerocloud/pdf/WorkflowResourceUsage.java"
+  ],
+  "dimensions": [
+    "input",
+    "pages",
+    "objects",
+    "nesting",
+    "decompression",
+    "pixels",
+    "memory",
+    "temporary",
+    "elapsed",
+    "concurrency"
+  ],
+  "cases": {
+    "defaults-declarations": {
+      "fixture": "controlled public Workflow declarations",
+      "observation": "observations.properties:defaults-declarations",
+      "result": "pass"
+    },
+    "input-path-exact": {
+      "fixture": "plain.pdf; independently authored 354 bytes",
+      "observation": "observations.properties:input-path-exact",
+      "result": "pass"
+    },
+    "input-path-excess": {
+      "fixture": "plain.pdf; independently authored 354 bytes",
+      "observation": "observations.properties:input-path-excess",
+      "result": "pass",
+      "code": "WORKFLOW_INPUT_LIMIT_EXCEEDED"
+    },
+    "input-stream-exact": {
+      "fixture": "plain.pdf; independently authored 354 bytes",
+      "observation": "observations.properties:input-stream-exact",
+      "result": "pass"
+    },
+    "input-stream-excess": {
+      "fixture": "plain.pdf; independently authored 354 bytes",
+      "observation": "observations.properties:input-stream-excess",
+      "result": "pass",
+      "code": "WORKFLOW_INPUT_LIMIT_EXCEEDED"
+    },
+    "input-channel-exact": {
+      "fixture": "plain.pdf; independently authored 354 bytes",
+      "observation": "observations.properties:input-channel-exact",
+      "result": "pass"
+    },
+    "input-channel-excess": {
+      "fixture": "plain.pdf; independently authored 354 bytes",
+      "observation": "observations.properties:input-channel-excess",
+      "result": "pass",
+      "code": "WORKFLOW_INPUT_LIMIT_EXCEEDED"
+    },
+    "input-bytes-exact": {
+      "fixture": "plain.pdf; independently authored 354 bytes",
+      "observation": "observations.properties:input-bytes-exact",
+      "result": "pass"
+    },
+    "input-bytes-excess": {
+      "fixture": "plain.pdf; independently authored 354 bytes",
+      "observation": "observations.properties:input-bytes-excess",
+      "result": "pass",
+      "code": "WORKFLOW_INPUT_LIMIT_EXCEEDED"
+    },
+    "input-aggregate-exact": {
+      "fixture": "two plain.pdf Sources; 354+354 bytes",
+      "observation": "observations.properties:input-aggregate-exact",
+      "result": "pass"
+    },
+    "input-aggregate-excess": {
+      "fixture": "two plain.pdf Sources; 354+354 bytes",
+      "observation": "observations.properties:input-aggregate-excess",
+      "result": "pass",
+      "code": "WORKFLOW_INPUT_LIMIT_EXCEEDED"
+    },
+    "pages-exact": {
+      "fixture": "plain.pdf; 1 page, 3 indirect objects, 354-byte retained Source/snapshot",
+      "observation": "observations.properties:pages-exact",
+      "result": "pass"
+    },
+    "pages-excess": {
+      "fixture": "plain.pdf; 1 page, 3 indirect objects, 354-byte retained Source/snapshot",
+      "observation": "observations.properties:pages-excess",
+      "result": "pass",
+      "code": "PAGE_LIMIT_EXCEEDED"
+    },
+    "pages-zero": {
+      "fixture": "plain.pdf; 1 page, 3 indirect objects, 354-byte retained Source/snapshot",
+      "observation": "observations.properties:pages-zero",
+      "result": "pass",
+      "code": "PAGE_LIMIT_EXCEEDED"
+    },
+    "objects-exact": {
+      "fixture": "plain.pdf; 1 page, 3 indirect objects, 354-byte retained Source/snapshot",
+      "observation": "observations.properties:objects-exact",
+      "result": "pass"
+    },
+    "objects-excess": {
+      "fixture": "plain.pdf; 1 page, 3 indirect objects, 354-byte retained Source/snapshot",
+      "observation": "observations.properties:objects-excess",
+      "result": "pass",
+      "code": "OBJECT_LIMIT_EXCEEDED"
+    },
+    "objects-zero": {
+      "fixture": "plain.pdf; 1 page, 3 indirect objects, 354-byte retained Source/snapshot",
+      "observation": "observations.properties:objects-zero",
+      "result": "pass",
+      "code": "OBJECT_LIMIT_EXCEEDED"
+    },
+    "nesting-exact": {
+      "fixture": "nested.pdf; trailer/reference/Catalog/seven arrays, depth 10",
+      "observation": "observations.properties:nesting-exact",
+      "result": "pass"
+    },
+    "nesting-excess": {
+      "fixture": "nested.pdf; trailer/reference/Catalog/seven arrays, depth 10",
+      "observation": "observations.properties:nesting-excess",
+      "result": "pass",
+      "code": "NESTING_LIMIT_EXCEEDED"
+    },
+    "nesting-zero": {
+      "fixture": "nested.pdf; trailer/reference/Catalog/seven arrays, depth 10",
+      "observation": "observations.properties:nesting-zero",
+      "result": "pass",
+      "code": "NESTING_LIMIT_EXCEEDED"
+    },
+    "decompression-exact": {
+      "fixture": "filters.pdf; stages 5+3 bytes",
+      "observation": "observations.properties:decompression-exact",
+      "result": "pass"
+    },
+    "decompression-excess": {
+      "fixture": "filters.pdf; stages 5+3 bytes",
+      "observation": "observations.properties:decompression-excess",
+      "result": "pass",
+      "code": "DECOMPRESSION_LIMIT_EXCEEDED"
+    },
+    "decompression-zero": {
+      "fixture": "filters.pdf; stages 5+3 bytes",
+      "observation": "observations.properties:decompression-zero",
+      "result": "pass",
+      "code": "DECOMPRESSION_LIMIT_EXCEEDED"
+    },
+    "pixels-exact": {
+      "fixture": "pixels.pdf; 2*3 pixels",
+      "observation": "observations.properties:pixels-exact",
+      "result": "pass"
+    },
+    "pixels-excess": {
+      "fixture": "pixels.pdf; 2*3 pixels",
+      "observation": "observations.properties:pixels-excess",
+      "result": "pass",
+      "code": "PIXEL_LIMIT_EXCEEDED"
+    },
+    "pixels-zero": {
+      "fixture": "pixels.pdf; 2*3 pixels",
+      "observation": "observations.properties:pixels-zero",
+      "result": "pass",
+      "code": "PIXEL_LIMIT_EXCEEDED"
+    },
+    "memory-exact": {
+      "fixture": "plain.pdf; 1 page, 3 indirect objects, 354-byte retained Source/snapshot",
+      "observation": "observations.properties:memory-exact",
+      "result": "pass"
+    },
+    "memory-excess": {
+      "fixture": "plain.pdf; 1 page, 3 indirect objects, 354-byte retained Source/snapshot",
+      "observation": "observations.properties:memory-excess",
+      "result": "pass",
+      "code": "MEMORY_LIMIT_EXCEEDED"
+    },
+    "memory-zero": {
+      "fixture": "plain.pdf; 1 page, 3 indirect objects, 354-byte retained Source/snapshot",
+      "observation": "observations.properties:memory-zero",
+      "result": "pass",
+      "code": "MEMORY_LIMIT_EXCEEDED"
+    },
+    "temporary-exact": {
+      "fixture": "plain.pdf; 1 page, 3 indirect objects, 354-byte retained Source/snapshot",
+      "observation": "observations.properties:temporary-exact",
+      "result": "pass"
+    },
+    "temporary-excess": {
+      "fixture": "plain.pdf; 1 page, 3 indirect objects, 354-byte retained Source/snapshot",
+      "observation": "observations.properties:temporary-excess",
+      "result": "pass",
+      "code": "TEMPORARY_STORAGE_LIMIT_EXCEEDED"
+    },
+    "temporary-zero": {
+      "fixture": "plain.pdf; 1 page, 3 indirect objects, 354-byte retained Source/snapshot",
+      "observation": "observations.properties:temporary-zero",
+      "result": "pass",
+      "code": "TEMPORARY_STORAGE_LIMIT_EXCEEDED"
+    },
+    "input-zero": {
+      "fixture": "plain.pdf; zero-byte policy",
+      "observation": "observations.properties:input-zero",
+      "result": "pass",
+      "code": "WORKFLOW_INPUT_LIMIT_EXCEEDED"
+    },
+    "ascii85-exact": {
+      "fixture": "ascii85.pdf; independently encoded ABC and declared stage lengths",
+      "observation": "observations.properties:ascii85-exact",
+      "result": "pass"
+    },
+    "ascii85-excess": {
+      "fixture": "ascii85.pdf; independently encoded ABC and declared stage lengths",
+      "observation": "observations.properties:ascii85-excess",
+      "result": "pass",
+      "code": "DECOMPRESSION_LIMIT_EXCEEDED"
+    },
+    "flate-exact": {
+      "fixture": "flate.pdf; independently encoded ABC and declared stage lengths",
+      "observation": "observations.properties:flate-exact",
+      "result": "pass"
+    },
+    "flate-excess": {
+      "fixture": "flate.pdf; independently encoded ABC and declared stage lengths",
+      "observation": "observations.properties:flate-excess",
+      "result": "pass",
+      "code": "DECOMPRESSION_LIMIT_EXCEEDED"
+    },
+    "lzw-exact": {
+      "fixture": "lzw.pdf; independently encoded ABC and declared stage lengths",
+      "observation": "observations.properties:lzw-exact",
+      "result": "pass"
+    },
+    "lzw-excess": {
+      "fixture": "lzw.pdf; independently encoded ABC and declared stage lengths",
+      "observation": "observations.properties:lzw-excess",
+      "result": "pass",
+      "code": "DECOMPRESSION_LIMIT_EXCEEDED"
+    },
+    "returned-memory-exact": {
+      "fixture": "xmp.pdf; four-byte result, working+defensive copy; earlier return remains retained",
+      "observation": "observations.properties:returned-memory-exact",
+      "result": "pass"
+    },
+    "returned-memory-excess": {
+      "fixture": "xmp.pdf; four-byte result, working+defensive copy; earlier return remains retained",
+      "observation": "observations.properties:returned-memory-excess",
+      "result": "pass",
+      "code": "MEMORY_LIMIT_EXCEEDED"
+    },
+    "retained-working-memory-exact": {
+      "fixture": "xmp.pdf; four-byte result, working+defensive copy; earlier return remains retained",
+      "observation": "observations.properties:retained-working-memory-exact",
+      "result": "pass"
+    },
+    "retained-working-memory-excess": {
+      "fixture": "xmp.pdf; four-byte result, working+defensive copy; earlier return remains retained",
+      "observation": "observations.properties:retained-working-memory-excess",
+      "result": "pass",
+      "code": "MEMORY_LIMIT_EXCEEDED"
+    },
+    "zero-consumption": {
+      "fixture": "controlled public Workflow declarations",
+      "observation": "observations.properties:zero-consumption",
+      "result": "pass"
+    },
+    "request-precedence": {
+      "fixture": "controlled public Workflow declarations",
+      "observation": "observations.properties:request-precedence",
+      "result": "pass",
+      "code": "PAGE_LIMIT_EXCEEDED"
+    },
+    "local-source-precedence": {
+      "fixture": "controlled public Workflow declarations",
+      "observation": "observations.properties:local-source-precedence",
+      "result": "pass",
+      "code": "SOURCE_LIMIT_EXCEEDED"
+    },
+    "local-decoding-precedence": {
+      "fixture": "controlled public Workflow declarations",
+      "observation": "observations.properties:local-decoding-precedence",
+      "result": "pass",
+      "code": "PDF_VALUE_LIMIT_EXCEEDED"
+    },
+    "repeated-decode-exact": {
+      "fixture": "controlled public Workflow declarations",
+      "observation": "observations.properties:repeated-decode-exact",
+      "result": "pass"
+    },
+    "repeated-decode-excess": {
+      "fixture": "controlled public Workflow declarations",
+      "observation": "observations.properties:repeated-decode-excess",
+      "result": "pass",
+      "code": "DECOMPRESSION_LIMIT_EXCEEDED"
+    },
+    "filter-patch-exact": {
+      "fixture": "controlled public Workflow declarations",
+      "observation": "observations.properties:filter-patch-exact",
+      "result": "pass"
+    },
+    "filter-patch-excess": {
+      "fixture": "controlled public Workflow declarations",
+      "observation": "observations.properties:filter-patch-excess",
+      "result": "pass",
+      "code": "DECOMPRESSION_LIMIT_EXCEEDED"
+    },
+    "pixels-no-refund": {
+      "fixture": "controlled public Workflow declarations",
+      "observation": "observations.properties:pixels-no-refund",
+      "result": "pass"
+    },
+    "elapsed-equality": {
+      "fixture": "controlled public Workflow declarations",
+      "observation": "observations.properties:elapsed-equality",
+      "result": "pass"
+    },
+    "elapsed-first-excess": {
+      "fixture": "controlled public Workflow declarations",
+      "observation": "observations.properties:elapsed-first-excess",
+      "result": "pass",
+      "code": "ELAPSED_TIME_LIMIT_EXCEEDED"
+    },
+    "backward-clock": {
+      "fixture": "controlled public Workflow declarations",
+      "observation": "observations.properties:backward-clock",
+      "result": "pass"
+    },
+    "deadline-equality": {
+      "fixture": "controlled public Workflow declarations",
+      "observation": "observations.properties:deadline-equality",
+      "result": "pass",
+      "code": "DEADLINE_EXCEEDED"
+    },
+    "source-cancellation": {
+      "fixture": "controlled public Workflow declarations",
+      "observation": "observations.properties:source-cancellation",
+      "result": "pass",
+      "code": "WORKFLOW_CANCELLED"
+    },
+    "concurrency-incoming": {
+      "fixture": "controlled public Workflow declarations",
+      "observation": "observations.properties:concurrency-incoming",
+      "result": "pass",
+      "code": "CONCURRENCY_LIMIT_EXCEEDED"
+    },
+    "concurrency-active": {
+      "fixture": "controlled public Workflow declarations",
+      "observation": "observations.properties:concurrency-active",
+      "result": "pass",
+      "code": "CONCURRENCY_LIMIT_EXCEEDED"
+    },
+    "concurrency-zero": {
+      "fixture": "controlled public Workflow declarations",
+      "observation": "observations.properties:concurrency-zero",
+      "result": "pass",
+      "code": "CONCURRENCY_LIMIT_EXCEEDED"
+    },
+    "permit-terminal-paths": {
+      "fixture": "controlled public Workflow declarations",
+      "observation": "observations.properties:permit-terminal-paths",
+      "result": "pass",
+      "code": "PAGE_LIMIT_EXCEEDED"
+    },
+    "caught-terminal-failure": {
+      "fixture": "controlled public Workflow declarations",
+      "observation": "observations.properties:caught-terminal-failure",
+      "result": "pass",
+      "code": "PAGE_LIMIT_EXCEEDED",
+      "observations": {
+        "receipts": "NOT_ATTEMPTED:false"
+      }
+    },
+    "owning-format-failure": {
+      "fixture": "controlled public Workflow declarations",
+      "observation": "observations.properties:owning-format-failure",
+      "result": "pass",
+      "code": "SOURCE_READ_FAILED"
+    },
+    "unsupported-filter": {
+      "fixture": "controlled public Workflow declarations",
+      "observation": "observations.properties:unsupported-filter",
+      "result": "pass"
+    },
+    "validation-before-publication": {
+      "fixture": "controlled public Workflow declarations",
+      "observation": "observations.properties:validation-before-publication",
+      "result": "pass",
+      "code": "WORKFLOW_CANCELLED",
+      "observations": {
+        "receipts": "NOT_ATTEMPTED:false"
+      }
+    },
+    "publication-quota-preserves-paths": {
+      "fixture": "controlled public Workflow declarations",
+      "observation": "observations.properties:publication-quota-preserves-paths",
+      "result": "pass",
+      "code": "TEMPORARY_STORAGE_LIMIT_EXCEEDED"
+    },
+    "publication-high-water": {
+      "fixture": "independently authored 354-byte plain.pdf; incremental same blank object model; stream then two Path Targets, fixed 1 MiB quota",
+      "observation": "observations.properties:publication-high-water",
+      "result": "pass"
+    },
+    "publication-ordered-partial": {
+      "fixture": "controlled public Workflow declarations",
+      "observation": "observations.properties:publication-ordered-partial",
+      "result": "pass",
+      "code": "PUBLICATION_FAILED",
+      "observations": {
+        "receipts": "COMMITTED:false,FAILED:true,NOT_ATTEMPTED:false"
+      }
+    },
+    "split-aggregate-pages": {
+      "fixture": "controlled public Workflow declarations",
+      "observation": "observations.properties:split-aggregate-pages",
+      "result": "pass",
+      "code": "PAGE_LIMIT_EXCEEDED"
+    },
+    "objects-command-excess": {
+      "fixture": "plain.pdf plus AddBlankPage: four indirect objects against three",
+      "observation": "observations.properties:objects-command-excess",
+      "result": "pass",
+      "code": "OBJECT_LIMIT_EXCEEDED"
+    },
+    "objects-donor-aggregate": {
+      "fixture": "primary and donor plain.pdf: two three-object inputs plus an imported Page, 708 Source bytes",
+      "observation": "observations.properties:objects-donor-aggregate",
+      "result": "pass"
+    },
+    "objects-donor-first-excess": {
+      "fixture": "primary three-object plain.pdf; donor three-object plain.pdf exceeds five on its third object",
+      "observation": "observations.properties:objects-donor-first-excess",
+      "result": "pass",
+      "code": "OBJECT_LIMIT_EXCEEDED"
+    },
+    "adjacent-cancellation-cleans": {
+      "fixture": "injected Clock observes a nonempty target-adjacent file, cancels before move, two sentinel Paths",
+      "observation": "observations.properties:adjacent-cancellation-cleans",
+      "result": "pass",
+      "code": "WORKFLOW_CANCELLED",
+      "observations": {
+        "adjacent-observed": "true",
+        "receipts": "NOT_ATTEMPTED:false,NOT_ATTEMPTED:false"
+      }
+    },
+    "split-aggregate-objects": {
+      "fixture": "primary three objects plus at least two indirect Pages/Page nodes per product exceeds six; two sentinel Paths",
+      "observation": "observations.properties:split-aggregate-objects",
+      "result": "pass",
+      "code": "OBJECT_LIMIT_EXCEEDED",
+      "observations": {
+        "before-validation": "true"
+      }
+    },
+    "objects-command-observed": {
+      "fixture": "plain.pdf: three independently authored indirect objects plus at least one new indirect Page; parent aliases can also be observed",
+      "observation": "observations.properties:objects-command-observed",
+      "result": "pass"
+    }
+  },
+  "facade-observations": {
+    "stream-ownership.result": "pass",
+    "reopened.result": "pass",
+    "closed-views.result": "pass",
+    "partial-publication.result": "pass",
+    "partial-publication.code": "PUBLICATION_FAILED",
+    "partial-publication.receipts": "COMMITTED:false,FAILED:true,NOT_ATTEMPTED:false",
+    "execution-profile": "IN_PROCESS"
+  },
+  "phase-applicability": {
+    "input": {
+      "staging": "Every Source form and all named Sources consume actual copied bytes.",
+      "operations": "Operations borrow admitted snapshots; no new Source bytes are counted a second time.",
+      "validation": "Reading a staged product is not accepting another caller Source.",
+      "publication": "Target output is not Source input; the original aggregate ledger persists."
+    },
+    "pages": {
+      "staging": "Preflight admits the primary page tree.",
+      "operations": "Commands, opened donors and split products add distinct pages; Queries do not reset the ledger.",
+      "validation": "Validation observes already accounted document outcomes under the same context.",
+      "publication": "Targets copy validated products; duplicating a destination does not add a document page."
+    },
+    "objects": {
+      "staging": "Xref/iterative traversal admits indirect objects before caller work.",
+      "operations": "A new Page introduces at least one distinct indirect object after primary three: the unchanged three-object ceiling must fail; broader success observes retained primary plus introduced objects. Opening a three-object donor must retain the primary three objects. Queries/Patches retain observed identities and stream changes are rechecked.",
+      "validation": "The same finite context owns traversal and staged validation.",
+      "publication": "Two distinct split products retain primary counts; at least two required indirect Pages/Page nodes per product plus primary three must exceed six. Reopening and xref-size checks do not replace that aggregate. The failure must precede STAGED, so a per-file validation check cannot stand in for aggregate exhaustion. Successful split/publication and their qualified page/content/box rules reuse the same-candidate pages predecessor recorder."
+    },
+    "nesting": {
+      "staging": "Iterative trailer/reference/container path includes depth 10 exact and 9 first excess.",
+      "operations": "Public Patch and supported content-scope contracts retain their stricter owning limits.",
+      "validation": "Same cooperative context and iterative traversal, with no budget replacement.",
+      "publication": "Copying a validated file does not introduce a new logical graph nesting path."
+    },
+    "decompression": {
+      "staging": "Mixed and individual supported filter stages charge every emitted byte.",
+      "operations": "Repeated reads and supported stream-dictionary changes charge again; local decoding limits compose.",
+      "validation": "No new decoding is presumed for a resource-free staged blank outcome.",
+      "publication": "Copying encoded validated bytes does not decode a PDF stream."
+    },
+    "pixels": {
+      "staging": "A materializable 2x3 RGB declaration admits six pixels; malformed/platform-codec controls remain in the public regression suite.",
+      "operations": "Dimension changes do not refund admitted pixels; Canvas preparation stays covered by the public contract suite.",
+      "validation": "Resource-free publication products contain no image to decode.",
+      "publication": "File copies do not decode images; Rendering remains a separate capability."
+    },
+    "memory": {
+      "staging": "Defensive byte Sources consume exactly their independently authored length.",
+      "operations": "Returned bytes, retained earlier results and working copies share one high-water ledger; public regressions cover numeric lexemes and Canvas copies.",
+      "validation": "No new public detached result is allocated by blank validation.",
+      "publication": "Stream copy working buffers and retained document state remain within the same context; no heap/RSS claim."
+    },
+    "temporary": {
+      "staging": "354-byte snapshots have exact and first-excess boundaries; low publication-request quota stops before Paths change.",
+      "operations": "Cache/spill and split products retain the transaction ledger and cleanup.",
+      "validation": "Staged products remain live through validation; validation does not reset storage accounting.",
+      "publication": "Uncompressed independent Source plus an incremental blank product: stream peak = 354 + emitted product bytes; Path peak = 354 + twice emitted bytes. Adjacent-file cancellation observes nonempty staging before commitment and all terminal paths inspect every adjacent directory. No implementation quota search is used."
+    },
+    "elapsed": {
+      "staging": "A one-byte controlled read advances the Clock to equality or one nanosecond excess.",
+      "operations": "Backward Clock contributes zero until catch-up; absolute deadline equality expires.",
+      "validation": "VALIDATED checkpoint can cancel before publication.",
+      "publication": "Public tests cover write/flush/post-commit cancellation and accurate ordered receipts under the same Clock/context."
+    },
+    "concurrency": {
+      "staging": "Admission is nonblocking before caller work and obeys zero and first-excess ceilings.",
+      "operations": "Latches hold one workflow while a distinct workflow sharing the same environment tests incoming and active ceilings separately.",
+      "validation": "Permit remains held until the terminal path finishes.",
+      "publication": "Permit is released after success, checked failure or unchanged caller exception; it is not a per-phase quota."
+    }
+  },
+  "public-regressions": {
+    "HostileInputWorkflowTest": {
+      "source": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/HostileInputWorkflowTest.java",
+      "required-methods": [
+        "policyIsCompleteImmutableAndEnvironmentDefaultIsApplied",
+        "invalidIncompleteAndOverflowingDeclarationsAreRejected",
+        "aggregateInputBoundaryCoversEverySourceKindAndNamedSources",
+        "pageAndObjectBoundariesFailBeforeCallerWork",
+        "nestingBoundaryIsStackSafeAndCannotBeResetByPatch",
+        "everySupportedFilterStageConsumesOneAggregateBudget",
+        "repeatedLazyDecodingCannotResetTheWorkflowBudget",
+        "patchNestingIsRejectedBeforeRecursiveMaterialization",
+        "sharedNestingCeilingComposesWithSupportedContentScopes",
+        "decodedPixelBoundaryCoversImagePreparationMetadata",
+        "ownedMemoryAndTemporaryStorageHaveExactSourceBoundaries",
+        "pdfNumberSerializationHasExactBoundariesAndReusesMemory",
+        "commandAndCanvasPayloadCopiesReserveMemoryBeforeCloning",
+        "stagedProductsAndEveryPathTargetShareTemporaryQuota",
+        "executionStopsInterruptOwnedSourceReadsAtExactBoundaries",
+        "cancellationDuringStreamPublicationReportsPartialFailure",
+        "sharedConcurrencyGateRejectsFirstExcessAndReleasesPermit",
+        "policyFailurePoisonsCaughtOperationAndPreventsPublication",
+        "unavailableEnvironmentStorageFailsSafely"
+      ],
+      "count": 19,
+      "receipt": "contract-tests.txt; all 133 public/artifact tests must execute with zero failures/skips"
+    },
+    "WorkflowTransactionContractTest": {
+      "source": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/WorkflowTransactionContractTest.java",
+      "required-methods": [
+        "namedPrimaryPathSourceIsRewrittenToNamedPathTarget",
+        "streamChannelAndBoundedBytesAreCallerOwnedPrimarySources",
+        "boundedSourcesFailSafelyWithoutClosingCallerResources",
+        "sourceFactoriesRejectNegativeByteLimitsAsProgrammingErrors",
+        "callerOwnedInputRuntimeExceptionPropagatesUnchanged",
+        "callerOwnedOutputRuntimeExceptionPropagatesUnchanged",
+        "convenienceFactoriesDoNotSelectSaveModeImplicitly",
+        "requestRequiresUniqueNamesAndADeclaredPrimarySource",
+        "successfulPublicationCommitsEveryNamedPathAndStreamTarget",
+        "multiTargetFailureReportsCommittedFailedAndNotAttemptedTargets",
+        "nestedWorkflowFailureCannotLeakForeignReceipts",
+        "validationFailureTouchesNoTargetAndReportsEveryTarget",
+        "incrementalWithoutPrimarySourceFailsBeforeCallerWork",
+        "cancellationBeforeAndDuringWorkPreventsPublication",
+        "deadlineExpiryUsesAnInjectedClockWithoutSleeping",
+        "progressEventsExposeOnlyDeterministicTransactionPhases"
+      ],
+      "count": 16,
+      "receipt": "contract-tests.txt; all 133 public/artifact tests must execute with zero failures/skips"
+    },
+    "WorkflowResourceOwnershipTest": {
+      "source": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/WorkflowResourceOwnershipTest.java",
+      "required-methods": [
+        "moduleOpenedPathDescriptorClosesAcrossT03ExitCategories",
+        "callerOwnedInputsRemainOpenAcrossT03ExitCategories",
+        "callerOwnedOutputsRemainOpenAcrossT03ExitCategories"
+      ],
+      "count": 3,
+      "receipt": "contract-tests.txt; all 133 public/artifact tests must execute with zero failures/skips"
+    },
+    "WorkflowLifecycleTest": {
+      "source": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/WorkflowLifecycleTest.java",
+      "required-methods": [
+        "queryObservesTheBlankPageAddedEarlierInTheSession",
+        "callerRuntimeFailureAbortsPublicationAndPropagatesUnchanged",
+        "sessionIsInvalidAfterTheWorkflowReturns",
+        "callerDefinedCommandIsRejectedWithoutPublication",
+        "activeSessionRejectsCrossThreadUseWithoutBackendDetails",
+        "sessionIsInvalidAfterCallerAndDocumentFailureExits",
+        "pathSourceCanBeReplacedAfterSuccessAndFailureExits"
+      ],
+      "count": 7,
+      "receipt": "contract-tests.txt; all 133 public/artifact tests must execute with zero failures/skips"
+    },
+    "PdfValueWorkflowTest": {
+      "source": "pdf-document/src/test/java/net/zerocloud/pdf/consumer/PdfValueWorkflowTest.java",
+      "required-methods": [
+        "dictionaryRemovalIsOrderedAndSurvivesPublication",
+        "nestedDictionaryPatchResolvesEarlierChangesInDeclarationOrder",
+        "invalidatedPathRejectsWholePatchAndAllowsPublication",
+        "nestedRemovalValidatesCyclesAgainstTheFinalPatchGraph",
+        "arrayReplacementSupportsFollowingNestedChangesAndReopen",
+        "arrayInsertionUsesUpdatedPositionsAcrossOnePatchAndReopen",
+        "arrayRemovalAndInvalidLaterIndexPreserveAtomicityThroughReopen",
+        "malformedCorePatchRollsBackBeforeCallerContinues",
+        "missingEffectivePageResourcesRollsBackBeforeCallerContinues",
+        "nestedStreamMetadataAndAliasesStayProtected",
+        "nestedVersionArraysAndAliasesStayProtected",
+        "indirectCatalogVersionAliasesRemainEngineOwned",
+        "changedStreamIsRevalidatedInsidePatch",
+        "valueReplacementKeepsIndirectAliasesAndOrderedLocations",
+        "replacingIndirectDictionaryPreservesExistingPageTreeLinks",
+        "laterRootReplacementOverridesEarlierNestedEdits",
+        "rejectedReplacementPreservesReferencesAndAllowsLaterPublication",
+        "bareReferenceBodyIsRejectedWhileContainerReferencesRemainValid",
+        "replacingIndirectArrayPreservesExistingPageTreeLinks",
+        "incrementalReplacementUpdatesPreviouslyHiddenAliases",
+        "discardedEqualReplacementValuesDoNotAccumulateMemoryCharges",
+        "intermediateRootReplacementsReleaseTheirWorkingValues",
+        "streamDataReplacementPreservesAliasesAttributesAndExplicitEncoding",
+        "rejectedStreamReplacementsReleaseBuffersAndPreserveTheSourceValue",
+        "streamDataChangesPreserveExistingOwnerLinksAndViews",
+        "wholeStreamReplacementPreservesItsExistingOwnerAndReference",
+        "settingAnExistingOwnerLinkKeepsTheValidSourceCycle",
+        "unrelatedChangesPreserveUnknownEncodedStreamsAndResources",
+        "hiddenStreamEncodingAliasesRemainProtected",
+        "nullValueRoundTripsThroughRewriteAndReopen",
+        "booleanValueRoundTripsThroughRewriteAndReopen",
+        "numberValueRoundTripsThroughRewriteAndReopen",
+        "successfulPatchReportsValueCapability",
+        "stringValueRoundTripsThroughRewriteAndReopen",
+        "nameValueRoundTripsThroughRewriteAndReopen",
+        "arrayValueRoundTripsThroughRewriteAndReopen",
+        "dictionaryValueRoundTripsThroughRewriteAndReopen",
+        "dictionaryTraversalDiscoversUnknownEntriesWithinBound",
+        "indirectReferenceRoundTripsThroughRewriteAndReopen",
+        "streamValueRoundTripsThroughRewriteAndReopen",
+        "lazyTraversalFailsPredictablyAfterSessionClose",
+        "lazyStreamFailsPredictablyAfterSessionClose",
+        "lazyTraversalFailsPredictablyAfterDeclaredLimitExhaustion",
+        "lazyStreamFailsPredictablyAfterDeclaredLimitExhaustion",
+        "patchRejectsObjectReferenceFromAnotherSession",
+        "patchRejectsReferenceCycle",
+        "patchRejectsCycleThroughExistingObjectGraph",
+        "patchFailureDoesNotApplyEarlierChanges",
+        "patchRejectsEngineOwnedStreamMetadataChange",
+        "patchRejectsValueImplementationNotOwnedByLibrary"
+      ],
+      "count": 50,
+      "receipt": "contract-tests.txt; all 133 public/artifact tests must execute with zero failures/skips"
+    },
+    "BlankDocumentFacadeTest": {
+      "source": "pdf-migration-itext7/src/test/java/net/zerocloud/pdf/itext7/consumer/BlankDocumentFacadeTest.java",
+      "required-methods": [
+        "migratedCallShapeCreatesPublishesReopensAndObservesOnePage",
+        "missingSourceReportsStableNativeFailureCode",
+        "publicationFailureRetainsTheNativeFailureReceipt",
+        "layoutOwnsPublicationAndClosingItsDocument",
+        "readerReleasesThePathBeforeReturningItsDetachedView"
+      ],
+      "count": 5,
+      "receipt": "contract-tests.txt; all 133 public/artifact tests must execute with zero failures/skips"
+    },
+    "PdfValuesFacadeTest": {
+      "source": "pdf-migration-itext7/src/test/java/net/zerocloud/pdf/itext7/consumer/PdfValuesFacadeTest.java",
+      "required-methods": [
+        "mappedNumberChangesPublishAndReopenThroughBothInterfaces",
+        "mappedScalarsKeepKindsUnicodeAndExactBytesAfterReplacementAndReopen",
+        "textInspectionDecodesPdfDocEncodingWithoutChangingItsRawBytes",
+        "textInspectionRecognizesUtf8AndPreservesMalformedBinaryStrings",
+        "invalidJavaTextIsRejectedBeforeChangingTheDocument",
+        "nestedDictionaryInsertionReplacementAndRemovalPublishThroughNativePatches",
+        "arrayInsertionReplacementAndRemovalPublishThroughNativePatches",
+        "observedArrayValuesFollowInsertionsAndRemovalThroughAnotherView",
+        "replacedDictionaryValuesCannotMutateTheNewOccupantOfTheirLocation",
+        "readerWriterEditingAndCopyingPreserveTheSourceAndExistingValues",
+        "indirectAliasesKeepSessionIdentityDuringValueChangesAndReferenceReplacement",
+        "streamBytesAndDictionaryChangesKeepIndirectAliasesAfterPublication",
+        "readerWriterRetainsPagesQueuedBeforeLazySessionInitialization",
+        "detachedContainmentCyclesFailBeforeMutationWhileSharedChildrenPublish",
+        "deeplyNestedDetachedValuesReachNativeLimitsWithoutAJavaStackOverflow",
+        "detachedContainersHonorDereferenceFlagsAndKeepReferenceOwnership",
+        "closedContainerAndStreamViewsRetainTheNativeExpiryFailure",
+        "facadeContainerInspectionIsBoundedWithoutPoisoningValidMutation",
+        "facadeDecodedStreamReadsShareTheirCumulativeBoundAndStillPermitAValidPatch",
+        "callerStreamsStayOpenAcrossCreateEditAndReopen",
+        "replacedDirectStreamLengthBecomesDetachedAfterDataChange",
+        "callerStreamsAlsoPublishWithoutOpeningAValueView",
+        "failedCallerInputIsSafeAndNeverClosed",
+        "failedCallerPublicationRetainsItsActualReceiptAndNeverRetriesOrCloses",
+        "foreignAndCyclicReferencesRejectImmediatelyAndAllowLaterPublication",
+        "invalidIndicesAndCoreChangesKeepTheEarlierStatePublishable",
+        "protectedStreamAndVersionAliasesKeepNativeFailuresAndStillPermitStreamChanges",
+        "facadeChangesPreserveUnknownEncodedResourcesAndVisibleContent",
+        "readerKeepsValuesAfterClosingAndDeletingTheOriginalSource",
+        "rejectedCloseFromAnotherThreadLeavesTheOwnerAbleToPublish",
+        "cancelledInitializationCannotFallBackToAnotherPublishingWorkflow"
+      ],
+      "count": 31,
+      "receipt": "contract-tests.txt; all 133 public/artifact tests must execute with zero failures/skips"
+    }
+  },
+  "credential-lifecycle": "The same candidate refreshes password-baseline, password-clear-metadata and password-attachments with their existing Native/Facade credential copying, destruction, safe failure and cleanup contracts; no security implementation is replaced.",
+  "published-products": [
+    "native-first",
+    "native-second",
+    "native-stream-high-water",
+    "native-before-failure",
+    "facade-stream",
+    "facade-before-failure",
+    "pdf-outcomes/native",
+    "pdf-outcomes/facade"
+  ],
+  "pdf-profile": "Explicit reuse of qualified T03 resource-free one-page PDF 1.7 rules, 144 DPI opaque sRGB white raster, AE 0, fuzz 0, plus every required rule-specific control. Resource operand Sources are read-only experiments, not new published PDF-feature claims.",
+  "execution": "Only actual Ubuntu 24.04 Linux x86-64 JDK 8/11/17/21 Native IN_PROCESS and corresponding Facade IN_PROCESS. Windows/macOS and Worker certification excluded.",
+  "split-positive-evidence": "Same-candidate pages predecessor: T10 Native split corpus, separate per-product page/content/CropBox/Rotate syntax, qualified standards, semantic and visual outcomes; its complete eight established tuples are refreshed before limits."
+}

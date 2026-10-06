@@ -2335,4 +2335,4 @@ No preview additions (included with all stable surfaces) are declared.
 
 - Behavioral capability: [`document.hostile-input-limits`](capability-matrix.md#capability-document_dot_hostile_dash_input_dash_limits)
 - Deferred ticket: `T20`
-- Reason: Workflow Resource Policy and cooperative resource accounting are project-specific controls with no Reference Suite counterpart. PDF outcomes still require four independent chains; underlying document operations retain their own Facade obligations. Certification remains required under #81.
+- Reason: Workflow Resource Policy and cooperative resource accounting are project-specific controls with no Reference Suite counterpart. PDF outcomes still require four independent chains; underlying document operations retain their own Facade obligations. Issue #81 retains actual IN_PROCESS Facade observations for all four Ubuntu/JDK tuples; current candidate identities remain mandatory in the Foundation evidence index.

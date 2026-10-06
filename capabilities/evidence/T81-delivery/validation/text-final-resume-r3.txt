@@ -1,0 +1,18 @@
+T13 environment JDK 8
+T13 retained original JDK 8 / IN_PROCESS
+T13 certification JDK 8 / HARDENED_WORKER
+T13 environment JDK 11
+T13 certification JDK 11 / IN_PROCESS
+T13 certification JDK 11 / HARDENED_WORKER
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/capabilities/evidence/T81-delivery/resume-text.py", line 201, in <module>
+    main(output)
+    ~~~~^^^^^^^^
+  File "/workspace/folio-pdf/capabilities/evidence/T81-delivery/resume-text.py", line 127, in main
+    driver.run_logged(plan['contract-tests-command'], scope / 'contract-tests.txt', cwd=ROOT,
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                      timeout=case.get('contract-timeout', 300))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 982, in run_logged
+    raise RuntimeError('Command failed; see ' + str(path))
+RuntimeError: Command failed; see /workspace/folio-pdf/capabilities/evidence/foundation/T81-final/text-r4/jdk11-hardened_worker/contract-tests.txt

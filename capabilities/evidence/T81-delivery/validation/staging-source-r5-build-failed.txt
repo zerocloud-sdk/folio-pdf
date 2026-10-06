@@ -1,0 +1,373 @@
+[INFO] Scanning for projects...
+[INFO] Inspecting build with total of 10 modules
+[INFO] Installing Central Publishing features
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent                                    [pom]
+[INFO] Folio PDF by ZeroCloud - BOM                                       [pom]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract              [jar]
+[INFO] Folio PDF by ZeroCloud - Conversion                                [jar]
+[INFO] Folio PDF by ZeroCloud - Document Engine                           [jar]
+[INFO] Folio PDF by ZeroCloud - Stable iText 7 Migration Facade           [jar]
+[INFO] Folio PDF by ZeroCloud - Acceptance Evidence                       [jar]
+[INFO] Folio PDF by ZeroCloud - Preview iText 7 Migration Facade          [jar]
+[INFO] Folio PDF by ZeroCloud - Inventory Build Tool                      [jar]
+[INFO] Folio PDF by ZeroCloud - Release Rehearsal Tool                    [jar]
+[INFO] 
+[INFO] ----------------------< net.zerocloud:pdf-parent >----------------------
+[INFO] Building Folio PDF by ZeroCloud - Parent 0.1.0                    [1/10]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.0:clean (default-clean) @ pdf-parent ---
+[INFO] Deleting /workspace/folio-pdf/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (clean-flattened-release-pom) @ pdf-parent ---
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-parent ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.version.RequireMavenVersion passed
+[INFO] Rule 1: org.apache.maven.enforcer.rules.version.RequireJavaVersion passed
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten-release-pom) @ pdf-parent ---
+[INFO] Generating flattened POM of project net.zerocloud:pdf-parent:pom:0.1.0...
+[INFO] 
+[INFO] --- source:3.4.0:jar-no-fork (attach-release-sources) @ pdf-parent ---
+[INFO] 
+[INFO] --- javadoc:3.12.0:jar (attach-release-javadocs) @ pdf-parent ---
+[INFO] Not executing Javadoc as the project is not a Java classpath-capable package
+[INFO] 
+[INFO] --- cyclonedx:2.9.2:makeAggregateBom (generate-release-sbom) @ pdf-parent ---
+[INFO] CycloneDX: Resolving Aggregated Dependencies
+[INFO] CycloneDX: Creating BOM version 1.6 with 23 component(s)
+[INFO] CycloneDX: Writing and validating BOM (XML): /workspace/folio-pdf/target/release-audit/sbom.xml
+[INFO]            attaching as pdf-parent-0.1.0-cyclonedx.xml
+[INFO] CycloneDX: Writing and validating BOM (JSON): /workspace/folio-pdf/target/release-audit/sbom.json
+[WARNING] Unknown keyword meta:enum - you should define your own Meta Schema. If the keyword is irrelevant for validation, just use a NonValidationKeyword or if it should generate annotations AnnotationKeyword
+[WARNING] Unknown keyword deprecated - you should define your own Meta Schema. If the keyword is irrelevant for validation, just use a NonValidationKeyword or if it should generate annotations AnnotationKeyword
+[INFO]            attaching as pdf-parent-0.1.0-cyclonedx.json
+[INFO] 
+[INFO] --- dependency:3.8.1:build-classpath (default-cli) @ pdf-parent ---
+[INFO] No dependencies found.
+[INFO] Wrote classpath file '/workspace/folio-pdf/target/t03-classpath.txt'.
+[INFO] 
+[INFO] -----------------------< net.zerocloud:pdf-bom >------------------------
+[INFO] Building Folio PDF by ZeroCloud - BOM 0.1.0                       [2/10]
+[INFO]   from pdf-bom/pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.0:clean (default-clean) @ pdf-bom ---
+[INFO] Deleting /workspace/folio-pdf/pdf-bom/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (clean-flattened-release-pom) @ pdf-bom ---
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-bom ---
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten-release-pom) @ pdf-bom ---
+[INFO] Generating flattened POM of project net.zerocloud:pdf-bom:pom:0.1.0...
+[INFO] 
+[INFO] --- source:3.4.0:jar-no-fork (attach-release-sources) @ pdf-bom ---
+[INFO] 
+[INFO] --- javadoc:3.12.0:jar (attach-release-javadocs) @ pdf-bom ---
+[INFO] Not executing Javadoc as the project is not a Java classpath-capable package
+[INFO] 
+[INFO] --- dependency:3.8.1:build-classpath (default-cli) @ pdf-bom ---
+[INFO] No dependencies found.
+[INFO] Wrote classpath file '/workspace/folio-pdf/pdf-bom/target/t03-classpath.txt'.
+[INFO] 
+[INFO] ----------------< net.zerocloud:pdf-provider-contract >-----------------
+[INFO] Building Folio PDF by ZeroCloud - Capability Provider Contract 0.1.0 [3/10]
+[INFO]   from pdf-provider-contract/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.0:clean (default-clean) @ pdf-provider-contract ---
+[INFO] Deleting /workspace/folio-pdf/pdf-provider-contract/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (clean-flattened-release-pom) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-provider-contract ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten-release-pom) @ pdf-provider-contract ---
+[INFO] Generating flattened POM of project net.zerocloud:pdf-provider-contract:jar:0.1.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-provider-contract ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 18 source files with javac [debug parameters release 8] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-provider-contract ---
+[INFO] skip non existing resourceDirectory /workspace/folio-pdf/pdf-provider-contract/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-provider-contract ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug parameters release 8] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-provider-contract ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ pdf-provider-contract ---
+[INFO] Building jar: /workspace/folio-pdf/pdf-provider-contract/target/pdf-provider-contract-0.1.0.jar
+[INFO] 
+[INFO] --- source:3.4.0:jar-no-fork (attach-release-sources) @ pdf-provider-contract ---
+[INFO] Building jar: /workspace/folio-pdf/pdf-provider-contract/target/pdf-provider-contract-0.1.0-sources.jar
+[INFO] 
+[INFO] --- javadoc:3.12.0:jar (attach-release-javadocs) @ pdf-provider-contract ---
+[INFO] Building jar: /workspace/folio-pdf/pdf-provider-contract/target/pdf-provider-contract-0.1.0-javadoc.jar
+[INFO] 
+[INFO] --- dependency:3.8.1:build-classpath (default-cli) @ pdf-provider-contract ---
+[INFO] Wrote classpath file '/workspace/folio-pdf/pdf-provider-contract/target/t03-classpath.txt'.
+[INFO] 
+[INFO] --------------------< net.zerocloud:pdf-conversion >--------------------
+[INFO] Building Folio PDF by ZeroCloud - Conversion 0.1.0                [4/10]
+[INFO]   from pdf-conversion/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.0:clean (default-clean) @ pdf-conversion ---
+[INFO] Deleting /workspace/folio-pdf/pdf-conversion/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (clean-flattened-release-pom) @ pdf-conversion ---
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-conversion ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /workspace/folio-pdf/pdf-conversion/src/main/resources
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten-release-pom) @ pdf-conversion ---
+[INFO] Generating flattened POM of project net.zerocloud:pdf-conversion:jar:0.1.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-conversion ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 3 source files with javac [debug parameters release 8] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /workspace/folio-pdf/pdf-conversion/src/test/resources
+[INFO] Copying 1 resource from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-conversion ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 5 source files with javac [debug parameters release 8] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-conversion ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ pdf-conversion ---
+[INFO] Building jar: /workspace/folio-pdf/pdf-conversion/target/pdf-conversion-0.1.0.jar
+[INFO] 
+[INFO] --- source:3.4.0:jar-no-fork (attach-release-sources) @ pdf-conversion ---
+[INFO] Building jar: /workspace/folio-pdf/pdf-conversion/target/pdf-conversion-0.1.0-sources.jar
+[INFO] 
+[INFO] --- javadoc:3.12.0:jar (attach-release-javadocs) @ pdf-conversion ---
+[INFO] Building jar: /workspace/folio-pdf/pdf-conversion/target/pdf-conversion-0.1.0-javadoc.jar
+[INFO] 
+[INFO] --- dependency:3.8.1:build-classpath (default-cli) @ pdf-conversion ---
+[INFO] Wrote classpath file '/workspace/folio-pdf/pdf-conversion/target/t03-classpath.txt'.
+[INFO] 
+[INFO] ---------------------< net.zerocloud:pdf-document >---------------------
+[INFO] Building Folio PDF by ZeroCloud - Document Engine 0.1.0           [5/10]
+[INFO]   from pdf-document/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.0:clean (default-clean) @ pdf-document ---
+[INFO] Deleting /workspace/folio-pdf/pdf-document/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (clean-flattened-release-pom) @ pdf-document ---
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-document ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-document ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten-release-pom) @ pdf-document ---
+[INFO] Generating flattened POM of project net.zerocloud:pdf-document:jar:0.1.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-document ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 278 source files with javac [debug parameters release 8] to target/classes
+[INFO] /workspace/folio-pdf/pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxMetadataEncryption.java: /workspace/folio-pdf/pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxMetadataEncryption.java uses or overrides a deprecated API.
+[INFO] /workspace/folio-pdf/pdf-document/src/main/java/net/zerocloud/pdf/PdfBoxMetadataEncryption.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-document ---
+[INFO] Copying 12 resources from src/test/resources to target/test-classes
+[INFO] Copying 15 resources from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-document ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 47 source files with javac [debug parameters release 8] to target/test-classes
+[INFO] /workspace/folio-pdf/pdf-document/src/test/java/net/zerocloud/pdf/consumer/BlankDocumentWorkflowTest.java: Some input files use or override a deprecated API.
+[INFO] /workspace/folio-pdf/pdf-document/src/test/java/net/zerocloud/pdf/consumer/BlankDocumentWorkflowTest.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-document ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ pdf-document ---
+[INFO] Building jar: /workspace/folio-pdf/pdf-document/target/pdf-document-0.1.0.jar
+[INFO] 
+[INFO] --- source:3.4.0:jar-no-fork (attach-release-sources) @ pdf-document ---
+[INFO] Building jar: /workspace/folio-pdf/pdf-document/target/pdf-document-0.1.0-sources.jar
+[INFO] 
+[INFO] --- javadoc:3.12.0:jar (attach-release-javadocs) @ pdf-document ---
+[INFO] Building jar: /workspace/folio-pdf/pdf-document/target/pdf-document-0.1.0-javadoc.jar
+[INFO] 
+[INFO] --- dependency:3.8.1:build-classpath (default-cli) @ pdf-document ---
+[INFO] Wrote classpath file '/workspace/folio-pdf/pdf-document/target/t03-classpath.txt'.
+[INFO] 
+[INFO] -----------------< net.zerocloud:pdf-migration-itext7 >-----------------
+[INFO] Building Folio PDF by ZeroCloud - Stable iText 7 Migration Facade 0.1.0 [6/10]
+[INFO]   from pdf-migration-itext7/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.0:clean (default-clean) @ pdf-migration-itext7 ---
+[INFO] Deleting /workspace/folio-pdf/pdf-migration-itext7/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (clean-flattened-release-pom) @ pdf-migration-itext7 ---
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-migration-itext7 ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-migration-itext7 ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten-release-pom) @ pdf-migration-itext7 ---
+[INFO] Generating flattened POM of project net.zerocloud:pdf-migration-itext7:jar:0.1.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-migration-itext7 ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 35 source files with javac [debug parameters release 8] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-migration-itext7 ---
+[INFO] Copying 5 resources from ../pdf-document/src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-migration-itext7 ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 15 source files with javac [debug parameters release 8] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-migration-itext7 ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ pdf-migration-itext7 ---
+[INFO] Building jar: /workspace/folio-pdf/pdf-migration-itext7/target/pdf-migration-itext7-0.1.0.jar
+[INFO] 
+[INFO] --- source:3.4.0:jar-no-fork (attach-release-sources) @ pdf-migration-itext7 ---
+[INFO] Building jar: /workspace/folio-pdf/pdf-migration-itext7/target/pdf-migration-itext7-0.1.0-sources.jar
+[INFO] 
+[INFO] --- javadoc:3.12.0:jar (attach-release-javadocs) @ pdf-migration-itext7 ---
+[INFO] Building jar: /workspace/folio-pdf/pdf-migration-itext7/target/pdf-migration-itext7-0.1.0-javadoc.jar
+[INFO] 
+[INFO] --- dependency:3.8.1:build-classpath (default-cli) @ pdf-migration-itext7 ---
+[INFO] Wrote classpath file '/workspace/folio-pdf/pdf-migration-itext7/target/t03-classpath.txt'.
+[INFO] 
+[INFO] --------------------< net.zerocloud:pdf-acceptance >--------------------
+[INFO] Building Folio PDF by ZeroCloud - Acceptance Evidence 0.1.0       [7/10]
+[INFO]   from pdf-acceptance/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.0:clean (default-clean) @ pdf-acceptance ---
+[INFO] Deleting /workspace/folio-pdf/pdf-acceptance/target
+[INFO] 
+[INFO] --- flatten:1.7.3:clean (clean-flattened-release-pom) @ pdf-acceptance ---
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-acceptance ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-acceptance ---
+[INFO] Copying 32 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- flatten:1.7.3:flatten (flatten-release-pom) @ pdf-acceptance ---
+[INFO] Generating flattened POM of project net.zerocloud:pdf-acceptance:jar:0.1.0...
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-acceptance ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 140 source files with javac [debug parameters release 8] to target/classes
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /workspace/folio-pdf/pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ContractTestCommand.java:[4,20] package junit.runner does not exist
+[ERROR] /workspace/folio-pdf/pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ContractTestCommand.java:[5,26] package org.junit.internal does not exist
+[ERROR] /workspace/folio-pdf/pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ContractTestCommand.java:[6,24] package org.junit.runner does not exist
+[ERROR] /workspace/folio-pdf/pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ContractTestCommand.java:[7,24] package org.junit.runner does not exist
+[ERROR] /workspace/folio-pdf/pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ContractTestCommand.java:[8,37] package org.junit.runner.notification does not exist
+[ERROR] /workspace/folio-pdf/pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ContractTestCommand.java:[9,37] package org.junit.runner.notification does not exist
+[ERROR] /workspace/folio-pdf/pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ContractTestCommand.java:[28,9] cannot find symbol
+  symbol:   class JUnitCore
+  location: class net.zerocloud.pdf.acceptance.T20ContractTestCommand
+[ERROR] /workspace/folio-pdf/pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ContractTestCommand.java:[28,30] cannot find symbol
+  symbol:   class JUnitCore
+  location: class net.zerocloud.pdf.acceptance.T20ContractTestCommand
+[ERROR] /workspace/folio-pdf/pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ContractTestCommand.java:[29,30] cannot find symbol
+  symbol:   class TextListener
+  location: class net.zerocloud.pdf.acceptance.T20ContractTestCommand
+[ERROR] /workspace/folio-pdf/pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ContractTestCommand.java:[30,30] cannot find symbol
+  symbol:   class RunListener
+  location: class net.zerocloud.pdf.acceptance.T20ContractTestCommand
+[ERROR] /workspace/folio-pdf/pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ContractTestCommand.java:[32,47] cannot find symbol
+  symbol: class Failure
+[ERROR] /workspace/folio-pdf/pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ContractTestCommand.java:[31,13] method does not override or implement a method from a supertype
+[ERROR] /workspace/folio-pdf/pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ContractTestCommand.java:[36,43] cannot find symbol
+  symbol:   variable Version
+  location: class net.zerocloud.pdf.acceptance.T20ContractTestCommand
+[ERROR] /workspace/folio-pdf/pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ContractTestCommand.java:[37,9] cannot find symbol
+  symbol:   class Result
+  location: class net.zerocloud.pdf.acceptance.T20ContractTestCommand
+[INFO] 14 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for Folio PDF by ZeroCloud - Parent 0.1.0:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent .................... SUCCESS [  3.139 s]
+[INFO] Folio PDF by ZeroCloud - BOM ....................... SUCCESS [  0.017 s]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract SUCCESS [  2.340 s]
+[INFO] Folio PDF by ZeroCloud - Conversion ................ SUCCESS [  1.224 s]
+[INFO] Folio PDF by ZeroCloud - Document Engine ........... SUCCESS [  8.828 s]
+[INFO] Folio PDF by ZeroCloud - Stable iText 7 Migration Facade SUCCESS [  2.036 s]
+[INFO] Folio PDF by ZeroCloud - Acceptance Evidence ....... FAILURE [  0.993 s]
+[INFO] Folio PDF by ZeroCloud - Preview iText 7 Migration Facade SKIPPED
+[INFO] Folio PDF by ZeroCloud - Inventory Build Tool ...... SKIPPED
+[INFO] Folio PDF by ZeroCloud - Release Rehearsal Tool .... SKIPPED
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  19.012 s
+[INFO] Finished at: 2026-10-03T10:31:26+08:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.15.0:compile (default-compile) on project pdf-acceptance: Compilation failure: Compilation failure: 
+[ERROR] /workspace/folio-pdf/pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ContractTestCommand.java:[4,20] package junit.runner does not exist
+[ERROR] /workspace/folio-pdf/pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ContractTestCommand.java:[5,26] package org.junit.internal does not exist
+[ERROR] /workspace/folio-pdf/pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ContractTestCommand.java:[6,24] package org.junit.runner does not exist
+[ERROR] /workspace/folio-pdf/pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ContractTestCommand.java:[7,24] package org.junit.runner does not exist
+[ERROR] /workspace/folio-pdf/pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ContractTestCommand.java:[8,37] package org.junit.runner.notification does not exist
+[ERROR] /workspace/folio-pdf/pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ContractTestCommand.java:[9,37] package org.junit.runner.notification does not exist
+[ERROR] /workspace/folio-pdf/pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ContractTestCommand.java:[28,9] cannot find symbol
+[ERROR]   symbol:   class JUnitCore
+[ERROR]   location: class net.zerocloud.pdf.acceptance.T20ContractTestCommand
+[ERROR] /workspace/folio-pdf/pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ContractTestCommand.java:[28,30] cannot find symbol
+[ERROR]   symbol:   class JUnitCore
+[ERROR]   location: class net.zerocloud.pdf.acceptance.T20ContractTestCommand
+[ERROR] /workspace/folio-pdf/pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ContractTestCommand.java:[29,30] cannot find symbol
+[ERROR]   symbol:   class TextListener
+[ERROR]   location: class net.zerocloud.pdf.acceptance.T20ContractTestCommand
+[ERROR] /workspace/folio-pdf/pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ContractTestCommand.java:[30,30] cannot find symbol
+[ERROR]   symbol:   class RunListener
+[ERROR]   location: class net.zerocloud.pdf.acceptance.T20ContractTestCommand
+[ERROR] /workspace/folio-pdf/pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ContractTestCommand.java:[32,47] cannot find symbol
+[ERROR]   symbol: class Failure
+[ERROR] /workspace/folio-pdf/pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ContractTestCommand.java:[31,13] method does not override or implement a method from a supertype
+[ERROR] /workspace/folio-pdf/pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ContractTestCommand.java:[36,43] cannot find symbol
+[ERROR]   symbol:   variable Version
+[ERROR]   location: class net.zerocloud.pdf.acceptance.T20ContractTestCommand
+[ERROR] /workspace/folio-pdf/pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ContractTestCommand.java:[37,9] cannot find symbol
+[ERROR]   symbol:   class Result
+[ERROR]   location: class net.zerocloud.pdf.acceptance.T20ContractTestCommand
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+[ERROR] 
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :pdf-acceptance

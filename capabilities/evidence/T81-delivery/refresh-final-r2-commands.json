@@ -1,0 +1,278 @@
+[
+  {
+    "obligation": "transactions",
+    "attempt": 1,
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/workspace/folio-pdf/scripts/t03-foundation.py",
+      "certify",
+      "capabilities/evidence/foundation/T81-final-r2/transactions",
+      "--obligation",
+      "transactions"
+    ],
+    "started": "2026-10-04T17:46:28.956166+00:00",
+    "finished": "2026-10-04T17:51:59.739273+00:00",
+    "exit-code": 0
+  },
+  {
+    "obligation": "values",
+    "attempt": 1,
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/workspace/folio-pdf/scripts/t03-foundation.py",
+      "certify",
+      "capabilities/evidence/foundation/T81-final-r2/values",
+      "--obligation",
+      "values"
+    ],
+    "started": "2026-10-04T17:51:59.741782+00:00",
+    "finished": "2026-10-04T18:02:47.477086+00:00",
+    "exit-code": 0
+  },
+  {
+    "obligation": "pages",
+    "attempt": 1,
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/workspace/folio-pdf/scripts/t03-foundation.py",
+      "certify",
+      "capabilities/evidence/foundation/T81-final-r2/pages",
+      "--obligation",
+      "pages"
+    ],
+    "started": "2026-10-04T18:02:47.494250+00:00",
+    "finished": "2026-10-04T18:28:20.563059+00:00",
+    "exit-code": 0
+  },
+  {
+    "obligation": "metadata",
+    "attempt": 1,
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/workspace/folio-pdf/scripts/t03-foundation.py",
+      "certify",
+      "capabilities/evidence/foundation/T81-final-r2/metadata",
+      "--obligation",
+      "metadata"
+    ],
+    "started": "2026-10-04T18:28:20.591140+00:00",
+    "finished": "2026-10-04T18:51:10.243821+00:00",
+    "exit-code": 0
+  },
+  {
+    "obligation": "annotations",
+    "attempt": 1,
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/workspace/folio-pdf/scripts/t03-foundation.py",
+      "certify",
+      "capabilities/evidence/foundation/T81-final-r2/annotations",
+      "--obligation",
+      "annotations"
+    ],
+    "started": "2026-10-04T18:51:10.245972+00:00",
+    "finished": "2026-10-04T20:00:42.734842+00:00",
+    "exit-code": 0
+  },
+  {
+    "obligation": "text",
+    "attempt": 1,
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/workspace/folio-pdf/scripts/t03-foundation.py",
+      "certify",
+      "capabilities/evidence/foundation/T81-final-r2/text",
+      "--obligation",
+      "text"
+    ],
+    "started": "2026-10-04T20:00:42.759164+00:00",
+    "finished": "2026-10-04T22:53:48.006348+00:00",
+    "exit-code": 0
+  },
+  {
+    "obligation": "images",
+    "attempt": 1,
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/workspace/folio-pdf/scripts/t03-foundation.py",
+      "certify",
+      "capabilities/evidence/foundation/T81-final-r2/images",
+      "--obligation",
+      "images"
+    ],
+    "started": "2026-10-04T22:53:48.163568+00:00",
+    "finished": "2026-10-04T23:09:20.065195+00:00",
+    "exit-code": 0
+  },
+  {
+    "obligation": "incremental",
+    "attempt": 1,
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/workspace/folio-pdf/scripts/t03-foundation.py",
+      "certify",
+      "capabilities/evidence/foundation/T81-final-r2/incremental",
+      "--obligation",
+      "incremental"
+    ],
+    "started": "2026-10-04T23:09:20.069324+00:00",
+    "finished": "2026-10-04T23:33:32.808440+00:00",
+    "exit-code": 0
+  },
+  {
+    "obligation": "password-baseline",
+    "attempt": 1,
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/workspace/folio-pdf/scripts/t03-foundation.py",
+      "certify",
+      "capabilities/evidence/foundation/T81-final-r2/password-baseline",
+      "--obligation",
+      "password-baseline"
+    ],
+    "started": "2026-10-04T23:33:32.811359+00:00",
+    "finished": "2026-10-05T01:49:26.871683+00:00",
+    "exit-code": 0
+  },
+  {
+    "obligation": "password-clear-metadata",
+    "attempt": 1,
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/workspace/folio-pdf/scripts/t03-foundation.py",
+      "certify",
+      "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata",
+      "--obligation",
+      "password-clear-metadata"
+    ],
+    "started": "2026-10-05T01:49:26.931031+00:00",
+    "finished": "2026-10-05T04:31:45.866929+00:00",
+    "exit-code": 1
+  },
+  {
+    "obligation": "password-clear-metadata",
+    "attempt": 2,
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "capabilities/evidence/T81-delivery/resume-clear-metadata-last-r2.py",
+      "certify",
+      "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2",
+      "--obligation",
+      "password-clear-metadata"
+    ],
+    "started": "2026-10-05T04:43:56.872378+00:00",
+    "finished": "2026-10-05T05:14:37.832959+00:00",
+    "exit-code": 0,
+    "recovery-recipe": {
+      "path": "capabilities/evidence/T81-delivery/resume-clear-metadata-last-r2.py",
+      "sha256": "b05a2a3053f4f0745b13b73ce648d583525791b9f310c257b45ada675671a599"
+    }
+  },
+  {
+    "obligation": "password-attachments",
+    "attempt": 2,
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "capabilities/evidence/T81-delivery/resume-attachments-final-r2.py",
+      "certify",
+      "capabilities/evidence/foundation/T81-final-r2/password-attachments-r2",
+      "--obligation",
+      "password-attachments"
+    ],
+    "started": "2026-10-05T23:25:24.912915+00:00",
+    "finished": "2026-10-05T23:28:13.860233+00:00",
+    "exit-code": 1,
+    "recovery-recipe": {
+      "path": "capabilities/evidence/T81-delivery/resume-attachments-final-r2.py",
+      "sha256": "602b209efa5ff636c4fb4a77eb9c16291b1a0dacc498845b0225ee1b945adc6d"
+    }
+  },
+  {
+    "obligation": "password-attachments",
+    "attempt": 3,
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "capabilities/evidence/T81-delivery/resume-attachments-final-r2.py",
+      "certify",
+      "capabilities/evidence/foundation/T81-final-r2/password-attachments-r3",
+      "--obligation",
+      "password-attachments"
+    ],
+    "started": "2026-10-05T23:34:01.989486+00:00",
+    "finished": "2026-10-06T00:33:29.142245+00:00",
+    "exit-code": 1,
+    "recovery-recipe": {
+      "path": "capabilities/evidence/T81-delivery/resume-attachments-final-r2.py",
+      "sha256": "602b209efa5ff636c4fb4a77eb9c16291b1a0dacc498845b0225ee1b945adc6d"
+    }
+  },
+  {
+    "obligation": "password-attachments",
+    "attempt": 4,
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "capabilities/evidence/T81-delivery/resume-attachments-last-final-r2.py",
+      "certify",
+      "capabilities/evidence/foundation/T81-final-r2/password-attachments-r4",
+      "--obligation",
+      "password-attachments"
+    ],
+    "started": "2026-10-06T00:39:30.739571+00:00",
+    "finished": "2026-10-06T00:44:09.156274+00:00",
+    "exit-code": 1,
+    "recovery-recipe": {
+      "path": "capabilities/evidence/T81-delivery/resume-attachments-last-final-r2.py",
+      "sha256": "55ff0581f7fd32cec4678cfe91aece308234bab0a296f9dae4e997bb0a2c1e01"
+    }
+  },
+  {
+    "obligation": "password-attachments",
+    "attempt": 5,
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "capabilities/evidence/T81-delivery/resume-attachments-last-final-r2.py",
+      "certify",
+      "capabilities/evidence/foundation/T81-final-r2/password-attachments-r5",
+      "--obligation",
+      "password-attachments"
+    ],
+    "started": "2026-10-06T00:45:47.242414+00:00",
+    "finished": "2026-10-06T01:27:28.525517+00:00",
+    "exit-code": 0,
+    "recovery-recipe": {
+      "path": "capabilities/evidence/T81-delivery/resume-attachments-last-final-r2.py",
+      "sha256": "55ff0581f7fd32cec4678cfe91aece308234bab0a296f9dae4e997bb0a2c1e01"
+    }
+  },
+  {
+    "obligation": "limits",
+    "attempt": 1,
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/workspace/folio-pdf/scripts/t03-foundation.py",
+      "certify",
+      "capabilities/evidence/foundation/T81-final-r2/limits",
+      "--obligation",
+      "limits"
+    ],
+    "started": "2026-10-06T01:28:09.452302+00:00",
+    "finished": "2026-10-06T01:48:56.058147+00:00",
+    "exit-code": 0
+  }
+]

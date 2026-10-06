@@ -1,0 +1,16 @@
+{
+  "diagnostic-only": true,
+  "failure": "Worker did not terminate after completing its response; all 24 tests executed, one failure; not indexed.",
+  "diagnostic": "Exact original full 24-test suite passed; not used as certification.",
+  "cause": "Not established. The failure has appeared in historical predecessor refreshes; a diagnostic pass does not prove a cause or fix.",
+  "scope-decision": "Worker isolation/recovery/scale and product changes are explicitly outside issue #81; unchanged full-tuple certification is required.",
+  "failure-record": {
+    "path": "capabilities/evidence/T81-delivery/validation/attachments-final-r2-relaunch-r1-result.json",
+    "sha256": "4574a84be6fb0f8278ffa62b42a963d61134af55387caa3884a69b5c1fceaec0"
+  },
+  "diagnostic-record": {
+    "path": "capabilities/evidence/T81-delivery/validation/attachments-jdk17-worker-probe-r1-result.json",
+    "sha256": "cb6af6f0f2d7a16bc9503fc30b075019834e2c2823d0d3dc0d10ea9b0ef4087f"
+  },
+  "phase-applicability": "diagnosing-bugs feedback-loop replay applied; Worker fix/instrumentation/regression phases excluded by the sole execution contract. No causal hypothesis is claimed."
+}

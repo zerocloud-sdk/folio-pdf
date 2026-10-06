@@ -1,0 +1,13 @@
+Unindexed JDK17 public/artifact contracts passed
+Unindexed JDK17 recorder passed; live collection follows
+Traceback (most recent call last):
+  File "/tmp/t81-collect-smoke.py", line 42, in <module>
+    collected = reports.collect_reports(root, scope / 'observations', 'IN_PROCESS')
+  File "/workspace/folio-pdf/scripts/t20_foundation_reports.py", line 200, in collect_reports
+    inventory = closed_observations(root, files)
+  File "/workspace/folio-pdf/scripts/t20_foundation_reports.py", line 65, in closed_observations
+    require(observed.get(name + '.' + key) == value, 'missing declared observation: ' + name + '.' + key)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/folio-pdf/scripts/t20_foundation_reports.py", line 26, in require
+    raise ValueError('T20 ' + message)
+ValueError: T20 missing declared observation: adjacent-cancellation-cleans.receipts

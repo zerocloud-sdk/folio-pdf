@@ -1,0 +1,121 @@
+JUnit version 4.13.2
+..............Oct 04, 2026 11:02:52 PM org.apache.pdfbox.filter.ASCIIHexFilter decode
+SEVERE: Invalid hex, int: 71 char: G
+.Oct 04, 2026 11:02:52 PM org.apache.pdfbox.filter.ASCIIHexFilter decode
+SEVERE: Invalid hex, int: 120 char: x
+..Oct 04, 2026 11:02:52 PM org.apache.pdfbox.filter.ASCIIHexFilter decode
+SEVERE: Invalid hex, int: 71 char: G
+Oct 04, 2026 11:02:52 PM org.apache.pdfbox.filter.ASCIIHexFilter decode
+SEVERE: Invalid hex, int: 71 char: G
+.....Oct 04, 2026 11:02:52 PM org.apache.pdfbox.filter.ASCIIHexFilter decode
+SEVERE: Invalid hex, int: 71 char: G
+.Oct 04, 2026 11:02:52 PM org.apache.pdfbox.filter.LZWFilter doLZWDecode
+WARNING: Premature EOF in LZW stream, EOD code missing
+java.io.EOFException
+	at java.desktop/javax.imageio.stream.ImageInputStreamImpl.readBits(ImageInputStreamImpl.java:670)
+	at org.apache.pdfbox.filter.LZWFilter.doLZWDecode(LZWFilter.java:82)
+	at org.apache.pdfbox.filter.LZWFilter.decode(LZWFilter.java:67)
+	at org.apache.pdfbox.filter.Filter.decode(Filter.java:107)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.decodeFilterStages(PdfBoxHostileInputPreflight.java:369)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.preflightFilterStages(PdfBoxHostileInputPreflight.java:235)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.auditStream(PdfBoxHostileInputPreflight.java:193)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.traverse(PdfBoxHostileInputPreflight.java:156)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.audit(PdfBoxHostileInputPreflight.java:41)
+	at net.zerocloud.pdf.WorkflowResourceContext.audit(WorkflowResourceContext.java:607)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.executeChecked(PdfBoxWorkflowEngine.java:118)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.execute(PdfBoxWorkflowEngine.java:40)
+	at net.zerocloud.pdf.DocumentWorkflow.executeOnce(DocumentWorkflow.java:184)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:103)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:64)
+	at net.zerocloud.pdf.consumer.ImageResourceExtractionWorkflowTest.query(ImageResourceExtractionWorkflowTest.java:2243)
+	at net.zerocloud.pdf.consumer.ImageResourceExtractionWorkflowTest.nullOptionalDecodeParametersUseTheirEffectiveDefaults(ImageResourceExtractionWorkflowTest.java:448)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.junit.runners.Suite.runChild(Suite.java:128)
+	at org.junit.runners.Suite.runChild(Suite.java:27)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:137)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:115)
+	at org.junit.runner.JUnitCore.runMain(JUnitCore.java:77)
+	at org.junit.runner.JUnitCore.main(JUnitCore.java:36)
+
+..Oct 04, 2026 11:02:52 PM org.apache.pdfbox.filter.LZWFilter doLZWDecode
+WARNING: Premature EOF in LZW stream, EOD code missing
+java.io.EOFException: Invalid LZW code: 489
+	at org.apache.pdfbox.filter.LZWFilter.doLZWDecode(LZWFilter.java:119)
+	at org.apache.pdfbox.filter.LZWFilter.decode(LZWFilter.java:67)
+	at org.apache.pdfbox.filter.Filter.decode(Filter.java:107)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.decodeFilterStages(PdfBoxHostileInputPreflight.java:369)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.preflightFilterStages(PdfBoxHostileInputPreflight.java:235)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.auditStream(PdfBoxHostileInputPreflight.java:193)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.traverse(PdfBoxHostileInputPreflight.java:156)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.audit(PdfBoxHostileInputPreflight.java:41)
+	at net.zerocloud.pdf.WorkflowResourceContext.audit(WorkflowResourceContext.java:607)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.executeChecked(PdfBoxWorkflowEngine.java:118)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.execute(PdfBoxWorkflowEngine.java:40)
+	at net.zerocloud.pdf.DocumentWorkflow.executeOnce(DocumentWorkflow.java:184)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:103)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:64)
+	at net.zerocloud.pdf.consumer.ImageResourceExtractionWorkflowTest.query(ImageResourceExtractionWorkflowTest.java:2243)
+	at net.zerocloud.pdf.consumer.ImageResourceExtractionWorkflowTest.unsupportedFilterKeepsEncodedBytesAndReportsDecodedAvailability(ImageResourceExtractionWorkflowTest.java:592)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.junit.runners.Suite.runChild(Suite.java:128)
+	at org.junit.runners.Suite.runChild(Suite.java:27)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:137)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:115)
+	at org.junit.runner.JUnitCore.runMain(JUnitCore.java:77)
+	at org.junit.runner.JUnitCore.main(JUnitCore.java:36)
+
+.............
+Time: 3.846
+
+OK (38 tests)
+

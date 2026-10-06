@@ -1,0 +1,28 @@
+final already completed transactions
+final already completed values
+final already completed pages
+final already completed metadata
+final already completed annotations
+final already completed text
+final already completed images
+final already completed incremental
+final already completed password-baseline
+final already completed password-clear-metadata
+final starting password-attachments attempt 2
+T80 environment JDK 8
+T80 certification JDK 8 / IN_PROCESS
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1435, in <module>
+    main()
+    ~~~~^^
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1431, in main
+    certify(root, root / args.output, contract, helper, args.obligation)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1311, in certify
+    run_logged(evidence_command, scope / 'recorder.txt', cwd=root,
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               timeout=case.get('recorder-timeout', 300))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 982, in run_logged
+    raise RuntimeError('Command failed; see ' + str(path))
+RuntimeError: Command failed; see /workspace/folio-pdf/capabilities/evidence/foundation/T81-final/password-attachments-r2/jdk8-in_process/recorder.txt

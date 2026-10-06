@@ -1,0 +1,20 @@
+T13 environment JDK 8
+T13 retained original JDK 8 / IN_PROCESS
+T13 retained original JDK 8 / HARDENED_WORKER
+T13 environment JDK 11
+T13 retained original JDK 11 / IN_PROCESS
+T13 certification JDK 11 / HARDENED_WORKER
+T13 environment JDK 17
+T13 certification JDK 17 / IN_PROCESS
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/capabilities/evidence/T81-delivery/resume-text-three.py", line 215, in <module>
+    main(output)
+    ~~~~^^^^^^^^
+  File "/workspace/folio-pdf/capabilities/evidence/T81-delivery/resume-text-three.py", line 145, in main
+    driver.run_logged(plan['recorder-command'], scope / 'recorder.txt', cwd=ROOT,
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                      timeout=case.get('recorder-timeout', 300))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 982, in run_logged
+    raise RuntimeError('Command failed; see ' + str(path))
+RuntimeError: Command failed; see /workspace/folio-pdf/capabilities/evidence/foundation/T81-final/text-r5/jdk17-in_process/recorder.txt

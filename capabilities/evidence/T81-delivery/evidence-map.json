@@ -1,0 +1,1464 @@
+{
+  "contract": {
+    "path": "capabilities/evidence/T81-delivery/execution-contract.md",
+    "sha256": "3a37ffb1d1bad77d09e6f6b0e2f577395cf9da2d867d1bc2cf9aaf5044b8298d"
+  },
+  "baseline": "05e7f546f5885680e333ad8d3dea3645b25d26b7",
+  "current-identities": {
+    "path": "capabilities/evidence/T81-delivery/identity-summary.json",
+    "sha256": "9381ba3f23ac7f215b204521ffd88b8da5eec4269026640ed20c7f377f8cde7f"
+  },
+  "completion-criteria": [
+    {
+      "id": 1,
+      "text": "A source-traceable, closed coverage inventory covers every declared Workflow Resource Policy bound across staging, operations, validation and publication. Each required case has a fixture, public observation and retained result; applicability is justified rather than silently omitted.",
+      "status": "satisfied",
+      "evidence": [
+        {
+          "path": "capabilities/profiles/T20-hostile-input/coverage.json",
+          "sha256": "347bfde847440435a5ceb0d2f00f873a903078c030ac176d530570356c7e944f"
+        },
+        {
+          "path": "capabilities/profiles/T20-hostile-input/fixtures.json",
+          "sha256": "f302f3eede40cac006c3c3aa472ac100ed52dc51ece7714666d9d21122263963"
+        },
+        {
+          "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ResourceContracts.java",
+          "sha256": "9442a0a03c85e7036bb69490702ba5179ea910daf43d630c92c6f855a4fdeeef"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/identity-summary.json",
+          "sha256": "9381ba3f23ac7f215b204521ffd88b8da5eec4269026640ed20c7f377f8cde7f"
+        }
+      ],
+      "observation": "See bound original/live records and retained source observations."
+    },
+    {
+      "id": 2,
+      "text": "Independently controlled hostile-input and first-excess fixtures prove all ten dimensions: aggregate input bytes, pages, indirect objects, nesting, supported filter-stage decompression, decoded pixels, modeled owned memory, temporary storage, elapsed time and shared-environment concurrency. Preserve finite defaults, zero semantics, invalid/overflow declaration rejection, inclusive numeric/elapsed boundaries and the version-1 nesting ceiling.",
+      "status": "satisfied",
+      "evidence": [
+        {
+          "path": "capabilities/profiles/T20-hostile-input/coverage.json",
+          "sha256": "347bfde847440435a5ceb0d2f00f873a903078c030ac176d530570356c7e944f"
+        },
+        {
+          "path": "capabilities/profiles/T20-hostile-input/fixtures.json",
+          "sha256": "f302f3eede40cac006c3c3aa472ac100ed52dc51ece7714666d9d21122263963"
+        },
+        {
+          "path": "scripts/generate-t20-corpus.py",
+          "sha256": "7aafbfba8aa47c38cccdc5a7b665bdae58fa0eaaed4f4eb31efcf4a4fb29db45"
+        },
+        {
+          "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ResourceContracts.java",
+          "sha256": "9442a0a03c85e7036bb69490702ba5179ea910daf43d630c92c6f855a4fdeeef"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/identity-summary.json",
+          "sha256": "9381ba3f23ac7f215b204521ffd88b8da5eec4269026640ed20c7f377f8cde7f"
+        }
+      ],
+      "observation": "See bound original/live records and retained source observations."
+    },
+    {
+      "id": 3,
+      "text": "Public observations demonstrate request-policy precedence over the environment default, composition with stricter operation-local limits, and aggregate accounting across primary/additional Sources, Commands, Queries, Patches, products and Targets. Cover repeated decoding, relevant stream-dictionary changes, retained/working memory lifetimes and temporary-storage high-water behavior without resetting budgets between phases.",
+      "status": "satisfied",
+      "evidence": [
+        {
+          "path": "capabilities/profiles/T20-hostile-input/coverage.json",
+          "sha256": "347bfde847440435a5ceb0d2f00f873a903078c030ac176d530570356c7e944f"
+        },
+        {
+          "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ResourceContracts.java",
+          "sha256": "9442a0a03c85e7036bb69490702ba5179ea910daf43d630c92c6f855a4fdeeef"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/identity-summary.json",
+          "sha256": "9381ba3f23ac7f215b204521ffd88b8da5eec4269026640ed20c7f377f8cde7f"
+        }
+      ],
+      "observation": "See bound original/live records and retained source observations."
+    },
+    {
+      "id": 4,
+      "text": "Deterministic Clock, stream and latch controls demonstrate cancellation and deadline handling at owned checkpoints, elapsed-bound equality versus first excess, deadline expiry at equality, backward-Clock behavior, and concurrency admission against both incoming and active ceilings. Permits are released after success, checked failure and caller exceptions.",
+      "status": "satisfied",
+      "evidence": [
+        {
+          "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ResourceContracts.java",
+          "sha256": "9442a0a03c85e7036bb69490702ba5179ea910daf43d630c92c6f855a4fdeeef"
+        },
+        {
+          "path": "capabilities/profiles/T20-hostile-input/coverage.json",
+          "sha256": "347bfde847440435a5ceb0d2f00f873a903078c030ac176d530570356c7e944f"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/identity-summary.json",
+          "sha256": "9381ba3f23ac7f215b204521ffd88b8da5eec4269026640ed20c7f377f8cde7f"
+        }
+      ],
+      "observation": "See bound original/live records and retained source observations."
+    },
+    {
+      "id": 5,
+      "text": "Resource exhaustion remains terminal when caught by caller code. Existing malformed/unsupported-input and operation-local failures retain their owning semantics when no workflow limit is exhausted. Safe failures retain the declared code, capability identifier, content-free diagnostics and public receipt behavior.",
+      "status": "satisfied",
+      "evidence": [
+        {
+          "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ResourceContracts.java",
+          "sha256": "9442a0a03c85e7036bb69490702ba5179ea910daf43d630c92c6f855a4fdeeef"
+        },
+        {
+          "path": "capabilities/profiles/T20-hostile-input/coverage.json",
+          "sha256": "347bfde847440435a5ceb0d2f00f873a903078c030ac176d530570356c7e944f"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/identity-summary.json",
+          "sha256": "9381ba3f23ac7f215b204521ffd88b8da5eec4269026640ed20c7f377f8cde7f"
+        }
+      ],
+      "observation": "See bound original/live records and retained source observations."
+    },
+    {
+      "id": 6,
+      "text": "Public lifecycle observations prove workflow-owned documents, credentials, descriptors, snapshots, cache/spill, staged products and target-adjacent staging are released on terminal paths; caller-owned streams, channels and outputs remain open; Session views expire.",
+      "status": "satisfied",
+      "evidence": [
+        {
+          "path": "capabilities/profiles/T20-hostile-input/coverage.json",
+          "sha256": "347bfde847440435a5ceb0d2f00f873a903078c030ac176d530570356c7e944f"
+        },
+        {
+          "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ResourceContracts.java",
+          "sha256": "9442a0a03c85e7036bb69490702ba5179ea910daf43d630c92c6f855a4fdeeef"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/identity-summary.json",
+          "sha256": "9381ba3f23ac7f215b204521ffd88b8da5eec4269026640ed20c7f377f8cde7f"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/refresh-final-r2-commands.json",
+          "sha256": "988599027d3dc9b509c2610024debb36efcfbe4c95cfa903783a9efea3867083"
+        }
+      ],
+      "observation": "All 75 fixed experiments assert owned-root and target-directory cleanup. Existing public ownership/lifecycle suites and the three fresh encryption predecessors retain credential, descriptor, snapshot/cache/spill and terminal-path observations."
+    },
+    {
+      "id": 7,
+      "text": "Publication observations prove validation precedes publication, pre-commit failure preserves existing Path Targets, earlier committed Targets remain committed, failed/current/later receipts accurately report COMMITTED/FAILED/NOT_ATTEMPTED, and stream failures correctly identify possible partial output. Preserve primary failure and cleanup semantics.",
+      "status": "satisfied",
+      "evidence": [
+        {
+          "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ResourceContracts.java",
+          "sha256": "9442a0a03c85e7036bb69490702ba5179ea910daf43d630c92c6f855a4fdeeef"
+        },
+        {
+          "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20FacadeContracts.java",
+          "sha256": "041fcf5ce3d751bc7dc190517a4df765bc4357f4bf0b046f0e06dea0665ea328"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/identity-summary.json",
+          "sha256": "9381ba3f23ac7f215b204521ffd88b8da5eec4269026640ed20c7f377f8cde7f"
+        }
+      ],
+      "observation": "See bound original/live records and retained source observations."
+    },
+    {
+      "id": 8,
+      "text": "Existing public Migration Facade operations demonstrate matching supported document outcomes, reopened files, ownership, lifecycle, safe failures and Publication Receipts. Record their actual IN_PROCESS execution. Retain the approved Native-only policy-control decision consistently in the Foundation authority, Facade manifest and public contracts; add no artificial Reference Suite control API or unsupported Stable stub.",
+      "status": "satisfied",
+      "evidence": [
+        {
+          "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20FacadeContracts.java",
+          "sha256": "041fcf5ce3d751bc7dc190517a4df765bc4357f4bf0b046f0e06dea0665ea328"
+        },
+        {
+          "path": "capabilities/facade-surface.yaml",
+          "sha256": "d64fb7db912828a12ff7eabf96ed85e33a0c5478c0ff863000ea0b1e80a7dbd1"
+        },
+        {
+          "path": "capabilities/foundation-release.yaml",
+          "sha256": "4473edd264186840a13cc60857a9849fd2d72d320fdb63f76072dd1946138648"
+        },
+        {
+          "path": "docs/hostile-input-policy.md",
+          "sha256": "d468932099d8beb442879f9fc4d23bff7de6efd71e47b312cf7116cccffc6204"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/identity-summary.json",
+          "sha256": "9381ba3f23ac7f215b204521ffd88b8da5eec4269026640ed20c7f377f8cde7f"
+        }
+      ],
+      "observation": "See bound original/live records and retained source observations."
+    },
+    {
+      "id": 9,
+      "text": "Resource-enforcement observations have a separate retained contract chain. Affected successful PDF outcomes have separate independent syntax, standards, semantic and visual records with qualified negative controls. Reuse existing independent corpora and pinned tools where applicable; extend required rule coverage where outcomes demand it.",
+      "status": "satisfied",
+      "evidence": [
+        {
+          "path": "pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20EvidenceCommand.java",
+          "sha256": "3cabbf30fcffec5b87e02c5a596845885da1f0290a9666293a1172b321f87575"
+        },
+        {
+          "path": "scripts/t20_foundation_reports.py",
+          "sha256": "9c0787ae0230f5ab54b737af00bde14383813a1d47f2dc58a5e1fdecda196b8f"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/identity-summary.json",
+          "sha256": "9381ba3f23ac7f215b204521ffd88b8da5eec4269026640ed20c7f377f8cde7f"
+        }
+      ],
+      "observation": "Every successful T20 blank PDF has four qualified PDF chains; the separate fifth chain certifies enforcement. Successful split-product features reuse the same candidate's complete T10 predecessor evidence."
+    },
+    {
+      "id": 10,
+      "text": "Missing tools, uncovered required rules, undetected controls, missing records, mismatched identities, altered findings or changed producer labels cannot produce PASS. Collection validates actual retained artifacts and observations, with live replay where applicable. Test failure/indeterminate paths as well as successful collection.",
+      "status": "satisfied",
+      "evidence": [
+        {
+          "path": "scripts/t20_foundation_reports.py",
+          "sha256": "9c0787ae0230f5ab54b737af00bde14383813a1d47f2dc58a5e1fdecda196b8f"
+        },
+        {
+          "path": "scripts/tests/test_t20_foundation.py",
+          "sha256": "5ecce28b55bbb34db6d376979587ea01bbfdc0c1edbcb095e9f705c5d9e713a4"
+        },
+        {
+          "path": "pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T20ContractTestCommand.java",
+          "sha256": "abc95260378ed66742384fcf7c9b75ece7fcb278461434205fa93563c0f70cac"
+        },
+        {
+          "path": "pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T20ContractTestCommandTest.java",
+          "sha256": "25e92d6a0bd7e356a2ade9e7734a190ea67ae013f06a2beec9a5663b65cc3034"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/collector-final-r2.txt",
+          "sha256": "11b95cc5f3ff49dc2347bdf4923ac512cfb769476b789ab4524bb3bb953c337a"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/collect-final-cli-r2.txt",
+          "sha256": "729156caad6aa38d3f17391359f9502b060b8818173c01fb8f1870506b5e36cb"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/refresh-initial-r4.txt",
+          "sha256": "dad3b6540267dacf34ceba79dd49cbb6d5816d69fc3277b28cd9a20cbf81281c"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/limits-envelope-diagnostic-r1.txt",
+          "sha256": "cb98c9a16ef6db4890cbcc1a5cf034755f8523d0c495bf5c0a99dde6f184a1b5"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-initial/limits-envelope-r1/envelope-repair-audit.json",
+          "sha256": "ad34ce0fc39bde8ddaa2bafeac728198fc35f3d7e0c6fb561fa0fabd07071922"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/repair-limits-envelope.py",
+          "sha256": "cb0dfdbcf7947a8a5d29f04c4d4535c3d5d6767ce8c0eddff53f48293bf04809"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/reviews/standards-observer-envelope-recipe.md",
+          "sha256": "a296079c69074d4633cc444a8d4579aac1696efc7cb3e64ef10e88b1b75a0e24"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/reviews/spec-observer-envelope-recipe.md",
+          "sha256": "eb1c1f6842909c715a31113ef01868f7ac003993fd6712cd6e7f8525f95a555a"
+        }
+      ],
+      "observation": "See bound original/live records and retained source observations."
+    },
+    {
+      "id": 11,
+      "text": "Four complete `limits` certifications cover actual Ubuntu 24.04 / Linux x86-64 \u00d7 JDK 8/11/17/21, Native IN_PROCESS, with corresponding Facade IN_PROCESS observations. Each binds exact image, OS, JDK vendor/build/executable, execution settings, source/contracts, candidate artifacts, harness, corpus and actual tool/native identities. Retain original findings and artifact hashes.",
+      "status": "satisfied",
+      "evidence": [
+        {
+          "path": "capabilities/evidence/T81-delivery/identity-summary.json",
+          "sha256": "9381ba3f23ac7f215b204521ffd88b8da5eec4269026640ed20c7f377f8cde7f"
+        },
+        {
+          "path": "capabilities/foundation-evidence.yaml",
+          "sha256": "34115941733dbd22e86d452f8bfa68092bb81cfd1e2b890b744985ac4db256d0"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/final-candidate-r2/archive-map.json",
+          "sha256": "4d84ec5777933ae6e9aa0c5ef9f4fa653e07795ac5a4f7d04a66ecc36025ea64"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/final-candidate-r2/source-archive.json",
+          "sha256": "762d025bfafa7fb4b32dcd610a9491293566192bc98a6a40318bac2c035ef87d"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/final-candidate-r2/artifact-archive.json",
+          "sha256": "85d758202be85bcea17b5db06d693f9eddb6dcd0b5c45ee6cac378fba9a3d813"
+        }
+      ],
+      "observation": "See bound original/live records and retained source observations."
+    },
+    {
+      "id": 12,
+      "text": "Candidate changes invalidate prior evidence honestly. Refresh already certified predecessors as required for the same candidate in this order: transactions, values, pages, metadata, annotations, text, images, incremental, password-baseline, password-clear-metadata, password-attachments. Preserve their declared execution coverage and historical records; use existing implementations and recorders.",
+      "status": "satisfied",
+      "evidence": [
+        {
+          "path": "capabilities/evidence/T81-delivery/refresh-initial-commands.json",
+          "sha256": "985aab96340a7d7737222e957434bfbf5892c89f8510e9d65e4842b8ecb7e526"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/refresh-final-r2-commands.json",
+          "sha256": "988599027d3dc9b509c2610024debb36efcfbe4c95cfa903783a9efea3867083"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/refresh-final-r1-interruption.json",
+          "sha256": "4c44511b42cffbc456a54c8f88af93fd2ea5470ed080177786135502c81d889d"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/initial-candidate-r7/source-archive.json",
+          "sha256": "ffaafda9e2b01b33e41f3538f30c0468d27e384aa7111148e812fbaf4c15fd7b"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/initial-candidate-r7/artifact-archive.json",
+          "sha256": "e8fbfc0c244eb44c8c6c1bc27b1b5dab1715d5574c649728ad4c7c9778ac2df2"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/final-candidate-r2/archive-map.json",
+          "sha256": "4d84ec5777933ae6e9aa0c5ef9f4fa653e07795ac5a4f7d04a66ecc36025ea64"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/final-candidate-r2/source-archive.json",
+          "sha256": "762d025bfafa7fb4b32dcd610a9491293566192bc98a6a40318bac2c035ef87d"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/final-candidate-r2/artifact-archive.json",
+          "sha256": "85d758202be85bcea17b5db06d693f9eddb6dcd0b5c45ee6cac378fba9a3d813"
+        },
+        {
+          "path": "capabilities/foundation-evidence.yaml",
+          "sha256": "34115941733dbd22e86d452f8bfa68092bb81cfd1e2b890b744985ac4db256d0"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/provision-t80-arlington-model-r1-result.json",
+          "sha256": "e5cd3ecc065a221f54bf331b7817a296c7dc82d83a8c687cb0f55c55a9e67579"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/t80-cache-and-staged-identity-r1.json",
+          "sha256": "3d1c04d3f60880eec8253dd0f8893db8688932ebde2aa714694b2bd0fba14054"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-initial/password-attachments/jdk8-in_process/recorder.txt",
+          "sha256": "368209e64d0a48282b272cee50645cbfb3ec5256ba0ba1b4088cfee640ef63e2"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-initial/password-attachments-r2/jdk11-hardened_worker/contract-tests.txt",
+          "sha256": "72e8f2f02a05a02e360032985b6d11f2f06ccf8e940e00caf07d5bd406aff35e"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/attachments-jdk11-worker-probe-r1-result.json",
+          "sha256": "e870ecb0efc3c21e17d4c09625d953396c9657e9ef265b5a4a1237058ca9640f"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-initial/password-attachments-r3/resume-audit.json",
+          "sha256": "50764f01eab7f099af512a547dc3d364ca021fae1770ce9b9e9fac1648f8c7fc"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/resume-attachments.py",
+          "sha256": "74a5cd951011ddc0fefa0c2b6c8a143d96ed2486713b34fe98b3c36094aa0b32"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/reviews/standards-resume-recipe.md",
+          "sha256": "688ddeae2701b73929211479c77e9d3942829b515a4893ab062134b818217534"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/reviews/spec-resume-recipe.md",
+          "sha256": "684fec52c727cee73bef1344a2cb53c8d6d41e8aebdb1937076b513e914f22fd"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final/text/jdk8-hardened_worker/contract-tests.txt",
+          "sha256": "2fe93ab7a7808871e98d3d44b516f080a4816f4161c26c407a3063de52a9f11a"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/text-jdk8-worker-probe-r1-result.json",
+          "sha256": "428ba1f4dd5aa8503f452d2f2a52b58ba1b85537adcabbed605fbf40394ebb10"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final/text-r6/resume-audit.json",
+          "sha256": "ccb91d2ee889eac8a4f3b0062b2ef9535d1e97387efb962a588e958b9992279b"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/resume-text.py",
+          "sha256": "f9f74b84992f289f5d8e3ed6117b188024dbfa698fb2774d2ed35949efc45190"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/reviews/standards-text-resume-recipe.md",
+          "sha256": "94bbecb80ccef8f6d18ff7e51b25be50ccfbd1ee319ba86f4625d0db6d1cff6d"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/reviews/spec-text-resume-recipe.md",
+          "sha256": "2941a356fcf5f11d631d96fa1c4d6f478d719d80d5366ffa684eb6added65b3e"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/text-final-resume-r1-interruption.json",
+          "sha256": "40d0425f5bed0af3561ba45ac8e08e96a39b1d59e50c5a3259caac0a29935027"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final/text-r3/jdk8-hardened_worker/contract-tests.txt",
+          "sha256": "320590ac385e8e823cde461648116b536d9b34a0e10411fc1cdddf53f11b9f06"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/text-timeout-probe-r1-result.json",
+          "sha256": "f7c647c5ef1e3a71a84c5be6e27dd1bcf3eae0dc8454573c9b0a837a65b86787"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/reviews/standards-text-resume-r2.md",
+          "sha256": "307edcc48d9d93d33366ac3cc9c054596011b18eef718b006db81eda1422dfed"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/reviews/spec-text-resume-r2.md",
+          "sha256": "99c43331e4b425b316493aafe52e976e89ed32292e86dffd4e1b6570aac25c32"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/text-recipe-history.json",
+          "sha256": "a20856919ce8f99bfa2eb354385c537871aceaf0ed281894e19dc3cab66d863f"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final/text-r4/jdk11-hardened_worker/contract-tests.txt",
+          "sha256": "84ec0dc3a43b5d58e49ee2b4b8ab6a2207470c43a4ac4e7303e1d62b12c1e19e"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/text-jdk11-worker-probe-r1-result.json",
+          "sha256": "456ca52a8845b723828d36bcddbfa8727c5e102732d0c6c0ea0993b0257a15c9"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/resume-text-three.py",
+          "sha256": "fb224820a3f500b6061fb784fc68857daccc0a8eee20f281ff16bc18cb985fea"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/reviews/standards-text-resume-three.md",
+          "sha256": "bfeac3909e09e3bd9077d3d489eb18ed180ae6c6900938e1ce8817ea412c887e"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/reviews/spec-text-resume-three.md",
+          "sha256": "768ca76c1ecd8199e1bfb8f57d20c2b8630e680588a843ccaeeec3104d56e298"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final/text-r5/jdk17-in_process/observations/negative/visual/vertical-font-position/page-1-visual.txt",
+          "sha256": "4f256aeac0272f8527aad97f36e5d47bead3b9df9d8ebf307da5c81e36d42876"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/text-visual-probe-r1-result.json",
+          "sha256": "1beb800af32dba4939784fdfa3d0b85862ff8d534f8f7bdb5d7c01aff6c23930"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/resume-text-four.py",
+          "sha256": "1c79cc27e8f058e303825f0512c77681a6d2e50a7d3ae15638bdf8b5f02c9cef"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/reviews/standards-text-resume-four.md",
+          "sha256": "9a306698dd2e67028343d07ffda053efcf60255ec290ad79917b61924eaeed2f"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/reviews/spec-text-resume-four.md",
+          "sha256": "1ec7b75361863a6f40edd8155a19f1bd6bd0711d47e2d931347bf99efc888ad0"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation-wrapper-history.json",
+          "sha256": "c1abd47654c614251791db5b79277179f190ec4d5c7a6055834f0b8166986689"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final/incremental/jdk8-hardened_worker/contract-tests.txt",
+          "sha256": "538e06b80873b85a890157ea8f19924f7b05564375f099f6a07666e85c263dd7"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/incremental-jdk8-worker-probe-r1-result.json",
+          "sha256": "834861ce2cd6590fb54e4556a3c3342d68d5ec408e25dd806c304799db184d6d"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final/password-clear-metadata/jdk11-hardened_worker/recorder.txt",
+          "sha256": "081212ad4a2c74c6ea73d34548b0c4a078711d320197253518edaf30cedea29b"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/clear-metadata-products-probe-r1-result.json",
+          "sha256": "b89aadddf66074d8ff46685c5cf04c73cba3bcc8bbb6857a146e3b04d78bef23"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final/password-clear-metadata-r2/resume-audit.json",
+          "sha256": "278bbb300ad995271682c2a30d27cf99ea4d3f88a03af885401ca54b2a35a435"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/resume-clear-metadata.py",
+          "sha256": "4821433516ea2ba9215fab77f8982bb1db9baa33e09bfe7d8371996105a7695a"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/reviews/standards-clear-metadata-resume.md",
+          "sha256": "184fc05e873791ea4a717503b6010b72339d2749b37a97a8915b07b0b849ba6d"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/reviews/spec-clear-metadata-resume.md",
+          "sha256": "6a74e0d67d9d40c8f6b9c4e58c8f21a19f89e9a2fe8e9c059786bb14f0301e68"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final/password-attachments/jdk8-in_process/recorder.txt",
+          "sha256": "e098ec749ee9de17d6b245a138c10ef0bbc62b4f9b1ace100ceee93194d80ad8"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/attachment-visual-probe-r2-result.json",
+          "sha256": "9b0415b1306780c8e8d0dc6aec09044979106416ce37cbac2ed05b68bf0cb809"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/attachment-visual-probe-r1-result.json",
+          "sha256": "b5c6c41cbc472a297b32f75f4de1b0fc39c663a24e2558b302c26f873bf21852"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/diagnose-attachment-visual.py",
+          "sha256": "0bb9cc833cce675fda4464666e568fa1149b94c5b32df6e5565972752faacffd"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/diagnose-attachment-visual-r1.py",
+          "sha256": "b863e55ef5616e773b3ddc649dd1b492fa5aea248846ef324c32d59a909c973f"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final/password-attachments-r2/jdk8-in_process/recorder.txt",
+          "sha256": "362a3d2384cf2547d58eb38c6ea809c7083da14eb945b2efe98be7d4d7d5d41c"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/attachment-coordinator-timing-r1.json",
+          "sha256": "b4a828039d62ae804df06d36becd586da4d6d3fbdb978a9e9a7f28f8632da427"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/refresh-final-commands.json",
+          "sha256": "df196e107ee1ca26a51678f5bc12c5084a93a07ad25dd87c51202c78be30c969"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/final-candidate/evidence-index.json",
+          "sha256": "09e5685b722a2b141a6a4accfedbb2f28e10c81888a776eda151eacb0ca3ecda"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/final-candidate/source-archive.json",
+          "sha256": "36a8756b2b8b148ee0d4e52ba39afa6cebfad2084206a25a0b30eb084f3b73b7"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/final-candidate/artifact-archive.json",
+          "sha256": "b48c86d49413b7bbc41183f3d52d164664edb3eae9136966a26d756cb63eb07e"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/inventory-expectation-failure.json",
+          "sha256": "2c7326126774e1863314309afff868178e9f3c1f1bcda217bb21970b2da5f724"
+        },
+        {
+          "path": "build-tools/inventory/src/test/java/net/zerocloud/pdf/tools/inventory/FoundationReadinessCommandTest.java",
+          "sha256": "afd79a3eefa68214f2dfd95af51fa3a98693033950a530cc0655bf9e41494512"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/inventory-expectation-focused-r2-result.json",
+          "sha256": "76e929987926dceb63e68112cfea029e9fe43b797b5e4823f1777022b22be1d8"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/reviews/standards-inventory-expectation.md",
+          "sha256": "93d48cf1d39423e8b86ef150a2384bfb8bc3d423b377c78d9e1c66a05547e575"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/reviews/spec-inventory-expectation.md",
+          "sha256": "4b05261c52426d6bd806b4aa1c029031a97f122b36846f7b0d030a71e32252d2"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/final-stage-r2-closure.json",
+          "sha256": "5f0ee3092b165465b15654be1889eb0c1463df3de9c2319787ce0d444df57506"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata/jdk21-hardened_worker/contract-tests.txt",
+          "sha256": "ccd50091895d232d4c8b9026bf5a5f9f495fd907c85d0250202abcf2e32618c8"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/clear-metadata-jdk21-worker-probe-r1-result.json",
+          "sha256": "53ec3d8860d3db49ac99012a375a5dc7aedfaa297e366a84d44fc378bb1bdae1"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/resume-clear-metadata-last-r2.py",
+          "sha256": "b05a2a3053f4f0745b13b73ce648d583525791b9f310c257b45ada675671a599"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/resume-audit.json",
+          "sha256": "9d666476c055b7cfdbb7ee1e37aa8d5f64adb2ca2ba2238d950d9f3796122592"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/reviews/standards-clear-metadata-last-r2.md",
+          "sha256": "860c481e11f46ddbae5b50dabb93fff8595be5b8ceda2e51e4673ece3c26c43c"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/reviews/spec-clear-metadata-last-r2.md",
+          "sha256": "9876d984aeb689064fa0fdb898d0b24c28589caf160ff0d16abba4bcb4448ec1"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/relaunch-authority.json",
+          "sha256": "9873c5fc7ab7331c0bac8aa029963be8075fc559ff4b63a19509254b2869b12e"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/relaunch-entry-audit-r1.json",
+          "sha256": "98967c5ece539b9af3446d3363d7ae013fb8e6adef510c53263d463563ef6c2e"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/resume-attachments-final-r2.py",
+          "sha256": "602b209efa5ff636c4fb4a77eb9c16291b1a0dacc498845b0225ee1b945adc6d"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/attachments-final-r2-relaunch-r4-result.json",
+          "sha256": "71d4cc074e0b1b2c17db51a0b273278666a5f077da8eb94f8ef3f12ff0795820"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-attachments-r5/resume-audit.json",
+          "sha256": "ebfee73dd06d28f1e9baef54f5d686082377f2b77e99dabbdf4edceafe06d496"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/reviews/standards-relaunch-source-r1.md",
+          "sha256": "d91b430cf776eabce7f0cae649367cfd82e2b0d2a11fe040d4611272359ae3be"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/reviews/spec-relaunch-source-r1.md",
+          "sha256": "1801f5f9d158e3a2bd53bc3f9cb4de935ae3b243f82d29b650e525c852358700"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/attachments-final-r2-relaunch-r1-result.json",
+          "sha256": "4574a84be6fb0f8278ffa62b42a963d61134af55387caa3884a69b5c1fceaec0"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-attachments-r2/jdk17-hardened_worker/contract-tests.txt",
+          "sha256": "68cf4cb3ddcfe2e7dd2ca0cb44a415148a582c003756be5527e92a9053050104"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/attachments-jdk17-worker-probe-r1-result.json",
+          "sha256": "cb6af6f0f2d7a16bc9503fc30b075019834e2c2823d0d3dc0d10ea9b0ef4087f"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/diagnose-attachments-jdk17-worker.py",
+          "sha256": "12e5864fb7a19ec1d2fd5adb543761773c8f4a1436df9537648e94b90f385e73"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/attachments-final-r2-relaunch-r2-result.json",
+          "sha256": "9cf31ac2fa54a30efebfe8d377b9e6e9a1ec104a1839c7b0c9b760b39ead0e58"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-attachments-r3/jdk21-hardened_worker/contract-tests.txt",
+          "sha256": "6058e5fa7980b24fa259b7dd17f40771a2646fee85e44bea913a6903c2af36c6"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/attachments-jdk21-worker-probe-r1-result.json",
+          "sha256": "2cfc83960634f74fa50eff0b74a0d3f9d3eebe23a3b3f627fc6203aa25a46f0e"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/diagnose-attachments-jdk21-worker.py",
+          "sha256": "24f1a07ca272a9a145ecce0b31b3a9f69068445de548757943e02e8771902964"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/resume-attachments-last-final-r2.py",
+          "sha256": "55ff0581f7fd32cec4678cfe91aece308234bab0a296f9dae4e997bb0a2c1e01"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/reviews/standards-relaunch-last-tuple-r1.md",
+          "sha256": "b8e9088cd9632dde4f398e58f0991604728503d4d170315fd3a6506fdb6b99ee"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/reviews/spec-relaunch-last-tuple-r1.md",
+          "sha256": "05e16be8321b170ffa16792db0a70ba09ae449f88a1ff4fe3c1d1e56b6893c7d"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/relaunch-attachment-outcome.json",
+          "sha256": "77d40b7e94b5d6a5863f3540d980e40503b40f0cb36be866b73546d1fdb5b36f"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/record-relaunch-attachments.py",
+          "sha256": "b9b1f3f56d7a5baaf327ca22988581d190b392dd6aada324df673339d209c397"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/attachment-visual-probe-r2-retained-audit.json",
+          "sha256": "b1f6b3d5b22b96fc2463c318232bb0d18a67720b1267f8b66a07cd029b96e771"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/audit-retained-attachment-probe-r2.py",
+          "sha256": "66a2afee75103ba4284b68a17a4b37937f267a3f4e34d491e444282b69fe3803"
+        }
+      ],
+      "observation": "Both initial and final cycles refresh eleven predecessors in the required order and preserve eight tuples each; limits then adds four IN_PROCESS scopes. Promotion changed bound inputs and therefore required the entire final cycle. Historical and failed attempts remain retained without relabeling."
+    },
+    {
+      "id": 13,
+      "text": "Capability Matrix, Facade Surface, Foundation release/requirements/evidence authorities, generated/public English contracts, Javadoc, Chinese usage material and clean-room provenance agree. Mark `document.hostile-input-limits` compatible only after complete evidence and satisfied dependencies; introduce no unrelated promotion.",
+      "status": "satisfied",
+      "evidence": [
+        {
+          "path": "capabilities/capability-matrix.yaml",
+          "sha256": "816e9b8759b2e25b2d4e91aba79af64f87d32e164041ad1c5866826b81ffb248"
+        },
+        {
+          "path": "capabilities/facade-surface.yaml",
+          "sha256": "d64fb7db912828a12ff7eabf96ed85e33a0c5478c0ff863000ea0b1e80a7dbd1"
+        },
+        {
+          "path": "capabilities/foundation-release.yaml",
+          "sha256": "4473edd264186840a13cc60857a9849fd2d72d320fdb63f76072dd1946138648"
+        },
+        {
+          "path": "docs/hostile-input-policy.md",
+          "sha256": "d468932099d8beb442879f9fc4d23bff7de6efd71e47b312cf7116cccffc6204"
+        },
+        {
+          "path": "docs/t20-certification.md",
+          "sha256": "c4260f904be55b80eba61f5aef58250a454998bb6bcaac392f91c97cd90e3490"
+        },
+        {
+          "path": "docs/zh-CN/getting-started.md",
+          "sha256": "3e96bfc4f02fa20c37ad9e1c3c14a54e6e11cd0c34e47510408e36e8e15f16f3"
+        },
+        {
+          "path": "PROVENANCE.md",
+          "sha256": "6fee535bc59b07419a8924f0a0e33f6473a70e40123d6c41ab4cb5f80e6427a0"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/inventory-check-final-r2.txt",
+          "sha256": "261971b5595c499a1aa937dd006edfa2a8885e1771c4a6f9cdc6ca12408af876"
+        }
+      ],
+      "observation": "See bound original/live records and retained source observations."
+    },
+    {
+      "id": 14,
+      "text": "Live inventory evaluation reports `limits` and its prerequisites satisfied with current identities. Overall Foundation readiness may remain NOT READY for concrete later obligations; retain those diagnostics without removing requirements or changing labels to manufacture release readiness.",
+      "status": "satisfied",
+      "evidence": [
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/inventory-readiness-final-r2.txt",
+          "sha256": "9de443a7c894c25cb2f7f8101b45f1151580d7d9eef8d094c350c51018b1e94f"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/identity-summary.json",
+          "sha256": "9381ba3f23ac7f215b204521ffd88b8da5eec4269026640ed20c7f377f8cde7f"
+        }
+      ],
+      "observation": "See bound original/live records and retained source observations."
+    },
+    {
+      "id": 15,
+      "text": "Ran the smallest applicable initial validation: `./mvnw -B -ntp -pl pdf-document -am -Dtest=HostileInputWorkflowTest -Dsurefire.failIfNoSpecifiedTests=false test`. Run additional focused Native/Facade, recorder, collector and real-tool tests as the changed coverage requires.",
+      "status": "satisfied",
+      "evidence": [
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/hostile-input-initial-r1.txt",
+          "sha256": "96cb42d60b1aa01db7147c3c686d65f1c26bf1e8075be3da6f7be26a8d70c519"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/resource-experiments-final-source-r3.txt",
+          "sha256": "440f743be5efcd76970513215a3576ad10c2cc9c4a936885b6673b6cb4756e9b"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/independent-t20-ubuntu-r2.txt",
+          "sha256": "c04a9fa456b304fc4deb46c769877987da1575ecf70b6c8ba69ec704e7b7e53b"
+        }
+      ],
+      "observation": "See bound original/live records and retained source observations."
+    },
+    {
+      "id": 16,
+      "text": "Ran repository-mandated full verification: `./mvnw -B -ntp verify`. Shipped-code/build-compatibility changes also pass `./scripts/verify-jdk-matrix.sh`. All mandatory #81 certification cases, tuples, rules and chains execute without skips.",
+      "status": "satisfied",
+      "evidence": [
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/full-verify-ubuntu-final-r2.txt",
+          "sha256": "43ae92c54f76fba9f21a0a16e29d1123ae87ef366957b35dc6520326b1a1ab4d"
+        },
+        {
+          "path": "pdf-acceptance/src/test/java/net/zerocloud/pdf/acceptance/T20ContractTestCommand.java",
+          "sha256": "abc95260378ed66742384fcf7c9b75ece7fcb278461434205fa93563c0f70cac"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/identity-summary.json",
+          "sha256": "9381ba3f23ac7f215b204521ffd88b8da5eec4269026640ed20c7f377f8cde7f"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/reviews/standards-final.md",
+          "sha256": "1075629c33bd4148d6efddb1dc4f038c5ae9403e582cc3ce0cdeb5183fba44c2"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/inventory-expectation-suite-r2-result.json",
+          "sha256": "5962f81b5836a0ed55db576aa3dc4ae7524683d2e28febe5fea9b091368bbf9e"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/release-tool-pre-restage-r1-result.json",
+          "sha256": "6b534fa660a87addf98908eb312eb17aac3fbc19875fc54fa9066657db07c298"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/release-tool-ubuntu-pre-restage-r1-result.json",
+          "sha256": "acef0317c9d2d2e2f3a20576dd400ac2ca2c55ab549ecc7cd8744a93eb407b29"
+        }
+      ],
+      "observation": "Full verification ran inside the actual pinned Ubuntu/JDK17 environment. No shipped code, dependency, POM, build compatibility or CI changes were introduced, so the conditional verify-jdk-matrix.sh rule is not triggered; Standards review confirms this. Four actual JDK certifications, including artifact checks and strict zero-skip suites, are complete."
+    },
+    {
+      "id": 17,
+      "text": "Ran applicable collector checks using the repository route: `PYTHONPATH=.build-cache/foundation-host-python python3 -B -m unittest discover -s scripts/tests -p 'test_*foundation.py'`; ran `./scripts/inventory validate`, `generate`, `check` and live `readiness`. Record expected unrelated readiness failures separately from failed slice requirements.",
+      "status": "satisfied",
+      "evidence": [
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/collector-final-r2.txt",
+          "sha256": "11b95cc5f3ff49dc2347bdf4923ac512cfb769476b789ab4524bb3bb953c337a"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/inventory-validate-final-r2.txt",
+          "sha256": "c9d2c77e1ce27d219e53878cd4130ffb9045bea037bb1b1958256ea237bcdccb"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/inventory-generate-final-r2.txt",
+          "sha256": "cf84c3c636f4d0525aa52b4063205bdf78318dbb055cf7a6a5e0631c45f53ca8"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/inventory-check-final-r2.txt",
+          "sha256": "261971b5595c499a1aa937dd006edfa2a8885e1771c4a6f9cdc6ca12408af876"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/inventory-readiness-final-r2.txt",
+          "sha256": "9de443a7c894c25cb2f7f8101b45f1151580d7d9eef8d094c350c51018b1e94f"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/collect-final-cli-r2.txt",
+          "sha256": "729156caad6aa38d3f17391359f9502b060b8818173c01fb8f1870506b5e36cb"
+        }
+      ],
+      "observation": "See bound original/live records and retained source observations."
+    },
+    {
+      "id": 18,
+      "text": "Reviewed the final diff against the source criteria and recorded baseline. Resolve applicable Standards and Spec findings; retain review results identifying baseline `05e7f546f5885680e333ad8d3dea3645b25d26b7`.",
+      "status": "satisfied",
+      "evidence": [
+        {
+          "path": "capabilities/evidence/T81-delivery/reviews/standards-final.md",
+          "sha256": "1075629c33bd4148d6efddb1dc4f038c5ae9403e582cc3ce0cdeb5183fba44c2"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/reviews/spec-final.md",
+          "sha256": "0201f3ac45705f98718dd4cd35ee2d77c9fcd1602b42d0f0f460353164bc55f4"
+        }
+      ],
+      "observation": "See bound original/live records and retained source observations."
+    },
+    {
+      "id": 19,
+      "text": "The execution receipt maps every issue criterion to observable evidence and records exact certification identities, validation commands/results, reviews, remaining unrelated Foundation blockers, worktree state and optional commit status.",
+      "status": "satisfied",
+      "evidence": [
+        {
+          "path": "capabilities/evidence/T81-delivery/identity-summary.json",
+          "sha256": "9381ba3f23ac7f215b204521ffd88b8da5eec4269026640ed20c7f377f8cde7f"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/worktree-audit.json",
+          "sha256": "f4ea5be6ea8793b2a00cd4e03734f57a2848dfc9f918bc13257e9cf4cf63f16c"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/validation/inventory-readiness-final-r2.txt",
+          "sha256": "9de443a7c894c25cb2f7f8101b45f1151580d7d9eef8d094c350c51018b1e94f"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/reviews/standards-final.md",
+          "sha256": "1075629c33bd4148d6efddb1dc4f038c5ae9403e582cc3ce0cdeb5183fba44c2"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/reviews/spec-final.md",
+          "sha256": "0201f3ac45705f98718dd4cd35ee2d77c9fcd1602b42d0f0f460353164bc55f4"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/write-receipt-relaunch.py",
+          "sha256": "2c0ddce5b93b320be08fcad641865c5719d243953d8249bfa524cdf7074772d8"
+        }
+      ],
+      "observation": "See bound original/live records and retained source observations."
+    },
+    {
+      "id": 20,
+      "text": "Commit only after all selected criteria pass and the source context or user authorizes a commit. The user has authorized at most one optional local commit: use `git commit -s` with `mabaiqiu <mabaiqiu@gmail.com>` and verify its Signed-off-by trailer.",
+      "status": "satisfied",
+      "evidence": [
+        {
+          "path": "capabilities/evidence/T81-delivery/worktree-audit.json",
+          "sha256": "f4ea5be6ea8793b2a00cd4e03734f57a2848dfc9f918bc13257e9cf4cf63f16c"
+        }
+      ],
+      "observation": "Optional local commit omitted. HEAD remains the baseline; no commit or Signed-off-by trailer is claimed."
+    },
+    {
+      "id": 21,
+      "text": "Workspace is clean except for this ticket's changes (unrelated dirty or untracked files untouched).",
+      "status": "satisfied",
+      "evidence": [
+        {
+          "path": "capabilities/evidence/T81-delivery/worktree-audit.json",
+          "sha256": "f4ea5be6ea8793b2a00cd4e03734f57a2848dfc9f918bc13257e9cf4cf63f16c"
+        },
+        {
+          "path": "capabilities/evidence/T81-delivery/relaunch-authority.json",
+          "sha256": "9873c5fc7ab7331c0bac8aa029963be8075fc559ff4b63a19509254b2869b12e"
+        }
+      ],
+      "observation": "The original execution began clean; this authorized relaunch retained its dirty ticket worktree and all evidence. Every changed/untracked deliverable is owned by issue #81; unrelated work was untouched."
+    }
+  ],
+  "issue-acceptance-criteria": [
+    {
+      "id": "AC1",
+      "baseline-classification": "demonstrably incomplete",
+      "status": "satisfied",
+      "completion-criterion-ids": [
+        1,
+        2
+      ]
+    },
+    {
+      "id": "AC2",
+      "baseline-classification": "unverified",
+      "status": "satisfied",
+      "completion-criterion-ids": [
+        3,
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    {
+      "id": "AC3",
+      "baseline-classification": "evidenced complete; preserved",
+      "status": "satisfied",
+      "completion-criterion-ids": [
+        8,
+        13
+      ]
+    },
+    {
+      "id": "AC4",
+      "baseline-classification": "demonstrably incomplete",
+      "status": "satisfied",
+      "completion-criterion-ids": [
+        8,
+        9
+      ]
+    },
+    {
+      "id": "AC5",
+      "baseline-classification": "demonstrably incomplete",
+      "status": "satisfied",
+      "completion-criterion-ids": [
+        9,
+        10,
+        11,
+        12
+      ]
+    },
+    {
+      "id": "AC6",
+      "baseline-classification": "unverified",
+      "status": "satisfied",
+      "completion-criterion-ids": [
+        8
+      ]
+    },
+    {
+      "id": "AC7",
+      "baseline-classification": "demonstrably incomplete",
+      "status": "satisfied",
+      "completion-criterion-ids": [
+        13,
+        14
+      ]
+    },
+    {
+      "id": "AC8",
+      "baseline-classification": "demonstrably incomplete for issue #81",
+      "status": "satisfied",
+      "completion-criterion-ids": [
+        15,
+        16,
+        17,
+        18
+      ]
+    },
+    {
+      "id": "AC9",
+      "baseline-classification": "evidenced complete; preserved",
+      "status": "satisfied",
+      "completion-criterion-ids": [
+        6,
+        13,
+        16,
+        20,
+        21
+      ]
+    }
+  ],
+  "remaining-unrelated-foundation-blockers": {
+    "worker": {
+      "slice": 82,
+      "diagnostics": [
+        "capability document.hardened-worker is experimental, requires compatible",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on document.hardened-worker",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on document.hardened-worker",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on document.hardened-worker",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk21 on document.hardened-worker",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk8/HARDENED_WORKER (required chains: syntax, standards, semantic, visual, contract)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk11/HARDENED_WORKER (required chains: syntax, standards, semantic, visual, contract)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual, contract)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual, contract)"
+      ]
+    },
+    "recovery": {
+      "slice": 83,
+      "diagnostics": [
+        "capability document.hardened-worker.recovery-scale is experimental, requires compatible",
+        "incompatible Dependency Gate document.hardened-worker",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on document.hardened-worker.recovery-scale",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on document.hardened-worker.recovery-scale",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on document.hardened-worker.recovery-scale",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk21 on document.hardened-worker.recovery-scale",
+        "unresolved retained limitation: Historical one-environment scale observations do not certify all required final Ubuntu/JDK candidate profiles; #83 must retain actual opt-in runs.",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk8/HARDENED_WORKER (required chains: syntax, standards, semantic, visual, contract)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk11/HARDENED_WORKER (required chains: syntax, standards, semantic, visual, contract)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual, contract)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual, contract)",
+        "incomplete prerequisite obligation worker"
+      ]
+    },
+    "canvas": {
+      "slice": 85,
+      "diagnostics": [
+        "capability composition.canvas.draw-positioned-text is experimental, requires compatible",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on composition.canvas.draw-positioned-text",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on composition.canvas.draw-positioned-text",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on composition.canvas.draw-positioned-text",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk21 on composition.canvas.draw-positioned-text",
+        "missing required Facade mapping set for kernel PdfCanvas paths and encoded glyphs",
+        "unresolved retained limitation: The split Canvas graphics surface requires #85/#86 reconciliation; missing required drawing behavior remains blocking.",
+        "unresolved retained limitation: The borrowed-font restrictions must cover the approved Foundation Canvas profile under #85.",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk8/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk8/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk11/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk11/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk17/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+      ]
+    },
+    "graphics": {
+      "slice": 86,
+      "diagnostics": [
+        "capability composition.canvas.images-colors-transparency is experimental, requires compatible",
+        "incompatible Dependency Gate composition.canvas.draw-positioned-text",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on composition.canvas.images-colors-transparency",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on composition.canvas.images-colors-transparency",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on composition.canvas.images-colors-transparency",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk21 on composition.canvas.images-colors-transparency",
+        "missing required Facade mapping set for image, color and transparency graphics",
+        "unresolved retained limitation: Image normalization and precision/color restrictions require #86 evidence for every promised image profile.",
+        "unresolved retained limitation: Borrowed-image filter restrictions require #86 reconciliation with required Foundation graphics.",
+        "unresolved retained limitation: Required graphics Facade and certification are still absent; downstream non-goals do not waive them.",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk8/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk8/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk11/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk11/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk17/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "incomplete prerequisite obligation canvas"
+      ]
+    },
+    "fonts": {
+      "slice": 87,
+      "diagnostics": [
+        "capability composition.fonts.load-embed-subset-fallback is experimental, requires compatible",
+        "incompatible Dependency Gate composition.canvas.draw-positioned-text",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on composition.fonts.load-embed-subset-fallback",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on composition.fonts.load-embed-subset-fallback",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on composition.fonts.load-embed-subset-fallback",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk21 on composition.fonts.load-embed-subset-fallback",
+        "missing required Facade mapping set for font factory, font and positioned text",
+        "unresolved retained limitation: Positioned-text clipping restrictions require #87 reconciliation with the required text/Canvas families.",
+        "unresolved retained limitation: Admitted static font formats and metadata restrictions require #87 certification for all Foundation reference fonts.",
+        "unresolved retained limitation: Scalar/glyph ambiguity restrictions and the shaping split require #87/#93 evidence for required multilingual behavior.",
+        "unresolved retained limitation: Required font Facade and certification are absent; later-release exclusions cannot waive them.",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk8/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk8/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk11/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk11/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk17/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "incomplete prerequisite obligation canvas"
+      ]
+    },
+    "rendering": {
+      "slice": 88,
+      "diagnostics": [
+        "capability conversion.rendering is experimental, requires compatible",
+        "incompatible Dependency Gate conversion.capability-provider.select-execute",
+        "incompatible Dependency Gate composition.canvas.images-colors-transparency",
+        "incompatible Dependency Gate composition.fonts.load-embed-subset-fallback",
+        "incompatible Dependency Gate document.hardened-worker",
+        "incompatible Dependency Gate document.hardened-worker.recovery-scale",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on conversion.rendering",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on conversion.rendering",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on conversion.rendering",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk21 on conversion.rendering",
+        "missing required Facade mapping set for pdfRender page rendering",
+        "unresolved retained limitation: Annotation rendering restrictions require #88 evidence against the Foundation Rendering profile.",
+        "unresolved retained limitation: Font substitution and platform-codec diagnostics are not compatibility evidence; #88 must certify required font/image outcomes.",
+        "unresolved retained limitation: Independent rendering option coverage, standards/semantic chains and Facade mappings remain incomplete under #88.",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk8/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk8/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk11/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk11/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk17/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "incomplete prerequisite obligation providers",
+        "incomplete prerequisite obligation graphics",
+        "incomplete prerequisite obligation fonts",
+        "incomplete prerequisite obligation worker",
+        "incomplete prerequisite obligation recovery"
+      ]
+    },
+    "providers": {
+      "slice": 84,
+      "diagnostics": [
+        "capability conversion.capability-provider.select-execute is experimental, requires compatible",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on conversion.capability-provider.select-execute",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on conversion.capability-provider.select-execute",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on conversion.capability-provider.select-execute",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk21 on conversion.capability-provider.select-execute",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk8/IN_PROCESS (required chains: syntax, standards, semantic, visual, contract)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk8/HARDENED_WORKER (required chains: syntax, standards, semantic, visual, contract)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk11/IN_PROCESS (required chains: syntax, standards, semantic, visual, contract)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk11/HARDENED_WORKER (required chains: syntax, standards, semantic, visual, contract)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk17/IN_PROCESS (required chains: syntax, standards, semantic, visual, contract)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual, contract)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual, contract)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual, contract)"
+      ]
+    },
+    "paragraphs": {
+      "slice": 89,
+      "diagnostics": [
+        "capability composition.layout.paragraph-areas is experimental, requires compatible",
+        "incompatible Dependency Gate composition.canvas.draw-positioned-text",
+        "incompatible Dependency Gate composition.canvas.images-colors-transparency",
+        "incompatible Dependency Gate composition.fonts.load-embed-subset-fallback",
+        "incompatible Dependency Gate document.hardened-worker",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on composition.layout.paragraph-areas",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on composition.layout.paragraph-areas",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on composition.layout.paragraph-areas",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk21 on composition.layout.paragraph-areas",
+        "missing required Facade mapping set for layout Document, Paragraph, Text and AreaBreak",
+        "unresolved retained limitation: The full pinned Foundation font/typography profile remains uncertified under #87/#89/#93; four-platform wording is superseded only by ADR-0040.",
+        "unresolved retained limitation: Unicode/shaping/hyphenation/vertical-text restrictions must be reconciled with full required Foundation paragraph behavior under #89/#93.",
+        "unresolved retained limitation: Required advanced paragraphs/tables and migration mappings remain separate blocking obligations.",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk8/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk8/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk11/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk11/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk17/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "incomplete prerequisite obligation canvas",
+        "incomplete prerequisite obligation graphics",
+        "incomplete prerequisite obligation fonts",
+        "incomplete prerequisite obligation worker"
+      ]
+    },
+    "pagination": {
+      "slice": 90,
+      "diagnostics": [
+        "capability composition.layout.paragraph-pagination is experimental, requires compatible",
+        "incompatible Dependency Gate composition.layout.paragraph-areas",
+        "incompatible Dependency Gate composition.fonts.load-embed-subset-fallback",
+        "incompatible Dependency Gate composition.canvas.images-colors-transparency",
+        "incompatible Dependency Gate document.hardened-worker",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on composition.layout.paragraph-pagination",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on composition.layout.paragraph-pagination",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on composition.layout.paragraph-pagination",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk21 on composition.layout.paragraph-pagination",
+        "missing required Facade mapping set for layout paragraph properties, relayout and flushing",
+        "unresolved retained limitation: Tab variants and excluded leaders require #90 audit against the complete Foundation paragraph contract.",
+        "unresolved retained limitation: Small-font independent pages do not certify all required Foundation reference fonts/environments under #90.",
+        "unresolved retained limitation: Required standards, compatible dependencies and paragraph Facade remain incomplete under #90.",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk8/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk8/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk11/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk11/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk17/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "incomplete prerequisite obligation paragraphs",
+        "incomplete prerequisite obligation fonts",
+        "incomplete prerequisite obligation graphics",
+        "incomplete prerequisite obligation worker"
+      ]
+    },
+    "tables": {
+      "slice": 92,
+      "diagnostics": [
+        "capability composition.layout.tables is experimental, requires compatible",
+        "incompatible Dependency Gate composition.layout.paragraph-areas",
+        "incompatible Dependency Gate composition.layout.paragraph-pagination",
+        "incompatible Dependency Gate composition.fonts.load-embed-subset-fallback",
+        "incompatible Dependency Gate composition.canvas.images-colors-transparency",
+        "incompatible Dependency Gate document.hardened-worker",
+        "incomplete prerequisite obligation paragraphs",
+        "incomplete prerequisite obligation pagination",
+        "incomplete prerequisite obligation fonts",
+        "incomplete prerequisite obligation graphics",
+        "incomplete prerequisite obligation worker",
+        "incomplete prerequisite obligation tables-base",
+        "incomplete prerequisite obligation tables-pagination"
+      ]
+    },
+    "shaping": {
+      "slice": 93,
+      "diagnostics": [
+        "capability composition.shaping.harf-buzz is experimental, requires compatible",
+        "incompatible Dependency Gate conversion.capability-provider.select-execute",
+        "incompatible Dependency Gate composition.fonts.load-embed-subset-fallback",
+        "incompatible Dependency Gate composition.layout.paragraph-areas",
+        "incompatible Dependency Gate composition.layout.paragraph-pagination",
+        "incompatible Dependency Gate composition.layout.tables",
+        "incompatible Dependency Gate document.hardened-worker",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on composition.shaping.harf-buzz",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on composition.shaping.harf-buzz",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on composition.shaping.harf-buzz",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk21 on composition.shaping.harf-buzz",
+        "missing required Facade mapping set for layout typography and explicit shaping configuration",
+        "unresolved retained limitation: Admitted shaping/font/feature profiles require #93 evidence for every required representative writing system.",
+        "unresolved retained limitation: Cross-style grapheme/run restrictions must be reconciled with required Foundation shaping under #93.",
+        "unresolved retained limitation: Parent-side native resource limits and required Linux observations remain #93 responsibilities; Windows/macOS gates are removed by ADR-0040.",
+        "unresolved retained limitation: Missing actual required Ubuntu/JDK native observations still block #93; Windows/macOS absence is explicitly not a Foundation 0.1.0 blocker.",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk8/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk8/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk11/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk11/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk17/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "incomplete prerequisite obligation providers",
+        "incomplete prerequisite obligation fonts",
+        "incomplete prerequisite obligation paragraphs",
+        "incomplete prerequisite obligation pagination",
+        "incomplete prerequisite obligation tables",
+        "incomplete prerequisite obligation worker"
+      ]
+    },
+    "barcodes-1d": {
+      "slice": 94,
+      "diagnostics": [
+        "capability composition.barcodes.one-dimensional is experimental, requires compatible",
+        "incompatible Dependency Gate composition.canvas.draw-positioned-text",
+        "incompatible Dependency Gate composition.canvas.images-colors-transparency",
+        "incompatible Dependency Gate composition.fonts.load-embed-subset-fallback",
+        "incompatible Dependency Gate document.hardened-worker",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on composition.barcodes.one-dimensional",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on composition.barcodes.one-dimensional",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on composition.barcodes.one-dimensional",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk21 on composition.barcodes.one-dimensional",
+        "missing required Facade mapping set for barcodes one-dimensional generation modes",
+        "unresolved retained limitation: All 116 cases require final candidate/environment evidence and compatible dependencies under #94.",
+        "unresolved retained limitation: Independent standards, required environment/font evidence and matching 1D Facade remain incomplete.",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk8/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk8/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk11/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk11/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk17/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "incomplete prerequisite obligation canvas",
+        "incomplete prerequisite obligation graphics",
+        "incomplete prerequisite obligation fonts",
+        "incomplete prerequisite obligation worker"
+      ]
+    },
+    "barcodes-2d": {
+      "slice": 95,
+      "diagnostics": [
+        "capability composition.barcodes.two-dimensional is experimental, requires compatible",
+        "incompatible Dependency Gate composition.canvas.draw-positioned-text",
+        "incompatible Dependency Gate composition.canvas.images-colors-transparency",
+        "incompatible Dependency Gate document.hardened-worker",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on composition.barcodes.two-dimensional",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on composition.barcodes.two-dimensional",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on composition.barcodes.two-dimensional",
+        "missing certified environment ubuntu-24.04-linux-x86-64-jdk21 on composition.barcodes.two-dimensional",
+        "missing required Facade mapping set for barcodes QR, DataMatrix and PDF417 modes",
+        "unresolved retained limitation: Typed control/file-ID migration differences need exact #95 Facade and semantic evidence.",
+        "unresolved retained limitation: Every Reference Suite PDF417 generation mode must be reconciled under #95; raster-only inversion and other exclusions cannot hide required vector modes.",
+        "unresolved retained limitation: The complete 224-page-per-mode corpus and damaged controls need final candidate/environment evidence under #95.",
+        "unresolved retained limitation: Independent standards, compatible dependencies, required environments and 2D Facade remain incomplete.",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk8/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk8/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk11/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk11/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk17/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "incomplete prerequisite obligation canvas",
+        "incomplete prerequisite obligation graphics",
+        "incomplete prerequisite obligation worker"
+      ]
+    },
+    "tables-base": {
+      "slice": 91,
+      "diagnostics": [
+        "missing independently certifiable subcapability composition.layout.tables.base (aggregate composition.layout.tables)",
+        "missing required Facade mapping set for layout Table and Cell properties and lifecycle",
+        "unresolved retained limitation: AUTO allocation restrictions require #91 proof against full required fixed/automatic table behavior.",
+        "unresolved retained limitation: Cell-content and nesting restrictions require #91 reconciliation with the Foundation table profile.",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk8/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk8/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk11/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk11/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk17/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "incomplete prerequisite obligation pagination",
+        "incomplete prerequisite obligation fonts",
+        "incomplete prerequisite obligation graphics"
+      ]
+    },
+    "tables-pagination": {
+      "slice": 92,
+      "diagnostics": [
+        "missing independently certifiable subcapability composition.layout.tables.pagination (aggregate composition.layout.tables)",
+        "missing required Facade mapping set for layout Table and Cell properties and lifecycle",
+        "unresolved retained limitation: Restricted incremental large-table mode must cover every required Foundation flushing case under #92.",
+        "unresolved retained limitation: T26/T27 evidence must be retained for the two independent subcapabilities on final required profiles.",
+        "unresolved retained limitation: Required standards, dependency, Foundation typography/environment and Table/Cell Facade certification remain incomplete.",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk8/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk8/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk11/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk11/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk17/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)",
+        "incomplete prerequisite obligation tables-base",
+        "incomplete prerequisite obligation pagination",
+        "incomplete prerequisite obligation fonts",
+        "incomplete prerequisite obligation graphics"
+      ]
+    },
+    "environments": {
+      "slice": 69,
+      "diagnostics": [
+        "missing certification ubuntu-24.04-linux-x86-64-jdk8/REPOSITORY (required chains: contract)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk11/REPOSITORY (required chains: contract)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk17/REPOSITORY (required chains: contract)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk21/REPOSITORY (required chains: contract)"
+      ]
+    },
+    "java-artifacts": {
+      "slice": 96,
+      "diagnostics": [
+        "missing certification ubuntu-24.04-linux-x86-64-jdk8/REPOSITORY (required chains: contract, artifact)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk11/REPOSITORY (required chains: contract, artifact)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk17/REPOSITORY (required chains: contract, artifact)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk21/REPOSITORY (required chains: contract, artifact)"
+      ]
+    },
+    "facade-artifacts": {
+      "slice": 96,
+      "diagnostics": [
+        "missing certification ubuntu-24.04-linux-x86-64-jdk17/REPOSITORY (required chains: contract, artifact)"
+      ]
+    },
+    "acceptance": {
+      "slice": 70,
+      "diagnostics": [
+        "missing certification ubuntu-24.04-linux-x86-64-jdk17/REPOSITORY (required chains: contract, review)"
+      ]
+    },
+    "docs": {
+      "slice": 96,
+      "diagnostics": [
+        "missing certification ubuntu-24.04-linux-x86-64-jdk17/REPOSITORY (required chains: contract, review)"
+      ]
+    },
+    "provenance": {
+      "slice": 96,
+      "diagnostics": [
+        "missing certification ubuntu-24.04-linux-x86-64-jdk17/REPOSITORY (required chains: review, supply-chain)"
+      ]
+    },
+    "supply-chain": {
+      "slice": 96,
+      "diagnostics": [
+        "missing certification ubuntu-24.04-linux-x86-64-jdk17/REPOSITORY (required chains: supply-chain, review)"
+      ]
+    },
+    "reproducibility": {
+      "slice": 96,
+      "diagnostics": [
+        "missing certification ubuntu-24.04-linux-x86-64-jdk17/REPOSITORY (required chains: reproducibility, artifact, signature)",
+        "incomplete prerequisite obligation integration"
+      ]
+    },
+    "candidate": {
+      "slice": 97,
+      "diagnostics": [
+        "missing certification ubuntu-24.04-linux-x86-64-jdk17/REPOSITORY (required chains: artifact, signature, review)",
+        "incomplete prerequisite obligation reproducibility",
+        "incomplete prerequisite obligation publication-controls"
+      ]
+    },
+    "publication-controls": {
+      "slice": 97,
+      "diagnostics": [
+        "missing certification ubuntu-24.04-linux-x86-64-jdk17/REPOSITORY (required chains: contract, review)"
+      ]
+    },
+    "integration": {
+      "slice": 96,
+      "diagnostics": [
+        "missing certification ubuntu-24.04-linux-x86-64-jdk8/REPOSITORY (required chains: contract, review)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk11/REPOSITORY (required chains: contract, review)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk17/REPOSITORY (required chains: contract, review)",
+        "missing certification ubuntu-24.04-linux-x86-64-jdk21/REPOSITORY (required chains: contract, review)",
+        "incomplete prerequisite obligation worker",
+        "incomplete prerequisite obligation recovery",
+        "incomplete prerequisite obligation canvas",
+        "incomplete prerequisite obligation graphics",
+        "incomplete prerequisite obligation fonts",
+        "incomplete prerequisite obligation rendering",
+        "incomplete prerequisite obligation providers",
+        "incomplete prerequisite obligation paragraphs",
+        "incomplete prerequisite obligation pagination",
+        "incomplete prerequisite obligation tables",
+        "incomplete prerequisite obligation shaping",
+        "incomplete prerequisite obligation barcodes-1d",
+        "incomplete prerequisite obligation barcodes-2d",
+        "incomplete prerequisite obligation tables-base",
+        "incomplete prerequisite obligation tables-pagination",
+        "incomplete prerequisite obligation environments",
+        "incomplete prerequisite obligation java-artifacts",
+        "incomplete prerequisite obligation facade-artifacts",
+        "incomplete prerequisite obligation acceptance",
+        "incomplete prerequisite obligation docs",
+        "incomplete prerequisite obligation provenance",
+        "incomplete prerequisite obligation supply-chain"
+      ]
+    }
+  },
+  "optional-commit": "omitted"
+}

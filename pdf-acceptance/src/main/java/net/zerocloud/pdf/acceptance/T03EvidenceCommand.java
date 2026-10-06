@@ -98,7 +98,7 @@ public final class T03EvidenceCommand {
         }
     }
 
-    private static Properties record(Path root, Path output, WorkflowExecutionProfile execution,
+    static Properties record(Path root, Path output, WorkflowExecutionProfile execution,
             VisualProfile visual, String release) throws Exception {
         Path pdf = output.resolve("blank.pdf");
         String exactHash = EvidenceFiles.sha256(pdf);

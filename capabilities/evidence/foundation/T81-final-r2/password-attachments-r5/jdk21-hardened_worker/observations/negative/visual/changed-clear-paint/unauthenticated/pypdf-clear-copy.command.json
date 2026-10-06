@@ -1,0 +1,26 @@
+{
+  "command": [
+    "@observer-python",
+    "-I",
+    "-S",
+    "-B",
+    "@repository/scripts/t80-byte-check.py",
+    "@repository/capabilities/profiles/T80-controls/changed-clear-paint.pdf",
+    "@private-0"
+  ],
+  "exit-code": 0,
+  "limit": null,
+  "maximum-output-bytes": 16777216,
+  "privacy-projection": "tool-text-v1",
+  "stderr-sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdin": "none",
+  "stdout-sha256": "3f53e78f33aaf6708dd8e71749dcdbf4f578af62dfc6474eac63fa160e5a0fd9",
+  "supervisor": [
+    "/bin/sh",
+    "-c",
+    "trap 'kill -KILL \"-$$\"' TERM INT HUP; exec 3<&0; \"$@\" <&3 3<&- & child=$!; exec 3<&- 0<&-; wait \"$child\"; result=$?; exit \"$result\"",
+    "folio-t78-tool",
+    "@tool-command"
+  ],
+  "timeout-seconds": 30
+}

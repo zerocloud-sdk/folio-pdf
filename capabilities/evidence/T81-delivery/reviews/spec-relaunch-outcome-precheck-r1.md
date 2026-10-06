@@ -1,0 +1,14 @@
+# Spec precheck — attachment outcome and receipt selection
+
+Baseline: `05e7f546f5885680e333ad8d3dea3645b25d26b7`.
+Read-only review against the sole issue-81 contract of the changes to `write-receipt-relaunch.py` since the earlier delivery precheck and the new `record-relaunch-attachments.py`. No outcome recorder, receipt writer, certification or tests were executed by this reviewer.
+
+No concrete Spec blocker:
+
+- For “Preserve … historical records,” the outcome recorder requires a fresh destination, reads numerically ordered actual relaunch validation-result records, checks their retained log hashes and preserves references to every unsuccessful attempt and its latest actual suite transcript. The existing r1/r2/r3 results all report nonzero exits with valid retained log hashes. Their failed/unpublished state is retained independently from the eventual accepted result.
+- For “Missing … records … cannot produce PASS,” the recorder requires exactly one successful result, positioned last, and a passing complete resume audit with precisely eight expected scopes, seven retained originals and one freshly executed scope. Earlier attempts must all remain unsuccessful. Missing result/log/audit files or mismatched expected recovery counts prevent outcome generation. This summary explicitly supplies no certification and changes no product or bound.
+- For “The execution receipt … records exact certification identities, validation commands/results,” the writer now selects the accepted result/audit through their exact retained outcome references and verifies their hashes and passing status. It separately verifies every referenced unsuccessful result/transcript and requires the known r1/r2/r3 failures. The pre-existing audited 92-scope/372-chain identity summary, staged closure, current index, full validation and live-readiness guards remain mandatory; the outcome summary cannot replace them.
+- Receipt prose distinguishes the 234.221-second JDK17 and 257.805-second JDK21 complete diagnostic passes from certification, records further failed full-tuple retries, and links the dynamically selected accepted recovery. The retained JDK21 transcript supports its stated duration. No failed or diagnostic attempt is promoted or relabeled.
+- Draft receipts select the separate pre-receipt worktree audit and leave final-review criteria pending. Final mode still requires the final worktree audit and both passing baseline-relative reviews. Criterion/history links retain the Native-only policy decision, cooperative guarantee, existing encryption, exact platform scope and omitted optional commit.
+
+The accepted outcome does not yet exist. Successful current recovery, exact final evidence, all remaining gates, receipt generation and final delivery review remain required. No files other than this review were edited.

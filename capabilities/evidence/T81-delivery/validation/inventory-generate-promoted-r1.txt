@@ -1,0 +1,73 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------< net.zerocloud:pdf-inventory-tool >------------------
+[INFO] Building Folio PDF by ZeroCloud - Inventory Build Tool 0.1.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-inventory-tool ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.version.RequireMavenVersion passed
+[INFO] Rule 1: org.apache.maven.enforcer.rules.version.RequireJavaVersion passed
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-inventory-tool ---
+[INFO] skip non existing resourceDirectory /workspace/folio-pdf/build-tools/inventory/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-inventory-tool ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 16 source files with javac [debug parameters release 8] to target/classes
+[INFO] 
+[INFO] --- exec:3.6.3:java (default-cli) @ pdf-inventory-tool ---
+ERROR: capability-matrix.capabilities[12].promotion-gates: compatible capabilities cannot retain an open promotion gate
+ERROR: capability document.hostile-input-limits profile evidence record: missing or mismatched metadata line Release train: `0.1.0-SNAPSHOT`
+ERROR: capability document.hostile-input-limits syntax Acceptance Evidence record: missing or mismatched metadata line Capability: `document.hostile-input-limits`
+ERROR: capability document.hostile-input-limits syntax Acceptance Evidence record: missing or mismatched metadata line Acceptance Profile: `T20-hostile-input-limits`
+ERROR: capability document.hostile-input-limits syntax Acceptance Evidence record: missing or mismatched metadata line Profile record: `capabilities/evidence/T20-hostile-input-limits.md`
+ERROR: capability document.hostile-input-limits syntax Acceptance Evidence record: missing or mismatched metadata line Release train: `0.1.0-SNAPSHOT`
+ERROR: capability document.hostile-input-limits syntax Acceptance Evidence record: missing or mismatched metadata line Chain: `syntax`
+ERROR: capability document.hostile-input-limits syntax Acceptance Evidence record: missing or mismatched metadata line Result: `pass`
+ERROR: capability document.hostile-input-limits syntax Acceptance Evidence record: missing or mismatched metadata line Producer kind: `external-tool`
+ERROR: capability document.hostile-input-limits syntax Acceptance Evidence record: missing or mismatched metadata line Producer: `qpdf`
+ERROR: capability document.hostile-input-limits syntax Acceptance Evidence record: missing or mismatched metadata line Producer version: `12.4.0`
+ERROR: capability document.hostile-input-limits standards Acceptance Evidence record: missing or mismatched metadata line Capability: `document.hostile-input-limits`
+ERROR: capability document.hostile-input-limits standards Acceptance Evidence record: missing or mismatched metadata line Acceptance Profile: `T20-hostile-input-limits`
+ERROR: capability document.hostile-input-limits standards Acceptance Evidence record: missing or mismatched metadata line Profile record: `capabilities/evidence/T20-hostile-input-limits.md`
+ERROR: capability document.hostile-input-limits standards Acceptance Evidence record: missing or mismatched metadata line Release train: `0.1.0-SNAPSHOT`
+ERROR: capability document.hostile-input-limits standards Acceptance Evidence record: missing or mismatched metadata line Chain: `standards`
+ERROR: capability document.hostile-input-limits standards Acceptance Evidence record: missing or mismatched metadata line Result: `pass`
+ERROR: capability document.hostile-input-limits standards Acceptance Evidence record: missing or mismatched metadata line Producer kind: `external-tool`
+ERROR: capability document.hostile-input-limits standards Acceptance Evidence record: missing or mismatched metadata line Producer: `arlington`
+ERROR: capability document.hostile-input-limits standards Acceptance Evidence record: missing or mismatched metadata line Producer version: `0.81`
+ERROR: capability document.hostile-input-limits semantic Acceptance Evidence record: missing or mismatched metadata line Capability: `document.hostile-input-limits`
+ERROR: capability document.hostile-input-limits semantic Acceptance Evidence record: missing or mismatched metadata line Acceptance Profile: `T20-hostile-input-limits`
+ERROR: capability document.hostile-input-limits semantic Acceptance Evidence record: missing or mismatched metadata line Profile record: `capabilities/evidence/T20-hostile-input-limits.md`
+ERROR: capability document.hostile-input-limits semantic Acceptance Evidence record: missing or mismatched metadata line Release train: `0.1.0-SNAPSHOT`
+ERROR: capability document.hostile-input-limits semantic Acceptance Evidence record: missing or mismatched metadata line Chain: `semantic`
+ERROR: capability document.hostile-input-limits semantic Acceptance Evidence record: missing or mismatched metadata line Result: `pass`
+ERROR: capability document.hostile-input-limits semantic Acceptance Evidence record: missing or mismatched metadata line Producer kind: `project-test`
+ERROR: capability document.hostile-input-limits semantic Acceptance Evidence record: missing or mismatched metadata line Producer: `folio-pdf-t20`
+ERROR: capability document.hostile-input-limits semantic Acceptance Evidence record: missing or mismatched metadata line Producer version: `0.1.0`
+ERROR: capability document.hostile-input-limits visual Acceptance Evidence record: missing or mismatched metadata line Capability: `document.hostile-input-limits`
+ERROR: capability document.hostile-input-limits visual Acceptance Evidence record: missing or mismatched metadata line Acceptance Profile: `T20-hostile-input-limits`
+ERROR: capability document.hostile-input-limits visual Acceptance Evidence record: missing or mismatched metadata line Profile record: `capabilities/evidence/T20-hostile-input-limits.md`
+ERROR: capability document.hostile-input-limits visual Acceptance Evidence record: missing or mismatched metadata line Release train: `0.1.0-SNAPSHOT`
+ERROR: capability document.hostile-input-limits visual Acceptance Evidence record: missing or mismatched metadata line Chain: `visual`
+ERROR: capability document.hostile-input-limits visual Acceptance Evidence record: missing or mismatched metadata line Result: `pass`
+ERROR: capability document.hostile-input-limits visual Acceptance Evidence record: missing or mismatched metadata line Producer kind: `external-tool`
+ERROR: capability document.hostile-input-limits visual Acceptance Evidence record: missing or mismatched metadata line Producer: `pdfium-cli`
+ERROR: capability document.hostile-input-limits visual Acceptance Evidence record: missing or mismatched metadata line Producer version: `v0.11.2-pdfium-chromium-7881`
+Inventory validation failed with 38 error(s).
+[WARNING] 
+net.zerocloud.pdf.tools.inventory.InventoryCommand$InventoryCommandFailure: Inventory validation failed with 38 error(s).
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  2.073 s
+[INFO] Finished at: 2026-10-04T05:36:23+08:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.codehaus.mojo:exec-maven-plugin:3.6.3:java (default-cli) on project pdf-inventory-tool: An exception occurred while executing the Java class. Inventory validation failed with 38 error(s). -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException

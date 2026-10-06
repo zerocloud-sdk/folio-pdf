@@ -370,6 +370,9 @@ are checked cooperatively inside project-owned bounded work. Configure the
 environment-owned temporary root for service deployments. See the
 [trusted in-process hostile-input policy](docs/hostile-input-policy.md) for
 the exact defaults, accounting model, and failure/receipt behavior.
+The [T20 independent certification contract](docs/t20-certification.md) records
+the closed boundary inventory, separate enforcement/PDF chains and exact
+Ubuntu/JDK/IN_PROCESS evidence scope.
 
 The T21/T22 [Hardened Worker guide](docs/hardened-worker.md) documents the
 authenticated closed protocol, callback/query ordering, parent-owned Source

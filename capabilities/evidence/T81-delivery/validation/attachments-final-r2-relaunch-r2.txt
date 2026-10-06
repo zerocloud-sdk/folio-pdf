@@ -1,0 +1,24 @@
+T80 environment JDK 8
+T80 retained original JDK 8 / IN_PROCESS
+T80 retained original JDK 8 / HARDENED_WORKER
+T80 environment JDK 11
+T80 retained original JDK 11 / IN_PROCESS
+T80 retained original JDK 11 / HARDENED_WORKER
+T80 environment JDK 17
+T80 retained original JDK 17 / IN_PROCESS
+T80 certification JDK 17 / HARDENED_WORKER
+T80 environment JDK 21
+T80 certification JDK 21 / IN_PROCESS
+T80 certification JDK 21 / HARDENED_WORKER
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/capabilities/evidence/T81-delivery/resume-attachments-final-r2.py", line 215, in <module>
+    main(output)
+    ~~~~^^^^^^^^
+  File "/workspace/folio-pdf/capabilities/evidence/T81-delivery/resume-attachments-final-r2.py", line 141, in main
+    driver.run_logged(plan['contract-tests-command'], scope / 'contract-tests.txt', cwd=ROOT,
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                      timeout=case.get('contract-timeout', 300))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 982, in run_logged
+    raise RuntimeError('Command failed; see ' + str(path))
+RuntimeError: Command failed; see /workspace/folio-pdf/capabilities/evidence/foundation/T81-final-r2/password-attachments-r3/jdk21-hardened_worker/contract-tests.txt

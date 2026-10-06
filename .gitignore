@@ -39,5 +39,16 @@ Thumbs.db
 # T80 password embedded-files-only certification and refreshed predecessor logs are retained certification evidence.
 !/capabilities/evidence/foundation/T80-*/**/*.log
 !/capabilities/evidence/T80-*/**/*.log
+# T81 hostile-input certification and refreshed predecessor logs are retained evidence.
+!/capabilities/evidence/foundation/T81-*/**/*.log
+!/capabilities/evidence/T81-*/**/*.log
+# T81 publishes only the final-r2 certification and curated delivery records; superseded attempts and candidate payloads stay local.
+/capabilities/evidence/foundation/T81-initial/
+/capabilities/evidence/foundation/T81-final/
+/capabilities/evidence/T81-delivery/initial-candidate/originals/
+/capabilities/evidence/T81-delivery/initial-candidate-r7/originals/
+/capabilities/evidence/T81-delivery/initial-candidate-r7/*.zip
+/capabilities/evidence/T81-delivery/final-candidate/originals/
+/capabilities/evidence/T81-delivery/final-candidate/*.zip
 hs_err_pid*
 replay_pid*

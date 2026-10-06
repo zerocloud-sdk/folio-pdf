@@ -1172,11 +1172,11 @@ documentation, and project-owned tests are the permitted design inputs.
   termination, T23 rendering, OCR, LibreOffice, redaction, Migration Facade
   surface, or a new product module, and it makes no global publication-
   atomicity or physical secure-erasure claim.
-- Compatibility Curator evidence: none; the role remains vacant. All four
-  mandatory Acceptance Evidence chains are absent, the T03 and T09 compatible-
-  status Dependency Gates remain open, and T06 remains a Promotion Gate. T20
-  therefore remains `experimental` with no compatible or certified-platform
-  claim.
+- Historical implementation milestone: Compatibility Curator evidence was
+  absent and the role remained vacant. At that milestone the four independent
+  chains and T03/T09 compatible-status gates were incomplete, so T20 remained
+  `experimental`. The T81 record below separately documents later certification
+  work; it does not rewrite the meaning of this historical implementation record.
 
 ## T21 hardened-worker record
 
@@ -3031,3 +3031,44 @@ change requires fresh candidate certification; r3 evidence remains historical.
   Windows/macOS remain uncertified and nonblocking under the amendment.
   Aggregate security is derived from the existing three members and current
   evidence, without another slice or a release-publication claim.
+
+## T81 trusted in-process hostile-input certification record
+
+- Authorship: OpenAI Codex authored and integrated the bounded #81 acceptance
+  contribution under MaBaiqiu's approved `/workspace/contracts/issue-81-contract.md`.
+  The approved comparison baseline is `05e7f546f5885680e333ad8d3dea3645b25d26b7`.
+- References: the approved issue snapshot, the public Workflow policy/usage and
+  ownership contracts, ISO 32000-1 document/object/stream/page/image syntax,
+  Java SE Clock/Duration, stream/channel, file and concurrency contracts, and
+  existing project-owned T03/T09/T20 public tests and independent profiles.
+  No iText source, resources, fixtures, binaries, implementation details or
+  Compatibility Curator output were inspected or adapted.
+- New operands: `scripts/generate-t20-corpus.py` writes minimal project-owned
+  PDFs directly from syntax. ASCII85 and Flate operands use Python's standard
+  library; LZW encodes explicit clear/A/B/C/EOD codes. The 75 resource
+  experiments use independently authored lengths, graph/filter/pixel and
+  lifetime expectations and controlled Clock, stream and latch events. All
+  new code, JSON, text and generated PDF fixtures are Apache-2.0 project work.
+- Reused acceptance: the resource-free published outcomes use the original
+  qualified T03 rules, original authored white raster and negative controls,
+  pinned qpdf/pdfcpu/Arlington/PDFium/ImageMagick tools and notices. These
+  acceptance assets, tools and the pinned Python runtime remain outside
+  product runtime. The complete explicit HarfBuzz installation is independently
+  supplied and observed; no native binary or font is added to a product.
+- Scope: the existing Native enforcement and password scopes are preserved.
+  The separate contract chain and four independent PDF chains retain exact
+  source, contracts, harness, corpus, candidate artifact, OS image, JDK and
+  actual native/tool identities. Collection verifies original bytes/findings
+  and fresh live replay, with categorical safe failures and ordered receipts.
+  Predecessor evidence is refreshed honestly for each changed candidate.
+- The Native-only policy-control decision is retained because the Reference
+  Suite has no counterpart. Existing public Facade operations execute
+  IN_PROCESS and retain their document, ownership and publication obligations.
+  Only actual Ubuntu 24.04 Linux x86-64 JDK 8/11/17/21 IN_PROCESS tuples can be
+  certified by this slice. Windows/macOS remain explicitly uncertified and
+  nonblocking for Foundation 0.1.0 under the approved amendment.
+- Modeled usage is cooperative and is not JVM heap, RSS, arbitrary termination
+  or sandbox certification. No Worker/recovery/scale, later Foundation slice,
+  excluded context implementation or release/publication control is promoted.
+  Current compatibility is established by the current Foundation evidence
+  authority, with historical records preserved separately.

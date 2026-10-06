@@ -1,0 +1,33 @@
+warning: [options] bootstrap class path not set in conjunction with -source 8
+1 warning
+JUnit version 4.13.2
+.E.
+Time: 0.307
+There was 1 failure:
+1) fixedResourceExperimentsExecuteWithoutSearchingQuotas(net.zerocloud.pdf.acceptance.T20EvidenceCommandTest)
+net.zerocloud.pdf.DocumentFailure: The workflow PDF-object limit was exceeded.
+	at net.zerocloud.pdf.WorkflowResourceContext.stopFailure(WorkflowResourceContext.java:924)
+	at net.zerocloud.pdf.WorkflowResourceContext.checkedConsume(WorkflowResourceContext.java:693)
+	at net.zerocloud.pdf.WorkflowResourceContext.observeObject(WorkflowResourceContext.java:300)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.traverse(PdfBoxHostileInputPreflight.java:146)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.audit(PdfBoxHostileInputPreflight.java:41)
+	at net.zerocloud.pdf.WorkflowResourceContext.audit(WorkflowResourceContext.java:607)
+	at net.zerocloud.pdf.PdfBoxDocumentSession.execute(PdfBoxDocumentSession.java:151)
+	at net.zerocloud.pdf.acceptance.T20ResourceContracts.lambda$addedObject$28(T20ResourceContracts.java:216)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.executeWithDocument(PdfBoxWorkflowEngine.java:350)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.executeChecked(PdfBoxWorkflowEngine.java:242)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.execute(PdfBoxWorkflowEngine.java:40)
+	at net.zerocloud.pdf.DocumentWorkflow.executeOnce(DocumentWorkflow.java:184)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:103)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:64)
+	at net.zerocloud.pdf.acceptance.T20ResourceContracts.addedObject(T20ResourceContracts.java:218)
+	at net.zerocloud.pdf.acceptance.T20ResourceContracts.lambda$run$4(T20ResourceContracts.java:95)
+	at net.zerocloud.pdf.acceptance.T20ResourceContracts.observe(T20ResourceContracts.java:151)
+	at net.zerocloud.pdf.acceptance.T20ResourceContracts.run(T20ResourceContracts.java:95)
+	at net.zerocloud.pdf.acceptance.T20ResourceContracts.record(T20ResourceContracts.java:82)
+	at net.zerocloud.pdf.acceptance.T20EvidenceCommand.main(T20EvidenceCommand.java:27)
+	at net.zerocloud.pdf.acceptance.T20EvidenceCommandTest.fixedResourceExperimentsExecuteWithoutSearchingQuotas(T20EvidenceCommandTest.java:21)
+
+FAILURES!!!
+Tests run: 2,  Failures: 1
+

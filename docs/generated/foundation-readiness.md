@@ -81,7 +81,7 @@ A missing capability, required behavior, compatible dependency, independent evid
 | [`images`](#images) | `document.images-resources.extract` | [#76](https://github.com/zerocloud-sdk/folio-pdf/issues/76) | satisfied |
 | [`incremental`](#incremental) | `document.incremental-signature.protect` | [#77](https://github.com/zerocloud-sdk/folio-pdf/issues/77) | satisfied |
 | [`security`](#security) | `document.version-password-security` | [#78](https://github.com/zerocloud-sdk/folio-pdf/issues/78) | satisfied |
-| [`limits`](#limits) | `document.hostile-input-limits` | [#81](https://github.com/zerocloud-sdk/folio-pdf/issues/81) | blocked |
+| [`limits`](#limits) | `document.hostile-input-limits` | [#81](https://github.com/zerocloud-sdk/folio-pdf/issues/81) | satisfied |
 | [`worker`](#worker) | `document.hardened-worker` | [#82](https://github.com/zerocloud-sdk/folio-pdf/issues/82) | blocked |
 | [`recovery`](#recovery) | `document.hardened-worker.recovery-scale` | [#83](https://github.com/zerocloud-sdk/folio-pdf/issues/83) | blocked |
 | [`canvas`](#canvas) | `composition.canvas.draw-positioned-text` | [#85](https://github.com/zerocloud-sdk/folio-pdf/issues/85) | blocked |
@@ -270,15 +270,6 @@ Apply one finite-default, transaction-wide hostile-input resource policy to trus
 - Native Interface only: Workflow Resource Policy and cooperative resource accounting are project-specific controls with no Reference Suite counterpart. PDF outcomes still require four independent chains; underlying document operations retain their own Facade obligations.
 - Source requirements: [`spec-us-40`](#spec-us-40), [`spec-td-20`](#spec-td-20), [`slice-81-1`](#slice-81-1), [`slice-81-2`](#slice-81-2), [`slice-81-3`](#slice-81-3), [`slice-81-4`](#slice-81-4)
 
-- Blocker: capability document.hostile-input-limits is experimental, requires compatible
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on document.hostile-input-limits
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on document.hostile-input-limits
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on document.hostile-input-limits
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk21 on document.hostile-input-limits
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk8/IN_PROCESS (required chains: syntax, standards, semantic, visual, contract)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk11/IN_PROCESS (required chains: syntax, standards, semantic, visual, contract)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/IN_PROCESS (required chains: syntax, standards, semantic, visual, contract)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual, contract)
 
 <a id="worker"></a>
 ### `worker`
@@ -296,7 +287,6 @@ Execute the fixed-point Document Workflow contract through an authenticated, bou
 - Source requirements: [`spec-us-40`](#spec-us-40), [`spec-us-41`](#spec-us-41), [`spec-us-42`](#spec-us-42), [`spec-us-43`](#spec-us-43), [`spec-us-44`](#spec-us-44), [`spec-us-74`](#spec-us-74), [`spec-id-15`](#spec-id-15), [`spec-id-16`](#spec-id-16), [`spec-id-17`](#spec-id-17), [`spec-id-19`](#spec-id-19), [`spec-id-30`](#spec-id-30), [`spec-id-31`](#spec-id-31), [`spec-id-32`](#spec-id-32), [`spec-td-02`](#spec-td-02), [`spec-td-20`](#spec-td-20), [`spec-td-22`](#spec-td-22), [`slice-82-1`](#slice-82-1), [`slice-82-2`](#slice-82-2), [`slice-82-3`](#slice-82-3), [`slice-82-4`](#slice-82-4)
 
 - Blocker: capability document.hardened-worker is experimental, requires compatible
-- Blocker: incompatible Dependency Gate document.hostile-input-limits
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on document.hardened-worker
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on document.hardened-worker
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on document.hardened-worker
@@ -305,7 +295,6 @@ Execute the fixed-point Document Workflow contract through an authenticated, bou
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk11/HARDENED_WORKER (required chains: syntax, standards, semantic, visual, contract)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual, contract)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual, contract)
-- Blocker: incomplete prerequisite obligation limits
 
 <a id="recovery"></a>
 ### `recovery`
@@ -457,7 +446,6 @@ Render selected current pages to bounded, session-scoped PNGs through a replacea
 - Blocker: incompatible Dependency Gate conversion.capability-provider.select-execute
 - Blocker: incompatible Dependency Gate composition.canvas.images-colors-transparency
 - Blocker: incompatible Dependency Gate composition.fonts.load-embed-subset-fallback
-- Blocker: incompatible Dependency Gate document.hostile-input-limits
 - Blocker: incompatible Dependency Gate document.hardened-worker
 - Blocker: incompatible Dependency Gate document.hardened-worker.recovery-scale
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on conversion.rendering
@@ -479,7 +467,6 @@ Render selected current pages to bounded, session-scoped PNGs through a replacea
 - Blocker: incomplete prerequisite obligation providers
 - Blocker: incomplete prerequisite obligation graphics
 - Blocker: incomplete prerequisite obligation fonts
-- Blocker: incomplete prerequisite obligation limits
 - Blocker: incomplete prerequisite obligation worker
 - Blocker: incomplete prerequisite obligation recovery
 
@@ -531,7 +518,6 @@ Compose mixed semantic paragraphs across finite explicit new-page areas with mar
 - Blocker: incompatible Dependency Gate composition.canvas.draw-positioned-text
 - Blocker: incompatible Dependency Gate composition.canvas.images-colors-transparency
 - Blocker: incompatible Dependency Gate composition.fonts.load-embed-subset-fallback
-- Blocker: incompatible Dependency Gate document.hostile-input-limits
 - Blocker: incompatible Dependency Gate document.hardened-worker
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on composition.layout.paragraph-areas
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on composition.layout.paragraph-areas
@@ -552,7 +538,6 @@ Compose mixed semantic paragraphs across finite explicit new-page areas with mar
 - Blocker: incomplete prerequisite obligation canvas
 - Blocker: incomplete prerequisite obligation graphics
 - Blocker: incomplete prerequisite obligation fonts
-- Blocker: incomplete prerequisite obligation limits
 - Blocker: incomplete prerequisite obligation worker
 
 <a id="pagination"></a>
@@ -574,7 +559,6 @@ Apply indentation, aligned tabs, hard keep and widow/orphan rules, horizontal ov
 - Blocker: incompatible Dependency Gate composition.layout.paragraph-areas
 - Blocker: incompatible Dependency Gate composition.fonts.load-embed-subset-fallback
 - Blocker: incompatible Dependency Gate composition.canvas.images-colors-transparency
-- Blocker: incompatible Dependency Gate document.hostile-input-limits
 - Blocker: incompatible Dependency Gate document.hardened-worker
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on composition.layout.paragraph-pagination
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on composition.layout.paragraph-pagination
@@ -595,7 +579,6 @@ Apply indentation, aligned tabs, hard keep and widow/orphan rules, horizontal ov
 - Blocker: incomplete prerequisite obligation paragraphs
 - Blocker: incomplete prerequisite obligation fonts
 - Blocker: incomplete prerequisite obligation graphics
-- Blocker: incomplete prerequisite obligation limits
 - Blocker: incomplete prerequisite obligation worker
 
 <a id="tables"></a>
@@ -617,13 +600,11 @@ Compose bounded FIXED/AUTO tables across finite areas and pages with split rows 
 - Blocker: incompatible Dependency Gate composition.layout.paragraph-pagination
 - Blocker: incompatible Dependency Gate composition.fonts.load-embed-subset-fallback
 - Blocker: incompatible Dependency Gate composition.canvas.images-colors-transparency
-- Blocker: incompatible Dependency Gate document.hostile-input-limits
 - Blocker: incompatible Dependency Gate document.hardened-worker
 - Blocker: incomplete prerequisite obligation paragraphs
 - Blocker: incomplete prerequisite obligation pagination
 - Blocker: incomplete prerequisite obligation fonts
 - Blocker: incomplete prerequisite obligation graphics
-- Blocker: incomplete prerequisite obligation limits
 - Blocker: incomplete prerequisite obligation worker
 - Blocker: incomplete prerequisite obligation tables-base
 - Blocker: incomplete prerequisite obligation tables-pagination
@@ -649,7 +630,6 @@ Shape explicitly selected fonts through the project-owned HarfBuzz Provider and 
 - Blocker: incompatible Dependency Gate composition.layout.paragraph-areas
 - Blocker: incompatible Dependency Gate composition.layout.paragraph-pagination
 - Blocker: incompatible Dependency Gate composition.layout.tables
-- Blocker: incompatible Dependency Gate document.hostile-input-limits
 - Blocker: incompatible Dependency Gate document.hardened-worker
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on composition.shaping.harf-buzz
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on composition.shaping.harf-buzz
@@ -673,7 +653,6 @@ Shape explicitly selected fonts through the project-owned HarfBuzz Provider and 
 - Blocker: incomplete prerequisite obligation paragraphs
 - Blocker: incomplete prerequisite obligation pagination
 - Blocker: incomplete prerequisite obligation tables
-- Blocker: incomplete prerequisite obligation limits
 - Blocker: incomplete prerequisite obligation worker
 
 <a id="barcodes-1d"></a>
@@ -695,7 +674,6 @@ Draw all Reference Suite one-dimensional barcode families as PDF vectors with ex
 - Blocker: incompatible Dependency Gate composition.canvas.draw-positioned-text
 - Blocker: incompatible Dependency Gate composition.canvas.images-colors-transparency
 - Blocker: incompatible Dependency Gate composition.fonts.load-embed-subset-fallback
-- Blocker: incompatible Dependency Gate document.hostile-input-limits
 - Blocker: incompatible Dependency Gate document.hardened-worker
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on composition.barcodes.one-dimensional
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on composition.barcodes.one-dimensional
@@ -715,7 +693,6 @@ Draw all Reference Suite one-dimensional barcode families as PDF vectors with ex
 - Blocker: incomplete prerequisite obligation canvas
 - Blocker: incomplete prerequisite obligation graphics
 - Blocker: incomplete prerequisite obligation fonts
-- Blocker: incomplete prerequisite obligation limits
 - Blocker: incomplete prerequisite obligation worker
 
 <a id="barcodes-2d"></a>
@@ -736,7 +713,6 @@ Generate QR, DataMatrix ECC200 and PDF417 as reusable vector Forms with strict e
 - Blocker: capability composition.barcodes.two-dimensional is experimental, requires compatible
 - Blocker: incompatible Dependency Gate composition.canvas.draw-positioned-text
 - Blocker: incompatible Dependency Gate composition.canvas.images-colors-transparency
-- Blocker: incompatible Dependency Gate document.hostile-input-limits
 - Blocker: incompatible Dependency Gate document.hardened-worker
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on composition.barcodes.two-dimensional
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on composition.barcodes.two-dimensional
@@ -757,7 +733,6 @@ Generate QR, DataMatrix ECC200 and PDF417 as reusable vector Forms with strict e
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
 - Blocker: incomplete prerequisite obligation canvas
 - Blocker: incomplete prerequisite obligation graphics
-- Blocker: incomplete prerequisite obligation limits
 - Blocker: incomplete prerequisite obligation worker
 
 <a id="password-baseline"></a>
@@ -1075,7 +1050,6 @@ Close every Foundation behavior, aggregate, dependency and Facade obligation; ru
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk11/REPOSITORY (required chains: contract, review)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/REPOSITORY (required chains: contract, review)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/REPOSITORY (required chains: contract, review)
-- Blocker: incomplete prerequisite obligation limits
 - Blocker: incomplete prerequisite obligation worker
 - Blocker: incomplete prerequisite obligation recovery
 - Blocker: incomplete prerequisite obligation canvas

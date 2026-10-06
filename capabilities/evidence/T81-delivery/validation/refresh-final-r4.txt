@@ -1,0 +1,59 @@
+final already completed transactions
+final already completed values
+final already completed pages
+final already completed metadata
+final already completed annotations
+final already completed text
+final already completed images
+final starting incremental attempt 2
+T15 environment JDK 8
+T15 certification JDK 8 / IN_PROCESS
+T15 certification JDK 8 / HARDENED_WORKER
+T15 environment JDK 11
+T15 certification JDK 11 / IN_PROCESS
+T15 certification JDK 11 / HARDENED_WORKER
+T15 environment JDK 17
+T15 certification JDK 17 / IN_PROCESS
+T15 certification JDK 17 / HARDENED_WORKER
+T15 environment JDK 21
+T15 certification JDK 21 / IN_PROCESS
+T15 certification JDK 21 / HARDENED_WORKER
+Recorded exactly 8 T15 certifications; retained 56 current certifications for other obligations.
+final completed incremental
+final starting password-baseline attempt 1
+T78 environment JDK 8
+T78 certification JDK 8 / IN_PROCESS
+T78 certification JDK 8 / HARDENED_WORKER
+T78 environment JDK 11
+T78 certification JDK 11 / IN_PROCESS
+T78 certification JDK 11 / HARDENED_WORKER
+T78 environment JDK 17
+T78 certification JDK 17 / IN_PROCESS
+T78 certification JDK 17 / HARDENED_WORKER
+T78 environment JDK 21
+T78 certification JDK 21 / IN_PROCESS
+T78 certification JDK 21 / HARDENED_WORKER
+Recorded exactly 8 T78 certifications; retained 64 current certifications for other obligations.
+final completed password-baseline
+final starting password-clear-metadata attempt 1
+T79 environment JDK 8
+T79 certification JDK 8 / IN_PROCESS
+T79 certification JDK 8 / HARDENED_WORKER
+T79 environment JDK 11
+T79 certification JDK 11 / IN_PROCESS
+T79 certification JDK 11 / HARDENED_WORKER
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1435, in <module>
+    main()
+    ~~~~^^
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1431, in main
+    certify(root, root / args.output, contract, helper, args.obligation)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1311, in certify
+    run_logged(evidence_command, scope / 'recorder.txt', cwd=root,
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               timeout=case.get('recorder-timeout', 300))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 982, in run_logged
+    raise RuntimeError('Command failed; see ' + str(path))
+RuntimeError: Command failed; see /workspace/folio-pdf/capabilities/evidence/foundation/T81-final/password-clear-metadata/jdk11-hardened_worker/recorder.txt

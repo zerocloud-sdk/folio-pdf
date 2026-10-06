@@ -1,0 +1,69 @@
+{
+  "profile": "T20-hostile-input-limits",
+  "origin": "Project-authored ISO 32000-1 syntax; Apache-2.0; no implementation-derived fixtures",
+  "fixtures": {
+    "plain.pdf": {
+      "sha256": "abff4052994108ae06599b0274e0cc078720f71ef876dd92c822d557abd500fa",
+      "bytes": 354
+    },
+    "nested.pdf": {
+      "sha256": "42d398b9554ddc32a37bea14e4a86ec1e420b76fbedf4941b1d8072d5f57360e",
+      "bytes": 378
+    },
+    "filters.pdf": {
+      "sha256": "35d19d0f1df8653f4228e189d8c492da7e277fe75adafc8793c84461d329a5e5",
+      "bytes": 492
+    },
+    "pixels.pdf": {
+      "sha256": "1a6ad6e80360f2d431004dbeb53a3ffea1e72c54e5391010f4e518bb32e8fd82",
+      "bytes": 583
+    },
+    "malformed.pdf": {
+      "sha256": "06b89fa6abea4ef3609e753f5c1a357596a277e4dd2756385974aa950e67426f",
+      "bytes": 10
+    },
+    "unsupported.pdf": {
+      "sha256": "4707c8bf14bb10885c0ebb4cbd8c36194f75c7336bba77d5962afc0314808d61",
+      "bytes": 470
+    },
+    "ascii85.pdf": {
+      "sha256": "d9453897aad1f564262a6b7058ba3f461ca42346a7aae53e5535b4b62148ab9b",
+      "bytes": 466
+    },
+    "flate.pdf": {
+      "sha256": "4c6875beb359750d1a9d1ff0555bd80e6f1637109738d1ae0ffcf923b4f0b7bd",
+      "bytes": 500
+    },
+    "lzw.pdf": {
+      "sha256": "0453d74af7e82211f4bfbc3c58125c6c1484cd890a3d45a10b847082b6d86f8b",
+      "bytes": 488
+    },
+    "xmp.pdf": {
+      "sha256": "c2f60ca8f9f87e90757ac110b7754c148d4dd5d7f294d3fb1be262c324551404",
+      "bytes": 472
+    }
+  },
+  "expectations": {
+    "plain-pages": 1,
+    "plain-objects": 3,
+    "nested-depth": 10,
+    "filter-stage-bytes": [
+      5,
+      3
+    ],
+    "pixels": 6,
+    "ascii85-stage-bytes": [
+      3
+    ],
+    "flate-stage-bytes": [
+      11,
+      3
+    ],
+    "lzw-stage-bytes": [
+      6,
+      3
+    ],
+    "xmp-query-memory": 8,
+    "two-xmp-query-memory": 12
+  }
+}

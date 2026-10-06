@@ -1,0 +1,271 @@
+{
+  "schema-version": 1,
+  "result": "pass",
+  "orchestrator": {
+    "path": "capabilities/evidence/T81-delivery/resume-clear-metadata-last-r2.py",
+    "sha256": "b05a2a3053f4f0745b13b73ce648d583525791b9f310c257b45ada675671a599"
+  },
+  "driver": {
+    "path": "scripts/t03-foundation.py",
+    "sha256": "68912f8da7fa31d7b502cea96a70a61c83f6e1632c9c2849cbdbe7b28544a59b"
+  },
+  "identities": {
+    "Candidate": "73afedc590cf4764c32ef21a980a2c51ac7d12738951a6aa5a4470728aaba8e3",
+    "Contract": "5a5214f1734f0ae454abb49845bcb0823b055a1aca927079590a0c2c1b3830a0"
+  },
+  "retained-original-scopes": [
+    {
+      "environment": "ubuntu-24.04-linux-x86-64-jdk8",
+      "execution-profile": "IN_PROCESS",
+      "original-scope": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata/jdk8-in_process"
+    },
+    {
+      "environment": "ubuntu-24.04-linux-x86-64-jdk8",
+      "execution-profile": "HARDENED_WORKER",
+      "original-scope": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata/jdk8-hardened_worker"
+    },
+    {
+      "environment": "ubuntu-24.04-linux-x86-64-jdk11",
+      "execution-profile": "IN_PROCESS",
+      "original-scope": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata/jdk11-in_process"
+    },
+    {
+      "environment": "ubuntu-24.04-linux-x86-64-jdk11",
+      "execution-profile": "HARDENED_WORKER",
+      "original-scope": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata/jdk11-hardened_worker"
+    },
+    {
+      "environment": "ubuntu-24.04-linux-x86-64-jdk17",
+      "execution-profile": "IN_PROCESS",
+      "original-scope": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata/jdk17-in_process"
+    },
+    {
+      "environment": "ubuntu-24.04-linux-x86-64-jdk17",
+      "execution-profile": "HARDENED_WORKER",
+      "original-scope": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata/jdk17-hardened_worker"
+    },
+    {
+      "environment": "ubuntu-24.04-linux-x86-64-jdk21",
+      "execution-profile": "IN_PROCESS",
+      "original-scope": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata/jdk21-in_process"
+    }
+  ],
+  "fresh-scopes": 1,
+  "expected-scope-count": 8,
+  "expected-chains": [
+    "syntax",
+    "standards",
+    "semantic",
+    "visual"
+  ],
+  "environment-checks": [
+    {
+      "profile": "ubuntu-24.04-linux-x86-64-jdk8",
+      "result": "pass",
+      "before": {
+        "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk8-environment/environment.yaml",
+        "sha256": "05a695a80db1cf372a27d6bed02f3d7f490a36b4a35a4a3830e37bf1371312d2"
+      },
+      "after-observations": [
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk8-environment-after/architecture.txt",
+          "sha256": "aaf631698ae5160ceb04a97681a14887fdcab47cd6e0f163c87485b3b1340b62"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk8-environment-after/image-digest.txt",
+          "sha256": "392abb88f40d4c3f70046fc7e42cee8977c3484f605408540a1e4698cfac454d"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk8-environment-after/invocation.json",
+          "sha256": "eba281989bae919dd1d648da9ed8e41d944d21ad01f638368de55abc6473bd15"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk8-environment-after/java-executable.txt",
+          "sha256": "8c8150aa3521a9104c157e3ad79ea5dfac8668ef2e728add0473e69a7d60a400"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk8-environment-after/java-version.txt",
+          "sha256": "c85aa174bb9955df58c8d2a1e16869e66e2cec4c7b0b77438eb5698c53aa086a"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk8-environment-after/jdk-release.txt",
+          "sha256": "250579a790b2abfd0e03eb9672d80d8977366fc5ba48ed6e7fd0573c0bc471a1"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk8-environment-after/kernel.txt",
+          "sha256": "9d41cea920fe3134c94f3feb3dc2a114b538aacc607da1bfb183afc0a1f78732"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk8-environment-after/native-observation.json",
+          "sha256": "e8dac16d2f946059d97bc49315f75bfc921b13293b2a983e2bf8656f7adc7e8f"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk8-environment-after/observer.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk8-environment-after/os-release.txt",
+          "sha256": "01af466feb100306498c86aa6bad1815e33036019aa34d4362c20f374ea5c829"
+        }
+      ],
+      "compared-with-original": true
+    },
+    {
+      "profile": "ubuntu-24.04-linux-x86-64-jdk11",
+      "result": "pass",
+      "before": {
+        "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk11-environment/environment.yaml",
+        "sha256": "bcb5431d459dcbf4fe72c5e37473a2dbe690e0e0c851dcbb67a8cdcdb51d516c"
+      },
+      "after-observations": [
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk11-environment-after/architecture.txt",
+          "sha256": "aaf631698ae5160ceb04a97681a14887fdcab47cd6e0f163c87485b3b1340b62"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk11-environment-after/image-digest.txt",
+          "sha256": "ce093c61f169c0f8c3bfb339203173db75d24dd1d482b9b488f11ebb9ff816db"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk11-environment-after/invocation.json",
+          "sha256": "940d531a9d34ce9be42686579fd500f5ff7a135e183b40fa00f3c66471bda5e9"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk11-environment-after/java-executable.txt",
+          "sha256": "93f074c858c78fc68d6b0662031c45d74cc70a28983a28216babb84a1969e7fb"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk11-environment-after/java-version.txt",
+          "sha256": "3cb3af8ced08f0bbf17e3aa7c18009fa312379c9a46f5c089050f37a3ecd6c1d"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk11-environment-after/jdk-release.txt",
+          "sha256": "835f68e0d43e3a6a676c461cc57ea76cc36b36c6a036f41408f53593c4f51be0"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk11-environment-after/kernel.txt",
+          "sha256": "9d41cea920fe3134c94f3feb3dc2a114b538aacc607da1bfb183afc0a1f78732"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk11-environment-after/native-observation.json",
+          "sha256": "a320c18e63551c2bed0817dcf6e3d004b9222ca407655b54adac2609ed52a266"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk11-environment-after/observer.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk11-environment-after/os-release.txt",
+          "sha256": "01af466feb100306498c86aa6bad1815e33036019aa34d4362c20f374ea5c829"
+        }
+      ],
+      "compared-with-original": true
+    },
+    {
+      "profile": "ubuntu-24.04-linux-x86-64-jdk17",
+      "result": "pass",
+      "before": {
+        "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk17-environment/environment.yaml",
+        "sha256": "c83817ae0d78e3a27c26dd3510cc2e782d9174d3c8c24e9f4cf7f87c86df3eed"
+      },
+      "after-observations": [
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk17-environment-after/architecture.txt",
+          "sha256": "aaf631698ae5160ceb04a97681a14887fdcab47cd6e0f163c87485b3b1340b62"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk17-environment-after/image-digest.txt",
+          "sha256": "59ec785f601ca19052119e2895dfb6b9b33672619d301dce4c14f293882f8d95"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk17-environment-after/invocation.json",
+          "sha256": "3c6519dbeec9644136ff2a03e3080ad70b0a75c3c6c319af20889dee8e4a0229"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk17-environment-after/java-executable.txt",
+          "sha256": "362498da5aeb7e12f764e7b980383204c5ae22870267fb2ceca2e687a28095a7"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk17-environment-after/java-version.txt",
+          "sha256": "84826e11e971483f3608925cb5e642a59778010dee06637084a6b82a9749be2f"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk17-environment-after/jdk-release.txt",
+          "sha256": "9bba1dfe6fa144a9ed37833b4b3443ab803c41618612b772bdc7330027469346"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk17-environment-after/kernel.txt",
+          "sha256": "9d41cea920fe3134c94f3feb3dc2a114b538aacc607da1bfb183afc0a1f78732"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk17-environment-after/native-observation.json",
+          "sha256": "18f3e18dca51b434122cc8d2039458ce752980bbab552fd0d2796a045850fbe0"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk17-environment-after/observer.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk17-environment-after/os-release.txt",
+          "sha256": "01af466feb100306498c86aa6bad1815e33036019aa34d4362c20f374ea5c829"
+        }
+      ],
+      "compared-with-original": true
+    },
+    {
+      "profile": "ubuntu-24.04-linux-x86-64-jdk21",
+      "result": "pass",
+      "before": {
+        "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk21-environment/environment.yaml",
+        "sha256": "61f247b562932fc4a478393e1d38c60ad2aa288fe7e5af83e2eeadf9e368cbd1"
+      },
+      "after-observations": [
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk21-environment-after/architecture.txt",
+          "sha256": "aaf631698ae5160ceb04a97681a14887fdcab47cd6e0f163c87485b3b1340b62"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk21-environment-after/image-digest.txt",
+          "sha256": "c10e2e3f11519ac052f4d7926caebd202c3aeae08570bc08d88acf2e4aa02e33"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk21-environment-after/invocation.json",
+          "sha256": "3d77edfd8c0c421ff071b8852be2e9358144dd069a0a23b5763390dda03f45e6"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk21-environment-after/java-executable.txt",
+          "sha256": "6c948ae0c724730fa20139c0660678739e153b419b5e9d31db65941d9b930b35"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk21-environment-after/java-version.txt",
+          "sha256": "41e80efcd093ee7447c657b39180059c1b348adc3f8c90e8ee49c248ea302139"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk21-environment-after/jdk-release.txt",
+          "sha256": "95831ab52b5291e8df70cb96cd3693171d462f2740949f05f5c03a51eb3a92fa"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk21-environment-after/kernel.txt",
+          "sha256": "9d41cea920fe3134c94f3feb3dc2a114b538aacc607da1bfb183afc0a1f78732"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk21-environment-after/native-observation.json",
+          "sha256": "92d807edbbbcdcbf2db9ae850a87f3010d88c83d66dab5ac09b0d34c82f998ae"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk21-environment-after/observer.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/jdk21-environment-after/os-release.txt",
+          "sha256": "01af466feb100306498c86aa6bad1815e33036019aa34d4362c20f374ea5c829"
+        }
+      ],
+      "compared-with-original": true
+    }
+  ],
+  "original-files-unchanged": {
+    "path": "capabilities/evidence/foundation/T81-final-r2/password-clear-metadata-r2/original-files-before.json",
+    "sha256": "b7b833fd6cf62613838d327f67c21d39edbb698053b1e493524bce1a9ae7200e"
+  }
+}

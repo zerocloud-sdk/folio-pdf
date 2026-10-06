@@ -1,0 +1,262 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -------------------< net.zerocloud:pdf-release-tool >-------------------
+[INFO] Building Folio PDF by ZeroCloud - Release Rehearsal Tool 0.1.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-release-tool ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.version.RequireMavenVersion passed
+[INFO] Rule 1: org.apache.maven.enforcer.rules.version.RequireJavaVersion passed
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-release-tool ---
+[INFO] skip non existing resourceDirectory /workspace/folio-pdf/build-tools/release/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-release-tool ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-release-tool ---
+[INFO] skip non existing resourceDirectory /workspace/folio-pdf/build-tools/release/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-release-tool ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-release-tool ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.tools.release.ReleasePolicyContractTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.042 s -- in net.zerocloud.pdf.tools.release.ReleasePolicyContractTest
+[INFO] Running net.zerocloud.pdf.tools.release.ReleaseRehearsalCommandTest
+[ERROR] Tests run: 5, Failures: 0, Errors: 4, Skipped: 0, Time elapsed: 0.114 s <<< FAILURE! -- in net.zerocloud.pdf.tools.release.ReleaseRehearsalCommandTest
+[ERROR] net.zerocloud.pdf.tools.release.ReleaseRehearsalCommandTest.structuralFailuresAreObservableAtTheRepositoryCommand -- Time elapsed: 0.028 s <<< ERROR!
+java.lang.IllegalStateException: 
+[gpg, --homedir, /tmp/junit9645922160418062480/failure-base-work/gnupg, --batch, --generate-key, /tmp/junit9645922160418062480/failure-base-work/key.batch] failed:
+gpg: keybox '/tmp/junit9645922160418062480/failure-base-work/gnupg/pubring.kbx' created
+gpg: error running '/usr/bin/gpg-agent': exit status 2
+gpg: failed to start gpg-agent '/usr/bin/gpg-agent': General error
+gpg: can't connect to the gpg-agent: General error
+gpg: agent_genkey failed: No agent running
+gpg: key generation failed: No agent running
+
+	at net.zerocloud.pdf.tools.release.ReleaseBundleFixture.run(ReleaseBundleFixture.java:346)
+	at net.zerocloud.pdf.tools.release.ReleaseBundleFixture.create(ReleaseBundleFixture.java:56)
+	at net.zerocloud.pdf.tools.release.ReleaseRehearsalCommandTest.structuralFailuresAreObservableAtTheRepositoryCommand(ReleaseRehearsalCommandTest.java:57)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:316)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:214)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:155)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[ERROR] net.zerocloud.pdf.tools.release.ReleaseRehearsalCommandTest.completeBundleAndEveryTestSignaturePassAtTheRepositoryCommand -- Time elapsed: 0.008 s <<< ERROR!
+java.lang.IllegalStateException: 
+[gpg, --homedir, /tmp/junit17869455055759187053/complete-bundle-work/gnupg, --batch, --generate-key, /tmp/junit17869455055759187053/complete-bundle-work/key.batch] failed:
+gpg: keybox '/tmp/junit17869455055759187053/complete-bundle-work/gnupg/pubring.kbx' created
+gpg: error running '/usr/bin/gpg-agent': exit status 2
+gpg: failed to start gpg-agent '/usr/bin/gpg-agent': General error
+gpg: can't connect to the gpg-agent: General error
+gpg: agent_genkey failed: No agent running
+gpg: key generation failed: No agent running
+
+	at net.zerocloud.pdf.tools.release.ReleaseBundleFixture.run(ReleaseBundleFixture.java:346)
+	at net.zerocloud.pdf.tools.release.ReleaseBundleFixture.create(ReleaseBundleFixture.java:56)
+	at net.zerocloud.pdf.tools.release.ReleaseRehearsalCommandTest.completeBundleAndEveryTestSignaturePassAtTheRepositoryCommand(ReleaseRehearsalCommandTest.java:43)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:316)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:214)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:155)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[ERROR] net.zerocloud.pdf.tools.release.ReleaseRehearsalCommandTest.reproducibilityComparisonRecordsHashesAndSignatureExclusions -- Time elapsed: 0.008 s <<< ERROR!
+java.lang.IllegalStateException: 
+[gpg, --homedir, /tmp/junit18357870273520627210/reproducible-fixture-work/gnupg, --batch, --generate-key, /tmp/junit18357870273520627210/reproducible-fixture-work/key.batch] failed:
+gpg: keybox '/tmp/junit18357870273520627210/reproducible-fixture-work/gnupg/pubring.kbx' created
+gpg: error running '/usr/bin/gpg-agent': exit status 2
+gpg: failed to start gpg-agent '/usr/bin/gpg-agent': General error
+gpg: can't connect to the gpg-agent: General error
+gpg: agent_genkey failed: No agent running
+gpg: key generation failed: No agent running
+
+	at net.zerocloud.pdf.tools.release.ReleaseBundleFixture.run(ReleaseBundleFixture.java:346)
+	at net.zerocloud.pdf.tools.release.ReleaseBundleFixture.create(ReleaseBundleFixture.java:56)
+	at net.zerocloud.pdf.tools.release.ReleaseRehearsalCommandTest.reproducibilityComparisonRecordsHashesAndSignatureExclusions(ReleaseRehearsalCommandTest.java:117)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:316)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:214)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:155)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[ERROR] net.zerocloud.pdf.tools.release.ReleaseRehearsalCommandTest.bundleCommandAssemblesCentralLayoutFromSignedReactorOutputs -- Time elapsed: 0.008 s <<< ERROR!
+java.lang.IllegalStateException: 
+[gpg, --homedir, /tmp/junit356827108990839794/signed-build-tree-central-fixture-work/gnupg, --batch, --generate-key, /tmp/junit356827108990839794/signed-build-tree-central-fixture-work/key.batch] failed:
+gpg: keybox '/tmp/junit356827108990839794/signed-build-tree-central-fixture-work/gnupg/pubring.kbx' created
+gpg: error running '/usr/bin/gpg-agent': exit status 2
+gpg: failed to start gpg-agent '/usr/bin/gpg-agent': General error
+gpg: can't connect to the gpg-agent: General error
+gpg: agent_genkey failed: No agent running
+gpg: key generation failed: No agent running
+
+	at net.zerocloud.pdf.tools.release.ReleaseBundleFixture.run(ReleaseBundleFixture.java:346)
+	at net.zerocloud.pdf.tools.release.ReleaseBundleFixture.create(ReleaseBundleFixture.java:56)
+	at net.zerocloud.pdf.tools.release.ReleaseBundleFixture.createSignedBuildTree(ReleaseBundleFixture.java:199)
+	at net.zerocloud.pdf.tools.release.ReleaseRehearsalCommandTest.bundleCommandAssemblesCentralLayoutFromSignedReactorOutputs(ReleaseRehearsalCommandTest.java:140)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:316)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:214)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:155)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Errors: 
+[ERROR]   ReleaseRehearsalCommandTest.bundleCommandAssemblesCentralLayoutFromSignedReactorOutputs:140 » IllegalState [gpg, --homedir, /tmp/junit356827108990839794/signed-build-tree-central-fixture-work/gnupg, --batch, --generate-key, /tmp/junit356827108990839794/signed-build-tree-central-fixture-work/key.batch] failed:
+gpg: keybox '/tmp/junit356827108990839794/signed-build-tree-central-fixture-work/gnupg/pubring.kbx' created
+gpg: error running '/usr/bin/gpg-agent': exit status 2
+gpg: failed to start gpg-agent '/usr/bin/gpg-agent': General error
+gpg: can't connect to the gpg-agent: General error
+gpg: agent_genkey failed: No agent running
+gpg: key generation failed: No agent running
+
+[ERROR]   ReleaseRehearsalCommandTest.completeBundleAndEveryTestSignaturePassAtTheRepositoryCommand:43 » IllegalState [gpg, --homedir, /tmp/junit17869455055759187053/complete-bundle-work/gnupg, --batch, --generate-key, /tmp/junit17869455055759187053/complete-bundle-work/key.batch] failed:
+gpg: keybox '/tmp/junit17869455055759187053/complete-bundle-work/gnupg/pubring.kbx' created
+gpg: error running '/usr/bin/gpg-agent': exit status 2
+gpg: failed to start gpg-agent '/usr/bin/gpg-agent': General error
+gpg: can't connect to the gpg-agent: General error
+gpg: agent_genkey failed: No agent running
+gpg: key generation failed: No agent running
+
+[ERROR]   ReleaseRehearsalCommandTest.reproducibilityComparisonRecordsHashesAndSignatureExclusions:117 » IllegalState [gpg, --homedir, /tmp/junit18357870273520627210/reproducible-fixture-work/gnupg, --batch, --generate-key, /tmp/junit18357870273520627210/reproducible-fixture-work/key.batch] failed:
+gpg: keybox '/tmp/junit18357870273520627210/reproducible-fixture-work/gnupg/pubring.kbx' created
+gpg: error running '/usr/bin/gpg-agent': exit status 2
+gpg: failed to start gpg-agent '/usr/bin/gpg-agent': General error
+gpg: can't connect to the gpg-agent: General error
+gpg: agent_genkey failed: No agent running
+gpg: key generation failed: No agent running
+
+[ERROR]   ReleaseRehearsalCommandTest.structuralFailuresAreObservableAtTheRepositoryCommand:57 » IllegalState [gpg, --homedir, /tmp/junit9645922160418062480/failure-base-work/gnupg, --batch, --generate-key, /tmp/junit9645922160418062480/failure-base-work/key.batch] failed:
+gpg: keybox '/tmp/junit9645922160418062480/failure-base-work/gnupg/pubring.kbx' created
+gpg: error running '/usr/bin/gpg-agent': exit status 2
+gpg: failed to start gpg-agent '/usr/bin/gpg-agent': General error
+gpg: can't connect to the gpg-agent: General error
+gpg: agent_genkey failed: No agent running
+gpg: key generation failed: No agent running
+
+[INFO] 
+[ERROR] Tests run: 11, Failures: 0, Errors: 4, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.277 s
+[INFO] Finished at: 2026-10-05T01:31:04+08:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.5.4:test (default-test) on project pdf-release-tool: 
+[ERROR] 
+[ERROR] See /workspace/folio-pdf/build-tools/release/target/surefire-reports for the individual test results.
+[ERROR] See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

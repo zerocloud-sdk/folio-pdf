@@ -1,0 +1,227 @@
+E.....E.....E.......F..F.F..F.................F....................E............E.....................
+======================================================================
+ERROR: test_certification_rejects_sources_changed_since_the_build (test_t03_foundation.FoundationCandidateTest.test_certification_rejects_sources_changed_since_the_build)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 53, in require_staged_build
+    runtime = python_runtime(root)
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1013, in python_runtime
+    runtime.relative_to(Path(root).resolve())
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/pathlib/_local.py", line 385, in relative_to
+    raise ValueError(f"{str(self)!r} is not in the subpath of {str(other)!r}")
+ValueError: '/workspace/folio-pdf/.build-cache/foundation-python' is not in the subpath of '/tmp/tmpa4i6ldy_'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/tests/test_t03_foundation.py", line 353, in test_certification_rejects_sources_changed_since_the_build
+    module.require_staged_build(root, contract, record)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 64, in require_staged_build
+    raise ValueError('Staged build inputs are missing or outside the repository') from error
+ValueError: Staged build inputs are missing or outside the repository
+
+======================================================================
+ERROR: test_metadata_case_freezes_t11_contract_tools_and_eight_tuple_plan (test_t03_foundation.FoundationCandidateTest.test_metadata_case_freezes_t11_contract_tools_and_eight_tuple_plan)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/tests/test_t03_foundation.py", line 108, in test_metadata_case_freezes_t11_contract_tools_and_eight_tuple_plan
+    plan = module.execution_plan(root, scope, "example.invalid/image@sha256:abc",
+                                 pathlib.Path("/cache/harfbuzz/bin/folio-harfbuzz"),
+                                 "/workspace/candidate.jar", case, "HARDENED_WORKER")
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1184, in execution_plan
+    command = container_command(root, image, helper)
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1036, in container_command
+    runtime = python_runtime(root)
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1013, in python_runtime
+    runtime.relative_to(Path(root).resolve())
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/pathlib/_local.py", line 385, in relative_to
+    raise ValueError(f"{str(self)!r} is not in the subpath of {str(other)!r}")
+ValueError: '/workspace/folio-pdf/.build-cache/foundation-python' is not in the subpath of '/workspace-source'
+
+======================================================================
+ERROR: test_staging_rejects_inputs_changed_during_the_build (test_t03_foundation.FoundationCandidateTest.test_staging_rejects_inputs_changed_during_the_build)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/tests/test_t03_foundation.py", line 384, in test_staging_rejects_inputs_changed_during_the_build
+    module.record_staged_build(root, contract, before, [root / "tests.jar"], receipt)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 83, in record_staged_build
+    runtime = python_runtime(root)
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1013, in python_runtime
+    runtime.relative_to(Path(root).resolve())
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/pathlib/_local.py", line 385, in relative_to
+    raise ValueError(f"{str(self)!r} is not in the subpath of {str(other)!r}")
+ValueError: '/workspace/folio-pdf/.build-cache/foundation-python' is not in the subpath of '/tmp/tmp4wc_ayxx'
+
+======================================================================
+ERROR: test_baseline_route_keeps_actual_facade_mode_and_two_native_modes (test_t78_foundation.PasswordFoundationTest.test_baseline_route_keeps_actual_facade_mode_and_two_native_modes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/tests/test_t78_foundation.py", line 51, in test_baseline_route_keeps_actual_facade_mode_and_two_native_modes
+    plan = foundation.execution_plan(root, root / 'run', 'image@sha256:fixed',
+            Path('/native/bin/folio-harfbuzz'), '/workspace/acceptance.jar', case, mode)
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1184, in execution_plan
+    command = container_command(root, image, helper)
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1036, in container_command
+    runtime = python_runtime(root)
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1013, in python_runtime
+    runtime.relative_to(Path(root).resolve())
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/pathlib/_local.py", line 385, in relative_to
+    raise ValueError(f"{str(self)!r} is not in the subpath of {str(other)!r}")
+ValueError: '/workspace/folio-pdf/.build-cache/foundation-python' is not in the subpath of '/repository'
+
+======================================================================
+ERROR: test_clear_metadata_route_keeps_actual_facade_mode_and_two_native_modes (test_t79_foundation.ClearMetadataFoundationTest.test_clear_metadata_route_keeps_actual_facade_mode_and_two_native_modes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/tests/test_t79_foundation.py", line 47, in test_clear_metadata_route_keeps_actual_facade_mode_and_two_native_modes
+    plan = foundation.execution_plan(root, root / 'run', 'image@sha256:fixed',
+            Path('/native/bin/folio-harfbuzz'), '/workspace/acceptance.jar', case, mode)
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1184, in execution_plan
+    command = container_command(root, image, helper)
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1036, in container_command
+    runtime = python_runtime(root)
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1013, in python_runtime
+    runtime.relative_to(Path(root).resolve())
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/pathlib/_local.py", line 385, in relative_to
+    raise ValueError(f"{str(self)!r} is not in the subpath of {str(other)!r}")
+ValueError: '/workspace/folio-pdf/.build-cache/foundation-python' is not in the subpath of '/repository'
+
+======================================================================
+FAIL: test_values_plan_runs_complete_public_suites_and_records_real_facade_mode (test_t09_foundation.EvidenceIndexMergeTest.test_values_plan_runs_complete_public_suites_and_records_real_facade_mode)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/tests/test_t09_foundation.py", line 56, in test_values_plan_runs_complete_public_suites_and_records_real_facade_mode
+    self.assertEqual(0, result.returncode, result.stdout)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1 : Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1412, in <module>
+    main()
+    ~~~~^^
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1381, in main
+    record_plan(root, (root / args.output).resolve(), contract, helper, args.obligation)
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1218, in record_plan
+    executions.append(execution_plan(root, scope, profile['identity']['image'], helper, cp, case, execution))
+                      ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1184, in execution_plan
+    command = container_command(root, image, helper)
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1036, in container_command
+    runtime = python_runtime(root)
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1013, in python_runtime
+    runtime.relative_to(Path(root).resolve())
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/pathlib/_local.py", line 385, in relative_to
+    raise ValueError(f"{str(self)!r} is not in the subpath of {str(other)!r}")
+ValueError: '/workspace/folio-pdf/.build-cache/foundation-python' is not in the subpath of '/tmp/tmp8ol922ee'
+
+
+======================================================================
+FAIL: test_common_environment_catalog_pins_original_and_t10_arlington (test_t10_foundation.PagesCertificationCaseTest.test_common_environment_catalog_pins_original_and_t10_arlington)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/tests/test_t10_foundation.py", line 55, in test_common_environment_catalog_pins_original_and_t10_arlington
+    self.assertEqual({'folio-pdf-t03', 'folio-pdf-t09', 'folio-pdf-t10', 'folio-pdf-t11', 'folio-pdf-t12', 'folio-pdf-t13', 'folio-pdf-t14', 'folio-pdf-t15', 'folio-pdf-t78', 'folio-pdf-t79', 'folio-pdf-t80'},
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                     {item['id'] for item in tools if item['kind'] == 'project-test'})
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the second set but not the first:
+'folio-pdf-t20'
+
+======================================================================
+FAIL: test_pages_plan_has_eight_native_runs_and_fixed_facade_mode (test_t10_foundation.PagesCertificationCaseTest.test_pages_plan_has_eight_native_runs_and_fixed_facade_mode)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/tests/test_t10_foundation.py", line 89, in test_pages_plan_has_eight_native_runs_and_fixed_facade_mode
+    self.assertEqual(0, result.returncode, result.stdout)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1 : Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1412, in <module>
+    main()
+    ~~~~^^
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1381, in main
+    record_plan(root, (root / args.output).resolve(), contract, helper, args.obligation)
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1218, in record_plan
+    executions.append(execution_plan(root, scope, profile['identity']['image'], helper, cp, case, execution))
+                      ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1184, in execution_plan
+    command = container_command(root, image, helper)
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1036, in container_command
+    runtime = python_runtime(root)
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1013, in python_runtime
+    runtime.relative_to(Path(root).resolve())
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/pathlib/_local.py", line 385, in relative_to
+    raise ValueError(f"{str(self)!r} is not in the subpath of {str(other)!r}")
+ValueError: '/workspace/folio-pdf/.build-cache/foundation-python' is not in the subpath of '/tmp/tmpjmc01u95'
+
+
+======================================================================
+FAIL: test_public_plan_declares_eight_actual_execution_combinations_and_frozen_contract (test_t12_foundation.T12FoundationTest.test_public_plan_declares_eight_actual_execution_combinations_and_frozen_contract)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/tests/test_t12_foundation.py", line 50, in test_public_plan_declares_eight_actual_execution_combinations_and_frozen_contract
+    self.assertEqual(0, completed.returncode, completed.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1 : Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1412, in <module>
+    main()
+    ~~~~^^
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1381, in main
+    record_plan(root, (root / args.output).resolve(), contract, helper, args.obligation)
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1218, in record_plan
+    executions.append(execution_plan(root, scope, profile['identity']['image'], helper, cp, case, execution))
+                      ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1184, in execution_plan
+    command = container_command(root, image, helper)
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1036, in container_command
+    runtime = python_runtime(root)
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1013, in python_runtime
+    runtime.relative_to(Path(root).resolve())
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/pathlib/_local.py", line 385, in relative_to
+    raise ValueError(f"{str(self)!r} is not in the subpath of {str(other)!r}")
+ValueError: '/workspace/folio-pdf/.build-cache/foundation-python' is not in the subpath of '/tmp/tmpeotll4t_'
+
+
+======================================================================
+FAIL: test_public_plan_binds_all_eight_native_combinations_and_actual_facade_mode (test_t13_foundation.T13FoundationTest.test_public_plan_binds_all_eight_native_combinations_and_actual_facade_mode)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/tests/test_t13_foundation.py", line 782, in test_public_plan_binds_all_eight_native_combinations_and_actual_facade_mode
+    self.assertEqual(0, result.returncode, result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1 : Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1412, in <module>
+    main()
+    ~~~~^^
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1381, in main
+    record_plan(root, (root / args.output).resolve(), contract, helper, args.obligation)
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1218, in record_plan
+    executions.append(execution_plan(root, scope, profile['identity']['image'], helper, cp, case, execution))
+                      ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1184, in execution_plan
+    command = container_command(root, image, helper)
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1036, in container_command
+    runtime = python_runtime(root)
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1013, in python_runtime
+    runtime.relative_to(Path(root).resolve())
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/pathlib/_local.py", line 385, in relative_to
+    raise ValueError(f"{str(self)!r} is not in the subpath of {str(other)!r}")
+ValueError: '/workspace/folio-pdf/.build-cache/foundation-python' is not in the subpath of '/tmp/tmpoloo0r5z'
+
+
+----------------------------------------------------------------------
+Ran 102 tests in 546.442s
+
+FAILED (failures=5, errors=5)

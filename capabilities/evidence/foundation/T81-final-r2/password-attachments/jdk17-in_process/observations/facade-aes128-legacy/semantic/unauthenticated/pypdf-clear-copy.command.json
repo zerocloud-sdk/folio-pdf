@@ -1,0 +1,26 @@
+{
+  "command": [
+    "@observer-python",
+    "-I",
+    "-S",
+    "-B",
+    "@repository/scripts/t80-byte-check.py",
+    "@evidence/facade-aes128-legacy/product.pdf",
+    "@private-0"
+  ],
+  "exit-code": 0,
+  "limit": null,
+  "maximum-output-bytes": 16777216,
+  "privacy-projection": "tool-text-v1",
+  "stderr-sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdin": "none",
+  "stdout-sha256": "3d9434ea789801ad051a5e525cd02170bc665bffeee72851d32e469b9f177ca1",
+  "supervisor": [
+    "/bin/sh",
+    "-c",
+    "trap 'kill -KILL \"-$$\"' TERM INT HUP; exec 3<&0; \"$@\" <&3 3<&- & child=$!; exec 3<&- 0<&-; wait \"$child\"; result=$?; exit \"$result\"",
+    "folio-t78-tool",
+    "@tool-command"
+  ],
+  "timeout-seconds": 30
+}

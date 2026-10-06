@@ -1,0 +1,81 @@
+Version exit: 0
+[0m
+
+Arlington PDF Model C++ P.o.C. version v0.81-folio-t13-r1 built Sep 12 2026 00:00:00 (GNU-C linux release)
+Choose one of: --pdf, --checkdva or --validate.
+
+Usage:
+	TestGrammar --tsvdir <dir> [--force <ver>|exact] [--out <fname|dir>] [--no-color] [--clobber] [--debug] [--brief] [--extensions <extn1[,extn2]>] [--password <pwd>] [--exclude string | @textfile.txt] [--dryrun] [--allfiles] [--validate | --checkdva <formalrep> | --pdf <fname|dir|@file.txt> ]
+
+Options: 
+-h, --help                   This usage message.
+-b, --brief                  terse output when checking PDFs. The full PDF DOM tree is NOT output.
+-c, --checkdva               Adobe DVA formal-rep PDF file to compare against Arlington PDF model.
+-d, --debug                  output additional debugging information.
+    --clobber                always overwrite PDF output report files (--pdf) rather than append underscores.
+    --no-color               disable colorized text output (useful when redirecting or piping output)
+-m, --batchmode              stop popup error dialog windows and redirect everything to console (Windows only, includes memory leak reports).
+-o, --out                    output file or folder. Default is stdout. See --clobber for overwriting behavior.
+-p, --pdf                    input PDF file, folder, or text file of PDF files/folders.
+-f, --force                  force the PDF version to the specified value (1,0, 1.1, ..., 2.0 or 'exact'). Only applicable to --pdf.
+-t, --tsvdir                 [required] folder containing Arlington PDF model TSV file set.
+-v, --validate               validate the Arlington PDF model.
+-e, --extensions             a comma-separated list of extensions, or '*' for all extensions.
+    --password               password. Only applicable to --pdf.
+    --exclude                PDF exclusion string or filelist (# is a comment). Only applicable to --pdf.
+    --dryrun                 Dry run - don't do any actual processing.
+-a, --allfiles               Process all files regardless of file extension.
+    --explicit-values-only   Ignore wildcards in PossibleValues.
+
+Built using pdfium
+
+Validation exit: 0
+Processing "/workspace/capabilities/evidence/foundation/T81-final-r2/text/jdk11-in_process/observations/facade-nested-split-type3/declarations/extraction.pdf" to stdout BEGIN - TestGrammar v0.81-folio-t13-r1 built Sep 12 2026 00:00:00 (GNU-C linux release) pdfium
+Arlington TSV data: "/workspace/.build-cache/arlington/t13-r1/tsv/latest"
+PDF: "/workspace/capabilities/evidence/foundation/T81-final-r2/text/jdk11-in_process/observations/facade-nested-split-type3/declarations/extraction.pdf"
+Info: XRefStream detected.
+Info: Header is version PDF 2.0
+Info: Command line forced to PDF 2.0
+Info: Processing as PDF 2.0
+       1: Trailer (as XRefStream)
+       2:   Trailer (as XRefStream)->ID (as TrailerIDArray)
+       3:   Trailer (as XRefStream)->Index (as ArrayOfXRefIndexIntegers)
+       4:   Trailer (as XRefStream)->Root (as Catalog)
+       5:   Trailer (as XRefStream)->W (as ArrayOfXRefWIntegers)
+       6:     Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)
+       7:       Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)
+       8:         Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]
+       9:           Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Contents (as ArrayOfStreamsGeneral)
+      10:           Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Parent (as PageTreeNodeRoot)
+      11:           Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)
+      12:             Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Contents (as ArrayOfStreamsGeneral)[0 (as Stream)]
+      13:             Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Contents (as ArrayOfStreamsGeneral)[1 (as Stream)]
+      14:             Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)
+      15:             Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)
+      16:               Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)
+      17:               Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)->Middle (as XObjectFormType1)
+      18:                 Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->CharProcs (as CharProcMap)
+      19:                 Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->Encoding
+      20:                 Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->Resources (as Resource)
+      21:                 Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->Widths (as ArrayOfNumbersGeneral)
+      22:                 Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)->Middle (as XObjectFormType1)->Resources (as Resource)
+      23:                   Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->CharProcs (as CharProcMap)->A (as Stream)
+      24:                   Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)->Encoding->Differences (as ArrayOfDifferences)
+      25:                   Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)->Middle (as XObjectFormType1)->Resources (as Resource)->XObject (as XObjectMap)
+      26:                     Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)->Middle (as XObjectFormType1)->Resources (as Resource)->XObject (as XObjectMap)->Leaf (as XObjectFormType1)
+      27:                       Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)->Middle (as XObjectFormType1)->Resources (as Resource)->XObject (as XObjectMap)->Leaf (as XObjectFormType1)->Resources (as Resource)
+      28:                         Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)->Middle (as XObjectFormType1)->Resources (as Resource)->XObject (as XObjectMap)->Leaf (as XObjectFormType1)->Resources (as Resource)->Font (as FontMap)
+      29:                           Trailer (as XRefStream)->Root (as Catalog)->Pages (as PageTreeNodeRoot)->Kids (as ArrayOfPageTreeNodeKids)[0 (as PageObject)]->Resources (as Resource)->XObject (as XObjectMap)->Middle (as XObjectFormType1)->Resources (as Resource)->XObject (as XObjectMap)->Leaf (as XObjectFormType1)->Resources (as Resource)->Font (as FontMap)->F1 (as FontType3)
+Info: Latest Arlington object was PDF 1.5 (XRefStream/Filter) compared using forced PDF 2.0
+END
+
+DONE - 1 files processed
+
+Negative control cid0-fontname-consistent sha256=41ead4cc938319a01a3c62b26b467d85f91215b68bc05aa09fe95df4290585a1 detected=true
+Negative control cid0-w2-triples sha256=e3e843e331136c0e884cb9df9bfa95e113cca1862b3aa4f6340d2a5b98735146 detected=true
+Negative control cid2-fontname-consistent sha256=1a2288809aaf1b74230f1f96424e06b46833719b9d14aff3ddf95488087e960b detected=true
+Negative control cid2-w2-triples sha256=81d8ba3a55e3b895d1dfd1073f6f3d09cccb92bca3460f478c5e8a81dd2bd139 detected=true
+Negative control shared-fontname-consistent sha256=1b804da68dea12cc3861788158f2724909ecaea0d2c48129f613021d48fb41ca detected=true
+Negative control truetype-fontname-consistent sha256=ff4f35d31bffc504df3d9bcd2abad49504ad05937028b38ed32c10783858e602 detected=true
+Negative control type1-fontname-consistent sha256=1cd72394fd206647d40d9f549b9aa3a088f6793954ba27ef93e0776124dcd802 detected=true
+Negative control type3-fontname-consistent sha256=b8948588b081a4f4bee151cb2cfe747674b0a78c3e5b3526aad23cadcb1c6733 detected=true

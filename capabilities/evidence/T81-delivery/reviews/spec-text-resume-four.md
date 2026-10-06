@@ -1,0 +1,13 @@
+# Spec review — four-scope final text recovery
+
+Baseline/current HEAD: `05e7f546f5885680e333ad8d3dea3645b25d26b7`. Prospective read-only review against the sole issue-81 contract. Recipe SHA-256: `1c79cc27e8f058e303825f0512c77681a6d2e50a7d3ae15638bdf8b5f02c9cef`. No tests or recipe execution, bound-source edits, or final-certification claim.
+
+No concrete execution blocker or Spec finding:
+
+- Compared with the reviewed three-scope recipe, changes are confined to sealing `text-r5`, retaining its JDK11 HARDENED_WORKER scope, and updating retained/fresh counts to four/four. Inspected original transcript reports 126-test PASS without failures; four actual PASS records have expected producers and matching candidate, contract, environment and execution-configuration identities. Its environment hash equals the retained JDK11 environment reference. Prior recipe bytes remain intact.
+- “Preserve their declared execution coverage and historical records” remains enforced through exact original configuration/input/command checks, unchanged references, all-file seals across three trees, all available original-before/closing environment comparisons, fresh before/after observations, and staged/source guards. The available JDK11 `text-r5` closing observations join the existing checks without changing observer rules.
+- The failed JDK17 IN_PROCESS scope contains no certification envelopes. Neither its successful suite nor its three successful chains enter the retained mapping. All four remaining JDK17/21 tuples execute the complete unchanged suite, recorder and collector in fresh directories; no failed-tuple component reuse occurs.
+- For “missing records, mismatched identities, altered findings or changed producer labels cannot produce PASS,” unchanged publication verification follows exact eight-scope/four-chain checks, full original seals and an unchanged transitive preflight requiring the exact 48-scope union preserving all 40 predecessors. PASS audit still follows successful publication.
+- Wrapper exemption adds only the new recipe filename. Suite/recorder ceilings and individual tests/tool/Worker bounds remain unchanged. The failed visual control retains `indeterminate`, unavailable raster findings and exact PDF SHA `4eb152d0d923e2449ccd0b0751a5a606ed2dcca38b7fa0b0eba107d4201a90e4`. Three isolated diagnostic controls return expected `fail`; they establish neither the original failure's precise cause nor complete-tuple acceptance, and supply no certification.
+
+Recovery must still complete all four fresh tuples. Later ordered predecessors, all four limits tuples, final gates and final reviews remain required.

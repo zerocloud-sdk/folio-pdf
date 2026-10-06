@@ -1,0 +1,14 @@
+# Spec precheck — relaunch delivery helpers
+
+Baseline: `05e7f546f5885680e333ad8d3dea3645b25d26b7`.
+Read-only review against the sole issue-81 contract of `audit-worktree-relaunch.py`, `write-receipt-relaunch.py`, `diagnose-attachments-jdk17-worker.py`, `relaunch-authority.json` and `validation/relaunch-worker-diagnostic-decision-r1.json`, compared with retained original helpers and records. No helper was executed by this reviewer; certification and final gates remain pending.
+
+No concrete Spec blocker:
+
+- For “preserve historical evidence,” the new helper copies preserve the original clean-entry authority and recipes. Relaunch metadata accurately identifies the existing authorized dirty ticket worktree, unchanged baseline HEAD and retained candidate. The worktree helper requires fresh audit destinations and rejects unknown changed/untracked paths; its record includes exact relaunch-authority and recipe hashes.
+- For “Missing … records … or altered findings … cannot produce PASS,” the receipt writer still requires the audited 92-scope/372-record identity summary, unchanged index/staged-build hashes, current staged closure, passing mandatory gates and retained log hashes. The unchanged evidence-audit route proves the exact eleven eight-tuple predecessors plus four IN_PROCESS limits scopes. Readiness must show selected obligations satisfied at current Candidate/Contract identities while retaining later blockers.
+- For “The execution receipt maps every issue criterion to observable evidence,” all 21 completion criteria and nine issue criteria retain mappings; relaunch entry, failure, diagnostic, recovery recipe/result/audit and reviews augment predecessor/history links. Final mode requires baseline-relative passing Standards/Spec reviews with zero unresolved findings. Draft mode leaves review-dependent criteria pending; it does not bypass certification or validation prerequisites.
+- For “Preserve their declared execution coverage,” the diagnostic changes only the fresh writable mount of the recorded full 24-test JDK17 Worker command. Its passing transcript is diagnostic-only and cannot publish a certification. The failed full tuple remains retained; the same reviewed recovery requires all three unfinished tuples afresh before the exact 88-scope predecessor union. The 234.221-second diagnostic duration is supported by the retained log; pressure snapshots establish no cause or fix.
+- The prospective final receipt describes successful recovery only behind required result/audit guards. Native-only controls, cooperative modeled usage, existing encryption, platform scope, optional-commit omission and orchestrator-owned publication remain explicit.
+
+Actual recovery, all four final limits tuples, final gates, evidence audit, receipt generation and final delivery review remain required before completion.

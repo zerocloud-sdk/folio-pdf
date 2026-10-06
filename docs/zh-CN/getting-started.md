@@ -963,3 +963,32 @@ PDF 1.7 Level 8、StdCF/EFOpen 和不同 user/owner 属于明确限定的互操�
 [认证契约](../t80-certification.md)解释原始加密字节、无需凭据的明文观察以及四条独立检查链。
 认证限定 Ubuntu 24.04 Linux x86-64 × JDK 8/11/17/21；Native 两种执行模式，
 Facade 实际 IN_PROCESS。Windows/macOS 保持未认证且不是 F0.1.0 阻塞条件。
+
+## T20 可信进程内资源策略验收
+
+`WorkflowResourcePolicy` 用十个有限上限约束一次 `DocumentWorkflow.execute`：
+所有 Source 的实际输入字节、不同页与间接对象、容器和对象图嵌套、每个受支持
+过滤阶段的输出、可实际处理的解码像素、Folio 计量的自有内存、临时存储、耗时
+及共享 Environment 的并发数。Environment 提供默认策略；请求的完整不可变
+`resourcePolicy` 优先于该默认值，操作自身更严格的限制仍然有效。零表示不允许
+消耗该项资源，数值和耗时恰好等于上限可成功，第一次超出即失败；绝对 deadline
+在相等时已经过期。版本 1 的嵌套上限为 16,384。
+
+计量贯穿主 Source、额外 Source、Command、Query、Patch、拆分产品、验证和所有
+Target，重复读取不能重置预算。捕获资源耗尽异常也不能使事务继续发布。失败前
+尚未提交的 Path 保留原内容，早先提交的 Target 保持 `COMMITTED`；失败流可能
+已有部分输出，当前及后续收据分别保留 `FAILED` / `NOT_ATTEMPTED`。调用方流、
+channel 和输出保持打开，Session 视图过期，工作流的快照、缓存、溢写、产品及
+目标旁暂存文件在终止路径清理。
+
+[独立验收契约](../t20-certification.md) 和覆盖清单将资源执行的 contract 链与
+成功 PDF 的 syntax、standards、semantic、visual 四链分开，并通过实际工具、
+负控制和现场重放检查原始结果。认证只适用于证据索引中的实际 Ubuntu 24.04 /
+Linux x86-64、JDK 8/11/17/21、Native `IN_PROCESS` 及对应 Facade `IN_PROCESS`
+组合。Windows 和 macOS 保持未认证，且不是 Foundation 0.1.0 阻断项。资源策略
+是 Native Interface 自有控制；Facade 保留现有文档操作、重开、生命周期、所有权
+和 Publication Receipt 映射，不增设 Reference Suite 没有的策略接口。
+
+保证仍是可信进程内的协作式检查。计量值不代表 JVM 堆、进程 RSS、任意回调或
+后端/原生代码的强制终止，也不代表沙箱。Worker 隔离、恢复及规模认证属于后续
+独立义务。详细默认值、稳定错误码和边界见[资源策略指南](../hostile-input-policy.md)。

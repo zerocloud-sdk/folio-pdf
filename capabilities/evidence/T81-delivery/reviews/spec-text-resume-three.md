@@ -1,0 +1,13 @@
+# Spec review — three-scope final text recovery
+
+Baseline and current HEAD: `05e7f546f5885680e333ad8d3dea3645b25d26b7`. Prospective read-only review against the sole issue-81 contract. Recipe SHA-256: `fb224820a3f500b6061fb784fc68857daccc0a8eee20f281ff16bc18cb985fea`. No tests or recovery execution, bound-source edits, or final-certification claim.
+
+No concrete execution blocker or Spec finding:
+
+- For “Preserve their declared execution coverage and historical records,” the explicit retained mapping selects original `text/jdk8-in_process`, `text-r4/jdk8-hardened_worker`, and `text-r4/jdk11-in_process`. Inspected logs each report 126-test PASS without `FAILURES!!!`; all four records have PASS, expected producers, and matching current candidate/environment hashes. Configuration inputs, exact suite/recorder commands, settings, and original record references are checked and retained. Failed scopes supply no certification.
+- For “Use fresh directories and preserve historical evidence,” the separate recipe leaves prior recipes intact, seals every file in both original trees, and verifies that seal before publication. Five remaining tuples use fresh directories and unchanged driver execution/collection. Journal numbering derives from retained events; PASS audit follows publication.
+- Original/live environment objects must match for both retained JDK majors. Every available original-before and closing observation is checked; closing native comparisons require actual PASS and stable helper/engine/installation equality while original raw bytes remain hash-sealed. Fresh before/after observations bracket every major, including those lacking original closing observations. The selected JDK8 environment hash matches both retained JDK8 scopes.
+- For “mismatched identities, altered findings or changed producer labels cannot produce PASS,” staged/source guards remain active, required scope/chain sets stay eight/four, and unchanged transitive merge preflights the exact 48-scope union preserving all 40 predecessors. Unchanged `publish_index` verifies fresh records and performs locked, stale-index-guarded publication.
+- `run-validation.py` adds only the new orchestration filename to the existing overall-timer exemption. T13 suite/recorder ceilings remain 600/1,800 seconds; existing individual test and Worker checks remain unchanged. Failed full-suite attempts and diagnostic reruns remain history, not acceptance substitutions.
+
+All five fresh complete suites, recorders, four-chain collectors and closing observations must still pass. Subsequent ordered predecessors, four limits tuples and final gates/reviews remain required.

@@ -1,0 +1,13 @@
+# Standards: concrete text resume recipe
+
+Baseline/HEAD: `05e7f546f5885680e333ad8d3dea3645b25d26b7`. Reviewed [resume-text.py](/workspace/folio-pdf/capabilities/evidence/T81-delivery/resume-text.py), SHA-256 `660ab3d08ba86fe665502826992ea92ef4f411a9388662129a2c8ee73cd2d4c0`, against the current Foundation driver and the [previously reviewed recovery](/workspace/folio-pdf/capabilities/evidence/T81-delivery/reviews/standards-resume-recipe.md).
+
+No concrete execution blocker, hard Standards violation or actionable optional smell found. This is prospective review; no recovery, diagnostic or pending certification was executed or certified.
+
+Read-only checks confirm forty accepted scopes for transactions, values, pages, metadata and annotations. The retained JDK8 IN_PROCESS text transcript reports `OK (126 tests)`; all four original chain-report references match their current bytes. The old closing observation is absent because the next Worker suite failed. The failed transcript records the existing post-response `requireExited` failure, not a successful text certification.
+
+The recipe seals every original file, including failed records, and rechecks that seal before publication. It retains the passing scope's original configuration and record references, checking current candidate/contract/environment identities, input closure, exact commands/settings and producer labels. Original/live JDK8 environment equality is required; original closing payloads, when present, use stable native identities rather than timestamp/ASLR byte equality. A new actual closing observation is required after the resumed work.
+
+Seven fresh tuples use unchanged `execution_plan`, full 126-test suite, recorder and collector calls with existing timeouts. Source/staged checks surround execution. Exact eight-scope/four-chain checks and a forty-eight-scope predecessor preflight precede the unchanged locked, stale-authority-guarded publication route. The global passing audit is written only after publication; the final journal correctly records text attempt two.
+
+No bound source, Worker behavior, test or timeout is modified. Direct retention of independently completed records with unchanged identities remains consistent with [ADR-0023](/workspace/folio-pdf/docs/adr/0023-require-independent-acceptance-evidence-chains.md:3), [ADR-0040](/workspace/folio-pdf/docs/adr/0040-certify-only-observed-foundation-environments.md:3) and the [sole contract](/workspace/contracts/issue-81-contract.md). Use a fresh output outside bound source roots and assertions enabled; the inspected Python optimization level is zero. Final certification and delivery reviews remain separate.

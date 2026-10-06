@@ -1,0 +1,13 @@
+# Spec review — concrete predecessor resume recipe
+
+Baseline: `05e7f546f5885680e333ad8d3dea3645b25d26b7`. Read-only review of `capabilities/evidence/T81-delivery/resume-attachments.py` against the sole issue-81 contract and `spec-resume-path.md`. No execution or final-certification claim.
+
+No remaining Spec findings after the prepublication retention and native-observation corrections:
+
+- For “Use fresh directories and preserve historical evidence,” the recipe seals every original r2 file, keeps the three original scope paths/configurations/reports, and verifies the complete original file list and hashes again before merging. Five remaining scopes use newly created directories and execute the unchanged complete suite, recorder and collector. The standalone failed-suite replay is not used as certification.
+- For exact candidate/environment binding, it uses the staged-build guard, current inventory identities, complete certification inputs and scope-specific execution plans. Original commands, options, settings, producer labels and record identities must agree. Actual resumed before-observations match the original environments; resumed after-observations must match those before-observations. Original native closing observations require PASS and equal helper/loaded-engine/installation identities; timestamps and ASLR maps are independently observed raw payloads, retained under their original hashes. This also completes JDK11's previously missing after-check without editing original evidence.
+- For “Preserve their declared execution coverage,” it checks the Foundation profile/chain declarations and exactly eight expected environment/execution scope keys, four chains per scope and three retained scopes. Every fresh chain passes the existing `collect_reports` route; unchanged `publish_index` verifies all fresh records transitively before replacing the authority.
+- The initial version checked all-80 predecessor retention only after publication. The corrected recipe preflights unchanged `merge_evidence`, requiring 88 records and exactly the union of previous and attachment scope keys before `publish_index`. Its authority-byte guard and postpublication checks remain. Stale/missing predecessor records therefore stop this recipe before replacement.
+- The recipe lies outside the declared candidate source roots, so it introduces no product/Worker changes, threshold changes or bound-source edits. Original failure records and all later required limits certifications remain part of the delivery obligations.
+
+No tests were executed by this reviewer. This is a prospective execution-path assessment; full execution, transitive audit and live inventory results remain required.

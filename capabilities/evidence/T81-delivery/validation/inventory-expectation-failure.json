@@ -1,0 +1,76 @@
+{
+  "retained-at": "2026-10-04T17:22:06.450243+00:00",
+  "failure": "realInventoryIsValidButFoundationRemainsNotReady asserts obsolete BLOCKED #79/#80 after successful certification",
+  "source": {
+    "path": "build-tools/inventory/src/test/java/net/zerocloud/pdf/tools/inventory/FoundationReadinessCommandTest.java",
+    "sha256": "a5918d4350795257383b7386fa4a7437a40300c7b74a8d0152dc8257fb68f246"
+  },
+  "full-verify-result": {
+    "command": [
+      "podman",
+      "run",
+      "--rm",
+      "--network=none",
+      "--userns=keep-id",
+      "--volume",
+      "/workspace/folio-pdf:/workspace:rw",
+      "--volume",
+      "/workspace/folio-pdf/.build-cache/t81-provision/folio-harfbuzz:/folio-harfbuzz:ro",
+      "--volume",
+      "/workspace/folio-pdf/.build-cache/foundation-python/bin/python3.12:/usr/bin/python3.12:ro",
+      "--volume",
+      "/workspace/folio-pdf/.build-cache/foundation-python/lib/python3.12:/usr/lib/python3.12:ro",
+      "--volume",
+      "/workspace/folio-pdf/.build-cache/foundation-python/lib/libexpat.so.1:/lib/x86_64-linux-gnu/libexpat.so.1:ro",
+      "--workdir",
+      "/workspace",
+      "--env",
+      "LANG=C.UTF-8",
+      "--env",
+      "LC_ALL=C.UTF-8",
+      "--env",
+      "TZ=UTC",
+      "--env",
+      "PYTHONDONTWRITEBYTECODE=1",
+      "--env",
+      "FOLIO_HARFBUZZ_HELPER=/folio-harfbuzz/bin/folio-harfbuzz",
+      "--env",
+      "MAVEN_USER_HOME=/workspace/.build-cache/maven",
+      "--env",
+      "MAVEN_OPTS=-Dmaven.repo.local=/workspace/.build-cache/maven/repository",
+      "--env",
+      "FOLIO_FOUNDATION_PYTHON_ROOT=/workspace/.build-cache/foundation-python",
+      "docker.io/library/eclipse-temurin@sha256:61a94244559f2e89e4edb02bae37eeb8762ecf5deaf237251fa630e5120a8798",
+      "./mvnw",
+      "-B",
+      "-ntp",
+      "verify"
+    ],
+    "required-repository-command": "./mvnw -B -ntp verify",
+    "actual-image": {
+      "os": "ubuntu",
+      "os-version": "24.04",
+      "architecture": "x86-64",
+      "image": "docker.io/library/eclipse-temurin@sha256:61a94244559f2e89e4edb02bae37eeb8762ecf5deaf237251fa630e5120a8798",
+      "os-release-sha256": "01af466feb100306498c86aa6bad1815e33036019aa34d4362c20f374ea5c829",
+      "jdk-major": 17,
+      "jdk-vendor": "Eclipse Adoptium",
+      "jdk-build": "17.0.20+8",
+      "java-sha256": "6dce8306ebf735a85decdc801d84431f6e84525b60adc885624df05edeffb481"
+    },
+    "started": "2026-10-04T16:55:33.981191+00:00",
+    "finished": "2026-10-04T17:20:00.702443+00:00",
+    "exit-code": 1,
+    "log": {
+      "path": "capabilities/evidence/T81-delivery/validation/full-verify-ubuntu-final.txt",
+      "sha256": "6278832345c6f1965e594cbabc11d965c93e802b6ab9e2de7ff503d1730d1b51"
+    }
+  },
+  "candidate": "d9d4c5362c1dd87903be84753508eaeb309d30252948c0a1c0228b3ccb51087e",
+  "contract": "5a5214f1734f0ae454abb49845bcb0823b055a1aca927079590a0c2c1b3830a0",
+  "historical-index": {
+    "path": "capabilities/evidence/T81-delivery/final-candidate/evidence-index.json",
+    "sha256": "09e5685b722a2b141a6a4accfedbb2f28e10c81888a776eda151eacb0ca3ecda"
+  },
+  "required-response": "Correct test expectations, restage, and rerun ordered predecessor and limits certification; no historical relabeling."
+}

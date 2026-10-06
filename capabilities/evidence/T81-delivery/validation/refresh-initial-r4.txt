@@ -1,0 +1,46 @@
+initial starting password-attachments attempt 3
+T80 environment JDK 8
+T80 retained original JDK 8 / IN_PROCESS
+T80 retained original JDK 8 / HARDENED_WORKER
+T80 environment JDK 11
+T80 retained original JDK 11 / IN_PROCESS
+T80 certification JDK 11 / HARDENED_WORKER
+T80 environment JDK 17
+T80 certification JDK 17 / IN_PROCESS
+T80 certification JDK 17 / HARDENED_WORKER
+T80 environment JDK 21
+T80 certification JDK 21 / IN_PROCESS
+T80 certification JDK 21 / HARDENED_WORKER
+Recorded exactly 8 T80 certifications; retained 80 current certifications for other obligations.
+initial already completed transactions
+initial already completed values
+initial already completed pages
+initial already completed metadata
+initial already completed annotations
+initial already completed text
+initial already completed images
+initial already completed incremental
+initial already completed password-baseline
+initial already completed password-clear-metadata
+initial already completed password-attachments
+initial starting limits attempt 1
+T20 environment JDK 8
+T20 certification JDK 8 / IN_PROCESS
+T20 environment JDK 11
+T20 certification JDK 11 / IN_PROCESS
+T20 environment JDK 17
+T20 certification JDK 17 / IN_PROCESS
+T20 environment JDK 21
+T20 certification JDK 21 / IN_PROCESS
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1424, in <module>
+    main()
+    ~~~~^^
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1420, in main
+    certify(root, root / args.output, contract, helper, args.obligation)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1343, in certify
+    merged = publish_index(root, output)
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 938, in publish_index
+    raise ValueError('New evidence is incomplete, stale or does not match the observed identities')
+ValueError: New evidence is incomplete, stale or does not match the observed identities

@@ -15,6 +15,12 @@ def reference(root, path):
     return {'path': path.relative_to(root).as_posix(), 'sha256': sha256(path)}
 
 
+def append_environment_observations(root, directory, report):
+    """Hash raw observer payloads without treating container paths as repo references."""
+    report.setdefault('environment-observations', []).extend(
+        reference(root, path) for path in sorted(directory.iterdir()) if path.is_file())
+
+
 def source_inputs(root, contract):
     root = Path(root).resolve()
     inputs = set()
@@ -140,6 +146,24 @@ ARTIFACT_CONTRACT_TESTS = tuple(
     'net.zerocloud.pdf.migration.itext7.contract.' + name
     for name in ('JarContractIT', 'ClasspathExclusivityIT'))
 CERTIFICATION_CASES = {
+    'limits': {
+        'profile': 'T20-hostile-input-limits', 'label': 'T20', 'test-count': 133,
+        'test-main': 'net.zerocloud.pdf.acceptance.T20ContractTestCommand',
+        'test-classes': ['net.zerocloud.pdf.consumer.' + name for name in (
+            'HostileInputWorkflowTest', 'WorkflowLifecycleTest', 'WorkflowTransactionContractTest',
+            'WorkflowResourceOwnershipTest', 'PdfValueWorkflowTest')]
+            + ['net.zerocloud.pdf.itext7.consumer.BlankDocumentFacadeTest',
+               'net.zerocloud.pdf.itext7.consumer.PdfValuesFacadeTest'],
+        'execution-profiles': ('IN_PROCESS',), 'chains': CHAINS + ('contract',),
+        'additional-java-options': ['-Dfolio.t09.executionProfile=IN_PROCESS'],
+        'facade-execution-profile': 'IN_PROCESS', 'standards-producer': 'arlington',
+        'contract-timeout': 600, 'recorder-timeout': 900,
+        'workflow-policy': 'Trusted IN_PROCESS only; fixed independently authored inclusive boundaries and first excess for all ten resource dimensions; deterministic Clock, stream and latch controls; aggregate ledger, terminal failures, lifetimes and ordered publication; existing Facade operations execute IN_PROCESS; no Facade policy control or isolation claim',
+        'fonts': 'none; all published positive outcomes are resource-free blank one-page PDFs',
+        'configuration-paths': ['capabilities/profiles/T20-hostile-input',
+            'scripts/t20-evidence-pin.properties', 'capabilities/profiles/T03-standards',
+            'capabilities/profiles/T03-document-blank-visual.properties',
+            'capabilities/expected/T03-document-blank-144dpi-srgb.png']},
     'password-attachments': {
         'profile': 'T32-password-embedded-files-only', 'label': 'T80', 'test-count': 24,
         'test-classes': ['net.zerocloud.pdf.consumer.EmbeddedFilesPasswordWorkflowTest',
@@ -431,6 +455,13 @@ def certification_case(obligation):
     return case
 
 
+def certification_producers(case):
+    return {'syntax': case.get('syntax-producer', 'qpdf'),
+            'standards': case.get('standards-producer', 'arlington'),
+            'semantic': 'folio-pdf-' + case['label'].lower(),
+            'visual': 'pdfium-cli', 'contract': 'folio-pdf-' + case['label'].lower()}
+
+
 def properties(path):
     """Read recorder-owned flat properties (values used here contain no escapes)."""
     return dict(line.split('=', 1) for line in Path(path).read_text().splitlines()
@@ -671,6 +702,9 @@ def append_source_visual(root, run, report):
 
 
 def collect_reports(root, run, obligation='transactions', execution_profile=None):
+    if obligation == 'limits':
+        from t20_foundation_reports import collect_reports as collect_limit_reports
+        return collect_limit_reports(root, run, execution_profile)
     if obligation == 'password-attachments':
         from t80_foundation_reports import collect_reports as collect_attachment_reports
         return collect_attachment_reports(root, run, execution_profile)
@@ -792,6 +826,7 @@ def merge_evidence(root, previous, fresh, identities):
     being copied into the current-candidate authority with a new label.
     """
     import copy
+    import json
     import yaml
     merged = copy.deepcopy(fresh)
     if previous.get('candidate') != fresh['candidate']:
@@ -810,7 +845,11 @@ def merge_evidence(root, previous, fresh, identities):
             return None
         if path in visiting:
             raise ValueError('Cyclic evidence references')
-        value = yaml.safe_load(path.read_text())
+        text = path.read_text()
+        try:
+            value = json.loads(text)
+        except json.JSONDecodeError:
+            value = yaml.safe_load(text)
         ancestors = visiting | {path}
 
         def walk(node):
@@ -859,8 +898,16 @@ def merge_evidence(root, previous, fresh, identities):
                 if any(record.get(name) != value for name, value in expected.items()) or record['chain'] in chains:
                     raise ValueError('Retained certification identity changed')
                 chains.add(record['chain'])
-            if chains != set(CHAINS):
+            case = certification_case(certification['obligation'])
+            if chains != set(case.get('chains', CHAINS)):
                 raise ValueError('Incomplete retained certification')
+            if certification['obligation'] == 'limits':
+                if certification['execution-profile'] != 'IN_PROCESS':
+                    raise ValueError('T20 certifies only actual IN_PROCESS execution')
+                for item in certification['records']:
+                    record = verified(item, kind='certification')
+                    if record.get('producer') != certification_producers(case)[record['chain']]:
+                        raise ValueError('T20 producer label changed')
             retained.append(copy.deepcopy(certification))
             if certification['environment'] not in environments:
                 environments[certification['environment']] = old_environment
@@ -943,7 +990,8 @@ def stage_harness(root, base):
     if directory.exists():
         shutil.rmtree(directory)
     directory.mkdir(parents=True, exist_ok=True)
-    for module, name in [('pdf-document', 'native-tests'), ('pdf-migration-itext7', 'facade-tests')]:
+    for module, name in [('pdf-document', 'native-tests'), ('pdf-migration-itext7', 'facade-tests'),
+                         ('pdf-acceptance', 'acceptance-tests')]:
         classes = root / module / 'target/test-classes'
         with zipfile.ZipFile(directory / (name + '.jar'), 'w') as jar:
             for path in sorted(classes.rglob('*')):
@@ -1076,8 +1124,8 @@ def certification_tools():
          'pin': 'scripts/imagemagick-pin.properties',
          'hash-key': 'IMAGEMAGICK_EXECUTABLE_SHA256', 'chains': ['visual']}]
     project = [{'id': 'folio-pdf-' + label, 'kind': 'project-test',
-                'version': '0.1.0', 'chains': ['semantic']}
-               for label in ('t03', 't09', 't10', 't11', 't12', 't13', 't14', 't15', 't78', 't79', 't80')]
+                'version': '0.1.0', 'chains': ['semantic', 'contract'] if label == 't20' else ['semantic']}
+               for label in ('t03', 't09', 't10', 't11', 't12', 't13', 't14', 't15', 't20', 't78', 't79', 't80')]
     return external + project
 
 
@@ -1144,12 +1192,15 @@ uname -m > "$out/architecture.txt"
 
 def execution_plan(root, scope, image, helper, cp, case, execution):
     """Generate exactly the commands used by certify; planning does not run them."""
+    if execution not in case.get('execution-profiles', ('IN_PROCESS', 'HARDENED_WORKER')):
+        raise ValueError('Execution profile is outside the declared certification scope')
     inside = '/workspace/' + scope.relative_to(root).as_posix()
     command = container_command(root, image, helper)
     command[-1:-1] = ['--volume', str(scope) + ':' + inside + ':rw']
     options = ['-Xmx1024m', '-Duser.language=en', '-Duser.country=US', '-Duser.timezone=UTC',
                '-Dfolio.harfBuzzHelper=/folio-harfbuzz/bin/folio-harfbuzz',
                '-Dfolio.' + case['label'].lower() + '.executionProfile=' + execution]
+    options += case.get('additional-java-options', [])
     evidence_command = command + ['java'] + options + ['-cp', cp, 'net.zerocloud.pdf.acceptance.' + case['label'] + 'EvidenceCommand',
         '/workspace', inside + '/observations', execution, '0.1.0']
     test_options = [
@@ -1158,7 +1209,9 @@ def execution_plan(root, scope, image, helper, cp, case, execution):
         '-DstableArtifactPath=/workspace/target/foundation-0.1.0/artifacts/pdf-migration-itext7-0.1.0.jar',
         '-DdocumentArtifactPath=/workspace/target/foundation-0.1.0/artifacts/pdf-document-0.1.0.jar',
         '-DtestClassesPath=/workspace/target/foundation-0.1.0/harness/facade-tests.jar']
-    test_command = command + ['java'] + options + test_options + ['-cp', cp, 'org.junit.runner.JUnitCore'] + case['test-classes']
+    test_main = case.get('test-main', 'org.junit.runner.JUnitCore')
+    test_args = [str(case['test-count'])] if case['label'] == 'T20' else []
+    test_command = command + ['java'] + options + test_options + ['-cp', cp, test_main] + test_args + case['test-classes']
     return {'recorder-command': evidence_command, 'contract-tests-command': test_command,
             'preservation-command': command + ['/usr/bin/python3.12', '/workspace/scripts/t03-foundation.py',
                 'preservation', inside + '/observations', '--root', '/workspace'] if case['label'] == 'T09' else [],
@@ -1177,11 +1230,26 @@ def record_plan(root, output, contract, helper, obligation):
     case = certification_case(obligation)
     executions = []
     for profile in yaml.safe_load((root / contract['environments']).read_text())['profiles']:
-        for execution in ('IN_PROCESS', 'HARDENED_WORKER'):
+        for execution in case.get('execution-profiles', ('IN_PROCESS', 'HARDENED_WORKER')):
             scope = output / ('jdk' + str(profile['identity']['jdk-major']) + '-' + execution.lower())
             executions.append(execution_plan(root, scope, profile['identity']['image'], helper, cp, case, execution))
     write_json(output / 'plan.json', {'status': 'unverified-plan', 'configuration-paths': case['configuration-paths'],
                                      'tools': certification_tools(), 'executions': executions})
+
+
+def certification_inputs(root, contract, receipt, case):
+    """The complete shared configuration closure, also checked by live collection."""
+    base = root / 'target/foundation-0.1.0'
+    profile_inputs = []
+    for name in case['configuration-paths']:
+        path = root / name
+        profile_inputs += list(path.rglob('*')) if path.is_dir() else [path]
+    inputs = sorted(set(certification_classpath(root, contract, receipt)
+        + [root / item['path'] for item in receipt['harness']]
+        + [base / 'build-inputs.json', base / 'build-command.json', root / 'scripts/imagemagick-runtime.sha256']
+        + profile_inputs
+        + [root / item['pin'] for item in certification_tools() if item['kind'] == 'external-tool']))
+    return [reference(root, path) for path in inputs if path.is_file()]
 
 
 def certify(root, output, contract, helper, obligation='transactions'):
@@ -1190,6 +1258,10 @@ def certify(root, output, contract, helper, obligation='transactions'):
     root = root.resolve()
     case = certification_case(obligation)
     profile_contract = next(item['profile-contract'] for item in contract['obligations'] if item['id'] == obligation)
+    declared = next(item for item in contract['obligations'] if item['id'] == obligation)
+    profiles = case.get('execution-profiles', ('IN_PROCESS', 'HARDENED_WORKER'))
+    if set(profiles) != set(declared['execution-profiles']) or set(case.get('chains', CHAINS)) != set(declared['chains']):
+        raise ValueError('Recorder scope differs from the Foundation authority')
     output = output.resolve()
     output.relative_to(root)
     base = root / 'target/foundation-0.1.0'
@@ -1205,16 +1277,7 @@ def certify(root, output, contract, helper, obligation='transactions'):
     environment_profiles = yaml.safe_load((root / contract['environments']).read_text())['profiles']
     classpath_files = certification_classpath(root, contract, receipt)
     cp = ':'.join('/workspace/' + path.relative_to(root).as_posix() for path in classpath_files)
-    profile_inputs = []
-    for name in case['configuration-paths']:
-        path = root / name
-        profile_inputs += list(path.rglob('*')) if path.is_dir() else [path]
-    configuration_inputs = sorted(set(classpath_files + [root / item['path'] for item in receipt['harness']]
-        + [build_record, base / 'build-command.json', root / 'scripts/imagemagick-runtime.sha256']
-        + profile_inputs
-        + [root / item['pin'] for item in certification_tools()
-           if item['kind'] == 'external-tool']))
-    configuration_inputs = [reference(root, path) for path in configuration_inputs if path.is_file()]
+    configuration_inputs = certification_inputs(root, contract, receipt, case)
     for profile in environment_profiles:
         major = profile['identity']['jdk-major']
         print(case['label'] + ' environment JDK ' + str(major), flush=True)
@@ -1224,7 +1287,7 @@ def certify(root, output, contract, helper, obligation='transactions'):
         write_json(record_path, environment)
         environment_ref = reference(root, record_path)
         inventory['environments'].append({'profile': profile['id'], 'record': environment_ref})
-        for execution in ('IN_PROCESS', 'HARDENED_WORKER'):
+        for execution in profiles:
             print(case['label'] + ' certification JDK ' + str(major) + ' / ' + execution, flush=True)
             scope = output / ('jdk' + str(major) + '-' + execution.lower())
             scope.mkdir()
@@ -1261,17 +1324,14 @@ def certify(root, output, contract, helper, obligation='transactions'):
             for chain, report in reports.items():
                 if chain == 'semantic':
                     report['findings'] += [reference(root, scope / 'contract-tests.txt'), reference(root, scope / 'contract-tests-command.json')]
-                report['environment-observations'] = [reference(root, path) for path in sorted(directory.iterdir()) if path.is_file()]
+                append_environment_observations(root, directory, report)
                 report_file = scope / (chain + '-report.json')
                 write_json(report_file, report)
                 record = {'schema-version': 1, 'obligation': obligation, 'acceptance-profile': case['profile'],
                           'release': '0.1.0', 'candidate-sha256': identities['Candidate'], 'contract-sha256': identities['Contract'],
                           'environment-sha256': environment_ref['sha256'], 'execution-configuration-sha256': sha256(configuration),
                           'execution-profile': execution, 'chain': chain, 'result': 'pass',
-                          'producer': {'syntax': case.get('syntax-producer', 'qpdf'),
-                                       'standards': case.get('standards-producer', 'arlington'),
-                                       'semantic': 'folio-pdf-' + case['label'].lower(),
-                                       'visual': 'pdfium-cli'}[chain],
+                          'producer': certification_producers(case)[chain],
                           'configuration': reference(root, root / profile_contract),
                           'report': reference(root, report_file), 'negative-controls': report['negative-controls']}
                 path = scope / (chain + '.yaml')
@@ -1292,8 +1352,9 @@ def certify(root, output, contract, helper, obligation='transactions'):
     write_json(output / 'identities.json', identities)
     (output / 'prior-index.sha256').write_text(hashlib.sha256(previous_bytes).hexdigest() + '\n')
     merged = publish_index(root, output)
-    print('Recorded exactly eight ' + case['label'] + ' certifications; retained '
-          + str(len(merged['certifications']) - 8) + ' current certifications for other obligations.', flush=True)
+    count = len(environment_profiles) * len(profiles)
+    print('Recorded exactly ' + str(count) + ' ' + case['label'] + ' certifications; retained '
+          + str(len(merged['certifications']) - count) + ' current certifications for other obligations.', flush=True)
 
 
 def main():
@@ -1304,7 +1365,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('action', choices=('stage', 'certify', 'collect', 'preservation', 'plan', 'merge-index'))
     parser.add_argument('output', nargs='?', type=Path)
-    parser.add_argument('--obligation', choices=('transactions', 'values', 'pages', 'metadata', 'annotations', 'text', 'images', 'incremental', 'password-baseline', 'password-clear-metadata', 'password-attachments'), default='transactions')
+    parser.add_argument('--obligation', choices=tuple(CERTIFICATION_CASES), default='transactions')
     parser.add_argument('--execution-profile', choices=('IN_PROCESS', 'HARDENED_WORKER'))
     parser.add_argument('--root', type=Path, default=Path(__file__).resolve().parents[1])
     args = parser.parse_args()
@@ -1325,9 +1386,9 @@ def main():
         import json
         if args.output is None:
             parser.error('collect requires an observation directory')
-        if args.obligation in ('metadata', 'annotations', 'text', 'images', 'incremental', 'password-baseline', 'password-clear-metadata', 'password-attachments') and args.execution_profile is None:
+        if args.obligation in ('metadata', 'annotations', 'text', 'images', 'incremental', 'limits', 'password-baseline', 'password-clear-metadata', 'password-attachments') and args.execution_profile is None:
             parser.error(args.obligation + ' collect requires --execution-profile')
-        if args.obligation not in ('metadata', 'annotations', 'text', 'images', 'incremental', 'password-baseline', 'password-clear-metadata', 'password-attachments') and args.execution_profile is not None:
+        if args.obligation not in ('metadata', 'annotations', 'text', 'images', 'incremental', 'limits', 'password-baseline', 'password-clear-metadata', 'password-attachments') and args.execution_profile is not None:
             parser.error('--execution-profile applies only to metadata, annotations, text, images, incremental password-baseline, password-clear-metadata and password-attachments collect')
         print(json.dumps(collect_reports(root, (root / args.output).resolve(), args.obligation,
                                          args.execution_profile), indent=2))

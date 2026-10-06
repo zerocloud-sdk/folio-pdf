@@ -1,0 +1,51 @@
+{
+  "status": "pass",
+  "prior-manifest": {
+    "path": "capabilities/evidence/T81-delivery/relaunch-helper-identities.json",
+    "sha256": "16d82d2e1890f9a7ce5596e561570facb078fcefbb9090bf8c9961b9864908e0"
+  },
+  "reason": "Correct the receipt consumer to audit the actually retained historical diagnostic wrapper and individual outputs, as required by contract completion item 19; do not overwrite the original record or reconstruct lost detail.",
+  "changed-prior-helpers": [
+    "capabilities/evidence/T81-delivery/write-receipt-relaunch.py"
+  ],
+  "original-helper-identities": {
+    "path": "capabilities/evidence/T81-delivery/delivery-helper-identities.json",
+    "sha256": "0a5922049b87307e6f2ebc2da77669223ae553008919b68b85e7a1aaf958f964"
+  },
+  "original-helpers-unchanged": true,
+  "candidate-bound-inputs-changed": false,
+  "relaunch-helpers": [
+    {
+      "path": "capabilities/evidence/T81-delivery/resume-attachments-final-r2.py",
+      "sha256": "602b209efa5ff636c4fb4a77eb9c16291b1a0dacc498845b0225ee1b945adc6d"
+    },
+    {
+      "path": "capabilities/evidence/T81-delivery/resume-attachments-last-final-r2.py",
+      "sha256": "55ff0581f7fd32cec4678cfe91aece308234bab0a296f9dae4e997bb0a2c1e01"
+    },
+    {
+      "path": "capabilities/evidence/T81-delivery/diagnose-attachments-jdk17-worker.py",
+      "sha256": "12e5864fb7a19ec1d2fd5adb543761773c8f4a1436df9537648e94b90f385e73"
+    },
+    {
+      "path": "capabilities/evidence/T81-delivery/diagnose-attachments-jdk21-worker.py",
+      "sha256": "24f1a07ca272a9a145ecce0b31b3a9f69068445de548757943e02e8771902964"
+    },
+    {
+      "path": "capabilities/evidence/T81-delivery/record-relaunch-attachments.py",
+      "sha256": "b9b1f3f56d7a5baaf327ca22988581d190b392dd6aada324df673339d209c397"
+    },
+    {
+      "path": "capabilities/evidence/T81-delivery/audit-worktree-relaunch.py",
+      "sha256": "e9be37ff086a5d6c4a91de941acf8cce8cc09d197b9faa6c06df1f27ab2ac602"
+    },
+    {
+      "path": "capabilities/evidence/T81-delivery/write-receipt-relaunch.py",
+      "sha256": "2c0ddce5b93b320be08fcad641865c5719d243953d8249bfa524cdf7074772d8"
+    },
+    {
+      "path": "capabilities/evidence/T81-delivery/audit-retained-attachment-probe-r2.py",
+      "sha256": "66a2afee75103ba4284b68a17a4b37937f267a3f4e34d491e444282b69fe3803"
+    }
+  ]
+}

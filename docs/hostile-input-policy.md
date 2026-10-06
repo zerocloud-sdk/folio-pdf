@@ -251,3 +251,13 @@ its fail-closed Linux/JDK requirements and must not silently fall back when it
 is unavailable. The exact controls, limitations, Worker failure codes, and
 absence of any certified-platform claim are documented in the
 [Hardened Worker guide](hardened-worker.md).
+
+## Independent acceptance
+
+The [T20 certification contract](t20-certification.md) separates resource
+enforcement observations from independent evidence for successful PDF
+outcomes. Its closed inventory records fixed boundary operands, deterministic
+Clock/stream/latch controls, Native/Facade outcomes, ownership and ordered
+Publication Receipts. Certification covers only the exact artifact and actual
+Ubuntu/JDK/IN_PROCESS tuples in the Foundation evidence index; it does not
+extend the cooperative guarantee or certify other platforms or Worker profiles.
