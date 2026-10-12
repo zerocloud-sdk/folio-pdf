@@ -1,0 +1,46 @@
+{
+  "command": [
+    "bash",
+    "capabilities/evidence/T83-delivery/relaunch-environment.sh",
+    "python3",
+    "-B",
+    "/tmp/issue83-local-commit.py"
+  ],
+  "exit-code": 1,
+  "failed-git-command": [
+    "git",
+    "add",
+    "--",
+    "capabilities/evidence/foundation/T83-final-r20/annotations/jdk17-hardened_worker"
+  ],
+  "git-exit-code": 128,
+  "error": "fatal: Unable to create '/workspace/folio-pdf/.git/index.lock': File exists.",
+  "completed-groups": 223,
+  "attempted-group": 224,
+  "total-groups": 1189,
+  "commits-created": 0,
+  "head-after-failure": "42fe5c797711070b319b9419e14fcb7adfa98735",
+  "helper": {
+    "path": "capabilities/evidence/T83-delivery/local-commit-r23.py",
+    "sha256": "72bd6d6645a8128b2fcf5011bb16d6b0f7df5578969b6cdc4f70f7ccce9ecb57"
+  },
+  "lock-after-read-only-check": false,
+  "observed-git-process": {
+    "pid": 3318818,
+    "parent-pid": 53,
+    "name": "git",
+    "elapsed-seconds": 15
+  },
+  "lock-owner-established": false,
+  "lock-removed-or-process-killed": false,
+  "temporary-git-setting": {
+    "original-core.splitIndex": null,
+    "temporary-core.splitIndex": true,
+    "git-version": "2.47.3",
+    "observed-unsplit-index-bytes": 832211251,
+    "reason": "Reduce repeated writes while staging 1189 bounded issue83 evidence groups; exact staged blob SHA256/length verification remains unchanged.",
+    "restore-required": true,
+    "restored": false
+  },
+  "disposition": "Original staging attempt failed before commit. Preserve its partial index and verify every staged path/blob before resuming; no product or certification inputs changed."
+}

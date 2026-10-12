@@ -51,6 +51,26 @@ public final class T80PasswordProductsTest {
     }
 
     @Test
+    public void attachmentBatchHasASeparateFiniteCoordinatorBudget() throws Exception {
+        Path java = Paths.get(System.getProperty("java.home"), "bin", "java");
+        assertEquals(0, ExternalProcess.runCoordinator(java, root(), 1800000, 4096,
+                ExternalProcess.CoordinatorBudget.THIRTY_MINUTES, "-version").exitCode);
+        try {
+            ExternalProcess.runCoordinator(java, root(), 1800001, 4096,
+                    ExternalProcess.CoordinatorBudget.THIRTY_MINUTES, "-version");
+            fail("The attachment batch must retain its thirty-minute maximum");
+        } catch (java.io.IOException expected) { assertTrue(expected.getMessage().contains("1800000")); }
+        try {
+            ExternalProcess.runCoordinator(java, root(), 900001, 4096, "-version");
+            fail("The default coordinator must retain its fifteen-minute maximum");
+        } catch (java.io.IOException expected) { assertTrue(expected.getMessage().contains("900000")); }
+        try {
+            ExternalProcess.run(java, root(), 300001, 4096, "-version");
+            fail("An individual tool must retain its five-minute maximum");
+        } catch (java.io.IOException expected) { assertTrue(expected.getMessage().contains("300000")); }
+    }
+
+    @Test
     @Category(IndependentTools.class)
     public void actualIndependentChainsAndControlsPassForEveryProduct() throws Exception {
         Path output = Paths.get(System.getProperty("folio.t80.independentOutput",

@@ -167,15 +167,21 @@ Queries, Patches, named Sources, split products, or publication Targets.
   child work therefore share the same current bound without a static split.
   Parent-owned Source snapshots are borrowed without duplicate child charges;
   rendered PNGs and external-Provider snapshots release storage at close.
-- Elapsed time starts when the admitted transaction resource context opens and
-  is measured by the environment `Clock`. Exact elapsed time is allowed; the
-  first later checkpoint fails. A backwards-moving Clock contributes zero
-  elapsed time until it catches up. An absolute request deadline remains
-  expired when the Clock is equal to or later than it. Under T21 the parent
-  keeps this original Clock authoritative, including after authenticated
-  child `STAGED` and `VALIDATED` progress frames; the child's cooperative time
-  policy is disabled to avoid substituting its system clock. The original
-  Clock is sampled only on the caller execution thread. A monotonic parent
+- Elapsed time starts when the admitted transaction resource context opens.
+  System-default and ordinary builder environments measure it with
+  `System.nanoTime`, so wall-clock steps cannot consume or extend the budget.
+  `WorkflowEnvironment.Builder.monotonicTicker(LongSupplier)` injects an
+  independent nanosecond source for deterministic elapsed limits, remaining
+  Provider budgets and usage receipts. Exact elapsed time is allowed; the first
+  later checkpoint fails. Explicit `withClock(clock)` and builder `clock(clock)`
+  configurations retain logical clock-driven elapsed time unless a ticker is
+  also configured; in that compatibility mode a backwards-moving Clock
+  contributes zero until it catches up. An absolute request deadline still
+  expires when the environment Clock is equal to or later than it. Under T21
+  the parent keeps these original time sources authoritative, including after
+  authenticated child `STAGED` and `VALIDATED` progress frames; the child's
+  cooperative time policy is disabled to avoid substituting its time sources.
+  The original Clock/ticker is sampled only on the caller execution thread. A monotonic parent
   watchdog applies the same configured duration as an independent hard Worker-
   lifetime ceiling, and RLIMIT_CPU remains an independent CPU ceiling.
 - Concurrency is nonblocking admission shared by every `DocumentWorkflow`

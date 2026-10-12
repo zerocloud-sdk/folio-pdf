@@ -97,6 +97,32 @@ public final class FoundationReadinessCommandTest {
     }
 
     @Test
+    public void recoveryCannotBypassActualRuntimeAndLauncherWitnesses() throws Exception {
+        Fixture fixture = new Fixture(temporary.newFolder().toPath());
+        fixture.prepare(false);
+        fixture.obligation.put("id", "recovery");
+        Map<String, Object> requirements = fixture.load("capabilities/requirements.yaml");
+        map(list(requirements, "requirements").get(0)).put("obligations", strings("recovery"));
+        fixture.write("capabilities/requirements.yaml", requirements);
+        fixture.saveFoundation(); fixture.saveEvidence(); fixture.certify();
+        assertFailure(command("readiness", fixture.root), "actual JVM runtime and launcher witnesses");
+        for (Object item : list(fixture.evidence, "environments")) {
+            Map<String, Object> observed = map(item);
+            String path = (String) map(observed.get("record")).get("path");
+            Map<String, Object> environment = fixture.load(path);
+            environment.put("java-runtime", object("vendor", "Synthetic runtime brand",
+                    "build", map(environment.get("identity")).get("jdk-build")));
+            environment.put("worker-launcher", object("path", "/usr/bin/prlimit", "version", "Synthetic fixture",
+                    "sha256", hash(bytes("synthetic launcher bytes"))));
+            fixture.write(path, environment); observed.put("record", fixture.reference(path));
+        }
+        fixture.evidence.put("certifications", objects());
+        fixture.saveEvidence(); fixture.certify();
+        Result valid = command("readiness", fixture.root);
+        assertEquals(valid.output, 0, valid.exit);
+    }
+
+    @Test
     public void workerRuntimeLauncherAndPrerequisiteCommandsAreRequired() throws Exception {
         Fixture fixture = new Fixture(temporary.newFolder().toPath());
         fixture.prepare(false);

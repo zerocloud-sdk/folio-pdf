@@ -1,0 +1,36 @@
+# T73 qpdf syntax findings
+
+Input exact SHA-256: `7aacebad03c7edd38067efdeddee54473b8321aba9fa1aabe9e354338f30facb`
+
+Input hash policy: `SHA-256 of the exact unmodified PDF bytes`
+
+Tool: `qpdf`
+
+Tool version: `12.4.0`
+
+Distribution SHA-256: `a3bca240f3bb61efdc3a90be89d1da4ed5e125326c3458c4e62df53ff4f153e3`
+
+Final determination: `pass`
+
+## metadata.pdf
+
+Invocation: `qpdf --check metadata.pdf`
+
+`metadata.pdf` exit code: `0`
+
+### Standard output
+
+```text
+checking metadata.pdf
+PDF Version: 2.0
+File is not encrypted
+File is not linearized
+No syntax or stream encoding errors found; the file may still contain
+errors that qpdf cannot detect
+```
+
+### Standard error
+
+```text
+
+```

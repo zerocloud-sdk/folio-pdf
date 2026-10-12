@@ -1,0 +1,20 @@
+Processing "@repository/capabilities/profiles/T78-controls/tuple-v2-r6.pdf" to stdout BEGIN - TestGrammar v0.81 built Sep  8 2026 00:00:00 (GNU-C linux release) pdfium
+Arlington TSV data: "@repository/.build-cache/t78-arlington-model/output"
+PDF: "@repository/capabilities/profiles/T78-controls/tuple-v2-r6.pdf"
+Info: Traditional trailer dictionary detected.
+Info: Encrypted PDF
+Info: Header is version PDF 2.0
+Info: Processing as PDF 2.0
+       2:     Trailer->Encrypt (as EncryptionStandard)
+Error: wrong value for possible values: Length (EncryptionStandard) should be: integer [fn:Eval(((@V==1) && (@Length==40)) || ((@V==2) && ((@Length==40) || (@Length==128))) || ((@V==4) && (@Length==128)) || ((@V==5) && (@Length==256)))] in PDF 2.0 and is integer==256
+Info: detected a dictionary key version-based feature that was deprecated in PDF 2.0 (using PDF 2.0) for EncryptionStandard/Length
+Error: wrong value for possible values: R (EncryptionStandard) should be: integer [fn:Eval(((@V==1) && ((@R==2) || (@R==3))) || ((@V==2) && (@R==3)) || ((@V==4) && (@R==4)) || ((@V==5) && ((@R==5) || (@R==6))))] in PDF 2.0 and is integer==6
+       4:     Trailer->Info (as DocInfo)
+Info: detected a dictionary key version-based feature that was deprecated in PDF 2.0 (using PDF 2.0) for DocInfo/Title
+       8:         Trailer->Encrypt (as EncryptionStandard)->CF (as CryptFilterMap)->StdCF (as CryptFilter)
+Error: wrong value for possible values: CFM (CryptFilter) should be: name [fn:Eval(((trailer::Encrypt::@V==4) && ((@CFM==V2) || (@CFM==AESV2))) || ((trailer::Encrypt::@V==5) && (@CFM==AESV3)))] in PDF 2.0 and is name==AESV3
+Info: detected a dictionary key version-based feature that was deprecated in PDF 2.0 (using PDF 2.0) for CryptFilter/Length
+Info: Latest Arlington object was PDF 1.5 (EncryptionStandard/CF) compared using PDF 2.0
+END
+
+DONE - 1 files processed

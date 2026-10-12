@@ -87,7 +87,11 @@ stream；每个目标都会得到 `COMMITTED`、`FAILED` 或
 `REWRITE` 发布完整替换文件。`INCREMENTAL` 要求已有 primary Source，保持
 Source 的全部字节作为不变前缀，并按版本 1 命令策略追加非空修订。T03 还提供显式
 取消、期限和不携带路径、文件名、内容、元数据、凭据或后端异常的进度阶段。
-不可变的 `WorkflowEnvironment` 持有期限检查所需的 Clock；成功的
+不可变的 `WorkflowEnvironment` 持有绝对期限检查所需的 Clock。耗时上限、剩余
+Provider 时间预算和耗时收据默认使用 `System.nanoTime`，不受系统时钟跳变影响。
+显式 `withClock(clock)` 或 `.clock(clock)` 保留确定性的逻辑耗时语义；同时设置
+`.monotonicTicker(System::nanoTime)` 可使耗时独立于自定义 Clock，也可注入纳秒
+ticker 进行测试。成功的
 `WorkflowOutcome` 会给出 capability ID、进程内执行配置、Save Mode、安全
 诊断和每个目标的收据。PDFBox 仅作为 `pdf-document` 的内部实现依赖，不会
 出现在公开接口中。
@@ -1018,6 +1022,50 @@ Worker 的实际 Unix-domain 连接/监听拒绝。独立策略验收 JVM 与允
 
 计量内存不等于 JVM 堆或进程 RSS，堆/direct-memory 上限也不覆盖全部原生分配。
 这不认证内核沙箱、容器、任意字节码或物理安全擦除。Windows/macOS 未认证，
-且不是 Foundation 0.1.0 的发布阻断项。T22 恢复/规模继续保持 experimental。
+且不是 Foundation 0.1.0 的发布阻断项。T22 恢复/规模由独立认证契约限定，见下文。
 复现命令、所有权和清理边界见[T21 认证契约](../t21-certification.md)及
 [英文 Worker 指南](../hardened-worker.md)。
+
+## Worker 恢复与有界规模（T22）
+
+[T22 认证契约](../t22-certification.md)限定四个实际 Ubuntu 24.04/Linux x86-64
+Temurin JDK 8/11/17/21 环境。每个 HARDENED_WORKER 环境保留 syntax、standards、
+semantic、visual 和 contract 五条记录；共二十条，全部绑定同一最终候选及真实工具、
+启动器和运行类路径。当前状态以 Foundation 证据索引为准。Windows/macOS 仍未认证。
+
+可选事务标识仅属于同一 WorkflowEnvironment 的有限内存账本。lookupTransaction
+返回 RUNNING、RECOVERABLE、COMPLETED 或 FAILED 与声明顺序的发布收据。仅符合条件
+且全部 Target 为 NOT_ATTEMPTED 的恢复失败允许调用方重试。全部 Path/流已提交后
+丢失确认仍为 COMPLETED；可能写出部分字节的流发布失败是终态 FAILED。最终事务
+再次提交会在回调和发布之前拒绝，不重复输出。调用方必须保留回调与可变 Path 的
+逻辑意义，并在重试前恢复借用 Source 的读取位置；没有自动重试、持久恢复、跨环境
+全局身份或跨 Target 原子性。现有公共 Facade 文档行为实际运行 IN_PROCESS，恢复和
+资源控制仍是 Native-only，不增加没有 Reference Suite 对应项的映射。
+
+收到认证的 FINISHED 后，父进程最多给予 30 秒退出宽限，覆盖 JVM 关闭、内核退出和
+父进程观察退出的调度延迟。取消、调用方 deadline、五分钟默认总耗时上限和独立
+watchdog 仍然生效；确认子进程成功退出后才允许发布。退出等待超限或被中断时，安全
+诊断保留 FINISHED 后耗时、子进程是否仍存活、等待次数及最长轮询、可用 PID 和有限
+Linux 进程/线程状态；不可用的信息明示为 unavailable，不保留路径、命令行、环境、
+线程名或原始异常。真实 30 秒超限回归测试使用 60 秒 JUnit timeout，其他新增退出
+用例仍限 10 秒；真正卡住的关闭过程可能先触发现有普通测试的 10 秒 timeout。
+FINISHED 后所有退出失败均保留上述诊断及可用的退出码，同时保持原失败码、能力标识、
+事务标识和发布收据。真实非零退出回归验证子进程已退出、退出码仍可诊断且未发布。
+
+三个 opt-in 规模配置在每个认证环境实际运行：发布并重开恰好 5,000 页；消费恰好
+1,073,741,824 字节的单页 PDF；并发上限设为二，两个工作流准入，首个超限请求在
+回调/发布前失败，容量释放后可恢复重试。输入的每个真实消费字节以无损 gzip 留存，
+各独立工具恢复完整 1-GiB 输入后检查；只读配置没有 Target，也没有发布 PDF。
+保留命令构造、长度/哈希、实际输出、公共页数、收据、完整有限策略、计量高水位、
+临时溢写、耗时、流所有权和清理。普通 CI 跳过 opt-in 用例不能作为规模认证。
+
+独立语义检查实际全部空白页与 Page tree；standards 复用适用的 T03 二十二条空白
+PDF 规则及检出的负例，不声称字体、排版或更宽的合规认证。visual 使用实际
+5,000 页文件的第 1、2,500、5,000 页，以及其他实际单页文件，按原 144-DPI 白色
+opaque-sRGB、AE 零、零 fuzz 规则比较。该明示抽样不等于全文视觉或 #88 渲染认证。
+计量 Folio 内存/存储不等于 JVM 堆、RSS、原生内存、内核/容器或安全擦除保证。
+
+在声明环境执行 `./scripts/t22-scale all`。可用 `FOLIO_T22_OUTPUT` 指定已存在的
+空留存目录。冻结源码、契约、清单和生成视图后 stage，再按依赖顺序刷新已有认证，
+最后 certify recovery；后续候选变更需重新暂存和认证。#83 不完成整个 Foundation
+发布，也不授权推送、关闭议题或发布。

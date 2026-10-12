@@ -1,0 +1,7 @@
+Local CPython subprocess uses monotonic deadlines.
+Source: /usr/lib/python3.13/subprocess.py
+from time import monotonic as _time
+                endtime = _time() + timeout
+            return endtime - _time()
+            endtime = _time() + timeout
+                endtime = _time() + timeout

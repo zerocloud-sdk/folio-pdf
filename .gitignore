@@ -45,6 +45,9 @@ Thumbs.db
 # T82 Worker certification and current predecessor observer logs are retained evidence.
 !/capabilities/evidence/foundation/T82-*/**/*.log
 !/capabilities/evidence/T82-*/**/*.log
+# T83 recovery/scale certification retains original producer and validation logs.
+!/capabilities/evidence/foundation/T83-*/**/*.log
+!/capabilities/evidence/T83-*/**/*.log
 # T81 publishes only the final-r2 certification and curated delivery records; superseded attempts and candidate payloads stay local.
 /capabilities/evidence/foundation/T81-initial/
 /capabilities/evidence/foundation/T81-final/
@@ -67,5 +70,8 @@ Thumbs.db
 /capabilities/evidence/T82-delivery/development-candidate-r2/*.zip.part*
 /capabilities/evidence/T82-delivery/development-candidate-r3/*.zip
 /capabilities/evidence/T82-delivery/development-candidate-r3/*.zip.part*
+# T83 keeps superseded development artifacts locally; delivery logs and the final indexed certification remain reviewable.
+/capabilities/evidence/foundation/T83-development*/
+/capabilities/evidence/T83-delivery/candidate-final-r1/*.zip.part*
 hs_err_pid*
 replay_pid*

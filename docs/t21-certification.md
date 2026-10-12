@@ -100,8 +100,9 @@ Windows x86-64 and macOS x86-64/arm64 remain uncertified and nonblocking for
 Foundation 0.1.0. Modeled Folio memory/storage accounting, JVM heap/direct
 ceilings, CPU/descriptors and the monotonic Worker watchdog retain distinct
 guarantees. This does not establish full process RSS/native-memory, kernel,
-container, arbitrary-bytecode or physical secure-erasure guarantees. #83
-recovery/scale and other downstream capabilities remain experimental.
+container, arbitrary-bytecode or physical secure-erasure guarantees. Issue #83
+recovery/scale uses the separate [T22 certification contract](t22-certification.md);
+other downstream capabilities retain their own gates.
 
 Select the explicit validated HarfBuzz and Ubuntu Python installations and
 writable Maven cache. Then use fresh output directories:

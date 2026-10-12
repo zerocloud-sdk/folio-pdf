@@ -138,6 +138,13 @@ final class VisualProfile {
         PageWorkflowFamily pageWorkflow = PageWorkflowFamily.from(profileId);
         int pageNumber = 1;
         int pageCount = 1;
+        if (profileId.equals("T22-worker-recovery-scale-pages")) {
+            pageNumber = positiveInt(properties, "PAGE_SELECTION");
+            pageCount = positiveInt(properties, "PAGE_COUNT");
+            if (pageCount != 5000 || !Arrays.asList(1, 2500, 5000).contains(pageNumber)) {
+                throw new IOException("T22 requires the declared first, middle and final pages of the actual 5000-page artifact");
+            }
+        }
         if (profileId.equals("T24-paragraph-composition") || profileId.startsWith("T25-paragraph-")
                 || profileId.equals("T26-table-composition") || profileId.equals("T27-table-pagination")
                 || profileId.startsWith("T28-unicode-") || shaping || pageWorkflow != null) {
@@ -241,6 +248,7 @@ final class VisualProfile {
                 T03_COLOR_POLICY,
                 T03_FONT_POLICY,
                 T03_ANTIALIASING_POLICY));
+        policies.put("T22-worker-recovery-scale-pages", policies.get(T03_PROFILE));
         policies.put(T18_PROFILE, new RenderingPolicy(
                 OPAQUE_SRGB_COLOR_POLICY,
                 NO_FONT_RESOURCES_POLICY,

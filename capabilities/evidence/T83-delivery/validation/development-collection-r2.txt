@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/capabilities/evidence/T83-delivery/development-collection.py", line 36, in <module>
+    reports = module.collect_reports(root, scope / 'observations', 'recovery', 'HARDENED_WORKER')
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 746, in collect_reports
+    return collect_recovery_reports(root, run, execution_profile)
+  File "/workspace/folio-pdf/scripts/t22_foundation_reports.py", line 370, in collect_reports
+    fresh = compare_originals(root, files, replay, plan, module, normalize_extra)
+  File "/workspace/folio-pdf/scripts/t20_foundation_reports.py", line 212, in compare_originals
+    require(left == right, 'original findings/observations differ from live replay: ' + name)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/folio-pdf/scripts/t20_foundation_reports.py", line 26, in require
+    raise ValueError('T20 ' + message)
+ValueError: T20 original findings/observations differ from live replay: scale/concurrency/concurrent-0/page-1/visual.md

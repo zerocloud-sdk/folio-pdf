@@ -19,6 +19,18 @@ final class ExternalProcess {
     private ExternalProcess() {
     }
 
+    /** Closed suite budgets do not change the maximum for an individual tool. */
+    enum CoordinatorBudget {
+        FIFTEEN_MINUTES(900000),
+        THIRTY_MINUTES(1800000);
+
+        private final long maximumTimeoutMillis;
+
+        CoordinatorBudget(long maximumTimeoutMillis) {
+            this.maximumTimeoutMillis = maximumTimeoutMillis;
+        }
+    }
+
     static ProcessResult run(Path executable, Path directory, String... arguments)
             throws IOException, InterruptedException {
         return run(executable, directory, 30000, 4 * 1024 * 1024, arguments);
@@ -32,9 +44,17 @@ final class ExternalProcess {
     /** Runs a repository-owned suite coordinator whose individual checks retain their own bounds. */
     static ProcessResult runCoordinator(Path executable, Path directory, long timeoutMillis, int maxOutputBytes,
             String... arguments) throws IOException, InterruptedException {
+        return runCoordinator(executable, directory, timeoutMillis, maxOutputBytes,
+                CoordinatorBudget.FIFTEEN_MINUTES, arguments);
+    }
+
+    /** Selects a fixed finite maximum for a complete repository-owned observer batch. */
+    static ProcessResult runCoordinator(Path executable, Path directory, long timeoutMillis, int maxOutputBytes,
+            CoordinatorBudget budget, String... arguments) throws IOException, InterruptedException {
+        if (budget == null) { throw new IOException("An acceptance coordinator budget is required"); }
         Path privateDirectory = Files.createTempDirectory("folio-acceptance-private-");
         try {
-            return runBounded(executable, directory, timeoutMillis, 900000, maxOutputBytes,
+            return runBounded(executable, directory, timeoutMillis, budget.maximumTimeoutMillis, maxOutputBytes,
                     privateDirectory, arguments);
         } finally {
             // The Java owner also removes files when the coordinator cannot unwind.

@@ -9,8 +9,9 @@ import java.time.Duration;
  * no consumption in that dimension. Exact consumption of a numeric boundary
  * succeeds and the first excess fails with a stable
  * {@link DocumentFailureCode}. Concurrency is an admission ceiling. The
- * elapsed limit is measured with the {@link java.time.Clock} owned by the
- * {@link WorkflowEnvironment}; it composes with an absolute request deadline
+ * elapsed limit uses the {@link WorkflowEnvironment}'s monotonic nanosecond
+ * ticker by default. Explicit Clock-only environments retain logical elapsed
+ * time for deterministic execution. It composes with an absolute request deadline
  * by stopping at whichever limit is observed first.</p>
  *
  * <p>These cooperative limits cover project-owned work in the trusted

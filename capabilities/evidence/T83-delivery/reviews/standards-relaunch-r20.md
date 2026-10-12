@@ -1,0 +1,13 @@
+Standards review of issue #83, prefreeze relaunch r20. Fixed point and HEAD: `42fe5c797711070b319b9419e14fcb7adfa98735`; no intervening commits. Reviewed `git diff 42fe5c797711070b319b9419e14fcb7adfa98735 -- <source paths>` together with relevant untracked Java/Python sources, T22 profiles/contracts, English/Chinese documentation, and the five new r20 delivery helpers. Read the sole execution contract and both orchestrator investigations; scratch and contracts remained read-only.
+
+Zero actionable documented-standard breaches and zero actionable heuristic findings remain.
+
+`WorkflowEnvironment`, `WorkflowResourceContext` and `DocumentWorkflow` keep timing authority within the Document Engine. The explicit nanosecond ticker has a demonstrated need; the Clock-only compatibility path is documented and setter order is explicit. `WorkerMessages` rejects relative child deadlines instead of granting a separate wall-clock budget, consistent with parent-owned timing in [ADR-0024](/workspace/folio-pdf/docs/adr/0024-proxy-document-sessions-across-the-worker-seam.md:5). The new elapsed tests assert public outcomes, receipts, reopened documents and cleanup; initialization assertions use the authorized real codec boundary, consistent with [CONTRIBUTING.md](/workspace/folio-pdf/CONTRIBUTING.md:42).
+
+The 30-second Worker exit grace remains bounded by cancellation, deadlines and elapsed policy. Diagnostics retain bounded state without paths, content or implementation exceptions, preserving [ADR-0025](/workspace/folio-pdf/docs/adr/0025-define-resource-ownership-and-failure-contracts.md:3) and [ADR-0031](/workspace/folio-pdf/docs/adr/0031-isolate-worker-data-and-secret-material.md:3).
+
+The 180-case T22 profile, shared mandatory runner, original scale artifacts and strict collector retain acceptance/tool separation and separate evidence chains under [ADR-0023](/workspace/folio-pdf/docs/adr/0023-require-independent-acceptance-evidence-chains.md:3). Fresh r20 helpers preserve predecessor identities, freeze review/development evidence, measure gate duration monotonically with paired wall diagnostics, and stop on failed verification/certification. No report treats prior PASS as current certification.
+
+Considered all twelve skill smells as judgment calls. Shared execution/collection logic avoids unjustified duplication; the ticker and bounded diagnostics add required behavior, not speculative hooks. Domain vocabulary and documented recovery boundaries remain consistent.
+
+This is a source review, not gate evidence. Fresh full verification, JDK 8/11/17/21 matrix, actual scale and all fourteen obligations remain pending; [CONTRIBUTING.md](/workspace/folio-pdf/CONTRIBUTING.md:46) still requires verification before submission.

@@ -50,6 +50,10 @@ final class HardenedWorkerEngine {
     static final String CAPABILITY_ID = "document.hardened-worker";
 
     private static final long RESPONSE_POLL_MILLIS = 25L;
+    // JVM teardown, kernel exit and parent reaper observation are not real-time.
+    // Keep cancellation, caller deadlines and the overall elapsed bound active
+    // while allowing a finished child to complete those steps on a stalled host.
+    private static final long WORKER_EXIT_GRACE_SECONDS = 30L;
     private static final int WORKER_OPEN_FILE_LIMIT = 64;
     private static final int MAXIMUM_CLASS_INVENTORY_BYTES = 64 * 1024;
     private static final String DOCUMENT_CLASS_INVENTORY =
@@ -259,6 +263,7 @@ final class HardenedWorkerEngine {
             WorkerProtocol.Frame finished = connection.exchange(
                     WorkerProtocol.FINISH,
                     new byte[0]);
+            long finishedReceivedNanos = System.nanoTime();
             String capabilityId;
             try {
                 requireOpcode(finished, WorkerProtocol.FINISHED);
@@ -268,7 +273,7 @@ final class HardenedWorkerEngine {
             } finally {
                 finished.clear();
             }
-            connection.requireExited();
+            connection.requireExited(finishedReceivedNanos);
             resources.mergeWorkerUsage(connection.requireWorkerResourceUsage());
 
             List<Path> products = new ArrayList<Path>(targetPaths.size());
@@ -2026,37 +2031,146 @@ final class HardenedWorkerEngine {
             process.destroyForcibly();
         }
 
-        void requireExited() throws DocumentFailure {
-            long waitUntil = System.nanoTime()
-                    + TimeUnit.SECONDS.toNanos(1L);
-            while (process.isAlive()) {
-                try {
-                    if (process.waitFor(
-                            RESPONSE_POLL_MILLIS,
-                            TimeUnit.MILLISECONDS)) {
-                        break;
+        void requireExited(long finishedReceivedNanos) throws DocumentFailure {
+            long waitUntil = finishedReceivedNanos
+                    + TimeUnit.SECONDS.toNanos(WORKER_EXIT_GRACE_SECONDS);
+            long iterations = 0L;
+            long maximumPollNanos = 0L;
+            try {
+                while (process.isAlive()) {
+                    long pollStartedNanos = System.nanoTime();
+                    iterations++;
+                    try {
+                        if (process.waitFor(
+                                RESPONSE_POLL_MILLIS,
+                                TimeUnit.MILLISECONDS)) {
+                            break;
+                        }
+                        resources.checkpoint();
+                        // The child may have exited while the parent was in
+                        // checkpoint or descheduled after the timed wait.
+                        if (System.nanoTime() - waitUntil >= 0L && process.isAlive()) {
+                            throw WorkerCodecIO.workerFailure(
+                                    DocumentFailureCode.WORKER_TERMINATED,
+                                    "The Worker did not terminate after completing its response.");
+                        }
+                    } catch (InterruptedException failure) {
+                        Thread.currentThread().interrupt();
+                        throw WorkerCodecIO.workerFailure(
+                                DocumentFailureCode.WORKER_TERMINATED,
+                                "The Worker termination wait was interrupted.");
+                    } finally {
+                        maximumPollNanos = Math.max(maximumPollNanos,
+                                System.nanoTime() - pollStartedNanos);
                     }
-                } catch (InterruptedException failure) {
-                    Thread.currentThread().interrupt();
-                    process.destroyForcibly();
-                    throw WorkerCodecIO.workerFailure(
-                            DocumentFailureCode.WORKER_TERMINATED,
-                            "The Worker termination wait was interrupted.");
                 }
-                resources.checkpoint();
-                if (System.nanoTime() - waitUntil >= 0L) {
-                    process.destroyForcibly();
-                    throw WorkerCodecIO.workerFailure(
-                            DocumentFailureCode.WORKER_TERMINATED,
-                            "The Worker did not terminate after completing its response.");
+                if (process.exitValue() != 0) {
+                    throw stoppedOrTerminated();
                 }
+                if (!stopReason.compareAndSet(null, StopReason.COMPLETED)) {
+                    throw stoppedOrTerminated();
+                }
+            } catch (DocumentFailure failure) {
+                throw exitWaitFailure(failure, finishedReceivedNanos, iterations, maximumPollNanos);
             }
-            if (process.exitValue() != 0) {
-                throw stoppedOrTerminated();
+        }
+
+        private DocumentFailure exitWaitFailure(
+                DocumentFailure failure,
+                long finishedReceivedNanos,
+                long iterations,
+                long maximumPollNanos) {
+            // Snapshot before killing the child; never retain its command line,
+            // environment, filenames, thread names, content or raw exceptions.
+            try {
+                boolean alive = process.isAlive();
+                String diagnostic = failure.getDiagnostic()
+                        + " elapsedSinceFinishedMillis=" + TimeUnit.NANOSECONDS.toMillis(
+                                System.nanoTime() - finishedReceivedNanos)
+                        + "; exitGraceSeconds=" + WORKER_EXIT_GRACE_SECONDS
+                        + "; childAlive=" + alive
+                        + "; waitIterations=" + iterations
+                        + "; maximumPollMillis=" + TimeUnit.NANOSECONDS.toMillis(maximumPollNanos)
+                        + "; childExitCode=" + childExitCode(process)
+                        + "; " + childStateDiagnostic(process);
+                DocumentFailure reported = new DocumentFailure(
+                        failure.getCode(), failure.getCapabilityId(), diagnostic,
+                        failure.getPublicationReceipts(), failure.getTransactionId().orElse(null));
+                for (Throwable suppressed : failure.getSuppressed()) {
+                    reported.addSuppressed(suppressed);
+                }
+                return reported;
+            } finally {
+                process.destroyForcibly();
             }
-            if (!stopReason.compareAndSet(null, StopReason.COMPLETED)) {
-                throw stoppedOrTerminated();
+        }
+
+        private static String childExitCode(Process process) {
+            try {
+                return Integer.toString(process.exitValue());
+            } catch (IllegalThreadStateException alive) {
+                return "unavailable";
             }
+        }
+
+        private static String childStateDiagnostic(Process process) {
+            long pid = childPid(process);
+            if (pid <= 0L) {
+                return "childPid=unavailable; childState=unavailable; threadStates=unavailable";
+            }
+            Path root = Paths.get("/proc", Long.toString(pid));
+            String state = procState(root.resolve("stat"));
+            StringBuilder threads = new StringBuilder();
+            int count = 0;
+            // Linux procfs state only, at most eight tasks and 512 bytes each.
+            // Missing procfs/access or an exit racing the snapshot is explicit.
+            try (java.nio.file.DirectoryStream<Path> tasks = Files.newDirectoryStream(root.resolve("task"))) {
+                for (Path task : tasks) {
+                    if (count == 8) { break; }
+                    if (count++ != 0) { threads.append(','); }
+                    threads.append(procState(task.resolve("stat")));
+                }
+            } catch (IOException | RuntimeException unavailable) {
+                threads.append(threads.length() == 0 ? "unavailable" : ",unavailable");
+            }
+            if (threads.length() == 0) { threads.append("unavailable"); }
+            return "childPid=" + pid + "; childState=" + state
+                    + "; threadStates=" + threads + "; sampledThreads=" + count;
+        }
+
+        private static long childPid(Process process) {
+            try {
+                // Reflectively use the public Java 9+ API without linking it
+                // into the Java 8 runtime closure.
+                return ((Long) Process.class.getMethod("pid").invoke(process)).longValue();
+            } catch (NoSuchMethodException java8) {
+                try {
+                    java.lang.reflect.Field pid = process.getClass().getDeclaredField("pid");
+                    pid.setAccessible(true);
+                    return ((Number) pid.get(process)).longValue();
+                } catch (ReflectiveOperationException | RuntimeException unavailable) {
+                    return -1L;
+                }
+            } catch (ReflectiveOperationException | RuntimeException unavailable) {
+                return -1L;
+            }
+        }
+
+        private static String procState(Path stat) {
+            try (InputStream input = Files.newInputStream(stat)) {
+                byte[] bytes = new byte[512];
+                int count = input.read(bytes);
+                if (count <= 0) { return "unavailable"; }
+                String value = new String(bytes, 0, count, StandardCharsets.US_ASCII);
+                int end = value.lastIndexOf(')');
+                if (end >= 0 && end + 2 < value.length()) {
+                    char state = value.charAt(end + 2);
+                    if ("RSDTtXZPIWK".indexOf(state) >= 0) { return Character.toString(state); }
+                }
+            } catch (IOException | RuntimeException unavailable) {
+                // Diagnostics are best-effort and cannot replace the failure.
+            }
+            return "unavailable";
         }
 
         private void stop(StopReason reason) {

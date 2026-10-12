@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -138,16 +137,10 @@ final class WorkerMessages {
                 input.readString(),
                 "Save Mode");
         String primarySourceName = input.readNullableString();
-        Instant deadline = null;
         if (input.readBoolean()) {
-            long seconds = input.readLong();
-            int nano = input.readInt();
-            try {
-                deadline = Instant.now().plus(
-                        Duration.ofSeconds(seconds, nano));
-            } catch (RuntimeException failure) {
-                throw rejected("The Worker deadline is invalid.");
-            }
+            // Initialization v2 always leaves deadlines with the parent. A
+            // relative budget must never become a child wall-clock deadline.
+            throw rejected("The Worker deadline must remain parent-owned.");
         }
 
         List<PasswordCredential> credentials =
@@ -221,9 +214,6 @@ final class WorkerMessages {
             net.zerocloud.pdf.provider.ProviderMetadata shaping = WorkerShapingCodec.read(input, request);
             input.requireFullyConsumed();
 
-            if (deadline != null) {
-                request.deadline(deadline);
-            }
             if (outputPolicy != null) {
                 request.outputPolicy(outputPolicy);
             }

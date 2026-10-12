@@ -1,0 +1,22 @@
+{
+  "result": "pass",
+  "fixture-bytes": 9,
+  "expected-sha256": "25718360e05d3c2d0963d1381e9dd4dae5fca789244ee4b9f861adcc0cc96218",
+  "observations": [
+    {
+      "same-path": true,
+      "same-length": true,
+      "staged-sha256": "25718360e05d3c2d0963d1381e9dd4dae5fca789244ee4b9f861adcc0cc96218",
+      "accepted": true
+    },
+    {
+      "same-path": true,
+      "same-length": true,
+      "staged-sha256": "92e78d0b032962f47792a9fa95fd981ef63e1e3ef074d536d6304c75eddbe29f",
+      "accepted": false
+    }
+  ],
+  "isolated-commits-created": 0,
+  "target-head-and-index-unchanged": true,
+  "predicate": "Compare SHA-256 and length of actual Git staged blobs to immutable ownership rows; a same-length evidence alteration must fail."
+}

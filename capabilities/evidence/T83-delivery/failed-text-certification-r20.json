@@ -1,0 +1,32 @@
+{
+  "recorded-at": "2026-10-11T14:50:48.084342+00:00",
+  "candidate": "candidate-final-r10",
+  "scope": "capabilities/evidence/foundation/T83-final-r20/text",
+  "exit-code": 1,
+  "certifications-exported": 0,
+  "original-files": 58245,
+  "original-bytes": 366911130,
+  "manifest": {
+    "path": "capabilities/evidence/T83-delivery/failed-text-certification-r20.tsv.gz",
+    "sha256": "96b3920d00952808d2272d4259777e63c07de5b6816e7235f1f3b25eb4d71e4f"
+  },
+  "index-unchanged": true,
+  "prior-index": {
+    "path": "capabilities/evidence/T83-delivery/refresh-final-r20/text-prior-index.yaml",
+    "sha256": "f156bd6f938fec74cc09c9bb8db3dfb7f1435ea771daa1f2950adf5335ee2ba3"
+  },
+  "current-index": {
+    "path": "capabilities/foundation-evidence.yaml",
+    "sha256": "f156bd6f938fec74cc09c9bb8db3dfb7f1435ea771daa1f2950adf5335ee2ba3"
+  },
+  "gate": {
+    "path": "capabilities/evidence/T83-delivery/validation/refresh-final-r20-text-result.json",
+    "sha256": "ca495ac3a77f672a9a65e1e2260ed551ccca0d8590f1bd7f4d0e3a028856d946"
+  },
+  "failure": {
+    "path": "capabilities/evidence/foundation/T83-final-r20/text/jdk11-in_process/observations/native-uncertain-geometry/programs/failed-program-process.txt",
+    "sha256": "83182499075be8e27ddcc68bd1bf7dcacf9fefbbb84e3d4101fad094dd8ae89d"
+  },
+  "finding": "T13 native uncertain-geometry program standards became INDETERMINATE after one qualified content-control observer hit unchanged RLIMIT_CPU soft 5s/hard 10s during platform.python_version before input inspection. Syntax/semantic/visual and all negative chains passed; all126 contract tests passed on completed JDK8 and JDK11 scopes.",
+  "disposition": "Preserve originals; replay exact control as diagnostics only, without relaxing limits or exporting partial text. Frozen candidate10 source and successful five-obligation current index remain unchanged."
+}

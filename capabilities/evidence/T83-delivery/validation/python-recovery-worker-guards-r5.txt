@@ -1,0 +1,19 @@
+...........................E...
+======================================================================
+ERROR: test_resealed_recovery_child_findings_keep_exact_artifact_identity (test_t22_foundation.T22FoundationTest.test_resealed_recovery_child_findings_keep_exact_artifact_identity)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/tests/test_t22_foundation.py", line 184, in test_resealed_recovery_child_findings_keep_exact_artifact_identity
+    seal(run); reports.published_document_observations(run, RetainedFiles(run))
+                                                            ~~~~~~~~~~~~~^^^^^
+  File "/workspace/folio-pdf/scripts/t13_foundation_reports.py", line 136, in __init__
+    self.verify()
+    ~~~~~~~~~~~^^
+  File "/workspace/folio-pdf/scripts/t13_foundation_reports.py", line 185, in verify
+    raise ValueError('Incomplete T13 original retained receipt')
+ValueError: Incomplete T13 original retained receipt
+
+----------------------------------------------------------------------
+Ran 31 tests in 0.496s
+
+FAILED (errors=1)

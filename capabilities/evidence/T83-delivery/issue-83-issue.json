@@ -1,0 +1,38 @@
+{
+  "body": "## Parent\n\n- #33 \u2014 [T32] Certify the Foundation 0.1.0 release candidate\n- Governing specification: #1\n\n## What to build\n\nGive operators verifiable transaction recovery and publication status together with explicit, exercised Foundation scale bounds.\n\nOwned capability coverage: `document.hardened-worker.recovery-scale`.\n\nThe Native behavior is already substantially implemented at the planning baseline. Reuse verified implementation and existing independent corpora; complete the declared gaps, migration surface and certification instead of rebuilding the feature.\n\nMaintainer scope amendment, 2026-09-08: certify only currently verifiable environments. The required scope is the actual Ubuntu 24.04 / Linux x86-64 environments exercised with JDK 8, 11, 17 and 21; exact vendor/build, image and tool identities must accompany evidence. Windows x86-64 and macOS x86-64/arm64 remain explicitly uncertified and are not release blockers for Foundation 0.1.0. This supersedes the earlier four-OS-platform requirement for this release only; every other #1/#33 contract and non-goal remains in force.\n\n## Acceptance criteria\n\n- [ ] Certify environment-local transaction identity/status, request-envelope conflicts, bounded retained recovery state, uncertain-publication lookup and at-most-authorized retry behavior through public requests.\n- [ ] Exercise actual multi-frame values, interruption/crash/malformed input and publication failures without duplicate output, fabricated durability or cross-Target atomicity.\n- [ ] Run the opt-in 5,000-page, exact 1-GiB and configured-concurrency profiles with retained input/output identities, measured modeled high-water marks, temporary spill and cleanup evidence; ordinary CI skips are not scale certification.\n- [ ] Record exact tested resources, execution limits and Linux/JDK environment, keeping the scope bounded and the project-specific recovery surface explicit.\n- [ ] All mandatory evidence for this slice is tied to the actual tested artifacts and declared environment. Retain separate independent syntax, standards, semantic and visual records and negative controls; a missing tool, uncovered required rule or mismatched identity cannot become PASS by changing labels or producer names.\n- [ ] Matching public Native and Migration Facade behavior is verified at the highest available seam through Document Workflow outcomes, reopened files, Publication Receipts and safe failures. Avoid backend identity/private-call assertions; test the actual external Provider seam only where applicable.\n- [ ] Update the applicable Capability Matrix, Facade Surface, generated/public English contracts, Chinese usage material and clean-room provenance together. Mark only the completed, dependency-satisfied capability or subcapability compatible, and introduce no unsupported Stable stub.\n- [ ] Run the smallest relevant validation during development and the repository-mandated full verification before submission; shipped-code/build-compatibility changes also pass the existing JDK matrix. Resolve applicable Standards/Spec review findings against the session's recorded implementation baseline.\n- [ ] Keep Java 8 runtime compatibility, explicit resource ownership and clean-room licensing. Acceptance-only tools, fonts and fixtures stay outside product runtime; do not implement downstream Forms, Trust signing, Conformance, SVG/XML, OCR, Sanitization or Office tickets.\n\n## Blocked by\n\n- #82 \u2014 [T32.14] Certify the Hardened Worker boundary on the declared Linux profiles\n",
+  "comments": [],
+  "labels": [
+    {
+      "id": "LA_kwDOTz_uB88AAAACvrAyiQ",
+      "name": "ready-for-agent",
+      "description": "Fully specified and ready for an implementation agent",
+      "color": "0E8A16"
+    }
+  ],
+  "number": 83,
+  "state": "OPEN",
+  "title": "[T32.15] Certify Worker recovery and bounded Foundation scale",
+  "dependencies": {
+    "blockedBy": {
+      "nodes": [
+        {
+          "number": 82,
+          "title": "[T32.14] Certify the Hardened Worker boundary on the declared Linux profiles",
+          "state": "CLOSED"
+        }
+      ]
+    },
+    "blocking": {
+      "nodes": [
+        {
+          "number": 88,
+          "title": "[T32.20] Certify Rendering and its Foundation migration surface",
+          "state": "OPEN"
+        }
+      ]
+    }
+  },
+  "dependencyComments": {
+    "nodes": []
+  }
+}

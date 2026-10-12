@@ -2328,7 +2328,7 @@ No preview additions (included with all stable surfaces) are declared.
 
 - Behavioral capability: [`document.hardened-worker.recovery-scale`](capability-matrix.md#capability-document_dot_hardened_dash_worker_dot_recovery_dash_scale)
 - Deferred ticket: `T22`
-- Reason: Environment-local transaction identity/status, bounded recovery and resource usage are project-specific controls with no Reference Suite counterpart. This does not exclude migration mappings for the document operations they execute. Certification remains required under #83.
+- Reason: Environment-local transaction identity/status, bounded recovery and resource usage are project-specific controls with no Reference Suite counterpart. This does not exclude migration mappings for the document operations they execute. T22 observes existing public lifecycle, ownership, reopened files and ordered publication failures through the actual IN_PROCESS Facade; its Native Worker controls are certified separately.
 
 <a id="excluded-capability-document_dot_hostile_dash_input_dash_limits"></a>
 ### `document.hostile-input-limits`

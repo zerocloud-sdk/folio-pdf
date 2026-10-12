@@ -25,7 +25,9 @@ with current candidate, launcher and independent evidence identities in the
 identity and status lookup, bounded authenticated multi-frame values, public
 modeled resource high-water marks, and generated 5,000-page, exact 1-GiB, and
 configured-concurrency scale profiles. Recovery is finite and in-memory, not
-durable or automatic.
+durable or automatic. Issue #83 certifies the actual bounded workloads and recovery
+controls on the same four declared environments; see the
+[T22 certification contract](docs/t22-certification.md).
 
 T70 certifies `document.blank.create-publish-reopen` and promotes the 12 T04
 lifecycle mappings into `pdf-migration-itext7`. Preview currently contains the
@@ -384,7 +386,8 @@ count- and per-record-bounded transaction retention and retry rules, target-spec
 multi-frame transport, controlled scale profiles, configuration, supported
 Linux/JDK envelope, and explicit limits on the certification claim. The base
 Worker has separate syntax, standards, semantic, visual and contract records;
-the Facade observations remain IN_PROCESS. Recovery/scale remains experimental,
+the Facade observations remain IN_PROCESS. The recovery/scale profile retains
+its own twenty candidate-bound records under [T22 certification](docs/t22-certification.md),
 and Windows/macOS remain uncertified. Selecting the
 profile never silently falls back to in-process execution. Remote Capability
 Providers remain parent-brokered and separately require Remote Disclosure
@@ -553,6 +556,13 @@ deterministic deadline Clock is configured through
 `WorkflowEnvironment.withClock(clock)` or `WorkflowEnvironment.builder()` and
 supplied when constructing a workflow; `DocumentWorkflow` does not accept a
 raw Clock.
+
+Elapsed limits and usage default to `System.nanoTime`, so wall-clock adjustments
+do not consume or extend the workflow budget. Explicit Clock-only environments
+retain logical elapsed time for deterministic execution; add
+`.monotonicTicker(System::nanoTime)` to keep elapsed time independent of a custom
+wall Clock, or inject a nanosecond ticker in tests. Absolute deadlines continue
+to use the environment Clock.
 
 Callers moving from the T01 request factories should follow the
 [0.x T03 migration note](docs/migrations/0.x-t03-document-workflow.md): every

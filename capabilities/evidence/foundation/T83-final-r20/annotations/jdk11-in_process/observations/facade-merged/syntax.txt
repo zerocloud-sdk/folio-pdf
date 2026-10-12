@@ -1,0 +1,36 @@
+# T74 qpdf syntax findings
+
+Input exact SHA-256: `e44ed17a7ca6fea39d894ac9b41ee78ba46a8cdc9bcbe6a3d1a6936138929b9e`
+
+Input hash policy: `SHA-256 of the exact unmodified PDF bytes`
+
+Tool: `qpdf`
+
+Tool version: `12.4.0`
+
+Distribution SHA-256: `a3bca240f3bb61efdc3a90be89d1da4ed5e125326c3458c4e62df53ff4f153e3`
+
+Final determination: `pass`
+
+## annotations.pdf
+
+Invocation: `qpdf --check annotations.pdf`
+
+`annotations.pdf` exit code: `0`
+
+### Standard output
+
+```text
+checking annotations.pdf
+PDF Version: 2.0
+File is not encrypted
+File is not linearized
+No syntax or stream encoding errors found; the file may still contain
+errors that qpdf cannot detect
+```
+
+### Standard error
+
+```text
+
+```

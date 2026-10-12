@@ -1,0 +1,9 @@
+T83_WAIT_RACE parent-checkpoint-resume child-exited-zero=true
+T83_WAIT_RACE attempt=1 failure=The Worker did not terminate after completing its response. delayed=true child-exited-zero=true output-exists=false
+Exception in thread "main" java.lang.AssertionError: Real child exited zero before parent resumed, but the termination wait rejected it
+	at net.zerocloud.pdf.T83ExitWaitRaceR4.main(T83ExitWaitRaceR4.java:85)
+Caused by: net.zerocloud.pdf.DocumentFailure: The Worker did not terminate after completing its response.
+	at net.zerocloud.pdf.DocumentFailure.withTransactionId(DocumentFailure.java:118)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:115)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:64)
+	at net.zerocloud.pdf.T83ExitWaitRaceR4.main(T83ExitWaitRaceR4.java:54)

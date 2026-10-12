@@ -7,6 +7,7 @@ import java.time.Clock;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.LongSupplier;
 import net.zerocloud.pdf.composition.ReferenceFontSet;
 import net.zerocloud.pdf.provider.CapabilityProvider;
 import net.zerocloud.pdf.provider.ProviderCatalog;
@@ -22,7 +23,9 @@ import net.zerocloud.pdf.provider.ProviderMetadata;
  * explicit reusable Reference Font Set instead of exposing them as generic
  * lookups on Document Session. The system defaults contain neither Providers
  * nor fonts and therefore cannot select a remote engine, scan installed fonts,
- * or perform implicit network access. A caller-supplied Clock and every
+ * or perform implicit network access. Defaults measure elapsed time with
+ * {@link System#nanoTime()} and absolute deadlines with the UTC system Clock.
+ * A caller-supplied Clock, monotonic ticker and every
  * registered Provider must be safe for the way the resulting environment is
  * shared. Retained transaction status is in-memory and exists only for this
  * environment's lifetime.</p>
@@ -34,6 +37,7 @@ public final class WorkflowEnvironment {
     private static final WorkflowEnvironment SYSTEM_DEFAULTS =
             new WorkflowEnvironment(
                     Clock.systemUTC(),
+                    System::nanoTime,
                     ProviderCatalog.empty(),
                     ReferenceFontSet.empty(),
                     WorkflowResourcePolicy.safeDefaults(),
@@ -44,6 +48,7 @@ public final class WorkflowEnvironment {
                     null);
 
     private final Clock clock;
+    private final LongSupplier monotonicTicker;
     private final ProviderCatalog providerCatalog;
     private final ReferenceFontSet referenceFontSet;
     private final WorkflowResourcePolicy defaultResourcePolicy;
@@ -58,6 +63,7 @@ public final class WorkflowEnvironment {
 
     private WorkflowEnvironment(
             Clock clock,
+            LongSupplier monotonicTicker,
             ProviderCatalog providerCatalog,
             ReferenceFontSet referenceFontSet,
             WorkflowResourcePolicy defaultResourcePolicy,
@@ -68,6 +74,7 @@ public final class WorkflowEnvironment {
             WorkflowResourceContext.OwnedMemoryAuthority
                     ownedMemoryAuthority) {
         this.clock = clock;
+        this.monotonicTicker = monotonicTicker;
         this.providerCatalog = providerCatalog;
         this.referenceFontSet = referenceFontSet;
         this.defaultResourcePolicy = defaultResourcePolicy;
@@ -91,7 +98,10 @@ public final class WorkflowEnvironment {
     }
 
     /**
-     * Creates an immutable environment using an explicit execution Clock.
+     * Creates an immutable environment using an explicit logical Clock for
+     * deadlines and elapsed time. This preserves deterministic clock-driven
+     * execution. For a wall Clock with independent elapsed time, use
+     * {@code builder().clock(clock).monotonicTicker(System::nanoTime)}.
      *
      * @param clock the execution clock
      * @return an environment owning the supplied Clock
@@ -99,6 +109,7 @@ public final class WorkflowEnvironment {
     public static WorkflowEnvironment withClock(Clock clock) {
         return new WorkflowEnvironment(
                 Objects.requireNonNull(clock, "clock"),
+                null,
                 ProviderCatalog.empty(),
                 ReferenceFontSet.empty(),
                 WorkflowResourcePolicy.safeDefaults(),
@@ -151,6 +162,10 @@ public final class WorkflowEnvironment {
         return clock;
     }
 
+    LongSupplier getMonotonicTicker() {
+        return monotonicTicker;
+    }
+
     ProviderCatalog getProviderCatalog() {
         return providerCatalog;
     }
@@ -189,6 +204,9 @@ public final class WorkflowEnvironment {
     public static final class Builder {
 
         private Clock clock = Clock.systemUTC();
+        private LongSupplier monotonicTicker = System::nanoTime;
+        private boolean explicitClock;
+        private boolean explicitTicker;
         private final List<CapabilityProvider> providers =
                 new ArrayList<CapabilityProvider>();
         private ReferenceFontSet referenceFontSet = ReferenceFontSet.empty();
@@ -207,13 +225,35 @@ public final class WorkflowEnvironment {
         }
 
         /**
-         * Sets the Clock used to evaluate absolute workflow deadlines.
+         * Sets the Clock used to evaluate absolute workflow deadlines and,
+         * unless an explicit monotonic ticker is configured, logical elapsed
+         * time. Use {@link #monotonicTicker(LongSupplier)} to measure elapsed
+         * time independently of this Clock. The order of these setters does
+         * not affect that choice.
          *
          * @param clock the shared deadline Clock
          * @return this builder
          */
         public Builder clock(Clock clock) {
             this.clock = Objects.requireNonNull(clock, "clock");
+            explicitClock = true;
+            return this;
+        }
+
+        /**
+         * Sets an independent, thread-safe nanosecond ticker for elapsed-time
+         * limits, remaining Provider budgets and resource usage. The default
+         * environment uses {@link System#nanoTime()}; absolute deadlines still
+         * use the configured Clock. Injected tickers must advance monotonically
+         * with the same subtraction/wraparound semantics as nanoTime and must
+         * not perform blocking work. Only differences are meaningful.
+         *
+         * @param ticker the shared monotonic nanosecond source
+         * @return this builder
+         */
+        public Builder monotonicTicker(LongSupplier ticker) {
+            monotonicTicker = Objects.requireNonNull(ticker, "ticker");
+            explicitTicker = true;
             return this;
         }
 
@@ -313,6 +353,7 @@ public final class WorkflowEnvironment {
         public WorkflowEnvironment build() {
             return new WorkflowEnvironment(
                     clock,
+                    explicitTicker || !explicitClock ? monotonicTicker : null,
                     ProviderCatalog.of(providers),
                     referenceFontSet,
                     defaultResourcePolicy,

@@ -1,0 +1,13 @@
+Captured source SHA-256: 6498a3401ca052c53563cedf1376b829aafdf113c0422b395832d7db1de2f1eb
+Captured source SHA-256: a8b1d1d0035212ad4a76301d7399994048a1c0812728e96ed3cd400550ea0761
+Comparing the actual captured input properties through compare_originals/normalize_extra
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/capabilities/evidence/T83-delivery/diagnostics/recovery-input-memory-repro-r1.py", line 39, in <module>
+    compare_originals(root, RetainedFiles(original), replay, {}, worker.foundation(), recovery.normalize_extra)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/folio-pdf/scripts/t20_foundation_reports.py", line 212, in compare_originals
+    require(left == right, 'original findings/observations differ from live replay: ' + name)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/folio-pdf/scripts/t20_foundation_reports.py", line 26, in require
+    raise ValueError('T20 ' + message)
+ValueError: T20 original findings/observations differ from live replay: scale/input/observations.properties

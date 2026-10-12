@@ -2061,17 +2061,15 @@ capabilities:
       - Parent-observed publication progress retains declaration-ordered receipts. Loss of the caller acknowledgement after every Path or stream Target commits resolves as COMPLETED through lookup and cannot replay. Any stream write that may have emitted partial bytes is FAILED with partialOutputPossible and is terminal. Path publication remains ordered and cross-Target atomicity is not claimed.
       - Every physical protocol frame retains its configured payload bound, monotonic sequence, and HMAC. A larger logical value uses a direction-unique transfer identity, declared application opcode, total length, exact chunk count, ordered chunk indexes, and SHA-256 digest. The complete payload plus one maximum-frame receive buffer must pass aggregate modeled-memory admission before allocation; every top-level declaration or chunk reserves that frame scratch before allocation, and a valid transfer reuses the declaration reservation across expected chunks. Missing, reordered, duplicate, corrupt, mismatched, malformed, or excess transfer data fails safely, clears buffers, releases reservations, and cannot mutate an uncommitted Target. This is bounded in-memory chunking, not unbounded streaming or temporary-file staging.
       - Workflow Resource Usage combines parent and authenticated child observations for accepted input, pages, objects, decompression, pixels, peak modeled Folio-owned memory, peak transaction temporary storage, and elapsed time. It is not JVM heap, process RSS, native/backend allocation, operating-system cache, kernel-limit, nesting, or concurrency measurement.
-      - Opt-in generated profiles exercise 5,000-page publish/reopen semantics, exact 1-GiB constant-memory clean-room input/staging and cleanup, and admission at configured concurrency two with deterministic first-excess rejection and retry after release. The recorded Linux 6.8.0-136-generic amd64 and GraalVM Community Java 17.0.9 observations are implementation evidence for one platform, not a benchmark, cross-platform result, mandatory independent Acceptance Evidence, or certified-platform claim.
+      - The bounded certification executes actual 5,000-page publish/reopen, exact 1,073,741,824-byte clean-room input/staging and cleanup, and configured concurrency two with first-excess rejection and recoverable retry on each declared Ubuntu 24.04 Linux x86-64 JDK 8/11/17/21 environment. Actual workload artifacts, full finite policies and modeled high-water marks are retained. Independent semantics inspect every blank page; visual evidence samples pages 1, 2,500 and 5,000 of the actual 5,000-page file and the sole page of every other actual workload PDF. This is neither a benchmark nor full-document visual or rendering certification; Windows/macOS remain uncertified.
       - T22 adds no remote Worker, durable recovery store, renderer, downstream ticket behavior, public backend SPI, arbitrary extension mechanism, Migration Facade mapping, whole-process memory guarantee, kernel-container certification, physical secure-erasure claim, or cross-Target transaction.
     dependency-gates:
       - capability: document.hardened-worker
         required-status: compatible
-    promotion-gates:
-      - ticket: T06
-        requirement: Complete every mandatory independent Acceptance Evidence chain and close the compatible-status T21 Dependency Gate before compatibility; implementation recovery, protocol, and controlled scale observations alone are insufficient.
+    promotion-gates: []
     acceptance-profile:
       id: T22-worker-recovery-scale
-      state: experimental
+      state: compatible
       mandatory-evidence:
         - syntax
         - standards
@@ -2099,7 +2097,7 @@ capabilities:
         assertion: Opt-in public-seam tests generate and verify the 5,000-page, exact 1-GiB, and configured-concurrency workloads, assert semantic results, ownership and cleanup, deterministic first-excess behavior, and modeled memory, temporary-storage, and elapsed usage within the full recorded policy.
       - kind: controlled-scale-command
         path: scripts/t22-scale
-        assertion: The repository-owned command selects all, pages, input, or concurrency and emits exact platform, construction, policy, usage, elapsed, and concurrency records without retaining a large fixture.
+        assertion: The repository-owned command selects all, pages, input, or concurrency and emits exact platform, construction, policy, usage, elapsed, and concurrency records with optional FOLIO_T22_OUTPUT retention of the exact consumed input as lossless gzip and actual published workload PDFs.
       - kind: authoritative-contract
         path: docs/hardened-worker.md
         assertion: Recovery, lookup, retention, retry, target-specific uncertainty, bounded authenticated chunking, resource-usage semantics, controlled scale profiles, exact observations, and remaining limitations are documented.
@@ -2112,12 +2110,38 @@ capabilities:
       - kind: cross-jdk-contract
         path: scripts/verify-jdk-matrix.sh
         assertion: Maven verification runs the default recovery, protocol, API, artifact, and regression contracts on JDK 8, 11, 17, and 21; the resource-intensive scale profiles remain separately opt-in.
-    acceptance-evidence: []
+      - kind: retained-recovery-contract-chain
+        path: capabilities/evidence/T83-recovery-contract.md
+        assertion: All 180 mandatory named cases, real interruption and malformed Source outcomes, ordered lookup/receipt states, replay rejection, and all three actual scale profiles execute without skips on each declared tuple; full workload bytes and original findings bind fresh live replay, with actual Facade execution IN_PROCESS.
+      - kind: recovery-certification-contract
+        path: docs/t22-certification.md
+        assertion: Actual workload identities, applicable qualified predicates, sampled visual scope, finite policies, original counters and fresh execution bind all twenty producer records and dependency-satisfied current candidate evidence.
+    acceptance-evidence:
+      - chain: syntax
+        result: pass
+        record: capabilities/evidence/T83-recovery-syntax.md
+        producer: {kind: external-tool, name: qpdf, version: '12.4.0'}
+      - chain: standards
+        result: pass
+        record: capabilities/evidence/T83-recovery-standards.md
+        producer: {kind: external-tool, name: arlington, version: '0.81'}
+      - chain: semantic
+        result: pass
+        record: capabilities/evidence/T83-recovery-semantic.md
+        producer: {kind: project-test, name: folio-pdf-t22, version: '0.1.0'}
+      - chain: visual
+        result: pass
+        record: capabilities/evidence/T83-recovery-visual.md
+        producer: {kind: external-tool, name: pdfium-cli, version: 'v0.11.2-pdfium-chromium-7881'}
     provenance:
       path: PROVENANCE.md
-      record: T22 worker-recovery-scale record
-    certified-platforms: []
-    status: experimental
+      record: T83 Worker recovery and bounded scale certification record
+    certified-platforms:
+      - ubuntu-24.04-linux-x86-64-jdk8
+      - ubuntu-24.04-linux-x86-64-jdk11
+      - ubuntu-24.04-linux-x86-64-jdk17
+      - ubuntu-24.04-linux-x86-64-jdk21
+    status: compatible
 
   - id: composition.canvas.draw-positioned-text
     context: composition

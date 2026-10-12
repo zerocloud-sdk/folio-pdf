@@ -3114,3 +3114,153 @@ change requires fresh candidate certification; r3 evidence remains historical.
   arbitrary-bytecode or physical secure-erasure claim. #83 recovery/scale and
   later capabilities are not promoted, and no release/publication authority is
   exercised. Current compatibility is defined by the live Foundation index.
+
+## T83 Worker recovery and bounded scale certification record
+
+- Authorship: OpenAI Codex authored the bounded #83 acceptance contribution
+  under MaBaiqiu's approved `/workspace/contracts/issue-83-contract.md`, against
+  baseline `42fe5c797711070b319b9419e14fcb7adfa98735`. The existing Native
+  recovery, transaction, protocol and resource implementation is reused.
+- References: live #83/#1/#33, closed #82, #23 implementation history, repository
+  public Workflow and Worker contracts, ADR-0038 and the relevant existing
+  isolation/ownership/protocol ADRs, Java SE process/identity/cryptography/file
+  contracts and the original qualified T03/T21 acceptance assets. No iText
+  source, restricted implementation material, third-party fixtures or outputs,
+  or Compatibility Curator material was inspected, copied or adapted.
+- New material: the acceptance-only T22 recorder/collector, mandatory-case
+  authority, real interruption/malformed-input sentinels, actual scale artifact
+  retention and independent all-page graph observer are project-authored
+  Apache-2.0 work. The existing constant-memory clean-room giant-PDF generator
+  uses PDF 1.7 blank-page geometry/Resources matching the applicable T03 profile.
+  The actual observer diagnosed rejection of the original leading-gap layout;
+  the blank object tree now follows the header, while the xref remains near the
+  end of the exact 1-GiB input. Its exact consumed bytes are archived losslessly;
+  no miniature certifies scale.
+- Reused acceptance: original T03 22-rule standards union, rule-specific
+  negative PDFs, authored white raster and two-page/one-pixel controls, and
+  hash-pinned qpdf/pdfcpu/Arlington/PDFium/ImageMagick/Python installations with
+  their existing notices. T22 raises the finite acceptance output/time
+  budget for Arlington's actual 5,000-page traversal. No tool, font, fixture,
+  acceptance class, dependency or native engine enters product runtime or the
+  production Worker closure. The existing explicit HarfBuzz installation is
+  provisioned and independently observed as an environment input.
+- Prerequisite batch budget: the T80 attachment recorder and two unchanged
+  replays reached their existing 15-minute coordinator deadline. A diagnostic
+  run of the unchanged pinned full observer over byte-identical actual products
+  sealed all 7,060 files after 904.790 seconds; all 1,797 individual commands
+  retained their 30-second/16-MiB bounds. Its owner removed the original
+  container-private storage, including the normal AppImage extraction cache.
+  The failed diagnostic's extra pre-cleanup assertion stays disclosed and is
+  validated separately without relabeling it or exporting certifications.
+  The acceptance helper now offers a closed 30-minute preset selected only by
+  T80; its default 15-minute and individual-tool five-minute maxima remain.
+  Predicates, tool identities, document policies and product runtime are
+  unchanged. The new acceptance source requires a fresh freeze, staged candidate
+  and all fourteen current prerequisite/recovery obligations; failed and
+  historical records remain intact. The measured duration does not establish
+  a universal performance cause or guarantee.
+- Worker termination correction: a controlled real-child timing diagnostic
+  reproduced the post-response termination error after the managed process
+  had already exited zero. Three fresh reproductions failed; removing only
+  the delayed parent checkpoint passed. A public real-Worker regression failed
+  before the fix and passed afterward with committed publication, completed
+  lookup, public reopen and owned-storage cleanup. The supervisor now rechecks
+  child liveness after checkpoint before declaring the exit grace expired.
+  Cancellation, elapsed expiry, interruption, unsuccessful exit and the
+  completed-state guard remain authoritative. The caller launcher and Clock
+  injection are test fixtures outside product runtime; no new public API or
+  dependency is introduced. This demonstrates the isolated race and does not
+  attribute every historical shutdown error to it. Fresh source/candidate and
+  prerequisite/recovery certification plus the required JDK matrix bind the
+  shipped correction.
+- Relaunch exit grace: the owner-approved 30-second post-FINISHED grace covers
+  JVM teardown, kernel exit and parent exit observation under VM stalls. The
+  independent investigation in `/workspace/contracts/issue-83-worker-investigation.md`
+  supplied timing observations and fault-injection results, not proprietary
+  source or a new runtime dependency. The original liveness recheck remains;
+  cancellation, caller deadline, interruption and the five-minute default bound
+  remain enforced. Original project-authored regressions retain a real managed
+  child past one second and exercise actual 30-second expiry plus safe bounded
+  elapsed/liveness/PID/process/thread-state diagnostics before forced termination.
+  Caller launcher and Clock fixtures remain outside the production closure.
+  Only the expiry case has a 60-second JUnit timeout; the other new exit cases
+  keep 10 seconds. Historical failures and the interrupted R11 certification
+  remain retained and cannot certify the new candidate. No scratch investigation
+  worktree or external contract is modified or used as a runtime input.
+  The collector separately qualifies the original and fresh exit diagnostic
+  record; omission, duplication, invalid elapsed/grace/liveness/PID/state/sample
+  and unsafe data controls first exposed an evidence gap, then passed after
+  strict validation. Real times/PIDs/states remain retained without claiming
+  equality across executions or attributing every historical failure.
+  A final pre-certification audit also found generic diagnostics on nonzero and
+  policy-stop exit paths. A real nonzero-exit regression first exposed that gap;
+  all post-FINISHED failures now preserve their original public code/capability,
+  receipts and transaction identity while adding the bounded diagnostic and
+  available exit code. Candidate6's ordinary verification was deliberately
+  stopped before any certification; its source/archive/log and controlled stop
+  remain retained. The replacement candidate requires every gate freshly.
+  Candidate7 full verification passed, but the JDK 8 matrix found a fixture-only
+  ClosedByInterruptException in sentinel inspection after the runtime correctly
+  preserved interruption. An exact-method replay reproduces that error. The
+  fixture now asserts the preserved flag before temporarily clearing/restoring
+  it around its own NIO inspection. Runtime interruption behavior is unchanged;
+  the failed matrix, source7/archive7 and complete full-verification result stay
+  retained. A new candidate requires every verification/certification freshly.
+- Scope: 180 mandatory named cases execute without ignored or assumption skips,
+  including all T21 boundary cases and all three actual bounded scale profiles.
+  Native public recovery, ordered receipts, no final replay, child termination,
+  caller ownership and cleanup are retained. Matching public Facade document
+  behavior actually executes IN_PROCESS; recovery/resource controls remain
+  justified Native-only controls with no artificial Reference Suite mapping.
+- Identities: original products/findings, exact lengths/hashes/constructions,
+  full finite policies, modeled counters and original stdout bind final source,
+  contracts, staged product/harness artifacts, immutable images, OS/kernel,
+  exact JDK build/vendor/executable, launcher/runtime closure, commands,
+  locale/timezone and native/tool inputs. Fresh live collection re-executes the
+  suite and independent producers; changed labels or resealed artifacts cannot
+  supply missing predicates or repair altered findings. Prerequisites are
+  refreshed for the same final candidate without relabeling historical runs.
+  Exact child finding hashes are checked before comparison. Already-compared
+  ID-neutral PDF bytes provide an unambiguous comparison identity when original
+  concurrency products share bytes but fresh trailer IDs differ. Original
+  hashes and bytes remain retained; positive and negative raw graph digests,
+  commands and observer identities are checked before any comparison normalization.
+  Canonical JSON preserves scalar types. Scale visual report authority links
+  compare their resolved external files across replay directory depths; local
+  artifact links and all original report bytes are retained unchanged.
+  Aggregate scale owned-memory peaks may vary only after both complete scale
+  executions are independently bound to their own artifacts and stdout and
+  validated against the unchanged full finite policies. Original measured peaks
+  and their hashes remain retained; per-output memory and all other counters,
+  policies, input constructions and artifact findings remain strict. Resealed
+  missing, malformed, zero, negative, over-limit or unbound peaks are rejected.
+- Certification is restricted to actual Ubuntu 24.04/Linux x86-64 JDK
+  8/11/17/21 HARDENED_WORKER tuples and twenty required chain records. Standards
+  covers the qualified blank-document predicates; semantics inspects every
+  actual blank page; visual samples actual pages 1/2,500/5,000 and each other
+  actual one-page artifact. No full-document visual, font/layout, #88 rendering,
+  durable/distributed recovery, automatic retry, cross-Target atomicity, RSS,
+  native-memory, kernel/container or physical-erasure claim is made.
+- Current compatibility is governed by the live Foundation evidence index.
+  Earlier T22/GraalVM and T82 status descriptions remain dated history.
+  Windows/macOS and downstream slices remain uncertified. This work does not
+  complete #33, publish a release or exercise tracker/publication authority.
+
+## Issue #83 monotonic-time relaunch
+
+Codex authored the environment ticker, elapsed-context correction, initialization
+v2 deadline rejection, seven project-owned timing regression cases and the
+associated English/Chinese contracts under the user's October 10 decision.
+References are the sole retained #83 execution contract, the orchestrator's
+read-only T28 investigation and scratch diff, existing project code/fixtures,
+and the Java 8 Clock, Duration, LongSupplier and System.nanoTime API contracts.
+The scratch equals(Clock.systemUTC()) approach was read as a diagnostic proof;
+the delivered design instead uses an explicit independent ticker and preserves
+explicit Clock-only logical test semantics. No scratch file was modified.
+
+New fixtures are project-authored clocks, counters and protocol byte envelopes;
+no external resource, runtime dependency, iText source, restricted material or
+reverse-engineered closed add-on was used. Existing licensed tools/fonts and
+fixtures retain their recorded identities. The time-source audit and paired
+wall/monotonic gate evidence are retained under T83-delivery; prior failed
+verification and candidate archives stay intact and cannot certify candidate10.

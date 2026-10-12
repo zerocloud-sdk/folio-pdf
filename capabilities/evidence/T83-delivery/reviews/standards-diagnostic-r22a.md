@@ -1,0 +1,15 @@
+Standards follow-up, r22a: reviewed `preserve-failed-text-r21.py`, `diagnose-text-timeout-r22.py`, `diagnostics/T83TextReplayR22.java` and their preserved/diagnostic records. Only this report was written; frozen candidate10 inputs and originals were unchanged.
+
+Zero actionable documented-standard breaches and zero actionable heuristic findings in these helpers.
+
+The preservation helper checks the unchanged source/staged receipt, failed R21 text ledger, stable 40-tuple/160-chain index and original timeout transcript. Its immutable manifest binds file hashes and lengths; validation rechecks those files and retained references. Independent read-only review rehashed **138,077 originals / 900,290,576 bytes** successfully.
+
+The diagnostic helper removes the failed scope's writable mount, writes into a separate diagnostic scope and retains original image/options/staged test closure. The Java runner verifies the actual 10,000-ms annotation, reconstructs the original eighteen-case prefix, records monotonic listener durations, rejects skipped execution and preserves failures. It stays outside product runtime, consistent with [ADR-0009](/workspace/folio-pdf/docs/adr/0009-organize-deep-domain-modules.md:3).
+
+Actual disposition: twenty exact-method parents passed; prefix parents 1–3 passed; prefix 4 failed. All 24 transcript hashes agree with recorded rows. The outer diagnostic exits 1 and exports no certification. Its 10,685-ms query wait differs from R21's initialization stack; the evidence establishes a timeout crossing, not a shared root cause or completion of ten prefix parents.
+
+No documented standard fixes this semantic method's JUnit watchdog at ten seconds. A justified finite watchdog adjustment preserving public assertions and product policies is not inherently a breach of [CONTRIBUTING.md](/workspace/folio-pdf/CONTRIBUTING.md:42). The ten-second statement in [T22](/workspace/folio-pdf/docs/t22-certification.md:35) describes new exit cases. Any test-source adjustment changes candidate identity and requires a new freeze, full verification, matrix, scale and all fourteen fresh obligations.
+
+Retaining seven complete same-candidate raw profiles has no documented blocker if their actual paths/bytes/commands and every identity remain intact, the failed eighth is never relabeled, and the unchanged standard collector qualifies every required predicate/control under [ADR-0040](/workspace/folio-pdf/docs/adr/0040-certify-only-observed-foundation-environments.md:3). The earlier proposed all-eight live replay is not an additional Standards requirement; [T13 collection](/workspace/folio-pdf/scripts/t13_foundation_reports.py:700) does not require rerunning every test parent. No concrete resume route is reviewed here; changed source invalidates retention. Final completion remains outstanding.
+
+Reviewed SHA-256: preservation `1e851a701b3a28d72c8b922849e882f430c66ed2eb3062c8c33e28a1432365db`; diagnostic helper `dffeb6056cfdc92906ba49ce3fa6802b745f4df7558286110d4a313cb6f6db65`; Java runner `ea445f48ce71dba5a6e1c9a10875ab5355941b12cbcfd9b50bbc756def29d3cd`.

@@ -157,6 +157,7 @@ public final class DocumentWorkflow {
             resources = WorkflowResourceContext.open(
                     policy,
                     environment.getClock(),
+                    environment.getMonotonicTicker(),
                     request.getCancellationToken(),
                     request.getDeadline(),
                     environment.getTemporaryDirectory(),

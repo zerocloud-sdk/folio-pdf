@@ -36,7 +36,8 @@ public final class T80EvidenceCommand {
         Path output = Files.createDirectory(Paths.get(arguments[offset + 1]).toAbsolutePath().normalize());
         RetainedEvidence retained = T80PasswordProducts.create(root, output, execution);
         if (!productsOnly) {
-            ProcessResult process = ExternalProcess.runCoordinator(python, root, 900000, 16 * 1024 * 1024,
+            ProcessResult process = ExternalProcess.runCoordinator(python, root, 1800000, 16 * 1024 * 1024,
+                    ExternalProcess.CoordinatorBudget.THIRTY_MINUTES,
                     "-I", root.resolve("scripts/t80-certification.py").toString(), root.toString(), output.toString(), execution.name());
             System.out.print(process.standardOutput);
             System.err.print(process.standardError);

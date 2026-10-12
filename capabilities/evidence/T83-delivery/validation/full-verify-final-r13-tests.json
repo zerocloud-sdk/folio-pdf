@@ -1,0 +1,66 @@
+{
+  "tests": 1677,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 4,
+  "recorded-class-executions": 111,
+  "ordinary-skips": [
+    {
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 3,
+      "class": "net.zerocloud.pdf.consumer.HardenedWorkerScaleProfileTest"
+    },
+    {
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "class": "net.zerocloud.pdf.acceptance.T30BarcodeEvidenceCommandTest"
+    }
+  ],
+  "regression-executions": [
+    {
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "class": "net.zerocloud.pdf.HardenedWorkerTerminationWaitTest"
+    }
+  ],
+  "monotonic-regression-executions": [
+    {
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "class": "net.zerocloud.pdf.consumer.WorkflowElapsedTimeContractTest"
+    },
+    {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "class": "net.zerocloud.pdf.WorkerInitializationTimingTest"
+    }
+  ],
+  "actual-exit-grace-diagnostic": {
+    "elapsed-since-finished-millis": 30008,
+    "exit-grace-seconds": 30,
+    "child-alive": true,
+    "wait-iterations": 1194,
+    "maximum-poll-millis": 26,
+    "child-pid": 64223,
+    "child-state": "S",
+    "thread-states": [
+      "S"
+    ],
+    "sampled-threads": 1
+  },
+  "log": {
+    "path": "capabilities/evidence/T83-delivery/validation/full-verify-final-r13.txt",
+    "sha256": "b2268c90fc2d1799ad8d7768d6c5219b90f239f2c15f1424e47f8168c1aaf40f"
+  },
+  "scope": "Full ordinary reactor verification; repeated integration class executions count as executed. Opt-in CI skips are not recovery certification."
+}

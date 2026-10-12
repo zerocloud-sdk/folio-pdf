@@ -1,0 +1,278 @@
+[
+  {
+    "jdk-major": 8,
+    "declared-environment": "ubuntu-24.04-linux-x86-64-jdk8",
+    "started": "2026-10-11T02:43:03.426870+00:00",
+    "finished": "2026-10-11T02:43:51.585151+00:00",
+    "command": [
+      "podman",
+      "run",
+      "--rm",
+      "--network=none",
+      "--userns=keep-id",
+      "--volume",
+      "/workspace/folio-pdf:/workspace:rw",
+      "--volume",
+      "/workspace/folio-pdf/.build-cache/t81-provision/folio-harfbuzz:/folio-harfbuzz:ro",
+      "--volume",
+      "/workspace/folio-pdf/.build-cache/foundation-python/bin/python3.12:/usr/bin/python3.12:ro",
+      "--volume",
+      "/workspace/folio-pdf/.build-cache/foundation-python/lib/python3.12:/usr/lib/python3.12:ro",
+      "--volume",
+      "/workspace/folio-pdf/.build-cache/foundation-python/lib/libexpat.so.1:/lib/x86_64-linux-gnu/libexpat.so.1:ro",
+      "--workdir",
+      "/workspace",
+      "--env",
+      "LANG=C.UTF-8",
+      "--env",
+      "LC_ALL=C.UTF-8",
+      "--env",
+      "TZ=UTC",
+      "--env",
+      "PYTHONDONTWRITEBYTECODE=1",
+      "--env",
+      "FOLIO_HARFBUZZ_HELPER=/folio-harfbuzz/bin/folio-harfbuzz",
+      "--env",
+      "MAVEN_USER_HOME=/workspace/.build-cache/maven",
+      "--env",
+      "MAVEN_OPTS=-Dmaven.repo.local=/workspace/.build-cache/maven/repository",
+      "--env",
+      "FOLIO_T22_OUTPUT=/workspace/capabilities/evidence/T83-delivery/scale-final-r9/jdk8/profiles",
+      "docker.io/library/eclipse-temurin@sha256:a4da319337cb6504ba4fb663cbd72a75df5515efb31bbdc6fc4ad7ba8d710dee",
+      "./scripts/t22-scale",
+      "all"
+    ],
+    "exit-code": 0,
+    "tests": 3,
+    "skipped": 0,
+    "environment": {
+      "path": "capabilities/evidence/T83-delivery/scale-final-r9/jdk8/environment.yaml",
+      "sha256": "bebd1f2d34dbea1eee525e084e7719cdf2439eb1b741f537991f25a50da3833b"
+    },
+    "log": {
+      "path": "capabilities/evidence/T83-delivery/scale-final-r9/jdk8/scale.txt",
+      "sha256": "5c63f834f4320760d059c19d7c24327fd05e7f0a8538dd7fc57d598d4c6bede1"
+    },
+    "actual-profiles": {
+      "pages": {
+        "path": "capabilities/evidence/T83-delivery/scale-final-r9/jdk8/profiles/pages/observations.properties",
+        "sha256": "a1b7d13e3c7fb627094de4e03598f297fce2106f3801a9cb81adc8194d2fec67"
+      },
+      "input": {
+        "path": "capabilities/evidence/T83-delivery/scale-final-r9/jdk8/profiles/input/observations.properties",
+        "sha256": "d6bb4e1b1211437f9c4bc2afb537a417719d6b8c33b1022ba080c4604e9d16ab"
+      },
+      "concurrency": {
+        "path": "capabilities/evidence/T83-delivery/scale-final-r9/jdk8/profiles/concurrency/observations.properties",
+        "sha256": "9229c1f1cec8da33ba1bc9251c47eac0309aed93e91c6ef749aad2f38b31e6b3"
+      }
+    }
+  },
+  {
+    "jdk-major": 11,
+    "declared-environment": "ubuntu-24.04-linux-x86-64-jdk11",
+    "started": "2026-10-11T02:43:53.488366+00:00",
+    "finished": "2026-10-11T02:44:33.344561+00:00",
+    "command": [
+      "podman",
+      "run",
+      "--rm",
+      "--network=none",
+      "--userns=keep-id",
+      "--volume",
+      "/workspace/folio-pdf:/workspace:rw",
+      "--volume",
+      "/workspace/folio-pdf/.build-cache/t81-provision/folio-harfbuzz:/folio-harfbuzz:ro",
+      "--volume",
+      "/workspace/folio-pdf/.build-cache/foundation-python/bin/python3.12:/usr/bin/python3.12:ro",
+      "--volume",
+      "/workspace/folio-pdf/.build-cache/foundation-python/lib/python3.12:/usr/lib/python3.12:ro",
+      "--volume",
+      "/workspace/folio-pdf/.build-cache/foundation-python/lib/libexpat.so.1:/lib/x86_64-linux-gnu/libexpat.so.1:ro",
+      "--workdir",
+      "/workspace",
+      "--env",
+      "LANG=C.UTF-8",
+      "--env",
+      "LC_ALL=C.UTF-8",
+      "--env",
+      "TZ=UTC",
+      "--env",
+      "PYTHONDONTWRITEBYTECODE=1",
+      "--env",
+      "FOLIO_HARFBUZZ_HELPER=/folio-harfbuzz/bin/folio-harfbuzz",
+      "--env",
+      "MAVEN_USER_HOME=/workspace/.build-cache/maven",
+      "--env",
+      "MAVEN_OPTS=-Dmaven.repo.local=/workspace/.build-cache/maven/repository",
+      "--env",
+      "FOLIO_T22_OUTPUT=/workspace/capabilities/evidence/T83-delivery/scale-final-r9/jdk11/profiles",
+      "docker.io/library/eclipse-temurin@sha256:09f6797de424a6a085da4db6ba64381b2a4d51c2100a5e91998b69d7c23e0ecb",
+      "./scripts/t22-scale",
+      "all"
+    ],
+    "exit-code": 0,
+    "tests": 3,
+    "skipped": 0,
+    "environment": {
+      "path": "capabilities/evidence/T83-delivery/scale-final-r9/jdk11/environment.yaml",
+      "sha256": "120807d070948e3006a11ca9bec5ce7db71e9f106f3babeb7797806907da9c81"
+    },
+    "log": {
+      "path": "capabilities/evidence/T83-delivery/scale-final-r9/jdk11/scale.txt",
+      "sha256": "ec0f5781b98b4b1b8696ff51e918b866ef39e43997843a2c52db42056334cfca"
+    },
+    "actual-profiles": {
+      "pages": {
+        "path": "capabilities/evidence/T83-delivery/scale-final-r9/jdk11/profiles/pages/observations.properties",
+        "sha256": "e14623bf917d8c5dea515bdc09136df1411aafa2129fe7ce98eee2a2995c64cc"
+      },
+      "input": {
+        "path": "capabilities/evidence/T83-delivery/scale-final-r9/jdk11/profiles/input/observations.properties",
+        "sha256": "11a240ae390bcbe06b70172e6de4ac4bf92c4b63dab10554794ade32d69c8855"
+      },
+      "concurrency": {
+        "path": "capabilities/evidence/T83-delivery/scale-final-r9/jdk11/profiles/concurrency/observations.properties",
+        "sha256": "ad09fb5fa2253313dbb1d27e5641d6fb68ce947f15411d47332d78e66452d9a7"
+      }
+    }
+  },
+  {
+    "jdk-major": 17,
+    "declared-environment": "ubuntu-24.04-linux-x86-64-jdk17",
+    "started": "2026-10-11T02:44:35.235852+00:00",
+    "finished": "2026-10-11T02:45:13.847897+00:00",
+    "command": [
+      "podman",
+      "run",
+      "--rm",
+      "--network=none",
+      "--userns=keep-id",
+      "--volume",
+      "/workspace/folio-pdf:/workspace:rw",
+      "--volume",
+      "/workspace/folio-pdf/.build-cache/t81-provision/folio-harfbuzz:/folio-harfbuzz:ro",
+      "--volume",
+      "/workspace/folio-pdf/.build-cache/foundation-python/bin/python3.12:/usr/bin/python3.12:ro",
+      "--volume",
+      "/workspace/folio-pdf/.build-cache/foundation-python/lib/python3.12:/usr/lib/python3.12:ro",
+      "--volume",
+      "/workspace/folio-pdf/.build-cache/foundation-python/lib/libexpat.so.1:/lib/x86_64-linux-gnu/libexpat.so.1:ro",
+      "--workdir",
+      "/workspace",
+      "--env",
+      "LANG=C.UTF-8",
+      "--env",
+      "LC_ALL=C.UTF-8",
+      "--env",
+      "TZ=UTC",
+      "--env",
+      "PYTHONDONTWRITEBYTECODE=1",
+      "--env",
+      "FOLIO_HARFBUZZ_HELPER=/folio-harfbuzz/bin/folio-harfbuzz",
+      "--env",
+      "MAVEN_USER_HOME=/workspace/.build-cache/maven",
+      "--env",
+      "MAVEN_OPTS=-Dmaven.repo.local=/workspace/.build-cache/maven/repository",
+      "--env",
+      "FOLIO_T22_OUTPUT=/workspace/capabilities/evidence/T83-delivery/scale-final-r9/jdk17/profiles",
+      "docker.io/library/eclipse-temurin@sha256:61a94244559f2e89e4edb02bae37eeb8762ecf5deaf237251fa630e5120a8798",
+      "./scripts/t22-scale",
+      "all"
+    ],
+    "exit-code": 0,
+    "tests": 3,
+    "skipped": 0,
+    "environment": {
+      "path": "capabilities/evidence/T83-delivery/scale-final-r9/jdk17/environment.yaml",
+      "sha256": "dd45992f2017a423ddb3d618265411a87e05fb86969a31205edc5ef9ac3f0a5e"
+    },
+    "log": {
+      "path": "capabilities/evidence/T83-delivery/scale-final-r9/jdk17/scale.txt",
+      "sha256": "3f1b75463c7b3de3ccb74690d762d9ab76dd1663ebf90e0e00d42ccb5a56cac4"
+    },
+    "actual-profiles": {
+      "pages": {
+        "path": "capabilities/evidence/T83-delivery/scale-final-r9/jdk17/profiles/pages/observations.properties",
+        "sha256": "17a01042356f75afbbf41f5eefd2d80601ba9427b9d84987bd268dd2e57bf691"
+      },
+      "input": {
+        "path": "capabilities/evidence/T83-delivery/scale-final-r9/jdk17/profiles/input/observations.properties",
+        "sha256": "81250d8585a0b848e19c42134cc3b40e09f09bd66d55db183fa3c4341d02135c"
+      },
+      "concurrency": {
+        "path": "capabilities/evidence/T83-delivery/scale-final-r9/jdk17/profiles/concurrency/observations.properties",
+        "sha256": "3320db3b10015a260482686fac5eb88c1e4499b7b17cea85a103535208b49347"
+      }
+    }
+  },
+  {
+    "jdk-major": 21,
+    "declared-environment": "ubuntu-24.04-linux-x86-64-jdk21",
+    "started": "2026-10-11T02:45:15.896901+00:00",
+    "finished": "2026-10-11T02:45:54.569661+00:00",
+    "command": [
+      "podman",
+      "run",
+      "--rm",
+      "--network=none",
+      "--userns=keep-id",
+      "--volume",
+      "/workspace/folio-pdf:/workspace:rw",
+      "--volume",
+      "/workspace/folio-pdf/.build-cache/t81-provision/folio-harfbuzz:/folio-harfbuzz:ro",
+      "--volume",
+      "/workspace/folio-pdf/.build-cache/foundation-python/bin/python3.12:/usr/bin/python3.12:ro",
+      "--volume",
+      "/workspace/folio-pdf/.build-cache/foundation-python/lib/python3.12:/usr/lib/python3.12:ro",
+      "--volume",
+      "/workspace/folio-pdf/.build-cache/foundation-python/lib/libexpat.so.1:/lib/x86_64-linux-gnu/libexpat.so.1:ro",
+      "--workdir",
+      "/workspace",
+      "--env",
+      "LANG=C.UTF-8",
+      "--env",
+      "LC_ALL=C.UTF-8",
+      "--env",
+      "TZ=UTC",
+      "--env",
+      "PYTHONDONTWRITEBYTECODE=1",
+      "--env",
+      "FOLIO_HARFBUZZ_HELPER=/folio-harfbuzz/bin/folio-harfbuzz",
+      "--env",
+      "MAVEN_USER_HOME=/workspace/.build-cache/maven",
+      "--env",
+      "MAVEN_OPTS=-Dmaven.repo.local=/workspace/.build-cache/maven/repository",
+      "--env",
+      "FOLIO_T22_OUTPUT=/workspace/capabilities/evidence/T83-delivery/scale-final-r9/jdk21/profiles",
+      "docker.io/library/eclipse-temurin@sha256:1ca5e470ad60db0d5b4137c1357068fa210051d815ad98ea9964f4bbe7367f8c",
+      "./scripts/t22-scale",
+      "all"
+    ],
+    "exit-code": 0,
+    "tests": 3,
+    "skipped": 0,
+    "environment": {
+      "path": "capabilities/evidence/T83-delivery/scale-final-r9/jdk21/environment.yaml",
+      "sha256": "73584aac61c03cf72f5df08bbcfff0d22db6c492a6b94854f69191abb15054bd"
+    },
+    "log": {
+      "path": "capabilities/evidence/T83-delivery/scale-final-r9/jdk21/scale.txt",
+      "sha256": "af10364a0f09b562a43a41bbd458f13ae87ae17c39a5a6ec478fa4acc3904454"
+    },
+    "actual-profiles": {
+      "pages": {
+        "path": "capabilities/evidence/T83-delivery/scale-final-r9/jdk21/profiles/pages/observations.properties",
+        "sha256": "7ff800e86d2b67d49b86248a3a4e6df49eda89046c3a3eac47a59431c3e77648"
+      },
+      "input": {
+        "path": "capabilities/evidence/T83-delivery/scale-final-r9/jdk21/profiles/input/observations.properties",
+        "sha256": "c97db789e6434304bda3054a3629331e36671d0d6bd7f9bbac8551e5afe63fdb"
+      },
+      "concurrency": {
+        "path": "capabilities/evidence/T83-delivery/scale-final-r9/jdk21/profiles/concurrency/observations.properties",
+        "sha256": "1b7ebb6bfbab31df1197958b942201225743dd940fb35c73fd256229b7b4206e"
+      }
+    }
+  }
+]

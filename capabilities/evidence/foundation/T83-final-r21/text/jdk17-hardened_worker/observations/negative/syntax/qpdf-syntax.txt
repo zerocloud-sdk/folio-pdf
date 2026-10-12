@@ -1,0 +1,35 @@
+# T75 qpdf syntax findings
+
+Input exact SHA-256: `3df4691c8b8b17f9fd9c39d7747465ebc34b35d78453504212b06d7558cae9d7`
+
+Input hash policy: `SHA-256 of the exact unmodified PDF bytes`
+
+Tool: `qpdf`
+
+Tool version: `12.4.0`
+
+Distribution SHA-256: `a3bca240f3bb61efdc3a90be89d1da4ed5e125326c3458c4e62df53ff4f153e3`
+
+Final determination: `fail`
+
+## extraction.pdf
+
+Invocation: `qpdf --check extraction.pdf`
+
+`extraction.pdf` exit code: `2`
+
+### Standard output
+
+```text
+
+```
+
+### Standard error
+
+```text
+WARNING: extraction.pdf: file is damaged
+WARNING: extraction.pdf: can't find startxref
+WARNING: extraction.pdf: Attempting to reconstruct cross-reference table
+WARNING: extraction.pdf (object 1 0, offset 17): unexpected EOF
+qpdf: extraction.pdf: unable to find trailer dictionary while recovering damaged file
+```

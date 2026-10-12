@@ -34,12 +34,12 @@ def foundation():
     return module
 
 
-def mandatory_tests(root):
-    lines = (root / TESTS).read_text().splitlines()
+def mandatory_tests(root, inventory_path=INVENTORY, tests_path=TESTS, profile=PROFILE):
+    lines = (root / tests_path).read_text().splitlines()
     require(lines and len(lines) == len(set(lines)) and all(re.fullmatch(r'[A-Za-z0-9_.]+#[A-Za-z0-9_]+(?:\[(?:IN_PROCESS|HARDENED_WORKER)\])?', name)
             for name in lines), 'duplicate, malformed or missing mandatory case inventory')
-    inventory = json.loads((root / INVENTORY).read_text())
-    require(inventory['profile'] == PROFILE and inventory['mandatory-test-count'] == len(lines), 'mandatory inventory/count mismatch')
+    inventory = json.loads((root / inventory_path).read_text())
+    require(inventory['profile'] == profile and inventory['mandatory-test-count'] == len(lines), 'mandatory inventory/count mismatch')
     require({name.split('#')[0] for name in lines} == set(inventory['test-classes']), 'mandatory class inventory mismatch')
     shared = [name for name in lines if '.WorkflowExecutionProfileContractTest#' in name]
     require(shared and {name.replace('[IN_PROCESS]', '').replace('[HARDENED_WORKER]', '') for name in shared if name.endswith('[IN_PROCESS]')}
@@ -81,9 +81,9 @@ def safe_diagnostic(value):
             'missing or unsafe diagnostic')
 
 
-def validate_inputs(root, files):
+def validate_inputs(root, files, pin_path='scripts/t21-evidence-pin.properties'):
     module = foundation()
-    authority = root / 'scripts/t21-evidence-pin.properties'
+    authority = root / pin_path
     pin = files.authorities.properties(authority)
     require(pin and any(name.startswith('.build-cache/') for name in pin), 'missing pinned producer identities')
     for name, expected in pin.items():
@@ -91,13 +91,13 @@ def validate_inputs(root, files):
         path.resolve(strict=True).relative_to(root)
         actual = module.sha256(path) if name.startswith('.build-cache/') else files.authorities.digest(path)
         require(actual == expected, 'frozen producer/configuration changed: ' + name)
-    expected = {**pin, 'scripts/t21-evidence-pin.properties': files.authorities.digest(authority)}
+    expected = {**pin, pin_path: files.authorities.digest(authority)}
     for phase in ('before', 'after'):
         require(files.properties(files.directory / ('identities-' + phase + '.properties')) == expected,
                 'observed producer/configuration identity changed: ' + phase)
 
 
-def bound_execution(root, scope, contract, receipt, identities, helper, module):
+def bound_execution(root, scope, contract, receipt, identities, helper, module, obligation='worker'):
     import yaml
     config = json.loads((scope / 'execution.yaml').read_text())
     match = re.fullmatch(r'jdk(8|11|17|21)-hardened_worker', scope.name)
@@ -113,35 +113,35 @@ def bound_execution(root, scope, contract, receipt, identities, helper, module):
     module.require_environment(profile['identity'], environment.get('identity'))
     cp = ':'.join('/workspace/' + path.relative_to(root).as_posix()
                   for path in module.certification_classpath(root, contract, receipt))
-    plan = module.execution_plan(root, scope, profile['identity']['image'], helper, cp,
-                                 module.certification_case('worker'), 'HARDENED_WORKER')
+    case = module.certification_case(obligation)
+    plan = module.execution_plan(root, scope, profile['identity']['image'], helper, cp, case, 'HARDENED_WORKER')
     expected = {'schema-version': 1, 'candidate-sha256': identities['Candidate'],
-        'environment-sha256': module.sha256(environment_path), 'acceptance-profile': PROFILE,
+        'environment-sha256': module.sha256(environment_path), 'acceptance-profile': case['profile'],
         'execution-profile': 'HARDENED_WORKER', 'command': plan['recorder-command'], 'java-options': plan['java-options'],
         'locale': 'en_US / C.UTF-8', 'timezone': 'UTC', 'settings': plan['settings'],
-        'support-commands': plan['support-commands'],
-        'inputs': module.certification_inputs(root, contract, receipt, module.certification_case('worker'))}
+        **({'support-commands': plan['support-commands']} if 'support-commands' in plan else {}),
+        'inputs': module.certification_inputs(root, contract, receipt, case)}
     require(config == expected, 'candidate, environment, launcher/control command or complete input binding changed')
     return profile, environment, cp
 
 
-def require_contract_tests(root, scope, plan):
-    tests, _ = mandatory_tests(root)
+def require_contract_tests(root, scope, plan, label='T21', inventory_path=INVENTORY, tests_path=TESTS, profile=PROFILE):
+    tests, _ = mandatory_tests(root, inventory_path, tests_path, profile)
     require(len(tests) == plan['required-test-count'], 'required case count differs from runner')
     require(json.loads((scope / 'contract-tests-command.json').read_text()) == plan['contract-tests-command'], 'actual test command changed')
     transcript = (scope / 'contract-tests.txt').read_text()
-    cases = re.findall(r'(?m)^T21 CASE (\S+) = (PASS|FAIL)$', transcript)
+    cases = re.findall(r'(?m)^' + label + r' CASE (\S+) = (PASS|FAIL)$', transcript)
     require(len(cases) == len(tests) and {name for name, result in cases} == tests and all(result == 'PASS' for _, result in cases),
             'missing, duplicate, failed or undeclared mandatory execution')
     count = str(len(tests))
-    require(transcript.startswith('JUnit version 4.13.2\n') and transcript.count('T21 required execution: tests=' + count
+    require(transcript.startswith('JUnit version 4.13.2\n') and transcript.count(label + ' required execution: tests=' + count
             + ', failures=0, ignored=0, assumptions=0, duplicates=0\n') == 1
             and len(re.findall(r'(?m)^OK \(' + count + r' tests\)$', transcript)) == 1 and 'FAILURES!!!' not in transcript,
             'nonpassing or skipped complete execution')
     files = RetainedFiles(scope / 'boundary-observations')
-    require(files.result == {'profile': 'T21-hardened-worker-boundary', 'result': 'pass', 'required-case-count': count,
+    require(files.result == {'profile': 'T21-hardened-worker-boundary' if label == 'T21' else 'T22-recovery-scale-boundary', 'result': 'pass', 'required-case-count': count,
                             'retained-files-sha256': files.expected[files.directory / 'retained-files.sha256']}, 'missing original boundary retention')
-    require(transcript.count('T21 boundary retained-sha256=' + files.expected[files.directory / 'retained-files.sha256'] + '\n') == 1,
+    require(transcript.count(label + ' boundary retained-sha256=' + files.expected[files.directory / 'retained-files.sha256'] + '\n') == 1,
             'boundary files are not bound to the observed mandatory execution')
     return files
 

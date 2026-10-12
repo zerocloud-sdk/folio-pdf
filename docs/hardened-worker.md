@@ -14,8 +14,9 @@ Linux x86-64 Temurin JDK 8, 11, 17 and 21 images in the
 [T21 certification contract](t21-certification.md). The current Foundation
 index binds the five separate chains to the production artifacts, exact
 launcher, class inventories, tools and execution configuration. Windows x86-64
-and macOS x86-64/arm64 remain uncertified. The implemented T22 extensions below
-retain their separate experimental recovery/scale status.
+and macOS x86-64/arm64 remain uncertified. Issue #83 separately certifies the
+T22 recovery/scale extensions below through the candidate-bound evidence in the
+[T22 certification contract](t22-certification.md) and current Foundation index.
 
 ```java
 WorkflowEnvironment environment = WorkflowEnvironment.builder().build();
@@ -364,9 +365,13 @@ semantic bounds. Authenticated temporary-storage grants enforce the same live
 parent/child limit before child file and cache growth; a retained parent PNG
 reduces immediately available capacity. Parent-owned Source snapshots are
 borrowed by the child and charged once. The parent remains authoritative for
-elapsed time and deadlines because an injected Clock cannot be reconstructed
-faithfully in another process. The injected Clock is sampled only on the caller
-execution thread. The same configured maximum duration also supplies a
+elapsed time and deadlines because injected time sources cannot be reconstructed
+faithfully in another process. By default elapsed limits, remaining Provider
+budgets and usage use `System.nanoTime`, independently of wall-clock corrections.
+Absolute deadlines use the environment Clock. Explicit Clock-only environments
+retain deterministic logical elapsed time; configuring `monotonicTicker` makes
+elapsed time independent of that Clock regardless of setter order. Both sources
+are sampled only on the caller execution thread. The same configured maximum duration also supplies a
 monotonic hard ceiling for the Worker lifetime, and RLIMIT_CPU is a separate
 CPU ceiling.
 
@@ -403,7 +408,21 @@ has already poisoned or exhausted an active context, the fixed failure codec
 may use the bounded emergency reporting path solely to preserve that cause. A
 Worker crash, authentication failure, unsupported message, message-limit
 failure, or unavailable launcher has a distinct stable `DocumentFailureCode`
-and a fixed content-free diagnostic.
+and a content-free diagnostic.
+
+After an authenticated `FINISHED`, the parent allows up to 30 seconds for JVM
+teardown, kernel exit and parent reaper observation. It checks cancellation,
+the caller deadline and the workflow elapsed policy during this wait; the
+monotonic watchdog and five-minute default overall bound remain active.
+Publication requires confirmed successful child exit. A delayed parent rechecks
+child liveness before declaring grace expiry. Every failed post-FINISHED exit wait
+retains elapsed milliseconds since FINISHED, observed child liveness, iteration
+count, maximum poll time, available exit code and PID plus bounded Linux process/thread
+state, sampled before forced termination. Unavailable observations are explicit.
+Nonzero exit, cancellation, deadline, elapsed and interruption failures preserve
+their original failure code, capability and publication/transaction information.
+These diagnostics exclude document data, filenames, command lines, environment,
+thread names and raw implementation exceptions.
 
 ## Resource observations and controlled scale profiles
 
@@ -411,7 +430,7 @@ Every successful `WorkflowOutcome` includes a detached
 `WorkflowResourceUsage`. It reports accepted Source bytes, observed pages and
 objects, decoded-stream bytes, decoded pixels, peak modeled Folio-owned memory,
 peak transaction temporary storage, and elapsed time observed through the
-environment Clock. Parent and authenticated child observations are combined;
+environment's elapsed-time source (monotonic by default). Parent and authenticated child observations are combined;
 `isWithin(policy)` compares every represented value with its inclusive policy
 bound. Nesting and concurrency are admission properties and are not represented
 by one workflow's usage value. These observations do not measure JVM heap,
@@ -470,11 +489,17 @@ Hardened Worker profile neither grants disclosure nor gives the Worker network
 access.
 
 T22 adds no remote Worker, durable or cross-environment recovery store,
-automatic retry service, public backend SPI, user extension mechanism,
-renderer, Migration Facade mapping, or independent standards, semantic,
-syntax, or visual Acceptance Evidence. It does not make publication atomic
-across Targets. The capability remains `experimental` with an empty
-certified-platform list.
+automatic retry service, public backend SPI, user extension mechanism, renderer
+or Migration Facade control mapping. It does not make publication atomic across
+Targets. Issue #83 supplies candidate-bound syntax, standards, semantic, visual
+and contract evidence for the actual recovery and bounded scale workloads on
+the four declared Ubuntu 24.04/Linux x86-64 Temurin JDK 8/11/17/21 environments.
+The [T22 certification contract](t22-certification.md) defines the applicable
+22-rule blank-document scope, full actual input retention, all-page semantics
+and visual sample of pages 1, 2,500 and 5,000. Windows/macOS remain uncertified.
+Current compatibility is defined by the Foundation evidence index; the dated
+GraalVM observations above retain their historical scope. `FOLIO_T22_OUTPUT`
+can select an existing empty root for standalone scale artifact retention.
 
 ## T23 Rendering values
 

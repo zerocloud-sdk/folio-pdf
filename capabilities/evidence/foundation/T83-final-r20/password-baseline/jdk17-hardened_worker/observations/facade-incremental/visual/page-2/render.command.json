@@ -1,0 +1,30 @@
+{
+  "command": [
+    "@repository/scripts/container-bin/pdfium",
+    "render",
+    "@private-0",
+    "@private-1",
+    "--dpi",
+    "144",
+    "--file-type",
+    "png",
+    "--pages",
+    "2",
+    "--render-annotations"
+  ],
+  "exit-code": 0,
+  "limit": null,
+  "maximum-output-bytes": 16777216,
+  "privacy-projection": "tool-text-v1",
+  "stderr-sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdin": "none",
+  "stdout-sha256": "b976cc33a5d5e33ba8cff8215aa560cac2c048a7cefa8a9d197ab49aa96f1a8b",
+  "supervisor": [
+    "/bin/sh",
+    "-c",
+    "trap 'kill -KILL \"-$$\"' TERM INT HUP; exec 3<&0; \"$@\" <&3 3<&- & child=$!; exec 3<&- 0<&-; wait \"$child\"; result=$?; exit \"$result\"",
+    "folio-t78-tool",
+    "@tool-command"
+  ],
+  "timeout-seconds": 30
+}

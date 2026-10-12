@@ -1,0 +1,27 @@
+{
+  "command": [
+    "@repository/.build-cache/pdfcpu/0.15.0/pdfcpu",
+    "validate",
+    "--mode",
+    "strict",
+    "--conf",
+    "disable",
+    "--offline",
+    "@private-0"
+  ],
+  "exit-code": 1,
+  "limit": null,
+  "maximum-output-bytes": 16777216,
+  "privacy-projection": "tool-text-v1",
+  "stderr-sha256": "ea6dae6e69e38a0e391560556459a62d6e771803d3ddccb582b5888803760c4c",
+  "stdin": "none",
+  "stdout-sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "supervisor": [
+    "/bin/sh",
+    "-c",
+    "trap 'kill -KILL \"-$$\"' TERM INT HUP; exec 3<&0; \"$@\" <&3 3<&- & child=$!; exec 3<&- 0<&-; wait \"$child\"; result=$?; exit \"$result\"",
+    "folio-t78-tool",
+    "@tool-command"
+  ],
+  "timeout-seconds": 30
+}

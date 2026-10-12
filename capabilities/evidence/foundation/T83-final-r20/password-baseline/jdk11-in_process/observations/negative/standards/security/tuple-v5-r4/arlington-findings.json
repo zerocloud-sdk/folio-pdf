@@ -1,0 +1,8 @@
+{
+  "findings": [
+    "Error: special case not correct: O (EncryptionStandard) in PDF 2.0 should be: string-byte [fn:Eval(fn:AlwaysUnencrypted() && (((@R<=4) && (fn:StringLength(O)==32)) || (((@R==5) || (@R==6)) && (fn:StringLength(O)==48))))] - string when unsupported encryption",
+    "Error: wrong value for possible values: R (EncryptionStandard) should be: integer [fn:Eval(((@V==1) && ((@R==2) || (@R==3))) || ((@V==2) && (@R==3)) || ((@V==4) && (@R==4)) || ((@V==5) && ((@R==5) || (@R==6))))] in PDF 2.0 [observed value redacted]",
+    "Error: special case not correct: U (EncryptionStandard) in PDF 2.0 should be: string-byte [fn:Eval(fn:AlwaysUnencrypted() && (((@R<=4) && (fn:StringLength(U)==32)) || (((@R==5) || (@R==6)) && (fn:StringLength(U)==48))))] - string when unsupported encryption"
+  ],
+  "result": "fail"
+}

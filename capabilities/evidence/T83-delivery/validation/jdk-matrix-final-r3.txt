@@ -1,0 +1,1085 @@
+==> Verifying Folio PDF on JDK 8 (docker.io/library/eclipse-temurin@sha256:a4da319337cb6504ba4fb663cbd72a75df5515efb31bbdc6fc4ad7ba8d710dee)
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent                                    [pom]
+[INFO] Folio PDF by ZeroCloud - BOM                                       [pom]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract              [jar]
+[INFO] Folio PDF by ZeroCloud - Conversion                                [jar]
+[INFO] Folio PDF by ZeroCloud - Document Engine                           [jar]
+[INFO] Folio PDF by ZeroCloud - Stable iText 7 Migration Facade           [jar]
+[INFO] Folio PDF by ZeroCloud - Acceptance Evidence                       [jar]
+[INFO] Folio PDF by ZeroCloud - Preview iText 7 Migration Facade          [jar]
+[INFO] Folio PDF by ZeroCloud - Inventory Build Tool                      [jar]
+[INFO] Folio PDF by ZeroCloud - Release Rehearsal Tool                    [jar]
+[INFO] 
+[INFO] ----------------------< net.zerocloud:pdf-parent >----------------------
+[INFO] Building Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT           [1/10]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-parent ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.version.RequireMavenVersion passed
+[INFO] Rule 1: org.apache.maven.enforcer.rules.version.RequireJavaVersion passed
+[INFO] 
+[INFO] -----------------------< net.zerocloud:pdf-bom >------------------------
+[INFO] Building Folio PDF by ZeroCloud - BOM 0.1.0-SNAPSHOT              [2/10]
+[INFO]   from pdf-bom/pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-bom ---
+[INFO] 
+[INFO] ----------------< net.zerocloud:pdf-provider-contract >-----------------
+[INFO] Building Folio PDF by ZeroCloud - Capability Provider Contract 0.1.0-SNAPSHOT [3/10]
+[INFO]   from pdf-provider-contract/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-provider-contract ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-provider-contract ---
+[INFO] skip non existing resourceDirectory /workspace/pdf-provider-contract/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-provider-contract ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-provider-contract ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.provider.ProviderCatalogTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.038 s -- in net.zerocloud.pdf.provider.ProviderCatalogTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ pdf-provider-contract ---
+[INFO] 
+[INFO] --------------------< net.zerocloud:pdf-conversion >--------------------
+[INFO] Building Folio PDF by ZeroCloud - Conversion 0.1.0-SNAPSHOT       [4/10]
+[INFO]   from pdf-conversion/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-conversion ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /workspace/pdf-conversion/src/main/resources
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-conversion ---
+[INFO] skip non existing resourceDirectory /workspace/pdf-conversion/src/test/resources
+[INFO] Copying 1 resource from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-conversion ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-conversion ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.conversion.SubprocessCapabilityProviderTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.043 s -- in net.zerocloud.pdf.conversion.SubprocessCapabilityProviderTest
+[INFO] Running net.zerocloud.pdf.conversion.HarfBuzzCapabilityProviderTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.030 s -- in net.zerocloud.pdf.conversion.HarfBuzzCapabilityProviderTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ pdf-conversion ---
+[INFO] 
+[INFO] --- failsafe:3.5.4:integration-test (default) @ pdf-conversion ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.conversion.contract.JarContractIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.033 s -- in net.zerocloud.pdf.conversion.contract.JarContractIT
+[INFO] Running net.zerocloud.pdf.conversion.contract.PublicApiLeakageIT
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s -- in net.zerocloud.pdf.conversion.contract.PublicApiLeakageIT
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- failsafe:3.5.4:verify (default) @ pdf-conversion ---
+[INFO] 
+[INFO] ---------------------< net.zerocloud:pdf-document >---------------------
+[INFO] Building Folio PDF by ZeroCloud - Document Engine 0.1.0-SNAPSHOT  [5/10]
+[INFO]   from pdf-document/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.2:enforce (enforce-build-runtime) @ pdf-document ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ pdf-document ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from .. to target/classes/META-INF
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ pdf-document ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pdf-document ---
+[INFO] Copying 12 resources from src/test/resources to target/test-classes
+[INFO] Copying 15 resources from ../pdf-acceptance/src/main/resources/net/zerocloud/pdf/acceptance/fonts/noto to target/test-classes/net/zerocloud/pdf/fixtures/noto
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ pdf-document ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ pdf-document ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running net.zerocloud.pdf.PdfBoxFontMetricPreflightTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.049 s -- in net.zerocloud.pdf.PdfBoxFontMetricPreflightTest
+[INFO] Running net.zerocloud.pdf.PdfBoxCMapPreflightTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s -- in net.zerocloud.pdf.PdfBoxCMapPreflightTest
+[INFO] Running net.zerocloud.pdf.consumer.WorkflowResourceOwnershipTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.284 s -- in net.zerocloud.pdf.consumer.WorkflowResourceOwnershipTest
+[INFO] Running net.zerocloud.pdf.consumer.ClearMetadataPasswordWorkflowTest
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.865 s -- in net.zerocloud.pdf.consumer.ClearMetadataPasswordWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.IncrementalSignatureWorkflowTest
+Oct 09, 2026 2:21:51 AM org.apache.pdfbox.pdfparser.COSParser parseFileObject
+WARNING: Object (5:0) at offset 277 does not end with 'endobj' but with '0'
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.322 s -- in net.zerocloud.pdf.consumer.IncrementalSignatureWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+Oct 09, 2026 2:21:52 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Oct 09, 2026 2:21:52 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Oct 09, 2026 2:21:53 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Oct 09, 2026 2:21:53 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Oct 09, 2026 2:21:53 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Oct 09, 2026 2:21:53 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Oct 09, 2026 2:21:55 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Oct 09, 2026 2:21:55 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Oct 09, 2026 2:21:55 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Oct 09, 2026 2:21:56 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Oct 09, 2026 2:21:56 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Oct 09, 2026 2:21:56 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Oct 09, 2026 2:21:57 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Oct 09, 2026 2:21:57 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Oct 09, 2026 2:21:57 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Oct 09, 2026 2:21:58 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Oct 09, 2026 2:21:58 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Oct 09, 2026 2:21:58 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Oct 09, 2026 2:21:59 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+Oct 09, 2026 2:21:59 AM org.apache.fontbox.ttf.CmapSubtable processSubtype14
+WARNING: Format 14 cmap table is not supported and will be ignored
+[INFO] Tests run: 48, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 120.7 s -- in net.zerocloud.pdf.consumer.UnicodeCompositionWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.EmbeddedFilesPasswordWorkflowTest
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.969 s -- in net.zerocloud.pdf.consumer.EmbeddedFilesPasswordWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.WorkflowLifecycleTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.015 s -- in net.zerocloud.pdf.consumer.WorkflowLifecycleTest
+[INFO] Running net.zerocloud.pdf.consumer.RenderingColdStartTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.413 s -- in net.zerocloud.pdf.consumer.RenderingColdStartTest
+[INFO] Running net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest
+[INFO] Tests run: 82, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 23.98 s -- in net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest
+[INFO] Running net.zerocloud.pdf.consumer.CanvasImageColorTransparencyWorkflowTest
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.300 s -- in net.zerocloud.pdf.consumer.CanvasImageColorTransparencyWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[INFO] Tests run: 34, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 95.93 s -- in net.zerocloud.pdf.consumer.ShapingCompositionWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.ImageResourceExtractionWorkflowTest
+Oct 09, 2026 2:25:55 AM org.apache.pdfbox.filter.ASCIIHexFilter decode
+SEVERE: Invalid hex, int: 71 char: G
+Oct 09, 2026 2:25:55 AM org.apache.pdfbox.filter.ASCIIHexFilter decode
+SEVERE: Invalid hex, int: 120 char: x
+Oct 09, 2026 2:25:55 AM org.apache.pdfbox.filter.ASCIIHexFilter decode
+SEVERE: Invalid hex, int: 71 char: G
+Oct 09, 2026 2:25:55 AM org.apache.pdfbox.filter.ASCIIHexFilter decode
+SEVERE: Invalid hex, int: 71 char: G
+Oct 09, 2026 2:25:55 AM org.apache.pdfbox.filter.ASCIIHexFilter decode
+SEVERE: Invalid hex, int: 71 char: G
+Oct 09, 2026 2:25:55 AM org.apache.pdfbox.filter.LZWFilter doLZWDecode
+WARNING: Premature EOF in LZW stream, EOD code missing
+java.io.EOFException
+	at javax.imageio.stream.ImageInputStreamImpl.readBits(ImageInputStreamImpl.java:687)
+	at org.apache.pdfbox.filter.LZWFilter.doLZWDecode(LZWFilter.java:82)
+	at org.apache.pdfbox.filter.LZWFilter.decode(LZWFilter.java:67)
+	at org.apache.pdfbox.filter.Filter.decode(Filter.java:107)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.decodeFilterStages(PdfBoxHostileInputPreflight.java:369)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.preflightFilterStages(PdfBoxHostileInputPreflight.java:235)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.auditStream(PdfBoxHostileInputPreflight.java:193)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.traverse(PdfBoxHostileInputPreflight.java:156)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.audit(PdfBoxHostileInputPreflight.java:41)
+	at net.zerocloud.pdf.WorkflowResourceContext.audit(WorkflowResourceContext.java:607)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.executeChecked(PdfBoxWorkflowEngine.java:118)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.execute(PdfBoxWorkflowEngine.java:40)
+	at net.zerocloud.pdf.DocumentWorkflow.executeOnce(DocumentWorkflow.java:184)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:103)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:64)
+	at net.zerocloud.pdf.consumer.ImageResourceExtractionWorkflowTest.query(ImageResourceExtractionWorkflowTest.java:2243)
+	at net.zerocloud.pdf.consumer.ImageResourceExtractionWorkflowTest.nullOptionalDecodeParametersUseTheirEffectiveDefaults(ImageResourceExtractionWorkflowTest.java:448)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:316)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:214)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:155)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+Oct 09, 2026 2:25:55 AM org.apache.pdfbox.filter.LZWFilter doLZWDecode
+WARNING: Premature EOF in LZW stream, EOD code missing
+java.io.EOFException: Invalid LZW code: 489
+	at org.apache.pdfbox.filter.LZWFilter.doLZWDecode(LZWFilter.java:119)
+	at org.apache.pdfbox.filter.LZWFilter.decode(LZWFilter.java:67)
+	at org.apache.pdfbox.filter.Filter.decode(Filter.java:107)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.decodeFilterStages(PdfBoxHostileInputPreflight.java:369)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.preflightFilterStages(PdfBoxHostileInputPreflight.java:235)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.auditStream(PdfBoxHostileInputPreflight.java:193)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.traverse(PdfBoxHostileInputPreflight.java:156)
+	at net.zerocloud.pdf.PdfBoxHostileInputPreflight.audit(PdfBoxHostileInputPreflight.java:41)
+	at net.zerocloud.pdf.WorkflowResourceContext.audit(WorkflowResourceContext.java:607)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.executeChecked(PdfBoxWorkflowEngine.java:118)
+	at net.zerocloud.pdf.PdfBoxWorkflowEngine.execute(PdfBoxWorkflowEngine.java:40)
+	at net.zerocloud.pdf.DocumentWorkflow.executeOnce(DocumentWorkflow.java:184)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:103)
+	at net.zerocloud.pdf.DocumentWorkflow.execute(DocumentWorkflow.java:64)
+	at net.zerocloud.pdf.consumer.ImageResourceExtractionWorkflowTest.query(ImageResourceExtractionWorkflowTest.java:2243)
+	at net.zerocloud.pdf.consumer.ImageResourceExtractionWorkflowTest.unsupportedFilterKeepsEncodedBytesAndReportsDecodedAvailability(ImageResourceExtractionWorkflowTest.java:592)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:316)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:214)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:155)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[INFO] Tests run: 28, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.168 s -- in net.zerocloud.pdf.consumer.ImageResourceExtractionWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.DocumentMetadataWorkflowTest
+Oct 09, 2026 2:26:00 AM org.apache.pdfbox.multipdf.Splitter createNewDocument
+WARNING: Nested entry for key 'T11Custom' skipped in document information dictionary
+Oct 09, 2026 2:26:00 AM org.apache.pdfbox.multipdf.Splitter createNewDocument
+WARNING: Nested entry for key 'T11Custom' skipped in document information dictionary
+[INFO] Tests run: 62, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 9.530 s -- in net.zerocloud.pdf.consumer.DocumentMetadataWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.PageManipulationWorkflowTest
+Oct 09, 2026 2:26:05 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Oct 09, 2026 2:26:05 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Oct 09, 2026 2:26:05 AM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Oct 09, 2026 2:26:05 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Oct 09, 2026 2:26:05 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Oct 09, 2026 2:26:05 AM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Oct 09, 2026 2:26:05 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Oct 09, 2026 2:26:05 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Oct 09, 2026 2:26:05 AM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Oct 09, 2026 2:26:05 AM org.apache.pdfbox.filter.FlateFilterDecoderStream fetch
+WARNING: FlateFilter: premature end of stream due to a DataFormatException = invalid distance too far back
+Oct 09, 2026 2:26:05 AM org.apache.pdfbox.filter.FlateFilterDecoderStream fetch
+WARNING: FlateFilter: premature end of stream due to a DataFormatException = invalid distance too far back
+Oct 09, 2026 2:26:05 AM org.apache.pdfbox.filter.FlateFilterDecoderStream fetch
+WARNING: FlateFilter: premature end of stream due to a DataFormatException = invalid distance too far back
+Oct 09, 2026 2:26:05 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: inherited resources of source document are not imported to destination page
+Oct 09, 2026 2:26:05 AM org.apache.pdfbox.pdmodel.PDDocument importPage
+WARNING: call importedPage.setResources(page.getResources()) to do this
+Oct 09, 2026 2:26:05 AM org.apache.pdfbox.multipdf.Splitter processPage
+INFO: Resources imported in Splitter
+Oct 09, 2026 2:26:05 AM org.apache.pdfbox.filter.Filter getDecodeParams
+SEVERE: Expected DecodeParams to be an Array or Dictionary but found org.apache.pdfbox.cos.COSName
+Oct 09, 2026 2:26:05 AM org.apache.pdfbox.filter.Filter getDecodeParams
+SEVERE: Expected DecodeParams to be an Array or Dictionary but found org.apache.pdfbox.cos.COSName
+Oct 09, 2026 2:26:05 AM org.apache.pdfbox.filter.Filter getDecodeParams
+SEVERE: Expected DecodeParams to be an Array or Dictionary but found org.apache.pdfbox.cos.COSName
+[INFO] Tests run: 53, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.393 s -- in net.zerocloud.pdf.consumer.PageManipulationWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.Barcode2DWorkflowTest
+[INFO] Tests run: 70, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 189.8 s -- in net.zerocloud.pdf.consumer.Barcode2DWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.AnnotationWorkflowTest
+[INFO] Tests run: 36, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.222 s -- in net.zerocloud.pdf.consumer.AnnotationWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.BlankDocumentWorkflowTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s -- in net.zerocloud.pdf.consumer.BlankDocumentWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.PdfValueWorkflowTest
+[INFO] Tests run: 100, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 81.93 s -- in net.zerocloud.pdf.consumer.PdfValueWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.PdfVersionPasswordSecurityWorkflowTest
+[INFO] Tests run: 31, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.658 s -- in net.zerocloud.pdf.consumer.PdfVersionPasswordSecurityWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.BarcodeWorkflowTest
+[INFO] Tests run: 60, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 177.5 s -- in net.zerocloud.pdf.consumer.BarcodeWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest
+[INFO] Tests run: 64, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 66.56 s -- in net.zerocloud.pdf.consumer.ParagraphPaginationWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.TableCompositionWorkflowTest
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 74.87 s -- in net.zerocloud.pdf.consumer.TableCompositionWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.CanvasWorkflowTest
+Oct 09, 2026 2:36:01 AM org.apache.pdfbox.pdmodel.font.FileSystemFontProvider loadDiskCache
+INFO: 8 new font files found, font cache will be re-built
+Oct 09, 2026 2:36:01 AM org.apache.pdfbox.pdmodel.font.FileSystemFontProvider <init>
+INFO: Building on-disk font cache, this may take a while
+Oct 09, 2026 2:36:01 AM org.apache.pdfbox.pdmodel.font.FileSystemFontProvider <init>
+INFO: Finished building on-disk font cache, found 8 fonts
+Oct 09, 2026 2:36:01 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:36:01 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:36:01 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:36:01 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:36:01 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:36:01 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:36:01 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:36:01 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:36:01 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:36:01 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.139 s -- in net.zerocloud.pdf.consumer.CanvasWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.HostileInputWorkflowTest
+[INFO] Tests run: 19, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.123 s -- in net.zerocloud.pdf.consumer.HostileInputWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Tests run: 32, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 49.03 s -- in net.zerocloud.pdf.consumer.LargeTableWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.RenderingWorkflowContractTest
+[INFO] Tests run: 68, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 34.30 s -- in net.zerocloud.pdf.consumer.RenderingWorkflowContractTest
+[INFO] Running net.zerocloud.pdf.consumer.HardenedWorkerScaleProfileTest
+[WARNING] Tests run: 3, Failures: 0, Errors: 0, Skipped: 3, Time elapsed: 0.002 s -- in net.zerocloud.pdf.consumer.HardenedWorkerScaleProfileTest
+[INFO] Running net.zerocloud.pdf.consumer.ParagraphCompositionWorkflowTest
+[INFO] Tests run: 42, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 58.54 s -- in net.zerocloud.pdf.consumer.ParagraphCompositionWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 35.41 s -- in net.zerocloud.pdf.consumer.TablePaginationWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest
+Oct 09, 2026 2:38:58 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:58 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:58 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:58 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:58 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:58 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:58 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:58 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:58 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:58 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:58 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:58 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:58 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:58 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:58 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:58 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:58 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:58 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:58 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:58 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType0 <init>
+WARNING: Using fallback LiberationSans for CID-keyed font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType0 <init>
+WARNING: Using fallback LiberationSans for CID-keyed font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:38:59 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT13
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT13
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdfparser.BaseParser parseDirObject
+WARNING: Skipped unexpected dir object = '__folio_pdf_content_stream_terminal_probe__' at offset 68 (start offset: 25)
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdfparser.BaseParser parseCOSArray
+WARNING: Corrupt array element at offset 68, start offset: 23
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdfparser.BaseParser parseDirObject
+WARNING: Skipped unexpected dir object = '__folio_pdf_content_stream_terminal_probe__' at offset 68 (start offset: 25)
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdfparser.BaseParser parseCOSArray
+WARNING: Corrupt array element at offset 68, start offset: 23
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:00 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:01 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:01 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:01 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:01 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:01 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:39:01 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:01 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:01 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:01 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:01 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:39:01 AM org.apache.pdfbox.pdmodel.font.PDCIDFontType2 findFontOrSubstitute
+WARNING: Using fallback font LiberationSans for CID-keyed TrueType font FolioT75
+Oct 09, 2026 2:39:01 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:01 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:02 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:02 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:02 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:02 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:02 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:02 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:02 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:02 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:02 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:02 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:02 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:02 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:02 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:02 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+Oct 09, 2026 2:39:02 AM org.apache.pdfbox.pdmodel.font.PDType1Font <init>
+WARNING: Using fallback font LiberationSans for Helvetica
+[INFO] Tests run: 115, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.080 s -- in net.zerocloud.pdf.consumer.TextStructureExtractionWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.IncrementalSignatureMatrixTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.116 s -- in net.zerocloud.pdf.consumer.IncrementalSignatureMatrixTest
+[INFO] Running net.zerocloud.pdf.consumer.WorkflowTransactionContractTest
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.032 s -- in net.zerocloud.pdf.consumer.WorkflowTransactionContractTest
+[INFO] Running net.zerocloud.pdf.consumer.WorkflowCapabilityProviderTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s -- in net.zerocloud.pdf.consumer.WorkflowCapabilityProviderTest
+[INFO] Running net.zerocloud.pdf.consumer.FontLoadingWorkflowTest
+Oct 09, 2026 2:39:03 AM org.apache.fontbox.ttf.PostScriptTable read
+WARNING: No PostScript name data is provided for the font FolioPrimary-Regular
+Oct 09, 2026 2:39:03 AM org.apache.fontbox.ttf.PostScriptTable read
+WARNING: No PostScript name data is provided for the font FolioPrimary-Regular
+[INFO] Tests run: 22, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.733 s -- in net.zerocloud.pdf.consumer.FontLoadingWorkflowTest
+[INFO] Running net.zerocloud.pdf.consumer.HardenedWorkerRecoveryTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.229 s -- in net.zerocloud.pdf.consumer.HardenedWorkerRecoveryTest
+[INFO] Running net.zerocloud.pdf.consumer.HardenedWorkerWorkflowTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.585 s -- in net.zerocloud.pdf.consumer.HardenedWorkerWorkflowTest
+[INFO] Running net.zerocloud.pdf.HardenedWorkerTerminationWaitTest
+T22_WORKER_EXIT_GRACE The Worker did not terminate after completing its response. elapsedSinceFinishedMillis=30007; exitGraceSeconds=30; childAlive=true; waitIterations=1190; maximumPollMillis=25; childExitCode=unavailable; childPid=62738; childState=S; threadStates=S; sampledThreads=1
+[ERROR] Tests run: 8, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 37.30 s <<< FAILURE! -- in net.zerocloud.pdf.HardenedWorkerTerminationWaitTest
+[ERROR] net.zerocloud.pdf.HardenedWorkerTerminationWaitTest.interruptedExitWaitRetainsDiagnosticsAndPreventsPublication -- Time elapsed: 0.563 s <<< ERROR!
+java.nio.channels.ClosedByInterruptException
+	at java.nio.channels.spi.AbstractInterruptibleChannel.end(AbstractInterruptibleChannel.java:202)
+	at sun.nio.ch.FileChannelImpl.size(FileChannelImpl.java:315)
+	at java.nio.file.Files.readAllBytes(Files.java:3154)
+	at net.zerocloud.pdf.HardenedWorkerTerminationWaitTest.failsBeforePublication(HardenedWorkerTerminationWaitTest.java:215)
+	at net.zerocloud.pdf.HardenedWorkerTerminationWaitTest.interruptedExitWaitRetainsDiagnosticsAndPreventsPublication(HardenedWorkerTerminationWaitTest.java:147)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:299)
+	at org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:293)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.lang.Thread.run(Thread.java:750)
+
+[INFO] Running net.zerocloud.pdf.HardenedWorkerRecoveryFaultTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.923 s -- in net.zerocloud.pdf.HardenedWorkerRecoveryFaultTest
+[INFO] Running net.zerocloud.pdf.WorkerCodecContractTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.202 s -- in net.zerocloud.pdf.WorkerCodecContractTest
+[INFO] Running net.zerocloud.pdf.WorkflowResourceCacheAccountingTest
+[INFO] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 s -- in net.zerocloud.pdf.WorkflowResourceCacheAccountingTest
+[INFO] Running net.zerocloud.pdf.WorkerProtocolBoundaryTest
+[INFO] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.945 s -- in net.zerocloud.pdf.WorkerProtocolBoundaryTest
+[INFO] Running net.zerocloud.pdf.HardenedWorkerIsolationTest
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.082 s -- in net.zerocloud.pdf.HardenedWorkerIsolationTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Errors: 
+[ERROR]   HardenedWorkerTerminationWaitTest.interruptedExitWaitRetainsDiagnosticsAndPreventsPublication:147->failsBeforePublication:215 » ClosedByInterrupt
+[INFO] 
+[ERROR] Tests run: 1273, Failures: 0, Errors: 1, Skipped: 3
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for Folio PDF by ZeroCloud - Parent 0.1.0-SNAPSHOT:
+[INFO] 
+[INFO] Folio PDF by ZeroCloud - Parent .................... SUCCESS [  0.289 s]
+[INFO] Folio PDF by ZeroCloud - BOM ....................... SUCCESS [  0.003 s]
+[INFO] Folio PDF by ZeroCloud - Capability Provider Contract SUCCESS [  0.858 s]
+[INFO] Folio PDF by ZeroCloud - Conversion ................ SUCCESS [  1.686 s]
+[INFO] Folio PDF by ZeroCloud - Document Engine ........... FAILURE [18:27 min]
+[INFO] Folio PDF by ZeroCloud - Stable iText 7 Migration Facade SKIPPED
+[INFO] Folio PDF by ZeroCloud - Acceptance Evidence ....... SKIPPED
+[INFO] Folio PDF by ZeroCloud - Preview iText 7 Migration Facade SKIPPED
+[INFO] Folio PDF by ZeroCloud - Inventory Build Tool ...... SKIPPED
+[INFO] Folio PDF by ZeroCloud - Release Rehearsal Tool .... SKIPPED
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  18:30 min
+[INFO] Finished at: 2026-10-09T02:40:15Z
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.5.4:test (default-test) on project pdf-document: 
+[ERROR] 
+[ERROR] See /workspace/pdf-document/target/surefire-reports for the individual test results.
+[ERROR] See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+[ERROR] 
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :pdf-document

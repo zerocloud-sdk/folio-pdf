@@ -94,7 +94,7 @@ public final class WorkflowResourceUsage {
         return peakTemporaryStorageBytes;
     }
 
-    /** @return elapsed time observed through the environment Clock */
+    /** @return elapsed time observed through the environment's elapsed-time source */
     public Duration getElapsedTime() {
         return elapsedTime;
     }

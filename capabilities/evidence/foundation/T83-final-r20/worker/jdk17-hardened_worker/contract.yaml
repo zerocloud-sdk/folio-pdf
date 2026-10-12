@@ -1,0 +1,48 @@
+{
+  "schema-version": 1,
+  "obligation": "worker",
+  "acceptance-profile": "T21-hardened-worker",
+  "release": "0.1.0",
+  "candidate-sha256": "f554e856b8da919a948cf02be86120f380b6b56f3150bcab79cb178e4abddc34",
+  "contract-sha256": "77496c1b1f7973d220824315954207b9e38487d1310b014f7b23ee19cf5f3ab4",
+  "environment-sha256": "dd45992f2017a423ddb3d618265411a87e05fb86969a31205edc5ef9ac3f0a5e",
+  "execution-configuration-sha256": "7b6be9a240e50113ebfce2f16cda8efe8849ac8c5af3b85ab312074e2b6c4982",
+  "execution-profile": "HARDENED_WORKER",
+  "chain": "contract",
+  "result": "pass",
+  "producer": "folio-pdf-t21",
+  "configuration": {
+    "path": "capabilities/evidence/T21-hardened-worker.md",
+    "sha256": "cfe37df6fd04c6dc0fc5946ff3ac3bc490c784493c2415b356f9f4d5a12d8984"
+  },
+  "report": {
+    "path": "capabilities/evidence/foundation/T83-final-r20/worker/jdk17-hardened_worker/contract-report.json",
+    "sha256": "816ad096d00f73e2bc888d81feec89b46fdff0d130e1e5b3d22e90cb5cb54852"
+  },
+  "negative-controls": [
+    {
+      "path": "capabilities/profiles/T21-hardened-worker/coverage.json",
+      "sha256": "6e116259174250991cb920642729498b0b45d6347a7eb70e4ba08dbdef11b299"
+    },
+    {
+      "path": "capabilities/profiles/T21-hardened-worker/mandatory-tests.txt",
+      "sha256": "402eeed03ba368ce9403db471090c1abb30426c0c690e532bf0f1cbaac96c039"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T83-final-r20/worker/jdk17-hardened_worker/contract-tests.txt",
+      "sha256": "eb371d34bbb563129d43397eeed9f69cf2bab03fa6981b193ca85b3fd044e6d6"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T83-final-r20/worker/jdk17-hardened_worker/boundary-observations/faults/observations.properties",
+      "sha256": "eb1158cd3943209a220fab56bdf6415f8182ccecb1b1a4752b98920d55ebee56"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T83-final-r20/worker/jdk17-hardened_worker/boundary-observations/prerequisites/observations.properties",
+      "sha256": "de935a101ddaf676b99741394650f823dbbeb805aec48046be4dc2af1b826675"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T83-final-r20/worker/jdk17-hardened_worker/prerequisite-control/observations.properties",
+      "sha256": "061ed34f3223d14b155c33ed25c5df866a76ca142019bd28db887ceffe7468b6"
+    }
+  ]
+}

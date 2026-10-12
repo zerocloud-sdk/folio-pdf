@@ -158,7 +158,7 @@ def live_replay(root, run):
     return replay, plan, module
 
 
-def compare_originals(root, original, replay, plan, module):
+def compare_originals(root, original, replay, plan, module, normalize_extra=None):
     fresh = RetainedFiles(replay / 'observations')
     old_names = {path.relative_to(original.directory).as_posix() for path in original.expected}
     new_names = {path.relative_to(fresh.directory).as_posix() for path in fresh.expected}
@@ -167,8 +167,14 @@ def compare_originals(root, original, replay, plan, module):
     for name in sorted(old_names):
         old, new = original.directory / name, fresh.directory / name
         if old.suffix == '.pdf':
-            require(neutral_pdf(original.read(old)) == neutral_pdf(fresh.read(new)), 'published PDF/control differs from live observation: ' + name)
-            replacements[original.expected[old]] = fresh.expected[new]
+            neutral = neutral_pdf(original.read(old))
+            require(neutral == neutral_pdf(fresh.read(new)), 'published PDF/control differs from live observation: ' + name)
+            # Identical original PDFs may receive different trailer IDs in replay.
+            # Both hashes map to the already-compared neutral bytes, so aliases
+            # cannot overwrite each other with an unrelated replay hash.
+            identity = hashlib.sha256(neutral).hexdigest()
+            replacements[original.expected[old]] = identity
+            replacements[fresh.expected[new]] = identity
         elif old.suffix == '.png':
             # Requalify original pixels with the pinned external comparator; metadata
             # timestamps may vary while required pixel, alpha and size outcomes do not.
@@ -201,6 +207,8 @@ def compare_originals(root, original, replay, plan, module):
             right = parse_properties(normalized(right, fresh.directory).encode())
         elif old.suffix in ('.txt', '.md'):
             left, right = normalized(left, original.directory), normalized(right, fresh.directory)
+        if normalize_extra is not None:
+            left, right = normalize_extra(name, left, right, normalized, original.directory, fresh.directory)
         require(left == right, 'original findings/observations differ from live replay: ' + name)
     fresh.verify()
     original.verify()

@@ -1,0 +1,19 @@
+E
+======================================================================
+ERROR: test_independently_bound_input_memory_peaks_can_differ (scripts.tests.test_t22_foundation.T22FoundationTest.test_independently_bound_input_memory_peaks_can_differ)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/tests/test_t22_foundation.py", line 335, in test_independently_bound_input_memory_peaks_can_differ
+    compare_originals(root, original, scopes[1], {}, worker.foundation(), normalize)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/folio-pdf/scripts/t20_foundation_reports.py", line 212, in compare_originals
+    require(left == right, 'original findings/observations differ from live replay: ' + name)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/folio-pdf/scripts/t20_foundation_reports.py", line 26, in require
+    raise ValueError('T20 ' + message)
+ValueError: T20 original findings/observations differ from live replay: scale/input/observations.properties
+
+----------------------------------------------------------------------
+Ran 1 test in 0.022s
+
+FAILED (errors=1)

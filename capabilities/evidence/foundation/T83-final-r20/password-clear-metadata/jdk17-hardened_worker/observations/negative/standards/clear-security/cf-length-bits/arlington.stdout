@@ -1,0 +1,19 @@
+Processing "@repository/capabilities/profiles/T79-controls/cf-length-bits.pdf" to stdout BEGIN - TestGrammar v0.81 built Sep  8 2026 00:00:00 (GNU-C linux release) pdfium
+Arlington TSV data: "@repository/.build-cache/t79-arlington-model/output"
+PDF: "@repository/capabilities/profiles/T79-controls/cf-length-bits.pdf"
+Info: Traditional trailer dictionary detected.
+Info: Encrypted PDF
+Info: Header is version PDF 2.0
+Info: Processing as PDF 2.0
+       2:     Trailer->Encrypt (as EncryptionStandard)
+Info: detected a dictionary key version-based feature that was deprecated in PDF 2.0 (using PDF 2.0) for EncryptionStandard/Length
+       4:     Trailer->Info (as DocInfo)
+Info: detected a dictionary key version-based feature that was deprecated in PDF 2.0 (using PDF 2.0) for DocInfo/Keywords
+Info: detected a dictionary key version-based feature that was deprecated in PDF 2.0 (using PDF 2.0) for DocInfo/Title
+      10:         Trailer->Encrypt (as EncryptionStandard)->CF (as CryptFilterMap)->StdCF (as CryptFilter)
+Error: wrong value for possible values: Length (CryptFilter) should be: integer [fn:Eval(((@CFM==V2) && (@Length==16)) || ((@CFM==AESV2) && (@Length==16)) || ((@CFM==AESV3) && (@Length==32)))] in PDF 2.0 and is integer==256
+Info: detected a dictionary key version-based feature that was deprecated in PDF 2.0 (using PDF 2.0) for CryptFilter/Length
+Info: Latest Arlington object was PDF 1.5 (EncryptionStandard/CF) compared using PDF 2.0
+END
+
+DONE - 1 files processed

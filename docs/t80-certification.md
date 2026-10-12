@@ -89,6 +89,23 @@ Supply the documented complete HarfBuzz and pinned Python installations, plus
 pinned acceptance tools. Run the public and independent tests, full verification,
 JDK matrix and collector rejection suite before freezing source/contracts/harness.
 
+The complete attachment observer uses a fixed 30-minute/16-MiB coordinator
+budget for all 62 actual Native/Facade products, the original-input corpus and
+qualified negative controls. The default coordinator retains its 15-minute
+maximum; T78 and T79 continue to use that default. Individual Java tools retain
+their five-minute maximum and each Python observer command retains its
+30-second/16-MiB bounds. The same owner removes the entire private directory
+after success, timeout, interruption or output overflow, including AppImage
+extraction caches. This acceptance-only batch budget changes no Worker or
+document resource policy, required predicate, tool identity or control.
+
+The [retained #83 duration measurement](../capabilities/evidence/T83-delivery/diagnostics/validated-attachments-duration-r1.json)
+observed the unchanged full observer seal after 904.790 seconds. The original
+15-minute recorder and two unchanged replays timed out; all failures remain
+retained and unindexed. The measurement exports no certification. The changed
+acceptance harness requires restaging and fresh same-candidate prerequisite
+qualification before recovery certification.
+
 ```sh
 python3 scripts/provision-t80-qpdf.py
 python3 scripts/provision-t80-arlington-model.py

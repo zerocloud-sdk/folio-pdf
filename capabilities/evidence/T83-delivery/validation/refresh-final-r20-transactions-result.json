@@ -1,0 +1,44 @@
+{
+  "command": [
+    "python3",
+    "-B",
+    "scripts/t03-foundation.py",
+    "certify",
+    "capabilities/evidence/foundation/T83-final-r20/transactions",
+    "--obligation",
+    "transactions"
+  ],
+  "repository-command": [
+    "python3",
+    "-B",
+    "scripts/t03-foundation.py",
+    "certify",
+    "capabilities/evidence/foundation/T83-final-r20/transactions",
+    "--obligation",
+    "transactions"
+  ],
+  "cwd": "/workspace/folio-pdf",
+  "timeout-seconds": 21600,
+  "delivery-wrapper-sha256": "cb763fb498c1fe203f5cae745d87a0ec009c9ad013772efc0d653958e73ee100",
+  "actual-declared-image": null,
+  "started": "2026-10-11T02:45:56.017175+00:00",
+  "environment": {
+    "JAVA_HOME": "/workspace/folio-pdf/.build-cache/t83-jdk17",
+    "MAVEN_USER_HOME": "/workspace/folio-pdf/.build-cache/maven",
+    "MAVEN_OPTS": "-Dmaven.repo.local=/workspace/folio-pdf/.build-cache/maven/repository",
+    "PYTHONPATH": "/workspace/folio-pdf/.build-cache/t83-fonttools:/workspace/folio-pdf/.build-cache/foundation-host-python",
+    "FOLIO_FOUNDATION_PYTHON_ROOT": "/workspace/folio-pdf/.build-cache/foundation-python",
+    "FOLIO_HARFBUZZ_HELPER": "/workspace/folio-pdf/.build-cache/t81-provision/folio-harfbuzz/bin/folio-harfbuzz",
+    "CONTAINERS_STORAGE_CONF": "/workspace/folio-pdf/.build-cache/t83-storage.conf"
+  },
+  "timing-semantics": "Timeout and primary elapsed duration use monotonic time; wall duration and UTC timestamps are diagnostic.",
+  "monotonic-duration-seconds": 302.9525465950137,
+  "wall-duration-seconds": 559.7314429283142,
+  "wall-minus-monotonic-seconds": 256.7788963333005,
+  "finished": "2026-10-11T02:55:15.748699+00:00",
+  "exit-code": 0,
+  "log": {
+    "path": "capabilities/evidence/T83-delivery/validation/refresh-final-r20-transactions.txt",
+    "sha256": "f106d67226b992eff51a59d5206ee5164feabc28d12dddb0477dbdcf3b8d5e86"
+  }
+}

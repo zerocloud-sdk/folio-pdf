@@ -249,3 +249,20 @@ candidate; their prior identities become stale when source/contracts change.
 The five obligations can be satisfied while unrelated Foundation slices keep
 overall readiness NOT READY. The approved environment matrix and deferred
 Windows/macOS scope remain those in ADR-0040.
+
+## Recovery and bounded scale certification
+
+`--obligation recovery` selects the frozen T22 profile and only the four declared
+HARDENED_WORKER Ubuntu/JDK tuples. Each tuple retains separate syntax, standards,
+semantic, visual and contract records. All 180 named cases and the actual
+5,000-page, exact 1-GiB and concurrency profiles must execute without skips.
+The [T22 contract](t22-certification.md) defines original workload retention,
+applicable qualified predicates, visual sampling, strict replay and the actual
+IN_PROCESS Facade scope. The checker requires observed JVM/launcher witnesses
+for recovery as well as worker.
+
+Freeze and stage the final candidate, then refresh invalidated predecessors in
+order through `worker` before `recovery`. Historical evidence keeps its original
+identity; a new label cannot make it current. Live readiness must keep every
+previously satisfied prerequisite SATISFIED for the same candidate. Unrelated
+outstanding slices may keep global readiness NOT READY and are outside #83.

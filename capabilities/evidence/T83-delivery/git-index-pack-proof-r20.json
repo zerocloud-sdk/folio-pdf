@@ -1,0 +1,39 @@
+{
+  "git-version": "git version 2.47.3",
+  "purpose": "Bound loose-object inode growth when staging retained issue83 evidence after all criteria pass.",
+  "probe": "Temporary isolated Git repository, staged blobs only, no commit or target-repository index mutation.",
+  "steps": [
+    {
+      "staged-files": 1,
+      "incremental-pack-command": [
+        "repack",
+        "-d",
+        "--window-memory=64m",
+        "--threads=2",
+        "--max-pack-size=512m"
+      ],
+      "objects-preserved-readable": true,
+      "loose-staged-objects-packed": true,
+      "pack-files": 1,
+      "created-commits": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "staged-files": 2,
+      "incremental-pack-command": [
+        "repack",
+        "-d",
+        "--window-memory=64m",
+        "--threads=2",
+        "--max-pack-size=512m"
+      ],
+      "objects-preserved-readable": true,
+      "loose-staged-objects-packed": true,
+      "pack-files": 2,
+      "created-commits": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ]
+}

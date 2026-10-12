@@ -146,6 +146,32 @@ ARTIFACT_CONTRACT_TESTS = tuple(
     'net.zerocloud.pdf.migration.itext7.contract.' + name
     for name in ('JarContractIT', 'ClasspathExclusivityIT'))
 CERTIFICATION_CASES = {
+    'recovery': {
+        'profile': 'T22-worker-recovery-scale', 'label': 'T22', 'test-count': 180,
+        'test-main': 'net.zerocloud.pdf.acceptance.T22ContractTestCommand',
+        'test-classes': ['net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest',
+            'net.zerocloud.pdf.consumer.HardenedWorkerWorkflowTest',
+            'net.zerocloud.pdf.HardenedWorkerIsolationTest', 'net.zerocloud.pdf.WorkerProtocolBoundaryTest',
+            'net.zerocloud.pdf.HardenedWorkerRecoveryFaultTest', 'net.zerocloud.pdf.T21BoundaryObservationCases',
+            'net.zerocloud.pdf.itext7.consumer.BlankDocumentFacadeTest',
+            'net.zerocloud.pdf.consumer.HardenedWorkerRecoveryTest',
+            'net.zerocloud.pdf.consumer.HardenedWorkerScaleProfileTest',
+            'net.zerocloud.pdf.WorkerCodecContractTest', 'net.zerocloud.pdf.T22RecoveryObservationCases',
+            'net.zerocloud.pdf.HardenedWorkerTerminationWaitTest',
+            'net.zerocloud.pdf.WorkerInitializationTimingTest',
+            'net.zerocloud.pdf.consumer.WorkflowElapsedTimeContractTest'],
+        'execution-profiles': ('HARDENED_WORKER',), 'chains': CHAINS + ('contract',),
+        'facade-execution-profile': 'IN_PROCESS', 'standards-producer': 'arlington',
+        'contract-timeout': 1800, 'recorder-timeout': 1800,
+        'additional-java-options': ['-Dfolio.pdf.t22.scale=all'],
+        'workflow-policy': 'Actual 5000-page publication/reopen, exact 1073741824-byte consumed input, concurrency two/first excess/retry; full finite modeled Folio resource policies; environment-local bounded identity/status, envelope conflicts, ordered receipts, eligible retry, lost acknowledgement and terminal partial output; actual interruption, child crash, malformed input/response and authenticated multi-frame controls; Native HARDENED_WORKER; Facade IN_PROCESS',
+        'fonts': 'none; all inspected actual workload pages and recovery outcomes are resource-free blank pages',
+        'configuration-paths': ['capabilities/profiles/T22-worker-recovery-scale', 'scripts/t22-evidence-pin.properties',
+            'scripts/t22-arlington-pin.properties',
+            *['capabilities/profiles/T22-worker-recovery-scale-pages-' + str(page) + '-visual.properties' for page in (1, 2500, 5000)],
+            'capabilities/profiles/T21-hardened-worker', 'scripts/t21-evidence-pin.properties',
+            'capabilities/profiles/T03-standards', 'capabilities/profiles/T03-document-blank-visual.properties',
+            'capabilities/expected/T03-document-blank-144dpi-srgb.png']},
     'worker': {
         'profile': 'T21-hardened-worker', 'label': 'T21', 'test-count': 137,
         'test-main': 'net.zerocloud.pdf.acceptance.T21ContractTestCommand',
@@ -718,6 +744,9 @@ def append_source_visual(root, run, report):
 
 
 def collect_reports(root, run, obligation='transactions', execution_profile=None):
+    if obligation == 'recovery':
+        from t22_foundation_reports import collect_reports as collect_recovery_reports
+        return collect_recovery_reports(root, run, execution_profile)
     if obligation == 'worker':
         from t21_foundation_reports import collect_reports as collect_worker_reports
         return collect_worker_reports(root, run, execution_profile)
@@ -1143,8 +1172,8 @@ def certification_tools():
          'pin': 'scripts/imagemagick-pin.properties',
          'hash-key': 'IMAGEMAGICK_EXECUTABLE_SHA256', 'chains': ['visual']}]
     project = [{'id': 'folio-pdf-' + label, 'kind': 'project-test',
-                'version': '0.1.0', 'chains': ['semantic', 'contract'] if label in ('t20', 't21') else ['semantic']}
-               for label in ('t03', 't09', 't10', 't11', 't12', 't13', 't14', 't15', 't20', 't21', 't78', 't79', 't80')]
+                'version': '0.1.0', 'chains': ['semantic', 'contract'] if label in ('t20', 't21', 't22') else ['semantic']}
+               for label in ('t03', 't09', 't10', 't11', 't12', 't13', 't14', 't15', 't20', 't21', 't22', 't78', 't79', 't80')]
     return external + project
 
 
@@ -1245,6 +1274,10 @@ def execution_plan(root, scope, image, helper, cp, case, execution):
                               + ':/usr/bin/prlimit:ro']
         support = [prerequisite + ['java'] + options + ['-cp', cp,
             'net.zerocloud.pdf.acceptance.T21UnavailableLaunchCommand', inside + '/prerequisite-control']]
+    if case['label'] == 'T22':
+        test_args = ['/workspace/capabilities/profiles/T22-worker-recovery-scale/mandatory-tests.txt']
+        test_options += ['-Dfolio.t21.observationOutput=' + inside + '/boundary-observations',
+                         '-Dfolio.pdf.t22.output=' + inside + '/scale-observations']
     test_command = command + ['java'] + options + test_options + ['-cp', cp, test_main] + test_args + case['test-classes']
     return {'recorder-command': evidence_command, 'contract-tests-command': test_command,
             'preservation-command': command + ['/usr/bin/python3.12', '/workspace/scripts/t03-foundation.py',
@@ -1424,9 +1457,9 @@ def main():
         import json
         if args.output is None:
             parser.error('collect requires an observation directory')
-        if args.obligation in ('metadata', 'annotations', 'text', 'images', 'incremental', 'limits', 'worker', 'password-baseline', 'password-clear-metadata', 'password-attachments') and args.execution_profile is None:
+        if args.obligation in ('metadata', 'annotations', 'text', 'images', 'incremental', 'limits', 'worker', 'recovery', 'password-baseline', 'password-clear-metadata', 'password-attachments') and args.execution_profile is None:
             parser.error(args.obligation + ' collect requires --execution-profile')
-        if args.obligation not in ('metadata', 'annotations', 'text', 'images', 'incremental', 'limits', 'worker', 'password-baseline', 'password-clear-metadata', 'password-attachments') and args.execution_profile is not None:
+        if args.obligation not in ('metadata', 'annotations', 'text', 'images', 'incremental', 'limits', 'worker', 'recovery', 'password-baseline', 'password-clear-metadata', 'password-attachments') and args.execution_profile is not None:
             parser.error('--execution-profile applies only to metadata, annotations, text, images, incremental, limits, worker and password collect')
         print(json.dumps(collect_reports(root, (root / args.output).resolve(), args.obligation,
                                          args.execution_profile), indent=2))

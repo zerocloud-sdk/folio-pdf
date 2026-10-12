@@ -1,0 +1,35 @@
+{
+  "validator": {
+    "path": "capabilities/evidence/T83-delivery/diagnostics/unicode-elapsed-preservation-r2.py",
+    "sha256": "2459e19bd5beacd1b3ba58326049f20acefc436b89bf01c76acc8fabd623f4bf"
+  },
+  "checker": {
+    "path": "capabilities/evidence/T83-delivery/validate-unicode-preservation-r3.py",
+    "sha256": "e9a88690018cd0acedcba2882a298d108916dd783445bce3cf3b25080dc41f9d"
+  },
+  "actual-preservation-passed": true,
+  "originals-unchanged": true,
+  "negative-cases": [
+    {
+      "case": "altered-ledger",
+      "rejected": true,
+      "isolated-copy": true
+    },
+    {
+      "case": "resealed-log",
+      "rejected": true,
+      "isolated-copy": true
+    },
+    {
+      "case": "resealed-report",
+      "rejected": true,
+      "isolated-copy": true
+    },
+    {
+      "case": "omitted-prior-witness",
+      "rejected": true,
+      "isolated-copy": true
+    }
+  ],
+  "certifications-exported": 0
+}

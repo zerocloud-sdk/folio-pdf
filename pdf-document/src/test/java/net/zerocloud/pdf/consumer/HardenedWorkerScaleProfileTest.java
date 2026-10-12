@@ -8,6 +8,8 @@ import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.security.MessageDigest;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -43,7 +45,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-/** Opt-in generated Foundation-scale profiles; no large fixture is retained. */
+/** Opt-in generated Foundation-scale profiles with optional actual-artifact retention. */
 public final class HardenedWorkerScaleProfileTest {
 
     private static final String SCALE_PROPERTY = "folio.pdf.t22.scale";
@@ -57,6 +59,8 @@ public final class HardenedWorkerScaleProfileTest {
     public void generatedFiveThousandPageWorkloadCompletesAndReopens()
             throws Exception {
         assumeProfile("pages");
+        ScaleProfileEvidence evidence = ScaleProfileEvidence.open("pages");
+        evidence.commands(FOUNDATION_PAGES);
         Path target = temporaryFolder.getRoot().toPath()
                 .resolve("generated-5000-pages.pdf");
         WorkflowResourcePolicy policy = WorkflowResourcePolicy.safeDefaults();
@@ -86,6 +90,9 @@ public final class HardenedWorkerScaleProfileTest {
         assertTrue(created.getResourceUsage().getObservedPages()
                 >= FOUNDATION_PAGES);
         assertUsageWithin(created.getResourceUsage(), policy);
+        assertNoWorkflowRoots(temporaryFolder.getRoot().toPath());
+        evidence.output(target, created, FOUNDATION_PAGES);
+        evidence.finish(policy, created.getResourceUsage(), wallNanos);
         record(
                 "pages",
                 "5000 project-owned AddBlankPage commands; published and reopened",
@@ -99,10 +106,12 @@ public final class HardenedWorkerScaleProfileTest {
     public void generatedExactOneGiBInputCompletesWithinStagingProfile()
             throws Exception {
         assumeProfile("input");
+        ScaleProfileEvidence evidence = ScaleProfileEvidence.open("input");
         WorkflowResourcePolicy policy = WorkflowResourcePolicy.safeDefaults();
         WorkflowEnvironment environment = environment(policy);
         GeneratedLargePdfStream generated = new GeneratedLargePdfStream(
                 FOUNDATION_INPUT_BYTES);
+        generated.archive = evidence.inputArchive();
         WorkflowRequest request = WorkflowRequest.builder()
                 .source(
                         "generated",
@@ -115,8 +124,13 @@ public final class HardenedWorkerScaleProfileTest {
                 .build();
 
         long started = System.nanoTime();
-        WorkflowOutcome<Integer> outcome = new DocumentWorkflow(environment)
-                .execute(request, session -> session.query(PageCount.INSTANCE));
+        WorkflowOutcome<Integer> outcome;
+        try {
+            outcome = new DocumentWorkflow(environment)
+                    .execute(request, session -> session.query(PageCount.INSTANCE));
+        } finally {
+            if (generated.archive != null) { generated.archive.close(); }
+        }
         long wallNanos = System.nanoTime() - started;
 
         WorkflowResourceUsage usage = outcome.getResourceUsage();
@@ -128,6 +142,12 @@ public final class HardenedWorkerScaleProfileTest {
                 >= FOUNDATION_INPUT_BYTES);
         assertUsageWithin(usage, policy);
         assertNoWorkflowRoots(temporaryFolder.getRoot().toPath());
+        assertTrue(outcome.getPublicationReceipts().isEmpty());
+        evidence.input(generated.getReadBytes(), ScaleProfileEvidence.hex(generated.digest.digest()),
+                generated.tailOffset, GeneratedLargePdfStream.HEADER, generated.tail);
+        evidence.observation("caller-input-open", !generated.isClosed());
+        evidence.observation("public-pages", outcome.getResult());
+        evidence.finish(policy, usage, wallNanos);
         record(
                 "input",
                 "exact 1-GiB generated InputStream: header, newline fill, valid one-page xref tail",
@@ -141,6 +161,8 @@ public final class HardenedWorkerScaleProfileTest {
     public void configuredConcurrencyLimitAdmitsLimitAndRejectsFirstExcess()
             throws Exception {
         assumeProfile("concurrency");
+        ScaleProfileEvidence evidence = ScaleProfileEvidence.open("concurrency");
+        evidence.commands(1);
         final int concurrency = 2;
         WorkflowResourcePolicy policy = withConcurrency(
                 WorkflowResourcePolicy.safeDefaults(),
@@ -220,6 +242,11 @@ public final class HardenedWorkerScaleProfileTest {
                     WorkflowTransactionState.RECOVERABLE,
                     workflow.lookupTransaction(excessId).get().getState());
             assertFalse(Files.exists(excessTarget));
+            evidence.observation("first-excess-code", "CONCURRENCY_LIMIT_EXCEEDED");
+            evidence.observation("first-excess-state", "RECOVERABLE");
+            evidence.observation("first-excess-receipts", "result:NOT_ATTEMPTED:false");
+            evidence.observation("first-excess-callback-count", 0);
+            evidence.observation("first-excess-target", "absent");
         } finally {
             release.countDown();
             for (Thread thread : threads) {
@@ -249,6 +276,19 @@ public final class HardenedWorkerScaleProfileTest {
                 WorkflowTransactionState.COMPLETED,
                 workflow.lookupTransaction(excessId).get().getState());
         assertUsageWithin(retried.getResourceUsage(), policy);
+        for (int index = 0; index < concurrency; index++) {
+            Path target = temporaryFolder.getRoot().toPath().resolve("concurrent-" + index + ".pdf");
+            assertEquals(Integer.valueOf(1), workflow.execute(readRequest(target),
+                    session -> session.query(PageCount.INSTANCE)).getResult());
+            evidence.output(target, outcomes.get(index).get(), 1);
+        }
+        assertEquals(Integer.valueOf(1), workflow.execute(readRequest(excessTarget),
+                session -> session.query(PageCount.INSTANCE)).getResult());
+        evidence.output(excessTarget, retried, 1);
+        assertNoWorkflowRoots(temporaryFolder.getRoot().toPath());
+        evidence.observation("admitted-workflows", concurrency);
+        evidence.observation("retry-state", "COMPLETED");
+        evidence.finish(policy, retried.getResourceUsage(), wallNanos);
         record(
                 "concurrency",
                 "two held public workflows; nonblocking first excess; retry after release",
@@ -384,14 +424,21 @@ public final class HardenedWorkerScaleProfileTest {
     /** Constant-memory clean-room PDF generator with its xref at byte 1 GiB. */
     private static final class GeneratedLargePdfStream extends InputStream {
 
+        private static final String OBJECTS = "1 0 obj\n"
+                + "<< /Type /Catalog /Pages 2 0 R >>\nendobj\n"
+                + "2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n"
+                + "3 0 obj\n<< /Type /Page /Parent 2 0 R "
+                + "/MediaBox [0 0 612 792] /Resources << >> >>\nendobj\n";
         private static final byte[] HEADER =
-                "%PDF-1.4\n".getBytes(StandardCharsets.US_ASCII);
+                ("%PDF-1.7\n" + OBJECTS).getBytes(StandardCharsets.US_ASCII);
 
         private final long length;
         private final long tailOffset;
         private final byte[] tail;
         private long position;
         private boolean closed;
+        private OutputStream archive;
+        private final MessageDigest digest = ScaleProfileEvidence.digest();
 
         private GeneratedLargePdfStream(long length) {
             if (length <= 1024L) {
@@ -414,14 +461,14 @@ public final class HardenedWorkerScaleProfileTest {
         }
 
         @Override
-        public int read() {
+        public int read() throws IOException {
             byte[] one = new byte[1];
             int count = read(one, 0, 1);
             return count < 0 ? -1 : one[0] & 0xff;
         }
 
         @Override
-        public int read(byte[] bytes, int offset, int count) {
+        public int read(byte[] bytes, int offset, int count) throws IOException {
             if (bytes == null) {
                 throw new NullPointerException("bytes");
             }
@@ -450,6 +497,8 @@ public final class HardenedWorkerScaleProfileTest {
                     offset,
                     position,
                     copied);
+            digest.update(bytes, offset, copied);
+            if (archive != null) { archive.write(bytes, offset, copied); }
             position += copied;
             return copied;
         }
@@ -490,37 +539,24 @@ public final class HardenedWorkerScaleProfileTest {
         }
 
         private static byte[] tail(long offset) {
-            String object1 = "1 0 obj\n"
-                    + "<< /Type /Catalog /Pages 2 0 R >>\n"
-                    + "endobj\n";
-            String object2 = "2 0 obj\n"
-                    + "<< /Type /Pages /Kids [3 0 R] /Count 1 >>\n"
-                    + "endobj\n";
-            String object3 = "3 0 obj\n"
-                    + "<< /Type /Page /Parent 2 0 R "
-                    + "/MediaBox [0 0 72 72] >>\n"
-                    + "endobj\n";
-            long object1Offset = offset;
-            long object2Offset = object1Offset + asciiLength(object1);
-            long object3Offset = object2Offset + asciiLength(object2);
-            long xrefOffset = object3Offset + asciiLength(object3);
+            // Independent observers require a real first object immediately after the header.
+            // The complete input still spans exactly one GiB, with its xref near the end.
+            long object1Offset = 9L;
+            long object2Offset = object1Offset + OBJECTS.indexOf("2 0 obj\n");
+            long object3Offset = object1Offset + OBJECTS.indexOf("3 0 obj\n");
             String xref = "xref\n0 4\n"
                     + "0000000000 65535 f \n"
                     + xrefEntry(object1Offset)
                     + xrefEntry(object2Offset)
                     + xrefEntry(object3Offset)
                     + "trailer\n<< /Size 4 /Root 1 0 R >>\n"
-                    + "startxref\n" + xrefOffset + "\n%%EOF\n";
-            return (object1 + object2 + object3 + xref)
-                    .getBytes(StandardCharsets.US_ASCII);
+                    + "startxref\n" + offset + "\n%%EOF\n";
+            return xref.getBytes(StandardCharsets.US_ASCII);
         }
 
         private static String xrefEntry(long offset) {
             return String.format(Locale.ROOT, "%010d 00000 n \n", offset);
         }
 
-        private static int asciiLength(String value) {
-            return value.getBytes(StandardCharsets.US_ASCII).length;
-        }
     }
 }

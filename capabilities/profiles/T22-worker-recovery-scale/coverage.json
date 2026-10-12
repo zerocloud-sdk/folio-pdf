@@ -1,0 +1,64 @@
+{
+  "profile": "T22-worker-recovery-scale",
+  "source-issue": 83,
+  "mandatory-test-count": 180,
+  "test-classes": [
+    "net.zerocloud.pdf.HardenedWorkerIsolationTest",
+    "net.zerocloud.pdf.HardenedWorkerRecoveryFaultTest",
+    "net.zerocloud.pdf.HardenedWorkerTerminationWaitTest",
+    "net.zerocloud.pdf.T21BoundaryObservationCases",
+    "net.zerocloud.pdf.T22RecoveryObservationCases",
+    "net.zerocloud.pdf.WorkerCodecContractTest",
+    "net.zerocloud.pdf.WorkerInitializationTimingTest",
+    "net.zerocloud.pdf.WorkerProtocolBoundaryTest",
+    "net.zerocloud.pdf.consumer.HardenedWorkerRecoveryTest",
+    "net.zerocloud.pdf.consumer.HardenedWorkerScaleProfileTest",
+    "net.zerocloud.pdf.consumer.HardenedWorkerWorkflowTest",
+    "net.zerocloud.pdf.consumer.WorkflowElapsedTimeContractTest",
+    "net.zerocloud.pdf.consumer.WorkflowExecutionProfileContractTest",
+    "net.zerocloud.pdf.itext7.consumer.BlankDocumentFacadeTest",
+    "net.zerocloud.pdf.migration.itext7.contract.ClasspathExclusivityIT",
+    "net.zerocloud.pdf.migration.itext7.contract.JarContractIT"
+  ],
+  "reused-boundary-profile": "T21-hardened-worker",
+  "scale-profiles": [
+    "pages",
+    "input",
+    "concurrency"
+  ],
+  "scale-execution": {
+    "pages": {
+      "pages": 5000,
+      "visual-pages": [
+        1,
+        2500,
+        5000
+      ]
+    },
+    "input": {
+      "bytes": 1073741824,
+      "read-only": true,
+      "visual-pages": [
+        1
+      ]
+    },
+    "concurrency": {
+      "admitted": 2,
+      "first-excess": 3,
+      "retry": "after capacity release",
+      "visual-pages": [
+        1
+      ]
+    }
+  },
+  "qualifications": {
+    "syntax": "Pinned qpdf on the actual PDF workload bytes. The complete consumed giant input is retained as lossless gzip, rehydrated without shortening for every producer.",
+    "standards": "Original qualified T03 22-rule blank-document union applies to every actual scale page and the actual PDF 1.7 input. No font/layout/conformance predicate is claimed.",
+    "semantic": "Public Worker reopen plus independent qpdf graph traversal of every actual blank page; no miniature substitute.",
+    "visual": "Original 144-DPI opaque-sRGB white AE-zero and zero-fuzz blank raster at first/middle/final pages of the actual 5000-page file, every concurrency output and actual one-page 1-GiB input. This is a declared sample, not full-document visual or rendering certification.",
+    "facade": "Existing public lifecycle operations execute IN_PROCESS; transaction/recovery/resource controls remain Native only.",
+    "resources": "Full finite Workflow policies and modeled Folio memory/storage observations; no JVM heap/process RSS/native memory/kernel/secure-erasure claim.",
+    "termination-wait": "Real Worker/public workflow regressions: an actual managed child alive beyond one second exits within the 30-second post-FINISHED grace; delayed parent observation rechecks liveness; actual grace expiry retains elapsed/liveness/bounded process/thread-state diagnostics before forced termination. Cancellation, caller deadline, the default five-minute elapsed bound and interruption still prevent publication with ordered NOT_ATTEMPTED receipts, RECOVERABLE lookup, unchanged Target sentinels, confirmed child termination and owned-storage cleanup. Success retains COMMITTED receipt, COMPLETED lookup and public reopen. Only the full-grace expiry case uses a 60-second JUnit timeout; other new exit cases use 10 seconds. Fixture launcher and Clock remain outside the qualified runtime closure. Every post-FINISHED failure retains the original failure code/capability/receipts/identity and safe exit diagnostics; a real nonzero managed-process exit records childAlive=false and childExitCode=37 without publication.",
+    "elapsed-time": "Public workflows in both profiles separate wall-clock deadlines from monotonic elapsed limits, budgets and usage; forward/backward wall steps, frozen wall time with genuine elapsed excess, inclusive boundaries, ticker wraparound, real nanoTime and real long execution. Explicit Clock-only deterministic semantics remain qualified; initialization v2 rejects child relative-wall deadline conversion."
+  }
+}

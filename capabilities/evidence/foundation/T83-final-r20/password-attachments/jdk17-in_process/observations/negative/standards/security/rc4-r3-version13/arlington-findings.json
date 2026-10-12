@@ -1,0 +1,6 @@
+{
+  "findings": [
+    "Error: special case not correct: V (EncryptionStandard) in PDF 1.3 should be: integer [fn:Eval(((@V==1) && ((@R==2) || fn:SinceVersion(1.4))) || ((@V==2) && fn:SinceVersion(1.4)) || ((@V==4) && fn:SinceVersion(1.5)) || ((@V==5) && (fn:SinceVersion(2.0) || (fn:IsPDFVersion(1.7) && (fn:IsPresent(trailer::Catalog::Extensions::ADBE::BaseVersion) && fn:IsPresent(trailer::Catalog::Extensions::ADBE::ExtensionLevel) && (trailer::Catalog::Extensions::ADBE::@BaseVersion==1.7)) && (((@R==5) && (trailer::Catalog::Extensions::ADBE::@ExtensionLevel>=3)) || ((@R==6) && (trailer::Catalog::Extensions::ADBE::@ExtensionLevel>=8)))))))] [observed value redacted]"
+  ],
+  "result": "fail"
+}

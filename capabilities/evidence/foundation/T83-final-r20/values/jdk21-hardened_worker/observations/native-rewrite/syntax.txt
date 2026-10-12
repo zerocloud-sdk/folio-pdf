@@ -1,0 +1,36 @@
+# T71 qpdf syntax findings
+
+Input exact SHA-256: `bf0a15b96b23183ec7e7133872928a555a1c593a5f274cb59b8fb53f1a5de379`
+
+Input hash policy: `SHA-256 of the exact unmodified PDF bytes`
+
+Tool: `qpdf`
+
+Tool version: `12.4.0`
+
+Distribution SHA-256: `a3bca240f3bb61efdc3a90be89d1da4ed5e125326c3458c4e62df53ff4f153e3`
+
+Final determination: `pass`
+
+## values.pdf
+
+Invocation: `qpdf --check values.pdf`
+
+`values.pdf` exit code: `0`
+
+### Standard output
+
+```text
+checking values.pdf
+PDF Version: 1.7
+File is not encrypted
+File is not linearized
+No syntax or stream encoding errors found; the file may still contain
+errors that qpdf cannot detect
+```
+
+### Standard error
+
+```text
+
+```

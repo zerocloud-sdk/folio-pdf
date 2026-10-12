@@ -1,0 +1,23 @@
+T22 environment JDK 8
+T22 certification JDK 8 / HARDENED_WORKER
+T22 environment JDK 11
+T22 certification JDK 11 / HARDENED_WORKER
+Traceback (most recent call last):
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1503, in <module>
+    main()
+    ~~~~^^
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1499, in main
+    certify(root, root / args.output, contract, helper, args.obligation)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 1381, in certify
+    reports = collect_reports(root, scope / 'observations', obligation, execution)
+  File "/workspace/folio-pdf/scripts/t03-foundation.py", line 746, in collect_reports
+    return collect_recovery_reports(root, run, execution_profile)
+  File "/workspace/folio-pdf/scripts/t22_foundation_reports.py", line 386, in collect_reports
+    fresh = compare_originals(root, files, replay, plan, module, normalize_extra)
+  File "/workspace/folio-pdf/scripts/t20_foundation_reports.py", line 212, in compare_originals
+    require(left == right, 'original findings/observations differ from live replay: ' + name)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/folio-pdf/scripts/t20_foundation_reports.py", line 26, in require
+    raise ValueError('T20 ' + message)
+ValueError: T20 original findings/observations differ from live replay: scale/input/observations.properties

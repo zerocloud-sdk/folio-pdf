@@ -1,0 +1,49 @@
+Supplemental timing searches. Exit 1 means no match; these searches are not certification gates.
+
+Command: rg -n '\$\{?SECONDS\b|EPOCHREALTIME|EPOCHSECONDS|date[^\n]*%s|perf_counter|time\.clock\(' scripts build-tools .github --glob '!*.java'
+Exit: 0
+scripts/release-rehearsal:277:    printf 'source-date-epoch=%s\n' "${source_date_epoch}"
+
+Command: rg -n 'clock_gettime|CLOCK_REALTIME|gettimeofday|std::chrono::system_clock' pdf-acceptance pdf-document pdf-provider-contract pdf-conversion pdf-migration-itext7 pdf-migration-itext7-preview build-tools scripts --glob '!**/target/**'
+Exit: 1
+
+
+Command: rg -n 'source_date_epoch|SOURCE_DATE_EPOCH' scripts/release-rehearsal
+Exit: 0
+182:source_date_epoch=$(git -C "${repository_root}" show -s --format=%ct HEAD)
+203:    -Dproject.build.outputTimestamp="${source_date_epoch}"
+277:    printf 'source-date-epoch=%s\n' "${source_date_epoch}"
+
+Command: rg -n 'Clock|Instant\.now|System\.currentTimeMillis|time\.time\(|datetime\.(now|utcnow)|time\.monotonic|System\.nanoTime|\$\{?SECONDS\b|EPOCHREALTIME|EPOCHSECONDS|date[^\n]*%s' capabilities/evidence/T83-delivery --glob '*r2[123].py' --glob '*R22.java' --glob relaunch-environment.sh
+Exit: 0
+capabilities/evidence/T83-delivery/complete-text-relaunch-r22.py:77:    'recorded-at': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+capabilities/evidence/T83-delivery/refresh-relaunch-r22.py:110:    started = datetime.datetime.now(datetime.timezone.utc).isoformat()
+capabilities/evidence/T83-delivery/refresh-relaunch-r22.py:119:        'finished': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+capabilities/evidence/T83-delivery/write-relaunch-receipt-r23.py:101:    'explicit injectable `System.nanoTime` ticker. Signed subtraction handles wraparound.',
+capabilities/evidence/T83-delivery/write-relaunch-receipt-r23.py:102:    'Explicit Clock-only test environments preserve their existing logical-time semantics;',
+capabilities/evidence/T83-delivery/write-relaunch-receipt-r23.py:105:    'a relative child deadline instead of converting it through `Instant.now`.',
+capabilities/evidence/T83-delivery/audit-relaunch-r23.py:425:output = {'recorded-at': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'baseline': baseline,
+capabilities/evidence/T83-delivery/audit-relaunch-r23.py:462:        'semantics': 'Elapsed limits, remaining budgets and usage default to nanosecond ticker. Explicit Clock-only environments retain logical test time; absolute deadlines remain wall instants.'},
+capabilities/evidence/T83-delivery/refresh-relaunch-r23.py:112:    started = datetime.datetime.now(datetime.timezone.utc).isoformat()
+capabilities/evidence/T83-delivery/refresh-relaunch-r23.py:121:        'finished': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+capabilities/evidence/T83-delivery/write-relaunch-receipt-r22.py:101:    'explicit injectable `System.nanoTime` ticker. Signed subtraction handles wraparound.',
+capabilities/evidence/T83-delivery/write-relaunch-receipt-r22.py:102:    'Explicit Clock-only test environments preserve their existing logical-time semantics;',
+capabilities/evidence/T83-delivery/write-relaunch-receipt-r22.py:105:    'a relative child deadline instead of converting it through `Instant.now`.',
+capabilities/evidence/T83-delivery/complete-text-relaunch-r23.py:104:    'recorded-at': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+capabilities/evidence/T83-delivery/preserve-failed-text-r21.py:77:        'recorded-at': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+capabilities/evidence/T83-delivery/audit-relaunch-r22.py:393:output = {'recorded-at': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'baseline': baseline,
+capabilities/evidence/T83-delivery/audit-relaunch-r22.py:423:        'semantics': 'Elapsed limits, remaining budgets and usage default to nanosecond ticker. Explicit Clock-only environments retain logical test time; absolute deadlines remain wall instants.'},
+capabilities/evidence/T83-delivery/refresh-relaunch-r21.py:107:    started = datetime.datetime.now(datetime.timezone.utc).isoformat()
+capabilities/evidence/T83-delivery/refresh-relaunch-r21.py:116:        'finished': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+capabilities/evidence/T83-delivery/diagnose-t13-cpu-r21.py:38:        started = time.monotonic()
+capabilities/evidence/T83-delivery/diagnose-t13-cpu-r21.py:41:        elapsed = time.monotonic() - started
+capabilities/evidence/T83-delivery/diagnose-t13-cpu-r21.py:74:    before = {'recorded-at': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'image': image,
+capabilities/evidence/T83-delivery/diagnose-text-timeout-r22.py:24:    started = time.monotonic()
+capabilities/evidence/T83-delivery/diagnose-text-timeout-r22.py:27:    return process.returncode, time.monotonic() - started
+capabilities/evidence/T83-delivery/diagnose-text-timeout-r22.py:96:        'recorded-at': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+capabilities/evidence/T83-delivery/diagnostics/T83TextReplayR22.java:77:                started = System.nanoTime();
+capabilities/evidence/T83-delivery/diagnostics/T83TextReplayR22.java:81:                long elapsed = System.nanoTime() - started;
+All pdf-* module follow-up (including the modules outside the earlier explicit list):
+Command: rg -n 'clock_gettime|CLOCK_REALTIME|gettimeofday|std::chrono::system_clock' pdf-acceptance pdf-bom pdf-conversion pdf-document pdf-migration-itext7 pdf-migration-itext7-preview pdf-provider-contract build-tools scripts --glob '!**/target/**'
+Exit: 1
+

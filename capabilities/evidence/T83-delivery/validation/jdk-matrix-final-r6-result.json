@@ -1,0 +1,32 @@
+{
+  "command": [
+    "./scripts/verify-jdk-matrix.sh"
+  ],
+  "repository-command": [
+    "./scripts/verify-jdk-matrix.sh"
+  ],
+  "cwd": "/workspace/folio-pdf",
+  "timeout-seconds": 21600,
+  "delivery-wrapper-sha256": "cb763fb498c1fe203f5cae745d87a0ec009c9ad013772efc0d653958e73ee100",
+  "actual-declared-image": null,
+  "started": "2026-10-10T18:55:03.240031+00:00",
+  "environment": {
+    "JAVA_HOME": "/workspace/folio-pdf/.build-cache/t83-jdk17",
+    "MAVEN_USER_HOME": "/workspace/folio-pdf/.build-cache/maven",
+    "MAVEN_OPTS": "-Dmaven.repo.local=/workspace/folio-pdf/.build-cache/maven/repository",
+    "PYTHONPATH": "/workspace/folio-pdf/.build-cache/t83-fonttools:/workspace/folio-pdf/.build-cache/foundation-host-python",
+    "FOLIO_FOUNDATION_PYTHON_ROOT": "/workspace/folio-pdf/.build-cache/foundation-python",
+    "FOLIO_HARFBUZZ_HELPER": "/workspace/folio-pdf/.build-cache/t81-provision/folio-harfbuzz/bin/folio-harfbuzz",
+    "CONTAINERS_STORAGE_CONF": "/workspace/folio-pdf/.build-cache/t83-storage.conf"
+  },
+  "timing-semantics": "Timeout and primary elapsed duration use monotonic time; wall duration and UTC timestamps are diagnostic.",
+  "monotonic-duration-seconds": 5562.086978287087,
+  "wall-duration-seconds": 28074.362424612045,
+  "wall-minus-monotonic-seconds": 22512.27544632496,
+  "finished": "2026-10-11T02:42:57.602624+00:00",
+  "exit-code": 0,
+  "log": {
+    "path": "capabilities/evidence/T83-delivery/validation/jdk-matrix-final-r6.txt",
+    "sha256": "fecf7c70ac87102d7b61ff2df3a6e8dd5e9e93dac400f5c8bb4c89269494a068"
+  }
+}

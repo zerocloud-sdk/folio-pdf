@@ -1,0 +1,34 @@
+{
+  "command": [
+    "python3",
+    "-B",
+    "-c",
+    "import ast, hashlib, importlib.util, json, zipfile\nfrom pathlib import Path\nroot = Path.cwd()\np = root / \"capabilities/evidence/T83-delivery/audit-final.py\"\nspec = importlib.util.spec_from_file_location(\"archive_check\", root / \"scripts/t03-foundation.py\")\ndriver = importlib.util.module_from_spec(spec)\nspec.loader.exec_module(driver)\ntree = ast.parse(p.read_text(), filename=str(p))\nnode = next(item for item in tree.body if isinstance(item, ast.FunctionDef) and item.name == \"audit_diagnostic_archive\")\nnamespace = {\"root\": root, \"driver\": driver, \"json\": json, \"hashlib\": hashlib, \"zipfile\": zipfile}\nexec(compile(ast.Module(body=[node], type_ignores=[]), str(p), \"exec\"), namespace)\nbase = root / \"capabilities/evidence/T83-delivery/diagnostics\"\nfor manifest, ledger, replay_root, count, clear in (\n    (\"worker-exit-products.zip.json\", \"worker-exit-replays-r2.json\", \".build-cache/t83-worker-exit-replay-r2\", 68, False),\n    (\"attachments-worker-exit-products.zip.json\", \"attachments-exit-replays-r1.json\", \".build-cache/t83-attachments-exit-replay-r1\", 62, True)):\n    result = namespace[\"audit_diagnostic_archive\"](base / manifest, json.loads((base / ledger).read_text()), replay_root, count, require_clear=clear)\n    print(\"PASS\", manifest, result)\nprint(\"Audit-script SHA-256:\", driver.sha256(p))\n"
+  ],
+  "repository-command": [
+    "python3",
+    "-B",
+    "-c",
+    "import ast, hashlib, importlib.util, json, zipfile\nfrom pathlib import Path\nroot = Path.cwd()\np = root / \"capabilities/evidence/T83-delivery/audit-final.py\"\nspec = importlib.util.spec_from_file_location(\"archive_check\", root / \"scripts/t03-foundation.py\")\ndriver = importlib.util.module_from_spec(spec)\nspec.loader.exec_module(driver)\ntree = ast.parse(p.read_text(), filename=str(p))\nnode = next(item for item in tree.body if isinstance(item, ast.FunctionDef) and item.name == \"audit_diagnostic_archive\")\nnamespace = {\"root\": root, \"driver\": driver, \"json\": json, \"hashlib\": hashlib, \"zipfile\": zipfile}\nexec(compile(ast.Module(body=[node], type_ignores=[]), str(p), \"exec\"), namespace)\nbase = root / \"capabilities/evidence/T83-delivery/diagnostics\"\nfor manifest, ledger, replay_root, count, clear in (\n    (\"worker-exit-products.zip.json\", \"worker-exit-replays-r2.json\", \".build-cache/t83-worker-exit-replay-r2\", 68, False),\n    (\"attachments-worker-exit-products.zip.json\", \"attachments-exit-replays-r1.json\", \".build-cache/t83-attachments-exit-replay-r1\", 62, True)):\n    result = namespace[\"audit_diagnostic_archive\"](base / manifest, json.loads((base / ledger).read_text()), replay_root, count, require_clear=clear)\n    print(\"PASS\", manifest, result)\nprint(\"Audit-script SHA-256:\", driver.sha256(p))\n"
+  ],
+  "cwd": "/workspace/folio-pdf",
+  "timeout-seconds": 21600,
+  "delivery-wrapper-sha256": "57b57ce52be300b4947fe81a26f9714090af9590969d7882cf4e41f42e5194a5",
+  "actual-declared-image": null,
+  "started": "2026-10-07T16:23:07.945141+00:00",
+  "environment": {
+    "JAVA_HOME": "/workspace/folio-pdf/.build-cache/t83-jdk17",
+    "MAVEN_USER_HOME": "/workspace/folio-pdf/.build-cache/maven",
+    "MAVEN_OPTS": "-Dmaven.repo.local=/workspace/folio-pdf/.build-cache/maven/repository",
+    "PYTHONPATH": "/workspace/folio-pdf/.build-cache/t83-fonttools:/workspace/folio-pdf/.build-cache/foundation-host-python",
+    "FOLIO_FOUNDATION_PYTHON_ROOT": "/workspace/folio-pdf/.build-cache/foundation-python",
+    "FOLIO_HARFBUZZ_HELPER": "/workspace/folio-pdf/.build-cache/t81-provision/folio-harfbuzz/bin/folio-harfbuzz",
+    "CONTAINERS_STORAGE_CONF": "/workspace/folio-pdf/.build-cache/t83-storage.conf"
+  },
+  "finished": "2026-10-07T16:23:08.109716+00:00",
+  "exit-code": 0,
+  "log": {
+    "path": "capabilities/evidence/T83-delivery/validation/diagnostic-archive-helper-r1.txt",
+    "sha256": "fa435ff72908fe0c18f1c85335fd0e64bdeed491e226877b97d47854c316f4da"
+  }
+}

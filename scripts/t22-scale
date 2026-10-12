@@ -13,6 +13,12 @@ case ${profile} in
         ;;
 esac
 
+if [ -n "${FOLIO_T22_OUTPUT:-}" ]; then
+    set -- "-Dfolio.pdf.t22.output=${FOLIO_T22_OUTPUT}"
+else
+    set --
+fi
+
 exec "${repository_root}/mvnw" \
     -B -ntp \
     -pl pdf-document \
@@ -20,4 +26,5 @@ exec "${repository_root}/mvnw" \
     -Dtest=HardenedWorkerScaleProfileTest \
     -Dsurefire.failIfNoSpecifiedTests=false \
     -Dfolio.pdf.t22.scale="${profile}" \
+    "$@" \
     test

@@ -83,7 +83,7 @@ A missing capability, required behavior, compatible dependency, independent evid
 | [`security`](#security) | `document.version-password-security` | [#78](https://github.com/zerocloud-sdk/folio-pdf/issues/78) | satisfied |
 | [`limits`](#limits) | `document.hostile-input-limits` | [#81](https://github.com/zerocloud-sdk/folio-pdf/issues/81) | satisfied |
 | [`worker`](#worker) | `document.hardened-worker` | [#82](https://github.com/zerocloud-sdk/folio-pdf/issues/82) | satisfied |
-| [`recovery`](#recovery) | `document.hardened-worker.recovery-scale` | [#83](https://github.com/zerocloud-sdk/folio-pdf/issues/83) | blocked |
+| [`recovery`](#recovery) | `document.hardened-worker.recovery-scale` | [#83](https://github.com/zerocloud-sdk/folio-pdf/issues/83) | satisfied |
 | [`canvas`](#canvas) | `composition.canvas.draw-positioned-text` | [#85](https://github.com/zerocloud-sdk/folio-pdf/issues/85) | blocked |
 | [`graphics`](#graphics) | `composition.canvas.images-colors-transparency` | [#86](https://github.com/zerocloud-sdk/folio-pdf/issues/86) | blocked |
 | [`fonts`](#fonts) | `composition.fonts.load-embed-subset-fallback` | [#87](https://github.com/zerocloud-sdk/folio-pdf/issues/87) | blocked |
@@ -300,18 +300,8 @@ Recover safely retryable Hardened Worker failures, resolve uncertain publication
 - Dependencies: `worker`
 - Aggregate members: none
 - Native Interface only: Environment-local transaction identity/status, bounded recovery and resource usage are project-specific controls with no Reference Suite counterpart. This does not exclude migration mappings for the document operations they execute.
-- Source requirements: [`spec-us-45`](#spec-us-45), [`spec-us-50`](#spec-us-50), [`spec-us-73`](#spec-us-73), [`spec-id-31`](#spec-id-31), [`spec-td-02`](#spec-td-02), [`spec-td-21`](#spec-td-21), [`slice-83-1`](#slice-83-1), [`slice-83-2`](#slice-83-2), [`slice-83-3`](#slice-83-3), [`slice-83-4`](#slice-83-4)
+- Source requirements: [`spec-us-45`](#spec-us-45), [`spec-us-50`](#spec-us-50), [`spec-us-73`](#spec-us-73), [`spec-id-31`](#spec-id-31), [`spec-td-02`](#spec-td-02), [`spec-td-21`](#spec-td-21), [`slice-83-1`](#slice-83-1), [`slice-83-2`](#slice-83-2), [`slice-83-3`](#slice-83-3), [`slice-83-4`](#slice-83-4), [`slice-83-5`](#slice-83-5), [`slice-83-6`](#slice-83-6), [`slice-83-7`](#slice-83-7), [`slice-83-8`](#slice-83-8), [`slice-83-9`](#slice-83-9)
 
-- Blocker: capability document.hardened-worker.recovery-scale is experimental, requires compatible
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on document.hardened-worker.recovery-scale
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on document.hardened-worker.recovery-scale
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on document.hardened-worker.recovery-scale
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk21 on document.hardened-worker.recovery-scale
-- Blocker: unresolved retained limitation: Historical one-environment scale observations do not certify all required final Ubuntu/JDK candidate profiles; #83 must retain actual opt-in runs.
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk8/HARDENED_WORKER (required chains: syntax, standards, semantic, visual, contract)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk11/HARDENED_WORKER (required chains: syntax, standards, semantic, visual, contract)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual, contract)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual, contract)
 
 <a id="canvas"></a>
 ### `canvas`
@@ -435,7 +425,6 @@ Render selected current pages to bounded, session-scoped PNGs through a replacea
 - Blocker: incompatible Dependency Gate conversion.capability-provider.select-execute
 - Blocker: incompatible Dependency Gate composition.canvas.images-colors-transparency
 - Blocker: incompatible Dependency Gate composition.fonts.load-embed-subset-fallback
-- Blocker: incompatible Dependency Gate document.hardened-worker.recovery-scale
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on conversion.rendering
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on conversion.rendering
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on conversion.rendering
@@ -455,7 +444,6 @@ Render selected current pages to bounded, session-scoped PNGs through a replacea
 - Blocker: incomplete prerequisite obligation providers
 - Blocker: incomplete prerequisite obligation graphics
 - Blocker: incomplete prerequisite obligation fonts
-- Blocker: incomplete prerequisite obligation recovery
 
 <a id="providers"></a>
 ### `providers`
@@ -1025,7 +1013,6 @@ Close every Foundation behavior, aggregate, dependency and Facade obligation; ru
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk11/REPOSITORY (required chains: contract, review)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/REPOSITORY (required chains: contract, review)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/REPOSITORY (required chains: contract, review)
-- Blocker: incomplete prerequisite obligation recovery
 - Blocker: incomplete prerequisite obligation canvas
 - Blocker: incomplete prerequisite obligation graphics
 - Blocker: incomplete prerequisite obligation fonts
@@ -1221,8 +1208,8 @@ Classifications bind the exact Capability Matrix limitation text by SHA-256; cha
   Original limitation: Every physical protocol frame retains its configured payload bound, monotonic sequence, and HMAC. A larger logical value uses a direction-unique transfer identity, declared application opcode, total length, exact chunk count, ordered chunk indexes, and SHA-256 digest. The complete payload plus one maximum-frame receive buffer must pass aggregate modeled-memory admission before allocation; every top-level declaration or chunk reserves that frame scratch before allocation, and a valid transfer reuses the declaration reservation across expected chunks. Missing, reordered, duplicate, corrupt, mismatched, malformed, or excess transfer data fails safely, clears buffers, releases reservations, and cannot mutate an uncommitted Target. This is bounded in-memory chunking, not unbounded streaming or temporary-file staging.
 - `document.hardened-worker.recovery-scale` / `retained-contract` → [`recovery`](#recovery): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #83 must prove it without omitting required successful Foundation cases.
   Original limitation: Workflow Resource Usage combines parent and authenticated child observations for accepted input, pages, objects, decompression, pixels, peak modeled Folio-owned memory, peak transaction temporary storage, and elapsed time. It is not JVM heap, process RSS, native/backend allocation, operating-system cache, kernel-limit, nesting, or concurrency measurement.
-- `document.hardened-worker.recovery-scale` / `release-blocker` → [`recovery`](#recovery): Historical one-environment scale observations do not certify all required final Ubuntu/JDK candidate profiles; #83 must retain actual opt-in runs.
-  Original limitation: Opt-in generated profiles exercise 5,000-page publish/reopen semantics, exact 1-GiB constant-memory clean-room input/staging and cleanup, and admission at configured concurrency two with deterministic first-excess rejection and retry after release. The recorded Linux 6.8.0-136-generic amd64 and GraalVM Community Java 17.0.9 observations are implementation evidence for one platform, not a benchmark, cross-platform result, mandatory independent Acceptance Evidence, or certified-platform claim.
+- `document.hardened-worker.recovery-scale` / `retained-contract` → [`recovery`](#recovery): The actual bounded scale artifacts and four final-candidate environments are mandatory; visual sampling and modeled accounting preserve the explicit limits of this certification.
+  Original limitation: The bounded certification executes actual 5,000-page publish/reopen, exact 1,073,741,824-byte clean-room input/staging and cleanup, and configured concurrency two with first-excess rejection and recoverable retry on each declared Ubuntu 24.04 Linux x86-64 JDK 8/11/17/21 environment. Actual workload artifacts, full finite policies and modeled high-water marks are retained. Independent semantics inspect every blank page; visual evidence samples pages 1, 2,500 and 5,000 of the actual 5,000-page file and the sole page of every other actual workload PDF. This is neither a benchmark nor full-document visual or rendering certification; Windows/macOS remain uncertified.
 - `document.hardened-worker.recovery-scale` / `retained-contract` → [`recovery`](#recovery): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #83 must prove it without omitting required successful Foundation cases.
   Original limitation: T22 adds no remote Worker, durable recovery store, renderer, downstream ticket behavior, public backend SPI, arbitrary extension mechanism, Migration Facade mapping, whole-process memory guarantee, kernel-container certification, physical secure-erasure claim, or cross-Target transaction.
 - `composition.canvas.draw-positioned-text` / `retained-contract` → [`canvas`](#canvas): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #85 must prove it without omitting required successful Foundation cases.
@@ -2768,6 +2755,31 @@ Classifications bind the exact Capability Matrix limitation text by SHA-256; cha
 <a id="slice-83-4"></a>
 - `slice-83-4` — https://github.com/zerocloud-sdk/folio-pdf/issues/83 — Acceptance criteria 4
   Record exact tested resources, execution limits and Linux/JDK environment, keeping the scope bounded and the project-specific recovery surface explicit.
+  Disposition: `required`. Approved certification slice; scope declarations do not assert implementation or certification. Obligations: `recovery`
+
+<a id="slice-83-5"></a>
+- `slice-83-5` — https://github.com/zerocloud-sdk/folio-pdf/issues/83 — Acceptance criteria 5
+  All mandatory evidence for this slice is tied to the actual tested artifacts and declared environment. Retain separate independent syntax, standards, semantic and visual records and negative controls; a missing tool, uncovered required rule or mismatched identity cannot become PASS by changing labels or producer names.
+  Disposition: `required`. Approved certification slice; scope declarations do not assert implementation or certification. Obligations: `recovery`
+
+<a id="slice-83-6"></a>
+- `slice-83-6` — https://github.com/zerocloud-sdk/folio-pdf/issues/83 — Acceptance criteria 6
+  Matching public Native and Migration Facade behavior is verified at the highest available seam through Document Workflow outcomes, reopened files, Publication Receipts and safe failures. Avoid backend identity/private-call assertions; test the actual external Provider seam only where applicable.
+  Disposition: `required`. Approved certification slice; scope declarations do not assert implementation or certification. Obligations: `recovery`
+
+<a id="slice-83-7"></a>
+- `slice-83-7` — https://github.com/zerocloud-sdk/folio-pdf/issues/83 — Acceptance criteria 7
+  Update the applicable Capability Matrix, Facade Surface, generated/public English contracts, Chinese usage material and clean-room provenance together. Mark only the completed, dependency-satisfied capability or subcapability compatible, and introduce no unsupported Stable stub.
+  Disposition: `required`. Approved certification slice; scope declarations do not assert implementation or certification. Obligations: `recovery`
+
+<a id="slice-83-8"></a>
+- `slice-83-8` — https://github.com/zerocloud-sdk/folio-pdf/issues/83 — Acceptance criteria 8
+  Run the smallest relevant validation during development and the repository-mandated full verification before submission; shipped-code/build-compatibility changes also pass the existing JDK matrix. Resolve applicable Standards/Spec review findings against the session's recorded implementation baseline.
+  Disposition: `required`. Approved certification slice; scope declarations do not assert implementation or certification. Obligations: `recovery`
+
+<a id="slice-83-9"></a>
+- `slice-83-9` — https://github.com/zerocloud-sdk/folio-pdf/issues/83 — Acceptance criteria 9
+  Keep Java 8 runtime compatibility, explicit resource ownership and clean-room licensing. Acceptance-only tools, fonts and fixtures stay outside product runtime; do not implement downstream Forms, Trust signing, Conformance, SVG/XML, OCR, Sanitization or Office tickets.
   Disposition: `required`. Approved certification slice; scope declarations do not assert implementation or certification. Obligations: `recovery`
 
 <a id="slice-84-1"></a>

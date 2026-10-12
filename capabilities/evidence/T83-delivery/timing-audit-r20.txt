@@ -1,0 +1,47 @@
+Wall-source audit of all shipped code, acceptance tooling, build-tools and gate scripts.
+Command: ['rg', '-n', 'Clock|Instant\\.now|ZonedDateTime\\.now|currentTimeMillis|Duration\\.between|time\\.time\\(|datetime\\.(now|utcnow)|gettimeofday|CLOCK_REALTIME|Date\\.now|\\.timestamp\\(', 'scripts', '.mvn', '.github', 'pdf-document/src/main', 'pdf-provider-contract/src/main', 'pdf-conversion/src/main', 'pdf-migration-itext7/src/main', 'pdf-migration-itext7-preview/src/main', 'pdf-acceptance/src/main', 'build-tools', '-g', '*.java', '-g', '*.py', '-g', '*.sh', '-g', '*.c', '-g', '*.cpp', '-g', '*.js']
+scripts/install-harfbuzz.py:174:                "created_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+pdf-migration-itext7/src/main/java/net/zerocloud/pdf/itext7/kernel/pdf/PdfDocumentInfo.java:233:        ZonedDateTime now = ZonedDateTime.now();
+pdf-document/src/main/java/net/zerocloud/pdf/WorkerMessages.java:87:            // Clock cannot be faithfully reconstructed in another process.
+scripts/t29-native-observation.py:77:        "created_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+pdf-document/src/main/java/net/zerocloud/pdf/WorkflowResourceContext.java:16:import java.time.Clock;
+pdf-document/src/main/java/net/zerocloud/pdf/WorkflowResourceContext.java:48:    private final Clock clock;
+pdf-document/src/main/java/net/zerocloud/pdf/WorkflowResourceContext.java:123:            Clock clock,
+pdf-document/src/main/java/net/zerocloud/pdf/WorkflowResourceContext.java:144:            Clock clock,
+pdf-document/src/main/java/net/zerocloud/pdf/WorkflowResourceContext.java:159:            Clock clock,
+pdf-document/src/main/java/net/zerocloud/pdf/WorkflowResourceContext.java:165:        // Explicit Clock-only contexts retain their logical-time test semantics.
+pdf-document/src/main/java/net/zerocloud/pdf/WorkflowResourceContext.java:172:            Clock clock,
+pdf-document/src/main/java/net/zerocloud/pdf/WorkflowResourceContext.java:216:            Duration deadlineRemaining = Duration.between(now, absoluteDeadline);
+pdf-document/src/main/java/net/zerocloud/pdf/WorkflowResourceContext.java:278:        return now.isBefore(startedAt) ? Duration.ZERO : Duration.between(startedAt, now);
+scripts/t03-foundation.py:201:        'workflow-policy': 'Trusted IN_PROCESS only; fixed independently authored inclusive boundaries and first excess for all ten resource dimensions; deterministic Clock, stream and latch controls; aggregate ledger, terminal failures, lifetimes and ordered publication; existing Facade operations execute IN_PROCESS; no Facade policy control or isolation claim',
+pdf-document/src/main/java/net/zerocloud/pdf/DocumentWorkflow.java:159:                    environment.getClock(),
+pdf-document/src/main/java/net/zerocloud/pdf/WorkflowRequest.java:381:         * Sets the absolute deadline checked against the workflow's Clock.
+pdf-document/src/main/java/net/zerocloud/pdf/WorkflowEnvironment.java:6:import java.time.Clock;
+pdf-document/src/main/java/net/zerocloud/pdf/WorkflowEnvironment.java:27: * {@link System#nanoTime()} and absolute deadlines with the UTC system Clock.
+pdf-document/src/main/java/net/zerocloud/pdf/WorkflowEnvironment.java:28: * A caller-supplied Clock, monotonic ticker and every
+pdf-document/src/main/java/net/zerocloud/pdf/WorkflowEnvironment.java:39:                    Clock.systemUTC(),
+pdf-document/src/main/java/net/zerocloud/pdf/WorkflowEnvironment.java:50:    private final Clock clock;
+pdf-document/src/main/java/net/zerocloud/pdf/WorkflowEnvironment.java:65:            Clock clock,
+pdf-document/src/main/java/net/zerocloud/pdf/WorkflowEnvironment.java:101:     * Creates an immutable environment using an explicit logical Clock for
+pdf-document/src/main/java/net/zerocloud/pdf/WorkflowEnvironment.java:103:     * execution. For a wall Clock with independent elapsed time, use
+pdf-document/src/main/java/net/zerocloud/pdf/WorkflowEnvironment.java:107:     * @return an environment owning the supplied Clock
+pdf-document/src/main/java/net/zerocloud/pdf/WorkflowEnvironment.java:109:    public static WorkflowEnvironment withClock(Clock clock) {
+pdf-document/src/main/java/net/zerocloud/pdf/WorkflowEnvironment.java:161:    Clock getClock() {
+pdf-document/src/main/java/net/zerocloud/pdf/WorkflowEnvironment.java:206:        private Clock clock = Clock.systemUTC();
+pdf-document/src/main/java/net/zerocloud/pdf/WorkflowEnvironment.java:208:        private boolean explicitClock;
+pdf-document/src/main/java/net/zerocloud/pdf/WorkflowEnvironment.java:228:         * Sets the Clock used to evaluate absolute workflow deadlines and,
+pdf-document/src/main/java/net/zerocloud/pdf/WorkflowEnvironment.java:231:         * time independently of this Clock. The order of these setters does
+pdf-document/src/main/java/net/zerocloud/pdf/WorkflowEnvironment.java:234:         * @param clock the shared deadline Clock
+pdf-document/src/main/java/net/zerocloud/pdf/WorkflowEnvironment.java:237:        public Builder clock(Clock clock) {
+pdf-document/src/main/java/net/zerocloud/pdf/WorkflowEnvironment.java:239:            explicitClock = true;
+pdf-document/src/main/java/net/zerocloud/pdf/WorkflowEnvironment.java:247:         * use the configured Clock. Injected tickers must advance monotonically
+pdf-document/src/main/java/net/zerocloud/pdf/WorkflowEnvironment.java:356:                    explicitTicker || !explicitClock ? monotonicTicker : null,
+pdf-document/src/main/java/net/zerocloud/pdf/WorkflowResourcePolicy.java:13: * ticker by default. Explicit Clock-only environments retain logical elapsed
+pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T21WorkflowContracts.java:9:import java.time.Clock;
+pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T21WorkflowContracts.java:47:                .clock(Clock.fixed(Instant.parse("2026-01-01T00:00:00Z"), ZoneOffset.UTC)).build());
+pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ResourceContracts.java:11:import java.time.Clock;
+pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ResourceContracts.java:69:    private final MutableClock clock = new MutableClock();
+pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ResourceContracts.java:128:        observe("backward-clock", this::backwardClock);
+pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ResourceContracts.java:345:    private void backwardClock() throws Exception {
+pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ResourceContracts.java:640:    private static final class MutableClock extends Clock {
+pdf-acceptance/src/main/java/net/zerocloud/pdf/acceptance/T20ResourceContracts.java:644:        @Override public Clock withZone(ZoneId zone) { if (!getZone().equals(zone)) { throw new IllegalArgumentException("UTC fixture"); } return this; }

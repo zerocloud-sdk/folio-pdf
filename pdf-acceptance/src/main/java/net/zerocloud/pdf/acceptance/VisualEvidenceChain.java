@@ -127,6 +127,11 @@ final class VisualEvidenceChain {
                 "T19-font-loading-embedding-subsetting");
     }
 
+    static VisualEvidenceChain t22(Path repositoryRoot, String artifact) {
+        return new VisualEvidenceChain("T22", "document.hardened-worker.recovery-scale",
+                "T22-worker-recovery-scale", "../" + artifact, "T22-scale", repositoryRoot);
+    }
+
     static VisualEvidenceChain t23(String profile) {
         return conventional("T23", "conversion.rendering", profile);
     }

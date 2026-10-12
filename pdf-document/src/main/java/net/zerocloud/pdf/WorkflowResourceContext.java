@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.LongSupplier;
 import org.apache.pdfbox.cos.COSDictionary;
 import org.apache.pdfbox.cos.COSObject;
 import org.apache.pdfbox.cos.COSStream;
@@ -48,6 +49,8 @@ final class WorkflowResourceContext implements AutoCloseable {
     private final CancellationToken cancellationToken;
     private final Instant absoluteDeadline;
     private final Instant startedAt;
+    private final LongSupplier monotonicTicker;
+    private final long startedNanos;
     private final Path temporaryRoot;
     private final OwnedMemoryAuthority ownedMemoryAuthority;
     private final TemporaryStorageAuthority temporaryStorageAuthority;
@@ -118,6 +121,7 @@ final class WorkflowResourceContext implements AutoCloseable {
     private WorkflowResourceContext(
             WorkflowResourcePolicy policy,
             Clock clock,
+            LongSupplier monotonicTicker,
             CancellationToken cancellationToken,
             Instant absoluteDeadline,
             Path temporaryRoot,
@@ -126,7 +130,9 @@ final class WorkflowResourceContext implements AutoCloseable {
         this.clock = clock;
         this.cancellationToken = cancellationToken;
         this.absoluteDeadline = absoluteDeadline;
-        this.startedAt = clock.instant();
+        this.monotonicTicker = monotonicTicker;
+        this.startedAt = monotonicTicker == null ? clock.instant() : null;
+        this.startedNanos = monotonicTicker == null ? 0L : monotonicTicker.getAsLong();
         this.temporaryRoot = temporaryRoot;
         this.ownedMemoryAuthority = ownedMemoryAuthority;
         this.temporaryStorageAuthority = ownedMemoryAuthority instanceof TemporaryStorageAuthority
@@ -156,6 +162,20 @@ final class WorkflowResourceContext implements AutoCloseable {
             Path environmentTemporaryDirectory,
             OwnedMemoryAuthority ownedMemoryAuthority)
             throws DocumentFailure {
+        // Explicit Clock-only contexts retain their logical-time test semantics.
+        return open(policy, clock, null, cancellationToken, absoluteDeadline,
+                environmentTemporaryDirectory, ownedMemoryAuthority);
+    }
+
+    static WorkflowResourceContext open(
+            WorkflowResourcePolicy policy,
+            Clock clock,
+            LongSupplier monotonicTicker,
+            CancellationToken cancellationToken,
+            Instant absoluteDeadline,
+            Path environmentTemporaryDirectory,
+            OwnedMemoryAuthority ownedMemoryAuthority)
+            throws DocumentFailure {
         Path root = null;
         try {
             Path parent = environmentTemporaryDirectory
@@ -169,6 +189,7 @@ final class WorkflowResourceContext implements AutoCloseable {
             return new WorkflowResourceContext(
                     policy,
                     clock,
+                    monotonicTicker,
                     cancellationToken,
                     absoluteDeadline,
                     root,
@@ -189,7 +210,7 @@ final class WorkflowResourceContext implements AutoCloseable {
     Duration remainingExecutionTime() throws DocumentFailure {
         checkpoint();
         Instant now = clock.instant();
-        Duration elapsed = now.isBefore(startedAt) ? Duration.ZERO : Duration.between(startedAt, now);
+        Duration elapsed = elapsedSince(now);
         Duration remaining = policy.getMaximumElapsedTime().minus(elapsed);
         if (absoluteDeadline != null) {
             Duration deadlineRemaining = Duration.between(now, absoluteDeadline);
@@ -208,9 +229,7 @@ final class WorkflowResourceContext implements AutoCloseable {
     }
 
     synchronized WorkflowResourceUsage snapshotUsage() {
-        Instant now = clock.instant();
-        Duration elapsed = now.isBefore(startedAt)
-                ? Duration.ZERO : Duration.between(startedAt, now);
+        Duration elapsed = elapsedSince(monotonicTicker == null ? clock.instant() : null);
         return new WorkflowResourceUsage(
                 inputBytes,
                 pageCount,
@@ -250,6 +269,15 @@ final class WorkflowResourceContext implements AutoCloseable {
         return !closed;
     }
 
+    private Duration elapsedSince(Instant now) {
+        if (monotonicTicker != null) {
+            // Subtraction remains valid across nanoTime's signed wraparound.
+            long elapsedNanos = monotonicTicker.getAsLong() - startedNanos;
+            return elapsedNanos <= 0L ? Duration.ZERO : Duration.ofNanos(elapsedNanos);
+        }
+        return now.isBefore(startedAt) ? Duration.ZERO : Duration.between(startedAt, now);
+    }
+
     void checkpoint() throws DocumentFailure {
         requireOpen();
         if (terminalFailure != null) {
@@ -266,8 +294,7 @@ final class WorkflowResourceContext implements AutoCloseable {
                     DocumentFailureCode.DEADLINE_EXCEEDED,
                     "The workflow deadline has expired.");
         }
-        Duration elapsed = now.isBefore(startedAt)
-                ? Duration.ZERO : Duration.between(startedAt, now);
+        Duration elapsed = elapsedSince(now);
         if (elapsed.compareTo(policy.getMaximumElapsedTime()) > 0) {
             throw stopFailure(
                     DocumentFailureCode.ELAPSED_TIME_LIMIT_EXCEEDED,

@@ -1,0 +1,48 @@
+{
+  "schema-version": 1,
+  "obligation": "recovery",
+  "acceptance-profile": "T22-worker-recovery-scale",
+  "release": "0.1.0",
+  "candidate-sha256": "f554e856b8da919a948cf02be86120f380b6b56f3150bcab79cb178e4abddc34",
+  "contract-sha256": "77496c1b1f7973d220824315954207b9e38487d1310b014f7b23ee19cf5f3ab4",
+  "environment-sha256": "dd45992f2017a423ddb3d618265411a87e05fb86969a31205edc5ef9ac3f0a5e",
+  "execution-configuration-sha256": "46729a9b28f97f769943b25c32479ed877717e2397f01c981b74faf5cf6c553f",
+  "execution-profile": "HARDENED_WORKER",
+  "chain": "contract",
+  "result": "pass",
+  "producer": "folio-pdf-t22",
+  "configuration": {
+    "path": "capabilities/evidence/T22-worker-recovery-scale.md",
+    "sha256": "28eb06c22bb3de5ac24a54919291bba1a9e5c16cfd855499669b19660c0bc044"
+  },
+  "report": {
+    "path": "capabilities/evidence/foundation/T83-final-r20/recovery/jdk17-hardened_worker/contract-report.json",
+    "sha256": "3601767e1aba99780cc4d4c932402ca7bd0f657ae5ac9e0ddb673a777f4d5611"
+  },
+  "negative-controls": [
+    {
+      "path": "capabilities/profiles/T22-worker-recovery-scale/coverage.json",
+      "sha256": "fb6b9193b4b5bdc5a9455ecddaf4cba638bca34a80c7d67e12a0214295a719e2"
+    },
+    {
+      "path": "capabilities/profiles/T22-worker-recovery-scale/mandatory-tests.txt",
+      "sha256": "db6f6a9e1ad163255fc0177d2c6c0de4112d951537d08486fdc99b2b465504bd"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T83-final-r20/recovery/jdk17-hardened_worker/contract-tests.txt",
+      "sha256": "74448be9988c94ae4ed81343a44cc09824bfed83693e13f9b0c89430edf06577"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T83-final-r20/recovery/jdk17-hardened_worker/boundary-observations/faults/observations.properties",
+      "sha256": "337ec88b4614a2988303262c3ebb4baa51cebca6593f61bef14cf86a57fa1b6e"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T83-final-r20/recovery/jdk17-hardened_worker/boundary-observations/recovery-failures/interruption.properties",
+      "sha256": "ff52df2b9ee659cc321db5d3b01277fbfbf6906756b38d0d69e19ad59af9c38b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T83-final-r20/recovery/jdk17-hardened_worker/boundary-observations/recovery-failures/malformed-input.properties",
+      "sha256": "948bbf88933f854e10121747c65cf9ca8f5f968c967f183343a03d6a58c0ac50"
+    }
+  ]
+}
