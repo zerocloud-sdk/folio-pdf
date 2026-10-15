@@ -146,6 +146,28 @@ ARTIFACT_CONTRACT_TESTS = tuple(
     'net.zerocloud.pdf.migration.itext7.contract.' + name
     for name in ('JarContractIT', 'ClasspathExclusivityIT'))
 CERTIFICATION_CASES = {
+    'providers': {
+        'profile': 'T05-capability-provider-contract', 'label': 'T05', 'test-count': 59,
+        'test-main': 'net.zerocloud.pdf.acceptance.T05ContractTestCommand',
+        'test-classes': ['net.zerocloud.pdf.provider.ProviderCatalogTest',
+            'net.zerocloud.pdf.consumer.WorkflowCapabilityProviderTest',
+            'net.zerocloud.pdf.conversion.SubprocessCapabilityProviderTest',
+            'net.zerocloud.pdf.acceptance.T05ProviderContractsTest',
+            *['net.zerocloud.pdf.consumer.' + name for name in ('BlankDocumentWorkflowTest',
+                'WorkflowLifecycleTest', 'WorkflowTransactionContractTest', 'WorkflowResourceOwnershipTest')],
+            'net.zerocloud.pdf.itext7.consumer.BlankDocumentFacadeTest',
+            'net.zerocloud.pdf.conversion.contract.PublicApiLeakageIT',
+            'net.zerocloud.pdf.conversion.contract.JarContractIT'],
+        'execution-profiles': ('IN_PROCESS', 'HARDENED_WORKER'), 'chains': CHAINS + ('contract',),
+        'facade-execution-profile': 'IN_PROCESS', 'standards-producer': 'arlington',
+        'contract-timeout': 600, 'recorder-timeout': 900,
+        'workflow-policy': 'Explicit immutable registrations and metadata-only selection; capability-scoped Workflow consent and separate direct request authorization; actual bounded Provider exchange, direct-child subprocess lifecycle and controlled loopback synthetic payloads; declared finite system-default document policies; public Native publication/reopen/ownership/ordered failure outcomes; Facade IN_PROCESS',
+        'fonts': 'none; actual independently inspected workload PDFs are resource-free blank pages',
+        'provider-settings': 'Actual project-authored in-process, unavailable native, subprocess and loopback remote fixtures; complete immutable metadata retained; no external service or shipped remote adapter; Providers execute in the parent independently of Workflow profile',
+        'configuration-paths': ['capabilities/profiles/T05-capability-provider-contract',
+            'scripts/t05-evidence-pin.properties', 'capabilities/profiles/T03-standards',
+            'capabilities/profiles/T03-document-blank-visual.properties',
+            'capabilities/expected/T03-document-blank-144dpi-srgb.png']},
     'recovery': {
         'profile': 'T22-worker-recovery-scale', 'label': 'T22', 'test-count': 180,
         'test-main': 'net.zerocloud.pdf.acceptance.T22ContractTestCommand',
@@ -744,6 +766,9 @@ def append_source_visual(root, run, report):
 
 
 def collect_reports(root, run, obligation='transactions', execution_profile=None):
+    if obligation == 'providers':
+        from t05_foundation_reports import collect_reports as collect_provider_reports
+        return collect_provider_reports(root, run, execution_profile)
     if obligation == 'recovery':
         from t22_foundation_reports import collect_reports as collect_recovery_reports
         return collect_recovery_reports(root, run, execution_profile)
@@ -949,7 +974,7 @@ def merge_evidence(root, previous, fresh, identities):
             case = certification_case(certification['obligation'])
             if chains != set(case.get('chains', CHAINS)):
                 raise ValueError('Incomplete retained certification')
-            if certification['obligation'] in ('limits', 'worker'):
+            if certification['obligation'] in ('providers', 'limits', 'worker'):
                 if certification['execution-profile'] not in case['execution-profiles']:
                     raise ValueError('Certification execution profile changed')
                 for item in certification['records']:
@@ -989,6 +1014,9 @@ def publish_index(root, directory):
             raise ValueError('Evidence authority changed during certification; refusing to overwrite it')
         previous = yaml.safe_load(previous_bytes)
         fresh = json.loads((directory / 'observed-index.json').read_text())
+        if any(item['obligation'] == 'providers' for item in fresh['certifications']):
+            from t05_foundation_reports import require_complete_index
+            require_complete_index(root, fresh)
         identities = json.loads((directory / 'identities.json').read_text())
         empty = {'schema-version': 1, 'candidate': fresh['candidate'], 'environments': fresh['environments'], 'certifications': []}
         verified = merge_evidence(root, fresh, empty, identities)
@@ -1038,7 +1066,8 @@ def stage_harness(root, base):
     if directory.exists():
         shutil.rmtree(directory)
     directory.mkdir(parents=True, exist_ok=True)
-    for module, name in [('pdf-document', 'native-tests'), ('pdf-migration-itext7', 'facade-tests'),
+    for module, name in [('pdf-provider-contract', 'provider-tests'), ('pdf-conversion', 'conversion-tests'),
+                         ('pdf-document', 'native-tests'), ('pdf-migration-itext7', 'facade-tests'),
                          ('pdf-acceptance', 'acceptance-tests')]:
         classes = root / module / 'target/test-classes'
         with zipfile.ZipFile(directory / (name + '.jar'), 'w') as jar:
@@ -1172,8 +1201,8 @@ def certification_tools():
          'pin': 'scripts/imagemagick-pin.properties',
          'hash-key': 'IMAGEMAGICK_EXECUTABLE_SHA256', 'chains': ['visual']}]
     project = [{'id': 'folio-pdf-' + label, 'kind': 'project-test',
-                'version': '0.1.0', 'chains': ['semantic', 'contract'] if label in ('t20', 't21', 't22') else ['semantic']}
-               for label in ('t03', 't09', 't10', 't11', 't12', 't13', 't14', 't15', 't20', 't21', 't22', 't78', 't79', 't80')]
+                'version': '0.1.0', 'chains': ['semantic', 'contract'] if label in ('t05', 't20', 't21', 't22') else ['semantic']}
+               for label in ('t03', 't05', 't09', 't10', 't11', 't12', 't13', 't14', 't15', 't20', 't21', 't22', 't78', 't79', 't80')]
     return external + project
 
 
@@ -1266,6 +1295,14 @@ def execution_plan(root, scope, image, helper, cp, case, execution):
     test_main = case.get('test-main', 'org.junit.runner.JUnitCore')
     test_args = [str(case['test-count'])] if case['label'] == 'T20' else []
     support = []
+    if case['label'] == 'T05':
+        options += ['-Dfolio.t03.executionProfile=' + execution]
+        # Recorder options were already used above; bind its identical workload profile.
+        evidence_command = command + ['java'] + options + ['-cp', cp,
+            'net.zerocloud.pdf.acceptance.T05EvidenceCommand', '/workspace', inside + '/observations', execution, '0.1.0']
+        test_args = ['/workspace/capabilities/profiles/T05-capability-provider-contract/mandatory-tests.txt']
+        test_options += ['-DproviderArtifactPath=/workspace/target/foundation-0.1.0/artifacts/pdf-provider-contract-0.1.0.jar',
+                         '-DconversionArtifactPath=/workspace/target/foundation-0.1.0/artifacts/pdf-conversion-0.1.0.jar']
     if case['label'] == 'T21':
         test_args = ['/workspace/capabilities/profiles/T21-hardened-worker/mandatory-tests.txt']
         test_options += ['-Dfolio.t21.observationOutput=' + inside + '/boundary-observations']
@@ -1285,7 +1322,7 @@ def execution_plan(root, scope, image, helper, cp, case, execution):
             'required-test-count': case['test-count'], 'java-options': options,
             **({'support-commands': support} if support else {}),
             'settings': {'workflow-policy': case['workflow-policy'], 'fonts': case['fonts'],
-                         'providers': 'none; Stable Facade execution is ' + case['facade-execution-profile']}}
+                         'providers': case.get('provider-settings', 'none; Stable Facade execution is ' + case['facade-execution-profile'])}}
 
 
 def record_plan(root, output, contract, helper, obligation):
@@ -1320,7 +1357,7 @@ def certification_inputs(root, contract, receipt, case):
     return [reference(root, path) for path in inputs if path.is_file()]
 
 
-def certify(root, output, contract, helper, obligation='transactions'):
+def certify(root, output, contract, helper, obligation='transactions', defer_index=False):
     import json
     import yaml
     root = root.resolve()
@@ -1422,6 +1459,14 @@ def certify(root, output, contract, helper, obligation='transactions'):
     write_json(output / 'observed-index.json', inventory)
     write_json(output / 'identities.json', identities)
     (output / 'prior-index.sha256').write_text(hashlib.sha256(previous_bytes).hexdigest() + '\n')
+    if defer_index:
+        # Independent obligation runs may record in disjoint directories while
+        # sharing one immutable candidate and one unchanged evidence authority.
+        # Their complete records still pass publish_index's strict validation
+        # and stale-index guard before any combined local index is installed.
+        print('Recorded ' + str(len(inventory['certifications'])) + ' ' + case['label']
+              + ' certifications; evidence index deferred and unchanged.', flush=True)
+        return inventory
     merged = publish_index(root, output)
     count = len(environment_profiles) * len(profiles)
     print('Recorded exactly ' + str(count) + ' ' + case['label'] + ' certifications; retained '
@@ -1438,8 +1483,12 @@ def main():
     parser.add_argument('output', nargs='?', type=Path)
     parser.add_argument('--obligation', choices=tuple(CERTIFICATION_CASES), default='transactions')
     parser.add_argument('--execution-profile', choices=('IN_PROCESS', 'HARDENED_WORKER'))
+    parser.add_argument('--defer-index', action='store_true',
+                        help='certify into a fresh observation directory without replacing the evidence index')
     parser.add_argument('--root', type=Path, default=Path(__file__).resolve().parents[1])
     args = parser.parse_args()
+    if args.defer_index and args.action != 'certify':
+        parser.error('--defer-index applies only to certify')
     root = args.root.resolve()
     if args.action == 'merge-index':
         if args.output is None:
@@ -1457,10 +1506,10 @@ def main():
         import json
         if args.output is None:
             parser.error('collect requires an observation directory')
-        if args.obligation in ('metadata', 'annotations', 'text', 'images', 'incremental', 'limits', 'worker', 'recovery', 'password-baseline', 'password-clear-metadata', 'password-attachments') and args.execution_profile is None:
+        if args.obligation in ('providers', 'metadata', 'annotations', 'text', 'images', 'incremental', 'limits', 'worker', 'recovery', 'password-baseline', 'password-clear-metadata', 'password-attachments') and args.execution_profile is None:
             parser.error(args.obligation + ' collect requires --execution-profile')
-        if args.obligation not in ('metadata', 'annotations', 'text', 'images', 'incremental', 'limits', 'worker', 'recovery', 'password-baseline', 'password-clear-metadata', 'password-attachments') and args.execution_profile is not None:
-            parser.error('--execution-profile applies only to metadata, annotations, text, images, incremental, limits, worker and password collect')
+        if args.obligation not in ('providers', 'metadata', 'annotations', 'text', 'images', 'incremental', 'limits', 'worker', 'recovery', 'password-baseline', 'password-clear-metadata', 'password-attachments') and args.execution_profile is not None:
+            parser.error('--execution-profile applies only to profile-bound obligation collectors, including providers')
         print(json.dumps(collect_reports(root, (root / args.output).resolve(), args.obligation,
                                          args.execution_profile), indent=2))
         return
@@ -1499,7 +1548,7 @@ def main():
     else:
         if args.output is None:
             parser.error('certify requires a fresh repository-relative output directory')
-        certify(root, root / args.output, contract, helper, args.obligation)
+        certify(root, root / args.output, contract, helper, args.obligation, args.defer_index)
 
 
 if __name__ == '__main__':

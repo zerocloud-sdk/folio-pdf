@@ -1,0 +1,25 @@
+{
+  "command": [
+    "@observer-python",
+    "-I",
+    "-S",
+    "-B",
+    "@repository/scripts/t78-pypdf-check.py",
+    "@evidence/facade-rc4-40/product.pdf"
+  ],
+  "exit-code": 0,
+  "limit": null,
+  "maximum-output-bytes": 16777216,
+  "privacy-projection": "tool-text-v1",
+  "stderr-sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdin": "credential-bytes",
+  "stdout-sha256": "b393e367f98ccc9ae920ee9c2144ce17f98376a0be1a85bdff6365bce40134ec",
+  "supervisor": [
+    "/bin/sh",
+    "-c",
+    "trap 'kill -KILL \"-$$\"' TERM INT HUP; exec 3<&0; \"$@\" <&3 3<&- & child=$!; exec 3<&- 0<&-; wait \"$child\"; result=$?; exit \"$result\"",
+    "folio-t78-tool",
+    "@tool-command"
+  ],
+  "timeout-seconds": 30
+}

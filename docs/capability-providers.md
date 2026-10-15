@@ -128,3 +128,22 @@ workflow and the opt-in T21 Hardened Worker supplies the documented hostile-
 input process boundary. The Java 8 Provider adapter still supervises its
 direct child only; T21 process-tree containment applies to the PDF Worker and
 does not retroactively turn this generic integration seam into a sandbox.
+
+## Certification boundary
+
+[T05 certification](t05-certification.md) governs the eight exact Linux/JDK and
+Native Workflow tuples, separate Provider contract observations, and four
+independent chains over actual published/reopened documents. The current
+[Foundation evidence index](../capabilities/foundation-evidence.yaml) binds the
+candidate, original loopback/process findings, qualified controls and exact
+runtime/tool configuration. Stable and Preview document operations execute
+IN_PROCESS; Provider registration and authorization remain Native Interface only
+with the recorded individual reason. No Provider-specific Facade stub is added.
+
+The controlled remote fixture is acceptance-only and transfers project-authored
+synthetic bytes over loopback. Workflow authorization applies to selection for
+that capability; a separate direct Provider Request needs its own explicit
+authorization. Consent does not carry into a later request. The generic adapter
+supervises its direct child and owns only its per-run staging; caller roots and
+unrelated files remain caller-owned. These controls do not certify arbitrary
+in-process termination, descendant containment or hard OS resource isolation.

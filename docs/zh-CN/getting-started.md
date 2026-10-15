@@ -123,6 +123,45 @@ IN_PROCESS 和 HARDENED_WORKER。无已授权修改的签名文件不能通过�
 提供中文使用说明。如有安全问题，请按 [SECURITY.md](../../SECURITY.md) 中的
 临时私密报告方式联系维护者。
 
+## Capability Provider：选择、执行与披露授权
+
+`WorkflowEnvironment.builder().provider(provider)` 按声明顺序复制注册信息；
+`getProviderMetadata()` 只返回不可变元数据，不探测引擎或调用适配器。默认环境
+没有调用方 Provider，保持离线。`ProviderPreference.any(capabilityId)` 选择
+第一个可用且已获授权的注册项；`prefer(capabilityId, providerId)` 必须匹配精确
+ID，不会自动回退。不可用引擎的状态是注册时快照，安装变化后应重建 Environment。
+
+```java
+WorkflowEnvironment environment = WorkflowEnvironment.builder().provider(provider).build();
+WorkflowRequest request = WorkflowRequest.builder()
+        .providerPreference(ProviderPreference.prefer(capabilityId, providerId))
+        .authorizeRemoteDisclosure(capabilityId) // 仅为这个 capability 授权；默认拒绝。
+        .target("result", PublicationTarget.path(output))
+        .executionProfile(WorkflowExecutionProfile.HARDENED_WORKER)
+        .saveMode(SaveMode.REWRITE).build();
+```
+
+Workflow 的 preference 只验证选择并在脱离 Session 的 Outcome 中报告元数据；
+选择本身不执行适配器。直接 `ProviderCatalog.execute` / `CapabilityProvider.execute`
+使用单独的 `ProviderRequest.authorizeRemoteDisclosure()`，不能由注册、preference
+或上一次请求推断授权。授权其他 capability 也不能允许本次披露。字节数组有防御性
+副本，输入和输出必须在声明上限内；正超时不得超过 Provider 最大时长。适配器负责
+耗时限制，普通进程内 Java 代码没有强制终止保证。失败只保留稳定码、注册身份和
+固定安全诊断，不携带底层 cause 或 suppressed 信息。
+
+Provider 的 `IN_PROCESS`、`NATIVE`、`SUBPROCESS`、`REMOTE` 是引擎执行模式，
+不等同于 Workflow Profile。Provider 在两个 Native Profile 中仍由父进程调用；
+PDF Worker 的网络限制不变。通用 subprocess 适配器确认直接子进程结束、关闭流
+并删除自有的每次运行 staging，保留调用方根目录和其他内容；不承诺后代进程沙箱。
+
+[T05 英文认证合同](../t05-certification.md)定义四个精确 Ubuntu/JDK 环境的八个
+组合和 40 个独立记录。实际环回端点只发送项目自创的合成字节，夹具不进入产品
+运行时。PDF 标准和像素证据检查本次 Workflow 真正发布及重开的文档，不能用
+Provider 字节交换或测试 PASS 替代。Stable / Preview 的适用文档行为均运行
+IN_PROCESS；Provider 控制保留 Native-only 理由，没有虚构的 Facade 映射。
+当前候选及原始观察以[Foundation 索引](../../capabilities/foundation-evidence.yaml)
+为准；Windows 和 macOS 仍未认证，其他未完成 obligation 仍阻止整体 Foundation 发布。
+
 ## Stable Migration Facade：创建、发布、重开
 
 选择 `net.zerocloud:pdf-migration-itext7`，不要同时引入 Preview。当前两种 artifact

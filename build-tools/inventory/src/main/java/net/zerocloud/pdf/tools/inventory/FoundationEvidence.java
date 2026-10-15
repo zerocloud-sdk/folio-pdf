@@ -225,7 +225,8 @@ final class FoundationEvidence {
         }
         match(configuration, "candidate-sha256", readiness.candidateIdentity);
         ObservedEnvironment observed = environments.get(environment);
-        if (("worker".equals(obligation.id) || "recovery".equals(obligation.id))
+        if (("worker".equals(obligation.id) || "recovery".equals(obligation.id)
+                || "providers".equals(obligation.id) && "HARDENED_WORKER".equals(execution))
                 && (observed == null || !observed.workerWitnesses)) {
             configuration.error("Worker certification requires actual JVM runtime and launcher witnesses");
         }

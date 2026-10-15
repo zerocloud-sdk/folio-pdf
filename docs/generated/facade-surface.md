@@ -2307,7 +2307,7 @@ No preview additions (included with all stable surfaces) are declared.
 
 - Behavioral capability: [`conversion.capability-provider.select-execute`](capability-matrix.md#capability-conversion_dot_capability_dash_provider_dot_select_dash_execute)
 - Deferred ticket: `T05`
-- Reason: Provider registration, deterministic selection, availability and Remote Disclosure Authorization form the project-owned deployment contract and have no Reference Suite counterpart. Rendering and shaping keep their separate required migration families. Certification remains required under #84.
+- Reason: Provider registration, deterministic selection, availability and Remote Disclosure Authorization form the project-owned deployment contract and have no Reference Suite counterpart. Rendering and shaping keep their separate required migration families. The T05 certification contract governs the Provider control; inherited Stable and Preview document outcomes execute IN_PROCESS without a Provider-specific mapping.
 
 <a id="excluded-capability-conversion_dot_rendering"></a>
 ### `conversion.rendering`

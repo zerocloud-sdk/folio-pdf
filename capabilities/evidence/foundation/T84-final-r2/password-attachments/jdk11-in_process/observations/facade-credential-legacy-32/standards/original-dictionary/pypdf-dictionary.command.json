@@ -1,0 +1,26 @@
+{
+  "command": [
+    "@observer-python",
+    "-I",
+    "-S",
+    "-B",
+    "@repository/scripts/t80-dictionary-check.py",
+    "@evidence/facade-credential-legacy-32/product.pdf",
+    "output"
+  ],
+  "exit-code": 0,
+  "limit": null,
+  "maximum-output-bytes": 16777216,
+  "privacy-projection": "tool-text-v1",
+  "stderr-sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdin": "none",
+  "stdout-sha256": "9b3d0c57cc579c47beeaefefa911d7ebc333cd48f75f46035359788a617f89c7",
+  "supervisor": [
+    "/bin/sh",
+    "-c",
+    "trap 'kill -KILL \"-$$\"' TERM INT HUP; exec 3<&0; \"$@\" <&3 3<&- & child=$!; exec 3<&- 0<&-; wait \"$child\"; result=$?; exit \"$result\"",
+    "folio-t78-tool",
+    "@tool-command"
+  ],
+  "timeout-seconds": 30
+}

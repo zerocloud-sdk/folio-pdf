@@ -1,0 +1,36 @@
+# T75 qpdf syntax findings
+
+Input exact SHA-256: `5f494acbbdedc685448fdd2dbec891d71408ae82af464e773fb6ce899d311d0b`
+
+Input hash policy: `SHA-256 of the exact unmodified PDF bytes`
+
+Tool: `qpdf`
+
+Tool version: `12.4.0`
+
+Distribution SHA-256: `a3bca240f3bb61efdc3a90be89d1da4ed5e125326c3458c4e62df53ff4f153e3`
+
+Final determination: `pass`
+
+## extraction.pdf
+
+Invocation: `qpdf --check extraction.pdf`
+
+`extraction.pdf` exit code: `0`
+
+### Standard output
+
+```text
+checking extraction.pdf
+PDF Version: 2.0
+File is not encrypted
+File is not linearized
+No syntax or stream encoding errors found; the file may still contain
+errors that qpdf cannot detect
+```
+
+### Standard error
+
+```text
+
+```

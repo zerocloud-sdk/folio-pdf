@@ -1,0 +1,2668 @@
+{
+  "schema-version": 1,
+  "obligation": "providers",
+  "acceptance-profile": "T05-capability-provider-contract",
+  "release": "0.1.0",
+  "candidate-sha256": "8e079e00ef1cf38a23efd34922d60268949682732d3066332927451b1bb5dca8",
+  "contract-sha256": "5c3cafb114f1ba8d148af31e5a74dd8466caf8427a92fb91b3e561805b92e176",
+  "environment-sha256": "d934726b3d08aeb289e2215d7e7bcbe3164ec9c02a054d54423488a0b036ad8d",
+  "execution-configuration-sha256": "ebd067cc75eb8fc93aba4bf6ad630a53a452d850cbe2a98b7df5a39c2d805280",
+  "execution-profile": "HARDENED_WORKER",
+  "chain": "standards",
+  "result": "pass",
+  "producer": "arlington",
+  "configuration": {
+    "path": "capabilities/evidence/T05-capability-provider-contract.md",
+    "sha256": "7efcb9cbbbb4f486dd6b44b599d4d6eb0ad1d11f23323fddf42eaeca262faeac"
+  },
+  "report": {
+    "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/standards-report.json",
+    "sha256": "1861c6d62c6ce84cdc61375a9882a7830d49fb1b60d393941f6b686caeeea0bc"
+  },
+  "negative-controls": [
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/negative/standards.txt",
+      "sha256": "858e9663d6512285088f0e8094bced4bf46612add3211606bd5f2ecbe7c41e88"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/pdfcpu/negative-catalog-pages.txt",
+      "sha256": "8695e3d84567a2fdfe1363098885f4e67302e31d831a2c839f84f5a423ed5733"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/pdfcpu/control-catalog-pages.pdf",
+      "sha256": "411166c5051b04d0d6a85710266b961ac57ca3302d6e920fdb7f183f28f1bb3f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/pdfcpu/negative-catalog-pages-indirect.txt",
+      "sha256": "860b0ce9110516c1fead3c01ef3ce1b7b01585fd21d898ebe5c671c902613552"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/pdfcpu/control-catalog-pages-indirect.pdf",
+      "sha256": "15968efef75ed27fc29077dba4ac2c17bab7d57b60babd2ebebe84ad52da357b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/pdfcpu/negative-catalog-type.txt",
+      "sha256": "fba6dc23ce56f85cfe2c091aeba555e98eab23a3c2e687cafd23f26c8b2dde73"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/pdfcpu/control-catalog-type.pdf",
+      "sha256": "c1f95d7931bb320feb3294c3867d41e96a1302cb3920606dbaab7e12e101860f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/pdfcpu/negative-catalog-type-required.txt",
+      "sha256": "ff106e10626f17c5a799636098f22ce0116a137fcf684251b3b1c3062aac887b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/pdfcpu/control-catalog-type-required.pdf",
+      "sha256": "1b232380a180eb3ced9c3625153ee010b06e11b3a628c6c0b1078aba437e0f33"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/pdfcpu/negative-page-mediabox-numbers.txt",
+      "sha256": "535a6433be58bd27b649d909068859c84601d0e29808e63fdd8c6aed11220b6e"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/pdfcpu/control-page-mediabox-numbers.pdf",
+      "sha256": "6ec1510cccbd9d7dcc664381d68e71ebb0d2a0300e7ee97a6b4cb89c2740713c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/pdfcpu/negative-page-mediabox-rectangle.txt",
+      "sha256": "87c858841407c7b0aa0a2651fb4ccb6e04f8a9fe3c9d98da051a509cce339f82"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/pdfcpu/control-page-mediabox-rectangle.pdf",
+      "sha256": "25bd505efea14dafefa8dd134879d5f35261db8be4da1d9c23b65d3ae2fc3432"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/pdfcpu/negative-page-mediabox-required.txt",
+      "sha256": "df9049fff3823ced1d39bf4c69399279e166fc8b8546bee06ecad2e4260e98b8"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/pdfcpu/control-page-mediabox-required.pdf",
+      "sha256": "2a5fb414c8b1f565b6021559f7d637c1f6475d5446987abb1084dfd74b374382"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/pdfcpu/negative-page-parent-indirect.txt",
+      "sha256": "ff0b8c110202316e493b99652dc1dc4236de74752a7d54cf8d5ea4be68aac051"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/pdfcpu/control-page-parent-indirect.pdf",
+      "sha256": "a7bb58bcdf556530a2d2a978e5d7cbeaff67d318d033ba7a5a81fbc67dc3eae8"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/pdfcpu/negative-page-parent-link.txt",
+      "sha256": "521ab41bf4caaaec8baed9823d91a64d4764e259ef4c54aa130ca832eca536de"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/pdfcpu/control-page-parent-link.pdf",
+      "sha256": "c7d96c8c614c6f9171109e5fd1af17e549bf7acc62099b6e1a28718209f39dfb"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/pdfcpu/negative-page-parent-required.txt",
+      "sha256": "bd12b0f9f556388cdffb584504e4d050f2803652aea0ece7fcbb98b0c5b0fccb"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/pdfcpu/control-page-parent-required.pdf",
+      "sha256": "253228ff414804b4b799f336d7e21220b44e64285f81d60ea0ef3c98f149f2fd"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/pdfcpu/negative-page-resources-type.txt",
+      "sha256": "52d63930716a4eb17fe346409774028ae668f663d8020ab072e858445837fcdf"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/pdfcpu/control-page-resources-type.pdf",
+      "sha256": "33ff1741b362fb02856ba83e49f8be159dc32a2bda115a22a1ca32b7f5dad705"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/pdfcpu/negative-page-type.txt",
+      "sha256": "56edb278498426378b6e0ae0246caa58a82da9d6f1124ed0ffbe4a95e053b2a3"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/pdfcpu/control-page-type.pdf",
+      "sha256": "ef89d0046065ec31948ad50fda2f00c3d74c179c5f39582d7d1246df2841a37c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/pdfcpu/negative-page-type-value.txt",
+      "sha256": "397b22c2ea47322e38c0a43856ddb6efc3d622f3a4a3ce72cd859efa9b4e981f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/pdfcpu/control-page-type-value.pdf",
+      "sha256": "957a1ec451275bb287a11cedcbe3993eb49b30a9bcdceaf488e6c0fc71f98ec8"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/pdfcpu/negative-pages-count-integer.txt",
+      "sha256": "21832110b0d5a57ac5cf553b665ad642beb953a4653e51f2dafee7dd3e1ab9f6"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/pdfcpu/control-pages-count-integer.pdf",
+      "sha256": "553ae8c98a032fa94e3366d9b946569ab7073b770c4eaf73d154b1675379ebb5"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/pdfcpu/negative-pages-count-nonnegative.txt",
+      "sha256": "c6a8653e8295806dac2b00aeb7166fdf0be3aedf45e3d0ff52726bf2936b34e7"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/pdfcpu/control-pages-count-nonnegative.pdf",
+      "sha256": "9fe087f812420765adb7add8ed1fdc50a271624bd6eac7dfc4b508870258f62b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/pdfcpu/negative-pages-count-required.txt",
+      "sha256": "842e74a76884373e1eddbd4bb8b32e26d8b0bda8b8e000966ed50fc9fa71e5db"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/pdfcpu/control-pages-count-required.pdf",
+      "sha256": "56986acd52560e6715727d47cc99c3a90b8641331b527e6d7445084d0dc16f11"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/pdfcpu/negative-pages-count-value.txt",
+      "sha256": "99ddfd875314f53e19529da91e32bb897ffd643f9c73a81149f4e3b917181aef"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/pdfcpu/control-pages-count-value.pdf",
+      "sha256": "56986c0732dd1534bb63e5c331f8f7dbcdb6301dadc4592ccd9938f7cce008c9"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/pdfcpu/negative-pages-kid-reference.txt",
+      "sha256": "1eef84740b2e830ecb304be31ca94f90e8c037638880a587a8138175ea9e98af"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/pdfcpu/control-pages-kid-reference.pdf",
+      "sha256": "1c0e162bdbf9b3d969f65af5e4553b88d4e811fde4de9670753cba4a053e55d0"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/pdfcpu/negative-pages-kids.txt",
+      "sha256": "089dec63613a3c43c7d6fa270fed19d625c8d64847d1cbc11d78c9e05e5587a5"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/pdfcpu/control-pages-kids.pdf",
+      "sha256": "6e4226f52a6ce1c7020ab2d2788a85a79ef5d7a1d4eee45c0debf51fffc10ba0"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/arlington/negative-page-resources-required.txt",
+      "sha256": "29702e401c5611613205050cbc12548c5e2e9e50215cf589722aa39dcaa871d7"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/arlington/control-page-resources-required.pdf",
+      "sha256": "057453de6d8fe0490a10b2a44d06c824d0306c64bca64b3444b37ed4b3188dd3"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/arlington/negative-pages-type.txt",
+      "sha256": "c06dcf6b945fd2d429b161e17358581366e35fbff37f7bd924356fabbde8cc1f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/arlington/control-pages-type.pdf",
+      "sha256": "6fe72868d9f01b1fb929450a8f504f6b12fdc8508ae8e325d49009e6b43bbe1a"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/arlington/negative-pages-type-value.txt",
+      "sha256": "3e00ae8dd4e78f6303745168254dee4a398fb6a0e87a3024c220344af0edbca9"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/native/arlington/control-pages-type-value.pdf",
+      "sha256": "46e9d3271b38bad3579ec1bff9388f580efd1990534924c2508f2b1fc6a88cfc"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/pdfcpu/negative-catalog-pages.txt",
+      "sha256": "8a9f24b472272e1808a15e003778b6a54b4f9a155a5688c078b1f90d30c40fb1"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/pdfcpu/control-catalog-pages.pdf",
+      "sha256": "411166c5051b04d0d6a85710266b961ac57ca3302d6e920fdb7f183f28f1bb3f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/pdfcpu/negative-catalog-pages-indirect.txt",
+      "sha256": "29150f6d1efa8f45272c5c78a8f76f07f5347c752141988b69e13541a675ca44"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/pdfcpu/control-catalog-pages-indirect.pdf",
+      "sha256": "15968efef75ed27fc29077dba4ac2c17bab7d57b60babd2ebebe84ad52da357b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/pdfcpu/negative-catalog-type.txt",
+      "sha256": "cf59304158cfaceaca2bd0c5759d7145a739ad42f7930f734ffc7ef12eafdbaf"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/pdfcpu/control-catalog-type.pdf",
+      "sha256": "c1f95d7931bb320feb3294c3867d41e96a1302cb3920606dbaab7e12e101860f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/pdfcpu/negative-catalog-type-required.txt",
+      "sha256": "fa543e3d563f3dbb7d6608bffc7888c9f2f2bb3b851e1810bf9c44af0d787b90"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/pdfcpu/control-catalog-type-required.pdf",
+      "sha256": "1b232380a180eb3ced9c3625153ee010b06e11b3a628c6c0b1078aba437e0f33"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/pdfcpu/negative-page-mediabox-numbers.txt",
+      "sha256": "32af39e694b462e811ef45d592d503511fd57ac9a0f35b80868b0906349ba068"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/pdfcpu/control-page-mediabox-numbers.pdf",
+      "sha256": "6ec1510cccbd9d7dcc664381d68e71ebb0d2a0300e7ee97a6b4cb89c2740713c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/pdfcpu/negative-page-mediabox-rectangle.txt",
+      "sha256": "a1de453a0496282680cad76b82e9d552f8d6b8d5ad83a2de6a7d1b1907918b4c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/pdfcpu/control-page-mediabox-rectangle.pdf",
+      "sha256": "25bd505efea14dafefa8dd134879d5f35261db8be4da1d9c23b65d3ae2fc3432"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/pdfcpu/negative-page-mediabox-required.txt",
+      "sha256": "b246ac796cafa806485c34e1f1f00a6da7d0d5facdc2d326d320ccb2d431e2bf"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/pdfcpu/control-page-mediabox-required.pdf",
+      "sha256": "2a5fb414c8b1f565b6021559f7d637c1f6475d5446987abb1084dfd74b374382"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/pdfcpu/negative-page-parent-indirect.txt",
+      "sha256": "68a49ffccd6864dda167c6d1e789f85b684ee2f6c814dd7b422ddd883665b30a"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/pdfcpu/control-page-parent-indirect.pdf",
+      "sha256": "a7bb58bcdf556530a2d2a978e5d7cbeaff67d318d033ba7a5a81fbc67dc3eae8"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/pdfcpu/negative-page-parent-link.txt",
+      "sha256": "7724f3353fcc433215559eb3714322aa5fac134f2d217486a42c591961f8eb21"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/pdfcpu/control-page-parent-link.pdf",
+      "sha256": "c7d96c8c614c6f9171109e5fd1af17e549bf7acc62099b6e1a28718209f39dfb"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/pdfcpu/negative-page-parent-required.txt",
+      "sha256": "8f1b9408f76eb6bd7942c434c185fb574b2f8776aac8db08c247502a1a53cae5"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/pdfcpu/control-page-parent-required.pdf",
+      "sha256": "253228ff414804b4b799f336d7e21220b44e64285f81d60ea0ef3c98f149f2fd"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/pdfcpu/negative-page-resources-type.txt",
+      "sha256": "dac9e1eb37cfaa5d29a7673af85f03c937ce97a1027a3025830a7c1d1a8d639a"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/pdfcpu/control-page-resources-type.pdf",
+      "sha256": "33ff1741b362fb02856ba83e49f8be159dc32a2bda115a22a1ca32b7f5dad705"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/pdfcpu/negative-page-type.txt",
+      "sha256": "00c78622ec846cd97afc867515cdd75b66c0410c4023b595e6838211fc9234f9"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/pdfcpu/control-page-type.pdf",
+      "sha256": "ef89d0046065ec31948ad50fda2f00c3d74c179c5f39582d7d1246df2841a37c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/pdfcpu/negative-page-type-value.txt",
+      "sha256": "b83a9f08f72b2805fdf155a55901522deafd0149beb55ca525482aa2ab999cac"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/pdfcpu/control-page-type-value.pdf",
+      "sha256": "957a1ec451275bb287a11cedcbe3993eb49b30a9bcdceaf488e6c0fc71f98ec8"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/pdfcpu/negative-pages-count-integer.txt",
+      "sha256": "24e0266e2836318d985f65fa93e77f2394766e4af13a6bbfdee3939a119405f1"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/pdfcpu/control-pages-count-integer.pdf",
+      "sha256": "553ae8c98a032fa94e3366d9b946569ab7073b770c4eaf73d154b1675379ebb5"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/pdfcpu/negative-pages-count-nonnegative.txt",
+      "sha256": "aaf13d4201b7b6bcf0afbc2b4dea3d236ef2afd03c1d8c06553e0e8406aee821"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/pdfcpu/control-pages-count-nonnegative.pdf",
+      "sha256": "9fe087f812420765adb7add8ed1fdc50a271624bd6eac7dfc4b508870258f62b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/pdfcpu/negative-pages-count-required.txt",
+      "sha256": "1910cdac2835017f36bab2e4f18547ee72fda07097dc7b786766922b76bea2a3"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/pdfcpu/control-pages-count-required.pdf",
+      "sha256": "56986acd52560e6715727d47cc99c3a90b8641331b527e6d7445084d0dc16f11"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/pdfcpu/negative-pages-count-value.txt",
+      "sha256": "b278e61c6c5942e85f2a965f564371787d29a6201f9fedec12bbf405be518456"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/pdfcpu/control-pages-count-value.pdf",
+      "sha256": "56986c0732dd1534bb63e5c331f8f7dbcdb6301dadc4592ccd9938f7cce008c9"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/pdfcpu/negative-pages-kid-reference.txt",
+      "sha256": "afa8ee856f52da9bf0fb5f248da06d8b35a669fcbb1103c405637c7bf10ccf70"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/pdfcpu/control-pages-kid-reference.pdf",
+      "sha256": "1c0e162bdbf9b3d969f65af5e4553b88d4e811fde4de9670753cba4a053e55d0"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/pdfcpu/negative-pages-kids.txt",
+      "sha256": "9f724acdcc3166518539be11e77fec9b193880230bc02a559aeb02ce74a91a03"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/pdfcpu/control-pages-kids.pdf",
+      "sha256": "6e4226f52a6ce1c7020ab2d2788a85a79ef5d7a1d4eee45c0debf51fffc10ba0"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/arlington/negative-page-resources-required.txt",
+      "sha256": "c26c16452e0d1d50d739b8cbc0e1838c2ab1a88b444134722359f16079c044a2"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/arlington/control-page-resources-required.pdf",
+      "sha256": "057453de6d8fe0490a10b2a44d06c824d0306c64bca64b3444b37ed4b3188dd3"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/arlington/negative-pages-type.txt",
+      "sha256": "64d609694e30456ecfb47bb02739931bf6bf088066275ff5710f84ad8434b3ea"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/arlington/control-pages-type.pdf",
+      "sha256": "6fe72868d9f01b1fb929450a8f504f6b12fdc8508ae8e325d49009e6b43bbe1a"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/arlington/negative-pages-type-value.txt",
+      "sha256": "448b28ff81bd30d0da3a52f2573871f7e1503b31e1e66a7c264055d9ab3b28e3"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/pdf-controls/facade/arlington/control-pages-type-value.pdf",
+      "sha256": "46e9d3271b38bad3579ec1bff9388f580efd1990534924c2508f2b1fc6a88cfc"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/arlington/control-page-resources-required.pdf",
+      "sha256": "057453de6d8fe0490a10b2a44d06c824d0306c64bca64b3444b37ed4b3188dd3"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/arlington/control-pages-type-value.pdf",
+      "sha256": "46e9d3271b38bad3579ec1bff9388f580efd1990534924c2508f2b1fc6a88cfc"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/arlington/control-pages-type.pdf",
+      "sha256": "6fe72868d9f01b1fb929450a8f504f6b12fdc8508ae8e325d49009e6b43bbe1a"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/arlington/negative-page-resources-required.txt",
+      "sha256": "e20350c045b57030b75556ccc89eea947688fa666dd745e14b5fd28e6d0589a9"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/arlington/negative-pages-type-value.txt",
+      "sha256": "9533f3c052356b04926b56112124ad4832939d8793e32c193ff8a31d35bd1ac1"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/arlington/negative-pages-type.txt",
+      "sha256": "e0bae0e5a1b1966bda7b71f9d648400cbb8e19d8075383f888d54bb2d0a74944"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/pdfcpu/control-catalog-pages-indirect.pdf",
+      "sha256": "15968efef75ed27fc29077dba4ac2c17bab7d57b60babd2ebebe84ad52da357b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/pdfcpu/control-catalog-pages.pdf",
+      "sha256": "411166c5051b04d0d6a85710266b961ac57ca3302d6e920fdb7f183f28f1bb3f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/pdfcpu/control-catalog-type-required.pdf",
+      "sha256": "1b232380a180eb3ced9c3625153ee010b06e11b3a628c6c0b1078aba437e0f33"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/pdfcpu/control-catalog-type.pdf",
+      "sha256": "c1f95d7931bb320feb3294c3867d41e96a1302cb3920606dbaab7e12e101860f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/pdfcpu/control-page-mediabox-numbers.pdf",
+      "sha256": "6ec1510cccbd9d7dcc664381d68e71ebb0d2a0300e7ee97a6b4cb89c2740713c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/pdfcpu/control-page-mediabox-rectangle.pdf",
+      "sha256": "25bd505efea14dafefa8dd134879d5f35261db8be4da1d9c23b65d3ae2fc3432"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/pdfcpu/control-page-mediabox-required.pdf",
+      "sha256": "2a5fb414c8b1f565b6021559f7d637c1f6475d5446987abb1084dfd74b374382"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/pdfcpu/control-page-parent-indirect.pdf",
+      "sha256": "a7bb58bcdf556530a2d2a978e5d7cbeaff67d318d033ba7a5a81fbc67dc3eae8"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/pdfcpu/control-page-parent-link.pdf",
+      "sha256": "c7d96c8c614c6f9171109e5fd1af17e549bf7acc62099b6e1a28718209f39dfb"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/pdfcpu/control-page-parent-required.pdf",
+      "sha256": "253228ff414804b4b799f336d7e21220b44e64285f81d60ea0ef3c98f149f2fd"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/pdfcpu/control-page-resources-type.pdf",
+      "sha256": "33ff1741b362fb02856ba83e49f8be159dc32a2bda115a22a1ca32b7f5dad705"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/pdfcpu/control-page-type-value.pdf",
+      "sha256": "957a1ec451275bb287a11cedcbe3993eb49b30a9bcdceaf488e6c0fc71f98ec8"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/pdfcpu/control-page-type.pdf",
+      "sha256": "ef89d0046065ec31948ad50fda2f00c3d74c179c5f39582d7d1246df2841a37c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/pdfcpu/control-pages-count-integer.pdf",
+      "sha256": "553ae8c98a032fa94e3366d9b946569ab7073b770c4eaf73d154b1675379ebb5"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/pdfcpu/control-pages-count-nonnegative.pdf",
+      "sha256": "9fe087f812420765adb7add8ed1fdc50a271624bd6eac7dfc4b508870258f62b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/pdfcpu/control-pages-count-required.pdf",
+      "sha256": "56986acd52560e6715727d47cc99c3a90b8641331b527e6d7445084d0dc16f11"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/pdfcpu/control-pages-count-value.pdf",
+      "sha256": "56986c0732dd1534bb63e5c331f8f7dbcdb6301dadc4592ccd9938f7cce008c9"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/pdfcpu/control-pages-kid-reference.pdf",
+      "sha256": "1c0e162bdbf9b3d969f65af5e4553b88d4e811fde4de9670753cba4a053e55d0"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/pdfcpu/control-pages-kids.pdf",
+      "sha256": "6e4226f52a6ce1c7020ab2d2788a85a79ef5d7a1d4eee45c0debf51fffc10ba0"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/pdfcpu/negative-catalog-pages-indirect.txt",
+      "sha256": "0f6bcba0773deacd719e8521a810272b964dbc8a0b3b079fbc012eda6778331c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/pdfcpu/negative-catalog-pages.txt",
+      "sha256": "4ecc3475d8e86348f8b57ce9e796228bf8b07b29edd9dacc4217b72d3f905b8c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/pdfcpu/negative-catalog-type-required.txt",
+      "sha256": "8da8ad95a02c6153a933b5e47c5ba11bec45554386488c17f2275762ae2cc707"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/pdfcpu/negative-catalog-type.txt",
+      "sha256": "d1deab60bcaefe8908b35ac61f2f26b21382235c6193a3d06e92797d8b3e2cd5"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/pdfcpu/negative-page-mediabox-numbers.txt",
+      "sha256": "260150de679e9036b43c4dd3b14489c8bd4855010ca4dcba3dea10adc6852949"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/pdfcpu/negative-page-mediabox-rectangle.txt",
+      "sha256": "64126aa34ebf1e7e544bb34e4efb60e80a8da69a936e09d62d68072107c46d24"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/pdfcpu/negative-page-mediabox-required.txt",
+      "sha256": "3092557447993ce685b7091bdbe51668623d0e35b3d7d3d206e62c288d9b097e"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/pdfcpu/negative-page-parent-indirect.txt",
+      "sha256": "798be41e862c9d24fbc86c60e879b25443f17e2a660e3daeb9c7e10e7f533c8f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/pdfcpu/negative-page-parent-link.txt",
+      "sha256": "9c50b5ef568e6a7718d221fcec4a55eef398bfc9c7613e9c5695fe618d27a17a"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/pdfcpu/negative-page-parent-required.txt",
+      "sha256": "415fd369ebc3aecbb130acd23ec030c035a74784382488780277202c8c49c02e"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/pdfcpu/negative-page-resources-type.txt",
+      "sha256": "a278a8db61ed41179241db54b60b05854383117e4fc25c7447c56c8d34a66790"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/pdfcpu/negative-page-type-value.txt",
+      "sha256": "288451dea9a498385f7f4f179685b2eae94d2c4acf746861eb2f9add73933dfc"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/pdfcpu/negative-page-type.txt",
+      "sha256": "e60e9afbcc1b1bbf8f74d960b8b4f955bd2903f004e204a1d5ea5d3696c63d8b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/pdfcpu/negative-pages-count-integer.txt",
+      "sha256": "610089f2266868d3e1ceae1591132fef4d4f6aaf30c56510b3ccbb98eff29e91"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/pdfcpu/negative-pages-count-nonnegative.txt",
+      "sha256": "974d244378aaf8a7a77cdfafc340ded1ad9c4585cdeb8c0f383b4047697724a6"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/pdfcpu/negative-pages-count-required.txt",
+      "sha256": "a101be6dbb282e353b29780d76fdcda7b3a4523b577aa93bf43a4212a7339553"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/pdfcpu/negative-pages-count-value.txt",
+      "sha256": "d7d563632876b572ccb2c15110a343788b8ec6a958c6ad2a3bb7d9e044deb4a7"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/pdfcpu/negative-pages-kid-reference.txt",
+      "sha256": "4b2edf00016ed9c46c923b6f81079b9475a50cf64f3a9437809b52cb2eee5c7e"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-offline/pdfcpu/negative-pages-kids.txt",
+      "sha256": "21ba9c4746e5e0f68df79fd05b985041279d4fdfa2ae810ca5f8807966c28487"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/arlington/control-page-resources-required.pdf",
+      "sha256": "057453de6d8fe0490a10b2a44d06c824d0306c64bca64b3444b37ed4b3188dd3"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/arlington/control-pages-type-value.pdf",
+      "sha256": "46e9d3271b38bad3579ec1bff9388f580efd1990534924c2508f2b1fc6a88cfc"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/arlington/control-pages-type.pdf",
+      "sha256": "6fe72868d9f01b1fb929450a8f504f6b12fdc8508ae8e325d49009e6b43bbe1a"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/arlington/negative-page-resources-required.txt",
+      "sha256": "83d47f8bce5524e8f98b0f534253eada355ecb76653161544af3d44459b3907d"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/arlington/negative-pages-type-value.txt",
+      "sha256": "ad413ab6d64b1a6aabc802607f0ccd6c5e4c69ec527763a286f0d1e06f951699"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/arlington/negative-pages-type.txt",
+      "sha256": "34d45914c468a808ba34d28cf8f4b890a6c698ac56b91d9106ccee6848cd5854"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/pdfcpu/control-catalog-pages-indirect.pdf",
+      "sha256": "15968efef75ed27fc29077dba4ac2c17bab7d57b60babd2ebebe84ad52da357b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/pdfcpu/control-catalog-pages.pdf",
+      "sha256": "411166c5051b04d0d6a85710266b961ac57ca3302d6e920fdb7f183f28f1bb3f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/pdfcpu/control-catalog-type-required.pdf",
+      "sha256": "1b232380a180eb3ced9c3625153ee010b06e11b3a628c6c0b1078aba437e0f33"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/pdfcpu/control-catalog-type.pdf",
+      "sha256": "c1f95d7931bb320feb3294c3867d41e96a1302cb3920606dbaab7e12e101860f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/pdfcpu/control-page-mediabox-numbers.pdf",
+      "sha256": "6ec1510cccbd9d7dcc664381d68e71ebb0d2a0300e7ee97a6b4cb89c2740713c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/pdfcpu/control-page-mediabox-rectangle.pdf",
+      "sha256": "25bd505efea14dafefa8dd134879d5f35261db8be4da1d9c23b65d3ae2fc3432"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/pdfcpu/control-page-mediabox-required.pdf",
+      "sha256": "2a5fb414c8b1f565b6021559f7d637c1f6475d5446987abb1084dfd74b374382"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/pdfcpu/control-page-parent-indirect.pdf",
+      "sha256": "a7bb58bcdf556530a2d2a978e5d7cbeaff67d318d033ba7a5a81fbc67dc3eae8"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/pdfcpu/control-page-parent-link.pdf",
+      "sha256": "c7d96c8c614c6f9171109e5fd1af17e549bf7acc62099b6e1a28718209f39dfb"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/pdfcpu/control-page-parent-required.pdf",
+      "sha256": "253228ff414804b4b799f336d7e21220b44e64285f81d60ea0ef3c98f149f2fd"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/pdfcpu/control-page-resources-type.pdf",
+      "sha256": "33ff1741b362fb02856ba83e49f8be159dc32a2bda115a22a1ca32b7f5dad705"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/pdfcpu/control-page-type-value.pdf",
+      "sha256": "957a1ec451275bb287a11cedcbe3993eb49b30a9bcdceaf488e6c0fc71f98ec8"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/pdfcpu/control-page-type.pdf",
+      "sha256": "ef89d0046065ec31948ad50fda2f00c3d74c179c5f39582d7d1246df2841a37c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/pdfcpu/control-pages-count-integer.pdf",
+      "sha256": "553ae8c98a032fa94e3366d9b946569ab7073b770c4eaf73d154b1675379ebb5"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/pdfcpu/control-pages-count-nonnegative.pdf",
+      "sha256": "9fe087f812420765adb7add8ed1fdc50a271624bd6eac7dfc4b508870258f62b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/pdfcpu/control-pages-count-required.pdf",
+      "sha256": "56986acd52560e6715727d47cc99c3a90b8641331b527e6d7445084d0dc16f11"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/pdfcpu/control-pages-count-value.pdf",
+      "sha256": "56986c0732dd1534bb63e5c331f8f7dbcdb6301dadc4592ccd9938f7cce008c9"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/pdfcpu/control-pages-kid-reference.pdf",
+      "sha256": "1c0e162bdbf9b3d969f65af5e4553b88d4e811fde4de9670753cba4a053e55d0"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/pdfcpu/control-pages-kids.pdf",
+      "sha256": "6e4226f52a6ce1c7020ab2d2788a85a79ef5d7a1d4eee45c0debf51fffc10ba0"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/pdfcpu/negative-catalog-pages-indirect.txt",
+      "sha256": "ecf792c0e625b436b0cec24b3bd3edec0b8e40a96c79d2c55d9aadbcc436fd72"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/pdfcpu/negative-catalog-pages.txt",
+      "sha256": "650de5aa3ee44a3609b370b30a262e2a5103d04b02a6f6947af2b8617e7e8d99"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/pdfcpu/negative-catalog-type-required.txt",
+      "sha256": "485e1adfe1541899a21452161d2ae2902c0e9c3080d9971fb95e9a08a67b65b7"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/pdfcpu/negative-catalog-type.txt",
+      "sha256": "fc6523f74df28f61662a1a15ff397c49e7c64ed6566a3978bf4da746d9f12b77"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/pdfcpu/negative-page-mediabox-numbers.txt",
+      "sha256": "01b0de705d72fe67f1166b4d6cab363f20032ee50c81b179cc52c65b7a01f189"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/pdfcpu/negative-page-mediabox-rectangle.txt",
+      "sha256": "0922b1fb21c4cab4b5c56a755d3efbb55c117a521c9fcf714ba64af008c8df38"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/pdfcpu/negative-page-mediabox-required.txt",
+      "sha256": "384d8ee0388a8e628fe5ab32420a58bf6a747ef1df05802c4695e4ed4a9028fb"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/pdfcpu/negative-page-parent-indirect.txt",
+      "sha256": "5b29f4f4ce2d3af5878d563a1135e82b481bd34f77bfe98603a3c04e1c5a010e"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/pdfcpu/negative-page-parent-link.txt",
+      "sha256": "22bd7e6761a1fc4212e1bcfd92d3daf67c0d9257d828eaa22c0c7020be88a91c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/pdfcpu/negative-page-parent-required.txt",
+      "sha256": "5a931cc050b05f2beb08748be301682835c964c567ac24ba78b00003f414b142"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/pdfcpu/negative-page-resources-type.txt",
+      "sha256": "8aa000f0142fd613a2eafcd8ac2a61432dda7d3dc726e75487ff66667d250f5b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/pdfcpu/negative-page-type-value.txt",
+      "sha256": "a3e13f5a05386bfde20b52f6cb7b1fcf6419fe64e50ad56161b081a717156489"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/pdfcpu/negative-page-type.txt",
+      "sha256": "67f57ca452a4bb6eb092df340f87187facc3ec9f1a590f9a91138d9dc90d5f18"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/pdfcpu/negative-pages-count-integer.txt",
+      "sha256": "56970173957278f7e8a696ba0752670c603fa742225e8a877f558e1bf1f5ac0c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/pdfcpu/negative-pages-count-nonnegative.txt",
+      "sha256": "c95cd76061f13a50500b3488d0086de82adbf5bbfdd074a492e0017c04609848"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/pdfcpu/negative-pages-count-required.txt",
+      "sha256": "77cd4d0854afbf0a0c48c1df5d85313a98ad5029de168d6addc75054eaa642a7"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/pdfcpu/negative-pages-count-value.txt",
+      "sha256": "c3115f1dfb0868813391076defaa151cba236a329e812d22fa47603a2d8ea5ee"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/pdfcpu/negative-pages-kid-reference.txt",
+      "sha256": "616b1f60a5e12cbd2e1f52a4d592531f7f64e2880b3da54ef4a70e7cdf749f39"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-registration/pdfcpu/negative-pages-kids.txt",
+      "sha256": "9d6951d545623e0538826b7bc09d098167beff3c5b29ae98f2bb4f157fece36c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/arlington/control-page-resources-required.pdf",
+      "sha256": "057453de6d8fe0490a10b2a44d06c824d0306c64bca64b3444b37ed4b3188dd3"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/arlington/control-pages-type-value.pdf",
+      "sha256": "46e9d3271b38bad3579ec1bff9388f580efd1990534924c2508f2b1fc6a88cfc"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/arlington/control-pages-type.pdf",
+      "sha256": "6fe72868d9f01b1fb929450a8f504f6b12fdc8508ae8e325d49009e6b43bbe1a"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/arlington/negative-page-resources-required.txt",
+      "sha256": "f195daa5746c57ad9ccfe41f27e7371118a5e88f1839d41da837d4f1f49e38f5"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/arlington/negative-pages-type-value.txt",
+      "sha256": "1331998d431e057dc3443450d58184061a62e23db7e5c52fe618055b9a026ab1"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/arlington/negative-pages-type.txt",
+      "sha256": "903edcaf823590037c9c7a4c46ab00daac5c57397444d6283535e8199ea3d519"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/pdfcpu/control-catalog-pages-indirect.pdf",
+      "sha256": "15968efef75ed27fc29077dba4ac2c17bab7d57b60babd2ebebe84ad52da357b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/pdfcpu/control-catalog-pages.pdf",
+      "sha256": "411166c5051b04d0d6a85710266b961ac57ca3302d6e920fdb7f183f28f1bb3f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/pdfcpu/control-catalog-type-required.pdf",
+      "sha256": "1b232380a180eb3ced9c3625153ee010b06e11b3a628c6c0b1078aba437e0f33"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/pdfcpu/control-catalog-type.pdf",
+      "sha256": "c1f95d7931bb320feb3294c3867d41e96a1302cb3920606dbaab7e12e101860f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/pdfcpu/control-page-mediabox-numbers.pdf",
+      "sha256": "6ec1510cccbd9d7dcc664381d68e71ebb0d2a0300e7ee97a6b4cb89c2740713c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/pdfcpu/control-page-mediabox-rectangle.pdf",
+      "sha256": "25bd505efea14dafefa8dd134879d5f35261db8be4da1d9c23b65d3ae2fc3432"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/pdfcpu/control-page-mediabox-required.pdf",
+      "sha256": "2a5fb414c8b1f565b6021559f7d637c1f6475d5446987abb1084dfd74b374382"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/pdfcpu/control-page-parent-indirect.pdf",
+      "sha256": "a7bb58bcdf556530a2d2a978e5d7cbeaff67d318d033ba7a5a81fbc67dc3eae8"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/pdfcpu/control-page-parent-link.pdf",
+      "sha256": "c7d96c8c614c6f9171109e5fd1af17e549bf7acc62099b6e1a28718209f39dfb"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/pdfcpu/control-page-parent-required.pdf",
+      "sha256": "253228ff414804b4b799f336d7e21220b44e64285f81d60ea0ef3c98f149f2fd"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/pdfcpu/control-page-resources-type.pdf",
+      "sha256": "33ff1741b362fb02856ba83e49f8be159dc32a2bda115a22a1ca32b7f5dad705"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/pdfcpu/control-page-type-value.pdf",
+      "sha256": "957a1ec451275bb287a11cedcbe3993eb49b30a9bcdceaf488e6c0fc71f98ec8"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/pdfcpu/control-page-type.pdf",
+      "sha256": "ef89d0046065ec31948ad50fda2f00c3d74c179c5f39582d7d1246df2841a37c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/pdfcpu/control-pages-count-integer.pdf",
+      "sha256": "553ae8c98a032fa94e3366d9b946569ab7073b770c4eaf73d154b1675379ebb5"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/pdfcpu/control-pages-count-nonnegative.pdf",
+      "sha256": "9fe087f812420765adb7add8ed1fdc50a271624bd6eac7dfc4b508870258f62b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/pdfcpu/control-pages-count-required.pdf",
+      "sha256": "56986acd52560e6715727d47cc99c3a90b8641331b527e6d7445084d0dc16f11"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/pdfcpu/control-pages-count-value.pdf",
+      "sha256": "56986c0732dd1534bb63e5c331f8f7dbcdb6301dadc4592ccd9938f7cce008c9"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/pdfcpu/control-pages-kid-reference.pdf",
+      "sha256": "1c0e162bdbf9b3d969f65af5e4553b88d4e811fde4de9670753cba4a053e55d0"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/pdfcpu/control-pages-kids.pdf",
+      "sha256": "6e4226f52a6ce1c7020ab2d2788a85a79ef5d7a1d4eee45c0debf51fffc10ba0"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/pdfcpu/negative-catalog-pages-indirect.txt",
+      "sha256": "c61808e1967a3f96d9f698d9f2fd731d054fb1d88684ad99761fb69f7331d4c7"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/pdfcpu/negative-catalog-pages.txt",
+      "sha256": "1e3ab68b97c887f73f8fa2e424e2920d037538d02120b322ccf936eb1cf5ca62"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/pdfcpu/negative-catalog-type-required.txt",
+      "sha256": "166b14c4b2ee5247e859dba66dac435d014b11d7462fb3229a36dbcb88c9952d"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/pdfcpu/negative-catalog-type.txt",
+      "sha256": "f5a8c30cdf0ffa8d3c1a236dde940c004d3f99b3f9d6517966534620814151c5"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/pdfcpu/negative-page-mediabox-numbers.txt",
+      "sha256": "ecaeead282190fc4fdf40a56da324bd06f387b8c05c870c0f1d4c178a0997cf6"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/pdfcpu/negative-page-mediabox-rectangle.txt",
+      "sha256": "9be063ce03ebd8299f08125aaaf42d264c687d74cfac69bee6b117b24a854719"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/pdfcpu/negative-page-mediabox-required.txt",
+      "sha256": "3275f13e8e17e93dc7f11551dd1ef317cac13fa55dece98f2ac3c4365debd95b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/pdfcpu/negative-page-parent-indirect.txt",
+      "sha256": "17969c6a4640479d6b51baa731b14d3f3c26fd291c48a3f6ce7ca2f335bbb3a6"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/pdfcpu/negative-page-parent-link.txt",
+      "sha256": "618eab466786c70446ddaebcace460855cf5f024eb121d3fb2ec7c767af99899"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/pdfcpu/negative-page-parent-required.txt",
+      "sha256": "e290f0334c35a1036f15b2719167ccf95bd3d21a63b725795fb3da4bc4ada790"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/pdfcpu/negative-page-resources-type.txt",
+      "sha256": "c107a667a15634cd39f8e4dddfb92598fc74d1c75dabc99773f255d4510c1b1c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/pdfcpu/negative-page-type-value.txt",
+      "sha256": "7cee6ab9255de08a1ad2dadf9bdf3072c49d4f7f69fd1ff9da5e566739109439"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/pdfcpu/negative-page-type.txt",
+      "sha256": "ac5751258a7489f6d9c05671f9202b3c460a6ce15e43c6bd8606cf09af042b07"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/pdfcpu/negative-pages-count-integer.txt",
+      "sha256": "a223b8f0c7c652a83295b82ab4de5b5bf6a8b5ba0c564827449a27add358e886"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/pdfcpu/negative-pages-count-nonnegative.txt",
+      "sha256": "8d69abf917a2d6ba05939f76d501c73970a27abc2f7fcec76e068d83a9496303"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/pdfcpu/negative-pages-count-required.txt",
+      "sha256": "74fe7d9e827b24903ab06d2307af0b3d6068feccbb6447befb7a50303c98e252"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/pdfcpu/negative-pages-count-value.txt",
+      "sha256": "1c5eddbc5ead6c0bcbcf7beec5b0528e750e6c8101daa542015d085bff451cd4"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/pdfcpu/negative-pages-kid-reference.txt",
+      "sha256": "60dc19c3ddaed310cff175bfae5705e882cce40bc863a0d8239115e3fc52bde7"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-first/pdfcpu/negative-pages-kids.txt",
+      "sha256": "282b31155e2727eb3206a194adbea343f930a4c17e3fc373817ea2f6c34c114e"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/arlington/control-page-resources-required.pdf",
+      "sha256": "057453de6d8fe0490a10b2a44d06c824d0306c64bca64b3444b37ed4b3188dd3"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/arlington/control-pages-type-value.pdf",
+      "sha256": "46e9d3271b38bad3579ec1bff9388f580efd1990534924c2508f2b1fc6a88cfc"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/arlington/control-pages-type.pdf",
+      "sha256": "6fe72868d9f01b1fb929450a8f504f6b12fdc8508ae8e325d49009e6b43bbe1a"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/arlington/negative-page-resources-required.txt",
+      "sha256": "c1352ba02e8688847d0ead05a98f702edbd78732916003aaefb4d8022d8dc7e2"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/arlington/negative-pages-type-value.txt",
+      "sha256": "dcdac6462c8abcdb1291c60fcf66c37d8c5ca08228673f1567197579bfd9a692"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/arlington/negative-pages-type.txt",
+      "sha256": "b4c8a09b2a7e4544d6211b0188a2fcb104f2c5e30d52c358995f1d7b6d40163a"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/pdfcpu/control-catalog-pages-indirect.pdf",
+      "sha256": "15968efef75ed27fc29077dba4ac2c17bab7d57b60babd2ebebe84ad52da357b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/pdfcpu/control-catalog-pages.pdf",
+      "sha256": "411166c5051b04d0d6a85710266b961ac57ca3302d6e920fdb7f183f28f1bb3f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/pdfcpu/control-catalog-type-required.pdf",
+      "sha256": "1b232380a180eb3ced9c3625153ee010b06e11b3a628c6c0b1078aba437e0f33"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/pdfcpu/control-catalog-type.pdf",
+      "sha256": "c1f95d7931bb320feb3294c3867d41e96a1302cb3920606dbaab7e12e101860f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/pdfcpu/control-page-mediabox-numbers.pdf",
+      "sha256": "6ec1510cccbd9d7dcc664381d68e71ebb0d2a0300e7ee97a6b4cb89c2740713c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/pdfcpu/control-page-mediabox-rectangle.pdf",
+      "sha256": "25bd505efea14dafefa8dd134879d5f35261db8be4da1d9c23b65d3ae2fc3432"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/pdfcpu/control-page-mediabox-required.pdf",
+      "sha256": "2a5fb414c8b1f565b6021559f7d637c1f6475d5446987abb1084dfd74b374382"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/pdfcpu/control-page-parent-indirect.pdf",
+      "sha256": "a7bb58bcdf556530a2d2a978e5d7cbeaff67d318d033ba7a5a81fbc67dc3eae8"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/pdfcpu/control-page-parent-link.pdf",
+      "sha256": "c7d96c8c614c6f9171109e5fd1af17e549bf7acc62099b6e1a28718209f39dfb"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/pdfcpu/control-page-parent-required.pdf",
+      "sha256": "253228ff414804b4b799f336d7e21220b44e64285f81d60ea0ef3c98f149f2fd"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/pdfcpu/control-page-resources-type.pdf",
+      "sha256": "33ff1741b362fb02856ba83e49f8be159dc32a2bda115a22a1ca32b7f5dad705"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/pdfcpu/control-page-type-value.pdf",
+      "sha256": "957a1ec451275bb287a11cedcbe3993eb49b30a9bcdceaf488e6c0fc71f98ec8"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/pdfcpu/control-page-type.pdf",
+      "sha256": "ef89d0046065ec31948ad50fda2f00c3d74c179c5f39582d7d1246df2841a37c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/pdfcpu/control-pages-count-integer.pdf",
+      "sha256": "553ae8c98a032fa94e3366d9b946569ab7073b770c4eaf73d154b1675379ebb5"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/pdfcpu/control-pages-count-nonnegative.pdf",
+      "sha256": "9fe087f812420765adb7add8ed1fdc50a271624bd6eac7dfc4b508870258f62b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/pdfcpu/control-pages-count-required.pdf",
+      "sha256": "56986acd52560e6715727d47cc99c3a90b8641331b527e6d7445084d0dc16f11"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/pdfcpu/control-pages-count-value.pdf",
+      "sha256": "56986c0732dd1534bb63e5c331f8f7dbcdb6301dadc4592ccd9938f7cce008c9"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/pdfcpu/control-pages-kid-reference.pdf",
+      "sha256": "1c0e162bdbf9b3d969f65af5e4553b88d4e811fde4de9670753cba4a053e55d0"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/pdfcpu/control-pages-kids.pdf",
+      "sha256": "6e4226f52a6ce1c7020ab2d2788a85a79ef5d7a1d4eee45c0debf51fffc10ba0"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/pdfcpu/negative-catalog-pages-indirect.txt",
+      "sha256": "c9188dcd33c9404648e8a0cae9b5d8c31f87caf2eacf8ef8c75f97a95ca79329"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/pdfcpu/negative-catalog-pages.txt",
+      "sha256": "81fba2e949078562b9c1e6c083a5b45791067818d8d119e975d9f3a8266ccf6d"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/pdfcpu/negative-catalog-type-required.txt",
+      "sha256": "7a27c4f21406214b972498a4a27f7c431daf0282b88f2d02e8adb38acbd84695"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/pdfcpu/negative-catalog-type.txt",
+      "sha256": "76cb697665e466ba833f12d154c07988f537edadbda6589641048eb1993f0f69"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/pdfcpu/negative-page-mediabox-numbers.txt",
+      "sha256": "1a2ab59268fd25b3a3c3b8e86112429ef643c45369f59df836db22c46c6b150c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/pdfcpu/negative-page-mediabox-rectangle.txt",
+      "sha256": "5790152d110b1faa44ed2e1fb3cf9a96dae80eca926239c7ca468c1b468881fd"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/pdfcpu/negative-page-mediabox-required.txt",
+      "sha256": "c17caff65013b565a9188494eb376e39b5fc266c32b1314cebe3958b0cf3816a"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/pdfcpu/negative-page-parent-indirect.txt",
+      "sha256": "5eaf5a0d97d2da98aaa6de6c1a50f707c276dc95d4188b35e0825d159b6a861b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/pdfcpu/negative-page-parent-link.txt",
+      "sha256": "1301286bd1daca6ea5f4477499bf4f402e0b49fdfe65c15292f30dc32f644799"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/pdfcpu/negative-page-parent-required.txt",
+      "sha256": "a2085b1b3ef717cbe15ce7ae49aaf7ed2215da8b3bdde69e1f80ecb3982d1ead"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/pdfcpu/negative-page-resources-type.txt",
+      "sha256": "eb3c95da6daa001d261aa54b9c162df00e045eca696c67531ef4c7226d29d025"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/pdfcpu/negative-page-type-value.txt",
+      "sha256": "007581ff8a5e082f85410270a6cecf97af595ee7a27196024a6a2dd71ab66672"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/pdfcpu/negative-page-type.txt",
+      "sha256": "f1959ceeaa07bc8b62109866fa11cbe54ee06af1ab06456af380ef14cc87e824"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/pdfcpu/negative-pages-count-integer.txt",
+      "sha256": "9c87fa75720b87288a9a06aeaf22a451bde77f760d9ce08d8681ba3811cda877"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/pdfcpu/negative-pages-count-nonnegative.txt",
+      "sha256": "d57384fdac4887a5fa7debaa240c9d7d565764cbdf938ed2afd297b6302e2b80"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/pdfcpu/negative-pages-count-required.txt",
+      "sha256": "d165870215ca83fc773a8c7ee59497402a07610f45fbda4512a1d42647b7fb88"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/pdfcpu/negative-pages-count-value.txt",
+      "sha256": "0a7d96e677cd6ff071548d88ddce19baf37c2751103b42772dec66d51b5beae0"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/pdfcpu/negative-pages-kid-reference.txt",
+      "sha256": "f17c803c71275a7080a0e596c24bd0bb8ef0a0a55465d3bb9446a0fc7d035ada"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-repeat/pdfcpu/negative-pages-kids.txt",
+      "sha256": "2b4afe6b6156d16ec936f49f04ab10ef8ef4e58c1fdeaa383d738b74a912ed14"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/arlington/control-page-resources-required.pdf",
+      "sha256": "057453de6d8fe0490a10b2a44d06c824d0306c64bca64b3444b37ed4b3188dd3"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/arlington/control-pages-type-value.pdf",
+      "sha256": "46e9d3271b38bad3579ec1bff9388f580efd1990534924c2508f2b1fc6a88cfc"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/arlington/control-pages-type.pdf",
+      "sha256": "6fe72868d9f01b1fb929450a8f504f6b12fdc8508ae8e325d49009e6b43bbe1a"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/arlington/negative-page-resources-required.txt",
+      "sha256": "02fc24f02607de51aed197737c2e0ae601f6a14bc8ab094c6a27358e77bf2bf5"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/arlington/negative-pages-type-value.txt",
+      "sha256": "a19599566a3ad13567aeb7fb140bed5d396fc9b9942a092c3e24402990f9fffc"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/arlington/negative-pages-type.txt",
+      "sha256": "119a8dcb8617ac56b7c74d6d83670b38003dc8f6985480d2e6247e49c882e43e"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/pdfcpu/control-catalog-pages-indirect.pdf",
+      "sha256": "15968efef75ed27fc29077dba4ac2c17bab7d57b60babd2ebebe84ad52da357b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/pdfcpu/control-catalog-pages.pdf",
+      "sha256": "411166c5051b04d0d6a85710266b961ac57ca3302d6e920fdb7f183f28f1bb3f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/pdfcpu/control-catalog-type-required.pdf",
+      "sha256": "1b232380a180eb3ced9c3625153ee010b06e11b3a628c6c0b1078aba437e0f33"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/pdfcpu/control-catalog-type.pdf",
+      "sha256": "c1f95d7931bb320feb3294c3867d41e96a1302cb3920606dbaab7e12e101860f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/pdfcpu/control-page-mediabox-numbers.pdf",
+      "sha256": "6ec1510cccbd9d7dcc664381d68e71ebb0d2a0300e7ee97a6b4cb89c2740713c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/pdfcpu/control-page-mediabox-rectangle.pdf",
+      "sha256": "25bd505efea14dafefa8dd134879d5f35261db8be4da1d9c23b65d3ae2fc3432"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/pdfcpu/control-page-mediabox-required.pdf",
+      "sha256": "2a5fb414c8b1f565b6021559f7d637c1f6475d5446987abb1084dfd74b374382"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/pdfcpu/control-page-parent-indirect.pdf",
+      "sha256": "a7bb58bcdf556530a2d2a978e5d7cbeaff67d318d033ba7a5a81fbc67dc3eae8"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/pdfcpu/control-page-parent-link.pdf",
+      "sha256": "c7d96c8c614c6f9171109e5fd1af17e549bf7acc62099b6e1a28718209f39dfb"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/pdfcpu/control-page-parent-required.pdf",
+      "sha256": "253228ff414804b4b799f336d7e21220b44e64285f81d60ea0ef3c98f149f2fd"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/pdfcpu/control-page-resources-type.pdf",
+      "sha256": "33ff1741b362fb02856ba83e49f8be159dc32a2bda115a22a1ca32b7f5dad705"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/pdfcpu/control-page-type-value.pdf",
+      "sha256": "957a1ec451275bb287a11cedcbe3993eb49b30a9bcdceaf488e6c0fc71f98ec8"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/pdfcpu/control-page-type.pdf",
+      "sha256": "ef89d0046065ec31948ad50fda2f00c3d74c179c5f39582d7d1246df2841a37c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/pdfcpu/control-pages-count-integer.pdf",
+      "sha256": "553ae8c98a032fa94e3366d9b946569ab7073b770c4eaf73d154b1675379ebb5"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/pdfcpu/control-pages-count-nonnegative.pdf",
+      "sha256": "9fe087f812420765adb7add8ed1fdc50a271624bd6eac7dfc4b508870258f62b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/pdfcpu/control-pages-count-required.pdf",
+      "sha256": "56986acd52560e6715727d47cc99c3a90b8641331b527e6d7445084d0dc16f11"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/pdfcpu/control-pages-count-value.pdf",
+      "sha256": "56986c0732dd1534bb63e5c331f8f7dbcdb6301dadc4592ccd9938f7cce008c9"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/pdfcpu/control-pages-kid-reference.pdf",
+      "sha256": "1c0e162bdbf9b3d969f65af5e4553b88d4e811fde4de9670753cba4a053e55d0"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/pdfcpu/control-pages-kids.pdf",
+      "sha256": "6e4226f52a6ce1c7020ab2d2788a85a79ef5d7a1d4eee45c0debf51fffc10ba0"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/pdfcpu/negative-catalog-pages-indirect.txt",
+      "sha256": "553a35e7ebf79e0cd70de48e602cbe98f3eb0ea3345614b156d818da2c0d83be"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/pdfcpu/negative-catalog-pages.txt",
+      "sha256": "856e73412d788e86bcbddbd7af229397a4cbed0fdb8c7a44f1488d943150b238"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/pdfcpu/negative-catalog-type-required.txt",
+      "sha256": "a592fdf4f01f76a908cd667f92481856666dca7b96f01fe6df79926d18eb2233"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/pdfcpu/negative-catalog-type.txt",
+      "sha256": "49be4e8cdd7ec62b81941b28a4b88d2eef423bdf211b975fce9a5345c06ee53a"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/pdfcpu/negative-page-mediabox-numbers.txt",
+      "sha256": "7387da28db59dd0b8317e14a383b12d86228f4f84ebc25ccbd2279d5cabd109d"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/pdfcpu/negative-page-mediabox-rectangle.txt",
+      "sha256": "9d9623ab877b1cb9c134595f5e6e08f25a4f474670d822f82182e68431ae6050"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/pdfcpu/negative-page-mediabox-required.txt",
+      "sha256": "c3a6fcbcb6c70caef361553020d811e5c338c5bb14e4a33f1d86a30160a4e79f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/pdfcpu/negative-page-parent-indirect.txt",
+      "sha256": "ce290c46b75cf3fd004f004103a842800aedefa0f4608c40cd790da243352689"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/pdfcpu/negative-page-parent-link.txt",
+      "sha256": "05a146af4f41f51d7625233d4ee478131a7a12799ceedfc892a4d6b7c32a9fb4"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/pdfcpu/negative-page-parent-required.txt",
+      "sha256": "d55d6a7626c3b84bc52b2f68ffecf09bb6d1a2bee92f08202d80ee999439c17d"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/pdfcpu/negative-page-resources-type.txt",
+      "sha256": "10223166f38675ad7d6dbb55517333cff065b4c4a112bba45ba36962c590570b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/pdfcpu/negative-page-type-value.txt",
+      "sha256": "045c9b4ed5a3b88eeb02182cb2e36d72aa77f433e127488873fa8327baf6e398"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/pdfcpu/negative-page-type.txt",
+      "sha256": "492fff58573e83cee5421929c2be56fa0a0c9131f398008842d6e5bc037333f9"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/pdfcpu/negative-pages-count-integer.txt",
+      "sha256": "c0cbfccd2b85208ce2920b6e9987afb4a99a3e8d9b3fa96882438f3a9ae4dfca"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/pdfcpu/negative-pages-count-nonnegative.txt",
+      "sha256": "4b7a0d72bb84f686b602c76b67c34d7ec0762ee48eeee6f4fed6b38020de9604"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/pdfcpu/negative-pages-count-required.txt",
+      "sha256": "8483f5c3ac720b72ab03fc47642ac3493a89169c2aab1e1edc55767187c5bb17"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/pdfcpu/negative-pages-count-value.txt",
+      "sha256": "2c4affd424cdb0cf412346539ba73fd6cd6854b5df74b5823664d43c354705ab"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/pdfcpu/negative-pages-kid-reference.txt",
+      "sha256": "1e7fa61be94bab24a4ada2b3b35f7dbeee4332c9c6772f3774f74289ff072eb4"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-exact/pdfcpu/negative-pages-kids.txt",
+      "sha256": "e3ff436d113077effc333e11f1b5520bea3c98f1320fb3119d52d1975c3864e2"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/arlington/control-page-resources-required.pdf",
+      "sha256": "057453de6d8fe0490a10b2a44d06c824d0306c64bca64b3444b37ed4b3188dd3"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/arlington/control-pages-type-value.pdf",
+      "sha256": "46e9d3271b38bad3579ec1bff9388f580efd1990534924c2508f2b1fc6a88cfc"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/arlington/control-pages-type.pdf",
+      "sha256": "6fe72868d9f01b1fb929450a8f504f6b12fdc8508ae8e325d49009e6b43bbe1a"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/arlington/negative-page-resources-required.txt",
+      "sha256": "26d183c39d61cf8933aa19679133d45912715dcd43af6a9ef50765c1f73b73b8"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/arlington/negative-pages-type-value.txt",
+      "sha256": "8864acc5db64108b754f44d8470f70b349e0b035a6fce7a86b45765acacc0e4d"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/arlington/negative-pages-type.txt",
+      "sha256": "e7e86779fb18b07120f7e8907e15630463804f21c2dd1392c5c6fa97e795b456"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/pdfcpu/control-catalog-pages-indirect.pdf",
+      "sha256": "15968efef75ed27fc29077dba4ac2c17bab7d57b60babd2ebebe84ad52da357b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/pdfcpu/control-catalog-pages.pdf",
+      "sha256": "411166c5051b04d0d6a85710266b961ac57ca3302d6e920fdb7f183f28f1bb3f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/pdfcpu/control-catalog-type-required.pdf",
+      "sha256": "1b232380a180eb3ced9c3625153ee010b06e11b3a628c6c0b1078aba437e0f33"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/pdfcpu/control-catalog-type.pdf",
+      "sha256": "c1f95d7931bb320feb3294c3867d41e96a1302cb3920606dbaab7e12e101860f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/pdfcpu/control-page-mediabox-numbers.pdf",
+      "sha256": "6ec1510cccbd9d7dcc664381d68e71ebb0d2a0300e7ee97a6b4cb89c2740713c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/pdfcpu/control-page-mediabox-rectangle.pdf",
+      "sha256": "25bd505efea14dafefa8dd134879d5f35261db8be4da1d9c23b65d3ae2fc3432"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/pdfcpu/control-page-mediabox-required.pdf",
+      "sha256": "2a5fb414c8b1f565b6021559f7d637c1f6475d5446987abb1084dfd74b374382"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/pdfcpu/control-page-parent-indirect.pdf",
+      "sha256": "a7bb58bcdf556530a2d2a978e5d7cbeaff67d318d033ba7a5a81fbc67dc3eae8"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/pdfcpu/control-page-parent-link.pdf",
+      "sha256": "c7d96c8c614c6f9171109e5fd1af17e549bf7acc62099b6e1a28718209f39dfb"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/pdfcpu/control-page-parent-required.pdf",
+      "sha256": "253228ff414804b4b799f336d7e21220b44e64285f81d60ea0ef3c98f149f2fd"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/pdfcpu/control-page-resources-type.pdf",
+      "sha256": "33ff1741b362fb02856ba83e49f8be159dc32a2bda115a22a1ca32b7f5dad705"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/pdfcpu/control-page-type-value.pdf",
+      "sha256": "957a1ec451275bb287a11cedcbe3993eb49b30a9bcdceaf488e6c0fc71f98ec8"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/pdfcpu/control-page-type.pdf",
+      "sha256": "ef89d0046065ec31948ad50fda2f00c3d74c179c5f39582d7d1246df2841a37c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/pdfcpu/control-pages-count-integer.pdf",
+      "sha256": "553ae8c98a032fa94e3366d9b946569ab7073b770c4eaf73d154b1675379ebb5"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/pdfcpu/control-pages-count-nonnegative.pdf",
+      "sha256": "9fe087f812420765adb7add8ed1fdc50a271624bd6eac7dfc4b508870258f62b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/pdfcpu/control-pages-count-required.pdf",
+      "sha256": "56986acd52560e6715727d47cc99c3a90b8641331b527e6d7445084d0dc16f11"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/pdfcpu/control-pages-count-value.pdf",
+      "sha256": "56986c0732dd1534bb63e5c331f8f7dbcdb6301dadc4592ccd9938f7cce008c9"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/pdfcpu/control-pages-kid-reference.pdf",
+      "sha256": "1c0e162bdbf9b3d969f65af5e4553b88d4e811fde4de9670753cba4a053e55d0"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/pdfcpu/control-pages-kids.pdf",
+      "sha256": "6e4226f52a6ce1c7020ab2d2788a85a79ef5d7a1d4eee45c0debf51fffc10ba0"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/pdfcpu/negative-catalog-pages-indirect.txt",
+      "sha256": "0cd18104f11abcd1b04323cd4c7eeb9d542df847644f8ec95b6f2ea099e32821"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/pdfcpu/negative-catalog-pages.txt",
+      "sha256": "74270e1e1f249dddbe632ad315c598114abe50e9afab73ef6275bf004504cffa"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/pdfcpu/negative-catalog-type-required.txt",
+      "sha256": "c1d8f5a8b1f2565b2babbfa9935e74d9531ce58be986c7f4cba3c3c7fec5cc35"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/pdfcpu/negative-catalog-type.txt",
+      "sha256": "9de1bcb7785ee9c650ee0abf952b664f3434b6ea522569d63aef0bd76101b7b1"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/pdfcpu/negative-page-mediabox-numbers.txt",
+      "sha256": "86eaf360b4fec9fb75d6e4940f5472b18daea4cd24b65f7d10b6055b29c30537"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/pdfcpu/negative-page-mediabox-rectangle.txt",
+      "sha256": "23a0f23a1aa219003625e843c683c41247891040243dde67db682116f79dc1e1"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/pdfcpu/negative-page-mediabox-required.txt",
+      "sha256": "60c1849940bbc15d7b8b0343e67f8b36e3b3c4c33a20dfe19b35e330b31d88c3"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/pdfcpu/negative-page-parent-indirect.txt",
+      "sha256": "89dc3e45847e3bc1261c3c4f07c107f2eb58f5c88810c5466ecd5c660000209c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/pdfcpu/negative-page-parent-link.txt",
+      "sha256": "537ed4c6d58c526c467c07418828e45b77b257887fc577aa5bebcd2a81fbbee9"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/pdfcpu/negative-page-parent-required.txt",
+      "sha256": "d37725043ed6afcee2e5c59e406416a83c850f711ba9fb092ac6692b9f7d6ede"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/pdfcpu/negative-page-resources-type.txt",
+      "sha256": "92cd968e59b851f714836d68422e1f9546c9a8cf84ff8635a154c59663867f4b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/pdfcpu/negative-page-type-value.txt",
+      "sha256": "7f8103af8024cc2f0d32007ffaeebb17bfe4fbeee91d0499e99ac1bafe40843a"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/pdfcpu/negative-page-type.txt",
+      "sha256": "9613fb7790c799d6ef0923902a455cc7abff00b57ef72d8c1e83b42fae564f6f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/pdfcpu/negative-pages-count-integer.txt",
+      "sha256": "522b45a176c12dacf0adfd2e875ffd67e80ce480736675f75a722128cebae995"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/pdfcpu/negative-pages-count-nonnegative.txt",
+      "sha256": "c9f4d9ea4d0391d79e2da427d382c244b63f8ba0da8d6c12df7057337e26aa7f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/pdfcpu/negative-pages-count-required.txt",
+      "sha256": "0da4c24c3a071801e01dde5fd6c7b12dde5c9d4ec7602aa0ce801c2eb16e5f0c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/pdfcpu/negative-pages-count-value.txt",
+      "sha256": "cb64e5bfab0caf30b55141a7ab9c41da2ed5254cb6649815d2023d8f49b10797"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/pdfcpu/negative-pages-kid-reference.txt",
+      "sha256": "c29d2b71c355829fd156c474a5809af05ed7768aac0e3bf31745bb379ec7be3e"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-selection/pdfcpu/negative-pages-kids.txt",
+      "sha256": "b44a189c663ed31bcfb93ffb550e16e4f2dd61d27e7292c4599cedb16f5e98cb"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/arlington/control-page-resources-required.pdf",
+      "sha256": "057453de6d8fe0490a10b2a44d06c824d0306c64bca64b3444b37ed4b3188dd3"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/arlington/control-pages-type-value.pdf",
+      "sha256": "46e9d3271b38bad3579ec1bff9388f580efd1990534924c2508f2b1fc6a88cfc"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/arlington/control-pages-type.pdf",
+      "sha256": "6fe72868d9f01b1fb929450a8f504f6b12fdc8508ae8e325d49009e6b43bbe1a"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/arlington/negative-page-resources-required.txt",
+      "sha256": "1cd13691c1468ff5f49b2869b4a69ee56cea6464096d87ea88e7ef2aaada5145"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/arlington/negative-pages-type-value.txt",
+      "sha256": "cf5eacf8109a18bdcaf66126f4310fc1724a66941b9f6d79357ae98ce2e6e43b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/arlington/negative-pages-type.txt",
+      "sha256": "f794f4cd0f78f5d4ef48ba5b4b5a0c51e12791cafe261f89f24a4cc96f44df19"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/pdfcpu/control-catalog-pages-indirect.pdf",
+      "sha256": "15968efef75ed27fc29077dba4ac2c17bab7d57b60babd2ebebe84ad52da357b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/pdfcpu/control-catalog-pages.pdf",
+      "sha256": "411166c5051b04d0d6a85710266b961ac57ca3302d6e920fdb7f183f28f1bb3f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/pdfcpu/control-catalog-type-required.pdf",
+      "sha256": "1b232380a180eb3ced9c3625153ee010b06e11b3a628c6c0b1078aba437e0f33"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/pdfcpu/control-catalog-type.pdf",
+      "sha256": "c1f95d7931bb320feb3294c3867d41e96a1302cb3920606dbaab7e12e101860f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/pdfcpu/control-page-mediabox-numbers.pdf",
+      "sha256": "6ec1510cccbd9d7dcc664381d68e71ebb0d2a0300e7ee97a6b4cb89c2740713c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/pdfcpu/control-page-mediabox-rectangle.pdf",
+      "sha256": "25bd505efea14dafefa8dd134879d5f35261db8be4da1d9c23b65d3ae2fc3432"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/pdfcpu/control-page-mediabox-required.pdf",
+      "sha256": "2a5fb414c8b1f565b6021559f7d637c1f6475d5446987abb1084dfd74b374382"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/pdfcpu/control-page-parent-indirect.pdf",
+      "sha256": "a7bb58bcdf556530a2d2a978e5d7cbeaff67d318d033ba7a5a81fbc67dc3eae8"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/pdfcpu/control-page-parent-link.pdf",
+      "sha256": "c7d96c8c614c6f9171109e5fd1af17e549bf7acc62099b6e1a28718209f39dfb"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/pdfcpu/control-page-parent-required.pdf",
+      "sha256": "253228ff414804b4b799f336d7e21220b44e64285f81d60ea0ef3c98f149f2fd"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/pdfcpu/control-page-resources-type.pdf",
+      "sha256": "33ff1741b362fb02856ba83e49f8be159dc32a2bda115a22a1ca32b7f5dad705"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/pdfcpu/control-page-type-value.pdf",
+      "sha256": "957a1ec451275bb287a11cedcbe3993eb49b30a9bcdceaf488e6c0fc71f98ec8"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/pdfcpu/control-page-type.pdf",
+      "sha256": "ef89d0046065ec31948ad50fda2f00c3d74c179c5f39582d7d1246df2841a37c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/pdfcpu/control-pages-count-integer.pdf",
+      "sha256": "553ae8c98a032fa94e3366d9b946569ab7073b770c4eaf73d154b1675379ebb5"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/pdfcpu/control-pages-count-nonnegative.pdf",
+      "sha256": "9fe087f812420765adb7add8ed1fdc50a271624bd6eac7dfc4b508870258f62b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/pdfcpu/control-pages-count-required.pdf",
+      "sha256": "56986acd52560e6715727d47cc99c3a90b8641331b527e6d7445084d0dc16f11"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/pdfcpu/control-pages-count-value.pdf",
+      "sha256": "56986c0732dd1534bb63e5c331f8f7dbcdb6301dadc4592ccd9938f7cce008c9"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/pdfcpu/control-pages-kid-reference.pdf",
+      "sha256": "1c0e162bdbf9b3d969f65af5e4553b88d4e811fde4de9670753cba4a053e55d0"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/pdfcpu/control-pages-kids.pdf",
+      "sha256": "6e4226f52a6ce1c7020ab2d2788a85a79ef5d7a1d4eee45c0debf51fffc10ba0"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/pdfcpu/negative-catalog-pages-indirect.txt",
+      "sha256": "2fda991988d03baf69dc4e40c7acddb0a30c8b649b9fbf584b93f566185f7c2e"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/pdfcpu/negative-catalog-pages.txt",
+      "sha256": "d99747c8716fd23e057bd513ca1aa4611a92e1fdf836d56a234e69e8cf2b3a8e"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/pdfcpu/negative-catalog-type-required.txt",
+      "sha256": "7aaeef3d4d26a05e9ef0087501aadf9b589837628a4ec3ca6acd206b4095bd17"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/pdfcpu/negative-catalog-type.txt",
+      "sha256": "9abf497287cc08694e969d5eae7bbceecc8c97df253792bd529b3d7f553d43e3"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/pdfcpu/negative-page-mediabox-numbers.txt",
+      "sha256": "f88d74f332cff3796051dace5e2d66d4cfea69505b98c25625b364f1d37538e1"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/pdfcpu/negative-page-mediabox-rectangle.txt",
+      "sha256": "327291860eb60eda69b8df2b39c0b8bd2d8f7e0771971770d6cd5a36240beaf9"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/pdfcpu/negative-page-mediabox-required.txt",
+      "sha256": "790830f21a03874fe5ace96af32847b1ad169b557ce9a7e1a22d7fd3181dae32"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/pdfcpu/negative-page-parent-indirect.txt",
+      "sha256": "4ede8eea90809b280a9306cd63471543fbe642e5ba63b211687ece28637bccff"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/pdfcpu/negative-page-parent-link.txt",
+      "sha256": "9442ffc47f0fcba790c72b7da7470c181358a972f5c2a5bc2e3ca9d0dfa8ac72"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/pdfcpu/negative-page-parent-required.txt",
+      "sha256": "b5094c3021b764b8ef3fe7e3fa4dafaa1ccf8187207628eea5875a58981a3e8a"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/pdfcpu/negative-page-resources-type.txt",
+      "sha256": "082932a6335e0b6fd8b58273f769b5de8f34655ab8780239ef18a0eef740691c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/pdfcpu/negative-page-type-value.txt",
+      "sha256": "f3106b9938f3dfbabb8a50794aff0a79b07b60a47e03e069cd93fd887c2cb1b4"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/pdfcpu/negative-page-type.txt",
+      "sha256": "99e0a8f38f6aecf03c3ee9fee830abb886683aa0d6fa08768aea1a947557eb7f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/pdfcpu/negative-pages-count-integer.txt",
+      "sha256": "7da491801bac931927d3315b03b0603b7fd3c416c842150b9390f2025bf4e50b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/pdfcpu/negative-pages-count-nonnegative.txt",
+      "sha256": "5e560c76b37b394e9f395a858e3358363a655bbb82eec8bf9b71b566ccdfff89"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/pdfcpu/negative-pages-count-required.txt",
+      "sha256": "dcb886307f1e05d65489d87c2db5d1997bbb9451e531cfd7009e8f16b57701dc"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/pdfcpu/negative-pages-count-value.txt",
+      "sha256": "ad69cd317b7bd7b90ce00154dc24548119ee46ec7d07b6391ef45387b701bd37"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/pdfcpu/negative-pages-kid-reference.txt",
+      "sha256": "dd5c95c9b2ca9caa64a2d733f07bce29d1d2dc3b5762878b695f79006c4cb44d"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-remote-execution/pdfcpu/negative-pages-kids.txt",
+      "sha256": "dcc66b62363e59d64dc06bcff8db3f3f7607e448e068d0e5977a72d645161d5f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/arlington/control-page-resources-required.pdf",
+      "sha256": "057453de6d8fe0490a10b2a44d06c824d0306c64bca64b3444b37ed4b3188dd3"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/arlington/control-pages-type-value.pdf",
+      "sha256": "46e9d3271b38bad3579ec1bff9388f580efd1990534924c2508f2b1fc6a88cfc"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/arlington/control-pages-type.pdf",
+      "sha256": "6fe72868d9f01b1fb929450a8f504f6b12fdc8508ae8e325d49009e6b43bbe1a"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/arlington/negative-page-resources-required.txt",
+      "sha256": "7cc169bbb885fc93326d8893218f1eba709359652dea4b87aef07a42f086c3a3"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/arlington/negative-pages-type-value.txt",
+      "sha256": "572dfa0961a48b95be30c31ca58d1b102808649635f914472ef05394c3cd1e05"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/arlington/negative-pages-type.txt",
+      "sha256": "4bfaf4d2d6fbb860697057cf345720d1bf3623dc7426e3196f52b44054f9ee0a"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/pdfcpu/control-catalog-pages-indirect.pdf",
+      "sha256": "15968efef75ed27fc29077dba4ac2c17bab7d57b60babd2ebebe84ad52da357b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/pdfcpu/control-catalog-pages.pdf",
+      "sha256": "411166c5051b04d0d6a85710266b961ac57ca3302d6e920fdb7f183f28f1bb3f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/pdfcpu/control-catalog-type-required.pdf",
+      "sha256": "1b232380a180eb3ced9c3625153ee010b06e11b3a628c6c0b1078aba437e0f33"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/pdfcpu/control-catalog-type.pdf",
+      "sha256": "c1f95d7931bb320feb3294c3867d41e96a1302cb3920606dbaab7e12e101860f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/pdfcpu/control-page-mediabox-numbers.pdf",
+      "sha256": "6ec1510cccbd9d7dcc664381d68e71ebb0d2a0300e7ee97a6b4cb89c2740713c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/pdfcpu/control-page-mediabox-rectangle.pdf",
+      "sha256": "25bd505efea14dafefa8dd134879d5f35261db8be4da1d9c23b65d3ae2fc3432"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/pdfcpu/control-page-mediabox-required.pdf",
+      "sha256": "2a5fb414c8b1f565b6021559f7d637c1f6475d5446987abb1084dfd74b374382"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/pdfcpu/control-page-parent-indirect.pdf",
+      "sha256": "a7bb58bcdf556530a2d2a978e5d7cbeaff67d318d033ba7a5a81fbc67dc3eae8"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/pdfcpu/control-page-parent-link.pdf",
+      "sha256": "c7d96c8c614c6f9171109e5fd1af17e549bf7acc62099b6e1a28718209f39dfb"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/pdfcpu/control-page-parent-required.pdf",
+      "sha256": "253228ff414804b4b799f336d7e21220b44e64285f81d60ea0ef3c98f149f2fd"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/pdfcpu/control-page-resources-type.pdf",
+      "sha256": "33ff1741b362fb02856ba83e49f8be159dc32a2bda115a22a1ca32b7f5dad705"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/pdfcpu/control-page-type-value.pdf",
+      "sha256": "957a1ec451275bb287a11cedcbe3993eb49b30a9bcdceaf488e6c0fc71f98ec8"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/pdfcpu/control-page-type.pdf",
+      "sha256": "ef89d0046065ec31948ad50fda2f00c3d74c179c5f39582d7d1246df2841a37c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/pdfcpu/control-pages-count-integer.pdf",
+      "sha256": "553ae8c98a032fa94e3366d9b946569ab7073b770c4eaf73d154b1675379ebb5"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/pdfcpu/control-pages-count-nonnegative.pdf",
+      "sha256": "9fe087f812420765adb7add8ed1fdc50a271624bd6eac7dfc4b508870258f62b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/pdfcpu/control-pages-count-required.pdf",
+      "sha256": "56986acd52560e6715727d47cc99c3a90b8641331b527e6d7445084d0dc16f11"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/pdfcpu/control-pages-count-value.pdf",
+      "sha256": "56986c0732dd1534bb63e5c331f8f7dbcdb6301dadc4592ccd9938f7cce008c9"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/pdfcpu/control-pages-kid-reference.pdf",
+      "sha256": "1c0e162bdbf9b3d969f65af5e4553b88d4e811fde4de9670753cba4a053e55d0"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/pdfcpu/control-pages-kids.pdf",
+      "sha256": "6e4226f52a6ce1c7020ab2d2788a85a79ef5d7a1d4eee45c0debf51fffc10ba0"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/pdfcpu/negative-catalog-pages-indirect.txt",
+      "sha256": "73c18258d36434f24cd7923b1739d2c4cbccaf4ea7f833e9b96972855b7128ce"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/pdfcpu/negative-catalog-pages.txt",
+      "sha256": "6f6f15b3465a8e460f5aa4167612c229926374761da471cbdd688f0f006f8a5f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/pdfcpu/negative-catalog-type-required.txt",
+      "sha256": "9ae5d7769f6f93c99aeae39e516396a3055094341cabe650c670253aa6201f99"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/pdfcpu/negative-catalog-type.txt",
+      "sha256": "1c78486f49bc953954c14d10a6b76d8b076de4cc6945088deda8201c5f8e6098"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/pdfcpu/negative-page-mediabox-numbers.txt",
+      "sha256": "b622c119402bfa0cb8ce38b63e7f008321767ec0a0a3b0013483f25763568a86"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/pdfcpu/negative-page-mediabox-rectangle.txt",
+      "sha256": "865e4d478dcf8e0eef2ef44510e6122d1b5cbef558af3c560aa76e1f47258645"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/pdfcpu/negative-page-mediabox-required.txt",
+      "sha256": "9908f74990fde1c424cdae8fe9fbcef0a5e190be2456876814fda34ba4397856"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/pdfcpu/negative-page-parent-indirect.txt",
+      "sha256": "fd3cf16ad6d5fc23cccb002cf11a2baa3714cb6089dea71eb317090643374ed9"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/pdfcpu/negative-page-parent-link.txt",
+      "sha256": "2ab54fd656546df0ef37a884e249140cd58c78b4cbce3af080da6f6fa1522a07"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/pdfcpu/negative-page-parent-required.txt",
+      "sha256": "03f8829653c2e7c0d37bb263f36320d31b62daf877f9ddff821951f90bbc56ae"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/pdfcpu/negative-page-resources-type.txt",
+      "sha256": "b7c736f86e1c01f1d30567c7bf869fc758b8504ae2acbaaa4e864347ced1e07e"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/pdfcpu/negative-page-type-value.txt",
+      "sha256": "e14b91028788835926aa75a5c893e9b730e9a58f0ba167ac15a9dc4981516823"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/pdfcpu/negative-page-type.txt",
+      "sha256": "8c63bca6767f85fc5d182c202ad68175724c1ac2abdb5705b442149883c34dd7"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/pdfcpu/negative-pages-count-integer.txt",
+      "sha256": "13425ee384e92acea676784853203bf5574874278fdc98848786d7123dd558a8"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/pdfcpu/negative-pages-count-nonnegative.txt",
+      "sha256": "4b602b783e59f75448584533374fc84c806772bc997adb78914e1e04b02b387d"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/pdfcpu/negative-pages-count-required.txt",
+      "sha256": "81d5fdbdf70570a50713925a30871bdeba108d3c3d6ff8403e0963ac2bd5c80d"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/pdfcpu/negative-pages-count-value.txt",
+      "sha256": "a87eaa1bcbab150e20bd106852830513f75dba57c8cf327741fdfe3ea6c4457f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/pdfcpu/negative-pages-kid-reference.txt",
+      "sha256": "bb0600eb8d361ef3cbf5a763d5c564f4317666db1dc7dfc3ea171ef10c6e10ad"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-stream/pdfcpu/negative-pages-kids.txt",
+      "sha256": "6535b3bf6b1eaa8815bc7eb231bdc7b0cdbfc9ddcf8dccd636fd59b27d0e3431"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/arlington/control-page-resources-required.pdf",
+      "sha256": "057453de6d8fe0490a10b2a44d06c824d0306c64bca64b3444b37ed4b3188dd3"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/arlington/control-pages-type-value.pdf",
+      "sha256": "46e9d3271b38bad3579ec1bff9388f580efd1990534924c2508f2b1fc6a88cfc"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/arlington/control-pages-type.pdf",
+      "sha256": "6fe72868d9f01b1fb929450a8f504f6b12fdc8508ae8e325d49009e6b43bbe1a"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/arlington/negative-page-resources-required.txt",
+      "sha256": "f683541b596679d7c3aaea4fafd55ca1f8916e1c0a6708c1ac5e163ddf72343c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/arlington/negative-pages-type-value.txt",
+      "sha256": "77e3b03d15a3df40376eeb1f78c1ad8d902b29914f7afebf21b44d98c7e48377"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/arlington/negative-pages-type.txt",
+      "sha256": "ebd61a48406804575c2e6c29626b94ef140f967bfdfc9750cdf6d9ab7b7fc439"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/pdfcpu/control-catalog-pages-indirect.pdf",
+      "sha256": "15968efef75ed27fc29077dba4ac2c17bab7d57b60babd2ebebe84ad52da357b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/pdfcpu/control-catalog-pages.pdf",
+      "sha256": "411166c5051b04d0d6a85710266b961ac57ca3302d6e920fdb7f183f28f1bb3f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/pdfcpu/control-catalog-type-required.pdf",
+      "sha256": "1b232380a180eb3ced9c3625153ee010b06e11b3a628c6c0b1078aba437e0f33"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/pdfcpu/control-catalog-type.pdf",
+      "sha256": "c1f95d7931bb320feb3294c3867d41e96a1302cb3920606dbaab7e12e101860f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/pdfcpu/control-page-mediabox-numbers.pdf",
+      "sha256": "6ec1510cccbd9d7dcc664381d68e71ebb0d2a0300e7ee97a6b4cb89c2740713c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/pdfcpu/control-page-mediabox-rectangle.pdf",
+      "sha256": "25bd505efea14dafefa8dd134879d5f35261db8be4da1d9c23b65d3ae2fc3432"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/pdfcpu/control-page-mediabox-required.pdf",
+      "sha256": "2a5fb414c8b1f565b6021559f7d637c1f6475d5446987abb1084dfd74b374382"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/pdfcpu/control-page-parent-indirect.pdf",
+      "sha256": "a7bb58bcdf556530a2d2a978e5d7cbeaff67d318d033ba7a5a81fbc67dc3eae8"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/pdfcpu/control-page-parent-link.pdf",
+      "sha256": "c7d96c8c614c6f9171109e5fd1af17e549bf7acc62099b6e1a28718209f39dfb"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/pdfcpu/control-page-parent-required.pdf",
+      "sha256": "253228ff414804b4b799f336d7e21220b44e64285f81d60ea0ef3c98f149f2fd"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/pdfcpu/control-page-resources-type.pdf",
+      "sha256": "33ff1741b362fb02856ba83e49f8be159dc32a2bda115a22a1ca32b7f5dad705"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/pdfcpu/control-page-type-value.pdf",
+      "sha256": "957a1ec451275bb287a11cedcbe3993eb49b30a9bcdceaf488e6c0fc71f98ec8"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/pdfcpu/control-page-type.pdf",
+      "sha256": "ef89d0046065ec31948ad50fda2f00c3d74c179c5f39582d7d1246df2841a37c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/pdfcpu/control-pages-count-integer.pdf",
+      "sha256": "553ae8c98a032fa94e3366d9b946569ab7073b770c4eaf73d154b1675379ebb5"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/pdfcpu/control-pages-count-nonnegative.pdf",
+      "sha256": "9fe087f812420765adb7add8ed1fdc50a271624bd6eac7dfc4b508870258f62b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/pdfcpu/control-pages-count-required.pdf",
+      "sha256": "56986acd52560e6715727d47cc99c3a90b8641331b527e6d7445084d0dc16f11"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/pdfcpu/control-pages-count-value.pdf",
+      "sha256": "56986c0732dd1534bb63e5c331f8f7dbcdb6301dadc4592ccd9938f7cce008c9"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/pdfcpu/control-pages-kid-reference.pdf",
+      "sha256": "1c0e162bdbf9b3d969f65af5e4553b88d4e811fde4de9670753cba4a053e55d0"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/pdfcpu/control-pages-kids.pdf",
+      "sha256": "6e4226f52a6ce1c7020ab2d2788a85a79ef5d7a1d4eee45c0debf51fffc10ba0"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/pdfcpu/negative-catalog-pages-indirect.txt",
+      "sha256": "a9febd212d71db79368e4f68c8749ce9c971e6a3032c546c73ae059602f904e6"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/pdfcpu/negative-catalog-pages.txt",
+      "sha256": "c3991893b726e73276613af8ca0caccde54d2ef246a4cc5e6847952f6918223e"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/pdfcpu/negative-catalog-type-required.txt",
+      "sha256": "3c5dae170393d2ebe52ced18c5f6dc782759a46b44b2377c1dc6d413ba641c4d"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/pdfcpu/negative-catalog-type.txt",
+      "sha256": "3c5a4b54a45484977eae8e64a3cbc62b29cd1ae94c58c22411c995216ce07520"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/pdfcpu/negative-page-mediabox-numbers.txt",
+      "sha256": "93455ca7b74f7e3fcbd214a76a1976a767ae90d1ec423f319930f58fff0a2be5"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/pdfcpu/negative-page-mediabox-rectangle.txt",
+      "sha256": "88c9644ba4324c6e0f24965926221510bb9b39a4cdbfb15feefe43c60e0c134e"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/pdfcpu/negative-page-mediabox-required.txt",
+      "sha256": "087c302f105b91c3bfc1bf57a75a7aceca28e778140d3e6e7501afa4ca3dde5f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/pdfcpu/negative-page-parent-indirect.txt",
+      "sha256": "ea36289783070812686cef88c0112cb40ea338ed4b8235a4a894e3ec1d0afd92"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/pdfcpu/negative-page-parent-link.txt",
+      "sha256": "11a02b6a90d03f350b979a31160a520393d3e7722677cf9a99978bf9f012d6a2"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/pdfcpu/negative-page-parent-required.txt",
+      "sha256": "75da271660ddd9142c47a432070141e5979211c547fe2f0e356d44ae181a47ba"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/pdfcpu/negative-page-resources-type.txt",
+      "sha256": "bbbc52b9f1afc0eba65935ba47d51562991042d78791ac8fc45bd81f09f7455f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/pdfcpu/negative-page-type-value.txt",
+      "sha256": "8e017c63de07d63ec6e0e379ee366efb0697151c3cf4e425a385c232780a0d39"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/pdfcpu/negative-page-type.txt",
+      "sha256": "b2f7daf0c57f542f2b89c4e441e9e4640db1699349a027c539ef02ffe04b9ce1"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/pdfcpu/negative-pages-count-integer.txt",
+      "sha256": "428b6133e7513728b447f021e0a67c25616a6dffc34d8aabea3abd1356147dcb"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/pdfcpu/negative-pages-count-nonnegative.txt",
+      "sha256": "0a64f38c0b383bb8d04afba234f0677100eaa48bec16e3d508849c3f2e2b8559"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/pdfcpu/negative-pages-count-required.txt",
+      "sha256": "056c4639330818d44c331607e424fbc51fbf0ff8b6e920a494a9b8bea227a472"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/pdfcpu/negative-pages-count-value.txt",
+      "sha256": "8f2d96b38956fec93d2492c6462726ed0774a1ac3fae9280eac282488fbe8c7d"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/pdfcpu/negative-pages-kid-reference.txt",
+      "sha256": "d5dfba3c0d4f51546ad19d0afe61fb91ed35cac4e69fabd087fccca8b69b435e"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/native-before-failure/pdfcpu/negative-pages-kids.txt",
+      "sha256": "b5ef9c40aace32ca75deddb4a5d572faf8f0aa55363202633f8bc110b9715669"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/arlington/control-page-resources-required.pdf",
+      "sha256": "057453de6d8fe0490a10b2a44d06c824d0306c64bca64b3444b37ed4b3188dd3"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/arlington/control-pages-type-value.pdf",
+      "sha256": "46e9d3271b38bad3579ec1bff9388f580efd1990534924c2508f2b1fc6a88cfc"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/arlington/control-pages-type.pdf",
+      "sha256": "6fe72868d9f01b1fb929450a8f504f6b12fdc8508ae8e325d49009e6b43bbe1a"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/arlington/negative-page-resources-required.txt",
+      "sha256": "615f08428ceb5dd0c3e5c77a8edc8b09c219ac47c1c818f1d418bf66678f1bf7"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/arlington/negative-pages-type-value.txt",
+      "sha256": "3d536c979e7b141ede8ee4f98b71e861f51344fc8bf65a993ec701262f3ad1c8"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/arlington/negative-pages-type.txt",
+      "sha256": "bc896b8fc18ef2390f1b4d6cb08a02f83de347e5029a6494b27f2347f8f37e6b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/pdfcpu/control-catalog-pages-indirect.pdf",
+      "sha256": "15968efef75ed27fc29077dba4ac2c17bab7d57b60babd2ebebe84ad52da357b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/pdfcpu/control-catalog-pages.pdf",
+      "sha256": "411166c5051b04d0d6a85710266b961ac57ca3302d6e920fdb7f183f28f1bb3f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/pdfcpu/control-catalog-type-required.pdf",
+      "sha256": "1b232380a180eb3ced9c3625153ee010b06e11b3a628c6c0b1078aba437e0f33"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/pdfcpu/control-catalog-type.pdf",
+      "sha256": "c1f95d7931bb320feb3294c3867d41e96a1302cb3920606dbaab7e12e101860f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/pdfcpu/control-page-mediabox-numbers.pdf",
+      "sha256": "6ec1510cccbd9d7dcc664381d68e71ebb0d2a0300e7ee97a6b4cb89c2740713c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/pdfcpu/control-page-mediabox-rectangle.pdf",
+      "sha256": "25bd505efea14dafefa8dd134879d5f35261db8be4da1d9c23b65d3ae2fc3432"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/pdfcpu/control-page-mediabox-required.pdf",
+      "sha256": "2a5fb414c8b1f565b6021559f7d637c1f6475d5446987abb1084dfd74b374382"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/pdfcpu/control-page-parent-indirect.pdf",
+      "sha256": "a7bb58bcdf556530a2d2a978e5d7cbeaff67d318d033ba7a5a81fbc67dc3eae8"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/pdfcpu/control-page-parent-link.pdf",
+      "sha256": "c7d96c8c614c6f9171109e5fd1af17e549bf7acc62099b6e1a28718209f39dfb"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/pdfcpu/control-page-parent-required.pdf",
+      "sha256": "253228ff414804b4b799f336d7e21220b44e64285f81d60ea0ef3c98f149f2fd"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/pdfcpu/control-page-resources-type.pdf",
+      "sha256": "33ff1741b362fb02856ba83e49f8be159dc32a2bda115a22a1ca32b7f5dad705"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/pdfcpu/control-page-type-value.pdf",
+      "sha256": "957a1ec451275bb287a11cedcbe3993eb49b30a9bcdceaf488e6c0fc71f98ec8"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/pdfcpu/control-page-type.pdf",
+      "sha256": "ef89d0046065ec31948ad50fda2f00c3d74c179c5f39582d7d1246df2841a37c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/pdfcpu/control-pages-count-integer.pdf",
+      "sha256": "553ae8c98a032fa94e3366d9b946569ab7073b770c4eaf73d154b1675379ebb5"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/pdfcpu/control-pages-count-nonnegative.pdf",
+      "sha256": "9fe087f812420765adb7add8ed1fdc50a271624bd6eac7dfc4b508870258f62b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/pdfcpu/control-pages-count-required.pdf",
+      "sha256": "56986acd52560e6715727d47cc99c3a90b8641331b527e6d7445084d0dc16f11"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/pdfcpu/control-pages-count-value.pdf",
+      "sha256": "56986c0732dd1534bb63e5c331f8f7dbcdb6301dadc4592ccd9938f7cce008c9"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/pdfcpu/control-pages-kid-reference.pdf",
+      "sha256": "1c0e162bdbf9b3d969f65af5e4553b88d4e811fde4de9670753cba4a053e55d0"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/pdfcpu/control-pages-kids.pdf",
+      "sha256": "6e4226f52a6ce1c7020ab2d2788a85a79ef5d7a1d4eee45c0debf51fffc10ba0"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/pdfcpu/negative-catalog-pages-indirect.txt",
+      "sha256": "c4ea2b057e8ba8f9f10d5cfbbef2b7bd715edd852f982ce585fc7ae58eb970e8"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/pdfcpu/negative-catalog-pages.txt",
+      "sha256": "efbe92dfc003f46d2353c46174c358cee11f0af48b25944297a8d914fd2de29e"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/pdfcpu/negative-catalog-type-required.txt",
+      "sha256": "129f176d0a7c48b3a57d41b9c9a479e5b285adb0e4a85421eef69090e047f10c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/pdfcpu/negative-catalog-type.txt",
+      "sha256": "47df2c6a58286e11ff0a68af8e644de84e8bce39b1d27db0c1e822c35d08b71f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/pdfcpu/negative-page-mediabox-numbers.txt",
+      "sha256": "150bf572095fbfe42fd46595f528f9e72f0c1824bb441f7c1149c4e19937597f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/pdfcpu/negative-page-mediabox-rectangle.txt",
+      "sha256": "bb74b8f81e20f9966da95d70fc46c384d806d9022cd51ffd9e5456e3f74d12dd"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/pdfcpu/negative-page-mediabox-required.txt",
+      "sha256": "a633492dfbe6866e1b364507bf5e66c6f93ab19ccc436fae64a58877891484b1"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/pdfcpu/negative-page-parent-indirect.txt",
+      "sha256": "0770bb677f0a8628254fb057f0e371be74877fcc20f908ec5eb6b6728f176b41"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/pdfcpu/negative-page-parent-link.txt",
+      "sha256": "f062affa646c7c84454077de22d55ad3061c227d06cd55c9935b3fd2ea7feda2"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/pdfcpu/negative-page-parent-required.txt",
+      "sha256": "ef2ef4c1a97a51460a90c974142df3b91a0e74db614d32227c5dadc932ccd2a3"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/pdfcpu/negative-page-resources-type.txt",
+      "sha256": "5f1a312b97cfe50cb9b3b9494c7c3f6bf36f8cef98547d2d4551c8b20f046b20"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/pdfcpu/negative-page-type-value.txt",
+      "sha256": "22742d4943f7b94ccf48c71c325365de2cc1c8b6c4c22ecd4860cf56b7698dfa"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/pdfcpu/negative-page-type.txt",
+      "sha256": "9898b00affd5bef2c2589de93b8cefbd75037e94591ed50167d4174378cc8322"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/pdfcpu/negative-pages-count-integer.txt",
+      "sha256": "cd5d3c30d47acd9e37b3660c4da384a4481fd7f1730936ff513afb1b8d931ea2"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/pdfcpu/negative-pages-count-nonnegative.txt",
+      "sha256": "607a0284fb017e162126d0b73ddbdf2fa4ca08f0241e9883070a31b7c50d16b6"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/pdfcpu/negative-pages-count-required.txt",
+      "sha256": "6ce8e1a8a614cd29ca36e95f2f1dc617d081062a5253db86a9cc449383f09141"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/pdfcpu/negative-pages-count-value.txt",
+      "sha256": "3998ec3948626a3e8aff08e3cb4f3c76ba36ee5a32649e9f754b619e3957b468"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/pdfcpu/negative-pages-kid-reference.txt",
+      "sha256": "8f6dbde6256bb1c6dd423a9403f6dab62bb9a1fee0dcc5d12c417a62126b54df"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-stream/pdfcpu/negative-pages-kids.txt",
+      "sha256": "4761fbff356e8e5440d0c2e78c974152c80940fa89c592cd139651c264ea93a0"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/arlington/control-page-resources-required.pdf",
+      "sha256": "057453de6d8fe0490a10b2a44d06c824d0306c64bca64b3444b37ed4b3188dd3"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/arlington/control-pages-type-value.pdf",
+      "sha256": "46e9d3271b38bad3579ec1bff9388f580efd1990534924c2508f2b1fc6a88cfc"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/arlington/control-pages-type.pdf",
+      "sha256": "6fe72868d9f01b1fb929450a8f504f6b12fdc8508ae8e325d49009e6b43bbe1a"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/arlington/negative-page-resources-required.txt",
+      "sha256": "b99349c47d9b71a2c1ec9bbaaf6bf586f713003b68995df4721a2db83cd0790e"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/arlington/negative-pages-type-value.txt",
+      "sha256": "337a142fd7901f8422505222a29017b87d973287326e35481675baefea0a20cb"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/arlington/negative-pages-type.txt",
+      "sha256": "5b3cf2aeaf5de41adfdbea84d15b43794964944e665dcc0c6e71b4702e265195"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/pdfcpu/control-catalog-pages-indirect.pdf",
+      "sha256": "15968efef75ed27fc29077dba4ac2c17bab7d57b60babd2ebebe84ad52da357b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/pdfcpu/control-catalog-pages.pdf",
+      "sha256": "411166c5051b04d0d6a85710266b961ac57ca3302d6e920fdb7f183f28f1bb3f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/pdfcpu/control-catalog-type-required.pdf",
+      "sha256": "1b232380a180eb3ced9c3625153ee010b06e11b3a628c6c0b1078aba437e0f33"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/pdfcpu/control-catalog-type.pdf",
+      "sha256": "c1f95d7931bb320feb3294c3867d41e96a1302cb3920606dbaab7e12e101860f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/pdfcpu/control-page-mediabox-numbers.pdf",
+      "sha256": "6ec1510cccbd9d7dcc664381d68e71ebb0d2a0300e7ee97a6b4cb89c2740713c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/pdfcpu/control-page-mediabox-rectangle.pdf",
+      "sha256": "25bd505efea14dafefa8dd134879d5f35261db8be4da1d9c23b65d3ae2fc3432"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/pdfcpu/control-page-mediabox-required.pdf",
+      "sha256": "2a5fb414c8b1f565b6021559f7d637c1f6475d5446987abb1084dfd74b374382"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/pdfcpu/control-page-parent-indirect.pdf",
+      "sha256": "a7bb58bcdf556530a2d2a978e5d7cbeaff67d318d033ba7a5a81fbc67dc3eae8"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/pdfcpu/control-page-parent-link.pdf",
+      "sha256": "c7d96c8c614c6f9171109e5fd1af17e549bf7acc62099b6e1a28718209f39dfb"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/pdfcpu/control-page-parent-required.pdf",
+      "sha256": "253228ff414804b4b799f336d7e21220b44e64285f81d60ea0ef3c98f149f2fd"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/pdfcpu/control-page-resources-type.pdf",
+      "sha256": "33ff1741b362fb02856ba83e49f8be159dc32a2bda115a22a1ca32b7f5dad705"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/pdfcpu/control-page-type-value.pdf",
+      "sha256": "957a1ec451275bb287a11cedcbe3993eb49b30a9bcdceaf488e6c0fc71f98ec8"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/pdfcpu/control-page-type.pdf",
+      "sha256": "ef89d0046065ec31948ad50fda2f00c3d74c179c5f39582d7d1246df2841a37c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/pdfcpu/control-pages-count-integer.pdf",
+      "sha256": "553ae8c98a032fa94e3366d9b946569ab7073b770c4eaf73d154b1675379ebb5"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/pdfcpu/control-pages-count-nonnegative.pdf",
+      "sha256": "9fe087f812420765adb7add8ed1fdc50a271624bd6eac7dfc4b508870258f62b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/pdfcpu/control-pages-count-required.pdf",
+      "sha256": "56986acd52560e6715727d47cc99c3a90b8641331b527e6d7445084d0dc16f11"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/pdfcpu/control-pages-count-value.pdf",
+      "sha256": "56986c0732dd1534bb63e5c331f8f7dbcdb6301dadc4592ccd9938f7cce008c9"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/pdfcpu/control-pages-kid-reference.pdf",
+      "sha256": "1c0e162bdbf9b3d969f65af5e4553b88d4e811fde4de9670753cba4a053e55d0"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/pdfcpu/control-pages-kids.pdf",
+      "sha256": "6e4226f52a6ce1c7020ab2d2788a85a79ef5d7a1d4eee45c0debf51fffc10ba0"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/pdfcpu/negative-catalog-pages-indirect.txt",
+      "sha256": "7e1b4ed0843c36a579c3d8d460ae9a4bc2a66451f5fbfb72f24a0267ed42a007"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/pdfcpu/negative-catalog-pages.txt",
+      "sha256": "176e924b7442ed8ca09839b586169b0953cab85e21d34cf581e239b3717690c2"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/pdfcpu/negative-catalog-type-required.txt",
+      "sha256": "b952f49f8f453dded5a84eb8e1e8f10bf25ff42f0f3c59a09e05f04c14412c5c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/pdfcpu/negative-catalog-type.txt",
+      "sha256": "c71dbea754e40c03cfda2ce34332f128747ee70fc0c62b6a48a5fa407a727a74"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/pdfcpu/negative-page-mediabox-numbers.txt",
+      "sha256": "11ba7527ecb0cb0145ca0f4d04ed8fc709f534f7efbc07c0ed27e778989094a3"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/pdfcpu/negative-page-mediabox-rectangle.txt",
+      "sha256": "c72615f7c36335016b99e0194d295e027b6799683f4f8a7a7834baf48d1b1ad2"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/pdfcpu/negative-page-mediabox-required.txt",
+      "sha256": "2b44523e61146af066d2135e5b399f7813d82c51fd2c09c97b548432c43b9a93"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/pdfcpu/negative-page-parent-indirect.txt",
+      "sha256": "659e3ad6ff3787fa7567d00c89d0f7f04cfa4fdceaa5ba8cce9df18b9fa92cfd"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/pdfcpu/negative-page-parent-link.txt",
+      "sha256": "511278b13269fe8501da09bfb569ee3a6eb3cc3c2fa2413fd632d41fe4490cef"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/pdfcpu/negative-page-parent-required.txt",
+      "sha256": "45f29f66b0c097bde6f90418a485fc07bb07f1fb5103815ecb54ea3f2f7fe8ca"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/pdfcpu/negative-page-resources-type.txt",
+      "sha256": "87d1a753855f8da028f2a16a2dd50e7ebef0d358fee62011da531fef9d0c0e5b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/pdfcpu/negative-page-type-value.txt",
+      "sha256": "0e863c47b1e6b1d0079463a64c6b006030a85b59e01c914fdb7cdd1408fab9c1"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/pdfcpu/negative-page-type.txt",
+      "sha256": "9022bb66cd535bf965ec3e10f44a960f23be720c16e05a38f2271e9641865329"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/pdfcpu/negative-pages-count-integer.txt",
+      "sha256": "30bcc40a175e994698c67d86b17f450d6a01a3179b53671a7ee9842bbd5cafc4"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/pdfcpu/negative-pages-count-nonnegative.txt",
+      "sha256": "b5fddbfdad3cac3da810bb173b1a1e626754805b6b39da11cd9cde3b97dd4b85"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/pdfcpu/negative-pages-count-required.txt",
+      "sha256": "c3a8deb596a72b464b393311f8d3a3945bb8696451b170f9c9e455b4c12f1538"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/pdfcpu/negative-pages-count-value.txt",
+      "sha256": "980cc7284ce97d02c0997a16265475b048f9b0ae86545aee2688df78bb2c075b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/pdfcpu/negative-pages-kid-reference.txt",
+      "sha256": "22d8bb441c56b40bc6de6c1d3ecc3e23284b083c45a3b800c6d500ba44c0498b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/facade-before-failure/pdfcpu/negative-pages-kids.txt",
+      "sha256": "45a455f5bd26bb45c11e11ff22f7517e6f675446f52a2f8626f5b16e36f0625c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/arlington/control-page-resources-required.pdf",
+      "sha256": "057453de6d8fe0490a10b2a44d06c824d0306c64bca64b3444b37ed4b3188dd3"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/arlington/control-pages-type-value.pdf",
+      "sha256": "46e9d3271b38bad3579ec1bff9388f580efd1990534924c2508f2b1fc6a88cfc"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/arlington/control-pages-type.pdf",
+      "sha256": "6fe72868d9f01b1fb929450a8f504f6b12fdc8508ae8e325d49009e6b43bbe1a"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/arlington/negative-page-resources-required.txt",
+      "sha256": "915f4ec97fe558b5beb026c76de936f174f4a4527e8c53d7642ad2bcec2c8ccb"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/arlington/negative-pages-type-value.txt",
+      "sha256": "4a1d651df38ca386cd29c7744bec90d41bc6ab0520cd3365c3b9d7aae01136f3"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/arlington/negative-pages-type.txt",
+      "sha256": "1ac8a01f5d8ac6166d99746ad39cb00c89864975591979667aad3147621bc024"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/pdfcpu/control-catalog-pages-indirect.pdf",
+      "sha256": "15968efef75ed27fc29077dba4ac2c17bab7d57b60babd2ebebe84ad52da357b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/pdfcpu/control-catalog-pages.pdf",
+      "sha256": "411166c5051b04d0d6a85710266b961ac57ca3302d6e920fdb7f183f28f1bb3f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/pdfcpu/control-catalog-type-required.pdf",
+      "sha256": "1b232380a180eb3ced9c3625153ee010b06e11b3a628c6c0b1078aba437e0f33"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/pdfcpu/control-catalog-type.pdf",
+      "sha256": "c1f95d7931bb320feb3294c3867d41e96a1302cb3920606dbaab7e12e101860f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/pdfcpu/control-page-mediabox-numbers.pdf",
+      "sha256": "6ec1510cccbd9d7dcc664381d68e71ebb0d2a0300e7ee97a6b4cb89c2740713c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/pdfcpu/control-page-mediabox-rectangle.pdf",
+      "sha256": "25bd505efea14dafefa8dd134879d5f35261db8be4da1d9c23b65d3ae2fc3432"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/pdfcpu/control-page-mediabox-required.pdf",
+      "sha256": "2a5fb414c8b1f565b6021559f7d637c1f6475d5446987abb1084dfd74b374382"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/pdfcpu/control-page-parent-indirect.pdf",
+      "sha256": "a7bb58bcdf556530a2d2a978e5d7cbeaff67d318d033ba7a5a81fbc67dc3eae8"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/pdfcpu/control-page-parent-link.pdf",
+      "sha256": "c7d96c8c614c6f9171109e5fd1af17e549bf7acc62099b6e1a28718209f39dfb"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/pdfcpu/control-page-parent-required.pdf",
+      "sha256": "253228ff414804b4b799f336d7e21220b44e64285f81d60ea0ef3c98f149f2fd"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/pdfcpu/control-page-resources-type.pdf",
+      "sha256": "33ff1741b362fb02856ba83e49f8be159dc32a2bda115a22a1ca32b7f5dad705"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/pdfcpu/control-page-type-value.pdf",
+      "sha256": "957a1ec451275bb287a11cedcbe3993eb49b30a9bcdceaf488e6c0fc71f98ec8"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/pdfcpu/control-page-type.pdf",
+      "sha256": "ef89d0046065ec31948ad50fda2f00c3d74c179c5f39582d7d1246df2841a37c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/pdfcpu/control-pages-count-integer.pdf",
+      "sha256": "553ae8c98a032fa94e3366d9b946569ab7073b770c4eaf73d154b1675379ebb5"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/pdfcpu/control-pages-count-nonnegative.pdf",
+      "sha256": "9fe087f812420765adb7add8ed1fdc50a271624bd6eac7dfc4b508870258f62b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/pdfcpu/control-pages-count-required.pdf",
+      "sha256": "56986acd52560e6715727d47cc99c3a90b8641331b527e6d7445084d0dc16f11"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/pdfcpu/control-pages-count-value.pdf",
+      "sha256": "56986c0732dd1534bb63e5c331f8f7dbcdb6301dadc4592ccd9938f7cce008c9"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/pdfcpu/control-pages-kid-reference.pdf",
+      "sha256": "1c0e162bdbf9b3d969f65af5e4553b88d4e811fde4de9670753cba4a053e55d0"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/pdfcpu/control-pages-kids.pdf",
+      "sha256": "6e4226f52a6ce1c7020ab2d2788a85a79ef5d7a1d4eee45c0debf51fffc10ba0"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/pdfcpu/negative-catalog-pages-indirect.txt",
+      "sha256": "d885eeb4fb8c58a316975783e3fc17768b61b5bb5816beb8b2b2af4dd94622ae"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/pdfcpu/negative-catalog-pages.txt",
+      "sha256": "a7ecfac21cb0302d8e826e188820469dc153200fbbdae46e96d96c6ca9a6c5ad"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/pdfcpu/negative-catalog-type-required.txt",
+      "sha256": "e7755ba0e9d4031dfa6771cc301faefe8edcee3ae19bdc393b22c27157c6ae25"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/pdfcpu/negative-catalog-type.txt",
+      "sha256": "ec7aff1637bff681bef7c41b6e24cb012fd4d0bf647763921c8714ddc3b33bc2"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/pdfcpu/negative-page-mediabox-numbers.txt",
+      "sha256": "83cce95c6d5a9fe9b69073361fedd95cfbb8745baa56737cbefbf0c2ab8c54b0"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/pdfcpu/negative-page-mediabox-rectangle.txt",
+      "sha256": "f2266a82b32dce321a144c3e786526900cb758af30a1ce2c4f6dcfb66fe217ce"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/pdfcpu/negative-page-mediabox-required.txt",
+      "sha256": "1b600b1e704eef9cb276f2ea91fdf2207425c14eaa31998597dff4642016efd1"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/pdfcpu/negative-page-parent-indirect.txt",
+      "sha256": "ab3b43fe1c9111d1f5f3fb4cca99560cfbadb7177d9a42150264763ad376009d"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/pdfcpu/negative-page-parent-link.txt",
+      "sha256": "699447673f931f6072b267e57be130db212a524a0ae8d640873a2ebc84d0401a"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/pdfcpu/negative-page-parent-required.txt",
+      "sha256": "4e7eeb9fd05bf2c94bbed17c50c0247c98b3ace39b7b6358929404993ae481cf"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/pdfcpu/negative-page-resources-type.txt",
+      "sha256": "82215874f5705adafcea38e34c9df1351199a96be44ba36282657ca974e73432"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/pdfcpu/negative-page-type-value.txt",
+      "sha256": "119c39657f6d6d067995839c648fea1efe51b708b8bfdf9c4830e6b699e333d5"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/pdfcpu/negative-page-type.txt",
+      "sha256": "aa810b0e12e75f5b9bb4dcbedd8cb179187dddc3e65c83db7cf55c92cd8693eb"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/pdfcpu/negative-pages-count-integer.txt",
+      "sha256": "da19285662ad242bf2b0bfdf0568c0ef7d539a577a85f0f6ac24293f4cc585fe"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/pdfcpu/negative-pages-count-nonnegative.txt",
+      "sha256": "bf80214d3d671a50d2a8c0db361319289f94a1adf008ab7829da9ed52d37e23c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/pdfcpu/negative-pages-count-required.txt",
+      "sha256": "fe89006c95d2dadf6b56e07638ade473f5e6ddfea2980ddabafd18d6961bcb10"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/pdfcpu/negative-pages-count-value.txt",
+      "sha256": "68b47b03506fdc7b1686c1850b7e575df26b67cf9cd61c53098592c07d1cd177"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/pdfcpu/negative-pages-kid-reference.txt",
+      "sha256": "a1df31ecb41a51decbbd57baab26adc80b5e5f78bb832aae6e4f400d2b5bc37a"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-stream/pdfcpu/negative-pages-kids.txt",
+      "sha256": "c1d19c7f2f86d057ed2237fb58e4a5a8fa9dfc061e4bf5f4f187909a2caba6b2"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/arlington/control-page-resources-required.pdf",
+      "sha256": "057453de6d8fe0490a10b2a44d06c824d0306c64bca64b3444b37ed4b3188dd3"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/arlington/control-pages-type-value.pdf",
+      "sha256": "46e9d3271b38bad3579ec1bff9388f580efd1990534924c2508f2b1fc6a88cfc"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/arlington/control-pages-type.pdf",
+      "sha256": "6fe72868d9f01b1fb929450a8f504f6b12fdc8508ae8e325d49009e6b43bbe1a"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/arlington/negative-page-resources-required.txt",
+      "sha256": "ec661e69cf3d58c0705fa807971ae8639b9ea5fd5a55af133d502af0c10458e9"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/arlington/negative-pages-type-value.txt",
+      "sha256": "cd70ea6dc160bcd642c55a7d5d60e322cb8c252901036b8ee90d43014c4bedb5"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/arlington/negative-pages-type.txt",
+      "sha256": "77f3a9916f60b7b4744ef80a3cd49b1e250e5b35b08aa05b686581d1c99fcd38"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/pdfcpu/control-catalog-pages-indirect.pdf",
+      "sha256": "15968efef75ed27fc29077dba4ac2c17bab7d57b60babd2ebebe84ad52da357b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/pdfcpu/control-catalog-pages.pdf",
+      "sha256": "411166c5051b04d0d6a85710266b961ac57ca3302d6e920fdb7f183f28f1bb3f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/pdfcpu/control-catalog-type-required.pdf",
+      "sha256": "1b232380a180eb3ced9c3625153ee010b06e11b3a628c6c0b1078aba437e0f33"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/pdfcpu/control-catalog-type.pdf",
+      "sha256": "c1f95d7931bb320feb3294c3867d41e96a1302cb3920606dbaab7e12e101860f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/pdfcpu/control-page-mediabox-numbers.pdf",
+      "sha256": "6ec1510cccbd9d7dcc664381d68e71ebb0d2a0300e7ee97a6b4cb89c2740713c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/pdfcpu/control-page-mediabox-rectangle.pdf",
+      "sha256": "25bd505efea14dafefa8dd134879d5f35261db8be4da1d9c23b65d3ae2fc3432"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/pdfcpu/control-page-mediabox-required.pdf",
+      "sha256": "2a5fb414c8b1f565b6021559f7d637c1f6475d5446987abb1084dfd74b374382"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/pdfcpu/control-page-parent-indirect.pdf",
+      "sha256": "a7bb58bcdf556530a2d2a978e5d7cbeaff67d318d033ba7a5a81fbc67dc3eae8"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/pdfcpu/control-page-parent-link.pdf",
+      "sha256": "c7d96c8c614c6f9171109e5fd1af17e549bf7acc62099b6e1a28718209f39dfb"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/pdfcpu/control-page-parent-required.pdf",
+      "sha256": "253228ff414804b4b799f336d7e21220b44e64285f81d60ea0ef3c98f149f2fd"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/pdfcpu/control-page-resources-type.pdf",
+      "sha256": "33ff1741b362fb02856ba83e49f8be159dc32a2bda115a22a1ca32b7f5dad705"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/pdfcpu/control-page-type-value.pdf",
+      "sha256": "957a1ec451275bb287a11cedcbe3993eb49b30a9bcdceaf488e6c0fc71f98ec8"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/pdfcpu/control-page-type.pdf",
+      "sha256": "ef89d0046065ec31948ad50fda2f00c3d74c179c5f39582d7d1246df2841a37c"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/pdfcpu/control-pages-count-integer.pdf",
+      "sha256": "553ae8c98a032fa94e3366d9b946569ab7073b770c4eaf73d154b1675379ebb5"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/pdfcpu/control-pages-count-nonnegative.pdf",
+      "sha256": "9fe087f812420765adb7add8ed1fdc50a271624bd6eac7dfc4b508870258f62b"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/pdfcpu/control-pages-count-required.pdf",
+      "sha256": "56986acd52560e6715727d47cc99c3a90b8641331b527e6d7445084d0dc16f11"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/pdfcpu/control-pages-count-value.pdf",
+      "sha256": "56986c0732dd1534bb63e5c331f8f7dbcdb6301dadc4592ccd9938f7cce008c9"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/pdfcpu/control-pages-kid-reference.pdf",
+      "sha256": "1c0e162bdbf9b3d969f65af5e4553b88d4e811fde4de9670753cba4a053e55d0"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/pdfcpu/control-pages-kids.pdf",
+      "sha256": "6e4226f52a6ce1c7020ab2d2788a85a79ef5d7a1d4eee45c0debf51fffc10ba0"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/pdfcpu/negative-catalog-pages-indirect.txt",
+      "sha256": "ff31a36178fdf7055f0c186aa1dc1d9da44a2e705230d079190720b09204fd5a"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/pdfcpu/negative-catalog-pages.txt",
+      "sha256": "4092139cc5d1312e7fe4d81e59c152feabc9eea4819c7f120753c7a2bcb0d130"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/pdfcpu/negative-catalog-type-required.txt",
+      "sha256": "f834adccbced5c0410235dd9a45189aa9f4e096862ff2563909763e056fb3515"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/pdfcpu/negative-catalog-type.txt",
+      "sha256": "d634617c74b79b96462a95d4a1580662668a9c67682037de6c144894fccb0202"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/pdfcpu/negative-page-mediabox-numbers.txt",
+      "sha256": "95dfbc98c9c2f4a002b3534c4a86d2bfb9b2a9b5b46e788e0bb4e866517df592"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/pdfcpu/negative-page-mediabox-rectangle.txt",
+      "sha256": "19ab6aaf119613000d99fc808269dee3e53701d3b34107b81246d9cc78dcaefa"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/pdfcpu/negative-page-mediabox-required.txt",
+      "sha256": "de28beaf3909e9feb3fdb760be45e92d1b55dd2faf702a1b17e884eb260b0573"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/pdfcpu/negative-page-parent-indirect.txt",
+      "sha256": "41fd9bca54db9943fe9822711969f5e4c6100c18c2ccaacbe3c97131a01024ec"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/pdfcpu/negative-page-parent-link.txt",
+      "sha256": "5ef002a58f82001e634bd02596ba8c15086e3c1477e244c431303316df131c5a"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/pdfcpu/negative-page-parent-required.txt",
+      "sha256": "24c701f22ac37feced096f55fc789b8d444eee70ade69e8cfbc19fac581789eb"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/pdfcpu/negative-page-resources-type.txt",
+      "sha256": "4db646b3d2f5990d8714a1eedc07f403c36bb25f5f17fbd9c97fe0bbd3160465"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/pdfcpu/negative-page-type-value.txt",
+      "sha256": "de620a8f550913f78d7c7e8bf8637893be677c0716bdf7989b3677eb7eecda11"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/pdfcpu/negative-page-type.txt",
+      "sha256": "2bd105f3228ff42555ccb4e7c495c42c5680abf3ed012067429f21edb8c4e43e"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/pdfcpu/negative-pages-count-integer.txt",
+      "sha256": "899f92892f5e4ed692cd41f51b134aa859ca51aacd496972803656aba701811f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/pdfcpu/negative-pages-count-nonnegative.txt",
+      "sha256": "128e653afe403eb0e8cc66f4b2f88aeb153de046a07878a591bc3977bad4fa88"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/pdfcpu/negative-pages-count-required.txt",
+      "sha256": "3caa0593f9896607c090b7ca6f3637518683d0cb07473b795acf88430d0b98f2"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/pdfcpu/negative-pages-count-value.txt",
+      "sha256": "12e4f0c2d730d8246bc4655b4d3d9e5c40efde92b2b6fbebe7ee31baf2b20112"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/pdfcpu/negative-pages-kid-reference.txt",
+      "sha256": "b0d0ce348c7deaf431e725654631adac362149e6e5757ba997148a16448043ed"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/providers/jdk17-hardened_worker/observations/preview/facade-before-failure/pdfcpu/negative-pages-kids.txt",
+      "sha256": "1e00d54272c245b5185f98ec11c7752c20312a92d4b1e4630621e89eaf666443"
+    }
+  ]
+}

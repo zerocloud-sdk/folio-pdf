@@ -1,0 +1,180 @@
+{
+  "result": "pass",
+  "negative-control": "fail",
+  "policy": "Compare final effective raw stream bytes and filter attributes; the old incremental prefix does not qualify.",
+  "observations": {
+    "source": {
+      "retained-stream": {
+        "raw-sha256": "b7f6a2bc7b16c2e9d14d804c987e2be6afeb8902eb565cb27652a94b768358d7",
+        "length": 35,
+        "attributes": {
+          "/DecodeParms": [
+            {
+              "/Predictor": 1
+            }
+          ],
+          "/Filter": [
+            "/FlateDecode"
+          ]
+        }
+      },
+      "page-content": {
+        "raw-sha256": "03d8d7d60d5c570ac2544fd4abeaedc6e00d663b49c7f4b67417db6a8458a7ff",
+        "length": 31,
+        "attributes": {}
+      }
+    },
+    "native-rewrite": {
+      "retained-stream": {
+        "raw-sha256": "b7f6a2bc7b16c2e9d14d804c987e2be6afeb8902eb565cb27652a94b768358d7",
+        "length": 35,
+        "attributes": {
+          "/DecodeParms": [
+            {
+              "/Predictor": 1
+            }
+          ],
+          "/Filter": [
+            "/FlateDecode"
+          ]
+        }
+      },
+      "page-content": {
+        "raw-sha256": "03d8d7d60d5c570ac2544fd4abeaedc6e00d663b49c7f4b67417db6a8458a7ff",
+        "length": 31,
+        "attributes": {}
+      }
+    },
+    "native-incremental": {
+      "retained-stream": {
+        "raw-sha256": "b7f6a2bc7b16c2e9d14d804c987e2be6afeb8902eb565cb27652a94b768358d7",
+        "length": 35,
+        "attributes": {
+          "/DecodeParms": [
+            {
+              "/Predictor": 1
+            }
+          ],
+          "/Filter": [
+            "/FlateDecode"
+          ]
+        }
+      },
+      "page-content": {
+        "raw-sha256": "03d8d7d60d5c570ac2544fd4abeaedc6e00d663b49c7f4b67417db6a8458a7ff",
+        "length": 31,
+        "attributes": {}
+      }
+    },
+    "facade": {
+      "retained-stream": {
+        "raw-sha256": "b7f6a2bc7b16c2e9d14d804c987e2be6afeb8902eb565cb27652a94b768358d7",
+        "length": 35,
+        "attributes": {
+          "/DecodeParms": [
+            {
+              "/Predictor": 1
+            }
+          ],
+          "/Filter": [
+            "/FlateDecode"
+          ]
+        }
+      },
+      "page-content": {
+        "raw-sha256": "03d8d7d60d5c570ac2544fd4abeaedc6e00d663b49c7f4b67417db6a8458a7ff",
+        "length": 31,
+        "attributes": {}
+      }
+    },
+    "negative": {
+      "retained-stream": {
+        "raw-sha256": "265fe619bdf8933d41978d273fca3e6af34a9ac0c2b0d86372d4fee33b4217ba",
+        "length": 40,
+        "attributes": {
+          "/DecodeParms": [
+            {
+              "/Predictor": 1
+            }
+          ],
+          "/Filter": [
+            "/FlateDecode"
+          ]
+        }
+      },
+      "page-content": {
+        "raw-sha256": "03d8d7d60d5c570ac2544fd4abeaedc6e00d663b49c7f4b67417db6a8458a7ff",
+        "length": 31,
+        "attributes": {}
+      }
+    }
+  },
+  "findings": [
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/values/jdk21-hardened_worker/observations/raw-preservation/source.json",
+      "sha256": "364aad3d6c8b526149af189fc9811acfdfa79d9240d2dff90567052f5d38ff6e"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/values/jdk21-hardened_worker/observations/raw-preservation/source-command.json",
+      "sha256": "2a2afd4e2dd30e8c5f1ab966402f950a969e47f4183e5da744ecb027e3d7d04a"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/values/jdk21-hardened_worker/observations/raw-preservation/source-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/values/jdk21-hardened_worker/observations/raw-preservation/native-rewrite.json",
+      "sha256": "624167fb52e6098ccd9ae00a0f3c8e876ee465650101053118b138170d32c124"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/values/jdk21-hardened_worker/observations/raw-preservation/native-rewrite-command.json",
+      "sha256": "693ab24f487b33791f98d3e303f173740211f7cfea57053c1d3dfe478efcb30d"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/values/jdk21-hardened_worker/observations/raw-preservation/native-rewrite-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/values/jdk21-hardened_worker/observations/raw-preservation/native-incremental.json",
+      "sha256": "b5a69aae2a2ac34fc7cd93dbe07014944812f393ce946cb9c0177d56e353e54e"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/values/jdk21-hardened_worker/observations/raw-preservation/native-incremental-command.json",
+      "sha256": "0c417b6fecfdfd93fd584578589ba961a66dbb2f8ae8000c587a0b8a3d801ad6"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/values/jdk21-hardened_worker/observations/raw-preservation/native-incremental-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/values/jdk21-hardened_worker/observations/raw-preservation/facade.json",
+      "sha256": "bdd67277434f190106313deed0be98d1f95881dfb0e9e1987a06f989c883deda"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/values/jdk21-hardened_worker/observations/raw-preservation/facade-command.json",
+      "sha256": "5d59be15ae7cd2b55439f4be795e9d41c53441c73fd9424684bb34cee7d6d0c9"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/values/jdk21-hardened_worker/observations/raw-preservation/facade-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/values/jdk21-hardened_worker/observations/raw-preservation/negative.json",
+      "sha256": "e28fed05c6728d38b836c24cbc591b2187b672cdee4e077ac444c963f1836b1f"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/values/jdk21-hardened_worker/observations/raw-preservation/negative-command.json",
+      "sha256": "6630620f16fb7fdc2d5f109e23815b67f33472b52c98613f5eb74d0b1e6f24ad"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/values/jdk21-hardened_worker/observations/raw-preservation/negative-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "negative-controls": [
+    {
+      "path": "capabilities/profiles/T09-values/fixtures/reencoded-incremental.pdf",
+      "sha256": "5d99ad6b086b6cb5be10af2508be7eee22705b82dc4b50c25488183c8f3d212d"
+    }
+  ]
+}

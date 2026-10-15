@@ -16,6 +16,14 @@ SPEC = importlib.util.spec_from_file_location(
 
 
 class FoundationCandidateTest(unittest.TestCase):
+    def test_deferred_index_is_explicitly_certify_only(self):
+        import subprocess
+        import sys
+        completed = subprocess.run([sys.executable, str(SPEC.origin), 'plan', 'unused', '--defer-index'],
+                                   capture_output=True, text=True, timeout=10)
+        self.assertEqual(2, completed.returncode)
+        self.assertIn('--defer-index applies only to certify', completed.stderr)
+
     def test_environment_preserves_runtime_brand_and_empty_jvm_properties(self):
         import hashlib
         module = importlib.util.module_from_spec(SPEC)

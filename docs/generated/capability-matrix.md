@@ -23,7 +23,7 @@ Behavioral authority: [`../../capabilities/capability-matrix.yaml`](../../capabi
 | [`composition.layout.paragraph-pagination`](#capability-composition_dot_layout_dot_paragraph_dash_pagination) | `composition` | `experimental` | [excluded by `T32`](facade-surface.md#excluded-capability-composition_dot_layout_dot_paragraph_dash_pagination) |
 | [`composition.layout.tables`](#capability-composition_dot_layout_dot_tables) | `composition` | `experimental` | [excluded by `T32`](facade-surface.md#excluded-capability-composition_dot_layout_dot_tables) |
 | [`composition.shaping.harf-buzz`](#capability-composition_dot_shaping_dot_harf_dash_buzz) | `composition` | `experimental` | [excluded by `T32`](facade-surface.md#excluded-capability-composition_dot_shaping_dot_harf_dash_buzz) |
-| [`conversion.capability-provider.select-execute`](#capability-conversion_dot_capability_dash_provider_dot_select_dash_execute) | `conversion` | `experimental` | [excluded by `T05`](facade-surface.md#excluded-capability-conversion_dot_capability_dash_provider_dot_select_dash_execute) |
+| [`conversion.capability-provider.select-execute`](#capability-conversion_dot_capability_dash_provider_dot_select_dash_execute) | `conversion` | `compatible` | [excluded by `T05`](facade-surface.md#excluded-capability-conversion_dot_capability_dash_provider_dot_select_dash_execute) |
 | [`conversion.rendering`](#capability-conversion_dot_rendering) | `conversion` | `experimental` | [excluded by `T32`](facade-surface.md#excluded-capability-conversion_dot_rendering) |
 | [`document.annotations-actions.manage`](#capability-document_dot_annotations_dash_actions_dot_manage) | `document-engine` | `compatible` | [`itext7.kernel.pdf-catalog.get-open-action`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_catalog_dot_get_dash_open_dash_action), [`itext7.kernel.pdf-catalog.set-open-action`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_catalog_dot_set_dash_open_dash_action), [`itext7.kernel.pdf-document.flatten-annotations`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_flatten_dash_annotations), [`itext7.kernel.pdf-document.get-actions`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_actions), [`itext7.kernel.pdf-document.get-annotations`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_annotations), [`itext7.kernel.pdf-document.update-annotations`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_update_dash_annotations), [`itext7.kernel.pdf-page.add-annotation`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_page_dot_add_dash_annotation), [`itext7.kernel.pdf-page.get-additional-actions`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_page_dot_get_dash_additional_dash_actions), [`itext7.kernel.pdf-page.get-annotations`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_page_dot_get_dash_annotations), [`itext7.kernel.pdf-page.remove-annotation`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_page_dot_remove_dash_annotation), [`itext7.kernel.pdf-page.set-additional-action`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_page_dot_set_dash_additional_dash_action), [`itext7.kernel.pdf-page.set-normal-appearance`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_page_dot_set_dash_normal_dash_appearance) |
 | [`document.blank.create-publish-reopen`](#capability-document_dot_blank_dot_create_dash_publish_dash_reopen) | `document-engine` | `compatible` | [`itext7.kernel.pdf-document.add-new-page`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_add_dash_new_dash_page), [`itext7.kernel.pdf-document.close`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_close), [`itext7.kernel.pdf-document.constructor-reader`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_constructor_dash_reader), [`itext7.kernel.pdf-document.constructor-writer`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_constructor_dash_writer), [`itext7.kernel.pdf-document.get-number-of-pages`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_document_dot_get_dash_number_dash_of_dash_pages), [`itext7.kernel.pdf-exception.constructor-message-cause`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_exception_dot_constructor_dash_message_dash_cause), [`itext7.kernel.pdf-page.get-pdf-object`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_page_dot_get_dash_pdf_dash_object), [`itext7.kernel.pdf-reader.close`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_reader_dot_close), [`itext7.kernel.pdf-reader.constructor-string`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_reader_dot_constructor_dash_string), [`itext7.kernel.pdf-writer.constructor-string`](facade-surface.md#facade-surface-itext7_dot_kernel_dot_pdf_dash_writer_dot_constructor_dash_string), [`itext7.layout.document.close`](facade-surface.md#facade-surface-itext7_dot_layout_dot_document_dot_close), [`itext7.layout.document.constructor-pdf-document`](facade-surface.md#facade-surface-itext7_dot_layout_dot_document_dot_constructor_dash_pdf_dash_document) |
@@ -759,13 +759,13 @@ Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T29 shaping contribu
 Register, inspect, deterministically select, and safely execute project-owned Capability Providers.
 
 - Context: `conversion`
-- Status: `experimental`
+- Status: `compatible`
 - Reference Suite source: `Fixed Reference Suite OCR, Office, rendering, and external-engine integration boundaries`
 - Reference role: capability inventory only; not an implementation or behavioral oracle
 - Acceptance Profile: `T05-capability-provider-contract`
 - Mandatory evidence chains: `syntax`, `standards`, `semantic`, `visual`
 - Evidence record: [`capabilities/evidence/T05-capability-provider-contract.md`](../../capabilities/evidence/T05-capability-provider-contract.md)
-- Certified platforms: none
+- Certified platforms: `ubuntu-24.04-linux-x86-64-jdk8`, `ubuntu-24.04-linux-x86-64-jdk11`, `ubuntu-24.04-linux-x86-64-jdk17`, `ubuntu-24.04-linux-x86-64-jdk21`
 
 ### Native Interface mapping
 
@@ -787,12 +787,12 @@ Register, inspect, deterministically select, and safely execute project-owned Ca
 
 - Stable: none
 - Preview: none
-- Explicit exclusion: [`T05`](facade-surface.md#excluded-capability-conversion_dot_capability_dash_provider_dot_select_dash_execute) — Provider registration, deterministic selection, availability and Remote Disclosure Authorization form the project-owned deployment contract and have no Reference Suite counterpart. Rendering and shaping keep their separate required migration families. Certification remains required under #84.
+- Explicit exclusion: [`T05`](facade-surface.md#excluded-capability-conversion_dot_capability_dash_provider_dot_select_dash_execute) — Provider registration, deterministic selection, availability and Remote Disclosure Authorization form the project-owned deployment contract and have no Reference Suite counterpart. Rendering and shaping keep their separate required migration families. The T05 certification contract governs the Provider control; inherited Stable and Preview document outcomes execute IN_PROCESS without a Provider-specific mapping.
 
 ### Gates and limitations
 
 - Dependency Gate: [`document.blank.create-publish-reopen`](#capability-document_dot_blank_dot_create_dash_publish_dash_reopen) must be `compatible`
-- Promotion gate `T06`: Complete the independent acceptance evidence required before compatibility.
+- Promotion gates: none
 - Limitation: T05 supplies the Provider contract and a generic bounded subprocess adapter; it does not implement or bundle Tesseract, LibreOffice, HarfBuzz, PDFium, a commercial engine, or a remote service adapter.
 - Limitation: Provider Operating Limits cover request bytes, result bytes, and elapsed subprocess time. T20 supplies cooperative policy for the surrounding workflow, while T21's separate document Worker leaves Provider selection and execution parent-brokered.
 - Limitation: The generic Java 8 subprocess adapter supervises its direct child. T21's process-tree boundary contains the PDF Worker and does not certify arbitrary Capability Provider descendants.
@@ -809,8 +809,17 @@ Implementation evidence:
 - `provider-public-api-contract`: [`pdf-conversion/src/test/java/net/zerocloud/pdf/conversion/contract/PublicApiLeakageIT.java`](../../pdf-conversion/src/test/java/net/zerocloud/pdf/conversion/contract/PublicApiLeakageIT.java) — Public and protected Provider signatures expose only project-owned or JDK types and no PDFBox, process-implementation, or network-client types.
 - `provider-artifact-contract`: [`pdf-conversion/src/test/java/net/zerocloud/pdf/conversion/contract/JarContractIT.java`](../../pdf-conversion/src/test/java/net/zerocloud/pdf/conversion/contract/JarContractIT.java) — Both shipped T05 artifacts have intentional module names, Java 8 class files, notices, no bundled backend, and Release Train BOM entries.
 - `cross-jdk-contract`: [`scripts/verify-jdk-matrix.sh`](../../scripts/verify-jdk-matrix.sh) — Maven verification runs the Provider contract on JDK 8, 11, 17, and 21.
+- `provider-certification-contract`: [`docs/t05-certification.md`](../t05-certification.md) — Eight exact environment/profile tuples retain five independent records; actual Provider boundaries and applicable Native/Stable/Preview documents are qualified separately.
+- `provider-certification-case-inventory`: [`capabilities/profiles/T05-capability-provider-contract/coverage.json`](../../capabilities/profiles/T05-capability-provider-contract/coverage.json) — All nine issue criteria, 51 original public/boundary cases and 59 mandatory named tests retain source traceability with no missing, duplicated or skipped execution.
+- `provider-certification-collector`: [`scripts/t05_foundation_reports.py`](../../scripts/t05_foundation_reports.py) — Strict collection checks original endpoint bytes, malformed frames, cleanup, safe failures, documents and controls against fresh same-candidate execution; stale identities or resealed invalid observations reject PASS.
+- `provider-boundary-evidence`: [`capabilities/evidence/T84-provider-contract.md`](../../capabilities/evidence/T84-provider-contract.md) — The separately identifiable contract chain qualifies actual loopback consent, direct public Provider bounds and generic subprocess lifecycle in both Native profiles.
 
-Acceptance Evidence: incomplete; no independent chain has been recorded as passing.
+Acceptance Evidence:
+
+- `syntax`: `pass` — [`capabilities/evidence/T84-provider-syntax.md`](../../capabilities/evidence/T84-provider-syntax.md); producer `qpdf@12.4.0` (`external-tool`)
+- `standards`: `pass` — [`capabilities/evidence/T84-provider-standards.md`](../../capabilities/evidence/T84-provider-standards.md); producer `arlington@0.81` (`external-tool`)
+- `semantic`: `pass` — [`capabilities/evidence/T84-provider-semantic.md`](../../capabilities/evidence/T84-provider-semantic.md); producer `folio-pdf-t05@0.1.0` (`project-test`)
+- `visual`: `pass` — [`capabilities/evidence/T84-provider-visual.md`](../../capabilities/evidence/T84-provider-visual.md); producer `pdfium-cli@v0.11.2-pdfium-chromium-7881` (`external-tool`)
 
 Provenance: [`PROVENANCE.md`](../../PROVENANCE.md), record `T05 capability-provider record`.
 

@@ -1,0 +1,44 @@
+{
+  "schema-version": 1,
+  "obligation": "incremental",
+  "acceptance-profile": "T15-incremental-signature-protection",
+  "release": "0.1.0",
+  "candidate-sha256": "8e079e00ef1cf38a23efd34922d60268949682732d3066332927451b1bb5dca8",
+  "contract-sha256": "5c3cafb114f1ba8d148af31e5a74dd8466caf8427a92fb91b3e561805b92e176",
+  "environment-sha256": "dc092bd0bca8b4c5acfd815e7046b59359ba88536b69eaae890e5c8bf642d7bb",
+  "execution-configuration-sha256": "bf1604504776ef7c4bd5dee61c143fe822ab1e1b97d24115baa7918caa87c8e8",
+  "execution-profile": "HARDENED_WORKER",
+  "chain": "syntax",
+  "result": "pass",
+  "producer": "qpdf",
+  "configuration": {
+    "path": "docs/t15-certification.md",
+    "sha256": "2f4a2b363478c9d2dba8df72c525bc00366003ecc7842d86be1fc1e2af331171"
+  },
+  "report": {
+    "path": "capabilities/evidence/foundation/T84-final-r2/incremental/jdk21-hardened_worker/syntax-report.json",
+    "sha256": "c050ab677f7034a616eaf209df6f9cf2cb149f6291215448ab66b42d63169558"
+  },
+  "negative-controls": [
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/incremental/jdk21-hardened_worker/observations/negative/syntax/invalid.pdf",
+      "sha256": "f5117edb193052414d3b7496857953fd5c40d289c84ce675aa0bd361d40ffd76"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/incremental/jdk21-hardened_worker/observations/negative/syntax/qpdf.command.json",
+      "sha256": "f90b485db43afa9665e0b6cf234c783a17213b52735fbe1a4be151e8a1f542f2"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/incremental/jdk21-hardened_worker/observations/negative/syntax/qpdf.stderr",
+      "sha256": "5a7c1fc6f11e73f4e0d125807ce9a2cb7acf66cce4c05c455b93748b373b8348"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/incremental/jdk21-hardened_worker/observations/negative/syntax/qpdf.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/incremental/jdk21-hardened_worker/observations/negative/syntax/result.json",
+      "sha256": "40bee4c175a2140cffee08167b2a051ee3082b1d8f4cf2d681475080091db58b"
+    }
+  ]
+}

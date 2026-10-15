@@ -12,6 +12,7 @@ import net.zerocloud.pdf.PublicationTarget;
 import net.zerocloud.pdf.PublicationStatus;
 import net.zerocloud.pdf.SaveMode;
 import net.zerocloud.pdf.WorkflowEnvironment;
+import net.zerocloud.pdf.WorkflowExecutionProfile;
 import net.zerocloud.pdf.WorkflowOutcome;
 import net.zerocloud.pdf.WorkflowRequest;
 import net.zerocloud.pdf.command.AddBlankPage;
@@ -43,7 +44,7 @@ public final class WorkflowCapabilityProviderTest {
                 .provider(first)
                 .provider(preferred)
                 .build();
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = requestBuilder()
                 .providerPreference(ProviderPreference.prefer(
                         "conversion.test.echo",
                         "test.preferred"))
@@ -86,7 +87,7 @@ public final class WorkflowCapabilityProviderTest {
                 .provider(first)
                 .provider(replacement)
                 .build();
-        WorkflowRequest.Builder request = WorkflowRequest.builder()
+        WorkflowRequest.Builder request = requestBuilder()
                 .providerPreference(ProviderPreference.prefer(
                         "conversion.test.echo",
                         "test.first"));
@@ -142,7 +143,7 @@ public final class WorkflowCapabilityProviderTest {
     public void offlineSystemDefaultsHaveNoProviderRegistrationOrSelection()
             throws Exception {
         WorkflowEnvironment environment = WorkflowEnvironment.systemDefaults();
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = requestBuilder()
                 .target(
                         "output",
                         PublicationTarget.path(
@@ -177,7 +178,7 @@ public final class WorkflowCapabilityProviderTest {
                 .engineLicense("LicenseRef-Test", "Project test license")
                 .distribution(ProviderDistribution.SEPARATELY_INSTALLED)
                 .build());
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = requestBuilder()
                 .providerPreference(ProviderPreference.prefer(
                         "conversion.test.echo",
                         "test.unavailable"))
@@ -221,7 +222,7 @@ public final class WorkflowCapabilityProviderTest {
         WorkflowEnvironment environment = WorkflowEnvironment.builder()
                 .provider(remote)
                 .build();
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = requestBuilder()
                 .providerPreference(ProviderPreference.prefer(
                         "conversion.test.echo",
                         "test.remote"))
@@ -268,7 +269,7 @@ public final class WorkflowCapabilityProviderTest {
         WorkflowEnvironment environment = WorkflowEnvironment.builder()
                 .provider(remote)
                 .build();
-        WorkflowRequest request = WorkflowRequest.builder()
+        WorkflowRequest request = requestBuilder()
                 .providerPreference(ProviderPreference.prefer(
                         "conversion.test.echo",
                         "test.authorized-remote"))
@@ -294,6 +295,11 @@ public final class WorkflowCapabilityProviderTest {
         assertEquals(ProviderExecutionMode.REMOTE,
                 outcome.getProviderSelections().get(0).getMetadata().getExecutionMode());
         assertEquals(0, remote.invocations.get());
+    }
+
+    private static WorkflowRequest.Builder requestBuilder() {
+        return WorkflowRequest.builder().executionProfile(WorkflowExecutionProfile.valueOf(
+                System.getProperty("folio.t05.executionProfile", "IN_PROCESS")));
     }
 
     private static CountingProvider provider(String providerId, String version) {

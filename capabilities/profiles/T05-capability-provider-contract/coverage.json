@@ -1,0 +1,1361 @@
+{
+  "profile": "T05-capability-provider-contract",
+  "issue": 84,
+  "baseline": "dfe7eaea98533aa12449e677d9612fc4b964091a",
+  "required-execution-profiles": [
+    "IN_PROCESS",
+    "HARDENED_WORKER"
+  ],
+  "mandatory-test-count": 59,
+  "test-classes": [
+    "net.zerocloud.pdf.provider.ProviderCatalogTest",
+    "net.zerocloud.pdf.consumer.WorkflowCapabilityProviderTest",
+    "net.zerocloud.pdf.conversion.SubprocessCapabilityProviderTest",
+    "net.zerocloud.pdf.acceptance.T05ProviderContractsTest",
+    "net.zerocloud.pdf.consumer.BlankDocumentWorkflowTest",
+    "net.zerocloud.pdf.consumer.WorkflowLifecycleTest",
+    "net.zerocloud.pdf.consumer.WorkflowTransactionContractTest",
+    "net.zerocloud.pdf.consumer.WorkflowResourceOwnershipTest",
+    "net.zerocloud.pdf.itext7.consumer.BlankDocumentFacadeTest",
+    "net.zerocloud.pdf.conversion.contract.PublicApiLeakageIT",
+    "net.zerocloud.pdf.conversion.contract.JarContractIT",
+    "net.zerocloud.pdf.migration.itext7.contract.JarContractIT",
+    "net.zerocloud.pdf.migration.itext7.contract.ClasspathExclusivityIT"
+  ],
+  "cases": {
+    "offline": {
+      "criteria": [
+        1,
+        4,
+        9
+      ],
+      "requirements": [
+        "spec-us-37",
+        "spec-us-38",
+        "spec-id-19",
+        "spec-id-47",
+        "slice-84-1",
+        "slice-84-4"
+      ],
+      "observations": {
+        "metadata-count": "0",
+        "selection-count": "0"
+      }
+    },
+    "immutable-registration": {
+      "criteria": [
+        1,
+        4,
+        9
+      ],
+      "requirements": [
+        "spec-us-37",
+        "spec-us-38",
+        "spec-id-19",
+        "spec-id-47",
+        "slice-84-1",
+        "slice-84-4"
+      ],
+      "observations": {
+        "metadata-count": "4",
+        "immutable": "true"
+      }
+    },
+    "registration-only": {
+      "criteria": [
+        1,
+        4,
+        9
+      ],
+      "requirements": [
+        "spec-us-37",
+        "spec-us-38",
+        "spec-id-19",
+        "spec-id-47",
+        "slice-84-1",
+        "slice-84-4"
+      ],
+      "observations": {
+        "requests": "0",
+        "disclosed-bytes": "0",
+        "selection-count": "0"
+      }
+    },
+    "declaration-order": {
+      "criteria": [
+        1,
+        4,
+        9
+      ],
+      "requirements": [
+        "spec-us-37",
+        "spec-us-38",
+        "spec-id-19",
+        "spec-id-47",
+        "slice-84-1",
+        "slice-84-4"
+      ],
+      "observations": {
+        "selected": "test.t05-first",
+        "invocations": "0"
+      }
+    },
+    "repeated-selection": {
+      "criteria": [
+        1,
+        4,
+        9
+      ],
+      "requirements": [
+        "spec-us-37",
+        "spec-us-38",
+        "spec-id-19",
+        "spec-id-47",
+        "slice-84-1",
+        "slice-84-4"
+      ],
+      "observations": {
+        "selected": "test.t05-first",
+        "invocations": "0"
+      }
+    },
+    "exact-preference": {
+      "criteria": [
+        1,
+        4,
+        9
+      ],
+      "requirements": [
+        "spec-us-37",
+        "spec-us-38",
+        "spec-id-19",
+        "spec-id-47",
+        "slice-84-1",
+        "slice-84-4"
+      ],
+      "observations": {
+        "selected": "test.t05-later",
+        "invocations": "0"
+      }
+    },
+    "missing-preference": {
+      "criteria": [
+        1,
+        4,
+        9
+      ],
+      "requirements": [
+        "spec-us-37",
+        "spec-us-38",
+        "spec-id-19",
+        "spec-id-47",
+        "slice-84-1",
+        "slice-84-4"
+      ],
+      "observations": {
+        "diagnostic": "No eligible Capability Provider is registered.",
+        "receipts": "result:NOT_ATTEMPTED:false",
+        "sentinel-sha256": "5f53c0ff07ba5d9a330e68c95dabb1a9bc49e29f9ed53f6fa7c6d99abb000050"
+      },
+      "code": "CAPABILITY_PROVIDER_NOT_FOUND"
+    },
+    "wrong-capability": {
+      "criteria": [
+        1,
+        4,
+        9
+      ],
+      "requirements": [
+        "spec-us-37",
+        "spec-us-38",
+        "spec-id-19",
+        "spec-id-47",
+        "slice-84-1",
+        "slice-84-4"
+      ],
+      "observations": {
+        "diagnostic": "No eligible Capability Provider is registered.",
+        "receipts": "result:NOT_ATTEMPTED:false",
+        "sentinel-sha256": "5f53c0ff07ba5d9a330e68c95dabb1a9bc49e29f9ed53f6fa7c6d99abb000050"
+      },
+      "code": "CAPABILITY_PROVIDER_NOT_FOUND"
+    },
+    "unavailable-preference": {
+      "criteria": [
+        1,
+        4,
+        9
+      ],
+      "requirements": [
+        "spec-us-37",
+        "spec-us-38",
+        "spec-id-19",
+        "spec-id-47",
+        "slice-84-1",
+        "slice-84-4"
+      ],
+      "observations": {
+        "diagnostic": "The selected Capability Provider is unavailable.",
+        "receipts": "result:NOT_ATTEMPTED:false",
+        "sentinel-sha256": "5f53c0ff07ba5d9a330e68c95dabb1a9bc49e29f9ed53f6fa7c6d99abb000050"
+      },
+      "code": "CAPABILITY_PROVIDER_UNAVAILABLE"
+    },
+    "remote-preference-denied": {
+      "criteria": [
+        1,
+        3,
+        6
+      ],
+      "requirements": [
+        "spec-us-39",
+        "spec-us-74",
+        "spec-id-19",
+        "spec-id-32",
+        "spec-id-47",
+        "slice-84-3"
+      ],
+      "observations": {
+        "diagnostic": "Remote document disclosure was not explicitly authorized.",
+        "receipts": "result:NOT_ATTEMPTED:false",
+        "sentinel-sha256": "5f53c0ff07ba5d9a330e68c95dabb1a9bc49e29f9ed53f6fa7c6d99abb000050"
+      },
+      "code": "REMOTE_DISCLOSURE_NOT_AUTHORIZED"
+    },
+    "remote-wrong-scope": {
+      "criteria": [
+        1,
+        3,
+        6
+      ],
+      "requirements": [
+        "spec-us-39",
+        "spec-us-74",
+        "spec-id-19",
+        "spec-id-32",
+        "spec-id-47",
+        "slice-84-3"
+      ],
+      "observations": {
+        "diagnostic": "Remote document disclosure was not explicitly authorized.",
+        "receipts": "result:NOT_ATTEMPTED:false",
+        "sentinel-sha256": "5f53c0ff07ba5d9a330e68c95dabb1a9bc49e29f9ed53f6fa7c6d99abb000050"
+      },
+      "code": "REMOTE_DISCLOSURE_NOT_AUTHORIZED"
+    },
+    "workflow-no-inherited-consent": {
+      "criteria": [
+        1,
+        4,
+        9
+      ],
+      "requirements": [
+        "spec-us-37",
+        "spec-us-38",
+        "spec-id-19",
+        "spec-id-47",
+        "slice-84-1",
+        "slice-84-4"
+      ],
+      "observations": {
+        "diagnostic": "Remote document disclosure was not explicitly authorized.",
+        "receipts": "result:NOT_ATTEMPTED:false",
+        "sentinel-sha256": "5f53c0ff07ba5d9a330e68c95dabb1a9bc49e29f9ed53f6fa7c6d99abb000050"
+      },
+      "code": "REMOTE_DISCLOSURE_NOT_AUTHORIZED"
+    },
+    "remote-zero-disclosure": {
+      "criteria": [
+        1,
+        3,
+        6
+      ],
+      "requirements": [
+        "spec-us-39",
+        "spec-us-74",
+        "spec-id-19",
+        "spec-id-32",
+        "spec-id-47",
+        "slice-84-3"
+      ],
+      "observations": {
+        "requests": "0",
+        "disclosed-bytes": "0"
+      }
+    },
+    "authorized-selection-only": {
+      "criteria": [
+        1,
+        3,
+        6
+      ],
+      "requirements": [
+        "spec-us-39",
+        "spec-us-74",
+        "spec-id-19",
+        "spec-id-32",
+        "spec-id-47",
+        "slice-84-3"
+      ],
+      "observations": {
+        "requests": "0",
+        "disclosed-bytes": "0",
+        "selected": "test.t05-remote"
+      }
+    },
+    "remote-direct-denied": {
+      "criteria": [
+        1,
+        3,
+        6
+      ],
+      "requirements": [
+        "spec-us-39",
+        "spec-us-74",
+        "spec-id-19",
+        "spec-id-32",
+        "spec-id-47",
+        "slice-84-3"
+      ],
+      "observations": {
+        "provider": "test.t05-remote",
+        "capability": "conversion.test.t05",
+        "diagnostic": "Remote document disclosure was not explicitly authorized.",
+        "cause": "none",
+        "suppressed": "0"
+      },
+      "code": "REMOTE_DISCLOSURE_NOT_AUTHORIZED"
+    },
+    "remote-exact-transfer": {
+      "criteria": [
+        1,
+        3,
+        6
+      ],
+      "requirements": [
+        "spec-us-39",
+        "spec-us-74",
+        "spec-id-19",
+        "spec-id-32",
+        "spec-id-47",
+        "slice-84-3"
+      ],
+      "observations": {
+        "requests": "1",
+        "disclosed-bytes": "4",
+        "input-sha256": "5f53c0ff07ba5d9a330e68c95dabb1a9bc49e29f9ed53f6fa7c6d99abb000050",
+        "output-sha256": "56d6d8afb4f010556922903cf04be93976d0a5664f763e07b309813cebd983d1"
+      }
+    },
+    "remote-no-inherited-consent": {
+      "criteria": [
+        1,
+        3,
+        6
+      ],
+      "requirements": [
+        "spec-us-39",
+        "spec-us-74",
+        "spec-id-19",
+        "spec-id-32",
+        "spec-id-47",
+        "slice-84-3"
+      ],
+      "observations": {
+        "provider": "test.t05-remote",
+        "capability": "conversion.test.t05",
+        "diagnostic": "Remote document disclosure was not explicitly authorized.",
+        "cause": "none",
+        "suppressed": "0"
+      },
+      "code": "REMOTE_DISCLOSURE_NOT_AUTHORIZED"
+    },
+    "parent-brokered-execution": {
+      "criteria": [
+        1,
+        3,
+        6
+      ],
+      "requirements": [
+        "spec-us-39",
+        "spec-us-74",
+        "spec-id-19",
+        "spec-id-32",
+        "spec-id-47",
+        "slice-84-3"
+      ],
+      "observations": {
+        "broker": "parent",
+        "requests": "2",
+        "disclosed-bytes": "8",
+        "direct-authorization": "explicit"
+      }
+    },
+    "detached-values": {
+      "criteria": [
+        2,
+        9
+      ],
+      "requirements": [
+        "spec-us-74",
+        "slice-84-2",
+        "spec-td-04",
+        "spec-id-47"
+      ],
+      "observations": {
+        "input-sha256": "5f53c0ff07ba5d9a330e68c95dabb1a9bc49e29f9ed53f6fa7c6d99abb000050",
+        "output-sha256": "56d6d8afb4f010556922903cf04be93976d0a5664f763e07b309813cebd983d1"
+      }
+    },
+    "exact-byte-bounds": {
+      "criteria": [
+        2,
+        9
+      ],
+      "requirements": [
+        "spec-us-74",
+        "slice-84-2",
+        "spec-td-04",
+        "spec-id-47"
+      ],
+      "observations": {
+        "input-length": "4",
+        "output-length": "4"
+      }
+    },
+    "input-first-excess": {
+      "criteria": [
+        2,
+        9
+      ],
+      "requirements": [
+        "spec-us-74",
+        "slice-84-2",
+        "spec-td-04",
+        "spec-id-47"
+      ],
+      "observations": {
+        "provider": "test.t05-direct",
+        "capability": "conversion.test.t05",
+        "diagnostic": "The Provider input limit was exceeded.",
+        "cause": "none",
+        "suppressed": "0"
+      },
+      "code": "INPUT_LIMIT_EXCEEDED"
+    },
+    "output-first-excess": {
+      "criteria": [
+        2,
+        9
+      ],
+      "requirements": [
+        "spec-us-74",
+        "slice-84-2",
+        "spec-td-04",
+        "spec-id-47"
+      ],
+      "observations": {
+        "provider": "test.t05-direct",
+        "capability": "conversion.test.t05",
+        "diagnostic": "The Provider output limit was exceeded.",
+        "cause": "none",
+        "suppressed": "0"
+      },
+      "code": "OUTPUT_LIMIT_EXCEEDED"
+    },
+    "null-result": {
+      "criteria": [
+        2,
+        9
+      ],
+      "requirements": [
+        "spec-us-74",
+        "slice-84-2",
+        "spec-td-04",
+        "spec-id-47"
+      ],
+      "observations": {
+        "provider": "test.t05-direct",
+        "capability": "conversion.test.t05",
+        "diagnostic": "The Provider engine returned malformed output.",
+        "cause": "none",
+        "suppressed": "0"
+      },
+      "code": "MALFORMED_OUTPUT"
+    },
+    "runtime-failure": {
+      "criteria": [
+        2,
+        9
+      ],
+      "requirements": [
+        "spec-us-74",
+        "slice-84-2",
+        "spec-td-04",
+        "spec-id-47"
+      ],
+      "observations": {
+        "provider": "test.t05-direct",
+        "capability": "conversion.test.t05",
+        "diagnostic": "The Provider engine did not complete successfully.",
+        "cause": "none",
+        "suppressed": "0"
+      },
+      "code": "EXECUTION_FAILED"
+    },
+    "forged-failure": {
+      "criteria": [
+        2,
+        9
+      ],
+      "requirements": [
+        "spec-us-74",
+        "slice-84-2",
+        "spec-td-04",
+        "spec-id-47"
+      ],
+      "observations": {
+        "provider": "test.t05-direct",
+        "capability": "conversion.test.t05",
+        "diagnostic": "The Provider engine did not complete successfully.",
+        "cause": "none",
+        "suppressed": "0"
+      },
+      "code": "EXECUTION_FAILED"
+    },
+    "capability-preference-agreement": {
+      "criteria": [
+        2,
+        9
+      ],
+      "requirements": [
+        "spec-us-74",
+        "slice-84-2",
+        "spec-td-04",
+        "spec-id-47"
+      ],
+      "observations": {
+        "invocations": "0"
+      },
+      "code": "IllegalArgumentException"
+    },
+    "positive-timeout": {
+      "criteria": [
+        2,
+        9
+      ],
+      "requirements": [
+        "spec-us-74",
+        "slice-84-2",
+        "spec-td-04",
+        "spec-id-47"
+      ],
+      "observations": {
+        "zero-rejected": "true",
+        "negative-rejected": "true"
+      },
+      "code": "IllegalArgumentException"
+    },
+    "maximum-timeout": {
+      "criteria": [
+        2,
+        9
+      ],
+      "requirements": [
+        "spec-us-74",
+        "slice-84-2",
+        "spec-td-04",
+        "spec-id-47"
+      ],
+      "observations": {
+        "timeout": "PT5S",
+        "accepted": "true"
+      }
+    },
+    "above-maximum-timeout": {
+      "criteria": [
+        2,
+        9
+      ],
+      "requirements": [
+        "spec-us-74",
+        "slice-84-2",
+        "spec-td-04",
+        "spec-id-47"
+      ],
+      "observations": {
+        "invocations": "0"
+      },
+      "code": "IllegalArgumentException"
+    },
+    "direct-wrong-capability": {
+      "criteria": [
+        2,
+        9
+      ],
+      "requirements": [
+        "spec-us-74",
+        "slice-84-2",
+        "spec-td-04",
+        "spec-id-47"
+      ],
+      "observations": {
+        "provider": "test.t05-direct",
+        "capability": "conversion.test.other",
+        "diagnostic": "No eligible Capability Provider is registered.",
+        "cause": "none",
+        "suppressed": "0"
+      },
+      "code": "PROVIDER_NOT_FOUND"
+    },
+    "direct-unavailable": {
+      "criteria": [
+        2,
+        9
+      ],
+      "requirements": [
+        "spec-us-74",
+        "slice-84-2",
+        "spec-td-04",
+        "spec-id-47"
+      ],
+      "observations": {
+        "provider": "test.t05-unavailable-direct",
+        "capability": "conversion.test.t05",
+        "diagnostic": "The selected Capability Provider is unavailable.",
+        "cause": "none",
+        "suppressed": "0"
+      },
+      "code": "PROVIDER_UNAVAILABLE"
+    },
+    "consistent-remote-metadata": {
+      "criteria": [
+        1,
+        3,
+        6
+      ],
+      "requirements": [
+        "spec-us-39",
+        "spec-us-74",
+        "spec-id-19",
+        "spec-id-32",
+        "spec-id-47",
+        "slice-84-3"
+      ],
+      "observations": {
+        "both-mismatches-rejected": "true"
+      },
+      "code": "IllegalStateException"
+    },
+    "immutable-catalog": {
+      "criteria": [
+        1,
+        4,
+        9
+      ],
+      "requirements": [
+        "spec-us-37",
+        "spec-us-38",
+        "spec-id-19",
+        "spec-id-47",
+        "slice-84-1",
+        "slice-84-4"
+      ],
+      "observations": {
+        "metadata-count": "1",
+        "immutable": "true"
+      }
+    },
+    "process-echo": {
+      "criteria": [
+        2,
+        9
+      ],
+      "requirements": [
+        "spec-us-74",
+        "slice-84-2",
+        "spec-td-04",
+        "spec-id-47"
+      ],
+      "observations": {
+        "input-length": "4",
+        "output-length": "4"
+      }
+    },
+    "process-pre-start-input": {
+      "criteria": [
+        2,
+        9
+      ],
+      "requirements": [
+        "spec-us-74",
+        "slice-84-2",
+        "spec-td-04",
+        "spec-id-47"
+      ],
+      "observations": {
+        "provider": "test.t05-process",
+        "capability": "conversion.test.t05",
+        "diagnostic": "The Provider input limit was exceeded.",
+        "cause": "none",
+        "suppressed": "0"
+      },
+      "code": "INPUT_LIMIT_EXCEEDED"
+    },
+    "process-first-excess-output": {
+      "criteria": [
+        2,
+        9
+      ],
+      "requirements": [
+        "spec-us-74",
+        "slice-84-2",
+        "spec-td-04",
+        "spec-id-47"
+      ],
+      "observations": {
+        "provider": "test.t05-process",
+        "capability": "conversion.test.t05",
+        "diagnostic": "The Provider output limit was exceeded.",
+        "cause": "none",
+        "suppressed": "0"
+      },
+      "code": "OUTPUT_LIMIT_EXCEEDED"
+    },
+    "process-wrong-magic": {
+      "criteria": [
+        2,
+        9
+      ],
+      "requirements": [
+        "spec-us-74",
+        "slice-84-2",
+        "spec-td-04",
+        "spec-id-47"
+      ],
+      "observations": {
+        "provider": "test.t05-process",
+        "capability": "conversion.test.t05",
+        "diagnostic": "The Provider engine returned malformed output.",
+        "cause": "none",
+        "suppressed": "0"
+      },
+      "code": "MALFORMED_OUTPUT"
+    },
+    "process-wrong-version": {
+      "criteria": [
+        2,
+        9
+      ],
+      "requirements": [
+        "spec-us-74",
+        "slice-84-2",
+        "spec-td-04",
+        "spec-id-47"
+      ],
+      "observations": {
+        "provider": "test.t05-process",
+        "capability": "conversion.test.t05",
+        "diagnostic": "The Provider engine returned malformed output.",
+        "cause": "none",
+        "suppressed": "0"
+      },
+      "code": "MALFORMED_OUTPUT"
+    },
+    "process-negative-length": {
+      "criteria": [
+        2,
+        9
+      ],
+      "requirements": [
+        "spec-us-74",
+        "slice-84-2",
+        "spec-td-04",
+        "spec-id-47"
+      ],
+      "observations": {
+        "provider": "test.t05-process",
+        "capability": "conversion.test.t05",
+        "diagnostic": "The Provider engine returned malformed output.",
+        "cause": "none",
+        "suppressed": "0"
+      },
+      "code": "MALFORMED_OUTPUT"
+    },
+    "process-oversized-length": {
+      "criteria": [
+        2,
+        9
+      ],
+      "requirements": [
+        "spec-us-74",
+        "slice-84-2",
+        "spec-td-04",
+        "spec-id-47"
+      ],
+      "observations": {
+        "provider": "test.t05-process",
+        "capability": "conversion.test.t05",
+        "diagnostic": "The Provider output limit was exceeded.",
+        "cause": "none",
+        "suppressed": "0"
+      },
+      "code": "OUTPUT_LIMIT_EXCEEDED"
+    },
+    "process-truncated-header": {
+      "criteria": [
+        2,
+        9
+      ],
+      "requirements": [
+        "spec-us-74",
+        "slice-84-2",
+        "spec-td-04",
+        "spec-id-47"
+      ],
+      "observations": {
+        "provider": "test.t05-process",
+        "capability": "conversion.test.t05",
+        "diagnostic": "The Provider engine returned malformed output.",
+        "cause": "none",
+        "suppressed": "0"
+      },
+      "code": "MALFORMED_OUTPUT"
+    },
+    "process-truncated-payload": {
+      "criteria": [
+        2,
+        9
+      ],
+      "requirements": [
+        "spec-us-74",
+        "slice-84-2",
+        "spec-td-04",
+        "spec-id-47"
+      ],
+      "observations": {
+        "provider": "test.t05-process",
+        "capability": "conversion.test.t05",
+        "diagnostic": "The Provider engine returned malformed output.",
+        "cause": "none",
+        "suppressed": "0"
+      },
+      "code": "MALFORMED_OUTPUT"
+    },
+    "process-trailing-output": {
+      "criteria": [
+        2,
+        9
+      ],
+      "requirements": [
+        "spec-us-74",
+        "slice-84-2",
+        "spec-td-04",
+        "spec-id-47"
+      ],
+      "observations": {
+        "provider": "test.t05-process",
+        "capability": "conversion.test.t05",
+        "diagnostic": "The Provider engine returned malformed output.",
+        "cause": "none",
+        "suppressed": "0"
+      },
+      "code": "MALFORMED_OUTPUT"
+    },
+    "process-startup": {
+      "criteria": [
+        2,
+        9
+      ],
+      "requirements": [
+        "spec-us-74",
+        "slice-84-2",
+        "spec-td-04",
+        "spec-id-47"
+      ],
+      "observations": {
+        "provider": "test.t05-process",
+        "capability": "conversion.test.t05",
+        "diagnostic": "The Provider engine could not be started.",
+        "cause": "none",
+        "suppressed": "0"
+      },
+      "code": "STARTUP_FAILED"
+    },
+    "process-nonzero": {
+      "criteria": [
+        2,
+        9
+      ],
+      "requirements": [
+        "spec-us-74",
+        "slice-84-2",
+        "spec-td-04",
+        "spec-id-47"
+      ],
+      "observations": {
+        "provider": "test.t05-process",
+        "capability": "conversion.test.t05",
+        "diagnostic": "The Provider engine did not complete successfully.",
+        "cause": "none",
+        "suppressed": "0"
+      },
+      "code": "EXECUTION_FAILED"
+    },
+    "process-crash": {
+      "criteria": [
+        2,
+        9
+      ],
+      "requirements": [
+        "spec-us-74",
+        "slice-84-2",
+        "spec-td-04",
+        "spec-id-47"
+      ],
+      "observations": {
+        "provider": "test.t05-process",
+        "capability": "conversion.test.t05",
+        "diagnostic": "The Provider engine did not complete successfully.",
+        "cause": "none",
+        "suppressed": "0"
+      },
+      "code": "EXECUTION_FAILED"
+    },
+    "process-stalled-input": {
+      "criteria": [
+        2,
+        9
+      ],
+      "requirements": [
+        "spec-us-74",
+        "slice-84-2",
+        "spec-td-04",
+        "spec-id-47"
+      ],
+      "observations": {
+        "provider": "test.t05-process",
+        "capability": "conversion.test.t05",
+        "diagnostic": "The Provider execution deadline expired.",
+        "cause": "none",
+        "suppressed": "0"
+      },
+      "code": "DEADLINE_EXCEEDED"
+    },
+    "process-stalled-output": {
+      "criteria": [
+        2,
+        9
+      ],
+      "requirements": [
+        "spec-us-74",
+        "slice-84-2",
+        "spec-td-04",
+        "spec-id-47"
+      ],
+      "observations": {
+        "provider": "test.t05-process",
+        "capability": "conversion.test.t05",
+        "diagnostic": "The Provider execution deadline expired.",
+        "cause": "none",
+        "suppressed": "0"
+      },
+      "code": "DEADLINE_EXCEEDED"
+    },
+    "process-inherited-pipe": {
+      "criteria": [
+        2,
+        9
+      ],
+      "requirements": [
+        "spec-us-74",
+        "slice-84-2",
+        "spec-td-04",
+        "spec-id-47"
+      ],
+      "observations": {
+        "provider": "test.t05-process",
+        "capability": "conversion.test.t05",
+        "diagnostic": "The Provider execution deadline expired.",
+        "cause": "none",
+        "suppressed": "0"
+      },
+      "code": "DEADLINE_EXCEEDED"
+    },
+    "native-ownership": {
+      "criteria": [
+        6
+      ],
+      "requirements": [
+        "spec-us-74",
+        "spec-id-19",
+        "slice-84-4"
+      ],
+      "observations": {
+        "input-closed": "false",
+        "output-closed": "false",
+        "pages": "1",
+        "receipts": "result:COMMITTED:false"
+      }
+    },
+    "native-partial-publication": {
+      "criteria": [
+        6
+      ],
+      "requirements": [
+        "spec-us-74",
+        "spec-id-19",
+        "slice-84-4"
+      ],
+      "observations": {
+        "diagnostic": "The validated document could not be written to its stream target.",
+        "receipts": "first:COMMITTED:false,current:FAILED:true,later:NOT_ATTEMPTED:false",
+        "sentinel-sha256": "5f53c0ff07ba5d9a330e68c95dabb1a9bc49e29f9ed53f6fa7c6d99abb000050"
+      },
+      "code": "PUBLICATION_FAILED"
+    }
+  },
+  "subprocesses": {
+    "echo": {
+      "result": "pass",
+      "direct-child-state": "terminated",
+      "timeout": "PT1S",
+      "elapsed-upper-bound-millis": "6000",
+      "new-open-pipes": "0",
+      "owned-staging-removed": "true",
+      "caller-root-preserved": "true",
+      "caller-sentinel-sha256": "5f53c0ff07ba5d9a330e68c95dabb1a9bc49e29f9ed53f6fa7c6d99abb000050"
+    },
+    "pre-start-input": {
+      "result": "INPUT_LIMIT_EXCEEDED",
+      "direct-child-state": "not-started",
+      "timeout": "PT1S",
+      "elapsed-upper-bound-millis": "6000",
+      "new-open-pipes": "0",
+      "owned-staging-removed": "true",
+      "caller-root-preserved": "true",
+      "caller-sentinel-sha256": "5f53c0ff07ba5d9a330e68c95dabb1a9bc49e29f9ed53f6fa7c6d99abb000050"
+    },
+    "first-excess-output": {
+      "result": "OUTPUT_LIMIT_EXCEEDED",
+      "direct-child-state": "terminated",
+      "timeout": "PT1S",
+      "elapsed-upper-bound-millis": "6000",
+      "new-open-pipes": "0",
+      "owned-staging-removed": "true",
+      "caller-root-preserved": "true",
+      "caller-sentinel-sha256": "5f53c0ff07ba5d9a330e68c95dabb1a9bc49e29f9ed53f6fa7c6d99abb000050"
+    },
+    "wrong-magic": {
+      "result": "MALFORMED_OUTPUT",
+      "direct-child-state": "terminated",
+      "timeout": "PT1S",
+      "elapsed-upper-bound-millis": "6000",
+      "new-open-pipes": "0",
+      "owned-staging-removed": "true",
+      "caller-root-preserved": "true",
+      "caller-sentinel-sha256": "5f53c0ff07ba5d9a330e68c95dabb1a9bc49e29f9ed53f6fa7c6d99abb000050"
+    },
+    "wrong-version": {
+      "result": "MALFORMED_OUTPUT",
+      "direct-child-state": "terminated",
+      "timeout": "PT1S",
+      "elapsed-upper-bound-millis": "6000",
+      "new-open-pipes": "0",
+      "owned-staging-removed": "true",
+      "caller-root-preserved": "true",
+      "caller-sentinel-sha256": "5f53c0ff07ba5d9a330e68c95dabb1a9bc49e29f9ed53f6fa7c6d99abb000050"
+    },
+    "negative-length": {
+      "result": "MALFORMED_OUTPUT",
+      "direct-child-state": "terminated",
+      "timeout": "PT1S",
+      "elapsed-upper-bound-millis": "6000",
+      "new-open-pipes": "0",
+      "owned-staging-removed": "true",
+      "caller-root-preserved": "true",
+      "caller-sentinel-sha256": "5f53c0ff07ba5d9a330e68c95dabb1a9bc49e29f9ed53f6fa7c6d99abb000050"
+    },
+    "oversized-length": {
+      "result": "OUTPUT_LIMIT_EXCEEDED",
+      "direct-child-state": "terminated",
+      "timeout": "PT1S",
+      "elapsed-upper-bound-millis": "6000",
+      "new-open-pipes": "0",
+      "owned-staging-removed": "true",
+      "caller-root-preserved": "true",
+      "caller-sentinel-sha256": "5f53c0ff07ba5d9a330e68c95dabb1a9bc49e29f9ed53f6fa7c6d99abb000050"
+    },
+    "truncated-header": {
+      "result": "MALFORMED_OUTPUT",
+      "direct-child-state": "terminated",
+      "timeout": "PT1S",
+      "elapsed-upper-bound-millis": "6000",
+      "new-open-pipes": "0",
+      "owned-staging-removed": "true",
+      "caller-root-preserved": "true",
+      "caller-sentinel-sha256": "5f53c0ff07ba5d9a330e68c95dabb1a9bc49e29f9ed53f6fa7c6d99abb000050"
+    },
+    "truncated-payload": {
+      "result": "MALFORMED_OUTPUT",
+      "direct-child-state": "terminated",
+      "timeout": "PT1S",
+      "elapsed-upper-bound-millis": "6000",
+      "new-open-pipes": "0",
+      "owned-staging-removed": "true",
+      "caller-root-preserved": "true",
+      "caller-sentinel-sha256": "5f53c0ff07ba5d9a330e68c95dabb1a9bc49e29f9ed53f6fa7c6d99abb000050"
+    },
+    "trailing-output": {
+      "result": "MALFORMED_OUTPUT",
+      "direct-child-state": "terminated",
+      "timeout": "PT1S",
+      "elapsed-upper-bound-millis": "6000",
+      "new-open-pipes": "0",
+      "owned-staging-removed": "true",
+      "caller-root-preserved": "true",
+      "caller-sentinel-sha256": "5f53c0ff07ba5d9a330e68c95dabb1a9bc49e29f9ed53f6fa7c6d99abb000050"
+    },
+    "startup": {
+      "result": "STARTUP_FAILED",
+      "direct-child-state": "not-started",
+      "timeout": "PT1S",
+      "elapsed-upper-bound-millis": "6000",
+      "new-open-pipes": "0",
+      "owned-staging-removed": "true",
+      "caller-root-preserved": "true",
+      "caller-sentinel-sha256": "5f53c0ff07ba5d9a330e68c95dabb1a9bc49e29f9ed53f6fa7c6d99abb000050"
+    },
+    "nonzero": {
+      "result": "EXECUTION_FAILED",
+      "direct-child-state": "terminated",
+      "timeout": "PT1S",
+      "elapsed-upper-bound-millis": "6000",
+      "new-open-pipes": "0",
+      "owned-staging-removed": "true",
+      "caller-root-preserved": "true",
+      "caller-sentinel-sha256": "5f53c0ff07ba5d9a330e68c95dabb1a9bc49e29f9ed53f6fa7c6d99abb000050"
+    },
+    "crash": {
+      "result": "EXECUTION_FAILED",
+      "direct-child-state": "terminated",
+      "timeout": "PT1S",
+      "elapsed-upper-bound-millis": "6000",
+      "new-open-pipes": "0",
+      "owned-staging-removed": "true",
+      "caller-root-preserved": "true",
+      "caller-sentinel-sha256": "5f53c0ff07ba5d9a330e68c95dabb1a9bc49e29f9ed53f6fa7c6d99abb000050"
+    },
+    "stalled-input": {
+      "result": "DEADLINE_EXCEEDED",
+      "direct-child-state": "terminated",
+      "timeout": "PT1S",
+      "elapsed-upper-bound-millis": "6000",
+      "new-open-pipes": "0",
+      "owned-staging-removed": "true",
+      "caller-root-preserved": "true",
+      "caller-sentinel-sha256": "5f53c0ff07ba5d9a330e68c95dabb1a9bc49e29f9ed53f6fa7c6d99abb000050"
+    },
+    "stalled-output": {
+      "result": "DEADLINE_EXCEEDED",
+      "direct-child-state": "terminated",
+      "timeout": "PT1S",
+      "elapsed-upper-bound-millis": "6000",
+      "new-open-pipes": "0",
+      "owned-staging-removed": "true",
+      "caller-root-preserved": "true",
+      "caller-sentinel-sha256": "5f53c0ff07ba5d9a330e68c95dabb1a9bc49e29f9ed53f6fa7c6d99abb000050"
+    },
+    "inherited-pipe": {
+      "result": "DEADLINE_EXCEEDED",
+      "direct-child-state": "terminated",
+      "timeout": "PT1S",
+      "elapsed-upper-bound-millis": "6000",
+      "new-open-pipes": "0",
+      "owned-staging-removed": "true",
+      "caller-root-preserved": "true",
+      "caller-sentinel-sha256": "5f53c0ff07ba5d9a330e68c95dabb1a9bc49e29f9ed53f6fa7c6d99abb000050"
+    }
+  },
+  "facade-observations": {
+    "execution-profile": "IN_PROCESS",
+    "stream-ownership.receipts": "target:COMMITTED:false",
+    "stream-ownership.result": "pass",
+    "reopened.result": "pass",
+    "closed-views.result": "pass",
+    "partial-publication.receipts": "first:COMMITTED:false,current:FAILED:true,later:NOT_ATTEMPTED:false",
+    "partial-publication.code": "PUBLICATION_FAILED",
+    "partial-publication.result": "pass"
+  },
+  "pdf-products": [
+    "native-offline",
+    "native-registration",
+    "native-first",
+    "native-repeat",
+    "native-exact",
+    "native-remote-selection",
+    "native-remote-execution",
+    "native-stream",
+    "native-before-failure",
+    "facade-stream",
+    "facade-before-failure",
+    "preview/facade-stream",
+    "preview/facade-before-failure"
+  ],
+  "pdf-predicates": "Actual resource-free one-page 612x792-point PDFs; existing T03 standards/raster rules and rule-specific controls; Provider payloads are not PDF evidence.",
+  "source-criteria": {
+    "1": {
+      "requirements": [
+        "spec-us-37",
+        "spec-us-38",
+        "spec-us-39",
+        "spec-us-74",
+        "spec-id-19",
+        "spec-id-32",
+        "spec-id-47",
+        "spec-td-04",
+        "slice-84-1",
+        "slice-84-2",
+        "slice-84-3",
+        "slice-84-4"
+      ],
+      "verification": "actual Provider/Workflow observations"
+    },
+    "2": {
+      "requirements": [
+        "spec-us-37",
+        "spec-us-38",
+        "spec-us-39",
+        "spec-us-74",
+        "spec-id-19",
+        "spec-id-32",
+        "spec-id-47",
+        "spec-td-04",
+        "slice-84-1",
+        "slice-84-2",
+        "slice-84-3",
+        "slice-84-4"
+      ],
+      "verification": "actual Provider/Workflow observations"
+    },
+    "3": {
+      "requirements": [
+        "spec-us-37",
+        "spec-us-38",
+        "spec-us-39",
+        "spec-us-74",
+        "spec-id-19",
+        "spec-id-32",
+        "spec-id-47",
+        "spec-td-04",
+        "slice-84-1",
+        "slice-84-2",
+        "slice-84-3",
+        "slice-84-4"
+      ],
+      "verification": "actual Provider/Workflow observations"
+    },
+    "4": {
+      "requirements": [
+        "spec-us-37",
+        "spec-us-38",
+        "spec-us-39",
+        "spec-us-74",
+        "spec-id-19",
+        "spec-id-32",
+        "spec-id-47",
+        "spec-td-04",
+        "slice-84-1",
+        "slice-84-2",
+        "slice-84-3",
+        "slice-84-4"
+      ],
+      "verification": "artifact and Native-only contract checks"
+    },
+    "5": {
+      "requirements": [
+        "spec-us-37",
+        "spec-us-38",
+        "spec-us-39",
+        "spec-us-74",
+        "spec-id-19",
+        "spec-id-32",
+        "spec-id-47",
+        "spec-td-04",
+        "slice-84-1",
+        "slice-84-2",
+        "slice-84-3",
+        "slice-84-4"
+      ],
+      "verification": "separate five-chain qualified original/live evidence"
+    },
+    "6": {
+      "requirements": [
+        "spec-us-37",
+        "spec-us-38",
+        "spec-us-39",
+        "spec-us-74",
+        "spec-id-19",
+        "spec-id-32",
+        "spec-id-47",
+        "spec-td-04",
+        "slice-84-1",
+        "slice-84-2",
+        "slice-84-3",
+        "slice-84-4"
+      ],
+      "verification": "actual Provider/Workflow observations"
+    },
+    "7": {
+      "requirements": [
+        "spec-us-37",
+        "spec-us-38",
+        "spec-us-39",
+        "spec-us-74",
+        "spec-id-19",
+        "spec-id-32",
+        "spec-id-47",
+        "spec-td-04",
+        "slice-84-1",
+        "slice-84-2",
+        "slice-84-3",
+        "slice-84-4"
+      ],
+      "verification": "coordinated inventories, English/Chinese contracts and provenance"
+    },
+    "8": {
+      "requirements": [
+        "spec-us-37",
+        "spec-us-38",
+        "spec-us-39",
+        "spec-us-74",
+        "spec-id-19",
+        "spec-id-32",
+        "spec-id-47",
+        "spec-td-04",
+        "slice-84-1",
+        "slice-84-2",
+        "slice-84-3",
+        "slice-84-4"
+      ],
+      "verification": "focused, full verify, inventory and fixed-baseline Standards/Spec reviews"
+    },
+    "9": {
+      "requirements": [
+        "spec-us-37",
+        "spec-us-38",
+        "spec-us-39",
+        "spec-us-74",
+        "spec-id-19",
+        "spec-id-32",
+        "spec-id-47",
+        "spec-td-04",
+        "slice-84-1",
+        "slice-84-2",
+        "slice-84-3",
+        "slice-84-4"
+      ],
+      "verification": "artifact and Native-only contract checks"
+    }
+  }
+}

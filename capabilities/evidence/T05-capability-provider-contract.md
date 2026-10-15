@@ -1,6 +1,8 @@
 # T05 Capability Provider contract evidence
 
-Status: `experimental`
+Status: `compatible`
+
+Historical implementation status: `experimental`
 
 Capability: `conversion.capability-provider.select-execute`
 
@@ -17,7 +19,10 @@ subprocess, and a remote service. They do not imply whether the enclosing
 Document Workflow uses trusted in-process execution or the future Hardened
 Worker Profile.
 
-## Implementation evidence
+## Historical implementation evidence
+
+The account below describes the original T05 phase. Its prerequisite and
+certification observations are historical; the current #84 account follows.
 
 - `ProviderCatalogTest` exercises immutable project-owned request/result
   values, deterministic declaration-ordered selection, metadata disclosure,
@@ -67,3 +72,39 @@ No syntax, standards, semantic, or visual Acceptance Evidence chain has been
 recorded as passing. T03 is also still `experimental`, so T05's declared
 Dependency Gate is open. T05 therefore remains `experimental`; T06 is still
 required before any compatibility claim or certified-platform claim.
+
+## Current issue #84 certification account
+
+Foundation obligation: `providers`; dependency: `transactions`.
+[T05 certification contract](../../docs/t05-certification.md),
+[frozen 51-case inventory](../profiles/T05-capability-provider-contract/coverage.json),
+[59 mandatory named tests](../profiles/T05-capability-provider-contract/mandatory-tests.txt).
+The current [Foundation evidence index](../foundation-evidence.yaml) owns the
+exact staged candidate, four Ubuntu 24.04/Linux x86-64 Temurin builds, two Native
+profiles and 40 separate syntax/standards/semantic/visual/contract records.
+Compatibility is valid only with that complete dependency-satisfied index and
+current actual source, artifacts, configuration, tools and observations.
+
+Actual public observations cover declaration-order and exact preferences,
+metadata-only selection and immutable snapshots, offline defaults, byte bounds,
+timeout policy, safe adapter failures, framed subprocess faults/lifecycle and
+controlled loopback disclosure. Registration/preference does not disclose;
+wrong-capability consent and later unauthorized requests remain refused.
+Explicit Workflow selection and explicit direct Provider Request authorization
+are separate controls, with parent-brokered execution in both Native profiles.
+
+All applicable native, Stable and isolated Preview published outcomes are
+reopened and checked with original T03 blank-PDF predicates and controls.
+Provider byte transfer does not replace PDF standards or visual evidence.
+Facades execute IN_PROCESS and Provider-specific controls retain the individual
+Native-only mapping rationale. Strict collection reexecutes the exact candidate
+and rejects omitted/skipped/repeated cases, tuples/chains, altered payloads,
+frames, findings or documents, stale identities and resealed invalid controls.
+
+The current four PDF narratives are T84-provider-syntax/standards/semantic/visual;
+the additional T84-provider-contract narrative owns boundary controls. Windows
+and macOS remain uncertified. Generic cleanup supervises only the direct child
+and owned per-run staging; arbitrary in-process termination, Provider descendant
+containment and hard OS isolation are not claimed. Other open slices remain
+Foundation blockers. The original T05 record and prior failed observations keep
+their historical identities.

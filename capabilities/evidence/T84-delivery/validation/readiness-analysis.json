@@ -1,0 +1,1461 @@
+{
+  "result": "pass",
+  "global-foundation-ready": false,
+  "readiness-exit-code": 1,
+  "candidate-sha256": "8e079e00ef1cf38a23efd34922d60268949682732d3066332927451b1bb5dca8",
+  "contract-sha256": "5c3cafb114f1ba8d148af31e5a74dd8466caf8427a92fb91b3e561805b92e176",
+  "readiness-log": "capabilities/evidence/T84-delivery/validation/readiness-final.txt",
+  "readiness-log-sha256": "676ffbfc6e6c89265aa2ec3ca425c81b6134acdb296f455330b4c73e90b21220",
+  "preserved-initially-satisfied-obligations": [
+    "annotations",
+    "images",
+    "incremental",
+    "limits",
+    "metadata",
+    "pages",
+    "password-attachments",
+    "password-baseline",
+    "password-clear-metadata",
+    "recovery",
+    "security",
+    "text",
+    "transactions",
+    "values",
+    "worker"
+  ],
+  "satisfied-obligations": [
+    "annotations",
+    "images",
+    "incremental",
+    "limits",
+    "metadata",
+    "pages",
+    "password-attachments",
+    "password-baseline",
+    "password-clear-metadata",
+    "providers",
+    "recovery",
+    "security",
+    "text",
+    "transactions",
+    "values",
+    "worker"
+  ],
+  "provider-tuples": 8,
+  "provider-chains": 40,
+  "total-tuples": 108,
+  "total-chains": 452,
+  "unrelated-blocked-obligations": [
+    "acceptance",
+    "barcodes-1d",
+    "barcodes-2d",
+    "candidate",
+    "canvas",
+    "docs",
+    "environments",
+    "facade-artifacts",
+    "fonts",
+    "graphics",
+    "integration",
+    "java-artifacts",
+    "pagination",
+    "paragraphs",
+    "provenance",
+    "publication-controls",
+    "rendering",
+    "reproducibility",
+    "shaping",
+    "supply-chain",
+    "tables",
+    "tables-base",
+    "tables-pagination"
+  ],
+  "unrelated-blockers": [
+    {
+      "obligation": "canvas",
+      "slice": 85,
+      "reason": "capability composition.canvas.draw-positioned-text is experimental, requires compatible"
+    },
+    {
+      "obligation": "canvas",
+      "slice": 85,
+      "reason": "missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on composition.canvas.draw-positioned-text"
+    },
+    {
+      "obligation": "canvas",
+      "slice": 85,
+      "reason": "missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on composition.canvas.draw-positioned-text"
+    },
+    {
+      "obligation": "canvas",
+      "slice": 85,
+      "reason": "missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on composition.canvas.draw-positioned-text"
+    },
+    {
+      "obligation": "canvas",
+      "slice": 85,
+      "reason": "missing certified environment ubuntu-24.04-linux-x86-64-jdk21 on composition.canvas.draw-positioned-text"
+    },
+    {
+      "obligation": "canvas",
+      "slice": 85,
+      "reason": "missing required Facade mapping set for kernel PdfCanvas paths and encoded glyphs"
+    },
+    {
+      "obligation": "canvas",
+      "slice": 85,
+      "reason": "unresolved retained limitation: The split Canvas graphics surface requires #85/#86 reconciliation; missing required drawing behavior remains blocking."
+    },
+    {
+      "obligation": "canvas",
+      "slice": 85,
+      "reason": "unresolved retained limitation: The borrowed-font restrictions must cover the approved Foundation Canvas profile under #85."
+    },
+    {
+      "obligation": "canvas",
+      "slice": 85,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk8/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "canvas",
+      "slice": 85,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk8/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "canvas",
+      "slice": 85,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk11/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "canvas",
+      "slice": 85,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk11/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "canvas",
+      "slice": 85,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk17/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "canvas",
+      "slice": 85,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "canvas",
+      "slice": 85,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "canvas",
+      "slice": 85,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "graphics",
+      "slice": 86,
+      "reason": "capability composition.canvas.images-colors-transparency is experimental, requires compatible"
+    },
+    {
+      "obligation": "graphics",
+      "slice": 86,
+      "reason": "incompatible Dependency Gate composition.canvas.draw-positioned-text"
+    },
+    {
+      "obligation": "graphics",
+      "slice": 86,
+      "reason": "missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on composition.canvas.images-colors-transparency"
+    },
+    {
+      "obligation": "graphics",
+      "slice": 86,
+      "reason": "missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on composition.canvas.images-colors-transparency"
+    },
+    {
+      "obligation": "graphics",
+      "slice": 86,
+      "reason": "missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on composition.canvas.images-colors-transparency"
+    },
+    {
+      "obligation": "graphics",
+      "slice": 86,
+      "reason": "missing certified environment ubuntu-24.04-linux-x86-64-jdk21 on composition.canvas.images-colors-transparency"
+    },
+    {
+      "obligation": "graphics",
+      "slice": 86,
+      "reason": "missing required Facade mapping set for image, color and transparency graphics"
+    },
+    {
+      "obligation": "graphics",
+      "slice": 86,
+      "reason": "unresolved retained limitation: Image normalization and precision/color restrictions require #86 evidence for every promised image profile."
+    },
+    {
+      "obligation": "graphics",
+      "slice": 86,
+      "reason": "unresolved retained limitation: Borrowed-image filter restrictions require #86 reconciliation with required Foundation graphics."
+    },
+    {
+      "obligation": "graphics",
+      "slice": 86,
+      "reason": "unresolved retained limitation: Required graphics Facade and certification are still absent; downstream non-goals do not waive them."
+    },
+    {
+      "obligation": "graphics",
+      "slice": 86,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk8/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "graphics",
+      "slice": 86,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk8/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "graphics",
+      "slice": 86,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk11/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "graphics",
+      "slice": 86,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk11/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "graphics",
+      "slice": 86,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk17/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "graphics",
+      "slice": 86,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "graphics",
+      "slice": 86,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "graphics",
+      "slice": 86,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "graphics",
+      "slice": 86,
+      "reason": "incomplete prerequisite obligation canvas"
+    },
+    {
+      "obligation": "fonts",
+      "slice": 87,
+      "reason": "capability composition.fonts.load-embed-subset-fallback is experimental, requires compatible"
+    },
+    {
+      "obligation": "fonts",
+      "slice": 87,
+      "reason": "incompatible Dependency Gate composition.canvas.draw-positioned-text"
+    },
+    {
+      "obligation": "fonts",
+      "slice": 87,
+      "reason": "missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on composition.fonts.load-embed-subset-fallback"
+    },
+    {
+      "obligation": "fonts",
+      "slice": 87,
+      "reason": "missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on composition.fonts.load-embed-subset-fallback"
+    },
+    {
+      "obligation": "fonts",
+      "slice": 87,
+      "reason": "missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on composition.fonts.load-embed-subset-fallback"
+    },
+    {
+      "obligation": "fonts",
+      "slice": 87,
+      "reason": "missing certified environment ubuntu-24.04-linux-x86-64-jdk21 on composition.fonts.load-embed-subset-fallback"
+    },
+    {
+      "obligation": "fonts",
+      "slice": 87,
+      "reason": "missing required Facade mapping set for font factory, font and positioned text"
+    },
+    {
+      "obligation": "fonts",
+      "slice": 87,
+      "reason": "unresolved retained limitation: Positioned-text clipping restrictions require #87 reconciliation with the required text/Canvas families."
+    },
+    {
+      "obligation": "fonts",
+      "slice": 87,
+      "reason": "unresolved retained limitation: Admitted static font formats and metadata restrictions require #87 certification for all Foundation reference fonts."
+    },
+    {
+      "obligation": "fonts",
+      "slice": 87,
+      "reason": "unresolved retained limitation: Scalar/glyph ambiguity restrictions and the shaping split require #87/#93 evidence for required multilingual behavior."
+    },
+    {
+      "obligation": "fonts",
+      "slice": 87,
+      "reason": "unresolved retained limitation: Required font Facade and certification are absent; later-release exclusions cannot waive them."
+    },
+    {
+      "obligation": "fonts",
+      "slice": 87,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk8/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "fonts",
+      "slice": 87,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk8/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "fonts",
+      "slice": 87,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk11/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "fonts",
+      "slice": 87,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk11/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "fonts",
+      "slice": 87,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk17/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "fonts",
+      "slice": 87,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "fonts",
+      "slice": 87,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "fonts",
+      "slice": 87,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "fonts",
+      "slice": 87,
+      "reason": "incomplete prerequisite obligation canvas"
+    },
+    {
+      "obligation": "rendering",
+      "slice": 88,
+      "reason": "capability conversion.rendering is experimental, requires compatible"
+    },
+    {
+      "obligation": "rendering",
+      "slice": 88,
+      "reason": "incompatible Dependency Gate composition.canvas.images-colors-transparency"
+    },
+    {
+      "obligation": "rendering",
+      "slice": 88,
+      "reason": "incompatible Dependency Gate composition.fonts.load-embed-subset-fallback"
+    },
+    {
+      "obligation": "rendering",
+      "slice": 88,
+      "reason": "missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on conversion.rendering"
+    },
+    {
+      "obligation": "rendering",
+      "slice": 88,
+      "reason": "missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on conversion.rendering"
+    },
+    {
+      "obligation": "rendering",
+      "slice": 88,
+      "reason": "missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on conversion.rendering"
+    },
+    {
+      "obligation": "rendering",
+      "slice": 88,
+      "reason": "missing certified environment ubuntu-24.04-linux-x86-64-jdk21 on conversion.rendering"
+    },
+    {
+      "obligation": "rendering",
+      "slice": 88,
+      "reason": "missing required Facade mapping set for pdfRender page rendering"
+    },
+    {
+      "obligation": "rendering",
+      "slice": 88,
+      "reason": "unresolved retained limitation: Annotation rendering restrictions require #88 evidence against the Foundation Rendering profile."
+    },
+    {
+      "obligation": "rendering",
+      "slice": 88,
+      "reason": "unresolved retained limitation: Font substitution and platform-codec diagnostics are not compatibility evidence; #88 must certify required font/image outcomes."
+    },
+    {
+      "obligation": "rendering",
+      "slice": 88,
+      "reason": "unresolved retained limitation: Independent rendering option coverage, standards/semantic chains and Facade mappings remain incomplete under #88."
+    },
+    {
+      "obligation": "rendering",
+      "slice": 88,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk8/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "rendering",
+      "slice": 88,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk8/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "rendering",
+      "slice": 88,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk11/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "rendering",
+      "slice": 88,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk11/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "rendering",
+      "slice": 88,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk17/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "rendering",
+      "slice": 88,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "rendering",
+      "slice": 88,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "rendering",
+      "slice": 88,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "rendering",
+      "slice": 88,
+      "reason": "incomplete prerequisite obligation graphics"
+    },
+    {
+      "obligation": "rendering",
+      "slice": 88,
+      "reason": "incomplete prerequisite obligation fonts"
+    },
+    {
+      "obligation": "paragraphs",
+      "slice": 89,
+      "reason": "capability composition.layout.paragraph-areas is experimental, requires compatible"
+    },
+    {
+      "obligation": "paragraphs",
+      "slice": 89,
+      "reason": "incompatible Dependency Gate composition.canvas.draw-positioned-text"
+    },
+    {
+      "obligation": "paragraphs",
+      "slice": 89,
+      "reason": "incompatible Dependency Gate composition.canvas.images-colors-transparency"
+    },
+    {
+      "obligation": "paragraphs",
+      "slice": 89,
+      "reason": "incompatible Dependency Gate composition.fonts.load-embed-subset-fallback"
+    },
+    {
+      "obligation": "paragraphs",
+      "slice": 89,
+      "reason": "missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on composition.layout.paragraph-areas"
+    },
+    {
+      "obligation": "paragraphs",
+      "slice": 89,
+      "reason": "missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on composition.layout.paragraph-areas"
+    },
+    {
+      "obligation": "paragraphs",
+      "slice": 89,
+      "reason": "missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on composition.layout.paragraph-areas"
+    },
+    {
+      "obligation": "paragraphs",
+      "slice": 89,
+      "reason": "missing certified environment ubuntu-24.04-linux-x86-64-jdk21 on composition.layout.paragraph-areas"
+    },
+    {
+      "obligation": "paragraphs",
+      "slice": 89,
+      "reason": "missing required Facade mapping set for layout Document, Paragraph, Text and AreaBreak"
+    },
+    {
+      "obligation": "paragraphs",
+      "slice": 89,
+      "reason": "unresolved retained limitation: The full pinned Foundation font/typography profile remains uncertified under #87/#89/#93; four-platform wording is superseded only by ADR-0040."
+    },
+    {
+      "obligation": "paragraphs",
+      "slice": 89,
+      "reason": "unresolved retained limitation: Unicode/shaping/hyphenation/vertical-text restrictions must be reconciled with full required Foundation paragraph behavior under #89/#93."
+    },
+    {
+      "obligation": "paragraphs",
+      "slice": 89,
+      "reason": "unresolved retained limitation: Required advanced paragraphs/tables and migration mappings remain separate blocking obligations."
+    },
+    {
+      "obligation": "paragraphs",
+      "slice": 89,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk8/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "paragraphs",
+      "slice": 89,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk8/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "paragraphs",
+      "slice": 89,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk11/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "paragraphs",
+      "slice": 89,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk11/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "paragraphs",
+      "slice": 89,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk17/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "paragraphs",
+      "slice": 89,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "paragraphs",
+      "slice": 89,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "paragraphs",
+      "slice": 89,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "paragraphs",
+      "slice": 89,
+      "reason": "incomplete prerequisite obligation canvas"
+    },
+    {
+      "obligation": "paragraphs",
+      "slice": 89,
+      "reason": "incomplete prerequisite obligation graphics"
+    },
+    {
+      "obligation": "paragraphs",
+      "slice": 89,
+      "reason": "incomplete prerequisite obligation fonts"
+    },
+    {
+      "obligation": "pagination",
+      "slice": 90,
+      "reason": "capability composition.layout.paragraph-pagination is experimental, requires compatible"
+    },
+    {
+      "obligation": "pagination",
+      "slice": 90,
+      "reason": "incompatible Dependency Gate composition.layout.paragraph-areas"
+    },
+    {
+      "obligation": "pagination",
+      "slice": 90,
+      "reason": "incompatible Dependency Gate composition.fonts.load-embed-subset-fallback"
+    },
+    {
+      "obligation": "pagination",
+      "slice": 90,
+      "reason": "incompatible Dependency Gate composition.canvas.images-colors-transparency"
+    },
+    {
+      "obligation": "pagination",
+      "slice": 90,
+      "reason": "missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on composition.layout.paragraph-pagination"
+    },
+    {
+      "obligation": "pagination",
+      "slice": 90,
+      "reason": "missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on composition.layout.paragraph-pagination"
+    },
+    {
+      "obligation": "pagination",
+      "slice": 90,
+      "reason": "missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on composition.layout.paragraph-pagination"
+    },
+    {
+      "obligation": "pagination",
+      "slice": 90,
+      "reason": "missing certified environment ubuntu-24.04-linux-x86-64-jdk21 on composition.layout.paragraph-pagination"
+    },
+    {
+      "obligation": "pagination",
+      "slice": 90,
+      "reason": "missing required Facade mapping set for layout paragraph properties, relayout and flushing"
+    },
+    {
+      "obligation": "pagination",
+      "slice": 90,
+      "reason": "unresolved retained limitation: Tab variants and excluded leaders require #90 audit against the complete Foundation paragraph contract."
+    },
+    {
+      "obligation": "pagination",
+      "slice": 90,
+      "reason": "unresolved retained limitation: Small-font independent pages do not certify all required Foundation reference fonts/environments under #90."
+    },
+    {
+      "obligation": "pagination",
+      "slice": 90,
+      "reason": "unresolved retained limitation: Required standards, compatible dependencies and paragraph Facade remain incomplete under #90."
+    },
+    {
+      "obligation": "pagination",
+      "slice": 90,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk8/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "pagination",
+      "slice": 90,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk8/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "pagination",
+      "slice": 90,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk11/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "pagination",
+      "slice": 90,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk11/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "pagination",
+      "slice": 90,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk17/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "pagination",
+      "slice": 90,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "pagination",
+      "slice": 90,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "pagination",
+      "slice": 90,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "pagination",
+      "slice": 90,
+      "reason": "incomplete prerequisite obligation paragraphs"
+    },
+    {
+      "obligation": "pagination",
+      "slice": 90,
+      "reason": "incomplete prerequisite obligation fonts"
+    },
+    {
+      "obligation": "pagination",
+      "slice": 90,
+      "reason": "incomplete prerequisite obligation graphics"
+    },
+    {
+      "obligation": "tables",
+      "slice": 92,
+      "reason": "capability composition.layout.tables is experimental, requires compatible"
+    },
+    {
+      "obligation": "tables",
+      "slice": 92,
+      "reason": "incompatible Dependency Gate composition.layout.paragraph-areas"
+    },
+    {
+      "obligation": "tables",
+      "slice": 92,
+      "reason": "incompatible Dependency Gate composition.layout.paragraph-pagination"
+    },
+    {
+      "obligation": "tables",
+      "slice": 92,
+      "reason": "incompatible Dependency Gate composition.fonts.load-embed-subset-fallback"
+    },
+    {
+      "obligation": "tables",
+      "slice": 92,
+      "reason": "incompatible Dependency Gate composition.canvas.images-colors-transparency"
+    },
+    {
+      "obligation": "tables",
+      "slice": 92,
+      "reason": "incomplete prerequisite obligation paragraphs"
+    },
+    {
+      "obligation": "tables",
+      "slice": 92,
+      "reason": "incomplete prerequisite obligation pagination"
+    },
+    {
+      "obligation": "tables",
+      "slice": 92,
+      "reason": "incomplete prerequisite obligation fonts"
+    },
+    {
+      "obligation": "tables",
+      "slice": 92,
+      "reason": "incomplete prerequisite obligation graphics"
+    },
+    {
+      "obligation": "tables",
+      "slice": 92,
+      "reason": "incomplete prerequisite obligation tables-base"
+    },
+    {
+      "obligation": "tables",
+      "slice": 92,
+      "reason": "incomplete prerequisite obligation tables-pagination"
+    },
+    {
+      "obligation": "shaping",
+      "slice": 93,
+      "reason": "capability composition.shaping.harf-buzz is experimental, requires compatible"
+    },
+    {
+      "obligation": "shaping",
+      "slice": 93,
+      "reason": "incompatible Dependency Gate composition.fonts.load-embed-subset-fallback"
+    },
+    {
+      "obligation": "shaping",
+      "slice": 93,
+      "reason": "incompatible Dependency Gate composition.layout.paragraph-areas"
+    },
+    {
+      "obligation": "shaping",
+      "slice": 93,
+      "reason": "incompatible Dependency Gate composition.layout.paragraph-pagination"
+    },
+    {
+      "obligation": "shaping",
+      "slice": 93,
+      "reason": "incompatible Dependency Gate composition.layout.tables"
+    },
+    {
+      "obligation": "shaping",
+      "slice": 93,
+      "reason": "missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on composition.shaping.harf-buzz"
+    },
+    {
+      "obligation": "shaping",
+      "slice": 93,
+      "reason": "missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on composition.shaping.harf-buzz"
+    },
+    {
+      "obligation": "shaping",
+      "slice": 93,
+      "reason": "missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on composition.shaping.harf-buzz"
+    },
+    {
+      "obligation": "shaping",
+      "slice": 93,
+      "reason": "missing certified environment ubuntu-24.04-linux-x86-64-jdk21 on composition.shaping.harf-buzz"
+    },
+    {
+      "obligation": "shaping",
+      "slice": 93,
+      "reason": "missing required Facade mapping set for layout typography and explicit shaping configuration"
+    },
+    {
+      "obligation": "shaping",
+      "slice": 93,
+      "reason": "unresolved retained limitation: Admitted shaping/font/feature profiles require #93 evidence for every required representative writing system."
+    },
+    {
+      "obligation": "shaping",
+      "slice": 93,
+      "reason": "unresolved retained limitation: Cross-style grapheme/run restrictions must be reconciled with required Foundation shaping under #93."
+    },
+    {
+      "obligation": "shaping",
+      "slice": 93,
+      "reason": "unresolved retained limitation: Parent-side native resource limits and required Linux observations remain #93 responsibilities; Windows/macOS gates are removed by ADR-0040."
+    },
+    {
+      "obligation": "shaping",
+      "slice": 93,
+      "reason": "unresolved retained limitation: Missing actual required Ubuntu/JDK native observations still block #93; Windows/macOS absence is explicitly not a Foundation 0.1.0 blocker."
+    },
+    {
+      "obligation": "shaping",
+      "slice": 93,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk8/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "shaping",
+      "slice": 93,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk8/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "shaping",
+      "slice": 93,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk11/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "shaping",
+      "slice": 93,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk11/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "shaping",
+      "slice": 93,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk17/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "shaping",
+      "slice": 93,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "shaping",
+      "slice": 93,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "shaping",
+      "slice": 93,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "shaping",
+      "slice": 93,
+      "reason": "incomplete prerequisite obligation fonts"
+    },
+    {
+      "obligation": "shaping",
+      "slice": 93,
+      "reason": "incomplete prerequisite obligation paragraphs"
+    },
+    {
+      "obligation": "shaping",
+      "slice": 93,
+      "reason": "incomplete prerequisite obligation pagination"
+    },
+    {
+      "obligation": "shaping",
+      "slice": 93,
+      "reason": "incomplete prerequisite obligation tables"
+    },
+    {
+      "obligation": "barcodes-1d",
+      "slice": 94,
+      "reason": "capability composition.barcodes.one-dimensional is experimental, requires compatible"
+    },
+    {
+      "obligation": "barcodes-1d",
+      "slice": 94,
+      "reason": "incompatible Dependency Gate composition.canvas.draw-positioned-text"
+    },
+    {
+      "obligation": "barcodes-1d",
+      "slice": 94,
+      "reason": "incompatible Dependency Gate composition.canvas.images-colors-transparency"
+    },
+    {
+      "obligation": "barcodes-1d",
+      "slice": 94,
+      "reason": "incompatible Dependency Gate composition.fonts.load-embed-subset-fallback"
+    },
+    {
+      "obligation": "barcodes-1d",
+      "slice": 94,
+      "reason": "missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on composition.barcodes.one-dimensional"
+    },
+    {
+      "obligation": "barcodes-1d",
+      "slice": 94,
+      "reason": "missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on composition.barcodes.one-dimensional"
+    },
+    {
+      "obligation": "barcodes-1d",
+      "slice": 94,
+      "reason": "missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on composition.barcodes.one-dimensional"
+    },
+    {
+      "obligation": "barcodes-1d",
+      "slice": 94,
+      "reason": "missing certified environment ubuntu-24.04-linux-x86-64-jdk21 on composition.barcodes.one-dimensional"
+    },
+    {
+      "obligation": "barcodes-1d",
+      "slice": 94,
+      "reason": "missing required Facade mapping set for barcodes one-dimensional generation modes"
+    },
+    {
+      "obligation": "barcodes-1d",
+      "slice": 94,
+      "reason": "unresolved retained limitation: All 116 cases require final candidate/environment evidence and compatible dependencies under #94."
+    },
+    {
+      "obligation": "barcodes-1d",
+      "slice": 94,
+      "reason": "unresolved retained limitation: Independent standards, required environment/font evidence and matching 1D Facade remain incomplete."
+    },
+    {
+      "obligation": "barcodes-1d",
+      "slice": 94,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk8/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "barcodes-1d",
+      "slice": 94,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk8/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "barcodes-1d",
+      "slice": 94,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk11/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "barcodes-1d",
+      "slice": 94,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk11/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "barcodes-1d",
+      "slice": 94,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk17/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "barcodes-1d",
+      "slice": 94,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "barcodes-1d",
+      "slice": 94,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "barcodes-1d",
+      "slice": 94,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "barcodes-1d",
+      "slice": 94,
+      "reason": "incomplete prerequisite obligation canvas"
+    },
+    {
+      "obligation": "barcodes-1d",
+      "slice": 94,
+      "reason": "incomplete prerequisite obligation graphics"
+    },
+    {
+      "obligation": "barcodes-1d",
+      "slice": 94,
+      "reason": "incomplete prerequisite obligation fonts"
+    },
+    {
+      "obligation": "barcodes-2d",
+      "slice": 95,
+      "reason": "capability composition.barcodes.two-dimensional is experimental, requires compatible"
+    },
+    {
+      "obligation": "barcodes-2d",
+      "slice": 95,
+      "reason": "incompatible Dependency Gate composition.canvas.draw-positioned-text"
+    },
+    {
+      "obligation": "barcodes-2d",
+      "slice": 95,
+      "reason": "incompatible Dependency Gate composition.canvas.images-colors-transparency"
+    },
+    {
+      "obligation": "barcodes-2d",
+      "slice": 95,
+      "reason": "missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on composition.barcodes.two-dimensional"
+    },
+    {
+      "obligation": "barcodes-2d",
+      "slice": 95,
+      "reason": "missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on composition.barcodes.two-dimensional"
+    },
+    {
+      "obligation": "barcodes-2d",
+      "slice": 95,
+      "reason": "missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on composition.barcodes.two-dimensional"
+    },
+    {
+      "obligation": "barcodes-2d",
+      "slice": 95,
+      "reason": "missing certified environment ubuntu-24.04-linux-x86-64-jdk21 on composition.barcodes.two-dimensional"
+    },
+    {
+      "obligation": "barcodes-2d",
+      "slice": 95,
+      "reason": "missing required Facade mapping set for barcodes QR, DataMatrix and PDF417 modes"
+    },
+    {
+      "obligation": "barcodes-2d",
+      "slice": 95,
+      "reason": "unresolved retained limitation: Typed control/file-ID migration differences need exact #95 Facade and semantic evidence."
+    },
+    {
+      "obligation": "barcodes-2d",
+      "slice": 95,
+      "reason": "unresolved retained limitation: Every Reference Suite PDF417 generation mode must be reconciled under #95; raster-only inversion and other exclusions cannot hide required vector modes."
+    },
+    {
+      "obligation": "barcodes-2d",
+      "slice": 95,
+      "reason": "unresolved retained limitation: The complete 224-page-per-mode corpus and damaged controls need final candidate/environment evidence under #95."
+    },
+    {
+      "obligation": "barcodes-2d",
+      "slice": 95,
+      "reason": "unresolved retained limitation: Independent standards, compatible dependencies, required environments and 2D Facade remain incomplete."
+    },
+    {
+      "obligation": "barcodes-2d",
+      "slice": 95,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk8/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "barcodes-2d",
+      "slice": 95,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk8/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "barcodes-2d",
+      "slice": 95,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk11/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "barcodes-2d",
+      "slice": 95,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk11/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "barcodes-2d",
+      "slice": 95,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk17/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "barcodes-2d",
+      "slice": 95,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "barcodes-2d",
+      "slice": 95,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "barcodes-2d",
+      "slice": 95,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "barcodes-2d",
+      "slice": 95,
+      "reason": "incomplete prerequisite obligation canvas"
+    },
+    {
+      "obligation": "barcodes-2d",
+      "slice": 95,
+      "reason": "incomplete prerequisite obligation graphics"
+    },
+    {
+      "obligation": "tables-base",
+      "slice": 91,
+      "reason": "missing independently certifiable subcapability composition.layout.tables.base (aggregate composition.layout.tables)"
+    },
+    {
+      "obligation": "tables-base",
+      "slice": 91,
+      "reason": "missing required Facade mapping set for layout Table and Cell properties and lifecycle"
+    },
+    {
+      "obligation": "tables-base",
+      "slice": 91,
+      "reason": "unresolved retained limitation: AUTO allocation restrictions require #91 proof against full required fixed/automatic table behavior."
+    },
+    {
+      "obligation": "tables-base",
+      "slice": 91,
+      "reason": "unresolved retained limitation: Cell-content and nesting restrictions require #91 reconciliation with the Foundation table profile."
+    },
+    {
+      "obligation": "tables-base",
+      "slice": 91,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk8/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "tables-base",
+      "slice": 91,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk8/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "tables-base",
+      "slice": 91,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk11/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "tables-base",
+      "slice": 91,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk11/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "tables-base",
+      "slice": 91,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk17/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "tables-base",
+      "slice": 91,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "tables-base",
+      "slice": 91,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "tables-base",
+      "slice": 91,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "tables-base",
+      "slice": 91,
+      "reason": "incomplete prerequisite obligation pagination"
+    },
+    {
+      "obligation": "tables-base",
+      "slice": 91,
+      "reason": "incomplete prerequisite obligation fonts"
+    },
+    {
+      "obligation": "tables-base",
+      "slice": 91,
+      "reason": "incomplete prerequisite obligation graphics"
+    },
+    {
+      "obligation": "tables-pagination",
+      "slice": 92,
+      "reason": "missing independently certifiable subcapability composition.layout.tables.pagination (aggregate composition.layout.tables)"
+    },
+    {
+      "obligation": "tables-pagination",
+      "slice": 92,
+      "reason": "missing required Facade mapping set for layout Table and Cell properties and lifecycle"
+    },
+    {
+      "obligation": "tables-pagination",
+      "slice": 92,
+      "reason": "unresolved retained limitation: Restricted incremental large-table mode must cover every required Foundation flushing case under #92."
+    },
+    {
+      "obligation": "tables-pagination",
+      "slice": 92,
+      "reason": "unresolved retained limitation: T26/T27 evidence must be retained for the two independent subcapabilities on final required profiles."
+    },
+    {
+      "obligation": "tables-pagination",
+      "slice": 92,
+      "reason": "unresolved retained limitation: Required standards, dependency, Foundation typography/environment and Table/Cell Facade certification remain incomplete."
+    },
+    {
+      "obligation": "tables-pagination",
+      "slice": 92,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk8/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "tables-pagination",
+      "slice": 92,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk8/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "tables-pagination",
+      "slice": 92,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk11/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "tables-pagination",
+      "slice": 92,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk11/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "tables-pagination",
+      "slice": 92,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk17/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "tables-pagination",
+      "slice": 92,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "tables-pagination",
+      "slice": 92,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "tables-pagination",
+      "slice": 92,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)"
+    },
+    {
+      "obligation": "tables-pagination",
+      "slice": 92,
+      "reason": "incomplete prerequisite obligation tables-base"
+    },
+    {
+      "obligation": "tables-pagination",
+      "slice": 92,
+      "reason": "incomplete prerequisite obligation pagination"
+    },
+    {
+      "obligation": "tables-pagination",
+      "slice": 92,
+      "reason": "incomplete prerequisite obligation fonts"
+    },
+    {
+      "obligation": "tables-pagination",
+      "slice": 92,
+      "reason": "incomplete prerequisite obligation graphics"
+    },
+    {
+      "obligation": "environments",
+      "slice": 69,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk8/REPOSITORY (required chains: contract)"
+    },
+    {
+      "obligation": "environments",
+      "slice": 69,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk11/REPOSITORY (required chains: contract)"
+    },
+    {
+      "obligation": "environments",
+      "slice": 69,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk17/REPOSITORY (required chains: contract)"
+    },
+    {
+      "obligation": "environments",
+      "slice": 69,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk21/REPOSITORY (required chains: contract)"
+    },
+    {
+      "obligation": "java-artifacts",
+      "slice": 96,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk8/REPOSITORY (required chains: contract, artifact)"
+    },
+    {
+      "obligation": "java-artifacts",
+      "slice": 96,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk11/REPOSITORY (required chains: contract, artifact)"
+    },
+    {
+      "obligation": "java-artifacts",
+      "slice": 96,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk17/REPOSITORY (required chains: contract, artifact)"
+    },
+    {
+      "obligation": "java-artifacts",
+      "slice": 96,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk21/REPOSITORY (required chains: contract, artifact)"
+    },
+    {
+      "obligation": "facade-artifacts",
+      "slice": 96,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk17/REPOSITORY (required chains: contract, artifact)"
+    },
+    {
+      "obligation": "acceptance",
+      "slice": 70,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk17/REPOSITORY (required chains: contract, review)"
+    },
+    {
+      "obligation": "docs",
+      "slice": 96,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk17/REPOSITORY (required chains: contract, review)"
+    },
+    {
+      "obligation": "provenance",
+      "slice": 96,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk17/REPOSITORY (required chains: review, supply-chain)"
+    },
+    {
+      "obligation": "supply-chain",
+      "slice": 96,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk17/REPOSITORY (required chains: supply-chain, review)"
+    },
+    {
+      "obligation": "reproducibility",
+      "slice": 96,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk17/REPOSITORY (required chains: reproducibility, artifact, signature)"
+    },
+    {
+      "obligation": "reproducibility",
+      "slice": 96,
+      "reason": "incomplete prerequisite obligation integration"
+    },
+    {
+      "obligation": "candidate",
+      "slice": 97,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk17/REPOSITORY (required chains: artifact, signature, review)"
+    },
+    {
+      "obligation": "candidate",
+      "slice": 97,
+      "reason": "incomplete prerequisite obligation reproducibility"
+    },
+    {
+      "obligation": "candidate",
+      "slice": 97,
+      "reason": "incomplete prerequisite obligation publication-controls"
+    },
+    {
+      "obligation": "publication-controls",
+      "slice": 97,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk17/REPOSITORY (required chains: contract, review)"
+    },
+    {
+      "obligation": "integration",
+      "slice": 96,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk8/REPOSITORY (required chains: contract, review)"
+    },
+    {
+      "obligation": "integration",
+      "slice": 96,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk11/REPOSITORY (required chains: contract, review)"
+    },
+    {
+      "obligation": "integration",
+      "slice": 96,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk17/REPOSITORY (required chains: contract, review)"
+    },
+    {
+      "obligation": "integration",
+      "slice": 96,
+      "reason": "missing certification ubuntu-24.04-linux-x86-64-jdk21/REPOSITORY (required chains: contract, review)"
+    },
+    {
+      "obligation": "integration",
+      "slice": 96,
+      "reason": "incomplete prerequisite obligation canvas"
+    },
+    {
+      "obligation": "integration",
+      "slice": 96,
+      "reason": "incomplete prerequisite obligation graphics"
+    },
+    {
+      "obligation": "integration",
+      "slice": 96,
+      "reason": "incomplete prerequisite obligation fonts"
+    },
+    {
+      "obligation": "integration",
+      "slice": 96,
+      "reason": "incomplete prerequisite obligation rendering"
+    },
+    {
+      "obligation": "integration",
+      "slice": 96,
+      "reason": "incomplete prerequisite obligation paragraphs"
+    },
+    {
+      "obligation": "integration",
+      "slice": 96,
+      "reason": "incomplete prerequisite obligation pagination"
+    },
+    {
+      "obligation": "integration",
+      "slice": 96,
+      "reason": "incomplete prerequisite obligation tables"
+    },
+    {
+      "obligation": "integration",
+      "slice": 96,
+      "reason": "incomplete prerequisite obligation shaping"
+    },
+    {
+      "obligation": "integration",
+      "slice": 96,
+      "reason": "incomplete prerequisite obligation barcodes-1d"
+    },
+    {
+      "obligation": "integration",
+      "slice": 96,
+      "reason": "incomplete prerequisite obligation barcodes-2d"
+    },
+    {
+      "obligation": "integration",
+      "slice": 96,
+      "reason": "incomplete prerequisite obligation tables-base"
+    },
+    {
+      "obligation": "integration",
+      "slice": 96,
+      "reason": "incomplete prerequisite obligation tables-pagination"
+    },
+    {
+      "obligation": "integration",
+      "slice": 96,
+      "reason": "incomplete prerequisite obligation environments"
+    },
+    {
+      "obligation": "integration",
+      "slice": 96,
+      "reason": "incomplete prerequisite obligation java-artifacts"
+    },
+    {
+      "obligation": "integration",
+      "slice": 96,
+      "reason": "incomplete prerequisite obligation facade-artifacts"
+    },
+    {
+      "obligation": "integration",
+      "slice": 96,
+      "reason": "incomplete prerequisite obligation acceptance"
+    },
+    {
+      "obligation": "integration",
+      "slice": 96,
+      "reason": "incomplete prerequisite obligation docs"
+    },
+    {
+      "obligation": "integration",
+      "slice": 96,
+      "reason": "incomplete prerequisite obligation provenance"
+    },
+    {
+      "obligation": "integration",
+      "slice": 96,
+      "reason": "incomplete prerequisite obligation supply-chain"
+    }
+  ],
+  "interpretation": "Provider and all initially satisfied obligations are live SATISFIED; global readiness is false solely for unrelated outstanding release obligations."
+}

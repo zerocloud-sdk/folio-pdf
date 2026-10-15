@@ -266,3 +266,21 @@ order through `worker` before `recovery`. Historical evidence keeps its original
 identity; a new label cannot make it current. Live readiness must keep every
 previously satisfied prerequisite SATISFIED for the same candidate. Unrelated
 outstanding slices may keep global readiness NOT READY and are outside #83.
+
+## Provider selection and disclosure certification (#84)
+
+The `providers` control requires eight exact environment/Native-profile tuples
+and five separate chains per tuple. The [T05 contract](t05-certification.md)
+defines the frozen cases, real loopback/subprocess boundaries, public document
+outcomes, qualified T03 predicates and strict original-versus-live collection.
+Stable and Preview Facades execute IN_PROCESS for applicable document behavior;
+Provider controls retain their individual Native-only reason. A Provider
+SUBPROCESS or REMOTE declaration cannot substitute for a Workflow profile.
+Provider HARDENED_WORKER evidence requires actual JVM/launcher witnesses.
+
+The final index must preserve every previously satisfied obligation for the
+same staged candidate, with transactions refreshed first. All 40 Provider
+records and their raw findings/controls must exist with current actual bytes.
+Global readiness may remain false for unrelated outstanding slices. The
+acceptance-only endpoint transfers synthetic bytes over loopback and adds no
+product remote adapter or Worker network permission.

@@ -88,7 +88,7 @@ A missing capability, required behavior, compatible dependency, independent evid
 | [`graphics`](#graphics) | `composition.canvas.images-colors-transparency` | [#86](https://github.com/zerocloud-sdk/folio-pdf/issues/86) | blocked |
 | [`fonts`](#fonts) | `composition.fonts.load-embed-subset-fallback` | [#87](https://github.com/zerocloud-sdk/folio-pdf/issues/87) | blocked |
 | [`rendering`](#rendering) | `conversion.rendering` | [#88](https://github.com/zerocloud-sdk/folio-pdf/issues/88) | blocked |
-| [`providers`](#providers) | `conversion.capability-provider.select-execute` | [#84](https://github.com/zerocloud-sdk/folio-pdf/issues/84) | blocked |
+| [`providers`](#providers) | `conversion.capability-provider.select-execute` | [#84](https://github.com/zerocloud-sdk/folio-pdf/issues/84) | satisfied |
 | [`paragraphs`](#paragraphs) | `composition.layout.paragraph-areas` | [#89](https://github.com/zerocloud-sdk/folio-pdf/issues/89) | blocked |
 | [`pagination`](#pagination) | `composition.layout.paragraph-pagination` | [#90](https://github.com/zerocloud-sdk/folio-pdf/issues/90) | blocked |
 | [`tables`](#tables) | `composition.layout.tables` | [#92](https://github.com/zerocloud-sdk/folio-pdf/issues/92) | blocked |
@@ -422,7 +422,6 @@ Render selected current pages to bounded, session-scoped PNGs through a replacea
 - Source requirements: [`spec-us-21`](#spec-us-21), [`spec-us-38`](#spec-us-38), [`spec-id-49`](#spec-id-49), [`spec-td-10`](#spec-td-10), [`slice-88-1`](#slice-88-1), [`slice-88-2`](#slice-88-2), [`slice-88-3`](#slice-88-3), [`slice-88-4`](#slice-88-4)
 
 - Blocker: capability conversion.rendering is experimental, requires compatible
-- Blocker: incompatible Dependency Gate conversion.capability-provider.select-execute
 - Blocker: incompatible Dependency Gate composition.canvas.images-colors-transparency
 - Blocker: incompatible Dependency Gate composition.fonts.load-embed-subset-fallback
 - Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on conversion.rendering
@@ -441,7 +440,6 @@ Render selected current pages to bounded, session-scoped PNGs through a replacea
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: incomplete prerequisite obligation providers
 - Blocker: incomplete prerequisite obligation graphics
 - Blocker: incomplete prerequisite obligation fonts
 
@@ -460,19 +458,6 @@ Register, inspect, deterministically select, and safely execute project-owned Ca
 - Native Interface only: Provider registration, deterministic selection, availability and Remote Disclosure Authorization form the project-owned deployment contract and have no Reference Suite counterpart. Rendering and shaping keep their separate required migration families.
 - Source requirements: [`spec-us-37`](#spec-us-37), [`spec-us-38`](#spec-us-38), [`spec-us-39`](#spec-us-39), [`spec-us-74`](#spec-us-74), [`spec-id-19`](#spec-id-19), [`spec-id-32`](#spec-id-32), [`spec-id-47`](#spec-id-47), [`spec-td-04`](#spec-td-04), [`slice-84-1`](#slice-84-1), [`slice-84-2`](#slice-84-2), [`slice-84-3`](#slice-84-3), [`slice-84-4`](#slice-84-4)
 
-- Blocker: capability conversion.capability-provider.select-execute is experimental, requires compatible
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk8 on conversion.capability-provider.select-execute
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk11 on conversion.capability-provider.select-execute
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk17 on conversion.capability-provider.select-execute
-- Blocker: missing certified environment ubuntu-24.04-linux-x86-64-jdk21 on conversion.capability-provider.select-execute
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk8/IN_PROCESS (required chains: syntax, standards, semantic, visual, contract)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk8/HARDENED_WORKER (required chains: syntax, standards, semantic, visual, contract)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk11/IN_PROCESS (required chains: syntax, standards, semantic, visual, contract)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk11/HARDENED_WORKER (required chains: syntax, standards, semantic, visual, contract)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/IN_PROCESS (required chains: syntax, standards, semantic, visual, contract)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual, contract)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual, contract)
-- Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual, contract)
 
 <a id="paragraphs"></a>
 ### `paragraphs`
@@ -594,7 +579,6 @@ Shape explicitly selected fonts through the project-owned HarfBuzz Provider and 
 - Source requirements: [`spec-us-08`](#spec-us-08), [`spec-us-38`](#spec-us-38), [`spec-us-58`](#spec-us-58), [`spec-id-37`](#spec-id-37), [`spec-id-38`](#spec-id-38), [`spec-id-39`](#spec-id-39), [`spec-td-15`](#spec-td-15), [`slice-93-1`](#slice-93-1), [`slice-93-2`](#slice-93-2), [`slice-93-3`](#slice-93-3), [`slice-93-4`](#slice-93-4)
 
 - Blocker: capability composition.shaping.harf-buzz is experimental, requires compatible
-- Blocker: incompatible Dependency Gate conversion.capability-provider.select-execute
 - Blocker: incompatible Dependency Gate composition.fonts.load-embed-subset-fallback
 - Blocker: incompatible Dependency Gate composition.layout.paragraph-areas
 - Blocker: incompatible Dependency Gate composition.layout.paragraph-pagination
@@ -616,7 +600,6 @@ Shape explicitly selected fonts through the project-owned HarfBuzz Provider and 
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk17/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/IN_PROCESS (required chains: syntax, standards, semantic, visual)
 - Blocker: missing certification ubuntu-24.04-linux-x86-64-jdk21/HARDENED_WORKER (required chains: syntax, standards, semantic, visual)
-- Blocker: incomplete prerequisite obligation providers
 - Blocker: incomplete prerequisite obligation fonts
 - Blocker: incomplete prerequisite obligation paragraphs
 - Blocker: incomplete prerequisite obligation pagination
@@ -1017,7 +1000,6 @@ Close every Foundation behavior, aggregate, dependency and Facade obligation; ru
 - Blocker: incomplete prerequisite obligation graphics
 - Blocker: incomplete prerequisite obligation fonts
 - Blocker: incomplete prerequisite obligation rendering
-- Blocker: incomplete prerequisite obligation providers
 - Blocker: incomplete prerequisite obligation paragraphs
 - Blocker: incomplete prerequisite obligation pagination
 - Blocker: incomplete prerequisite obligation tables
@@ -1286,15 +1268,15 @@ Classifications bind the exact Capability Matrix limitation text by SHA-256; cha
   Original limitation: Rendering retains cancellation, deadline, elapsed-time, environment concurrency, extraction-permission, cleanup, signature, and PDF publication contracts. PNG consumption is immediate caller-owned output with possible partial bytes and no Publication Receipt. Escaping rendering failures abort PDF Targets; subsequent PDF publication keeps ordered Path and stream receipt semantics.
 - `conversion.rendering` / `release-blocker` → [`rendering`](#rendering): Independent rendering option coverage, standards/semantic chains and Facade mappings remain incomplete under #88.
   Original limitation: The independent profiles cover page content plus a normal stamp appearance, the T18 image/color/transparency corpus, and the T19 embedded-font corpus at fixed DPI 144, scale 1, page 1, effective CropBox, opaque white sRGB, and SHOW annotations. Other options have public behavioral tests but no independent visual compatibility claim. T23 adds no OCR, Office conversion, paragraph layout, shaping, Migration Facade surface, or platform certification.
-- `conversion.capability-provider.select-execute` / `retained-contract` → [`providers`](#providers): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #84 must prove it without omitting required successful Foundation cases.
+- `conversion.capability-provider.select-execute` / `retained-contract` → [`providers`](#providers): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #84 retains the bounded Provider control and its qualified public/boundary observations under docs/t05-certification.md; no required successful case is omitted.
   Original limitation: T05 supplies the Provider contract and a generic bounded subprocess adapter; it does not implement or bundle Tesseract, LibreOffice, HarfBuzz, PDFium, a commercial engine, or a remote service adapter.
-- `conversion.capability-provider.select-execute` / `retained-contract` → [`providers`](#providers): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #84 must prove it without omitting required successful Foundation cases.
+- `conversion.capability-provider.select-execute` / `retained-contract` → [`providers`](#providers): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #84 retains the bounded Provider control and its qualified public/boundary observations under docs/t05-certification.md; no required successful case is omitted.
   Original limitation: Provider Operating Limits cover request bytes, result bytes, and elapsed subprocess time. T20 supplies cooperative policy for the surrounding workflow, while T21's separate document Worker leaves Provider selection and execution parent-brokered.
-- `conversion.capability-provider.select-execute` / `retained-contract` → [`providers`](#providers): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #84 must prove it without omitting required successful Foundation cases.
+- `conversion.capability-provider.select-execute` / `retained-contract` → [`providers`](#providers): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #84 retains the bounded Provider control and its qualified public/boundary observations under docs/t05-certification.md; no required successful case is omitted.
   Original limitation: The generic Java 8 subprocess adapter supervises its direct child. T21's process-tree boundary contains the PDF Worker and does not certify arbitrary Capability Provider descendants.
-- `conversion.capability-provider.select-execute` / `retained-contract` → [`providers`](#providers): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #84 must prove it without omitting required successful Foundation cases.
+- `conversion.capability-provider.select-execute` / `retained-contract` → [`providers`](#providers): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #84 retains the bounded Provider control and its qualified public/boundary observations under docs/t05-certification.md; no required successful case is omitted.
   Original limitation: Provider availability is an immutable registration snapshot; callers rebuild the Workflow Environment when an external engine installation changes.
-- `conversion.capability-provider.select-execute` / `retained-contract` → [`providers`](#providers): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #84 must prove it without omitting required successful Foundation cases.
+- `conversion.capability-provider.select-execute` / `retained-contract` → [`providers`](#providers): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #84 retains the bounded Provider control and its qualified public/boundary observations under docs/t05-certification.md; no required successful case is omitted.
   Original limitation: T05 byte-array request and result values are bounded and detached; large-value chunking and worker staging remain outside this ticket.
 - `composition.layout.paragraph-areas` / `retained-contract` → [`paragraphs`](#paragraphs): This preserves the explicit ownership, bounded execution, representation or safe-preservation contract; #89 must prove it without omitting required successful Foundation cases.
   Original limitation: Version 1 appends the reached prefix of a finite list of new unrotated pages. Dimensions are positive and at most 14400 points; nonnegative margins leave a positive box. Areas are explicit rectangles relative to that box or the whole box when omitted. There is no implicit page-template repetition or existing-page-area insertion.
@@ -2785,22 +2767,22 @@ Classifications bind the exact Capability Matrix limitation text by SHA-256; cha
 <a id="slice-84-1"></a>
 - `slice-84-1` — https://github.com/zerocloud-sdk/folio-pdf/issues/84 — Acceptance criteria 1
   Certify deterministic Provider selection, explicit preference, availability, version/license/limit metadata and offline default behavior through the public Workflow Environment.
-  Disposition: `required`. Approved certification slice; scope declarations do not assert implementation or certification. Obligations: `providers`
+  Disposition: `required`. The frozen T05 source inventory and five-chain Foundation evidence retain this Provider requirement; current actual candidate-bound observations govern certification. Obligations: `providers`
 
 <a id="slice-84-2"></a>
 - `slice-84-2` — https://github.com/zerocloud-sdk/folio-pdf/issues/84 — Acceptance criteria 2
   At actual external subprocess/provider seams, verify request/result bounds, timeouts, child cleanup, immutable detached values and safe failure propagation.
-  Disposition: `required`. Approved certification slice; scope declarations do not assert implementation or certification. Obligations: `providers`
+  Disposition: `required`. The frozen T05 source inventory and five-chain Foundation evidence retain this Provider requirement; current actual candidate-bound observations govern certification. Obligations: `providers`
 
 <a id="slice-84-3"></a>
 - `slice-84-3` — https://github.com/zerocloud-sdk/folio-pdf/issues/84 — Acceptance criteria 3
   Use controlled local test endpoints for remote-disclosure authorization cases; registration or preference alone cannot authorize document disclosure and no real document is sent to an external service.
-  Disposition: `required`. Approved certification slice; scope declarations do not assert implementation or certification. Obligations: `providers`
+  Disposition: `required`. The frozen T05 source inventory and five-chain Foundation evidence retain this Provider requirement; current actual candidate-bound observations govern certification. Obligations: `providers`
 
 <a id="slice-84-4"></a>
 - `slice-84-4` — https://github.com/zerocloud-sdk/folio-pdf/issues/84 — Acceptance criteria 4
   Preserve project-owned contracts and record the justified Native-Interface-only mapping decision; do not introduce OCR, Office or downstream provider implementations.
-  Disposition: `required`. Approved certification slice; scope declarations do not assert implementation or certification. Obligations: `providers`
+  Disposition: `required`. The frozen T05 source inventory and five-chain Foundation evidence retain this Provider requirement; current actual candidate-bound observations govern certification. Obligations: `providers`
 
 <a id="slice-85-1"></a>
 - `slice-85-1` — https://github.com/zerocloud-sdk/folio-pdf/issues/85 — Acceptance criteria 1

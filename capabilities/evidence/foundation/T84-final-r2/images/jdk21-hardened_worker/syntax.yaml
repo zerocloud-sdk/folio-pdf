@@ -1,0 +1,44 @@
+{
+  "schema-version": 1,
+  "obligation": "images",
+  "acceptance-profile": "T14-image-resource-extraction",
+  "release": "0.1.0",
+  "candidate-sha256": "8e079e00ef1cf38a23efd34922d60268949682732d3066332927451b1bb5dca8",
+  "contract-sha256": "5c3cafb114f1ba8d148af31e5a74dd8466caf8427a92fb91b3e561805b92e176",
+  "environment-sha256": "dc092bd0bca8b4c5acfd815e7046b59359ba88536b69eaae890e5c8bf642d7bb",
+  "execution-configuration-sha256": "9cb469a1d7ddb2534357779e2387fe8d8b4e6b07bb08ebf812303124d9c627d9",
+  "execution-profile": "HARDENED_WORKER",
+  "chain": "syntax",
+  "result": "pass",
+  "producer": "qpdf",
+  "configuration": {
+    "path": "capabilities/evidence/T76-image-resource-certification.md",
+    "sha256": "1f000b6c849fddc907d339962076c829c803f13cfe3e56f6556ed5ca87b38ab4"
+  },
+  "report": {
+    "path": "capabilities/evidence/foundation/T84-final-r2/images/jdk21-hardened_worker/syntax-report.json",
+    "sha256": "517b8b2b966428c39af58ea9aad9c2d44cae2b8a4598095332328c077717792b"
+  },
+  "negative-controls": [
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/images/jdk21-hardened_worker/observations/negative/syntax/invalid.pdf",
+      "sha256": "3df4691c8b8b17f9fd9c39d7747465ebc34b35d78453504212b06d7558cae9d7"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/images/jdk21-hardened_worker/observations/negative/syntax/qpdf.command.json",
+      "sha256": "14d11c5ce293520e6f06ccde7efb69391a924f8c99016673921bc83e2a435ad2"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/images/jdk21-hardened_worker/observations/negative/syntax/qpdf.stderr",
+      "sha256": "715cb8d1a47566dc244c3bb6fe8d1364500ef7accb04ab6cda7abd34c5df3ce3"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/images/jdk21-hardened_worker/observations/negative/syntax/qpdf.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "capabilities/evidence/foundation/T84-final-r2/images/jdk21-hardened_worker/observations/negative/syntax/result.json",
+      "sha256": "b46914e26b99f0d61707d9429c67c8a7118b39075c859ac94d76b21930b1b434"
+    }
+  ]
+}

@@ -3264,3 +3264,37 @@ reverse-engineered closed add-on was used. Existing licensed tools/fonts and
 fixtures retain their recorded identities. The time-source audit and paired
 wall/monotonic gate evidence are retained under T83-delivery; prior failed
 verification and candidate archives stay intact and cannot certify candidate10.
+
+## T32.16 Provider certification (#84)
+
+- Authorship: OpenAI Codex authored the acceptance-only recorder, strict collector,
+  public/boundary checks, case inventory and documentation at repository operator
+  mabaiqiu's direction. The existing shipped Provider implementation is reused.
+- Approved inputs: the unchanged supplied issue #84 snapshot and execution
+  contract, repository public Provider/Workflow/Facade contracts and tests,
+  Foundation authorities, CONTEXT.md, CONTRIBUTING.md and ADR-0007/0023/0033/0040.
+  No live tracker mutation or restricted Reference Suite material was used.
+- New fixtures are original Apache-2.0 synthetic byte arrays, length-framed
+  loopback/process peers, malformed frames, caller staging/Target sentinels and
+  resource-free blank document outcomes. Endpoint adapters and process classes
+  live only in pdf-acceptance and never in product jars or the qualified PDF
+  Worker runtime closure. No downstream engine, cloud adapter or dependency is
+  introduced. No user document is sent to an external service.
+- Independent PDF predicates reuse the qualified project-authored T03 rule
+  corpus, standards qualification and white-page raster only for the exact
+  applicable workload artifacts. qpdf, pdfcpu, Arlington, PDFium and ImageMagick
+  retain their existing pinned identities and license records. Observer Python,
+  PyYAML, exact Temurin images and the explicit HarfBuzz installation remain
+  acceptance/build inputs under their existing recorded license treatment.
+- The frozen source inventory covers all nine criteria and every assigned
+  Foundation requirement. Named mandatory execution, raw endpoint/process
+  observations, original independent findings and controls are bound to the
+  staged candidate and requalified through live collection. Historical T05
+  implementation/prerequisite statements above describe that original phase;
+  the current Provider certification account is T05 and the Foundation index.
+- No iText source, resource, output, binary-derived implementation, proprietary
+  add-on protocol or Compatibility Curator differential evidence was used.
+  Native-only Provider controls keep the recorded individual rationale;
+  existing Stable/Preview public document behavior is observed without adding
+  a Provider mapping. Generic direct-child cleanup does not certify a Provider
+  descendant sandbox, arbitrary in-process termination or hard OS isolation.
